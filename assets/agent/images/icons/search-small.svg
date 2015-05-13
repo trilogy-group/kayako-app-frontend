@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="13px" height="13px" viewBox="0 0 13 13" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.3.1 (12002) - http://www.bohemiancoding.com/sketch -->
+    <title>Line</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="✴️-Cases" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="🔒popover--macros" sketch:type="MSArtboardGroup" transform="translate(-253.000000, -343.000000)" fill="#BEC4C7">
+            <g id="drilldown--menu-2" sketch:type="MSLayerGroup" transform="translate(29.000000, 275.000000)">
+                <g id="search-3" transform="translate(12.000000, 61.000000)" sketch:type="MSShapeGroup">
+                    <path d="M220.650974,17.0084999 C219.758573,17.6333556 218.672104,18 217.5,18 C214.462434,18 212,15.5375661 212,12.5 C212,9.46243388 214.462434,7 217.5,7 C220.537566,7 223,9.46243388 223,12.5 C223,13.6631812 222.638916,14.7420267 222.022725,15.630561 C222.097206,15.690487 222.159917,15.7457037 222.207107,15.7928932 L224.707107,18.2928932 C225.097631,18.6834175 225.097631,19.3165825 224.707107,19.7071068 C224.316582,20.0976311 223.683418,20.0976311 223.292893,19.7071068 L220.792893,17.2071068 C220.743664,17.1389213 220.696367,17.0727454 220.650974,17.0084999 Z M220.168995,14.7642801 C220.687314,14.1539216 221,13.3634767 221,12.5 C221,10.5670034 219.432997,9 217.5,9 C215.567003,9 214,10.5670034 214,12.5 C214,14.4329966 215.567003,16 217.5,16 C218.381895,16 219.187609,15.6738321 219.80309,15.1355484 C219.830711,15.0290235 219.888032,14.9370901 219.972514,14.8526085 C220.022237,14.8028851 220.089194,14.7747362 220.168995,14.7642801 Z" id="Line"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
