@@ -8,10 +8,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <base href="/" />
-<meta name="frontend-cp/config/environment" content="%7B%22modulePrefix%22%3A%22frontend-cp%22%2C%22environment%22%3A%22production%22%2C%22baseURL%22%3A%22/%22%2C%22locationType%22%3A%22auto%22%2C%22EmberENV%22%3A%7B%22FEATURES%22%3A%7B%7D%7D%2C%22contentSecurityPolicy%22%3A%7B%22img-src%22%3A%22*%22%2C%22style-src%22%3A%22%27self%27%20%27unsafe-inline%27%22%2C%22default-src%22%3A%22%27none%27%22%2C%22script-src%22%3A%22%27self%27%22%2C%22font-src%22%3A%22%27self%27%22%2C%22connect-src%22%3A%22%27self%27%22%2C%22media-src%22%3A%22%27self%27%22%7D%2C%22APP%22%3A%7B%22name%22%3A%22frontend-cp%22%2C%22version%22%3A%220.0.0.61507286%22%7D%2C%22contentSecurityPolicyHeader%22%3A%22Content-Security-Policy-Report-Only%22%2C%22exportApplicationGlobal%22%3Afalse%7D" />
+<meta name="frontend-cp/config/environment" content="%7B%22modulePrefix%22%3A%22frontend-cp%22%2C%22environment%22%3A%22production%22%2C%22baseURL%22%3A%22/%22%2C%22locationType%22%3A%22auto%22%2C%22EmberENV%22%3A%7B%22FEATURES%22%3A%7B%7D%7D%2C%22contentSecurityPolicy%22%3A%7B%22img-src%22%3A%22*%22%2C%22style-src%22%3A%22%27self%27%20%27unsafe-inline%27%22%2C%22default-src%22%3A%22%27none%27%22%2C%22script-src%22%3A%22%27self%27%22%2C%22font-src%22%3A%22%27self%27%22%2C%22connect-src%22%3A%22%27self%27%22%2C%22media-src%22%3A%22%27self%27%22%7D%2C%22APP%22%3A%7B%22name%22%3A%22frontend-cp%22%2C%22version%22%3A%220.0.0.05fad1c3%22%7D%2C%22contentSecurityPolicyHeader%22%3A%22Content-Security-Policy-Report-Only%22%2C%22exportApplicationGlobal%22%3Afalse%7D" />
 
   <link rel="stylesheet" href="assets/vendor-d41d8cd98f00b204e9800998ecf8427e.css">
-  <link rel="stylesheet" href="assets/frontend-cp-b22ed32c54f16c0b569f43166d747de2.css">
+  <link rel="stylesheet" href="assets/frontend-cp-8b19044c550fa398c92c9569d4367e09.css">
 
   
 </head>
@@ -19,7 +19,7 @@
 
 
 <script src="assets/vendor-b9f281ddd33943a3bc13fae517ea37c9.js"></script>
-<script src="assets/frontend-cp-60ffe0855060b28f67e19216be9533f2.js"></script>
+<script src="assets/frontend-cp-77bf9d110b0f530f10ea61a0f79cce31.js"></script>
 
 
 </body>
