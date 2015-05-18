@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="15px" height="13px" viewBox="0 0 15 13" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.3.1 (12002) - http://www.bohemiancoding.com/sketch -->
+    <title>icon-photos</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="✴️-Cases" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="-[SCN]-Case-New" sketch:type="MSArtboardGroup" transform="translate(-460.000000, -258.000000)" fill="#5F6C73">
+            <g id="case-text-area-header" sketch:type="MSLayerGroup" transform="translate(41.000000, 239.000000)">
+                <g id="wysiwyg-icons" transform="translate(281.000000, 19.000000)" sketch:type="MSShapeGroup">
+                    <path d="M151.125,1.85714286 L149.333125,1.85714286 L148.75,0.619047619 C148.615625,0.310761905 148.078125,0 147.60875,0 L143.474375,0 C143.005,0 142.4675,0.310761905 142.333125,0.619047619 L141.75,1.85714286 L139.875,1.85714286 C138.381875,1.85714286 138,3.0952381 138,3.0952381 L138,11.7619048 C138,11.7619048 138.9375,13 139.875,13 L151.125,13 C152.12125,13 153,11.7619048 153,11.7619048 L153,3.0952381 C153,3.0952381 152.685,1.85714286 151.125,1.85714286 L151.125,1.85714286 Z M145.5,11.1434762 C143.429375,11.1434762 141.75,9.48009524 141.75,7.42857143 C141.75,5.37766667 143.429375,3.71428571 145.5,3.71428571 C147.57125,3.71428571 149.25,5.37766667 149.25,7.42857143 C149.25,9.48009524 147.57125,11.1434762 145.5,11.1434762 L145.5,11.1434762 Z M145.5,4.95238095 C144.119375,4.95238095 143,6.06109524 143,7.42857143 C143,8.79604762 144.119375,9.9047619 145.5,9.9047619 C146.880625,9.9047619 148,8.79604762 148,7.42857143 C148,6.06109524 146.880625,4.95238095 145.5,4.95238095 L145.5,4.95238095 Z" id="icon-photos"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
