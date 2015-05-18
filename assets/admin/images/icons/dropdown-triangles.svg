@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="5px" height="8px" viewBox="0 0 5 8" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.3.1 (12002) - http://www.bohemiancoding.com/sketch -->
+    <title>Dropdown Triangles 5</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="✴️-Cases" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="-[SCN]-Case-New" sketch:type="MSArtboardGroup" transform="translate(-644.000000, -261.000000)" fill="#A1AAAF">
+            <g id="case-text-area-header" sketch:type="MSLayerGroup" transform="translate(41.000000, 239.000000)">
+                <g id="Dropdown-Triangles-5" transform="translate(603.000000, 22.000000)" sketch:type="MSShapeGroup">
+                    <polygon id="Triangle-4" points="2.5 0 5 3 0 3 "></polygon>
+                    <polygon id="Triangle-5" transform="translate(2.500000, 6.500000) scale(1, -1) translate(-2.500000, -6.500000) " points="2.5 5 5 8 0 8 "></polygon>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
