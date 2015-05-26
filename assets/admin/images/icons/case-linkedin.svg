@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.3.2 (12043) - http://www.bohemiancoding.com/sketch -->
+    <title>Imported Layers</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="✴️-Organization" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="Organization" sketch:type="MSArtboardGroup" transform="translate(-724.000000, -799.000000)" fill="#838D94">
+            <g id="comp-contact-info" sketch:type="MSLayerGroup" transform="translate(724.000000, 613.000000)">
+                <path d="M15,186 L1,186 C0.447,186 0,186.447 0,187 L0,201 C0,201.553 0.447,202 1,202 L15,202 C15.553,202 16,201.553 16,201 L16,187 C16,186.447 15.553,186 15,186 L15,186 Z M3,191 L5,191 L5,198 L3,198 L3,191 Z M4,190 C3.447,190 3,189.553 3,189 C3,188.447 3.447,188 4,188 C4.553,188 5,188.447 5,189 C5,189.553 4.553,190 4,190 L4,190 Z M13,198 L11,198 L11,195 C11,194.06 10.75,193 9.75,193 C8.625,193 8,194 8,195 L8,198 L6.016,198 C6.016,198 6.063,191 6.031,191 L8,191 L8,192.5 C8.305,191.829 8.938,191.187 9.854,191.062 C11.795,190.798 13,191.824 13,193.974 L13,198 L13,198 Z" id="Imported-Layers" sketch:type="MSShapeGroup"></path>
+            </g>
+        </g>
+    </g>
+</svg>
