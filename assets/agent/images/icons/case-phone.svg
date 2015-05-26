@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="10px" height="16px" viewBox="0 0 10 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.3.2 (12043) - http://www.bohemiancoding.com/sketch -->
+    <title>Imported Layers</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="✴️-Organization" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="Organization" sketch:type="MSArtboardGroup" transform="translate(-727.000000, -642.000000)" fill="#838D94">
+            <g id="comp-contact-info" sketch:type="MSLayerGroup" transform="translate(724.000000, 613.000000)">
+                <path d="M12,29 L4,29 C3.447,29 3,29.447 3,30 L3,44 C3,44.553 3.447,45 4,45 L12,45 C12.553,45 13,44.553 13,44 L13,30 C13,29.447 12.553,29 12,29 L12,29 Z M9,43.5 C9,43.776 8.776,44 8.5,44 L7.5,44 C7.224,44 7,43.776 7,43.5 L7,42.5 C7,42.224 7.224,42 7.5,42 L8.5,42 C8.776,42 9,42.224 9,42.5 L9,43.5 L9,43.5 Z M5,32 L11,32 L11,41 L5,41 L5,32 Z M7,30 L9,30 L9,31 L7,31 L7,30 Z" id="Imported-Layers" sketch:type="MSShapeGroup"></path>
+            </g>
+        </g>
+    </g>
+</svg>
