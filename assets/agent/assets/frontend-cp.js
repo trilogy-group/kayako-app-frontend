@@ -3079,6 +3079,54 @@ define('frontend-cp/components/ko-cases-list/template', ['exports'], function (e
   }()));
 
 });
+define('frontend-cp/components/ko-center/template', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      isHTMLBars: true,
+      revision: "Ember@1.12.0",
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","ko-center__contents");
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, content = hooks.content;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        var morph0 = dom.createMorphAt(dom.childAt(fragment, [0]),0,0);
+        content(env, morph0, context, "yield");
+        return fragment;
+      }
+    };
+  }()));
+
+});
 define('frontend-cp/components/ko-checkbox/component', ['exports', 'ember'], function (exports, Ember) {
 
   'use strict';
@@ -5414,6 +5462,66 @@ define('frontend-cp/components/ko-limited-text-area/template', ['exports'], func
   }()));
 
 });
+define('frontend-cp/components/ko-loader/component', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Component.extend({
+    tagName: 'ul',
+    classNames: ['ko-loader'],
+    classNameBindings: ['large:ko-loader--large']
+  });
+
+});
+define('frontend-cp/components/ko-loader/template', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      isHTMLBars: true,
+      revision: "Ember@1.12.0",
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("li");
+        dom.setAttribute(el1,"class","ko-loader__item");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("li");
+        dom.setAttribute(el1,"class","ko-loader__item");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("li");
+        dom.setAttribute(el1,"class","ko-loader__item");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        return fragment;
+      }
+    };
+  }()));
+
+});
 define('frontend-cp/components/ko-login-otp/component', ['exports', 'ember'], function (exports, Ember) {
 
 	'use strict';
@@ -5729,6 +5837,7 @@ define('frontend-cp/components/ko-pagination/component', ['exports', 'ember'], f
 
   exports['default'] = Ember['default'].Component.extend({
     currentPage: 1,
+    loadingPage: null,
     pageCount: 1,
 
     previousPage: (function () {
@@ -5754,6 +5863,514 @@ define('frontend-cp/components/ko-pagination/template', ['exports'], function (e
   'use strict';
 
   exports['default'] = Ember.HTMLBars.template((function() {
+    var child0 = (function() {
+      var child0 = (function() {
+        return {
+          isHTMLBars: true,
+          revision: "Ember@1.12.0",
+          blockParams: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          build: function build(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          render: function render(context, env, contextualElement) {
+            var dom = env.dom;
+            var hooks = env.hooks, content = hooks.content;
+            dom.detectNamespace(contextualElement);
+            var fragment;
+            if (env.useFragmentCache && dom.canClone) {
+              if (this.cachedFragment === null) {
+                fragment = this.build(dom);
+                if (this.hasRendered) {
+                  this.cachedFragment = fragment;
+                } else {
+                  this.hasRendered = true;
+                }
+              }
+              if (this.cachedFragment) {
+                fragment = dom.cloneNode(this.cachedFragment, true);
+              }
+            } else {
+              fragment = this.build(dom);
+            }
+            var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+            dom.insertBoundary(fragment, null);
+            dom.insertBoundary(fragment, 0);
+            content(env, morph0, context, "ko-loader");
+            return fragment;
+          }
+        };
+      }());
+      return {
+        isHTMLBars: true,
+        revision: "Ember@1.12.0",
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("      ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          var hooks = env.hooks, block = hooks.block;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          var morph0 = dom.createMorphAt(fragment,1,1,contextualElement);
+          block(env, morph0, context, "ko-center", [], {}, child0, null);
+          return fragment;
+        }
+      };
+    }());
+    var child1 = (function() {
+      return {
+        isHTMLBars: true,
+        revision: "Ember@1.12.0",
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("      ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          var hooks = env.hooks, inline = hooks.inline;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          var morph0 = dom.createMorphAt(fragment,1,1,contextualElement);
+          inline(env, morph0, context, "yield", [1], {});
+          return fragment;
+        }
+      };
+    }());
+    var child2 = (function() {
+      var child0 = (function() {
+        return {
+          isHTMLBars: true,
+          revision: "Ember@1.12.0",
+          blockParams: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          build: function build(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          render: function render(context, env, contextualElement) {
+            var dom = env.dom;
+            var hooks = env.hooks, content = hooks.content;
+            dom.detectNamespace(contextualElement);
+            var fragment;
+            if (env.useFragmentCache && dom.canClone) {
+              if (this.cachedFragment === null) {
+                fragment = this.build(dom);
+                if (this.hasRendered) {
+                  this.cachedFragment = fragment;
+                } else {
+                  this.hasRendered = true;
+                }
+              }
+              if (this.cachedFragment) {
+                fragment = dom.cloneNode(this.cachedFragment, true);
+              }
+            } else {
+              fragment = this.build(dom);
+            }
+            var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+            dom.insertBoundary(fragment, null);
+            dom.insertBoundary(fragment, 0);
+            content(env, morph0, context, "ko-loader");
+            return fragment;
+          }
+        };
+      }());
+      return {
+        isHTMLBars: true,
+        revision: "Ember@1.12.0",
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("      ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          var hooks = env.hooks, block = hooks.block;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          var morph0 = dom.createMorphAt(fragment,1,1,contextualElement);
+          block(env, morph0, context, "ko-center", [], {}, child0, null);
+          return fragment;
+        }
+      };
+    }());
+    var child3 = (function() {
+      return {
+        isHTMLBars: true,
+        revision: "Ember@1.12.0",
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("      ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          var hooks = env.hooks, get = hooks.get, inline = hooks.inline;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          var morph0 = dom.createMorphAt(fragment,1,1,contextualElement);
+          inline(env, morph0, context, "yield", [get(env, context, "previousPage")], {});
+          return fragment;
+        }
+      };
+    }());
+    var child4 = (function() {
+      var child0 = (function() {
+        return {
+          isHTMLBars: true,
+          revision: "Ember@1.12.0",
+          blockParams: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          build: function build(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          render: function render(context, env, contextualElement) {
+            var dom = env.dom;
+            var hooks = env.hooks, content = hooks.content;
+            dom.detectNamespace(contextualElement);
+            var fragment;
+            if (env.useFragmentCache && dom.canClone) {
+              if (this.cachedFragment === null) {
+                fragment = this.build(dom);
+                if (this.hasRendered) {
+                  this.cachedFragment = fragment;
+                } else {
+                  this.hasRendered = true;
+                }
+              }
+              if (this.cachedFragment) {
+                fragment = dom.cloneNode(this.cachedFragment, true);
+              }
+            } else {
+              fragment = this.build(dom);
+            }
+            var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+            dom.insertBoundary(fragment, null);
+            dom.insertBoundary(fragment, 0);
+            content(env, morph0, context, "ko-loader");
+            return fragment;
+          }
+        };
+      }());
+      return {
+        isHTMLBars: true,
+        revision: "Ember@1.12.0",
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("      ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          var hooks = env.hooks, block = hooks.block;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          var morph0 = dom.createMorphAt(fragment,1,1,contextualElement);
+          block(env, morph0, context, "ko-center", [], {}, child0, null);
+          return fragment;
+        }
+      };
+    }());
+    var child5 = (function() {
+      return {
+        isHTMLBars: true,
+        revision: "Ember@1.12.0",
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("      ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          var hooks = env.hooks, get = hooks.get, inline = hooks.inline;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          var morph0 = dom.createMorphAt(fragment,1,1,contextualElement);
+          inline(env, morph0, context, "yield", [get(env, context, "nextPage")], {});
+          return fragment;
+        }
+      };
+    }());
+    var child6 = (function() {
+      var child0 = (function() {
+        return {
+          isHTMLBars: true,
+          revision: "Ember@1.12.0",
+          blockParams: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          build: function build(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          render: function render(context, env, contextualElement) {
+            var dom = env.dom;
+            var hooks = env.hooks, content = hooks.content;
+            dom.detectNamespace(contextualElement);
+            var fragment;
+            if (env.useFragmentCache && dom.canClone) {
+              if (this.cachedFragment === null) {
+                fragment = this.build(dom);
+                if (this.hasRendered) {
+                  this.cachedFragment = fragment;
+                } else {
+                  this.hasRendered = true;
+                }
+              }
+              if (this.cachedFragment) {
+                fragment = dom.cloneNode(this.cachedFragment, true);
+              }
+            } else {
+              fragment = this.build(dom);
+            }
+            var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+            dom.insertBoundary(fragment, null);
+            dom.insertBoundary(fragment, 0);
+            content(env, morph0, context, "ko-loader");
+            return fragment;
+          }
+        };
+      }());
+      return {
+        isHTMLBars: true,
+        revision: "Ember@1.12.0",
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("      ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          var hooks = env.hooks, block = hooks.block;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          var morph0 = dom.createMorphAt(fragment,1,1,contextualElement);
+          block(env, morph0, context, "ko-center", [], {}, child0, null);
+          return fragment;
+        }
+      };
+    }());
+    var child7 = (function() {
+      return {
+        isHTMLBars: true,
+        revision: "Ember@1.12.0",
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("      ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          var hooks = env.hooks, get = hooks.get, inline = hooks.inline;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          var morph0 = dom.createMorphAt(fragment,1,1,contextualElement);
+          inline(env, morph0, context, "yield", [get(env, context, "pageCount")], {});
+          return fragment;
+        }
+      };
+    }());
     return {
       isHTMLBars: true,
       revision: "Ember@1.12.0",
@@ -5762,51 +6379,72 @@ define('frontend-cp/components/ko-pagination/template', ['exports'], function (e
       hasRendered: false,
       build: function build(dom) {
         var el0 = dom.createDocumentFragment();
-        var el1 = dom.createElement("span");
-        dom.setAttribute(el1,"class","ko-pagination__pageNumber");
-        var el2 = dom.createComment("");
-        dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createElement("span");
-        dom.setAttribute(el1,"class","ko-pagination__pageCount");
-        var el2 = dom.createTextNode("of ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createComment("");
-        dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
-        dom.appendChild(el0, el1);
         var el1 = dom.createElement("div");
-        var el2 = dom.createComment("");
+        dom.setAttribute(el1,"class","ko-pagination__container");
+        var el2 = dom.createTextNode("\n  ");
         dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createElement("div");
-        var el2 = dom.createComment("");
+        var el2 = dom.createElement("span");
+        dom.setAttribute(el2,"class","ko-pagination__pageNumber");
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createElement("div");
-        var el2 = dom.createComment("");
+        var el2 = dom.createTextNode("\n  ");
         dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createElement("div");
-        var el2 = dom.createComment("");
+        var el2 = dom.createElement("span");
+        dom.setAttribute(el2,"class","ko-pagination__pageCount");
+        var el3 = dom.createTextNode("of ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        var el3 = dom.createTextNode("\n");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        var el3 = dom.createTextNode("\n");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        var el3 = dom.createTextNode("\n");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        var el3 = dom.createTextNode("\n");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
         return el0;
       },
       render: function render(context, env, contextualElement) {
         var dom = env.dom;
-        var hooks = env.hooks, content = hooks.content, get = hooks.get, subexpr = hooks.subexpr, concat = hooks.concat, attribute = hooks.attribute, inline = hooks.inline;
+        var hooks = env.hooks, content = hooks.content, get = hooks.get, subexpr = hooks.subexpr, concat = hooks.concat, attribute = hooks.attribute, block = hooks.block;
         dom.detectNamespace(contextualElement);
         var fragment;
         if (env.useFragmentCache && dom.canClone) {
@@ -5824,30 +6462,31 @@ define('frontend-cp/components/ko-pagination/template', ['exports'], function (e
         } else {
           fragment = this.build(dom);
         }
-        var element0 = dom.childAt(fragment, [4]);
-        var element1 = dom.childAt(fragment, [6]);
-        var element2 = dom.childAt(fragment, [8]);
-        var element3 = dom.childAt(fragment, [10]);
-        var morph0 = dom.createMorphAt(dom.childAt(fragment, [0]),0,0);
-        var morph1 = dom.createMorphAt(dom.childAt(fragment, [2]),1,1);
-        var morph2 = dom.createMorphAt(element0,0,0);
-        var attrMorph0 = dom.createAttrMorph(element0, 'class');
-        var morph3 = dom.createMorphAt(element1,0,0);
-        var attrMorph1 = dom.createAttrMorph(element1, 'class');
-        var morph4 = dom.createMorphAt(element2,0,0);
-        var attrMorph2 = dom.createAttrMorph(element2, 'class');
-        var morph5 = dom.createMorphAt(element3,0,0);
-        var attrMorph3 = dom.createAttrMorph(element3, 'class');
+        var element0 = dom.childAt(fragment, [0]);
+        var element1 = dom.childAt(element0, [5]);
+        var element2 = dom.childAt(element0, [7]);
+        var element3 = dom.childAt(element0, [9]);
+        var element4 = dom.childAt(element0, [11]);
+        var morph0 = dom.createMorphAt(dom.childAt(element0, [1]),0,0);
+        var morph1 = dom.createMorphAt(dom.childAt(element0, [3]),1,1);
+        var morph2 = dom.createMorphAt(element1,1,1);
+        var attrMorph0 = dom.createAttrMorph(element1, 'class');
+        var morph3 = dom.createMorphAt(element2,1,1);
+        var attrMorph1 = dom.createAttrMorph(element2, 'class');
+        var morph4 = dom.createMorphAt(element3,1,1);
+        var attrMorph2 = dom.createAttrMorph(element3, 'class');
+        var morph5 = dom.createMorphAt(element4,1,1);
+        var attrMorph3 = dom.createAttrMorph(element4, 'class');
         content(env, morph0, context, "currentPage");
         content(env, morph1, context, "pageCount");
-        attribute(env, attrMorph0, element0, "class", concat(env, ["ko-pagination__first ", subexpr(env, context, "if", [get(env, context, "hasPreviousPage"), "ko-pagination__first--available", ""], {})]));
-        inline(env, morph2, context, "yield", [1], {});
-        attribute(env, attrMorph1, element1, "class", concat(env, ["ko-pagination__previous ", subexpr(env, context, "if", [get(env, context, "hasPreviousPage"), "ko-pagination__previous--available", ""], {})]));
-        inline(env, morph3, context, "yield", [get(env, context, "previousPage")], {});
-        attribute(env, attrMorph2, element2, "class", concat(env, ["ko-pagination__next ", subexpr(env, context, "if", [get(env, context, "hasNextPage"), "ko-pagination__next--available", ""], {})]));
-        inline(env, morph4, context, "yield", [get(env, context, "nextPage")], {});
-        attribute(env, attrMorph3, element3, "class", concat(env, ["ko-pagination__last ", subexpr(env, context, "if", [get(env, context, "hasNextPage"), "ko-pagination__last--available", ""], {})]));
-        inline(env, morph5, context, "yield", [get(env, context, "pageCount")], {});
+        attribute(env, attrMorph0, element1, "class", concat(env, ["ko-pagination__first ", subexpr(env, context, "if", [get(env, context, "hasPreviousPage"), "ko-pagination__first--available", ""], {})]));
+        block(env, morph2, context, "if", [subexpr(env, context, "eq", [get(env, context, "loadingPage"), 1], {})], {}, child0, child1);
+        attribute(env, attrMorph1, element2, "class", concat(env, ["ko-pagination__previous ", subexpr(env, context, "if", [get(env, context, "hasPreviousPage"), "ko-pagination__previous--available", ""], {})]));
+        block(env, morph3, context, "if", [subexpr(env, context, "eq", [get(env, context, "loadingPage"), get(env, context, "previousPage")], {})], {}, child2, child3);
+        attribute(env, attrMorph2, element3, "class", concat(env, ["ko-pagination__next ", subexpr(env, context, "if", [get(env, context, "hasNextPage"), "ko-pagination__next--available", ""], {})]));
+        block(env, morph4, context, "if", [subexpr(env, context, "eq", [get(env, context, "loadingPage"), get(env, context, "nextPage")], {})], {}, child4, child5);
+        attribute(env, attrMorph3, element4, "class", concat(env, ["ko-pagination__last ", subexpr(env, context, "if", [get(env, context, "hasNextPage"), "ko-pagination__last--available", ""], {})]));
+        block(env, morph5, context, "if", [subexpr(env, context, "eq", [get(env, context, "loadingPage"), get(env, context, "pageCount")], {})], {}, child6, child7);
         return fragment;
       }
     };
@@ -8293,6 +8932,94 @@ define('frontend-cp/instance-initializers/session', ['exports'], function (expor
       sessionService.setSessionId(sessionId);
     }
   };
+
+});
+define('frontend-cp/loading/template', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports['default'] = Ember.HTMLBars.template((function() {
+    var child0 = (function() {
+      return {
+        isHTMLBars: true,
+        revision: "Ember@1.12.0",
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          var hooks = env.hooks, inline = hooks.inline;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+          dom.insertBoundary(fragment, null);
+          dom.insertBoundary(fragment, 0);
+          inline(env, morph0, context, "ko-loader", [], {"large": true});
+          return fragment;
+        }
+      };
+    }());
+    return {
+      isHTMLBars: true,
+      revision: "Ember@1.12.0",
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, block = hooks.block;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+        dom.insertBoundary(fragment, null);
+        dom.insertBoundary(fragment, 0);
+        block(env, morph0, context, "ko-center", [], {}, child0, null);
+        return fragment;
+      }
+    };
+  }()));
 
 });
 define('frontend-cp/login/controller', ['exports', 'ember', 'frontend-cp/mixins/simple-state'], function (exports, Ember, SimpleStateMixin) {
@@ -12068,6 +12795,94 @@ define('frontend-cp/session/cases/case/index/template', ['exports'], function (e
   }()));
 
 });
+define('frontend-cp/session/cases/case/loading/template', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports['default'] = Ember.HTMLBars.template((function() {
+    var child0 = (function() {
+      return {
+        isHTMLBars: true,
+        revision: "Ember@1.12.0",
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          var hooks = env.hooks, inline = hooks.inline;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+          dom.insertBoundary(fragment, null);
+          dom.insertBoundary(fragment, 0);
+          inline(env, morph0, context, "ko-loader", [], {"large": true});
+          return fragment;
+        }
+      };
+    }());
+    return {
+      isHTMLBars: true,
+      revision: "Ember@1.12.0",
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, block = hooks.block;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+        dom.insertBoundary(fragment, null);
+        dom.insertBoundary(fragment, 0);
+        block(env, morph0, context, "ko-center", [], {}, child0, null);
+        return fragment;
+      }
+    };
+  }()));
+
+});
 define('frontend-cp/session/cases/case/organisation/route', ['exports', 'frontend-cp/routes/abstract/organisation-route'], function (exports, OrganisationRoute) {
 
   'use strict';
@@ -12289,7 +13104,15 @@ define('frontend-cp/session/cases/index/controller', ['exports', 'ember'], funct
       page: {
         refreshModel: true
       }
-    }
+    },
+
+    // Indicates whether route is loading (to show loading spinner instead
+    // of a list)
+    loading: true,
+
+    // Page number being loaded, used by the ko-pagination to correctly
+    // turn links into spinners
+    loadingPage: null
   });
 
 });
@@ -12297,10 +13120,15 @@ define('frontend-cp/session/cases/index/route', ['exports', 'ember'], function (
 
   'use strict';
 
+  var parseIntOrDefault = function parseIntOrDefault(string, defaultValue) {
+    return isNaN(string) ? defaultValue : Math.floor(Math.abs(string));
+  };
+
   exports['default'] = Ember['default'].Route.extend({
     page: 1,
     limit: 5,
     offset: 0,
+    firstLoad: true,
 
     queryParams: {
       page: {
@@ -12311,7 +13139,7 @@ define('frontend-cp/session/cases/index/route', ['exports', 'ember'], function (
     model: function model(params) {
       if (params.page) {
         var page = params.page;
-        this.set('page', isNaN(page) ? 1 : Math.floor(Math.abs(page)));
+        this.set('page', parseIntOrDefault(page, 1));
       }
       this.set('offset', (this.get('page') - 1) * this.get('limit'));
 
@@ -12327,6 +13155,36 @@ define('frontend-cp/session/cases/index/route', ['exports', 'ember'], function (
         page: this.get('page'),
         total: Math.ceil(this.store.metadataFor('case').total / this.get('limit'))
       });
+
+      // Resetting loading state
+      controller.set('loading', false);
+      controller.set('loadingPage', null);
+    },
+
+    resetController: function resetController(controller, isExiting) {
+      // As routes are persisted across the entire app lifecycle,
+      // we have to reset things manually
+      if (isExiting) {
+        this.set('firstLoad', true);
+      }
+    },
+
+    actions: {
+      // Called whenever a transition to this route is performed.
+      // Not implementing this event or returning "true" causes Ember
+      // to enter loading substate.
+      loading: function loading(transition) {
+        // Enter loading substate, but only if we are coming from another route
+        if (this.get('firstLoad')) {
+          this.set('firstLoad', false);
+          return true;
+        }
+
+        // Switching between pages on this route won't remove the paginator
+        var controller = this.controllerFor('session.cases.index');
+        controller.set('loadingPage', parseIntOrDefault(transition.queryParams.page, null));
+        controller.set('loading', true);
+      }
     }
   });
 
@@ -12337,6 +13195,140 @@ define('frontend-cp/session/cases/index/template', ['exports'], function (export
 
   exports['default'] = Ember.HTMLBars.template((function() {
     var child0 = (function() {
+      var child0 = (function() {
+        return {
+          isHTMLBars: true,
+          revision: "Ember@1.12.0",
+          blockParams: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          build: function build(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          render: function render(context, env, contextualElement) {
+            var dom = env.dom;
+            var hooks = env.hooks, inline = hooks.inline;
+            dom.detectNamespace(contextualElement);
+            var fragment;
+            if (env.useFragmentCache && dom.canClone) {
+              if (this.cachedFragment === null) {
+                fragment = this.build(dom);
+                if (this.hasRendered) {
+                  this.cachedFragment = fragment;
+                } else {
+                  this.hasRendered = true;
+                }
+              }
+              if (this.cachedFragment) {
+                fragment = dom.cloneNode(this.cachedFragment, true);
+              }
+            } else {
+              fragment = this.build(dom);
+            }
+            var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+            dom.insertBoundary(fragment, null);
+            dom.insertBoundary(fragment, 0);
+            inline(env, morph0, context, "ko-loader", [], {"large": true});
+            return fragment;
+          }
+        };
+      }());
+      return {
+        isHTMLBars: true,
+        revision: "Ember@1.12.0",
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("      ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          var hooks = env.hooks, block = hooks.block;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          var morph0 = dom.createMorphAt(fragment,1,1,contextualElement);
+          block(env, morph0, context, "ko-center", [], {}, child0, null);
+          return fragment;
+        }
+      };
+    }());
+    var child1 = (function() {
+      return {
+        isHTMLBars: true,
+        revision: "Ember@1.12.0",
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("      ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1,"class","ko-session-cases-index__contents");
+          var el2 = dom.createTextNode("\n        ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n      ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          var hooks = env.hooks, get = hooks.get, inline = hooks.inline;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          var morph0 = dom.createMorphAt(dom.childAt(fragment, [1]),1,1);
+          inline(env, morph0, context, "ko-cases-list", [], {"cases": get(env, context, "cases")});
+          return fragment;
+        }
+      };
+    }());
+    var child2 = (function() {
       var child0 = (function() {
         return {
           isHTMLBars: true,
@@ -12379,7 +13371,7 @@ define('frontend-cp/session/cases/index/template', ['exports'], function (export
         hasRendered: false,
         build: function build(dom) {
           var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("    ");
+          var el1 = dom.createTextNode("      ");
           dom.appendChild(el0, el1);
           var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
@@ -12423,21 +13415,30 @@ define('frontend-cp/session/cases/index/template', ['exports'], function (export
       build: function build(dom) {
         var el0 = dom.createDocumentFragment();
         var el1 = dom.createElement("div");
-        dom.setAttribute(el1,"class","ko-cases");
+        dom.setAttribute(el1,"class","ko-session-cases-index");
         var el2 = dom.createTextNode("\n  ");
         dom.appendChild(el1, el2);
         var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","foo");
-        var el3 = dom.createTextNode("\n    ");
+        dom.setAttribute(el2,"class","ko-session-cases-index__scrollable");
+        var el3 = dom.createTextNode("\n");
         dom.appendChild(el2, el3);
         var el3 = dom.createComment("");
         dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n  ");
+        var el3 = dom.createTextNode("  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","ko-session-cases-index__pagination");
+        var el3 = dom.createTextNode("\n");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("  ");
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createComment("");
         dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
@@ -12446,7 +13447,7 @@ define('frontend-cp/session/cases/index/template', ['exports'], function (export
       },
       render: function render(context, env, contextualElement) {
         var dom = env.dom;
-        var hooks = env.hooks, get = hooks.get, inline = hooks.inline, block = hooks.block;
+        var hooks = env.hooks, get = hooks.get, block = hooks.block;
         dom.detectNamespace(contextualElement);
         var fragment;
         if (env.useFragmentCache && dom.canClone) {
@@ -12466,9 +13467,97 @@ define('frontend-cp/session/cases/index/template', ['exports'], function (export
         }
         var element0 = dom.childAt(fragment, [0]);
         var morph0 = dom.createMorphAt(dom.childAt(element0, [1]),1,1);
-        var morph1 = dom.createMorphAt(element0,3,3);
-        inline(env, morph0, context, "ko-cases-list", [], {"cases": get(env, context, "cases")});
-        block(env, morph1, context, "ko-pagination", [], {"currentPage": get(env, context, "page"), "pageCount": get(env, context, "total")}, child0, null);
+        var morph1 = dom.createMorphAt(dom.childAt(element0, [3]),1,1);
+        block(env, morph0, context, "if", [get(env, context, "loading")], {}, child0, child1);
+        block(env, morph1, context, "ko-pagination", [], {"currentPage": get(env, context, "page"), "loadingPage": get(env, context, "loadingPage"), "pageCount": get(env, context, "total")}, child2, null);
+        return fragment;
+      }
+    };
+  }()));
+
+});
+define('frontend-cp/session/cases/loading/template', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports['default'] = Ember.HTMLBars.template((function() {
+    var child0 = (function() {
+      return {
+        isHTMLBars: true,
+        revision: "Ember@1.12.0",
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          var hooks = env.hooks, inline = hooks.inline;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+          dom.insertBoundary(fragment, null);
+          dom.insertBoundary(fragment, 0);
+          inline(env, morph0, context, "ko-loader", [], {"large": true});
+          return fragment;
+        }
+      };
+    }());
+    return {
+      isHTMLBars: true,
+      revision: "Ember@1.12.0",
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, block = hooks.block;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+        dom.insertBoundary(fragment, null);
+        dom.insertBoundary(fragment, 0);
+        block(env, morph0, context, "ko-center", [], {}, child0, null);
         return fragment;
       }
     };
@@ -12611,6 +13700,94 @@ define('frontend-cp/session/controller', ['exports', 'ember'], function (exports
   exports['default'] = Ember['default'].Controller.extend({
     tabsService: Ember['default'].inject.service('tabs')
   });
+
+});
+define('frontend-cp/session/loading/template', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports['default'] = Ember.HTMLBars.template((function() {
+    var child0 = (function() {
+      return {
+        isHTMLBars: true,
+        revision: "Ember@1.12.0",
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          var hooks = env.hooks, inline = hooks.inline;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+          dom.insertBoundary(fragment, null);
+          dom.insertBoundary(fragment, 0);
+          inline(env, morph0, context, "ko-loader", [], {"large": true});
+          return fragment;
+        }
+      };
+    }());
+    return {
+      isHTMLBars: true,
+      revision: "Ember@1.12.0",
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, block = hooks.block;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+        dom.insertBoundary(fragment, null);
+        dom.insertBoundary(fragment, 0);
+        block(env, morph0, context, "ko-center", [], {}, child0, null);
+        return fragment;
+      }
+    };
+  }()));
 
 });
 define('frontend-cp/session/route', ['exports', 'ember'], function (exports, Ember) {
@@ -13550,6 +14727,42 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
         var el0 = dom.createDocumentFragment();
         var el1 = dom.createElement("div");
         dom.setAttribute(el1,"class","showcase-container");
+        var el2 = dom.createTextNode("\n\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("h2");
+        var el3 = dom.createTextNode("Loader");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("code");
+        var el3 = dom.createTextNode("\n    {{ko-loader}}\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","showcase-spacer");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("code");
+        var el3 = dom.createTextNode("\n    {{ko-loader large=true}}\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","showcase-spacer");
+        dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n\n  ");
         dom.appendChild(el1, el2);
         var el2 = dom.createElement("h2");
@@ -14633,7 +15846,7 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
       },
       render: function render(context, env, contextualElement) {
         var dom = env.dom;
-        var hooks = env.hooks, get = hooks.get, inline = hooks.inline, block = hooks.block, element = hooks.element, content = hooks.content;
+        var hooks = env.hooks, content = hooks.content, inline = hooks.inline, get = hooks.get, block = hooks.block, element = hooks.element;
         dom.detectNamespace(contextualElement);
         var fragment;
         if (env.useFragmentCache && dom.canClone) {
@@ -14652,93 +15865,97 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
           fragment = this.build(dom);
         }
         var element0 = dom.childAt(fragment, [0]);
-        var element1 = dom.childAt(element0, [187]);
-        var element2 = dom.childAt(element0, [189]);
-        var element3 = dom.childAt(element0, [213]);
+        var element1 = dom.childAt(element0, [201]);
+        var element2 = dom.childAt(element0, [203]);
+        var element3 = dom.childAt(element0, [227]);
         var element4 = dom.childAt(element3, [1]);
         var element5 = dom.childAt(element3, [3]);
         var morph0 = dom.createMorphAt(element0,3,3);
         var morph1 = dom.createMorphAt(element0,9,9);
         var morph2 = dom.createMorphAt(element0,17,17);
-        var morph3 = dom.createMorphAt(element0,25,25);
-        var morph4 = dom.createMorphAt(element0,33,33);
-        var morph5 = dom.createMorphAt(element0,41,41);
-        var morph6 = dom.createMorphAt(element0,49,49);
-        var morph7 = dom.createMorphAt(element0,57,57);
-        var morph8 = dom.createMorphAt(element0,65,65);
+        var morph3 = dom.createMorphAt(element0,23,23);
+        var morph4 = dom.createMorphAt(element0,31,31);
+        var morph5 = dom.createMorphAt(element0,39,39);
+        var morph6 = dom.createMorphAt(element0,47,47);
+        var morph7 = dom.createMorphAt(element0,55,55);
+        var morph8 = dom.createMorphAt(element0,63,63);
         var morph9 = dom.createMorphAt(element0,71,71);
-        var morph10 = dom.createMorphAt(element0,77,77);
-        var morph11 = dom.createMorphAt(element0,79,79);
-        var morph12 = dom.createMorphAt(element0,81,81);
-        var morph13 = dom.createMorphAt(element0,83,83);
-        var morph14 = dom.createMorphAt(element0,85,85);
-        var morph15 = dom.createMorphAt(element0,93,93);
-        var morph16 = dom.createMorphAt(element0,97,97);
-        var morph17 = dom.createMorphAt(element0,101,101);
-        var morph18 = dom.createMorphAt(element0,105,105);
-        var morph19 = dom.createMorphAt(dom.childAt(element0, [115]),0,0);
-        var morph20 = dom.createMorphAt(element0,123,123);
-        var morph21 = dom.createMorphAt(element0,125,125);
-        var morph22 = dom.createMorphAt(dom.childAt(element0, [139]),0,0);
-        var morph23 = dom.createMorphAt(dom.childAt(element0, [143]),0,0);
-        var morph24 = dom.createMorphAt(dom.childAt(element0, [147]),0,0);
-        var morph25 = dom.createMorphAt(dom.childAt(element0, [151]),0,0);
-        var morph26 = dom.createMorphAt(dom.childAt(element0, [155]),0,0);
-        var morph27 = dom.createMorphAt(dom.childAt(element0, [159]),0,0);
-        var morph28 = dom.createMorphAt(dom.childAt(element0, [163]),0,0);
-        var morph29 = dom.createMorphAt(dom.childAt(element0, [167]),0,0);
-        var morph30 = dom.createMorphAt(dom.childAt(element0, [171]),0,0);
-        var morph31 = dom.createMorphAt(dom.childAt(element0, [177]),0,0);
-        var morph32 = dom.createMorphAt(dom.childAt(element0, [181, 3, 1]),1,1);
-        var morph33 = dom.createMorphAt(dom.childAt(element0, [193]),1,1);
-        var morph34 = dom.createMorphAt(dom.childAt(element0, [199]),1,1);
-        var morph35 = dom.createMorphAt(dom.childAt(element0, [201]),0,0);
-        var morph36 = dom.createMorphAt(dom.childAt(element4, [1]),1,1);
-        var morph37 = dom.createMorphAt(dom.childAt(element4, [3, 1, 3, 1]),1,1);
-        var morph38 = dom.createMorphAt(dom.childAt(element5, [1, 1]),1,1);
-        var morph39 = dom.createMorphAt(dom.childAt(element5, [3]),1,1);
-        inline(env, morph0, context, "ko-feed", [], {"events": get(env, context, "events")});
-        inline(env, morph1, context, "ko-contact-info", [], {"title": get(env, context, "contactTitle"), "facebook": get(env, context, "facebook"), "twitter": get(env, context, "twitter"), "linkedin": get(env, context, "linkedin"), "emails": get(env, context, "email"), "phones": get(env, context, "phone")});
-        inline(env, morph2, context, "ko-feedback", [], {"title": get(env, context, "feedbackTitle"), "feedback": get(env, context, "feedback")});
-        inline(env, morph3, context, "ko-recent-cases", [], {"title": get(env, context, "casesTitle"), "cases": get(env, context, "cases")});
-        inline(env, morph4, context, "ko-case-metric", [], {"title": get(env, context, "metricTitle"), "metrics": get(env, context, "metrics")});
-        inline(env, morph5, context, "ko-avatar", [], {"avatar": get(env, context, "avatar")});
-        inline(env, morph6, context, "ko-recent-members", [], {"title": get(env, context, "membersTitle"), "members": get(env, context, "people")});
-        inline(env, morph7, context, "ko-address", [], {"title": get(env, context, "addressTitle"), "address": get(env, context, "address")});
-        block(env, morph8, context, "ko-info-bar", [], {}, child0, null);
-        block(env, morph9, context, "ko-info-bar", [], {}, child1, null);
-        inline(env, morph10, context, "ko-checkbox", [], {"label": "Remember my preferences", "large": true, "disabled": false, "tabindex": 0, "checked": false});
-        inline(env, morph11, context, "ko-checkbox", [], {"label": "Remember my preferences", "large": true, "disabled": false, "tabindex": 0, "checked": true});
-        inline(env, morph12, context, "ko-checkbox", [], {"label": "Remember my diet", "large": true, "disabled": true, "tabindex": 0, "checked": false});
-        inline(env, morph13, context, "ko-checkbox", [], {"label": "Remember my color", "large": false, "disabled": true, "tabindex": 0, "checked": false});
-        inline(env, morph14, context, "ko-checkbox", [], {"label": "Remember my name", "large": false, "disabled": false, "tabindex": 0, "checked": false});
-        inline(env, morph15, context, "ko-toggle", [], {"activated": false, "label": "Nuclear bomb switch", "micro": false, "tabindex": 0});
-        inline(env, morph16, context, "ko-toggle", [], {"activated": true, "label": "Nuclear bomb switch", "micro": false, "tabindex": 0});
-        inline(env, morph17, context, "ko-toggle", [], {"activated": false, "label": "Nuclear bomb switch", "micro": true, "tabindex": 0});
-        inline(env, morph18, context, "ko-toggle", [], {"activated": true, "label": "Nuclear bomb switch", "micro": true, "tabindex": 0});
-        inline(env, morph19, context, "ko-breadcrumbs", [], {"breadcrumbs": get(env, context, "tabs"), "activeTab": get(env, context, "activeTab"), "action": "tabChange"});
-        inline(env, morph20, context, "ko-participants", [], {"participants": get(env, context, "participants"), "addParticipant": "addParticipant"});
-        inline(env, morph21, context, "ko-add-participants-context-menu", [], {"contextModalId": "addParticipants"});
-        inline(env, morph22, context, "escape-html", ["<button class=\"button button--default\">Button</button>"], {});
-        inline(env, morph23, context, "escape-html", ["<button class=\"button button--default\" disabled=\"disabled\">Disabled button</button>"], {});
-        inline(env, morph24, context, "escape-html", ["<button class=\"button button--action i--chevrons\">Actions</button>"], {});
-        inline(env, morph25, context, "escape-html", ["<button class=\"button button--primary\">Primary button</button>"], {});
-        inline(env, morph26, context, "escape-html", ["<button class=\"button button--highlight\">Highlight button</button>"], {});
-        inline(env, morph27, context, "escape-html", ["<button class=\"button button--alert\">Alert button</button>"], {});
-        inline(env, morph28, context, "escape-html", ["<button class=\"button button--twitter\">Twitter button</button>"], {});
-        inline(env, morph29, context, "escape-html", ["<button class=\"button button--facebook\">Facebook button</button>"], {});
-        inline(env, morph30, context, "escape-html", ["<div class=\"button-group\">\n  	<button class=\"button-group__item\">Button</button><button class=\"button-group__item toggled\">Toggled button</button><button class=\"button-group__item\">Button</button>\n  </div>"], {});
-        inline(env, morph31, context, "escape-html", ["<button class=\"button button--primary button--dropdown\">Split button</button>"], {});
-        inline(env, morph32, context, "ko-editable-text", [], {"value": get(env, context, "editableTextVal")});
+        var morph10 = dom.createMorphAt(element0,79,79);
+        var morph11 = dom.createMorphAt(element0,85,85);
+        var morph12 = dom.createMorphAt(element0,91,91);
+        var morph13 = dom.createMorphAt(element0,93,93);
+        var morph14 = dom.createMorphAt(element0,95,95);
+        var morph15 = dom.createMorphAt(element0,97,97);
+        var morph16 = dom.createMorphAt(element0,99,99);
+        var morph17 = dom.createMorphAt(element0,107,107);
+        var morph18 = dom.createMorphAt(element0,111,111);
+        var morph19 = dom.createMorphAt(element0,115,115);
+        var morph20 = dom.createMorphAt(element0,119,119);
+        var morph21 = dom.createMorphAt(dom.childAt(element0, [129]),0,0);
+        var morph22 = dom.createMorphAt(element0,137,137);
+        var morph23 = dom.createMorphAt(element0,139,139);
+        var morph24 = dom.createMorphAt(dom.childAt(element0, [153]),0,0);
+        var morph25 = dom.createMorphAt(dom.childAt(element0, [157]),0,0);
+        var morph26 = dom.createMorphAt(dom.childAt(element0, [161]),0,0);
+        var morph27 = dom.createMorphAt(dom.childAt(element0, [165]),0,0);
+        var morph28 = dom.createMorphAt(dom.childAt(element0, [169]),0,0);
+        var morph29 = dom.createMorphAt(dom.childAt(element0, [173]),0,0);
+        var morph30 = dom.createMorphAt(dom.childAt(element0, [177]),0,0);
+        var morph31 = dom.createMorphAt(dom.childAt(element0, [181]),0,0);
+        var morph32 = dom.createMorphAt(dom.childAt(element0, [185]),0,0);
+        var morph33 = dom.createMorphAt(dom.childAt(element0, [191]),0,0);
+        var morph34 = dom.createMorphAt(dom.childAt(element0, [195, 3, 1]),1,1);
+        var morph35 = dom.createMorphAt(dom.childAt(element0, [207]),1,1);
+        var morph36 = dom.createMorphAt(dom.childAt(element0, [213]),1,1);
+        var morph37 = dom.createMorphAt(dom.childAt(element0, [215]),0,0);
+        var morph38 = dom.createMorphAt(dom.childAt(element4, [1]),1,1);
+        var morph39 = dom.createMorphAt(dom.childAt(element4, [3, 1, 3, 1]),1,1);
+        var morph40 = dom.createMorphAt(dom.childAt(element5, [1, 1]),1,1);
+        var morph41 = dom.createMorphAt(dom.childAt(element5, [3]),1,1);
+        content(env, morph0, context, "ko-loader");
+        inline(env, morph1, context, "ko-loader", [], {"large": true});
+        inline(env, morph2, context, "ko-feed", [], {"events": get(env, context, "events")});
+        inline(env, morph3, context, "ko-contact-info", [], {"title": get(env, context, "contactTitle"), "facebook": get(env, context, "facebook"), "twitter": get(env, context, "twitter"), "linkedin": get(env, context, "linkedin"), "emails": get(env, context, "email"), "phones": get(env, context, "phone")});
+        inline(env, morph4, context, "ko-feedback", [], {"title": get(env, context, "feedbackTitle"), "feedback": get(env, context, "feedback")});
+        inline(env, morph5, context, "ko-recent-cases", [], {"title": get(env, context, "casesTitle"), "cases": get(env, context, "cases")});
+        inline(env, morph6, context, "ko-case-metric", [], {"title": get(env, context, "metricTitle"), "metrics": get(env, context, "metrics")});
+        inline(env, morph7, context, "ko-avatar", [], {"avatar": get(env, context, "avatar")});
+        inline(env, morph8, context, "ko-recent-members", [], {"title": get(env, context, "membersTitle"), "members": get(env, context, "people")});
+        inline(env, morph9, context, "ko-address", [], {"title": get(env, context, "addressTitle"), "address": get(env, context, "address")});
+        block(env, morph10, context, "ko-info-bar", [], {}, child0, null);
+        block(env, morph11, context, "ko-info-bar", [], {}, child1, null);
+        inline(env, morph12, context, "ko-checkbox", [], {"label": "Remember my preferences", "large": true, "disabled": false, "tabindex": 0, "checked": false});
+        inline(env, morph13, context, "ko-checkbox", [], {"label": "Remember my preferences", "large": true, "disabled": false, "tabindex": 0, "checked": true});
+        inline(env, morph14, context, "ko-checkbox", [], {"label": "Remember my diet", "large": true, "disabled": true, "tabindex": 0, "checked": false});
+        inline(env, morph15, context, "ko-checkbox", [], {"label": "Remember my color", "large": false, "disabled": true, "tabindex": 0, "checked": false});
+        inline(env, morph16, context, "ko-checkbox", [], {"label": "Remember my name", "large": false, "disabled": false, "tabindex": 0, "checked": false});
+        inline(env, morph17, context, "ko-toggle", [], {"activated": false, "label": "Nuclear bomb switch", "micro": false, "tabindex": 0});
+        inline(env, morph18, context, "ko-toggle", [], {"activated": true, "label": "Nuclear bomb switch", "micro": false, "tabindex": 0});
+        inline(env, morph19, context, "ko-toggle", [], {"activated": false, "label": "Nuclear bomb switch", "micro": true, "tabindex": 0});
+        inline(env, morph20, context, "ko-toggle", [], {"activated": true, "label": "Nuclear bomb switch", "micro": true, "tabindex": 0});
+        inline(env, morph21, context, "ko-breadcrumbs", [], {"breadcrumbs": get(env, context, "tabs"), "activeTab": get(env, context, "activeTab"), "action": "tabChange"});
+        inline(env, morph22, context, "ko-participants", [], {"participants": get(env, context, "participants"), "addParticipant": "addParticipant"});
+        inline(env, morph23, context, "ko-add-participants-context-menu", [], {"contextModalId": "addParticipants"});
+        inline(env, morph24, context, "escape-html", ["<button class=\"button button--default\">Button</button>"], {});
+        inline(env, morph25, context, "escape-html", ["<button class=\"button button--default\" disabled=\"disabled\">Disabled button</button>"], {});
+        inline(env, morph26, context, "escape-html", ["<button class=\"button button--action i--chevrons\">Actions</button>"], {});
+        inline(env, morph27, context, "escape-html", ["<button class=\"button button--primary\">Primary button</button>"], {});
+        inline(env, morph28, context, "escape-html", ["<button class=\"button button--highlight\">Highlight button</button>"], {});
+        inline(env, morph29, context, "escape-html", ["<button class=\"button button--alert\">Alert button</button>"], {});
+        inline(env, morph30, context, "escape-html", ["<button class=\"button button--twitter\">Twitter button</button>"], {});
+        inline(env, morph31, context, "escape-html", ["<button class=\"button button--facebook\">Facebook button</button>"], {});
+        inline(env, morph32, context, "escape-html", ["<div class=\"button-group\">\n  	<button class=\"button-group__item\">Button</button><button class=\"button-group__item toggled\">Toggled button</button><button class=\"button-group__item\">Button</button>\n  </div>"], {});
+        inline(env, morph33, context, "escape-html", ["<button class=\"button button--primary button--dropdown\">Split button</button>"], {});
+        inline(env, morph34, context, "ko-editable-text", [], {"value": get(env, context, "editableTextVal")});
         element(env, element1, context, "action", ["toggleCaseFieldError"], {});
         element(env, element2, context, "action", ["clearChanges"], {});
-        block(env, morph33, context, "ko-info-bar", [], {}, child2, null);
-        inline(env, morph34, context, "ko-datepicker", [], {"date": get(env, context, "date"), "on-date-change": "dateChange"});
-        inline(env, morph35, context, "escape-html", ["{{ko-datepicker date=date on-date-change=\"dateChange\"}}"], {});
-        inline(env, morph36, context, "ko-breadcrumbs", [], {"tabs": get(env, context, "tabs"), "activeTab": get(env, context, "activeTab"), "action": "tabChange"});
-        inline(env, morph37, context, "ko-editable-text", [], {"value": get(env, context, "editableTextVal")});
-        content(env, morph38, context, "ko-text-editor");
-        block(env, morph39, context, "ko-info-bar", [], {}, child3, null);
+        block(env, morph35, context, "ko-info-bar", [], {}, child2, null);
+        inline(env, morph36, context, "ko-datepicker", [], {"date": get(env, context, "date"), "on-date-change": "dateChange"});
+        inline(env, morph37, context, "escape-html", ["{{ko-datepicker date=date on-date-change=\"dateChange\"}}"], {});
+        inline(env, morph38, context, "ko-breadcrumbs", [], {"tabs": get(env, context, "tabs"), "activeTab": get(env, context, "activeTab"), "action": "tabChange"});
+        inline(env, morph39, context, "ko-editable-text", [], {"value": get(env, context, "editableTextVal")});
+        content(env, morph40, context, "ko-text-editor");
+        block(env, morph41, context, "ko-info-bar", [], {}, child3, null);
         return fragment;
       }
     };
@@ -14874,6 +16091,78 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
       };
     }());
     var child2 = (function() {
+      return {
+        isHTMLBars: true,
+        revision: "Ember@1.12.0",
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("Showcase");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    var child3 = (function() {
+      return {
+        isHTMLBars: true,
+        revision: "Ember@1.12.0",
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("Style Guide");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    var child4 = (function() {
       var child0 = (function() {
         return {
           isHTMLBars: true,
@@ -14958,78 +16247,6 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
         }
       };
     }());
-    var child3 = (function() {
-      return {
-        isHTMLBars: true,
-        revision: "Ember@1.12.0",
-        blockParams: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        build: function build(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("Showcase");
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        render: function render(context, env, contextualElement) {
-          var dom = env.dom;
-          dom.detectNamespace(contextualElement);
-          var fragment;
-          if (env.useFragmentCache && dom.canClone) {
-            if (this.cachedFragment === null) {
-              fragment = this.build(dom);
-              if (this.hasRendered) {
-                this.cachedFragment = fragment;
-              } else {
-                this.hasRendered = true;
-              }
-            }
-            if (this.cachedFragment) {
-              fragment = dom.cloneNode(this.cachedFragment, true);
-            }
-          } else {
-            fragment = this.build(dom);
-          }
-          return fragment;
-        }
-      };
-    }());
-    var child4 = (function() {
-      return {
-        isHTMLBars: true,
-        revision: "Ember@1.12.0",
-        blockParams: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        build: function build(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("Style Guide");
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        render: function render(context, env, contextualElement) {
-          var dom = env.dom;
-          dom.detectNamespace(contextualElement);
-          var fragment;
-          if (env.useFragmentCache && dom.canClone) {
-            if (this.cachedFragment === null) {
-              fragment = this.build(dom);
-              if (this.hasRendered) {
-                this.cachedFragment = fragment;
-              } else {
-                this.hasRendered = true;
-              }
-            }
-            if (this.cachedFragment) {
-              fragment = dom.cloneNode(this.cachedFragment, true);
-            }
-          } else {
-            fragment = this.build(dom);
-          }
-          return fragment;
-        }
-      };
-    }());
     return {
       isHTMLBars: true,
       revision: "Ember@1.12.0",
@@ -15065,6 +16282,20 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
         var el5 = dom.createTextNode("\n          ");
         dom.appendChild(el4, el5);
         var el5 = dom.createComment("");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n          ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createComment("");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n          ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createComment("");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n          ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("button");
+        var el6 = dom.createTextNode("logout");
+        dom.appendChild(el5, el6);
         dom.appendChild(el4, el5);
         var el5 = dom.createTextNode("\n        ");
         dom.appendChild(el4, el5);
@@ -15142,32 +16373,16 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
         dom.setAttribute(el1,"class","session__content");
         var el2 = dom.createTextNode("\n");
         dom.appendChild(el1, el2);
-        var el2 = dom.createElement("button");
-        var el3 = dom.createTextNode("logout");
-        dom.appendChild(el2, el3);
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n");
-        dom.appendChild(el1, el2);
         var el2 = dom.createComment("");
         dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n");
         dom.appendChild(el1, el2);
-        var el2 = dom.createComment("");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createComment("");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n");
-        dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n\n");
         dom.appendChild(el0, el1);
         return el0;
       },
       render: function render(context, env, contextualElement) {
         var dom = env.dom;
-        var hooks = env.hooks, block = hooks.block, get = hooks.get, content = hooks.content, element = hooks.element;
+        var hooks = env.hooks, get = hooks.get, subexpr = hooks.subexpr, block = hooks.block, element = hooks.element, content = hooks.content;
         dom.detectNamespace(contextualElement);
         var fragment;
         if (env.useFragmentCache && dom.canClone) {
@@ -15187,22 +16402,21 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
         }
         var element0 = dom.childAt(fragment, [0, 1]);
         var element1 = dom.childAt(element0, [3, 1]);
-        var element2 = dom.childAt(fragment, [2]);
-        var element3 = dom.childAt(element2, [1]);
+        var element2 = dom.childAt(element1, [9]);
         var morph0 = dom.createMorphAt(element1,1,1);
         var morph1 = dom.createMorphAt(element1,3,3);
-        var morph2 = dom.createMorphAt(dom.childAt(element0, [5, 1]),1,1);
-        var morph3 = dom.createMorphAt(element0,7,7);
-        var morph4 = dom.createMorphAt(element2,3,3);
-        var morph5 = dom.createMorphAt(element2,5,5);
-        var morph6 = dom.createMorphAt(element2,7,7);
-        block(env, morph0, context, "link-to", ["session.cases"], {"class": "nav-main__item"}, child0, null);
+        var morph2 = dom.createMorphAt(element1,5,5);
+        var morph3 = dom.createMorphAt(element1,7,7);
+        var morph4 = dom.createMorphAt(dom.childAt(element0, [5, 1]),1,1);
+        var morph5 = dom.createMorphAt(element0,7,7);
+        var morph6 = dom.createMorphAt(dom.childAt(fragment, [2]),1,1);
+        block(env, morph0, context, "link-to", ["session.cases", subexpr(env, context, "query-params", [], {"page": get(env, context, "null")})], {"class": "nav-main__item"}, child0, null);
         block(env, morph1, context, "link-to", ["session.users"], {"class": "nav-main__item"}, child1, null);
-        block(env, morph2, context, "each", [get(env, context, "tabsService.tabs")], {}, child2, null);
-        content(env, morph3, context, "ko-agent-dropdown");
-        element(env, element3, context, "action", ["logout"], {});
-        block(env, morph4, context, "link-to", ["session.showcase"], {}, child3, null);
-        block(env, morph5, context, "link-to", ["session.styleguide"], {}, child4, null);
+        block(env, morph2, context, "link-to", ["session.showcase"], {"class": "nav-main__item"}, child2, null);
+        block(env, morph3, context, "link-to", ["session.styleguide"], {"class": "nav-main__item"}, child3, null);
+        element(env, element2, context, "action", ["logout"], {});
+        block(env, morph4, context, "each", [get(env, context, "tabsService.tabs")], {}, child4, null);
+        content(env, morph5, context, "ko-agent-dropdown");
         content(env, morph6, context, "outlet");
         return fragment;
       }
@@ -16595,6 +17809,26 @@ define('frontend-cp/tests/components/ko-limited-text-area/component.jshint', fun
   module('JSHint - components/ko-limited-text-area');
   test('components/ko-limited-text-area/component.js should pass jshint', function() { 
     ok(true, 'components/ko-limited-text-area/component.js should pass jshint.'); 
+  });
+
+});
+define('frontend-cp/tests/components/ko-loader/component.eslint-test', ['qunit'], function (qunit) {
+
+  'use strict';
+
+  qunit.module('ESLint - components/ko-loader');
+  qunit.test('components/ko-loader/component.js should pass ESLint', function(assert) {
+    assert.ok(true, 'components/ko-loader/component.js should pass ESLint.\n');
+  });
+
+});
+define('frontend-cp/tests/components/ko-loader/component.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - components/ko-loader');
+  test('components/ko-loader/component.js should pass jshint', function() { 
+    ok(true, 'components/ko-loader/component.js should pass jshint.'); 
   });
 
 });
@@ -22221,7 +23455,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"name":"frontend-cp","version":"0.0.0.62d760a1"});
+  require("frontend-cp/app")["default"].create({"name":"frontend-cp","version":"0.0.0.ad4a1e04"});
 }
 
 /* jshint ignore:end */
