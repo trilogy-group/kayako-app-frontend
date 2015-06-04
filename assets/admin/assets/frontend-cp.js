@@ -452,17 +452,15 @@ define('frontend-cp/application/controller', ['exports', 'ember'], function (exp
   });
 
 });
-define('frontend-cp/application/route', ['exports', 'ember', 'moment'], function (exports, Ember, moment) {
+define('frontend-cp/application/route', ['exports', 'ember'], function (exports, Ember) {
 
   'use strict';
 
   exports['default'] = Ember['default'].Route.extend({
     navMenu: null,
     sessionService: Ember['default'].inject.service('session'),
-    intl: Ember['default'].inject.service('intl'),
 
     beforeModel: function beforeModel(transition) {
-      this.get('intl').set('adapterType', 'intl');
       if (this.get('sessionService').getSessionId() === null) {
         this.transitionTo('login');
       } else {
@@ -473,22 +471,8 @@ define('frontend-cp/application/route', ['exports', 'ember', 'moment'], function
     },
 
     model: function model() {
-      var _this = this;
-
-      var locale = this.store.find('locale', 'current');
-      return locale.then(function (locale) {
-        var intl = _this.get('intl');
-        intl.set('locales', [locale.id]);
-        moment['default'].locale(locale.id);
-
-        return locale.get('strings').then(function (strings) {
-          strings.forEach(function (string) {
-            intl.addMessage(locale.id, string.id, string.get('value'));
-          });
-          return Ember['default'].Object.create({
-            navMenu: _this.get('navMenu')
-          });
-        });
+      return Ember['default'].Object.create({
+        navMenu: this.get('navMenu')
       });
     },
 
@@ -9804,6 +9788,37 @@ define('frontend-cp/initializers/inflector', ['exports', 'ember'], function (exp
     initialize: function initialize() {
       var inflector = Ember['default'].Inflector.inflector;
       inflector.irregular('person', 'persons');
+    }
+  };
+
+});
+define('frontend-cp/initializers/intl', ['exports', 'moment'], function (exports, moment) {
+
+  'use strict';
+
+  exports['default'] = {
+    name: 'intl',
+    after: 'store',
+
+    initialize: function initialize(container, application) {
+      application.deferReadiness();
+
+      var intl = container.lookup('service:intl');
+      var store = container.lookup('store:main');
+      intl.set('adapterType', 'intl');
+
+      var locale = store.find('locale', 'current');
+      return locale.then(function (locale) {
+        intl.set('locales', [locale.id]);
+        moment['default'].locale(locale.id);
+
+        return locale.get('strings').then(function (strings) {
+          strings.forEach(function (string) {
+            intl.addMessage(locale.id, string.id, string.get('value'));
+          });
+          application.advanceReadiness();
+        });
+      });
     }
   };
 
@@ -20598,6 +20613,26 @@ define('frontend-cp/tests/initializers/inflector.jshint', function () {
   });
 
 });
+define('frontend-cp/tests/initializers/intl.eslint-test', ['qunit'], function (qunit) {
+
+  'use strict';
+
+  qunit.module('ESLint - initializers');
+  qunit.test('initializers/intl.js should pass ESLint', function(assert) {
+    assert.ok(true, 'initializers/intl.js should pass ESLint.\n');
+  });
+
+});
+define('frontend-cp/tests/initializers/intl.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - initializers');
+  test('initializers/intl.js should pass jshint', function() { 
+    ok(true, 'initializers/intl.js should pass jshint.'); 
+  });
+
+});
 define('frontend-cp/tests/instance-initializers/session.eslint-test', ['qunit'], function (qunit) {
 
   'use strict';
@@ -23766,7 +23801,7 @@ define('frontend-cp/tests/unit/components/ko-case-tags-field/component-test.esli
   });
 
 });
-define('frontend-cp/tests/unit/components/ko-case-tags-field/component-test', ['ember', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/initializers/ember-intl'], function (Ember, qunit, ember_intl) {
+define('frontend-cp/tests/unit/components/ko-case-tags-field/component-test', ['ember', 'frontend-cp/tests/helpers/qunit'], function (Ember, qunit) {
 
   'use strict';
 
@@ -26137,7 +26172,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"name":"frontend-cp","version":"0.0.0.6c44bad5"});
+  require("frontend-cp/app")["default"].create({"name":"frontend-cp","version":"0.0.0.5bddc055"});
 }
 
 /* jshint ignore:end */
