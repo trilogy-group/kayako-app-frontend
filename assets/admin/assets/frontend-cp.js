@@ -518,19 +518,31 @@ define('frontend-cp/components/ko-add-participants-context-menu/template', ['exp
         hasRendered: false,
         build: function build(dom) {
           var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("some kind of test\n    ");
+          var el1 = dom.createTextNode("\n  ");
           dom.appendChild(el0, el1);
-          var el1 = dom.createElement("button");
-          var el2 = dom.createTextNode("next");
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n\n  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1,"class","box");
+          var el2 = dom.createTextNode("\n    ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("a");
+          dom.setAttribute(el2,"href","#");
+          var el3 = dom.createTextNode("Add New User");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n  ");
           dom.appendChild(el1, el2);
           dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n");
+          var el1 = dom.createTextNode("\n\n");
           dom.appendChild(el0, el1);
           return el0;
         },
         render: function render(context, env, contextualElement) {
           var dom = env.dom;
-          var hooks = env.hooks, element = hooks.element;
+          var hooks = env.hooks, get = hooks.get, inline = hooks.inline, element = hooks.element;
           dom.detectNamespace(contextualElement);
           var fragment;
           if (env.useFragmentCache && dom.canClone) {
@@ -548,7 +560,9 @@ define('frontend-cp/components/ko-add-participants-context-menu/template', ['exp
           } else {
             fragment = this.build(dom);
           }
-          var element1 = dom.childAt(fragment, [1]);
+          var element1 = dom.childAt(fragment, [3, 1]);
+          var morph0 = dom.createMorphAt(fragment,1,1,contextualElement);
+          inline(env, morph0, context, "ko-add-participants-popover", [], {"results": get(env, context, "copyInParticipants")});
           element(env, element1, context, "action", ["next"], {});
           return fragment;
         }
@@ -563,7 +577,11 @@ define('frontend-cp/components/ko-add-participants-context-menu/template', ['exp
         hasRendered: false,
         build: function build(dom) {
           var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("adding monk ");
+          var el1 = dom.createTextNode("\n  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n\n  ");
           dom.appendChild(el0, el1);
           var el1 = dom.createElement("button");
           var el2 = dom.createTextNode("prev");
@@ -575,7 +593,7 @@ define('frontend-cp/components/ko-add-participants-context-menu/template', ['exp
         },
         render: function render(context, env, contextualElement) {
           var dom = env.dom;
-          var hooks = env.hooks, element = hooks.element;
+          var hooks = env.hooks, content = hooks.content, element = hooks.element;
           dom.detectNamespace(contextualElement);
           var fragment;
           if (env.useFragmentCache && dom.canClone) {
@@ -593,7 +611,9 @@ define('frontend-cp/components/ko-add-participants-context-menu/template', ['exp
           } else {
             fragment = this.build(dom);
           }
-          var element0 = dom.childAt(fragment, [1]);
+          var element0 = dom.childAt(fragment, [3]);
+          var morph0 = dom.createMorphAt(fragment,1,1,contextualElement);
+          content(env, morph0, context, "ko-add-users-popover");
           element(env, element0, context, "action", ["prev"], {});
           return fragment;
         }
@@ -608,6 +628,8 @@ define('frontend-cp/components/ko-add-participants-context-menu/template', ['exp
       build: function build(dom) {
         var el0 = dom.createDocumentFragment();
         var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
         var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
@@ -634,11 +656,636 @@ define('frontend-cp/components/ko-add-participants-context-menu/template', ['exp
           fragment = this.build(dom);
         }
         var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
-        var morph1 = dom.createMorphAt(fragment,1,1,contextualElement);
+        var morph1 = dom.createMorphAt(fragment,2,2,contextualElement);
         dom.insertBoundary(fragment, null);
         dom.insertBoundary(fragment, 0);
         block(env, morph0, context, "ko-context-modal-item", [], {"index": "0", "title": "Add a participant", "contextModalId": get(env, context, "contextModalId")}, child0, null);
-        block(env, morph1, context, "ko-context-modal-item", [], {"index": "1", "title": "Add a monkey", "contextModalId": get(env, context, "contextModalId")}, child1, null);
+        block(env, morph1, context, "ko-context-modal-item", [], {"index": "1", "title": "Add new User", "contextModalId": get(env, context, "contextModalId")}, child1, null);
+        return fragment;
+      }
+    };
+  }()));
+
+});
+define('frontend-cp/components/ko-add-participants-popover/component', ['exports', 'ember', 'npm:lodash'], function (exports, Ember, _) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Component.extend({
+
+    classNames: ['ko-add-participants-popover'],
+    showResults: false,
+    results: null,
+    searchTerm: null,
+    name: null,
+    email: null,
+    filteredParticipants: null,
+    selectedParticipants: [],
+
+    setupParticipants: (function () {
+      this.set('filteredParticipants', this.get('results'));
+    }).on('didInsertElement'),
+    // TODO: when RFC implemented and its possible to invoke same actions via multiple events
+    keyDown: function keyDown(e) {
+      // downArrow
+      if (e.keyCode === 40) {
+        return false;
+      }
+      // upArrow
+      if (e.keyCode === 38) {
+        return false;
+      }
+      // enter
+      if (e.keyCode === 13) {
+        return false;
+      }
+    },
+    // TODO: when RFC implemented and its possible to invoke same actions via multiple events
+    keyUp: function keyUp(e) {
+      // downArrow
+      if (e.keyCode === 40) {
+        return false;
+      }
+      // upArrow
+      if (e.keyCode === 38) {
+        return false;
+      }
+      // enter
+      if (e.keyCode === 13) {
+        return false;
+      }
+      return false;
+    },
+
+    actions: {
+
+      query: function query() {
+        var _this = this;
+
+        var filteredResults = _['default'].filter(this.results, function (result) {
+          return _['default'].some([result.name, result.company, result.email], function (result) {
+            return result.indexOf(_this.searchTerm) !== -1;
+          });
+        });
+
+        this.set('filteredParticipants', filteredResults);
+        this.set('searchTerm', '');
+      },
+
+      removeParticipant: function removeParticipant(participant) {
+        this.selectedParticipants.removeObject(participant);
+      },
+
+      participantSelected: function participantSelected(participant) {
+        this.selectedParticipants.pushObject(participant);
+        this.set('showResults', false);
+        this.set('searchTerm', '');
+      },
+
+      whenKeyIsPressed: function whenKeyIsPressed() {
+        this.set('showResults', true);
+      }
+    }
+
+  });
+
+});
+define('frontend-cp/components/ko-add-participants-popover/template', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports['default'] = Ember.HTMLBars.template((function() {
+    var child0 = (function() {
+      var child0 = (function() {
+        return {
+          isHTMLBars: true,
+          revision: "Ember@1.12.0",
+          blockParams: 1,
+          cachedFragment: null,
+          hasRendered: false,
+          build: function build(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("      ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("ul");
+            dom.setAttribute(el1,"class","ko-add-participants-popover__selected-list");
+            dom.setAttribute(el1,"role","menu");
+            var el2 = dom.createTextNode("\n        ");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createElement("li");
+            dom.setAttribute(el2,"class","ko-add-participants-popover__selected-list-item");
+            var el3 = dom.createTextNode("\n          ");
+            dom.appendChild(el2, el3);
+            var el3 = dom.createElement("div");
+            dom.setAttribute(el3,"class","u-inline-block");
+            var el4 = dom.createTextNode("\n            ");
+            dom.appendChild(el3, el4);
+            var el4 = dom.createComment("");
+            dom.appendChild(el3, el4);
+            var el4 = dom.createTextNode("\n          ");
+            dom.appendChild(el3, el4);
+            dom.appendChild(el2, el3);
+            var el3 = dom.createTextNode("\n          ");
+            dom.appendChild(el2, el3);
+            var el3 = dom.createElement("i");
+            dom.setAttribute(el3,"class","i--close");
+            dom.appendChild(el2, el3);
+            var el3 = dom.createTextNode("\n        ");
+            dom.appendChild(el2, el3);
+            dom.appendChild(el1, el2);
+            var el2 = dom.createTextNode("\n      ");
+            dom.appendChild(el1, el2);
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          render: function render(context, env, contextualElement, blockArguments) {
+            var dom = env.dom;
+            var hooks = env.hooks, set = hooks.set, get = hooks.get, inline = hooks.inline, element = hooks.element;
+            dom.detectNamespace(contextualElement);
+            var fragment;
+            if (env.useFragmentCache && dom.canClone) {
+              if (this.cachedFragment === null) {
+                fragment = this.build(dom);
+                if (this.hasRendered) {
+                  this.cachedFragment = fragment;
+                } else {
+                  this.hasRendered = true;
+                }
+              }
+              if (this.cachedFragment) {
+                fragment = dom.cloneNode(this.cachedFragment, true);
+              }
+            } else {
+              fragment = this.build(dom);
+            }
+            var element5 = dom.childAt(fragment, [1, 1]);
+            var element6 = dom.childAt(element5, [3]);
+            var morph0 = dom.createMorphAt(dom.childAt(element5, [1]),1,1);
+            set(env, context, "participant", blockArguments[0]);
+            inline(env, morph0, context, "ko-checkbox", [], {"label": get(env, context, "participant.name"), "large": false, "disabled": false, "tabindex": 0, "checked": true});
+            element(env, element6, context, "action", ["removeParticipant", get(env, context, "participant")], {});
+            return fragment;
+          }
+        };
+      }());
+      return {
+        isHTMLBars: true,
+        revision: "Ember@1.12.0",
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1,"class","box ko-add-participants-popover__selected-list-container");
+          var el2 = dom.createTextNode("\n");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("  ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          var hooks = env.hooks, get = hooks.get, block = hooks.block;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          var morph0 = dom.createMorphAt(dom.childAt(fragment, [1]),1,1);
+          block(env, morph0, context, "each", [get(env, context, "selectedParticipants")], {}, child0, null);
+          return fragment;
+        }
+      };
+    }());
+    var child1 = (function() {
+      var child0 = (function() {
+        return {
+          isHTMLBars: true,
+          revision: "Ember@1.12.0",
+          blockParams: 1,
+          cachedFragment: null,
+          hasRendered: false,
+          build: function build(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("        ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("li");
+            dom.setAttribute(el1,"class","ko-add-participants-popover__filtered-list-item");
+            var el2 = dom.createTextNode("\n          ");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createElement("div");
+            dom.setAttribute(el2,"class","flag--small flag--auto");
+            var el3 = dom.createTextNode("\n            ");
+            dom.appendChild(el2, el3);
+            var el3 = dom.createElement("div");
+            dom.setAttribute(el3,"class","flag__img");
+            var el4 = dom.createTextNode("\n              ");
+            dom.appendChild(el3, el4);
+            var el4 = dom.createElement("img");
+            dom.setAttribute(el4,"class","ko-add-participants-popover__image");
+            dom.setAttribute(el4,"alt","");
+            dom.appendChild(el3, el4);
+            var el4 = dom.createTextNode("\n            ");
+            dom.appendChild(el3, el4);
+            dom.appendChild(el2, el3);
+            var el3 = dom.createTextNode("\n            ");
+            dom.appendChild(el2, el3);
+            var el3 = dom.createElement("div");
+            dom.setAttribute(el3,"class","flag__body");
+            var el4 = dom.createTextNode("\n              ");
+            dom.appendChild(el3, el4);
+            var el4 = dom.createElement("strong");
+            var el5 = dom.createComment("");
+            dom.appendChild(el4, el5);
+            dom.appendChild(el3, el4);
+            var el4 = dom.createTextNode(",\n              ");
+            dom.appendChild(el3, el4);
+            var el4 = dom.createElement("span");
+            dom.setAttribute(el4,"class","caption");
+            var el5 = dom.createTextNode("\n                ");
+            dom.appendChild(el4, el5);
+            var el5 = dom.createComment("");
+            dom.appendChild(el4, el5);
+            var el5 = dom.createTextNode("\n                ");
+            dom.appendChild(el4, el5);
+            var el5 = dom.createComment("");
+            dom.appendChild(el4, el5);
+            var el5 = dom.createTextNode("\n              ");
+            dom.appendChild(el4, el5);
+            dom.appendChild(el3, el4);
+            var el4 = dom.createTextNode("\n            ");
+            dom.appendChild(el3, el4);
+            dom.appendChild(el2, el3);
+            var el3 = dom.createTextNode("\n          ");
+            dom.appendChild(el2, el3);
+            dom.appendChild(el1, el2);
+            var el2 = dom.createTextNode("\n        ");
+            dom.appendChild(el1, el2);
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          render: function render(context, env, contextualElement, blockArguments) {
+            var dom = env.dom;
+            var hooks = env.hooks, set = hooks.set, get = hooks.get, element = hooks.element, concat = hooks.concat, attribute = hooks.attribute, content = hooks.content;
+            dom.detectNamespace(contextualElement);
+            var fragment;
+            if (env.useFragmentCache && dom.canClone) {
+              if (this.cachedFragment === null) {
+                fragment = this.build(dom);
+                if (this.hasRendered) {
+                  this.cachedFragment = fragment;
+                } else {
+                  this.hasRendered = true;
+                }
+              }
+              if (this.cachedFragment) {
+                fragment = dom.cloneNode(this.cachedFragment, true);
+              }
+            } else {
+              fragment = this.build(dom);
+            }
+            var element0 = dom.childAt(fragment, [1]);
+            var element1 = dom.childAt(element0, [1]);
+            var element2 = dom.childAt(element1, [1, 1]);
+            var element3 = dom.childAt(element1, [3]);
+            var element4 = dom.childAt(element3, [3]);
+            var attrMorph0 = dom.createAttrMorph(element2, 'src');
+            var morph0 = dom.createMorphAt(dom.childAt(element3, [1]),0,0);
+            var morph1 = dom.createMorphAt(element4,1,1);
+            var morph2 = dom.createMorphAt(element4,3,3);
+            set(env, context, "participant", blockArguments[0]);
+            element(env, element0, context, "action", ["participantSelected", get(env, context, "participant")], {});
+            attribute(env, attrMorph0, element2, "src", concat(env, [get(env, context, "participant.image")]));
+            content(env, morph0, context, "participant.name");
+            content(env, morph1, context, "participant.company");
+            content(env, morph2, context, "participant.email");
+            return fragment;
+          }
+        };
+      }());
+      return {
+        isHTMLBars: true,
+        revision: "Ember@1.12.0",
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1,"class","box");
+          var el2 = dom.createTextNode("\n    Showing 10 of 27 users\n  ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n\n  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1,"class","ko-add-participants-popover__filtered-list-container");
+          var el2 = dom.createTextNode("\n    ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("ul");
+          dom.setAttribute(el2,"class","ko-add-participants-popover__filtered-list");
+          dom.setAttribute(el2,"role","menu");
+          var el3 = dom.createTextNode("\n");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createComment("");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createTextNode("    ");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n  ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          var hooks = env.hooks, get = hooks.get, block = hooks.block;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          var morph0 = dom.createMorphAt(dom.childAt(fragment, [3, 1]),1,1);
+          block(env, morph0, context, "each", [get(env, context, "filteredParticipants")], {}, child0, null);
+          return fragment;
+        }
+      };
+    }());
+    var child2 = (function() {
+      return {
+        isHTMLBars: true,
+        revision: "Ember@1.12.0",
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1,"class","box header__subtitle");
+          var el2 = dom.createTextNode("\n    These people will be copied in on your reply. They cannot see the entire conversation. ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("a");
+          dom.setAttribute(el2,"href","#");
+          var el3 = dom.createTextNode("Find out more about CC recipients.");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n  ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    return {
+      isHTMLBars: true,
+      revision: "Ember@1.12.0",
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","box");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","input i--search-small");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, get = hooks.get, inline = hooks.inline, block = hooks.block;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        var morph0 = dom.createMorphAt(dom.childAt(fragment, [0, 1]),1,1);
+        var morph1 = dom.createMorphAt(fragment,2,2,contextualElement);
+        var morph2 = dom.createMorphAt(fragment,4,4,contextualElement);
+        var morph3 = dom.createMorphAt(fragment,6,6,contextualElement);
+        dom.insertBoundary(fragment, null);
+        inline(env, morph0, context, "input", [], {"class": "input__text u-1/1 has-icon", "type": "text", "placeholder": "Type to search participants", "value": get(env, context, "searchTerm"), "enter": "query", "key-press": "whenKeyIsPressed"});
+        block(env, morph1, context, "unless", [get(env, context, "showResults")], {}, child0, null);
+        block(env, morph2, context, "if", [get(env, context, "showResults")], {}, child1, null);
+        block(env, morph3, context, "unless", [get(env, context, "showResults")], {}, child2, null);
+        return fragment;
+      }
+    };
+  }()));
+
+});
+define('frontend-cp/components/ko-add-user-popover/component', ['exports', 'ember'], function (exports, Ember) {
+
+	'use strict';
+
+	exports['default'] = Ember['default'].Component.extend({});
+
+});
+define('frontend-cp/components/ko-add-user-popover/template', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      isHTMLBars: true,
+      revision: "Ember@1.12.0",
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("form");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","box");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("label");
+        var el4 = dom.createElement("strong");
+        var el5 = dom.createTextNode("Name");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode(" ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("br");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode(" ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("br");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("label");
+        var el4 = dom.createElement("strong");
+        var el5 = dom.createTextNode("Email Address");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode(" ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("br");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode(" ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("br");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","box");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, get = hooks.get, inline = hooks.inline;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        var element0 = dom.childAt(fragment, [0]);
+        var element1 = dom.childAt(element0, [1]);
+        var morph0 = dom.createMorphAt(element1,5,5);
+        var morph1 = dom.createMorphAt(element1,13,13);
+        var morph2 = dom.createMorphAt(dom.childAt(element0, [3]),1,1);
+        inline(env, morph0, context, "input", [], {"value": get(env, context, "name"), "class": "input__text u-1/1", "type": "text"});
+        inline(env, morph1, context, "input", [], {"value": get(env, context, "email"), "class": "input__text u-1/1", "type": "email"});
+        inline(env, morph2, context, "input", [], {"class": "button button--primary", "value": "Add User", "type": "submit", "disabled": true});
         return fragment;
       }
     };
@@ -775,6 +1422,214 @@ define('frontend-cp/components/ko-address/template', ['exports'], function (expo
         dom.insertBoundary(fragment, null);
         content(env, morph0, context, "title");
         block(env, morph1, context, "each", [get(env, context, "address")], {}, child0, null);
+        return fragment;
+      }
+    };
+  }()));
+
+});
+define('frontend-cp/components/ko-admin-card-team/component', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Component.extend({
+    teamName: null,
+    memberType: 'Agent',
+    members: null,
+
+    memberCount: (function () {
+      return this.get('members.length');
+    }).property('members'),
+
+    pluralizedMemberType: (function () {
+      if (this.get('memberCount') === 1) {
+        return this.get('memberType');
+      }
+      return Ember['default'].Inflector.inflector.pluralize(this.get('memberType'));
+    }).property('memberType', 'memberCount')
+
+  });
+
+});
+define('frontend-cp/components/ko-admin-card-team/template', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports['default'] = Ember.HTMLBars.template((function() {
+    var child0 = (function() {
+      var child0 = (function() {
+        return {
+          isHTMLBars: true,
+          revision: "Ember@1.12.0",
+          blockParams: 1,
+          cachedFragment: null,
+          hasRendered: false,
+          build: function build(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("              ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("li");
+            var el2 = dom.createTextNode(" ");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createComment("");
+            dom.appendChild(el1, el2);
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          render: function render(context, env, contextualElement, blockArguments) {
+            var dom = env.dom;
+            var hooks = env.hooks, set = hooks.set, get = hooks.get, inline = hooks.inline;
+            dom.detectNamespace(contextualElement);
+            var fragment;
+            if (env.useFragmentCache && dom.canClone) {
+              if (this.cachedFragment === null) {
+                fragment = this.build(dom);
+                if (this.hasRendered) {
+                  this.cachedFragment = fragment;
+                } else {
+                  this.hasRendered = true;
+                }
+              }
+              if (this.cachedFragment) {
+                fragment = dom.cloneNode(this.cachedFragment, true);
+              }
+            } else {
+              fragment = this.build(dom);
+            }
+            var morph0 = dom.createMorphAt(dom.childAt(fragment, [1]),1,1);
+            set(env, context, "member", blockArguments[0]);
+            inline(env, morph0, context, "ko-avatar", [], {"avatar": get(env, context, "member.avatar")});
+            return fragment;
+          }
+        };
+      }());
+      return {
+        isHTMLBars: true,
+        revision: "Ember@1.12.0",
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("\n    ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1,"class","ko-admin-card-team__header");
+          var el2 = dom.createTextNode("\n        ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("div");
+          dom.setAttribute(el2,"class","ko-admin-card-team__team-name");
+          var el3 = dom.createComment("");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n        ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("div");
+          dom.setAttribute(el2,"class","ko-admin-card-team__membership");
+          var el3 = dom.createComment("");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createTextNode(" ");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createComment("");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n    ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n\n    ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1,"class","ko-admin-card-team__content");
+          var el2 = dom.createTextNode("\n        ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("ul");
+          dom.setAttribute(el2,"class","list-inline");
+          var el3 = dom.createTextNode("\n");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createComment("");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createTextNode("        ");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n    ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          var hooks = env.hooks, content = hooks.content, get = hooks.get, block = hooks.block;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          var element0 = dom.childAt(fragment, [1]);
+          var element1 = dom.childAt(element0, [3]);
+          var morph0 = dom.createMorphAt(dom.childAt(element0, [1]),0,0);
+          var morph1 = dom.createMorphAt(element1,0,0);
+          var morph2 = dom.createMorphAt(element1,2,2);
+          var morph3 = dom.createMorphAt(dom.childAt(fragment, [3, 1]),1,1);
+          content(env, morph0, context, "teamName");
+          content(env, morph1, context, "members.length");
+          content(env, morph2, context, "pluralizedMemberType");
+          block(env, morph3, context, "each", [get(env, context, "members")], {}, child0, null);
+          return fragment;
+        }
+      };
+    }());
+    return {
+      isHTMLBars: true,
+      revision: "Ember@1.12.0",
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, block = hooks.block;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+        dom.insertBoundary(fragment, null);
+        dom.insertBoundary(fragment, 0);
+        block(env, morph0, context, "ko-admin-selectable-card", [], {}, child0, null);
         return fragment;
       }
     };
@@ -988,7 +1843,7 @@ define('frontend-cp/components/ko-admin-selectable-card/template', ['exports'], 
   }()));
 
 });
-define('frontend-cp/components/ko-agent-dropdown/component', ['exports', 'ember', 'ember-cli-keyboard-actions/mixins/keyboard-actions', 'frontend-cp/mixins/drop-down-keyboard-nav'], function (exports, Ember, KeyboardActionsMixin, DropdownKeyboardNav) {
+define('frontend-cp/components/ko-agent-dropdown/component', ['exports', 'ember', 'ember-cli-keyboard-actions/mixins/keyboard-actions', 'frontend-cp/components/mixins/drop-down-keyboard-nav'], function (exports, Ember, KeyboardActionsMixin, DropdownKeyboardNav) {
 
   'use strict';
 
@@ -996,8 +1851,8 @@ define('frontend-cp/components/ko-agent-dropdown/component', ['exports', 'ember'
     attributeBindings: ['data-region', 'tabindex'],
     dataRegion: 'navigation-new',
     tabindex: 0,
-    classNames: ['u-inline-block', 'u-v-align-fix'],
-    navItems: [{ text: 'Case', path: 'session.cases.new' }, { text: 'User' }, { text: 'Organization' }],
+    classNames: ['u-inline-block'],
+    navItems: [{ text: 'Case', path: 'session.cases.new', icon: 'images/icons/case.svg' }, { text: 'User', icon: 'images/icons/user.svg' }, { text: 'Organization', icon: 'images/icons/organization.svg' }],
     showDropdown: false,
     isMouseAccess: false,
     keyboardPosition: 0,
@@ -1070,13 +1925,28 @@ define('frontend-cp/components/ko-agent-dropdown/template', ['exports'], functio
           hasRendered: false,
           build: function build(dom) {
             var el0 = dom.createDocumentFragment();
-            var el1 = dom.createComment("");
+            var el1 = dom.createTextNode("        ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("img");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n        ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("div");
+            dom.setAttribute(el1,"class","t-center");
+            var el2 = dom.createTextNode("\n          ");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createComment("");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createTextNode("\n        ");
+            dom.appendChild(el1, el2);
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
             dom.appendChild(el0, el1);
             return el0;
           },
           render: function render(context, env, contextualElement) {
             var dom = env.dom;
-            var hooks = env.hooks, content = hooks.content;
+            var hooks = env.hooks, get = hooks.get, concat = hooks.concat, attribute = hooks.attribute, content = hooks.content;
             dom.detectNamespace(contextualElement);
             var fragment;
             if (env.useFragmentCache && dom.canClone) {
@@ -1094,9 +1964,10 @@ define('frontend-cp/components/ko-agent-dropdown/template', ['exports'], functio
             } else {
               fragment = this.build(dom);
             }
-            var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
-            dom.insertBoundary(fragment, null);
-            dom.insertBoundary(fragment, 0);
+            var element0 = dom.childAt(fragment, [1]);
+            var attrMorph0 = dom.createAttrMorph(element0, 'src');
+            var morph0 = dom.createMorphAt(dom.childAt(fragment, [3]),1,1);
+            attribute(env, attrMorph0, element0, "src", concat(env, [get(env, context, "item.icon")]));
             content(env, morph0, context, "item.text");
             return fragment;
           }
@@ -1110,15 +1981,15 @@ define('frontend-cp/components/ko-agent-dropdown/template', ['exports'], functio
         hasRendered: false,
         build: function build(dom) {
           var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("      ");
+          dom.appendChild(el0, el1);
           var el1 = dom.createElement("li");
-          dom.setAttribute(el1,"class","dropdown-menu-item");
-          dom.setAttribute(el1,"tabindex","-1");
-          dom.setAttribute(el1,"role","menuitem");
-          var el2 = dom.createTextNode("\n    ");
+          dom.setAttribute(el1,"class","agent-dropdown__item");
+          var el2 = dom.createTextNode("\n");
           dom.appendChild(el1, el2);
           var el2 = dom.createComment("");
           dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n  ");
+          var el2 = dom.createTextNode("      ");
           dom.appendChild(el1, el2);
           dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n");
@@ -1127,7 +1998,7 @@ define('frontend-cp/components/ko-agent-dropdown/template', ['exports'], functio
         },
         render: function render(context, env, contextualElement) {
           var dom = env.dom;
-          var hooks = env.hooks, element = hooks.element, get = hooks.get, block = hooks.block;
+          var hooks = env.hooks, get = hooks.get, block = hooks.block;
           dom.detectNamespace(contextualElement);
           var fragment;
           if (env.useFragmentCache && dom.canClone) {
@@ -1145,10 +2016,8 @@ define('frontend-cp/components/ko-agent-dropdown/template', ['exports'], functio
           } else {
             fragment = this.build(dom);
           }
-          var element0 = dom.childAt(fragment, [0]);
-          var morph0 = dom.createMorphAt(element0,1,1);
-          element(env, element0, context, "action", ["showDropdown"], {});
-          block(env, morph0, context, "link-to", [get(env, context, "item.path")], {}, child0, null);
+          var morph0 = dom.createMorphAt(dom.childAt(fragment, [1]),1,1);
+          block(env, morph0, context, "link-to", [get(env, context, "item.path")], {"class": "agent-dropdown__link"}, child0, null);
           return fragment;
         }
       };
@@ -1166,12 +2035,147 @@ define('frontend-cp/components/ko-agent-dropdown/template', ['exports'], functio
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
-        var el1 = dom.createElement("ul");
+        var el1 = dom.createElement("div");
         dom.setAttribute(el1,"tabindex","-1");
         dom.setAttribute(el1,"role","menu");
-        var el2 = dom.createTextNode("\n");
+        var el2 = dom.createTextNode("\n  ");
         dom.appendChild(el1, el2);
-        var el2 = dom.createComment("");
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","box box--secondary");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("ul");
+        dom.setAttribute(el3,"class","list-inline");
+        var el4 = dom.createTextNode("\n");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","box");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("p");
+        dom.setAttribute(el3,"class","t-caption t-small u-mb-");
+        var el4 = dom.createTextNode("\n    Recently viewed:\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","flag flag--auto flag--small u-mb-");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","flag__img");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("img");
+        dom.setAttribute(el5,"class","avatar");
+        dom.setAttribute(el5,"src","https://s-media-cache-ak0.pinimg.com/736x/ca/c1/18/cac1189a8df5498d17ef09d65ad0f698.jpg");
+        dom.setAttribute(el5,"alt","");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","flag__body");
+        var el5 = dom.createTextNode("\n        I can't open the internet.\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("p");
+        dom.setAttribute(el5,"class","t-small t-caption");
+        var el6 = dom.createTextNode("Samantha Jones");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","flag flag--auto flag--small u-mb-");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","flag__img");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("img");
+        dom.setAttribute(el5,"class","avatar");
+        dom.setAttribute(el5,"src","https://s-media-cache-ak0.pinimg.com/736x/ca/c1/18/cac1189a8df5498d17ef09d65ad0f698.jpg");
+        dom.setAttribute(el5,"alt","");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","flag__body");
+        var el5 = dom.createTextNode("\n        I can't open the internet.\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("p");
+        dom.setAttribute(el5,"class","t-small t-caption");
+        var el6 = dom.createTextNode("Samantha Jones");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","flag flag--auto flag--small");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","flag__img");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("img");
+        dom.setAttribute(el5,"class","avatar");
+        dom.setAttribute(el5,"src","https://s-media-cache-ak0.pinimg.com/736x/ca/c1/18/cac1189a8df5498d17ef09d65ad0f698.jpg");
+        dom.setAttribute(el5,"alt","");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","flag__body");
+        var el5 = dom.createTextNode("\n        I can't open the internet.\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("p");
+        dom.setAttribute(el5,"class","t-small t-caption");
+        var el6 = dom.createTextNode("Samantha Jones");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
         dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
@@ -1200,10 +2204,10 @@ define('frontend-cp/components/ko-agent-dropdown/template', ['exports'], functio
         }
         var element1 = dom.childAt(fragment, [0]);
         var element2 = dom.childAt(fragment, [2]);
-        var morph0 = dom.createMorphAt(element2,1,1);
         var attrMorph0 = dom.createAttrMorph(element2, 'class');
+        var morph0 = dom.createMorphAt(dom.childAt(element2, [1, 1]),1,1);
         element(env, element1, context, "action", ["showDropdown"], {});
-        attribute(env, attrMorph0, element2, "class", concat(env, ["dropdown-menu ", subexpr(env, context, "unless", [get(env, context, "showDropdown"), "u-hidden"], {})]));
+        attribute(env, attrMorph0, element2, "class", concat(env, ["agent-dropdown box-container ", subexpr(env, context, "unless", [get(env, context, "showDropdown"), "u-hidden"], {})]));
         block(env, morph0, context, "each", [get(env, context, "navItems")], {"keyword": "item"}, child0, null);
         return fragment;
       }
@@ -1247,7 +2251,6 @@ define('frontend-cp/components/ko-avatar/template', ['exports'], function (expor
       build: function build(dom) {
         var el0 = dom.createDocumentFragment();
         var el1 = dom.createElement("div");
-        dom.setAttribute(el1,"class","flag__img");
         var el2 = dom.createTextNode("\n  ");
         dom.appendChild(el1, el2);
         var el2 = dom.createElement("img");
@@ -2277,7 +3280,7 @@ define('frontend-cp/components/ko-case-select-field/template', ['exports'], func
           var el1 = dom.createTextNode("  ");
           dom.appendChild(el0, el1);
           var el1 = dom.createElement("li");
-          dom.setAttribute(el1,"class","dropdown-menu-item");
+          dom.setAttribute(el1,"class","dropdown-menu__item");
           dom.setAttribute(el1,"tabindex","-1");
           dom.setAttribute(el1,"role","menuitemradio");
           var el2 = dom.createTextNode("\n    ");
@@ -2392,7 +3395,7 @@ define('frontend-cp/components/ko-case-select-field/template', ['exports'], func
   }()));
 
 });
-define('frontend-cp/components/ko-case-tags-field/component', ['exports', 'ember', 'frontend-cp/mixins/suggestions', 'frontend-cp/mixins/drop-down-keyboard-nav'], function (exports, Ember, Suggestions, DropDownKeyboardNav) {
+define('frontend-cp/components/ko-case-tags-field/component', ['exports', 'ember', 'frontend-cp/components/mixins/suggestions', 'frontend-cp/components/mixins/drop-down-keyboard-nav'], function (exports, Ember, Suggestions, DropDownKeyboardNav) {
 
   'use strict';
 
@@ -2711,11 +3714,13 @@ define('frontend-cp/components/ko-case-tags-field/template', ['exports'], functi
           var el1 = dom.createTextNode("  ");
           dom.appendChild(el0, el1);
           var el1 = dom.createElement("li");
+          dom.setAttribute(el1,"class","tag-new dropdown-menu__item");
           dom.setAttribute(el1,"tabindex","-1");
           dom.setAttribute(el1,"role","menuItem");
           var el2 = dom.createComment("");
           dom.appendChild(el1, el2);
           var el2 = dom.createElement("span");
+          dom.setAttribute(el2,"class","t-caption t-small u-ml--");
           var el3 = dom.createTextNode("New Tag");
           dom.appendChild(el2, el3);
           dom.appendChild(el1, el2);
@@ -2768,7 +3773,7 @@ define('frontend-cp/components/ko-case-tags-field/template', ['exports'], functi
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
         var el1 = dom.createElement("ul");
-        dom.setAttribute(el1,"class","list-inline");
+        dom.setAttribute(el1,"class","list-inline u-overflow-scroll");
         dom.setAttribute(el1,"role","menu");
         var el2 = dom.createTextNode("\n");
         dom.appendChild(el1, el2);
@@ -2828,8 +3833,8 @@ define('frontend-cp/components/ko-case-tags-field/template', ['exports'], functi
         var attrMorph0 = dom.createAttrMorph(element5, 'class');
         content(env, morph0, context, "title");
         block(env, morph1, context, "each", [get(env, context, "selectedTags")], {}, child0, null);
-        inline(env, morph2, context, "input", [], {"value": get(env, context, "searchTerm"), "on": "key-down", "tabindex": 0, "role": "textbox"});
-        attribute(env, attrMorph0, element5, "class", concat(env, ["dropdown-menu ", subexpr(env, context, "unless", [get(env, context, "showDropdown"), "u-hidden"], {})]));
+        inline(env, morph2, context, "input", [], {"class": "tag-input", "placeholder": "Add a tag...", "value": get(env, context, "searchTerm"), "on": "key-down", "tabindex": 0, "role": "textbox"});
+        attribute(env, attrMorph0, element5, "class", concat(env, ["dropdown-menu ", subexpr(env, context, "unless", [get(env, context, "showDropdown"), "u-hidden"], {}), " list-bare"]));
         block(env, morph3, context, "each", [get(env, context, "suggestedTags")], {}, child1, null);
         block(env, morph4, context, "if", [get(env, context, "isCreateAllowed")], {}, child2, null);
         return fragment;
@@ -3754,6 +4759,8 @@ define('frontend-cp/components/ko-context-modal-item/template', ['exports'], fun
           hasRendered: false,
           build: function build(dom) {
             var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("    ");
+            dom.appendChild(el0, el1);
             var el1 = dom.createComment("");
             dom.appendChild(el0, el1);
             var el1 = dom.createTextNode("\n");
@@ -3780,8 +4787,7 @@ define('frontend-cp/components/ko-context-modal-item/template', ['exports'], fun
             } else {
               fragment = this.build(dom);
             }
-            var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
-            dom.insertBoundary(fragment, 0);
+            var morph0 = dom.createMorphAt(fragment,1,1,contextualElement);
             content(env, morph0, context, "yield");
             return fragment;
           }
@@ -3801,7 +4807,7 @@ define('frontend-cp/components/ko-context-modal-item/template', ['exports'], fun
         },
         render: function render(context, env, contextualElement) {
           var dom = env.dom;
-          var hooks = env.hooks, get = hooks.get, subexpr = hooks.subexpr, block = hooks.block;
+          var hooks = env.hooks, get = hooks.get, block = hooks.block;
           dom.detectNamespace(contextualElement);
           var fragment;
           if (env.useFragmentCache && dom.canClone) {
@@ -3822,7 +4828,7 @@ define('frontend-cp/components/ko-context-modal-item/template', ['exports'], fun
           var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
           dom.insertBoundary(fragment, null);
           dom.insertBoundary(fragment, 0);
-          block(env, morph0, context, "if", [subexpr(env, context, "not", [get(env, context, "isHidden")], {})], {}, child0, null);
+          block(env, morph0, context, "unless", [get(env, context, "isHidden")], {}, child0, null);
           return fragment;
         }
       };
@@ -4685,6 +5691,8 @@ define('frontend-cp/components/ko-editable-text/template', ['exports'], function
         var el2 = dom.createComment("");
         dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
         return el0;
       },
       render: function render(context, env, contextualElement) {
@@ -4716,7 +5724,7 @@ define('frontend-cp/components/ko-editable-text/template', ['exports'], function
         attribute(env, attrMorph0, element0, "class", concat(env, ["editable-text__text ", subexpr(env, context, "if", [get(env, context, "isEditing"), "u-hidden"], {}), " ", subexpr(env, context, "if", [get(env, context, "isEdited"), "editable-text__text--edited"], {})]));
         element(env, element0, context, "action", ["edit"], {});
         content(env, morph0, context, "value");
-        attribute(env, attrMorph1, element1, "class", concat(env, [subexpr(env, context, "if", [subexpr(env, context, "not", [get(env, context, "isEditing")], {}), "u-hidden"], {})]));
+        attribute(env, attrMorph1, element1, "class", concat(env, [subexpr(env, context, "unless", [get(env, context, "isEditing"), "u-hidden"], {})]));
         inline(env, morph1, context, "input", [], {"value": get(env, context, "valueToSave"), "action": "editComplete", "class": "editable-text__input"});
         return fragment;
       }
@@ -7534,7 +8542,7 @@ define('frontend-cp/components/ko-text-editor/component', ['exports', 'ember', '
 
   exports['default'] = Ember['default'].Component.extend({
     quill: null,
-    cursor: null,
+    cursor: 0,
     attachedFiles: [],
     inlineFiles: [],
     totalSize: 0,
@@ -7686,8 +8694,12 @@ define('frontend-cp/components/ko-text-editor/component', ['exports', 'ember', '
         }
       });
       Ember['default'].$('.ql-editor').on('blur', function () {
-        _this.quill.focus();
-        _this.set('cursor', _this.quill.getSelection().start);
+
+        if (_this.quill.getSelection() === null) {
+          _this.set('cursor', 0);
+        } else {
+          _this.set('cursor', _this.quill.getSelection().start);
+        }
       });
     }).on('didInsertElement'),
     process: function process(elem, prefix, postfix) {
@@ -8037,7 +9049,7 @@ define('frontend-cp/components/ko-text-editor/template', ['exports'], function (
         var el6 = dom.createTextNode("\n        ");
         dom.appendChild(el5, el6);
         dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n\n        ");
+        var el5 = dom.createTextNode("\n        ");
         dom.appendChild(el4, el5);
         var el5 = dom.createComment("");
         dom.appendChild(el4, el5);
@@ -8207,6 +9219,308 @@ define('frontend-cp/components/ko-text-editor/template', ['exports'], function (
         element(env, element10, context, "action", ["insertImage"], {});
         block(env, morph3, context, "ko-draggable-dropzone", [], {"dropped": "imageDropped"}, child0, null);
         block(env, morph4, context, "each", [get(env, context, "attachedFiles")], {}, child1, null);
+        return fragment;
+      }
+    };
+  }()));
+
+});
+define('frontend-cp/components/ko-time-billing/component', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Component.extend({
+
+    timeBillingDuration: null, //length of time tracked in hours as a float
+    humanReadableDuration: 'test', //length of time tracked as : separated hour:minute
+    isValid: true,
+
+    onDurationParamChange: (function () {
+      this.set('humanReadableDuration', this.parseDurationToHumanReadable(this.get('timeBillingDuration')));
+    }).observes('timeBillingDuration').on('init'),
+
+    onDurationTextChange: (function () {
+      var durationArray = this.parseHumanReadableDuration(this.get('humanReadableDuration'));
+      var hours = durationArray[0];
+      var minutes = durationArray[1];
+      var duration = Number(hours) + Number(minutes / 60);
+
+      if (isNaN(Number(duration))) {
+        this.set('isValid', false);
+      } else {
+        this.set('isValid', true);
+        this.setDuration(duration);
+      }
+    }).on('focusOut'),
+
+    parseHumanReadableDuration: function parseHumanReadableDuration(humanDuration) {
+      if (humanDuration.indexOf(':') === -1) {
+        return [Number(humanDuration), 0];
+      }
+
+      var durationParts = humanDuration.split(':');
+      var hoursString = durationParts[0];
+      var minutesString = durationParts[1];
+      return [Number(hoursString), Number(minutesString)];
+    },
+
+    setDuration: function setDuration(duration) {
+      this.sendAction('on-duration-change', duration);
+    },
+
+    parseDurationToHumanReadable: function parseDurationToHumanReadable(duration) {
+      if (duration === null) {
+        return '';
+      }
+
+      var hours = Math.floor(duration);
+      var minutes = (duration - Math.floor(duration)) * 60;
+      if (minutes < 10) {
+        //force to 2sf
+        minutes = '0' + minutes;
+      }
+      return hours + ':' + minutes;
+    }
+
+  });
+
+});
+define('frontend-cp/components/ko-time-billing/ko-time-billing-context-modal/component', ['exports', 'ember', 'frontend-cp/components/mixins/context-menu-set'], function (exports, Ember, ContextMenuSetComponentMixin) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Component.extend(ContextMenuSetComponentMixin['default'], {
+    durationChangedAction: 'onDurationChanged', //needed to traverse action coming through this component
+
+    actions: {
+      onDurationChanged: function onDurationChanged(duration) {
+        this.sendAction('on-duration-change', duration);
+      }
+    }
+  });
+
+});
+define('frontend-cp/components/ko-time-billing/ko-time-billing-context-modal/template', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports['default'] = Ember.HTMLBars.template((function() {
+    var child0 = (function() {
+      return {
+        isHTMLBars: true,
+        revision: "Ember@1.12.0",
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          var hooks = env.hooks, get = hooks.get, inline = hooks.inline;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          var morph0 = dom.createMorphAt(fragment,1,1,contextualElement);
+          inline(env, morph0, context, "ko-time-billing", [], {"timeBillingDuration": get(env, context, "timeBillingDuration"), "on-duration-change": get(env, context, "durationChangedAction")});
+          return fragment;
+        }
+      };
+    }());
+    return {
+      isHTMLBars: true,
+      revision: "Ember@1.12.0",
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, get = hooks.get, block = hooks.block;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+        dom.insertBoundary(fragment, null);
+        dom.insertBoundary(fragment, 0);
+        block(env, morph0, context, "ko-context-modal-item", [], {"index": "0", "title": "Track time", "contextModalId": get(env, context, "contextModalId")}, child0, null);
+        return fragment;
+      }
+    };
+  }()));
+
+});
+define('frontend-cp/components/ko-time-billing/ko-time-billing-demo-open/component', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Component.extend({
+    click: function click(event) {
+      this.sendAction('addTimeBilling', event);
+    }
+  });
+
+});
+define('frontend-cp/components/ko-time-billing/ko-time-billing-demo-open/template', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      isHTMLBars: true,
+      revision: "Ember@1.12.0",
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createTextNode("Open me");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        return fragment;
+      }
+    };
+  }()));
+
+});
+define('frontend-cp/components/ko-time-billing/ko-time-entry/component', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].TextField.extend({
+    placeholder: '1:15',
+    isValid: true,
+    isInvalid: Ember['default'].computed.not('isValid'),
+    classNameBindings: [':ko-time-billing__ko-time-entry', 'isInvalid:ko-time-billing__ko-time-entry--invalid']
+  });
+
+});
+define('frontend-cp/components/ko-time-billing/template', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      isHTMLBars: true,
+      revision: "Ember@1.12.0",
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","ko-time-billing");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","ko-time-billing__label");
+        var el3 = dom.createTextNode("Time spent");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("span");
+        dom.setAttribute(el3,"class","ko-time-billing__time-format-label");
+        var el4 = dom.createTextNode("Hrs");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, get = hooks.get, inline = hooks.inline;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        var morph0 = dom.createMorphAt(dom.childAt(fragment, [0, 3]),1,1);
+        inline(env, morph0, context, "ko-time-billing/ko-time-entry", [], {"value": get(env, context, "humanReadableDuration"), "isValid": get(env, context, "isValid")});
         return fragment;
       }
     };
@@ -8650,6 +9964,56 @@ define('frontend-cp/components/mixins/context-menu-set', ['exports', 'ember'], f
       prev: function prev() {
         this.get('contextModalService').prev();
       }
+    }
+  });
+
+});
+define('frontend-cp/components/mixins/drop-down-keyboard-nav', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Mixin.create({
+
+    moveSelectedItem: function moveSelectedItem(listLength, ulSelector, direction, positionProperty) {
+      var position = this.get(positionProperty);
+      switch (direction) {
+        case 'down':
+          {
+            position = ++position;
+            if (position <= listLength) {
+              this.$(ulSelector + ' li:nth-child(' + position + ')').focus();
+              this.set(positionProperty, position);
+            }
+            break;
+          }
+        case 'up':
+          {
+            position = --position;
+            if (position > 0) {
+              this.$(ulSelector + ' li:nth-child(' + position + ')').focus();
+              this.set(positionProperty, position);
+            }
+            break;
+          }
+      }
+    }
+  });
+
+});
+define('frontend-cp/components/mixins/suggestions', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Mixin.create({
+
+    matches: function matches(searchStr, source) {
+      var result = [];
+
+      if (source.length > 0) {
+        result = source.filter(RegExp.prototype.test, new RegExp(searchStr, 'i'));
+      }
+
+      return new Ember['default'].A(result);
     }
   });
 
@@ -10175,38 +11539,6 @@ define('frontend-cp/mixins/breadcrumbable', ['exports', 'ember'], function (expo
   });
 
 });
-define('frontend-cp/mixins/drop-down-keyboard-nav', ['exports', 'ember'], function (exports, Ember) {
-
-  'use strict';
-
-  exports['default'] = Ember['default'].Mixin.create({
-
-    moveSelectedItem: function moveSelectedItem(listLength, ulSelector, direction, positionProperty) {
-      var position = this.get(positionProperty);
-      switch (direction) {
-        case 'down':
-          {
-            position = ++position;
-            if (position <= listLength) {
-              this.$(ulSelector + ' li:nth-child(' + position + ')').focus();
-              this.set(positionProperty, position);
-            }
-            break;
-          }
-        case 'up':
-          {
-            position = --position;
-            if (position > 0) {
-              this.$(ulSelector + ' li:nth-child(' + position + ')').focus();
-              this.set(positionProperty, position);
-            }
-            break;
-          }
-      }
-    }
-  });
-
-});
 define('frontend-cp/mixins/simple-state', ['exports', 'ember'], function (exports, Ember) {
 
   'use strict';
@@ -10286,24 +11618,6 @@ define('frontend-cp/mixins/simple-state', ['exports', 'ember'], function (export
     getStateAtLevel: function getStateAtLevel(level, currentState) {
       currentState = currentState || this.get('_currentState');
       return currentState.split('.')[level];
-    }
-  });
-
-});
-define('frontend-cp/mixins/suggestions', ['exports', 'ember'], function (exports, Ember) {
-
-  'use strict';
-
-  exports['default'] = Ember['default'].Mixin.create({
-
-    matches: function matches(searchStr, source) {
-      var result = [];
-
-      if (source.length > 0) {
-        result = source.filter(RegExp.prototype.test, new RegExp(searchStr, 'i'));
-      }
-
-      return new Ember['default'].A(result);
     }
   });
 
@@ -10483,7 +11797,7 @@ define('frontend-cp/models/case', ['exports', 'ember-data'], function (exports, 
     caseType: DS['default'].belongsTo('type'),
     // sla
     // tags: DS.hasMany('tag'),
-    // customFields: DS.hasMany('custom-field'),
+    customFields: DS['default'].hasMany('custom-field'),
     // metadata
     lastReplier: DS['default'].belongsTo('person'),
     lastReplierIdentity: DS['default'].belongsTo('identity'),
@@ -11036,6 +12350,8 @@ define('frontend-cp/models/tab', ['exports', 'ember'], function (exports, Ember)
     ids: null,
 
     index: null,
+
+    scrollPosition: 0,
 
     browserTabId: null,
 
@@ -11802,6 +13118,16 @@ define('frontend-cp/services/local-store', ['exports', 'ember'], function (expor
   });
 
 });
+define('frontend-cp/services/scroll', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Service.extend({
+    scroll: 0,
+    targetScroll: 0
+  });
+
+});
 define('frontend-cp/services/session', ['exports', 'ember', 'jquery'], function (exports, Ember, $) {
 
   'use strict';
@@ -11887,6 +13213,13 @@ define('frontend-cp/services/tabs', ['exports', 'ember', 'frontend-cp/models/tab
 
   'use strict';
 
+  function arrayToObject(fields, func, thisObj) {
+    return fields.reduce(function (obj, k) {
+      obj[k] = func.call(thisObj, k);
+      return obj;
+    }, {});
+  }
+
   exports['default'] = Ember['default'].Service.extend({
 
     /**
@@ -11898,6 +13231,7 @@ define('frontend-cp/services/tabs', ['exports', 'ember', 'frontend-cp/models/tab
 
     urlService: Ember['default'].inject.service('url'),
     localStoreService: Ember['default'].inject.service('localStore'),
+    scrollService: Ember['default'].inject.service('scroll'),
 
     /**
      * Used to keep track of when tabs were opened and provide a
@@ -11914,6 +13248,13 @@ define('frontend-cp/services/tabs', ['exports', 'ember', 'frontend-cp/models/tab
     selectedTab: null,
 
     isTabAtRoot: null,
+
+    scrollUpdated: (function () {
+      var tab = this.get('selectedTab');
+      if (tab) {
+        tab.set('scrollPosition', this.get('scrollService.scroll'));
+      }
+    }).observes('scrollService.scroll'),
 
     currentUrlDidChange: (function () {
       var _this = this;
@@ -12022,6 +13363,7 @@ define('frontend-cp/services/tabs', ['exports', 'ember', 'frontend-cp/models/tab
      * @param  {Tab | null} tab - tab
      */
     selectTab: function selectTab(tab) {
+      this.get('scrollService').set('targetScroll', tab.get('scrollPosition'));
       this.set('selectedTab', tab);
     },
 
@@ -12084,7 +13426,7 @@ define('frontend-cp/services/tabs', ['exports', 'ember', 'frontend-cp/models/tab
       });
 
       this.set('counter', counter);
-    }).observes('tabs.@each', 'tabs.@each.selected', 'tabs.@each.index', 'tabs.@each.ids.@each', 'tabs.@each.routeName', 'tabs.@each.label', 'tabs.@each.url'),
+    }).observes('tabs.@each', 'tabs.@each.selected', 'tabs.@each.index', 'tabs.@each.ids.@each', 'tabs.@each.routeName', 'tabs.@each.label', 'tabs.@each.url', 'tabs.@each.scrollPosition'),
 
     /**
      * Loops through tabs, simplifying them for storage
@@ -12092,14 +13434,9 @@ define('frontend-cp/services/tabs', ['exports', 'ember', 'frontend-cp/models/tab
     copyTabsToStorage: function copyTabsToStorage() {
       // Simplify tabs object
       var tabs = this.tabs.map(function (tabModel) {
-        var tab = {
-          routeName: tabModel.get('routeName'),
-          ids: tabModel.get('ids'),
-          url: tabModel.get('url'),
-          label: tabModel.get('label'),
-          index: tabModel.get('index')
-        };
-        return tab;
+        var fields = ['routeName', 'ids', 'url', 'label', 'index', 'scrollPosition'];
+
+        return arrayToObject(fields, tabModel.get, tabModel);
       });
       // Copy tabs array into store
       this.get('localStoreService').setItem('tabs', tabs.toArray(), true);
@@ -12122,7 +13459,9 @@ define('frontend-cp/services/tabs', ['exports', 'ember', 'frontend-cp/models/tab
           // Only add tabs that are not already stored in this.tabs
           if (!_this3.getTab(tab.routeName, tab.ids)) {
             var tabModel = Tab['default'].create(tab);
+
             tabModel.set('tabsService', _this3);
+            tabModel.set('scrollPosition', 0);
 
             _this3.tabs.pushObject(tabModel);
           }
@@ -12138,6 +13477,42 @@ define('frontend-cp/services/url', ['exports', 'ember'], function (exports, Embe
 
   exports['default'] = Ember['default'].Service.extend({
     currentUrl: null
+  });
+
+});
+define('frontend-cp/services/validations', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  var set = Ember['default'].set;
+
+  exports['default'] = Ember['default'].Object.extend({
+    init: function init() {
+      set(this, 'cache', {});
+    }
+  });
+
+});
+define('frontend-cp/session/admin/showcase/controller', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Controller.extend({
+
+    people: new Ember['default'].A([{
+      avatar: {
+        url: 'https://s-media-cache-ak0.pinimg.com/736x/ca/c1/18/cac1189a8df5498d17ef09d65ad0f698.jpg'
+      }
+    }, {
+      avatar: {
+        url: 'https://s-media-cache-ak0.pinimg.com/736x/ca/c1/18/cac1189a8df5498d17ef09d65ad0f698.jpg'
+      }
+    }, {
+      avatar: {
+        url: 'https://s-media-cache-ak0.pinimg.com/736x/ca/c1/18/cac1189a8df5498d17ef09d65ad0f698.jpg'
+      }
+    }])
+
   });
 
 });
@@ -12290,6 +13665,27 @@ define('frontend-cp/session/admin/showcase/template', ['exports'], function (exp
         dom.appendChild(el1, el2);
         var el2 = dom.createElement("h2");
         var el3 = dom.createTextNode("ko-admin-card-user");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("code");
+        var el3 = dom.createTextNode("\n    {{ko-admin-card-user user=user}}\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","showcase-spacer");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("h2");
+        var el3 = dom.createTextNode("ko-admin-card-team");
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n  ");
@@ -12531,36 +13927,38 @@ define('frontend-cp/session/admin/showcase/template', ['exports'], function (exp
         var morph1 = dom.createMorphAt(element0,9,9);
         var morph2 = dom.createMorphAt(element0,17,17);
         var morph3 = dom.createMorphAt(element0,25,25);
-        var morph4 = dom.createMorphAt(element0,27,27);
-        var morph5 = dom.createMorphAt(element0,29,29);
-        var morph6 = dom.createMorphAt(element0,31,31);
-        var morph7 = dom.createMorphAt(element0,33,33);
+        var morph4 = dom.createMorphAt(element0,33,33);
+        var morph5 = dom.createMorphAt(element0,35,35);
+        var morph6 = dom.createMorphAt(element0,37,37);
+        var morph7 = dom.createMorphAt(element0,39,39);
         var morph8 = dom.createMorphAt(element0,41,41);
-        var morph9 = dom.createMorphAt(element0,45,45);
-        var morph10 = dom.createMorphAt(element0,49,49);
-        var morph11 = dom.createMorphAt(element0,53,53);
-        var morph12 = dom.createMorphAt(element0,63,63);
-        var morph13 = dom.createMorphAt(element0,67,67);
-        var morph14 = dom.createMorphAt(element0,71,71);
-        var morph15 = dom.createMorphAt(element0,75,75);
-        var morph16 = dom.createMorphAt(element0,79,79);
+        var morph9 = dom.createMorphAt(element0,49,49);
+        var morph10 = dom.createMorphAt(element0,53,53);
+        var morph11 = dom.createMorphAt(element0,57,57);
+        var morph12 = dom.createMorphAt(element0,61,61);
+        var morph13 = dom.createMorphAt(element0,71,71);
+        var morph14 = dom.createMorphAt(element0,75,75);
+        var morph15 = dom.createMorphAt(element0,79,79);
+        var morph16 = dom.createMorphAt(element0,83,83);
+        var morph17 = dom.createMorphAt(element0,87,87);
         block(env, morph0, context, "ko-admin-selectable-card", [], {}, child0, null);
         block(env, morph1, context, "ko-admin-selectable-card", [], {"isActive": false}, child1, null);
         inline(env, morph2, context, "ko-admin-card-user", [], {"user": get(env, context, "userModel")});
-        inline(env, morph3, context, "ko-checkbox", [], {"label": "Remember my preferences", "large": true, "disabled": false, "tabindex": 0, "checked": false});
-        inline(env, morph4, context, "ko-checkbox", [], {"label": "Remember my preferences", "large": true, "disabled": false, "tabindex": 0, "checked": true});
-        inline(env, morph5, context, "ko-checkbox", [], {"label": "Remember my diet", "large": true, "disabled": true, "tabindex": 0, "checked": false});
-        inline(env, morph6, context, "ko-checkbox", [], {"label": "Remember my color", "large": false, "disabled": true, "tabindex": 0, "checked": false});
-        inline(env, morph7, context, "ko-checkbox", [], {"label": "Remember my name", "large": false, "disabled": false, "tabindex": 0, "checked": false});
-        inline(env, morph8, context, "ko-toggle", [], {"activated": false, "label": "Nuclear bomb switch", "micro": false, "tabindex": 0});
-        inline(env, morph9, context, "ko-toggle", [], {"activated": true, "label": "Nuclear bomb switch", "micro": false, "tabindex": 0});
-        inline(env, morph10, context, "ko-toggle", [], {"activated": false, "label": "Nuclear bomb switch", "micro": true, "tabindex": 0});
-        inline(env, morph11, context, "ko-toggle", [], {"activated": true, "label": "Nuclear bomb switch", "micro": true, "tabindex": 0});
-        inline(env, morph12, context, "ko-radio", [], {"label": "You can choose this", "large": true, "disabled": false, "tabindex": 0, "selected": false});
-        inline(env, morph13, context, "ko-radio", [], {"label": "or this", "large": true, "disabled": false, "tabindex": 0, "selected": true});
-        inline(env, morph14, context, "ko-radio", [], {"label": "but not this", "large": true, "disabled": true, "tabindex": 0, "selected": false});
-        inline(env, morph15, context, "ko-radio", [], {"label": "nor this", "large": false, "disabled": true, "tabindex": 0, "selected": false});
-        inline(env, morph16, context, "ko-radio", [], {"label": "This is fine however", "large": false, "disabled": false, "tabindex": 0, "selected": false});
+        inline(env, morph3, context, "ko-admin-card-team", [], {"teamName": "marketing", "members": get(env, context, "people")});
+        inline(env, morph4, context, "ko-checkbox", [], {"label": "Remember my preferences", "large": true, "disabled": false, "tabindex": 0, "checked": false});
+        inline(env, morph5, context, "ko-checkbox", [], {"label": "Remember my preferences", "large": true, "disabled": false, "tabindex": 0, "checked": true});
+        inline(env, morph6, context, "ko-checkbox", [], {"label": "Remember my diet", "large": true, "disabled": true, "tabindex": 0, "checked": false});
+        inline(env, morph7, context, "ko-checkbox", [], {"label": "Remember my color", "large": false, "disabled": true, "tabindex": 0, "checked": false});
+        inline(env, morph8, context, "ko-checkbox", [], {"label": "Remember my name", "large": false, "disabled": false, "tabindex": 0, "checked": false});
+        inline(env, morph9, context, "ko-toggle", [], {"activated": false, "label": "Nuclear bomb switch", "micro": false, "tabindex": 0});
+        inline(env, morph10, context, "ko-toggle", [], {"activated": true, "label": "Nuclear bomb switch", "micro": false, "tabindex": 0});
+        inline(env, morph11, context, "ko-toggle", [], {"activated": false, "label": "Nuclear bomb switch", "micro": true, "tabindex": 0});
+        inline(env, morph12, context, "ko-toggle", [], {"activated": true, "label": "Nuclear bomb switch", "micro": true, "tabindex": 0});
+        inline(env, morph13, context, "ko-radio", [], {"label": "You can choose this", "large": true, "disabled": false, "tabindex": 0, "selected": false});
+        inline(env, morph14, context, "ko-radio", [], {"label": "or this", "large": true, "disabled": false, "tabindex": 0, "selected": true});
+        inline(env, morph15, context, "ko-radio", [], {"label": "but not this", "large": true, "disabled": true, "tabindex": 0, "selected": false});
+        inline(env, morph16, context, "ko-radio", [], {"label": "nor this", "large": false, "disabled": true, "tabindex": 0, "selected": false});
+        inline(env, morph17, context, "ko-radio", [], {"label": "This is fine however", "large": false, "disabled": false, "tabindex": 0, "selected": false});
         return fragment;
       }
     };
@@ -13817,7 +15215,7 @@ define('frontend-cp/session/route', ['exports', 'ember'], function (exports, Emb
 
     beforeModel: function beforeModel() {
       // Retrieve tabs from storage if available
-      this.get('tabsService').copyTabsFromStorage();
+      this.get('tabsService').getTabs();
 
       // Redirect to login if not validated
       if (this.get('sessionService').getSessionId() === null) {
@@ -13858,11 +15256,11 @@ define('frontend-cp/session/route', ['exports', 'ember'], function (exports, Emb
   });
 
 });
-define('frontend-cp/session/showcase/controller', ['exports', 'ember'], function (exports, Ember) {
+define('frontend-cp/session/showcase/controller', ['exports', 'ember', 'ember-validations'], function (exports, Ember, EmberValidations) {
 
   'use strict';
 
-  exports['default'] = Ember['default'].Controller.extend({
+  exports['default'] = Ember['default'].Controller.extend(EmberValidations['default'], {
 
     contextModalService: Ember['default'].inject.service('context-modal'),
 
@@ -13893,8 +15291,17 @@ define('frontend-cp/session/showcase/controller', ['exports', 'ember'], function
 
       dateChange: function dateChange(date) {
         this.set('date', date);
+      },
+
+      addTimeBilling: function addTimeBilling(event) {
+        this.get('contextModalService').open('addTimeBilling', event);
+      },
+      onDurationChanged: function onDurationChanged(timeBillingDuration) {
+        this.set('timeBillingDuration', timeBillingDuration);
       }
     },
+
+    timeBillingDuration: 1.5,
 
     editableTextVal: 'I am a hunky munky',
     editableTextValB: 'I am a chunky munky',
@@ -14230,6 +15637,8 @@ define('frontend-cp/session/showcase/controller', ['exports', 'ember'], function
       'updatedAt': '2015-05-06T08:27:13Z',
       'resourceType': 'post'
     }],
+
+    copyInParticipants: [{ image: 'http://lorempixel.com/48/48/people/', name: 'Jessica Myers', company: 'Cisco Systems Inc.', email: 'jessica@cisco.com' }, { image: 'http://lorempixel.com/48/48/people/', name: 'Nina Jessicon', company: 'Stelco Steel Inc.', email: 'nina@stelco.com' }, { image: 'http://lorempixel.com/48/48/people/', name: 'Rebecca Sesam', company: 'Cisco Systems Inc.', email: 'jessica@cisco.com' }, { image: 'http://lorempixel.com/48/48/people/', name: 'Jessica Myers', company: 'Cisco Systems Inc.', email: 'jessica@cisco.com' }, { image: 'http://lorempixel.com/48/48/people/', name: 'John Doe', company: 'Cisco Systems Inc.', email: 'johndoe@cisco.com' }, { image: 'http://lorempixel.com/48/48/people/', name: 'Janine Smith', company: 'Cisco Systems Inc.', email: 'jessica@cisco.com' }, { image: 'http://lorempixel.com/48/48/people/', name: 'John Smith', company: 'Cisco Systems Inc.', email: 'jessica@cisco.com' }, { image: 'http://lorempixel.com/48/48/people/', name: 'Kebab Soup', company: 'Cisco Systems Inc.', email: 'jessica@cisco.com' }, { image: 'http://lorempixel.com/48/48/people/', name: 'Peter Myers', company: 'Cisco Systems Inc.', email: 'jessica@cisco.com' }],
 
     participants: [{ image: 'http://cdn2.thegloss.com/wp-content/uploads/2013/06/Nigella-Lawson.jpg', alt: 'Lord' }, { image: 'http://images.tvnz.co.nz/tvnzImages/entertainmentNews/2014/03/nigellaLawsonMaster.jpg', alt: 'Have Mercy' }, { image: 'http://regmedia.co.uk/2013/03/18/nigellaLawsonPhotoHugoBurnand.jpg', alt: 'On My' }, { image: 'http://i.dailymail.co.uk/i/pix/2012/11/18/article-2234773-0B6AFF92000005DC-297634x722.jpg', alt: 'Deadlifts' }],
 
@@ -14730,6 +16139,29 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
         var el2 = dom.createTextNode("\n\n  ");
         dom.appendChild(el1, el2);
         var el2 = dom.createElement("h2");
+        var el3 = dom.createTextNode("ko-time-billing");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n  Duration: ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","showcase-spacer");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("h2");
         var el3 = dom.createTextNode("Loader");
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
@@ -15072,7 +16504,7 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
         var el3 = dom.createTextNode("\n  ");
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n\n\n\n  ");
+        var el2 = dom.createTextNode("\n\n  ");
         dom.appendChild(el1, el2);
         var el2 = dom.createElement("div");
         dom.setAttribute(el2,"class","showcase-spacer");
@@ -15117,7 +16549,11 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
         var el2 = dom.createTextNode("\n\n  ");
         dom.appendChild(el1, el2);
         var el2 = dom.createElement("code");
-        var el3 = dom.createTextNode("\n    {{ko-participants participants=participants addParticipant=\"addParticipant\"}}\n\n    {{ko-add-participants-context-menu contextModalId=\"addParticipants\"}}\n  ");
+        var el3 = dom.createTextNode("\n    {{ko-participants\n      participants=participants\n      addParticipant=\"addParticipant\"\n    }} ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("br");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    {{ko-add-participants-context-menu\n      copyInParticipants=copyInParticipants\n      contextModalId=\"addParticipants\"\n    }}\n  ");
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n\n  ");
@@ -15846,7 +17282,7 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
       },
       render: function render(context, env, contextualElement) {
         var dom = env.dom;
-        var hooks = env.hooks, content = hooks.content, inline = hooks.inline, get = hooks.get, block = hooks.block, element = hooks.element;
+        var hooks = env.hooks, inline = hooks.inline, get = hooks.get, content = hooks.content, block = hooks.block, element = hooks.element;
         dom.detectNamespace(contextualElement);
         var fragment;
         if (env.useFragmentCache && dom.canClone) {
@@ -15865,97 +17301,103 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
           fragment = this.build(dom);
         }
         var element0 = dom.childAt(fragment, [0]);
-        var element1 = dom.childAt(element0, [201]);
-        var element2 = dom.childAt(element0, [203]);
-        var element3 = dom.childAt(element0, [227]);
+        var element1 = dom.childAt(element0, [211]);
+        var element2 = dom.childAt(element0, [213]);
+        var element3 = dom.childAt(element0, [237]);
         var element4 = dom.childAt(element3, [1]);
         var element5 = dom.childAt(element3, [3]);
         var morph0 = dom.createMorphAt(element0,3,3);
-        var morph1 = dom.createMorphAt(element0,9,9);
-        var morph2 = dom.createMorphAt(element0,17,17);
-        var morph3 = dom.createMorphAt(element0,23,23);
-        var morph4 = dom.createMorphAt(element0,31,31);
-        var morph5 = dom.createMorphAt(element0,39,39);
-        var morph6 = dom.createMorphAt(element0,47,47);
-        var morph7 = dom.createMorphAt(element0,55,55);
-        var morph8 = dom.createMorphAt(element0,63,63);
-        var morph9 = dom.createMorphAt(element0,71,71);
-        var morph10 = dom.createMorphAt(element0,79,79);
-        var morph11 = dom.createMorphAt(element0,85,85);
-        var morph12 = dom.createMorphAt(element0,91,91);
-        var morph13 = dom.createMorphAt(element0,93,93);
+        var morph1 = dom.createMorphAt(element0,5,5);
+        var morph2 = dom.createMorphAt(element0,7,7);
+        var morph3 = dom.createMorphAt(element0,13,13);
+        var morph4 = dom.createMorphAt(element0,19,19);
+        var morph5 = dom.createMorphAt(element0,27,27);
+        var morph6 = dom.createMorphAt(element0,33,33);
+        var morph7 = dom.createMorphAt(element0,41,41);
+        var morph8 = dom.createMorphAt(element0,49,49);
+        var morph9 = dom.createMorphAt(element0,57,57);
+        var morph10 = dom.createMorphAt(element0,65,65);
+        var morph11 = dom.createMorphAt(element0,73,73);
+        var morph12 = dom.createMorphAt(element0,81,81);
+        var morph13 = dom.createMorphAt(element0,89,89);
         var morph14 = dom.createMorphAt(element0,95,95);
-        var morph15 = dom.createMorphAt(element0,97,97);
-        var morph16 = dom.createMorphAt(element0,99,99);
-        var morph17 = dom.createMorphAt(element0,107,107);
-        var morph18 = dom.createMorphAt(element0,111,111);
-        var morph19 = dom.createMorphAt(element0,115,115);
-        var morph20 = dom.createMorphAt(element0,119,119);
-        var morph21 = dom.createMorphAt(dom.childAt(element0, [129]),0,0);
-        var morph22 = dom.createMorphAt(element0,137,137);
-        var morph23 = dom.createMorphAt(element0,139,139);
-        var morph24 = dom.createMorphAt(dom.childAt(element0, [153]),0,0);
-        var morph25 = dom.createMorphAt(dom.childAt(element0, [157]),0,0);
-        var morph26 = dom.createMorphAt(dom.childAt(element0, [161]),0,0);
-        var morph27 = dom.createMorphAt(dom.childAt(element0, [165]),0,0);
-        var morph28 = dom.createMorphAt(dom.childAt(element0, [169]),0,0);
-        var morph29 = dom.createMorphAt(dom.childAt(element0, [173]),0,0);
-        var morph30 = dom.createMorphAt(dom.childAt(element0, [177]),0,0);
-        var morph31 = dom.createMorphAt(dom.childAt(element0, [181]),0,0);
-        var morph32 = dom.createMorphAt(dom.childAt(element0, [185]),0,0);
-        var morph33 = dom.createMorphAt(dom.childAt(element0, [191]),0,0);
-        var morph34 = dom.createMorphAt(dom.childAt(element0, [195, 3, 1]),1,1);
-        var morph35 = dom.createMorphAt(dom.childAt(element0, [207]),1,1);
-        var morph36 = dom.createMorphAt(dom.childAt(element0, [213]),1,1);
-        var morph37 = dom.createMorphAt(dom.childAt(element0, [215]),0,0);
-        var morph38 = dom.createMorphAt(dom.childAt(element4, [1]),1,1);
-        var morph39 = dom.createMorphAt(dom.childAt(element4, [3, 1, 3, 1]),1,1);
-        var morph40 = dom.createMorphAt(dom.childAt(element5, [1, 1]),1,1);
-        var morph41 = dom.createMorphAt(dom.childAt(element5, [3]),1,1);
-        content(env, morph0, context, "ko-loader");
-        inline(env, morph1, context, "ko-loader", [], {"large": true});
-        inline(env, morph2, context, "ko-feed", [], {"events": get(env, context, "events")});
-        inline(env, morph3, context, "ko-contact-info", [], {"title": get(env, context, "contactTitle"), "facebook": get(env, context, "facebook"), "twitter": get(env, context, "twitter"), "linkedin": get(env, context, "linkedin"), "emails": get(env, context, "email"), "phones": get(env, context, "phone")});
-        inline(env, morph4, context, "ko-feedback", [], {"title": get(env, context, "feedbackTitle"), "feedback": get(env, context, "feedback")});
-        inline(env, morph5, context, "ko-recent-cases", [], {"title": get(env, context, "casesTitle"), "cases": get(env, context, "cases")});
-        inline(env, morph6, context, "ko-case-metric", [], {"title": get(env, context, "metricTitle"), "metrics": get(env, context, "metrics")});
-        inline(env, morph7, context, "ko-avatar", [], {"avatar": get(env, context, "avatar")});
-        inline(env, morph8, context, "ko-recent-members", [], {"title": get(env, context, "membersTitle"), "members": get(env, context, "people")});
-        inline(env, morph9, context, "ko-address", [], {"title": get(env, context, "addressTitle"), "address": get(env, context, "address")});
-        block(env, morph10, context, "ko-info-bar", [], {}, child0, null);
-        block(env, morph11, context, "ko-info-bar", [], {}, child1, null);
-        inline(env, morph12, context, "ko-checkbox", [], {"label": "Remember my preferences", "large": true, "disabled": false, "tabindex": 0, "checked": false});
-        inline(env, morph13, context, "ko-checkbox", [], {"label": "Remember my preferences", "large": true, "disabled": false, "tabindex": 0, "checked": true});
-        inline(env, morph14, context, "ko-checkbox", [], {"label": "Remember my diet", "large": true, "disabled": true, "tabindex": 0, "checked": false});
-        inline(env, morph15, context, "ko-checkbox", [], {"label": "Remember my color", "large": false, "disabled": true, "tabindex": 0, "checked": false});
-        inline(env, morph16, context, "ko-checkbox", [], {"label": "Remember my name", "large": false, "disabled": false, "tabindex": 0, "checked": false});
-        inline(env, morph17, context, "ko-toggle", [], {"activated": false, "label": "Nuclear bomb switch", "micro": false, "tabindex": 0});
-        inline(env, morph18, context, "ko-toggle", [], {"activated": true, "label": "Nuclear bomb switch", "micro": false, "tabindex": 0});
-        inline(env, morph19, context, "ko-toggle", [], {"activated": false, "label": "Nuclear bomb switch", "micro": true, "tabindex": 0});
-        inline(env, morph20, context, "ko-toggle", [], {"activated": true, "label": "Nuclear bomb switch", "micro": true, "tabindex": 0});
-        inline(env, morph21, context, "ko-breadcrumbs", [], {"breadcrumbs": get(env, context, "tabs"), "activeTab": get(env, context, "activeTab"), "action": "tabChange"});
-        inline(env, morph22, context, "ko-participants", [], {"participants": get(env, context, "participants"), "addParticipant": "addParticipant"});
-        inline(env, morph23, context, "ko-add-participants-context-menu", [], {"contextModalId": "addParticipants"});
-        inline(env, morph24, context, "escape-html", ["<button class=\"button button--default\">Button</button>"], {});
-        inline(env, morph25, context, "escape-html", ["<button class=\"button button--default\" disabled=\"disabled\">Disabled button</button>"], {});
-        inline(env, morph26, context, "escape-html", ["<button class=\"button button--action i--chevrons\">Actions</button>"], {});
-        inline(env, morph27, context, "escape-html", ["<button class=\"button button--primary\">Primary button</button>"], {});
-        inline(env, morph28, context, "escape-html", ["<button class=\"button button--highlight\">Highlight button</button>"], {});
-        inline(env, morph29, context, "escape-html", ["<button class=\"button button--alert\">Alert button</button>"], {});
-        inline(env, morph30, context, "escape-html", ["<button class=\"button button--twitter\">Twitter button</button>"], {});
-        inline(env, morph31, context, "escape-html", ["<button class=\"button button--facebook\">Facebook button</button>"], {});
-        inline(env, morph32, context, "escape-html", ["<div class=\"button-group\">\n  	<button class=\"button-group__item\">Button</button><button class=\"button-group__item toggled\">Toggled button</button><button class=\"button-group__item\">Button</button>\n  </div>"], {});
-        inline(env, morph33, context, "escape-html", ["<button class=\"button button--primary button--dropdown\">Split button</button>"], {});
-        inline(env, morph34, context, "ko-editable-text", [], {"value": get(env, context, "editableTextVal")});
+        var morph15 = dom.createMorphAt(element0,101,101);
+        var morph16 = dom.createMorphAt(element0,103,103);
+        var morph17 = dom.createMorphAt(element0,105,105);
+        var morph18 = dom.createMorphAt(element0,107,107);
+        var morph19 = dom.createMorphAt(element0,109,109);
+        var morph20 = dom.createMorphAt(element0,117,117);
+        var morph21 = dom.createMorphAt(element0,121,121);
+        var morph22 = dom.createMorphAt(element0,125,125);
+        var morph23 = dom.createMorphAt(element0,129,129);
+        var morph24 = dom.createMorphAt(dom.childAt(element0, [139]),0,0);
+        var morph25 = dom.createMorphAt(element0,147,147);
+        var morph26 = dom.createMorphAt(element0,149,149);
+        var morph27 = dom.createMorphAt(dom.childAt(element0, [163]),0,0);
+        var morph28 = dom.createMorphAt(dom.childAt(element0, [167]),0,0);
+        var morph29 = dom.createMorphAt(dom.childAt(element0, [171]),0,0);
+        var morph30 = dom.createMorphAt(dom.childAt(element0, [175]),0,0);
+        var morph31 = dom.createMorphAt(dom.childAt(element0, [179]),0,0);
+        var morph32 = dom.createMorphAt(dom.childAt(element0, [183]),0,0);
+        var morph33 = dom.createMorphAt(dom.childAt(element0, [187]),0,0);
+        var morph34 = dom.createMorphAt(dom.childAt(element0, [191]),0,0);
+        var morph35 = dom.createMorphAt(dom.childAt(element0, [195]),0,0);
+        var morph36 = dom.createMorphAt(dom.childAt(element0, [201]),0,0);
+        var morph37 = dom.createMorphAt(dom.childAt(element0, [205, 3, 1]),1,1);
+        var morph38 = dom.createMorphAt(dom.childAt(element0, [217]),1,1);
+        var morph39 = dom.createMorphAt(dom.childAt(element0, [223]),1,1);
+        var morph40 = dom.createMorphAt(dom.childAt(element0, [225]),0,0);
+        var morph41 = dom.createMorphAt(dom.childAt(element4, [1]),1,1);
+        var morph42 = dom.createMorphAt(dom.childAt(element4, [3, 1, 3, 1]),1,1);
+        var morph43 = dom.createMorphAt(dom.childAt(element5, [1, 1]),1,1);
+        var morph44 = dom.createMorphAt(dom.childAt(element5, [3]),1,1);
+        inline(env, morph0, context, "ko-time-billing/ko-time-billing-demo-open", [], {"addTimeBilling": "addTimeBilling"});
+        inline(env, morph1, context, "ko-time-billing/ko-time-billing-context-modal", [], {"contextModalId": "addTimeBilling", "timeBillingDuration": get(env, context, "timeBillingDuration"), "on-duration-change": "onDurationChanged"});
+        content(env, morph2, context, "timeBillingDuration");
+        content(env, morph3, context, "ko-loader");
+        inline(env, morph4, context, "ko-loader", [], {"large": true});
+        inline(env, morph5, context, "ko-feed", [], {"events": get(env, context, "events")});
+        inline(env, morph6, context, "ko-contact-info", [], {"title": get(env, context, "contactTitle"), "facebook": get(env, context, "facebook"), "twitter": get(env, context, "twitter"), "linkedin": get(env, context, "linkedin"), "emails": get(env, context, "email"), "phones": get(env, context, "phone")});
+        inline(env, morph7, context, "ko-feedback", [], {"title": get(env, context, "feedbackTitle"), "feedback": get(env, context, "feedback")});
+        inline(env, morph8, context, "ko-recent-cases", [], {"title": get(env, context, "casesTitle"), "cases": get(env, context, "cases")});
+        inline(env, morph9, context, "ko-case-metric", [], {"title": get(env, context, "metricTitle"), "metrics": get(env, context, "metrics")});
+        inline(env, morph10, context, "ko-avatar", [], {"avatar": get(env, context, "avatar")});
+        inline(env, morph11, context, "ko-recent-members", [], {"title": get(env, context, "membersTitle"), "members": get(env, context, "people")});
+        inline(env, morph12, context, "ko-address", [], {"title": get(env, context, "addressTitle"), "address": get(env, context, "address")});
+        block(env, morph13, context, "ko-info-bar", [], {}, child0, null);
+        block(env, morph14, context, "ko-info-bar", [], {}, child1, null);
+        inline(env, morph15, context, "ko-checkbox", [], {"label": "Remember my preferences", "large": true, "disabled": false, "tabindex": 0, "checked": false});
+        inline(env, morph16, context, "ko-checkbox", [], {"label": "Remember my preferences", "large": true, "disabled": false, "tabindex": 0, "checked": true});
+        inline(env, morph17, context, "ko-checkbox", [], {"label": "Remember my diet", "large": true, "disabled": true, "tabindex": 0, "checked": false});
+        inline(env, morph18, context, "ko-checkbox", [], {"label": "Remember my color", "large": false, "disabled": true, "tabindex": 0, "checked": false});
+        inline(env, morph19, context, "ko-checkbox", [], {"label": "Remember my name", "large": false, "disabled": false, "tabindex": 0, "checked": false});
+        inline(env, morph20, context, "ko-toggle", [], {"activated": false, "label": "Nuclear bomb switch", "micro": false, "tabindex": 0});
+        inline(env, morph21, context, "ko-toggle", [], {"activated": true, "label": "Nuclear bomb switch", "micro": false, "tabindex": 0});
+        inline(env, morph22, context, "ko-toggle", [], {"activated": false, "label": "Nuclear bomb switch", "micro": true, "tabindex": 0});
+        inline(env, morph23, context, "ko-toggle", [], {"activated": true, "label": "Nuclear bomb switch", "micro": true, "tabindex": 0});
+        inline(env, morph24, context, "ko-breadcrumbs", [], {"breadcrumbs": get(env, context, "tabs"), "activeTab": get(env, context, "activeTab"), "action": "tabChange"});
+        inline(env, morph25, context, "ko-participants", [], {"participants": get(env, context, "participants"), "addParticipant": "addParticipant"});
+        inline(env, morph26, context, "ko-add-participants-context-menu", [], {"copyInParticipants": get(env, context, "copyInParticipants"), "contextModalId": "addParticipants"});
+        inline(env, morph27, context, "escape-html", ["<button class=\"button button--default\">Button</button>"], {});
+        inline(env, morph28, context, "escape-html", ["<button class=\"button button--default\" disabled=\"disabled\">Disabled button</button>"], {});
+        inline(env, morph29, context, "escape-html", ["<button class=\"button button--action i--chevrons\">Actions</button>"], {});
+        inline(env, morph30, context, "escape-html", ["<button class=\"button button--primary\">Primary button</button>"], {});
+        inline(env, morph31, context, "escape-html", ["<button class=\"button button--highlight\">Highlight button</button>"], {});
+        inline(env, morph32, context, "escape-html", ["<button class=\"button button--alert\">Alert button</button>"], {});
+        inline(env, morph33, context, "escape-html", ["<button class=\"button button--twitter\">Twitter button</button>"], {});
+        inline(env, morph34, context, "escape-html", ["<button class=\"button button--facebook\">Facebook button</button>"], {});
+        inline(env, morph35, context, "escape-html", ["<div class=\"button-group\">\n  	<button class=\"button-group__item\">Button</button><button class=\"button-group__item toggled\">Toggled button</button><button class=\"button-group__item\">Button</button>\n  </div>"], {});
+        inline(env, morph36, context, "escape-html", ["<button class=\"button button--primary button--dropdown\">Split button</button>"], {});
+        inline(env, morph37, context, "ko-editable-text", [], {"value": get(env, context, "editableTextVal")});
         element(env, element1, context, "action", ["toggleCaseFieldError"], {});
         element(env, element2, context, "action", ["clearChanges"], {});
-        block(env, morph35, context, "ko-info-bar", [], {}, child2, null);
-        inline(env, morph36, context, "ko-datepicker", [], {"date": get(env, context, "date"), "on-date-change": "dateChange"});
-        inline(env, morph37, context, "escape-html", ["{{ko-datepicker date=date on-date-change=\"dateChange\"}}"], {});
-        inline(env, morph38, context, "ko-breadcrumbs", [], {"tabs": get(env, context, "tabs"), "activeTab": get(env, context, "activeTab"), "action": "tabChange"});
-        inline(env, morph39, context, "ko-editable-text", [], {"value": get(env, context, "editableTextVal")});
-        content(env, morph40, context, "ko-text-editor");
-        block(env, morph41, context, "ko-info-bar", [], {}, child3, null);
+        block(env, morph38, context, "ko-info-bar", [], {}, child2, null);
+        inline(env, morph39, context, "ko-datepicker", [], {"date": get(env, context, "date"), "on-date-change": "dateChange"});
+        inline(env, morph40, context, "escape-html", ["{{ko-datepicker date=date on-date-change=\"dateChange\"}}"], {});
+        inline(env, morph41, context, "ko-breadcrumbs", [], {"tabs": get(env, context, "tabs"), "activeTab": get(env, context, "activeTab"), "action": "tabChange"});
+        inline(env, morph42, context, "ko-editable-text", [], {"value": get(env, context, "editableTextVal")});
+        content(env, morph43, context, "ko-text-editor");
+        block(env, morph44, context, "ko-info-bar", [], {}, child3, null);
         return fragment;
       }
     };
@@ -15984,12 +17426,427 @@ define('frontend-cp/session/styleguide/template', ['exports'], function (exports
       hasRendered: false,
       build: function build(dom) {
         var el0 = dom.createDocumentFragment();
-        var el1 = dom.createTextNode("Add style guide here!");
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","styleguide container");
+        var el2 = dom.createTextNode("\n  Add style guide here!\n\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","styleguide__item");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("h2");
+        var el4 = dom.createTextNode("Headings");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("h1");
+        var el4 = dom.createTextNode("Heading 1");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("h2");
+        var el4 = dom.createTextNode("Heading 2");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("h3");
+        var el4 = dom.createTextNode("Heading 3");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("h4");
+        var el4 = dom.createTextNode("Heading 3");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("h5");
+        var el4 = dom.createTextNode("Heading 5");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("h6");
+        var el4 = dom.createTextNode("Heading 6");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","styleguide__item");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("h2");
+        var el4 = dom.createTextNode("Arrow");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","box u-pos-rel");
+        var el4 = dom.createTextNode("\n      I have an arrow at the top! :)\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","arrow arrow--top");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("code");
+        var el4 = dom.createTextNode("\n");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","box u-pos-rel");
+        var el4 = dom.createTextNode("\n      I have an arrow at the bottom! :(\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","arrow arrow--bottom");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("code");
+        var el4 = dom.createTextNode("\n");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","styleguide__item");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("h2");
+        var el4 = dom.createTextNode("Box");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","box");
+        var el4 = dom.createTextNode("\n      I am a standard box!\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("code");
+        var el4 = dom.createTextNode("\n");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","box box--secondary");
+        var el4 = dom.createTextNode("\n      i am a box with secondary styling!\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("code");
+        var el4 = dom.createTextNode("\n");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","box-container");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","box");
+        var el5 = dom.createTextNode("I am a box with a container");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","box box--wide");
+        var el5 = dom.createTextNode("\n        I am a wide box with a container ;)\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","box");
+        var el5 = dom.createTextNode("I am a box container");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("code");
+        var el4 = dom.createTextNode("\n");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","styleguide__item");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("h2");
+        var el4 = dom.createTextNode("Flag");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","flag");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","flag__img");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("img");
+        dom.setAttribute(el5,"width","48");
+        dom.setAttribute(el5,"height","48");
+        dom.setAttribute(el5,"src","http://i.imgur.com/C9QgICy.jpg");
+        dom.setAttribute(el5,"alt","");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","flag__body");
+        var el5 = dom.createTextNode("\n        I am the flag body!\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("code");
+        var el4 = dom.createTextNode("\n");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","styleguide__item");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("h2");
+        var el4 = dom.createTextNode("Typography Utilities");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("h4");
+        var el4 = dom.createTextNode("States");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("p");
+        dom.setAttribute(el3,"class","t-good");
+        var el4 = dom.createTextNode("I am a good message! :)");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("p");
+        dom.setAttribute(el3,"class","t-bad");
+        var el4 = dom.createTextNode("I am a bad message! >:)");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("p");
+        dom.setAttribute(el3,"class","t-warning");
+        var el4 = dom.createTextNode("I am a warning message! :(");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("code");
+        var el4 = dom.createTextNode("\n");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("h4");
+        var el4 = dom.createTextNode("Position");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("p");
+        dom.setAttribute(el3,"class","t-center");
+        var el4 = dom.createTextNode("I am center aligned");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("p");
+        dom.setAttribute(el3,"class","t-left");
+        var el4 = dom.createTextNode("I am left aligned");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("p");
+        dom.setAttribute(el3,"class","t-right");
+        var el4 = dom.createTextNode("I am right aligned");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("code");
+        var el4 = dom.createTextNode("\n");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("h4");
+        var el4 = dom.createTextNode("Style");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("p");
+        dom.setAttribute(el3,"class","t-caption");
+        var el4 = dom.createTextNode("I am a caption!");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("p");
+        dom.setAttribute(el3,"class","t-small");
+        var el4 = dom.createTextNode("I am small!");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("code");
+        var el4 = dom.createTextNode("\n");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","styleguide__item");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("h2");
+        var el4 = dom.createTextNode("Variables");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("h4");
+        var el4 = dom.createTextNode("Brand");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("code");
+        var el4 = dom.createTextNode("\n$brand-rounding | border-radius\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("h4");
+        var el4 = dom.createTextNode("Colors");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n  ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("code");
+        var el4 = dom.createTextNode("\n$color-primary\n$color-secondary\n$color-tertiary\n$color-trim\n  $color-trim--dark\n\n$color-active\n\n\n$color-text-primary\n$color-text-secondary\n  $color-text-secondary--dark\n\n\n$color-good\n$color-bad\n$color-warning\n\n\n$color-twitter\n$color-facebook\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("h4");
+        var el4 = dom.createTextNode("Defaults");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("code");
+        var el4 = dom.createTextNode("\n$base-spacing-unit\n$half-spacing-unit\n$quarter-spacing-unit\n$large-spacing-unit\n\n$base-font-size\n$base-line-height\n$base-text-color\n$base-background-color\n$base-font-family\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
         return el0;
       },
       render: function render(context, env, contextualElement) {
         var dom = env.dom;
+        var hooks = env.hooks, inline = hooks.inline;
         dom.detectNamespace(contextualElement);
         var fragment;
         if (env.useFragmentCache && dom.canClone) {
@@ -16007,6 +17864,28 @@ define('frontend-cp/session/styleguide/template', ['exports'], function (exports
         } else {
           fragment = this.build(dom);
         }
+        var element0 = dom.childAt(fragment, [0]);
+        var element1 = dom.childAt(element0, [3]);
+        var element2 = dom.childAt(element0, [5]);
+        var element3 = dom.childAt(element0, [9]);
+        var morph0 = dom.createMorphAt(dom.childAt(element1, [5]),1,1);
+        var morph1 = dom.createMorphAt(dom.childAt(element1, [9]),1,1);
+        var morph2 = dom.createMorphAt(dom.childAt(element2, [5]),1,1);
+        var morph3 = dom.createMorphAt(dom.childAt(element2, [9]),1,1);
+        var morph4 = dom.createMorphAt(dom.childAt(element2, [13]),1,1);
+        var morph5 = dom.createMorphAt(dom.childAt(element0, [7, 5]),1,1);
+        var morph6 = dom.createMorphAt(dom.childAt(element3, [11]),1,1);
+        var morph7 = dom.createMorphAt(dom.childAt(element3, [21]),1,1);
+        var morph8 = dom.createMorphAt(dom.childAt(element3, [29]),1,1);
+        inline(env, morph0, context, "escape-html", ["<div class=\"arrow arrow--top\"></div>"], {});
+        inline(env, morph1, context, "escape-html", ["<div class=\"arrow arrow--bottom\"></div>"], {});
+        inline(env, morph2, context, "escape-html", ["<div class=\"box\">\n  I am a box with secondary styling!\n</div>"], {});
+        inline(env, morph3, context, "escape-html", ["<div class=\"box box--secondary\">\n  I am a box with secondary styling!\n</div>"], {});
+        inline(env, morph4, context, "escape-html", ["<div class=\"box-container\">\n  <div class=\"box\">I am a box with a container</div>\n  <div class=\"box box--wide\">\n    I am a wide box with a container ;)\n  </div>\n  <div class=\"box\">I am a box container</div>\n</div>"], {});
+        inline(env, morph5, context, "escape-html", ["<div class=\"flag\">\n  <div class=\"flag__img\">\n    <img class=\"avatar\" src=\"http://i.imgur.com/C9QgICy.jpg\" alt=\"\">\n  </div>\n  <div class=\"flag__body\">\n    I am the flag body!\n  </div>\n</div>"], {});
+        inline(env, morph6, context, "escape-html", ["<p class=\"t-good\">I am a good message! :)</p>\n<p class=\"t-bad\">I am a bad message! >:)</p>\n<p class=\"t-warning\">I am a warning message! :(</p>"], {});
+        inline(env, morph7, context, "escape-html", ["<p class=\"t-center\">I am center aligned</p>\n<p class=\"t-left\">I am left aligned</p>\n<p class=\"t-right\">I am right aligned</p>"], {});
+        inline(env, morph8, context, "escape-html", ["<p class=\"t-caption\">I am a caption!</p>\n<p class=\"t-small\">I am small!</p>"], {});
         return fragment;
       }
     };
@@ -16844,6 +18723,44 @@ define('frontend-cp/session/users/user/template', ['exports'], function (exports
   }()));
 
 });
+define('frontend-cp/session/view', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].View.extend({
+    scrollService: Ember['default'].inject.service('scroll'),
+    $sessionContent: null,
+
+    didUpdateTargetScroll: (function () {
+      this.$().find('.session__content').scrollTop(this.get('scrollService.targetScroll'));
+    }).observes('scrollService.targetScroll'),
+
+    didInsertElement: function didInsertElement() {
+      var _this = this;
+
+      // Bind scrolling
+      this.set('$sessionContent', this.$().find('.session__content'));
+      this.get('$sessionContent').on('scroll', function () {
+        _this.onScroll();
+      });
+      this.get('$sessionContent').on('touchMove', function () {
+        _this.onScroll();
+      });
+    },
+
+    willDestroyElement: function willDestroyElement() {
+      // Unbind scrolling
+      this.get('$sessionContent').off('scroll');
+      this.get('$sessionContent').off('touchMove');
+    },
+
+    onScroll: function onScroll() {
+      this.get('scrollService').set('scroll', this.get('$sessionContent').scrollTop());
+    }
+
+  });
+
+});
 define('frontend-cp/tests/acceptance/create-case-test.eslint-test', ['qunit'], function (qunit) {
 
   'use strict';
@@ -17292,6 +19209,46 @@ define('frontend-cp/tests/components/ko-add-participants-context-menu/component.
   });
 
 });
+define('frontend-cp/tests/components/ko-add-participants-popover/component.eslint-test', ['qunit'], function (qunit) {
+
+  'use strict';
+
+  qunit.module('ESLint - components/ko-add-participants-popover');
+  qunit.test('components/ko-add-participants-popover/component.js should pass ESLint', function(assert) {
+    assert.ok(true, 'components/ko-add-participants-popover/component.js should pass ESLint.\n');
+  });
+
+});
+define('frontend-cp/tests/components/ko-add-participants-popover/component.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - components/ko-add-participants-popover');
+  test('components/ko-add-participants-popover/component.js should pass jshint', function() { 
+    ok(true, 'components/ko-add-participants-popover/component.js should pass jshint.'); 
+  });
+
+});
+define('frontend-cp/tests/components/ko-add-user-popover/component.eslint-test', ['qunit'], function (qunit) {
+
+  'use strict';
+
+  qunit.module('ESLint - components/ko-add-user-popover');
+  qunit.test('components/ko-add-user-popover/component.js should pass ESLint', function(assert) {
+    assert.ok(true, 'components/ko-add-user-popover/component.js should pass ESLint.\n');
+  });
+
+});
+define('frontend-cp/tests/components/ko-add-user-popover/component.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - components/ko-add-user-popover');
+  test('components/ko-add-user-popover/component.js should pass jshint', function() { 
+    ok(true, 'components/ko-add-user-popover/component.js should pass jshint.'); 
+  });
+
+});
 define('frontend-cp/tests/components/ko-address/component.eslint-test', ['qunit'], function (qunit) {
 
   'use strict';
@@ -17309,6 +19266,26 @@ define('frontend-cp/tests/components/ko-address/component.jshint', function () {
   module('JSHint - components/ko-address');
   test('components/ko-address/component.js should pass jshint', function() { 
     ok(true, 'components/ko-address/component.js should pass jshint.'); 
+  });
+
+});
+define('frontend-cp/tests/components/ko-admin-card-team/component.eslint-test', ['qunit'], function (qunit) {
+
+  'use strict';
+
+  qunit.module('ESLint - components/ko-admin-card-team');
+  qunit.test('components/ko-admin-card-team/component.js should pass ESLint', function(assert) {
+    assert.ok(true, 'components/ko-admin-card-team/component.js should pass ESLint.\n');
+  });
+
+});
+define('frontend-cp/tests/components/ko-admin-card-team/component.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - components/ko-admin-card-team');
+  test('components/ko-admin-card-team/component.js should pass jshint', function() { 
+    ok(true, 'components/ko-admin-card-team/component.js should pass jshint.'); 
   });
 
 });
@@ -18132,6 +20109,86 @@ define('frontend-cp/tests/components/ko-text-editor/component.jshint', function 
   });
 
 });
+define('frontend-cp/tests/components/ko-time-billing/component.eslint-test', ['qunit'], function (qunit) {
+
+  'use strict';
+
+  qunit.module('ESLint - components/ko-time-billing');
+  qunit.test('components/ko-time-billing/component.js should pass ESLint', function(assert) {
+    assert.ok(true, 'components/ko-time-billing/component.js should pass ESLint.\n');
+  });
+
+});
+define('frontend-cp/tests/components/ko-time-billing/component.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - components/ko-time-billing');
+  test('components/ko-time-billing/component.js should pass jshint', function() { 
+    ok(true, 'components/ko-time-billing/component.js should pass jshint.'); 
+  });
+
+});
+define('frontend-cp/tests/components/ko-time-billing/ko-time-billing-context-modal/component.eslint-test', ['qunit'], function (qunit) {
+
+  'use strict';
+
+  qunit.module('ESLint - components/ko-time-billing/ko-time-billing-context-modal');
+  qunit.test('components/ko-time-billing/ko-time-billing-context-modal/component.js should pass ESLint', function(assert) {
+    assert.ok(true, 'components/ko-time-billing/ko-time-billing-context-modal/component.js should pass ESLint.\n');
+  });
+
+});
+define('frontend-cp/tests/components/ko-time-billing/ko-time-billing-context-modal/component.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - components/ko-time-billing/ko-time-billing-context-modal');
+  test('components/ko-time-billing/ko-time-billing-context-modal/component.js should pass jshint', function() { 
+    ok(true, 'components/ko-time-billing/ko-time-billing-context-modal/component.js should pass jshint.'); 
+  });
+
+});
+define('frontend-cp/tests/components/ko-time-billing/ko-time-billing-demo-open/component.eslint-test', ['qunit'], function (qunit) {
+
+  'use strict';
+
+  qunit.module('ESLint - components/ko-time-billing/ko-time-billing-demo-open');
+  qunit.test('components/ko-time-billing/ko-time-billing-demo-open/component.js should pass ESLint', function(assert) {
+    assert.ok(true, 'components/ko-time-billing/ko-time-billing-demo-open/component.js should pass ESLint.\n');
+  });
+
+});
+define('frontend-cp/tests/components/ko-time-billing/ko-time-billing-demo-open/component.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - components/ko-time-billing/ko-time-billing-demo-open');
+  test('components/ko-time-billing/ko-time-billing-demo-open/component.js should pass jshint', function() { 
+    ok(true, 'components/ko-time-billing/ko-time-billing-demo-open/component.js should pass jshint.'); 
+  });
+
+});
+define('frontend-cp/tests/components/ko-time-billing/ko-time-entry/component.eslint-test', ['qunit'], function (qunit) {
+
+  'use strict';
+
+  qunit.module('ESLint - components/ko-time-billing/ko-time-entry');
+  qunit.test('components/ko-time-billing/ko-time-entry/component.js should pass ESLint', function(assert) {
+    assert.ok(true, 'components/ko-time-billing/ko-time-entry/component.js should pass ESLint.\n');
+  });
+
+});
+define('frontend-cp/tests/components/ko-time-billing/ko-time-entry/component.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - components/ko-time-billing/ko-time-entry');
+  test('components/ko-time-billing/ko-time-entry/component.js should pass jshint', function() { 
+    ok(true, 'components/ko-time-billing/ko-time-entry/component.js should pass jshint.'); 
+  });
+
+});
 define('frontend-cp/tests/components/ko-toggle/component.eslint-test', ['qunit'], function (qunit) {
 
   'use strict';
@@ -18189,6 +20246,46 @@ define('frontend-cp/tests/components/mixins/context-menu-set.jshint', function (
   module('JSHint - components/mixins');
   test('components/mixins/context-menu-set.js should pass jshint', function() { 
     ok(true, 'components/mixins/context-menu-set.js should pass jshint.'); 
+  });
+
+});
+define('frontend-cp/tests/components/mixins/drop-down-keyboard-nav.eslint-test', ['qunit'], function (qunit) {
+
+  'use strict';
+
+  qunit.module('ESLint - components/mixins');
+  qunit.test('components/mixins/drop-down-keyboard-nav.js should pass ESLint', function(assert) {
+    assert.ok(true, 'components/mixins/drop-down-keyboard-nav.js should pass ESLint.\n');
+  });
+
+});
+define('frontend-cp/tests/components/mixins/drop-down-keyboard-nav.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - components/mixins');
+  test('components/mixins/drop-down-keyboard-nav.js should pass jshint', function() { 
+    ok(true, 'components/mixins/drop-down-keyboard-nav.js should pass jshint.'); 
+  });
+
+});
+define('frontend-cp/tests/components/mixins/suggestions.eslint-test', ['qunit'], function (qunit) {
+
+  'use strict';
+
+  qunit.module('ESLint - components/mixins');
+  qunit.test('components/mixins/suggestions.js should pass ESLint', function(assert) {
+    assert.ok(true, 'components/mixins/suggestions.js should pass ESLint.\n');
+  });
+
+});
+define('frontend-cp/tests/components/mixins/suggestions.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - components/mixins');
+  test('components/mixins/suggestions.js should pass jshint', function() { 
+    ok(true, 'components/mixins/suggestions.js should pass jshint.'); 
   });
 
 });
@@ -18505,26 +20602,6 @@ define('frontend-cp/tests/mixins/breadcrumbable.jshint', function () {
   });
 
 });
-define('frontend-cp/tests/mixins/drop-down-keyboard-nav.eslint-test', ['qunit'], function (qunit) {
-
-  'use strict';
-
-  qunit.module('ESLint - mixins');
-  qunit.test('mixins/drop-down-keyboard-nav.js should pass ESLint', function(assert) {
-    assert.ok(true, 'mixins/drop-down-keyboard-nav.js should pass ESLint.\n');
-  });
-
-});
-define('frontend-cp/tests/mixins/drop-down-keyboard-nav.jshint', function () {
-
-  'use strict';
-
-  module('JSHint - mixins');
-  test('mixins/drop-down-keyboard-nav.js should pass jshint', function() { 
-    ok(true, 'mixins/drop-down-keyboard-nav.js should pass jshint.'); 
-  });
-
-});
 define('frontend-cp/tests/mixins/simple-state.eslint-test', ['qunit'], function (qunit) {
 
   'use strict';
@@ -18542,26 +20619,6 @@ define('frontend-cp/tests/mixins/simple-state.jshint', function () {
   module('JSHint - mixins');
   test('mixins/simple-state.js should pass jshint', function() { 
     ok(true, 'mixins/simple-state.js should pass jshint.'); 
-  });
-
-});
-define('frontend-cp/tests/mixins/suggestions.eslint-test', ['qunit'], function (qunit) {
-
-  'use strict';
-
-  qunit.module('ESLint - mixins');
-  qunit.test('mixins/suggestions.js should pass ESLint', function(assert) {
-    assert.ok(true, 'mixins/suggestions.js should pass ESLint.\n');
-  });
-
-});
-define('frontend-cp/tests/mixins/suggestions.jshint', function () {
-
-  'use strict';
-
-  module('JSHint - mixins');
-  test('mixins/suggestions.js should pass jshint', function() { 
-    ok(true, 'mixins/suggestions.js should pass jshint.'); 
   });
 
 });
@@ -20065,6 +22122,26 @@ define('frontend-cp/tests/services/local-store.jshint', function () {
   });
 
 });
+define('frontend-cp/tests/services/scroll.eslint-test', ['qunit'], function (qunit) {
+
+  'use strict';
+
+  qunit.module('ESLint - services');
+  qunit.test('services/scroll.js should pass ESLint', function(assert) {
+    assert.ok(true, 'services/scroll.js should pass ESLint.\n');
+  });
+
+});
+define('frontend-cp/tests/services/scroll.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - services');
+  test('services/scroll.js should pass jshint', function() { 
+    ok(true, 'services/scroll.js should pass jshint.'); 
+  });
+
+});
 define('frontend-cp/tests/services/session.eslint-test', ['qunit'], function (qunit) {
 
   'use strict';
@@ -20122,6 +22199,26 @@ define('frontend-cp/tests/services/url.jshint', function () {
   module('JSHint - services');
   test('services/url.js should pass jshint', function() { 
     ok(true, 'services/url.js should pass jshint.'); 
+  });
+
+});
+define('frontend-cp/tests/session/admin/showcase/controller.eslint-test', ['qunit'], function (qunit) {
+
+  'use strict';
+
+  qunit.module('ESLint - session/admin/showcase');
+  qunit.test('session/admin/showcase/controller.js should pass ESLint', function(assert) {
+    assert.ok(true, 'session/admin/showcase/controller.js should pass ESLint.\n');
+  });
+
+});
+define('frontend-cp/tests/session/admin/showcase/controller.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - session/admin/showcase');
+  test('session/admin/showcase/controller.js should pass jshint', function() { 
+    ok(true, 'session/admin/showcase/controller.js should pass jshint.'); 
   });
 
 });
@@ -20525,6 +22622,26 @@ define('frontend-cp/tests/session/users/user/route.jshint', function () {
   });
 
 });
+define('frontend-cp/tests/session/view.eslint-test', ['qunit'], function (qunit) {
+
+  'use strict';
+
+  qunit.module('ESLint - session');
+  qunit.test('session/view.js should pass ESLint', function(assert) {
+    assert.ok(true, 'session/view.js should pass ESLint.\n');
+  });
+
+});
+define('frontend-cp/tests/session/view.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - session');
+  test('session/view.js should pass jshint', function() { 
+    ok(true, 'session/view.js should pass jshint.'); 
+  });
+
+});
 define('frontend-cp/tests/test-helper.eslint-test', ['qunit'], function (qunit) {
 
   'use strict';
@@ -20624,6 +22741,291 @@ define('frontend-cp/tests/unit/adapters/private-test.jshint', function () {
   });
 
 });
+define('frontend-cp/tests/unit/components/ko-add-participants-context-menu/component-test.eslint-test', ['qunit'], function (qunit) {
+
+  'use strict';
+
+  qunit.module('ESLint - unit/components/ko-add-participants-context-menu');
+  qunit.test('unit/components/ko-add-participants-context-menu/component-test.js should pass ESLint', function(assert) {
+    assert.ok(true, 'unit/components/ko-add-participants-context-menu/component-test.js should pass ESLint.\n');
+  });
+
+});
+define('frontend-cp/tests/unit/components/ko-add-participants-context-menu/component-test', ['ember-qunit'], function (ember_qunit) {
+
+  'use strict';
+
+  ember_qunit.moduleForComponent('ko-add-participants-context-menu', {
+    // Specify the other units that are required for this test
+    // needs: ['component:foo', 'helper:bar']
+    needs: ['component:ko-context-modal-item', 'component:ko-add-participants-popover']
+  });
+
+  ember_qunit.test('it renders', function (assert) {
+    assert.expect(2);
+
+    // Creates the component instance
+    var component = this.subject();
+    assert.equal(component._state, 'preRender');
+
+    // Renders the component to the page
+    this.render();
+    assert.equal(component._state, 'inDOM');
+  });
+
+});
+define('frontend-cp/tests/unit/components/ko-add-participants-context-menu/component-test.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - unit/components/ko-add-participants-context-menu');
+  test('unit/components/ko-add-participants-context-menu/component-test.js should pass jshint', function() { 
+    ok(true, 'unit/components/ko-add-participants-context-menu/component-test.js should pass jshint.'); 
+  });
+
+});
+define('frontend-cp/tests/unit/components/ko-add-participants-popover/component-test.eslint-test', ['qunit'], function (qunit) {
+
+  'use strict';
+
+  qunit.module('ESLint - unit/components/ko-add-participants-popover');
+  qunit.test('unit/components/ko-add-participants-popover/component-test.js should pass ESLint', function(assert) {
+    assert.ok(true, 'unit/components/ko-add-participants-popover/component-test.js should pass ESLint.\n');
+  });
+
+});
+define('frontend-cp/tests/unit/components/ko-add-participants-popover/component-test', ['ember', 'ember-qunit'], function (Ember, ember_qunit) {
+
+  'use strict';
+
+  var component = undefined;
+  var space = 32;
+  var enter = 13;
+  var backspace = 8;
+  var tab = 9;
+  var d = 68;
+  var g = 71;
+  var w = 87;
+  var y = 89;
+  var upArrow = 38;
+  var downArrow = 40;
+  var input = 'div.input input';
+  var firstListItem = 'li:first';
+  var x = 'i.i--close';
+
+  var copyInParticipants = [{ image: 'http://lorempixel.com/48/48/people/', name: 'Jessica Myers', company: 'Cisco Systems Inc.', email: 'jessica@cisco.com' }, { image: 'http://lorempixel.com/48/48/people/', name: 'Nina Jessicon', company: 'Stelco Steel Inc.', email: 'nina@stelco.com' }, { image: 'http://lorempixel.com/48/48/people/', name: 'Rebecca Sesam', company: 'Cisco Systems Inc.', email: 'jessica@cisco.com' }, { image: 'http://lorempixel.com/48/48/people/', name: 'Jessica Myers', company: 'Cisco Systems Inc.', email: 'jessica@cisco.com' }, { image: 'http://lorempixel.com/48/48/people/', name: 'John Doe', company: 'Cisco Systems Inc.', email: 'johndoe@cisco.com' }, { image: 'http://lorempixel.com/48/48/people/', name: 'Janine Smith', company: 'Cisco Systems Inc.', email: 'jessica@cisco.com' }, { image: 'http://lorempixel.com/48/48/people/', name: 'John Smith', company: 'Cisco Systems Inc.', email: 'jessica@cisco.com' }, { image: 'http://lorempixel.com/48/48/people/', name: 'Kebab Soup', company: 'Cisco Systems Inc.', email: 'jessica@cisco.com' }, { image: 'http://lorempixel.com/48/48/people/', name: 'Peter Myers', company: 'Cisco Systems Inc.', email: 'jessica@cisco.com' }];
+
+  ember_qunit.moduleForComponent('ko-add-participants-popover', {
+    needs: ['component:ko-checkbox'],
+    setup: function setup() {
+      component = this.subject();
+      component.set('results', copyInParticipants);
+      component.set('contextModalId', 'addParticipants');
+    },
+    teardown: function teardown() {}
+  });
+
+  ember_qunit.test('it renders', function (assert) {
+    assert.expect(2);
+
+    assert.equal(component._state, 'preRender');
+
+    this.render();
+
+    assert.equal(component._state, 'inDOM');
+  });
+
+  ember_qunit.test('it does not show results when initialized', function (assert) {
+    assert.expect(1);
+
+    this.render();
+
+    assert.equal(component.showResults, false, 'it doesnt show any results at initialization');
+  });
+
+  ember_qunit.test('upon keypress/typing results start to show', function (assert) {
+    assert.expect(1);
+
+    this.render();
+
+    Ember['default'].run(function () {
+      component.send('whenKeyIsPressed');
+    });
+
+    assert.equal(component.showResults, true, 'it shows results');
+  });
+
+  ember_qunit.test('searching by name works', function (assert) {
+    assert.expect(1);
+
+    this.render();
+
+    Ember['default'].run(function () {
+      component.set('showResults', true);
+    });
+
+    Ember['default'].run(function () {
+      component.set('searchTerm', 'Peter');
+    });
+
+    Ember['default'].run(function () {
+      component.send('query');
+    });
+
+    assert.equal(component.filteredParticipants[0].name, 'Peter Myers', 'only contains filtered participants');
+  });
+
+  ember_qunit.test('searching by company works', function (assert) {
+    assert.expect(1);
+
+    this.render();
+
+    Ember['default'].run(function () {
+      component.set('showResults', true);
+    });
+
+    Ember['default'].run(function () {
+      component.set('searchTerm', 'Stelco');
+    });
+
+    Ember['default'].run(function () {
+      component.send('query');
+    });
+
+    assert.equal(component.filteredParticipants[0].company, 'Stelco Steel Inc.', 'only contains filtered participants');
+  });
+
+  ember_qunit.test('searching by email works', function (assert) {
+    assert.expect(1);
+
+    this.render();
+
+    Ember['default'].run(function () {
+      component.set('showResults', true);
+    });
+
+    Ember['default'].run(function () {
+      component.set('searchTerm', 'nina@stelco.com');
+    });
+
+    Ember['default'].run(function () {
+      component.send('query');
+    });
+
+    assert.equal(component.filteredParticipants[0].email, 'nina@stelco.com', 'only contains filtered participants');
+  });
+
+  ember_qunit.test('clicking on search result adds it to selected participants list', function (assert) {
+    var _this = this;
+
+    assert.expect(1);
+
+    this.render();
+
+    Ember['default'].run(function () {
+      component.set('showResults', true);
+    });
+
+    Ember['default'].run(function () {
+      component.set('searchTerm', 'nina@stelco.com');
+    });
+
+    Ember['default'].run(function () {
+      component.send('query');
+    });
+
+    Ember['default'].run(function () {
+      _this.$(firstListItem).click();
+    });
+
+    assert.equal(component.selectedParticipants[0].name, 'Nina Jessicon', 'participant has been selected');
+  });
+
+  ember_qunit.test('clicking on x removes participant from selected list', function (assert) {
+    var _this2 = this;
+
+    assert.expect(2);
+
+    this.render();
+
+    Ember['default'].run(function () {
+      component.set('showResults', true);
+    });
+
+    Ember['default'].run(function () {
+      component.set('searchTerm', 'nina@stelco.com');
+    });
+
+    Ember['default'].run(function () {
+      component.send('query');
+    });
+
+    Ember['default'].run(function () {
+      _this2.$(firstListItem).click();
+    });
+
+    assert.equal(component.selectedParticipants[0].name, 'Nina Jessicon', 'participant has been selected');
+
+    Ember['default'].run(function () {
+      _this2.$(x).click();
+    });
+
+    assert.equal(component.selectedParticipants.length, 0, 'participant has been removed from selected list');
+  });
+
+});
+define('frontend-cp/tests/unit/components/ko-add-participants-popover/component-test.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - unit/components/ko-add-participants-popover');
+  test('unit/components/ko-add-participants-popover/component-test.js should pass jshint', function() { 
+    ok(true, 'unit/components/ko-add-participants-popover/component-test.js should pass jshint.'); 
+  });
+
+});
+define('frontend-cp/tests/unit/components/ko-add-user-popover/component-test.eslint-test', ['qunit'], function (qunit) {
+
+  'use strict';
+
+  qunit.module('ESLint - unit/components/ko-add-user-popover');
+  qunit.test('unit/components/ko-add-user-popover/component-test.js should pass ESLint', function(assert) {
+    assert.ok(true, 'unit/components/ko-add-user-popover/component-test.js should pass ESLint.\n');
+  });
+
+});
+define('frontend-cp/tests/unit/components/ko-add-user-popover/component-test', ['ember-qunit'], function (ember_qunit) {
+
+  'use strict';
+
+  ember_qunit.moduleForComponent('ko-add-user-popover', {});
+
+  ember_qunit.test('it renders', function (assert) {
+    assert.expect(2);
+
+    // Creates the component instance
+    var component = this.subject();
+    assert.equal(component._state, 'preRender');
+
+    // Renders the component to the page
+    this.render();
+    assert.equal(component._state, 'inDOM');
+  });
+
+  // Specify the other units that are required for this test
+  // needs: ['component:foo', 'helper:bar']
+
+});
+define('frontend-cp/tests/unit/components/ko-add-user-popover/component-test.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - unit/components/ko-add-user-popover');
+  test('unit/components/ko-add-user-popover/component-test.js should pass jshint', function() { 
+    ok(true, 'unit/components/ko-add-user-popover/component-test.js should pass jshint.'); 
+  });
+
+});
 define('frontend-cp/tests/unit/components/ko-address/component-test.eslint-test', ['qunit'], function (qunit) {
 
   'use strict';
@@ -20663,6 +23065,85 @@ define('frontend-cp/tests/unit/components/ko-address/component-test.jshint', fun
   module('JSHint - unit/components/ko-address');
   test('unit/components/ko-address/component-test.js should pass jshint', function() { 
     ok(true, 'unit/components/ko-address/component-test.js should pass jshint.'); 
+  });
+
+});
+define('frontend-cp/tests/unit/components/ko-admin-card-team/component-test.eslint-test', ['qunit'], function (qunit) {
+
+  'use strict';
+
+  qunit.module('ESLint - unit/components/ko-admin-card-team');
+  qunit.test('unit/components/ko-admin-card-team/component-test.js should pass ESLint', function(assert) {
+    assert.ok(true, 'unit/components/ko-admin-card-team/component-test.js should pass ESLint.\n');
+  });
+
+});
+define('frontend-cp/tests/unit/components/ko-admin-card-team/component-test', ['ember', 'ember-qunit'], function (Ember, ember_qunit) {
+
+  'use strict';
+
+  var component = undefined;
+
+  var people = new Ember['default'].A([{
+    avatar: {
+      url: 'https://s-media-cache-ak0.pinimg.com/736x/ca/c1/18/cac1189a8df5498d17ef09d65ad0f698.jpg'
+    }
+  }, {
+    avatar: {
+      url: 'https://s-media-cache-ak0.pinimg.com/736x/ca/c1/18/cac1189a8df5498d17ef09d65ad0f698.jpg'
+    }
+  }, {
+    avatar: {
+      url: 'https://s-media-cache-ak0.pinimg.com/736x/ca/c1/18/cac1189a8df5498d17ef09d65ad0f698.jpg'
+    }
+  }]);
+
+  ember_qunit.moduleForComponent('ko-admin-card-team', {
+    needs: ['ko-admin-selectable-card'],
+    integration: true,
+
+    setup: function setup() {
+      component = this.subject();
+    },
+    teardown: function teardown() {}
+  });
+
+  ember_qunit.test('it correctly calculates number of members', function (assert) {
+    component.set('members', people);
+    assert.equal(component.get('memberCount'), people.length);
+  });
+
+  ember_qunit.test('it doesn\'t pluralize member type if only 1 member is present', function (assert) {
+    component.set('members', [people.firstObject]);
+    component.set('memberType', 'Agent');
+
+    assert.equal(component.get('pluralizedMemberType'), 'Agent');
+  });
+
+  ember_qunit.test('it pluralizes member type if there are 3 members present', function (assert) {
+    component.set('members', people);
+    component.set('memberType', 'Agent');
+
+    assert.equal(component.get('pluralizedMemberType'), 'Agents');
+  });
+
+  ember_qunit.test('it renders a member', function (assert) {
+    component.set('members', people);
+
+    this.render();
+
+    assert.equal(component._state, 'inDOM');
+    assert.ok(this.$('.ko-avatar__image').length);
+  });
+
+});
+define('frontend-cp/tests/unit/components/ko-admin-card-team/component-test.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - unit/components/ko-admin-card-team');
+  test('unit/components/ko-admin-card-team/component-test.js should pass jshint', function() { 
+    ok(true, 'unit/components/ko-admin-card-team/component-test.js should pass jshint.'); 
   });
 
 });
@@ -21924,26 +24405,100 @@ define('frontend-cp/tests/unit/components/ko-draggable-dropzone/component-test.e
   });
 
 });
-define('frontend-cp/tests/unit/components/ko-draggable-dropzone/component-test', ['ember-qunit'], function (ember_qunit) {
+define('frontend-cp/tests/unit/components/ko-draggable-dropzone/component-test', ['ember', 'ember-qunit'], function (Ember, ember_qunit) {
 
   'use strict';
 
-  ember_qunit.moduleForComponent('ko-draggable-dropzone', {});
+  var component = undefined;
+
+  var dropzone = '.ko-draggable-dropzone__container';
+  var filesMock = [{ name: 'Adam.png', type: 'image/png' }, { name: 'Peter.png', type: 'image/png' }];
+
+  var eventMock = document.createEvent('CustomEvent');
+  eventMock.initCustomEvent('drop', true, true, null);
+  eventMock.dataTransfer = { data: {}, files: filesMock };
+
+  var space = 32;
+  var enter = 13;
+  var tab = 9;
+  var d = 68;
+  var g = 71;
+  var w = 87;
+  var y = 89;
+
+  ember_qunit.moduleForComponent('ko-draggable-dropzone', {
+    setup: function setup() {
+      component = this.subject();
+    },
+    teardown: function teardown() {}
+  });
 
   ember_qunit.test('it renders', function (assert) {
     assert.expect(2);
 
-    // Creates the component instance
-    var component = this.subject();
     assert.equal(component._state, 'preRender');
 
-    // Renders the component to the page
     this.render();
+
     assert.equal(component._state, 'inDOM');
   });
 
-  // Specify the other units that are required for this test
-  // needs: ['component:foo', 'helper:bar']
+  ember_qunit.test('it has total size of 0 by default', function (assert) {
+    assert.expect(1);
+
+    this.render();
+
+    assert.equal(component.totalSize, 0, 'has total size of 0');
+  });
+
+  ember_qunit.test('it has drag counter of 0 by default', function (assert) {
+    assert.expect(1);
+
+    this.render();
+
+    assert.equal(component.dragCounter, 0, 'drag counter is zero');
+  });
+
+  ember_qunit.test('it can drop files', function (assert) {
+    assert.expect(1);
+
+    this.render();
+
+    Ember['default'].run(function () {});
+
+    assert.equal(component.dragClass, false, 'drag and drop is over');
+  });
+
+  ember_qunit.test('dragging in increments drag counter', function (assert) {
+    assert.expect(1);
+
+    Ember['default'].run(function () {
+      component.dragEnter(eventMock);
+    });
+
+    assert.equal(component.dragCounter, 1, 'drag counter got incremented');
+  });
+
+  ember_qunit.test('dragging out decrements drag counter', function (assert) {
+    assert.expect(2);
+
+    Ember['default'].run(function () {
+      component.dragEnter(eventMock);
+    });
+
+    assert.equal(component.dragCounter, 1, 'drag counted got incremented');
+
+    Ember['default'].run(function () {
+      component.dragLeave(eventMock);
+    });
+
+    assert.equal(component.dragCounter, 0, 'drag counter got decremented');
+  });
+
+  // TODO: neither of the two below work yet
+
+  // component.drop(this.$(dropzone).trigger(new $.Event('drop', { dataTransfer: { files: filesMock } })));
+  // component.drop(eventMock);
 
 });
 define('frontend-cp/tests/unit/components/ko-draggable-dropzone/component-test.jshint', function () {
@@ -21953,6 +24508,142 @@ define('frontend-cp/tests/unit/components/ko-draggable-dropzone/component-test.j
   module('JSHint - unit/components/ko-draggable-dropzone');
   test('unit/components/ko-draggable-dropzone/component-test.js should pass jshint', function() { 
     ok(true, 'unit/components/ko-draggable-dropzone/component-test.js should pass jshint.'); 
+  });
+
+});
+define('frontend-cp/tests/unit/components/ko-editable-text/component-test.eslint-test', ['qunit'], function (qunit) {
+
+  'use strict';
+
+  qunit.module('ESLint - unit/components/ko-editable-text');
+  qunit.test('unit/components/ko-editable-text/component-test.js should pass ESLint', function(assert) {
+    assert.ok(true, 'unit/components/ko-editable-text/component-test.js should pass ESLint.\n');
+  });
+
+});
+define('frontend-cp/tests/unit/components/ko-editable-text/component-test', ['ember', 'ember-qunit'], function (Ember, ember_qunit) {
+
+  'use strict';
+
+  var component = undefined;
+  var space = 32;
+  var enter = 13;
+  var tab = 9;
+  var d = 68;
+  var g = 71;
+  var w = 87;
+  var y = 89;
+  var edit = 'div:first';
+  var input = 'input';
+
+  ember_qunit.moduleForComponent('ko-editable-text', {
+    setup: function setup() {
+      component = this.subject();
+      component.set('value', 'I am a hunky munky');
+    },
+    teardown: function teardown() {}
+  });
+
+  ember_qunit.test('it renders', function (assert) {
+    assert.expect(2);
+
+    assert.equal(component._state, 'preRender');
+
+    this.render();
+
+    assert.equal(component._state, 'inDOM');
+  });
+
+  ember_qunit.test('is not editing by default', function (assert) {
+    assert.expect(1);
+
+    assert.equal(component.isEditing, false, 'is not editing by default');
+  });
+
+  ember_qunit.test('when clicked/on focus it becomes editable', function (assert) {
+    var _this = this;
+
+    assert.expect(1);
+
+    this.render();
+
+    Ember['default'].run(function () {
+      _this.$(edit).click();
+    });
+
+    assert.equal(component.isEditing, true, 'is editable');
+  });
+
+  ember_qunit.test('when focused out it becomes not editable', function (assert) {
+    var _this2 = this;
+
+    assert.expect(1);
+
+    this.render();
+
+    Ember['default'].run(function () {
+      _this2.$(edit).click();
+    });
+
+    Ember['default'].run(function () {
+      component.focusOut();
+    });
+
+    assert.equal(component.isEditing, false, 'is not editable');
+  });
+
+  ember_qunit.test('focus out cancels editing changes', function (assert) {
+    var _this3 = this;
+
+    assert.expect(1);
+
+    this.render();
+
+    Ember['default'].run(function () {
+      _this3.$(edit).click();
+    });
+
+    Ember['default'].run(function () {
+      component.set('value', 'I am a hunky munkyy');
+    });
+
+    Ember['default'].run(function () {
+      component.focusOut();
+    });
+
+    assert.equal(component.valueToSave, 'I am a hunky munky', 'value stays the same');
+  });
+
+  ember_qunit.test('pressing enter saves editing changes', function (assert) {
+    var _this4 = this;
+
+    assert.expect(1);
+
+    this.render();
+
+    Ember['default'].run(function () {
+      _this4.$(edit).click();
+    });
+
+    Ember['default'].run(function () {
+      component.set('valueToSave', 'I am a hunky munkyy bla bla');
+    });
+
+    Ember['default'].run(function () {
+      component.send('editComplete');
+    });
+
+    assert.equal(component.valueToSave, 'I am a hunky munkyy bla bla', 'value stays the same');
+  });
+
+});
+define('frontend-cp/tests/unit/components/ko-editable-text/component-test.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - unit/components/ko-editable-text');
+  test('unit/components/ko-editable-text/component-test.js should pass jshint', function() { 
+    ok(true, 'unit/components/ko-editable-text/component-test.js should pass jshint.'); 
   });
 
 });
@@ -22595,17 +25286,17 @@ define('frontend-cp/tests/unit/components/ko-toggle/component-test.jshint', func
   });
 
 });
-define('frontend-cp/tests/unit/mixins/drop-down-keyboard-nav-test.eslint-test', ['qunit'], function (qunit) {
+define('frontend-cp/tests/unit/components/mixins/drop-down-keyboard-nav-test.eslint-test', ['qunit'], function (qunit) {
 
   'use strict';
 
-  qunit.module('ESLint - unit/mixins');
-  qunit.test('unit/mixins/drop-down-keyboard-nav-test.js should pass ESLint', function(assert) {
-    assert.ok(true, 'unit/mixins/drop-down-keyboard-nav-test.js should pass ESLint.\n');
+  qunit.module('ESLint - unit/components/mixins');
+  qunit.test('unit/components/mixins/drop-down-keyboard-nav-test.js should pass ESLint', function(assert) {
+    assert.ok(true, 'unit/components/mixins/drop-down-keyboard-nav-test.js should pass ESLint.\n');
   });
 
 });
-define('frontend-cp/tests/unit/mixins/drop-down-keyboard-nav-test', ['ember', 'frontend-cp/mixins/drop-down-keyboard-nav', 'qunit'], function (Ember, DropDownKeyboardNavMixin, qunit) {
+define('frontend-cp/tests/unit/components/mixins/drop-down-keyboard-nav-test', ['ember', 'frontend-cp/components/mixins/drop-down-keyboard-nav', 'qunit'], function (Ember, DropDownKeyboardNavMixin, qunit) {
 
   'use strict';
 
@@ -22619,61 +25310,27 @@ define('frontend-cp/tests/unit/mixins/drop-down-keyboard-nav-test', ['ember', 'f
   });
 
 });
-define('frontend-cp/tests/unit/mixins/drop-down-keyboard-nav-test.jshint', function () {
+define('frontend-cp/tests/unit/components/mixins/drop-down-keyboard-nav-test.jshint', function () {
 
   'use strict';
 
-  module('JSHint - unit/mixins');
-  test('unit/mixins/drop-down-keyboard-nav-test.js should pass jshint', function() { 
-    ok(true, 'unit/mixins/drop-down-keyboard-nav-test.js should pass jshint.'); 
+  module('JSHint - unit/components/mixins');
+  test('unit/components/mixins/drop-down-keyboard-nav-test.js should pass jshint', function() { 
+    ok(true, 'unit/components/mixins/drop-down-keyboard-nav-test.js should pass jshint.'); 
   });
 
 });
-define('frontend-cp/tests/unit/mixins/simple-state-test.eslint-test', ['qunit'], function (qunit) {
+define('frontend-cp/tests/unit/components/mixins/suggestions-test.eslint-test', ['qunit'], function (qunit) {
 
   'use strict';
 
-  qunit.module('ESLint - unit/mixins');
-  qunit.test('unit/mixins/simple-state-test.js should pass ESLint', function(assert) {
-    assert.ok(true, 'unit/mixins/simple-state-test.js should pass ESLint.\n');
+  qunit.module('ESLint - unit/components/mixins');
+  qunit.test('unit/components/mixins/suggestions-test.js should pass ESLint', function(assert) {
+    assert.ok(true, 'unit/components/mixins/suggestions-test.js should pass ESLint.\n');
   });
 
 });
-define('frontend-cp/tests/unit/mixins/simple-state-test', ['ember', 'frontend-cp/mixins/simple-state', 'qunit'], function (Ember, SimpleStateMixin, qunit) {
-
-  'use strict';
-
-  qunit.module('SimpleStateMixin');
-
-  // Replace this with your real tests.
-  qunit.test('it works', function (assert) {
-    var SimpleStateObject = Ember['default'].Object.extend(SimpleStateMixin['default']);
-    var subject = SimpleStateObject.create();
-    assert.ok(subject);
-  });
-
-});
-define('frontend-cp/tests/unit/mixins/simple-state-test.jshint', function () {
-
-  'use strict';
-
-  module('JSHint - unit/mixins');
-  test('unit/mixins/simple-state-test.js should pass jshint', function() { 
-    ok(true, 'unit/mixins/simple-state-test.js should pass jshint.'); 
-  });
-
-});
-define('frontend-cp/tests/unit/mixins/suggestions-test.eslint-test', ['qunit'], function (qunit) {
-
-  'use strict';
-
-  qunit.module('ESLint - unit/mixins');
-  qunit.test('unit/mixins/suggestions-test.js should pass ESLint', function(assert) {
-    assert.ok(true, 'unit/mixins/suggestions-test.js should pass ESLint.\n');
-  });
-
-});
-define('frontend-cp/tests/unit/mixins/suggestions-test', ['ember', 'frontend-cp/mixins/suggestions', 'qunit'], function (Ember, SuggestionsMixin, qunit) {
+define('frontend-cp/tests/unit/components/mixins/suggestions-test', ['ember', 'frontend-cp/components/mixins/suggestions', 'qunit'], function (Ember, SuggestionsMixin, qunit) {
 
   'use strict';
 
@@ -22716,13 +25373,47 @@ define('frontend-cp/tests/unit/mixins/suggestions-test', ['ember', 'frontend-cp/
   });
 
 });
-define('frontend-cp/tests/unit/mixins/suggestions-test.jshint', function () {
+define('frontend-cp/tests/unit/components/mixins/suggestions-test.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - unit/components/mixins');
+  test('unit/components/mixins/suggestions-test.js should pass jshint', function() { 
+    ok(true, 'unit/components/mixins/suggestions-test.js should pass jshint.'); 
+  });
+
+});
+define('frontend-cp/tests/unit/mixins/simple-state-test.eslint-test', ['qunit'], function (qunit) {
+
+  'use strict';
+
+  qunit.module('ESLint - unit/mixins');
+  qunit.test('unit/mixins/simple-state-test.js should pass ESLint', function(assert) {
+    assert.ok(true, 'unit/mixins/simple-state-test.js should pass ESLint.\n');
+  });
+
+});
+define('frontend-cp/tests/unit/mixins/simple-state-test', ['ember', 'frontend-cp/mixins/simple-state', 'qunit'], function (Ember, SimpleStateMixin, qunit) {
+
+  'use strict';
+
+  qunit.module('SimpleStateMixin');
+
+  // Replace this with your real tests.
+  qunit.test('it works', function (assert) {
+    var SimpleStateObject = Ember['default'].Object.extend(SimpleStateMixin['default']);
+    var subject = SimpleStateObject.create();
+    assert.ok(subject);
+  });
+
+});
+define('frontend-cp/tests/unit/mixins/simple-state-test.jshint', function () {
 
   'use strict';
 
   module('JSHint - unit/mixins');
-  test('unit/mixins/suggestions-test.js should pass jshint', function() { 
-    ok(true, 'unit/mixins/suggestions-test.js should pass jshint.'); 
+  test('unit/mixins/simple-state-test.js should pass jshint', function() { 
+    ok(true, 'unit/mixins/simple-state-test.js should pass jshint.'); 
   });
 
 });
@@ -23455,7 +26146,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"name":"frontend-cp","version":"0.0.0.c418a1c4"});
+  require("frontend-cp/app")["default"].create({"name":"frontend-cp","version":"0.0.0.d1bf1599"});
 }
 
 /* jshint ignore:end */

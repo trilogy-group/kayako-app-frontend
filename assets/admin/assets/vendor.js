@@ -58988,9 +58988,9 @@ define("ember/load-initializers",
 })();
 
 ;(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"./browserify_stubs.js":[function(require,module,exports){
+define('npm:lodash', function(){ return { 'default': require('lodash')};})
 define('npm:numeral', function(){ return { 'default': require('numeral')};})
 define('npm:quill', function(){ return { 'default': require('quill')};})
-define('npm:lodash', function(){ return { 'default': require('lodash')};})
 },{"lodash":"/home/travis/build/Dremora/frontend-cp/node_modules/lodash/index.js","numeral":"/home/travis/build/Dremora/frontend-cp/node_modules/numeral/numeral.js","quill":"/home/travis/build/Dremora/frontend-cp/node_modules/quill/index.js"}],"/home/travis/build/Dremora/frontend-cp/node_modules/lodash/index.js":[function(require,module,exports){
 (function (global){
 /**
@@ -116408,6 +116408,801 @@ define('ember-truth-helpers/utils/truth-convert', ['exports', 'ember'], function
   exports['default'] = truthConvert;
 
 });
+define("ember-validations", ["ember-validations/index", "ember", "exports"], function(__index__, __Ember__, __exports__) {
+  "use strict";
+  __Ember__["default"].keys(__index__).forEach(function(key){
+    __exports__[key] = __index__[key];
+  });
+});
+
+define('ember-validations/errors', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  var get = Ember['default'].get;
+  var set = Ember['default'].set;
+
+  exports['default'] = Ember['default'].Object.extend({
+    unknownProperty: function(property) {
+      set(this, property, Ember['default'].A());
+      return get(this, property);
+    }
+  });
+
+});
+define('ember-validations/index', ['exports', 'ember-validations/mixin'], function (exports, Mixin) {
+
+  'use strict';
+
+  exports['default'] = {
+    Mixin: Mixin['default'],
+    validator: function(callback) {
+      return { callback: callback };
+    }
+  };
+
+});
+define('ember-validations/messages', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = {
+    render: function(attribute, context) {
+      if (Ember['default'].I18n) {
+        return Ember['default'].I18n.t('errors.' + attribute, context);
+      } else {
+        var regex = new RegExp("{{(.*?)}}"),
+            attributeName = "";
+        if (regex.test(this.defaults[attribute])) {
+          attributeName = regex.exec(this.defaults[attribute])[1];
+        }
+        return this.defaults[attribute].replace(regex, context[attributeName]);
+      }
+    },
+    defaults: {
+      inclusion: "is not included in the list",
+      exclusion: "is reserved",
+      invalid: "is invalid",
+      confirmation: "doesn't match {{attribute}}",
+      accepted: "must be accepted",
+      empty: "can't be empty",
+      blank: "can't be blank",
+      present: "must be blank",
+      tooLong: "is too long (maximum is {{count}} characters)",
+      tooShort: "is too short (minimum is {{count}} characters)",
+      wrongLength: "is the wrong length (should be {{count}} characters)",
+      notANumber: "is not a number",
+      notAnInteger: "must be an integer",
+      greaterThan: "must be greater than {{count}}",
+      greaterThanOrEqualTo: "must be greater than or equal to {{count}}",
+      equalTo: "must be equal to {{count}}",
+      lessThan: "must be less than {{count}}",
+      lessThanOrEqualTo: "must be less than or equal to {{count}}",
+      otherThan: "must be other than {{count}}",
+      odd: "must be odd",
+      even: "must be even",
+      url: "is not a valid URL"
+    }
+  };
+
+});
+define('ember-validations/mixin', ['exports', 'ember', 'ember-validations/errors', 'ember-validations/validators/base'], function (exports, Ember, Errors, Base) {
+
+  'use strict';
+
+  var get = Ember['default'].get;
+  var set = Ember['default'].set;
+
+  var setValidityMixin = Ember['default'].Mixin.create({
+    isValid: Ember['default'].computed('validators.@each.isValid', function() {
+      var compactValidators = get(this, 'validators').compact();
+      var filteredValidators = Ember['default'].EnumerableUtils.filter(compactValidators, function(validator) {
+        return !get(validator, 'isValid');
+      });
+
+      return get(filteredValidators, 'length') === 0;
+    }),
+    isInvalid: Ember['default'].computed.not('isValid')
+  });
+
+  var pushValidatableObject = function(model, property) {
+    var content = get(model, property);
+
+    model.removeObserver(property, pushValidatableObject);
+    if (Ember['default'].isArray(content)) {
+      model.validators.pushObject(ArrayValidatorProxy.create({model: model, property: property, contentBinding: 'model.' + property}));
+    } else {
+      model.validators.pushObject(content);
+    }
+  };
+
+  var lookupValidator = function(validatorName) {
+    var container = get(this, 'container');
+    var service = container.lookup('service:validations');
+    var validators = [];
+    var cache;
+
+    if (service) {
+      cache = get(service, 'cache');
+    } else {
+      cache = {};
+    }
+
+    if (cache[validatorName]) {
+      validators = validators.concat(cache[validatorName]);
+    } else {
+      var local = container.lookupFactory('validator:local/'+validatorName);
+      var remote = container.lookupFactory('validator:remote/'+validatorName);
+
+      if (local || remote) { validators = validators.concat([local, remote]); }
+      else {
+        var base = container.lookupFactory('validator:'+validatorName);
+
+        if (base) { validators = validators.concat([base]); }
+        else {
+          local = container.lookupFactory('ember-validations@validator:local/'+validatorName);
+          remote = container.lookupFactory('ember-validations@validator:remote/'+validatorName);
+
+          if (local || remote) { validators = validators.concat([local, remote]); }
+        }
+      }
+
+      cache[validatorName] = validators;
+    }
+
+    if (Ember['default'].isEmpty(validators)) {
+      Ember['default'].warn('Could not find the "'+validatorName+'" validator.');
+    }
+
+    return validators;
+  };
+
+  var ArrayValidatorProxy = Ember['default'].ArrayProxy.extend(setValidityMixin, {
+    validate: function() {
+      return this._validate();
+    },
+    _validate: Ember['default'].on('init', function() {
+      var promises = get(this, 'content').invoke('_validate').without(undefined);
+      return Ember['default'].RSVP.all(promises);
+    }),
+    validators: Ember['default'].computed.alias('content')
+  });
+
+  exports['default'] = Ember['default'].Mixin.create(setValidityMixin, {
+    init: function() {
+      this._super();
+      this.errors = Errors['default'].create();
+      this.dependentValidationKeys = {};
+      this.validators = Ember['default'].A();
+      if (get(this, 'validations') === undefined) {
+        this.validations = {};
+      }
+      this.buildValidators();
+      this.validators.forEach(function(validator) {
+        validator.addObserver('errors.[]', this, function(sender) {
+          var errors = Ember['default'].A();
+          this.validators.forEach(function(validator) {
+            if (validator.property === sender.property) {
+              errors.addObjects(validator.errors);
+            }
+          }, this);
+          set(this, 'errors.' + sender.property, errors);
+        });
+      }, this);
+    },
+    buildValidators: function() {
+      var property;
+
+      for (property in this.validations) {
+        if (this.validations[property].constructor === Object) {
+          this.buildRuleValidator(property);
+        } else {
+          this.buildObjectValidator(property);
+        }
+      }
+    },
+    buildRuleValidator: function(property) {
+      var pushValidator = function(validator) {
+        if (validator) {
+          this.validators.pushObject(validator.create({model: this, property: property, options: this.validations[property][validatorName]}));
+        }
+      };
+
+      if (this.validations[property].callback) {
+        this.validations[property] = { inline: this.validations[property] };
+      }
+
+      var createInlineClass = function(callback) {
+        return Base['default'].extend({
+          call: function() {
+            var errorMessage = this.callback.call(this);
+
+            if (errorMessage) {
+              this.errors.pushObject(errorMessage);
+            }
+          },
+          callback: callback
+        });
+      };
+
+      for (var validatorName in this.validations[property]) {
+        if (validatorName === 'inline') {
+          pushValidator.call(this, createInlineClass(this.validations[property][validatorName].callback));
+        } else if (this.validations[property].hasOwnProperty(validatorName)) {
+          Ember['default'].EnumerableUtils.forEach(lookupValidator.call(this, validatorName), pushValidator, this);
+        }
+      }
+    },
+    buildObjectValidator: function(property) {
+      if (Ember['default'].isNone(get(this, property))) {
+        this.addObserver(property, this, pushValidatableObject);
+      } else {
+        pushValidatableObject(this, property);
+      }
+    },
+    validate: function() {
+      var self = this;
+      return this._validate().then(function(vals) {
+        var errors = get(self, 'errors');
+        if (Ember['default'].EnumerableUtils.indexOf(vals, false) > -1) {
+          return Ember['default'].RSVP.reject(errors);
+        }
+        return errors;
+      });
+    },
+    _validate: Ember['default'].on('init', function() {
+      var promises = this.validators.invoke('_validate').without(undefined);
+      return Ember['default'].RSVP.all(promises);
+    })
+  });
+
+});
+define('ember-validations/patterns', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Namespace.create({
+    numericality: /^(-|\+)?(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d*)?$/,
+    blank: /^\s*$/
+  });
+
+});
+define('ember-validations/validators/base', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  var get = Ember['default'].get;
+  var set = Ember['default'].set;
+
+  exports['default'] = Ember['default'].Object.extend({
+    init: function() {
+      set(this, 'errors', Ember['default'].A());
+      this.dependentValidationKeys = Ember['default'].A();
+      this.conditionals = {
+        'if': get(this, 'options.if'),
+        unless: get(this, 'options.unless')
+      };
+      this.model.addObserver(this.property, this, this._validate);
+    },
+    addObserversForDependentValidationKeys: Ember['default'].on('init', function() {
+      this.dependentValidationKeys.forEach(function(key) {
+        this.model.addObserver(key, this, this._validate);
+      }, this);
+    }),
+    pushDependentValidationKeyToModel: Ember['default'].on('init', function() {
+      var model = get(this, 'model');
+      if (model.dependentValidationKeys[this.property] === undefined) {
+        model.dependentValidationKeys[this.property] = Ember['default'].A();
+      }
+      model.dependentValidationKeys[this.property].addObjects(this.dependentValidationKeys);
+    }),
+    call: function () {
+      throw 'Not implemented!';
+    },
+    unknownProperty: function(key) {
+      var model = get(this, 'model');
+      if (model) {
+        return get(model, key);
+      }
+    },
+    isValid: Ember['default'].computed.empty('errors.[]'),
+    isInvalid: Ember['default'].computed.not('isValid'),
+    validate: function() {
+      var self = this;
+      return this._validate().then(function(success) {
+        // Convert validation failures to rejects.
+        var errors = get(self, 'model.errors');
+        if (success) {
+          return errors;
+        } else {
+          return Ember['default'].RSVP.reject(errors);
+        }
+      });
+    },
+    _validate: Ember['default'].on('init', function() {
+      this.errors.clear();
+      if (this.canValidate()) {
+        this.call();
+      }
+      if (get(this, 'isValid')) {
+        return Ember['default'].RSVP.resolve(true);
+      } else {
+        return Ember['default'].RSVP.resolve(false);
+      }
+    }),
+    canValidate: function() {
+      if (typeof(this.conditionals) === 'object') {
+        if (this.conditionals['if']) {
+          if (typeof(this.conditionals['if']) === 'function') {
+            return this.conditionals['if'](this.model, this.property);
+          } else if (typeof(this.conditionals['if']) === 'string') {
+            if (typeof(this.model[this.conditionals['if']]) === 'function') {
+              return this.model[this.conditionals['if']]();
+            } else {
+              return get(this.model, this.conditionals['if']);
+            }
+          }
+        } else if (this.conditionals.unless) {
+          if (typeof(this.conditionals.unless) === 'function') {
+            return !this.conditionals.unless(this.model, this.property);
+          } else if (typeof(this.conditionals.unless) === 'string') {
+            if (typeof(this.model[this.conditionals.unless]) === 'function') {
+              return !this.model[this.conditionals.unless]();
+            } else {
+              return !get(this.model, this.conditionals.unless);
+            }
+          }
+        } else {
+          return true;
+        }
+      } else {
+        return true;
+      }
+    },
+    compare: function (a, b, operator) {
+      switch (operator) {
+        case '==':  return a == b; // jshint ignore:line
+        case '===': return a === b;
+        case '>=':  return a >= b;
+        case '<=':  return a <= b;
+        case '>':   return a > b;
+        case '<':   return a < b;
+        default:    return false;
+      }
+    }
+  });
+
+});
+define('ember-validations/validators/local/absence', ['exports', 'ember', 'ember-validations/validators/base', 'ember-validations/messages'], function (exports, Ember, Base, Messages) {
+
+  'use strict';
+
+  var get = Ember['default'].get;
+  var set = Ember['default'].set;
+
+  exports['default'] = Base['default'].extend({
+    init: function() {
+      this._super();
+      /*jshint expr:true*/
+      if (this.options === true) {
+        set(this, 'options', {});
+      }
+
+      if (this.options.message === undefined) {
+        set(this, 'options.message', Messages['default'].render('present', this.options));
+      }
+    },
+    call: function() {
+      if (!Ember['default'].isEmpty(get(this.model, this.property))) {
+        this.errors.pushObject(this.options.message);
+      }
+    }
+  });
+
+});
+define('ember-validations/validators/local/acceptance', ['exports', 'ember', 'ember-validations/validators/base', 'ember-validations/messages'], function (exports, Ember, Base, Messages) {
+
+  'use strict';
+
+  var get = Ember['default'].get;
+  var set = Ember['default'].set;
+
+  exports['default'] = Base['default'].extend({
+    init: function() {
+      this._super();
+      /*jshint expr:true*/
+      if (this.options === true) {
+        set(this, 'options', {});
+      }
+
+      if (this.options.message === undefined) {
+        set(this, 'options.message', Messages['default'].render('accepted', this.options));
+      }
+    },
+    call: function() {
+      if (this.options.accept) {
+        if (get(this.model, this.property) !== this.options.accept) {
+          this.errors.pushObject(this.options.message);
+        }
+      } else if (get(this.model, this.property) !== '1' && get(this.model, this.property) !== 1 && get(this.model, this.property) !== true) {
+        this.errors.pushObject(this.options.message);
+      }
+    }
+  });
+
+});
+define('ember-validations/validators/local/confirmation', ['exports', 'ember', 'ember-validations/validators/base', 'ember-validations/messages'], function (exports, Ember, Base, Messages) {
+
+  'use strict';
+
+  var get = Ember['default'].get;
+  var set = Ember['default'].set;
+
+  exports['default'] = Base['default'].extend({
+    init: function() {
+      this.originalProperty = this.property;
+      this.property = this.property + 'Confirmation';
+      this._super();
+      this.dependentValidationKeys.pushObject(this.originalProperty);
+      /*jshint expr:true*/
+      if (this.options === true) {
+        set(this, 'options', { attribute: this.originalProperty });
+        set(this, 'options', { message: Messages['default'].render('confirmation', this.options) });
+      }
+    },
+    call: function() {
+      var original = get(this.model, this.originalProperty);
+      var confirmation = get(this.model, this.property);
+
+      if(!Ember['default'].isEmpty(original) || !Ember['default'].isEmpty(confirmation)) {
+        if (original !== confirmation) {
+          this.errors.pushObject(this.options.message);
+        }
+      }
+    }
+  });
+
+});
+define('ember-validations/validators/local/exclusion', ['exports', 'ember', 'ember-validations/validators/base', 'ember-validations/messages'], function (exports, Ember, Base, Messages) {
+
+  'use strict';
+
+  var get = Ember['default'].get;
+  var set = Ember['default'].set;
+
+  exports['default'] = Base['default'].extend({
+    init: function() {
+      this._super();
+      if (this.options.constructor === Array) {
+        set(this, 'options', { 'in': this.options });
+      }
+
+      if (this.options.message === undefined) {
+        set(this, 'options.message', Messages['default'].render('exclusion', this.options));
+      }
+    },
+    call: function() {
+      /*jshint expr:true*/
+      var lower, upper;
+
+      if (Ember['default'].isEmpty(get(this.model, this.property))) {
+        if (this.options.allowBlank === undefined) {
+          this.errors.pushObject(this.options.message);
+        }
+      } else if (this.options['in']) {
+        if (Ember['default'].$.inArray(get(this.model, this.property), this.options['in']) !== -1) {
+          this.errors.pushObject(this.options.message);
+        }
+      } else if (this.options.range) {
+        lower = this.options.range[0];
+        upper = this.options.range[1];
+
+        if (get(this.model, this.property) >= lower && get(this.model, this.property) <= upper) {
+          this.errors.pushObject(this.options.message);
+        }
+      }
+    }
+  });
+
+});
+define('ember-validations/validators/local/format', ['exports', 'ember', 'ember-validations/validators/base', 'ember-validations/messages'], function (exports, Ember, Base, Messages) {
+
+  'use strict';
+
+  var get = Ember['default'].get;
+  var set = Ember['default'].set;
+
+  exports['default'] = Base['default'].extend({
+    init: function() {
+      this._super();
+      if (this.options.constructor === RegExp) {
+        set(this, 'options', { 'with': this.options });
+      }
+
+      if (this.options.message === undefined) {
+        set(this, 'options.message',  Messages['default'].render('invalid', this.options));
+      }
+     },
+     call: function() {
+      if (Ember['default'].isEmpty(get(this.model, this.property))) {
+        if (this.options.allowBlank === undefined) {
+          this.errors.pushObject(this.options.message);
+        }
+      } else if (this.options['with'] && !this.options['with'].test(get(this.model, this.property))) {
+        this.errors.pushObject(this.options.message);
+      } else if (this.options.without && this.options.without.test(get(this.model, this.property))) {
+        this.errors.pushObject(this.options.message);
+      }
+    }
+  });
+
+});
+define('ember-validations/validators/local/inclusion', ['exports', 'ember', 'ember-validations/validators/base', 'ember-validations/messages'], function (exports, Ember, Base, Messages) {
+
+  'use strict';
+
+  var get = Ember['default'].get;
+  var set = Ember['default'].set;
+
+  exports['default'] = Base['default'].extend({
+    init: function() {
+      this._super();
+      if (this.options.constructor === Array) {
+        set(this, 'options', { 'in': this.options });
+      }
+
+      if (this.options.message === undefined) {
+        set(this, 'options.message', Messages['default'].render('inclusion', this.options));
+      }
+    },
+    call: function() {
+      var lower, upper;
+      if (Ember['default'].isEmpty(get(this.model, this.property))) {
+        if (this.options.allowBlank === undefined) {
+          this.errors.pushObject(this.options.message);
+        }
+      } else if (this.options['in']) {
+        if (Ember['default'].$.inArray(get(this.model, this.property), this.options['in']) === -1) {
+          this.errors.pushObject(this.options.message);
+        }
+      } else if (this.options.range) {
+        lower = this.options.range[0];
+        upper = this.options.range[1];
+
+        if (get(this.model, this.property) < lower || get(this.model, this.property) > upper) {
+          this.errors.pushObject(this.options.message);
+        }
+      }
+    }
+  });
+
+});
+define('ember-validations/validators/local/length', ['exports', 'ember', 'ember-validations/validators/base', 'ember-validations/messages'], function (exports, Ember, Base, Messages) {
+
+  'use strict';
+
+  var get = Ember['default'].get;
+  var set = Ember['default'].set;
+
+  exports['default'] = Base['default'].extend({
+    init: function() {
+      var index, key;
+      this._super();
+      /*jshint expr:true*/
+      if (typeof(this.options) === 'number') {
+        set(this, 'options', { 'is': this.options });
+      }
+
+      if (this.options.messages === undefined) {
+        set(this, 'options.messages', {});
+      }
+
+      for (index = 0; index < this.messageKeys().length; index++) {
+        key = this.messageKeys()[index];
+        if (this.options[key] !== undefined && this.options[key].constructor === String) {
+          this.model.addObserver(this.options[key], this, this._validate);
+        }
+      }
+
+      this.options.tokenizer = this.options.tokenizer || function(value) { return value.toString().split(''); };
+      // if (typeof(this.options.tokenizer) === 'function') {
+        // debugger;
+        // // this.tokenizedLength = new Function('value', 'return '
+      // } else {
+        // this.tokenizedLength = new Function('value', 'return (value || "").' + (this.options.tokenizer || 'split("")') + '.length');
+      // }
+    },
+    CHECKS: {
+      'is'      : '==',
+      'minimum' : '>=',
+      'maximum' : '<='
+    },
+    MESSAGES: {
+      'is'      : 'wrongLength',
+      'minimum' : 'tooShort',
+      'maximum' : 'tooLong'
+    },
+    getValue: function(key) {
+      if (this.options[key].constructor === String) {
+        return get(this.model, this.options[key]) || 0;
+      } else {
+        return this.options[key];
+      }
+    },
+    messageKeys: function() {
+      return Ember['default'].keys(this.MESSAGES);
+    },
+    checkKeys: function() {
+      return Ember['default'].keys(this.CHECKS);
+    },
+    renderMessageFor: function(key) {
+      var options = {count: this.getValue(key)}, _key;
+      for (_key in this.options) {
+        options[_key] = this.options[_key];
+      }
+
+      return this.options.messages[this.MESSAGES[key]] || Messages['default'].render(this.MESSAGES[key], options);
+    },
+    renderBlankMessage: function() {
+      if (this.options.is) {
+        return this.renderMessageFor('is');
+      } else if (this.options.minimum) {
+        return this.renderMessageFor('minimum');
+      }
+    },
+    call: function() {
+      var key, comparisonResult;
+
+      if (Ember['default'].isEmpty(get(this.model, this.property))) {
+        if (this.options.allowBlank === undefined && (this.options.is || this.options.minimum)) {
+          this.errors.pushObject(this.renderBlankMessage());
+        }
+      } else {
+        for (key in this.CHECKS) {
+          if (!this.options[key]) {
+            continue;
+          }
+
+          comparisonResult = this.compare(
+            this.options.tokenizer(get(this.model, this.property)).length,
+            this.getValue(key),
+            this.CHECKS[key]
+          );
+          if (!comparisonResult) {
+            this.errors.pushObject(this.renderMessageFor(key));
+          }
+        }
+      }
+    }
+  });
+
+});
+define('ember-validations/validators/local/numericality', ['exports', 'ember', 'ember-validations/validators/base', 'ember-validations/messages', 'ember-validations/patterns'], function (exports, Ember, Base, Messages, Patterns) {
+
+  'use strict';
+
+  var get = Ember['default'].get;
+
+  exports['default'] = Base['default'].extend({
+    init: function() {
+      /*jshint expr:true*/
+      var index, keys, key;
+      this._super();
+
+      if (this.options === true) {
+        this.options = {};
+      } else if (this.options.constructor === String) {
+        key = this.options;
+        this.options = {};
+        this.options[key] = true;
+      }
+
+      if (this.options.messages === undefined || this.options.messages.numericality === undefined) {
+        this.options.messages = this.options.messages || {};
+        this.options.messages.numericality = Messages['default'].render('notANumber', this.options);
+      }
+
+      if (this.options.onlyInteger !== undefined && this.options.messages.onlyInteger === undefined) {
+        this.options.messages.onlyInteger = Messages['default'].render('notAnInteger', this.options);
+      }
+
+      keys = Ember['default'].keys(this.CHECKS).concat(['odd', 'even']);
+      for(index = 0; index < keys.length; index++) {
+        key = keys[index];
+
+        var prop = this.options[key];
+        // I have no idea what the hell is going on here. This seems to do nothing.
+        // The observer's key is being set to the values in the options hash?
+        if (key in this.options && isNaN(prop)) {
+          this.model.addObserver(prop, this, this._validate);
+        }
+
+        if (prop !== undefined && this.options.messages[key] === undefined) {
+          if (Ember['default'].$.inArray(key, Ember['default'].keys(this.CHECKS)) !== -1) {
+            this.options.count = prop;
+          }
+          this.options.messages[key] = Messages['default'].render(key, this.options);
+          if (this.options.count !== undefined) {
+            delete this.options.count;
+          }
+        }
+      }
+    },
+    CHECKS: {
+      equalTo              : '===',
+      greaterThan          : '>',
+      greaterThanOrEqualTo : '>=',
+      lessThan             : '<',
+      lessThanOrEqualTo    : '<='
+    },
+    call: function() {
+      var check, checkValue, comparisonResult;
+
+      if (Ember['default'].isEmpty(get(this.model, this.property))) {
+        if (this.options.allowBlank === undefined) {
+          this.errors.pushObject(this.options.messages.numericality);
+        }
+      } else if (!Patterns['default'].numericality.test(get(this.model, this.property))) {
+        this.errors.pushObject(this.options.messages.numericality);
+      } else if (this.options.onlyInteger === true && !(/^[+\-]?\d+$/.test(get(this.model, this.property)))) {
+        this.errors.pushObject(this.options.messages.onlyInteger);
+      } else if (this.options.odd  && parseInt(get(this.model, this.property), 10) % 2 === 0) {
+        this.errors.pushObject(this.options.messages.odd);
+      } else if (this.options.even && parseInt(get(this.model, this.property), 10) % 2 !== 0) {
+        this.errors.pushObject(this.options.messages.even);
+      } else {
+        for (check in this.CHECKS) {
+          if (this.options[check] === undefined) {
+            continue;
+          }
+
+          if (!isNaN(parseFloat(this.options[check])) && isFinite(this.options[check])) {
+            checkValue = this.options[check];
+          } else if (get(this.model, this.options[check]) !== undefined) {
+            checkValue = get(this.model, this.options[check]);
+          }
+
+          comparisonResult = this.compare(
+            get(this.model, this.property),
+            checkValue,
+            this.CHECKS[check]
+          );
+
+          if (!comparisonResult) {
+            this.errors.pushObject(this.options.messages[check]);
+          }
+        }
+      }
+    }
+  });
+
+});
+define('ember-validations/validators/local/presence', ['exports', 'ember', 'ember-validations/validators/base', 'ember-validations/messages'], function (exports, Ember, Base, Messages) {
+
+  'use strict';
+
+  var get = Ember['default'].get;
+
+  exports['default'] = Base['default'].extend({
+    init: function() {
+      this._super();
+      /*jshint expr:true*/
+      if (this.options === true) {
+        this.options = {};
+      }
+
+      if (this.options.message === undefined) {
+        this.options.message = Messages['default'].render('blank', this.options);
+      }
+    },
+    call: function() {
+      if (Ember['default'].isBlank(get(this.model, this.property))) {
+        this.errors.pushObject(this.options.message);
+      }
+    }
+  });
+
+});
 define("ember-wormhole", ["ember-wormhole/index", "ember", "exports"], function(__index__, __Ember__, __exports__) {
   "use strict";
   __Ember__["default"].keys(__index__).forEach(function(key){
@@ -116493,7 +117288,7 @@ define('ember-wormhole/components/ember-wormhole', ['exports', 'ember'], functio
 /* jshint ignore:end */
 //# sourceMappingURL=vendor.map
 
-Ember.COMPONENT_CSS_LOOKUP = {"application":"application-4953c7f7","ko-admin-card-user":"ko-admin-card-user-f3ed7132","ko-admin-selectable-card":"ko-admin-selectable-card-4da03fa9","ko-avatar":"ko-avatar-5715c187","ko-breadcrumbs":"ko-breadcrumbs-a4b52df8","ko-case-checkbox-field":"ko-case-checkbox-field-3385fade","ko-case-metric":"ko-case-metric-cc2712c3","ko-case-select-field":"ko-case-select-field-22606571","ko-cases-list":"ko-cases-list-fe29b148","ko-center":"ko-center-4320a4db","ko-checkbox":"ko-checkbox-00fcaba5","ko-contact-info":"ko-contact-info-30ea652f","ko-context-modal":"ko-context-modal-8319196b","ko-datepicker":"ko-datepicker-f25b74ed","ko-draggable-dropzone":"ko-draggable-dropzone-b37922e9","ko-editable-text":"ko-editable-text-1cdbf03c","ko-feed":"ko-feed-04a5b22e","ko-feedback":"ko-feedback-4333bb5d","ko-info-bar":"ko-info-bar-f2361d2c","ko-loader":"ko-loader-d36b0afa","ko-page-container":"ko-page-container-263b6a4a","ko-pagination":"ko-pagination-48be7bf2","ko-radio":"ko-radio-67ca71b4","ko-recent-cases":"ko-recent-cases-490ce95b","ko-search":"ko-search-a790c6d1","ko-sidebar":"ko-sidebar-5ad736fe","ko-tab":"ko-tab-a1d58808","ko-text-editor":"ko-text-editor-a4ab5994","ko-toggle":"ko-toggle-563e6d03","login":"login-801fcd75","session/admin":"session--admin-014b15ca","session/cases/index":"session--cases--index-d4e91bc3","session/showcase":"session--showcase-51d84f03","session":"session-b2f2e438"};
+Ember.COMPONENT_CSS_LOOKUP = {"application":"application-2669a6c3","ko-add-participants-popover":"ko-add-participants-popover-c4ff63f2","ko-admin-card-team":"ko-admin-card-team-a2c56b1a","ko-admin-card-user":"ko-admin-card-user-4fbe9ca7","ko-admin-selectable-card":"ko-admin-selectable-card-63671481","ko-agent-dropdown":"ko-agent-dropdown-144a20f5","ko-avatar":"ko-avatar-ff00c411","ko-breadcrumbs":"ko-breadcrumbs-cd6c20d6","ko-case-checkbox-field":"ko-case-checkbox-field-be622678","ko-case-metric":"ko-case-metric-8918dfa9","ko-case-select-field":"ko-case-select-field-2b9f1d23","ko-case-tags-field":"ko-case-tags-field-fa113fe5","ko-cases-list":"ko-cases-list-3de8db09","ko-center":"ko-center-f2018007","ko-checkbox":"ko-checkbox-1c691f90","ko-contact-info":"ko-contact-info-b1feabee","ko-context-modal":"ko-context-modal-dea6d112","ko-datepicker":"ko-datepicker-15579035","ko-draggable-dropzone":"ko-draggable-dropzone-1ab3d343","ko-editable-text":"ko-editable-text-e36fbf4e","ko-feed":"ko-feed-28a00226","ko-feedback":"ko-feedback-f283043d","ko-info-bar":"ko-info-bar-8a7d0659","ko-loader":"ko-loader-38b49293","ko-page-container":"ko-page-container-4275a831","ko-pagination":"ko-pagination-8ee2e084","ko-radio":"ko-radio-eadb6a0f","ko-recent-cases":"ko-recent-cases-8085602f","ko-search":"ko-search-0e6b7d31","ko-sidebar":"ko-sidebar-16123a6c","ko-tab":"ko-tab-788d1c38","ko-text-editor":"ko-text-editor-c91852a7","ko-time-billing/ko-time-entry":"ko-time-billing--ko-time-entry-6ba995f9","ko-time-billing":"ko-time-billing-90c4c064","ko-toggle":"ko-toggle-53a37014","login":"login-82cac2da","session/admin":"session--admin-f2de3557","session/cases/index":"session--cases--index-56512c79","session/showcase":"session--showcase-0a4c6cd1","session/styleguide":"session--styleguide-54b2898b","session":"session-e072ac73"};
 Ember.ComponentLookup.reopen({
   lookupFactory: function(name, container) {
     var Component = this._super(name, container);
