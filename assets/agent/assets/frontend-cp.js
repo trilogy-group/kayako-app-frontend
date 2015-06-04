@@ -26137,7 +26137,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"name":"frontend-cp","version":"0.0.0.8e9e7228"});
+  require("frontend-cp/app")["default"].create({"name":"frontend-cp","version":"0.0.0.6c44bad5"});
 }
 
 /* jshint ignore:end */

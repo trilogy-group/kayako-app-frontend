@@ -461,7 +461,7 @@ html {
  * over and over in your markup.
  */
 .clearfix:after,
-.ko-datepicker-4955634f:after, .ko-datepicker-4955634f .ko-datepicker__calendar:after, .ko-datepicker-4955634f .ko-datepicker__actions:after {
+.ko-datepicker-2410e69e:after, .ko-datepicker-2410e69e .ko-datepicker__calendar:after, .ko-datepicker-2410e69e .ko-datepicker__actions:after {
   content: "";
   display: table;
   clear: both; }
@@ -919,7 +919,7 @@ html {
  * The list-bare object simply removes any indents and bullet points from lists.
  */
 .list-bare,
-.dropdown-menu, .ko-context-modal-f947308a .ko-context-modal-list {
+.dropdown-menu, .ko-context-modal-84d0eb76 .ko-context-modal-list {
   margin: 0;
   padding: 0;
   list-style: none; }
@@ -930,12 +930,12 @@ html {
  * The list-inline object simply displays a list of items in one line.
  */
 .list-inline,
-.content-tabs-group, .content-tabs, .ko-breadcrumbs-21f4f651 .breadcrumbs {
+.content-tabs-group, .content-tabs, .ko-breadcrumbs-aa27424e .breadcrumbs {
   margin: 0;
   padding: 0;
   list-style: none; }
   .list-inline > li,
-  .content-tabs-group > li, .content-tabs > li, .ko-breadcrumbs-21f4f651 .breadcrumbs > li {
+  .content-tabs-group > li, .content-tabs > li, .ko-breadcrumbs-aa27424e .breadcrumbs > li {
     display: inline-block; }
 
 /*------------------------------------*    #FLAG
@@ -1072,7 +1072,7 @@ img {
 /*
 	Brand configuration
    ========================================================================== */
-.ko-case-tags-field-f9c8bf5e .tag:focus {
+.ko-case-tags-field-85575ed9 .tag:focus {
   box-shadow: 0px 0px 4px 0px rgba(80, 131, 219, 0.64), inset 0px 1px 1px 0px rgba(0, 0, 0, 0.08);
   outline: none; }
 
@@ -1316,7 +1316,7 @@ a {
 	Base input styling and initial configuration. Types of input should be
 	separated out into their own file (text, text-area etc).
    ========================================================================== */
-.input__text-area, .input__text-area--clean, .input__text, .input__text--alone, .input__text--full, .login__input, .login-42e65d3e .login__input {
+.input__text-area, .input__text-area--clean, .input__text, .input__text--alone, .input__text--full, .login__input, .login-19f8cf83 .login__input {
   padding: 6px 10px;
   margin-bottom: 9px;
   border: 1px solid #cfd4d8;
@@ -1922,16 +1922,16 @@ a {
 .input__counter,
 .header__subtitle,
 .info-bar-item__header,
-.ko-agent-dropdown-309c256d .agent-dropdown__link,
-.ko-feed-b50aed9b .feed__title--small,
+.ko-agent-dropdown-6ea0c6d0 .agent-dropdown__link,
+.ko-feed-6290e566 .feed__title--small,
 .t-caption {
   color: #838d94; }
   .is-active .input__counter,
   .is-active .header__subtitle,
   .is-active .info-bar-item__header,
-  .is-active .ko-agent-dropdown-309c256d .agent-dropdown__link,
-  .ko-agent-dropdown-309c256d .is-active .agent-dropdown__link, .is-active .ko-feed-b50aed9b .feed__title--small,
-  .ko-feed-b50aed9b .is-active .feed__title--small, .is-active .t-caption {
+  .is-active .ko-agent-dropdown-6ea0c6d0 .agent-dropdown__link,
+  .ko-agent-dropdown-6ea0c6d0 .is-active .agent-dropdown__link, .is-active .ko-feed-6290e566 .feed__title--small,
+  .ko-feed-6290e566 .is-active .feed__title--small, .is-active .t-caption {
     color: inherit; }
 
 .overlay {
@@ -1951,7 +1951,7 @@ a {
 .i--right-chevron:after {
   padding-left: 9px; }
 
-.i--pencil:after, .ko-editable-text-dd8db5f9 .editable-text__text:hover:after {
+.i--pencil:after, .ko-editable-text-d10fdc7b .editable-text__text:hover:after {
   content: url("/images/icons/pencil.svg");
   display: inline-block;
   padding-left: 9px; }
@@ -1963,11 +1963,11 @@ a {
 .i--right-chevron:after {
   content: url("/images/icons/right-chevron.svg"); }
 
-.i--chevron-left:after, .ko-datepicker-4955634f .ko-datepicker__previous:after {
+.i--chevron-left:after, .ko-datepicker-2410e69e .ko-datepicker__previous:after {
   vertical-align: middle;
   content: url("/images/icons/chevron-left.svg"); }
 
-.i--chevron-right:after, .ko-datepicker-4955634f .ko-datepicker__next:after {
+.i--chevron-right:after, .ko-datepicker-2410e69e .ko-datepicker__next:after {
   vertical-align: middle;
   content: url("/images/icons/chevron-right.svg"); }
 
@@ -2082,11 +2082,11 @@ a {
       -ms-transform: translateY(-50%);
           transform: translateY(-50%); }
 
-.ko-editable-text-dd8db5f9 .editable-text__text,
+.ko-editable-text-d10fdc7b .editable-text__text,
 .u-pointer {
   cursor: pointer; }
 
-.container, .ko-session-cases-index__contents, .session--cases--index-994d661d .ko-session-cases-index__contents {
+.container, .ko-session-cases-index__contents, .session--cases--index-cab035dc .ko-session-cases-index__contents {
   width: 940px;
   margin: 0 auto; }
 
@@ -2135,7 +2135,7 @@ a {
       -ms-transform: translateX(-50%);
           transform: translateX(-50%); }
 
-.ko-center-e6f33e77 .ko-center__contents,
+.ko-center-f8e092f6 .ko-center__contents,
 .u-center {
   position: absolute;
   top: 50%;
@@ -2144,14 +2144,14 @@ a {
       -ms-transform: translateX(-50%) translateY(-50%);
           transform: translateX(-50%) translateY(-50%); }
 
-.ko-center-e6f33e77 {
+.ko-center-f8e092f6 {
   -webkit-transform-style: preserve-3d;
           transform-style: preserve-3d; }
 
 /**
  * Absolutely positions and fills the container
  */
-body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrollable, .application, .application-40f27415 .application, .ko-center-e6f33e77, .session--cases--index-994d661d .ko-session-cases-index, .session--cases--index-994d661d .ko-session-cases-index__scrollable, .session-65c8a53e .session__content {
+body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrollable, .application, .application-d3d13b41 .application, .ko-center-f8e092f6, .session--cases--index-cab035dc .ko-session-cases-index, .session--cases--index-cab035dc .ko-session-cases-index__scrollable, .session-b0d5ca79 .session__content {
   position: absolute;
   top: 0;
   right: 0;
@@ -2189,7 +2189,7 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
 .t-warning {
   color: #ecc645; }
 
-.ko-agent-dropdown-309c256d .agent-dropdown__link,
+.ko-agent-dropdown-6ea0c6d0 .agent-dropdown__link,
 .t-center {
   text-align: center; }
 
@@ -2423,7 +2423,7 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
 .login-form__reset-form {
   vertical-align: bottom; }
 
-.ko-admin-card-team-6711c033 .ko-admin-card-team__header {
+.ko-admin-card-team-06d101f0 .ko-admin-card-team__header {
   /*
    * This sits inside a ko-admin-selectable-card which has padding.
    * The header needs to be separated by a line from the content
@@ -2435,94 +2435,94 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
   margin: 0px -9px;
   padding: 0px 9px 9px; }
 
-.ko-admin-card-team-6711c033 .ko-admin-card-team__team-name {
+.ko-admin-card-team-06d101f0 .ko-admin-card-team__team-name {
   font-size: 18px;
   font-size: 1.28571rem; }
 
-.ko-admin-card-team-6711c033 .ko-admin-card-team__membership {
+.ko-admin-card-team-06d101f0 .ko-admin-card-team__membership {
   color: #838D94; }
 
-.ko-admin-card-team-6711c033 .ko-admin-card-team__content {
+.ko-admin-card-team-06d101f0 .ko-admin-card-team__content {
   padding: 9px 0px 0px 0px; }
 
-.ko-admin-card-user-3d135cb4 .ko-admin-card-user__avatar {
+.ko-admin-card-user-3cb408a0 .ko-admin-card-user__avatar {
   float: left;
   padding-right: 18px; }
 
-.ko-admin-card-user-3d135cb4 .ko-admin-card-user__name {
+.ko-admin-card-user-3cb408a0 .ko-admin-card-user__name {
   font-weight: bold; }
 
-.ko-admin-selectable-card-a59e0240 {
+.ko-admin-selectable-card-dc9a81e6 {
   padding: 9px;
   border: solid 1px #D1D5D7;
   border-radius: 2px;
   overflow: hidden; }
 
-.ko-admin-selectable-card-a59e0240.ko-admin-selectable-card--inactive {
+.ko-admin-selectable-card-dc9a81e6.ko-admin-selectable-card--inactive {
   background-color: #CCC; }
 
-.ko-admin-selectable-card-a59e0240 .ko-admin-selectable-card__checkbox {
+.ko-admin-selectable-card-dc9a81e6 .ko-admin-selectable-card__checkbox {
   float: right; }
 
-.ko-agent-dropdown-309c256d {
+.ko-agent-dropdown-6ea0c6d0 {
   position: absolute;
   z-index: 5; }
 
-.ko-agent-dropdown-309c256d .agent-dropdown {
+.ko-agent-dropdown-6ea0c6d0 .agent-dropdown {
   position: relative;
   top: 100%;
   display: inline-block;
   line-height: initial; }
 
-.ko-agent-dropdown-309c256d .agent-dropdown__item {
+.ko-agent-dropdown-6ea0c6d0 .agent-dropdown__item {
   margin-right: 4.5px; }
-  .ko-agent-dropdown-309c256d .agent-dropdown__item:last-of-type {
+  .ko-agent-dropdown-6ea0c6d0 .agent-dropdown__item:last-of-type {
     margin-right: 0; }
 
-.ko-agent-dropdown-309c256d .agent-dropdown__link {
+.ko-agent-dropdown-6ea0c6d0 .agent-dropdown__link {
   display: block; }
 
-.ko-avatar-85b8d196 .ko-avatar__image {
+.ko-avatar-028d9cd4 .ko-avatar__image {
   width: 30px;
   height: 30px; }
-  .ko-avatar-85b8d196 .ko-avatar__image--large {
+  .ko-avatar-028d9cd4 .ko-avatar__image--large {
     width: 48px;
     height: 48px; }
 
-.ko-breadcrumbs-21f4f651 .breadcrumbs {
+.ko-breadcrumbs-aa27424e .breadcrumbs {
   border-bottom: 1px solid #D1D5D7; }
 
-.ko-breadcrumbs-21f4f651 .breadcrumbs__item {
+.ko-breadcrumbs-aa27424e .breadcrumbs__item {
   position: relative;
   bottom: -1px;
   padding: 18px 0;
   margin: 0 18px 0 0;
   cursor: pointer;
   border-bottom: 2px solid transparent; }
-  .ko-breadcrumbs-21f4f651 .breadcrumbs__item--active {
+  .ko-breadcrumbs-aa27424e .breadcrumbs__item--active {
     font-weight: 700;
     border-color: #5083DB; }
-  .ko-breadcrumbs-21f4f651 .breadcrumbs__item:last-child {
+  .ko-breadcrumbs-aa27424e .breadcrumbs__item:last-child {
     margin-right: 0; }
 
-.ko-breadcrumbs-21f4f651 .breadcrumbs__action {
+.ko-breadcrumbs-aa27424e .breadcrumbs__action {
   float: right; }
 
-.ko-case-checkbox-field-f8c083de label {
+.ko-case-checkbox-field-d5f54e8a label {
   cursor: pointer; }
 
-.ko-case-metric-c43f247e {
+.ko-case-metric-68e3104e {
   list-style-type: none; }
 
-.ko-case-select-field-b451f910 {
+.ko-case-select-field-6bba2f0a {
   position: relative; }
-  .ko-case-select-field-b451f910:focus {
+  .ko-case-select-field-6bba2f0a:focus {
     outline: none; }
 
-.ko-case-select-field-b451f910 .info-bar-item {
+.ko-case-select-field-6bba2f0a .info-bar-item {
   cursor: pointer; }
 
-.ko-case-tags-field-f9c8bf5e .tag {
+.ko-case-tags-field-85575ed9 .tag {
   max-width: 100%;
   word-wrap: break-word;
   position: relative;
@@ -2535,11 +2535,11 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
   background: #EBEEF0;
   border-radius: 2px;
   color: #5F5F5F; }
-  .ko-case-tags-field-f9c8bf5e .tag--changed {
+  .ko-case-tags-field-85575ed9 .tag--changed {
     background: #5083DB;
     color: #FFFFFF; }
 
-.ko-case-tags-field-f9c8bf5e .tag__action {
+.ko-case-tags-field-85575ed9 .tag__action {
   position: absolute;
   top: 50%;
   right: 6.5px;
@@ -2548,34 +2548,34 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
           transform: translateY(-50%);
   color: #A1AAAF;
   cursor: pointer; }
-  .tag--changed .ko-case-tags-field-f9c8bf5e .tag__action {
+  .tag--changed .ko-case-tags-field-85575ed9 .tag__action {
     color: #FFFFFF; }
 
-.ko-case-tags-field-f9c8bf5e .tag-input {
+.ko-case-tags-field-85575ed9 .tag-input {
   margin: 4.5px 6px 0 0;
   background-color: inherit;
   border: none;
   -webkit-appearance: none; }
-  .ko-case-tags-field-f9c8bf5e .tag-input:focus {
+  .ko-case-tags-field-85575ed9 .tag-input:focus {
     outline: none; }
-  .ko-case-tags-field-f9c8bf5e .tag-input:-webkit-input-placeholder {
+  .ko-case-tags-field-85575ed9 .tag-input:-webkit-input-placeholder {
     color: #A1AAAF; }
 
-.ko-case-tags-field-f9c8bf5e .tag-new {
+.ko-case-tags-field-85575ed9 .tag-new {
   max-width: 100%;
   word-wrap: break-word;
   border-top: 1px solid #cfd4d8; }
-  .ko-case-tags-field-f9c8bf5e .tag-new:hover,
-  .ko-case-tags-field-f9c8bf5e .tag-new:focus {
+  .ko-case-tags-field-85575ed9 .tag-new:hover,
+  .ko-case-tags-field-85575ed9 .tag-new:focus {
     border: 1px solid #3968B8; }
 
-.ko-case-tags-field-f9c8bf5e .tag-new__label {
+.ko-case-tags-field-85575ed9 .tag-new__label {
   margin-left: 4.5px; }
 
-.ko-cases-list-65992247 > table tbody tr {
+.ko-cases-list-f785a748 > table tbody tr {
   border-top: 1px solid #D1D5D7; }
 
-.ko-cases-list-65992247 > table thead th {
+.ko-cases-list-f785a748 > table thead th {
   font-size: 12px;
   font-size: 0.85714rem;
   text-transform: uppercase;
@@ -2585,23 +2585,23 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
   letter-spacing: 1px;
   font-weight: 600; }
 
-.ko-cases-list-65992247 > table thead th:not(:first-child) {
+.ko-cases-list-f785a748 > table thead th:not(:first-child) {
   color: #838D94; }
 
-.ko-cases-list-65992247 > table tbody td {
+.ko-cases-list-f785a748 > table tbody td {
   line-height: 33px;
   padding-right: 3px; }
 
-.ko-cases-list-65992247 > table tbody td:not(:first-child) {
+.ko-cases-list-f785a748 > table tbody td:not(:first-child) {
   font-size: 12px;
   font-size: 0.85714rem;
   color: #838D94; }
 
-.ko-checkbox-c3bea03b {
+.ko-checkbox-f536f146 {
   /**
  * [1] - we are using div instead of input element hence the styling.
  */ }
-  .ko-checkbox-c3bea03b .ko-checkbox__checkbox {
+  .ko-checkbox-f536f146 .ko-checkbox__checkbox {
     display: inline-block;
     width: 14px;
     height: 14px;
@@ -2614,21 +2614,21 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
     /*[1]*/
     border-radius: 2px;
     /*[1]*/ }
-    .ko-checkbox-c3bea03b .ko-checkbox__checkbox--large {
+    .ko-checkbox-f536f146 .ko-checkbox__checkbox--large {
       width: 19px;
       height: 18px; }
-    .ko-checkbox-c3bea03b .ko-checkbox__checkbox--disabled {
+    .ko-checkbox-f536f146 .ko-checkbox__checkbox--disabled {
       opacity: 0.5; }
-  .ko-checkbox-c3bea03b .ko-checkbox__label--disabled {
+  .ko-checkbox-f536f146 .ko-checkbox__label--disabled {
     opacity: 0.5; }
 
-.ko-context-modal-f947308a .ko-context-modal__overlay {
+.ko-context-modal-84d0eb76 .ko-context-modal__overlay {
   position: absolute;
   top: 0;
   left: 0;
   right: 0; }
 
-.ko-context-modal-f947308a .ko-context-modal__container {
+.ko-context-modal-84d0eb76 .ko-context-modal__container {
   width: 300px;
   position: absolute;
   z-index: 5;
@@ -2636,79 +2636,79 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
   border: 1px solid #BEC4C7;
   border-radius: 2px; }
 
-.ko-context-modal-f947308a .ko-context-modal__header {
+.ko-context-modal-84d0eb76 .ko-context-modal__header {
   display: inline-block;
   margin: 0;
   background-color: #ffffff;
   font-weight: 700; }
 
-.ko-context-modal-f947308a .ko-context-modal__action {
+.ko-context-modal-84d0eb76 .ko-context-modal__action {
   float: right;
   padding-left: 18px; }
 
-.ko-context-modal-f947308a .ko-context-modal-list__item {
+.ko-context-modal-84d0eb76 .ko-context-modal-list__item {
   padding: 4.5px 9px;
   border: 1px solid transparent; }
-  .ko-context-modal-f947308a .ko-context-modal-list__item.is-active {
+  .ko-context-modal-84d0eb76 .ko-context-modal-list__item.is-active {
     background-color: #5083DB;
     border: 1px solid #3968B8;
     color: #FFFFFF; }
 
-.ko-context-modal-f947308a .ko-context-modal-list__image {
+.ko-context-modal-84d0eb76 .ko-context-modal-list__image {
   width: 48px;
   height: 48px;
   border-radius: 2px; }
 
-.ko-datepicker-4955634f {
+.ko-datepicker-2410e69e {
   max-width: 378px;
   margin: 0 auto;
   padding: 0 15px; }
 
-.ko-datepicker-4955634f .ko-datepicker__header {
+.ko-datepicker-2410e69e .ko-datepicker__header {
   text-align: center;
   padding: 18px 15px; }
 
-.ko-datepicker-4955634f .ko-datepicker__month {
+.ko-datepicker-2410e69e .ko-datepicker__month {
   font-weight: 600;
   font-size: 18px;
   color: #2D3138; }
 
-.ko-datepicker-4955634f .ko-datepicker__year {
+.ko-datepicker-2410e69e .ko-datepicker__year {
   font-size: 12px;
   color: #959FA5;
   margin-left: 0.2rem; }
 
-.ko-datepicker-4955634f .ko-datepicker__arrow {
+.ko-datepicker-2410e69e .ko-datepicker__arrow {
   cursor: pointer; }
 
-.ko-datepicker-4955634f .ko-datepicker__previous {
+.ko-datepicker-2410e69e .ko-datepicker__previous {
   float: left;
   cursor: pointer; }
 
-.ko-datepicker-4955634f .ko-datepicker__next {
+.ko-datepicker-2410e69e .ko-datepicker__next {
   float: right;
   cursor: pointer; }
 
-.ko-datepicker-4955634f .ko-datepicker__weekday, .ko-datepicker-4955634f .ko-datepicker__date {
+.ko-datepicker-2410e69e .ko-datepicker__weekday, .ko-datepicker-2410e69e .ko-datepicker__date {
   display: block;
   width: calc(100% / 7);
   float: left;
   text-align: center;
   line-height: 31px; }
 
-.ko-datepicker-4955634f .ko-datepicker__weekday {
+.ko-datepicker-2410e69e .ko-datepicker__weekday {
   color: #838D94;
   font-size: 12px; }
 
-.ko-datepicker-4955634f .ko-datepicker__date {
+.ko-datepicker-2410e69e .ko-datepicker__date {
   font-size: 16px;
   color: #BEC4C7; }
-  .ko-datepicker-4955634f .ko-datepicker__date--current-month {
+  .ko-datepicker-2410e69e .ko-datepicker__date--current-month {
     color: #3B4048;
     cursor: pointer; }
-  .ko-datepicker-4955634f .ko-datepicker__date--today {
+  .ko-datepicker-2410e69e .ko-datepicker__date--today {
     position: relative; }
-    .ko-datepicker-4955634f .ko-datepicker__date--today::after {
+    .ko-datepicker-2410e69e .ko-datepicker__date--today::after {
       position: absolute;
       content: '';
       width: 0;
@@ -2717,31 +2717,31 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
       border-right: 7px solid #5083DB;
       right: 2px;
       top: 2px; }
-  .ko-datepicker-4955634f .ko-datepicker__date--selected {
+  .ko-datepicker-2410e69e .ko-datepicker__date--selected {
     outline: 1px solid #5083DB; }
 
-.ko-datepicker-4955634f .ko-datepicker__actions {
+.ko-datepicker-2410e69e .ko-datepicker__actions {
   padding: 15px; }
 
-.ko-datepicker-4955634f .ko-datepicker__action {
+.ko-datepicker-2410e69e .ko-datepicker__action {
   font-weight: 600;
   font-size: 14px;
   width: calc(100%/3);
   float: left;
   background-repeat: no-repeat;
   background-position: left center; }
-  .ko-datepicker-4955634f .ko-datepicker__action span {
+  .ko-datepicker-2410e69e .ko-datepicker__action span {
     cursor: pointer; }
-  .ko-datepicker-4955634f .ko-datepicker__action img {
+  .ko-datepicker-2410e69e .ko-datepicker__action img {
     margin-right: 0.2rem; }
-  .ko-datepicker-4955634f .ko-datepicker__action:first-child {
+  .ko-datepicker-2410e69e .ko-datepicker__action:first-child {
     text-align: left; }
-  .ko-datepicker-4955634f .ko-datepicker__action:nth-child(2) {
+  .ko-datepicker-2410e69e .ko-datepicker__action:nth-child(2) {
     text-align: center; }
-  .ko-datepicker-4955634f .ko-datepicker__action:last-child {
+  .ko-datepicker-2410e69e .ko-datepicker__action:last-child {
     text-align: right; }
 
-.ko-draggable-dropzone-e224f9f0.ko-draggable-dropzone--activated .ko-draggable-dropzone__border {
+.ko-draggable-dropzone-b913f9c2.ko-draggable-dropzone--activated .ko-draggable-dropzone__border {
   padding: 10px;
   width: 100%;
   margin-bottom: 10px;
@@ -2753,70 +2753,70 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
   right: 0;
   bottom: 0; }
 
-.ko-draggable-dropzone-e224f9f0.ko-draggable-dropzone--deactivated .ko-draggable-dropzone__border {
+.ko-draggable-dropzone-b913f9c2.ko-draggable-dropzone--deactivated .ko-draggable-dropzone__border {
   display: none; }
 
-.ko-editable-text-dd8db5f9 .editable-text__input {
+.ko-editable-text-d10fdc7b .editable-text__input {
   width: 100%; }
-  .ko-editable-text-dd8db5f9 .editable-text__input:focus {
+  .ko-editable-text-d10fdc7b .editable-text__input:focus {
     outline: 0;
     border: none;
     padding: 0 0 0 1px;
     margin: -1px;
     background: transparent; }
 
-.ko-editable-text-dd8db5f9 .editable-text__text--edited {
+.ko-editable-text-d10fdc7b .editable-text__text--edited {
   color: #5083DB; }
 
-.ko-feed-b50aed9b {
+.ko-feed-6290e566 {
   /*
 	Feed module.
 
 	Seen on the case overview page. (expand when you revisit this, Tom)
    ========================================================================== */ }
-  .ko-feed-b50aed9b {
+  .ko-feed-6290e566 {
     padding: 0 38px; }
-  .ko-feed-b50aed9b .feed__item {
+  .ko-feed-6290e566 .feed__item {
     min-height: 74px;
     position: relative;
     padding: 16px 0 16px 38px;
     border-left: 2px solid #ebeef0; }
-    .ko-feed-b50aed9b .feed__item:first-of-type {
+    .ko-feed-6290e566 .feed__item:first-of-type {
       padding-top: 0; }
-      .ko-feed-b50aed9b .feed__item:first-of-type .feed__image {
+      .ko-feed-6290e566 .feed__item:first-of-type .feed__image {
         top: 0; }
-    .ko-feed-b50aed9b .feed__item--is-private {
+    .ko-feed-6290e566 .feed__item--is-private {
       background: #fcf8ec;
       border: 1px solid #ECE5D1;
       border-left: 2px solid #E0AF2A; }
-  .ko-feed-b50aed9b .feed__title--small, .ko-feed-b50aed9b .feed__title {
+  .ko-feed-6290e566 .feed__title--small, .ko-feed-6290e566 .feed__title {
     display: inline-block;
     margin-bottom: 0;
     font-weight: 600; }
-  .ko-feed-b50aed9b .feed__title--small {
+  .ko-feed-6290e566 .feed__title--small {
     font-size: 14px; }
-  .ko-feed-b50aed9b .feed__image {
+  .ko-feed-6290e566 .feed__image {
     position: absolute;
     top: 16px;
     left: -21px;
     width: 42px;
     height: 42px;
     border-radius: 2px; }
-  .ko-feed-b50aed9b .feed__details {
+  .ko-feed-6290e566 .feed__details {
     color: #cfd4d8; }
 
-.ko-feedback-a80c6870 {
+.ko-feedback-a2fa23b3 {
   list-style-type: none; }
 
-.ko-feedback-a80c6870 .ko-feedback__item {
+.ko-feedback-a2fa23b3 .ko-feedback__item {
   padding-right: 20px;
   text-align: center; }
 
-.ko-info-bar-af1bf149 {
+.ko-info-bar-50582e3f {
   min-height: 100vh;
   border: 1px solid #D1D5D7; }
 
-.ko-loader-16e51de6 {
+.ko-loader-e1d285fe {
   display: block;
   position: relative;
   width: 12px;
@@ -2824,7 +2824,7 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
   margin: 0;
   padding: 0; }
 
-.ko-loader-16e51de6 .ko-loader__item {
+.ko-loader-e1d285fe .ko-loader__item {
   display: block;
   width: 2px;
   height: 15px;
@@ -2834,26 +2834,26 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
   padding: 0;
   -webkit-animation: ko-loader__state1 1.1s cubic-bezier(0.645, 0.045, 0.355, 1) 0s infinite alternate;
           animation: ko-loader__state1 1.1s cubic-bezier(0.645, 0.045, 0.355, 1) 0s infinite alternate; }
-  .ko-loader-16e51de6 .ko-loader__item:nth-child(2) {
+  .ko-loader-e1d285fe .ko-loader__item:nth-child(2) {
     left: 4px;
     -webkit-animation-name: ko-loader__state2;
             animation-name: ko-loader__state2;
     -webkit-animation-timing-function: ease-in-out;
             animation-timing-function: ease-in-out; }
-  .ko-loader-16e51de6 .ko-loader__item:nth-child(3) {
+  .ko-loader-e1d285fe .ko-loader__item:nth-child(3) {
     left: 8px;
     -webkit-animation-name: ko-loader__state3;
             animation-name: ko-loader__state3; }
 
-.ko-loader-16e51de6.ko-loader--large {
+.ko-loader-e1d285fe.ko-loader--large {
   width: 24px;
   height: 30px; }
-  .ko-loader-16e51de6.ko-loader--large .ko-loader__item {
+  .ko-loader-e1d285fe.ko-loader--large .ko-loader__item {
     width: 4px;
     height: 30px; }
-    .ko-loader-16e51de6.ko-loader--large .ko-loader__item:nth-child(2) {
+    .ko-loader-e1d285fe.ko-loader--large .ko-loader__item:nth-child(2) {
       left: 8px; }
-    .ko-loader-16e51de6.ko-loader--large .ko-loader__item:nth-child(3) {
+    .ko-loader-e1d285fe.ko-loader--large .ko-loader__item:nth-child(3) {
       left: 16px; }
 
 @-webkit-keyframes ko-loader__state1 {
@@ -2934,7 +2934,7 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
     -webkit-transform: scaleY(0.3);
             transform: scaleY(0.3); } }
 
-.ko-pagination-b34ff15a {
+.ko-pagination-d3d164ea {
   background-color: #f8f8f8;
   width: 44px;
   border-left: 1px solid #d1d5d7;
@@ -2943,10 +2943,10 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
   bottom: 0;
   right: 0;
   position: absolute; }
-  .ko-pagination-b34ff15a:hover .ko-pagination__container {
+  .ko-pagination-d3d164ea:hover .ko-pagination__container {
     bottom: 7px; }
 
-.ko-pagination-b34ff15a .ko-pagination__container {
+.ko-pagination-d3d164ea .ko-pagination__container {
   position: absolute;
   bottom: 30px;
   left: 0;
@@ -2954,12 +2954,12 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
   -webkit-transition: 0.2s all;
           transition: 0.2s all; }
 
-.ko-pagination-b34ff15a .ko-pagination__pageNumber {
+.ko-pagination-d3d164ea .ko-pagination__pageNumber {
   font-size: 24px;
   display: block;
   text-align: center; }
 
-.ko-pagination-b34ff15a .ko-pagination__pageCount {
+.ko-pagination-d3d164ea .ko-pagination__pageCount {
   font-size: 12px;
   display: block;
   text-align: center;
@@ -2967,12 +2967,12 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
   /* TODO color */
   margin-bottom: 0.5rem; }
 
-.ko-pagination-b34ff15a .ko-pagination__first, .ko-pagination-b34ff15a .ko-pagination__last, .ko-pagination-b34ff15a .ko-pagination__previous, .ko-pagination-b34ff15a .ko-pagination__next {
+.ko-pagination-d3d164ea .ko-pagination__first, .ko-pagination-d3d164ea .ko-pagination__last, .ko-pagination-d3d164ea .ko-pagination__previous, .ko-pagination-d3d164ea .ko-pagination__next {
   background-color: #f8f8f8;
   border: 0 solid #d1d5d7;
   position: relative;
   box-sizing: content-box; }
-  .ko-pagination-b34ff15a .ko-pagination__first a, .ko-pagination-b34ff15a .ko-pagination__last a, .ko-pagination-b34ff15a .ko-pagination__previous a, .ko-pagination-b34ff15a .ko-pagination__next a {
+  .ko-pagination-d3d164ea .ko-pagination__first a, .ko-pagination-d3d164ea .ko-pagination__last a, .ko-pagination-d3d164ea .ko-pagination__previous a, .ko-pagination-d3d164ea .ko-pagination__next a {
     display: block;
     position: absolute;
     top: 0;
@@ -2985,88 +2985,88 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
     opacity: 0.6;
     pointer-events: none; }
 
-.ko-pagination-b34ff15a .ko-pagination__first--available a,
-.ko-pagination-b34ff15a .ko-pagination__last--available a,
-.ko-pagination-b34ff15a .ko-pagination__previous--available a,
-.ko-pagination-b34ff15a .ko-pagination__next--available a {
+.ko-pagination-d3d164ea .ko-pagination__first--available a,
+.ko-pagination-d3d164ea .ko-pagination__last--available a,
+.ko-pagination-d3d164ea .ko-pagination__previous--available a,
+.ko-pagination-d3d164ea .ko-pagination__next--available a {
   opacity: 1;
   pointer-events: auto; }
-  .ko-pagination-b34ff15a .ko-pagination__first--available a:hover,
-  .ko-pagination-b34ff15a .ko-pagination__last--available a:hover,
-  .ko-pagination-b34ff15a .ko-pagination__previous--available a:hover,
-  .ko-pagination-b34ff15a .ko-pagination__next--available a:hover {
+  .ko-pagination-d3d164ea .ko-pagination__first--available a:hover,
+  .ko-pagination-d3d164ea .ko-pagination__last--available a:hover,
+  .ko-pagination-d3d164ea .ko-pagination__previous--available a:hover,
+  .ko-pagination-d3d164ea .ko-pagination__next--available a:hover {
     cursor: pointer;
     background-color: #3f8cb3; }
 
-.ko-pagination-b34ff15a .ko-pagination__first, .ko-pagination-b34ff15a .ko-pagination__last {
+.ko-pagination-d3d164ea .ko-pagination__first, .ko-pagination-d3d164ea .ko-pagination__last {
   height: 22px;
   -webkit-transition: 0.2s all;
           transition: 0.2s all; }
 
-.ko-pagination-b34ff15a .ko-pagination__previous, .ko-pagination-b34ff15a .ko-pagination__next {
+.ko-pagination-d3d164ea .ko-pagination__previous, .ko-pagination-d3d164ea .ko-pagination__next {
   height: 42px; }
 
-.ko-pagination-b34ff15a .ko-pagination__previous {
+.ko-pagination-d3d164ea .ko-pagination__previous {
   border-top-width: 1px; }
 
-.ko-pagination-b34ff15a .ko-pagination__next {
+.ko-pagination-d3d164ea .ko-pagination__next {
   border-top-width: 1px;
   border-bottom-width: 1px;
   margin-top: -1px;
   z-index: 100; }
 
-.ko-pagination-b34ff15a .ko-pagination__first {
+.ko-pagination-d3d164ea .ko-pagination__first {
   margin-bottom: -23px;
   border-top-width: 1px; }
 
-.ko-pagination-b34ff15a .ko-pagination__last {
+.ko-pagination-d3d164ea .ko-pagination__last {
   margin-top: -23px;
   border-bottom-width: 1px; }
 
-.ko-pagination-b34ff15a:hover {
+.ko-pagination-d3d164ea:hover {
   margin-top: -23px; }
-  .ko-pagination-b34ff15a:hover .ko-pagination__first {
+  .ko-pagination-d3d164ea:hover .ko-pagination__first {
     margin-bottom: 0; }
-  .ko-pagination-b34ff15a:hover .ko-pagination__last {
+  .ko-pagination-d3d164ea:hover .ko-pagination__last {
     margin-top: 0; }
 
-.ko-pagination-b34ff15a .ko-pagination__previous a {
+.ko-pagination-d3d164ea .ko-pagination__previous a {
   background-image: url("/images/icons/chevron-up.svg"); }
 
-.ko-pagination-b34ff15a .ko-pagination__previous.ko-pagination__previous--available a {
+.ko-pagination-d3d164ea .ko-pagination__previous.ko-pagination__previous--available a {
   background-image: url("/images/icons/chevron-up-gray.svg"); }
-  .ko-pagination-b34ff15a .ko-pagination__previous.ko-pagination__previous--available a:hover {
+  .ko-pagination-d3d164ea .ko-pagination__previous.ko-pagination__previous--available a:hover {
     background-image: url("/images/icons/chevron-up-active.svg"); }
 
-.ko-pagination-b34ff15a .ko-pagination__next a {
+.ko-pagination-d3d164ea .ko-pagination__next a {
   background-image: url("/images/icons/chevron-down.svg"); }
 
-.ko-pagination-b34ff15a .ko-pagination__next.ko-pagination__next--available a {
+.ko-pagination-d3d164ea .ko-pagination__next.ko-pagination__next--available a {
   background-image: url("/images/icons/chevron-down-gray.svg"); }
-  .ko-pagination-b34ff15a .ko-pagination__next.ko-pagination__next--available a:hover {
+  .ko-pagination-d3d164ea .ko-pagination__next.ko-pagination__next--available a:hover {
     background-image: url("/images/icons/chevron-down-active.svg"); }
 
-.ko-pagination-b34ff15a .ko-pagination__first a {
+.ko-pagination-d3d164ea .ko-pagination__first a {
   background-image: url("/images/icons/double-chevron-up.svg"); }
 
-.ko-pagination-b34ff15a .ko-pagination__first.ko-pagination__first--available a {
+.ko-pagination-d3d164ea .ko-pagination__first.ko-pagination__first--available a {
   background-image: url("/images/icons/double-chevron-up-gray.svg"); }
-  .ko-pagination-b34ff15a .ko-pagination__first.ko-pagination__first--available a:hover {
+  .ko-pagination-d3d164ea .ko-pagination__first.ko-pagination__first--available a:hover {
     background-image: url("/images/icons/double-chevron-up-active.svg"); }
 
-.ko-pagination-b34ff15a .ko-pagination__last a {
+.ko-pagination-d3d164ea .ko-pagination__last a {
   background-image: url("/images/icons/double-chevron-down.svg"); }
 
-.ko-pagination-b34ff15a .ko-pagination__last.ko-pagination__last--available a {
+.ko-pagination-d3d164ea .ko-pagination__last.ko-pagination__last--available a {
   background-image: url("/images/icons/double-chevron-down-gray.svg"); }
-  .ko-pagination-b34ff15a .ko-pagination__last.ko-pagination__last--available a:hover {
+  .ko-pagination-d3d164ea .ko-pagination__last.ko-pagination__last--available a:hover {
     background-image: url("/images/icons/double-chevron-down-active.svg"); }
 
-.ko-radio-aad12157 {
+.ko-radio-c341799c {
   /**
  * [1] - we are using div instead of input element hence the styling.
  */ }
-  .ko-radio-aad12157 .ko-radio__container {
+  .ko-radio-c341799c .ko-radio__container {
     display: inline-block;
     vertical-align: middle;
     width: 15px;
@@ -3080,38 +3080,38 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
     /*[1]*/
     border-radius: 31px;
     /*[1]*/ }
-    .ko-radio-aad12157 .ko-radio__container--large {
+    .ko-radio-c341799c .ko-radio__container--large {
       width: 18px;
       height: 18px; }
-    .ko-radio-aad12157 .ko-radio__container--disabled {
+    .ko-radio-c341799c .ko-radio__container--disabled {
       opacity: 0.5; }
-    .ko-radio-aad12157 .ko-radio__container .ko-radio__radio {
+    .ko-radio-c341799c .ko-radio__container .ko-radio__radio {
       width: 5px;
       height: 5px;
       background: #616C73;
       /*[1]*/
       border-radius: 31px; }
-      .ko-radio-aad12157 .ko-radio__container .ko-radio__radio--large {
+      .ko-radio-c341799c .ko-radio__container .ko-radio__radio--large {
         width: 6px;
         height: 6px; }
-  .ko-radio-aad12157 .ko-radio__label {
+  .ko-radio-c341799c .ko-radio__label {
     margin-left: 9px; }
-    .ko-radio-aad12157 .ko-radio__label--disabled {
+    .ko-radio-c341799c .ko-radio__label--disabled {
       opacity: 0.5; }
 
-.ko-recent-cases-a4b4bbbc {
+.ko-recent-cases-d3e0f17f {
   list-style-type: none; }
 
-.ko-search-519fd21a {
+.ko-search-6267b233 {
   /*
 	Search module
    ========================================================================== */ }
-  .ko-search-519fd21a .search {
+  .ko-search-6267b233 .search {
     height: 40px;
     padding-left: 40px;
     position: relative;
     border-right: 1px solid #d1d5d7; }
-    .ko-search-519fd21a .search:before {
+    .ko-search-6267b233 .search:before {
       content: '';
       height: 18px;
       width: 18px;
@@ -3122,80 +3122,80 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
       right: 9px;
       bottom: 9px;
       background: url("/images/ui/search.png") no-repeat; }
-  .ko-search-519fd21a .input__search {
+  .ko-search-6267b233 .input__search {
     width: 100%;
     height: 100%;
     border: none; }
-    .ko-search-519fd21a .input__search:focus {
+    .ko-search-6267b233 .input__search:focus {
       outline: none; }
 
-.ko-sidebar-cdbf6a26 {
+.ko-sidebar-dfa516c9 {
   /*
 	Sidebar module
    ========================================================================== */ }
-  .ko-sidebar-cdbf6a26 .sidebar {
+  .ko-sidebar-dfa516c9 .sidebar {
     min-height: 100vh;
     padding: 4.5px 0;
     background-color: #ffffff;
     border: 1px solid #d1d5d7;
     border-top-left-radius: 2px;
     border-bottom-left-radius: 2px; }
-  .ko-sidebar-cdbf6a26 .sidebar__item {
+  .ko-sidebar-dfa516c9 .sidebar__item {
     position: relative;
     padding: 4.5px 18px 4.5px 0;
     margin: 4px 0;
     text-indent: 18px;
     font-weight: 400; }
-    .ko-sidebar-cdbf6a26 .sidebar__item.active {
+    .ko-sidebar-dfa516c9 .sidebar__item.active {
       background-color: #f7f8f9;
       border-left: 2px solid #189ed8;
       font-weight: 600; }
-    .ko-sidebar-cdbf6a26 .sidebar__item.disabled {
+    .ko-sidebar-dfa516c9 .sidebar__item.disabled {
       color: rgba(0, 0, 0, 0.3); }
-  .ko-sidebar-cdbf6a26 .sidebar__value {
+  .ko-sidebar-dfa516c9 .sidebar__value {
     float: right;
     padding: 0 8px;
     background-color: #ebeef0;
     border-radius: 2px;
     text-indent: 0;
     color: #838d94; }
-    .ko-sidebar-cdbf6a26 .sidebar__value.active {
+    .ko-sidebar-dfa516c9 .sidebar__value.active {
       background-color: #189ed8;
       color: #ffffff; }
-  .ko-sidebar-cdbf6a26 .sidebar__spacer {
+  .ko-sidebar-dfa516c9 .sidebar__spacer {
     height: 1px;
     margin: 9px 18px;
     background-color: #d1d5d7;
     border: none; }
 
-.ko-tab-8fd38a4a .nav-tabs__label {
+.ko-tab-04214166 .nav-tabs__label {
   max-width: 144px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis; }
 
-.ko-text-editor-fe956dda {
+.ko-text-editor-2e826b9e {
   /*! Quill Editor v0.19.12
  *  https://quilljs.com/
  *  Copyright (c) 2014, Jason Chen
  *  Copyright (c) 2013, salesforce.com
  */ }
-  .ko-text-editor-fe956dda {
+  .ko-text-editor-2e826b9e {
     border-bottom: 1px solid #cfd4d8;
     margin-bottom: 9px; }
-  .ko-text-editor-fe956dda .ko-text-editor__dropzone-and-editor-container {
+  .ko-text-editor-2e826b9e .ko-text-editor__dropzone-and-editor-container {
     position: relative; }
-  .ko-text-editor-fe956dda .ko-text-editor__image-upload input {
+  .ko-text-editor-2e826b9e .ko-text-editor__image-upload input {
     display: none; }
-  .ko-text-editor-fe956dda .ql-image-tooltip {
+  .ko-text-editor-2e826b9e .ql-image-tooltip {
     padding: 10px;
     width: 300px;
     top: 20px !important; }
-  .ko-text-editor-fe956dda .ql-image-tooltip:after {
+  .ko-text-editor-2e826b9e .ql-image-tooltip:after {
     clear: both;
     content: "";
     display: table; }
-  .ko-text-editor-fe956dda .ql-image-tooltip a {
+  .ko-text-editor-2e826b9e .ql-image-tooltip a {
     border: 1px solid #000;
     box-sizing: border-box;
     display: inline-block;
@@ -3203,7 +3203,7 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
     padding: 5px;
     text-align: center;
     width: 50%; }
-  .ko-text-editor-fe956dda .ql-image-tooltip img {
+  .ko-text-editor-2e826b9e .ql-image-tooltip img {
     bottom: 0;
     left: 0;
     margin: auto;
@@ -3212,70 +3212,70 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
     position: absolute;
     right: 0;
     top: 0; }
-  .ko-text-editor-fe956dda .ql-image-tooltip .input {
+  .ko-text-editor-2e826b9e .ql-image-tooltip .input {
     box-sizing: border-box;
     width: 100%; }
-  .ko-text-editor-fe956dda .ql-image-tooltip .preview {
+  .ko-text-editor-2e826b9e .ql-image-tooltip .preview {
     margin: 10px 0px;
     position: relative;
     border: 1px dashed #000;
     height: 200px; }
-  .ko-text-editor-fe956dda .ql-image-tooltip .preview span {
+  .ko-text-editor-2e826b9e .ql-image-tooltip .preview span {
     display: inline-block;
     position: absolute;
     text-align: center;
     top: 40%;
     width: 100%; }
-  .ko-text-editor-fe956dda .ql-link-tooltip {
+  .ko-text-editor-2e826b9e .ql-link-tooltip {
     padding: 5px 10px; }
-  .ko-text-editor-fe956dda .ql-link-tooltip input.input {
+  .ko-text-editor-2e826b9e .ql-link-tooltip input.input {
     width: 170px; }
-  .ko-text-editor-fe956dda .ql-link-tooltip input.input,
-  .ko-text-editor-fe956dda .ql-link-tooltip a.done {
+  .ko-text-editor-2e826b9e .ql-link-tooltip input.input,
+  .ko-text-editor-2e826b9e .ql-link-tooltip a.done {
     display: none; }
-  .ko-text-editor-fe956dda .ql-link-tooltip a.change {
+  .ko-text-editor-2e826b9e .ql-link-tooltip a.change {
     margin-right: 4px; }
-  .ko-text-editor-fe956dda .ql-link-tooltip.editing input.input,
-  .ko-text-editor-fe956dda .ql-link-tooltip.editing a.done {
+  .ko-text-editor-2e826b9e .ql-link-tooltip.editing input.input,
+  .ko-text-editor-2e826b9e .ql-link-tooltip.editing a.done {
     display: inline-block; }
-  .ko-text-editor-fe956dda .ql-link-tooltip.editing a.url,
-  .ko-text-editor-fe956dda .ql-link-tooltip.editing a.change,
-  .ko-text-editor-fe956dda .ql-link-tooltip.editing a.remove {
+  .ko-text-editor-2e826b9e .ql-link-tooltip.editing a.url,
+  .ko-text-editor-2e826b9e .ql-link-tooltip.editing a.change,
+  .ko-text-editor-2e826b9e .ql-link-tooltip.editing a.remove {
     display: none; }
-  .ko-text-editor-fe956dda .ql-multi-cursor {
+  .ko-text-editor-2e826b9e .ql-multi-cursor {
     position: absolute;
     left: 0;
     top: 0;
     z-index: 1000; }
-  .ko-text-editor-fe956dda .ql-multi-cursor .cursor {
+  .ko-text-editor-2e826b9e .ql-multi-cursor .cursor {
     margin-left: -1px;
     position: absolute; }
-  .ko-text-editor-fe956dda .ql-multi-cursor .cursor-flag {
+  .ko-text-editor-2e826b9e .ql-multi-cursor .cursor-flag {
     bottom: 100%;
     position: absolute;
     white-space: nowrap; }
-  .ko-text-editor-fe956dda .ql-multi-cursor .cursor-name {
+  .ko-text-editor-2e826b9e .ql-multi-cursor .cursor-name {
     display: inline-block;
     color: #fff;
     padding: 2px 8px; }
-  .ko-text-editor-fe956dda .ql-multi-cursor .cursor-caret {
+  .ko-text-editor-2e826b9e .ql-multi-cursor .cursor-caret {
     height: 100%;
     position: absolute;
     width: 2px; }
-  .ko-text-editor-fe956dda .ql-multi-cursor .cursor.hidden .cursor-flag {
+  .ko-text-editor-2e826b9e .ql-multi-cursor .cursor.hidden .cursor-flag {
     display: none; }
-  .ko-text-editor-fe956dda .ql-multi-cursor .cursor.top .cursor-flag {
+  .ko-text-editor-2e826b9e .ql-multi-cursor .cursor.top .cursor-flag {
     bottom: auto;
     top: 100%; }
-  .ko-text-editor-fe956dda .ql-multi-cursor .cursor.right .cursor-flag {
+  .ko-text-editor-2e826b9e .ql-multi-cursor .cursor.right .cursor-flag {
     right: -2px; }
-  .ko-text-editor-fe956dda .ql-paste-manager {
+  .ko-text-editor-2e826b9e .ql-paste-manager {
     left: -100000px;
     position: absolute;
     top: 50%; }
-  .ko-text-editor-fe956dda .ql-toolbar {
+  .ko-text-editor-2e826b9e .ql-toolbar {
     box-sizing: border-box; }
-  .ko-text-editor-fe956dda .ql-tooltip {
+  .ko-text-editor-2e826b9e .ql-tooltip {
     background-color: #fff;
     border: 1px solid #000;
     box-sizing: border-box;
@@ -3283,10 +3283,10 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
     top: 0px;
     white-space: nowrap;
     z-index: 2000; }
-  .ko-text-editor-fe956dda .ql-tooltip a {
+  .ko-text-editor-2e826b9e .ql-tooltip a {
     cursor: pointer;
     text-decoration: none; }
-  .ko-text-editor-fe956dda .ql-container {
+  .ko-text-editor-2e826b9e .ql-container {
     box-sizing: border-box;
     cursor: text;
     font-family: Helvetica, 'Arial', sans-serif;
@@ -3298,7 +3298,7 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
     overflow-y: auto;
     padding: 12px 15px;
     position: relative; }
-  .ko-text-editor-fe956dda .ql-editor {
+  .ko-text-editor-2e826b9e .ql-editor {
     box-sizing: border-box;
     min-height: 500px;
     outline: none;
@@ -3306,94 +3306,94 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
       -o-tab-size: 4;
          tab-size: 4;
     white-space: pre-wrap; }
-  .ko-text-editor-fe956dda .ql-editor div {
+  .ko-text-editor-2e826b9e .ql-editor div {
     margin: 0;
     padding: 0; }
-  .ko-text-editor-fe956dda .ql-editor a {
+  .ko-text-editor-2e826b9e .ql-editor a {
     text-decoration: underline; }
-  .ko-text-editor-fe956dda .ql-editor b {
+  .ko-text-editor-2e826b9e .ql-editor b {
     font-weight: bold; }
-  .ko-text-editor-fe956dda .ql-editor i {
+  .ko-text-editor-2e826b9e .ql-editor i {
     font-style: italic; }
-  .ko-text-editor-fe956dda .ql-editor s {
+  .ko-text-editor-2e826b9e .ql-editor s {
     text-decoration: line-through; }
-  .ko-text-editor-fe956dda .ql-editor u {
+  .ko-text-editor-2e826b9e .ql-editor u {
     text-decoration: underline; }
-  .ko-text-editor-fe956dda .ql-editor a,
-  .ko-text-editor-fe956dda .ql-editor b,
-  .ko-text-editor-fe956dda .ql-editor i,
-  .ko-text-editor-fe956dda .ql-editor s,
-  .ko-text-editor-fe956dda .ql-editor u,
-  .ko-text-editor-fe956dda .ql-editor span {
+  .ko-text-editor-2e826b9e .ql-editor a,
+  .ko-text-editor-2e826b9e .ql-editor b,
+  .ko-text-editor-2e826b9e .ql-editor i,
+  .ko-text-editor-2e826b9e .ql-editor s,
+  .ko-text-editor-2e826b9e .ql-editor u,
+  .ko-text-editor-2e826b9e .ql-editor span {
     background-color: inherit; }
-  .ko-text-editor-fe956dda .ql-editor img {
+  .ko-text-editor-2e826b9e .ql-editor img {
     max-width: 100%; }
-  .ko-text-editor-fe956dda .ql-editor blockquote,
-  .ko-text-editor-fe956dda .ql-editor ol,
-  .ko-text-editor-fe956dda .ql-editor ul {
+  .ko-text-editor-2e826b9e .ql-editor blockquote,
+  .ko-text-editor-2e826b9e .ql-editor ol,
+  .ko-text-editor-2e826b9e .ql-editor ul {
     margin: 0 0 0 2em;
     padding: 0; }
-  .ko-text-editor-fe956dda .ql-editor ol {
+  .ko-text-editor-2e826b9e .ql-editor ol {
     list-style-type: decimal; }
-  .ko-text-editor-fe956dda .ql-editor ul {
+  .ko-text-editor-2e826b9e .ql-editor ul {
     list-style-type: disc; }
-  .ko-text-editor-fe956dda .ql-editor.ql-ie-9 br,
-  .ko-text-editor-fe956dda .ql-editor.ql-ie-10 br {
+  .ko-text-editor-2e826b9e .ql-editor.ql-ie-9 br,
+  .ko-text-editor-2e826b9e .ql-editor.ql-ie-10 br {
     display: none; }
-  .ko-text-editor-fe956dda .ql-snow .ql-image-tooltip a {
+  .ko-text-editor-2e826b9e .ql-snow .ql-image-tooltip a {
     border: 1px solid #06c; }
-  .ko-text-editor-fe956dda .ql-snow .ql-image-tooltip a.insert {
+  .ko-text-editor-2e826b9e .ql-snow .ql-image-tooltip a.insert {
     background-color: #06c;
     color: #fff; }
-  .ko-text-editor-fe956dda .ql-snow .ql-image-tooltip .preview {
+  .ko-text-editor-2e826b9e .ql-snow .ql-image-tooltip .preview {
     border-color: #ccc;
     color: #ccc; }
-  .ko-text-editor-fe956dda .ql-snow .ql-link-tooltip a,
-  .ko-text-editor-fe956dda .ql-snow .ql-link-tooltip span {
+  .ko-text-editor-2e826b9e .ql-snow .ql-link-tooltip a,
+  .ko-text-editor-2e826b9e .ql-snow .ql-link-tooltip span {
     line-height: 25px; }
-  .ko-text-editor-fe956dda .ql-snow .ql-multi-cursor .cursor-name {
+  .ko-text-editor-2e826b9e .ql-snow .ql-multi-cursor .cursor-name {
     border-radius: 4px;
     font-size: 11px;
     font-family: Arial;
     margin-left: -50%;
     padding: 4px 10px; }
-  .ko-text-editor-fe956dda .ql-snow .ql-multi-cursor .cursor-triangle {
+  .ko-text-editor-2e826b9e .ql-snow .ql-multi-cursor .cursor-triangle {
     border-left: 4px solid transparent;
     border-right: 4px solid transparent;
     height: 0px;
     margin-left: -3px;
     width: 0px; }
-  .ko-text-editor-fe956dda .ql-snow .ql-multi-cursor .cursor.left .cursor-name {
+  .ko-text-editor-2e826b9e .ql-snow .ql-multi-cursor .cursor.left .cursor-name {
     margin-left: -8px; }
-  .ko-text-editor-fe956dda .ql-snow .ql-multi-cursor .cursor.right .cursor-flag {
+  .ko-text-editor-2e826b9e .ql-snow .ql-multi-cursor .cursor.right .cursor-flag {
     right: auto; }
-  .ko-text-editor-fe956dda .ql-snow .ql-multi-cursor .cursor.right .cursor-name {
+  .ko-text-editor-2e826b9e .ql-snow .ql-multi-cursor .cursor.right .cursor-name {
     margin-left: -100%;
     margin-right: -8px; }
-  .ko-text-editor-fe956dda .ql-snow .ql-multi-cursor .cursor-triangle.bottom {
+  .ko-text-editor-2e826b9e .ql-snow .ql-multi-cursor .cursor-triangle.bottom {
     border-top: 4px solid transparent;
     display: block;
     margin-bottom: -1px; }
-  .ko-text-editor-fe956dda .ql-snow .ql-multi-cursor .cursor-triangle.top {
+  .ko-text-editor-2e826b9e .ql-snow .ql-multi-cursor .cursor-triangle.top {
     border-bottom: 4px solid transparent;
     display: none;
     margin-top: -1px; }
-  .ko-text-editor-fe956dda .ql-snow .ql-multi-cursor .cursor.top .cursor-triangle.bottom {
+  .ko-text-editor-2e826b9e .ql-snow .ql-multi-cursor .cursor.top .cursor-triangle.bottom {
     display: none; }
-  .ko-text-editor-fe956dda .ql-snow .ql-multi-cursor .cursor.top .cursor-triangle.top {
+  .ko-text-editor-2e826b9e .ql-snow .ql-multi-cursor .cursor.top .cursor-triangle.top {
     display: block; }
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar {
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar {
     box-sizing: border-box;
     padding: 8px;
     user-select: none;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none; }
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-group {
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-group {
     display: inline-block;
     margin-right: 15px;
     vertical-align: middle; }
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-separator {
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-separator {
     box-sizing: border-box;
     background-color: #ddd;
     display: inline-block;
@@ -3402,7 +3402,7 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
     margin-right: 4px;
     vertical-align: middle;
     width: 1px; }
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button {
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button {
     box-sizing: border-box;
     display: inline-block;
     height: 24px;
@@ -3415,7 +3415,7 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
     cursor: pointer;
     text-align: center;
     width: 24px; }
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker {
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker {
     box-sizing: border-box;
     color: #444;
     display: inline-block;
@@ -3423,7 +3423,7 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
     font-size: 14px;
     font-weight: 500;
     position: relative; }
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label {
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label {
     box-sizing: border-box;
     display: inline-block;
     height: 24px;
@@ -3437,10 +3437,10 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
     cursor: pointer;
     position: relative;
     width: 100%; }
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label.ql-active,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label:hover {
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label.ql-active,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label:hover {
     color: #06c; }
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-options {
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-options {
     background-color: #fff;
     border: 1px solid transparent;
     box-sizing: border-box;
@@ -3448,7 +3448,7 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
     padding: 4px 8px;
     position: absolute;
     width: 100%; }
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-options .ql-picker-item {
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-options .ql-picker-item {
     background-position: center center;
     background-repeat: no-repeat;
     background-size: 18px 18px;
@@ -3457,49 +3457,49 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
     display: block;
     padding-bottom: 5px;
     padding-top: 5px; }
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-options .ql-picker-item.ql-selected,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-options .ql-picker-item:hover {
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-options .ql-picker-item.ql-selected,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-options .ql-picker-item:hover {
     color: #06c; }
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-expanded .ql-picker-label {
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-expanded .ql-picker-label {
     border-color: #ccc;
     color: #ccc;
     z-index: 2; }
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-expanded .ql-picker-options {
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-expanded .ql-picker-options {
     border-color: #ccc;
     box-shadow: rgba(0, 0, 0, 0.2) 0 2px 8px;
     display: block;
     margin-top: -1px;
     z-index: 1; }
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-color-picker .ql-picker-label {
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-color-picker .ql-picker-label {
     background-position: center center;
     width: 28px; }
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-color-picker .ql-picker-options {
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-color-picker .ql-picker-options {
     padding: 5px;
     width: 152px; }
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-color-picker .ql-picker-options .ql-picker-item {
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-color-picker .ql-picker-options .ql-picker-item {
     border: 1px solid transparent;
     float: left;
     height: 16px;
     margin: 2px;
     padding: 0px;
     width: 16px; }
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-color-picker .ql-picker-options .ql-picker-item.ql-primary-color {
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-color-picker .ql-picker-options .ql-picker-item.ql-primary-color {
     margin-bottom: 8px; }
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-color-picker .ql-picker-options .ql-picker-item.ql-selected,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-color-picker .ql-picker-options .ql-picker-item:hover {
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-color-picker .ql-picker-options .ql-picker-item.ql-selected,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-color-picker .ql-picker-options .ql-picker-item:hover {
     border-color: #000; }
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-font {
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-font {
     width: 105px; }
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-size {
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-size {
     width: 80px; }
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-font .ql-picker-label,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-size .ql-picker-label {
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-font .ql-picker-label,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-size .ql-picker-label {
     padding-left: 8px;
     padding-right: 8px; }
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-align .ql-picker-label {
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-align .ql-picker-label {
     background-position: center center;
     width: 28px; }
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-align .ql-picker-item {
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-align .ql-picker-item {
     box-sizing: border-box;
     display: inline-block;
     height: 24px;
@@ -3507,503 +3507,503 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
     vertical-align: middle;
     padding: 0px;
     width: 28px; }
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-align .ql-picker-options {
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-align .ql-picker-options {
     padding: 4px 0px; }
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label {
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label {
     background-image: url(../images/icons/dropdown-triangles.svg); }
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-expanded .ql-picker-label {
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-expanded .ql-picker-label {
     background-image: url(../images/icons/dropdown-triangles.svg); }
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-active:not(.ql-expanded) .ql-picker-label,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker:not(.ql-expanded) .ql-picker-label:hover {
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-active:not(.ql-expanded) .ql-picker-label,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker:not(.ql-expanded) .ql-picker-label:hover {
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASBAMAAACk4JNkAAAAKlBMVEUAAAAAYc4AZMgAZcwAZs0AZs0AZs0AZ8wAZswAZs0AZswAZswAZswAZsx12LPhAAAADXRSTlMAFRzExcbLzM/Q0dLbKbcyLwAAADVJREFUCNdjYCAeMKYJQFnSdzdCWbl3r0NZvnev4tFre/cKlNV79yaUpXP3EJTFtEqBBHcAAHyoDQk0vM/lAAAAAElFTkSuQmCC"); }
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-bold,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-bold .ql-picker-label,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=bold],
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=bold] {
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-bold,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-bold .ql-picker-label,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=bold],
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=bold] {
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAMAAABhEH5lAAAAYFBMVEUAAACAgIBAQEA5OTlAQEBERERAQEBERERERERERERDQ0NERERERERERERDQ0NERERERERFRUVERERERERFRUVERERERERERERERERERERERERERERERERERERERERERESN6WzHAAAAH3RSTlMAAggJDA8cQEtTWHF/i4yTpau+xMXX3O7v8/f6+/z+qN9w2AAAAFZJREFUeNqlzMcSgCAMRVEsYO+9vv//S9FhNIYld5HFmSTCqQ66dazkRzA1lPSQGRZGIsDMKMxRW7+2yCIcyf/QUyUGSnc+dkaqoFumM32pf2BqY+HUBfQaCPgVIBc1AAAAAElFTkSuQmCC"); }
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-bold.ql-active,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-bold .ql-picker-label.ql-active,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=bold].ql-active,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=bold].ql-selected,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-bold:hover,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-bold .ql-picker-label:hover,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=bold]:hover,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=bold]:hover {
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-bold.ql-active,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-bold .ql-picker-label.ql-active,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=bold].ql-active,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=bold].ql-selected,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-bold:hover,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-bold .ql-picker-label:hover,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=bold]:hover,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=bold]:hover {
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAMAAABhEH5lAAAAYFBMVEUAAAAAgP8AYL8AccYAatUAZswAZMgAZMsAZswAZcsAZcsAZssAZssAZ80AZswAZs0AZswAZ8wAZswAZcwAZs0AZswAZswAZswAZswAZswAZswAZswAZswAZswAZswAZsxCU9XcAAAAH3RSTlMAAggJDA8cQEtTWHF/i4yTpau+xMXX3O7v8/f6+/z+qN9w2AAAAFZJREFUeNqlzMcSgCAMRVEsYO+9vv//S9FhNIYld5HFmSTCqQ66dazkRzA1lPSQGRZGIsDMKMxRW7+2yCIcyf/QUyUGSnc+dkaqoFumM32pf2BqY+HUBfQaCPgVIBc1AAAAAElFTkSuQmCC"); }
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-italic,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-italic .ql-picker-label,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=italic],
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=italic] {
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-italic,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-italic .ql-picker-label,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=italic],
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=italic] {
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAAi0lEQVR42mMYvoARl4SLi0sNkGoAYmY0qf+MjIztu3fvrkYWZGLADZhB8pS4CN1lQUBqLRDvAQJXHMqIstEISp8BEZQYZAIi/v//f5ZSg0xBBCMj4ymyDQKGjxKQEgLiV8DweUS2QUBXGEOZp0EEJV4zgdJnKDLo379/JsS6iJHSFA0DTDhT9CiAAQBbWyIY/pd4rQAAAABJRU5ErkJggg=="); }
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-italic.ql-active,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-italic .ql-picker-label.ql-active,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=italic].ql-active,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=italic].ql-selected,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-italic:hover,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-italic .ql-picker-label:hover,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=italic]:hover,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=italic]:hover {
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-italic.ql-active,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-italic .ql-picker-label.ql-active,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=italic].ql-active,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=italic].ql-selected,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-italic:hover,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-italic .ql-picker-label:hover,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=italic]:hover,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=italic]:hover {
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAAk0lEQVR42u3SsQ3CMBBA0X/2BozACMQswg4EMQMUdOyQVdggdpagZAc4ihjJjYmU66K8xpZsfdnSsVxCzTFdEW6AB0oKcqdrLhQcNaK+PLc79QfapLTDgz8cU9Tv8ibZQqIBgI8OxhexH29KPz90jltgA7zownN+6C0Nowhg+JqEvCZbSDSHNDJBLBNdctWJXv18Ad5dJL0jVfDhAAAAAElFTkSuQmCC"); }
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-underline,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-underline .ql-picker-label,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=underline],
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=underline] {
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-underline,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-underline .ql-picker-label,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=underline],
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=underline] {
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAMAAABhEH5lAAAAM1BMVEUAAABLS0tFRUVDQ0NERERDQ0NFRUVFRUVERERDQ0NERERFRUVERERERERERERERERERESvCHKbAAAAEHRSTlMAERpMbW6Bgry9xMXh5PP51ZZfkwAAAEdJREFUeNq9yEEKgDAMRNHERDWq6dz/tFLBQUC6KfRtPnzpsh/sC2AHrcRUo0iuDXONI7gMxVW9wIQWPFb5sMgMk5YTdMmvGw2DA8yS9di7AAAAAElFTkSuQmCC"); }
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-underline.ql-active,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-underline .ql-picker-label.ql-active,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=underline].ql-active,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=underline].ql-selected,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-underline:hover,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-underline .ql-picker-label:hover,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=underline]:hover,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=underline]:hover {
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-underline.ql-active,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-underline .ql-picker-label.ql-active,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=underline].ql-active,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=underline].ql-selected,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-underline:hover,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-underline .ql-picker-label:hover,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=underline]:hover,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=underline]:hover {
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAMAAABhEH5lAAAAM1BMVEUAAAAAadIAYs4AZc0AZcwAZswAZ84AZswAZs0AZ8wAZcwAZs0AZswAZswAZswAZswAZsycBlETAAAAEHRSTlMAERpMbW6Bgry9xMXh5PP51ZZfkwAAAEdJREFUeNq9yEEKgDAMRNHERDWq6dz/tFLBQUC6KfRtPnzpsh/sC2AHrcRUo0iuDXONI7gMxVW9wIQWPFb5sMgMk5YTdMmvGw2DA8yS9di7AAAAAElFTkSuQmCC"); }
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-strike,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-strike .ql-picker-label,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=strike],
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=strike] {
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-strike,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-strike .ql-picker-label,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=strike],
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=strike] {
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAMAAABhEH5lAAAAn1BMVEUAAAAAAACAgIBAQEA7OztAQEBLS0tHR0dAQEBJSUlGRkZERERCQkJERERDQ0NERERERERDQ0NFRUVERERERERERERERERERERFRUVERERERERERERFRUVDQ0NFRUVERERFRUVFRUVERERFRUVFRUVFRUVERERFRUVFRUVERERERERERERERERERERERERERERERERERERERERERERERERfrjwTAAAANHRSTlMAAQIMDRAREhQVKCk6PEhLT1xkZWZ4e4CCg4SIiZucoaersLK2wcTFydLX2ODi5err8fX3BKZfrQAAAH5JREFUGBmlwOEWgTAYBuC3isgMxCYAmwRh++7/2qRzttP/HnQTZjdjilkALzhR4wBvQiaLk8WXOJwlHVHjYgxnSmbeR0swGEkpxWZ3vt7fL/w9P4/ist+KdZ7zYYiWiCnScFYiRq1HFo4mxaKIKdJw0ooaVQovkaW1pUzQyQ86Agx4yKmWPAAAAABJRU5ErkJggg=="); }
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-strike.ql-active,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-strike .ql-picker-label.ql-active,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=strike].ql-active,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=strike].ql-selected,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-strike:hover,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-strike .ql-picker-label:hover,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=strike]:hover,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=strike]:hover {
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-strike.ql-active,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-strike .ql-picker-label.ql-active,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=strike].ql-active,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=strike].ql-selected,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-strike:hover,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-strike .ql-picker-label:hover,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=strike]:hover,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=strike]:hover {
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAMAAABhEH5lAAAAolBMVEUAAAAAAP8AgP8AatUAYsQAYM8AadIAY8YAZswAYc4AZswAZM0AZcoAZswAZ8oAZswAZMsAZ8oAZswAZcoAZ8sAZswAZssAZssAZs0AZswAZ8wAZs0AZ8wAZs0AZswAZ8wAZ8wAZs0AZ8wAZ8wAZs0AZs0AZs0AZcwAZs0AZcwAZswAZswAZswAZswAZswAZswAZswAZswAZswAZswAZswAZsyiCU+yAAAANXRSTlMAAQIMDRAREhQVKCk6PEhLT1xkZWZ4e4CAgoOEiImbnKGnq7CytsHExcnS19jg4uXq6/H190B1i7AAAAB/SURBVBgZpcDhFoEwGAbgt4pIBmImAJsEYfvu/9ZU52yn/z3oxk/vWuczD453psYRzoR0GkaLHzFYSzqhwvgY1pT0vI8WbzASQvDt/nJ7fN6ovb7P/HrYrTdZxoY+WoJEkoK14iEqPTKwFMkkCBJJClZcUqOM4USiMKYQETr5A2SVDLpJv6ZtAAAAAElFTkSuQmCC"); }
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-link,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-link .ql-picker-label,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=link],
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=link] {
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-link,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-link .ql-picker-label,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=link],
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=link] {
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAMAAABhEH5lAAAAllBMVEUAAAD///9VVVVJSUk5OTlAQEBHR0dFRUVCQkJHR0dBQUFCQkJGRkZDQ0NGRkZFRUVCQkJDQ0NERERDQ0NERERFRUVERERFRUVDQ0NERERFRUVERERERERFRUVERERERERERERERERFRUVERERFRUVFRUVERERERERERERERERERERERERERERERERERERERERERERERETx5KUoAAAAMXRSTlMAAAYHCQwZGiMkJzIzOUJOYGNlfoCJl5ibnaCxtLa8xsfIycrQ1OHi5uvs7e/19vn8NGTYeAAAAJdJREFUeNqN0McOgkAARdGnFJWiKGBhEEFpSn3//3OGjMmQ6MK7PMuLxVe/CXDTPl5DJmk3cOTTmZE7MDQES11RyhBY5vQU9aOB2z3gWVFMsXywYx3t9Q9tXsyDjlOVLQlOyanOL1ibkqB7l5odM01QSJqK6GdXmGwUHVhowImJIr2iMI9sLUWwa5LtFjPCSjSJBUl//HoDlmQPy0DFuCkAAAAASUVORK5CYII="); }
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-link.ql-active,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-link .ql-picker-label.ql-active,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=link].ql-active,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=link].ql-selected,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-link:hover,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-link .ql-picker-label:hover,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=link]:hover,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=link]:hover {
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-link.ql-active,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-link .ql-picker-label.ql-active,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=link].ql-active,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=link].ql-selected,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-link:hover,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-link .ql-picker-label:hover,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=link]:hover,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=link]:hover {
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAMAAABhEH5lAAAAmVBMVEUAAAD///8AVdUAbdsAccYAatUAZswAYs4AZswAY80AacsAZswAZM0AZ8kAZM0AZcsAZcoAZMsAZcoAZcoAZssAZs0AZs0AZ8wAZs0AZswAZs0AZswAZs0AZswAZs0AZs0AZs0AZ8wAZswAZcwAZs0AZs0AZswAZswAZswAZswAZswAZswAZswAZswAZswAZswAZswAZswAZsy/jsjWAAAAMnRSTlMAAAYHCQwZGiMkJzIzOUJOYGNlfoCAiZeYm52gsbS2vMbHyMnK0NTh4ubr7O3v9fb5/BM/koAAAACXSURBVHjajdDbEoFQAIXhpROqiAjaSdGJSq33fzjTbDO7GS78l9/lj9lXvwnw0le8gEzSuufAhzshr2doCpaGopQhoOX0Fb0GE9fbnidFMYV2Z8c62hgfWj6Z7zqOVY4kuCXHuqBgbUmC4Z9rdsx0QSFpLGKQXWCxUbRloQNHJoqMisI6sLUVwalJtitMCHPRJDYk/fHrDdIHECSPJag6AAAAAElFTkSuQmCC"); }
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-image,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-image .ql-picker-label,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=image],
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=image] {
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-image,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-image .ql-picker-label,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=image],
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=image] {
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASBAMAAACk4JNkAAAAElBMVEUAAABERERERERFRUVEREREREQbmEZBAAAABXRSTlMAeMTFxj7M9NAAAABBSURBVAjXY2DAD1RDQSAYyAqFABALLANmMRnAWMwODIIMUFnGUAEIS1A0NADMYgTqhLBY4SyEKXCTTcGMEAJuAgBa9RKl6Fva+wAAAABJRU5ErkJggg=="); }
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-image.ql-active,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-image .ql-picker-label.ql-active,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=image].ql-active,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=image].ql-selected,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-image:hover,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-image .ql-picker-label:hover,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=image]:hover,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=image]:hover {
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-image.ql-active,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-image .ql-picker-label.ql-active,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=image].ql-active,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=image].ql-selected,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-image:hover,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-image .ql-picker-label:hover,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=image]:hover,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=image]:hover {
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASBAMAAACk4JNkAAAAElBMVEUAAAAAZswAZcwAZs0AZs0AZszYB6XUAAAABXRSTlMAeMTFxj7M9NAAAABBSURBVAjXY2DAD1RDQSAYyAqFABALLANmMRnAWMwODIIMUFnGUAEIS1A0NADMYgTqhLBY4SyEKXCTTcGMEAJuAgBa9RKl6Fva+wAAAABJRU5ErkJggg=="); }
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-list,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-list .ql-picker-label,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=list],
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=list] {
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-list,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-list .ql-picker-label,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=list],
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=list] {
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAMAAABhEH5lAAAAS1BMVEUAAABCQkJFRUVGRkZFRUVCQkJFRUVDQ0NFRUVFRUVFRUVERERERERERERERERFRUVERERERERERERERERERERERERERERERERERET32eciAAAAGHRSTlMAMjRCQ0lOfYKQlJmaocTFxuHi5OXm9falfyKhAAAATElEQVR42mMgFnCKYIpJMDDwSUABP1yIHyYkABYRlBAmwngucV50IXZGIXTjmQTZ0I0XIcp4DjEedCFWFlF041mZRdCN5xDjZiAdAACXwgbrzvG+ZgAAAABJRU5ErkJggg=="); }
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-list.ql-active,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-list .ql-picker-label.ql-active,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=list].ql-active,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=list].ql-selected,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-list:hover,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-list .ql-picker-label:hover,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=list]:hover,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=list]:hover {
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-list.ql-active,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-list .ql-picker-label.ql-active,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=list].ql-active,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=list].ql-selected,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-list:hover,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-list .ql-picker-label:hover,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=list]:hover,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=list]:hover {
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAMAAABhEH5lAAAAS1BMVEUAAAAAZswAZ8kAZM0AZ8oAZcsAZcsAZswAZswAZ80AZs0AZs0AZ80AZ8wAZcwAZs0AZs0AZswAZswAZswAZswAZswAZswAZswAZswCB3gJAAAAGHRSTlMAMjRCQ0lOfYKQlJmaocTFxuHi5OXm9falfyKhAAAATElEQVR42mMgFnCKYIpJMDDwSUABP1yIHyYkABYRlBAmwngucV50IXZGIXTjmQTZ0I0XIcp4DjEedCFWFlF041mZRdCN5xDjZiAdAACXwgbrzvG+ZgAAAABJRU5ErkJggg=="); }
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-bullet,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-bullet .ql-picker-label,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=bullet],
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=bullet] {
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-bullet,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-bullet .ql-picker-label,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=bullet],
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=bullet] {
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASBAMAAACk4JNkAAAAD1BMVEUAAABERERFRUVERERERETRGyWnAAAABHRSTlMAxMXG4b8ciAAAABxJREFUCNdjYMAPhBhdgMAJyFJmArGcGRgGXAcA/t0ImAOSO9kAAAAASUVORK5CYII="); }
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-bullet.ql-active,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-bullet .ql-picker-label.ql-active,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=bullet].ql-active,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=bullet].ql-selected,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-bullet:hover,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-bullet .ql-picker-label:hover,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=bullet]:hover,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=bullet]:hover {
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-bullet.ql-active,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-bullet .ql-picker-label.ql-active,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=bullet].ql-active,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=bullet].ql-selected,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-bullet:hover,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-bullet .ql-picker-label:hover,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=bullet]:hover,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=bullet]:hover {
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASBAMAAACk4JNkAAAAD1BMVEUAAAAAZcwAZs0AZs0AZsyEYJIjAAAABHRSTlMAxMXG4b8ciAAAABxJREFUCNdjYMAPhBhdgMAJyFJmArGcGRgGXAcA/t0ImAOSO9kAAAAASUVORK5CYII="); }
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-authorship,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-authorship .ql-picker-label,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=authorship],
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=authorship] {
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-authorship,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-authorship .ql-picker-label,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=authorship],
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=authorship] {
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAMAAABhEH5lAAAARVBMVEUAAABFRUVFRUUAAAAAAABERERDQ0NEREQAAABERERERERERERERERERERFRUVERERERERERERERERERERERERERERERERVeSBUAAAAFnRSTlMAMDtOT1JfYmassMfN09Ta6vD4+fz9w8DTTwAAAExJREFUGBmVwEkSgCAMBMBRQUEU4zb/f6oFF5KbNLp4EQ8rkxnWQ76whBRYkYwwxo08ZijDzWJBs7La0ZysLjSJVUKXKSgOhQuKw08fJOYE1SddZQoAAAAASUVORK5CYII="); }
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-authorship.ql-active,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-authorship .ql-picker-label.ql-active,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=authorship].ql-active,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=authorship].ql-selected,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-authorship:hover,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-authorship .ql-picker-label:hover,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=authorship]:hover,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=authorship]:hover {
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-authorship.ql-active,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-authorship .ql-picker-label.ql-active,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=authorship].ql-active,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=authorship].ql-selected,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-authorship:hover,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-authorship .ql-picker-label:hover,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=authorship]:hover,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=authorship]:hover {
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAMAAABhEH5lAAAARVBMVEUAAAAAZcoAaMsAZc4AZ8sAZ8oAZswAZcsAZ80AZs0AZ8wAZ8wAZswAZswAZswAZs0AZswAZswAZswAZswAZswAZswAZszAoUIuAAAAFnRSTlMAMDtOT1JfYmassMfN09Ta6vD4+fz9w8DTTwAAAExJREFUGBmVwEkSgCAMBMBRQUEU4zb/f6oFF5KbNLp4EQ8rkxnWQ76whBRYkYwwxo08ZijDzWJBs7La0ZysLjSJVUKXKSgOhQuKw08fJOYE1SddZQoAAAAASUVORK5CYII="); }
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-color,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-color .ql-picker-label,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=color],
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=color] {
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-color,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-color .ql-picker-label,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=color],
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=color] {
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAMAAABhEH5lAAAAgVBMVEUAAAAAAACAgIBAQEBVVVVDQ0NGRkZGRkZFRUVERERDQ0NDQ0NDQ0NCQkIAAABFRUUAAABDQ0NEREREREREREQAAABDQ0NDQ0NERERFRUVERERERERERERDQ0NERERERERFRUVFRUVERERERERERERERERERERERERERERERERERERLPkdWAAAAKnRSTlMAAQIEBhMWISUtLkVMTU5OT1BTVlpmeX6OkJmdvL3GztTj5/Hy8/b3/f5utmv0AAAAX0lEQVR42pXIRQ6AQABDUdzd3bX3PyCWwAwr+Is2ecyvuKriXmQD5otKoKBFQz+sKkU5khQZKdK8yMoyiQTFOIseEbqLWv6mAPW+bAPvJmN0j/N7nfmTFRI5Jzk0fWwD4sYJPnqIyzwAAAAASUVORK5CYII="); }
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-color.ql-active,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-color .ql-picker-label.ql-active,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=color].ql-active,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=color].ql-selected,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-color:hover,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-color .ql-picker-label:hover,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=color]:hover,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=color]:hover {
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-color.ql-active,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-color .ql-picker-label.ql-active,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=color].ql-active,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=color].ql-selected,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-color:hover,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-color .ql-picker-label:hover,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=color]:hover,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=color]:hover {
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAMAAABhEH5lAAAAgVBMVEUAAAAAAP8AgP8AgL8AVdUAa8kAaNEAZMkAZ8gAZswAZM0AZMsAZc0AZ8oAZcsAZc4AZ8sAZswAZcsAZc0AZswAZ80AZcoAZcoAZs0AZ80AZs0AZs0AZs0AZ8wAZs0AZswAZswAZswAZswAZswAZswAZswAZswAZswAZswAZswAZsy3JBcuAAAAKnRSTlMAAQIEBhMWISUtLkVMTU5OT1BTVlpmeX6OkJmdvL3GztTj5/Hy8/b3/f5utmv0AAAAX0lEQVR42pXIRQ6AQABDUdzd3bX3PyCWwAwr+Is2ecyvuKriXmQB5otKoKBFQz+sKkU5khQZKdK8yMoyiQTFOIseEbqLWv6mAPW+bAPvJmN0j/N7nfmTHRI5Jzk0fWwD4foJPqgJbeoAAAAASUVORK5CYII="); }
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-background,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-background .ql-picker-label,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=background],
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=background] {
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-background,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-background .ql-picker-label,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=background],
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=background] {
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAMAAABhEH5lAAAAnFBMVEUAAAAAAACAgIBAQEAAAABVVVUAAAAAAAAAAABDQ0MAAABGRkZGRkYAAABFRUVERERDQ0MAAAAAAAAAAAAAAABDQ0MAAABDQ0MAAABCQkJFRUVDQ0NERERERERERERDQ0NDQ0NERERFRUVERERERERERERDQ0NERERERERFRUVFRUVERERERERERERERERERERERERERERERERERETMTXVbAAAAM3RSTlMAAQIEBgYHCBMTFBYhIyUtLjE2N0JFS0xNTU5QU1ZaeX6OkJmdvL3GztTj5/Hy8/b3/f5Qd6EEAAAAf0lEQVR42o2PRw6DQBRDHVJISCUhvTd69/3vhgT6MLPDmoX15KfRR++c6mdKgVIOTRFoeJ6hE+tCnjXRgUv+oc02jJNyrYk/vj/8jhRxnheLVZHNupn1Yp3nVIgzjhoUDlvxQR/AIOBtKbNjerUB+x7vhZjARPkLyslbYIe+qQDqMQxGJwkBGwAAAABJRU5ErkJggg=="); }
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-background.ql-active,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-background .ql-picker-label.ql-active,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=background].ql-active,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=background].ql-selected,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-background:hover,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-background .ql-picker-label:hover,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=background]:hover,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=background]:hover {
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-background.ql-active,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-background .ql-picker-label.ql-active,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=background].ql-active,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=background].ql-selected,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-background:hover,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-background .ql-picker-label:hover,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=background]:hover,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=background]:hover {
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAMAAABhEH5lAAAAllBMVEUAAAAAAP8AgP8AgL8AVdUAbbYAYL8Aa8kAZswAaNEAZMkAZswAZ8gAZswAZM0AaMsAaNAAZswAZM0AZMsAZswAZc0AZ8oAZ80AZcsAZswAZcsAZc0AZswAZcoAZcoAZs0AZ80AZs0AZs0AZs0AZ8wAZs0AZswAZswAZswAZswAZswAZswAZswAZswAZswAZswAZswAZsy8dW5vAAAAMXRSTlMAAQIEBgcIExQWISMlLS4xNjdCRUtMTU1OUFNWWnl+jpCZnby9xs7U4+fx8vP29/3+dqGBzgAAAH5JREFUeNqNj0cOg0AUQx1CgFQS0nujd9//ckigDzM7rFlYT34afYzOuX2WFCjl0BWBRhAYOnEu5EkTPfjkH9pswzSr15r44/vDr6mI87JarKrCHmbOi22ethDPTDoUT3vxwRDAJOJtKbNjfnUB957uhVjATPkLyslbYIexaQB/ngudkm14XQAAAABJRU5ErkJggg=="); }
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-left,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-left .ql-picker-label,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=left],
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=left] {
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-left,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-left .ql-picker-label,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=left],
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=left] {
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASBAMAAACk4JNkAAAAD1BMVEUAAABERERFRUVERERERETRGyWnAAAABHRSTlMAxMXG4b8ciAAAAClJREFUCNdjYMAPRFxcnCAsFRcXZwYiAFCHC0STCpjlTJwOJwaYDoIaAKIACBBRNsu4AAAAAElFTkSuQmCC"); }
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-left.ql-active,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-left .ql-picker-label.ql-active,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=left].ql-active,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=left].ql-selected,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-left:hover,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-left .ql-picker-label:hover,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=left]:hover,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=left]:hover {
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-left.ql-active,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-left .ql-picker-label.ql-active,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=left].ql-active,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=left].ql-selected,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-left:hover,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-left .ql-picker-label:hover,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=left]:hover,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=left]:hover {
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASBAMAAACk4JNkAAAAD1BMVEUAAAAAZcwAZs0AZs0AZsyEYJIjAAAABHRSTlMAxMXG4b8ciAAAAClJREFUCNdjYMAPRFxcnCAsFRcXZwYiAFCHC0STCpjlTJwOJwaYDoIaAKIACBBRNsu4AAAAAElFTkSuQmCC"); }
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-right,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-right .ql-picker-label,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=right],
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=right] {
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-right,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-right .ql-picker-label,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=right],
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=right] {
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASBAMAAACk4JNkAAAAD1BMVEUAAABERERFRUVERERERETRGyWnAAAABHRSTlMAxMXG4b8ciAAAAChJREFUCNdjYCAIRFxcnCAsFRcXZ2KUu0B0qIBZzgzEaXFigGkhpAMAmbwIEMJ9k/cAAAAASUVORK5CYII="); }
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-right.ql-active,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-right .ql-picker-label.ql-active,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=right].ql-active,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=right].ql-selected,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-right:hover,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-right .ql-picker-label:hover,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=right]:hover,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=right]:hover {
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-right.ql-active,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-right .ql-picker-label.ql-active,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=right].ql-active,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=right].ql-selected,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-right:hover,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-right .ql-picker-label:hover,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=right]:hover,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=right]:hover {
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASBAMAAACk4JNkAAAAD1BMVEUAAAAAZcwAZs0AZs0AZsyEYJIjAAAABHRSTlMAxMXG4b8ciAAAAChJREFUCNdjYCAIRFxcnCAsFRcXZ2KUu0B0qIBZzgzEaXFigGkhpAMAmbwIEMJ9k/cAAAAASUVORK5CYII="); }
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-center,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-center .ql-picker-label,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=center],
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=center] {
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-center,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-center .ql-picker-label,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=center],
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=center] {
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASBAMAAACk4JNkAAAAD1BMVEUAAABERERFRUVERERERETRGyWnAAAABHRSTlMAxMXG4b8ciAAAAC1JREFUCNdjYCAAGF1cXBTALCYgy4CBIBBxAQEnIEsFzHJmIMYKiCVMYBYhSwCyqQhMfft6AQAAAABJRU5ErkJggg=="); }
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-center.ql-active,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-center .ql-picker-label.ql-active,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=center].ql-active,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=center].ql-selected,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-center:hover,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-center .ql-picker-label:hover,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=center]:hover,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=center]:hover {
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-center.ql-active,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-center .ql-picker-label.ql-active,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=center].ql-active,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=center].ql-selected,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-center:hover,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-center .ql-picker-label:hover,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=center]:hover,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=center]:hover {
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASBAMAAACk4JNkAAAAD1BMVEUAAAAAZcwAZs0AZs0AZsyEYJIjAAAABHRSTlMAxMXG4b8ciAAAAC1JREFUCNdjYCAAGF1cXBTALCYgy4CBIBBxAQEnIEsFzHJmIMYKiCVMYBYhSwCyqQhMfft6AQAAAABJRU5ErkJggg=="); }
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-justify,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-justify .ql-picker-label,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=justify],
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=justify] {
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-justify,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-justify .ql-picker-label,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=justify],
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=justify] {
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASBAMAAACk4JNkAAAAD1BMVEUAAABERERFRUVERERERETRGyWnAAAABHRSTlMAxMXG4b8ciAAAABpJREFUCNdjYMAPRFxAwAnIUgGznBkYBlwHAJGzCjB/C3owAAAAAElFTkSuQmCC"); }
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-justify.ql-active,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-justify .ql-picker-label.ql-active,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=justify].ql-active,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=justify].ql-selected,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-justify:hover,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-justify .ql-picker-label:hover,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=justify]:hover,
-  .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=justify]:hover {
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-justify.ql-active,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-justify .ql-picker-label.ql-active,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=justify].ql-active,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=justify].ql-selected,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-justify:hover,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-justify .ql-picker-label:hover,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=justify]:hover,
+  .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=justify]:hover {
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAALklEQVR42mMYvoARzko9cwTIsyZR+zGGWcZgPUwIMUZGShwyGtijgT0a2EMMAADESwwWta/i5QAAAABJRU5ErkJggg=="); }
   @media (-webkit-min-device-pixel-ratio: 2) {
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label {
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label {
       background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkBAMAAAATLoWrAAAAIVBMVEUAAABCQkJDQ0NDQ0NERERERERERERERERERERERERERERehmmoAAAACnRSTlMATVRbaeXo6fz+NPhZJgAAAF9JREFUKM9jYBjkQC0JXYS5a4UBmpDFqlXN6IpWrUJTprEKCJpQhLJAQsswhZaiCImDhAJp5kMxkPGJZLjLEiQ0GUWIZdaqVSsdUM33XLVqCpqVLLPQFTEwmAcP9qQAAFUgKabkwE6gAAAAAElFTkSuQmCC"); }
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-expanded .ql-picker-label {
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-expanded .ql-picker-label {
       background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkBAMAAAATLoWrAAAAJFBMVEWqqqr////AwMDAwMDAwMDBwcHBwcHBwcHBwcHBwcHBwcHBwcEexLCPAAAAC3RSTlMAAE1UW2nl6On8/tZA57EAAABxSURBVHjazc4hFkBAGMTxL3AAp+AGniYiyaLnBETHoKkknbc7l7OrzW7zhP3HX5mRxCskEsknEaZoU6VDNbAyRRugSqICpoVotnT7dBFllnpefPuHUpjGD78aSztRfAK65cUOOIQpPnXrkFSDEFFB0APtK1HCkKpz1wAAAABJRU5ErkJggg=="); }
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-active:not(.ql-expanded) .ql-picker-label,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker:not(.ql-expanded) .ql-picker-label:hover {
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-active:not(.ql-expanded) .ql-picker-label,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker:not(.ql-expanded) .ql-picker-label:hover {
       background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkBAMAAAATLoWrAAAAIVBMVEUAAAAAZ8oAZMsAZc0AZswAZswAZswAZswAZswAZswAZswhMkyGAAAACnRSTlMATVRbaeXo6fz+NPhZJgAAAF9JREFUKM9jYBjkQC0JXYS5a4UBmpDFqlXN6IpWrUJTprEKCJpQhLJAQsswhZaiCImDhAJp5kMxkPGJZLjLEiQ0GUWIZdaqVSsdUM33XLVqCpqVLLPQFTEwmAcP9qQAAFUgKabkwE6gAAAAAElFTkSuQmCC"); }
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-bold,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-bold .ql-picker-label,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=bold],
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=bold] {
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-bold,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-bold .ql-picker-label,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=bold],
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=bold] {
       background-image: url(../images/icons/bold.svg); }
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-bold.ql-active,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-bold .ql-picker-label.ql-active,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=bold].ql-active,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=bold].ql-selected,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-bold:hover,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-bold .ql-picker-label:hover,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=bold]:hover,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=bold]:hover {
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-bold.ql-active,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-bold .ql-picker-label.ql-active,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=bold].ql-active,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=bold].ql-selected,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-bold:hover,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-bold .ql-picker-label:hover,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=bold]:hover,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=bold]:hover {
       background-image: url(../images/icons/bold.svg); }
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-italic,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-italic .ql-picker-label,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=italic],
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=italic] {
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-italic,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-italic .ql-picker-label,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=italic],
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=italic] {
       background-image: url(../images/icons/italic.svg); }
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-italic.ql-active,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-italic .ql-picker-label.ql-active,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=italic].ql-active,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=italic].ql-selected,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-italic:hover,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-italic .ql-picker-label:hover,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=italic]:hover,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=italic]:hover {
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-italic.ql-active,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-italic .ql-picker-label.ql-active,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=italic].ql-active,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=italic].ql-selected,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-italic:hover,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-italic .ql-picker-label:hover,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=italic]:hover,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=italic]:hover {
       background-image: url(../images/icons/italic.svg); }
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-underline,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-underline .ql-picker-label,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=underline],
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=underline] {
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-underline,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-underline .ql-picker-label,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=underline],
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=underline] {
       background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAMAAADW3miqAAAAWlBMVEUAAAAAAAAzMzNAQEBGRkZERERERERCQkJERERDQ0NFRUVERERERERFRUVERERERERERERFRUVERERERERERERDQ0NFRUVERERERERERERERERERERERERERET15sOLAAAAHXRSTlMAAQUMLC04TU9UVYePkJKkxMXG2Nrf4+jz9/n6/qlZ0HQAAACUSURBVHja7Y3BDsIgEAW3UCmCFatQxLL//5uuiQ0py1EPxs5tHhMW/oMhxoF5TUSMzGuQqH2PfiO60yiLStIHi260qqKKNLDI0XouOpI6Fh1f/x9W6xOpYZHwNM/9u5lJvACGzvSQRiWlOiUkNDSwuMFCi87mkmTbQRvt18aXWwxhXFiW4IyAr3LBJtMmmtrRFT7ME0B0HEswIOSJAAAAAElFTkSuQmCC"); }
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-underline.ql-active,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-underline .ql-picker-label.ql-active,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=underline].ql-active,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=underline].ql-selected,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-underline:hover,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-underline .ql-picker-label:hover,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=underline]:hover,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=underline]:hover {
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-underline.ql-active,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-underline .ql-picker-label.ql-active,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=underline].ql-active,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=underline].ql-selected,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-underline:hover,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-underline .ql-picker-label:hover,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=underline]:hover,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=underline]:hover {
       background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAMAAADW3miqAAAAWlBMVEUAAAAAAP8AZswAatUAaMsAZswAZM0AZ8oAZMsAZMsAZswAZswAZs0AZ80AZ8wAZ8wAZcwAZs0AZs0AZswAZs0AZswAZswAZswAZswAZswAZswAZswAZswAZszogqY1AAAAHXRSTlMAAQUMLC04TU9UVYePkJKkxMXG2Nrf4+jz9/n6/qlZ0HQAAACUSURBVHja7Y3BDsIgEAW3UCmCFatQxLL//5uuiQ0py1EPxs5tHhMW/oMhxoF5TUSMzGuQqH2PfiO60yiLStIHi260qqKKNLDI0XouOpI6Fh1f/x9W6xOpYZHwNM/9u5lJvACGzvSQRiWlOiUkNDSwuMFCi87mkmTbQRvt18aXWwxhXFiW4IyAr3LBJtMmmtrRFT7ME0B0HEswIOSJAAAAAElFTkSuQmCC"); }
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-strike,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-strike .ql-picker-label,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=strike],
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=strike] {
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-strike,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-strike .ql-picker-label,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=strike],
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=strike] {
       background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAMAAADW3miqAAABLFBMVEUAAACAgIBVVVVAQEAzMzNVVVVAQEA5OTlNTU1JSUlERERHR0dDQ0NGRkZDQ0NAQEBCQkJAQEBGRkZAQEBGRkZERERBQUFERERGRkZCQkJGRkZERERFRUVERERDQ0NFRUVERERDQ0NFRUVCQkJDQ0NFRUVCQkJDQ0NERERDQ0NERERERERDQ0NFRUVERERERERERERERERFRUVERERDQ0NFRUVERERERERFRUVERERERERDQ0NDQ0NFRUVERERERERFRUVERERERERFRUVERERERERDQ0NERERFRUVERERERERERERFRUVERERERERERERERERFRUVERERERERERERFRUVERERERERERERERERERERERERERERERERERERERERERERERERERERERET5TTiyAAAAY3RSTlMAAgMEBQYICQoODxITFhcYGxwdICEtLzEzNjc4P0BFRkdISk1YWWBjaWtsdHZ3f4CHiImKjJGSk5SVl5ufo6Smp625uru8vb/BwsPExcbMzs/Q0dPi4+Tl6+zv8PL19vf4+/z2SQ4sAAABE0lEQVQ4y2NgGDmAV8c5PCkxxFGDE6cSDuOEZCiI0WXGroY/OBkJeHJhU8Pkm4wCXBixKFIHyUTqibJzS5lEgNhqWBT5AMWD+CFsHg8gxxuLoniguCyMIwLkxGFRBPKZDKEw8gMqCuAloEgb7HADMTZ8ijisjHTUlCSFOdgFxeVUNPXM7Z38QmJ9EApQxFFCyxeuxhtFPC7U39nBQl9LVV5CiAMpiFDEOYQlldR0jGwM8DmOVVDRLBpkpDIBr/KBXOBKKNSEgYpiMUQjgaLChBQ5A0W94AHO6wXkumEoUgY5NcpUUYCFRUDBNAqHw22T0YAdNp9bo6qxZMLqI4VAhJIgBZwelzZ0D4uLC3M3lB5B5QgAFQdgZ6NzzvYAAAAASUVORK5CYII="); }
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-strike.ql-active,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-strike .ql-picker-label.ql-active,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=strike].ql-active,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=strike].ql-selected,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-strike:hover,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-strike .ql-picker-label:hover,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=strike]:hover,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=strike]:hover {
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-strike.ql-active,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-strike .ql-picker-label.ql-active,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=strike].ql-active,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=strike].ql-selected,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-strike:hover,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-strike .ql-picker-label:hover,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=strike]:hover,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=strike]:hover {
       background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAMAAADW3miqAAABLFBMVEUAAAAAgP8AVaoAgL8AZswAVdUAYL8AccYAZswAbcgAZswAY8YAa8kAaNEAZMgAasoAaNAAZMgAasoAaMcAZMkAZswAZ8kAaMsAZM0AaMsAZswAZM0AZcoAZMsAZMsAZswAZc0AZ8oAZMsAZ8oAZcsAZMsAZcoAZMsAZswAZssAZssAZcoAZssAZcwAZssAZs0AZswAZ8wAZs0AZs0AZswAZswAZ8wAZs0AZs0AZ80AZ8wAZswAZ8wAZs0AZ8wAZ8wAZs0AZs0AZswAZ8wAZs0AZs0AZ8wAZcwAZs0AZ8wAZswAZcwAZs0AZs0AZ8wAZswAZswAZs0AZswAZswAZswAZswAZswAZswAZswAZswAZswAZswAZswAZswAZswAZswAZswAZswAZswAZswL5dPDAAAAY3RSTlMAAgMEBQYICQoODxITFhcYGxwdICEtLzEzNjc4P0BFRkdISk1YWWBjaWtsdHZ3f4CHiImKjJGSk5SVl5ufo6Smp625uru8vb/BwsPExcbMzs/Q0dPi4+Tl6+zv8PL19vf4+/z2SQ4sAAABE0lEQVQ4y2NgGDmAV8c5PCkxxFGDE6cSDuOEZCiI0WXGroY/OBkJeHJhU8Pkm4wCXBixKFIHyUTqibJzS5lEgNhqWBT5AMWD+CFsHg8gxxuLoniguCyMIwLkxGFRBPKZDKEw8gMqCuAloEgb7HADMTZ8ijisjHTUlCSFOdgFxeVUNPXM7Z38QmJ9EApQxFFCyxeuxhtFPC7U39nBQl9LVV5CiAMpiFDEOYQlldR0jGwM8DmOVVDRLBpkpDIBr/KBXOBKKNSEgYpiMUQjgaLChBQ5A0W94AHO6wXkumEoUgY5NcpUUYCFRUDBNAqHw22T0YAdNp9bo6qxZMLqI4VAhJIgBZwelzZ0D4uLC3M3lB5B5QgAFQdgZ6NzzvYAAAAASUVORK5CYII="); }
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-link,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-link .ql-picker-label,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=link],
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=link] {
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-link,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-link .ql-picker-label,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=link],
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=link] {
       background-image: url(../images/icons/link.svg); }
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-link.ql-active,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-link .ql-picker-label.ql-active,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=link].ql-active,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=link].ql-selected,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-link:hover,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-link .ql-picker-label:hover,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=link]:hover,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=link]:hover {
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-link.ql-active,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-link .ql-picker-label.ql-active,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=link].ql-active,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=link].ql-selected,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-link:hover,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-link .ql-picker-label:hover,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=link]:hover,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=link]:hover {
       background-image: url(../images/icons/link.svg); }
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-image,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-image .ql-picker-label,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=image],
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=image] {
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-image,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-image .ql-picker-label,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=image],
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=image] {
       background-image: url(../images/icons/photos.svg); }
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-image.ql-active,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-image .ql-picker-label.ql-active,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=image].ql-active,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=image].ql-selected,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-image:hover,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-image .ql-picker-label:hover,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=image]:hover,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=image]:hover {
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-image.ql-active,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-image .ql-picker-label.ql-active,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=image].ql-active,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=image].ql-selected,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-image:hover,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-image .ql-picker-label:hover,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=image]:hover,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=image]:hover {
       background-image: url(../images/icons/photos.svg); }
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-attachment,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-attachment .ql-picker-label,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=image],
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=image] {
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-attachment,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-attachment .ql-picker-label,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=image],
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=image] {
       background-image: url(../images/icons/attach.svg); }
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-attachment.ql-active,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-attachment .ql-picker-label.ql-active,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=image].ql-active,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=image].ql-selected,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-attachment:hover,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-attachment .ql-picker-label:hover,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=image]:hover,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=image]:hover {
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-attachment.ql-active,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-attachment .ql-picker-label.ql-active,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=image].ql-active,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=image].ql-selected,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-attachment:hover,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-attachment .ql-picker-label:hover,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=image]:hover,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=image]:hover {
       background-image: url(../images/icons/attach.svg); }
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-cc,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-cc .ql-picker-label,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=image],
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=image] {
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-cc,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-cc .ql-picker-label,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=image],
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=image] {
       background-image: url(../images/icons/cc.svg); }
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-cc.ql-active,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-cc .ql-picker-label.ql-active,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=image].ql-active,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=image].ql-selected,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-cc:hover,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-cc .ql-picker-label:hover,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=image]:hover,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=image]:hover {
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-cc.ql-active,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-cc .ql-picker-label.ql-active,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=image].ql-active,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=image].ql-selected,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-cc:hover,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-cc .ql-picker-label:hover,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=image]:hover,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=image]:hover {
       background-image: url(../images/icons/cc.svg); }
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-billing,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-billing .ql-picker-label,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=image],
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=image] {
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-billing,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-billing .ql-picker-label,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=image],
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=image] {
       background-image: url(../images/icons/billing.svg); }
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-billing.ql-active,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-billing .ql-picker-label.ql-active,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=image].ql-active,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=image].ql-selected,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-billing:hover,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-billing .ql-picker-label:hover,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=image]:hover,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=image]:hover {
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-billing.ql-active,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-billing .ql-picker-label.ql-active,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=image].ql-active,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=image].ql-selected,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-billing:hover,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-billing .ql-picker-label:hover,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=image]:hover,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=image]:hover {
       background-image: url(../images/icons/billing.svg); }
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-list,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-list .ql-picker-label,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=list],
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=list] {
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-list,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-list .ql-picker-label,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=list],
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=list] {
       background-image: url(../images/icons/list-numeric.svg); }
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-list.ql-active,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-list .ql-picker-label.ql-active,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=list].ql-active,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=list].ql-selected,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-list:hover,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-list .ql-picker-label:hover,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=list]:hover,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=list]:hover {
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-list.ql-active,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-list .ql-picker-label.ql-active,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=list].ql-active,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=list].ql-selected,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-list:hover,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-list .ql-picker-label:hover,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=list]:hover,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=list]:hover {
       background-image: url(../images/icons/list-numeric.svg); }
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-bullet,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-bullet .ql-picker-label,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=bullet],
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=bullet] {
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-bullet,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-bullet .ql-picker-label,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=bullet],
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=bullet] {
       background-image: url(../images/icons/list-bullet.svg); }
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-bullet.ql-active,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-bullet .ql-picker-label.ql-active,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=bullet].ql-active,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=bullet].ql-selected,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-bullet:hover,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-bullet .ql-picker-label:hover,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=bullet]:hover,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=bullet]:hover {
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-bullet.ql-active,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-bullet .ql-picker-label.ql-active,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=bullet].ql-active,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=bullet].ql-selected,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-bullet:hover,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-bullet .ql-picker-label:hover,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=bullet]:hover,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=bullet]:hover {
       background-image: url(../images/icons/list-bullet.svg); }
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-authorship,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-authorship .ql-picker-label,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=authorship],
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=authorship] {
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-authorship,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-authorship .ql-picker-label,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=authorship],
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=authorship] {
       background-image: url(../images/icons/path-copy.svg); }
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-authorship.ql-active,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-authorship .ql-picker-label.ql-active,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=authorship].ql-active,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=authorship].ql-selected,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-authorship:hover,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-authorship .ql-picker-label:hover,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=authorship]:hover,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=authorship]:hover {
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-authorship.ql-active,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-authorship .ql-picker-label.ql-active,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=authorship].ql-active,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=authorship].ql-selected,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-authorship:hover,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-authorship .ql-picker-label:hover,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=authorship]:hover,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=authorship]:hover {
       background-image: url(../images/icons/path-copy.svg); }
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-color,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-color .ql-picker-label,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=color],
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=color] {
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-color,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-color .ql-picker-label,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=color],
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=color] {
       background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAMAAADW3miqAAAAz1BMVEUAAAAAAACAgIBVVVVAQEBVVVU5OTk7OztLS0tHR0dGRkZCQkIAAABERERDQ0NDQ0NDQ0NDQ0NGRkZERERERERCQkJFRUVERERFRUVEREQAAAAAAABDQ0NFRUVEREQAAABERERFRUVERERDQ0NDQ0NERERERERERERERERERERERERERERERERERERFRUVFRUVERERERERERERERERERERDQ0NERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERbYaT1AAAARHRSTlMAAQIDBAYJDRESFhsfIiYqNUFCREtNVVZZWlxdY2RlZm1zdXZ9hI6Tl6Sws7nExcnS09XY2d/g5ejp6+zt8PP09/n9/idH/qoAAADKSURBVBgZ1cDXUsJAAIXhg2KMGruxsGoUe8cWoij1f/9nYiZDGJjsLrfwaRHEWRZrhuAXWoH8zgBO5VVpADTktU9uVz5P5B7lsdUn19+U2x3w+gbcyilsA0cnwP+qXOpAWl1pAhdyqKZAXboGvpZkdwi0Q2m9CxzI7oUJz7LaYdJgWzYPTLmXxUaPKZ01ld0A7xXllr+BK5VlwLlGLoFPlWXQCjQSduBDZfFPM9bY8V+6p7kXmcTBRCqYxMmoYBKnmgqRSRxqkebUEKsKOlxMa6IbAAAAAElFTkSuQmCC"); }
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-color.ql-active,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-color .ql-picker-label.ql-active,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=color].ql-active,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=color].ql-selected,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-color:hover,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-color .ql-picker-label:hover,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=color]:hover,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=color]:hover {
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-color.ql-active,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-color .ql-picker-label.ql-active,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=color].ql-active,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=color].ql-selected,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-color:hover,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-color .ql-picker-label:hover,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=color]:hover,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=color]:hover {
       background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAMAAADW3miqAAAA0lBMVEUAAAAAAP8AgP8AVaoAgL8AVdUAccYAYsQAadIAY8YAaNEAaNAAY84AacsAZckAZ8gAZcoAZswAZM0AZcsAZswAZ8oAZswAZc0AZMsAZswAZ8oAZcsAZc4AZMsAZswAZcoAZ80AZcwAZswAZssAZssAZswAZs0AZs0AZs0AZ8wAZ8wAZ8wAZ8wAZswAZcwAZs0AZcwAZswAZswAZs0AZswAZswAZswAZswAZswAZswAZswAZswAZswAZswAZswAZswAZswAZswAZswAZswAZswAZswVaivDAAAARXRSTlMAAQIDBAYJDRESFhsfIiYqNUFCREtNVVZZWlxdXWNkZWZtc3V2fYSOk5eksLO5xMXJ0tPV2Nnf4OXo6evs7fDz9Pf5/f6Y2SWXAAAAy0lEQVQYGdXA11LCQACF4YNijBq7sbCWKPaOLURREPjf/5WYyRAGJrvLLXyaB3GWxZoi+IFWIL9TgBN5VRoADXntktuWzyO5B3ls9Mj11uV2C7y8AjdyCtvAwRHwtyyXOpBWl5rAuRyqKVCXroDPBdntA+1QWv0H9mT3zJgnWW0xrr8pm3sm3MlircuEzorKroG3inKLX8ClyjLgTEMXwIfKMmgFGgo78K6y+LsZa+TwN93RzItM4mAiFUziZFQwiVNNheg4cahFmlEDFzs7cwmPHM8AAAAASUVORK5CYII="); }
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-background,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-background .ql-picker-label,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=background],
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=background] {
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-background,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-background .ql-picker-label,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=background],
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=background] {
       background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAMAAADW3miqAAAA4VBMVEUAAAAAAACAgIBVVVVAQEBVVVU5OTk7OztLS0tHR0dGRkZCQkJERERDQ0NDQ0NDQ0NDQ0NERERCQkJEREQAAAADAwMGBgZDQ0NEREQODg5ERERDQ0NFRUVERERERERERERDQ0MiIiJDQ0MmJiZEREQrKytEREREREQyMjIyMjJEREREREREREQ4ODhERERERERFRUVFRUVERERERERERERERERAQEBERERERERBQUFERERERERERERBQUFERERERERERERBQUFERERERERERERDQ0NERERERERDQ0NERERERESZD8GyAAAASnRSTlMAAQIDBAYJDRESFhsiJio1QURJS01QU1RWWVpjZGVtdXZ4fYCEiI6TnZ6ksLO3ucTFydLT193g4OLl5ebn6enq6+7w8vP39/n+/rihcb4AAADbSURBVHjazZPFDsMwEERdZkpTZmbmpszd//+grhpFSaS1e+khc1jbmrG1z7KZdSXLgvo79M9ziKCkKJIeoUPJA8AxKT6H5QGVE3dlmwJqKqaLwVdRIV1fDfVEdKGXGnoFBXQtDIwnWJp8uswd/XQWy8XD7aqD9srp2uJQ5NElVuiWGKvisLFz6Bpo3ryM+R84iXO6GoFBQ5ouAka9wyRdF0waUHSBpzl09xF0dTRmNnXu2OOiTNDtAKCg7W3jYk7QnQGObu0KvVeAJUFXU9aS/h5Sp0VFtui/s6w+XSJAbiVJ3G0AAAAASUVORK5CYII="); }
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-background.ql-active,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-background .ql-picker-label.ql-active,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=background].ql-active,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=background].ql-selected,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-background:hover,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-background .ql-picker-label:hover,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=background]:hover,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=background]:hover {
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-background.ql-active,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-background .ql-picker-label.ql-active,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=background].ql-active,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=background].ql-selected,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-background:hover,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-background .ql-picker-label:hover,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=background]:hover,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=background]:hover {
       background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAMAAADW3miqAAAA5FBMVEUAAAAAAP8AgP8AVaoAgL8AZswAVdUAYL8AccYAYsQAadIAY8YAaNEAasoAZswAYsQAaNAAacsAZckAadEAZ8gAZcoAZswAZswAZMkAZM0AZcsAZ8sAZswAaM0AZ8oAZ80AZswAZc0AZMsAZswAZMsAZswAZcoAZcwAZswAZssAZssAZswAZs0AZs0AZs0AZ8wAZ8wAZ8wAZ8wAZswAZcwAZs0AZcwAZswAZswAZs0AZswAZswAZswAZswAZswAZswAZswAZswAZswAZswAZswAZswAZswAZswAZswAZswAZswAZsxJPDLdAAAAS3RSTlMAAQIDBAUGCAkNERIWGBkaGyImJyo1N0FCQkRFS0xNTVVWWVpjZGVtc3V2fYSOk5eksLO5xMXJ0tPV2Nnf4OXo6evs7fDz9Pf5/f60OfwzAAABG0lEQVR42s2T6VKDQBCEGyUJoqgSjcYg8dZ43/EieCUa5/3fx661qMAu7O98P4bZnq5lZlkwvXS7k1hf1BTdZFEsFpvUMU15IU7TuKiYJu9d5MODZZ8WcCBk39ZVAKcvpG+ZrgNsimIdTtV0TeBGFNewdBWORTFesUx3QcP9A8N59XT+kPWdPYavOQQVXfVYTtz6gI8jvfUsdRNWe8ApHy8z5ftgm8WhDyx8M4nKumoBd5LjVkkaAdYkz+8qpQLqtK+kwKU5XRPLP1JgNF8y3RkLjw4Us69cnMDb0qdLqR9myjEXz2brNPG2NSKQqOGPRJ5gEr8NYoT/9yHE7mfShoarovYptDw7kiWLyZTbNZBa9saK33tDWZlPK39U3ELkzhssBgAAAABJRU5ErkJggg=="); }
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-left,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-left .ql-picker-label,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=left],
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=left] {
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-left,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-left .ql-picker-label,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=left],
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=left] {
       background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkBAMAAAATLoWrAAAAElBMVEUAAABCQkJEREREREREREREREQc4xmxAAAABXRSTlMATeXo6UtNtyIAAABCSURBVCjPY2AYACAcCgaGSEKmEKFgTKEgJCERiJAiw0ACqOuR/WCKLBSMKRSE7PqB9YMwuttRnBqMKRSEGvYD6HYAD8opyeJDvUUAAAAASUVORK5CYII="); }
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-left.ql-active,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-left .ql-picker-label.ql-active,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=left].ql-active,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=left].ql-selected,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-left:hover,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-left .ql-picker-label:hover,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=left]:hover,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=left]:hover {
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-left.ql-active,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-left .ql-picker-label.ql-active,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=left].ql-active,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=left].ql-selected,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-left:hover,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-left .ql-picker-label:hover,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=left]:hover,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=left]:hover {
       background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkBAMAAAATLoWrAAAAElBMVEUAAAAAZ8oAZswAZswAZswAZsxixJGvAAAABXRSTlMATeXo6UtNtyIAAABCSURBVCjPY2AYACAcCgaGSEKmEKFgTKEgJCERiJAiw0ACqOuR/WCKLBSMKRSE7PqB9YMwuttRnBqMKRSEGvYD6HYAD8opyeJDvUUAAAAASUVORK5CYII="); }
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-right,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-right .ql-picker-label,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=right],
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=right] {
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-right,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-right .ql-picker-label,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=right],
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=right] {
       background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkBAMAAAATLoWrAAAAElBMVEUAAABCQkJEREREREREREREREQc4xmxAAAABXRSTlMATeXo6UtNtyIAAABCSURBVCjPY2AYMCAcCgaGSEKmEKFgTKEgJCERiJDiwLob2fWmyELBmEJByO4eWNejuN8QNZCRw94U3fUo7h8Q1wMAuRspyVIXC2UAAAAASUVORK5CYII="); }
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-right.ql-active,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-right .ql-picker-label.ql-active,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=right].ql-active,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=right].ql-selected,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-right:hover,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-right .ql-picker-label:hover,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=right]:hover,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=right]:hover {
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-right.ql-active,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-right .ql-picker-label.ql-active,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=right].ql-active,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=right].ql-selected,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-right:hover,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-right .ql-picker-label:hover,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=right]:hover,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=right]:hover {
       background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkBAMAAAATLoWrAAAAElBMVEUAAAAAZ8oAZswAZswAZswAZsxixJGvAAAABXRSTlMATeXo6UtNtyIAAABCSURBVCjPY2AYMCAcCgaGSEKmEKFgTKEgJCERiJDiwLob2fWmyELBmEJByO4eWNejuN8QNZCRw94U3fUo7h8Q1wMAuRspyVIXC2UAAAAASUVORK5CYII="); }
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-center,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-center .ql-picker-label,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=center],
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=center] {
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-center,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-center .ql-picker-label,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=center],
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=center] {
       background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkBAMAAAATLoWrAAAAElBMVEUAAABCQkJEREREREREREREREQc4xmxAAAABXRSTlMATeXo6UtNtyIAAABCSURBVCjPY2AYGCAcCgaGSEKmEKFgTKEgJCERiJAiw4ABqNORPWCKLBSMKRSE7PQB9oAwuuNR3BqMKRSEGvID53gA5GspyQ9EElMAAAAASUVORK5CYII="); }
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-center.ql-active,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-center .ql-picker-label.ql-active,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=center].ql-active,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=center].ql-selected,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-center:hover,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-center .ql-picker-label:hover,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=center]:hover,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=center]:hover {
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-center.ql-active,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-center .ql-picker-label.ql-active,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=center].ql-active,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=center].ql-selected,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-center:hover,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-center .ql-picker-label:hover,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=center]:hover,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=center]:hover {
       background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkBAMAAAATLoWrAAAAElBMVEUAAAAAZ8oAZswAZswAZswAZsxixJGvAAAABXRSTlMATeXo6UtNtyIAAABCSURBVCjPY2AYGCAcCgaGSEKmEKFgTKEgJCERiJAiw4ABqNORPWCKLBSMKRSE7PQB9oAwuuNR3BqMKRSEGvID53gA5GspyQ9EElMAAAAASUVORK5CYII="); }
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-justify,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-justify .ql-picker-label,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=justify],
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=justify] {
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-justify,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-justify .ql-picker-label,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=justify],
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=justify] {
       background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkBAMAAAATLoWrAAAAElBMVEUAAABCQkJEREREREREREREREQc4xmxAAAABXRSTlMATeXo6UtNtyIAAAAoSURBVCjPY2AYACAcigQMwUKmyELBmEJBYCERZCFFhoEBo64fINcDAAcQNGkJNhVcAAAAAElFTkSuQmCC"); }
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-format-button.ql-justify.ql-active,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker.ql-justify .ql-picker-label.ql-active,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=justify].ql-active,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=justify].ql-selected,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-justify:hover,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-justify .ql-picker-label:hover,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=justify]:hover,
-    .ko-text-editor-fe956dda .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=justify]:hover {
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-format-button.ql-justify.ql-active,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker.ql-justify .ql-picker-label.ql-active,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=justify].ql-active,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=justify].ql-selected,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-justify:hover,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-justify .ql-picker-label:hover,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=justify]:hover,
+    .ko-text-editor-2e826b9e .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=justify]:hover {
       background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkBAMAAAATLoWrAAAAElBMVEUAAAAAZ8oAZswAZswAZswAZsxixJGvAAAABXRSTlMATeXo6UtNtyIAAAAoSURBVCjPY2AYACAcigQMwUKmyELBmEJBYCERZCFFhoEBo64fINcDAAcQNGkJNhVcAAAAAElFTkSuQmCC"); } }
-  .ko-text-editor-fe956dda .ql-snow .ql-tooltip {
+  .ko-text-editor-2e826b9e .ql-snow .ql-tooltip {
     border: 1px solid #ccc;
     box-shadow: 0px 0px 5px #ddd;
     color: #222; }
-  .ko-text-editor-fe956dda .ql-snow .ql-tooltip a {
+  .ko-text-editor-2e826b9e .ql-snow .ql-tooltip a {
     color: #06c; }
-  .ko-text-editor-fe956dda .ql-snow .ql-tooltip .input {
+  .ko-text-editor-2e826b9e .ql-snow .ql-tooltip .input {
     border: 1px solid #ccc;
     margin: 0px;
     padding: 5px; }
-  .ko-text-editor-fe956dda .ql-snow a {
+  .ko-text-editor-2e826b9e .ql-snow a {
     color: #06c; }
 
-.ko-toggle-36e5e104 {
+.ko-toggle-87eebd30 {
   /**
  * [1] - we are using div instead of input element hence the styling.
  */ }
-  .ko-toggle-36e5e104 .ko-toggle__container {
+  .ko-toggle-87eebd30 .ko-toggle__container {
     position: relative;
     display: inline-block;
     vertical-align: middle;
@@ -4018,12 +4018,12 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
     -webkit-transition: background 300ms;
             transition: background 300ms;
     /*[1]*/ }
-    .ko-toggle-36e5e104 .ko-toggle__container--activated {
+    .ko-toggle-87eebd30 .ko-toggle__container--activated {
       background: #85A043; }
-    .ko-toggle-36e5e104 .ko-toggle__container--micro {
+    .ko-toggle-87eebd30 .ko-toggle__container--micro {
       width: 35px;
       height: 18px; }
-    .ko-toggle-36e5e104 .ko-toggle__container .ko-toggle__toggle {
+    .ko-toggle-87eebd30 .ko-toggle__container .ko-toggle__toggle {
       width: 24px;
       height: 24px;
       margin-left: 3px;
@@ -4036,29 +4036,29 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
       -webkit-transition: margin 300ms;
               transition: margin 300ms;
       /*[1]*/ }
-      .ko-toggle-36e5e104 .ko-toggle__container .ko-toggle__toggle--activated {
+      .ko-toggle-87eebd30 .ko-toggle__container .ko-toggle__toggle--activated {
         margin-left: 39px; }
-      .ko-toggle-36e5e104 .ko-toggle__container .ko-toggle__toggle--micro {
+      .ko-toggle-87eebd30 .ko-toggle__container .ko-toggle__toggle--micro {
         width: 12px;
         height: 12px; }
-    .ko-toggle-36e5e104 .ko-toggle__container .ko-toggle__toggle--activated.ko-toggle__toggle--micro {
+    .ko-toggle-87eebd30 .ko-toggle__container .ko-toggle__toggle--activated.ko-toggle__toggle--micro {
       margin-left: 20px; }
-  .ko-toggle-36e5e104 .ko-toggle__label {
+  .ko-toggle-87eebd30 .ko-toggle__label {
     font-size: "12px";
     font-size: "12px";
     position: relative;
     color: #838D94;
     margin-left: 9px; }
-    .ko-toggle-36e5e104 .ko-toggle__label--micro {
+    .ko-toggle-87eebd30 .ko-toggle__label--micro {
       margin-left: 4.5px; }
 
-.login-42e65d3e {
+.login-19f8cf83 {
   /*
   Login box that appears when an unauthorised user hits /admin
   Has two states: Fresh login (username/password) or a remembered login
   that shows the users gravatar (login__image) and only a password field.
    ========================================================================= */ }
-  .login-42e65d3e .login {
+  .login-19f8cf83 .login {
     width: 385px;
     position: relative;
     margin: 165px auto 9px;
@@ -4066,24 +4066,24 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
     border-radius: 2px;
     background-color: #ffffff; }
     @media screen and (max-width: 44.9375em) {
-      .login-42e65d3e .login {
+      .login-19f8cf83 .login {
         width: 90%;
         margin-left: auto;
         margin-right: auto; } }
-  .login-42e65d3e .login__header {
+  .login-19f8cf83 .login__header {
     margin-bottom: 18px;
     font-weight: 400; }
-  .login-42e65d3e .login__header--reset {
+  .login-19f8cf83 .login__header--reset {
     padding-bottom: 42px; }
-  .login-42e65d3e .login__image {
+  .login-19f8cf83 .login__image {
     width: 100px;
     height: 100px;
     padding: 9px;
     background-size: cover;
     border-radius: 2px; }
-  .login-42e65d3e .login__input {
+  .login-19f8cf83 .login__input {
     width: 100%; }
-  .login-42e65d3e .login__actions {
+  .login-19f8cf83 .login__actions {
     min-height: 40px;
     line-height: 40px;
     position: absolute;
@@ -4091,71 +4091,71 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
     bottom: 0;
     left: 0;
     border-top: 1px solid #cfd4d8; }
-  .login-42e65d3e .login-form {
+  .login-19f8cf83 .login-form {
     padding: 67px 0 0;
     overflow: hidden; }
-  .login-42e65d3e .login-form__mask {
+  .login-19f8cf83 .login-form__mask {
     position: relative;
     overflow: hidden;
     height: 74px;
     width: 100%; }
-  .login-42e65d3e .login-form__content {
+  .login-19f8cf83 .login-form__content {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     height: 148px; }
-  .login-42e65d3e .login-form__content--animate {
+  .login-19f8cf83 .login-form__content--animate {
     -webkit-transition: -webkit-transform 0.3s ease-in-out;
             transition: transform 0.3s ease-in-out; }
-  .login-42e65d3e .login-form__content-down {
+  .login-19f8cf83 .login-form__content-down {
     -webkit-transform: translate(0, -74px);
         -ms-transform: translate(0, -74px);
             transform: translate(0, -74px); }
-  .login-42e65d3e .login-form__fields-container-top {
+  .login-19f8cf83 .login-form__fields-container-top {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     height: 74px; }
-  .login-42e65d3e .login-form__fields-container-bottom {
+  .login-19f8cf83 .login-form__fields-container-bottom {
     position: absolute;
     top: 74px;
     left: 0;
     right: 0;
     height: 74px; }
-  .login-42e65d3e .login-form__wrapper {
+  .login-19f8cf83 .login-form__wrapper {
     padding: 0 18px; }
-  .login-42e65d3e .login-form__container {
+  .login-19f8cf83 .login-form__container {
     width: 200%;
     height: 100%;
     display: table;
     table-layout: fixed;
     -webkit-transition: -webkit-transform 0.35s ease-in-out;
             transition: transform 0.35s ease-in-out; }
-    .login-42e65d3e .login-form__container.u-slide {
+    .login-19f8cf83 .login-form__container.u-slide {
       -webkit-transform: translate(-50%, 0);
           -ms-transform: translate(-50%, 0);
               transform: translate(-50%, 0);
       -webkit-transition: -webkit-transform 0.35s ease-in-out;
               transition: transform 0.35s ease-in-out; }
-  .login-42e65d3e .login-form__form,
-  .login-42e65d3e .login-form__reset-form {
+  .login-19f8cf83 .login-form__form,
+  .login-19f8cf83 .login-form__reset-form {
     width: 100%;
     position: relative;
     display: table-cell;
     padding-bottom: 63px;
     -webkit-font-smoothing: subpixel-antialiased; }
-  .login-42e65d3e .login-form__reset-form {
+  .login-19f8cf83 .login-form__reset-form {
     vertical-align: bottom; }
 
-.session--admin-cba17267 .session-admin {
+.session--admin-02ea67ac .session-admin {
   padding: 18px; }
 
-.session--admin-cba17267 .session-admin--page-title {
+.session--admin-02ea67ac .session-admin--page-title {
   font-size: 28px; }
 
-.session--admin-cba17267 .session-admin--page-container {
+.session--admin-02ea67ac .session-admin--page-container {
   background-color: #fff;
   border-radius: 2px;
   border: solid 1px;
@@ -4163,52 +4163,52 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
   float: left;
   width: 100%; }
 
-.session--admin-cba17267 .session-admin-navigation {
+.session--admin-02ea67ac .session-admin-navigation {
   padding-left: 30px;
   border-right: solid 1px #ccc;
   width: 150px;
   float: left; }
 
-.session--admin-cba17267 .session-admin-navigation__heading {
+.session--admin-02ea67ac .session-admin-navigation__heading {
   color: #aaa;
   padding-top: 36px;
   text-transform: uppercase; }
 
-.session--admin-cba17267 .session-admin-navigation__list-group {
+.session--admin-02ea67ac .session-admin-navigation__list-group {
   list-style: none; }
 
-.session--cases--index-994d661d .ko-session-cases-index__scrollable {
+.session--cases--index-cab035dc .ko-session-cases-index__scrollable {
   overflow: auto; }
 
-.session--cases--index-994d661d .ko-session-cases-index__contents {
+.session--cases--index-cab035dc .ko-session-cases-index__contents {
   background: #FFFFFF;
   border: 1px solid #D1D5D7;
   border-radius: 4px;
   padding: 0 17px; }
 
-.session--cases--index-994d661d .ko-session-cases-index__pagination {
+.session--cases--index-cab035dc .ko-session-cases-index__pagination {
   width: 44px;
   position: absolute;
   top: 0;
   right: 0;
   bottom: 0; }
 
-.session--showcase-f8790394 .showcase-container {
+.session--showcase-c9f23081 .showcase-container {
   width: 80%;
   margin: 0 auto; }
-  .session--showcase-f8790394 .showcase-container code {
+  .session--showcase-c9f23081 .showcase-container code {
     display: block;
     margin: 18px 0 36px;
     padding: 9px;
     background: #ecf0f1; }
 
-.session--showcase-f8790394 .showcase-spacer {
+.session--showcase-c9f23081 .showcase-spacer {
   margin: 48px 0; }
 
-.session--styleguide-b7360e60 .styleguide {
+.session--styleguide-3bbad851 .styleguide {
   padding: 18px;
   background-color: #FFFFFF; }
-  .session--styleguide-b7360e60 .styleguide code {
+  .session--styleguide-3bbad851 .styleguide code {
     display: block;
     padding: 0 18px;
     margin: 18px 0px 18px;
@@ -4217,9 +4217,9 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
     font-family: Consolas, Monospace;
     white-space: pre; }
 
-.session--styleguide-b7360e60 .styleguide__item {
+.session--styleguide-3bbad851 .styleguide__item {
   margin: 36px 0; }
 
-.session-65c8a53e .session__content {
+.session-b0d5ca79 .session__content {
   top: 84px;
   overflow: auto; }
