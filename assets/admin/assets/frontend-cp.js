@@ -2,6 +2,47 @@
 
 /* jshint ignore:end */
 
+define('frontend-cp/adapters/-intl-adapter', ['exports', 'ember', 'ember-intl/models/intl-get-result', 'ember-intl/models/locale', 'ember-intl/adapter'], function (exports, Ember, IntlGetResult, Locale, IntlAdapter) {
+
+    'use strict';
+
+    function normalize(fullName) {
+        Ember['default'].assert('Lookup name must be a string', typeof fullName === 'string');
+
+        return fullName.toLowerCase();
+    }
+
+    exports['default'] = IntlAdapter['default'].extend({
+        findLanguage: function findLanguage(locale) {
+            if (locale instanceof Locale['default']) {
+                return locale;
+            }
+
+            if (typeof locale === 'string') {
+                return this.container.lookup('locale:' + normalize(locale));
+            }
+        },
+
+        findTranslation: function findTranslation(locales, translationKey) {
+            var container = this.container;
+            var locale, translation, key;
+
+            for (var i = 0, len = locales.length; i < len; i++) {
+                key = locales[i];
+                locale = this.findLanguage(key);
+
+                if (locale) {
+                    translation = locale.getValue(translationKey);
+
+                    if (typeof translation !== 'undefined') {
+                        return new IntlGetResult['default'](translation, key);
+                    }
+                }
+            }
+        }
+    });
+
+});
 define('frontend-cp/adapters/access-log', ['exports', 'frontend-cp/adapters/application'], function (exports, ApplicationAdapter) {
 
   'use strict';
@@ -263,6 +304,30 @@ define('frontend-cp/adapters/identity-twitter', ['exports', 'frontend-cp/adapter
   });
 
 });
+define('frontend-cp/adapters/intl', ['exports', 'frontend-cp/adapters/-intl-adapter', 'frontend-cp/locales/new-locale'], function (exports, IntlAdapter, Locale) {
+
+  'use strict';
+
+  exports['default'] = IntlAdapter['default'].extend({
+    locales: {},
+
+    findLanguage: function findLanguage(locale) {
+      if (locale instanceof Locale['default']) {
+        return locale;
+      }
+
+      if (typeof locale === 'string') {
+        if (!this.locales[locale]) {
+          this.locales[locale] = new (Locale['default'].extend({
+            locale: locale
+          }))();
+        }
+        return this.locales[locale];
+      }
+    }
+  });
+
+});
 define('frontend-cp/adapters/metric', ['exports', 'frontend-cp/adapters/application'], function (exports, ApplicationAdapter) {
 
   'use strict';
@@ -392,7 +457,6 @@ define('frontend-cp/application/route', ['exports', 'ember'], function (exports,
   'use strict';
 
   exports['default'] = Ember['default'].Route.extend({
-
     navMenu: null,
     sessionService: Ember['default'].inject.service('session'),
 
@@ -407,9 +471,8 @@ define('frontend-cp/application/route', ['exports', 'ember'], function (exports,
     },
 
     model: function model() {
-      var that = this;
       return Ember['default'].Object.create({
-        navMenu: that.get('navMenu')
+        navMenu: this.get('navMenu')
       });
     },
 
@@ -421,7 +484,6 @@ define('frontend-cp/application/route', ['exports', 'ember'], function (exports,
       logout: function logout() {
         this.get('sessionService').logout();
       }
-
     }
   });
 
@@ -490,6 +552,28 @@ define('frontend-cp/application/view', ['exports', 'ember'], function (exports, 
   });
 
 });
+define('frontend-cp/cldrs/en-us', ['exports'], function (exports) {
+
+	'use strict';
+
+	/*jslint eqeq: true*/
+	exports['default'] = { "locale": "en-US", "parentLocale": "en" };
+
+});
+define('frontend-cp/cldrs/en', ['exports'], function (exports) {
+
+  'use strict';
+
+  /*jslint eqeq: true*/
+  exports['default'] = { "locale": "en", "pluralRuleFunction": function pluralRuleFunction(n, ord) {
+      var s = String(n).split("."),
+          v0 = !s[1],
+          t0 = Number(s[0]) == n,
+          n10 = t0 && s[0].slice(-1),
+          n100 = t0 && s[0].slice(-2);if (ord) return n10 == 1 && n100 != 11 ? "one" : n10 == 2 && n100 != 12 ? "two" : n10 == 3 && n100 != 13 ? "few" : "other";return n == 1 && v0 ? "one" : "other";
+    }, "fields": { "year": { "displayName": "Year", "relative": { "0": "this year", "1": "next year", "-1": "last year" }, "relativeTime": { "future": { "one": "in {0} year", "other": "in {0} years" }, "past": { "one": "{0} year ago", "other": "{0} years ago" } } }, "month": { "displayName": "Month", "relative": { "0": "this month", "1": "next month", "-1": "last month" }, "relativeTime": { "future": { "one": "in {0} month", "other": "in {0} months" }, "past": { "one": "{0} month ago", "other": "{0} months ago" } } }, "day": { "displayName": "Day", "relative": { "0": "today", "1": "tomorrow", "-1": "yesterday" }, "relativeTime": { "future": { "one": "in {0} day", "other": "in {0} days" }, "past": { "one": "{0} day ago", "other": "{0} days ago" } } }, "hour": { "displayName": "Hour", "relativeTime": { "future": { "one": "in {0} hour", "other": "in {0} hours" }, "past": { "one": "{0} hour ago", "other": "{0} hours ago" } } }, "minute": { "displayName": "Minute", "relativeTime": { "future": { "one": "in {0} minute", "other": "in {0} minutes" }, "past": { "one": "{0} minute ago", "other": "{0} minutes ago" } } }, "second": { "displayName": "Second", "relative": { "0": "now" }, "relativeTime": { "future": { "one": "in {0} second", "other": "in {0} seconds" }, "past": { "one": "{0} second ago", "other": "{0} seconds ago" } } } } };
+
+});
 define('frontend-cp/components/ember-wormhole', ['exports', 'ember-wormhole/components/ember-wormhole'], function (exports, Component) {
 
 	'use strict';
@@ -530,7 +614,7 @@ define('frontend-cp/components/ko-add-participants-context-menu/template', ['exp
           dom.appendChild(el1, el2);
           var el2 = dom.createElement("a");
           dom.setAttribute(el2,"href","#");
-          var el3 = dom.createTextNode("Add New User");
+          var el3 = dom.createComment("");
           dom.appendChild(el2, el3);
           dom.appendChild(el1, el2);
           var el2 = dom.createTextNode("\n  ");
@@ -542,7 +626,7 @@ define('frontend-cp/components/ko-add-participants-context-menu/template', ['exp
         },
         render: function render(context, env, contextualElement) {
           var dom = env.dom;
-          var hooks = env.hooks, get = hooks.get, inline = hooks.inline, element = hooks.element;
+          var hooks = env.hooks, get = hooks.get, inline = hooks.inline, element = hooks.element, subexpr = hooks.subexpr;
           dom.detectNamespace(contextualElement);
           var fragment;
           if (env.useFragmentCache && dom.canClone) {
@@ -562,8 +646,10 @@ define('frontend-cp/components/ko-add-participants-context-menu/template', ['exp
           }
           var element1 = dom.childAt(fragment, [3, 1]);
           var morph0 = dom.createMorphAt(fragment,1,1,contextualElement);
+          var morph1 = dom.createMorphAt(element1,0,0);
           inline(env, morph0, context, "ko-add-participants-popover", [], {"results": get(env, context, "copyInParticipants")});
           element(env, element1, context, "action", ["next"], {});
+          inline(env, morph1, context, "format-message", [subexpr(env, context, "intl-get", ["users.addnewuser"], {})], {});
           return fragment;
         }
       };
@@ -584,7 +670,7 @@ define('frontend-cp/components/ko-add-participants-context-menu/template', ['exp
           var el1 = dom.createTextNode("\n\n  ");
           dom.appendChild(el0, el1);
           var el1 = dom.createElement("button");
-          var el2 = dom.createTextNode("prev");
+          var el2 = dom.createComment("");
           dom.appendChild(el1, el2);
           dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n");
@@ -593,7 +679,7 @@ define('frontend-cp/components/ko-add-participants-context-menu/template', ['exp
         },
         render: function render(context, env, contextualElement) {
           var dom = env.dom;
-          var hooks = env.hooks, content = hooks.content, element = hooks.element;
+          var hooks = env.hooks, content = hooks.content, element = hooks.element, subexpr = hooks.subexpr, inline = hooks.inline;
           dom.detectNamespace(contextualElement);
           var fragment;
           if (env.useFragmentCache && dom.canClone) {
@@ -613,8 +699,10 @@ define('frontend-cp/components/ko-add-participants-context-menu/template', ['exp
           }
           var element0 = dom.childAt(fragment, [3]);
           var morph0 = dom.createMorphAt(fragment,1,1,contextualElement);
+          var morph1 = dom.createMorphAt(element0,0,0);
           content(env, morph0, context, "ko-add-users-popover");
           element(env, element0, context, "action", ["prev"], {});
+          inline(env, morph1, context, "format-message", [subexpr(env, context, "intl-get", ["generic.popover.previous"], {})], {});
           return fragment;
         }
       };
@@ -637,7 +725,7 @@ define('frontend-cp/components/ko-add-participants-context-menu/template', ['exp
       },
       render: function render(context, env, contextualElement) {
         var dom = env.dom;
-        var hooks = env.hooks, get = hooks.get, block = hooks.block;
+        var hooks = env.hooks, get = hooks.get, subexpr = hooks.subexpr, block = hooks.block;
         dom.detectNamespace(contextualElement);
         var fragment;
         if (env.useFragmentCache && dom.canClone) {
@@ -659,8 +747,8 @@ define('frontend-cp/components/ko-add-participants-context-menu/template', ['exp
         var morph1 = dom.createMorphAt(fragment,2,2,contextualElement);
         dom.insertBoundary(fragment, null);
         dom.insertBoundary(fragment, 0);
-        block(env, morph0, context, "ko-context-modal-item", [], {"index": "0", "title": "Add a participant", "contextModalId": get(env, context, "contextModalId")}, child0, null);
-        block(env, morph1, context, "ko-context-modal-item", [], {"index": "1", "title": "Add new User", "contextModalId": get(env, context, "contextModalId")}, child1, null);
+        block(env, morph0, context, "ko-context-modal-item", [], {"index": "0", "title": subexpr(env, context, "format-message", [subexpr(env, context, "intl-get", ["cases.addparticipant"], {})], {}), "contextModalId": get(env, context, "contextModalId")}, child0, null);
+        block(env, morph1, context, "ko-context-modal-item", [], {"index": "1", "title": subexpr(env, context, "format-message", [subexpr(env, context, "intl-get", ["users.addnewuser"], {})], {}), "contextModalId": get(env, context, "contextModalId")}, child1, null);
         return fragment;
       }
     };
@@ -2385,7 +2473,7 @@ define('frontend-cp/components/ko-breadcrumbs/template', ['exports'], function (
         dom.appendChild(el2, el3);
         var el3 = dom.createElement("li");
         dom.setAttribute(el3,"class","breadcrumbs__item breadcrumbs__action i--right-chevron");
-        var el4 = dom.createTextNode("Next");
+        var el4 = dom.createComment("");
         dom.appendChild(el3, el4);
         dom.appendChild(el2, el3);
         var el3 = dom.createTextNode("\n  ");
@@ -2400,7 +2488,7 @@ define('frontend-cp/components/ko-breadcrumbs/template', ['exports'], function (
       },
       render: function render(context, env, contextualElement) {
         var dom = env.dom;
-        var hooks = env.hooks, get = hooks.get, block = hooks.block;
+        var hooks = env.hooks, get = hooks.get, block = hooks.block, subexpr = hooks.subexpr, inline = hooks.inline;
         dom.detectNamespace(contextualElement);
         var fragment;
         if (env.useFragmentCache && dom.canClone) {
@@ -2418,8 +2506,11 @@ define('frontend-cp/components/ko-breadcrumbs/template', ['exports'], function (
         } else {
           fragment = this.build(dom);
         }
-        var morph0 = dom.createMorphAt(dom.childAt(fragment, [0, 1]),1,1);
+        var element1 = dom.childAt(fragment, [0, 1]);
+        var morph0 = dom.createMorphAt(element1,1,1);
+        var morph1 = dom.createMorphAt(dom.childAt(element1, [3]),0,0);
         block(env, morph0, context, "each", [get(env, context, "breadcrumbs")], {}, child0, null);
+        inline(env, morph1, context, "format-message", [subexpr(env, context, "intl-get", ["generic.next"], {})], {});
         return fragment;
       }
     };
@@ -2576,6 +2667,10 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember'],
       });
     }).on('init'),
 
+    hasBrand: (function () {
+      return !!this.get('case.brand.companyName');
+    }).property('case.brand.companyName'),
+
     actions: {
       setStatus: function setStatus(status) {
         this.set('case.status', status);
@@ -2631,7 +2726,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           dom.appendChild(el1, el2);
           var el2 = dom.createElement("button");
           dom.setAttribute(el2,"class","button button--primary u-1/1");
-          var el3 = dom.createTextNode("Submit");
+          var el3 = dom.createComment("");
           dom.appendChild(el2, el3);
           dom.appendChild(el1, el2);
           var el2 = dom.createTextNode("\n        ");
@@ -2663,7 +2758,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
         },
         render: function render(context, env, contextualElement) {
           var dom = env.dom;
-          var hooks = env.hooks, element = hooks.element, inline = hooks.inline, get = hooks.get;
+          var hooks = env.hooks, element = hooks.element, subexpr = hooks.subexpr, inline = hooks.inline, get = hooks.get;
           dom.detectNamespace(contextualElement);
           var fragment;
           if (env.useFragmentCache && dom.canClone) {
@@ -2682,17 +2777,19 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             fragment = this.build(dom);
           }
           var element0 = dom.childAt(fragment, [1, 1]);
-          var morph0 = dom.createMorphAt(fragment,3,3,contextualElement);
-          var morph1 = dom.createMorphAt(fragment,5,5,contextualElement);
-          var morph2 = dom.createMorphAt(fragment,7,7,contextualElement);
-          var morph3 = dom.createMorphAt(fragment,9,9,contextualElement);
-          var morph4 = dom.createMorphAt(fragment,11,11,contextualElement);
+          var morph0 = dom.createMorphAt(element0,0,0);
+          var morph1 = dom.createMorphAt(fragment,3,3,contextualElement);
+          var morph2 = dom.createMorphAt(fragment,5,5,contextualElement);
+          var morph3 = dom.createMorphAt(fragment,7,7,contextualElement);
+          var morph4 = dom.createMorphAt(fragment,9,9,contextualElement);
+          var morph5 = dom.createMorphAt(fragment,11,11,contextualElement);
           element(env, element0, context, "action", ["submit"], {});
-          inline(env, morph0, context, "ko-case-select-field", [], {"title": "Requester"});
-          inline(env, morph1, context, "ko-case-select-field", [], {"title": "Assignee"});
-          inline(env, morph2, context, "ko-case-select-field", [], {"title": "Status", "content": get(env, context, "statuses"), "value": get(env, context, "case.status"), "labelPath": "label", "action": "setStatus"});
-          inline(env, morph3, context, "ko-case-select-field", [], {"title": "Type", "content": get(env, context, "types"), "value": get(env, context, "case.caseType"), "labelPath": "label", "action": "setType"});
-          inline(env, morph4, context, "ko-case-select-field", [], {"title": "Priority", "content": get(env, context, "priorities"), "value": get(env, context, "case.priority"), "labelPath": "label", "action": "setPriority"});
+          inline(env, morph0, context, "format-message", [subexpr(env, context, "intl-get", ["cases.submit"], {})], {});
+          inline(env, morph1, context, "ko-case-select-field", [], {"title": subexpr(env, context, "format-message", [subexpr(env, context, "intl-get", ["cases.requester"], {})], {})});
+          inline(env, morph2, context, "ko-case-select-field", [], {"title": subexpr(env, context, "format-message", [subexpr(env, context, "intl-get", ["cases.assignee"], {})], {})});
+          inline(env, morph3, context, "ko-case-select-field", [], {"title": subexpr(env, context, "format-message", [subexpr(env, context, "intl-get", ["cases.status"], {})], {}), "content": get(env, context, "statuses"), "value": get(env, context, "case.status"), "labelPath": "label", "action": "setStatus"});
+          inline(env, morph4, context, "ko-case-select-field", [], {"title": subexpr(env, context, "format-message", [subexpr(env, context, "intl-get", ["cases.type"], {})], {}), "content": get(env, context, "types"), "value": get(env, context, "case.caseType"), "labelPath": "label", "action": "setType"});
+          inline(env, morph5, context, "ko-case-select-field", [], {"title": subexpr(env, context, "format-message", [subexpr(env, context, "intl-get", ["cases.priority"], {})], {}), "content": get(env, context, "priorities"), "value": get(env, context, "case.priority"), "labelPath": "label", "action": "setPriority"});
           return fragment;
         }
       };
@@ -2752,10 +2849,6 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
         var el6 = dom.createElement("p");
         dom.setAttribute(el6,"class","header__subtitle");
         var el7 = dom.createTextNode("\n          ");
-        dom.appendChild(el6, el7);
-        var el7 = dom.createComment("");
-        dom.appendChild(el6, el7);
-        var el7 = dom.createTextNode(" created via {{case.channel.title}}, ");
         dom.appendChild(el6, el7);
         var el7 = dom.createComment("");
         dom.appendChild(el6, el7);
@@ -2823,7 +2916,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
       },
       render: function render(context, env, contextualElement) {
         var dom = env.dom;
-        var hooks = env.hooks, get = hooks.get, concat = hooks.concat, attribute = hooks.attribute, inline = hooks.inline, content = hooks.content, block = hooks.block;
+        var hooks = env.hooks, get = hooks.get, concat = hooks.concat, attribute = hooks.attribute, inline = hooks.inline, subexpr = hooks.subexpr, block = hooks.block;
         dom.detectNamespace(contextualElement);
         var fragment;
         if (env.useFragmentCache && dom.canClone) {
@@ -2845,23 +2938,20 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
         var element2 = dom.childAt(element1, [1, 1, 1]);
         var element3 = dom.childAt(element2, [1, 1]);
         var element4 = dom.childAt(element2, [3]);
-        var element5 = dom.childAt(element4, [3]);
-        var element6 = dom.childAt(element1, [3]);
-        var element7 = dom.childAt(element6, [1, 1]);
+        var element5 = dom.childAt(element1, [3]);
+        var element6 = dom.childAt(element5, [1, 1]);
         var attrMorph0 = dom.createAttrMorph(element3, 'src');
         var morph0 = dom.createMorphAt(dom.childAt(element4, [1]),1,1);
-        var morph1 = dom.createMorphAt(element5,1,1);
-        var morph2 = dom.createMorphAt(element5,3,3);
-        var morph3 = dom.createMorphAt(element7,1,1);
-        var morph4 = dom.createMorphAt(element7,3,3);
-        var morph5 = dom.createMorphAt(dom.childAt(element6, [3]),1,1);
+        var morph1 = dom.createMorphAt(dom.childAt(element4, [3]),1,1);
+        var morph2 = dom.createMorphAt(element6,1,1);
+        var morph3 = dom.createMorphAt(element6,3,3);
+        var morph4 = dom.createMorphAt(dom.childAt(element5, [3]),1,1);
         attribute(env, attrMorph0, element3, "src", concat(env, [get(env, context, "case.requester.avatar.url")]));
         inline(env, morph0, context, "ko-editable-text", [], {"value": get(env, context, "case.subject")});
-        content(env, morph1, context, "case.createdAt");
-        content(env, morph2, context, "case.brand.companyName");
-        inline(env, morph3, context, "ko-text-editor", [], {"viewName": "postEditor", "channels": get(env, context, "case.channels"), "channel": get(env, context, "channel")});
-        inline(env, morph4, context, "ko-feed", [], {"events": get(env, context, "messages")});
-        block(env, morph5, context, "ko-info-bar", [], {}, child0, null);
+        inline(env, morph1, context, "format-message", [subexpr(env, context, "intl-get", ["cases.subheader"], {})], {"time": get(env, context, "case.createdAt"), "channel": "\\{{case.channel.title}}", "hasBrand": get(env, context, "hasBrand"), "brand": get(env, context, "case.brand.companyName")});
+        inline(env, morph2, context, "ko-text-editor", [], {"viewName": "postEditor", "channels": get(env, context, "case.channels"), "channel": get(env, context, "channel")});
+        inline(env, morph3, context, "ko-feed", [], {"events": get(env, context, "messages")});
+        block(env, morph4, context, "ko-info-bar", [], {}, child0, null);
         return fragment;
       }
     };
@@ -3068,8 +3158,6 @@ define('frontend-cp/components/ko-case-metric/template', ['exports'], function (
           dom.setAttribute(el2,"class","t-small t-caption");
           var el3 = dom.createComment("");
           dom.appendChild(el2, el3);
-          var el3 = dom.createTextNode(" Total");
-          dom.appendChild(el2, el3);
           dom.appendChild(el1, el2);
           var el2 = dom.createTextNode("\n  ");
           dom.appendChild(el1, el2);
@@ -3080,7 +3168,7 @@ define('frontend-cp/components/ko-case-metric/template', ['exports'], function (
         },
         render: function render(context, env, contextualElement, blockArguments) {
           var dom = env.dom;
-          var hooks = env.hooks, set = hooks.set, content = hooks.content;
+          var hooks = env.hooks, set = hooks.set, content = hooks.content, subexpr = hooks.subexpr, inline = hooks.inline, get = hooks.get;
           dom.detectNamespace(contextualElement);
           var fragment;
           if (env.useFragmentCache && dom.canClone) {
@@ -3104,8 +3192,8 @@ define('frontend-cp/components/ko-case-metric/template', ['exports'], function (
           var morph2 = dom.createMorphAt(dom.childAt(element0, [3]),0,0);
           set(env, context, "metric", blockArguments[0]);
           content(env, morph0, context, "metric.value");
-          content(env, morph1, context, "metric.name");
-          content(env, morph2, context, "metric.total");
+          inline(env, morph1, context, "format-message", [subexpr(env, context, "intl-get", ["cases.metric.unresolved"], {})], {});
+          inline(env, morph2, context, "format-message", [subexpr(env, context, "intl-get", ["cases.metric.total"], {})], {"number": get(env, context, "metric.total")});
           return fragment;
         }
       };
@@ -3721,7 +3809,7 @@ define('frontend-cp/components/ko-case-tags-field/template', ['exports'], functi
           dom.appendChild(el1, el2);
           var el2 = dom.createElement("span");
           dom.setAttribute(el2,"class","t-caption t-small u-ml--");
-          var el3 = dom.createTextNode("New Tag");
+          var el3 = dom.createComment("");
           dom.appendChild(el2, el3);
           dom.appendChild(el1, el2);
           dom.appendChild(el0, el1);
@@ -3731,7 +3819,7 @@ define('frontend-cp/components/ko-case-tags-field/template', ['exports'], functi
         },
         render: function render(context, env, contextualElement) {
           var dom = env.dom;
-          var hooks = env.hooks, get = hooks.get, element = hooks.element, content = hooks.content;
+          var hooks = env.hooks, get = hooks.get, element = hooks.element, content = hooks.content, subexpr = hooks.subexpr, inline = hooks.inline;
           dom.detectNamespace(contextualElement);
           var fragment;
           if (env.useFragmentCache && dom.canClone) {
@@ -3751,8 +3839,10 @@ define('frontend-cp/components/ko-case-tags-field/template', ['exports'], functi
           }
           var element0 = dom.childAt(fragment, [1]);
           var morph0 = dom.createMorphAt(element0,0,0);
+          var morph1 = dom.createMorphAt(dom.childAt(element0, [1]),0,0);
           element(env, element0, context, "action", ["newTag", get(env, context, "searchTerm")], {});
           content(env, morph0, context, "searchTerm");
+          inline(env, morph1, context, "format-message", [subexpr(env, context, "intl-get", ["cases.newtag"], {})], {});
           return fragment;
         }
       };
@@ -4000,37 +4090,37 @@ define('frontend-cp/components/ko-cases-list/template', ['exports'], function (e
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
         var el4 = dom.createElement("th");
-        var el5 = dom.createTextNode("Subject");
+        var el5 = dom.createComment("");
         dom.appendChild(el4, el5);
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
         var el4 = dom.createElement("th");
-        var el5 = dom.createTextNode("Last replier");
+        var el5 = dom.createComment("");
         dom.appendChild(el4, el5);
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
         var el4 = dom.createElement("th");
-        var el5 = dom.createTextNode("Priority");
+        var el5 = dom.createComment("");
         dom.appendChild(el4, el5);
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
         var el4 = dom.createElement("th");
-        var el5 = dom.createTextNode("Ticket ID");
+        var el5 = dom.createComment("");
         dom.appendChild(el4, el5);
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
         var el4 = dom.createElement("th");
-        var el5 = dom.createTextNode("Activity");
+        var el5 = dom.createComment("");
         dom.appendChild(el4, el5);
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
         var el4 = dom.createElement("th");
-        var el5 = dom.createTextNode("Due");
+        var el5 = dom.createComment("");
         dom.appendChild(el4, el5);
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n    ");
@@ -4058,7 +4148,7 @@ define('frontend-cp/components/ko-cases-list/template', ['exports'], function (e
       },
       render: function render(context, env, contextualElement) {
         var dom = env.dom;
-        var hooks = env.hooks, get = hooks.get, block = hooks.block;
+        var hooks = env.hooks, subexpr = hooks.subexpr, inline = hooks.inline, get = hooks.get, block = hooks.block;
         dom.detectNamespace(contextualElement);
         var fragment;
         if (env.useFragmentCache && dom.canClone) {
@@ -4076,8 +4166,22 @@ define('frontend-cp/components/ko-cases-list/template', ['exports'], function (e
         } else {
           fragment = this.build(dom);
         }
-        var morph0 = dom.createMorphAt(dom.childAt(fragment, [0, 3]),1,1);
-        block(env, morph0, context, "each", [get(env, context, "cases")], {}, child0, null);
+        var element1 = dom.childAt(fragment, [0]);
+        var element2 = dom.childAt(element1, [1, 1]);
+        var morph0 = dom.createMorphAt(dom.childAt(element2, [1]),0,0);
+        var morph1 = dom.createMorphAt(dom.childAt(element2, [3]),0,0);
+        var morph2 = dom.createMorphAt(dom.childAt(element2, [5]),0,0);
+        var morph3 = dom.createMorphAt(dom.childAt(element2, [7]),0,0);
+        var morph4 = dom.createMorphAt(dom.childAt(element2, [9]),0,0);
+        var morph5 = dom.createMorphAt(dom.childAt(element2, [11]),0,0);
+        var morph6 = dom.createMorphAt(dom.childAt(element1, [3]),1,1);
+        inline(env, morph0, context, "format-message", [subexpr(env, context, "intl-get", ["cases.subject"], {})], {});
+        inline(env, morph1, context, "format-message", [subexpr(env, context, "intl-get", ["cases.lastreplier"], {})], {});
+        inline(env, morph2, context, "format-message", [subexpr(env, context, "intl-get", ["cases.priority"], {})], {});
+        inline(env, morph3, context, "format-message", [subexpr(env, context, "intl-get", ["cases.ticketid"], {})], {});
+        inline(env, morph4, context, "format-message", [subexpr(env, context, "intl-get", ["cases.activity"], {})], {});
+        inline(env, morph5, context, "format-message", [subexpr(env, context, "intl-get", ["cases.due"], {})], {});
+        block(env, morph6, context, "each", [get(env, context, "cases")], {}, child0, null);
         return fragment;
       }
     };
@@ -5077,7 +5181,7 @@ define('frontend-cp/components/ko-context-modal/template', ['exports'], function
         var el3 = dom.createElement("a");
         dom.setAttribute(el3,"href","#");
         dom.setAttribute(el3,"class","ko-context-modal__action");
-        var el4 = dom.createTextNode("close");
+        var el4 = dom.createComment("");
         dom.appendChild(el3, el4);
         dom.appendChild(el2, el3);
         var el3 = dom.createTextNode("\n  ");
@@ -5101,7 +5205,7 @@ define('frontend-cp/components/ko-context-modal/template', ['exports'], function
       },
       render: function render(context, env, contextualElement) {
         var dom = env.dom;
-        var hooks = env.hooks, get = hooks.get, concat = hooks.concat, attribute = hooks.attribute, element = hooks.element, subexpr = hooks.subexpr, content = hooks.content;
+        var hooks = env.hooks, get = hooks.get, concat = hooks.concat, attribute = hooks.attribute, element = hooks.element, subexpr = hooks.subexpr, content = hooks.content, inline = hooks.inline;
         dom.detectNamespace(contextualElement);
         var fragment;
         if (env.useFragmentCache && dom.canClone) {
@@ -5127,6 +5231,7 @@ define('frontend-cp/components/ko-context-modal/template', ['exports'], function
         var attrMorph0 = dom.createAttrMorph(element0, 'style');
         var attrMorph1 = dom.createAttrMorph(element1, 'style');
         var morph0 = dom.createMorphAt(dom.childAt(element2, [1]),0,0);
+        var morph1 = dom.createMorphAt(element3,0,0);
         var attrMorph2 = dom.createAttrMorph(element4, 'class');
         var attrMorph3 = dom.createAttrMorph(element4, 'style');
         attribute(env, attrMorph0, element0, "style", concat(env, ["width:", get(env, context, "documentWidth"), "px;height:", get(env, context, "documentHeight"), "px;"]));
@@ -5134,6 +5239,7 @@ define('frontend-cp/components/ko-context-modal/template', ['exports'], function
         attribute(env, attrMorph1, element1, "style", concat(env, ["top:", get(env, context, "positionY"), "px; left:", get(env, context, "positionX"), "px; ", subexpr(env, context, "if", [subexpr(env, context, "not", [get(env, context, "modalVisible")], {}), "visibility: hidden;"], {})]));
         content(env, morph0, context, "title");
         element(env, element3, context, "action", ["close"], {});
+        inline(env, morph1, context, "format-message", [subexpr(env, context, "intl-get", ["generic.close"], {})], {});
         attribute(env, attrMorph2, element4, "class", concat(env, [get(env, context, "arrowClass")]));
         attribute(env, attrMorph3, element4, "style", concat(env, ["left:", get(env, context, "arrowX"), "px;"]));
         return fragment;
@@ -5142,7 +5248,7 @@ define('frontend-cp/components/ko-context-modal/template', ['exports'], function
   }()));
 
 });
-define('frontend-cp/components/ko-datepicker/component', ['exports', 'ember', 'moment', 'ember-cli-keyboard-actions/mixins/keyboard-actions'], function (exports, Ember, moment, KeyboardActionsMixin) {
+define('frontend-cp/components/ko-datepicker/component', ['exports', 'ember', 'npm:lodash', 'moment', 'ember-cli-keyboard-actions/mixins/keyboard-actions'], function (exports, Ember, _, moment, KeyboardActionsMixin) {
 
   'use strict';
 
@@ -5159,7 +5265,7 @@ define('frontend-cp/components/ko-datepicker/component', ['exports', 'ember', 'm
     }).property('date'),
 
     onDateParamChange: (function () {
-      this.set('shownDate', moment['default'](this.get('momentDate').isValid() ? this.get('momentDate') : this.get('today')));
+      this.set('shownDate', moment['default'](this.get('momentDate').isValid() ? this.get('momentDate') : this.get('today')).toDate());
     }).observes('momentDate').on('init'),
 
     month: (function () {
@@ -5171,7 +5277,12 @@ define('frontend-cp/components/ko-datepicker/component', ['exports', 'ember', 'm
     }).property('shownDate'),
 
     weekdays: (function () {
-      return moment['default'].weekdaysShort();
+      var weekdays = moment['default'].weekdaysShort();
+      var firstDayOfWeek = moment['default'].localeData().firstDayOfWeek();
+      _['default'].times(firstDayOfWeek, function () {
+        return weekdays.push(weekdays.shift());
+      });
+      return weekdays;
     }).property(),
 
     days: (function () {
@@ -5200,10 +5311,6 @@ define('frontend-cp/components/ko-datepicker/component', ['exports', 'ember', 'm
       return dates;
     }).property('year', 'month', 'today', 'momentDate'),
 
-    formattedMonth: (function () {
-      return moment['default'].months(this.get('month'));
-    }).property('month'),
-
     jumpDateBy: function jumpDateBy(method, range) {
       if (this.get('momentDate').isValid()) {
         this.setDate(moment['default'](this.get('momentDate'))[method](1, range));
@@ -5217,11 +5324,11 @@ define('frontend-cp/components/ko-datepicker/component', ['exports', 'ember', 'm
 
     actions: {
       previousMonth: function previousMonth() {
-        this.set('shownDate', moment['default'](this.get('shownDate')).subtract(1, 'month'));
+        this.set('shownDate', moment['default'](this.get('shownDate')).subtract(1, 'month').toDate());
       },
 
       nextMonth: function nextMonth() {
-        this.set('shownDate', moment['default'](this.get('shownDate')).add(1, 'month'));
+        this.set('shownDate', moment['default'](this.get('shownDate')).add(1, 'month').toDate());
       },
 
       selectDate: function selectDate(date) {
@@ -5430,7 +5537,7 @@ define('frontend-cp/components/ko-datepicker/template', ['exports'], function (e
         dom.setAttribute(el4,"src","/images/icons/datepicker-today.svg");
         dom.setAttribute(el4,"alt","");
         dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("Today");
+        var el4 = dom.createComment("");
         dom.appendChild(el3, el4);
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
@@ -5443,7 +5550,7 @@ define('frontend-cp/components/ko-datepicker/template', ['exports'], function (e
         dom.setAttribute(el4,"src","/images/icons/datepicker-clear.svg");
         dom.setAttribute(el4,"alt","");
         dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("Clear");
+        var el4 = dom.createComment("");
         dom.appendChild(el3, el4);
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
@@ -5456,7 +5563,7 @@ define('frontend-cp/components/ko-datepicker/template', ['exports'], function (e
         dom.setAttribute(el4,"src","/images/icons/datepicker-close.svg");
         dom.setAttribute(el4,"alt","");
         dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("Close");
+        var el4 = dom.createComment("");
         dom.appendChild(el3, el4);
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
@@ -5469,7 +5576,7 @@ define('frontend-cp/components/ko-datepicker/template', ['exports'], function (e
       },
       render: function render(context, env, contextualElement) {
         var dom = env.dom;
-        var hooks = env.hooks, content = hooks.content, element = hooks.element, get = hooks.get, block = hooks.block;
+        var hooks = env.hooks, get = hooks.get, inline = hooks.inline, element = hooks.element, block = hooks.block, subexpr = hooks.subexpr;
         dom.detectNamespace(contextualElement);
         var fragment;
         if (env.useFragmentCache && dom.canClone) {
@@ -5499,15 +5606,21 @@ define('frontend-cp/components/ko-datepicker/template', ['exports'], function (e
         var morph1 = dom.createMorphAt(dom.childAt(element1, [3]),0,0);
         var morph2 = dom.createMorphAt(element4,1,1);
         var morph3 = dom.createMorphAt(element4,2,2);
-        content(env, morph0, context, "formattedMonth");
-        content(env, morph1, context, "year");
+        var morph4 = dom.createMorphAt(element6,1,1);
+        var morph5 = dom.createMorphAt(element7,1,1);
+        var morph6 = dom.createMorphAt(element8,1,1);
+        inline(env, morph0, context, "format-date", [get(env, context, "shownDate")], {"format": "month"});
+        inline(env, morph1, context, "format-date", [get(env, context, "shownDate")], {"format": "year"});
         element(env, element2, context, "action", ["previousMonth"], {});
         element(env, element3, context, "action", ["nextMonth"], {});
         block(env, morph2, context, "each", [get(env, context, "weekdays")], {}, child0, null);
         block(env, morph3, context, "each", [get(env, context, "days")], {}, child1, null);
         element(env, element6, context, "action", ["today"], {});
+        inline(env, morph4, context, "format-message", [subexpr(env, context, "intl-get", ["generic.datepicker.today"], {})], {});
         element(env, element7, context, "action", ["clear"], {});
+        inline(env, morph5, context, "format-message", [subexpr(env, context, "intl-get", ["generic.datepicker.clear"], {})], {});
         element(env, element8, context, "action", ["close"], {});
+        inline(env, morph6, context, "format-message", [subexpr(env, context, "intl-get", ["generic.datepicker.close"], {})], {});
         return fragment;
       }
     };
@@ -5933,8 +6046,6 @@ define('frontend-cp/components/ko-feed/template', ['exports'], function (exports
           dom.appendChild(el2, el3);
           var el3 = dom.createElement("div");
           dom.setAttribute(el3,"class","feed__title--small");
-          var el4 = dom.createTextNode("replied ");
-          dom.appendChild(el3, el4);
           var el4 = dom.createComment("");
           dom.appendChild(el3, el4);
           dom.appendChild(el2, el3);
@@ -5961,7 +6072,7 @@ define('frontend-cp/components/ko-feed/template', ['exports'], function (exports
         },
         render: function render(context, env, contextualElement, blockArguments) {
           var dom = env.dom;
-          var hooks = env.hooks, set = hooks.set, get = hooks.get, concat = hooks.concat, attribute = hooks.attribute, content = hooks.content, inline = hooks.inline, block = hooks.block;
+          var hooks = env.hooks, set = hooks.set, get = hooks.get, concat = hooks.concat, attribute = hooks.attribute, content = hooks.content, subexpr = hooks.subexpr, inline = hooks.inline, block = hooks.block;
           dom.detectNamespace(contextualElement);
           var fragment;
           if (env.useFragmentCache && dom.canClone) {
@@ -5984,13 +6095,13 @@ define('frontend-cp/components/ko-feed/template', ['exports'], function (exports
           var element3 = dom.childAt(element1, [3]);
           var attrMorph0 = dom.createAttrMorph(element2, 'src');
           var morph0 = dom.createMorphAt(element3,0,0);
-          var morph1 = dom.createMorphAt(dom.childAt(element3, [2]),1,1);
+          var morph1 = dom.createMorphAt(dom.childAt(element3, [2]),0,0);
           var morph2 = dom.createMorphAt(dom.childAt(element1, [5]),0,0);
           var morph3 = dom.createMorphAt(element1,7,7);
           set(env, context, "event", blockArguments[0]);
           attribute(env, attrMorph0, element2, "src", concat(env, [get(env, context, "event.creator.avatar.url")]));
           content(env, morph0, context, "event.creator.fullName");
-          inline(env, morph1, context, "ago", [get(env, context, "event.createdAt")], {});
+          inline(env, morph1, context, "format-message", [subexpr(env, context, "intl-get", ["feed.replied"], {})], {"ago": subexpr(env, context, "ago", [get(env, context, "event.createdAt")], {})});
           content(env, morph2, context, "event.contents");
           block(env, morph3, context, "if", [get(env, context, "event.attachments")], {}, child0, null);
           return fragment;
@@ -6077,7 +6188,7 @@ define('frontend-cp/components/ko-feedback/template', ['exports'], function (exp
           var el2 = dom.createTextNode("\n    ");
           dom.appendChild(el1, el2);
           var el2 = dom.createElement("div");
-          var el3 = dom.createTextNode("Yesterday");
+          var el3 = dom.createTextNode("TODO");
           dom.appendChild(el2, el3);
           dom.appendChild(el1, el2);
           var el2 = dom.createTextNode("\n  ");
@@ -6094,7 +6205,7 @@ define('frontend-cp/components/ko-feedback/template', ['exports'], function (exp
           var el2 = dom.createTextNode("\n    ");
           dom.appendChild(el1, el2);
           var el2 = dom.createElement("div");
-          var el3 = dom.createTextNode("Last week");
+          var el3 = dom.createTextNode("TODO");
           dom.appendChild(el2, el3);
           dom.appendChild(el1, el2);
           var el2 = dom.createTextNode("\n  ");
@@ -6111,7 +6222,7 @@ define('frontend-cp/components/ko-feedback/template', ['exports'], function (exp
           var el2 = dom.createTextNode("\n    ");
           dom.appendChild(el1, el2);
           var el2 = dom.createElement("div");
-          var el3 = dom.createTextNode("Last year");
+          var el3 = dom.createTextNode("TODO");
           dom.appendChild(el2, el3);
           dom.appendChild(el1, el2);
           var el2 = dom.createTextNode("\n  ");
@@ -6273,21 +6384,29 @@ define('frontend-cp/components/ko-file-field/template', ['exports'], function (e
   }()));
 
 });
-define('frontend-cp/components/ko-file-size/component', ['exports', 'ember', 'npm:numeral'], function (exports, Ember, numeral) {
+define('frontend-cp/components/ko-file-size/component', ['exports', 'ember'], function (exports, Ember) {
 
   'use strict';
 
   exports['default'] = Ember['default'].Component.extend({
     tagName: 'span',
-    attributeBindings: ['size'],
     size: null,
-    formattedSize: (function () {
+
+    options: (function () {
       var size = this.size;
+      var options = undefined;
       if (size > 1024 * 1024) {
-        return numeral['default'](size / 1024 / 1024).format('0,0.00') + 'MB';
+        options = {
+          size: size / 1024 / 1024,
+          unit: 'mb'
+        };
       } else {
-        return numeral['default'](size / 1024).format('0,0.00') + 'KB';
+        options = {
+          size: size / 1024,
+          unit: 'kb'
+        };
       }
+      return options;
     }).property('size')
   });
 
@@ -6307,13 +6426,11 @@ define('frontend-cp/components/ko-file-size/template', ['exports'], function (ex
         var el0 = dom.createDocumentFragment();
         var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
-        dom.appendChild(el0, el1);
         return el0;
       },
       render: function render(context, env, contextualElement) {
         var dom = env.dom;
-        var hooks = env.hooks, content = hooks.content;
+        var hooks = env.hooks, get = hooks.get, subexpr = hooks.subexpr, inline = hooks.inline;
         dom.detectNamespace(contextualElement);
         var fragment;
         if (env.useFragmentCache && dom.canClone) {
@@ -6332,8 +6449,9 @@ define('frontend-cp/components/ko-file-size/template', ['exports'], function (ex
           fragment = this.build(dom);
         }
         var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+        dom.insertBoundary(fragment, null);
         dom.insertBoundary(fragment, 0);
-        content(env, morph0, context, "formattedSize");
+        inline(env, morph0, context, "format-message", [subexpr(env, context, "intl-get", ["generic.filesize"], {})], {"size": get(env, context, "options.size"), "unit": get(env, context, "options.unit")});
         return fragment;
       }
     };
@@ -6633,7 +6751,7 @@ define('frontend-cp/components/ko-login-password/template', ['exports'], functio
       },
       render: function render(context, env, contextualElement) {
         var dom = env.dom;
-        var hooks = env.hooks, get = hooks.get, inline = hooks.inline;
+        var hooks = env.hooks, get = hooks.get, subexpr = hooks.subexpr, inline = hooks.inline;
         dom.detectNamespace(contextualElement);
         var fragment;
         if (env.useFragmentCache && dom.canClone) {
@@ -6654,8 +6772,8 @@ define('frontend-cp/components/ko-login-password/template', ['exports'], functio
         var element0 = dom.childAt(fragment, [0]);
         var morph0 = dom.createMorphAt(element0,1,1);
         var morph1 = dom.createMorphAt(element0,3,3);
-        inline(env, morph0, context, "input", [], {"type": "email", "value": get(env, context, "model.email"), "name": "email", "autofocus": "autofocus", "class": "login__input", "placeholder": "Email", "disabled": get(env, context, "isLoading")});
-        inline(env, morph1, context, "input", [], {"type": "password", "value": get(env, context, "model.password"), "name": "password", "class": "login__input", "placeholder": "Password", "disabled": get(env, context, "isLoading")});
+        inline(env, morph0, context, "input", [], {"type": "email", "value": get(env, context, "model.email"), "name": "email", "autofocus": "autofocus", "class": "login__input", "placeholder": subexpr(env, context, "format-message", [subexpr(env, context, "intl-get", ["login.email"], {})], {}), "disabled": get(env, context, "isLoading")});
+        inline(env, morph1, context, "input", [], {"type": "password", "value": get(env, context, "model.password"), "name": "password", "class": "login__input", "placeholder": subexpr(env, context, "format-message", [subexpr(env, context, "intl-get", ["login.password"], {})], {}), "disabled": get(env, context, "isLoading")});
         return fragment;
       }
     };
@@ -6699,7 +6817,7 @@ define('frontend-cp/components/ko-login-reset/template', ['exports'], function (
       },
       render: function render(context, env, contextualElement) {
         var dom = env.dom;
-        var hooks = env.hooks, get = hooks.get, inline = hooks.inline;
+        var hooks = env.hooks, get = hooks.get, subexpr = hooks.subexpr, inline = hooks.inline;
         dom.detectNamespace(contextualElement);
         var fragment;
         if (env.useFragmentCache && dom.canClone) {
@@ -6720,8 +6838,8 @@ define('frontend-cp/components/ko-login-reset/template', ['exports'], function (
         var element0 = dom.childAt(fragment, [0]);
         var morph0 = dom.createMorphAt(element0,1,1);
         var morph1 = dom.createMorphAt(element0,3,3);
-        inline(env, morph0, context, "input", [], {"type": "password", "value": get(env, context, "newPassword1"), "name": "reset-password", "class": "login__input", "placeholder": "New Password", "disabled": get(env, context, "isLoading")});
-        inline(env, morph1, context, "input", [], {"type": "password", "value": get(env, context, "newPassword2"), "name": "reset-password-2", "class": "login__input u-intimate", "placeholder": "Password (repeat)", "disabled": get(env, context, "isLoading")});
+        inline(env, morph0, context, "input", [], {"type": "password", "value": get(env, context, "newPassword1"), "name": "reset-password", "class": "login__input", "placeholder": subexpr(env, context, "format-message", [subexpr(env, context, "intl-get", ["login.newpassword"], {})], {}), "disabled": get(env, context, "isLoading")});
+        inline(env, morph1, context, "input", [], {"type": "password", "value": get(env, context, "newPassword2"), "name": "reset-password-2", "class": "login__input u-intimate", "placeholder": subexpr(env, context, "format-message", [subexpr(env, context, "intl-get", ["login.repeatpassword"], {})], {}), "disabled": get(env, context, "isLoading")});
         return fragment;
       }
     };
@@ -7400,8 +7518,6 @@ define('frontend-cp/components/ko-pagination/template', ['exports'], function (e
         dom.appendChild(el1, el2);
         var el2 = dom.createElement("span");
         dom.setAttribute(el2,"class","ko-pagination__pageCount");
-        var el3 = dom.createTextNode("of ");
-        dom.appendChild(el2, el3);
         var el3 = dom.createComment("");
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
@@ -7452,7 +7568,7 @@ define('frontend-cp/components/ko-pagination/template', ['exports'], function (e
       },
       render: function render(context, env, contextualElement) {
         var dom = env.dom;
-        var hooks = env.hooks, content = hooks.content, get = hooks.get, subexpr = hooks.subexpr, concat = hooks.concat, attribute = hooks.attribute, block = hooks.block;
+        var hooks = env.hooks, content = hooks.content, get = hooks.get, subexpr = hooks.subexpr, inline = hooks.inline, concat = hooks.concat, attribute = hooks.attribute, block = hooks.block;
         dom.detectNamespace(contextualElement);
         var fragment;
         if (env.useFragmentCache && dom.canClone) {
@@ -7476,7 +7592,7 @@ define('frontend-cp/components/ko-pagination/template', ['exports'], function (e
         var element3 = dom.childAt(element0, [9]);
         var element4 = dom.childAt(element0, [11]);
         var morph0 = dom.createMorphAt(dom.childAt(element0, [1]),0,0);
-        var morph1 = dom.createMorphAt(dom.childAt(element0, [3]),1,1);
+        var morph1 = dom.createMorphAt(dom.childAt(element0, [3]),0,0);
         var morph2 = dom.createMorphAt(element1,1,1);
         var attrMorph0 = dom.createAttrMorph(element1, 'class');
         var morph3 = dom.createMorphAt(element2,1,1);
@@ -7486,7 +7602,7 @@ define('frontend-cp/components/ko-pagination/template', ['exports'], function (e
         var morph5 = dom.createMorphAt(element4,1,1);
         var attrMorph3 = dom.createAttrMorph(element4, 'class');
         content(env, morph0, context, "currentPage");
-        content(env, morph1, context, "pageCount");
+        inline(env, morph1, context, "format-message", [subexpr(env, context, "intl-get", ["generic.paginatorof"], {})], {"number": get(env, context, "pageCount")});
         attribute(env, attrMorph0, element1, "class", concat(env, ["ko-pagination__first ", subexpr(env, context, "if", [get(env, context, "hasPreviousPage"), "ko-pagination__first--available", ""], {})]));
         block(env, morph2, context, "if", [subexpr(env, context, "eq", [get(env, context, "loadingPage"), 1], {})], {}, child0, child1);
         attribute(env, attrMorph1, element2, "class", concat(env, ["ko-pagination__previous ", subexpr(env, context, "if", [get(env, context, "hasPreviousPage"), "ko-pagination__previous--available", ""], {})]));
@@ -7974,8 +8090,6 @@ define('frontend-cp/components/ko-recent-cases/template', ['exports'], function 
           dom.appendChild(el0, el1);
           var el1 = dom.createElement("p");
           dom.setAttribute(el1,"class","t-small t-caption");
-          var el2 = dom.createTextNode("Last updated ");
-          dom.appendChild(el1, el2);
           var el2 = dom.createComment("");
           dom.appendChild(el1, el2);
           dom.appendChild(el0, el1);
@@ -7989,7 +8103,7 @@ define('frontend-cp/components/ko-recent-cases/template', ['exports'], function 
         },
         render: function render(context, env, contextualElement, blockArguments) {
           var dom = env.dom;
-          var hooks = env.hooks, set = hooks.set, content = hooks.content, get = hooks.get, inline = hooks.inline;
+          var hooks = env.hooks, set = hooks.set, content = hooks.content, get = hooks.get, subexpr = hooks.subexpr, inline = hooks.inline;
           dom.detectNamespace(contextualElement);
           var fragment;
           if (env.useFragmentCache && dom.canClone) {
@@ -8008,10 +8122,10 @@ define('frontend-cp/components/ko-recent-cases/template', ['exports'], function 
             fragment = this.build(dom);
           }
           var morph0 = dom.createMorphAt(fragment,1,1,contextualElement);
-          var morph1 = dom.createMorphAt(dom.childAt(fragment, [3]),1,1);
+          var morph1 = dom.createMorphAt(dom.childAt(fragment, [3]),0,0);
           set(env, context, "case", blockArguments[0]);
           content(env, morph0, context, "case.subject");
-          inline(env, morph1, context, "ago", [get(env, context, "case.createdAt")], {});
+          inline(env, morph1, context, "format-message", [subexpr(env, context, "intl-get", ["cases.lastupdated"], {})], {"time": subexpr(env, context, "ago", [get(env, context, "case.createdAt")], {})});
           return fragment;
         }
       };
@@ -8980,7 +9094,7 @@ define('frontend-cp/components/ko-text-editor/template', ['exports'], function (
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
         var el4 = dom.createElement("span");
-        var el5 = dom.createTextNode("Note");
+        var el5 = dom.createComment("");
         dom.appendChild(el4, el5);
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n    ");
@@ -8993,13 +9107,11 @@ define('frontend-cp/components/ko-text-editor/template', ['exports'], function (
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
         var el4 = dom.createElement("span");
-        dom.setAttribute(el4,"title","Bold");
         dom.setAttribute(el4,"class","ql-format-button ql-bold");
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
         var el4 = dom.createElement("span");
-        dom.setAttribute(el4,"title","Italic");
         dom.setAttribute(el4,"class","ql-format-button ql-italic");
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n    ");
@@ -9012,13 +9124,11 @@ define('frontend-cp/components/ko-text-editor/template', ['exports'], function (
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
         var el4 = dom.createElement("span");
-        dom.setAttribute(el4,"title","Bullet");
         dom.setAttribute(el4,"class","ql-format-button ql-bullet");
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
         var el4 = dom.createElement("span");
-        dom.setAttribute(el4,"title","List");
         dom.setAttribute(el4,"class","ql-format-button ql-list");
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n      ");
@@ -9043,7 +9153,6 @@ define('frontend-cp/components/ko-text-editor/template', ['exports'], function (
         var el6 = dom.createTextNode("\n            ");
         dom.appendChild(el5, el6);
         var el6 = dom.createElement("span");
-        dom.setAttribute(el6,"title","Image");
         dom.setAttribute(el6,"class","ql-format-button ql-image");
         dom.appendChild(el5, el6);
         var el6 = dom.createTextNode("\n        ");
@@ -9059,13 +9168,11 @@ define('frontend-cp/components/ko-text-editor/template', ['exports'], function (
         var el4 = dom.createTextNode("\n\n      ");
         dom.appendChild(el3, el4);
         var el4 = dom.createElement("span");
-        dom.setAttribute(el4,"title","Link");
         dom.setAttribute(el4,"class","ql-format-button ql-link");
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
         var el4 = dom.createElement("span");
-        dom.setAttribute(el4,"title","Authorship");
         dom.setAttribute(el4,"class","ql-format-button ql-authorship");
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n      ");
@@ -9087,7 +9194,6 @@ define('frontend-cp/components/ko-text-editor/template', ['exports'], function (
         var el7 = dom.createTextNode("\n            ");
         dom.appendChild(el6, el7);
         var el7 = dom.createElement("span");
-        dom.setAttribute(el7,"title","Attachment");
         dom.setAttribute(el7,"class","ql-format-button ql-attachment");
         dom.appendChild(el6, el7);
         var el7 = dom.createTextNode("\n        ");
@@ -9103,13 +9209,11 @@ define('frontend-cp/components/ko-text-editor/template', ['exports'], function (
         var el5 = dom.createTextNode("\n\n      ");
         dom.appendChild(el4, el5);
         var el5 = dom.createElement("span");
-        dom.setAttribute(el5,"title","CC");
         dom.setAttribute(el5,"class","ql-format-button ql-cc");
         dom.appendChild(el4, el5);
         var el5 = dom.createTextNode("\n      ");
         dom.appendChild(el4, el5);
         var el5 = dom.createElement("span");
-        dom.setAttribute(el5,"title","Billing");
         dom.setAttribute(el5,"class","ql-format-button ql-billing");
         dom.appendChild(el4, el5);
         var el5 = dom.createTextNode("\n\n      ");
@@ -9174,7 +9278,7 @@ define('frontend-cp/components/ko-text-editor/template', ['exports'], function (
       },
       render: function render(context, env, contextualElement) {
         var dom = env.dom;
-        var hooks = env.hooks, get = hooks.get, inline = hooks.inline, attribute = hooks.attribute, element = hooks.element, block = hooks.block;
+        var hooks = env.hooks, get = hooks.get, inline = hooks.inline, subexpr = hooks.subexpr, attribute = hooks.attribute, element = hooks.element, block = hooks.block;
         dom.detectNamespace(contextualElement);
         var fragment;
         if (env.useFragmentCache && dom.canClone) {
@@ -9194,31 +9298,65 @@ define('frontend-cp/components/ko-text-editor/template', ['exports'], function (
         }
         var element1 = dom.childAt(fragment, [0]);
         var element2 = dom.childAt(element1, [3]);
-        var element3 = dom.childAt(element2, [9]);
+        var element3 = dom.childAt(element2, [5]);
         var element4 = dom.childAt(element3, [1]);
-        var element5 = dom.childAt(element4, [1]);
-        var element6 = dom.childAt(element3, [9]);
+        var element5 = dom.childAt(element3, [3]);
+        var element6 = dom.childAt(element2, [7]);
         var element7 = dom.childAt(element6, [1]);
-        var element8 = dom.childAt(element7, [1]);
-        var element9 = dom.childAt(element6, [7]);
-        var element10 = dom.childAt(element6, [9]);
-        var element11 = dom.childAt(element1, [7]);
+        var element8 = dom.childAt(element6, [3]);
+        var element9 = dom.childAt(element2, [9]);
+        var element10 = dom.childAt(element9, [1]);
+        var element11 = dom.childAt(element10, [1]);
+        var element12 = dom.childAt(element11, [1]);
+        var element13 = dom.childAt(element9, [3]);
+        var element14 = dom.childAt(element9, [5]);
+        var element15 = dom.childAt(element9, [9]);
+        var element16 = dom.childAt(element15, [1]);
+        var element17 = dom.childAt(element16, [1]);
+        var element18 = dom.childAt(element17, [1]);
+        var element19 = dom.childAt(element15, [3]);
+        var element20 = dom.childAt(element15, [5]);
+        var element21 = dom.childAt(element15, [7]);
+        var element22 = dom.childAt(element15, [9]);
+        var element23 = dom.childAt(element1, [7]);
         var morph0 = dom.createMorphAt(element2,1,1);
-        var attrMorph0 = dom.createAttrMorph(element5, 'for');
-        var morph1 = dom.createMorphAt(element4,3,3);
-        var attrMorph1 = dom.createAttrMorph(element8, 'for');
-        var morph2 = dom.createMorphAt(element7,3,3);
-        var morph3 = dom.createMorphAt(element11,1,1);
-        var morph4 = dom.createMorphAt(dom.childAt(element11, [3, 1]),1,1);
+        var morph1 = dom.createMorphAt(dom.childAt(element2, [3, 1]),0,0);
+        var attrMorph0 = dom.createAttrMorph(element4, 'title');
+        var attrMorph1 = dom.createAttrMorph(element5, 'title');
+        var attrMorph2 = dom.createAttrMorph(element7, 'title');
+        var attrMorph3 = dom.createAttrMorph(element8, 'title');
+        var attrMorph4 = dom.createAttrMorph(element11, 'for');
+        var attrMorph5 = dom.createAttrMorph(element12, 'title');
+        var morph2 = dom.createMorphAt(element10,3,3);
+        var attrMorph6 = dom.createAttrMorph(element13, 'title');
+        var attrMorph7 = dom.createAttrMorph(element14, 'title');
+        var attrMorph8 = dom.createAttrMorph(element17, 'for');
+        var attrMorph9 = dom.createAttrMorph(element18, 'title');
+        var morph3 = dom.createMorphAt(element16,3,3);
+        var attrMorph10 = dom.createAttrMorph(element19, 'title');
+        var attrMorph11 = dom.createAttrMorph(element20, 'title');
+        var morph4 = dom.createMorphAt(element23,1,1);
+        var morph5 = dom.createMorphAt(dom.childAt(element23, [3, 1]),1,1);
         inline(env, morph0, context, "view", ["select"], {"class": "ql-social", "content": get(env, context, "channels"), "optionValuePath": "content.id", "optionLabelPath": "content.id", "value": get(env, context, "channel")});
-        attribute(env, attrMorph0, element5, "for", get(env, context, "filesInline.elementId"));
-        inline(env, morph1, context, "ko-file-field", [], {"viewName": "filesInline", "on-change": "handleInlineFiles"});
-        attribute(env, attrMorph1, element8, "for", get(env, context, "filesAttachment.elementId"));
-        inline(env, morph2, context, "ko-file-field", [], {"viewName": "filesAttachment", "on-change": "handleAttachmentFiles"});
-        element(env, element9, context, "action", ["convertToMarkdown"], {});
-        element(env, element10, context, "action", ["insertImage"], {});
-        block(env, morph3, context, "ko-draggable-dropzone", [], {"dropped": "imageDropped"}, child0, null);
-        block(env, morph4, context, "each", [get(env, context, "attachedFiles")], {}, child1, null);
+        inline(env, morph1, context, "format-message", [subexpr(env, context, "intl-get", ["cases.note"], {})], {});
+        attribute(env, attrMorph0, element4, "title", subexpr(env, context, "format-message", [subexpr(env, context, "intl-get", ["generic.texteditor.bold"], {})], {}));
+        attribute(env, attrMorph1, element5, "title", subexpr(env, context, "format-message", [subexpr(env, context, "intl-get", ["generic.texteditor.italic"], {})], {}));
+        attribute(env, attrMorph2, element7, "title", subexpr(env, context, "format-message", [subexpr(env, context, "intl-get", ["generic.texteditor.bullet"], {})], {}));
+        attribute(env, attrMorph3, element8, "title", subexpr(env, context, "format-message", [subexpr(env, context, "intl-get", ["generic.texteditor.list"], {})], {}));
+        attribute(env, attrMorph4, element11, "for", get(env, context, "filesInline.elementId"));
+        attribute(env, attrMorph5, element12, "title", subexpr(env, context, "format-message", [subexpr(env, context, "intl-get", ["generic.texteditor.image"], {})], {}));
+        inline(env, morph2, context, "ko-file-field", [], {"viewName": "filesInline", "on-change": "handleInlineFiles"});
+        attribute(env, attrMorph6, element13, "title", subexpr(env, context, "format-message", [subexpr(env, context, "intl-get", ["generic.texteditor.link"], {})], {}));
+        attribute(env, attrMorph7, element14, "title", subexpr(env, context, "format-message", [subexpr(env, context, "intl-get", ["generic.texteditor.authorship"], {})], {}));
+        attribute(env, attrMorph8, element17, "for", get(env, context, "filesAttachment.elementId"));
+        attribute(env, attrMorph9, element18, "title", subexpr(env, context, "format-message", [subexpr(env, context, "intl-get", ["generic.texteditor.attachment"], {})], {}));
+        inline(env, morph3, context, "ko-file-field", [], {"viewName": "filesAttachment", "on-change": "handleAttachmentFiles"});
+        attribute(env, attrMorph10, element19, "title", subexpr(env, context, "format-message", [subexpr(env, context, "intl-get", ["generic.texteditor.cc"], {})], {}));
+        attribute(env, attrMorph11, element20, "title", subexpr(env, context, "format-message", [subexpr(env, context, "intl-get", ["generic.texteditor.billing"], {})], {}));
+        element(env, element21, context, "action", ["convertToMarkdown"], {});
+        element(env, element22, context, "action", ["insertImage"], {});
+        block(env, morph4, context, "ko-draggable-dropzone", [], {"dropped": "imageDropped"}, child0, null);
+        block(env, morph5, context, "each", [get(env, context, "attachedFiles")], {}, child1, null);
         return fragment;
       }
     };
@@ -9833,15 +9971,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
         dom.appendChild(el5, el6);
         var el6 = dom.createElement("p");
         dom.setAttribute(el6,"class","header__subtitle");
-        var el7 = dom.createTextNode("\n          ");
-        dom.appendChild(el6, el7);
-        var el7 = dom.createComment("");
-        dom.appendChild(el6, el7);
-        var el7 = dom.createTextNode(" created via {{model.channel.title}}, ");
-        dom.appendChild(el6, el7);
-        var el7 = dom.createComment("");
-        dom.appendChild(el6, el7);
-        var el7 = dom.createTextNode("\n          ");
+        var el7 = dom.createTextNode("\n            TODO\n          ");
         dom.appendChild(el6, el7);
         dom.appendChild(el5, el6);
         var el6 = dom.createTextNode("\n        ");
@@ -9905,7 +10035,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
       },
       render: function render(context, env, contextualElement) {
         var dom = env.dom;
-        var hooks = env.hooks, get = hooks.get, concat = hooks.concat, attribute = hooks.attribute, inline = hooks.inline, content = hooks.content, block = hooks.block;
+        var hooks = env.hooks, get = hooks.get, concat = hooks.concat, attribute = hooks.attribute, inline = hooks.inline, block = hooks.block;
         dom.detectNamespace(contextualElement);
         var fragment;
         if (env.useFragmentCache && dom.canClone) {
@@ -9926,24 +10056,18 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
         var element0 = dom.childAt(fragment, [0]);
         var element1 = dom.childAt(element0, [1, 1, 1]);
         var element2 = dom.childAt(element1, [1, 1]);
-        var element3 = dom.childAt(element1, [3]);
-        var element4 = dom.childAt(element3, [3]);
-        var element5 = dom.childAt(element0, [3]);
-        var element6 = dom.childAt(element5, [1, 1]);
+        var element3 = dom.childAt(element0, [3]);
+        var element4 = dom.childAt(element3, [1, 1]);
         var attrMorph0 = dom.createAttrMorph(element2, 'src');
-        var morph0 = dom.createMorphAt(dom.childAt(element3, [1]),1,1);
+        var morph0 = dom.createMorphAt(dom.childAt(element1, [3, 1]),1,1);
         var morph1 = dom.createMorphAt(element4,1,1);
         var morph2 = dom.createMorphAt(element4,3,3);
-        var morph3 = dom.createMorphAt(element6,1,1);
-        var morph4 = dom.createMorphAt(element6,3,3);
-        var morph5 = dom.createMorphAt(dom.childAt(element5, [3]),1,1);
+        var morph3 = dom.createMorphAt(dom.childAt(element3, [3]),1,1);
         attribute(env, attrMorph0, element2, "src", concat(env, [get(env, context, "model.requester.avatar.url")]));
         inline(env, morph0, context, "ko-editable-text", [], {"value": get(env, context, "model.subject")});
-        content(env, morph1, context, "model.createdAt");
-        content(env, morph2, context, "model.brand.companyName");
-        inline(env, morph3, context, "ko-limited-text-area", [], {"max": 140, "placeholder": "Type reply"});
-        inline(env, morph4, context, "ko-feed", [], {"events": get(env, context, "model.timeline")});
-        block(env, morph5, context, "ko-info-bar", [], {}, child0, null);
+        inline(env, morph1, context, "ko-limited-text-area", [], {"max": 140, "placeholder": "TODO"});
+        inline(env, morph2, context, "ko-feed", [], {"events": get(env, context, "model.timeline")});
+        block(env, morph3, context, "ko-info-bar", [], {}, child0, null);
         return fragment;
       }
     };
@@ -10032,6 +10156,214 @@ define('frontend-cp/controllers/object', ['exports', 'ember'], function (exports
 	exports['default'] = Ember['default'].Controller;
 
 });
+define('frontend-cp/formats', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports['default'] = {
+    date: {
+      month: {
+        month: 'long'
+      },
+      year: {
+        year: 'numeric'
+      }
+    },
+    number: {
+      filesize: {
+        style: 'decimal',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }
+    },
+    time: {}
+  };
+
+});
+define('frontend-cp/formatters/format-date', ['exports', 'ember', 'ember-intl/formatter-base'], function (exports, Ember, Formatter) {
+
+    'use strict';
+
+    /**
+     * Copyright 2015, Yahoo! Inc.
+     * Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
+     */
+
+    var FormatDate = Formatter['default'].extend({
+        format: function format(value, hash) {
+            var args = this.buildOptions(value, hash);
+            var intl = this.intl;
+
+            return intl.formatDate.apply(intl, args);
+        }
+    });
+
+    FormatDate.reopenClass({
+        formatOptions: Ember['default'].A(['localeMatcher', 'timeZone', 'hour12', 'formatMatcher', 'weekday', 'era', 'year', 'month', 'day', 'hour', 'minute', 'second', 'timeZoneName'])
+    });
+
+    exports['default'] = FormatDate;
+
+});
+define('frontend-cp/formatters/format-html-message', ['exports', 'ember', 'frontend-cp/formatters/format-message', 'ember-intl/models/intl-get-result'], function (exports, Ember, FormatterMessage, IntlGetResult) {
+
+    'use strict';
+
+    /**
+     * Copyright 2015, Yahoo! Inc.
+     * Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
+     */
+
+    var FormatHtmlMessage = FormatterMessage['default'].extend({
+        escapeProps: function escapeProps(hash) {
+            var value;
+
+            return Object.keys(hash).reduce(function (result, hashKey) {
+                value = hash[hashKey];
+
+                if (typeof value === 'string') {
+                    value = Ember['default'].Handlebars.Utils.escapeExpression(value);
+                }
+
+                result[hashKey] = value;
+                return result;
+            }, {});
+        },
+
+        format: function format(value, hash) {
+            var locales = hash.locales;
+            hash = this.escapeProps(hash);
+            var superResult = this._super(value, hash, locales);
+            return Ember['default'].String.htmlSafe(superResult);
+        }
+    });
+
+    exports['default'] = FormatHtmlMessage;
+
+});
+define('frontend-cp/formatters/format-message', ['exports', 'ember', 'ember-intl/formatter-base', 'ember-intl/models/intl-get-result'], function (exports, Ember, Formatter, IntlGetResult) {
+
+    'use strict';
+
+    /**
+     * Copyright 2015, Yahoo! Inc.
+     * Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
+     */
+
+    var validKey = /[\w|.]/;
+
+    var FormatMessage = Formatter['default'].extend({
+        format: function format(value, hash, optionalLocale) {
+            var locales = optionalLocale || hash.locales;
+            var formatOptions = {};
+
+            if (value instanceof IntlGetResult['default']) {
+                if (typeof locales === 'undefined') {
+                    locales = value.locale;
+                }
+
+                value = value.translation;
+            }
+
+            if (locales) {
+                formatOptions.locales = locales;
+            }
+
+            return this.intl.formatMessage(value, hash, formatOptions);
+        }
+    });
+
+    FormatMessage.reopenClass({
+        formatOptions: Ember['default'].A()
+    });
+
+    exports['default'] = FormatMessage;
+
+});
+define('frontend-cp/formatters/format-number', ['exports', 'ember', 'ember-intl/formatter-base'], function (exports, Ember, Formatter) {
+
+    'use strict';
+
+    /**
+     * Copyright 2015, Yahoo! Inc.
+     * Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
+     */
+
+    var FormatNumber = Formatter['default'].extend({
+        format: function format(value, hash) {
+            var args = this.buildOptions(value, hash);
+            var intl = this.intl;
+
+            return intl.formatNumber.apply(intl, args);
+        }
+    });
+
+    FormatNumber.reopenClass({
+        formatOptions: Ember['default'].A(['localeMatcher', 'style', 'currency', 'currencyDisplay', 'useGrouping', 'minimumIntegerDigits', 'minimumFractionDigits', 'maximumFractionDigits', 'minimumSignificantDigits', 'maximumSignificantDigits'])
+    });
+
+    exports['default'] = FormatNumber;
+
+});
+define('frontend-cp/formatters/format-relative', ['exports', 'ember', 'ember-intl/formatter-base'], function (exports, Ember, Formatter) {
+
+    'use strict';
+
+    /**
+     * Copyright 2015, Yahoo! Inc.
+     * Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
+     */
+
+    var FormatRelative = Formatter['default'].extend({
+        format: function format(value, hash) {
+            var args = this.buildOptions(value, hash);
+            var intl = this.intl;
+
+            return intl.formatRelative.apply(intl, args);
+        }
+    });
+
+    FormatRelative.reopenClass({
+        formatOptions: Ember['default'].A(['style', 'units'])
+    });
+
+    exports['default'] = FormatRelative;
+
+});
+define('frontend-cp/formatters/format-time', ['exports', 'ember', 'ember-intl/formatter-base'], function (exports, Ember, Formatter) {
+
+    'use strict';
+
+    /**
+     * Copyright 2015, Yahoo! Inc.
+     * Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
+     */
+
+    var FormatTime = Formatter['default'].extend({
+        format: function format(value, hash) {
+            var args = this.buildOptions(value, hash);
+            var intl = this.intl;
+
+            return intl.formatTime.apply(intl, args);
+        }
+    });
+
+    FormatTime.reopenClass({
+        formatOptions: Ember['default'].A(['localeMatcher', 'timeZone', 'hour12', 'formatMatcher', 'weekday', 'era', 'year', 'month', 'day', 'hour', 'minute', 'second', 'timeZoneName'])
+    });
+
+    exports['default'] = FormatTime;
+
+});
+define('frontend-cp/helpers/-intl-get', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Handlebars.makeBoundHelper(function (value) {
+    return '%' + value + '%';
+  });
+
+});
 define('frontend-cp/helpers/and', ['exports', 'ember', 'ember-truth-helpers/helpers/and'], function (exports, Ember, andHelper) {
 
 	'use strict';
@@ -10059,6 +10391,78 @@ define('frontend-cp/helpers/escape-html', ['exports', 'ember'], function (export
   });
 
 });
+define('frontend-cp/helpers/format-date', ['exports', 'ember-intl/helpers/base'], function (exports, FormatHelper) {
+
+	'use strict';
+
+	/**
+	 * Copyright 2015, Yahoo! Inc.
+	 * Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
+	 */
+
+	exports['default'] = FormatHelper['default']('format-date');
+
+});
+define('frontend-cp/helpers/format-html-message', ['exports', 'ember-intl/helpers/base'], function (exports, FormatHelper) {
+
+	'use strict';
+
+	/**
+	 * Copyright 2015, Yahoo! Inc.
+	 * Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
+	 */
+
+	exports['default'] = FormatHelper['default']('format-html-message');
+
+});
+define('frontend-cp/helpers/format-message', ['exports', 'ember-intl/helpers/base'], function (exports, FormatHelper) {
+
+	'use strict';
+
+	/**
+	 * Copyright 2015, Yahoo! Inc.
+	 * Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
+	 */
+
+	exports['default'] = FormatHelper['default']('format-message');
+
+});
+define('frontend-cp/helpers/format-number', ['exports', 'ember-intl/helpers/base'], function (exports, FormatHelper) {
+
+	'use strict';
+
+	/**
+	 * Copyright 2015, Yahoo! Inc.
+	 * Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
+	 */
+
+	exports['default'] = FormatHelper['default']('format-number');
+
+});
+define('frontend-cp/helpers/format-relative', ['exports', 'ember-intl/helpers/base'], function (exports, FormatHelper) {
+
+	'use strict';
+
+	/**
+	 * Copyright 2015, Yahoo! Inc.
+	 * Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
+	 */
+
+	exports['default'] = FormatHelper['default']('format-relative');
+
+});
+define('frontend-cp/helpers/format-time', ['exports', 'ember-intl/helpers/base'], function (exports, FormatHelper) {
+
+	'use strict';
+
+	/**
+	 * Copyright 2015, Yahoo! Inc.
+	 * Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
+	 */
+
+	exports['default'] = FormatHelper['default']('format-time');
+
+});
 define('frontend-cp/helpers/get', ['exports', 'ember', 'ember-get-helper/helpers/get'], function (exports, Ember, getHelper) {
 
 	'use strict';
@@ -10066,6 +10470,71 @@ define('frontend-cp/helpers/get', ['exports', 'ember', 'ember-get-helper/helpers
 	exports['default'] = getHelper['default'];
 
 	exports.getHelper = getHelper['default'];
+
+});
+define('frontend-cp/helpers/intl-get', ['exports', 'ember', 'ember-intl/utils/streams'], function (exports, Ember, streams) {
+
+    'use strict';
+
+    /**
+     * Copyright 2015, Yahoo! Inc.
+     * Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
+     */
+
+    exports['default'] = function (value, options) {
+        Ember['default'].assert('intl-get helper must be used as a subexpression', options.isInline === true);
+
+        var view = options.data.view;
+        var types = options.types;
+        var hash = streams.readHash(options.hash);
+        var intl = view.container.lookup('service:intl');
+
+        var currentValue = value;
+        var outStreamValue = '';
+        var valueStream;
+
+        var outStream = new streams.Stream(function () {
+            return outStreamValue;
+        });
+
+        outStream.setValue = function (_value) {
+            outStreamValue = _value;
+            this.notify();
+        };
+
+        function valueStreamChanged() {
+            currentValue = valueStream.value();
+            pokeStream();
+        }
+
+        function pokeStream() {
+            return intl.getTranslation(streams.read(currentValue), hash.locales).then(function (translation) {
+                outStream.setValue(translation);
+            });
+        }
+
+        if (types[0] === 'ID') {
+            valueStream = view.getStream(value);
+            currentValue = valueStream.value();
+            valueStream.subscribe(valueStreamChanged);
+        }
+
+        intl.on('localesChanged', this, pokeStream);
+
+        view.one('willDestroyElement', this, function () {
+            intl.off('localesChanged', this, pokeStream);
+
+            if (valueStream) {
+                valueStream.unsubscribe(valueStreamChanged);
+            }
+
+            streams.destroyStream(outStream);
+        });
+
+        pokeStream();
+
+        return outStream;
+    };
 
 });
 define('frontend-cp/helpers/is-array', ['exports', 'ember', 'ember-truth-helpers/helpers/is-array'], function (exports, Ember, isArrayHelper) {
@@ -10175,6 +10644,70 @@ define('frontend-cp/initializers/ember-cli-mirage', ['exports', 'frontend-cp/con
   }
 
 });
+define('frontend-cp/initializers/ember-intl', ['exports', 'ember', 'frontend-cp/config/environment', 'frontend-cp/services/intl', 'ember-intl/utils/data', 'frontend-cp/helpers/format-date', 'frontend-cp/helpers/format-time', 'frontend-cp/helpers/format-relative', 'frontend-cp/helpers/format-number', 'frontend-cp/helpers/format-html-message', 'frontend-cp/helpers/format-message'], function (exports, Ember, ENV, IntlService, data, FormatDate, FormatTime, FormatRelative, FormatNumber, FormatHtmlMessage, FormatMessage) {
+
+    'use strict';
+
+    /**
+     * Copyright 2015, Yahoo! Inc.
+     * Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
+     */
+
+    var registerIntl = function registerIntl(container) {
+        var seen = requirejs._eak_seen;
+        var prefix = ENV['default'].modulePrefix;
+
+        container.optionsForType('formats', {
+            singleton: true,
+            instantiate: false
+        });
+
+        container.optionsForType('locale', {
+            singleton: true,
+            instantiate: true
+        });
+
+        Object.keys(seen).filter(function (key) {
+            return key.indexOf(prefix + '/cldrs/') === 0;
+        }).forEach(function (key) {
+            data.addLocaleData(require(key, null, null, true)['default']);
+        });
+
+        if (Ember['default'].HTMLBars) {
+            Ember['default'].HTMLBars._registerHelper('format-date', FormatDate['default']);
+            Ember['default'].HTMLBars._registerHelper('format-time', FormatTime['default']);
+            Ember['default'].HTMLBars._registerHelper('format-relative', FormatRelative['default']);
+            Ember['default'].HTMLBars._registerHelper('format-number', FormatNumber['default']);
+            Ember['default'].HTMLBars._registerHelper('format-html-message', FormatHtmlMessage['default']);
+            Ember['default'].HTMLBars._registerHelper('format-message', FormatMessage['default']);
+        }
+
+        // only here for backwards compat.
+        container.register('intl:main', container.lookup('service:intl'), {
+            instantiate: false,
+            singleton: true
+        });
+
+        container.typeInjection('controller', 'intl', 'service:intl');
+        container.typeInjection('component', 'intl', 'service:intl');
+        container.typeInjection('route', 'intl', 'service:intl');
+        container.typeInjection('model', 'intl', 'service:intl');
+        container.typeInjection('view', 'intl', 'service:intl');
+        container.typeInjection('formatter', 'intl', 'service:intl');
+    };
+
+    exports['default'] = {
+        name: 'ember-intl',
+
+        initialize: function initialize(container, app) {
+            registerIntl(container);
+            app.intl = container.lookup('service:intl');
+        }
+    };
+
+    exports.registerIntl = registerIntl;
+
+});
 define('frontend-cp/initializers/ember-moment', ['exports', 'ember-moment/helpers/moment', 'ember-moment/helpers/ago', 'ember-moment/helpers/duration', 'ember'], function (exports, moment, ago, duration, Ember) {
 
   'use strict';
@@ -10255,6 +10788,37 @@ define('frontend-cp/initializers/inflector', ['exports', 'ember'], function (exp
     initialize: function initialize() {
       var inflector = Ember['default'].Inflector.inflector;
       inflector.irregular('person', 'persons');
+    }
+  };
+
+});
+define('frontend-cp/initializers/intl', ['exports', 'moment'], function (exports, moment) {
+
+  'use strict';
+
+  exports['default'] = {
+    name: 'intl',
+    after: 'store',
+
+    initialize: function initialize(container, application) {
+      application.deferReadiness();
+
+      var intl = container.lookup('service:intl');
+      var store = container.lookup('store:main');
+      intl.set('adapterType', 'intl');
+
+      var locale = store.find('locale', 'current');
+      return locale.then(function (locale) {
+        intl.set('locales', [locale.id]);
+        moment['default'].locale(locale.id);
+
+        return locale.get('strings').then(function (strings) {
+          strings.forEach(function (string) {
+            intl.addMessage(locale.id, string.id, string.get('value'));
+          });
+          application.advanceReadiness();
+        });
+      });
     }
   };
 
@@ -10384,6 +10948,25 @@ define('frontend-cp/loading/template', ['exports'], function (exports) {
       }
     };
   }()));
+
+});
+define('frontend-cp/locales/new-locale', ['exports', 'ember-intl/models/locale'], function (exports, Locale) {
+
+  'use strict';
+
+  exports['default'] = Locale['default'].extend({
+    locale: '',
+    messages: {},
+
+    addMessage: function addMessage(key, value) {
+      this.messages[key] = value;
+      return value;
+    },
+
+    getValue: function getValue(key) {
+      return this.messages['frontendcp.universal.' + key];
+    }
+  });
 
 });
 define('frontend-cp/login/controller', ['exports', 'ember', 'frontend-cp/mixins/simple-state'], function (exports, Ember, SimpleStateMixin) {
@@ -10939,7 +11522,7 @@ define('frontend-cp/login/template', ['exports'], function (exports) {
           dom.appendChild(el1, el2);
           var el2 = dom.createElement("button");
           dom.setAttribute(el2,"class","button button--primary u-1/1 u-mt");
-          var el3 = dom.createTextNode("Reset your password");
+          var el3 = dom.createComment("");
           dom.appendChild(el2, el3);
           dom.appendChild(el1, el2);
           var el2 = dom.createTextNode("\n                ");
@@ -10951,7 +11534,7 @@ define('frontend-cp/login/template', ['exports'], function (exports) {
         },
         render: function render(context, env, contextualElement) {
           var dom = env.dom;
-          var hooks = env.hooks, get = hooks.get, inline = hooks.inline, attribute = hooks.attribute, element = hooks.element;
+          var hooks = env.hooks, get = hooks.get, subexpr = hooks.subexpr, inline = hooks.inline, attribute = hooks.attribute, element = hooks.element;
           dom.detectNamespace(contextualElement);
           var fragment;
           if (env.useFragmentCache && dom.canClone) {
@@ -10971,10 +11554,12 @@ define('frontend-cp/login/template', ['exports'], function (exports) {
           }
           var element0 = dom.childAt(fragment, [3, 1]);
           var morph0 = dom.createMorphAt(dom.childAt(fragment, [1]),1,1);
+          var morph1 = dom.createMorphAt(element0,0,0);
           var attrMorph0 = dom.createAttrMorph(element0, 'disabled');
-          inline(env, morph0, context, "input", [], {"type": "email", "value": get(env, context, "model.email"), "name": "forgot-password", "class": "login__input login__input--alone", "placeholder": "Email", "disabled": get(env, context, "isLoading")});
+          inline(env, morph0, context, "input", [], {"type": "email", "value": get(env, context, "model.email"), "name": "forgot-password", "class": "login__input login__input--alone", "placeholder": subexpr(env, context, "format-message", [subexpr(env, context, "intl-get", ["login.email"], {})], {}), "disabled": get(env, context, "isLoading")});
           attribute(env, attrMorph0, element0, "disabled", get(env, context, "isLoading"));
           element(env, element0, context, "action", ["sendForgotPasswordEmail"], {});
+          inline(env, morph1, context, "format-message", [subexpr(env, context, "intl-get", ["login.resetpassword"], {})], {});
           return fragment;
         }
       };
@@ -11170,7 +11755,7 @@ define('frontend-cp/login/template', ['exports'], function (exports) {
         dom.appendChild(el4, el5);
         var el5 = dom.createElement("h5");
         dom.setAttribute(el5,"class","login__header login__header--reset t-center");
-        var el6 = dom.createTextNode("Reset your password");
+        var el6 = dom.createComment("");
         dom.appendChild(el5, el6);
         dom.appendChild(el4, el5);
         var el5 = dom.createTextNode("\n\n");
@@ -11196,7 +11781,7 @@ define('frontend-cp/login/template', ['exports'], function (exports) {
         dom.appendChild(el5, el6);
         var el6 = dom.createElement("a");
         dom.setAttribute(el6,"href","javascript:void(0);");
-        var el7 = dom.createTextNode("« Back");
+        var el7 = dom.createComment("");
         dom.appendChild(el6, el7);
         dom.appendChild(el5, el6);
         var el6 = dom.createTextNode("\n                ");
@@ -11213,7 +11798,7 @@ define('frontend-cp/login/template', ['exports'], function (exports) {
         dom.appendChild(el4, el5);
         var el5 = dom.createElement("h5");
         dom.setAttribute(el5,"class","login__header t-center");
-        var el6 = dom.createTextNode("Welcome to Kayako");
+        var el6 = dom.createComment("");
         dom.appendChild(el5, el6);
         dom.appendChild(el4, el5);
         var el5 = dom.createTextNode("\n                ");
@@ -11266,7 +11851,7 @@ define('frontend-cp/login/template', ['exports'], function (exports) {
         dom.appendChild(el5, el6);
         var el6 = dom.createElement("button");
         dom.setAttribute(el6,"class","button button--primary u-1/1 u-mt");
-        var el7 = dom.createTextNode("Login");
+        var el7 = dom.createComment("");
         dom.appendChild(el6, el7);
         dom.appendChild(el5, el6);
         var el6 = dom.createTextNode("\n                ");
@@ -11280,7 +11865,7 @@ define('frontend-cp/login/template', ['exports'], function (exports) {
         dom.appendChild(el5, el6);
         var el6 = dom.createElement("a");
         dom.setAttribute(el6,"href","javascript:void(0);");
-        var el7 = dom.createTextNode("Forgot password?");
+        var el7 = dom.createComment("");
         dom.appendChild(el6, el7);
         dom.appendChild(el5, el6);
         var el6 = dom.createTextNode("\n                ");
@@ -11304,7 +11889,7 @@ define('frontend-cp/login/template', ['exports'], function (exports) {
       },
       render: function render(context, env, contextualElement) {
         var dom = env.dom;
-        var hooks = env.hooks, get = hooks.get, subexpr = hooks.subexpr, concat = hooks.concat, attribute = hooks.attribute, block = hooks.block, element = hooks.element;
+        var hooks = env.hooks, get = hooks.get, subexpr = hooks.subexpr, concat = hooks.concat, attribute = hooks.attribute, inline = hooks.inline, block = hooks.block, element = hooks.element;
         dom.detectNamespace(contextualElement);
         var fragment;
         if (env.useFragmentCache && dom.canClone) {
@@ -11335,32 +11920,42 @@ define('frontend-cp/login/template', ['exports'], function (exports) {
         var attrMorph0 = dom.createAttrMorph(element2, 'class');
         var attrMorph1 = dom.createAttrMorph(element3, 'style');
         var attrMorph2 = dom.createAttrMorph(element4, 'class');
-        var morph0 = dom.createMorphAt(element5,3,3);
-        var morph1 = dom.createMorphAt(dom.childAt(element5, [5]),0,0);
-        var morph2 = dom.createMorphAt(element5,7,7);
+        var morph0 = dom.createMorphAt(dom.childAt(element5, [1]),0,0);
+        var morph1 = dom.createMorphAt(element5,3,3);
+        var morph2 = dom.createMorphAt(dom.childAt(element5, [5]),0,0);
+        var morph3 = dom.createMorphAt(element5,7,7);
+        var morph4 = dom.createMorphAt(element6,0,0);
         var attrMorph3 = dom.createAttrMorph(element6, 'class');
-        var morph3 = dom.createMorphAt(dom.childAt(element7, [3]),0,0);
+        var morph5 = dom.createMorphAt(dom.childAt(element7, [1]),0,0);
+        var morph6 = dom.createMorphAt(dom.childAt(element7, [3]),0,0);
         var attrMorph4 = dom.createAttrMorph(element8, 'class');
-        var morph4 = dom.createMorphAt(dom.childAt(element8, [1]),1,1);
-        var morph5 = dom.createMorphAt(dom.childAt(element8, [3]),1,1);
+        var morph7 = dom.createMorphAt(dom.childAt(element8, [1]),1,1);
+        var morph8 = dom.createMorphAt(dom.childAt(element8, [3]),1,1);
+        var morph9 = dom.createMorphAt(element9,0,0);
         var attrMorph5 = dom.createAttrMorph(element9, 'disabled');
+        var morph10 = dom.createMorphAt(element10,0,0);
         var attrMorph6 = dom.createAttrMorph(element10, 'class');
         attribute(env, attrMorph0, element2, "class", concat(env, ["flip-container ", subexpr(env, context, "if", [get(env, context, "flipAvatar"), "flip"], {}), " ", subexpr(env, context, "if", [get(env, context, "isLoading"), "a-success"], {}), " ", subexpr(env, context, "if", [get(env, context, "isError"), "a-error"], {})]));
         attribute(env, attrMorph1, element3, "style", concat(env, ["background-image: url('", get(env, context, "avatarBackground"), "');"]));
         attribute(env, attrMorph2, element4, "class", concat(env, ["login-form__container ", subexpr(env, context, "if", [get(env, context, "isLogin"), "u-slide"], {})]));
-        block(env, morph0, context, "if", [get(env, context, "isForgotPasswordEmailSent")], {}, child0, null);
-        block(env, morph1, context, "each", [get(env, context, "errorMessages")], {}, child1, null);
-        block(env, morph2, context, "if", [subexpr(env, context, "not", [get(env, context, "isForgotPasswordEmailSent")], {})], {}, child2, null);
+        inline(env, morph0, context, "format-message", [subexpr(env, context, "intl-get", ["login.resetpassword"], {})], {});
+        block(env, morph1, context, "if", [get(env, context, "isForgotPasswordEmailSent")], {}, child0, null);
+        block(env, morph2, context, "each", [get(env, context, "errorMessages")], {}, child1, null);
+        block(env, morph3, context, "if", [subexpr(env, context, "not", [get(env, context, "isForgotPasswordEmailSent")], {})], {}, child2, null);
         attribute(env, attrMorph3, element6, "class", concat(env, ["js-slide ", subexpr(env, context, "if", [get(env, context, "isLoading"), "u-disable-link"], {})]));
         element(env, element6, context, "action", ["gotoLogin"], {});
-        block(env, morph3, context, "each", [get(env, context, "errorMessages")], {}, child3, null);
+        inline(env, morph4, context, "format-message", [subexpr(env, context, "intl-get", ["login.back"], {})], {});
+        inline(env, morph5, context, "format-message", [subexpr(env, context, "intl-get", ["login.welcome"], {})], {});
+        block(env, morph6, context, "each", [get(env, context, "errorMessages")], {}, child3, null);
         attribute(env, attrMorph4, element8, "class", concat(env, ["login-form__content ", subexpr(env, context, "if", [get(env, context, "isAnimatingContent"), "login-form__content--animate"], {}), " ", subexpr(env, context, "if", [get(env, context, "isContentDown"), "login-form__content-down"], {})]));
-        block(env, morph4, context, "if", [get(env, context, "topFormSet")], {}, child4, null);
-        block(env, morph5, context, "if", [get(env, context, "bottomFormSet")], {}, child5, null);
+        block(env, morph7, context, "if", [get(env, context, "topFormSet")], {}, child4, null);
+        block(env, morph8, context, "if", [get(env, context, "bottomFormSet")], {}, child5, null);
         attribute(env, attrMorph5, element9, "disabled", get(env, context, "loginButtonDisabled"));
         element(env, element9, context, "action", ["login"], {});
+        inline(env, morph9, context, "format-message", [subexpr(env, context, "intl-get", ["login.login"], {})], {});
         attribute(env, attrMorph6, element10, "class", concat(env, ["js-slide ", subexpr(env, context, "if", [get(env, context, "isLoading"), "u-disable-link"], {})]));
         element(env, element10, context, "action", ["gotoForgotPassword"], {});
+        inline(env, morph10, context, "format-message", [subexpr(env, context, "intl-get", ["login.forgot"], {})], {});
         return fragment;
       }
     };
@@ -11388,6 +11983,90 @@ define('frontend-cp/mirage/config', ['exports'], function (exports) {
         },
         'status': 200,
         'timestamp': 1432593047
+      };
+    });
+
+    this.get('api/v1/locales/current', function () {
+      return {
+        'status': 200,
+        'data': {
+          'locale': 'en-us',
+          'name': 'English (United States)',
+          'native_name': 'English (United States)',
+          'region': 'US',
+          'native_region': 'United States',
+          'script': '',
+          'variant': '',
+          'direction': 'LTR',
+          'is_enabled': true,
+          'created_at': '2015-05-28T14:12:59Z',
+          'updated_at': '2015-05-28T14:12:59Z',
+          'resource_type': 'locale'
+        },
+        'resource': 'locale'
+      };
+    });
+
+    this.get('api/v1/locales/en-us/strings', function () {
+      return {
+        'status': 200,
+        'data': {
+          'frontendcp.universal.admin.administration': 'Administration',
+          'frontendcp.universal.admin.apps': 'Apps',
+          'frontendcp.universal.admin.endpoints': 'Endpoints',
+          'frontendcp.universal.cases.activity': 'Activity',
+          'frontendcp.universal.cases.addparticipant': 'Add a participant',
+          'frontendcp.universal.cases.assignee': 'Assignee',
+          'frontendcp.universal.cases.cases': 'Cases',
+          'frontendcp.universal.cases.due': 'Due',
+          'frontendcp.universal.cases.lastreplier': 'Last replier',
+          'frontendcp.universal.cases.lastupdated': 'Last updated {time}',
+          'frontendcp.universal.cases.metric.total': '{number, number} Total',
+          'frontendcp.universal.cases.metric.unresolved': 'Unresolved',
+          'frontendcp.universal.cases.newtag': 'New Tag',
+          'frontendcp.universal.cases.note': 'Note',
+          'frontendcp.universal.cases.priority': 'Priority',
+          'frontendcp.universal.cases.requester': 'Requester',
+          'frontendcp.universal.cases.status': 'Status',
+          'frontendcp.universal.cases.subheader': '{time, date, medium} – {time, time, short} created via {channel}{hasBrand, select,\n    true {, {brand}}\n    false {}\n  }',
+          'frontendcp.universal.cases.subject': 'Subject',
+          'frontendcp.universal.cases.submit': 'Submit',
+          'frontendcp.universal.cases.ticketid': 'Ticket ID',
+          'frontendcp.universal.cases.type': 'Type',
+          'frontendcp.universal.feed.replied': 'replied {ago}',
+          'frontendcp.universal.generic.next': 'Next',
+          'frontendcp.universal.generic.close': 'close',
+          'frontendcp.universal.generic.datepicker.clear': 'Clear',
+          'frontendcp.universal.generic.datepicker.close': 'Close',
+          'frontendcp.universal.generic.datepicker.today': 'Today',
+          'frontendcp.universal.generic.filesize': '{size, number, filesize} {unit, select,\n    mb {MB}\n    kb {KB}\n  }',
+          'frontendcp.universal.generic.logout': 'logout',
+          'frontendcp.universal.generic.paginatorof': 'of {number, number}',
+          'frontendcp.universal.generic.popover.next': 'next',
+          'frontendcp.universal.generic.popover.previous': 'previous',
+          'frontendcp.universal.generic.search': 'Search helpdesk...',
+          'frontendcp.universal.generic.texteditor.attachment': 'Attachment',
+          'frontendcp.universal.generic.texteditor.authorship': 'Authorship',
+          'frontendcp.universal.generic.texteditor.cc': 'CC',
+          'frontendcp.universal.generic.texteditor.billing': 'Billing',
+          'frontendcp.universal.generic.texteditor.bold': 'Bold',
+          'frontendcp.universal.generic.texteditor.bullet': 'Bullet',
+          'frontendcp.universal.generic.texteditor.image': 'Image',
+          'frontendcp.universal.generic.texteditor.italic': 'Italic',
+          'frontendcp.universal.generic.texteditor.link': 'Link',
+          'frontendcp.universal.generic.texteditor.list': 'List',
+          'frontendcp.universal.generic.users': 'Users',
+          'frontendcp.universal.login.back': '« Back',
+          'frontendcp.universal.login.email': 'Email',
+          'frontendcp.universal.login.forgot': 'Forgot password?',
+          'frontendcp.universal.login.login': 'Login',
+          'frontendcp.universal.login.newpassword': 'New Password',
+          'frontendcp.universal.login.password': 'Password',
+          'frontendcp.universal.login.repeatpassword': 'Password (repeat)',
+          'frontendcp.universal.login.resetpassword': 'Reset your password',
+          'frontendcp.universal.login.welcome': 'Welcome to Kayako'
+        },
+        'resource': 'string'
       };
     });
 
@@ -11797,7 +12476,7 @@ define('frontend-cp/models/case', ['exports', 'ember-data'], function (exports, 
     caseType: DS['default'].belongsTo('type'),
     // sla
     // tags: DS.hasMany('tag'),
-    customFields: DS['default'].hasMany('custom-field'),
+    // customFields: DS.hasMany('custom-field'),
     // metadata
     lastReplier: DS['default'].belongsTo('person'),
     lastReplierIdentity: DS['default'].belongsTo('identity'),
@@ -12126,6 +12805,25 @@ define('frontend-cp/models/language', ['exports', 'ember-data'], function (expor
   });
 
 });
+define('frontend-cp/models/locale', ['exports', 'ember-data'], function (exports, DS) {
+
+  'use strict';
+
+  exports['default'] = DS['default'].Model.extend({
+    name: DS['default'].attr('string'),
+    nativeName: DS['default'].attr('string'),
+    region: DS['default'].attr('string'),
+    nativeRegion: DS['default'].attr('string'),
+    script: DS['default'].attr('string'),
+    variant: DS['default'].attr('string'),
+    direction: DS['default'].attr('string'),
+    isEnabled: DS['default'].attr('boolean'),
+    createdAt: DS['default'].attr('date'),
+    updatedAt: DS['default'].attr('date'),
+    strings: DS['default'].hasMany('string', { async: true, child: true })
+  });
+
+});
 define('frontend-cp/models/location', ['exports', 'ember-data'], function (exports, DS) {
 
   'use strict';
@@ -12330,6 +13028,17 @@ define('frontend-cp/models/status', ['exports', 'ember-data'], function (exports
     visibility: DS['default'].attr('string'),
     createdAt: DS['default'].attr('date'),
     updatedAt: DS['default'].attr('date')
+  });
+
+});
+define('frontend-cp/models/string', ['exports', 'ember-data'], function (exports, DS) {
+
+  'use strict';
+
+  exports['default'] = DS['default'].Model.extend({
+    value: DS['default'].attr('string'),
+
+    locale: DS['default'].belongsTo('locale', { async: true, parent: true })
   });
 
 });
@@ -12675,11 +13384,7 @@ define('frontend-cp/serializers/application', ['exports', 'ember', 'ember-data',
 
       var data = payload[this.primaryRecordKey];
       if (data) {
-        if (Ember['default'].isArray(data)) {
-          this.extractArrayData(data, payload);
-        } else {
-          this.extractSingleData(data, payload);
-        }
+        this.extractData(data, payload);
         delete payload[this.primaryRecordKey];
       }
 
@@ -12691,6 +13396,14 @@ define('frontend-cp/serializers/application', ['exports', 'ember', 'ember-data',
 
       delete payload.resource;
       return payload;
+    },
+
+    extractData: function extractData(data, payload) {
+      if (Ember['default'].isArray(data)) {
+        this.extractArrayData(data, payload);
+      } else {
+        this.extractSingleData(data, payload);
+      }
     },
 
     /**
@@ -12707,6 +13420,7 @@ define('frontend-cp/serializers/application', ['exports', 'ember', 'ember-data',
     /**
      * @param {Object[]} data - data
      * @param {String} typeKey - type of the item being extracted
+     * @return {Object} data — data extracted
      */
     extractItem: function extractItem(data, typeKey) {
       this.extractRelationships(data);
@@ -12730,6 +13444,7 @@ define('frontend-cp/serializers/application', ['exports', 'ember', 'ember-data',
       });
 
       delete data.resource_type;
+      return data;
     },
 
     /**
@@ -12909,6 +13624,15 @@ define('frontend-cp/serializers/facebook-account', ['exports', 'frontend-cp/seri
   });
 
 });
+define('frontend-cp/serializers/locale', ['exports', 'frontend-cp/serializers/application'], function (exports, ApplicationSerializer) {
+
+  'use strict';
+
+  exports['default'] = ApplicationSerializer['default'].extend({
+    primaryKey: 'locale'
+  });
+
+});
 define('frontend-cp/serializers/note', ['exports', 'frontend-cp/serializers/application'], function (exports, ApplicationSerializer) {
 
   'use strict';
@@ -12997,6 +13721,30 @@ define('frontend-cp/serializers/status', ['exports', 'frontend-cp/serializers/ap
   });
 
 });
+define('frontend-cp/serializers/string', ['exports', 'frontend-cp/serializers/application', 'npm:lodash'], function (exports, ApplicationSerializer, _) {
+
+  'use strict';
+
+  exports['default'] = ApplicationSerializer['default'].extend({
+    // Response is an object, but a collection of resources nevertheless
+    extractData: function extractData(data, payload) {
+      this.extractArrayData(data, payload);
+    },
+
+    // Turning an object of type {key => value} into array [{id: key, value: value}]
+    extractArrayData: function extractArrayData(data, payload) {
+      var _this = this;
+
+      payload[payload.resource] = _['default'].map(data, function (val, id) {
+        return _this.extractItem({
+          id: id,
+          value: val
+        }, payload.resource);
+      });
+    }
+  });
+
+});
 define('frontend-cp/serializers/tag', ['exports', 'frontend-cp/serializers/application'], function (exports, ApplicationSerializer) {
 
   'use strict';
@@ -13066,6 +13814,214 @@ define('frontend-cp/services/context-modal', ['exports', 'ember'], function (exp
     }
 
   });
+
+});
+define('frontend-cp/services/intl', ['exports', 'ember', 'ember-intl/utils/data', 'ember-intl/format-cache/memoizer', 'ember-intl/models/intl-get-result'], function (exports, Ember, data, createFormatCache, IntlGetResult) {
+
+    'use strict';
+
+    /**
+     * Copyright 2015, Yahoo! Inc.
+     * Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
+     */
+
+    var ServiceKlass = Ember['default'].Service || Ember['default'].Controller;
+    var makeArray = Ember['default'].makeArray;
+    var get = Ember['default'].get;
+    var on = Ember['default'].on;
+    var computed = Ember['default'].computed;
+    var observer = Ember['default'].observer;
+    var isEmpty = Ember['default'].isEmpty;
+    var isPresent = Ember['default'].isPresent;
+    var runOnce = Ember['default'].run.once;
+
+    function assertIsDate(date, errMsg) {
+        Ember['default'].assert(errMsg, isFinite(date));
+    }
+
+    exports['default'] = ServiceKlass.extend(Ember['default'].Evented, {
+        locales: null,
+        defaultLocale: null,
+
+        getDateTimeFormat: null,
+        getRelativeFormat: null,
+        getMessageFormat: null,
+        getNumberFormat: null,
+
+        adapterType: '-intl-adapter',
+
+        setupMemoizers: on('init', function () {
+            this.setProperties({
+                getDateTimeFormat: createFormatCache['default'](Intl.DateTimeFormat),
+                getRelativeFormat: createFormatCache['default'](data.IntlRelativeFormat),
+                getNumberFormat: createFormatCache['default'](Intl.NumberFormat),
+                getMessageFormat: createFormatCache['default'](data.IntlMessageFormat)
+            });
+        }),
+
+        adapter: computed('adapterType', function () {
+            var adapterType = get(this, 'adapterType');
+            var app = this.container.lookup('application:main');
+
+            if (app && app.IntlAdapter) {
+                return app.IntlAdapter.create({
+                    container: this.container
+                });
+            } else if (typeof adapterType === 'string') {
+                return this.container.lookup('adapter:' + adapterType);
+            }
+        }).readOnly(),
+
+        current: computed('locales', 'defaultLocale', function () {
+            var locales = makeArray(get(this, 'locales'));
+            var defaultLocale = get(this, 'defaultLocale');
+
+            if (isPresent(defaultLocale) && locales.indexOf(defaultLocale) === -1) {
+                locales.push(defaultLocale);
+            }
+
+            return locales;
+        }).readOnly(),
+
+        formats: computed(function () {
+            return this.container.lookup('formats:main', {
+                instantiate: false
+            }) || {};
+        }).readOnly(),
+
+        localeChanged: observer('current', function () {
+            runOnce(this, this.notifyLocaleChanged);
+        }),
+
+        addMessage: function addMessage(locale, key, value) {
+            return this.getLanguage(locale).then(function (localeInstance) {
+                return localeInstance.addMessage(key, value);
+            });
+        },
+
+        addMessages: function addMessages(locale, messageObject) {
+            return this.getLanguage(locale).then(function (localeInstance) {
+                return localeInstance.addMessages(messageObject);
+            });
+        },
+
+        notifyLocaleChanged: function notifyLocaleChanged() {
+            this.trigger('localesChanged');
+        },
+
+        formatMessage: function formatMessage(message, values, options) {
+            // When `message` is a function, assume it's an IntlMessageFormat
+            // instance's `format()` method passed by reference, and call it. This
+            // is possible because its `this` will be pre-bound to the instance.
+            if (typeof message === 'function') {
+                return message(values);
+            }
+
+            options = options || {};
+
+            var locales = makeArray(options.locales);
+            var formats = options.formats || get(this, 'formats');
+
+            if (isEmpty(locales)) {
+                locales = get(this, 'current');
+            }
+
+            if (typeof message === 'string') {
+                message = this.getMessageFormat(message, locales, formats);
+            }
+
+            return message.format(values);
+        },
+
+        formatTime: function formatTime(date, formatOptions, options) {
+            date = new Date(date);
+            assertIsDate(date, 'A date or timestamp must be provided to formatTime()');
+
+            return this._format('time', date, formatOptions, options);
+        },
+
+        formatRelative: function formatRelative(date, formatOptions, options) {
+            date = new Date(date);
+            assertIsDate(date, 'A date or timestamp must be provided to formatRelative()');
+
+            return this._format('relative', date, formatOptions, options);
+        },
+
+        formatDate: function formatDate(date, formatOptions, options) {
+            date = new Date(date);
+            assertIsDate(date, 'A date or timestamp must be provided to formatDate()');
+
+            return this._format('date', date, formatOptions, options);
+        },
+
+        formatNumber: function formatNumber(num, formatOptions, options) {
+            return this._format('number', num, formatOptions, options);
+        },
+
+        _format: function _format(type, value, formatOptions, helperOptions) {
+            if (!helperOptions) {
+                helperOptions = formatOptions || {};
+                formatOptions = null;
+            }
+
+            var locales = makeArray(helperOptions.locales);
+            var formats = get(this, 'formats');
+
+            if (isEmpty(locales)) {
+                locales = get(this, 'current');
+            }
+
+            if (formatOptions) {
+                if (typeof formatOptions === 'string' && formats) {
+                    formatOptions = get(formats, type + '.' + formatOptions);
+                }
+
+                formatOptions = Ember['default'].$.extend({}, formatOptions, helperOptions);
+            } else {
+                formatOptions = helperOptions;
+            }
+
+            switch (type) {
+                case 'date':
+                case 'time':
+                    return this.getDateTimeFormat(locales, formatOptions).format(value);
+                case 'number':
+                    return this.getNumberFormat(locales, formatOptions).format(value);
+                case 'relative':
+                    return this.getRelativeFormat(locales, formatOptions).format(value);
+                default:
+                    throw new Error('Unrecognized simple format type: ' + type);
+            }
+        },
+
+        getLanguage: function getLanguage(locale) {
+            var result = this.get('adapter').findLanguage(locale);
+
+            return Ember['default'].RSVP.cast(result).then(function (localeInstance) {
+                if (typeof localeInstance === 'undefined') {
+                    throw new Error('`locale` must be a string or a locale instance');
+                }
+
+                return localeInstance;
+            });
+        },
+
+        getTranslation: function getTranslation(key, locales) {
+            locales = locales ? Ember['default'].makeArray(locales) : this.get('current');
+
+            var result = this.get('adapter').findTranslation(locales, key);
+
+            return Ember['default'].RSVP.cast(result).then(function (result) {
+                Ember['default'].assert('findTranslation should return an object of instance `IntlGetResult`', result instanceof IntlGetResult['default']);
+
+                if (typeof result === 'undefined') {
+                    throw new Error('translation: `' + key + '` on locale(s): ' + locales.join(',') + ' was not found.');
+                }
+
+                return result;
+            });
+        }
+    });
 
 });
 define('frontend-cp/services/local-store', ['exports', 'ember'], function (exports, Ember) {
@@ -13986,7 +14942,11 @@ define('frontend-cp/session/admin/template', ['exports'], function (exports) {
         dom.appendChild(el1, el2);
         var el2 = dom.createElement("div");
         dom.setAttribute(el2,"class","session-admin--page-title");
-        var el3 = dom.createTextNode("\n    Administration\n  ");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n\n  ");
@@ -14001,7 +14961,7 @@ define('frontend-cp/session/admin/template', ['exports'], function (exports) {
         dom.appendChild(el3, el4);
         var el4 = dom.createElement("div");
         dom.setAttribute(el4,"class","session-admin-navigation__heading");
-        var el5 = dom.createTextNode("APPS");
+        var el5 = dom.createComment("");
         dom.appendChild(el4, el5);
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n        ");
@@ -14011,13 +14971,13 @@ define('frontend-cp/session/admin/template', ['exports'], function (exports) {
         var el5 = dom.createTextNode("\n            ");
         dom.appendChild(el4, el5);
         var el5 = dom.createElement("li");
-        var el6 = dom.createTextNode("Apps");
+        var el6 = dom.createComment("");
         dom.appendChild(el5, el6);
         dom.appendChild(el4, el5);
         var el5 = dom.createTextNode("\n            ");
         dom.appendChild(el4, el5);
         var el5 = dom.createElement("li");
-        var el6 = dom.createTextNode("Endpoints");
+        var el6 = dom.createComment("");
         dom.appendChild(el5, el6);
         dom.appendChild(el4, el5);
         var el5 = dom.createTextNode("\n        ");
@@ -14047,7 +15007,7 @@ define('frontend-cp/session/admin/template', ['exports'], function (exports) {
       },
       render: function render(context, env, contextualElement) {
         var dom = env.dom;
-        var hooks = env.hooks, content = hooks.content;
+        var hooks = env.hooks, subexpr = hooks.subexpr, inline = hooks.inline, content = hooks.content;
         dom.detectNamespace(contextualElement);
         var fragment;
         if (env.useFragmentCache && dom.canClone) {
@@ -14065,8 +15025,20 @@ define('frontend-cp/session/admin/template', ['exports'], function (exports) {
         } else {
           fragment = this.build(dom);
         }
-        var morph0 = dom.createMorphAt(dom.childAt(fragment, [1, 3, 3]),1,1);
-        content(env, morph0, context, "outlet");
+        var element0 = dom.childAt(fragment, [1]);
+        var element1 = dom.childAt(element0, [3]);
+        var element2 = dom.childAt(element1, [1]);
+        var element3 = dom.childAt(element2, [3]);
+        var morph0 = dom.createMorphAt(dom.childAt(element0, [1]),1,1);
+        var morph1 = dom.createMorphAt(dom.childAt(element2, [1]),0,0);
+        var morph2 = dom.createMorphAt(dom.childAt(element3, [1]),0,0);
+        var morph3 = dom.createMorphAt(dom.childAt(element3, [3]),0,0);
+        var morph4 = dom.createMorphAt(dom.childAt(element1, [3]),1,1);
+        inline(env, morph0, context, "format-message", [subexpr(env, context, "intl-get", ["admin.administration"], {})], {});
+        inline(env, morph1, context, "format-message", [subexpr(env, context, "intl-get", ["admin.apps"], {})], {});
+        inline(env, morph2, context, "format-message", [subexpr(env, context, "intl-get", ["admin.apps"], {})], {});
+        inline(env, morph3, context, "format-message", [subexpr(env, context, "intl-get", ["admin.endpoints"], {})], {});
+        content(env, morph4, context, "outlet");
         return fragment;
       }
     };
@@ -15375,7 +16347,7 @@ define('frontend-cp/session/showcase/controller', ['exports', 'ember', 'ember-va
 
     metricTitle: 'CASES',
 
-    metrics: [{ value: 9, total: 120, name: 'Unresolved' }],
+    metrics: [{ value: 9, total: 120 }],
 
     events: [{
       'uuid': 'f4fa0cf1-d4d9-420d-87d9-d357ea2c47df',
@@ -17906,12 +18878,13 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
         hasRendered: false,
         build: function build(dom) {
           var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("Cases");
+          var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
           return el0;
         },
         render: function render(context, env, contextualElement) {
           var dom = env.dom;
+          var hooks = env.hooks, subexpr = hooks.subexpr, inline = hooks.inline;
           dom.detectNamespace(contextualElement);
           var fragment;
           if (env.useFragmentCache && dom.canClone) {
@@ -17929,6 +18902,10 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
           } else {
             fragment = this.build(dom);
           }
+          var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+          dom.insertBoundary(fragment, null);
+          dom.insertBoundary(fragment, 0);
+          inline(env, morph0, context, "format-message", [subexpr(env, context, "intl-get", ["cases.cases"], {})], {});
           return fragment;
         }
       };
@@ -17942,12 +18919,13 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
         hasRendered: false,
         build: function build(dom) {
           var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("Users");
+          var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
           return el0;
         },
         render: function render(context, env, contextualElement) {
           var dom = env.dom;
+          var hooks = env.hooks, subexpr = hooks.subexpr, inline = hooks.inline;
           dom.detectNamespace(contextualElement);
           var fragment;
           if (env.useFragmentCache && dom.canClone) {
@@ -17965,6 +18943,10 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
           } else {
             fragment = this.build(dom);
           }
+          var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+          dom.insertBoundary(fragment, null);
+          dom.insertBoundary(fragment, 0);
+          inline(env, morph0, context, "format-message", [subexpr(env, context, "intl-get", ["generic.users"], {})], {});
           return fragment;
         }
       };
@@ -18173,7 +19155,7 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
         var el5 = dom.createTextNode("\n          ");
         dom.appendChild(el4, el5);
         var el5 = dom.createElement("button");
-        var el6 = dom.createTextNode("logout");
+        var el6 = dom.createComment("");
         dom.appendChild(el5, el6);
         dom.appendChild(el4, el5);
         var el5 = dom.createTextNode("\n        ");
@@ -18225,7 +19207,6 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
         dom.appendChild(el4, el5);
         var el5 = dom.createElement("input");
         dom.setAttribute(el5,"type","text");
-        dom.setAttribute(el5,"placeholder","Search helpdesk...");
         dom.setAttribute(el5,"class","input__search");
         dom.appendChild(el4, el5);
         var el5 = dom.createTextNode("\n            ");
@@ -18261,7 +19242,7 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
       },
       render: function render(context, env, contextualElement) {
         var dom = env.dom;
-        var hooks = env.hooks, get = hooks.get, subexpr = hooks.subexpr, block = hooks.block, element = hooks.element, content = hooks.content;
+        var hooks = env.hooks, get = hooks.get, subexpr = hooks.subexpr, block = hooks.block, element = hooks.element, inline = hooks.inline, content = hooks.content, attribute = hooks.attribute;
         dom.detectNamespace(contextualElement);
         var fragment;
         if (env.useFragmentCache && dom.canClone) {
@@ -18279,24 +19260,30 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
         } else {
           fragment = this.build(dom);
         }
-        var element0 = dom.childAt(fragment, [0, 1]);
-        var element1 = dom.childAt(element0, [3, 1]);
-        var element2 = dom.childAt(element1, [9]);
-        var morph0 = dom.createMorphAt(element1,1,1);
-        var morph1 = dom.createMorphAt(element1,3,3);
-        var morph2 = dom.createMorphAt(element1,5,5);
-        var morph3 = dom.createMorphAt(element1,7,7);
-        var morph4 = dom.createMorphAt(dom.childAt(element0, [5, 1]),1,1);
-        var morph5 = dom.createMorphAt(element0,7,7);
-        var morph6 = dom.createMorphAt(dom.childAt(fragment, [2]),1,1);
+        var element0 = dom.childAt(fragment, [0]);
+        var element1 = dom.childAt(element0, [1]);
+        var element2 = dom.childAt(element1, [3, 1]);
+        var element3 = dom.childAt(element2, [9]);
+        var element4 = dom.childAt(element0, [3, 1, 1, 1]);
+        var morph0 = dom.createMorphAt(element2,1,1);
+        var morph1 = dom.createMorphAt(element2,3,3);
+        var morph2 = dom.createMorphAt(element2,5,5);
+        var morph3 = dom.createMorphAt(element2,7,7);
+        var morph4 = dom.createMorphAt(element3,0,0);
+        var morph5 = dom.createMorphAt(dom.childAt(element1, [5, 1]),1,1);
+        var morph6 = dom.createMorphAt(element1,7,7);
+        var attrMorph0 = dom.createAttrMorph(element4, 'placeholder');
+        var morph7 = dom.createMorphAt(dom.childAt(fragment, [2]),1,1);
         block(env, morph0, context, "link-to", ["session.cases", subexpr(env, context, "query-params", [], {"page": get(env, context, "null")})], {"class": "nav-main__item"}, child0, null);
         block(env, morph1, context, "link-to", ["session.users"], {"class": "nav-main__item"}, child1, null);
         block(env, morph2, context, "link-to", ["session.showcase"], {"class": "nav-main__item"}, child2, null);
         block(env, morph3, context, "link-to", ["session.styleguide"], {"class": "nav-main__item"}, child3, null);
-        element(env, element2, context, "action", ["logout"], {});
-        block(env, morph4, context, "each", [get(env, context, "tabsService.tabs")], {}, child4, null);
-        content(env, morph5, context, "ko-agent-dropdown");
-        content(env, morph6, context, "outlet");
+        element(env, element3, context, "action", ["logout"], {});
+        inline(env, morph4, context, "format-message", [subexpr(env, context, "intl-get", ["generic.logout"], {})], {});
+        block(env, morph5, context, "each", [get(env, context, "tabsService.tabs")], {}, child4, null);
+        content(env, morph6, context, "ko-agent-dropdown");
+        attribute(env, attrMorph0, element4, "placeholder", subexpr(env, context, "format-message", [subexpr(env, context, "intl-get", ["generic.search"], {})], {}));
+        content(env, morph7, context, "outlet");
         return fragment;
       }
     };
@@ -18946,6 +19933,26 @@ define('frontend-cp/tests/adapters/identity-twitter.jshint', function () {
   module('JSHint - adapters');
   test('adapters/identity-twitter.js should pass jshint', function() { 
     ok(true, 'adapters/identity-twitter.js should pass jshint.'); 
+  });
+
+});
+define('frontend-cp/tests/adapters/intl.eslint-test', ['qunit'], function (qunit) {
+
+  'use strict';
+
+  qunit.module('ESLint - adapters');
+  qunit.test('adapters/intl.js should pass ESLint', function(assert) {
+    assert.ok(true, 'adapters/intl.js should pass ESLint.\n');
+  });
+
+});
+define('frontend-cp/tests/adapters/intl.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - adapters');
+  test('adapters/intl.js should pass jshint', function() { 
+    ok(true, 'adapters/intl.js should pass jshint.'); 
   });
 
 });
@@ -20289,6 +21296,46 @@ define('frontend-cp/tests/components/mixins/suggestions.jshint', function () {
   });
 
 });
+define('frontend-cp/tests/formats.eslint-test', ['qunit'], function (qunit) {
+
+  'use strict';
+
+  qunit.module('ESLint - .');
+  qunit.test('formats.js should pass ESLint', function(assert) {
+    assert.ok(true, 'formats.js should pass ESLint.\n');
+  });
+
+});
+define('frontend-cp/tests/formats.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - .');
+  test('formats.js should pass jshint', function() { 
+    ok(true, 'formats.js should pass jshint.'); 
+  });
+
+});
+define('frontend-cp/tests/helpers/-intl-get.eslint-test', ['qunit'], function (qunit) {
+
+  'use strict';
+
+  qunit.module('ESLint - helpers');
+  qunit.test('helpers/-intl-get.js should pass ESLint', function(assert) {
+    assert.ok(true, 'helpers/-intl-get.js should pass ESLint.\n');
+  });
+
+});
+define('frontend-cp/tests/helpers/-intl-get.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - helpers');
+  test('helpers/-intl-get.js should pass jshint', function() { 
+    ok(true, 'helpers/-intl-get.js should pass jshint.'); 
+  });
+
+});
 define('frontend-cp/tests/helpers/escape-html.eslint-test', ['qunit'], function (qunit) {
 
   'use strict';
@@ -20306,6 +21353,209 @@ define('frontend-cp/tests/helpers/escape-html.jshint', function () {
   module('JSHint - helpers');
   test('helpers/escape-html.js should pass jshint', function() { 
     ok(true, 'helpers/escape-html.js should pass jshint.'); 
+  });
+
+});
+define('frontend-cp/tests/helpers/format-date.eslint-test', ['qunit'], function (qunit) {
+
+  'use strict';
+
+  qunit.module('ESLint - helpers');
+  qunit.test('helpers/format-date.js should pass ESLint', function(assert) {
+    assert.ok(true, 'helpers/format-date.js should pass ESLint.\n');
+  });
+
+});
+define('frontend-cp/tests/helpers/format-date', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Handlebars.makeBoundHelper(function (value) {
+    return 'DATE %' + value + '%';
+  });
+
+});
+define('frontend-cp/tests/helpers/format-date.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - helpers');
+  test('helpers/format-date.js should pass jshint', function() { 
+    ok(true, 'helpers/format-date.js should pass jshint.'); 
+  });
+
+});
+define('frontend-cp/tests/helpers/format-html-message.eslint-test', ['qunit'], function (qunit) {
+
+  'use strict';
+
+  qunit.module('ESLint - helpers');
+  qunit.test('helpers/format-html-message.js should pass ESLint', function(assert) {
+    assert.ok(true, 'helpers/format-html-message.js should pass ESLint.\n');
+  });
+
+});
+define('frontend-cp/tests/helpers/format-html-message', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Handlebars.makeBoundHelper(function (value) {
+    return 'HTML MESSAGE %' + value + '%';
+  });
+
+});
+define('frontend-cp/tests/helpers/format-html-message.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - helpers');
+  test('helpers/format-html-message.js should pass jshint', function() { 
+    ok(true, 'helpers/format-html-message.js should pass jshint.'); 
+  });
+
+});
+define('frontend-cp/tests/helpers/format-message.eslint-test', ['qunit'], function (qunit) {
+
+  'use strict';
+
+  qunit.module('ESLint - helpers');
+  qunit.test('helpers/format-message.js should pass ESLint', function(assert) {
+    assert.ok(true, 'helpers/format-message.js should pass ESLint.\n');
+  });
+
+});
+define('frontend-cp/tests/helpers/format-message', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Handlebars.makeBoundHelper(function (value) {
+    return 'MESSAGE %' + value + '%';
+  });
+
+});
+define('frontend-cp/tests/helpers/format-message.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - helpers');
+  test('helpers/format-message.js should pass jshint', function() { 
+    ok(true, 'helpers/format-message.js should pass jshint.'); 
+  });
+
+});
+define('frontend-cp/tests/helpers/format-number.eslint-test', ['qunit'], function (qunit) {
+
+  'use strict';
+
+  qunit.module('ESLint - helpers');
+  qunit.test('helpers/format-number.js should pass ESLint', function(assert) {
+    assert.ok(true, 'helpers/format-number.js should pass ESLint.\n');
+  });
+
+});
+define('frontend-cp/tests/helpers/format-number', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Handlebars.makeBoundHelper(function (value) {
+    return 'NUMBER %' + value + '%';
+  });
+
+});
+define('frontend-cp/tests/helpers/format-number.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - helpers');
+  test('helpers/format-number.js should pass jshint', function() { 
+    ok(true, 'helpers/format-number.js should pass jshint.'); 
+  });
+
+});
+define('frontend-cp/tests/helpers/format-relative.eslint-test', ['qunit'], function (qunit) {
+
+  'use strict';
+
+  qunit.module('ESLint - helpers');
+  qunit.test('helpers/format-relative.js should pass ESLint', function(assert) {
+    assert.ok(true, 'helpers/format-relative.js should pass ESLint.\n');
+  });
+
+});
+define('frontend-cp/tests/helpers/format-relative', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Handlebars.makeBoundHelper(function (value) {
+    return 'RELATIVE %' + value + '%';
+  });
+
+});
+define('frontend-cp/tests/helpers/format-relative.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - helpers');
+  test('helpers/format-relative.js should pass jshint', function() { 
+    ok(true, 'helpers/format-relative.js should pass jshint.'); 
+  });
+
+});
+define('frontend-cp/tests/helpers/format-time.eslint-test', ['qunit'], function (qunit) {
+
+  'use strict';
+
+  qunit.module('ESLint - helpers');
+  qunit.test('helpers/format-time.js should pass ESLint', function(assert) {
+    assert.ok(true, 'helpers/format-time.js should pass ESLint.\n');
+  });
+
+});
+define('frontend-cp/tests/helpers/format-time', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Handlebars.makeBoundHelper(function (value) {
+    return 'TIME %' + value + '%';
+  });
+
+});
+define('frontend-cp/tests/helpers/format-time.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - helpers');
+  test('helpers/format-time.js should pass jshint', function() { 
+    ok(true, 'helpers/format-time.js should pass jshint.'); 
+  });
+
+});
+define('frontend-cp/tests/helpers/intl-get.eslint-test', ['qunit'], function (qunit) {
+
+  'use strict';
+
+  qunit.module('ESLint - helpers');
+  qunit.test('helpers/intl-get.js should pass ESLint', function(assert) {
+    assert.ok(true, 'helpers/intl-get.js should pass ESLint.\n');
+  });
+
+});
+define('frontend-cp/tests/helpers/intl-get', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Handlebars.makeBoundHelper(function (value) {
+    return '%' + value + '%';
+  });
+
+});
+define('frontend-cp/tests/helpers/intl-get.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - helpers');
+  test('helpers/intl-get.js should pass jshint', function() { 
+    ok(true, 'helpers/intl-get.js should pass jshint.'); 
   });
 
 });
@@ -20362,6 +21612,74 @@ define('frontend-cp/tests/helpers/login.jshint', function () {
   module('JSHint - helpers');
   test('helpers/login.js should pass jshint', function() { 
     ok(true, 'helpers/login.js should pass jshint.'); 
+  });
+
+});
+define('frontend-cp/tests/helpers/qunit.eslint-test', ['qunit'], function (qunit) {
+
+  'use strict';
+
+  qunit.module('ESLint - helpers');
+  qunit.test('helpers/qunit.js should pass ESLint', function(assert) {
+    assert.ok(true, 'helpers/qunit.js should pass ESLint.\n');
+  });
+
+});
+define('frontend-cp/tests/helpers/qunit', ['exports', 'ember', 'ember-qunit/qunit-module', 'ember-test-helpers', 'ember-qunit/test', 'frontend-cp/initializers/ember-intl', 'frontend-cp/tests/helpers/format-date', 'frontend-cp/tests/helpers/format-time', 'frontend-cp/tests/helpers/format-relative', 'frontend-cp/tests/helpers/format-number', 'frontend-cp/tests/helpers/format-html-message', 'frontend-cp/tests/helpers/format-message', 'frontend-cp/tests/helpers/intl-get'], function (exports, Ember, qunit_module, ember_test_helpers, test, ember_intl, FormatDate, FormatTime, FormatRelative, FormatNumber, FormatHtmlMessage, FormatMessage, IntlGet) {
+
+  'use strict';
+
+  exports.createModule = createModule;
+  exports.moduleForComponent = moduleForComponent;
+  exports.moduleForModel = moduleForModel;
+  exports.moduleFor = moduleFor;
+
+  function createModule(Constructor, name, description, callbacks) {
+    var actualCallbacks = callbacks || (typeof description === 'object' ? description : {});
+    var beforeCallback = actualCallbacks.setup || actualCallbacks.beforeEach;
+    actualCallbacks.setup = function () {
+      Ember['default'].HTMLBars._registerHelper('format-date', FormatDate['default']);
+      Ember['default'].HTMLBars._registerHelper('format-time', FormatTime['default']);
+      Ember['default'].HTMLBars._registerHelper('format-relative', FormatRelative['default']);
+      Ember['default'].HTMLBars._registerHelper('format-number', FormatNumber['default']);
+      Ember['default'].HTMLBars._registerHelper('format-html-message', FormatHtmlMessage['default']);
+      Ember['default'].HTMLBars._registerHelper('format-message', FormatMessage['default']);
+      Ember['default'].HTMLBars._registerHelper('intl-get', IntlGet['default']);
+      if (beforeCallback) {
+        beforeCallback.apply(this, arguments);
+      }
+    };
+
+    if (typeof description !== 'object' && !!description) {
+      return qunit_module.createModule(Constructor, name, description, actualCallbacks);
+    } else {
+      return qunit_module.createModule(Constructor, name, actualCallbacks);
+    }
+  }
+
+  function moduleForComponent(name, description, callbacks) {
+    createModule(ember_test_helpers.TestModuleForComponent, name, description, callbacks);
+  }
+
+  function moduleForModel(name, description, callbacks) {
+    createModule(ember_test_helpers.TestModuleForModel, name, description, callbacks);
+  }
+
+  function moduleFor(name, description, callbacks) {
+    createModule(ember_test_helpers.TestModule, name, description, callbacks);
+  }
+
+  exports.test = test['default'];
+  exports.setResolver = ember_test_helpers.setResolver;
+
+});
+define('frontend-cp/tests/helpers/qunit.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - helpers');
+  test('helpers/qunit.js should pass jshint', function() { 
+    ok(true, 'helpers/qunit.js should pass jshint.'); 
   });
 
 });
@@ -20462,6 +21780,26 @@ define('frontend-cp/tests/initializers/inflector.jshint', function () {
   });
 
 });
+define('frontend-cp/tests/initializers/intl.eslint-test', ['qunit'], function (qunit) {
+
+  'use strict';
+
+  qunit.module('ESLint - initializers');
+  qunit.test('initializers/intl.js should pass ESLint', function(assert) {
+    assert.ok(true, 'initializers/intl.js should pass ESLint.\n');
+  });
+
+});
+define('frontend-cp/tests/initializers/intl.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - initializers');
+  test('initializers/intl.js should pass jshint', function() { 
+    ok(true, 'initializers/intl.js should pass jshint.'); 
+  });
+
+});
 define('frontend-cp/tests/instance-initializers/session.eslint-test', ['qunit'], function (qunit) {
 
   'use strict';
@@ -20479,6 +21817,26 @@ define('frontend-cp/tests/instance-initializers/session.jshint', function () {
   module('JSHint - instance-initializers');
   test('instance-initializers/session.js should pass jshint', function() { 
     ok(true, 'instance-initializers/session.js should pass jshint.'); 
+  });
+
+});
+define('frontend-cp/tests/locales/new-locale.eslint-test', ['qunit'], function (qunit) {
+
+  'use strict';
+
+  qunit.module('ESLint - locales');
+  qunit.test('locales/new-locale.js should pass ESLint', function(assert) {
+    assert.ok(true, 'locales/new-locale.js should pass ESLint.\n');
+  });
+
+});
+define('frontend-cp/tests/locales/new-locale.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - locales');
+  test('locales/new-locale.js should pass jshint', function() { 
+    ok(true, 'locales/new-locale.js should pass jshint.'); 
   });
 
 });
@@ -21302,6 +22660,26 @@ define('frontend-cp/tests/models/language.jshint', function () {
   });
 
 });
+define('frontend-cp/tests/models/locale.eslint-test', ['qunit'], function (qunit) {
+
+  'use strict';
+
+  qunit.module('ESLint - models');
+  qunit.test('models/locale.js should pass ESLint', function(assert) {
+    assert.ok(true, 'models/locale.js should pass ESLint.\n');
+  });
+
+});
+define('frontend-cp/tests/models/locale.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - models');
+  test('models/locale.js should pass jshint', function() { 
+    ok(true, 'models/locale.js should pass jshint.'); 
+  });
+
+});
 define('frontend-cp/tests/models/location.eslint-test', ['qunit'], function (qunit) {
 
   'use strict';
@@ -21519,6 +22897,26 @@ define('frontend-cp/tests/models/status.jshint', function () {
   module('JSHint - models');
   test('models/status.js should pass jshint', function() { 
     ok(true, 'models/status.js should pass jshint.'); 
+  });
+
+});
+define('frontend-cp/tests/models/string.eslint-test', ['qunit'], function (qunit) {
+
+  'use strict';
+
+  qunit.module('ESLint - models');
+  qunit.test('models/string.js should pass ESLint', function(assert) {
+    assert.ok(true, 'models/string.js should pass ESLint.\n');
+  });
+
+});
+define('frontend-cp/tests/models/string.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - models');
+  test('models/string.js should pass jshint', function() { 
+    ok(true, 'models/string.js should pass jshint.'); 
   });
 
 });
@@ -21922,6 +23320,26 @@ define('frontend-cp/tests/serializers/facebook-account.jshint', function () {
   });
 
 });
+define('frontend-cp/tests/serializers/locale.eslint-test', ['qunit'], function (qunit) {
+
+  'use strict';
+
+  qunit.module('ESLint - serializers');
+  qunit.test('serializers/locale.js should pass ESLint', function(assert) {
+    assert.ok(true, 'serializers/locale.js should pass ESLint.\n');
+  });
+
+});
+define('frontend-cp/tests/serializers/locale.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - serializers');
+  test('serializers/locale.js should pass jshint', function() { 
+    ok(true, 'serializers/locale.js should pass jshint.'); 
+  });
+
+});
 define('frontend-cp/tests/serializers/note.eslint-test', ['qunit'], function (qunit) {
 
   'use strict';
@@ -22019,6 +23437,26 @@ define('frontend-cp/tests/serializers/status.jshint', function () {
   module('JSHint - serializers');
   test('serializers/status.js should pass jshint', function() { 
     ok(true, 'serializers/status.js should pass jshint.'); 
+  });
+
+});
+define('frontend-cp/tests/serializers/string.eslint-test', ['qunit'], function (qunit) {
+
+  'use strict';
+
+  qunit.module('ESLint - serializers');
+  qunit.test('serializers/string.js should pass ESLint', function(assert) {
+    assert.ok(true, 'serializers/string.js should pass ESLint.\n');
+  });
+
+});
+define('frontend-cp/tests/serializers/string.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - serializers');
+  test('serializers/string.js should pass jshint', function() { 
+    ok(true, 'serializers/string.js should pass jshint.'); 
   });
 
 });
@@ -22679,14 +24117,14 @@ define('frontend-cp/tests/unit/adapters/application-test.eslint-test', ['qunit']
   });
 
 });
-define('frontend-cp/tests/unit/adapters/application-test', ['ember-qunit'], function (ember_qunit) {
+define('frontend-cp/tests/unit/adapters/application-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
 
-  ember_qunit.moduleFor('adapter:application', 'ApplicationAdapter', {});
+  qunit.moduleFor('adapter:application', 'ApplicationAdapter', {});
 
   // Replace this with your real tests.
-  ember_qunit.test('it exists', function (assert) {
+  qunit.test('it exists', function (assert) {
     var adapter = this.subject();
     assert.ok(adapter);
   });
@@ -22715,14 +24153,14 @@ define('frontend-cp/tests/unit/adapters/private-test.eslint-test', ['qunit'], fu
   });
 
 });
-define('frontend-cp/tests/unit/adapters/private-test', ['ember-qunit'], function (ember_qunit) {
+define('frontend-cp/tests/unit/adapters/private-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
 
-  ember_qunit.moduleFor('adapter:private', 'PrivateAdapter', {});
+  qunit.moduleFor('adapter:private', 'PrivateAdapter', {});
 
   // Replace this with your real tests.
-  ember_qunit.test('it exists', function (assert) {
+  qunit.test('it exists', function (assert) {
     var adapter = this.subject();
     assert.ok(adapter);
   });
@@ -23036,13 +24474,13 @@ define('frontend-cp/tests/unit/components/ko-address/component-test.eslint-test'
   });
 
 });
-define('frontend-cp/tests/unit/components/ko-address/component-test', ['ember-qunit'], function (ember_qunit) {
+define('frontend-cp/tests/unit/components/ko-address/component-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
 
-  ember_qunit.moduleForComponent('ko-address', 'Unit | Component | ko address', {});
+  qunit.moduleForComponent('ko-address', 'Unit | Component | ko address', {});
 
-  ember_qunit.test('it renders', function (assert) {
+  qunit.test('it renders', function (assert) {
     assert.expect(2);
 
     // Creates the component instance
@@ -23078,7 +24516,7 @@ define('frontend-cp/tests/unit/components/ko-admin-card-team/component-test.esli
   });
 
 });
-define('frontend-cp/tests/unit/components/ko-admin-card-team/component-test', ['ember', 'ember-qunit'], function (Ember, ember_qunit) {
+define('frontend-cp/tests/unit/components/ko-admin-card-team/component-test', ['ember', 'frontend-cp/tests/helpers/qunit'], function (Ember, qunit) {
 
   'use strict';
 
@@ -23098,7 +24536,7 @@ define('frontend-cp/tests/unit/components/ko-admin-card-team/component-test', ['
     }
   }]);
 
-  ember_qunit.moduleForComponent('ko-admin-card-team', {
+  qunit.moduleForComponent('ko-admin-card-team', {
     needs: ['ko-admin-selectable-card'],
     integration: true,
 
@@ -23108,26 +24546,26 @@ define('frontend-cp/tests/unit/components/ko-admin-card-team/component-test', ['
     teardown: function teardown() {}
   });
 
-  ember_qunit.test('it correctly calculates number of members', function (assert) {
+  qunit.test('it correctly calculates number of members', function (assert) {
     component.set('members', people);
     assert.equal(component.get('memberCount'), people.length);
   });
 
-  ember_qunit.test('it doesn\'t pluralize member type if only 1 member is present', function (assert) {
+  qunit.test('it doesn\'t pluralize member type if only 1 member is present', function (assert) {
     component.set('members', [people.firstObject]);
     component.set('memberType', 'Agent');
 
     assert.equal(component.get('pluralizedMemberType'), 'Agent');
   });
 
-  ember_qunit.test('it pluralizes member type if there are 3 members present', function (assert) {
+  qunit.test('it pluralizes member type if there are 3 members present', function (assert) {
     component.set('members', people);
     component.set('memberType', 'Agent');
 
     assert.equal(component.get('pluralizedMemberType'), 'Agents');
   });
 
-  ember_qunit.test('it renders a member', function (assert) {
+  qunit.test('it renders a member', function (assert) {
     component.set('members', people);
 
     this.render();
@@ -23157,16 +24595,16 @@ define('frontend-cp/tests/unit/components/ko-admin-card-user/component-test.esli
   });
 
 });
-define('frontend-cp/tests/unit/components/ko-admin-card-user/component-test', ['ember-qunit'], function (ember_qunit) {
+define('frontend-cp/tests/unit/components/ko-admin-card-user/component-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
 
-  ember_qunit.moduleForComponent('ko-admin-card-user', 'Unit | Component | ko admin card user', {
+  qunit.moduleForComponent('ko-admin-card-user', 'Unit | Component | ko admin card user', {
     // Specify the other units that are required for this test
     needs: ['component:ko-admin-selectable-card', 'component:ko-avatar']
   });
 
-  ember_qunit.test('it renders', function (assert) {
+  qunit.test('it renders', function (assert) {
     assert.expect(2);
 
     // Creates the component instance
@@ -23199,14 +24637,14 @@ define('frontend-cp/tests/unit/components/ko-admin-selectable-card/component-tes
   });
 
 });
-define('frontend-cp/tests/unit/components/ko-admin-selectable-card/component-test', ['ember', 'ember-qunit'], function (Ember, ember_qunit) {
+define('frontend-cp/tests/unit/components/ko-admin-selectable-card/component-test', ['ember', 'frontend-cp/tests/helpers/qunit'], function (Ember, qunit) {
 
   'use strict';
 
   var component = undefined,
       checkbox = '.ko-checkbox__checkbox';
 
-  ember_qunit.moduleForComponent('ko-admin-selectable-card', {
+  qunit.moduleForComponent('ko-admin-selectable-card', {
     needs: ['component:ko-checkbox'],
     integration: true,
 
@@ -23216,7 +24654,7 @@ define('frontend-cp/tests/unit/components/ko-admin-selectable-card/component-tes
     teardown: function teardown() {}
   });
 
-  ember_qunit.test('toggling isSelected property to true fires selected action', function (assert) {
+  qunit.test('toggling isSelected property to true fires selected action', function (assert) {
     assert.expect(1);
 
     var modelId = 1;
@@ -23235,7 +24673,7 @@ define('frontend-cp/tests/unit/components/ko-admin-selectable-card/component-tes
     });
   });
 
-  ember_qunit.test('toggling isSelected property to true fires selected action', function (assert) {
+  qunit.test('toggling isSelected property to true fires selected action', function (assert) {
     assert.expect(1);
 
     var modelId = 2;
@@ -23255,7 +24693,7 @@ define('frontend-cp/tests/unit/components/ko-admin-selectable-card/component-tes
     });
   });
 
-  ember_qunit.test('toggling checkbox fires action', function (assert) {
+  qunit.test('toggling checkbox fires action', function (assert) {
     assert.expect(1);
 
     var modelId = 1;
@@ -23277,7 +24715,7 @@ define('frontend-cp/tests/unit/components/ko-admin-selectable-card/component-tes
     this.$(checkbox).click();
   });
 
-  ember_qunit.test('setting inactive state adds class', function (assert) {
+  qunit.test('setting inactive state adds class', function (assert) {
     Ember['default'].run(function () {
       component.set('isActive', false);
     });
@@ -23307,16 +24745,16 @@ define('frontend-cp/tests/unit/components/ko-agent-dropdown/component-test.eslin
   });
 
 });
-define('frontend-cp/tests/unit/components/ko-agent-dropdown/component-test', ['ember-qunit', 'ember'], function (ember_qunit, Ember) {
+define('frontend-cp/tests/unit/components/ko-agent-dropdown/component-test', ['frontend-cp/tests/helpers/qunit', 'ember'], function (qunit, Ember) {
 
   'use strict';
 
   var downArrow = 40;
   var enter = 13;
 
-  ember_qunit.moduleForComponent('ko-agent-dropdown', 'Unit | Component | ko agent dropdown', {});
+  qunit.moduleForComponent('ko-agent-dropdown', 'Unit | Component | ko agent dropdown', {});
 
-  ember_qunit.test('it renders', function (assert) {
+  qunit.test('it renders', function (assert) {
     assert.expect(2);
 
     // Creates the component instance
@@ -23328,7 +24766,7 @@ define('frontend-cp/tests/unit/components/ko-agent-dropdown/component-test', ['e
     assert.equal(component._state, 'inDOM');
   });
 
-  ember_qunit.test('the dropdown can be expanded by mouse', function (assert) {
+  qunit.test('the dropdown can be expanded by mouse', function (assert) {
     assert.expect(2);
 
     var component = this.subject();
@@ -23341,7 +24779,7 @@ define('frontend-cp/tests/unit/components/ko-agent-dropdown/component-test', ['e
     assert.equal($.trim(component.$('ul li:first:visible').text()), 'ham', 'the first menu item');
   });
 
-  ember_qunit.test('an item can be selected by mouse', function (assert) {
+  qunit.test('an item can be selected by mouse', function (assert) {
     assert.expect(2);
 
     var component = this.subject();
@@ -23357,7 +24795,7 @@ define('frontend-cp/tests/unit/components/ko-agent-dropdown/component-test', ['e
     this.$('.nav-new li a:first').click();
   });
 
-  ember_qunit.test('the dropdown can be expanded by keyboard', function (assert) {
+  qunit.test('the dropdown can be expanded by keyboard', function (assert) {
     assert.expect(2);
 
     var component = this.subject();
@@ -23374,7 +24812,7 @@ define('frontend-cp/tests/unit/components/ko-agent-dropdown/component-test', ['e
     assert.equal($.trim(component.$('ul li:first:visible').text()), 'ham', 'the first menu item');
   });
 
-  ember_qunit.test('an item can be selected by keyboard', function (assert) {
+  qunit.test('an item can be selected by keyboard', function (assert) {
     assert.expect(2);
 
     var component = this.subject();
@@ -23419,13 +24857,13 @@ define('frontend-cp/tests/unit/components/ko-avatar/component-test.eslint-test',
   });
 
 });
-define('frontend-cp/tests/unit/components/ko-avatar/component-test', ['ember-qunit'], function (ember_qunit) {
+define('frontend-cp/tests/unit/components/ko-avatar/component-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
 
-  ember_qunit.moduleForComponent('ko-avatar', 'Unit | Component | ko avatar', {});
+  qunit.moduleForComponent('ko-avatar', 'Unit | Component | ko avatar', {});
 
-  ember_qunit.test('it renders', function (assert) {
+  qunit.test('it renders', function (assert) {
     assert.expect(2);
 
     // Creates the component instance
@@ -23469,7 +24907,7 @@ define('frontend-cp/tests/unit/components/ko-case-checkbox-field/component-test'
 	// import {
 	//   moduleForComponent,
 	//   test
-	// } from 'ember-qunit';
+	// } from 'frontend-cp/tests/helpers/qunit';
 	//
 	// moduleForComponent('ko-case-checkbox-field', {
 	//   needs: []
@@ -23559,13 +24997,13 @@ define('frontend-cp/tests/unit/components/ko-case-metric/component-test.eslint-t
   });
 
 });
-define('frontend-cp/tests/unit/components/ko-case-metric/component-test', ['ember-qunit'], function (ember_qunit) {
+define('frontend-cp/tests/unit/components/ko-case-metric/component-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
 
-  ember_qunit.moduleForComponent('ko-case-metric', 'Unit | Component | ko case metric', {});
+  qunit.moduleForComponent('ko-case-metric', 'Unit | Component | ko case metric', {});
 
-  ember_qunit.test('it renders', function (assert) {
+  qunit.test('it renders', function (assert) {
     assert.expect(2);
 
     // Creates the component instance
@@ -23609,7 +25047,7 @@ define('frontend-cp/tests/unit/components/ko-case-select-field/component-test', 
 	// import {
 	//   moduleForComponent,
 	//   test
-	// } from 'ember-qunit';
+	// } from 'frontend-cp/tests/helpers/qunit';
 	//
 	// moduleForComponent('ko-case-select-field', {
 	//   needs: []
@@ -23775,7 +25213,7 @@ define('frontend-cp/tests/unit/components/ko-case-tags-field/component-test.esli
   });
 
 });
-define('frontend-cp/tests/unit/components/ko-case-tags-field/component-test', ['ember', 'ember-qunit'], function (Ember, ember_qunit) {
+define('frontend-cp/tests/unit/components/ko-case-tags-field/component-test', ['ember', 'frontend-cp/tests/helpers/qunit'], function (Ember, qunit) {
 
   'use strict';
 
@@ -23799,7 +25237,7 @@ define('frontend-cp/tests/unit/components/ko-case-tags-field/component-test', ['
   var w = 87;
   var y = 89;
 
-  ember_qunit.moduleForComponent('ko-case-tags-field', {
+  qunit.moduleForComponent('ko-case-tags-field', {
     // Specify the other units that are required for this test
     // needs: ['component:foo', 'helper:bar']
     setup: function setup() {
@@ -23810,7 +25248,7 @@ define('frontend-cp/tests/unit/components/ko-case-tags-field/component-test', ['
     teardown: function teardown() {}
   });
 
-  ember_qunit.test('is suggested', function (assert) {
+  qunit.test('is suggested', function (assert) {
     assert.expect(1);
 
     Ember['default'].run(function () {
@@ -23822,7 +25260,7 @@ define('frontend-cp/tests/unit/components/ko-case-tags-field/component-test', ['
     assert.equal(component.get('isSuggested'), true);
   });
 
-  ember_qunit.test('is not suggested when there are no tags', function (assert) {
+  qunit.test('is not suggested when there are no tags', function (assert) {
     assert.expect(1);
 
     Ember['default'].run(function () {
@@ -23834,7 +25272,7 @@ define('frontend-cp/tests/unit/components/ko-case-tags-field/component-test', ['
     assert.equal(component.get('isSuggested'), false);
   });
 
-  ember_qunit.test('is not suggested when nothing has been typed', function (assert) {
+  qunit.test('is not suggested when nothing has been typed', function (assert) {
     assert.expect(1);
 
     Ember['default'].run(function () {
@@ -23845,7 +25283,7 @@ define('frontend-cp/tests/unit/components/ko-case-tags-field/component-test', ['
     assert.equal(component.get('isSuggested'), false);
   });
 
-  ember_qunit.test('is selected', function (assert) {
+  qunit.test('is selected', function (assert) {
     assert.expect(1);
 
     Ember['default'].run(function () {
@@ -23858,7 +25296,7 @@ define('frontend-cp/tests/unit/components/ko-case-tags-field/component-test', ['
     assert.equal(component.get('isSelected'), true);
   });
 
-  ember_qunit.test('is not selected', function (assert) {
+  qunit.test('is not selected', function (assert) {
     assert.expect(1);
 
     Ember['default'].run(function () {
@@ -23871,7 +25309,7 @@ define('frontend-cp/tests/unit/components/ko-case-tags-field/component-test', ['
     assert.equal(component.get('isSelected'), false);
   });
 
-  ember_qunit.test('it renders', function (assert) {
+  qunit.test('it renders', function (assert) {
     assert.expect(2);
 
     assert.equal(component._state, 'preRender');
@@ -23881,7 +25319,7 @@ define('frontend-cp/tests/unit/components/ko-case-tags-field/component-test', ['
     assert.equal(component._state, 'inDOM');
   });
 
-  ember_qunit.test('title can be set', function (assert) {
+  qunit.test('title can be set', function (assert) {
     assert.expect(1);
 
     this.render();
@@ -23893,7 +25331,7 @@ define('frontend-cp/tests/unit/components/ko-case-tags-field/component-test', ['
     assert.equal(this.$(title).text(), 'Tags', 'title');
   });
 
-  ember_qunit.test('after a selection has taken place the text in the input should be cleared', function (assert) {
+  qunit.test('after a selection has taken place the text in the input should be cleared', function (assert) {
     assert.expect(3);
 
     this.render();
@@ -23911,7 +25349,7 @@ define('frontend-cp/tests/unit/components/ko-case-tags-field/component-test', ['
     assert.equal($.trim(component.$(searchField).val()), '', 'The search field has been cleared');
   });
 
-  ember_qunit.test('selected tags should not appear in suggestions', function (assert) {
+  qunit.test('selected tags should not appear in suggestions', function (assert) {
     assert.expect(1);
 
     this.render();
@@ -23923,10 +25361,10 @@ define('frontend-cp/tests/unit/components/ko-case-tags-field/component-test', ['
       component.keyUp({ keyCode: d });
     });
 
-    assert.equal(this.$(suggestionsList).text(), 'duckdNew Tag', 'suggestions list');
+    assert.equal(this.$(suggestionsList).text(), 'duckdMESSAGE %%cases.newtag%%', 'suggestions list');
   });
 
-  ember_qunit.test('suggested tags should be able to be selected by mouse', function (assert) {
+  qunit.test('suggested tags should be able to be selected by mouse', function (assert) {
     assert.expect(4);
 
     this.render();
@@ -23953,7 +25391,7 @@ define('frontend-cp/tests/unit/components/ko-case-tags-field/component-test', ['
     assert.equal($.trim(this.$(firstSelectedTagText).text()), 'dog', 'selected tags');
   });
 
-  ember_qunit.test('selected tags should be able to be removed by mouse', function (assert) {
+  qunit.test('selected tags should be able to be removed by mouse', function (assert) {
     assert.expect(3);
 
     this.render();
@@ -23978,7 +25416,7 @@ define('frontend-cp/tests/unit/components/ko-case-tags-field/component-test', ['
     assert.equal($.trim(component.$(firstSelectedTagText).text()), '', 'selected tags');
   });
 
-  ember_qunit.test('new tags can be created and added by mouse', function (assert) {
+  qunit.test('new tags can be created and added by mouse', function (assert) {
     assert.expect(4);
 
     this.render();
@@ -24009,7 +25447,7 @@ define('frontend-cp/tests/unit/components/ko-case-tags-field/component-test', ['
     assert.equal($.trim(component.$(firstSelectedTagText).text()), 'new', 'selected tags');
   });
 
-  ember_qunit.test('all suggested tags should be visible when tabing in by keyboard', function (assert) {
+  qunit.test('all suggested tags should be visible when tabing in by keyboard', function (assert) {
     assert.expect(1);
 
     this.render();
@@ -24023,7 +25461,7 @@ define('frontend-cp/tests/unit/components/ko-case-tags-field/component-test', ['
     assert.equal(this.$(suggestionsList).text(), 'dogpigmooseduckdonkeydavedonderek', 'suggestions list');
   });
 
-  ember_qunit.test('suggested tags should be able to be selected by keyboard', function (assert) {
+  qunit.test('suggested tags should be able to be selected by keyboard', function (assert) {
     assert.expect(1);
 
     this.render();
@@ -24049,7 +25487,7 @@ define('frontend-cp/tests/unit/components/ko-case-tags-field/component-test', ['
     });
   });
 
-  ember_qunit.test('selected tags should be able to be removed by keyboard', function (assert) {
+  qunit.test('selected tags should be able to be removed by keyboard', function (assert) {
     assert.expect(1);
 
     this.render();
@@ -24073,7 +25511,7 @@ define('frontend-cp/tests/unit/components/ko-case-tags-field/component-test', ['
     });
   });
 
-  ember_qunit.test('new tags can be created and added by keyboard', function (assert) {
+  qunit.test('new tags can be created and added by keyboard', function (assert) {
     assert.expect(1);
 
     this.render();
@@ -24099,7 +25537,7 @@ define('frontend-cp/tests/unit/components/ko-case-tags-field/component-test', ['
     });
   });
 
-  ember_qunit.test('new tags can be created and added by enter press on keyboard', function (assert) {
+  qunit.test('new tags can be created and added by enter press on keyboard', function (assert) {
     assert.expect(1);
 
     this.render();
@@ -24121,7 +25559,7 @@ define('frontend-cp/tests/unit/components/ko-case-tags-field/component-test', ['
     });
   });
 
-  ember_qunit.test('make sure suggestions are recalculated after selection by keyboard', function (assert) {
+  qunit.test('make sure suggestions are recalculated after selection by keyboard', function (assert) {
     assert.expect(1);
 
     this.render();
@@ -24161,7 +25599,7 @@ define('frontend-cp/tests/unit/components/ko-checkbox/component-test.eslint-test
   });
 
 });
-define('frontend-cp/tests/unit/components/ko-checkbox/component-test', ['ember', 'ember-qunit'], function (Ember, ember_qunit) {
+define('frontend-cp/tests/unit/components/ko-checkbox/component-test', ['ember', 'frontend-cp/tests/helpers/qunit'], function (Ember, qunit) {
 
   'use strict';
 
@@ -24172,7 +25610,7 @@ define('frontend-cp/tests/unit/components/ko-checkbox/component-test', ['ember',
   var checkbox = 'div:first';
   var label = 'label:first';
 
-  ember_qunit.moduleForComponent('ko-checkbox', {
+  qunit.moduleForComponent('ko-checkbox', {
     setup: function setup() {
       component = this.subject();
       component.set('label', 'Remember my preferences');
@@ -24181,7 +25619,7 @@ define('frontend-cp/tests/unit/components/ko-checkbox/component-test', ['ember',
     teardown: function teardown() {}
   });
 
-  ember_qunit.test('it renders', function (assert) {
+  qunit.test('it renders', function (assert) {
     assert.expect(2);
 
     assert.equal(component._state, 'preRender');
@@ -24190,7 +25628,7 @@ define('frontend-cp/tests/unit/components/ko-checkbox/component-test', ['ember',
     assert.equal(component._state, 'inDOM');
   });
 
-  ember_qunit.test('can be checked by pressing spacebar', function (assert) {
+  qunit.test('can be checked by pressing spacebar', function (assert) {
     assert.expect(1);
 
     this.render();
@@ -24202,7 +25640,7 @@ define('frontend-cp/tests/unit/components/ko-checkbox/component-test', ['ember',
     assert.equal(component.checked, true, 'it has been checked');
   });
 
-  ember_qunit.test('can be unchecked by pressing spacebar', function (assert) {
+  qunit.test('can be unchecked by pressing spacebar', function (assert) {
     assert.expect(1);
 
     this.render();
@@ -24218,7 +25656,7 @@ define('frontend-cp/tests/unit/components/ko-checkbox/component-test', ['ember',
     assert.equal(component.checked, false, 'it has been unchecked');
   });
 
-  ember_qunit.test('can be checked by clicking on checkbox', function (assert) {
+  qunit.test('can be checked by clicking on checkbox', function (assert) {
     var _this = this;
 
     assert.expect(1);
@@ -24232,7 +25670,7 @@ define('frontend-cp/tests/unit/components/ko-checkbox/component-test', ['ember',
     assert.equal(component.checked, true, 'it has been checked');
   });
 
-  ember_qunit.test('can be unchecked by clicking on checkbox', function (assert) {
+  qunit.test('can be unchecked by clicking on checkbox', function (assert) {
     var _this2 = this;
 
     assert.expect(1);
@@ -24250,7 +25688,7 @@ define('frontend-cp/tests/unit/components/ko-checkbox/component-test', ['ember',
     assert.equal(component.checked, false, 'it has been unchecked');
   });
 
-  ember_qunit.test('can be checked by clicking on label', function (assert) {
+  qunit.test('can be checked by clicking on label', function (assert) {
     var _this3 = this;
 
     assert.expect(1);
@@ -24264,7 +25702,7 @@ define('frontend-cp/tests/unit/components/ko-checkbox/component-test', ['ember',
     assert.equal(component.checked, true, 'it has been checked');
   });
 
-  ember_qunit.test('can be unchecked by clicking on label', function (assert) {
+  qunit.test('can be unchecked by clicking on label', function (assert) {
     var _this4 = this;
 
     assert.expect(1);
@@ -24282,7 +25720,7 @@ define('frontend-cp/tests/unit/components/ko-checkbox/component-test', ['ember',
     assert.equal(component.checked, false, 'it has been unchecked');
   });
 
-  ember_qunit.test('when disabled checkbox cant be checked', function (assert) {
+  qunit.test('when disabled checkbox cant be checked', function (assert) {
     var _this5 = this;
 
     assert.expect(1);
@@ -24321,13 +25759,13 @@ define('frontend-cp/tests/unit/components/ko-contact-info/component-test.eslint-
   });
 
 });
-define('frontend-cp/tests/unit/components/ko-contact-info/component-test', ['ember-qunit'], function (ember_qunit) {
+define('frontend-cp/tests/unit/components/ko-contact-info/component-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
 
-  ember_qunit.moduleForComponent('ko-contact-info', 'Unit | Component | ko contact info', {});
+  qunit.moduleForComponent('ko-contact-info', 'Unit | Component | ko contact info', {});
 
-  ember_qunit.test('it renders', function (assert) {
+  qunit.test('it renders', function (assert) {
     assert.expect(2);
 
     // Creates the component instance
@@ -24363,13 +25801,13 @@ define('frontend-cp/tests/unit/components/ko-datepicker/component-test.eslint-te
   });
 
 });
-define('frontend-cp/tests/unit/components/ko-datepicker/component-test', ['ember-qunit'], function (ember_qunit) {
+define('frontend-cp/tests/unit/components/ko-datepicker/component-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
 
-  ember_qunit.moduleForComponent('ko-datepicker', {});
+  qunit.moduleForComponent('ko-datepicker', {});
 
-  ember_qunit.test('it renders', function (assert) {
+  qunit.test('it renders', function (assert) {
     assert.expect(2);
 
     // Creates the component instance
@@ -24405,7 +25843,7 @@ define('frontend-cp/tests/unit/components/ko-draggable-dropzone/component-test.e
   });
 
 });
-define('frontend-cp/tests/unit/components/ko-draggable-dropzone/component-test', ['ember', 'ember-qunit'], function (Ember, ember_qunit) {
+define('frontend-cp/tests/unit/components/ko-draggable-dropzone/component-test', ['ember', 'frontend-cp/tests/helpers/qunit'], function (Ember, qunit) {
 
   'use strict';
 
@@ -24426,14 +25864,14 @@ define('frontend-cp/tests/unit/components/ko-draggable-dropzone/component-test',
   var w = 87;
   var y = 89;
 
-  ember_qunit.moduleForComponent('ko-draggable-dropzone', {
+  qunit.moduleForComponent('ko-draggable-dropzone', {
     setup: function setup() {
       component = this.subject();
     },
     teardown: function teardown() {}
   });
 
-  ember_qunit.test('it renders', function (assert) {
+  qunit.test('it renders', function (assert) {
     assert.expect(2);
 
     assert.equal(component._state, 'preRender');
@@ -24443,7 +25881,7 @@ define('frontend-cp/tests/unit/components/ko-draggable-dropzone/component-test',
     assert.equal(component._state, 'inDOM');
   });
 
-  ember_qunit.test('it has total size of 0 by default', function (assert) {
+  qunit.test('it has total size of 0 by default', function (assert) {
     assert.expect(1);
 
     this.render();
@@ -24451,7 +25889,7 @@ define('frontend-cp/tests/unit/components/ko-draggable-dropzone/component-test',
     assert.equal(component.totalSize, 0, 'has total size of 0');
   });
 
-  ember_qunit.test('it has drag counter of 0 by default', function (assert) {
+  qunit.test('it has drag counter of 0 by default', function (assert) {
     assert.expect(1);
 
     this.render();
@@ -24459,7 +25897,7 @@ define('frontend-cp/tests/unit/components/ko-draggable-dropzone/component-test',
     assert.equal(component.dragCounter, 0, 'drag counter is zero');
   });
 
-  ember_qunit.test('it can drop files', function (assert) {
+  qunit.test('it can drop files', function (assert) {
     assert.expect(1);
 
     this.render();
@@ -24469,7 +25907,7 @@ define('frontend-cp/tests/unit/components/ko-draggable-dropzone/component-test',
     assert.equal(component.dragClass, false, 'drag and drop is over');
   });
 
-  ember_qunit.test('dragging in increments drag counter', function (assert) {
+  qunit.test('dragging in increments drag counter', function (assert) {
     assert.expect(1);
 
     Ember['default'].run(function () {
@@ -24479,7 +25917,7 @@ define('frontend-cp/tests/unit/components/ko-draggable-dropzone/component-test',
     assert.equal(component.dragCounter, 1, 'drag counter got incremented');
   });
 
-  ember_qunit.test('dragging out decrements drag counter', function (assert) {
+  qunit.test('dragging out decrements drag counter', function (assert) {
     assert.expect(2);
 
     Ember['default'].run(function () {
@@ -24521,7 +25959,7 @@ define('frontend-cp/tests/unit/components/ko-editable-text/component-test.eslint
   });
 
 });
-define('frontend-cp/tests/unit/components/ko-editable-text/component-test', ['ember', 'ember-qunit'], function (Ember, ember_qunit) {
+define('frontend-cp/tests/unit/components/ko-editable-text/component-test', ['ember', 'frontend-cp/tests/helpers/qunit'], function (Ember, qunit) {
 
   'use strict';
 
@@ -24536,7 +25974,7 @@ define('frontend-cp/tests/unit/components/ko-editable-text/component-test', ['em
   var edit = 'div:first';
   var input = 'input';
 
-  ember_qunit.moduleForComponent('ko-editable-text', {
+  qunit.moduleForComponent('ko-editable-text', {
     setup: function setup() {
       component = this.subject();
       component.set('value', 'I am a hunky munky');
@@ -24544,7 +25982,7 @@ define('frontend-cp/tests/unit/components/ko-editable-text/component-test', ['em
     teardown: function teardown() {}
   });
 
-  ember_qunit.test('it renders', function (assert) {
+  qunit.test('it renders', function (assert) {
     assert.expect(2);
 
     assert.equal(component._state, 'preRender');
@@ -24554,13 +25992,13 @@ define('frontend-cp/tests/unit/components/ko-editable-text/component-test', ['em
     assert.equal(component._state, 'inDOM');
   });
 
-  ember_qunit.test('is not editing by default', function (assert) {
+  qunit.test('is not editing by default', function (assert) {
     assert.expect(1);
 
     assert.equal(component.isEditing, false, 'is not editing by default');
   });
 
-  ember_qunit.test('when clicked/on focus it becomes editable', function (assert) {
+  qunit.test('when clicked/on focus it becomes editable', function (assert) {
     var _this = this;
 
     assert.expect(1);
@@ -24574,7 +26012,7 @@ define('frontend-cp/tests/unit/components/ko-editable-text/component-test', ['em
     assert.equal(component.isEditing, true, 'is editable');
   });
 
-  ember_qunit.test('when focused out it becomes not editable', function (assert) {
+  qunit.test('when focused out it becomes not editable', function (assert) {
     var _this2 = this;
 
     assert.expect(1);
@@ -24592,7 +26030,7 @@ define('frontend-cp/tests/unit/components/ko-editable-text/component-test', ['em
     assert.equal(component.isEditing, false, 'is not editable');
   });
 
-  ember_qunit.test('focus out cancels editing changes', function (assert) {
+  qunit.test('focus out cancels editing changes', function (assert) {
     var _this3 = this;
 
     assert.expect(1);
@@ -24614,7 +26052,7 @@ define('frontend-cp/tests/unit/components/ko-editable-text/component-test', ['em
     assert.equal(component.valueToSave, 'I am a hunky munky', 'value stays the same');
   });
 
-  ember_qunit.test('pressing enter saves editing changes', function (assert) {
+  qunit.test('pressing enter saves editing changes', function (assert) {
     var _this4 = this;
 
     assert.expect(1);
@@ -24657,13 +26095,13 @@ define('frontend-cp/tests/unit/components/ko-feedback/component-test.eslint-test
   });
 
 });
-define('frontend-cp/tests/unit/components/ko-feedback/component-test', ['ember-qunit'], function (ember_qunit) {
+define('frontend-cp/tests/unit/components/ko-feedback/component-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
 
-  ember_qunit.moduleForComponent('ko-feedback', 'Unit | Component | ko feedback', {});
+  qunit.moduleForComponent('ko-feedback', 'Unit | Component | ko feedback', {});
 
-  ember_qunit.test('it renders', function (assert) {
+  qunit.test('it renders', function (assert) {
     assert.expect(2);
 
     // Creates the component instance
@@ -24699,13 +26137,13 @@ define('frontend-cp/tests/unit/components/ko-file-field/component-test.eslint-te
   });
 
 });
-define('frontend-cp/tests/unit/components/ko-file-field/component-test', ['ember-qunit'], function (ember_qunit) {
+define('frontend-cp/tests/unit/components/ko-file-field/component-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
 
-  ember_qunit.moduleForComponent('ko-file-field', {});
+  qunit.moduleForComponent('ko-file-field', {});
 
-  ember_qunit.test('it renders', function (assert) {
+  qunit.test('it renders', function (assert) {
     assert.expect(2);
 
     // Creates the component instance
@@ -24741,13 +26179,13 @@ define('frontend-cp/tests/unit/components/ko-file-size/component-test.eslint-tes
   });
 
 });
-define('frontend-cp/tests/unit/components/ko-file-size/component-test', ['ember-qunit'], function (ember_qunit) {
+define('frontend-cp/tests/unit/components/ko-file-size/component-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
 
-  ember_qunit.moduleForComponent('ko-file-size', {});
+  qunit.moduleForComponent('ko-file-size', {});
 
-  ember_qunit.test('it renders', function (assert) {
+  qunit.test('it renders', function (assert) {
     assert.expect(2);
 
     // Creates the component instance
@@ -24783,13 +26221,13 @@ define('frontend-cp/tests/unit/components/ko-info-bar/component-test.eslint-test
   });
 
 });
-define('frontend-cp/tests/unit/components/ko-info-bar/component-test', ['ember-qunit'], function (ember_qunit) {
+define('frontend-cp/tests/unit/components/ko-info-bar/component-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
 
-  ember_qunit.moduleForComponent('ko-info-bar', {});
+  qunit.moduleForComponent('ko-info-bar', {});
 
-  ember_qunit.test('it renders', function (assert) {
+  qunit.test('it renders', function (assert) {
     assert.expect(2);
 
     // Creates the component instance
@@ -24825,13 +26263,13 @@ define('frontend-cp/tests/unit/components/ko-pagination/component-test.eslint-te
   });
 
 });
-define('frontend-cp/tests/unit/components/ko-pagination/component-test', ['ember-qunit'], function (ember_qunit) {
+define('frontend-cp/tests/unit/components/ko-pagination/component-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
 
-  ember_qunit.moduleForComponent('ko-pagination', {});
+  qunit.moduleForComponent('ko-pagination', {});
 
-  ember_qunit.test('it renders', function (assert) {
+  qunit.test('it renders', function (assert) {
     assert.expect(2);
 
     // Creates the component instance
@@ -24867,7 +26305,7 @@ define('frontend-cp/tests/unit/components/ko-radio/component-test.eslint-test', 
   });
 
 });
-define('frontend-cp/tests/unit/components/ko-radio/component-test', ['ember', 'ember-qunit'], function (Ember, ember_qunit) {
+define('frontend-cp/tests/unit/components/ko-radio/component-test', ['ember', 'frontend-cp/tests/helpers/qunit'], function (Ember, qunit) {
 
   'use strict';
 
@@ -24878,7 +26316,7 @@ define('frontend-cp/tests/unit/components/ko-radio/component-test', ['ember', 'e
   var radio = 'div:first';
   var label = 'label:first';
 
-  ember_qunit.moduleForComponent('ko-radio', {
+  qunit.moduleForComponent('ko-radio', {
     setup: function setup() {
       component = this.subject();
       component.set('label', 'You can do this!');
@@ -24887,7 +26325,7 @@ define('frontend-cp/tests/unit/components/ko-radio/component-test', ['ember', 'e
     teardown: function teardown() {}
   });
 
-  ember_qunit.test('it renders', function (assert) {
+  qunit.test('it renders', function (assert) {
     assert.expect(2);
 
     assert.equal(component._state, 'preRender');
@@ -24896,7 +26334,7 @@ define('frontend-cp/tests/unit/components/ko-radio/component-test', ['ember', 'e
     assert.equal(component._state, 'inDOM');
   });
 
-  ember_qunit.test('can be selected by pressing spacebar', function (assert) {
+  qunit.test('can be selected by pressing spacebar', function (assert) {
     assert.expect(1);
 
     this.render();
@@ -24908,7 +26346,7 @@ define('frontend-cp/tests/unit/components/ko-radio/component-test', ['ember', 'e
     assert.equal(component.selected, true, 'it has been selected');
   });
 
-  ember_qunit.test('can be unselected by pressing spacebar', function (assert) {
+  qunit.test('can be unselected by pressing spacebar', function (assert) {
     assert.expect(1);
 
     this.render();
@@ -24924,7 +26362,7 @@ define('frontend-cp/tests/unit/components/ko-radio/component-test', ['ember', 'e
     assert.equal(component.selected, false, 'it has been unselected');
   });
 
-  ember_qunit.test('can be selected by clicking on radio', function (assert) {
+  qunit.test('can be selected by clicking on radio', function (assert) {
     var _this = this;
 
     assert.expect(1);
@@ -24938,7 +26376,7 @@ define('frontend-cp/tests/unit/components/ko-radio/component-test', ['ember', 'e
     assert.equal(component.selected, true, 'it has been selected');
   });
 
-  ember_qunit.test('can be unselected by clicking on radio', function (assert) {
+  qunit.test('can be unselected by clicking on radio', function (assert) {
     var _this2 = this;
 
     assert.expect(1);
@@ -24956,7 +26394,7 @@ define('frontend-cp/tests/unit/components/ko-radio/component-test', ['ember', 'e
     assert.equal(component.selected, false, 'it has been unselected');
   });
 
-  ember_qunit.test('can be selected by clicking on label', function (assert) {
+  qunit.test('can be selected by clicking on label', function (assert) {
     var _this3 = this;
 
     assert.expect(1);
@@ -24970,7 +26408,7 @@ define('frontend-cp/tests/unit/components/ko-radio/component-test', ['ember', 'e
     assert.equal(component.selected, true, 'it has been selected');
   });
 
-  ember_qunit.test('can be unselected by clicking on label', function (assert) {
+  qunit.test('can be unselected by clicking on label', function (assert) {
     var _this4 = this;
 
     assert.expect(1);
@@ -24988,7 +26426,7 @@ define('frontend-cp/tests/unit/components/ko-radio/component-test', ['ember', 'e
     assert.equal(component.selected, false, 'it has been unselected');
   });
 
-  ember_qunit.test('when disabled radio cant be selected', function (assert) {
+  qunit.test('when disabled radio cant be selected', function (assert) {
     var _this5 = this;
 
     assert.expect(1);
@@ -25027,13 +26465,13 @@ define('frontend-cp/tests/unit/components/ko-recent-cases/component-test.eslint-
   });
 
 });
-define('frontend-cp/tests/unit/components/ko-recent-cases/component-test', ['ember-qunit'], function (ember_qunit) {
+define('frontend-cp/tests/unit/components/ko-recent-cases/component-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
 
-  ember_qunit.moduleForComponent('ko-recent-cases', 'Unit | Component | ko recent cases', {});
+  qunit.moduleForComponent('ko-recent-cases', 'Unit | Component | ko recent cases', {});
 
-  ember_qunit.test('it renders', function (assert) {
+  qunit.test('it renders', function (assert) {
     assert.expect(2);
 
     // Creates the component instance
@@ -25069,13 +26507,13 @@ define('frontend-cp/tests/unit/components/ko-recent-members/component-test.eslin
   });
 
 });
-define('frontend-cp/tests/unit/components/ko-recent-members/component-test', ['ember-qunit'], function (ember_qunit) {
+define('frontend-cp/tests/unit/components/ko-recent-members/component-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
 
-  ember_qunit.moduleForComponent('ko-recent-members', 'Unit | Component | ko recent members', {});
+  qunit.moduleForComponent('ko-recent-members', 'Unit | Component | ko recent members', {});
 
-  ember_qunit.test('it renders', function (assert) {
+  qunit.test('it renders', function (assert) {
     assert.expect(2);
 
     // Creates the component instance
@@ -25111,17 +26549,17 @@ define('frontend-cp/tests/unit/components/ko-text-editor/component-test.eslint-t
   });
 
 });
-define('frontend-cp/tests/unit/components/ko-text-editor/component-test', ['ember-qunit'], function (ember_qunit) {
+define('frontend-cp/tests/unit/components/ko-text-editor/component-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
 
-  ember_qunit.moduleForComponent('ko-text-editor', {
+  qunit.moduleForComponent('ko-text-editor', {
     // Specify the other units that are required for this test
     // needs: ['component:foo', 'helper:bar']
     needs: ['component:ko-file-field', 'component:ko-draggable-dropzone']
   });
 
-  ember_qunit.test('it renders', function (assert) {
+  qunit.test('it renders', function (assert) {
     assert.expect(2);
 
     // Creates the component instance
@@ -25154,7 +26592,7 @@ define('frontend-cp/tests/unit/components/ko-toggle/component-test.eslint-test',
   });
 
 });
-define('frontend-cp/tests/unit/components/ko-toggle/component-test', ['ember', 'ember-qunit'], function (Ember, ember_qunit) {
+define('frontend-cp/tests/unit/components/ko-toggle/component-test', ['ember', 'frontend-cp/tests/helpers/qunit'], function (Ember, qunit) {
 
   'use strict';
 
@@ -25165,7 +26603,7 @@ define('frontend-cp/tests/unit/components/ko-toggle/component-test', ['ember', '
   var radio = 'div:first';
   var label = 'label:first';
 
-  ember_qunit.moduleForComponent('ko-toggle', {
+  qunit.moduleForComponent('ko-toggle', {
     setup: function setup() {
       component = this.subject();
       component.set('label', 'Nuclear bomb switch');
@@ -25174,7 +26612,7 @@ define('frontend-cp/tests/unit/components/ko-toggle/component-test', ['ember', '
     teardown: function teardown() {}
   });
 
-  ember_qunit.test('it renders', function (assert) {
+  qunit.test('it renders', function (assert) {
     assert.expect(2);
 
     assert.equal(component._state, 'preRender');
@@ -25183,7 +26621,7 @@ define('frontend-cp/tests/unit/components/ko-toggle/component-test', ['ember', '
     assert.equal(component._state, 'inDOM');
   });
 
-  ember_qunit.test('can be activated by pressing spacebar', function (assert) {
+  qunit.test('can be activated by pressing spacebar', function (assert) {
     assert.expect(1);
 
     this.render();
@@ -25195,7 +26633,7 @@ define('frontend-cp/tests/unit/components/ko-toggle/component-test', ['ember', '
     assert.equal(component.activated, true, 'it has been activated');
   });
 
-  ember_qunit.test('can be deactivated by pressing spacebar', function (assert) {
+  qunit.test('can be deactivated by pressing spacebar', function (assert) {
     assert.expect(1);
 
     this.render();
@@ -25211,7 +26649,7 @@ define('frontend-cp/tests/unit/components/ko-toggle/component-test', ['ember', '
     assert.equal(component.activated, false, 'it has been deactivated');
   });
 
-  ember_qunit.test('can be activated by clicking on radio', function (assert) {
+  qunit.test('can be activated by clicking on radio', function (assert) {
     var _this = this;
 
     assert.expect(1);
@@ -25225,7 +26663,7 @@ define('frontend-cp/tests/unit/components/ko-toggle/component-test', ['ember', '
     assert.equal(component.activated, true, 'it has been activated');
   });
 
-  ember_qunit.test('can be deactivated by clicking on radio', function (assert) {
+  qunit.test('can be deactivated by clicking on radio', function (assert) {
     var _this2 = this;
 
     assert.expect(1);
@@ -25243,7 +26681,7 @@ define('frontend-cp/tests/unit/components/ko-toggle/component-test', ['ember', '
     assert.equal(component.activated, false, 'it has been deactivated');
   });
 
-  ember_qunit.test('can be activated by clicking on label', function (assert) {
+  qunit.test('can be activated by clicking on label', function (assert) {
     var _this3 = this;
 
     assert.expect(1);
@@ -25257,7 +26695,7 @@ define('frontend-cp/tests/unit/components/ko-toggle/component-test', ['ember', '
     assert.equal(component.activated, true, 'it has been activated');
   });
 
-  ember_qunit.test('can be deactivated by clicking on label', function (assert) {
+  qunit.test('can be deactivated by clicking on label', function (assert) {
     var _this4 = this;
 
     assert.expect(1);
@@ -25427,16 +26865,16 @@ define('frontend-cp/tests/unit/models/attachment-test.eslint-test', ['qunit'], f
   });
 
 });
-define('frontend-cp/tests/unit/models/attachment-test', ['ember-qunit'], function (ember_qunit) {
+define('frontend-cp/tests/unit/models/attachment-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
 
-  ember_qunit.moduleForModel('attachment', {
+  qunit.moduleForModel('attachment', {
     // Specify the other units that are required for this test.
     integration: true
   });
 
-  ember_qunit.test('it exists', function (assert) {
+  qunit.test('it exists', function (assert) {
     DS._setupContainer(this.container);
     var model = this.subject();
     // let store = this.store();
@@ -25464,16 +26902,16 @@ define('frontend-cp/tests/unit/models/business-hour-test.eslint-test', ['qunit']
   });
 
 });
-define('frontend-cp/tests/unit/models/business-hour-test', ['ember-qunit'], function (ember_qunit) {
+define('frontend-cp/tests/unit/models/business-hour-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
 
-  ember_qunit.moduleForModel('business-hour', {
+  qunit.moduleForModel('business-hour', {
     // Specify the other units that are required for this test.
     integration: true
   });
 
-  ember_qunit.test('it exists', function (assert) {
+  qunit.test('it exists', function (assert) {
     DS._setupContainer(this.container);
     var model = this.subject();
     // let store = this.store();
@@ -25501,16 +26939,16 @@ define('frontend-cp/tests/unit/models/case-test.eslint-test', ['qunit'], functio
   });
 
 });
-define('frontend-cp/tests/unit/models/case-test', ['ember-qunit'], function (ember_qunit) {
+define('frontend-cp/tests/unit/models/case-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
 
-  ember_qunit.moduleForModel('case', {
+  qunit.moduleForModel('case', {
     // Specify the other units that are required for this test.
     integration: true
   });
 
-  ember_qunit.test('it exists', function (assert) {
+  qunit.test('it exists', function (assert) {
     DS._setupContainer(this.container);
     var model = this.subject();
     // let store = this.store();
@@ -25538,16 +26976,16 @@ define('frontend-cp/tests/unit/models/holiday-test.eslint-test', ['qunit'], func
   });
 
 });
-define('frontend-cp/tests/unit/models/holiday-test', ['ember-qunit'], function (ember_qunit) {
+define('frontend-cp/tests/unit/models/holiday-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
 
-  ember_qunit.moduleForModel('holiday', {
+  qunit.moduleForModel('holiday', {
     // Specify the other units that are required for this test.
     integration: true
   });
 
-  ember_qunit.test('it exists', function (assert) {
+  qunit.test('it exists', function (assert) {
     DS._setupContainer(this.container);
     var model = this.subject();
     // let store = this.store();
@@ -25575,16 +27013,16 @@ define('frontend-cp/tests/unit/models/identity-domain-test.eslint-test', ['qunit
   });
 
 });
-define('frontend-cp/tests/unit/models/identity-domain-test', ['ember-qunit'], function (ember_qunit) {
+define('frontend-cp/tests/unit/models/identity-domain-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
 
-  ember_qunit.moduleForModel('identity-domain', {
+  qunit.moduleForModel('identity-domain', {
     // Specify the other units that are required for this test.
     integration: true
   });
 
-  ember_qunit.test('it exists', function (assert) {
+  qunit.test('it exists', function (assert) {
     DS._setupContainer(this.container);
     var model = this.subject();
     // let store = this.store();
@@ -25612,16 +27050,16 @@ define('frontend-cp/tests/unit/models/identity-email-test.eslint-test', ['qunit'
   });
 
 });
-define('frontend-cp/tests/unit/models/identity-email-test', ['ember-qunit'], function (ember_qunit) {
+define('frontend-cp/tests/unit/models/identity-email-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
 
-  ember_qunit.moduleForModel('identity-email', {
+  qunit.moduleForModel('identity-email', {
     // Specify the other units that are required for this test.
     integration: true
   });
 
-  ember_qunit.test('it exists', function (assert) {
+  qunit.test('it exists', function (assert) {
     DS._setupContainer(this.container);
     var model = this.subject();
     // let store = this.store();
@@ -25649,16 +27087,16 @@ define('frontend-cp/tests/unit/models/identity-facebook-test.eslint-test', ['qun
   });
 
 });
-define('frontend-cp/tests/unit/models/identity-facebook-test', ['ember-qunit'], function (ember_qunit) {
+define('frontend-cp/tests/unit/models/identity-facebook-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
 
-  ember_qunit.moduleForModel('identity-facebook', {
+  qunit.moduleForModel('identity-facebook', {
     // Specify the other units that are required for this test.
     integration: true
   });
 
-  ember_qunit.test('it exists', function (assert) {
+  qunit.test('it exists', function (assert) {
     DS._setupContainer(this.container);
     var model = this.subject();
     // let store = this.store();
@@ -25686,16 +27124,16 @@ define('frontend-cp/tests/unit/models/identity-phone-test.eslint-test', ['qunit'
   });
 
 });
-define('frontend-cp/tests/unit/models/identity-phone-test', ['ember-qunit'], function (ember_qunit) {
+define('frontend-cp/tests/unit/models/identity-phone-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
 
-  ember_qunit.moduleForModel('identity-phone', {
+  qunit.moduleForModel('identity-phone', {
     // Specify the other units that are required for this test.
     integration: true
   });
 
-  ember_qunit.test('it exists', function (assert) {
+  qunit.test('it exists', function (assert) {
     DS._setupContainer(this.container);
     var model = this.subject();
     // let store = this.store();
@@ -25723,16 +27161,16 @@ define('frontend-cp/tests/unit/models/identity-test.eslint-test', ['qunit'], fun
   });
 
 });
-define('frontend-cp/tests/unit/models/identity-test', ['ember-qunit'], function (ember_qunit) {
+define('frontend-cp/tests/unit/models/identity-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
 
-  ember_qunit.moduleForModel('identity', {
+  qunit.moduleForModel('identity', {
     // Specify the other units that are required for this test.
     integration: true
   });
 
-  ember_qunit.test('it exists', function (assert) {
+  qunit.test('it exists', function (assert) {
     DS._setupContainer(this.container);
     var model = this.subject();
     // let store = this.store();
@@ -25760,16 +27198,16 @@ define('frontend-cp/tests/unit/models/identity-twitter-test.eslint-test', ['quni
   });
 
 });
-define('frontend-cp/tests/unit/models/identity-twitter-test', ['ember-qunit'], function (ember_qunit) {
+define('frontend-cp/tests/unit/models/identity-twitter-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
 
-  ember_qunit.moduleForModel('identity-twitter', {
+  qunit.moduleForModel('identity-twitter', {
     // Specify the other units that are required for this test.
     integration: true
   });
 
-  ember_qunit.test('it exists', function (assert) {
+  qunit.test('it exists', function (assert) {
     DS._setupContainer(this.container);
     var model = this.subject();
     // let store = this.store();
@@ -25797,16 +27235,16 @@ define('frontend-cp/tests/unit/models/person-test.eslint-test', ['qunit'], funct
   });
 
 });
-define('frontend-cp/tests/unit/models/person-test', ['ember-qunit'], function (ember_qunit) {
+define('frontend-cp/tests/unit/models/person-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
 
-  ember_qunit.moduleForModel('person', {
+  qunit.moduleForModel('person', {
     // Specify the other units that are required for this test.
     integration: true
   });
 
-  ember_qunit.test('it exists', function (assert) {
+  qunit.test('it exists', function (assert) {
     DS._setupContainer(this.container);
     var model = this.subject();
     // let store = this.store();
@@ -25834,16 +27272,16 @@ define('frontend-cp/tests/unit/models/priority-test.eslint-test', ['qunit'], fun
   });
 
 });
-define('frontend-cp/tests/unit/models/priority-test', ['ember-qunit'], function (ember_qunit) {
+define('frontend-cp/tests/unit/models/priority-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
 
-  ember_qunit.moduleForModel('priority', {
+  qunit.moduleForModel('priority', {
     // Specify the other units that are required for this test.
     integration: true
   });
 
-  ember_qunit.test('it exists', function (assert) {
+  qunit.test('it exists', function (assert) {
     DS._setupContainer(this.container);
     var model = this.subject();
     // let store = this.store();
@@ -25871,16 +27309,16 @@ define('frontend-cp/tests/unit/models/role-test.eslint-test', ['qunit'], functio
   });
 
 });
-define('frontend-cp/tests/unit/models/role-test', ['ember-qunit'], function (ember_qunit) {
+define('frontend-cp/tests/unit/models/role-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
 
-  ember_qunit.moduleForModel('role', {
+  qunit.moduleForModel('role', {
     // Specify the other units that are required for this test.
     integration: true
   });
 
-  ember_qunit.test('it exists', function (assert) {
+  qunit.test('it exists', function (assert) {
     DS._setupContainer(this.container);
     var model = this.subject();
     // let store = this.store();
@@ -25908,16 +27346,16 @@ define('frontend-cp/tests/unit/models/slack-identity-test.eslint-test', ['qunit'
   });
 
 });
-define('frontend-cp/tests/unit/models/slack-identity-test', ['ember-qunit'], function (ember_qunit) {
+define('frontend-cp/tests/unit/models/slack-identity-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
 
-  ember_qunit.moduleForModel('slack-identity', {
+  qunit.moduleForModel('slack-identity', {
     // Specify the other units that are required for this test.
     integration: true
   });
 
-  ember_qunit.test('it exists', function (assert) {
+  qunit.test('it exists', function (assert) {
     DS._setupContainer(this.container);
     var model = this.subject();
     // let store = this.store();
@@ -25945,16 +27383,16 @@ define('frontend-cp/tests/unit/models/team-test.eslint-test', ['qunit'], functio
   });
 
 });
-define('frontend-cp/tests/unit/models/team-test', ['ember-qunit'], function (ember_qunit) {
+define('frontend-cp/tests/unit/models/team-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
 
-  ember_qunit.moduleForModel('team', {
+  qunit.moduleForModel('team', {
     // Specify the other units that are required for this test.
     integration: true
   });
 
-  ember_qunit.test('it exists', function (assert) {
+  qunit.test('it exists', function (assert) {
     DS._setupContainer(this.container);
     var model = this.subject();
     // let store = this.store();
@@ -25982,16 +27420,16 @@ define('frontend-cp/tests/unit/models/vote-test.eslint-test', ['qunit'], functio
   });
 
 });
-define('frontend-cp/tests/unit/models/vote-test', ['ember-qunit'], function (ember_qunit) {
+define('frontend-cp/tests/unit/models/vote-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
 
-  ember_qunit.moduleForModel('vote', {
+  qunit.moduleForModel('vote', {
     // Specify the other units that are required for this test.
     integration: true
   });
 
-  ember_qunit.test('it exists', function (assert) {
+  qunit.test('it exists', function (assert) {
     DS._setupContainer(this.container);
     var model = this.subject();
     // let store = this.store();
@@ -26019,16 +27457,16 @@ define('frontend-cp/tests/unit/models/zone-test.eslint-test', ['qunit'], functio
   });
 
 });
-define('frontend-cp/tests/unit/models/zone-test', ['ember-qunit'], function (ember_qunit) {
+define('frontend-cp/tests/unit/models/zone-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
 
-  ember_qunit.moduleForModel('zone', {
+  qunit.moduleForModel('zone', {
     // Specify the other units that are required for this test.
     integration: true
   });
 
-  ember_qunit.test('it exists', function (assert) {
+  qunit.test('it exists', function (assert) {
     DS._setupContainer(this.container);
     var model = this.subject();
     // let store = this.store();
@@ -26056,14 +27494,14 @@ define('frontend-cp/tests/unit/services/context-modal-test.eslint-test', ['qunit
   });
 
 });
-define('frontend-cp/tests/unit/services/context-modal-test', ['ember-qunit'], function (ember_qunit) {
+define('frontend-cp/tests/unit/services/context-modal-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
 
-  ember_qunit.moduleFor('service:context-modal', {});
+  qunit.moduleFor('service:context-modal', {});
 
   // Replace this with your real tests.
-  ember_qunit.test('it exists', function (assert) {
+  qunit.test('it exists', function (assert) {
     var service = this.subject();
     assert.ok(service);
   });
@@ -26092,14 +27530,14 @@ define('frontend-cp/tests/unit/services/url-test.eslint-test', ['qunit'], functi
   });
 
 });
-define('frontend-cp/tests/unit/services/url-test', ['ember-qunit'], function (ember_qunit) {
+define('frontend-cp/tests/unit/services/url-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
 
-  ember_qunit.moduleFor('service:url', {});
+  qunit.moduleFor('service:url', {});
 
   // Replace this with your real tests.
-  ember_qunit.test('it exists', function (assert) {
+  qunit.test('it exists', function (assert) {
     var service = this.subject();
     assert.ok(service);
   });
@@ -26146,7 +27584,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"name":"frontend-cp","version":"0.0.0.d1bf1599"});
+  require("frontend-cp/app")["default"].create({"name":"frontend-cp","version":"0.0.0.708feb76"});
 }
 
 /* jshint ignore:end */

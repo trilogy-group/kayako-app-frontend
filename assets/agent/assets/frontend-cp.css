@@ -461,7 +461,7 @@ html {
  * over and over in your markup.
  */
 .clearfix:after,
-.ko-datepicker-15579035:after, .ko-datepicker-15579035 .ko-datepicker__calendar:after, .ko-datepicker-15579035 .ko-datepicker__actions:after {
+.ko-datepicker-e41720c4:after, .ko-datepicker-e41720c4 .ko-datepicker__calendar:after, .ko-datepicker-e41720c4 .ko-datepicker__actions:after {
   content: "";
   display: table;
   clear: both; }
@@ -919,7 +919,7 @@ html {
  * The list-bare object simply removes any indents and bullet points from lists.
  */
 .list-bare,
-.dropdown-menu, .ko-add-participants-popover-c4ff63f2 .ko-add-participants-popover__selected-list, .ko-add-participants-popover-c4ff63f2 .ko-add-participants-popover__filtered-list, .ko-context-modal-dea6d112 .ko-context-modal-list {
+.dropdown-menu, .ko-add-participants-popover-71cc525b .ko-add-participants-popover__selected-list, .ko-add-participants-popover-71cc525b .ko-add-participants-popover__filtered-list, .ko-context-modal-2fb82278 .ko-context-modal-list {
   margin: 0;
   padding: 0;
   list-style: none; }
@@ -930,12 +930,12 @@ html {
  * The list-inline object simply displays a list of items in one line.
  */
 .list-inline,
-.content-tabs-group, .content-tabs, .ko-breadcrumbs-cd6c20d6 .breadcrumbs {
+.content-tabs-group, .content-tabs, .ko-breadcrumbs-8ad79982 .breadcrumbs {
   margin: 0;
   padding: 0;
   list-style: none; }
   .list-inline > li,
-  .content-tabs-group > li, .content-tabs > li, .ko-breadcrumbs-cd6c20d6 .breadcrumbs > li {
+  .content-tabs-group > li, .content-tabs > li, .ko-breadcrumbs-8ad79982 .breadcrumbs > li {
     display: inline-block; }
 
 /*------------------------------------*    #FLAG
@@ -1072,7 +1072,7 @@ img {
 /*
 	Brand configuration
    ========================================================================== */
-.ko-case-tags-field-fa113fe5 .tag:focus {
+.ko-case-tags-field-9b55b731 .tag:focus {
   box-shadow: 0px 0px 4px 0px rgba(80, 131, 219, 0.64), inset 0px 1px 1px 0px rgba(0, 0, 0, 0.08);
   outline: none; }
 
@@ -1316,7 +1316,7 @@ a {
 	Base input styling and initial configuration. Types of input should be
 	separated out into their own file (text, text-area etc).
    ========================================================================== */
-.input__text-area, .input__text-area--clean, .input__text, .input__text--alone, .input__text--full, .login__input, .login-82cac2da .login__input {
+.input__text-area, .input__text-area--clean, .input__text, .input__text--alone, .input__text--full, .login__input, .login-f4c7a155 .login__input {
   padding: 6px 10px;
   margin-bottom: 9px;
   border: 1px solid #cfd4d8;
@@ -1922,16 +1922,16 @@ a {
 .input__counter,
 .header__subtitle,
 .info-bar-item__header,
-.ko-agent-dropdown-144a20f5 .agent-dropdown__link,
-.ko-feed-28a00226 .feed__title--small,
+.ko-agent-dropdown-eeb8ebad .agent-dropdown__link,
+.ko-feed-0af0ec5d .feed__title--small,
 .t-caption {
   color: #838d94; }
   .is-active .input__counter,
   .is-active .header__subtitle,
   .is-active .info-bar-item__header,
-  .is-active .ko-agent-dropdown-144a20f5 .agent-dropdown__link,
-  .ko-agent-dropdown-144a20f5 .is-active .agent-dropdown__link, .is-active .ko-feed-28a00226 .feed__title--small,
-  .ko-feed-28a00226 .is-active .feed__title--small, .is-active .t-caption {
+  .is-active .ko-agent-dropdown-eeb8ebad .agent-dropdown__link,
+  .ko-agent-dropdown-eeb8ebad .is-active .agent-dropdown__link, .is-active .ko-feed-0af0ec5d .feed__title--small,
+  .ko-feed-0af0ec5d .is-active .feed__title--small, .is-active .t-caption {
     color: inherit; }
 
 .overlay {
@@ -1952,7 +1952,7 @@ a {
 .i--right-chevron:after {
   padding-left: 9px; }
 
-.i--pencil:after, .ko-editable-text-e36fbf4e .editable-text__text:hover:after {
+.i--pencil:after, .ko-editable-text-455d4ad4 .editable-text__text:hover:after {
   content: url("/images/icons/pencil.svg");
   display: inline-block;
   padding-left: 9px; }
@@ -1964,11 +1964,11 @@ a {
 .i--right-chevron:after {
   content: url("/images/icons/right-chevron.svg"); }
 
-.i--chevron-left:after, .ko-datepicker-15579035 .ko-datepicker__previous:after {
+.i--chevron-left:after, .ko-datepicker-e41720c4 .ko-datepicker__previous:after {
   vertical-align: middle;
   content: url("/images/icons/chevron-left.svg"); }
 
-.i--chevron-right:after, .ko-datepicker-15579035 .ko-datepicker__next:after {
+.i--chevron-right:after, .ko-datepicker-e41720c4 .ko-datepicker__next:after {
   vertical-align: middle;
   content: url("/images/icons/chevron-right.svg"); }
 
@@ -2087,11 +2087,11 @@ a {
       -ms-transform: translateY(-50%);
           transform: translateY(-50%); }
 
-.ko-editable-text-e36fbf4e .editable-text__text,
+.ko-editable-text-455d4ad4 .editable-text__text,
 .u-pointer {
   cursor: pointer; }
 
-.container, .ko-session-cases-index__contents, .session--cases--index-56512c79 .ko-session-cases-index__contents {
+.container, .ko-session-cases-index__contents, .session--cases--index-fa23989c .ko-session-cases-index__contents {
   width: 940px;
   margin: 0 auto; }
 
@@ -2140,7 +2140,7 @@ a {
       -ms-transform: translateX(-50%);
           transform: translateX(-50%); }
 
-.ko-center-f2018007 .ko-center__contents,
+.ko-center-16213cb3 .ko-center__contents,
 .u-center {
   position: absolute;
   top: 50%;
@@ -2149,14 +2149,14 @@ a {
       -ms-transform: translateX(-50%) translateY(-50%);
           transform: translateX(-50%) translateY(-50%); }
 
-.ko-center-f2018007 {
+.ko-center-16213cb3 {
   -webkit-transform-style: preserve-3d;
           transform-style: preserve-3d; }
 
 /**
  * Absolutely positions and fills the container
  */
-body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrollable, .application, .application-2669a6c3 .application, .ko-center-f2018007, .session--cases--index-56512c79 .ko-session-cases-index, .session--cases--index-56512c79 .ko-session-cases-index__scrollable, .session-e072ac73 .session__content {
+body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrollable, .application, .application-4de1ca4f .application, .ko-center-16213cb3, .session--cases--index-fa23989c .ko-session-cases-index, .session--cases--index-fa23989c .ko-session-cases-index__scrollable, .session-5b1a8d82 .session__content {
   position: absolute;
   top: 0;
   right: 0;
@@ -2194,7 +2194,7 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
 .t-warning {
   color: #ecc645; }
 
-.ko-agent-dropdown-144a20f5 .agent-dropdown__link,
+.ko-agent-dropdown-eeb8ebad .agent-dropdown__link,
 .t-center {
   text-align: center; }
 
@@ -2310,7 +2310,8 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
 
 .session-admin-navigation__heading {
   color: #aaa;
-  padding-top: 36px; }
+  padding-top: 36px;
+  text-transform: uppercase; }
 
 .session-admin-navigation__list-group {
   list-style: none; }
@@ -2427,31 +2428,31 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
 .login-form__reset-form {
   vertical-align: bottom; }
 
-.ko-add-participants-popover-c4ff63f2 .ko-add-participants-popover__selected-list-item {
+.ko-add-participants-popover-71cc525b .ko-add-participants-popover__selected-list-item {
   background: #EBEEF0;
   padding: 5px;
   border-bottom: 2px solid #F7F8F9; }
-  .ko-add-participants-popover-c4ff63f2 .ko-add-participants-popover__selected-list-item .i--close {
+  .ko-add-participants-popover-71cc525b .ko-add-participants-popover__selected-list-item .i--close {
     float: right;
     cursor: pointer; }
 
-.ko-add-participants-popover-c4ff63f2 .ko-add-participants-popover__filtered-list-item {
+.ko-add-participants-popover-71cc525b .ko-add-participants-popover__filtered-list-item {
   padding: 4.5px 9px;
   border: 1px solid transparent; }
-  .ko-add-participants-popover-c4ff63f2 .ko-add-participants-popover__filtered-list-item:hover {
+  .ko-add-participants-popover-71cc525b .ko-add-participants-popover__filtered-list-item:hover {
     background-color: #5083DB;
     border: 1px solid #3968B8;
     color: #FFFFFF; }
-    .ko-add-participants-popover-c4ff63f2 .ko-add-participants-popover__filtered-list-item:hover .caption {
+    .ko-add-participants-popover-71cc525b .ko-add-participants-popover__filtered-list-item:hover .caption {
       color: #FFFFFF;
       cursor: pointer; }
 
-.ko-add-participants-popover-c4ff63f2 .ko-add-participants-popover__image {
+.ko-add-participants-popover-71cc525b .ko-add-participants-popover__image {
   width: 48px;
   height: 48px;
   border-radius: 2px; }
 
-.ko-admin-card-team-a2c56b1a .ko-admin-card-team__header {
+.ko-admin-card-team-4056bf25 .ko-admin-card-team__header {
   /*
    * This sits inside a ko-admin-selectable-card which has padding.
    * The header needs to be separated by a line from the content
@@ -2463,94 +2464,94 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
   margin: 0px -9px;
   padding: 0px 9px 9px; }
 
-.ko-admin-card-team-a2c56b1a .ko-admin-card-team__team-name {
+.ko-admin-card-team-4056bf25 .ko-admin-card-team__team-name {
   font-size: 18px;
   font-size: 1.28571rem; }
 
-.ko-admin-card-team-a2c56b1a .ko-admin-card-team__membership {
+.ko-admin-card-team-4056bf25 .ko-admin-card-team__membership {
   color: #838D94; }
 
-.ko-admin-card-team-a2c56b1a .ko-admin-card-team__content {
+.ko-admin-card-team-4056bf25 .ko-admin-card-team__content {
   padding: 9px 0px 0px 0px; }
 
-.ko-admin-card-user-4fbe9ca7 .ko-admin-card-user__avatar {
+.ko-admin-card-user-3fe117a2 .ko-admin-card-user__avatar {
   float: left;
   padding-right: 18px; }
 
-.ko-admin-card-user-4fbe9ca7 .ko-admin-card-user__name {
+.ko-admin-card-user-3fe117a2 .ko-admin-card-user__name {
   font-weight: bold; }
 
-.ko-admin-selectable-card-63671481 {
+.ko-admin-selectable-card-795ee140 {
   padding: 9px;
   border: solid 1px #D1D5D7;
   border-radius: 2px;
   overflow: hidden; }
 
-.ko-admin-selectable-card-63671481.ko-admin-selectable-card--inactive {
+.ko-admin-selectable-card-795ee140.ko-admin-selectable-card--inactive {
   background-color: #CCC; }
 
-.ko-admin-selectable-card-63671481 .ko-admin-selectable-card__checkbox {
+.ko-admin-selectable-card-795ee140 .ko-admin-selectable-card__checkbox {
   float: right; }
 
-.ko-agent-dropdown-144a20f5 {
+.ko-agent-dropdown-eeb8ebad {
   position: absolute;
   z-index: 5; }
 
-.ko-agent-dropdown-144a20f5 .agent-dropdown {
+.ko-agent-dropdown-eeb8ebad .agent-dropdown {
   position: relative;
   top: 100%;
   display: inline-block;
   line-height: initial; }
 
-.ko-agent-dropdown-144a20f5 .agent-dropdown__item {
+.ko-agent-dropdown-eeb8ebad .agent-dropdown__item {
   margin-right: 4.5px; }
-  .ko-agent-dropdown-144a20f5 .agent-dropdown__item:last-of-type {
+  .ko-agent-dropdown-eeb8ebad .agent-dropdown__item:last-of-type {
     margin-right: 0; }
 
-.ko-agent-dropdown-144a20f5 .agent-dropdown__link {
+.ko-agent-dropdown-eeb8ebad .agent-dropdown__link {
   display: block; }
 
-.ko-avatar-ff00c411 .ko-avatar__image {
+.ko-avatar-dece5192 .ko-avatar__image {
   width: 30px;
   height: 30px; }
-  .ko-avatar-ff00c411 .ko-avatar__image--large {
+  .ko-avatar-dece5192 .ko-avatar__image--large {
     width: 48px;
     height: 48px; }
 
-.ko-breadcrumbs-cd6c20d6 .breadcrumbs {
+.ko-breadcrumbs-8ad79982 .breadcrumbs {
   border-bottom: 1px solid #D1D5D7; }
 
-.ko-breadcrumbs-cd6c20d6 .breadcrumbs__item {
+.ko-breadcrumbs-8ad79982 .breadcrumbs__item {
   position: relative;
   bottom: -1px;
   padding: 18px 0;
   margin: 0 18px 0 0;
   cursor: pointer;
   border-bottom: 2px solid transparent; }
-  .ko-breadcrumbs-cd6c20d6 .breadcrumbs__item--active {
+  .ko-breadcrumbs-8ad79982 .breadcrumbs__item--active {
     font-weight: 700;
     border-color: #5083DB; }
-  .ko-breadcrumbs-cd6c20d6 .breadcrumbs__item:last-child {
+  .ko-breadcrumbs-8ad79982 .breadcrumbs__item:last-child {
     margin-right: 0; }
 
-.ko-breadcrumbs-cd6c20d6 .breadcrumbs__action {
+.ko-breadcrumbs-8ad79982 .breadcrumbs__action {
   float: right; }
 
-.ko-case-checkbox-field-be622678 label {
+.ko-case-checkbox-field-7cf5e780 label {
   cursor: pointer; }
 
-.ko-case-metric-8918dfa9 {
+.ko-case-metric-5cf513d4 {
   list-style-type: none; }
 
-.ko-case-select-field-2b9f1d23 {
+.ko-case-select-field-f21f27d1 {
   position: relative; }
-  .ko-case-select-field-2b9f1d23:focus {
+  .ko-case-select-field-f21f27d1:focus {
     outline: none; }
 
-.ko-case-select-field-2b9f1d23 .info-bar-item {
+.ko-case-select-field-f21f27d1 .info-bar-item {
   cursor: pointer; }
 
-.ko-case-tags-field-fa113fe5 .tag {
+.ko-case-tags-field-9b55b731 .tag {
   max-width: 100%;
   word-wrap: break-word;
   position: relative;
@@ -2563,11 +2564,11 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
   background: #EBEEF0;
   border-radius: 2px;
   color: #5F5F5F; }
-  .ko-case-tags-field-fa113fe5 .tag--changed {
+  .ko-case-tags-field-9b55b731 .tag--changed {
     background: #5083DB;
     color: #FFFFFF; }
 
-.ko-case-tags-field-fa113fe5 .tag__action {
+.ko-case-tags-field-9b55b731 .tag__action {
   position: absolute;
   top: 50%;
   right: 6.5px;
@@ -2576,34 +2577,34 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
           transform: translateY(-50%);
   color: #A1AAAF;
   cursor: pointer; }
-  .tag--changed .ko-case-tags-field-fa113fe5 .tag__action {
+  .tag--changed .ko-case-tags-field-9b55b731 .tag__action {
     color: #FFFFFF; }
 
-.ko-case-tags-field-fa113fe5 .tag-input {
+.ko-case-tags-field-9b55b731 .tag-input {
   margin: 4.5px 6px 0 0;
   background-color: inherit;
   border: none;
   -webkit-appearance: none; }
-  .ko-case-tags-field-fa113fe5 .tag-input:focus {
+  .ko-case-tags-field-9b55b731 .tag-input:focus {
     outline: none; }
-  .ko-case-tags-field-fa113fe5 .tag-input:-webkit-input-placeholder {
+  .ko-case-tags-field-9b55b731 .tag-input:-webkit-input-placeholder {
     color: #A1AAAF; }
 
-.ko-case-tags-field-fa113fe5 .tag-new {
+.ko-case-tags-field-9b55b731 .tag-new {
   max-width: 100%;
   word-wrap: break-word;
   border-top: 1px solid #cfd4d8; }
-  .ko-case-tags-field-fa113fe5 .tag-new:hover,
-  .ko-case-tags-field-fa113fe5 .tag-new:focus {
+  .ko-case-tags-field-9b55b731 .tag-new:hover,
+  .ko-case-tags-field-9b55b731 .tag-new:focus {
     border: 1px solid #3968B8; }
 
-.ko-case-tags-field-fa113fe5 .tag-new__label {
+.ko-case-tags-field-9b55b731 .tag-new__label {
   margin-left: 4.5px; }
 
-.ko-cases-list-3de8db09 > table tbody tr {
+.ko-cases-list-4f08f5df > table tbody tr {
   border-top: 1px solid #D1D5D7; }
 
-.ko-cases-list-3de8db09 > table thead th {
+.ko-cases-list-4f08f5df > table thead th {
   font-size: 12px;
   font-size: 0.85714rem;
   text-transform: uppercase;
@@ -2613,23 +2614,23 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
   letter-spacing: 1px;
   font-weight: 600; }
 
-.ko-cases-list-3de8db09 > table thead th:not(:first-child) {
+.ko-cases-list-4f08f5df > table thead th:not(:first-child) {
   color: #838D94; }
 
-.ko-cases-list-3de8db09 > table tbody td {
+.ko-cases-list-4f08f5df > table tbody td {
   line-height: 33px;
   padding-right: 3px; }
 
-.ko-cases-list-3de8db09 > table tbody td:not(:first-child) {
+.ko-cases-list-4f08f5df > table tbody td:not(:first-child) {
   font-size: 12px;
   font-size: 0.85714rem;
   color: #838D94; }
 
-.ko-checkbox-1c691f90 {
+.ko-checkbox-11a8f6a6 {
   /**
  * [1] - we are using div instead of input element hence the styling.
  */ }
-  .ko-checkbox-1c691f90 .ko-checkbox__checkbox {
+  .ko-checkbox-11a8f6a6 .ko-checkbox__checkbox {
     display: inline-block;
     width: 14px;
     height: 14px;
@@ -2642,21 +2643,21 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
     /*[1]*/
     border-radius: 2px;
     /*[1]*/ }
-    .ko-checkbox-1c691f90 .ko-checkbox__checkbox--large {
+    .ko-checkbox-11a8f6a6 .ko-checkbox__checkbox--large {
       width: 19px;
       height: 18px; }
-    .ko-checkbox-1c691f90 .ko-checkbox__checkbox--disabled {
+    .ko-checkbox-11a8f6a6 .ko-checkbox__checkbox--disabled {
       opacity: 0.5; }
-  .ko-checkbox-1c691f90 .ko-checkbox__label--disabled {
+  .ko-checkbox-11a8f6a6 .ko-checkbox__label--disabled {
     opacity: 0.5; }
 
-.ko-context-modal-dea6d112 .ko-context-modal__overlay {
+.ko-context-modal-2fb82278 .ko-context-modal__overlay {
   position: absolute;
   top: 0;
   left: 0;
   right: 0; }
 
-.ko-context-modal-dea6d112 .ko-context-modal__container {
+.ko-context-modal-2fb82278 .ko-context-modal__container {
   width: 300px;
   position: absolute;
   z-index: 5;
@@ -2664,79 +2665,79 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
   border: 1px solid #BEC4C7;
   border-radius: 2px; }
 
-.ko-context-modal-dea6d112 .ko-context-modal__header {
+.ko-context-modal-2fb82278 .ko-context-modal__header {
   display: inline-block;
   margin: 0;
   background-color: #ffffff;
   font-weight: 700; }
 
-.ko-context-modal-dea6d112 .ko-context-modal__action {
+.ko-context-modal-2fb82278 .ko-context-modal__action {
   float: right;
   padding-left: 18px; }
 
-.ko-context-modal-dea6d112 .ko-context-modal-list__item {
+.ko-context-modal-2fb82278 .ko-context-modal-list__item {
   padding: 4.5px 9px;
   border: 1px solid transparent; }
-  .ko-context-modal-dea6d112 .ko-context-modal-list__item.is-active {
+  .ko-context-modal-2fb82278 .ko-context-modal-list__item.is-active {
     background-color: #5083DB;
     border: 1px solid #3968B8;
     color: #FFFFFF; }
 
-.ko-context-modal-dea6d112 .ko-context-modal-list__image {
+.ko-context-modal-2fb82278 .ko-context-modal-list__image {
   width: 48px;
   height: 48px;
   border-radius: 2px; }
 
-.ko-datepicker-15579035 {
+.ko-datepicker-e41720c4 {
   max-width: 378px;
   margin: 0 auto;
   padding: 0 15px; }
 
-.ko-datepicker-15579035 .ko-datepicker__header {
+.ko-datepicker-e41720c4 .ko-datepicker__header {
   text-align: center;
   padding: 18px 15px; }
 
-.ko-datepicker-15579035 .ko-datepicker__month {
+.ko-datepicker-e41720c4 .ko-datepicker__month {
   font-weight: 600;
   font-size: 18px;
   color: #2D3138; }
 
-.ko-datepicker-15579035 .ko-datepicker__year {
+.ko-datepicker-e41720c4 .ko-datepicker__year {
   font-size: 12px;
   color: #959FA5;
   margin-left: 0.2rem; }
 
-.ko-datepicker-15579035 .ko-datepicker__arrow {
+.ko-datepicker-e41720c4 .ko-datepicker__arrow {
   cursor: pointer; }
 
-.ko-datepicker-15579035 .ko-datepicker__previous {
+.ko-datepicker-e41720c4 .ko-datepicker__previous {
   float: left;
   cursor: pointer; }
 
-.ko-datepicker-15579035 .ko-datepicker__next {
+.ko-datepicker-e41720c4 .ko-datepicker__next {
   float: right;
   cursor: pointer; }
 
-.ko-datepicker-15579035 .ko-datepicker__weekday, .ko-datepicker-15579035 .ko-datepicker__date {
+.ko-datepicker-e41720c4 .ko-datepicker__weekday, .ko-datepicker-e41720c4 .ko-datepicker__date {
   display: block;
   width: calc(100% / 7);
   float: left;
   text-align: center;
   line-height: 31px; }
 
-.ko-datepicker-15579035 .ko-datepicker__weekday {
+.ko-datepicker-e41720c4 .ko-datepicker__weekday {
   color: #838D94;
   font-size: 12px; }
 
-.ko-datepicker-15579035 .ko-datepicker__date {
+.ko-datepicker-e41720c4 .ko-datepicker__date {
   font-size: 16px;
   color: #BEC4C7; }
-  .ko-datepicker-15579035 .ko-datepicker__date--current-month {
+  .ko-datepicker-e41720c4 .ko-datepicker__date--current-month {
     color: #3B4048;
     cursor: pointer; }
-  .ko-datepicker-15579035 .ko-datepicker__date--today {
+  .ko-datepicker-e41720c4 .ko-datepicker__date--today {
     position: relative; }
-    .ko-datepicker-15579035 .ko-datepicker__date--today::after {
+    .ko-datepicker-e41720c4 .ko-datepicker__date--today::after {
       position: absolute;
       content: '';
       width: 0;
@@ -2745,31 +2746,31 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
       border-right: 7px solid #5083DB;
       right: 2px;
       top: 2px; }
-  .ko-datepicker-15579035 .ko-datepicker__date--selected {
+  .ko-datepicker-e41720c4 .ko-datepicker__date--selected {
     outline: 1px solid #5083DB; }
 
-.ko-datepicker-15579035 .ko-datepicker__actions {
+.ko-datepicker-e41720c4 .ko-datepicker__actions {
   padding: 15px; }
 
-.ko-datepicker-15579035 .ko-datepicker__action {
+.ko-datepicker-e41720c4 .ko-datepicker__action {
   font-weight: 600;
   font-size: 14px;
   width: calc(100%/3);
   float: left;
   background-repeat: no-repeat;
   background-position: left center; }
-  .ko-datepicker-15579035 .ko-datepicker__action span {
+  .ko-datepicker-e41720c4 .ko-datepicker__action span {
     cursor: pointer; }
-  .ko-datepicker-15579035 .ko-datepicker__action img {
+  .ko-datepicker-e41720c4 .ko-datepicker__action img {
     margin-right: 0.2rem; }
-  .ko-datepicker-15579035 .ko-datepicker__action:first-child {
+  .ko-datepicker-e41720c4 .ko-datepicker__action:first-child {
     text-align: left; }
-  .ko-datepicker-15579035 .ko-datepicker__action:nth-child(2) {
+  .ko-datepicker-e41720c4 .ko-datepicker__action:nth-child(2) {
     text-align: center; }
-  .ko-datepicker-15579035 .ko-datepicker__action:last-child {
+  .ko-datepicker-e41720c4 .ko-datepicker__action:last-child {
     text-align: right; }
 
-.ko-draggable-dropzone-1ab3d343.ko-draggable-dropzone--activated .ko-draggable-dropzone__border {
+.ko-draggable-dropzone-fe3420c2.ko-draggable-dropzone--activated .ko-draggable-dropzone__border {
   padding: 10px;
   width: 100%;
   margin-bottom: 10px;
@@ -2781,70 +2782,70 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
   right: 0;
   bottom: 0; }
 
-.ko-draggable-dropzone-1ab3d343.ko-draggable-dropzone--deactivated .ko-draggable-dropzone__border {
+.ko-draggable-dropzone-fe3420c2.ko-draggable-dropzone--deactivated .ko-draggable-dropzone__border {
   display: none; }
 
-.ko-editable-text-e36fbf4e .editable-text__input {
+.ko-editable-text-455d4ad4 .editable-text__input {
   width: 100%; }
-  .ko-editable-text-e36fbf4e .editable-text__input:focus {
+  .ko-editable-text-455d4ad4 .editable-text__input:focus {
     outline: 0;
     border: none;
     padding: 0 0 0 1px;
     margin: -1px;
     background: transparent; }
 
-.ko-editable-text-e36fbf4e .editable-text__text--edited {
+.ko-editable-text-455d4ad4 .editable-text__text--edited {
   color: #5083DB; }
 
-.ko-feed-28a00226 {
+.ko-feed-0af0ec5d {
   /*
 	Feed module.
 
 	Seen on the case overview page. (expand when you revisit this, Tom)
    ========================================================================== */ }
-  .ko-feed-28a00226 {
+  .ko-feed-0af0ec5d {
     padding: 0 38px; }
-  .ko-feed-28a00226 .feed__item {
+  .ko-feed-0af0ec5d .feed__item {
     min-height: 74px;
     position: relative;
     padding: 16px 0 16px 38px;
     border-left: 2px solid #ebeef0; }
-    .ko-feed-28a00226 .feed__item:first-of-type {
+    .ko-feed-0af0ec5d .feed__item:first-of-type {
       padding-top: 0; }
-      .ko-feed-28a00226 .feed__item:first-of-type .feed__image {
+      .ko-feed-0af0ec5d .feed__item:first-of-type .feed__image {
         top: 0; }
-    .ko-feed-28a00226 .feed__item--is-private {
+    .ko-feed-0af0ec5d .feed__item--is-private {
       background: #fcf8ec;
       border: 1px solid #ECE5D1;
       border-left: 2px solid #E0AF2A; }
-  .ko-feed-28a00226 .feed__title--small, .ko-feed-28a00226 .feed__title {
+  .ko-feed-0af0ec5d .feed__title--small, .ko-feed-0af0ec5d .feed__title {
     display: inline-block;
     margin-bottom: 0;
     font-weight: 600; }
-  .ko-feed-28a00226 .feed__title--small {
+  .ko-feed-0af0ec5d .feed__title--small {
     font-size: 14px; }
-  .ko-feed-28a00226 .feed__image {
+  .ko-feed-0af0ec5d .feed__image {
     position: absolute;
     top: 16px;
     left: -21px;
     width: 42px;
     height: 42px;
     border-radius: 2px; }
-  .ko-feed-28a00226 .feed__details {
+  .ko-feed-0af0ec5d .feed__details {
     color: #cfd4d8; }
 
-.ko-feedback-f283043d {
+.ko-feedback-739ae9d1 {
   list-style-type: none; }
 
-.ko-feedback-f283043d .ko-feedback__item {
+.ko-feedback-739ae9d1 .ko-feedback__item {
   padding-right: 20px;
   text-align: center; }
 
-.ko-info-bar-8a7d0659 {
+.ko-info-bar-f6a7ac15 {
   min-height: 100vh;
   border: 1px solid #D1D5D7; }
 
-.ko-loader-38b49293 {
+.ko-loader-2f0bd24a {
   display: block;
   position: relative;
   width: 12px;
@@ -2852,7 +2853,7 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
   margin: 0;
   padding: 0; }
 
-.ko-loader-38b49293 .ko-loader__item {
+.ko-loader-2f0bd24a .ko-loader__item {
   display: block;
   width: 2px;
   height: 15px;
@@ -2862,26 +2863,26 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
   padding: 0;
   -webkit-animation: ko-loader__state1 1.1s cubic-bezier(0.645, 0.045, 0.355, 1) 0s infinite alternate;
           animation: ko-loader__state1 1.1s cubic-bezier(0.645, 0.045, 0.355, 1) 0s infinite alternate; }
-  .ko-loader-38b49293 .ko-loader__item:nth-child(2) {
+  .ko-loader-2f0bd24a .ko-loader__item:nth-child(2) {
     left: 4px;
     -webkit-animation-name: ko-loader__state2;
             animation-name: ko-loader__state2;
     -webkit-animation-timing-function: ease-in-out;
             animation-timing-function: ease-in-out; }
-  .ko-loader-38b49293 .ko-loader__item:nth-child(3) {
+  .ko-loader-2f0bd24a .ko-loader__item:nth-child(3) {
     left: 8px;
     -webkit-animation-name: ko-loader__state3;
             animation-name: ko-loader__state3; }
 
-.ko-loader-38b49293.ko-loader--large {
+.ko-loader-2f0bd24a.ko-loader--large {
   width: 24px;
   height: 30px; }
-  .ko-loader-38b49293.ko-loader--large .ko-loader__item {
+  .ko-loader-2f0bd24a.ko-loader--large .ko-loader__item {
     width: 4px;
     height: 30px; }
-    .ko-loader-38b49293.ko-loader--large .ko-loader__item:nth-child(2) {
+    .ko-loader-2f0bd24a.ko-loader--large .ko-loader__item:nth-child(2) {
       left: 8px; }
-    .ko-loader-38b49293.ko-loader--large .ko-loader__item:nth-child(3) {
+    .ko-loader-2f0bd24a.ko-loader--large .ko-loader__item:nth-child(3) {
       left: 16px; }
 
 @-webkit-keyframes ko-loader__state1 {
@@ -2962,7 +2963,7 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
     -webkit-transform: scaleY(0.3);
             transform: scaleY(0.3); } }
 
-.ko-pagination-8ee2e084 {
+.ko-pagination-b02885ee {
   background-color: #f8f8f8;
   width: 44px;
   border-left: 1px solid #d1d5d7;
@@ -2971,10 +2972,10 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
   bottom: 0;
   right: 0;
   position: absolute; }
-  .ko-pagination-8ee2e084:hover .ko-pagination__container {
+  .ko-pagination-b02885ee:hover .ko-pagination__container {
     bottom: 7px; }
 
-.ko-pagination-8ee2e084 .ko-pagination__container {
+.ko-pagination-b02885ee .ko-pagination__container {
   position: absolute;
   bottom: 30px;
   left: 0;
@@ -2982,12 +2983,12 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
   -webkit-transition: 0.2s all;
           transition: 0.2s all; }
 
-.ko-pagination-8ee2e084 .ko-pagination__pageNumber {
+.ko-pagination-b02885ee .ko-pagination__pageNumber {
   font-size: 24px;
   display: block;
   text-align: center; }
 
-.ko-pagination-8ee2e084 .ko-pagination__pageCount {
+.ko-pagination-b02885ee .ko-pagination__pageCount {
   font-size: 12px;
   display: block;
   text-align: center;
@@ -2995,12 +2996,12 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
   /* TODO color */
   margin-bottom: 0.5rem; }
 
-.ko-pagination-8ee2e084 .ko-pagination__first, .ko-pagination-8ee2e084 .ko-pagination__last, .ko-pagination-8ee2e084 .ko-pagination__previous, .ko-pagination-8ee2e084 .ko-pagination__next {
+.ko-pagination-b02885ee .ko-pagination__first, .ko-pagination-b02885ee .ko-pagination__last, .ko-pagination-b02885ee .ko-pagination__previous, .ko-pagination-b02885ee .ko-pagination__next {
   background-color: #f8f8f8;
   border: 0 solid #d1d5d7;
   position: relative;
   box-sizing: content-box; }
-  .ko-pagination-8ee2e084 .ko-pagination__first a, .ko-pagination-8ee2e084 .ko-pagination__last a, .ko-pagination-8ee2e084 .ko-pagination__previous a, .ko-pagination-8ee2e084 .ko-pagination__next a {
+  .ko-pagination-b02885ee .ko-pagination__first a, .ko-pagination-b02885ee .ko-pagination__last a, .ko-pagination-b02885ee .ko-pagination__previous a, .ko-pagination-b02885ee .ko-pagination__next a {
     display: block;
     position: absolute;
     top: 0;
@@ -3013,88 +3014,88 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
     opacity: 0.6;
     pointer-events: none; }
 
-.ko-pagination-8ee2e084 .ko-pagination__first--available a,
-.ko-pagination-8ee2e084 .ko-pagination__last--available a,
-.ko-pagination-8ee2e084 .ko-pagination__previous--available a,
-.ko-pagination-8ee2e084 .ko-pagination__next--available a {
+.ko-pagination-b02885ee .ko-pagination__first--available a,
+.ko-pagination-b02885ee .ko-pagination__last--available a,
+.ko-pagination-b02885ee .ko-pagination__previous--available a,
+.ko-pagination-b02885ee .ko-pagination__next--available a {
   opacity: 1;
   pointer-events: auto; }
-  .ko-pagination-8ee2e084 .ko-pagination__first--available a:hover,
-  .ko-pagination-8ee2e084 .ko-pagination__last--available a:hover,
-  .ko-pagination-8ee2e084 .ko-pagination__previous--available a:hover,
-  .ko-pagination-8ee2e084 .ko-pagination__next--available a:hover {
+  .ko-pagination-b02885ee .ko-pagination__first--available a:hover,
+  .ko-pagination-b02885ee .ko-pagination__last--available a:hover,
+  .ko-pagination-b02885ee .ko-pagination__previous--available a:hover,
+  .ko-pagination-b02885ee .ko-pagination__next--available a:hover {
     cursor: pointer;
     background-color: #3f8cb3; }
 
-.ko-pagination-8ee2e084 .ko-pagination__first, .ko-pagination-8ee2e084 .ko-pagination__last {
+.ko-pagination-b02885ee .ko-pagination__first, .ko-pagination-b02885ee .ko-pagination__last {
   height: 22px;
   -webkit-transition: 0.2s all;
           transition: 0.2s all; }
 
-.ko-pagination-8ee2e084 .ko-pagination__previous, .ko-pagination-8ee2e084 .ko-pagination__next {
+.ko-pagination-b02885ee .ko-pagination__previous, .ko-pagination-b02885ee .ko-pagination__next {
   height: 42px; }
 
-.ko-pagination-8ee2e084 .ko-pagination__previous {
+.ko-pagination-b02885ee .ko-pagination__previous {
   border-top-width: 1px; }
 
-.ko-pagination-8ee2e084 .ko-pagination__next {
+.ko-pagination-b02885ee .ko-pagination__next {
   border-top-width: 1px;
   border-bottom-width: 1px;
   margin-top: -1px;
   z-index: 100; }
 
-.ko-pagination-8ee2e084 .ko-pagination__first {
+.ko-pagination-b02885ee .ko-pagination__first {
   margin-bottom: -23px;
   border-top-width: 1px; }
 
-.ko-pagination-8ee2e084 .ko-pagination__last {
+.ko-pagination-b02885ee .ko-pagination__last {
   margin-top: -23px;
   border-bottom-width: 1px; }
 
-.ko-pagination-8ee2e084:hover {
+.ko-pagination-b02885ee:hover {
   margin-top: -23px; }
-  .ko-pagination-8ee2e084:hover .ko-pagination__first {
+  .ko-pagination-b02885ee:hover .ko-pagination__first {
     margin-bottom: 0; }
-  .ko-pagination-8ee2e084:hover .ko-pagination__last {
+  .ko-pagination-b02885ee:hover .ko-pagination__last {
     margin-top: 0; }
 
-.ko-pagination-8ee2e084 .ko-pagination__previous a {
+.ko-pagination-b02885ee .ko-pagination__previous a {
   background-image: url("/images/icons/chevron-up.svg"); }
 
-.ko-pagination-8ee2e084 .ko-pagination__previous.ko-pagination__previous--available a {
+.ko-pagination-b02885ee .ko-pagination__previous.ko-pagination__previous--available a {
   background-image: url("/images/icons/chevron-up-gray.svg"); }
-  .ko-pagination-8ee2e084 .ko-pagination__previous.ko-pagination__previous--available a:hover {
+  .ko-pagination-b02885ee .ko-pagination__previous.ko-pagination__previous--available a:hover {
     background-image: url("/images/icons/chevron-up-active.svg"); }
 
-.ko-pagination-8ee2e084 .ko-pagination__next a {
+.ko-pagination-b02885ee .ko-pagination__next a {
   background-image: url("/images/icons/chevron-down.svg"); }
 
-.ko-pagination-8ee2e084 .ko-pagination__next.ko-pagination__next--available a {
+.ko-pagination-b02885ee .ko-pagination__next.ko-pagination__next--available a {
   background-image: url("/images/icons/chevron-down-gray.svg"); }
-  .ko-pagination-8ee2e084 .ko-pagination__next.ko-pagination__next--available a:hover {
+  .ko-pagination-b02885ee .ko-pagination__next.ko-pagination__next--available a:hover {
     background-image: url("/images/icons/chevron-down-active.svg"); }
 
-.ko-pagination-8ee2e084 .ko-pagination__first a {
+.ko-pagination-b02885ee .ko-pagination__first a {
   background-image: url("/images/icons/double-chevron-up.svg"); }
 
-.ko-pagination-8ee2e084 .ko-pagination__first.ko-pagination__first--available a {
+.ko-pagination-b02885ee .ko-pagination__first.ko-pagination__first--available a {
   background-image: url("/images/icons/double-chevron-up-gray.svg"); }
-  .ko-pagination-8ee2e084 .ko-pagination__first.ko-pagination__first--available a:hover {
+  .ko-pagination-b02885ee .ko-pagination__first.ko-pagination__first--available a:hover {
     background-image: url("/images/icons/double-chevron-up-active.svg"); }
 
-.ko-pagination-8ee2e084 .ko-pagination__last a {
+.ko-pagination-b02885ee .ko-pagination__last a {
   background-image: url("/images/icons/double-chevron-down.svg"); }
 
-.ko-pagination-8ee2e084 .ko-pagination__last.ko-pagination__last--available a {
+.ko-pagination-b02885ee .ko-pagination__last.ko-pagination__last--available a {
   background-image: url("/images/icons/double-chevron-down-gray.svg"); }
-  .ko-pagination-8ee2e084 .ko-pagination__last.ko-pagination__last--available a:hover {
+  .ko-pagination-b02885ee .ko-pagination__last.ko-pagination__last--available a:hover {
     background-image: url("/images/icons/double-chevron-down-active.svg"); }
 
-.ko-radio-eadb6a0f {
+.ko-radio-da4881be {
   /**
  * [1] - we are using div instead of input element hence the styling.
  */ }
-  .ko-radio-eadb6a0f .ko-radio__container {
+  .ko-radio-da4881be .ko-radio__container {
     display: inline-block;
     vertical-align: middle;
     width: 15px;
@@ -3108,38 +3109,38 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
     /*[1]*/
     border-radius: 31px;
     /*[1]*/ }
-    .ko-radio-eadb6a0f .ko-radio__container--large {
+    .ko-radio-da4881be .ko-radio__container--large {
       width: 18px;
       height: 18px; }
-    .ko-radio-eadb6a0f .ko-radio__container--disabled {
+    .ko-radio-da4881be .ko-radio__container--disabled {
       opacity: 0.5; }
-    .ko-radio-eadb6a0f .ko-radio__container .ko-radio__radio {
+    .ko-radio-da4881be .ko-radio__container .ko-radio__radio {
       width: 5px;
       height: 5px;
       background: #616C73;
       /*[1]*/
       border-radius: 31px; }
-      .ko-radio-eadb6a0f .ko-radio__container .ko-radio__radio--large {
+      .ko-radio-da4881be .ko-radio__container .ko-radio__radio--large {
         width: 6px;
         height: 6px; }
-  .ko-radio-eadb6a0f .ko-radio__label {
+  .ko-radio-da4881be .ko-radio__label {
     margin-left: 9px; }
-    .ko-radio-eadb6a0f .ko-radio__label--disabled {
+    .ko-radio-da4881be .ko-radio__label--disabled {
       opacity: 0.5; }
 
-.ko-recent-cases-8085602f {
+.ko-recent-cases-4cf17c39 {
   list-style-type: none; }
 
-.ko-search-0e6b7d31 {
+.ko-search-97e61606 {
   /*
 	Search module
    ========================================================================== */ }
-  .ko-search-0e6b7d31 .search {
+  .ko-search-97e61606 .search {
     height: 40px;
     padding-left: 40px;
     position: relative;
     border-right: 1px solid #d1d5d7; }
-    .ko-search-0e6b7d31 .search:before {
+    .ko-search-97e61606 .search:before {
       content: '';
       height: 18px;
       width: 18px;
@@ -3150,80 +3151,80 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
       right: 9px;
       bottom: 9px;
       background: url("/images/ui/search.png") no-repeat; }
-  .ko-search-0e6b7d31 .input__search {
+  .ko-search-97e61606 .input__search {
     width: 100%;
     height: 100%;
     border: none; }
-    .ko-search-0e6b7d31 .input__search:focus {
+    .ko-search-97e61606 .input__search:focus {
       outline: none; }
 
-.ko-sidebar-16123a6c {
+.ko-sidebar-c736c443 {
   /*
 	Sidebar module
    ========================================================================== */ }
-  .ko-sidebar-16123a6c .sidebar {
+  .ko-sidebar-c736c443 .sidebar {
     min-height: 100vh;
     padding: 4.5px 0;
     background-color: #ffffff;
     border: 1px solid #d1d5d7;
     border-top-left-radius: 2px;
     border-bottom-left-radius: 2px; }
-  .ko-sidebar-16123a6c .sidebar__item {
+  .ko-sidebar-c736c443 .sidebar__item {
     position: relative;
     padding: 4.5px 18px 4.5px 0;
     margin: 4px 0;
     text-indent: 18px;
     font-weight: 400; }
-    .ko-sidebar-16123a6c .sidebar__item.active {
+    .ko-sidebar-c736c443 .sidebar__item.active {
       background-color: #f7f8f9;
       border-left: 2px solid #189ed8;
       font-weight: 600; }
-    .ko-sidebar-16123a6c .sidebar__item.disabled {
+    .ko-sidebar-c736c443 .sidebar__item.disabled {
       color: rgba(0, 0, 0, 0.3); }
-  .ko-sidebar-16123a6c .sidebar__value {
+  .ko-sidebar-c736c443 .sidebar__value {
     float: right;
     padding: 0 8px;
     background-color: #ebeef0;
     border-radius: 2px;
     text-indent: 0;
     color: #838d94; }
-    .ko-sidebar-16123a6c .sidebar__value.active {
+    .ko-sidebar-c736c443 .sidebar__value.active {
       background-color: #189ed8;
       color: #ffffff; }
-  .ko-sidebar-16123a6c .sidebar__spacer {
+  .ko-sidebar-c736c443 .sidebar__spacer {
     height: 1px;
     margin: 9px 18px;
     background-color: #d1d5d7;
     border: none; }
 
-.ko-tab-788d1c38 .nav-tabs__label {
+.ko-tab-e9e55bcf .nav-tabs__label {
   max-width: 144px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis; }
 
-.ko-text-editor-c91852a7 {
+.ko-text-editor-9ee809aa {
   /*! Quill Editor v0.19.12
  *  https://quilljs.com/
  *  Copyright (c) 2014, Jason Chen
  *  Copyright (c) 2013, salesforce.com
  */ }
-  .ko-text-editor-c91852a7 {
+  .ko-text-editor-9ee809aa {
     border-bottom: 1px solid #cfd4d8;
     margin-bottom: 9px; }
-  .ko-text-editor-c91852a7 .ko-text-editor__dropzone-and-editor-container {
+  .ko-text-editor-9ee809aa .ko-text-editor__dropzone-and-editor-container {
     position: relative; }
-  .ko-text-editor-c91852a7 .ko-text-editor__image-upload input {
+  .ko-text-editor-9ee809aa .ko-text-editor__image-upload input {
     display: none; }
-  .ko-text-editor-c91852a7 .ql-image-tooltip {
+  .ko-text-editor-9ee809aa .ql-image-tooltip {
     padding: 10px;
     width: 300px;
     top: 20px !important; }
-  .ko-text-editor-c91852a7 .ql-image-tooltip:after {
+  .ko-text-editor-9ee809aa .ql-image-tooltip:after {
     clear: both;
     content: "";
     display: table; }
-  .ko-text-editor-c91852a7 .ql-image-tooltip a {
+  .ko-text-editor-9ee809aa .ql-image-tooltip a {
     border: 1px solid #000;
     box-sizing: border-box;
     display: inline-block;
@@ -3231,7 +3232,7 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
     padding: 5px;
     text-align: center;
     width: 50%; }
-  .ko-text-editor-c91852a7 .ql-image-tooltip img {
+  .ko-text-editor-9ee809aa .ql-image-tooltip img {
     bottom: 0;
     left: 0;
     margin: auto;
@@ -3240,70 +3241,70 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
     position: absolute;
     right: 0;
     top: 0; }
-  .ko-text-editor-c91852a7 .ql-image-tooltip .input {
+  .ko-text-editor-9ee809aa .ql-image-tooltip .input {
     box-sizing: border-box;
     width: 100%; }
-  .ko-text-editor-c91852a7 .ql-image-tooltip .preview {
+  .ko-text-editor-9ee809aa .ql-image-tooltip .preview {
     margin: 10px 0px;
     position: relative;
     border: 1px dashed #000;
     height: 200px; }
-  .ko-text-editor-c91852a7 .ql-image-tooltip .preview span {
+  .ko-text-editor-9ee809aa .ql-image-tooltip .preview span {
     display: inline-block;
     position: absolute;
     text-align: center;
     top: 40%;
     width: 100%; }
-  .ko-text-editor-c91852a7 .ql-link-tooltip {
+  .ko-text-editor-9ee809aa .ql-link-tooltip {
     padding: 5px 10px; }
-  .ko-text-editor-c91852a7 .ql-link-tooltip input.input {
+  .ko-text-editor-9ee809aa .ql-link-tooltip input.input {
     width: 170px; }
-  .ko-text-editor-c91852a7 .ql-link-tooltip input.input,
-  .ko-text-editor-c91852a7 .ql-link-tooltip a.done {
+  .ko-text-editor-9ee809aa .ql-link-tooltip input.input,
+  .ko-text-editor-9ee809aa .ql-link-tooltip a.done {
     display: none; }
-  .ko-text-editor-c91852a7 .ql-link-tooltip a.change {
+  .ko-text-editor-9ee809aa .ql-link-tooltip a.change {
     margin-right: 4px; }
-  .ko-text-editor-c91852a7 .ql-link-tooltip.editing input.input,
-  .ko-text-editor-c91852a7 .ql-link-tooltip.editing a.done {
+  .ko-text-editor-9ee809aa .ql-link-tooltip.editing input.input,
+  .ko-text-editor-9ee809aa .ql-link-tooltip.editing a.done {
     display: inline-block; }
-  .ko-text-editor-c91852a7 .ql-link-tooltip.editing a.url,
-  .ko-text-editor-c91852a7 .ql-link-tooltip.editing a.change,
-  .ko-text-editor-c91852a7 .ql-link-tooltip.editing a.remove {
+  .ko-text-editor-9ee809aa .ql-link-tooltip.editing a.url,
+  .ko-text-editor-9ee809aa .ql-link-tooltip.editing a.change,
+  .ko-text-editor-9ee809aa .ql-link-tooltip.editing a.remove {
     display: none; }
-  .ko-text-editor-c91852a7 .ql-multi-cursor {
+  .ko-text-editor-9ee809aa .ql-multi-cursor {
     position: absolute;
     left: 0;
     top: 0;
     z-index: 1000; }
-  .ko-text-editor-c91852a7 .ql-multi-cursor .cursor {
+  .ko-text-editor-9ee809aa .ql-multi-cursor .cursor {
     margin-left: -1px;
     position: absolute; }
-  .ko-text-editor-c91852a7 .ql-multi-cursor .cursor-flag {
+  .ko-text-editor-9ee809aa .ql-multi-cursor .cursor-flag {
     bottom: 100%;
     position: absolute;
     white-space: nowrap; }
-  .ko-text-editor-c91852a7 .ql-multi-cursor .cursor-name {
+  .ko-text-editor-9ee809aa .ql-multi-cursor .cursor-name {
     display: inline-block;
     color: #fff;
     padding: 2px 8px; }
-  .ko-text-editor-c91852a7 .ql-multi-cursor .cursor-caret {
+  .ko-text-editor-9ee809aa .ql-multi-cursor .cursor-caret {
     height: 100%;
     position: absolute;
     width: 2px; }
-  .ko-text-editor-c91852a7 .ql-multi-cursor .cursor.hidden .cursor-flag {
+  .ko-text-editor-9ee809aa .ql-multi-cursor .cursor.hidden .cursor-flag {
     display: none; }
-  .ko-text-editor-c91852a7 .ql-multi-cursor .cursor.top .cursor-flag {
+  .ko-text-editor-9ee809aa .ql-multi-cursor .cursor.top .cursor-flag {
     bottom: auto;
     top: 100%; }
-  .ko-text-editor-c91852a7 .ql-multi-cursor .cursor.right .cursor-flag {
+  .ko-text-editor-9ee809aa .ql-multi-cursor .cursor.right .cursor-flag {
     right: -2px; }
-  .ko-text-editor-c91852a7 .ql-paste-manager {
+  .ko-text-editor-9ee809aa .ql-paste-manager {
     left: -100000px;
     position: absolute;
     top: 50%; }
-  .ko-text-editor-c91852a7 .ql-toolbar {
+  .ko-text-editor-9ee809aa .ql-toolbar {
     box-sizing: border-box; }
-  .ko-text-editor-c91852a7 .ql-tooltip {
+  .ko-text-editor-9ee809aa .ql-tooltip {
     background-color: #fff;
     border: 1px solid #000;
     box-sizing: border-box;
@@ -3311,10 +3312,10 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
     top: 0px;
     white-space: nowrap;
     z-index: 2000; }
-  .ko-text-editor-c91852a7 .ql-tooltip a {
+  .ko-text-editor-9ee809aa .ql-tooltip a {
     cursor: pointer;
     text-decoration: none; }
-  .ko-text-editor-c91852a7 .ql-container {
+  .ko-text-editor-9ee809aa .ql-container {
     box-sizing: border-box;
     cursor: text;
     font-family: Helvetica, 'Arial', sans-serif;
@@ -3326,7 +3327,7 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
     overflow-y: auto;
     padding: 12px 15px;
     position: relative; }
-  .ko-text-editor-c91852a7 .ql-editor {
+  .ko-text-editor-9ee809aa .ql-editor {
     box-sizing: border-box;
     min-height: 500px;
     outline: none;
@@ -3334,94 +3335,94 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
       -o-tab-size: 4;
          tab-size: 4;
     white-space: pre-wrap; }
-  .ko-text-editor-c91852a7 .ql-editor div {
+  .ko-text-editor-9ee809aa .ql-editor div {
     margin: 0;
     padding: 0; }
-  .ko-text-editor-c91852a7 .ql-editor a {
+  .ko-text-editor-9ee809aa .ql-editor a {
     text-decoration: underline; }
-  .ko-text-editor-c91852a7 .ql-editor b {
+  .ko-text-editor-9ee809aa .ql-editor b {
     font-weight: bold; }
-  .ko-text-editor-c91852a7 .ql-editor i {
+  .ko-text-editor-9ee809aa .ql-editor i {
     font-style: italic; }
-  .ko-text-editor-c91852a7 .ql-editor s {
+  .ko-text-editor-9ee809aa .ql-editor s {
     text-decoration: line-through; }
-  .ko-text-editor-c91852a7 .ql-editor u {
+  .ko-text-editor-9ee809aa .ql-editor u {
     text-decoration: underline; }
-  .ko-text-editor-c91852a7 .ql-editor a,
-  .ko-text-editor-c91852a7 .ql-editor b,
-  .ko-text-editor-c91852a7 .ql-editor i,
-  .ko-text-editor-c91852a7 .ql-editor s,
-  .ko-text-editor-c91852a7 .ql-editor u,
-  .ko-text-editor-c91852a7 .ql-editor span {
+  .ko-text-editor-9ee809aa .ql-editor a,
+  .ko-text-editor-9ee809aa .ql-editor b,
+  .ko-text-editor-9ee809aa .ql-editor i,
+  .ko-text-editor-9ee809aa .ql-editor s,
+  .ko-text-editor-9ee809aa .ql-editor u,
+  .ko-text-editor-9ee809aa .ql-editor span {
     background-color: inherit; }
-  .ko-text-editor-c91852a7 .ql-editor img {
+  .ko-text-editor-9ee809aa .ql-editor img {
     max-width: 100%; }
-  .ko-text-editor-c91852a7 .ql-editor blockquote,
-  .ko-text-editor-c91852a7 .ql-editor ol,
-  .ko-text-editor-c91852a7 .ql-editor ul {
+  .ko-text-editor-9ee809aa .ql-editor blockquote,
+  .ko-text-editor-9ee809aa .ql-editor ol,
+  .ko-text-editor-9ee809aa .ql-editor ul {
     margin: 0 0 0 2em;
     padding: 0; }
-  .ko-text-editor-c91852a7 .ql-editor ol {
+  .ko-text-editor-9ee809aa .ql-editor ol {
     list-style-type: decimal; }
-  .ko-text-editor-c91852a7 .ql-editor ul {
+  .ko-text-editor-9ee809aa .ql-editor ul {
     list-style-type: disc; }
-  .ko-text-editor-c91852a7 .ql-editor.ql-ie-9 br,
-  .ko-text-editor-c91852a7 .ql-editor.ql-ie-10 br {
+  .ko-text-editor-9ee809aa .ql-editor.ql-ie-9 br,
+  .ko-text-editor-9ee809aa .ql-editor.ql-ie-10 br {
     display: none; }
-  .ko-text-editor-c91852a7 .ql-snow .ql-image-tooltip a {
+  .ko-text-editor-9ee809aa .ql-snow .ql-image-tooltip a {
     border: 1px solid #06c; }
-  .ko-text-editor-c91852a7 .ql-snow .ql-image-tooltip a.insert {
+  .ko-text-editor-9ee809aa .ql-snow .ql-image-tooltip a.insert {
     background-color: #06c;
     color: #fff; }
-  .ko-text-editor-c91852a7 .ql-snow .ql-image-tooltip .preview {
+  .ko-text-editor-9ee809aa .ql-snow .ql-image-tooltip .preview {
     border-color: #ccc;
     color: #ccc; }
-  .ko-text-editor-c91852a7 .ql-snow .ql-link-tooltip a,
-  .ko-text-editor-c91852a7 .ql-snow .ql-link-tooltip span {
+  .ko-text-editor-9ee809aa .ql-snow .ql-link-tooltip a,
+  .ko-text-editor-9ee809aa .ql-snow .ql-link-tooltip span {
     line-height: 25px; }
-  .ko-text-editor-c91852a7 .ql-snow .ql-multi-cursor .cursor-name {
+  .ko-text-editor-9ee809aa .ql-snow .ql-multi-cursor .cursor-name {
     border-radius: 4px;
     font-size: 11px;
     font-family: Arial;
     margin-left: -50%;
     padding: 4px 10px; }
-  .ko-text-editor-c91852a7 .ql-snow .ql-multi-cursor .cursor-triangle {
+  .ko-text-editor-9ee809aa .ql-snow .ql-multi-cursor .cursor-triangle {
     border-left: 4px solid transparent;
     border-right: 4px solid transparent;
     height: 0px;
     margin-left: -3px;
     width: 0px; }
-  .ko-text-editor-c91852a7 .ql-snow .ql-multi-cursor .cursor.left .cursor-name {
+  .ko-text-editor-9ee809aa .ql-snow .ql-multi-cursor .cursor.left .cursor-name {
     margin-left: -8px; }
-  .ko-text-editor-c91852a7 .ql-snow .ql-multi-cursor .cursor.right .cursor-flag {
+  .ko-text-editor-9ee809aa .ql-snow .ql-multi-cursor .cursor.right .cursor-flag {
     right: auto; }
-  .ko-text-editor-c91852a7 .ql-snow .ql-multi-cursor .cursor.right .cursor-name {
+  .ko-text-editor-9ee809aa .ql-snow .ql-multi-cursor .cursor.right .cursor-name {
     margin-left: -100%;
     margin-right: -8px; }
-  .ko-text-editor-c91852a7 .ql-snow .ql-multi-cursor .cursor-triangle.bottom {
+  .ko-text-editor-9ee809aa .ql-snow .ql-multi-cursor .cursor-triangle.bottom {
     border-top: 4px solid transparent;
     display: block;
     margin-bottom: -1px; }
-  .ko-text-editor-c91852a7 .ql-snow .ql-multi-cursor .cursor-triangle.top {
+  .ko-text-editor-9ee809aa .ql-snow .ql-multi-cursor .cursor-triangle.top {
     border-bottom: 4px solid transparent;
     display: none;
     margin-top: -1px; }
-  .ko-text-editor-c91852a7 .ql-snow .ql-multi-cursor .cursor.top .cursor-triangle.bottom {
+  .ko-text-editor-9ee809aa .ql-snow .ql-multi-cursor .cursor.top .cursor-triangle.bottom {
     display: none; }
-  .ko-text-editor-c91852a7 .ql-snow .ql-multi-cursor .cursor.top .cursor-triangle.top {
+  .ko-text-editor-9ee809aa .ql-snow .ql-multi-cursor .cursor.top .cursor-triangle.top {
     display: block; }
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar {
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar {
     box-sizing: border-box;
     padding: 8px;
     user-select: none;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none; }
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-format-group {
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-format-group {
     display: inline-block;
     margin-right: 15px;
     vertical-align: middle; }
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-format-separator {
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-format-separator {
     box-sizing: border-box;
     background-color: #ddd;
     display: inline-block;
@@ -3430,7 +3431,7 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
     margin-right: 4px;
     vertical-align: middle;
     width: 1px; }
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-format-button {
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-format-button {
     box-sizing: border-box;
     display: inline-block;
     height: 24px;
@@ -3443,7 +3444,7 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
     cursor: pointer;
     text-align: center;
     width: 24px; }
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker {
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker {
     box-sizing: border-box;
     color: #444;
     display: inline-block;
@@ -3451,7 +3452,7 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
     font-size: 14px;
     font-weight: 500;
     position: relative; }
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker .ql-picker-label {
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker .ql-picker-label {
     box-sizing: border-box;
     display: inline-block;
     height: 24px;
@@ -3465,10 +3466,10 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
     cursor: pointer;
     position: relative;
     width: 100%; }
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker .ql-picker-label.ql-active,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker .ql-picker-label:hover {
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker .ql-picker-label.ql-active,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker .ql-picker-label:hover {
     color: #06c; }
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker .ql-picker-options {
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker .ql-picker-options {
     background-color: #fff;
     border: 1px solid transparent;
     box-sizing: border-box;
@@ -3476,7 +3477,7 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
     padding: 4px 8px;
     position: absolute;
     width: 100%; }
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker .ql-picker-options .ql-picker-item {
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker .ql-picker-options .ql-picker-item {
     background-position: center center;
     background-repeat: no-repeat;
     background-size: 18px 18px;
@@ -3485,49 +3486,49 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
     display: block;
     padding-bottom: 5px;
     padding-top: 5px; }
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker .ql-picker-options .ql-picker-item.ql-selected,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker .ql-picker-options .ql-picker-item:hover {
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker .ql-picker-options .ql-picker-item.ql-selected,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker .ql-picker-options .ql-picker-item:hover {
     color: #06c; }
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker.ql-expanded .ql-picker-label {
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker.ql-expanded .ql-picker-label {
     border-color: #ccc;
     color: #ccc;
     z-index: 2; }
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker.ql-expanded .ql-picker-options {
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker.ql-expanded .ql-picker-options {
     border-color: #ccc;
     box-shadow: rgba(0, 0, 0, 0.2) 0 2px 8px;
     display: block;
     margin-top: -1px;
     z-index: 1; }
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker.ql-color-picker .ql-picker-label {
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker.ql-color-picker .ql-picker-label {
     background-position: center center;
     width: 28px; }
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker.ql-color-picker .ql-picker-options {
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker.ql-color-picker .ql-picker-options {
     padding: 5px;
     width: 152px; }
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker.ql-color-picker .ql-picker-options .ql-picker-item {
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker.ql-color-picker .ql-picker-options .ql-picker-item {
     border: 1px solid transparent;
     float: left;
     height: 16px;
     margin: 2px;
     padding: 0px;
     width: 16px; }
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker.ql-color-picker .ql-picker-options .ql-picker-item.ql-primary-color {
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker.ql-color-picker .ql-picker-options .ql-picker-item.ql-primary-color {
     margin-bottom: 8px; }
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker.ql-color-picker .ql-picker-options .ql-picker-item.ql-selected,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker.ql-color-picker .ql-picker-options .ql-picker-item:hover {
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker.ql-color-picker .ql-picker-options .ql-picker-item.ql-selected,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker.ql-color-picker .ql-picker-options .ql-picker-item:hover {
     border-color: #000; }
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker.ql-font {
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker.ql-font {
     width: 105px; }
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker.ql-size {
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker.ql-size {
     width: 80px; }
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker.ql-font .ql-picker-label,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker.ql-size .ql-picker-label {
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker.ql-font .ql-picker-label,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker.ql-size .ql-picker-label {
     padding-left: 8px;
     padding-right: 8px; }
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker.ql-align .ql-picker-label {
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker.ql-align .ql-picker-label {
     background-position: center center;
     width: 28px; }
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker.ql-align .ql-picker-item {
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker.ql-align .ql-picker-item {
     box-sizing: border-box;
     display: inline-block;
     height: 24px;
@@ -3535,191 +3536,191 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
     vertical-align: middle;
     padding: 0px;
     width: 28px; }
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker.ql-align .ql-picker-options {
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker.ql-align .ql-picker-options {
     padding: 4px 0px; }
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker .ql-picker-label {
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker .ql-picker-label {
     background-image: url(../images/icons/dropdown-triangles.svg); }
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker.ql-expanded .ql-picker-label {
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker.ql-expanded .ql-picker-label {
     background-image: url(../images/icons/dropdown-triangles.svg); }
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker.ql-active:not(.ql-expanded) .ql-picker-label,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar:not(.ios) .ql-picker:not(.ql-expanded) .ql-picker-label:hover {
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker.ql-active:not(.ql-expanded) .ql-picker-label,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar:not(.ios) .ql-picker:not(.ql-expanded) .ql-picker-label:hover {
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASBAMAAACk4JNkAAAAKlBMVEUAAAAAYc4AZMgAZcwAZs0AZs0AZs0AZ8wAZswAZs0AZswAZswAZswAZsx12LPhAAAADXRSTlMAFRzExcbLzM/Q0dLbKbcyLwAAADVJREFUCNdjYCAeMKYJQFnSdzdCWbl3r0NZvnev4tFre/cKlNV79yaUpXP3EJTFtEqBBHcAAHyoDQk0vM/lAAAAAElFTkSuQmCC"); }
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-format-button.ql-bold,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker.ql-bold .ql-picker-label,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=bold],
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=bold] {
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-format-button.ql-bold,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker.ql-bold .ql-picker-label,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=bold],
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=bold] {
     background-image: url(../images/icons/bold.svg); }
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-format-button.ql-bold.ql-active,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker.ql-bold .ql-picker-label.ql-active,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=bold].ql-active,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=bold].ql-selected,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-bold:hover,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-bold .ql-picker-label:hover,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=bold]:hover,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=bold]:hover {
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-format-button.ql-bold.ql-active,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker.ql-bold .ql-picker-label.ql-active,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=bold].ql-active,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=bold].ql-selected,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-bold:hover,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-bold .ql-picker-label:hover,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=bold]:hover,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=bold]:hover {
     background-image: url(../images/icons/bold.svg); }
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-format-button.ql-italic,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker.ql-italic .ql-picker-label,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=italic],
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=italic] {
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-format-button.ql-italic,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker.ql-italic .ql-picker-label,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=italic],
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=italic] {
     background-image: url(../images/icons/italic.svg); }
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-format-button.ql-italic.ql-active,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker.ql-italic .ql-picker-label.ql-active,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=italic].ql-active,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=italic].ql-selected,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-italic:hover,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-italic .ql-picker-label:hover,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=italic]:hover,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=italic]:hover {
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-format-button.ql-italic.ql-active,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker.ql-italic .ql-picker-label.ql-active,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=italic].ql-active,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=italic].ql-selected,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-italic:hover,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-italic .ql-picker-label:hover,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=italic]:hover,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=italic]:hover {
     background-image: url(../images/icons/italic.svg); }
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-format-button.ql-link,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker.ql-link .ql-picker-label,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=link],
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=link] {
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-format-button.ql-link,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker.ql-link .ql-picker-label,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=link],
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=link] {
     background-image: url(../images/icons/link.svg); }
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-format-button.ql-link.ql-active,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker.ql-link .ql-picker-label.ql-active,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=link].ql-active,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=link].ql-selected,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-link:hover,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-link .ql-picker-label:hover,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=link]:hover,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=link]:hover {
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-format-button.ql-link.ql-active,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker.ql-link .ql-picker-label.ql-active,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=link].ql-active,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=link].ql-selected,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-link:hover,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-link .ql-picker-label:hover,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=link]:hover,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=link]:hover {
     background-image: url(../images/icons/link.svg); }
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-format-button.ql-image,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker.ql-image .ql-picker-label,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=image],
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=image] {
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-format-button.ql-image,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker.ql-image .ql-picker-label,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=image],
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=image] {
     background-image: url(../images/icons/photos.svg); }
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-format-button.ql-image.ql-active,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker.ql-image .ql-picker-label.ql-active,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=image].ql-active,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=image].ql-selected,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-image:hover,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-image .ql-picker-label:hover,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=image]:hover,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=image]:hover {
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-format-button.ql-image.ql-active,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker.ql-image .ql-picker-label.ql-active,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=image].ql-active,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=image].ql-selected,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-image:hover,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-image .ql-picker-label:hover,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=image]:hover,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=image]:hover {
     background-image: url(../images/icons/photos.svg); }
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-format-button.ql-attachment,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker.ql-attachment .ql-picker-label,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=image],
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=image] {
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-format-button.ql-attachment,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker.ql-attachment .ql-picker-label,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=image],
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=image] {
     background-image: url(../images/icons/attach.svg); }
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-format-button.ql-attachment.ql-active,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker.ql-attachment .ql-picker-label.ql-active,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=image].ql-active,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=image].ql-selected,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-attachment:hover,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-attachment .ql-picker-label:hover,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=image]:hover,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=image]:hover {
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-format-button.ql-attachment.ql-active,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker.ql-attachment .ql-picker-label.ql-active,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=image].ql-active,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=image].ql-selected,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-attachment:hover,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-attachment .ql-picker-label:hover,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=image]:hover,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=image]:hover {
     background-image: url(../images/icons/attach.svg); }
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-format-button.ql-cc,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker.ql-cc .ql-picker-label,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=image],
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=image] {
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-format-button.ql-cc,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker.ql-cc .ql-picker-label,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=image],
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=image] {
     background-image: url(../images/icons/cc.svg); }
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-format-button.ql-cc.ql-active,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker.ql-cc .ql-picker-label.ql-active,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=image].ql-active,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=image].ql-selected,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-cc:hover,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-cc .ql-picker-label:hover,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=image]:hover,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=image]:hover {
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-format-button.ql-cc.ql-active,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker.ql-cc .ql-picker-label.ql-active,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=image].ql-active,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=image].ql-selected,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-cc:hover,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-cc .ql-picker-label:hover,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=image]:hover,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=image]:hover {
     background-image: url(../images/icons/cc.svg); }
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-format-button.ql-billing,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker.ql-billing .ql-picker-label,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=image],
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=image] {
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-format-button.ql-billing,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker.ql-billing .ql-picker-label,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=image],
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=image] {
     background-image: url(../images/icons/billing.svg); }
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-format-button.ql-billing.ql-active,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker.ql-billing .ql-picker-label.ql-active,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=image].ql-active,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=image].ql-selected,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-billing:hover,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-billing .ql-picker-label:hover,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=image]:hover,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=image]:hover {
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-format-button.ql-billing.ql-active,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker.ql-billing .ql-picker-label.ql-active,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=image].ql-active,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=image].ql-selected,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-billing:hover,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-billing .ql-picker-label:hover,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=image]:hover,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=image]:hover {
     background-image: url(../images/icons/billing.svg); }
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-format-button.ql-list,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker.ql-list .ql-picker-label,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=list],
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=list] {
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-format-button.ql-list,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker.ql-list .ql-picker-label,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=list],
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=list] {
     background-image: url(../images/icons/list-numeric.svg); }
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-format-button.ql-list.ql-active,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker.ql-list .ql-picker-label.ql-active,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=list].ql-active,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=list].ql-selected,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-list:hover,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-list .ql-picker-label:hover,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=list]:hover,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=list]:hover {
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-format-button.ql-list.ql-active,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker.ql-list .ql-picker-label.ql-active,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=list].ql-active,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=list].ql-selected,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-list:hover,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-list .ql-picker-label:hover,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=list]:hover,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=list]:hover {
     background-image: url(../images/icons/list-numeric.svg); }
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-format-button.ql-bullet,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker.ql-bullet .ql-picker-label,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=bullet],
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=bullet] {
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-format-button.ql-bullet,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker.ql-bullet .ql-picker-label,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=bullet],
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=bullet] {
     background-image: url(../images/icons/list-bullet.svg); }
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-format-button.ql-bullet.ql-active,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker.ql-bullet .ql-picker-label.ql-active,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=bullet].ql-active,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=bullet].ql-selected,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-bullet:hover,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-bullet .ql-picker-label:hover,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=bullet]:hover,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=bullet]:hover {
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-format-button.ql-bullet.ql-active,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker.ql-bullet .ql-picker-label.ql-active,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=bullet].ql-active,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=bullet].ql-selected,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-bullet:hover,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-bullet .ql-picker-label:hover,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=bullet]:hover,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=bullet]:hover {
     background-image: url(../images/icons/list-bullet.svg); }
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-format-button.ql-authorship,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker.ql-authorship .ql-picker-label,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=authorship],
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=authorship] {
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-format-button.ql-authorship,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker.ql-authorship .ql-picker-label,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=authorship],
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=authorship] {
     background-image: url(../images/icons/path-copy.svg); }
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-format-button.ql-authorship.ql-active,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker.ql-authorship .ql-picker-label.ql-active,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=authorship].ql-active,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=authorship].ql-selected,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-authorship:hover,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-authorship .ql-picker-label:hover,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=authorship]:hover,
-  .ko-text-editor-c91852a7 .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=authorship]:hover {
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-format-button.ql-authorship.ql-active,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker.ql-authorship .ql-picker-label.ql-active,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=authorship].ql-active,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=authorship].ql-selected,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-authorship:hover,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-authorship .ql-picker-label:hover,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=authorship]:hover,
+  .ko-text-editor-9ee809aa .ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=authorship]:hover {
     background-image: url(../images/icons/path-copy.svg); }
-  .ko-text-editor-c91852a7 .ql-snow .ql-tooltip {
+  .ko-text-editor-9ee809aa .ql-snow .ql-tooltip {
     border: 1px solid #ccc;
     box-shadow: 0px 0px 5px #ddd;
     color: #222; }
-  .ko-text-editor-c91852a7 .ql-snow .ql-tooltip a {
+  .ko-text-editor-9ee809aa .ql-snow .ql-tooltip a {
     color: #06c; }
-  .ko-text-editor-c91852a7 .ql-snow .ql-tooltip .input {
+  .ko-text-editor-9ee809aa .ql-snow .ql-tooltip .input {
     border: 1px solid #ccc;
     margin: 0px;
     padding: 5px; }
-  .ko-text-editor-c91852a7 .ql-snow a {
+  .ko-text-editor-9ee809aa .ql-snow a {
     color: #06c; }
 
-.ko-time-billing--ko-time-entry-6ba995f9.ko-time-billing__ko-time-entry {
+.ko-time-billing--ko-time-entry-840763cb.ko-time-billing__ko-time-entry {
   border: 1px solid #d1d5d7;
   border-radius: 2px;
   width: 70px;
   padding: 4.5px;
   margin-top: 4.5px; }
-  .ko-time-billing--ko-time-entry-6ba995f9.ko-time-billing__ko-time-entry--invalid {
+  .ko-time-billing--ko-time-entry-840763cb.ko-time-billing__ko-time-entry--invalid {
     border: 1px solid red; }
 
-.ko-time-billing-90c4c064 .ko-time-billing {
+.ko-time-billing-1dc2f6fd .ko-time-billing {
   padding: 9px; }
 
-.ko-time-billing-90c4c064 .ko-time-billing__label {
+.ko-time-billing-1dc2f6fd .ko-time-billing__label {
   font-weight: 600; }
 
-.ko-time-billing-90c4c064 .ko-time-billing__time-format-label {
+.ko-time-billing-1dc2f6fd .ko-time-billing__time-format-label {
   padding-left: 4.5px; }
 
-.ko-toggle-53a37014 {
+.ko-toggle-f49b9c54 {
   /**
  * [1] - we are using div instead of input element hence the styling.
  */ }
-  .ko-toggle-53a37014 .ko-toggle__container {
+  .ko-toggle-f49b9c54 .ko-toggle__container {
     position: relative;
     display: inline-block;
     vertical-align: middle;
@@ -3734,12 +3735,12 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
     -webkit-transition: background 300ms;
             transition: background 300ms;
     /*[1]*/ }
-    .ko-toggle-53a37014 .ko-toggle__container--activated {
+    .ko-toggle-f49b9c54 .ko-toggle__container--activated {
       background: #85A043; }
-    .ko-toggle-53a37014 .ko-toggle__container--micro {
+    .ko-toggle-f49b9c54 .ko-toggle__container--micro {
       width: 35px;
       height: 18px; }
-    .ko-toggle-53a37014 .ko-toggle__container .ko-toggle__toggle {
+    .ko-toggle-f49b9c54 .ko-toggle__container .ko-toggle__toggle {
       width: 24px;
       height: 24px;
       margin-left: 3px;
@@ -3752,29 +3753,29 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
       -webkit-transition: margin 300ms;
               transition: margin 300ms;
       /*[1]*/ }
-      .ko-toggle-53a37014 .ko-toggle__container .ko-toggle__toggle--activated {
+      .ko-toggle-f49b9c54 .ko-toggle__container .ko-toggle__toggle--activated {
         margin-left: 39px; }
-      .ko-toggle-53a37014 .ko-toggle__container .ko-toggle__toggle--micro {
+      .ko-toggle-f49b9c54 .ko-toggle__container .ko-toggle__toggle--micro {
         width: 12px;
         height: 12px; }
-    .ko-toggle-53a37014 .ko-toggle__container .ko-toggle__toggle--activated.ko-toggle__toggle--micro {
+    .ko-toggle-f49b9c54 .ko-toggle__container .ko-toggle__toggle--activated.ko-toggle__toggle--micro {
       margin-left: 20px; }
-  .ko-toggle-53a37014 .ko-toggle__label {
+  .ko-toggle-f49b9c54 .ko-toggle__label {
     font-size: "12px";
     font-size: "12px";
     position: relative;
     color: #838D94;
     margin-left: 9px; }
-    .ko-toggle-53a37014 .ko-toggle__label--micro {
+    .ko-toggle-f49b9c54 .ko-toggle__label--micro {
       margin-left: 4.5px; }
 
-.login-82cac2da {
+.login-f4c7a155 {
   /*
   Login box that appears when an unauthorised user hits /admin
   Has two states: Fresh login (username/password) or a remembered login
   that shows the users gravatar (login__image) and only a password field.
    ========================================================================= */ }
-  .login-82cac2da .login {
+  .login-f4c7a155 .login {
     width: 385px;
     position: relative;
     margin: 165px auto 9px;
@@ -3782,24 +3783,24 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
     border-radius: 2px;
     background-color: #ffffff; }
     @media screen and (max-width: 44.9375em) {
-      .login-82cac2da .login {
+      .login-f4c7a155 .login {
         width: 90%;
         margin-left: auto;
         margin-right: auto; } }
-  .login-82cac2da .login__header {
+  .login-f4c7a155 .login__header {
     margin-bottom: 18px;
     font-weight: 400; }
-  .login-82cac2da .login__header--reset {
+  .login-f4c7a155 .login__header--reset {
     padding-bottom: 42px; }
-  .login-82cac2da .login__image {
+  .login-f4c7a155 .login__image {
     width: 100px;
     height: 100px;
     padding: 9px;
     background-size: cover;
     border-radius: 2px; }
-  .login-82cac2da .login__input {
+  .login-f4c7a155 .login__input {
     width: 100%; }
-  .login-82cac2da .login__actions {
+  .login-f4c7a155 .login__actions {
     min-height: 40px;
     line-height: 40px;
     position: absolute;
@@ -3807,71 +3808,71 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
     bottom: 0;
     left: 0;
     border-top: 1px solid #cfd4d8; }
-  .login-82cac2da .login-form {
+  .login-f4c7a155 .login-form {
     padding: 67px 0 0;
     overflow: hidden; }
-  .login-82cac2da .login-form__mask {
+  .login-f4c7a155 .login-form__mask {
     position: relative;
     overflow: hidden;
     height: 74px;
     width: 100%; }
-  .login-82cac2da .login-form__content {
+  .login-f4c7a155 .login-form__content {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     height: 148px; }
-  .login-82cac2da .login-form__content--animate {
+  .login-f4c7a155 .login-form__content--animate {
     -webkit-transition: -webkit-transform 0.3s ease-in-out;
             transition: transform 0.3s ease-in-out; }
-  .login-82cac2da .login-form__content-down {
+  .login-f4c7a155 .login-form__content-down {
     -webkit-transform: translate(0, -74px);
         -ms-transform: translate(0, -74px);
             transform: translate(0, -74px); }
-  .login-82cac2da .login-form__fields-container-top {
+  .login-f4c7a155 .login-form__fields-container-top {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     height: 74px; }
-  .login-82cac2da .login-form__fields-container-bottom {
+  .login-f4c7a155 .login-form__fields-container-bottom {
     position: absolute;
     top: 74px;
     left: 0;
     right: 0;
     height: 74px; }
-  .login-82cac2da .login-form__wrapper {
+  .login-f4c7a155 .login-form__wrapper {
     padding: 0 18px; }
-  .login-82cac2da .login-form__container {
+  .login-f4c7a155 .login-form__container {
     width: 200%;
     height: 100%;
     display: table;
     table-layout: fixed;
     -webkit-transition: -webkit-transform 0.35s ease-in-out;
             transition: transform 0.35s ease-in-out; }
-    .login-82cac2da .login-form__container.u-slide {
+    .login-f4c7a155 .login-form__container.u-slide {
       -webkit-transform: translate(-50%, 0);
           -ms-transform: translate(-50%, 0);
               transform: translate(-50%, 0);
       -webkit-transition: -webkit-transform 0.35s ease-in-out;
               transition: transform 0.35s ease-in-out; }
-  .login-82cac2da .login-form__form,
-  .login-82cac2da .login-form__reset-form {
+  .login-f4c7a155 .login-form__form,
+  .login-f4c7a155 .login-form__reset-form {
     width: 100%;
     position: relative;
     display: table-cell;
     padding-bottom: 63px;
     -webkit-font-smoothing: subpixel-antialiased; }
-  .login-82cac2da .login-form__reset-form {
+  .login-f4c7a155 .login-form__reset-form {
     vertical-align: bottom; }
 
-.session--admin-f2de3557 .session-admin {
+.session--admin-5c147f2f .session-admin {
   padding: 18px; }
 
-.session--admin-f2de3557 .session-admin--page-title {
+.session--admin-5c147f2f .session-admin--page-title {
   font-size: 28px; }
 
-.session--admin-f2de3557 .session-admin--page-container {
+.session--admin-5c147f2f .session-admin--page-container {
   background-color: #fff;
   border-radius: 2px;
   border: solid 1px;
@@ -3879,51 +3880,52 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
   float: left;
   width: 100%; }
 
-.session--admin-f2de3557 .session-admin-navigation {
+.session--admin-5c147f2f .session-admin-navigation {
   padding-left: 30px;
   border-right: solid 1px #ccc;
   width: 150px;
   float: left; }
 
-.session--admin-f2de3557 .session-admin-navigation__heading {
+.session--admin-5c147f2f .session-admin-navigation__heading {
   color: #aaa;
-  padding-top: 36px; }
+  padding-top: 36px;
+  text-transform: uppercase; }
 
-.session--admin-f2de3557 .session-admin-navigation__list-group {
+.session--admin-5c147f2f .session-admin-navigation__list-group {
   list-style: none; }
 
-.session--cases--index-56512c79 .ko-session-cases-index__scrollable {
+.session--cases--index-fa23989c .ko-session-cases-index__scrollable {
   overflow: auto; }
 
-.session--cases--index-56512c79 .ko-session-cases-index__contents {
+.session--cases--index-fa23989c .ko-session-cases-index__contents {
   background: #FFFFFF;
   border: 1px solid #D1D5D7;
   border-radius: 4px;
   padding: 0 17px; }
 
-.session--cases--index-56512c79 .ko-session-cases-index__pagination {
+.session--cases--index-fa23989c .ko-session-cases-index__pagination {
   width: 44px;
   position: absolute;
   top: 0;
   right: 0;
   bottom: 0; }
 
-.session--showcase-0a4c6cd1 .showcase-container {
+.session--showcase-67495392 .showcase-container {
   width: 80%;
   margin: 0 auto; }
-  .session--showcase-0a4c6cd1 .showcase-container code {
+  .session--showcase-67495392 .showcase-container code {
     display: block;
     margin: 18px 0 36px;
     padding: 9px;
     background: #ecf0f1; }
 
-.session--showcase-0a4c6cd1 .showcase-spacer {
+.session--showcase-67495392 .showcase-spacer {
   margin: 48px 0; }
 
-.session--styleguide-54b2898b .styleguide {
+.session--styleguide-4c7bc215 .styleguide {
   padding: 18px;
   background-color: #FFFFFF; }
-  .session--styleguide-54b2898b .styleguide code {
+  .session--styleguide-4c7bc215 .styleguide code {
     display: block;
     padding: 0 18px;
     margin: 18px 0px 18px;
@@ -3932,9 +3934,9 @@ body, .session__content, .ko-session-cases-index, .ko-session-cases-index__scrol
     font-family: Consolas, Monospace;
     white-space: pre; }
 
-.session--styleguide-54b2898b .styleguide__item {
+.session--styleguide-4c7bc215 .styleguide__item {
   margin: 36px 0; }
 
-.session-e072ac73 .session__content {
+.session-5b1a8d82 .session__content {
   top: 84px;
   overflow: auto; }
