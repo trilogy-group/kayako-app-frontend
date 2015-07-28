@@ -375,6 +375,17 @@ define('frontend-cp/adapters/intl', ['exports', 'ember-intl/adapters/-intl-adapt
   });
 
 });
+define('frontend-cp/adapters/macro', ['exports', 'frontend-cp/adapters/application'], function (exports, ApplicationAdapter) {
+
+  'use strict';
+
+  exports['default'] = ApplicationAdapter['default'].extend({
+    pathForType: function pathForType() {
+      return 'cases/macros';
+    }
+  });
+
+});
 define('frontend-cp/adapters/metric', ['exports', 'frontend-cp/adapters/application'], function (exports, ApplicationAdapter) {
 
   'use strict';
@@ -4703,6 +4714,15 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember'],
       this.set('isCaseSubjectEdited', this.get('case').hasDirtyAttribute('subject'));
     }).on('init'),
 
+    macros: [],
+    initMacros: (function () {
+      var _this3 = this;
+
+      this.get('store').find('macro').then(function (macros) {
+        _this3.set('macros', macros);
+      });
+    }).on('init'),
+
     caseOrFormFields: (function () {
       var caseFields = this.get('caseFields');
       var form = this.get('case.form');
@@ -4727,6 +4747,8 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember'],
           return 'ko-case-field/type';
         case 'PRIORITY':
           return 'ko-case-field/priority';
+        case 'ASSIGNEE':
+          return 'ko-case-field/assignee';
         default:
           return '';
       }
@@ -4750,15 +4772,25 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember'],
     },
 
     updateDirtyCaseFieldHash: function updateDirtyCaseFieldHash() {
-      var _this3 = this;
+      var _this4 = this;
 
       var editedCaseFields = this.get('editedCaseFields');
       this.get('caseOrFormFields').forEach(function (field) {
         var relationshipKey = field.get('key');
+
+        /* Hack for type - type is a reserved word */
         if (relationshipKey === 'type') {
           relationshipKey = 'caseType';
         }
-        editedCaseFields.set(field.get('id'), _this3.get('case').hasDirtyBelongsToRelationship(relationshipKey));
+
+        /* Hack for assignee - it is made up from two properties (case.assginee.team and case.assignee.agent) */
+        if (relationshipKey === 'assignee') {
+          if (_this4.get('case.assignee')) {
+            editedCaseFields.set(field.get('id'), _this4.get('case.assignee').hasDirtyChanges());
+          }
+        } else {
+          editedCaseFields.set(field.get('id'), _this4.get('case').hasDirtyBelongsToRelationship(relationshipKey));
+        }
       });
     },
 
@@ -4789,9 +4821,21 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember'],
         this.set('case.subject', subject);
         this.set('isCaseSubjectEdited', this.get('case').hasDirtyAttribute('subject'));
       },
+      setAssignee: function setAssignee(team, agent) {
+        if (!this.get('case.assignee.teamFragment')) {
+          this.set('case.assignee.teamFragment', this.get('store').createFragment('relationship-fragment'));
+        }
+        this.set('case.assignee.teamFragment.relationshipId', team.get('id'));
 
+        if (!this.get('case.assginee.agentFragment')) {
+          this.set('case.assignee.agentFragment', this.get('store').createFragment('relationship-fragment'));
+        }
+        this.set('case.assignee.agentFragment.relationshipId', agent ? agent.get('id') : null);
+
+        this.updateDirtyCaseFieldHash();
+      },
       submit: function submit() {
-        var _this4 = this;
+        var _this5 = this;
 
         var channel = this.get('channel');
 
@@ -4800,18 +4844,18 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember'],
         if (!post) {
           // we are just updating the case -- don't create a case-reply
           this.get('case').save().then(function () {
-            _this4.resetCaseFormState();
+            _this5.resetCaseFormState();
           }, function (e) {
-            _this4.set('errors', e.responseJSON.errors);
+            _this5.set('errors', e.responseJSON.errors);
           });
         } else {
           this.get('case').saveWithPost(post, channel).then(function (caseReply) {
             caseReply.get('post').then(function (newPost) {
-              _this4.get('messages').pushObject(newPost);
+              _this5.get('messages').pushObject(newPost);
             });
-            _this4.resetCaseFormState();
+            _this5.resetCaseFormState();
           }, function (e) {
-            _this4.set('errors', e.responseJSON.errors);
+            _this5.set('errors', e.responseJSON.errors);
           });
         }
       },
@@ -4819,6 +4863,38 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember'],
       replyWithQuote: function replyWithQuote(quote) {
         this.$('.ql-editor div').remove();
         this.$('.ql-editor').append('<blockquote>' + quote + '</blockquote>');
+      },
+
+      applyMacro: function applyMacro(macro) {
+        var currentCase = this.get('case');
+        var contentsToAdd = macro.get('contents');
+        var newStatus = macro.get('properties.status');
+        var newPriority = macro.get('properties.priority');
+        var newType = macro.get('properties.macroType');
+        var newAssignedTeam = macro.get('assignee') ? macro.get('assignee.team') : null;
+        var newAssignedAgent = macro.get('assignee') ? macro.get('assignee.agent') : null;
+
+        if (contentsToAdd) {
+          var currentContents = this.get('postEditor').getMarkdown();
+          if (currentContents) {
+            this.get('postEditor').appendHTML('<div></div><div></div>' + currentContents);
+          } else {
+            this.get('postEditor').setHTML(currentContents);
+          }
+        }
+
+        if (newStatus) {
+          currentCase.set('status', newStatus);
+        }
+        if (newPriority) {
+          currentCase.set('priority', newPriority);
+        }
+        if (newType) {
+          currentCase.set('caseType', newType);
+        }
+        if (newAssignedTeam) {
+          this.send('setAssignee', newAssignedTeam, newAssignedAgent);
+        }
       }
     }
   });
@@ -4838,11 +4914,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 37,
+                  "line": 41,
                   "column": 10
                 },
                 "end": {
-                  "line": 45,
+                  "line": 49,
                   "column": 10
                 }
               },
@@ -4867,7 +4943,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
               return morphs;
             },
             statements: [
-              ["inline","component",[["subexpr","ko-helper",[["get","componentFor",["loc",[null,[38,35],[38,47]]]],["get","field.fieldType.id",["loc",[null,[38,48],[38,66]]]]],[],["loc",[null,[38,24],[38,67]]]]],["case",["subexpr","@mut",[["get","case",["loc",[null,[39,19],[39,23]]]]],[],[]],"field",["subexpr","@mut",[["get","field",["loc",[null,[40,20],[40,25]]]]],[],[]],"errors",["subexpr","@mut",[["get","errors",["loc",[null,[41,21],[41,27]]]]],[],[]],"options",["subexpr","ko-contextual-helper",[["get","optionsForField",["loc",[null,[42,44],[42,59]]]],["get","this",["loc",[null,[42,60],[42,64]]]],["get","field",["loc",[null,[42,65],[42,70]]]]],[],["loc",[null,[42,22],[42,71]]]],"editedCaseFields",["subexpr","@mut",[["get","editedCaseFields",["loc",[null,[43,31],[43,47]]]]],[],[]]],["loc",[null,[38,12],[44,14]]]]
+              ["inline","component",[["subexpr","ko-helper",[["get","componentFor",["loc",[null,[42,35],[42,47]]]],["get","field.fieldType.id",["loc",[null,[42,48],[42,66]]]]],[],["loc",[null,[42,24],[42,67]]]]],["case",["subexpr","@mut",[["get","case",["loc",[null,[43,19],[43,23]]]]],[],[]],"field",["subexpr","@mut",[["get","field",["loc",[null,[44,20],[44,25]]]]],[],[]],"errors",["subexpr","@mut",[["get","errors",["loc",[null,[45,21],[45,27]]]]],[],[]],"options",["subexpr","ko-contextual-helper",[["get","optionsForField",["loc",[null,[46,44],[46,59]]]],["get","this",["loc",[null,[46,60],[46,64]]]],["get","field",["loc",[null,[46,65],[46,70]]]]],[],["loc",[null,[46,22],[46,71]]]],"editedCaseFields",["subexpr","@mut",[["get","editedCaseFields",["loc",[null,[47,31],[47,47]]]]],[],[]]],["loc",[null,[42,12],[48,14]]]]
             ],
             locals: [],
             templates: []
@@ -4879,11 +4955,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 36,
+                "line": 40,
                 "column": 8
               },
               "end": {
-                "line": 46,
+                "line": 50,
                 "column": 8
               }
             },
@@ -4906,7 +4982,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             return morphs;
           },
           statements: [
-            ["block","if",[["subexpr","ko-helper",[["get","componentFor",["loc",[null,[37,27],[37,39]]]],["get","field.fieldType.id",["loc",[null,[37,40],[37,58]]]]],[],["loc",[null,[37,16],[37,59]]]]],[],0,null,["loc",[null,[37,10],[45,17]]]]
+            ["block","if",[["subexpr","ko-helper",[["get","componentFor",["loc",[null,[41,27],[41,39]]]],["get","field.fieldType.id",["loc",[null,[41,40],[41,58]]]]],[],["loc",[null,[41,16],[41,59]]]]],[],0,null,["loc",[null,[41,10],[49,17]]]]
           ],
           locals: ["field"],
           templates: [child0]
@@ -4918,11 +4994,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 31,
+              "line": 35,
               "column": 6
             },
             "end": {
-              "line": 48,
+              "line": 52,
               "column": 6
             }
           },
@@ -4974,11 +5050,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["element","action",["submit"],[],["loc",[null,[33,55],[33,74]]]],
-          ["inline","format-message",[["subexpr","intl-get",["cases.submit"],[],["loc",[null,[33,92],[33,117]]]]],[],["loc",[null,[33,75],[33,119]]]],
-          ["inline","ko-case-field/requester",[],["requester",["subexpr","@mut",[["get","case.requester",["loc",[null,[35,44],[35,58]]]]],[],[]]],["loc",[null,[35,8],[35,60]]]],
-          ["block","each",[["get","caseOrFormFields",["loc",[null,[36,16],[36,32]]]]],[],0,null,["loc",[null,[36,8],[46,17]]]],
-          ["inline","ko-case/sla-sidebar",[],["sla",["subexpr","@mut",[["get","case.sla",["loc",[null,[47,34],[47,42]]]]],[],[]],"slaMetrics",["subexpr","@mut",[["get","case.slaMetrics",["loc",[null,[47,54],[47,69]]]]],[],[]]],["loc",[null,[47,8],[47,71]]]]
+          ["element","action",["submit"],[],["loc",[null,[37,55],[37,74]]]],
+          ["inline","format-message",[["subexpr","intl-get",["cases.submit"],[],["loc",[null,[37,92],[37,117]]]]],[],["loc",[null,[37,75],[37,119]]]],
+          ["inline","ko-case-field/requester",[],["requester",["subexpr","@mut",[["get","case.requester",["loc",[null,[39,44],[39,58]]]]],[],[]]],["loc",[null,[39,8],[39,60]]]],
+          ["block","each",[["get","caseOrFormFields",["loc",[null,[40,16],[40,32]]]]],[],0,null,["loc",[null,[40,8],[50,17]]]],
+          ["inline","ko-case/sla-sidebar",[],["sla",["subexpr","@mut",[["get","case.sla",["loc",[null,[51,34],[51,42]]]]],[],[]],"slaMetrics",["subexpr","@mut",[["get","case.slaMetrics",["loc",[null,[51,54],[51,69]]]]],[],[]]],["loc",[null,[51,8],[51,71]]]]
         ],
         locals: [],
         templates: [child0]
@@ -4994,8 +5070,8 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             "column": 0
           },
           "end": {
-            "line": 52,
-            "column": 0
+            "line": 55,
+            "column": 6
           }
         },
         "moduleName": "frontend-cp/components/ko-case-content/template.hbs"
@@ -5061,6 +5137,17 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
         var el6 = dom.createTextNode("\n        ");
         dom.appendChild(el5, el6);
         dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("div");
+        dom.setAttribute(el5,"class","u-inline-block");
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createComment("");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
         var el5 = dom.createTextNode("\n      ");
         dom.appendChild(el4, el5);
         dom.appendChild(el3, el4);
@@ -5096,7 +5183,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
         var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
         dom.appendChild(el2, el3);
-        var el3 = dom.createComment("\n    ");
+        var el3 = dom.createTextNode("\n    ");
         dom.appendChild(el2, el3);
         var el3 = dom.createElement("div");
         dom.setAttribute(el3,"class","layout__item u-1/4");
@@ -5113,8 +5200,6 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
         var el2 = dom.createTextNode("\n");
         dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
-        dom.appendChild(el0, el1);
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
@@ -5124,25 +5209,156 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
         var element4 = dom.childAt(element2, [3]);
         var element5 = dom.childAt(element1, [3]);
         var element6 = dom.childAt(element5, [1, 1]);
-        var morphs = new Array(6);
+        var morphs = new Array(7);
         morphs[0] = dom.createAttrMorph(element3, 'src');
         morphs[1] = dom.createMorphAt(dom.childAt(element4, [1]),1,1);
         morphs[2] = dom.createMorphAt(dom.childAt(element4, [3]),1,1);
-        morphs[3] = dom.createMorphAt(element6,1,1);
-        morphs[4] = dom.createMorphAt(element6,3,3);
-        morphs[5] = dom.createMorphAt(dom.childAt(element5, [3]),1,1);
+        morphs[3] = dom.createMorphAt(dom.childAt(element2, [5]),1,1);
+        morphs[4] = dom.createMorphAt(element6,1,1);
+        morphs[5] = dom.createMorphAt(element6,3,3);
+        morphs[6] = dom.createMorphAt(dom.childAt(element5, [3]),1,1);
         return morphs;
       },
       statements: [
         ["attribute","src",["concat",[["get","case.requester.avatar",["loc",[null,[6,22],[6,43]]]]]]],
         ["inline","ko-editable-text",[],["value",["subexpr","@mut",[["get","case.subject",["loc",[null,[10,37],[10,49]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isCaseSubjectEdited",["loc",[null,[10,59],[10,78]]]]],[],[]],"onValueChange","setSubject"],["loc",[null,[10,12],[10,107]]]],
         ["inline","format-message",[["subexpr","intl-get",["cases.subheader"],[],["loc",[null,[13,27],[13,55]]]]],["time",["subexpr","@mut",[["get","case.createdAt",["loc",[null,[14,19],[14,33]]]]],[],[]],"channel",["subexpr","format-message",[["subexpr","intl-get",[["subexpr","ko-concat",["cases.channelType.",["get","case.sourceChannel.channelType",["loc",[null,[15,80],[15,110]]]]],[],["loc",[null,[15,48],[15,111]]]]],[],["loc",[null,[15,38],[15,112]]]]],[],["loc",[null,[15,22],[15,113]]]],"hasBrand",["subexpr","@mut",[["get","hasBrand",["loc",[null,[16,23],[16,31]]]]],[],[]],"brand",["subexpr","@mut",[["get","case.brand.companyName",["loc",[null,[17,20],[17,42]]]]],[],[]]],["loc",[null,[13,10],[17,44]]]],
-        ["inline","ko-text-editor",[],["viewName","postEditor","channels",["subexpr","@mut",[["get","case.replyChannels",["loc",[null,[26,56],[26,74]]]]],[],[]],"channel",["subexpr","@mut",[["get","reply.channel",["loc",[null,[26,83],[26,96]]]]],[],[]],"onChannelChange","setChannel"],["loc",[null,[26,8],[26,127]]]],
-        ["inline","ko-feed",[],["events",["subexpr","@mut",[["get","messages",["loc",[null,[27,25],[27,33]]]]],[],[]],"onReplyWithQuote","replyWithQuote"],["loc",[null,[27,8],[27,69]]]],
-        ["block","ko-info-bar",[],[],0,null,["loc",[null,[31,6],[48,22]]]]
+        ["inline","ko-case/macro-selector",[],["macros",["subexpr","@mut",[["get","macros",["loc",[null,[22,42],[22,48]]]]],[],[]],"onMacroSelected","applyMacro"],["loc",[null,[22,10],[22,79]]]],
+        ["inline","ko-text-editor",[],["viewName","postEditor","channels",["subexpr","@mut",[["get","case.replyChannels",["loc",[null,[30,56],[30,74]]]]],[],[]],"channel",["subexpr","@mut",[["get","reply.channel",["loc",[null,[30,83],[30,96]]]]],[],[]],"onChannelChange","setChannel"],["loc",[null,[30,8],[30,127]]]],
+        ["inline","ko-feed",[],["events",["subexpr","@mut",[["get","messages",["loc",[null,[31,25],[31,33]]]]],[],[]],"onReplyWithQuote","replyWithQuote"],["loc",[null,[31,8],[31,69]]]],
+        ["block","ko-info-bar",[],[],0,null,["loc",[null,[35,6],[52,22]]]]
       ],
       locals: [],
       templates: [child0]
+    };
+  }()));
+
+});
+define('frontend-cp/components/ko-case-field/assignee/component', ['exports', 'ember', 'frontend-cp/components/ko-case-field/base/component'], function (exports, Ember, BaseCaseField) {
+
+  'use strict';
+
+  exports['default'] = BaseCaseField['default'].extend({
+    //Params:
+    'case': null,
+    onAssigneeSelected: 'setAssignee',
+
+    assigneeValues: [],
+    store: Ember['default'].inject.service(),
+
+    currentlySelectedValue: (function () {
+      var agentName = this.get('case.assignee.agent.fullName');
+      var teamName = this.get('case.assignee.team.title');
+      return this.generateTeamAgentValue(teamName, agentName).split(',').join('/');
+    }).property('case.assignee.agent.fullName', 'case.assignee.team.title'),
+
+    setAssigneeValues: (function () {
+      var _this = this;
+
+      var assigneeValuePromises = {
+        agents: this.get('store').find('user', { role: 'agent' }),
+        teams: this.get('store').find('team')
+      };
+
+      Ember['default'].RSVP.hash(assigneeValuePromises).then(function (hash) {
+        var assigneeValues = [];
+
+        hash.agents.forEach(function (agent) {
+          var teams = agent.get('teams');
+          teams.forEach(function (team) {
+            var teamAgentId = _this.generateTeamAgentId(team.get('id'), agent.get('id'));
+            var teamAgentValue = _this.generateTeamAgentValue(team.get('title'), agent.get('fullName'));
+            assigneeValues.pushObject({ id: teamAgentId, value: teamAgentValue });
+          });
+        });
+
+        hash.teams.forEach(function (team) {
+          assigneeValues.pushObject({ id: team.get('id'), value: team.get('title') });
+        });
+
+        _this.set('assigneeValues', assigneeValues);
+      });
+    }).on('init'),
+
+    actions: {
+      onAssigneeSelected: function onAssigneeSelected(agentTeamId) {
+        var agent = this.getAgentFromAgentTeamId(agentTeamId);
+        var team = this.getTeamFromAgentTeamId(agentTeamId);
+        this.sendAction('onAssigneeSelected', team, agent);
+      }
+    },
+
+    getAgentFromAgentTeamId: function getAgentFromAgentTeamId(agentTeamId) {
+      var idParts = agentTeamId.split('-');
+      if (idParts.length !== 2) {
+        return null;
+      }
+      var agentId = idParts[1];
+      return this.get('store').getById('user', agentId);
+    },
+
+    getTeamFromAgentTeamId: function getTeamFromAgentTeamId(agentTeamId) {
+      var teamId = agentTeamId.split('-')[0];
+      return this.get('store').getById('team', teamId);
+    },
+
+    generateTeamAgentId: function generateTeamAgentId(teamId, agentId) {
+      if (!agentId) {
+        return teamId;
+      }
+      return teamId + '-' + agentId;
+    },
+
+    generateTeamAgentValue: function generateTeamAgentValue(teamName, agentName) {
+      teamName = teamName ? teamName : '';
+
+      return agentName ? teamName + ',' + agentName : teamName;
+    }
+  });
+
+});
+define('frontend-cp/components/ko-case-field/assignee/template', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      meta: {
+        "revision": "Ember@1.13.3",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 8,
+            "column": 2
+          }
+        },
+        "moduleName": "frontend-cp/components/ko-case-field/assignee/template.hbs"
+      },
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var morphs = new Array(1);
+        morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+        dom.insertBoundary(fragment, 0);
+        dom.insertBoundary(fragment, null);
+        return morphs;
+      },
+      statements: [
+        ["inline","ko-field/drill-down",[],["title","Assignee","options",["subexpr","@mut",[["get","assigneeValues",["loc",[null,[3,10],[3,24]]]]],[],[]],"value",["subexpr","@mut",[["get","currentlySelectedValue",["loc",[null,[4,8],[4,30]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isEdited",["loc",[null,[5,11],[5,19]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","caseFieldError",["loc",[null,[6,12],[6,26]]]]],[],[]],"onValueChange","onAssigneeSelected"],["loc",[null,[1,0],[8,2]]]]
+      ],
+      locals: [],
+      templates: []
     };
   }()));
 
@@ -5152,7 +5368,7 @@ define('frontend-cp/components/ko-case-field/base/component', ['exports', 'ember
   'use strict';
 
   exports['default'] = Ember['default'].Component.extend({
-
+    tagName: '',
     isEdited: false,
     updateIsEditedFromHash: (function () {
       var _this = this;
@@ -5824,6 +6040,81 @@ define('frontend-cp/components/ko-case-metric/template', ['exports'], function (
       ],
       locals: [],
       templates: [child0]
+    };
+  }()));
+
+});
+define('frontend-cp/components/ko-case/macro-selector/component', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Component.extend({
+    //Params:
+    macros: [],
+    onMacroSelected: null,
+
+    // build a value list for the option drilldown
+    macroValueList: (function () {
+      var valueList = this.get('macros').map(function (macro) {
+        return { id: macro.get('id'), value: macro.get('title') };
+      });
+      return valueList;
+    }).property('macros.@each'),
+
+    actions: {
+      onMacroSelected: function onMacroSelected(macroId) {
+        var selectedMacro = this.get('macros').filter(function (macro) {
+          return macro.get('id') === macroId;
+        }).get('firstObject');
+        this.sendAction('onMacroSelected', selectedMacro);
+      }
+    }
+
+  });
+
+});
+define('frontend-cp/components/ko-case/macro-selector/template', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      meta: {
+        "revision": "Ember@1.13.3",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 8,
+            "column": 2
+          }
+        },
+        "moduleName": "frontend-cp/components/ko-case/macro-selector/template.hbs"
+      },
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var morphs = new Array(1);
+        morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+        dom.insertBoundary(fragment, 0);
+        dom.insertBoundary(fragment, null);
+        return morphs;
+      },
+      statements: [
+        ["inline","ko-dropdown/drill-down",[],["label","Macro","title",["subexpr","format-message",[["subexpr","intl-get",["cases.applymacro"],[],["loc",[null,[3,24],[3,53]]]]],[],["loc",[null,[3,8],[3,54]]]],"placeholder",["subexpr","format-message",[["subexpr","intl-get",["cases.applymacroplaceholder"],[],["loc",[null,[4,30],[4,70]]]]],[],["loc",[null,[4,14],[4,71]]]],"options",["subexpr","@mut",[["get","macroValueList",["loc",[null,[5,10],[5,24]]]]],[],[]],"contextModalId","macroDrillDownInline","onSelect","onMacroSelected"],["loc",[null,[1,0],[8,2]]]]
+      ],
+      locals: [],
+      templates: []
     };
   }()));
 
@@ -15237,6 +15528,10 @@ define('frontend-cp/components/ko-option-list-drill-down/component', ['exports',
       this.set('keyboardPosition', 0);
     },
 
+    didUpdateOptions: (function () {
+      this.resetState();
+    }).observes('options.@each'),
+
     didInsertElement: function didInsertElement() {
       this.resetState();
     },
@@ -21383,7 +21678,15 @@ define('frontend-cp/components/ko-text-editor/component', ['exports', 'ember', '
       if (!(tagName in this.tagDictionary)) {
         return '';
       }
-      return this.tagDictionary[tagName].process(elem);
+      return this.tagDictionary[tagName].process(elem).trim();
+    },
+
+    appendHTML: function appendHTML(html) {
+      var newText = this.quill.getHTML() + html;
+      this.setHTML(newText);
+    },
+    setHTML: function setHTML(html) {
+      this.quill.setHTML(html);
     },
 
     clear: function clear() {
@@ -25494,7 +25797,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage'], function (e
   'use strict';
 
   exports['default'] = function(){this.post('admin/index.php',function(){return {'data':{'redirect':'/Base/Dashboard/','session':'AyUeuWPDD8JC2OA0c8335f8d1a99218c84cd7b97f7fcc2269a2e4274ieu04PQxkr2EAjPp9Z2Y2tJKd'},'errors':[],'notifications':{'error':[],'info':[],'success':[],'warning':[]},'status':200,'timestamp':1432593047};});this.get('api/v1/locales/current',function(){return {'status':200,'data':{'locale':'en-us','name':'English (United States)','native_name':'English (United States)','region':'US','native_region':'United States','script':'','variant':'','direction':'LTR','is_enabled':true,'created_at':'2015-05-28T14:12:59Z','updated_at':'2015-05-28T14:12:59Z','resource_type':'locale'},'resource':'locale'};});this.get('api/v1/locales/en-us/strings',function(db){return db.enusstrings[0];});this.get('/api/v1/session',function(){return {'status':200,'data':{'id':'pPW6tnOyJG6TmWCVea175d1bfc5dbf073a89ffeb6a2a198c61aae941Aqc7ahmzw8a','portal':'API','ip_address':'10.0.2.2','user_agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.132 Safari/537.36','user':{'id':1,'resource_type':'user'},'status':'ONLINE','created_at':'2015-07-23T16:32:01Z','last_activity_at':'2015-07-23T16:32:22Z','resource_type':'session'},'resource':'session','resources':{'role':{'1':{'id':1,'title':'Administrator','type':'ADMIN','ip_restriction':null,'password_expires_in_days':'0','is_two_factor_required':false,'created_at':'2015-07-23T12:09:20Z','updated_at':'2015-07-23T12:09:20Z','resource_type':'role','resource_url':'http://novo/api/index.php?/v1/roles/1'}},'business_hour':{'1':{'id':1,'title':'Default Business Hours','zones':{'monday':[9,10,11,12,13,14,15,16,17,18],'tuesday':[9,10,11,12,13,14,15,16,17,18],'wednesday':[9,10,11,12,13,14,15,16,17,18],'thursday':[9,10,11,12,13,14,15,16,17,18],'friday':[9,10,11,12,13,14,15,16,17,18],'saturday':[],'sunday':[]},'holidays':[],'created_at':'2015-07-23T12:09:20Z','updated_at':'2015-07-23T12:09:20Z','resource_type':'business_hour','resource_url':'http://novo/api/index.php?/v1/businesshours/1'}},'team':{'1':{'id':1,'title':'Sales','businesshour':{'id':1,'resource_type':'business_hour'},'followers':[],'created_at':'2015-07-23T12:09:20Z','updated_at':'2015-07-23T12:09:20Z','resource_type':'team','resource_url':'http://novo/api/index.php?/v1/teams/1'},'2':{'id':2,'title':'Support','businesshour':{'id':1,'resource_type':'business_hour'},'followers':[],'created_at':'2015-07-23T12:09:20Z','updated_at':'2015-07-23T12:09:20Z','resource_type':'team','resource_url':'http://novo/api/index.php?/v1/teams/2'},'3':{'id':3,'title':'Finance','businesshour':{'id':1,'resource_type':'business_hour'},'followers':[],'created_at':'2015-07-23T12:09:20Z','updated_at':'2015-07-23T12:09:20Z','resource_type':'team','resource_url':'http://novo/api/index.php?/v1/teams/3'},'4':{'id':4,'title':'Human Resources','businesshour':{'id':1,'resource_type':'business_hour'},'followers':[],'created_at':'2015-07-23T12:09:20Z','updated_at':'2015-07-23T12:09:20Z','resource_type':'team','resource_url':'http://novo/api/index.php?/v1/teams/4'}},'identity_email':{'1':{'id':1,'is_primary':true,'email':'test@kayako.com','is_notification_enabled':false,'is_validated':true,'created_at':'2015-07-23T12:09:20Z','updated_at':'2015-07-23T12:09:20Z','resource_type':'identity_email','resource_url':'http://novo/api/index.php?/v1/users/1/identities/emails/1'}},'user_field':{'1':{'id':1,'fielduuid':'a007fb77-0c64-4b8c-a993-ab355135955c','type':'TEXT','key':'enter_the_name','title':'Enter the name','is_visible_to_customers':true,'customer_title':'Enter the name','is_customer_editable':true,'is_required_for_customers':true,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':1,'is_system':false,'options':[],'locales':[],'created_at':'2015-07-23T12:09:20Z','updated_at':'2015-07-23T12:09:20Z','resource_type':'user_field','resource_url':'http://novo/api/index.php?/v1/users/fields/1'},'2':{'id':2,'fielduuid':'ddde64f0-f40b-4159-8369-9372699b900b','type':'TEXTAREA','key':'contact_address','title':'contact address','is_visible_to_customers':true,'customer_title':'1','is_customer_editable':false,'is_required_for_customers':false,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':2,'is_system':false,'options':[],'locales':[],'created_at':'2015-07-23T12:09:20Z','updated_at':'2015-07-23T12:09:20Z','resource_type':'user_field','resource_url':'http://novo/api/index.php?/v1/users/fields/2'},'3':{'id':3,'fielduuid':'79ec4918-9406-4447-97a7-0b3583fa9df7','type':'CHECKBOX','key':'interests','title':'interests','is_visible_to_customers':false,'customer_title':null,'is_customer_editable':false,'is_required_for_customers':false,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':3,'is_system':false,'options':[{'id':9,'resource_type':'field_option'},{'id':10,'resource_type':'field_option'},{'id':11,'resource_type':'field_option'}],'locales':[],'created_at':'2015-07-23T12:09:20Z','updated_at':'2015-07-23T12:09:20Z','resource_type':'user_field','resource_url':'http://novo/api/index.php?/v1/users/fields/3'}},'field_option':{'9':{'id':9,'fielduuid':'79ec4918-9406-4447-97a7-0b3583fa9df7','value':'googling','tag':'googling','sort_order':9,'created_at':'2015-07-23T12:09:20Z','updated_at':'2015-07-23T12:09:20Z','resource_type':'field_option'},'10':{'id':10,'fielduuid':'79ec4918-9406-4447-97a7-0b3583fa9df7','value':'learning new things','tag':'learningnewthings','sort_order':10,'created_at':'2015-07-23T12:09:20Z','updated_at':'2015-07-23T12:09:20Z','resource_type':'field_option'},'11':{'id':11,'fielduuid':'79ec4918-9406-4447-97a7-0b3583fa9df7','value':'other','tag':null,'sort_order':11,'created_at':'2015-07-23T12:09:20Z','updated_at':'2015-07-23T12:09:20Z','resource_type':'field_option'}},'user':{'1':{'id':1,'full_name':'John Doe','designation':null,'is_enabled':true,'role':{'id':1,'resource_type':'role'},'avatar':'http://novo/index.php?/avatar/get/5dadfafe-ef84-5db9-91f5-d617d0f4e58b','teams':[{'id':1,'resource_type':'team'},{'id':2,'resource_type':'team'},{'id':3,'resource_type':'team'},{'id':4,'resource_type':'team'}],'emails':[{'id':1,'resource_type':'identity_email'}],'phones':[],'twitter':[],'facebook':[],'external_identities':[],'addresses':[],'websites':[],'custom_fields':[{'field':{'id':1,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'},{'field':{'id':2,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'},{'field':{'id':3,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'}],'metadata':{'custom':null,'system':null,'resource_type':'metadata'},'tags':[],'notes':[],'pinned_notes_count':0,'followers':[],'locale':'en-us','time_zone':null,'time_zone_offset':null,'greeting':null,'signature':null,'status_message':null,'access_level':null,'password_updated_at':'2015-07-23T12:09:20Z','avatar_updated_at':null,'activity_at':'2015-07-23T16:32:01Z','visited_at':'2015-07-23T16:32:01Z','created_at':'2015-07-23T12:09:20Z','updated_at':'2015-07-23T16:32:01Z','resource_type':'user','resource_url':'http://novo/api/index.php?/v1/users/1'}}},'session_id':'pPW6tnOyJG6TmWCVea175d1bfc5dbf073a89ffeb6a2a198c61aae941Aqc7ahmzw8a'};});this.get('/api/v1/views/:viewId/cases',function(){return {'status':200,'data':[{'id':1,'mask_id':'DXX-189-28930','subject':'ERS Audit','portal':null,'source_channel':{'id':'02a60873-8118-453c-8258-8f44029e657d','resource_type':'channel'},'requester':{'id':2,'resource_type':'user'},'creator':{'id':3,'resource_type':'user'},'identity':{'id':2,'resource_type':'identity_email'},'assignee':{'team':{'id':3,'resource_type':'team'}},'brand':{'id':1,'resource_type':'brand'},'status':{'id':1,'resource_type':'case_status'},'priority':{'id':1,'resource_type':'case_priority'},'type':{'id':1,'resource_type':'case_type'},'sla':{'id':1,'resource_type':'sla'},'sla_metrics':[{'title':'FIRST_REPLY_TIME','state':'COMPLETED','is_breached':false,'target_in_seconds':null},{'title':'RESOLUTION_TIME','state':'ACTIVE','is_breached':false,'target_in_seconds':-82656},{'title':'NEXT_REPLY_TIME','state':'ACTIVE','is_breached':false,'target_in_seconds':-83016}],'tags':[{'id':1,'resource_type':'tag'},{'id':2,'resource_type':'tag'}],'form':{'id':1,'resource_type':'case_form'},'custom_fields':[{'field':{'id':8,'resource_type':'case_field'},'value':'Madhur','resource_type':'case_field_value'},{'field':{'id':9,'resource_type':'case_field'},'value':'Second Floor, 207 Old Street, London EC1V 9NR, United Kingdom','resource_type':'case_field_value'}],'followers':[],'metadata':{'custom':null,'system':null,'resource_type':'metadata'},'last_replier':{'id':2,'resource_type':'user'},'last_replier_identity':{'id':2,'resource_type':'identity_email'},'creation_mode':'WEB','state':'ACTIVE','post_count':3,'has_notes':false,'pinned_notes_count':0,'has_attachments':false,'rating':null,'rating_status':'UNOFFERED','created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','last_agent_activity_at':null,'last_customer_activity_at':'2015-07-09T15:36:10Z','resource_type':'case','resource_url':'http://novo/api/index.php?/v1/cases/1'},{'id':2,'mask_id':'PYI-851-88263','subject':'Profile Builder','portal':null,'source_channel':{'id':'02a60873-8118-453c-8258-8f44029e657d','resource_type':'channel'},'requester':{'id':4,'resource_type':'user'},'creator':{'id':5,'resource_type':'user'},'identity':{'id':4,'resource_type':'identity_email'},'assignee':{'team':{'id':2,'resource_type':'team'}},'brand':{'id':1,'resource_type':'brand'},'status':{'id':1,'resource_type':'case_status'},'priority':{'id':4,'resource_type':'case_priority'},'type':{'id':2,'resource_type':'case_type'},'sla':{'id':1,'resource_type':'sla'},'sla_metrics':[{'title':'FIRST_REPLY_TIME','state':'ACTIVE','is_breached':false,'target_in_seconds':-83376},{'title':'RESOLUTION_TIME','state':'ACTIVE','is_breached':false,'target_in_seconds':-82656}],'tags':[{'id':1,'resource_type':'tag'},{'id':3,'resource_type':'tag'}],'form':{'id':2,'resource_type':'case_form'},'custom_fields':[{'field':{'id':9,'resource_type':'case_field'},'value':'Estimated time','resource_type':'case_field_value'},{'field':{'id':10,'resource_type':'case_field'},'value':'1,2','resource_type':'case_field_value'},{'field':{'id':13,'resource_type':'case_field'},'value':'','resource_type':'case_field_value'},{'field':{'id':14,'resource_type':'case_field'},'value':'3','resource_type':'case_field_value'}],'followers':[],'metadata':{'custom':null,'system':null,'resource_type':'metadata'},'last_replier':{'id':4,'resource_type':'user'},'last_replier_identity':{'id':4,'resource_type':'identity_email'},'creation_mode':'WEB','state':'ACTIVE','post_count':3,'has_notes':true,'pinned_notes_count':0,'has_attachments':false,'rating':null,'rating_status':'UNOFFERED','created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','last_agent_activity_at':null,'last_customer_activity_at':'2015-07-09T15:36:10Z','resource_type':'case','resource_url':'http://novo/api/index.php?/v1/cases/2'},{'id':3,'mask_id':'TJS-877-65692','subject':'Windows 7 64 bit Upgrade Project','portal':null,'source_channel':{'id':'02a60873-8118-453c-8258-8f44029e657d','resource_type':'channel'},'requester':{'id':6,'resource_type':'user'},'creator':{'id':7,'resource_type':'user'},'identity':{'id':6,'resource_type':'identity_email'},'assignee':{'team':{'id':1,'resource_type':'team'}},'brand':{'id':1,'resource_type':'brand'},'status':{'id':1,'resource_type':'case_status'},'priority':{'id':2,'resource_type':'case_priority'},'type':{'id':2,'resource_type':'case_type'},'sla':{'id':1,'resource_type':'sla'},'sla_metrics':[{'title':'FIRST_REPLY_TIME','state':'COMPLETED','is_breached':false,'target_in_seconds':null},{'title':'RESOLUTION_TIME','state':'ACTIVE','is_breached':false,'target_in_seconds':-82656}],'tags':[{'id':2,'resource_type':'tag'},{'id':4,'resource_type':'tag'}],'custom_fields':[{'field':{'id':8,'resource_type':'case_field'},'value':'','resource_type':'case_field_value'},{'field':{'id':9,'resource_type':'case_field'},'value':'','resource_type':'case_field_value'},{'field':{'id':10,'resource_type':'case_field'},'value':'','resource_type':'case_field_value'},{'field':{'id':11,'resource_type':'case_field'},'value':'','resource_type':'case_field_value'},{'field':{'id':12,'resource_type':'case_field'},'value':'','resource_type':'case_field_value'},{'field':{'id':13,'resource_type':'case_field'},'value':'','resource_type':'case_field_value'},{'field':{'id':14,'resource_type':'case_field'},'value':'','resource_type':'case_field_value'}],'followers':[],'metadata':{'custom':null,'system':null,'resource_type':'metadata'},'last_replier':{'id':6,'resource_type':'user'},'last_replier_identity':{'id':6,'resource_type':'identity_email'},'creation_mode':'WEB','state':'ACTIVE','post_count':3,'has_notes':true,'pinned_notes_count':0,'has_attachments':false,'rating':null,'rating_status':'UNOFFERED','created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','last_agent_activity_at':null,'last_customer_activity_at':'2015-07-09T15:36:10Z','resource_type':'case','resource_url':'http://novo/api/index.php?/v1/cases/3'},{'id':4,'mask_id':'EXZ-814-50860','subject':'Netapp Disk Corruption','portal':null,'source_channel':{'id':'02a60873-8118-453c-8258-8f44029e657d','resource_type':'channel'},'requester':{'id':8,'resource_type':'user'},'creator':{'id':9,'resource_type':'user'},'identity':{'id':8,'resource_type':'identity_email'},'assignee':{'team':{'id':1,'resource_type':'team'}},'brand':{'id':1,'resource_type':'brand'},'status':{'id':1,'resource_type':'case_status'},'priority':{'id':1,'resource_type':'case_priority'},'type':{'id':3,'resource_type':'case_type'},'sla':{'id':1,'resource_type':'sla'},'sla_metrics':[{'title':'FIRST_REPLY_TIME','state':'COMPLETED','is_breached':false,'target_in_seconds':null},{'title':'RESOLUTION_TIME','state':'ACTIVE','is_breached':false,'target_in_seconds':-82656},{'title':'NEXT_REPLY_TIME','state':'ACTIVE','is_breached':false,'target_in_seconds':-83016}],'tags':[{'id':2,'resource_type':'tag'},{'id':3,'resource_type':'tag'}],'custom_fields':[{'field':{'id':8,'resource_type':'case_field'},'value':'','resource_type':'case_field_value'},{'field':{'id':9,'resource_type':'case_field'},'value':'','resource_type':'case_field_value'},{'field':{'id':10,'resource_type':'case_field'},'value':'','resource_type':'case_field_value'},{'field':{'id':11,'resource_type':'case_field'},'value':'','resource_type':'case_field_value'},{'field':{'id':12,'resource_type':'case_field'},'value':'','resource_type':'case_field_value'},{'field':{'id':13,'resource_type':'case_field'},'value':'','resource_type':'case_field_value'},{'field':{'id':14,'resource_type':'case_field'},'value':'','resource_type':'case_field_value'}],'followers':[],'metadata':{'custom':null,'system':null,'resource_type':'metadata'},'last_replier':{'id':8,'resource_type':'user'},'last_replier_identity':{'id':8,'resource_type':'identity_email'},'creation_mode':'WEB','state':'ACTIVE','post_count':3,'has_notes':true,'pinned_notes_count':0,'has_attachments':false,'rating':null,'rating_status':'UNOFFERED','created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','last_agent_activity_at':null,'last_customer_activity_at':'2015-07-09T15:36:10Z','resource_type':'case','resource_url':'http://novo/api/index.php?/v1/cases/4'},{'id':5,'mask_id':'TPZ-697-83834','subject':'Daily Backup','portal':null,'source_channel':{'id':'02a60873-8118-453c-8258-8f44029e657d','resource_type':'channel'},'requester':{'id':10,'resource_type':'user'},'creator':{'id':11,'resource_type':'user'},'identity':{'id':10,'resource_type':'identity_email'},'assignee':{'team':{'id':3,'resource_type':'team'}},'brand':{'id':1,'resource_type':'brand'},'status':{'id':1,'resource_type':'case_status'},'priority':{'id':2,'resource_type':'case_priority'},'type':{'id':3,'resource_type':'case_type'},'sla':{'id':1,'resource_type':'sla'},'sla_metrics':[{'title':'FIRST_REPLY_TIME','state':'ACTIVE','is_breached':false,'target_in_seconds':-83376},{'title':'RESOLUTION_TIME','state':'ACTIVE','is_breached':false,'target_in_seconds':-82656}],'tags':[{'id':1,'resource_type':'tag'},{'id':4,'resource_type':'tag'}],'custom_fields':[{'field':{'id':8,'resource_type':'case_field'},'value':'','resource_type':'case_field_value'},{'field':{'id':9,'resource_type':'case_field'},'value':'','resource_type':'case_field_value'},{'field':{'id':10,'resource_type':'case_field'},'value':'','resource_type':'case_field_value'},{'field':{'id':11,'resource_type':'case_field'},'value':'','resource_type':'case_field_value'},{'field':{'id':12,'resource_type':'case_field'},'value':'','resource_type':'case_field_value'},{'field':{'id':13,'resource_type':'case_field'},'value':'','resource_type':'case_field_value'},{'field':{'id':14,'resource_type':'case_field'},'value':'','resource_type':'case_field_value'}],'followers':[],'metadata':{'custom':null,'system':null,'resource_type':'metadata'},'last_replier':{'id':10,'resource_type':'user'},'last_replier_identity':{'id':10,'resource_type':'identity_email'},'creation_mode':'WEB','state':'ACTIVE','post_count':3,'has_notes':false,'pinned_notes_count':0,'has_attachments':false,'rating':null,'rating_status':'UNOFFERED','created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','last_agent_activity_at':null,'last_customer_activity_at':'2015-07-09T15:36:10Z','resource_type':'case','resource_url':'http://novo/api/index.php?/v1/cases/5'}],'resource':'case','resources':{'language':{'1':{'id':1,'locale':'en-us','flag_icon':null,'direction':'LTR','is_enabled':true,'statistics':{'uptodate':0,'outdated':0,'missing':0},'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'language','resource_url':'http://novo/api/index.php?/v1/languages/1'}},'brand':{'1':{'id':1,'name':'Default','url':null,'language':{'id':1,'resource_type':'language'},'is_enabled':true,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'brand','resource_url':'http://novo/api/index.php?/v1/brands/1'}},'mailbox':{'1':{'id':1,'uuid':'02a60873-8118-453c-8258-8f44029e657d','service':'STANDARD','encryption':'NONE','address':'support@brewfictus.com','prefix':null,'smtp_type':null,'host':null,'port':null,'username':null,'preserve_mails':false,'brand':{'id':1,'resource_type':'brand'},'is_default':false,'is_enabled':true,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'mailbox','resource_url':'http://novo/api/index.php?/v1/mailboxes/1'}},'channel':{'02a60873-8118-453c-8258-8f44029e657d':{'uuid':'02a60873-8118-453c-8258-8f44029e657d','type':'MAILBOX','character_limit':null,'account':{'id':1,'resource_type':'mailbox'},'resource_type':'channel'}},'role':{'2':{'id':2,'title':'Agent','type':'AGENT','ip_restriction':null,'password_expires_in_days':'0','is_two_factor_required':false,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'role','resource_url':'http://novo/api/index.php?/v1/roles/2'},'3':{'id':3,'title':'Collaborator','type':'COLLABORATOR','ip_restriction':null,'password_expires_in_days':'0','is_two_factor_required':false,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'role','resource_url':'http://novo/api/index.php?/v1/roles/3'},'4':{'id':4,'title':'Customer','type':'CUSTOMER','ip_restriction':null,'password_expires_in_days':'0','is_two_factor_required':false,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'role','resource_url':'http://novo/api/index.php?/v1/roles/4'}},'identity_domain':{'1':{'id':1,'is_primary':true,'domain':'brew.com','is_validated':false,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'identity_domain','resource_url':'http://novo/api/index.php?/v1/organizations/1/identities/domains/1'}},'organization':{'1':{'id':1,'name':'Brew','is_shared':false,'domains':[{'id':1,'resource_type':'identity_domain'}],'phone':[],'addresses':[],'websites':[],'notes':[],'pinned_notes_count':0,'tags':[],'custom_fields':[],'followers':[],'metadata':{'custom':null,'system':null,'resource_type':'metadata'},'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'organization','resource_url':'http://novo/api/index.php?/v1/organizations/1'}},'identity_email':{'2':{'id':2,'is_primary':true,'email':'johndoe2877832066@brew.com','is_notification_enabled':false,'is_validated':false,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'identity_email','resource_url':'http://novo/api/index.php?/v1/users/2/identities/emails/2'},'3':{'id':3,'is_primary':true,'email':'johndoe1867734778@brew.com','is_notification_enabled':false,'is_validated':true,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'identity_email','resource_url':'http://novo/api/index.php?/v1/users/3/identities/emails/3'},'4':{'id':4,'is_primary':true,'email':'johndoe6646073448@brew.com','is_notification_enabled':false,'is_validated':false,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'identity_email','resource_url':'http://novo/api/index.php?/v1/users/4/identities/emails/4'},'5':{'id':5,'is_primary':true,'email':'johndoe2911221560@brew.com','is_notification_enabled':false,'is_validated':true,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'identity_email','resource_url':'http://novo/api/index.php?/v1/users/5/identities/emails/5'},'6':{'id':6,'is_primary':true,'email':'johndoe1296700309@brew.com','is_notification_enabled':false,'is_validated':false,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'identity_email','resource_url':'http://novo/api/index.php?/v1/users/6/identities/emails/6'},'7':{'id':7,'is_primary':true,'email':'johndoe1588706763@brew.com','is_notification_enabled':false,'is_validated':true,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'identity_email','resource_url':'http://novo/api/index.php?/v1/users/7/identities/emails/7'},'8':{'id':8,'is_primary':true,'email':'johndoe1311891368@brew.com','is_notification_enabled':false,'is_validated':false,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'identity_email','resource_url':'http://novo/api/index.php?/v1/users/8/identities/emails/8'},'9':{'id':9,'is_primary':true,'email':'johndoe2573818849@brew.com','is_notification_enabled':false,'is_validated':true,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'identity_email','resource_url':'http://novo/api/index.php?/v1/users/9/identities/emails/9'},'10':{'id':10,'is_primary':true,'email':'johndoe1575498644@brew.com','is_notification_enabled':false,'is_validated':false,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'identity_email','resource_url':'http://novo/api/index.php?/v1/users/10/identities/emails/10'},'11':{'id':11,'is_primary':true,'email':'johndoe3800807592@brew.com','is_notification_enabled':false,'is_validated':true,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'identity_email','resource_url':'http://novo/api/index.php?/v1/users/11/identities/emails/11'}},'user_field':{'1':{'id':1,'fielduuid':'dd1ae5ae-890b-41f1-9c9c-53dd19951f13','type':'TEXT','key':'enter_the_name','title':'Enter the name','is_visible_to_customers':true,'customer_title':'Enter the name','is_customer_editable':true,'is_required_for_customers':true,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':1,'is_system':false,'options':[],'locales':[],'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'user_field','resource_url':'http://novo/api/index.php?/v1/users/fields/1'},'2':{'id':2,'fielduuid':'02b19e7d-782b-41da-9557-ef00ec81232d','type':'TEXTAREA','key':'contact_address','title':'contact address','is_visible_to_customers':true,'customer_title':'1','is_customer_editable':false,'is_required_for_customers':false,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':2,'is_system':false,'options':[],'locales':[],'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'user_field','resource_url':'http://novo/api/index.php?/v1/users/fields/2'},'3':{'id':3,'fielduuid':'a1bab57f-3c04-4dc0-9349-2dea084336b0','type':'CHECKBOX','key':'interests','title':'interests','is_visible_to_customers':false,'customer_title':null,'is_customer_editable':false,'is_required_for_customers':false,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':3,'is_system':false,'options':[{'id':9,'resource_type':'field_option'},{'id':10,'resource_type':'field_option'},{'id':11,'resource_type':'field_option'}],'locales':[],'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'user_field','resource_url':'http://novo/api/index.php?/v1/users/fields/3'}},'field_option':{'1':{'id':1,'fielduuid':'4dfcb17b-00fb-4899-907e-2ee517807651','value':'internetproblem','tag':'internet problem','sort_order':1,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'field_option'},'2':{'id':2,'fielduuid':'4dfcb17b-00fb-4899-907e-2ee517807651','value':'connectivityproblem','tag':'connectivity problem','sort_order':2,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'field_option'},'3':{'id':3,'fielduuid':'4dfcb17b-00fb-4899-907e-2ee517807651','value':'other','tag':null,'sort_order':3,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'field_option'},'4':{'id':4,'fielduuid':'55aeff67-4dbc-4809-8715-0227fae6e369','value':'yes','tag':'yes','sort_order':4,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'field_option'},'5':{'id':5,'fielduuid':'55aeff67-4dbc-4809-8715-0227fae6e369','value':'no','tag':'no','sort_order':5,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'field_option'},'6':{'id':6,'fielduuid':'a626e62e-0637-409d-a9a7-40f5b9bbc5da','value':'temporary','tag':null,'sort_order':6,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'field_option'},'7':{'id':7,'fielduuid':'a626e62e-0637-409d-a9a7-40f5b9bbc5da','value':'regularly','tag':null,'sort_order':7,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'field_option'},'8':{'id':8,'fielduuid':'a626e62e-0637-409d-a9a7-40f5b9bbc5da','value':'permanent','tag':null,'sort_order':8,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'field_option'},'9':{'id':9,'fielduuid':'a1bab57f-3c04-4dc0-9349-2dea084336b0','value':'googling','tag':'googling','sort_order':9,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'field_option'},'10':{'id':10,'fielduuid':'a1bab57f-3c04-4dc0-9349-2dea084336b0','value':'learning new things','tag':'learningnewthings','sort_order':10,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'field_option'},'11':{'id':11,'fielduuid':'a1bab57f-3c04-4dc0-9349-2dea084336b0','value':'other','tag':null,'sort_order':11,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'field_option'}},'user':{'2':{'id':2,'full_name':'John Doe','designation':null,'alias':null,'is_enabled':true,'role':{'id':4,'resource_type':'role'},'avatar':'http://novo/index.php?/Base/Avatar/Get/2dff63d1-bf25-54f6-ba6c-cc344e67f4e1/false/200','organization':{'id':1,'resource_type':'organization'},'teams':[],'emails':[{'id':2,'resource_type':'identity_email'}],'phones':[],'twitter':[],'facebook':[],'external_identities':[],'addresses':[],'websites':[],'custom_fields':[{'field':{'id':1,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'},{'field':{'id':2,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'},{'field':{'id':3,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'}],'metadata':{'custom':null,'system':null,'resource_type':'metadata'},'locale':'en-us','time_zone':null,'time_zone_offset':null,'greeting':null,'signature':null,'status_message':null,'tags':[],'notes':[],'pinned_notes_count':0,'followers':[],'access_level':null,'password_updated_at':'2015-07-09T15:36:10Z','avatar_updated_at':null,'activity_at':'2015-07-09T15:36:10Z','visited_at':null,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'user','resource_url':'http://novo/api/index.php?/v1/users/2'},'3':{'id':3,'full_name':'John Doe','designation':null,'alias':null,'is_enabled':true,'role':{'id':2,'resource_type':'role'},'avatar':'http://novo/index.php?/Base/Avatar/Get/a6bb8433-c714-5e8d-b333-f3743c0bf878/false/200','teams':[],'emails':[{'id':3,'resource_type':'identity_email'}],'phones':[],'twitter':[],'facebook':[],'external_identities':[],'addresses':[],'websites':[],'custom_fields':[{'field':{'id':1,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'},{'field':{'id':2,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'},{'field':{'id':3,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'}],'metadata':{'custom':null,'system':null,'resource_type':'metadata'},'locale':'en-us','time_zone':null,'time_zone_offset':null,'greeting':null,'signature':null,'status_message':null,'tags':[],'notes':[],'pinned_notes_count':0,'followers':[],'access_level':null,'password_updated_at':'2015-07-09T15:36:10Z','avatar_updated_at':null,'activity_at':'2015-07-09T15:36:10Z','visited_at':null,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'user','resource_url':'http://novo/api/index.php?/v1/users/3'},'4':{'id':4,'full_name':'John Doe','designation':null,'alias':null,'is_enabled':true,'role':{'id':4,'resource_type':'role'},'avatar':'http://novo/index.php?/Base/Avatar/Get/4cee7e51-1d55-5285-b24b-3ca57ccff234/false/200','organization':{'id':1,'resource_type':'organization'},'teams':[],'emails':[{'id':4,'resource_type':'identity_email'}],'phones':[],'twitter':[],'facebook':[],'external_identities':[],'addresses':[],'websites':[],'custom_fields':[{'field':{'id':1,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'},{'field':{'id':2,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'},{'field':{'id':3,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'}],'metadata':{'custom':null,'system':null,'resource_type':'metadata'},'locale':'en-us','time_zone':null,'time_zone_offset':null,'greeting':null,'signature':null,'status_message':null,'tags':[],'notes':[],'pinned_notes_count':0,'followers':[],'access_level':null,'password_updated_at':'2015-07-09T15:36:10Z','avatar_updated_at':null,'activity_at':'2015-07-09T15:36:10Z','visited_at':null,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'user','resource_url':'http://novo/api/index.php?/v1/users/4'},'5':{'id':5,'full_name':'John Doe','designation':null,'alias':null,'is_enabled':true,'role':{'id':2,'resource_type':'role'},'avatar':'http://novo/index.php?/Base/Avatar/Get/464d1ca9-f6d3-5eb2-ba4c-0dd80f8ade75/false/200','teams':[],'emails':[{'id':5,'resource_type':'identity_email'}],'phones':[],'twitter':[],'facebook':[],'external_identities':[],'addresses':[],'websites':[],'custom_fields':[{'field':{'id':1,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'},{'field':{'id':2,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'},{'field':{'id':3,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'}],'metadata':{'custom':null,'system':null,'resource_type':'metadata'},'locale':'en-us','time_zone':null,'time_zone_offset':null,'greeting':null,'signature':null,'status_message':null,'tags':[],'notes':[],'pinned_notes_count':0,'followers':[],'access_level':null,'password_updated_at':'2015-07-09T15:36:10Z','avatar_updated_at':null,'activity_at':'2015-07-09T15:36:10Z','visited_at':null,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'user','resource_url':'http://novo/api/index.php?/v1/users/5'},'6':{'id':6,'full_name':'John Doe','designation':null,'alias':null,'is_enabled':true,'role':{'id':4,'resource_type':'role'},'avatar':'http://novo/index.php?/Base/Avatar/Get/d2e29f2d-616f-5abd-9bd0-70d46149efd3/false/200','organization':{'id':1,'resource_type':'organization'},'teams':[],'emails':[{'id':6,'resource_type':'identity_email'}],'phones':[],'twitter':[],'facebook':[],'external_identities':[],'addresses':[],'websites':[],'custom_fields':[{'field':{'id':1,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'},{'field':{'id':2,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'},{'field':{'id':3,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'}],'metadata':{'custom':null,'system':null,'resource_type':'metadata'},'locale':'en-us','time_zone':null,'time_zone_offset':null,'greeting':null,'signature':null,'status_message':null,'tags':[],'notes':[],'pinned_notes_count':0,'followers':[],'access_level':null,'password_updated_at':'2015-07-09T15:36:10Z','avatar_updated_at':null,'activity_at':'2015-07-09T15:36:10Z','visited_at':null,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'user','resource_url':'http://novo/api/index.php?/v1/users/6'},'7':{'id':7,'full_name':'John Doe','designation':null,'alias':null,'is_enabled':true,'role':{'id':3,'resource_type':'role'},'avatar':'http://novo/index.php?/Base/Avatar/Get/3e0df753-1a3c-5ea1-a69e-5b07fd41fbf7/false/200','teams':[],'emails':[{'id':7,'resource_type':'identity_email'}],'phones':[],'twitter':[],'facebook':[],'external_identities':[],'addresses':[],'websites':[],'custom_fields':[{'field':{'id':1,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'},{'field':{'id':2,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'},{'field':{'id':3,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'}],'metadata':{'custom':null,'system':null,'resource_type':'metadata'},'locale':'en-us','time_zone':null,'time_zone_offset':null,'greeting':null,'signature':null,'status_message':null,'tags':[],'notes':[],'pinned_notes_count':0,'followers':[],'access_level':null,'password_updated_at':'2015-07-09T15:36:10Z','avatar_updated_at':null,'activity_at':'2015-07-09T15:36:10Z','visited_at':null,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'user','resource_url':'http://novo/api/index.php?/v1/users/7'},'8':{'id':8,'full_name':'John Doe','designation':null,'alias':null,'is_enabled':true,'role':{'id':4,'resource_type':'role'},'avatar':'http://novo/index.php?/Base/Avatar/Get/1031b1ed-9779-53a6-b603-29db3168ef74/false/200','organization':{'id':1,'resource_type':'organization'},'teams':[],'emails':[{'id':8,'resource_type':'identity_email'}],'phones':[],'twitter':[],'facebook':[],'external_identities':[],'addresses':[],'websites':[],'custom_fields':[{'field':{'id':1,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'},{'field':{'id':2,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'},{'field':{'id':3,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'}],'metadata':{'custom':null,'system':null,'resource_type':'metadata'},'locale':'en-us','time_zone':null,'time_zone_offset':null,'greeting':null,'signature':null,'status_message':null,'tags':[],'notes':[],'pinned_notes_count':0,'followers':[],'access_level':null,'password_updated_at':'2015-07-09T15:36:10Z','avatar_updated_at':null,'activity_at':'2015-07-09T15:36:10Z','visited_at':null,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'user','resource_url':'http://novo/api/index.php?/v1/users/8'},'9':{'id':9,'full_name':'John Doe','designation':null,'alias':null,'is_enabled':true,'role':{'id':2,'resource_type':'role'},'avatar':'http://novo/index.php?/Base/Avatar/Get/bda10775-28e7-50a7-879e-2ac56f67db59/false/200','teams':[],'emails':[{'id':9,'resource_type':'identity_email'}],'phones':[],'twitter':[],'facebook':[],'external_identities':[],'addresses':[],'websites':[],'custom_fields':[{'field':{'id':1,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'},{'field':{'id':2,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'},{'field':{'id':3,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'}],'metadata':{'custom':null,'system':null,'resource_type':'metadata'},'locale':'en-us','time_zone':null,'time_zone_offset':null,'greeting':null,'signature':null,'status_message':null,'tags':[],'notes':[],'pinned_notes_count':0,'followers':[],'access_level':null,'password_updated_at':'2015-07-09T15:36:10Z','avatar_updated_at':null,'activity_at':'2015-07-09T15:36:10Z','visited_at':null,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'user','resource_url':'http://novo/api/index.php?/v1/users/9'},'10':{'id':10,'full_name':'John Doe','designation':null,'alias':null,'is_enabled':true,'role':{'id':4,'resource_type':'role'},'avatar':'http://novo/index.php?/Base/Avatar/Get/2d24e0f1-b9a1-549e-a327-865a9e6058a8/false/200','organization':{'id':1,'resource_type':'organization'},'teams':[],'emails':[{'id':10,'resource_type':'identity_email'}],'phones':[],'twitter':[],'facebook':[],'external_identities':[],'addresses':[],'websites':[],'custom_fields':[{'field':{'id':1,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'},{'field':{'id':2,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'},{'field':{'id':3,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'}],'metadata':{'custom':null,'system':null,'resource_type':'metadata'},'locale':'en-us','time_zone':null,'time_zone_offset':null,'greeting':null,'signature':null,'status_message':null,'tags':[],'notes':[],'pinned_notes_count':0,'followers':[],'access_level':null,'password_updated_at':'2015-07-09T15:36:10Z','avatar_updated_at':null,'activity_at':'2015-07-09T15:36:10Z','visited_at':null,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'user','resource_url':'http://novo/api/index.php?/v1/users/10'},'11':{'id':11,'full_name':'John Doe','designation':null,'alias':null,'is_enabled':true,'role':{'id':3,'resource_type':'role'},'avatar':'http://novo/index.php?/Base/Avatar/Get/b1d1b7dd-df7c-503b-9e34-6789070f6c5d/false/200','teams':[],'emails':[{'id':11,'resource_type':'identity_email'}],'phones':[],'twitter':[],'facebook':[],'external_identities':[],'addresses':[],'websites':[],'custom_fields':[{'field':{'id':1,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'},{'field':{'id':2,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'},{'field':{'id':3,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'}],'metadata':{'custom':null,'system':null,'resource_type':'metadata'},'locale':'en-us','time_zone':null,'time_zone_offset':null,'greeting':null,'signature':null,'status_message':null,'tags':[],'notes':[],'pinned_notes_count':0,'followers':[],'access_level':null,'password_updated_at':'2015-07-09T15:36:10Z','avatar_updated_at':null,'activity_at':'2015-07-09T15:36:10Z','visited_at':null,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'user','resource_url':'http://novo/api/index.php?/v1/users/11'}},'business_hour':{'1':{'id':1,'title':'Default Business Hours','zones':{'monday':[9,10,11,12,13,14,15,16,17,18],'tuesday':[9,10,11,12,13,14,15,16,17,18],'wednesday':[9,10,11,12,13,14,15,16,17,18],'thursday':[9,10,11,12,13,14,15,16,17,18],'friday':[9,10,11,12,13,14,15,16,17,18],'saturday':[],'sunday':[]},'holidays':[],'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'business_hour','resource_url':'http://novo/api/index.php?/v1/businesshours/1'}},'team':{'1':{'id':1,'title':'Sales','businesshour':{'id':1,'resource_type':'business_hour'},'followers':[],'created_at':'2015-07-09T15:36:10Z','updated_at':null,'resource_type':'team','resource_url':'http://novo/api/index.php?/v1/teams/1'},'2':{'id':2,'title':'Support','businesshour':{'id':1,'resource_type':'business_hour'},'followers':[],'created_at':'2015-07-09T15:36:10Z','updated_at':null,'resource_type':'team','resource_url':'http://novo/api/index.php?/v1/teams/2'},'3':{'id':3,'title':'Finance','businesshour':{'id':1,'resource_type':'business_hour'},'followers':[],'created_at':'2015-07-09T15:36:10Z','updated_at':null,'resource_type':'team','resource_url':'http://novo/api/index.php?/v1/teams/3'}},'case_status':{'1':{'id':1,'label':'New','color':null,'visibility':'PUBLIC','type':'NEW','locales':[],'is_sla_active':true,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'case_status','resource_url':'http://novo/api/index.php?/v1/cases/statuses/1'}},'case_priority':{'1':{'id':1,'label':'Low','level':1,'color':null,'locales':[],'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'case_priority','resource_url':'http://novo/api/index.php?/v1/cases/priorities/1'},'2':{'id':2,'label':'Normal','level':2,'color':null,'locales':[],'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'case_priority','resource_url':'http://novo/api/index.php?/v1/cases/priorities/2'},'4':{'id':4,'label':'Urgent','level':4,'color':null,'locales':[],'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'case_priority','resource_url':'http://novo/api/index.php?/v1/cases/priorities/4'}},'case_type':{'1':{'id':1,'label':'Question','created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'case_type','resource_url':'http://novo/api/index.php?/v1/cases/types/1'},'2':{'id':2,'label':'Task','created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'case_type','resource_url':'http://novo/api/index.php?/v1/cases/types/2'},'3':{'id':3,'label':'Problem','created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'case_type','resource_url':'http://novo/api/index.php?/v1/cases/types/3'}},'sla':{'1':{'id':1,'title':'Regular support and sales tickets','description':null,'is_enabled':true,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'sla','resource_url':'http://novo/api/index.php?/v1/sla/1'}},'tag':{'1':{'id':1,'name':'connectivity','resource_type':'tag'},'2':{'id':2,'name':'bug','resource_type':'tag'},'3':{'id':3,'name':'internet','resource_type':'tag'},'4':{'id':4,'name':'printer','resource_type':'tag'}},'case_field':{'1':{'id':1,'fielduuid':'e6bb2845-4b85-455a-9828-07596d9bb506','type':'SUBJECT','key':'subject','title':'Subject','is_required_for_agents':true,'is_required_on_resolution':true,'is_visible_to_customers':true,'customer_title':'Subject','is_customer_editable':true,'is_required_for_customers':true,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':1,'is_system':true,'options':[],'locales':[],'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'case_field','resource_url':'http://novo/api/index.php?/v1/cases/fields/1'},'2':{'id':2,'fielduuid':'6df564a1-12c1-499e-8cb0-85dc9dea183b','type':'MESSAGE','key':'message','title':'Message','is_required_for_agents':false,'is_required_on_resolution':true,'is_visible_to_customers':true,'customer_title':'Message','is_customer_editable':true,'is_required_for_customers':true,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':2,'is_system':true,'options':[],'locales':[],'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'case_field','resource_url':'http://novo/api/index.php?/v1/cases/fields/2'},'3':{'id':3,'fielduuid':'802b6d93-7a4f-4791-aefc-f7d53ea348f5','type':'PRIORITY','key':'priority','title':'Priority','is_required_for_agents':false,'is_required_on_resolution':false,'is_visible_to_customers':true,'customer_title':'Priority','is_customer_editable':true,'is_required_for_customers':false,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':3,'is_system':true,'options':[],'locales':[],'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'case_field','resource_url':'http://novo/api/index.php?/v1/cases/fields/3'},'4':{'id':4,'fielduuid':'f0ec45ee-4ef9-4a13-bbc6-1d2e14d5726b','type':'STATUS','key':'status','title':'Status','is_required_for_agents':false,'is_required_on_resolution':true,'is_visible_to_customers':true,'customer_title':'Priority','is_customer_editable':false,'is_required_for_customers':false,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':4,'is_system':true,'options':[],'locales':[],'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'case_field','resource_url':'http://novo/api/index.php?/v1/cases/fields/4'},'5':{'id':5,'fielduuid':'e8de6e9e-f178-469c-8008-e1096357ac0f','type':'TYPE','key':'type','title':'Type','is_required_for_agents':false,'is_required_on_resolution':false,'is_visible_to_customers':false,'customer_title':'Type','is_customer_editable':false,'is_required_for_customers':false,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':5,'is_system':true,'options':[],'locales':[],'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'case_field','resource_url':'http://novo/api/index.php?/v1/cases/fields/5'},'6':{'id':6,'fielduuid':'a3b1a651-23b1-41dc-815a-e560b8940fc7','type':'TEAM','key':'team','title':'Team','is_required_for_agents':false,'is_required_on_resolution':false,'is_visible_to_customers':false,'customer_title':'Team','is_customer_editable':false,'is_required_for_customers':false,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':6,'is_system':true,'options':[],'locales':[],'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'case_field','resource_url':'http://novo/api/index.php?/v1/cases/fields/6'},'7':{'id':7,'fielduuid':'307fad7a-fe29-499a-9279-e1fdc7f14582','type':'ASSIGNEE','key':'assignee','title':'Assignee','is_required_for_agents':false,'is_required_on_resolution':false,'is_visible_to_customers':false,'customer_title':'Assignee','is_customer_editable':false,'is_required_for_customers':false,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':7,'is_system':true,'options':[],'locales':[],'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'case_field','resource_url':'http://novo/api/index.php?/v1/cases/fields/7'},'8':{'id':8,'fielduuid':'30f9d670-ab63-48a6-a331-98460e7ff281','type':'TEXT','key':'enter_the_name','title':'Enter the name','is_required_for_agents':false,'is_required_on_resolution':true,'is_visible_to_customers':true,'customer_title':'Enter the name','is_customer_editable':true,'is_required_for_customers':true,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':8,'is_system':false,'options':[],'locales':[],'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'case_field','resource_url':'http://novo/api/index.php?/v1/cases/fields/8'},'9':{'id':9,'fielduuid':'969fe14e-fe94-4eba-ad76-384c2469913f','type':'TEXTAREA','key':'contact_address','title':'contact address','is_required_for_agents':false,'is_required_on_resolution':true,'is_visible_to_customers':true,'customer_title':'1','is_customer_editable':false,'is_required_for_customers':false,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':9,'is_system':false,'options':[],'locales':[],'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'case_field','resource_url':'http://novo/api/index.php?/v1/cases/fields/9'},'10':{'id':10,'fielduuid':'4dfcb17b-00fb-4899-907e-2ee517807651','type':'CHECKBOX','key':'relateto','title':'relateto','is_required_for_agents':false,'is_required_on_resolution':false,'is_visible_to_customers':false,'customer_title':null,'is_customer_editable':false,'is_required_for_customers':false,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':10,'is_system':false,'options':[{'id':1,'resource_type':'field_option'},{'id':2,'resource_type':'field_option'},{'id':3,'resource_type':'field_option'}],'locales':[],'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'case_field','resource_url':'http://novo/api/index.php?/v1/cases/fields/10'},'11':{'id':11,'fielduuid':'55aeff67-4dbc-4809-8715-0227fae6e369','type':'RADIO','key':'important','title':'important','is_required_for_agents':false,'is_required_on_resolution':true,'is_visible_to_customers':true,'customer_title':'Important','is_customer_editable':true,'is_required_for_customers':true,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':11,'is_system':false,'options':[{'id':4,'resource_type':'field_option'},{'id':5,'resource_type':'field_option'}],'locales':[],'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'case_field','resource_url':'http://novo/api/index.php?/v1/cases/fields/11'},'12':{'id':12,'fielduuid':'a626e62e-0637-409d-a9a7-40f5b9bbc5da','type':'SELECT','key':'problems','title':'problems','is_required_for_agents':false,'is_required_on_resolution':true,'is_visible_to_customers':true,'customer_title':'problem','is_customer_editable':true,'is_required_for_customers':true,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':12,'is_system':false,'options':[{'id':6,'resource_type':'field_option'},{'id':7,'resource_type':'field_option'},{'id':8,'resource_type':'field_option'}],'locales':[],'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'case_field','resource_url':'http://novo/api/index.php?/v1/cases/fields/12'},'13':{'id':13,'fielduuid':'a2aa541c-f9fe-4617-ab8f-38fa908139c0','type':'DATE','key':'date','title':'date','is_required_for_agents':false,'is_required_on_resolution':true,'is_visible_to_customers':true,'customer_title':'date','is_customer_editable':true,'is_required_for_customers':true,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':13,'is_system':false,'options':[],'locales':[],'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'case_field','resource_url':'http://novo/api/index.php?/v1/cases/fields/13'},'14':{'id':14,'fielduuid':'e7846dfb-fc2a-4efa-bd99-60ce89a7b05d','type':'NUMERIC','key':'days','title':'days','is_required_for_agents':false,'is_required_on_resolution':true,'is_visible_to_customers':true,'customer_title':'days','is_customer_editable':true,'is_required_for_customers':true,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':14,'is_system':false,'options':[],'locales':[],'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'case_field','resource_url':'http://novo/api/index.php?/v1/cases/fields/14'}},'case_form':{'1':{'id':1,'title':'Internet Related Issue','is_visible_to_customers':true,'customer_title':'Internet Related Issue','description':null,'is_enabled':true,'is_default':false,'sort_order':1,'fields':[{'id':1,'resource_type':'case_field'},{'id':2,'resource_type':'case_field'},{'id':3,'resource_type':'case_field'},{'id':4,'resource_type':'case_field'},{'id':5,'resource_type':'case_field'},{'id':6,'resource_type':'case_field'},{'id':7,'resource_type':'case_field'},{'id':8,'resource_type':'case_field'},{'id':9,'resource_type':'case_field'}],'brand':{'id':1,'resource_type':'brand'},'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'case_form','resource_url':'http://novo/api/index.php?/v1/cases/forms/1'},'2':{'id':2,'title':'Computer Related issues','is_visible_to_customers':true,'customer_title':'Computer Related issues','description':null,'is_enabled':true,'is_default':false,'sort_order':2,'fields':[{'id':1,'resource_type':'case_field'},{'id':2,'resource_type':'case_field'},{'id':3,'resource_type':'case_field'},{'id':4,'resource_type':'case_field'},{'id':5,'resource_type':'case_field'},{'id':6,'resource_type':'case_field'},{'id':7,'resource_type':'case_field'},{'id':10,'resource_type':'case_field'},{'id':13,'resource_type':'case_field'},{'id':14,'resource_type':'case_field'},{'id':9,'resource_type':'case_field'}],'brand':null,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'case_form','resource_url':'http://novo/api/index.php?/v1/cases/forms/2'}}},'offset':0,'limit':5,'total_count':17,'next_url':'http://novo/api/index.php?/v1/cases/base&_flat=true&limit=5&offset=5','last_url':'http://novo/api/index.php?/v1/cases/base&_flat=true&limit=5&offset=15'};}); //todo check payload is correct and case/messages is still required
-  this.get('/api/v1/messages',function(db){return new Mirage['default'].Response(400,{},db.messages);});this.get('/api/v1/views',function(db){return db.views[0];});this.get('/api/v1/cases/:id',function(db){return db.cases[0];});this.get('/api/v1/cases/:id/notes',function(db){return db.casenotes[0];});this.get('/api/v1/cases/:id/messages',function(db){return db.casemessages[0];});this.get('api/v1/cases/:id/reply/channels',function(db){return db.casechannels[0];});this.get('/api/v1/cases/priorities',function(db){return db.casepriorities[0];});this.get('/api/v1/cases/types',function(db){return db.casetypes[0];});this.get('/api/v1/cases/statuses',function(db){return db.casestatuses[0];});this.get('api/v1/cases/fields',function(db){return db.casefields[0];});this.get('api/v1/cases/reply/channels',function(db){return db.casereplychannels[0];});this.get('api/v1/cases/fields/:id/options',function(){return {'status':200,'data':[{'id':1,'fielduuid':'8d364470-77c1-46b5-8506-810700a2d29a','value':'internetproblem','tag':'internet problem','sort_order':1,'created_at':'2015-07-16T09:30:40Z','updated_at':'2015-07-16T09:30:40Z','resource_type':'field_option','resource_url':'http://novo/api/index.php?/v1/cases/fields/10/options/1'},{'id':2,'fielduuid':'8d364470-77c1-46b5-8506-810700a2d29a','value':'connectivityproblem','tag':'connectivity problem','sort_order':2,'created_at':'2015-07-16T09:30:40Z','updated_at':'2015-07-16T09:30:40Z','resource_type':'field_option','resource_url':'http://novo/api/index.php?/v1/cases/fields/10/options/2'},{'id':3,'fielduuid':'8d364470-77c1-46b5-8506-810700a2d29a','value':'other','tag':null,'sort_order':3,'created_at':'2015-07-16T09:30:40Z','updated_at':'2015-07-16T09:30:40Z','resource_type':'field_option','resource_url':'http://novo/api/index.php?/v1/cases/fields/10/options/3'}],'resource':'field_option','total_count':3,'session_id':'d4XE33cnM105GKla1pFqYDfjr313e422cd61c535941c9a2d5681fe7e39eed1ca6SVNXQCtt07Jlp3jO'};}); // These comments are here to help you get started. Feel free to delete them.
+  this.get('/api/v1/messages',function(db){return new Mirage['default'].Response(400,{},db.messages);});this.get('/api/v1/views',function(db){return db.views[0];});this.get('/api/v1/cases/:id',function(db,request){if(isNaN(request.params.id)){throw "Caught by a wild card!";}return db.cases[0];});this.get('/api/v1/cases/:id/notes',function(db){return db.casenotes[0];});this.get('/api/v1/cases/:id/messages',function(db){return db.casemessages[0];});this.get('api/v1/cases/:id/reply/channels',function(db){return db.casechannels[0];});this.get('/api/v1/cases/priorities',function(db){return db.casepriorities[0];});this.get('/api/v1/cases/types',function(db){return db.casetypes[0];});this.get('/api/v1/cases/statuses',function(db){return db.casestatuses[0];});this.get('api/v1/cases/fields',function(db){return db.casefields[0];});this.get('api/v1/cases/reply/channels',function(db){return db.casereplychannels[0];});this.get('api/v1/cases/fields/:id/options',function(){return {'status':200,'data':[{'id':1,'fielduuid':'8d364470-77c1-46b5-8506-810700a2d29a','value':'internetproblem','tag':'internet problem','sort_order':1,'created_at':'2015-07-16T09:30:40Z','updated_at':'2015-07-16T09:30:40Z','resource_type':'field_option','resource_url':'http://novo/api/index.php?/v1/cases/fields/10/options/1'},{'id':2,'fielduuid':'8d364470-77c1-46b5-8506-810700a2d29a','value':'connectivityproblem','tag':'connectivity problem','sort_order':2,'created_at':'2015-07-16T09:30:40Z','updated_at':'2015-07-16T09:30:40Z','resource_type':'field_option','resource_url':'http://novo/api/index.php?/v1/cases/fields/10/options/2'},{'id':3,'fielduuid':'8d364470-77c1-46b5-8506-810700a2d29a','value':'other','tag':null,'sort_order':3,'created_at':'2015-07-16T09:30:40Z','updated_at':'2015-07-16T09:30:40Z','resource_type':'field_option','resource_url':'http://novo/api/index.php?/v1/cases/fields/10/options/3'}],'resource':'field_option','total_count':3,'session_id':'d4XE33cnM105GKla1pFqYDfjr313e422cd61c535941c9a2d5681fe7e39eed1ca6SVNXQCtt07Jlp3jO'};});this.get('api/v1/teams',function(){return {"status":200,"data":[{"id":1,"title":"Sales","businesshour":{"id":1,"title":"Default Business Hours","zones":{"monday":[9,10,11,12,13,14,15,16,17,18],"tuesday":[9,10,11,12,13,14,15,16,17,18],"wednesday":[9,10,11,12,13,14,15,16,17,18],"thursday":[9,10,11,12,13,14,15,16,17,18],"friday":[9,10,11,12,13,14,15,16,17,18],"saturday":[],"sunday":[]},"holidays":[],"created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-23T13:36:12Z","resource_type":"business_hour","resource_url":"http://novo/api/index.php?/v1/businesshours/1"},"followers":[],"created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-23T13:36:12Z","resource_type":"team","resource_url":"http://novo/api/index.php?/v1/teams/1"},{"id":2,"title":"Support","businesshour":{"id":1,"title":"Default Business Hours","zones":{"monday":[9,10,11,12,13,14,15,16,17,18],"tuesday":[9,10,11,12,13,14,15,16,17,18],"wednesday":[9,10,11,12,13,14,15,16,17,18],"thursday":[9,10,11,12,13,14,15,16,17,18],"friday":[9,10,11,12,13,14,15,16,17,18],"saturday":[],"sunday":[]},"holidays":[],"created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-23T13:36:12Z","resource_type":"business_hour","resource_url":"http://novo/api/index.php?/v1/businesshours/1"},"followers":[],"created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-23T13:36:12Z","resource_type":"team","resource_url":"http://novo/api/index.php?/v1/teams/2"},{"id":3,"title":"Finance","businesshour":{"id":1,"title":"Default Business Hours","zones":{"monday":[9,10,11,12,13,14,15,16,17,18],"tuesday":[9,10,11,12,13,14,15,16,17,18],"wednesday":[9,10,11,12,13,14,15,16,17,18],"thursday":[9,10,11,12,13,14,15,16,17,18],"friday":[9,10,11,12,13,14,15,16,17,18],"saturday":[],"sunday":[]},"holidays":[],"created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-23T13:36:12Z","resource_type":"business_hour","resource_url":"http://novo/api/index.php?/v1/businesshours/1"},"followers":[],"created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-23T13:36:12Z","resource_type":"team","resource_url":"http://novo/api/index.php?/v1/teams/3"},{"id":4,"title":"Human Resources","businesshour":{"id":1,"title":"Default Business Hours","zones":{"monday":[9,10,11,12,13,14,15,16,17,18],"tuesday":[9,10,11,12,13,14,15,16,17,18],"wednesday":[9,10,11,12,13,14,15,16,17,18],"thursday":[9,10,11,12,13,14,15,16,17,18],"friday":[9,10,11,12,13,14,15,16,17,18],"saturday":[],"sunday":[]},"holidays":[],"created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-23T13:36:12Z","resource_type":"business_hour","resource_url":"http://novo/api/index.php?/v1/businesshours/1"},"followers":[],"created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-23T13:36:12Z","resource_type":"team","resource_url":"http://novo/api/index.php?/v1/teams/4"}],"resource":"team","offset":0,"limit":10,"total_count":4,"session_id":"0VR4CSL7dXUshZtO8EI2a32a89eaa80d3bdecc9964941ec5d235a6632dcrhO2ug8M9VrLV"};});this.get('api/v1/users',function(){return {"status":200,"data":[{"id":1,"full_name":"John Doe","designation":null,"is_enabled":true,"role":{"id":1,"title":"Administrator","type":"ADMIN","created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-23T13:36:12Z","resource_type":"role","resource_url":"http://novo/api/index.php?/v1/roles/1"},"avatar":"http://novo/index.php?/avatar/get/3c8227bc-5101-51aa-908f-abc6dcb52dee","teams":[{"id":1,"title":"Sales","businesshour":{"id":1,"title":"Default Business Hours","zones":{"monday":[9,10,11,12,13,14,15,16,17,18],"tuesday":[9,10,11,12,13,14,15,16,17,18],"wednesday":[9,10,11,12,13,14,15,16,17,18],"thursday":[9,10,11,12,13,14,15,16,17,18],"friday":[9,10,11,12,13,14,15,16,17,18],"saturday":[],"sunday":[]},"holidays":[],"created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-23T13:36:12Z","resource_type":"business_hour","resource_url":"http://novo/api/index.php?/v1/businesshours/1"},"followers":[],"created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-23T13:36:12Z","resource_type":"team","resource_url":"http://novo/api/index.php?/v1/teams/1"},{"id":2,"title":"Support","businesshour":{"id":1,"title":"Default Business Hours","zones":{"monday":[9,10,11,12,13,14,15,16,17,18],"tuesday":[9,10,11,12,13,14,15,16,17,18],"wednesday":[9,10,11,12,13,14,15,16,17,18],"thursday":[9,10,11,12,13,14,15,16,17,18],"friday":[9,10,11,12,13,14,15,16,17,18],"saturday":[],"sunday":[]},"holidays":[],"created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-23T13:36:12Z","resource_type":"business_hour","resource_url":"http://novo/api/index.php?/v1/businesshours/1"},"followers":[],"created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-23T13:36:12Z","resource_type":"team","resource_url":"http://novo/api/index.php?/v1/teams/2"},{"id":3,"title":"Finance","businesshour":{"id":1,"title":"Default Business Hours","zones":{"monday":[9,10,11,12,13,14,15,16,17,18],"tuesday":[9,10,11,12,13,14,15,16,17,18],"wednesday":[9,10,11,12,13,14,15,16,17,18],"thursday":[9,10,11,12,13,14,15,16,17,18],"friday":[9,10,11,12,13,14,15,16,17,18],"saturday":[],"sunday":[]},"holidays":[],"created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-23T13:36:12Z","resource_type":"business_hour","resource_url":"http://novo/api/index.php?/v1/businesshours/1"},"followers":[],"created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-23T13:36:12Z","resource_type":"team","resource_url":"http://novo/api/index.php?/v1/teams/3"},{"id":4,"title":"Human Resources","businesshour":{"id":1,"title":"Default Business Hours","zones":{"monday":[9,10,11,12,13,14,15,16,17,18],"tuesday":[9,10,11,12,13,14,15,16,17,18],"wednesday":[9,10,11,12,13,14,15,16,17,18],"thursday":[9,10,11,12,13,14,15,16,17,18],"friday":[9,10,11,12,13,14,15,16,17,18],"saturday":[],"sunday":[]},"holidays":[],"created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-23T13:36:12Z","resource_type":"business_hour","resource_url":"http://novo/api/index.php?/v1/businesshours/1"},"followers":[],"created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-23T13:36:12Z","resource_type":"team","resource_url":"http://novo/api/index.php?/v1/teams/4"}],"emails":[{"id":1,"is_primary":true,"email":"test@kayako.com","is_notification_enabled":false,"is_validated":true,"created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-23T13:36:12Z","resource_type":"identity_email","resource_url":"http://novo/api/index.php?/v1/users/1/identities/emails/1"}],"phones":[],"twitter":[],"facebook":[],"external_identities":[],"addresses":[],"websites":[],"custom_fields":[{"field":{"id":1,"fielduuid":"21cf6eb0-5da3-4054-b054-66c89778fd95","type":"TEXT","key":"enter_the_name","title":"Enter the name","is_visible_to_customers":true,"customer_title":"Enter the name","is_customer_editable":true,"is_required_for_customers":true,"description":null,"is_enabled":true,"regular_expression":null,"sort_order":1,"is_system":false,"options":[],"locales":[],"created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-23T13:36:12Z","resource_type":"user_field","resource_url":"http://novo/api/index.php?/v1/users/fields/1"},"value":"","resource_type":"user_field_value"},{"field":{"id":2,"fielduuid":"15168ac8-e4cb-477c-8ae1-5c3f91585d89","type":"TEXTAREA","key":"contact_address","title":"contact address","is_visible_to_customers":true,"customer_title":"1","is_customer_editable":false,"is_required_for_customers":false,"description":null,"is_enabled":true,"regular_expression":null,"sort_order":2,"is_system":false,"options":[],"locales":[],"created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-23T13:36:12Z","resource_type":"user_field","resource_url":"http://novo/api/index.php?/v1/users/fields/2"},"value":"","resource_type":"user_field_value"},{"field":{"id":3,"fielduuid":"52d085c1-dd76-4aa0-b8c8-292414efd893","type":"CHECKBOX","key":"interests","title":"interests","is_visible_to_customers":false,"customer_title":null,"is_customer_editable":false,"is_required_for_customers":false,"description":null,"is_enabled":true,"regular_expression":null,"sort_order":3,"is_system":false,"options":[{"id":9,"fielduuid":"52d085c1-dd76-4aa0-b8c8-292414efd893","value":"googling","tag":"googling","sort_order":9,"created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-23T13:36:12Z","resource_type":"field_option"},{"id":10,"fielduuid":"52d085c1-dd76-4aa0-b8c8-292414efd893","value":"learning new things","tag":"learningnewthings","sort_order":10,"created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-23T13:36:12Z","resource_type":"field_option"},{"id":11,"fielduuid":"52d085c1-dd76-4aa0-b8c8-292414efd893","value":"other","tag":null,"sort_order":11,"created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-23T13:36:12Z","resource_type":"field_option"}],"locales":[],"created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-23T13:36:12Z","resource_type":"user_field","resource_url":"http://novo/api/index.php?/v1/users/fields/3"},"value":"","resource_type":"user_field_value"}],"metadata":{"custom":null,"system":null,"resource_type":"metadata"},"tags":[],"notes":[],"pinned_notes_count":0,"followers":[],"locale":"en-us","time_zone":null,"time_zone_offset":null,"greeting":null,"signature":null,"status_message":null,"access_level":null,"password_updated_at":"2015-07-23T13:36:12Z","avatar_updated_at":null,"activity_at":"2015-07-24T10:39:04Z","visited_at":"2015-07-24T10:39:49Z","created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-24T10:39:49Z","resource_type":"user","resource_url":"http://novo/api/index.php?/v1/users/1"}],"resource":"user","total_count":10,"session_id":"aFPgO9mG2DdUipMpV0tK5k3mv8zMfJa6d966aaa605f8933fd939e2fa86ea8f6294a577L0dQypQ3vkYo3t25NLuESAA"};});this.get('/api/v1/cases/macros',function(){return {"status":200,"data":[{"id":1,"title":"tests \\\\ assign to blank ","contents":"blank","agent":{"id":1,"full_name":"John Doe","designation":null,"is_enabled":true,"role":{"id":1,"title":"Administrator","type":"ADMIN","created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-23T13:36:12Z","resource_type":"role","resource_url":"http://novo/api/index.php?/v1/roles/1"},"avatar":"http://novo/index.php?/avatar/get/3c8227bc-5101-51aa-908f-abc6dcb52dee","teams":[{"id":1,"title":"Sales","businesshour":{"id":1,"title":"Default Business Hours","zones":{"monday":[9,10,11,12,13,14,15,16,17,18],"tuesday":[9,10,11,12,13,14,15,16,17,18],"wednesday":[9,10,11,12,13,14,15,16,17,18],"thursday":[9,10,11,12,13,14,15,16,17,18],"friday":[9,10,11,12,13,14,15,16,17,18],"saturday":[],"sunday":[]},"holidays":[],"created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-23T13:36:12Z","resource_type":"business_hour","resource_url":"http://novo/api/index.php?/v1/businesshours/1"},"followers":[],"created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-23T13:36:12Z","resource_type":"team","resource_url":"http://novo/api/index.php?/v1/teams/1"},{"id":2,"title":"Support","businesshour":{"id":1,"title":"Default Business Hours","zones":{"monday":[9,10,11,12,13,14,15,16,17,18],"tuesday":[9,10,11,12,13,14,15,16,17,18],"wednesday":[9,10,11,12,13,14,15,16,17,18],"thursday":[9,10,11,12,13,14,15,16,17,18],"friday":[9,10,11,12,13,14,15,16,17,18],"saturday":[],"sunday":[]},"holidays":[],"created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-23T13:36:12Z","resource_type":"business_hour","resource_url":"http://novo/api/index.php?/v1/businesshours/1"},"followers":[],"created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-23T13:36:12Z","resource_type":"team","resource_url":"http://novo/api/index.php?/v1/teams/2"},{"id":3,"title":"Finance","businesshour":{"id":1,"title":"Default Business Hours","zones":{"monday":[9,10,11,12,13,14,15,16,17,18],"tuesday":[9,10,11,12,13,14,15,16,17,18],"wednesday":[9,10,11,12,13,14,15,16,17,18],"thursday":[9,10,11,12,13,14,15,16,17,18],"friday":[9,10,11,12,13,14,15,16,17,18],"saturday":[],"sunday":[]},"holidays":[],"created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-23T13:36:12Z","resource_type":"business_hour","resource_url":"http://novo/api/index.php?/v1/businesshours/1"},"followers":[],"created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-23T13:36:12Z","resource_type":"team","resource_url":"http://novo/api/index.php?/v1/teams/3"},{"id":4,"title":"Human Resources","businesshour":{"id":1,"title":"Default Business Hours","zones":{"monday":[9,10,11,12,13,14,15,16,17,18],"tuesday":[9,10,11,12,13,14,15,16,17,18],"wednesday":[9,10,11,12,13,14,15,16,17,18],"thursday":[9,10,11,12,13,14,15,16,17,18],"friday":[9,10,11,12,13,14,15,16,17,18],"saturday":[],"sunday":[]},"holidays":[],"created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-23T13:36:12Z","resource_type":"business_hour","resource_url":"http://novo/api/index.php?/v1/businesshours/1"},"followers":[],"created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-23T13:36:12Z","resource_type":"team","resource_url":"http://novo/api/index.php?/v1/teams/4"}],"emails":[{"id":1,"is_primary":true,"email":"test@kayako.com","is_notification_enabled":false,"is_validated":true,"created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-23T13:36:12Z","resource_type":"identity_email","resource_url":"http://novo/api/index.php?/v1/users/1/identities/emails/1"}],"phones":[],"twitter":[],"facebook":[],"external_identities":[],"addresses":[],"websites":[],"custom_fields":[{"field":{"id":1,"fielduuid":"21cf6eb0-5da3-4054-b054-66c89778fd95","type":"TEXT","key":"enter_the_name","title":"Enter the name","is_visible_to_customers":true,"customer_title":"Enter the name","is_customer_editable":true,"is_required_for_customers":true,"description":null,"is_enabled":true,"regular_expression":null,"sort_order":1,"is_system":false,"options":[],"locales":[],"created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-23T13:36:12Z","resource_type":"user_field","resource_url":"http://novo/api/index.php?/v1/users/fields/1"},"value":"","resource_type":"user_field_value"},{"field":{"id":2,"fielduuid":"15168ac8-e4cb-477c-8ae1-5c3f91585d89","type":"TEXTAREA","key":"contact_address","title":"contact address","is_visible_to_customers":true,"customer_title":"1","is_customer_editable":false,"is_required_for_customers":false,"description":null,"is_enabled":true,"regular_expression":null,"sort_order":2,"is_system":false,"options":[],"locales":[],"created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-23T13:36:12Z","resource_type":"user_field","resource_url":"http://novo/api/index.php?/v1/users/fields/2"},"value":"","resource_type":"user_field_value"},{"field":{"id":3,"fielduuid":"52d085c1-dd76-4aa0-b8c8-292414efd893","type":"CHECKBOX","key":"interests","title":"interests","is_visible_to_customers":false,"customer_title":null,"is_customer_editable":false,"is_required_for_customers":false,"description":null,"is_enabled":true,"regular_expression":null,"sort_order":3,"is_system":false,"options":[{"id":9,"fielduuid":"52d085c1-dd76-4aa0-b8c8-292414efd893","value":"googling","tag":"googling","sort_order":9,"created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-23T13:36:12Z","resource_type":"field_option"},{"id":10,"fielduuid":"52d085c1-dd76-4aa0-b8c8-292414efd893","value":"learning new things","tag":"learningnewthings","sort_order":10,"created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-23T13:36:12Z","resource_type":"field_option"},{"id":11,"fielduuid":"52d085c1-dd76-4aa0-b8c8-292414efd893","value":"other","tag":null,"sort_order":11,"created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-23T13:36:12Z","resource_type":"field_option"}],"locales":[],"created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-23T13:36:12Z","resource_type":"user_field","resource_url":"http://novo/api/index.php?/v1/users/fields/3"},"value":"","resource_type":"user_field_value"}],"metadata":{"custom":null,"system":null,"resource_type":"metadata"},"tags":[],"notes":[],"pinned_notes_count":0,"followers":[],"locale":"en-us","time_zone":null,"time_zone_offset":null,"greeting":null,"signature":null,"status_message":null,"access_level":null,"password_updated_at":"2015-07-23T13:36:12Z","avatar_updated_at":null,"activity_at":"2015-07-24T11:08:54Z","visited_at":"2015-07-24T11:08:54Z","created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-24T11:08:54Z","resource_type":"user","resource_url":"http://novo/api/index.php?/v1/users/1"},"assignee":{"type":"AGENT","team":{"id":1,"title":"Sales","businesshour":{"id":1,"title":"Default Business Hours","zones":{"monday":[9,10,11,12,13,14,15,16,17,18],"tuesday":[9,10,11,12,13,14,15,16,17,18],"wednesday":[9,10,11,12,13,14,15,16,17,18],"thursday":[9,10,11,12,13,14,15,16,17,18],"friday":[9,10,11,12,13,14,15,16,17,18],"saturday":[],"sunday":[]},"holidays":[],"created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-23T13:36:12Z","resource_type":"business_hour","resource_url":"http://novo/api/index.php?/v1/businesshours/1"},"followers":[],"created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-23T13:36:12Z","resource_type":"team","resource_url":"http://novo/api/index.php?/v1/teams/1"},"agent":{"id":1,"full_name":"John Doe","designation":null,"is_enabled":true,"role":{"id":1,"title":"Administrator","type":"ADMIN","created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-23T13:36:12Z","resource_type":"role","resource_url":"http://novo/api/index.php?/v1/roles/1"},"avatar":"http://novo/index.php?/avatar/get/3c8227bc-5101-51aa-908f-abc6dcb52dee","teams":[{"id":1,"title":"Sales","businesshour":{"id":1,"title":"Default Business Hours","zones":{"monday":[9,10,11,12,13,14,15,16,17,18],"tuesday":[9,10,11,12,13,14,15,16,17,18],"wednesday":[9,10,11,12,13,14,15,16,17,18],"thursday":[9,10,11,12,13,14,15,16,17,18],"friday":[9,10,11,12,13,14,15,16,17,18],"saturday":[],"sunday":[]},"holidays":[],"created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-23T13:36:12Z","resource_type":"business_hour","resource_url":"http://novo/api/index.php?/v1/businesshours/1"},"followers":[],"created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-23T13:36:12Z","resource_type":"team","resource_url":"http://novo/api/index.php?/v1/teams/1"},{"id":2,"title":"Support","businesshour":{"id":1,"title":"Default Business Hours","zones":{"monday":[9,10,11,12,13,14,15,16,17,18],"tuesday":[9,10,11,12,13,14,15,16,17,18],"wednesday":[9,10,11,12,13,14,15,16,17,18],"thursday":[9,10,11,12,13,14,15,16,17,18],"friday":[9,10,11,12,13,14,15,16,17,18],"saturday":[],"sunday":[]},"holidays":[],"created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-23T13:36:12Z","resource_type":"business_hour","resource_url":"http://novo/api/index.php?/v1/businesshours/1"},"followers":[],"created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-23T13:36:12Z","resource_type":"team","resource_url":"http://novo/api/index.php?/v1/teams/2"},{"id":3,"title":"Finance","businesshour":{"id":1,"title":"Default Business Hours","zones":{"monday":[9,10,11,12,13,14,15,16,17,18],"tuesday":[9,10,11,12,13,14,15,16,17,18],"wednesday":[9,10,11,12,13,14,15,16,17,18],"thursday":[9,10,11,12,13,14,15,16,17,18],"friday":[9,10,11,12,13,14,15,16,17,18],"saturday":[],"sunday":[]},"holidays":[],"created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-23T13:36:12Z","resource_type":"business_hour","resource_url":"http://novo/api/index.php?/v1/businesshours/1"},"followers":[],"created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-23T13:36:12Z","resource_type":"team","resource_url":"http://novo/api/index.php?/v1/teams/3"},{"id":4,"title":"Human Resources","businesshour":{"id":1,"title":"Default Business Hours","zones":{"monday":[9,10,11,12,13,14,15,16,17,18],"tuesday":[9,10,11,12,13,14,15,16,17,18],"wednesday":[9,10,11,12,13,14,15,16,17,18],"thursday":[9,10,11,12,13,14,15,16,17,18],"friday":[9,10,11,12,13,14,15,16,17,18],"saturday":[],"sunday":[]},"holidays":[],"created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-23T13:36:12Z","resource_type":"business_hour","resource_url":"http://novo/api/index.php?/v1/businesshours/1"},"followers":[],"created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-23T13:36:12Z","resource_type":"team","resource_url":"http://novo/api/index.php?/v1/teams/4"}],"emails":[{"id":1,"is_primary":true,"email":"test@kayako.com","is_notification_enabled":false,"is_validated":true,"created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-23T13:36:12Z","resource_type":"identity_email","resource_url":"http://novo/api/index.php?/v1/users/1/identities/emails/1"}],"phones":[],"twitter":[],"facebook":[],"external_identities":[],"addresses":[],"websites":[],"custom_fields":[{"field":{"id":1,"fielduuid":"21cf6eb0-5da3-4054-b054-66c89778fd95","type":"TEXT","key":"enter_the_name","title":"Enter the name","is_visible_to_customers":true,"customer_title":"Enter the name","is_customer_editable":true,"is_required_for_customers":true,"description":null,"is_enabled":true,"regular_expression":null,"sort_order":1,"is_system":false,"options":[],"locales":[],"created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-23T13:36:12Z","resource_type":"user_field","resource_url":"http://novo/api/index.php?/v1/users/fields/1"},"value":"","resource_type":"user_field_value"},{"field":{"id":2,"fielduuid":"15168ac8-e4cb-477c-8ae1-5c3f91585d89","type":"TEXTAREA","key":"contact_address","title":"contact address","is_visible_to_customers":true,"customer_title":"1","is_customer_editable":false,"is_required_for_customers":false,"description":null,"is_enabled":true,"regular_expression":null,"sort_order":2,"is_system":false,"options":[],"locales":[],"created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-23T13:36:12Z","resource_type":"user_field","resource_url":"http://novo/api/index.php?/v1/users/fields/2"},"value":"","resource_type":"user_field_value"},{"field":{"id":3,"fielduuid":"52d085c1-dd76-4aa0-b8c8-292414efd893","type":"CHECKBOX","key":"interests","title":"interests","is_visible_to_customers":false,"customer_title":null,"is_customer_editable":false,"is_required_for_customers":false,"description":null,"is_enabled":true,"regular_expression":null,"sort_order":3,"is_system":false,"options":[{"id":9,"fielduuid":"52d085c1-dd76-4aa0-b8c8-292414efd893","value":"googling","tag":"googling","sort_order":9,"created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-23T13:36:12Z","resource_type":"field_option"},{"id":10,"fielduuid":"52d085c1-dd76-4aa0-b8c8-292414efd893","value":"learning new things","tag":"learningnewthings","sort_order":10,"created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-23T13:36:12Z","resource_type":"field_option"},{"id":11,"fielduuid":"52d085c1-dd76-4aa0-b8c8-292414efd893","value":"other","tag":null,"sort_order":11,"created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-23T13:36:12Z","resource_type":"field_option"}],"locales":[],"created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-23T13:36:12Z","resource_type":"user_field","resource_url":"http://novo/api/index.php?/v1/users/fields/3"},"value":"","resource_type":"user_field_value"}],"metadata":{"custom":null,"system":null,"resource_type":"metadata"},"tags":[],"notes":[],"pinned_notes_count":0,"followers":[],"locale":"en-us","time_zone":null,"time_zone_offset":null,"greeting":null,"signature":null,"status_message":null,"access_level":null,"password_updated_at":"2015-07-23T13:36:12Z","avatar_updated_at":null,"activity_at":"2015-07-24T11:08:54Z","visited_at":"2015-07-24T11:08:54Z","created_at":"2015-07-23T13:36:12Z","updated_at":"2015-07-24T11:08:54Z","resource_type":"user","resource_url":"http://novo/api/index.php?/v1/users/1"},"resource_type":"macro_assignee"},"properties":{"resource_type":"macro_properties"},"visibility":{"type":"ALL","resource_type":"macro_visibility"},"tags":[],"usage_count":0,"last_used_at":null,"created_at":"2015-07-23T13:38:59Z","updated_at":"2015-07-23T13:38:59Z","resource_type":"macro","resource_url":"http://novo/api/index.php?/v1/cases/macros/1"}],"resource":"macro","total_count":1,"session_id":"hom4BTrYwkPcHH847089d48a9177153bfa85890f20529058a07377544Oo5VgueZyI2RRvScA3ogmGNMZ"};}); // These comments are here to help you get started. Feel free to delete them.
   /*
       Default config
     */ // this.namespace = '';    // make this `api`, for example, if your API is namespaced
@@ -28578,6 +28881,24 @@ define('frontend-cp/models/business-hour', ['exports', 'ember-data'], function (
   });
 
 });
+define('frontend-cp/models/case-assignee', ['exports', 'ember-data', 'frontend-cp/mixins/change-aware-model'], function (exports, DS, ChangeAwareModel) {
+
+  'use strict';
+
+  exports['default'] = DS['default'].ModelFragment.extend(ChangeAwareModel['default'], {
+    teamFragment: DS['default'].hasOneFragment('relationship-fragment'),
+
+    team: (function () {
+      return this.store.getById('team', this.get('teamFragment.relationshipId'));
+    }).property('teamFragment', 'teamFragment.relationshipId'),
+
+    agentFragment: DS['default'].hasOneFragment('relationship-fragment'),
+    agent: (function () {
+      return this.store.getById('user', this.get('agentFragment.relationshipId'));
+    }).property('agentFragment')
+  });
+
+});
 define('frontend-cp/models/case-field-type', ['exports', 'ember-data'], function (exports, DS) {
 
   'use strict';
@@ -28757,6 +29078,7 @@ define('frontend-cp/models/case', ['exports', 'ember-data', 'frontend-cp/mixins/
   'use strict';
 
   exports['default'] = DS['default'].Model.extend(ChangeAwareModel['default'], {
+    assignee: DS['default'].hasOneFragment('case-assignee', { defaultValue: {} }),
     maskId: DS['default'].attr('string'),
     subject: DS['default'].attr('string'),
     portal: DS['default'].attr('string'),
@@ -29120,7 +29442,8 @@ define('frontend-cp/models/identity-slack', ['exports', 'ember-data', 'frontend-
   exports['default'] = Identity['default'].extend({
     userName: DS['default'].attr('string'),
 
-    parent: DS['default'].belongsTo('has-slack-identities', { async: true, polymorphic: true, parent: true })
+    parent: DS['default'].belongsTo('user', { async: true, polymorphic: true, parent: true })
+    //parent: DS.belongsTo('has-slack-identities', { async: true, polymorphic: true, parent: true })
   });
 
 });
@@ -29228,6 +29551,72 @@ define('frontend-cp/models/location', ['exports', 'ember-data'], function (expor
     longitude: DS['default'].attr('string'),
     metroCode: DS['default'].attr('string'),
     isp: DS['default'].attr('string')
+  });
+
+});
+define('frontend-cp/models/macro-assignee', ['exports', 'ember-data'], function (exports, DS) {
+
+  'use strict';
+
+  exports['default'] = DS['default'].ModelFragment.extend({
+    type: DS['default'].attr('string'), //UNASSIGNED, CURRENT_AGENT, TEAM, AGENT
+
+    teamFragment: DS['default'].hasOneFragment('relationship-fragment'),
+    team: (function () {
+      return this.store.getById('team', this.get('teamFragment.relationshipId'));
+    }).property('teamFragment.relationshipId'),
+
+    agentFragment: DS['default'].hasOneFragment('relationship-fragment'),
+    agent: (function () {
+      return this.store.getById('user', this.get('agentFragment.relationshipId'));
+    }).property('agentFragment.relationshipId')
+  });
+
+});
+define('frontend-cp/models/macro-properties', ['exports', 'ember-data'], function (exports, DS) {
+
+  'use strict';
+
+  exports['default'] = DS['default'].ModelFragment.extend({
+    typeFragment: DS['default'].hasOneFragment('relationship-fragment'),
+    macroType: (function () {
+      return this.store.getById('case-type', this.get('typeFragment.relationshipId'));
+    }).property('typeFragment.relationshipId'),
+
+    statusFragment: DS['default'].hasOneFragment('relationship-fragment'),
+    status: (function () {
+      return this.store.getById('case-status', this.get('statusFragment.relationshipId'));
+    }).property('statusFragment.relationshipId'),
+
+    priorityFragment: DS['default'].hasOneFragment('relationship-fragment'),
+    priority: (function () {
+      return this.store.getById('case-priority', this.get('priorityFragment.relationshipId'));
+    }).property('priorityFragment.relationshipId')
+  });
+
+});
+define('frontend-cp/models/macro-visibility', ['exports', 'ember-data'], function (exports, DS) {
+
+  'use strict';
+
+  exports['default'] = DS['default'].ModelFragment.extend({
+    type: DS['default'].attr('string'), // ALL, TEAM, PRIVATE
+    status: DS['default'].belongsTo('status'),
+    priority: DS['default'].belongsTo('priority')
+  });
+
+});
+define('frontend-cp/models/macro', ['exports', 'ember-data'], function (exports, DS) {
+
+  'use strict';
+
+  exports['default'] = DS['default'].Model.extend({
+    title: DS['default'].attr('string'),
+    contents: DS['default'].attr('string'),
+    agent: DS['default'].belongsTo('user'),
+    assignee: DS['default'].hasOneFragment('macro-assignee'),
+    properties: DS['default'].hasOneFragment('macro-properties'),
+    visibility: DS['default'].hasOneFragment('macro-visibility')
   });
 
 });
@@ -29494,15 +29883,6 @@ define('frontend-cp/models/sla', ['exports', 'ember-data'], function (exports, D
     createdAt: DS['default'].attr('date'),
     updatedAt: DS['default'].attr('date')
   });
-
-});
-define('frontend-cp/models/slack-identity', ['exports', 'ember-data', 'frontend-cp/models/identity'], function (exports, DS, Identity) {
-
-	'use strict';
-
-	exports['default'] = Identity['default'].extend({
-		userName: DS['default'].attr('string')
-	});
 
 });
 define('frontend-cp/models/string', ['exports', 'ember-data'], function (exports, DS) {
@@ -30131,6 +30511,18 @@ define('frontend-cp/serializers/avatar', ['exports', 'frontend-cp/serializers/ap
   });
 
 });
+define('frontend-cp/serializers/case-assignee', ['exports', 'frontend-cp/serializers/application'], function (exports, ApplicationSerializer) {
+
+  'use strict';
+
+  exports['default'] = ApplicationSerializer['default'].extend({
+    attrs: {
+      teamFragment: { key: 'team' },
+      agentFragment: { key: 'agent' }
+    }
+  });
+
+});
 define('frontend-cp/serializers/case-field-type', ['exports', 'ember-data'], function (exports, DS) {
 
 	'use strict';
@@ -30243,6 +30635,9 @@ define('frontend-cp/serializers/case', ['exports', 'frontend-cp/serializers/appl
         json.field_values[fieldValue.get('field.key')] = fieldValue.get('value');
       });
 
+      var assignee = snapshot.attr('assignee');
+      json.assignee_agent_id = assignee.get('agentFragment.relationshipId'); // eslint-disable-line camelcase
+      json.assignee_team_id = assignee.get('teamFragment.relationshipId'); // eslint-disable-line camelcase
       return json;
     }
   });
@@ -30314,6 +30709,31 @@ define('frontend-cp/serializers/locale', ['exports', 'frontend-cp/serializers/ap
 
   exports['default'] = ApplicationSerializer['default'].extend({
     primaryKey: 'locale'
+  });
+
+});
+define('frontend-cp/serializers/macro-assignee', ['exports', 'frontend-cp/serializers/application'], function (exports, ApplicationSerializer) {
+
+  'use strict';
+
+  exports['default'] = ApplicationSerializer['default'].extend({
+    attrs: {
+      teamFragment: { key: 'team' },
+      agentFragment: { key: 'agent' }
+    }
+  });
+
+});
+define('frontend-cp/serializers/macro-properties', ['exports', 'frontend-cp/serializers/application'], function (exports, ApplicationSerializer) {
+
+  'use strict';
+
+  exports['default'] = ApplicationSerializer['default'].extend({
+    attrs: {
+      typeFragment: { key: 'type' },
+      statusFragment: { key: 'status' },
+      priorityFragment: { key: 'priority' }
+    }
   });
 
 });
@@ -44369,7 +44789,7 @@ define('frontend-cp/tests/unit/components/ko-option-list-drill-down/component-te
     assert.equal(this.$(title).text(), 'Assignee', 'title');
   });
 
-  ember_qunit.test('make sure suggestions are recalculated after search', function (assert) {
+  ember_qunit.test('suggestions are recalculated after search', function (assert) {
     assert.expect(1);
 
     this.render();
@@ -44386,6 +44806,42 @@ define('frontend-cp/tests/unit/components/ko-option-list-drill-down/component-te
       actualList.push($(this).text());
     });
     assert.deepEqual(actualList, expectedList, 'suggestions list');
+  });
+
+  ember_qunit.test('if the search list is in use it redraws correctly when the options change', function (assert) {
+    assert.expect(2);
+
+    this.render();
+
+    Ember['default'].run(function () {
+      component.set('searchTerm', 'j');
+      component.keyUp({ keyCode: j });
+    });
+
+    var expectedList = ['Team A / Jesse Bennett-Chamberlain', 'Team A / Jamie Edwards', 'Team B / Jesse Bennett-Chamberlain'];
+
+    var actualList = [];
+    this.$(suggestionsList).each(function () {
+      actualList.push($(this).text());
+    });
+    assert.deepEqual(actualList, expectedList, 'suggestions list');
+
+    Ember['default'].run(function () {
+      component.set('options', [{ id: 2, value: 'Team A,Jamie Edwards' }]);
+    });
+
+    Ember['default'].run(function () {
+      component.set('searchTerm', 'j');
+      component.keyUp({ keyCode: j });
+    });
+
+    var expectedListTwo = ['Team A / Jamie Edwards'];
+
+    var actualListTwo = [];
+    this.$(suggestionsList).each(function () {
+      actualListTwo.push($(this).text());
+    });
+    assert.deepEqual(actualListTwo, expectedListTwo, 'suggestions list after options update');
   });
 
   ember_qunit.test('suggestions should be able to be selected by mouse', function (assert) {
@@ -45899,7 +46355,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+106b24c8"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+f9e74101"});
 }
 
 /* jshint ignore:end */
