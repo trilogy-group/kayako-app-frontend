@@ -1,7 +1,6 @@
 sudo: false
-language: javascript
-script:
-
+language: php
+script: echo 'build'
 notifications:
   webhooks:
     urls:
