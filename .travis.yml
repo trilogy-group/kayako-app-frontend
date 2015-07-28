@@ -1,48 +1,6 @@
 sudo: false
-env:
-  global:
-  - CI_HOME=`pwd`/../../
-  - secure: ctTqMsA8JFPKW3Q/q6XyuJMtW15/qo2LhyJYuDz7Vp/qS6fYhW9YKPntSEPQPDUYwSz7ts4tTuPYtC3IS8JljdnJSyQR0uqJyduIv6iTS/xNPFHR9V6ZL86LpBvLTk3r6ZLZIj1qvJZSmz/ZYC2YQX9Xf6ZyREnM2s93w1ycx+E=
-  - secure: ETo0w7wKu4kElifLXBj3x5s/Z4wInfAkz9wUnozF+/3peVl4+4qLDOzEJHf0VA7KHu+Oqh3TsQLAK5qjQcoO8r/AP4W1r5sr0I9aTOcV/PWqzjc5M7WH6SVoAqW5E4GWY1C4mhcv+Sj9cFLFDtd65JmmAW6AXZ37PFYCw5ffT+M=
-  - secure: D0890Yo6VpvPUR4lgQd4MJn/8WSnny45Q+mYskHmaFzUX7RSL7L0hCTen0SDsk02D2zEKna/dOJYDwA0A/5RfobF9Iub2pQej9LbP2TnNIH1S9BXqmI3TaD4k57ruZRYlITsxnc9rv55i9Vi8PUHdlryTxUrnr5ExAEtnVjTHXU=
 language: php
-php:
-- 5.5
-- 5.4
-services:
-- memcached
-- redis-server
-- elasticsearch
-before_install:
-- secret=`openssl rsautl -decrypt -inkey ~/.ssh/id_rsa -in $TRAVIS_BUILD_DIR/.travis/secret`
-- openssl aes-256-cbc -k "$secret" -in $TRAVIS_BUILD_DIR/.travis/id_private.enc -d
-  -a -out id_private
-- ssh-add -D
-- chmod 600 id_private
-- ssh-add ./id_private
-- rm -f ./id_private
-- cd $CI_HOME
-- git clone --depth=50 --branch=master git@github.com:kayako/travis-ci.git kayako/travis-ci
-install:
-- cd $CI_HOME
-- cd kayako/travis-ci
-- php build.php
-before_script:
-- mysql -e 'create database swift;'
-- mysql -e 'create database novo;'
-- echo "extension = memcached.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
-- echo "extension = redis.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
-script:
-- cd $CI_HOME
-- cd kayako/travis-ci
-- php bin/lint -R $TRAVIS_BUILD_DIR
-- php test.php
-after_success:
-- cd $CI_HOME
-- cd kayako/travis-ci
-- php package.php
-after_script:
-- php test_reporter.php
+script: echo 'build'
 notifications:
   webhooks:
     urls:
