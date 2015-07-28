@@ -6814,7 +6814,7 @@ define('frontend-cp/components/ko-cases-list/column/subject/template', ['exports
             },
             "end": {
               "line": 2,
-              "column": 75
+              "column": 71
             }
           },
           "moduleName": "frontend-cp/components/ko-cases-list/column/subject/template.hbs"
@@ -6824,19 +6824,19 @@ define('frontend-cp/components/ko-cases-list/column/subject/template', ['exports
         hasRendered: false,
         buildFragment: function buildFragment(dom) {
           var el0 = dom.createDocumentFragment();
-          var el1 = dom.createComment("");
+          var el1 = dom.createElement("strong");
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
           dom.appendChild(el0, el1);
           return el0;
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
           var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
-          dom.insertBoundary(fragment, 0);
-          dom.insertBoundary(fragment, null);
+          morphs[0] = dom.createMorphAt(dom.childAt(fragment, [0]),0,0);
           return morphs;
         },
         statements: [
-          ["content","case.subject",["loc",[null,[2,59],[2,75]]]]
+          ["content","case.subject",["loc",[null,[2,46],[2,62]]]]
         ],
         locals: [],
         templates: []
@@ -6852,8 +6852,8 @@ define('frontend-cp/components/ko-cases-list/column/subject/template', ['exports
             "column": 0
           },
           "end": {
-            "line": 3,
-            "column": 0
+            "line": 2,
+            "column": 83
           }
         },
         "moduleName": "frontend-cp/components/ko-cases-list/column/subject/template.hbs"
@@ -6869,8 +6869,6 @@ define('frontend-cp/components/ko-cases-list/column/subject/template', ['exports
         dom.appendChild(el0, el1);
         var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
-        dom.appendChild(el0, el1);
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
@@ -6878,11 +6876,12 @@ define('frontend-cp/components/ko-cases-list/column/subject/template', ['exports
         morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
         morphs[1] = dom.createMorphAt(fragment,2,2,contextualElement);
         dom.insertBoundary(fragment, 0);
+        dom.insertBoundary(fragment, null);
         return morphs;
       },
       statements: [
         ["inline","ko-avatar",[],["class","u-mr-","avatar",["subexpr","@mut",[["get","case.creator.avatar",["loc",[null,[1,33],[1,52]]]]],[],[]]],["loc",[null,[1,0],[1,54]]]],
-        ["block","link-to",["session.cases.case",["get","case",["loc",[null,[2,32],[2,36]]]]],["class","t-naked-link"],0,null,["loc",[null,[2,0],[2,87]]]]
+        ["block","link-to",["session.cases.case",["get","case",["loc",[null,[2,32],[2,36]]]]],[],0,null,["loc",[null,[2,0],[2,83]]]]
       ],
       locals: [],
       templates: [child0]
@@ -8047,7 +8046,7 @@ define('frontend-cp/components/ko-cases-list/template', ['exports'], function (e
         var el3 = dom.createTextNode("\n    ");
         dom.appendChild(el2, el3);
         var el3 = dom.createElement("h4");
-        dom.setAttribute(el3,"class","heading i-chevron-large-down i-color-grey--dark");
+        dom.setAttribute(el3,"class","heading i-chevron-large-down i-color-grey--dark i-after");
         var el4 = dom.createTextNode("Custom filter name");
         dom.appendChild(el3, el4);
         dom.appendChild(el2, el3);
@@ -8106,11 +8105,9 @@ define('frontend-cp/components/ko-cases-list/template', ['exports'], function (e
 });
 define('frontend-cp/components/ko-center/component', ['exports', 'ember'], function (exports, Ember) {
 
-  'use strict';
+	'use strict';
 
-  exports['default'] = Ember['default'].Component.extend({
-    classNames: ['ko-center']
-  });
+	exports['default'] = Ember['default'].Component.extend({});
 
 });
 define('frontend-cp/components/ko-center/template', ['exports'], function (exports) {
@@ -15240,6 +15237,10 @@ define('frontend-cp/components/ko-option-list-drill-down/component', ['exports',
       this.set('keyboardPosition', 0);
     },
 
+    didUpdateOptions: (function () {
+      this.resetState();
+    }).observes('options'),
+
     didInsertElement: function didInsertElement() {
       this.resetState();
     },
@@ -19521,7 +19522,7 @@ define('frontend-cp/components/ko-sidebar/template', ['exports'], function (expo
               },
               "end": {
                 "line": 7,
-                "column": 108
+                "column": 87
               }
             },
             "moduleName": "frontend-cp/components/ko-sidebar/template.hbs"
@@ -19543,7 +19544,7 @@ define('frontend-cp/components/ko-sidebar/template', ['exports'], function (expo
             return morphs;
           },
           statements: [
-            ["content","view.title",["loc",[null,[7,94],[7,108]]]]
+            ["content","view.title",["loc",[null,[7,73],[7,87]]]]
           ],
           locals: [],
           templates: []
@@ -19654,7 +19655,7 @@ define('frontend-cp/components/ko-sidebar/template', ['exports'], function (expo
         statements: [
           ["attribute","class",["concat",["sidebar__item\n  ",["subexpr","if",[["subexpr","eq",[["get","view",["loc",[null,[3,11],[3,15]]]],["get","activeView",["loc",[null,[3,16],[3,26]]]]],[],["loc",[null,[3,7],[3,27]]]],"sidebar__item--is-active",""],[],["loc",[null,[3,2],[3,59]]]],"\n  ",["subexpr","if",[["subexpr","eq",[["get","view.caseCount",["loc",[null,[4,11],[4,25]]]],0],[],["loc",[null,[4,7],[4,28]]]],"sidebar__item--is-disabled",""],[],["loc",[null,[4,2],[4,62]]]],"\n"]]],
           ["block","if",[["get","view.isDefault",["loc",[null,[6,8],[6,22]]]]],[],0,null,["loc",[null,[6,2],[6,60]]]],
-          ["block","link-to",["session.cases.index",["subexpr","query-params",[],["view",["get","view.id",["loc",[null,[7,54],[7,61]]]],"page","1"],["loc",[null,[7,35],[7,71]]]]],["class","t-naked-link"],1,null,["loc",[null,[7,2],[7,120]]]],
+          ["block","link-to",["session.cases.index",["subexpr","query-params",[],["view",["get","view.id",["loc",[null,[7,54],[7,61]]]],"page","1"],["loc",[null,[7,35],[7,71]]]]],[],1,null,["loc",[null,[7,2],[7,99]]]],
           ["block","if",[["subexpr","not",[["subexpr","eq",[["get","view.caseCountAccuracy",["loc",[null,[8,17],[8,39]]]],"UNKNOWN"],[],["loc",[null,[8,13],[8,50]]]]],[],["loc",[null,[8,8],[8,51]]]]],[],2,null,["loc",[null,[8,2],[12,9]]]]
         ],
         locals: ["view"],
@@ -19671,8 +19672,8 @@ define('frontend-cp/components/ko-sidebar/template', ['exports'], function (expo
             "column": 0
           },
           "end": {
-            "line": 15,
-            "column": 0
+            "line": 14,
+            "column": 9
           }
         },
         "moduleName": "frontend-cp/components/ko-sidebar/template.hbs"
@@ -44369,7 +44370,7 @@ define('frontend-cp/tests/unit/components/ko-option-list-drill-down/component-te
     assert.equal(this.$(title).text(), 'Assignee', 'title');
   });
 
-  ember_qunit.test('make sure suggestions are recalculated after search', function (assert) {
+  ember_qunit.test('suggestions are recalculated after search', function (assert) {
     assert.expect(1);
 
     this.render();
@@ -44386,6 +44387,42 @@ define('frontend-cp/tests/unit/components/ko-option-list-drill-down/component-te
       actualList.push($(this).text());
     });
     assert.deepEqual(actualList, expectedList, 'suggestions list');
+  });
+
+  ember_qunit.test('if the search list is in use it redraws correctly when the options change', function (assert) {
+    assert.expect(2);
+
+    this.render();
+
+    Ember['default'].run(function () {
+      component.set('searchTerm', 'j');
+      component.keyUp({ keyCode: j });
+    });
+
+    var expectedList = ['Team A / Jesse Bennett-Chamberlain', 'Team A / Jamie Edwards', 'Team B / Jesse Bennett-Chamberlain'];
+
+    var actualList = [];
+    this.$(suggestionsList).each(function () {
+      actualList.push($(this).text());
+    });
+    assert.deepEqual(actualList, expectedList, 'suggestions list');
+
+    Ember['default'].run(function () {
+      component.set('options', [{ id: 2, value: 'Team A,Jamie Edwards' }]);
+    });
+
+    Ember['default'].run(function () {
+      component.set('searchTerm', 'j');
+      component.keyUp({ keyCode: j });
+    });
+
+    var expectedListTwo = ['Team A / Jamie Edwards'];
+
+    var actualListTwo = [];
+    this.$(suggestionsList).each(function () {
+      actualListTwo.push($(this).text());
+    });
+    assert.deepEqual(actualListTwo, expectedListTwo, 'suggestions list after options update');
   });
 
   ember_qunit.test('suggestions should be able to be selected by mouse', function (assert) {
@@ -45899,7 +45936,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+977758aa"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+c0e2a265"});
 }
 
 /* jshint ignore:end */
