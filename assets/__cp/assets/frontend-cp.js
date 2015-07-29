@@ -24745,6 +24745,7 @@ define('frontend-cp/instance-initializers/ember-intl', ['exports', 'frontend-cp/
             return key.indexOf(env.modulePrefix + '\/' + type + '\/') === 0;
         });
     }
+
     function instanceInitializer(instance) {
         var service = instance.container.lookup('service:intl');
 
@@ -42205,6 +42206,30 @@ define('frontend-cp/tests/acceptance/case/reply-with-quote-test', ['ember', 'qun
   });
 
 });
+define('frontend-cp/tests/assertions/properties-equal', ['exports', 'ember', 'qunit'], function (exports, Ember, QUnit) {
+
+  'use strict';
+
+
+
+  exports['default'] = propertiesEqual;
+
+  function propertiesEqual(actual, expected, message) {
+    if (!actual) {
+      this.push(false, actual, expected, message);
+      return;
+    }
+    var actualProperties = getEmberObjectProperties(actual);
+    var expectedProperties = expected instanceof Ember['default'].Object ? getEmberObjectProperties(expected) : expected;
+    var objectsAreEqual = QUnit['default'].equiv(actualProperties, expectedProperties);
+    this.push(objectsAreEqual, actualProperties, expectedProperties, message);
+  }
+
+  function getEmberObjectProperties(object) {
+    return object.getProperties(Object.keys(object));
+  }
+
+});
 define('frontend-cp/tests/helpers/format-date', ['exports', 'ember'], function (exports, Ember) {
 
   'use strict';
@@ -42287,7 +42312,7 @@ define('frontend-cp/tests/helpers/login', ['exports', 'ember'], function (export
   });
 
 });
-define('frontend-cp/tests/helpers/qunit', ['exports', 'ember', 'ember-qunit/qunit-module', 'ember-test-helpers', 'ember-qunit/test', 'frontend-cp/tests/helpers/format-date', 'frontend-cp/tests/helpers/format-time', 'frontend-cp/tests/helpers/format-relative', 'frontend-cp/tests/helpers/format-number', 'frontend-cp/tests/helpers/format-html-message', 'frontend-cp/tests/helpers/format-message', 'frontend-cp/tests/helpers/intl-get', 'ember-truth-helpers/helpers/and', 'ember-truth-helpers/helpers/equal', 'ember-truth-helpers/helpers/not', 'ember-truth-helpers/helpers/or', 'ember-truth-helpers/utils/register-helper', 'ember-get-helper/helpers/get-glimmer', 'ember-get-helper/utils/register-helper'], function (exports, Ember, qunit_module, ember_test_helpers, test, FormatDate, FormatTime, FormatRelative, FormatNumber, FormatHtmlMessage, FormatMessage, IntlGet, and, equal, not, or, register_helper, getHelper, utils__register_helper) {
+define('frontend-cp/tests/helpers/qunit', ['exports', 'ember', 'qunit', 'ember-qunit/qunit-module', 'ember-test-helpers', 'ember-qunit/test', 'frontend-cp/tests/helpers/format-date', 'frontend-cp/tests/helpers/format-time', 'frontend-cp/tests/helpers/format-relative', 'frontend-cp/tests/helpers/format-number', 'frontend-cp/tests/helpers/format-html-message', 'frontend-cp/tests/helpers/format-message', 'frontend-cp/tests/helpers/intl-get', 'ember-truth-helpers/helpers/and', 'ember-truth-helpers/helpers/equal', 'ember-truth-helpers/helpers/not', 'ember-truth-helpers/helpers/or', 'ember-truth-helpers/utils/register-helper', 'ember-get-helper/helpers/get-glimmer', 'ember-get-helper/utils/register-helper', 'frontend-cp/tests/assertions/properties-equal'], function (exports, Ember, QUnit, qunit_module, ember_test_helpers, test, FormatDate, FormatTime, FormatRelative, FormatNumber, FormatHtmlMessage, FormatMessage, IntlGet, and, equal, not, or, register_helper, getHelper, utils__register_helper, propertiesEqualAssertion) {
 
   'use strict';
 
@@ -42295,6 +42320,8 @@ define('frontend-cp/tests/helpers/qunit', ['exports', 'ember', 'ember-qunit/quni
   exports.moduleForComponent = moduleForComponent;
   exports.moduleForModel = moduleForModel;
   exports.moduleFor = moduleFor;
+
+  QUnit['default'].assert.propertiesEqual = propertiesEqualAssertion['default'];
 
   function createModule(Constructor, name, description, callbacks) {
     var actualCallbacks = callbacks || (typeof description === 'object' ? description : {});
@@ -46999,7 +47026,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+b249dd7f"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+9efc06cf"});
 }
 
 /* jshint ignore:end */
