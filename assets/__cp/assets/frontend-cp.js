@@ -42216,12 +42216,12 @@ define('frontend-cp/tests/assertions/properties-equal', ['exports', 'ember', 'qu
   exports['default'] = propertiesEqual;
 
   function propertiesEqual(actual, expected, message) {
-    var expectedProperties = expected instanceof Ember['default'].Object ? getEmberObjectProperties(expected) : expected;
     if (!actual) {
-      this.push(false, actual, expectedProperties, message);
+      this.push(false, actual, expected, message);
       return;
     }
     var actualProperties = getEmberObjectProperties(actual);
+    var expectedProperties = expected instanceof Ember['default'].Object ? getEmberObjectProperties(expected) : expected;
     var objectsAreEqual = QUnit['default'].equiv(actualProperties, expectedProperties);
     this.push(objectsAreEqual, actualProperties, expectedProperties, message);
   }
@@ -47027,7 +47027,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+4e2eb0d7"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+12f34cf8"});
 }
 
 /* jshint ignore:end */
