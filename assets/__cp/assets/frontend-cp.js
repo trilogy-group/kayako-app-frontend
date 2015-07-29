@@ -4941,11 +4941,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 42,
+                  "line": 55,
                   "column": 10
                 },
                 "end": {
-                  "line": 50,
+                  "line": 63,
                   "column": 10
                 }
               },
@@ -4970,7 +4970,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
               return morphs;
             },
             statements: [
-              ["inline","component",[["subexpr","ko-helper",[["get","componentFor",["loc",[null,[43,35],[43,47]]]],["get","field.fieldType.id",["loc",[null,[43,48],[43,66]]]]],[],["loc",[null,[43,24],[43,67]]]]],["case",["subexpr","@mut",[["get","case",["loc",[null,[44,19],[44,23]]]]],[],[]],"field",["subexpr","@mut",[["get","field",["loc",[null,[45,20],[45,25]]]]],[],[]],"errors",["subexpr","@mut",[["get","errors",["loc",[null,[46,21],[46,27]]]]],[],[]],"options",["subexpr","ko-contextual-helper",[["get","optionsForField",["loc",[null,[47,44],[47,59]]]],["get","this",["loc",[null,[47,60],[47,64]]]],["get","field",["loc",[null,[47,65],[47,70]]]]],[],["loc",[null,[47,22],[47,71]]]],"editedCaseFields",["subexpr","@mut",[["get","editedCaseFields",["loc",[null,[48,31],[48,47]]]]],[],[]]],["loc",[null,[43,12],[49,14]]]]
+              ["inline","component",[["subexpr","ko-helper",[["get","componentFor",["loc",[null,[56,35],[56,47]]]],["get","field.fieldType.id",["loc",[null,[56,48],[56,66]]]]],[],["loc",[null,[56,24],[56,67]]]]],["case",["subexpr","@mut",[["get","case",["loc",[null,[57,19],[57,23]]]]],[],[]],"field",["subexpr","@mut",[["get","field",["loc",[null,[58,20],[58,25]]]]],[],[]],"errors",["subexpr","@mut",[["get","errors",["loc",[null,[59,21],[59,27]]]]],[],[]],"options",["subexpr","ko-contextual-helper",[["get","optionsForField",["loc",[null,[60,44],[60,59]]]],["get","this",["loc",[null,[60,60],[60,64]]]],["get","field",["loc",[null,[60,65],[60,70]]]]],[],["loc",[null,[60,22],[60,71]]]],"editedCaseFields",["subexpr","@mut",[["get","editedCaseFields",["loc",[null,[61,31],[61,47]]]]],[],[]]],["loc",[null,[56,12],[62,14]]]]
             ],
             locals: [],
             templates: []
@@ -4982,11 +4982,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 41,
+                "line": 54,
                 "column": 8
               },
               "end": {
-                "line": 51,
+                "line": 64,
                 "column": 8
               }
             },
@@ -5009,7 +5009,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             return morphs;
           },
           statements: [
-            ["block","if",[["subexpr","ko-helper",[["get","componentFor",["loc",[null,[42,27],[42,39]]]],["get","field.fieldType.id",["loc",[null,[42,40],[42,58]]]]],[],["loc",[null,[42,16],[42,59]]]]],[],0,null,["loc",[null,[42,10],[50,17]]]]
+            ["block","if",[["subexpr","ko-helper",[["get","componentFor",["loc",[null,[55,27],[55,39]]]],["get","field.fieldType.id",["loc",[null,[55,40],[55,58]]]]],[],["loc",[null,[55,16],[55,59]]]]],[],0,null,["loc",[null,[55,10],[63,17]]]]
           ],
           locals: ["field"],
           templates: [child0]
@@ -5021,11 +5021,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 35,
+              "line": 48,
               "column": 6
             },
             "end": {
-              "line": 53,
+              "line": 66,
               "column": 6
             }
           },
@@ -5082,12 +5082,12 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["element","action",["submit"],[],["loc",[null,[37,55],[37,74]]]],
-          ["inline","format-message",[["subexpr","intl-get",["cases.submit"],[],["loc",[null,[37,92],[37,117]]]]],[],["loc",[null,[37,75],[37,119]]]],
-          ["inline","ko-case-field/requester",[],["requester",["subexpr","@mut",[["get","case.requester",["loc",[null,[39,44],[39,58]]]]],[],[]]],["loc",[null,[39,8],[39,60]]]],
-          ["inline","ko-case-field/tags",[],["tags",["subexpr","@mut",[["get","tags",["loc",[null,[40,34],[40,38]]]]],[],[]],"onTagAddition","addTag","onTagRemoval","removeTag","isEdited",["subexpr","@mut",[["get","isTagsFieldEdited",["loc",[null,[40,96],[40,113]]]]],[],[]]],["loc",[null,[40,8],[40,115]]]],
-          ["block","each",[["get","caseOrFormFields",["loc",[null,[41,16],[41,32]]]]],[],0,null,["loc",[null,[41,8],[51,17]]]],
-          ["inline","ko-case/sla-sidebar",[],["sla",["subexpr","@mut",[["get","case.sla",["loc",[null,[52,34],[52,42]]]]],[],[]],"slaMetrics",["subexpr","@mut",[["get","case.slaMetrics",["loc",[null,[52,54],[52,69]]]]],[],[]]],["loc",[null,[52,8],[52,71]]]]
+          ["element","action",["submit"],[],["loc",[null,[50,55],[50,74]]]],
+          ["inline","format-message",[["subexpr","intl-get",["cases.submit"],[],["loc",[null,[50,92],[50,117]]]]],[],["loc",[null,[50,75],[50,119]]]],
+          ["inline","ko-case-field/requester",[],["requester",["subexpr","@mut",[["get","case.requester",["loc",[null,[52,44],[52,58]]]]],[],[]]],["loc",[null,[52,8],[52,60]]]],
+          ["inline","ko-case-field/tags",[],["tags",["subexpr","@mut",[["get","tags",["loc",[null,[53,34],[53,38]]]]],[],[]],"onTagAddition","addTag","onTagRemoval","removeTag","isEdited",["subexpr","@mut",[["get","isTagsFieldEdited",["loc",[null,[53,96],[53,113]]]]],[],[]]],["loc",[null,[53,8],[53,115]]]],
+          ["block","each",[["get","caseOrFormFields",["loc",[null,[54,16],[54,32]]]]],[],0,null,["loc",[null,[54,8],[64,17]]]],
+          ["inline","ko-case/sla-sidebar",[],["sla",["subexpr","@mut",[["get","case.sla",["loc",[null,[65,34],[65,42]]]]],[],[]],"slaMetrics",["subexpr","@mut",[["get","case.slaMetrics",["loc",[null,[65,54],[65,69]]]]],[],[]]],["loc",[null,[65,8],[65,71]]]]
         ],
         locals: [],
         templates: [child0]
@@ -5103,8 +5103,8 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             "column": 0
           },
           "end": {
-            "line": 56,
-            "column": 6
+            "line": 70,
+            "column": 0
           }
         },
         "moduleName": "frontend-cp/components/ko-case-content/template.hbs"
@@ -5119,11 +5119,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
         var el2 = dom.createTextNode("\n  ");
         dom.appendChild(el1, el2);
         var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","layout--flush");
+        dom.setAttribute(el2,"class","layout layout--flush u-mt");
         var el3 = dom.createTextNode("\n    ");
         dom.appendChild(el2, el3);
         var el3 = dom.createElement("div");
-        dom.setAttribute(el3,"class","layout__item u-1/1 u-mt");
+        dom.setAttribute(el3,"class","layout__item u-2/3");
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
         var el4 = dom.createElement("div");
@@ -5160,7 +5160,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
         dom.appendChild(el5, el6);
         var el6 = dom.createElement("p");
         dom.setAttribute(el6,"class","header__subtitle");
-        var el7 = dom.createTextNode("\n          ");
+        var el7 = dom.createTextNode("\n            ");
         dom.appendChild(el6, el7);
         var el7 = dom.createComment("");
         dom.appendChild(el6, el7);
@@ -5170,13 +5170,60 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
         var el6 = dom.createTextNode("\n        ");
         dom.appendChild(el5, el6);
         dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n\n        ");
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createComment("\n ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","layout__item u-1/3");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","flag");
+        var el5 = dom.createTextNode("\n        ");
         dom.appendChild(el4, el5);
         var el5 = dom.createElement("div");
-        dom.setAttribute(el5,"class","u-inline-block");
+        dom.setAttribute(el5,"class","flag__body");
         var el6 = dom.createTextNode("\n          ");
         dom.appendChild(el5, el6);
-        var el6 = dom.createComment("");
+        var el6 = dom.createElement("ul");
+        dom.setAttribute(el6,"class","list-inline u-mv t-right");
+        var el7 = dom.createTextNode("\n            ");
+        dom.appendChild(el6, el7);
+        var el7 = dom.createElement("li");
+        var el8 = dom.createTextNode("\n              ");
+        dom.appendChild(el7, el8);
+        var el8 = dom.createComment("");
+        dom.appendChild(el7, el8);
+        var el8 = dom.createTextNode("\n            ");
+        dom.appendChild(el7, el8);
+        dom.appendChild(el6, el7);
+        var el7 = dom.createTextNode("\n            ");
+        dom.appendChild(el6, el7);
+        var el7 = dom.createElement("li");
+        var el8 = dom.createTextNode("\n              ");
+        dom.appendChild(el7, el8);
+        var el8 = dom.createComment("");
+        dom.appendChild(el7, el8);
+        var el8 = dom.createTextNode("\n            ");
+        dom.appendChild(el7, el8);
+        dom.appendChild(el6, el7);
+        var el7 = dom.createTextNode("\n            ");
+        dom.appendChild(el6, el7);
+        var el7 = dom.createElement("li");
+        var el8 = dom.createTextNode("\n              ");
+        dom.appendChild(el7, el8);
+        var el8 = dom.createComment("");
+        dom.appendChild(el7, el8);
+        var el8 = dom.createTextNode("\n            ");
+        dom.appendChild(el7, el8);
+        dom.appendChild(el6, el7);
+        var el7 = dom.createTextNode("\n          ");
+        dom.appendChild(el6, el7);
         dom.appendChild(el5, el6);
         var el6 = dom.createTextNode("\n        ");
         dom.appendChild(el5, el6);
@@ -5197,7 +5244,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
         var el3 = dom.createTextNode("\n    ");
         dom.appendChild(el2, el3);
         var el3 = dom.createElement("div");
-        dom.setAttribute(el3,"class","layout__item u-3/4");
+        dom.setAttribute(el3,"class","layout__item u-2/3");
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
         var el4 = dom.createElement("div");
@@ -5216,10 +5263,10 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
         var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
         dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n    ");
+        var el3 = dom.createComment("\n ");
         dom.appendChild(el2, el3);
         var el3 = dom.createElement("div");
-        dom.setAttribute(el3,"class","layout__item u-1/4");
+        dom.setAttribute(el3,"class","layout__item u-1/3");
         var el4 = dom.createTextNode("\n");
         dom.appendChild(el3, el4);
         var el4 = dom.createComment("");
@@ -5233,33 +5280,41 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
         var el2 = dom.createTextNode("\n");
         dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
         var element1 = dom.childAt(fragment, [0]);
-        var element2 = dom.childAt(element1, [1, 1, 1]);
+        var element2 = dom.childAt(element1, [1]);
         var element3 = dom.childAt(element2, [1, 1]);
-        var element4 = dom.childAt(element2, [3]);
-        var element5 = dom.childAt(element1, [3]);
-        var element6 = dom.childAt(element5, [1, 1]);
-        var morphs = new Array(7);
-        morphs[0] = dom.createAttrMorph(element3, 'src');
-        morphs[1] = dom.createMorphAt(dom.childAt(element4, [1]),1,1);
-        morphs[2] = dom.createMorphAt(dom.childAt(element4, [3]),1,1);
-        morphs[3] = dom.createMorphAt(dom.childAt(element2, [5]),1,1);
-        morphs[4] = dom.createMorphAt(element6,1,1);
-        morphs[5] = dom.createMorphAt(element6,3,3);
-        morphs[6] = dom.createMorphAt(dom.childAt(element5, [3]),1,1);
+        var element4 = dom.childAt(element3, [1, 1]);
+        var element5 = dom.childAt(element3, [3]);
+        var element6 = dom.childAt(element2, [3, 1, 1, 1]);
+        var element7 = dom.childAt(element1, [3]);
+        var element8 = dom.childAt(element7, [1, 1]);
+        var morphs = new Array(9);
+        morphs[0] = dom.createAttrMorph(element4, 'src');
+        morphs[1] = dom.createMorphAt(dom.childAt(element5, [1]),1,1);
+        morphs[2] = dom.createMorphAt(dom.childAt(element5, [3]),1,1);
+        morphs[3] = dom.createMorphAt(dom.childAt(element6, [1]),1,1);
+        morphs[4] = dom.createMorphAt(dom.childAt(element6, [3]),1,1);
+        morphs[5] = dom.createMorphAt(dom.childAt(element6, [5]),1,1);
+        morphs[6] = dom.createMorphAt(element8,1,1);
+        morphs[7] = dom.createMorphAt(element8,3,3);
+        morphs[8] = dom.createMorphAt(dom.childAt(element7, [3]),1,1);
         return morphs;
       },
       statements: [
         ["attribute","src",["concat",[["get","case.requester.avatar",["loc",[null,[6,22],[6,43]]]]]]],
         ["inline","ko-editable-text",[],["value",["subexpr","@mut",[["get","case.subject",["loc",[null,[10,37],[10,49]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isCaseSubjectEdited",["loc",[null,[10,59],[10,78]]]]],[],[]],"onValueChange","setSubject"],["loc",[null,[10,12],[10,107]]]],
-        ["inline","format-message",[["subexpr","intl-get",["cases.subheader"],[],["loc",[null,[13,27],[13,55]]]]],["time",["subexpr","@mut",[["get","case.createdAt",["loc",[null,[14,19],[14,33]]]]],[],[]],"channel",["subexpr","format-message",[["subexpr","intl-get",[["subexpr","ko-concat",["cases.channelType.",["get","case.sourceChannel.channelType",["loc",[null,[15,80],[15,110]]]]],[],["loc",[null,[15,48],[15,111]]]]],[],["loc",[null,[15,38],[15,112]]]]],[],["loc",[null,[15,22],[15,113]]]],"hasBrand",["subexpr","@mut",[["get","hasBrand",["loc",[null,[16,23],[16,31]]]]],[],[]],"brand",["subexpr","@mut",[["get","case.brand.companyName",["loc",[null,[17,20],[17,42]]]]],[],[]]],["loc",[null,[13,10],[17,44]]]],
-        ["inline","ko-case/macro-selector",[],["macros",["subexpr","@mut",[["get","macros",["loc",[null,[22,42],[22,48]]]]],[],[]],"onMacroSelected","applyMacro"],["loc",[null,[22,10],[22,79]]]],
-        ["inline","ko-text-editor",[],["viewName","postEditor","channels",["subexpr","@mut",[["get","case.replyChannels",["loc",[null,[30,56],[30,74]]]]],[],[]],"channel",["subexpr","@mut",[["get","reply.channel",["loc",[null,[30,83],[30,96]]]]],[],[]],"onChannelChange","setChannel"],["loc",[null,[30,8],[30,127]]]],
-        ["inline","ko-feed",[],["events",["subexpr","@mut",[["get","messages",["loc",[null,[31,25],[31,33]]]]],[],[]],"onReplyWithQuote","replyWithQuote"],["loc",[null,[31,8],[31,69]]]],
-        ["block","ko-info-bar",[],[],0,null,["loc",[null,[35,6],[53,22]]]]
+        ["inline","format-message",[["subexpr","intl-get",["cases.subheader"],[],["loc",[null,[13,29],[13,57]]]]],["time",["subexpr","@mut",[["get","case.createdAt",["loc",[null,[14,17],[14,31]]]]],[],[]],"channel",["subexpr","format-message",[["subexpr","intl-get",[["subexpr","ko-concat",["cases.channelType.",["get","case.sourceChannel.channelType",["loc",[null,[15,78],[15,108]]]]],[],["loc",[null,[15,46],[15,109]]]]],[],["loc",[null,[15,36],[15,110]]]]],[],["loc",[null,[15,20],[15,111]]]],"hasBrand",["subexpr","@mut",[["get","hasBrand",["loc",[null,[16,21],[16,29]]]]],[],[]],"brand",["subexpr","@mut",[["get","case.brand.companyName",["loc",[null,[17,18],[17,40]]]]],[],[]]],["loc",[null,[13,12],[17,42]]]],
+        ["inline","ko-case/macro-selector",[],["macros",["subexpr","@mut",[["get","macros",["loc",[null,[27,46],[27,52]]]]],[],[]],"onMacroSelected","applyMacro"],["loc",[null,[27,14],[27,83]]]],
+        ["inline","ko-case/macro-selector",[],["macros",["subexpr","@mut",[["get","macros",["loc",[null,[30,46],[30,52]]]]],[],[]],"onMacroSelected","applyMacro"],["loc",[null,[30,14],[30,83]]]],
+        ["inline","ko-case/macro-selector",[],["macros",["subexpr","@mut",[["get","macros",["loc",[null,[33,46],[33,52]]]]],[],[]],"onMacroSelected","applyMacro"],["loc",[null,[33,14],[33,83]]]],
+        ["inline","ko-text-editor",[],["viewName","postEditor","channels",["subexpr","@mut",[["get","case.replyChannels",["loc",[null,[43,56],[43,74]]]]],[],[]],"channel",["subexpr","@mut",[["get","reply.channel",["loc",[null,[43,83],[43,96]]]]],[],[]],"onChannelChange","setChannel"],["loc",[null,[43,8],[43,127]]]],
+        ["inline","ko-feed",[],["events",["subexpr","@mut",[["get","messages",["loc",[null,[44,25],[44,33]]]]],[],[]],"onReplyWithQuote","replyWithQuote"],["loc",[null,[44,8],[44,69]]]],
+        ["block","ko-info-bar",[],[],0,null,["loc",[null,[48,6],[66,22]]]]
       ],
       locals: [],
       templates: [child0]
@@ -42216,12 +42271,12 @@ define('frontend-cp/tests/assertions/properties-equal', ['exports', 'ember', 'qu
   exports['default'] = propertiesEqual;
 
   function propertiesEqual(actual, expected, message) {
+    var expectedProperties = expected instanceof Ember['default'].Object ? getEmberObjectProperties(expected) : expected;
     if (!actual) {
-      this.push(false, actual, expected, message);
+      this.push(false, actual, expectedProperties, message);
       return;
     }
     var actualProperties = getEmberObjectProperties(actual);
-    var expectedProperties = expected instanceof Ember['default'].Object ? getEmberObjectProperties(expected) : expected;
     var objectsAreEqual = QUnit['default'].equiv(actualProperties, expectedProperties);
     this.push(objectsAreEqual, actualProperties, expectedProperties, message);
   }
@@ -47027,7 +47082,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+12f34cf8"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+91253b4d"});
 }
 
 /* jshint ignore:end */
