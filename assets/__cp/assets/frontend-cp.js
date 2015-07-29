@@ -29170,10 +29170,11 @@ define('frontend-cp/mixins/change-aware-model', ['exports', 'ember', 'npm:lodash
           return;
         }
         var relationship = _this.get(name);
-        initialRelationships[name] = [];
+        initialRelationships[name] = null;
 
         if (relationship) {
           if (typeof relationship.forEach === 'function') {
+            initialRelationships[name] = [];
             relationship.forEach(function (relatedObject) {
               initialRelationships[name].pushObject(relatedObject);
             });
@@ -42215,12 +42216,12 @@ define('frontend-cp/tests/assertions/properties-equal', ['exports', 'ember', 'qu
   exports['default'] = propertiesEqual;
 
   function propertiesEqual(actual, expected, message) {
+    var expectedProperties = expected instanceof Ember['default'].Object ? getEmberObjectProperties(expected) : expected;
     if (!actual) {
-      this.push(false, actual, expected, message);
+      this.push(false, actual, expectedProperties, message);
       return;
     }
     var actualProperties = getEmberObjectProperties(actual);
-    var expectedProperties = expected instanceof Ember['default'].Object ? getEmberObjectProperties(expected) : expected;
     var objectsAreEqual = QUnit['default'].equiv(actualProperties, expectedProperties);
     this.push(objectsAreEqual, actualProperties, expectedProperties, message);
   }
@@ -47026,7 +47027,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+9efc06cf"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+4e2eb0d7"});
 }
 
 /* jshint ignore:end */
