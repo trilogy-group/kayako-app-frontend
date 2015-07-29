@@ -31423,7 +31423,7 @@ define('frontend-cp/serializers/definition', ['exports', 'frontend-cp/serializer
   'use strict';
 
   exports['default'] = ApplicationSerializer['default'].extend({
-    primaryKey: 'name',
+    primaryKey: 'field',
     attrs: {
       definitionType: { key: 'type' }
     },
@@ -34158,13 +34158,12 @@ define('frontend-cp/session/admin/showcase/controller', ['exports', 'ember', 'fr
   exports['default'] = Ember['default'].Controller.extend(PusherBinding['default'], {
     view: null,
 
-    PUSHER_SUBSCRIPTIONS: {
-      testChannel: {
-        testEvent: function testEvent() {
-          console.log('this is fired');
-        } //eslint-disable-line
-      }
-    },
+    // Pusher is off because we're still using my expired personal key
+    //PUSHER_SUBSCRIPTIONS: {
+    //  testChannel: {
+    //    testEvent() { console.log('this is fired'); } //eslint-disable-line
+    //  }
+    //},
 
     canDeleteCollection: (function () {
       return this.get('view.collections.length') > 1;
@@ -47082,7 +47081,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+91253b4d"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+1cb08a2a"});
 }
 
 /* jshint ignore:end */
