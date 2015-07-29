@@ -121,7 +121,7 @@ define('frontend-cp/adapters/application', ['exports', 'ember', 'ember-data', 'n
             delete query.parent;
           }
           // The inverse relationship (parent-child)
-          inverseRelationship = typeObject.inverseFor(name);
+          inverseRelationship = typeObject.inverseFor(name, store);
         }
       });
 
@@ -191,7 +191,7 @@ define('frontend-cp/adapters/application', ['exports', 'ember', 'ember-data', 'n
       var _this = this;
 
       return this._super.apply(this, arguments).then(function (payload) {
-        var inverse = snapshot.type.inverseFor(relationship.key);
+        var inverse = snapshot.type.inverseFor(relationship.key, store);
         if (inverse && payload[_this.primaryRecordKey]) {
           // required for when collection payload is a hash and not an array - looking at you, locale strings
           if (!_['default'].isArray(payload[_this.primaryRecordKey])) {
@@ -215,14 +215,24 @@ define('frontend-cp/adapters/application', ['exports', 'ember', 'ember-data', 'n
       return Ember['default'].String.pluralize(dasherized);
     },
 
-    findQuery: function findQuery(store, type, query) {
-      var url = this.buildURL(type.modelName, null, null, 'findQuery', query);
+    query: function query(store, type, _query) {
+      var url = this.buildURL(type.modelName, null, null, 'query', _query);
 
       if (this.sortQueryParams) {
-        query = this.sortQueryParams(query);
+        _query = this.sortQueryParams(_query);
       }
 
-      return this.ajax(url, 'GET', { data: query });
+      return this.ajax(url, 'GET', { data: _query });
+    },
+
+    /* TODO: Remove when Ember 2.0 is released (just for deprecation warnings) */
+    shouldReloadAll: function shouldReloadAll(store, snapshotRecordArray) {
+      return true;
+    },
+
+    /* TODO: Remove when Ember 2.0 is relased (just for deprecation warnings) */
+    shouldBackgroundReloadRecord: function shouldBackgroundReloadRecord(store, snapshot) {
+      return false;
     }
   });
 
@@ -474,7 +484,7 @@ define('frontend-cp/adapters/static-model', ['exports', 'ember-data', 'npm:lodas
 
   exports['default'] = DS['default'].Adapter.extend({
     findAll: function findAll(store, typeClass) {
-      return store.all(typeClass);
+      return store.peekAll(typeClass);
     },
 
     find: function find(store, typeClass, id) {
@@ -4707,7 +4717,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember'],
     initMessages: (function () {
       var _this2 = this;
 
-      this.get('store').find('case-message', { parent: this.get('case'), page: 1 }).then(function (messages) {
+      this.get('store').query('case-message', { parent: this.get('case'), page: 1 }).then(function (messages) {
         _this2.set('messages', messages);
       });
     }).on('init'),
@@ -4771,13 +4781,13 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember'],
        */
       switch (field.get('fieldType.id')) {
         case 'PRIORITY':
-          return this.get('store').all('case-priority');
+          return this.get('store').peekAll('case-priority');
         case 'STATUS':
-          return this.get('store').all('case-status').filter(function (status) {
+          return this.get('store').peekAll('case-status').filter(function (status) {
             return status.get('statusType') !== 'NEW' && status.get('statusType') !== 'CLOSED';
           });
         case 'TYPE':
-          return this.get('store').all('case-type');
+          return this.get('store').peekAll('case-type');
 
       }
     },
@@ -4803,6 +4813,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember'],
           editedCaseFields.set(field.get('id'), _this4.get('case').hasDirtyBelongsToRelationship(relationshipKey));
         }
       });
+      //console.log(editedCaseFields);
     },
 
     resetCaseFormState: function resetCaseFormState() {
@@ -29583,7 +29594,7 @@ define('frontend-cp/models/brand', ['exports', 'ember-data'], function (exports,
     title: DS['default'].attr('string'),
     companyName: DS['default'].attr('string'),
     url: DS['default'].attr('string'),
-    language: DS['default'].belongsTo('language'),
+    language: DS['default'].belongsTo('language', { async: false }),
     isEnabled: DS['default'].attr('boolean')
   });
 
@@ -29593,12 +29604,12 @@ define('frontend-cp/models/business-hour', ['exports', 'ember-data'], function (
   'use strict';
 
   exports['default'] = DS['default'].Model.extend({
-    title: DS['default'].attr('string'),
+    title: DS['default'].attr('string', { async: false }),
     //zones: DS.hasMany('zone'),
-    holidays: DS['default'].hasMany('holiday'),
-    teams: DS['default'].hasMany('team'),
-    createdAt: DS['default'].attr('date'),
-    updatedAt: DS['default'].attr('date')
+    holidays: DS['default'].hasMany('holiday', { async: false }),
+    teams: DS['default'].hasMany('team', { async: false }),
+    createdAt: DS['default'].attr('date', { async: false }),
+    updatedAt: DS['default'].attr('date', { async: false })
   });
 
 });
@@ -29647,7 +29658,7 @@ define('frontend-cp/models/case-field-value', ['exports', 'ember-data'], functio
     // field: DS.belongsTo('case-field', { async: true }),
     fieldFragment: DS['default'].hasOneFragment('relationship-fragment'),
     field: (function () {
-      return this.store.getById('case-field', this.get('fieldFragment.relationshipId'));
+      return this.store.peekRecord('case-field', this.get('fieldFragment.relationshipId'));
     }).property('fieldFragment.relationshipId'),
 
     value: DS['default'].attr('string')
@@ -29693,8 +29704,8 @@ define('frontend-cp/models/case-form', ['exports', 'ember-data', 'frontend-cp/mi
     isEnabled: DS['default'].attr('boolean'),
     isDefault: DS['default'].attr('boolean'),
     sortOrder: DS['default'].attr('number'),
-    fields: DS['default'].hasMany('case-field'),
-    brand: DS['default'].belongsTo('brand'),
+    fields: DS['default'].hasMany('case-field', { async: false }),
+    brand: DS['default'].belongsTo('brand', { async: false }),
     createdAt: DS['default'].attr('date'),
     updatedAt: DS['default'].attr('date')
   });
@@ -29709,14 +29720,14 @@ define('frontend-cp/models/case-message', ['exports', 'ember-data'], function (e
     subject: DS['default'].attr('string'),
     bodyText: DS['default'].attr('string'),
     bodyHtml: DS['default'].attr('string'),
-    recipients: DS['default'].hasMany('message-recipient'),
+    recipients: DS['default'].hasMany('message-recipient', { async: false }),
     fullname: DS['default'].attr('string'),
     email: DS['default'].attr('string'),
-    creator: DS['default'].belongsTo('user'),
-    identity: DS['default'].belongsTo('identity'),
-    mailbox: DS['default'].belongsTo('mailbox'),
-    attachments: DS['default'].hasMany('attachment'),
-    location: DS['default'].belongsTo('location'),
+    creator: DS['default'].belongsTo('user', { async: false }),
+    identity: DS['default'].belongsTo('identity', { async: false }),
+    mailbox: DS['default'].belongsTo('mailbox', { async: false }),
+    attachments: DS['default'].hasMany('attachment', { async: false }),
+    location: DS['default'].belongsTo('location', { async: false }),
     // metadata: DS...
     creationMode: DS['default'].attr('string'),
     locale: DS['default'].attr('string'),
@@ -29749,17 +29760,17 @@ define('frontend-cp/models/case-reply', ['exports', 'ember-data'], function (exp
   exports['default'] = DS['default'].Model.extend({
     contents: DS['default'].attr('string'),
     channelType: DS['default'].attr('string'),
-    channel: DS['default'].belongsTo('account'),
+    channel: DS['default'].belongsTo('account', { async: false }),
     inReplyToUuid: DS['default'].attr('string'),
     // options[cc]
     // options[bcc]
     // options[markdown]
     // options[send_link]
-    status: DS['default'].belongsTo('case-status'),
-    priority: DS['default'].belongsTo('case-priority'),
-    caseType: DS['default'].belongsTo('case-type'),
-    assigneeTeam: DS['default'].belongsTo('team'),
-    assigneeAgent: DS['default'].belongsTo('user'),
+    status: DS['default'].belongsTo('case-status', { async: false }),
+    priority: DS['default'].belongsTo('case-priority', { async: false }),
+    caseType: DS['default'].belongsTo('case-type', { async: false }),
+    assigneeTeam: DS['default'].belongsTo('team', { async: false }),
+    assigneeAgent: DS['default'].belongsTo('user', { async: false }),
     tags: DS['default'].attr('string'),
     fieldValues: DS['default'].hasManyFragments('case-field-value'),
     // _filename: DS.belongsTo('?'),
@@ -29803,25 +29814,25 @@ define('frontend-cp/models/case', ['exports', 'ember-data', 'frontend-cp/mixins/
     maskId: DS['default'].attr('string'),
     subject: DS['default'].attr('string'),
     portal: DS['default'].attr('string'),
-    sourceChannel: DS['default'].belongsTo('channel'),
-    requester: DS['default'].belongsTo('user'),
-    creator: DS['default'].belongsTo('user'),
-    identity: DS['default'].belongsTo('identity', { polymorphic: true }),
-    sla: DS['default'].belongsTo('sla'),
+    sourceChannel: DS['default'].belongsTo('channel', { async: false }),
+    requester: DS['default'].belongsTo('user', { async: false }),
+    creator: DS['default'].belongsTo('user', { async: false }),
+    identity: DS['default'].belongsTo('identity', { polymorphic: true, async: false }),
+    sla: DS['default'].belongsTo('sla', { async: false }),
     slaMetrics: DS['default'].hasManyFragments('sla-metric'),
     // assignee: DS.belongsTo('team'), TODO weird json
-    assignedBy: DS['default'].belongsTo('user'),
-    brand: DS['default'].belongsTo('brand'),
-    status: DS['default'].belongsTo('case-status'),
-    priority: DS['default'].belongsTo('case-priority'),
-    caseType: DS['default'].belongsTo('case-type'),
-    tags: DS['default'].hasMany('tag'),
-    form: DS['default'].belongsTo('case-form'),
+    assignedBy: DS['default'].belongsTo('user', { async: false }),
+    brand: DS['default'].belongsTo('brand', { async: false }),
+    status: DS['default'].belongsTo('case-status', { async: false }),
+    priority: DS['default'].belongsTo('case-priority', { async: false }),
+    caseType: DS['default'].belongsTo('case-type', { async: false }),
+    tags: DS['default'].hasMany('tag', { async: false }),
+    form: DS['default'].belongsTo('case-form', { async: false }),
     customFields: DS['default'].hasManyFragments('case-field-value'),
     fieldValues: DS['default'].hasManyFragments('case-field-value', { defaultValue: [] }), // write only
     // metadata // TODO nested json
-    lastReplier: DS['default'].belongsTo('user'),
-    lastReplierIdentity: DS['default'].belongsTo('identity'),
+    lastReplier: DS['default'].belongsTo('user', { async: false }),
+    lastReplierIdentity: DS['default'].belongsTo('identity', { async: false }),
     creationMode: DS['default'].attr('string'),
     state: DS['default'].attr('string'),
     totalPosts: DS['default'].attr('number'),
@@ -29928,7 +29939,7 @@ define('frontend-cp/models/channel', ['exports', 'ember-data'], function (export
   exports['default'] = DS['default'].Model.extend({
     channelType: DS['default'].attr('string'),
     charaterLimit: DS['default'].attr('number'),
-    account: DS['default'].belongsTo('account', { polymorphic: true })
+    account: DS['default'].belongsTo('account', { polymorphic: true, async: false })
   });
 
 });
@@ -30257,7 +30268,7 @@ define('frontend-cp/models/link', ['exports', 'ember-data'], function (exports, 
 
   exports['default'] = DS['default'].Model.extend({
     label: DS['default'].attr('string'),
-    object: DS['default'].belongsTo('object', { polymorphic: true })
+    object: DS['default'].belongsTo('object', { polymorphic: true, async: false })
   });
 
 });
@@ -30417,8 +30428,8 @@ define('frontend-cp/models/note', ['exports', 'ember-data', 'frontend-cp/models/
     contents: DS['default'].attr('string'),
     isPinned: DS['default'].attr('boolean'),
     color: DS['default'].attr('string', { defaultValue: 'YELLOW' }), // TODO enum YELLOW, RED, GREEN, BLUE, ORANGE, PURPLE
-    creator: DS['default'].belongsTo('user'),
-    identity: DS['default'].belongsTo('identity'),
+    creator: DS['default'].belongsTo('user', { async: false }),
+    identity: DS['default'].belongsTo('identity', { async: false }),
     createdAt: DS['default'].attr('date'),
     updatedAt: DS['default'].attr('date'),
 
@@ -30446,7 +30457,7 @@ define('frontend-cp/models/organization-field-value', ['exports', 'ember-data'],
     // field: DS.belongsTo('organization-field', { async: true }),
     fieldFragment: DS['default'].hasOneFragment('relationship-fragment'),
     field: (function () {
-      return this.store.getById('organization-field', this.get('fieldFragment.relationshipId'));
+      return this.store.peekRecord('organization-field', this.get('fieldFragment.relationshipId'));
     }).property('fieldFragment.relationshipId'),
 
     value: DS['default'].attr('string')
@@ -30722,7 +30733,7 @@ define('frontend-cp/models/twitter-account', ['exports', 'ember-data', 'frontend
   exports['default'] = Account['default'].extend({
     twitterId: DS['default'].attr('string'),
     screenName: DS['default'].attr('string'),
-    brand: DS['default'].belongsTo('brand'),
+    brand: DS['default'].belongsTo('brand', { async: false }),
     routeMentions: DS['default'].attr('boolean'),
     routeMessages: DS['default'].attr('boolean'),
     routeFavorites: DS['default'].attr('boolean'),
@@ -30742,7 +30753,7 @@ define('frontend-cp/models/user-field-value', ['exports', 'ember-data'], functio
     // field: DS.belongsTo('user-field', { async: true }),
     fieldFragment: DS['default'].hasOneFragment('relationship-fragment'),
     field: (function () {
-      return this.store.getById('user-field', this.get('fieldFragment.relationshipId'));
+      return this.store.peekRecord('user-field', this.get('fieldFragment.relationshipId'));
     }).property('fieldFragment.relationshipId'),
 
     value: DS['default'].attr('string')
@@ -30780,7 +30791,7 @@ define('frontend-cp/models/user-note', ['exports', 'ember-data'], function (expo
     contents: DS['default'].attr('string'),
     color: DS['default'].attr('string'), // TODO option
     user: DS['default'].belongsTo('user', { async: true, parent: true }),
-    attachments: DS['default'].hasMany('attachment'),
+    attachments: DS['default'].hasMany('attachment', { async: false }),
     createdAt: DS['default'].attr('date'),
     updatedAt: DS['default'].attr('date')
   });
@@ -30798,7 +30809,7 @@ define('frontend-cp/models/user', ['exports', 'ember-data', 'ember'], function (
     role: DS['default'].belongsTo('role', { async: true }),
     avatar: DS['default'].attr('string'),
     organization: DS['default'].belongsTo('organization', { async: true }),
-    teams: DS['default'].hasMany('team'),
+    teams: DS['default'].hasMany('team', { async: false }),
     emails: DS['default'].hasMany('identity-email', { async: true, url: 'identities/emails' }),
     phones: DS['default'].hasMany('identity-phone', { async: true, url: 'identities/phones' }),
     twitter: DS['default'].hasMany('identity-twitter', { async: true, url: 'identities/twitter' }),
@@ -30806,7 +30817,7 @@ define('frontend-cp/models/user', ['exports', 'ember-data', 'ember'], function (
     addresses: DS['default'].hasMany('contact-address', { async: true, url: 'contacts/addresses' }),
     websites: DS['default'].hasMany('contact-website', { async: true, url: 'contacts/websites' }),
     customFields: DS['default'].hasManyFragments('user-field-value'),
-    tags: DS['default'].hasMany('tag'),
+    tags: DS['default'].hasMany('tag', { async: false }),
     notes: DS['default'].hasMany('user-note', { child: true, url: 'notes' }),
     accessLevel: DS['default'].attr('string'),
     locale: DS['default'].attr('string'),
@@ -30847,11 +30858,11 @@ define('frontend-cp/models/view', ['exports', 'ember-data'], function (exports, 
 
   exports['default'] = DS['default'].Model.extend({
     title: DS['default'].attr('string'),
-    agent: DS['default'].belongsTo('user'),
+    agent: DS['default'].belongsTo('user', { async: false }),
     visibilityType: DS['default'].attr('string'),
-    visibilityToTeams: DS['default'].hasMany('team'),
+    visibilityToTeams: DS['default'].hasMany('team', { async: false }),
     columns: DS['default'].hasManyFragments('column-fragment'),
-    predicateCollections: DS['default'].hasMany('predicate-collection'),
+    predicateCollections: DS['default'].hasMany('predicate-collection', { async: false }),
     orderByColumn: DS['default'].attr('string'),
     caseCount: DS['default'].attr('number'),
     caseCountAccuracy: DS['default'].attr('string'),
@@ -30872,7 +30883,7 @@ define('frontend-cp/models/vote', ['exports', 'ember-data'], function (exports, 
 
   exports['default'] = DS['default'].Model.extend({
     type: DS['default'].attr('string'),
-    user: DS['default'].belongsTo('user'),
+    user: DS['default'].belongsTo('user', { async: false }),
     createdAt: DS['default'].attr('date'),
     updatedAt: DS['default'].attr('date')
   });
@@ -31131,7 +31142,7 @@ define('frontend-cp/serializers/application', ['exports', 'ember', 'ember-data',
           if (relationship.options.url) {
             data.links[name] = relationship.options.url;
           } else {
-            var inverseRelationship = type.inverseFor(name);
+            var inverseRelationship = type.inverseFor(name, store);
             var childType = inverseRelationship.type;
             var childAdapter = store.adapterFor(childType.modelName);
             data.links[name] = childAdapter.pathForType(childType.modelName);
@@ -31929,7 +31940,7 @@ define('frontend-cp/services/session', ['exports', 'ember'], function (exports, 
       return this.get('store').find('session', 'current').then(function (session) {
         // We have to explicitly delete a record with id=current.
         // Thank you, Ember Data, for this mess.
-        var record = _this2.get('store').all('session').find(function (record) {
+        var record = _this2.get('store').peekAll('session').find(function (record) {
           return record.id === 'current';
         });
         record.unloadRecord();
@@ -32042,7 +32053,7 @@ define('frontend-cp/services/store-cache', ['exports', 'ember', 'npm:lodash'], f
           resolve(_this2.get('allCache.' + serializedQuery));
         });
       } else {
-        return this.get('store').find(type, _query).then(function (data) {
+        return this.get('store').query(type, _query).then(function (data) {
           _this2.set('allCache.' + serializedQuery, data);
           return data;
         });
@@ -33458,7 +33469,7 @@ define('frontend-cp/session/admin/manage/case-forms/index/controller', ['exports
 
     actions: {
       makeDefault: function makeDefault(caseform) {
-        this.store.all('case-form').forEach(function (caseform) {
+        this.store.peekAll('case-form').forEach(function (caseform) {
           caseform.isDefault = false;
         });
         caseform.isDefault = true;
@@ -34230,7 +34241,7 @@ define('frontend-cp/session/admin/showcase/route', ['exports', 'ember'], functio
       userModel.set('avatar', 'https://s-media-cache-ak0.pinimg.com/736x/ca/c1/18/cac1189a8df5498d17ef09d65ad0f698.jpg');
 
       controller.set('userModel', userModel);
-      controller.set('predicateDefinitions', this.store.all('definition'));
+      controller.set('predicateDefinitions', this.store.peekAll('definition'));
 
       this.store.find('view', 4).then(function (view) {
         controller.set('view', view);
@@ -35533,7 +35544,7 @@ define('frontend-cp/session/cases/index/route', ['exports', 'ember'], function (
       this.set('offset', (this.get('page') - 1) * this.get('limit'));
 
       return this.get('storeCache').findAll('view').then(function (views) {
-        var view = _this.store.getById('view', params.view);
+        var view = _this.store.peekRecord('view', params.view);
         if (!view) {
           view = views.filterBy('isDefault')[0];
           _this.transitionTo({ queryParams: { view: view.id } });
@@ -35557,7 +35568,7 @@ define('frontend-cp/session/cases/index/route', ['exports', 'ember'], function (
       controller.set('activeView', model.activeView);
       controller.setProperties({
         page: this.get('page'),
-        total: Math.ceil(this.store.metadataFor('case').total / this.get('limit'))
+        totalPages: Math.ceil(model.cases.get('meta.total') / this.get('limit'))
       });
 
       // Resetting loading state
@@ -35900,7 +35911,7 @@ define('frontend-cp/session/cases/index/template', ['exports'], function (export
       statements: [
         ["inline","ko-sidebar",[],["views",["subexpr","@mut",[["get","views",["loc",[null,[6,29],[6,34]]]]],[],[]],"activeView",["subexpr","@mut",[["get","activeView",["loc",[null,[6,46],[6,56]]]]],[],[]]],["loc",[null,[6,10],[6,58]]]],
         ["block","if",[["get","loading",["loc",[null,[10,18],[10,25]]]]],[],0,1,["loc",[null,[10,12],[14,19]]]],
-        ["block","ko-pagination",[],["currentPage",["subexpr","@mut",[["get","page",["loc",[null,[18,39],[18,43]]]]],[],[]],"loadingPage",["subexpr","@mut",[["get","loadingPage",["loc",[null,[18,56],[18,67]]]]],[],[]],"pageCount",["subexpr","@mut",[["get","total",["loc",[null,[18,78],[18,83]]]]],[],[]]],2,null,["loc",[null,[18,10],[20,28]]]]
+        ["block","ko-pagination",[],["currentPage",["subexpr","@mut",[["get","page",["loc",[null,[18,39],[18,43]]]]],[],[]],"loadingPage",["subexpr","@mut",[["get","loadingPage",["loc",[null,[18,56],[18,67]]]]],[],[]],"pageCount",["subexpr","@mut",[["get","totalPages",["loc",[null,[18,78],[18,88]]]]],[],[]]],2,null,["loc",[null,[18,10],[20,28]]]]
       ],
       locals: [],
       templates: [child0, child1, child2]
@@ -36149,7 +36160,7 @@ define('frontend-cp/session/controller', ['exports', 'ember'], function (exports
          * 404s are expected - it means we don't have any results
          * just catch the error and empty the searchResults array
          */
-        this.store.findQuery('search-result-group', { query: query, fields: 'snippet,resource' }).then(function (results) {
+        this.store.query('search-result-group', { query: query, fields: 'snippet,resource' }).then(function (results) {
           _this.set('searchResults', results);
         }, function () {
           _this.set('searchResults', new Ember['default'].A([]));
@@ -41750,7 +41761,7 @@ define('frontend-cp/session/users/index/route', ['exports', 'ember'], function (
       controller.set('users', model);
       controller.setProperties({
         page: this.get('page'),
-        total: Math.ceil(this.store.metadataFor('user').total / this.get('limit'))
+        totalPages: Math.ceil(model.get('meta.total') / this.get('limit'))
       });
     }
   });
@@ -47046,6 +47057,13 @@ define('frontend-cp/transforms/array', ['exports', 'ember-data'], function (expo
   });
 
 });
+define('frontend-cp/transforms/fragment-array', ['exports'], function (exports) {
+
+	'use strict';
+
+	exports['default'] = DS.FragmentArrayTransform;
+
+});
 define('frontend-cp/transforms/fragment', ['exports'], function (exports) {
 
 	'use strict';
@@ -47081,7 +47099,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+1cb08a2a"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+d086d56a"});
 }
 
 /* jshint ignore:end */
