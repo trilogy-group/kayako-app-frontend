@@ -4558,7 +4558,9 @@ define('frontend-cp/components/ko-breadcrumbs/component', ['exports', 'ember'], 
     activeBreadcrumb: null,
 
     initBreadcrumbs: (function () {
-      this.set('breadcrumbs', new Ember['default'].A([]));
+      if (!this.get('breadcrumbs')) {
+        this.set('breadcrumbs', []);
+      }
     }).on('init'),
 
     actions: {
@@ -20059,6 +20061,134 @@ define('frontend-cp/components/ko-reorderable-list/template', ['exports'], funct
   }()));
 
 });
+define('frontend-cp/components/ko-scroller/component', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Component.extend({
+    /**
+     * Current vertical scroll position, in pixels
+     * @type {Number}
+     */
+    scrollTop: 0,
+
+    /**
+     * Current horizontal scroll position, in pixels
+     * @type {Number}
+     */
+    scrollLeft: 0,
+
+    classNames: ['ko-scroller'],
+
+    _cachedScrollLeft: 0,
+    _cachedScrollTop: 0,
+
+    $componentElement: null,
+
+    /**
+     * Update the DOM when the scrollTop property is changed
+     */
+    scrollTopUpdated: (function () {
+      var scrollTop = this.get('scrollTop');
+      if (scrollTop === this.get('_cachedScrollTop')) {
+        return;
+      }
+      var $componentElement = this.get('$componentElement');
+      if (!$componentElement) {
+        return;
+      }
+      $componentElement.scrollTop(scrollTop);
+    }).observes('scrollTop'),
+
+    /**
+     * Update the DOM when the scrollLeft property is changed
+     */
+    scrollLeftUpdated: (function () {
+      var scrollLeft = this.get('scrollLeft');
+      if (scrollLeft === this.get('_cachedScrollLeft')) {
+        return;
+      }
+      var $componentElement = this.get('$componentElement');
+      if (!$componentElement) {
+        return;
+      }
+      $componentElement.scrollLeft(scrollLeft);
+    }).observes('scrollLeft'),
+
+    /**
+     * Add a scroll listener when the view is rendered
+     */
+    didInsertElement: (function () {
+      var _this = this;
+
+      var $componentElement = this.$();
+      this.set('$componentElement', $componentElement);
+
+      var scrollTop = this.get('scrollTop');
+      var scrollLeft = this.get('scrollLeft');
+
+      $componentElement.scrollTop(scrollTop);
+      $componentElement.scrollLeft(scrollLeft);
+
+      $componentElement.on('scroll', function (event) {
+        var scrollTop = Ember['default'].$(event.currentTarget).scrollTop();
+        var scrollLeft = Ember['default'].$(event.currentTarget).scrollLeft();
+        _this.set('_cachedScrollTop', scrollTop);
+        _this.set('_cachedScrollLeft', scrollLeft);
+        _this.set('scrollTop', scrollTop);
+        _this.set('scrollLeft', scrollLeft);
+      });
+    }).on('didInsertElement')
+
+  });
+
+});
+define('frontend-cp/components/ko-scroller/template', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      meta: {
+        "revision": "Ember@1.13.3",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 1,
+            "column": 9
+          }
+        },
+        "moduleName": "frontend-cp/components/ko-scroller/template.hbs"
+      },
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var morphs = new Array(1);
+        morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+        dom.insertBoundary(fragment, 0);
+        dom.insertBoundary(fragment, null);
+        return morphs;
+      },
+      statements: [
+        ["content","yield",["loc",[null,[1,0],[1,9]]]]
+      ],
+      locals: [],
+      templates: []
+    };
+  }()));
+
+});
 define('frontend-cp/components/ko-search/component', ['exports', 'ember'], function (exports, Ember) {
 
   'use strict';
@@ -20949,93 +21079,6 @@ define('frontend-cp/components/ko-suggest/template', ['exports'], function (expo
   }()));
 
 });
-define('frontend-cp/components/ko-tab/component', ['exports', 'ember'], function (exports, Ember) {
-
-  'use strict';
-
-  exports['default'] = Ember['default'].Component.extend({
-    tagName: 'a',
-    classNameBindings: [':nav-tabs__item', 'tab.selected:is-active'],
-    attributeBindings: ['href'],
-    href: Ember['default'].computed.alias('tab.url'),
-
-    click: function click(event) {
-      event.preventDefault();
-    },
-
-    actions: {
-      select: function select() {
-        this.sendAction('openTab', this.get('tab'));
-      },
-      close: function close() {
-        this.sendAction('closeTab', this.get('tab'));
-      }
-    }
-
-  });
-
-});
-define('frontend-cp/components/ko-tab/template', ['exports'], function (exports) {
-
-  'use strict';
-
-  exports['default'] = Ember.HTMLBars.template((function() {
-    return {
-      meta: {
-        "revision": "Ember@1.13.3",
-        "loc": {
-          "source": null,
-          "start": {
-            "line": 1,
-            "column": 0
-          },
-          "end": {
-            "line": 2,
-            "column": 0
-          }
-        },
-        "moduleName": "frontend-cp/components/ko-tab/template.hbs"
-      },
-      arity: 0,
-      cachedFragment: null,
-      hasRendered: false,
-      buildFragment: function buildFragment(dom) {
-        var el0 = dom.createDocumentFragment();
-        var el1 = dom.createElement("div");
-        dom.setAttribute(el1,"class","nav-tabs__label");
-        var el2 = dom.createComment("");
-        dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
-        var el1 = dom.createElement("div");
-        dom.setAttribute(el1,"class","nav-tabs__close");
-        var el2 = dom.createElement("span");
-        dom.setAttribute(el2,"class","i-cross i-size-20 i-inherit-lh");
-        dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
-        dom.appendChild(el0, el1);
-        return el0;
-      },
-      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var element0 = dom.childAt(fragment, [0]);
-        var element1 = dom.childAt(fragment, [1]);
-        var morphs = new Array(3);
-        morphs[0] = dom.createElementMorph(element0);
-        morphs[1] = dom.createMorphAt(element0,0,0);
-        morphs[2] = dom.createElementMorph(element1);
-        return morphs;
-      },
-      statements: [
-        ["element","action",["select"],[],["loc",[null,[1,5],[1,24]]]],
-        ["content","yield",["loc",[null,[1,49],[1,58]]]],
-        ["element","action",["close",["get","tab",["loc",[null,[1,110],[1,113]]]]],[],["loc",[null,[1,93],[1,115]]]]
-      ],
-      locals: [],
-      templates: []
-    };
-  }()));
-
-});
 define('frontend-cp/components/ko-table/body/component', ['exports', 'ember'], function (exports, Ember) {
 
   'use strict';
@@ -21841,6 +21884,211 @@ define('frontend-cp/components/ko-table/template', ['exports'], function (export
       ],
       locals: [],
       templates: []
+    };
+  }()));
+
+});
+define('frontend-cp/components/ko-tabs/component', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Component.extend({
+    init: function init() {
+      this._super();
+      this.set('tabs', this.get('tabs') || []);
+    },
+
+    /**
+     * Currently active tabs
+     * @type {Tab[]}
+     */
+    tabs: null,
+
+    /**
+     * Get/set the currently selected tab
+     * @param {string} key Computed property name
+     * @param {Tab} selectedTab Tab to select, or `null` to deselect all tabs
+     * @param {Tab} previousSelectedTab Previously selected tab, or `null` if no tab was selected
+     * @return {Tab} Selected tab, or `null` if no tab is selected
+     */
+    selectedTab: (function (key, selectedTab, previousSelectedTab) {
+      var isSetter = arguments.length > 1;
+      if (isSetter) {
+        selectedTab = selectedTab || null;
+        var tabs = this.get('tabs');
+
+        // If a tab was specified, ensure that it belongs to this service
+        if (selectedTab && !tabs.contains(selectedTab)) {
+          throw new Error('Specified tab does not belong to this service');
+        }
+
+        // Update the 'selected' property on all the tabs
+        tabs.forEach(function (tab) {
+          return tab.set('selected', tab === selectedTab);
+        });
+
+        // Navigate to the tab's page
+        var selectionHasChanged = selectedTab !== previousSelectedTab;
+        if (selectedTab && selectionHasChanged) {
+          this.sendAction('select', selectedTab);
+        }
+
+        return selectedTab;
+      }
+
+      // Find the selected tab
+      return this.get('tabs').find(function (tab) {
+        return tab.get('selected');
+      });
+
+      // Update whenever a tab's 'selected' property changes,
+      // or when tabs are added/removed
+    }).property('tabs.@each.selected'),
+
+    /**
+     * Close a tab and, if it is currently selected, select the tab next to it
+     * @param {Tab} tab The tab object to remove
+     */
+    closeTab: function closeTab(tab) {
+      var tabs = this.get('tabs');
+
+      // If we're about to close the selected tab, take a note of its index
+      var previouslySelectedIndex = tab === this.get('selectedTab') ? this.tabs.indexOf(tab) : -1;
+
+      tabs.removeObject(tab);
+
+      var wasLastTab = tabs.length === 0;
+      if (wasLastTab) {
+        this.sendAction('closeAll');
+      } else if (previouslySelectedIndex !== -1) {
+        // If the selected tab was closed, select the one that was to the right of it
+        var maxSelectedIndex = tabs.length - 1;
+        var newSelectedIndex = Math.min(previouslySelectedIndex, maxSelectedIndex);
+        var selectedTab = tabs.objectAt(newSelectedIndex);
+        this.set('selectedTab', selectedTab);
+      }
+    },
+
+    actions: {
+      select: function select(tab) {
+        this.set('selectedTab', tab);
+      },
+      close: function close(tab) {
+        this.closeTab(tab);
+      }
+    }
+  });
+
+});
+define('frontend-cp/components/ko-tabs/template', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports['default'] = Ember.HTMLBars.template((function() {
+    var child0 = (function() {
+      return {
+        meta: {
+          "revision": "Ember@1.13.3",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 1,
+              "column": 0
+            },
+            "end": {
+              "line": 6,
+              "column": 0
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-tabs/template.hbs"
+        },
+        arity: 1,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createElement("a");
+          var el2 = dom.createTextNode("\n  ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("div");
+          dom.setAttribute(el2,"class","nav-tabs__label");
+          var el3 = dom.createComment("");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("div");
+          dom.setAttribute(el2,"class","nav-tabs__close");
+          var el3 = dom.createElement("span");
+          dom.setAttribute(el3,"class","i-cross i-size-20 i-inherit-lh");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createTextNode("\n  ");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var element0 = dom.childAt(fragment, [0]);
+          var element1 = dom.childAt(element0, [2]);
+          var morphs = new Array(5);
+          morphs[0] = dom.createAttrMorph(element0, 'class');
+          morphs[1] = dom.createAttrMorph(element0, 'href');
+          morphs[2] = dom.createElementMorph(element0);
+          morphs[3] = dom.createMorphAt(dom.childAt(element0, [1]),0,0);
+          morphs[4] = dom.createElementMorph(element1);
+          return morphs;
+        },
+        statements: [
+          ["attribute","class",["concat",["nav-tabs__item",["subexpr","if",[["get","tab.selected",["loc",[null,[2,29],[2,41]]]]," is-active"],[],["loc",[null,[2,24],[2,56]]]]]]],
+          ["attribute","href",["concat",[["get","tab.url",["loc",[null,[2,90],[2,97]]]]]]],
+          ["element","action",["select",["get","tab",["loc",[null,[2,76],[2,79]]]]],[],["loc",[null,[2,58],[2,81]]]],
+          ["content","tab.label",["loc",[null,[3,31],[3,44]]]],
+          ["element","action",["close",["get","tab",["loc",[null,[3,96],[3,99]]]]],[],["loc",[null,[3,79],[3,101]]]]
+        ],
+        locals: ["tab"],
+        templates: []
+      };
+    }());
+    return {
+      meta: {
+        "revision": "Ember@1.13.3",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 7,
+            "column": 0
+          }
+        },
+        "moduleName": "frontend-cp/components/ko-tabs/template.hbs"
+      },
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var morphs = new Array(1);
+        morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+        dom.insertBoundary(fragment, 0);
+        dom.insertBoundary(fragment, null);
+        return morphs;
+      },
+      statements: [
+        ["block","each",[["get","tabs",["loc",[null,[1,8],[1,12]]]]],[],0,null,["loc",[null,[1,0],[6,9]]]]
+      ],
+      locals: [],
+      templates: [child0]
     };
   }()));
 
@@ -31360,25 +31608,40 @@ define('frontend-cp/models/tab', ['exports', 'ember'], function (exports, Ember)
 
   exports['default'] = Ember['default'].Object.extend({
 
-    tabsService: Ember['default'].inject.service('tabs'),
+    /**
+     * Tab base URL
+     * Path to the tab's 'home' page.
+     * This is used to check whether a page falls within this tab's remit.
+     * @type {[type]}
+     */
+    baseUrl: null,
 
-    label: null,
-
-    type: null,
-
+    /**
+     * Tab URL
+     * Path to the page that's currently displayed in the tab.
+     * This will either be the `baseUrl` or one of its descendant URLs.
+     * @type {string}
+     */
     url: null,
 
-    ids: null,
+    /**
+     * Tab label
+     * @type {string}
+     */
+    label: null,
 
-    index: null,
+    /**
+     * Whether the tab is currently selected
+     * @type {boolean}
+     */
+    selected: false,
 
-    scrollPosition: 0,
-
-    browserTabId: null,
-
-    selected: (function () {
-      return this.get('tabsService.selectedTab') === this;
-    }).property('tabsService.selectedTab')
+    /**
+     * UI state object
+     * Ember object containing UI state related to this tab
+     * @type {Object}
+     */
+    state: null
   });
 
 });
@@ -31669,91 +31932,126 @@ define('frontend-cp/routes/abstract/tabbed-route', ['exports', 'ember'], functio
     tab: null,
     tabsService: Ember['default'].inject.service('tabs'),
 
-    beforeModel: function beforeModel(transition) {
-      var _transition$router;
+    setupController: function setupController(controller, model) {
+      controller.set('model', model);
+      var router = this.container.lookup('router:main');
+      var tabsService = this.get('tabsService');
+      var sessionController = this.controllerFor('session');
 
-      var routeName = this.routeName;
+      var activeTransition = router.router.activeTransition;
 
-      // We only want to include ids required to get to this point down the route hierarchy
-      var ids = [];
-
-      /**
-       * Reliably returns the number of dynamic segments up to the current route
-       * @param {Transition} transition An ember transition object
-       * @return {number}
-       */
-      function getNumParams(transition) {
-        return transition.handlerInfos.filter(function (info) {
-          // Ignore if name contains routeName and is not routeName
-          // since we only want ids up to the current route
-          if (info.name.indexOf(routeName) === 0 && info.name !== routeName) {
-            return false;
-          }
-          return info.params || info.names;
-        }).map(function (section) {
-          return section.params || section.names;
-        }).map(function (info) {
-          return info.length ? info.length : Object.keys(info).length;
-        }).reduce(function (lengthA, lengthB) {
-          return lengthA + lengthB;
-        }, 0);
+      // Get/create a tab for this route
+      var tab = getTabForRoute(this, activeTransition, tabsService, sessionController);
+      var tabAlreadyExists = sessionController.get('tabs').contains(tab);
+      if (!tabAlreadyExists) {
+        sessionController.get('tabs').pushObject(tab);
       }
 
+      // Make the tab accessible to subclasses of this route
+      this.set('tab', tab);
+
+      // Add and select the tab
+      sessionController.set('selectedTab', tab);
+
       /**
-       * Try and find all dynamic segments as a list of ids
+       * Get/create a tab for a route
+       * @param {Route} route The route to create a tab for
+       * @param {Transition} transition Transition containing dynamic route segments
+       * @param {TabsService} tabsService Tabs service used to get/create the tab
+       * @param {SessionController} tabsController Controller for the view that contains the tabs
+       * @return {Tab} Tab model for the specified route
        */
-      if (transition.intent.contexts) {
-        // If clicking within the app use transition.intent.contexts
-        ids = transition.intent.contexts.map(function (context) {
-          return context.id ? context.id : context;
+      function getTabForRoute(route, transition, tabsService, tabsController) {
+        var routeUrl = getRouteUrl(route, transition);
+        var targetUrl = getTransitionTargetUrl(transition);
+        var existingTab = tabsController.getTabForUrl(routeUrl);
+        if (existingTab) {
+          existingTab.set('url', targetUrl);
+          return existingTab;
+        }
+        return tabsService.createTab({
+          url: targetUrl,
+          baseUrl: routeUrl
         });
-      } else if (transition.params) {
-        // If opening a new instance use transition.params
-        ids = extractNumsAsArray(transition.params);
-      }
 
-      // Cut ids to the number to get to this level
-      ids = ids.splice(0, getNumParams(transition));
+        /**
+         * Retrieve the URL for a route that includes dynamic segments
+         * @param {Route} route Route whose params we want to fetch
+         * @param {Transition} transition Transition that involves the specified route
+         * @param {TabsService} tabsService Tabs service used to get/create the tab
+         * @return {string} Array of Key/value object containing dynamic route segments, or models
+         */
+        function getRouteUrl(route, transition, tabsService) {
+          var _transition$router;
 
-      var url = transition.intent.url || (_transition$router = transition.router).generate.apply(_transition$router, [routeName].concat(_toConsumableArray(ids)));
+          var routeName = route.routeName;
 
-      this.tab = this.get('tabsService').getTab(routeName, ids);
+          // `transition.handlerInfos` is an array of metadata objects, one for each
+          // of the routes in the transition hierarchy. (e.g. "app", "app.section",
+          // "app.section.subsection").
+          var routeHandlers = transition.handlerInfos;
 
-      if (this.tab) {
-        this.get('tabsService').selectTab(this.tab);
-      } else {
-        this.tab = this.get('tabsService').createTab(routeName, ids, url, true);
+          // Get the dynamic route segment context objects for each of these levels
+          var routeContexts = routeHandlers.map(function (handlerInfo) {
+            return getHandlerContext(handlerInfo);
+          });
+
+          // Filter out the context objects for routes with no dynamic segments
+          var dynamicRouteContexts = routeContexts.filter(function (context) {
+            return context !== null;
+          });
+
+          // Return the route URL
+          return (_transition$router = transition.router).generate.apply(_transition$router, [routeName].concat(_toConsumableArray(dynamicRouteContexts)));
+
+          /**
+           * Retrieve the context object from a route handler info object
+           * @param {Object} handlerInfo Ember route handler info object
+           * @return {Object} Params object or model for dynamic routes, `null` for static routes
+           */
+          function getHandlerContext(handlerInfo) {
+            // If the transition was initiated by navigating to a URL,
+            // or route name + id, there will be a `params` object containing any
+            // dynamic route segments
+            if (handlerInfo.params) {
+              var hasDynamicSegments = Object.keys(handlerInfo.params).length > 0;
+              return hasDynamicSegments ? handlerInfo.params : null;
+            }
+
+            // If the transition was initiated by navigating to a route name + model,
+            // there will be a `context` object containing the model that corresponds
+            // to the dynamic route segment
+            if (handlerInfo.context) {
+              return handlerInfo.context;
+            }
+
+            // Looks like the route doesn't specify any dynamic segments
+            return null;
+          }
+        }
+
+        /**
+         * Serialize the transition into a target URL
+         * @param {Transition} transition Transition to serialize
+         * @return {string} URL path for the transition's target
+         */
+        function getTransitionTargetUrl(transition) {
+          var _transition$router2;
+
+          // If the transition was initiated by navigating to the URL, we already
+          // have the target URL so we can just return that
+          if (transition.intent.url) {
+            return transition.intent.url;
+          }
+
+          // Otherwise generate a URL based on the transition's target
+          var routeName = transition.intent.name;
+          var dynamicRouteContexts = transition.intent.contexts;
+          return (_transition$router2 = transition.router).generate.apply(_transition$router2, [routeName].concat(_toConsumableArray(dynamicRouteContexts)));
+        }
       }
     }
-
   });
-
-  var squashToArray = function squashToArray(vals) {
-    return vals.reduce(function (valA, valB) {
-      return valA.concat(valB);
-    }, []);
-  };
-
-  function mergeHashNums(hash) {
-    var keys = Object.keys(hash);
-    var vals = keys.map(function (key) {
-      return [hash[key]];
-    });
-
-    return squashToArray(vals);
-  }
-
-  function extractNumsAsArray(hash) {
-    var keys = Object.keys(hash).filter(function (key) {
-      return Object.keys(hash[key]).length > 0;
-    });
-
-    var vals = keys.map(function (key) {
-      return mergeHashNums(hash[key]);
-    });
-
-    return squashToArray(vals);
-  }
 
 });
 define('frontend-cp/routes/abstract/user-route', ['exports', 'ember'], function (exports, Ember) {
@@ -32468,12 +32766,17 @@ define('frontend-cp/services/local-store', ['exports', 'ember'], function (expor
      * Items are stored as JSON strings
      *
      * @param  {string} key - @todo add this doc
+     * @param {Boolean} options.persist Use local storage instead of session storage
      * @return {*} Stored object
      */
     getItem: function getItem(key) {
-      var isSession = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
+      var _ref = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
-      var item = (isSession ? sessionStorage : localStorage).getItem(key);
+      var _ref$persist = _ref.persist;
+      var persist = _ref$persist === undefined ? false : _ref$persist;
+
+      var store = persist ? localStorage : sessionStorage;
+      var item = store.getItem(key);
 
       // Note: stringified undefined will return 'undefined'
       if (item !== null && item !== 'undefined') {
@@ -32490,14 +32793,18 @@ define('frontend-cp/services/local-store', ['exports', 'ember'], function (expor
      *
      * @param {[type]}  key       [description]
      * @param {[type]}  item      [description]
-     * @param {Boolean} isSession [description]
+     * @param {Boolean} options.persist Use local storage instead of session storage
      */
     setItem: function setItem(key, item) {
-      var isSession = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
+      var _ref2 = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+
+      var _ref2$persist = _ref2.persist;
+      var persist = _ref2$persist === undefined ? false : _ref2$persist;
 
       // using typeof for strict undefined check
       if (typeof item !== 'undefined') {
-        (isSession ? sessionStorage : localStorage).setItem(key, JSON.stringify(item));
+        var store = persist ? localStorage : sessionStorage;
+        store.setItem(key, JSON.stringify(item));
       }
     },
 
@@ -32505,12 +32812,16 @@ define('frontend-cp/services/local-store', ['exports', 'ember'], function (expor
      * Remove item from the store.
      *
      * @param {[type]}  key       key of item to be removed
-     * @param {Boolean} isSession if true, session storage will be used
+     * @param {Boolean} options.persist Use local storage instead of session storage
      */
     removeItem: function removeItem(key) {
-      var isSession = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
+      var _ref3 = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
-      (isSession ? sessionStorage : localStorage).removeItem(key);
+      var _ref3$persist = _ref3.persist;
+      var persist = _ref3$persist === undefined ? false : _ref3$persist;
+
+      var store = persist ? localStorage : sessionStorage;
+      store.removeItem(key);
     },
 
     /**
@@ -32579,18 +32890,81 @@ define('frontend-cp/services/pusher', ['exports', 'ember', 'frontend-cp/config/e
   });
 
 });
-define('frontend-cp/services/scroll', ['exports', 'ember'], function (exports, Ember) {
+define('frontend-cp/services/route-state', ['exports', 'ember'], function (exports, Ember) {
 
   'use strict';
 
   exports['default'] = Ember['default'].Service.extend({
-    scroll: 0,
+
+    _state: null,
 
     /**
-     * Set this to change the scroll position
-     * @type {Number}
+     * Get the current history state object
+     * @return {Object} Key/value object containing state properties
      */
-    targetScroll: 0
+    getState: function getState() {
+      var location = this.container.lookup('location:history');
+      return location.getState();
+    },
+
+    /**
+     * Update the current history state, extending any existing state
+     * @param {Object} updates Key/value object containing state properties to be updated
+     */
+    updateState: function updateState(updates) {
+      var currentState = this.getState();
+
+      // Extend the existing state with the updates
+      var state = Object.assign({}, currentState, updates);
+
+      // Update the history state
+      var location = this.container.lookup('location:history');
+      (location.get('history') || history).replaceState(state, null);
+    },
+
+    /**
+     * Transition to a path with a corresponding history state object
+     * @param {string} url URL path for the target route
+     * @param {object} state History state properties to be added after transition with `history.replaceState(state)`
+     * @returns {Promise<Transition>} Promise fulfilled with the transition object
+     */
+    transitionToState: function transitionToState(url, state) {
+      var _this = this;
+
+      var router = this.container.lookup('router:main');
+
+      // Ember's router doesn't allow us to hook into the `pushState`
+      // call, so we have to apply the state updates once the
+      // transition is complete.
+      //
+      // We have to use an event listener rather than promises because
+      // the promise will only resolve AFTER all other `didTransition`
+      // event handlers have fired throughout the app (i.e. too late).
+      //
+      // In Ember, the most recently added listener will fire first,
+      // so this will run before all other `didTransition` listeners
+      // (unless others were added after `transitionTo()` was called).
+
+      var self = this;
+      var didReceiveTransitionEvent = false;
+      router.on('didTransition', onTransitionSucceeded);
+
+      // Let Ember's router take care of the transition
+      return router.transitionTo(url).then(function () {
+        // If we were already at this path, we won't have received a
+        // `didTransition` event, so we still need to set the state
+        if (!didReceiveTransitionEvent) {
+          _this.updateState(state);
+        }
+      })['finally'](function () {
+        router.off('didTransition', onTransitionSucceeded);
+      });
+
+      function onTransitionSucceeded() {
+        didReceiveTransitionEvent = true;
+        self.updateState(state);
+      }
+    }
   });
 
 });
@@ -32618,12 +32992,12 @@ define('frontend-cp/services/session', ['exports', 'ember'], function (exports, 
         return Ember['default'].RSVP.Promise.resolve(this.get('session'));
       }
 
-      var sessionId = this.get('localStoreService').getItem('sessionId');
+      var sessionId = this.get('localStoreService').getItem('sessionId', { persist: true });
       // sessionId saved in local storage
       if (sessionId) {
         this.set('sessionId', sessionId);
         return this._getSession()['catch'](function (e) {
-          _this.get('localStoreService').removeItem('sessionId');
+          _this.get('localStoreService').removeItem('sessionId', { persist: true });
           throw e;
         });
         // No session information available
@@ -32655,10 +33029,10 @@ define('frontend-cp/services/session', ['exports', 'ember'], function (exports, 
       var sessionId = this.get('session.id');
       if (sessionId) {
         this.set('sessionId', sessionId);
-        this.get('localStoreService').setItem('sessionId', sessionId);
+        this.get('localStoreService').setItem('sessionId', sessionId, { persist: true });
       } else {
         this.set('sessionId', null);
-        this.get('localStoreService').removeItem('sessionId');
+        this.get('localStoreService').removeItem('sessionId', { persist: true });
       }
     }).observes('session.id'),
 
@@ -32760,264 +33134,79 @@ define('frontend-cp/services/store-cache', ['exports', 'ember', 'npm:lodash'], f
   });
 
 });
-define('frontend-cp/services/tabs', ['exports', 'ember', 'frontend-cp/models/tab'], function (exports, Ember, Tab) {
+define('frontend-cp/services/tabs', ['exports', 'ember', 'frontend-cp/models/tab', 'npm:lodash'], function (exports, Ember, Tab, _) {
 
   'use strict';
 
-  function arrayToObject(fields, func, thisObj) {
-    return fields.reduce(function (obj, k) {
-      obj[k] = func.call(thisObj, k);
-      return obj;
-    }, {});
-  }
-
   exports['default'] = Ember['default'].Service.extend({
-
-    /**
-     * Property for use in computed properties and observers
-     * Ember automatically converts this to an ember array
-     * @type {array}
-     */
-    tabs: [],
-
-    urlService: Ember['default'].inject.service('url'),
     localStoreService: Ember['default'].inject.service('localStore'),
-    scrollService: Ember['default'].inject.service('scroll'),
 
     /**
-     * Used to keep track of when tabs were opened and provide a
-     * unique index
-     * @type {number}
+     * Create a new tab and add it to the store
+     * @param {string} options.baseUrl URL path for the tab's main root
+     * @param {string} options.targetUrl URL which is currently shown in the tab (could be nested inside the tab's main route)
+     * @param {string} [options.label] Tab label
+     * @return {Tab} Newly-created tab object
      */
-    counter: 0,
+    createTab: function createTab() {
+      var _ref = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
-    /**
-     * The currently selected tab, always a Tab or null
-     * Used for observers so should always be set with .set()
-     * @type {Tab}
-     */
-    selectedTab: null,
+      var _ref$url = _ref.url;
+      var url = _ref$url === undefined ? null : _ref$url;
+      var _ref$baseUrl = _ref.baseUrl;
+      var baseUrl = _ref$baseUrl === undefined ? null : _ref$baseUrl;
+      var _ref$label = _ref.label;
+      var label = _ref$label === undefined ? null : _ref$label;
 
-    isTabAtRoot: null,
-
-    scrollUpdated: (function () {
-      var tab = this.get('selectedTab');
-      if (tab) {
-        tab.set('scrollPosition', this.get('scrollService.scroll'));
-      }
-    }).observes('scrollService.scroll'),
-
-    currentUrlDidChange: (function () {
-      var _this = this;
-
-      var currentUrl = this.get('urlService.currentUrl');
-      if (currentUrl === null) {
-        return;
-      }
-
-      var selected = false;
-
-      this.tabs.forEach(function (tab) {
-        // Selects if you are in a tabs route hierarchy
-        if (currentUrl.indexOf(tab.get('url')) === 0) {
-          _this.set('isTabAtRoot', currentUrl === tab.get('url'));
-          _this.selectTab(tab);
-          selected = true;
-          return;
-        }
-      });
-
-      if (!selected) {
-        this.set('isTabAtRoot', null);
-        this.deselectAll();
-      }
-
-      // TODO this should not on('init') but without it it never fires
-    }).observes('urlService.currentUrl').on('init'),
-
-    /**
-     * Returns a tab if it exists in the cached store, otherwise returns null.
-     * @param  {string} routeName - routeName
-     * @param {Object[]} ids - a list of dynamic segment ids
-     * @return {Tab}
-     */
-    getTab: function getTab(routeName, ids) {
-      var tab = this.tabs.find(function (tab) {
-        return tab.routeName === routeName && tab.ids.join() === ids.join();
-      });
-
-      if (typeof tab === 'undefined') {
-        return null;
-      } else {
-        return tab;
-      }
-    },
-
-    /**
-     * Retrieve tabs from store and convert to Ember object
-     * Used to populate the tabs in a recovered session
-     * @return {Object} A Tab object
-     */
-    getTabs: function getTabs() {
-      // If the tabs array is empty and the store is not
-      // then copy over the tabs from the store
-      var tabsInStore = this.get('localStoreService').getItem('tabs');
-
-      if (tabsInStore !== null) {
-        this.copyTabsFromStorage();
-      }
-
-      return this.get('tabs');
-    },
-
-    /**
-     * Remove all stored tabs from memory and local storage.
-     */
-    clearTabs: function clearTabs() {
-      this.tabs.clear();
-      this.get('localStoreService').setItem('tabs', [], true);
-    },
-
-    /**
-     * Adding a new tab to the store
-     * @param {string} routeName - dot separated route
-     * @param {Object[]} ids - a list of dynamic segment ids
-     * @param {string} url - url for html anchor href
-     * @param {boolean} [select=true] - if false will open the tab without selecting it
-     * @return {Tab}
-     */
-    createTab: function createTab(routeName, ids, url, select) {
-      // TODO only open tab if validated on backend
-
-      this.incrementProperty('counter');
-
-      // tabService is passed to allow computed property on tab to know if it is selected
-      var tabModel = Tab['default'].create({
-        tabsService: this,
-        routeName: routeName,
-        ids: ids,
+      return Tab['default'].create({
         url: url,
-        index: this.get('counter')
+        baseUrl: baseUrl || url,
+        label: label,
+        selected: false,
+        state: null
       });
-
-      this.tabs.pushObject(tabModel);
-
-      if (select) {
-        this.selectTab(tabModel);
-      }
-
-      return tabModel;
     },
 
     /**
-     * Select a tab as a Tab object or as null
-     * @param  {Tab | null} tab - tab
+     * Save a set of tabs to local storage
+     * @param {Tab[]} tabModels Tab models to save
      */
-    selectTab: function selectTab(tab) {
-      this.get('scrollService').set('targetScroll', tab.get('scrollPosition'));
-      this.set('selectedTab', tab);
-    },
+    saveTabsToStorage: function saveTabsToStorage(tabModels) {
+      // Convert tab models into an array of simplified tab objects
+      var tabInfos = tabModels.map(function (tabModel) {
+        var tabInfo = _['default'].pick(tabModel, ['baseUrl', 'url', 'label']);
+        return tabInfo;
+      }).toArray();
 
-    /**
-     * Deselect all tabs
-     */
-    deselectAll: function deselectAll() {
-      this.set('selectedTab', null);
-    },
-
-    /**
-     * Closes the tab and, if the closed tab is the one
-     * that was selected, selects the tab with the
-     * highest index.
-     * @param  {Tab} tab - The tab object to remove.
-     */
-    closeTab: function closeTab(tab) {
-      var _this2 = this;
-
-      this.tabs.removeObject(tab);
-
-      if (tab.get('selected')) {
-        (function () {
-          var high = 0,
-              replacementTab = null;
-
-          _this2.tabs.forEach(function (tabItem) {
-            var index = tabItem.get('index');
-
-            if (index >= high) {
-              replacementTab = tabItem;
-              high = index;
-            }
-          });
-
-          // Select the next available tab
-
-          if (replacementTab) {
-            _this2.selectTab(replacementTab);
-          }
-        })();
-      }
-
-      if (this.tabs.length === 0) {
-        this.deselectAll();
-      }
-    },
-
-    /**
-     * Observes tabs and updates storage on change
-     */
-    tabsUpdated: (function () {
-      this.copyTabsToStorage();
-
-      // Set counter to highest index in tabs array
-      var counter = 0;
-
-      this.tabs.forEach(function (tab) {
-        counter = counter > tab.get('index') ? counter : tab.get('index');
-      });
-
-      this.set('counter', counter);
-    }).observes('tabs.@each', 'tabs.@each.selected', 'tabs.@each.index', 'tabs.@each.ids.@each', 'tabs.@each.routeName', 'tabs.@each.label', 'tabs.@each.url', 'tabs.@each.scrollPosition'),
-
-    /**
-     * Loops through tabs, simplifying them for storage
-     */
-    copyTabsToStorage: function copyTabsToStorage() {
-      // Simplify tabs object
-      var tabs = this.tabs.map(function (tabModel) {
-        var fields = ['routeName', 'ids', 'url', 'label', 'index', 'scrollPosition'];
-
-        return arrayToObject(fields, tabModel.get, tabModel);
-      });
       // Copy tabs array into store
-      this.get('localStoreService').setItem('tabs', tabs.toArray(), true);
+      this.get('localStoreService').setItem('tabs', tabInfos, {
+        persist: false
+      });
     },
 
     /**
-     * Loops through stored tabs, adding to Ember Array as Tab objects
-     * There should never be a situation where tabs are added to
-     * this.tabs and not to the store.
+     * Load a set of tabs from local storage
+     * @return {Tab[]} Saved tab models, or an empty array if there are no saved tabs
      */
-    copyTabsFromStorage: function copyTabsFromStorage() {
-      var _this3 = this;
-
-      // Converts simple objects in the store into Tab objects.
-
-      var tabs = this.get('localStoreService').getItem('tabs');
-
-      if (tabs) {
-        tabs.forEach(function (tab) {
-          // Only add tabs that are not already stored in this.tabs
-          if (!_this3.getTab(tab.routeName, tab.ids)) {
-            var tabModel = Tab['default'].create(tab);
-
-            tabModel.set('tabsService', _this3);
-            tabModel.set('scrollPosition', 0);
-
-            _this3.tabs.pushObject(tabModel);
-          }
-        });
+    loadTabsFromStorage: function loadTabsFromStorage() {
+      // Load tabs array from the store
+      var tabInfos = this.get('localStoreService').getItem('tabs', {
+        persist: false
+      });
+      if (!tabInfos) {
+        return [];
       }
+
+      // Convert simplified tab objects into an array of Tab models
+      var tabModels = tabInfos.map(function (tabInfo) {
+        return Tab['default'].create({
+          baseUrl: tabInfo.baseUrl,
+          url: tabInfo.url,
+          label: tabInfo.label
+        });
+      });
+
+      return tabModels;
     }
   });
 
@@ -36044,7 +36233,7 @@ define('frontend-cp/session/cases/case/route', ['exports', 'frontend-cp/routes/a
     },
 
     setupController: function setupController(controller, model) {
-      controller.set('model', model);
+      this._super(controller, model);
       this.get('tab').set('label', model.get('subject'));
     }
 
@@ -36317,12 +36506,12 @@ define('frontend-cp/session/cases/index/template', ['exports'], function (export
             "loc": {
               "source": null,
               "start": {
-                "line": 11,
-                "column": 14
+                "line": 10,
+                "column": 12
               },
               "end": {
-                "line": 11,
-                "column": 52
+                "line": 10,
+                "column": 50
               }
             },
             "moduleName": "frontend-cp/session/cases/index/template.hbs"
@@ -36344,7 +36533,7 @@ define('frontend-cp/session/cases/index/template', ['exports'], function (export
             return morphs;
           },
           statements: [
-            ["inline","ko-loader",[],["large",true],["loc",[null,[11,28],[11,52]]]]
+            ["inline","ko-loader",[],["large",true],["loc",[null,[10,26],[10,50]]]]
           ],
           locals: [],
           templates: []
@@ -36356,12 +36545,12 @@ define('frontend-cp/session/cases/index/template', ['exports'], function (export
           "loc": {
             "source": null,
             "start": {
-              "line": 10,
-              "column": 12
+              "line": 9,
+              "column": 10
             },
             "end": {
-              "line": 12,
-              "column": 12
+              "line": 11,
+              "column": 10
             }
           },
           "moduleName": "frontend-cp/session/cases/index/template.hbs"
@@ -36371,7 +36560,7 @@ define('frontend-cp/session/cases/index/template', ['exports'], function (export
         hasRendered: false,
         buildFragment: function buildFragment(dom) {
           var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("              ");
+          var el1 = dom.createTextNode("            ");
           dom.appendChild(el0, el1);
           var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
@@ -36385,7 +36574,7 @@ define('frontend-cp/session/cases/index/template', ['exports'], function (export
           return morphs;
         },
         statements: [
-          ["block","ko-center",[],[],0,null,["loc",[null,[11,14],[11,66]]]]
+          ["block","ko-center",[],[],0,null,["loc",[null,[10,12],[10,64]]]]
         ],
         locals: [],
         templates: [child0]
@@ -36398,12 +36587,12 @@ define('frontend-cp/session/cases/index/template', ['exports'], function (export
           "loc": {
             "source": null,
             "start": {
-              "line": 12,
-              "column": 12
+              "line": 11,
+              "column": 10
             },
             "end": {
-              "line": 14,
-              "column": 12
+              "line": 13,
+              "column": 10
             }
           },
           "moduleName": "frontend-cp/session/cases/index/template.hbs"
@@ -36413,7 +36602,7 @@ define('frontend-cp/session/cases/index/template', ['exports'], function (export
         hasRendered: false,
         buildFragment: function buildFragment(dom) {
           var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("              ");
+          var el1 = dom.createTextNode("            ");
           dom.appendChild(el0, el1);
           var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
@@ -36427,7 +36616,7 @@ define('frontend-cp/session/cases/index/template', ['exports'], function (export
           return morphs;
         },
         statements: [
-          ["inline","ko-cases-list",[],["cases",["subexpr","@mut",[["get","cases",["loc",[null,[13,36],[13,41]]]]],[],[]],"onCaseListSort","caseListSorted","columns",["subexpr","@mut",[["get","activeView.columns",["loc",[null,[13,82],[13,100]]]]],[],[]]],["loc",[null,[13,14],[13,102]]]]
+          ["inline","ko-cases-list",[],["cases",["subexpr","@mut",[["get","cases",["loc",[null,[12,34],[12,39]]]]],[],[]],"onCaseListSort","caseListSorted","columns",["subexpr","@mut",[["get","activeView.columns",["loc",[null,[12,80],[12,98]]]]],[],[]]],["loc",[null,[12,12],[12,100]]]]
         ],
         locals: [],
         templates: []
@@ -36441,12 +36630,12 @@ define('frontend-cp/session/cases/index/template', ['exports'], function (export
             "loc": {
               "source": null,
               "start": {
-                "line": 19,
-                "column": 12
+                "line": 18,
+                "column": 10
               },
               "end": {
-                "line": 19,
-                "column": 67
+                "line": 18,
+                "column": 65
               }
             },
             "moduleName": "frontend-cp/session/cases/index/template.hbs"
@@ -36472,12 +36661,12 @@ define('frontend-cp/session/cases/index/template', ['exports'], function (export
           "loc": {
             "source": null,
             "start": {
-              "line": 18,
-              "column": 10
+              "line": 17,
+              "column": 8
             },
             "end": {
-              "line": 20,
-              "column": 10
+              "line": 19,
+              "column": 8
             }
           },
           "moduleName": "frontend-cp/session/cases/index/template.hbs"
@@ -36487,7 +36676,7 @@ define('frontend-cp/session/cases/index/template', ['exports'], function (export
         hasRendered: false,
         buildFragment: function buildFragment(dom) {
           var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("            ");
+          var el1 = dom.createTextNode("          ");
           dom.appendChild(el0, el1);
           var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
@@ -36501,7 +36690,7 @@ define('frontend-cp/session/cases/index/template', ['exports'], function (export
           return morphs;
         },
         statements: [
-          ["block","link-to",["session.cases",["subexpr","query-params",[],["page",["get","number",["loc",[null,[19,58],[19,64]]]]],["loc",[null,[19,39],[19,65]]]]],[],0,null,["loc",[null,[19,12],[19,79]]]]
+          ["block","link-to",["session.cases",["subexpr","query-params",[],["page",["get","number",["loc",[null,[18,56],[18,62]]]]],["loc",[null,[18,37],[18,63]]]]],[],0,null,["loc",[null,[18,10],[18,77]]]]
         ],
         locals: ["number"],
         templates: [child0]
@@ -36517,7 +36706,7 @@ define('frontend-cp/session/cases/index/template', ['exports'], function (export
             "column": 0
           },
           "end": {
-            "line": 26,
+            "line": 24,
             "column": 0
           }
         },
@@ -36533,48 +36722,30 @@ define('frontend-cp/session/cases/index/template', ['exports'], function (export
         var el2 = dom.createTextNode("\n  ");
         dom.appendChild(el1, el2);
         var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","ko-session-cases-index__scrollable");
+        dom.setAttribute(el2,"class","container");
         var el3 = dom.createTextNode("\n    ");
         dom.appendChild(el2, el3);
         var el3 = dom.createElement("div");
-        dom.setAttribute(el3,"class","container");
+        dom.setAttribute(el3,"class","content layout layout--flush");
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
         var el4 = dom.createElement("div");
-        dom.setAttribute(el4,"class","content layout layout--flush");
+        dom.setAttribute(el4,"class","layout__item u-1/5");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createComment("");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createComment("\n   ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","layout__item u-4/5");
         var el5 = dom.createTextNode("\n        ");
         dom.appendChild(el4, el5);
         var el5 = dom.createElement("div");
-        dom.setAttribute(el5,"class","layout__item u-1/5");
-        var el6 = dom.createTextNode("\n          ");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createComment("");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createTextNode("\n        ");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createComment("\n     ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("div");
-        dom.setAttribute(el5,"class","layout__item u-4/5");
-        var el6 = dom.createTextNode("\n          ");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createElement("div");
-        dom.setAttribute(el6,"class","content__main content__main--has-sidebar");
-        var el7 = dom.createTextNode("\n");
-        dom.appendChild(el6, el7);
-        var el7 = dom.createComment("");
-        dom.appendChild(el6, el7);
-        var el7 = dom.createTextNode("          ");
-        dom.appendChild(el6, el7);
-        dom.appendChild(el5, el6);
-        var el6 = dom.createTextNode("\n        ");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("div");
-        dom.setAttribute(el5,"class","ko-session-cases-index__pagination");
+        dom.setAttribute(el5,"class","content__main content__main--has-sidebar");
         var el6 = dom.createTextNode("\n");
         dom.appendChild(el5, el6);
         var el6 = dom.createComment("");
@@ -36583,6 +36754,17 @@ define('frontend-cp/session/cases/index/template', ['exports'], function (export
         dom.appendChild(el5, el6);
         dom.appendChild(el4, el5);
         var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","ko-session-cases-index__pagination");
+        var el5 = dom.createTextNode("\n");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createComment("");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("      ");
         dom.appendChild(el4, el5);
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n    ");
@@ -36599,7 +36781,7 @@ define('frontend-cp/session/cases/index/template', ['exports'], function (export
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var element0 = dom.childAt(fragment, [0, 1, 1, 1]);
+        var element0 = dom.childAt(fragment, [0, 1, 1]);
         var morphs = new Array(3);
         morphs[0] = dom.createMorphAt(dom.childAt(element0, [1]),1,1);
         morphs[1] = dom.createMorphAt(dom.childAt(element0, [3, 1]),1,1);
@@ -36607,9 +36789,9 @@ define('frontend-cp/session/cases/index/template', ['exports'], function (export
         return morphs;
       },
       statements: [
-        ["inline","ko-sidebar",[],["views",["subexpr","@mut",[["get","views",["loc",[null,[6,29],[6,34]]]]],[],[]],"activeView",["subexpr","@mut",[["get","activeView",["loc",[null,[6,46],[6,56]]]]],[],[]]],["loc",[null,[6,10],[6,58]]]],
-        ["block","if",[["get","loading",["loc",[null,[10,18],[10,25]]]]],[],0,1,["loc",[null,[10,12],[14,19]]]],
-        ["block","ko-pagination",[],["currentPage",["subexpr","@mut",[["get","page",["loc",[null,[18,39],[18,43]]]]],[],[]],"loadingPage",["subexpr","@mut",[["get","loadingPage",["loc",[null,[18,56],[18,67]]]]],[],[]],"pageCount",["subexpr","@mut",[["get","totalPages",["loc",[null,[18,78],[18,88]]]]],[],[]]],2,null,["loc",[null,[18,10],[20,28]]]]
+        ["inline","ko-sidebar",[],["views",["subexpr","@mut",[["get","views",["loc",[null,[5,27],[5,32]]]]],[],[]],"activeView",["subexpr","@mut",[["get","activeView",["loc",[null,[5,44],[5,54]]]]],[],[]]],["loc",[null,[5,8],[5,56]]]],
+        ["block","if",[["get","loading",["loc",[null,[9,16],[9,23]]]]],[],0,1,["loc",[null,[9,10],[13,17]]]],
+        ["block","ko-pagination",[],["currentPage",["subexpr","@mut",[["get","page",["loc",[null,[17,37],[17,41]]]]],[],[]],"loadingPage",["subexpr","@mut",[["get","loadingPage",["loc",[null,[17,54],[17,65]]]]],[],[]],"pageCount",["subexpr","@mut",[["get","totalPages",["loc",[null,[17,76],[17,86]]]]],[],[]]],2,null,["loc",[null,[17,8],[19,26]]]]
       ],
       locals: [],
       templates: [child0, child1, child2]
@@ -36757,7 +36939,7 @@ define('frontend-cp/session/cases/new/route', ['exports', 'frontend-cp/routes/ab
     },
 
     setupController: function setupController(controller, model) {
-      controller.set('model', model);
+      this._super(controller, model);
       this.get('tab').set('label', model.get('subject'));
     }
 
@@ -36836,9 +37018,120 @@ define('frontend-cp/session/controller', ['exports', 'ember'], function (exports
   'use strict';
 
   exports['default'] = Ember['default'].Controller.extend({
+    urlService: Ember['default'].inject.service('url'),
     tabsService: Ember['default'].inject.service('tabs'),
+    routeStateService: Ember['default'].inject.service('routeState'),
     searchResults: null,
     isSearching: false,
+
+    /**
+     * Page scroll position, in pixels
+     * @type {Number}
+     */
+    scroll: 0,
+
+    /**
+     * Currently active tabs
+     * @type {Tab[]}
+     */
+    tabs: null,
+
+    /**
+     * Currently selected tab
+     * @type {Tab}
+     */
+    selectedTab: null,
+
+    init: function init() {
+      this._super();
+      this.set('tabs', this.get('tabs') || []);
+    },
+
+    /**
+     * Update the selected tab whenever the current URL changes
+     */
+    currentUrlDidChange: (function () {
+      var _this = this;
+
+      var currentUrl = this.get('urlService.currentUrl') || '';
+
+      // Find out if a matching tab exists
+      var selectedTab = this.get('tabs').find(function (tab) {
+        // Return a match if we've navigated to the tab's base URL,
+        // or to a descendant of that URL
+        return currentUrl.indexOf(tab.get('baseUrl')) === 0;
+      }) || null;
+
+      // Update the tab selection
+      this.set('selectedTab', selectedTab);
+
+      // Update the tab's current URL
+      if (selectedTab) {
+        selectedTab.set('url', currentUrl);
+      }
+
+      var routeStateService = this.get('routeStateService');
+      var state = routeStateService.getState();
+      var scrollPosition = state && state.scroll || 0;
+      if (this.get('scroll') === scrollPosition) {
+        return;
+      }
+      Ember['default'].run.scheduleOnce('afterRender', function () {
+        _this.set('scroll', scrollPosition);
+      });
+
+      // Recalculate whenever the URL changes, or when a tab is added
+    }).observes('tabs.@each', 'urlService.currentUrl').on('init'),
+
+    /**
+     * Update local storage whenever the tabs array changes
+     */
+    tabsUpdated: (function () {
+      var tabsService = this.get('tabsService');
+      var tabModels = this.get('tabs');
+      tabsService.saveTabsToStorage(tabModels);
+    }).observes('tabs.@each', 'tabs.@each.label'),
+
+    /**
+     * Save the tab state before transitioning away from the tab
+     */
+    saveTabStateBeforeTransitioning: (function () {
+      var _this2 = this;
+
+      var routeStateService = this.get('routeStateService');
+      var router = this.container.lookup('router:main');
+      router.on('willTransition', function () {
+        var selectedTab = _this2.get('selectedTab');
+        if (!selectedTab) {
+          return;
+        }
+        var state = routeStateService.getState();
+        selectedTab.set('state', state);
+      });
+    }).on('init'),
+
+    /**
+     * Save the scroll position to the history state whenever the user scrolls
+     */
+    scrollChanged: (function () {
+      var routeStateService = this.get('routeStateService');
+      var scrollPosition = this.get('scroll');
+      routeStateService.updateState({
+        'scroll': scrollPosition
+      });
+    }).observes('scroll'),
+
+    /**
+     * Returns a tab that matches the specified URL path (or one of its ancestors)
+     * @param {string} url URL to match against
+     * @return {Tab} Tab that corresponds to the URL, or `null` if no match was found
+     */
+    getTabForUrl: function getTabForUrl(url) {
+      var tab = this.get('tabs').find(function (tab) {
+        return url.startsWith(tab.get('baseUrl'));
+      });
+      return tab || null;
+    },
 
     actions: {
       onSearchingChanged: function onSearchingChanged(isSearching) {
@@ -36846,7 +37139,7 @@ define('frontend-cp/session/controller', ['exports', 'ember'], function (exports
       },
 
       performUniversalSearch: function performUniversalSearch(query) {
-        var _this = this;
+        var _this3 = this;
 
         if (!query) {
           this.set('isSearching', false);
@@ -36859,12 +37152,12 @@ define('frontend-cp/session/controller', ['exports', 'ember'], function (exports
          * just catch the error and empty the searchResults array
          */
         this.store.query('search-result-group', { query: query, fields: 'snippet,resource' }).then(function (results) {
-          _this.set('searchResults', results);
+          _this3.set('searchResults', results);
         }, function () {
-          _this.set('searchResults', new Ember['default'].A([]));
+          _this3.set('searchResults', new Ember['default'].A([]));
         }).then(function () {
           //we always want to set isSearching to true (so we get the no results message)
-          _this.set('isSearching', true);
+          _this3.set('isSearching', true);
         });
       },
 
@@ -36873,6 +37166,17 @@ define('frontend-cp/session/controller', ['exports', 'ember'], function (exports
       loadSearchRoute: function loadSearchRoute(baseURL, targetObjectId) {
         /* this has to be built as a URL - we have a searchResult object, not a user/case object */
         this.transitionToRoute(baseURL + targetObjectId);
+      },
+
+      onTabSelected: function onTabSelected(selectedTab) {
+        var routeStateService = this.get('routeStateService');
+        var targetUrl = selectedTab.get('url');
+        var targetState = selectedTab.get('state');
+        routeStateService.transitionToState(targetUrl, targetState);
+      },
+
+      onAllTabsClosed: function onAllTabsClosed() {
+        this.transitionToRoute('/');
       }
     }
   });
@@ -36968,8 +37272,6 @@ define('frontend-cp/session/route', ['exports', 'ember'], function (exports, Emb
 
   'use strict';
 
-  function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
-
   /**
    * SessionRoute
    *
@@ -36990,14 +37292,20 @@ define('frontend-cp/session/route', ['exports', 'ember'], function (exports, Emb
     tabsService: Ember['default'].inject.service('tabs'),
 
     beforeModel: function beforeModel(transition) {
-      // Retrieve tabs from storage if available
-      this.get('tabsService').getTabs();
-
       // Redirect to login if not validated
       if (!this.get('sessionService').isLoggedIn()) {
         this.controllerFor('login').set('transitionOnLogin', transition);
         this.transitionTo('login');
       }
+    },
+
+    setupController: function setupController(controller, model) {
+      // Retrieve tabs from storage if available
+      var tabsService = this.get('tabsService');
+      var savedTabs = tabsService.loadTabsFromStorage();
+
+      controller.set('model', model);
+      controller.set('tabs', savedTabs);
     },
 
     /**
@@ -37007,29 +37315,14 @@ define('frontend-cp/session/route', ['exports', 'ember'], function (exports, Emb
      * which case the next tab will be selected for you.
      */
     selectionDidChange: (function () {
-      var tab = this.get('tabsService').get('selectedTab');
-      // Ignore if is not the exact tabs route, eg if it is a subroute
-      if (tab && this.get('tabsService').get('isTabAtRoot')) {
-        var ids = tab.get('ids');
-        if (ids) {
-          this.transitionTo.apply(this, [tab.get('routeName')].concat(_toConsumableArray(ids)));
-        } else {
-          this.transitionTo(tab.get('routeName'));
-        }
-      } else if (tab === null && this.get('tabsService').get('tabs.length') === 0) {
+      var tabsService = this.get('tabsService');
+      var tab = tabsService.get('selectedTab');
+      if (tab) {
+        this.transitionTo(tab.get('url'));
+      } else if (tabsService.get('tabs.length') === 0) {
         this.transitionTo('session.cases');
       }
-    }).observes('tabsService.selectedTab'),
-
-    actions: {
-      openTab: function openTab(tab) {
-        var ids = tab.get('ids');
-        this.transitionTo.apply(this, [tab.get('routeName')].concat(_toConsumableArray(ids)));
-      },
-      closeTab: function closeTab(tab) {
-        this.get('tabsService').closeTab(tab);
-      }
-    }
+    }).observes('tabsService.selectedTab')
   });
 
 });
@@ -41651,99 +41944,17 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
       };
     }());
     var child5 = (function() {
-      var child0 = (function() {
-        return {
-          meta: {
-            "revision": "Ember@1.13.3",
-            "loc": {
-              "source": null,
-              "start": {
-                "line": 17,
-                "column": 10
-              },
-              "end": {
-                "line": 17,
-                "column": 80
-              }
-            },
-            "moduleName": "frontend-cp/session/template.hbs"
-          },
-          arity: 0,
-          cachedFragment: null,
-          hasRendered: false,
-          buildFragment: function buildFragment(dom) {
-            var el0 = dom.createDocumentFragment();
-            var el1 = dom.createComment("");
-            dom.appendChild(el0, el1);
-            return el0;
-          },
-          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-            var morphs = new Array(1);
-            morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
-            dom.insertBoundary(fragment, 0);
-            dom.insertBoundary(fragment, null);
-            return morphs;
-          },
-          statements: [
-            ["content","tab.label",["loc",[null,[17,67],[17,80]]]]
-          ],
-          locals: [],
-          templates: []
-        };
-      }());
       return {
         meta: {
           "revision": "Ember@1.13.3",
           "loc": {
             "source": null,
             "start": {
-              "line": 16,
-              "column": 10
-            },
-            "end": {
-              "line": 18,
-              "column": 10
-            }
-          },
-          "moduleName": "frontend-cp/session/template.hbs"
-        },
-        arity: 1,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("          ");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createComment("");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n");
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
-          return morphs;
-        },
-        statements: [
-          ["block","ko-tab",[],["tab",["subexpr","@mut",[["get","tab",["loc",[null,[17,24],[17,27]]]]],[],[]],"openTab","openTab","closeTab","closeTab"],0,null,["loc",[null,[17,10],[17,91]]]]
-        ],
-        locals: ["tab"],
-        templates: [child0]
-      };
-    }());
-    var child6 = (function() {
-      return {
-        meta: {
-          "revision": "Ember@1.13.3",
-          "loc": {
-            "source": null,
-            "start": {
-              "line": 30,
+              "line": 28,
               "column": 8
             },
             "end": {
-              "line": 32,
+              "line": 30,
               "column": 8
             }
           },
@@ -41768,24 +41979,24 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
           return morphs;
         },
         statements: [
-          ["content","ko-session-widgets",["loc",[null,[31,10],[31,32]]]]
+          ["content","ko-session-widgets",["loc",[null,[29,10],[29,32]]]]
         ],
         locals: [],
         templates: []
       };
     }());
-    var child7 = (function() {
+    var child6 = (function() {
       return {
         meta: {
           "revision": "Ember@1.13.3",
           "loc": {
             "source": null,
             "start": {
-              "line": 39,
+              "line": 37,
               "column": 0
             },
             "end": {
-              "line": 39,
+              "line": 37,
               "column": 62
             }
           },
@@ -41808,18 +42019,18 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
         templates: []
       };
     }());
-    var child8 = (function() {
+    var child7 = (function() {
       return {
         meta: {
           "revision": "Ember@1.13.3",
           "loc": {
             "source": null,
             "start": {
-              "line": 40,
+              "line": 38,
               "column": 0
             },
             "end": {
-              "line": 40,
+              "line": 38,
               "column": 67
             }
           },
@@ -41837,6 +42048,48 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
         buildRenderNodes: function buildRenderNodes() { return []; },
         statements: [
 
+        ],
+        locals: [],
+        templates: []
+      };
+    }());
+    var child8 = (function() {
+      return {
+        meta: {
+          "revision": "Ember@1.13.3",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 41,
+              "column": 2
+            },
+            "end": {
+              "line": 43,
+              "column": 2
+            }
+          },
+          "moduleName": "frontend-cp/session/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("    ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+          return morphs;
+        },
+        statements: [
+          ["content","outlet",["loc",[null,[42,4],[42,14]]]]
         ],
         locals: [],
         templates: []
@@ -41922,11 +42175,11 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
         dom.appendChild(el4, el5);
         var el5 = dom.createElement("nav");
         dom.setAttribute(el5,"class","nav-tabs");
-        var el6 = dom.createTextNode("\n");
+        var el6 = dom.createTextNode("\n          ");
         dom.appendChild(el5, el6);
         var el6 = dom.createComment("");
         dom.appendChild(el5, el6);
-        var el6 = dom.createTextNode("        ");
+        var el6 = dom.createTextNode("\n        ");
         dom.appendChild(el5, el6);
         dom.appendChild(el4, el5);
         var el5 = dom.createTextNode("\n      ");
@@ -41995,11 +42248,9 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
         dom.appendChild(el0, el1);
         var el1 = dom.createElement("div");
         dom.setAttribute(el1,"class","session__content");
-        var el2 = dom.createTextNode("\n  ");
+        var el2 = dom.createTextNode("\n");
         dom.appendChild(el1, el2);
         var el2 = dom.createComment("");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n");
         dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
@@ -42032,13 +42283,13 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
         ["block","link-to",["session.cases"],["class","nav-main__item i-person"],2,null,["loc",[null,[9,10],[9,82]]]],
         ["block","link-to",["session.cases"],["class","nav-main__item i-help"],3,null,["loc",[null,[10,10],[10,80]]]],
         ["block","link-to",["session.cases"],["class","nav-main__item i-insights"],4,null,["loc",[null,[11,10],[11,84]]]],
-        ["block","each",[["get","tabsService.tabs",["loc",[null,[16,18],[16,34]]]]],[],5,null,["loc",[null,[16,10],[18,19]]]],
-        ["content","ko-agent-dropdown",["loc",[null,[21,9],[21,30]]]],
-        ["inline","ko-universal-search",[],["performSearch","performUniversalSearch","searchResults",["subexpr","@mut",[["get","searchResults",["loc",[null,[26,83],[26,96]]]]],[],[]],"searchingChanged","onSearchingChanged"],["loc",[null,[26,8],[26,136]]]],
-        ["block","unless",[["get","hideSessionWidgets",["loc",[null,[30,18],[30,36]]]]],[],6,null,["loc",[null,[30,8],[32,19]]]],
-        ["block","link-to",["session.showcase"],["class","nav-main__item"],7,null,["loc",[null,[39,0],[39,74]]]],
-        ["block","link-to",["session.styleguide"],["class","nav-main__item"],8,null,["loc",[null,[40,0],[40,79]]]],
-        ["content","outlet",["loc",[null,[43,2],[43,12]]]]
+        ["inline","ko-tabs",[],["tabs",["subexpr","@mut",[["get","tabs",["loc",[null,[16,25],[16,29]]]]],[],[]],"selectedTab",["subexpr","@mut",[["get","selectedTab",["loc",[null,[16,42],[16,53]]]]],[],[]],"select","onTabSelected","closeAll","onAllTabsClosed"],["loc",[null,[16,10],[16,105]]]],
+        ["content","ko-agent-dropdown",["loc",[null,[19,9],[19,30]]]],
+        ["inline","ko-universal-search",[],["performSearch","performUniversalSearch","searchResults",["subexpr","@mut",[["get","searchResults",["loc",[null,[24,83],[24,96]]]]],[],[]],"searchingChanged","onSearchingChanged"],["loc",[null,[24,8],[24,136]]]],
+        ["block","unless",[["get","hideSessionWidgets",["loc",[null,[28,18],[28,36]]]]],[],5,null,["loc",[null,[28,8],[30,19]]]],
+        ["block","link-to",["session.showcase"],["class","nav-main__item"],6,null,["loc",[null,[37,0],[37,74]]]],
+        ["block","link-to",["session.styleguide"],["class","nav-main__item"],7,null,["loc",[null,[38,0],[38,79]]]],
+        ["block","ko-scroller",[],["scrollTop",["subexpr","@mut",[["get","scroll",["loc",[null,[41,27],[41,33]]]]],[],[]]],8,null,["loc",[null,[41,2],[43,18]]]]
       ],
       locals: [],
       templates: [child0, child1, child2, child3, child4, child5, child6, child7, child8]
@@ -42385,8 +42636,7 @@ define('frontend-cp/session/users/user/route', ['exports', 'frontend-cp/routes/a
     },
 
     setupController: function setupController(controller, model) {
-      controller.set('model', model);
-
+      this._super(controller, model);
       this.get('tab').set('label', model.get('fullName'));
     }
   });
@@ -42457,44 +42707,6 @@ define('frontend-cp/session/users/user/template', ['exports'], function (exports
       templates: []
     };
   }()));
-
-});
-define('frontend-cp/session/view', ['exports', 'ember'], function (exports, Ember) {
-
-  'use strict';
-
-  exports['default'] = Ember['default'].View.extend({
-    scrollService: Ember['default'].inject.service('scroll'),
-    $sessionContent: null,
-
-    didUpdateTargetScroll: (function () {
-      this.$().find('.session__content').scrollTop(this.get('scrollService.targetScroll'));
-    }).observes('scrollService.targetScroll'),
-
-    didInsertElement: function didInsertElement() {
-      var _this = this;
-
-      // Bind scrolling
-      this.set('$sessionContent', this.$().find('.session__content'));
-      this.get('$sessionContent').on('scroll', function () {
-        _this.onScroll();
-      });
-      this.get('$sessionContent').on('touchMove', function () {
-        _this.onScroll();
-      });
-    },
-
-    willDestroyElement: function willDestroyElement() {
-      // Unbind scrolling
-      this.get('$sessionContent').off('scroll');
-      this.get('$sessionContent').off('touchMove');
-    },
-
-    onScroll: function onScroll() {
-      this.get('scrollService').set('scroll', this.get('$sessionContent').scrollTop());
-    }
-
-  });
 
 });
 define('frontend-cp/tests/acceptance/case/create-test', ['ember', 'qunit', 'frontend-cp/tests/helpers/start-app'], function (Ember, qunit, startApp) {
@@ -42651,6 +42863,114 @@ define('frontend-cp/tests/assertions/properties-equal', ['exports', 'ember', 'qu
   function getEmberObjectProperties(object) {
     return object.getProperties(Object.keys(object));
   }
+
+});
+define('frontend-cp/tests/fixtures/MockBrowser', ['exports'], function (exports) {
+
+  'use strict';
+
+  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+  var History = (function () {
+    function History() {
+      var _ref = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+      var _ref$state = _ref.state;
+      var state = _ref$state === undefined ? null : _ref$state;
+      var _ref$title = _ref.title;
+      var title = _ref$title === undefined ? null : _ref$title;
+      var _ref$path = _ref.path;
+      var path = _ref$path === undefined ? '/' : _ref$path;
+
+      _classCallCheck(this, History);
+
+      this._entries = [];
+      this._currentIndex = -1;
+      this.pushState(state, title, path);
+    }
+
+    _createClass(History, [{
+      key: 'back',
+      value: function back() {
+        if (this._currentIndex > 0) {
+          this._currentIndex--;
+        }
+      }
+    }, {
+      key: 'forward',
+      value: function forward() {
+        if (this._currentIndex < this._entries.length - 1) {
+          this._currentIndex++;
+        }
+      }
+    }, {
+      key: 'go',
+      value: function go(delta) {
+        var targetIndex = this._currentIndex + delta;
+        if (targetIndex >= 0 && targetIndex < this._entries.length) {
+          this._currentIndex = targetIndex;
+        }
+      }
+    }, {
+      key: 'pushState',
+      value: function pushState(state, title, path) {
+        this._entries.length = this._currentIndex + 1;
+        this._entries.push({
+          state: state,
+          title: title,
+          path: path
+        });
+        this._currentIndex = this._entries.length - 1;
+      }
+    }, {
+      key: 'replaceState',
+      value: function replaceState(state, title, path) {
+        this._currentIndex = Math.max(0, this._currentIndex);
+        this._entries[this._currentIndex] = {
+          state: state,
+          title: title,
+          path: path
+        };
+      }
+    }, {
+      key: 'length',
+      get: function get() {
+        return this._entries.length;
+      }
+    }, {
+      key: 'state',
+      get: function get() {
+        if (this._currentIndex === -1) {
+          return null;
+        }
+        return this._entries[this._currentIndex].state;
+      }
+    }]);
+
+    return History;
+  })();
+
+  var Location = function Location(url) {
+    _classCallCheck(this, Location);
+
+    var linkElement = document.createElement('a');
+    linkElement.href = url;
+
+    this.hash = linkElement.hash;
+    this.host = linkElement.host;
+    this.hostname = linkElement.hostname;
+    this.href = linkElement.href;
+    this.origin = linkElement.origin;
+    this.pathname = linkElement.pathname;
+    this.port = linkElement.port;
+    this.protocol = linkElement.protocol;
+    this.search = linkElement.search;
+  };
+
+  exports.History = History;
+  exports.Location = Location;
 
 });
 define('frontend-cp/tests/helpers/format-date', ['exports', 'ember'], function (exports, Ember) {
@@ -43241,6 +43561,139 @@ define('frontend-cp/tests/integration/components/ko-profile/component-test', ['f
     });
 
     $profileDetail.click();
+  });
+
+});
+define('frontend-cp/tests/integration/components/ko-scroller/component-test', ['ember-qunit'], function (ember_qunit) {
+
+  'use strict';
+
+  ember_qunit.moduleForComponent('ko-scroller', 'Integration | Component | ko scroller', {
+    integration: true
+  });
+
+  ember_qunit.test('it renders', function (assert) {
+    assert.expect(2);
+
+    // Set any properties with this.set('myProperty', 'value');
+    // Handle any actions with this.on('myAction', function(val) { ... });
+
+    this.render(Ember.HTMLBars.template((function () {
+      return {
+        meta: {
+          'revision': 'Ember@1.13.3',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 1,
+              'column': 15
+            }
+          }
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [['content', 'ko-scroller', ['loc', [null, [1, 0], [1, 15]]]]],
+        locals: [],
+        templates: []
+      };
+    })()));
+
+    assert.equal(this.$().text().trim(), '');
+
+    // Template block usage:
+    this.render(Ember.HTMLBars.template((function () {
+      var child0 = (function () {
+        return {
+          meta: {
+            'revision': 'Ember@1.13.3',
+            'loc': {
+              'source': null,
+              'start': {
+                'line': 2,
+                'column': 4
+              },
+              'end': {
+                'line': 4,
+                'column': 4
+              }
+            }
+          },
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode('      template block text\n');
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes() {
+            return [];
+          },
+          statements: [],
+          locals: [],
+          templates: []
+        };
+      })();
+
+      return {
+        meta: {
+          'revision': 'Ember@1.13.3',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 5,
+              'column': 2
+            }
+          }
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode('\n');
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode('  ');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+          return morphs;
+        },
+        statements: [['block', 'ko-scroller', [], [], 0, null, ['loc', [null, [2, 4], [4, 20]]]]],
+        locals: [],
+        templates: [child0]
+      };
+    })()));
+
+    assert.equal(this.$().text().trim(), 'template block text');
   });
 
 });
@@ -47394,6 +47847,333 @@ define('frontend-cp/tests/unit/services/context-modal-test', ['frontend-cp/tests
   });
 
 });
+define('frontend-cp/tests/unit/services/route-state-test', ['frontend-cp/tests/helpers/qunit', 'ember', 'frontend-cp/tests/fixtures/MockBrowser'], function (qunit, Ember, MockBrowser) {
+
+  'use strict';
+
+  qunit.moduleFor('service:route-state', {
+    beforeEach: function beforeEach() {
+      this.container.register('location:history', createMockLocation(), { instantiate: false });
+      this.container.register('router:main', createMockRouter(this.container), { instantiate: false });
+    }
+  });
+
+  qunit.test('it exists', function (assert) {
+    assert.expect(1);
+
+    var service = this.subject();
+
+    assert.ok(service);
+  });
+
+  qunit.test('it gets the history API state', function (assert) {
+    assert.expect(1);
+
+    var mockLocation = createMockLocation({
+      rootUrl: '/root/',
+      path: '/initial',
+      state: {
+        initial: true
+      }
+    });
+    this.container.register('location:history', mockLocation, { instantiate: false });
+
+    var service = this.subject();
+
+    assert.deepEqual(service.getState(), { path: '/root/initial', initial: true });
+  });
+
+  qunit.test('it extends the history API state', function (assert) {
+    assert.expect(6);
+
+    var mockLocation = createMockLocation({
+      rootUrl: '/root/',
+      path: '/initial'
+    });
+    this.container.register('location:history', mockLocation, { instantiate: false });
+
+    var service = this.subject();
+
+    assert.equal(mockLocation.get('history').length, 1);
+    assert.deepEqual(service.getState(), { path: '/root/initial' });
+
+    service.updateState({ update1: true, update2: true });
+
+    assert.equal(mockLocation.get('history').length, 1);
+    assert.deepEqual(service.getState(), { path: '/root/initial', update1: true, update2: true });
+
+    service.updateState({ update3: true, update4: true });
+
+    assert.equal(mockLocation.get('history').length, 1);
+    assert.deepEqual(service.getState(), { path: '/root/initial', update1: true, update2: true, update3: true, update4: true });
+  });
+
+  qunit.test('it transitions to a history API state', function (assert) {
+    assert.expect(6);
+
+    var mockLocation = createMockLocation({
+      rootUrl: '/root/',
+      path: '/initial'
+    });
+    this.container.register('location:history', mockLocation, { instantiate: false });
+
+    var done = assert.async();
+
+    var service = this.subject();
+
+    assert.equal(mockLocation.get('history').length, 1);
+    assert.deepEqual(service.getState(), { path: '/root/initial' });
+
+    service.transitionToState('/state', { state: true }).then(function () {
+      assert.equal(mockLocation.get('history').length, 2);
+      assert.deepEqual(service.getState(), { path: '/root/state', state: true });
+
+      service.transitionToState('/stateless').then(function () {
+        assert.equal(mockLocation.get('history').length, 3);
+        assert.deepEqual(service.getState(), { path: '/root/stateless' });
+        done();
+      });
+    });
+  });
+
+  function createMockLocation() {
+    var _ref = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+    var _ref$rootUrl = _ref.rootUrl;
+    var rootUrl = _ref$rootUrl === undefined ? '/' : _ref$rootUrl;
+    var _ref$path = _ref.path;
+    var path = _ref$path === undefined ? '/' : _ref$path;
+    var _ref$state = _ref.state;
+    var state = _ref$state === undefined ? null : _ref$state;
+    var _ref$title = _ref.title;
+    var title = _ref$title === undefined ? null : _ref$title;
+
+    var location = Ember['default'].HistoryLocation.create({
+      rootURL: rootUrl,
+      location: new MockBrowser.Location(path),
+      history: new MockBrowser.History()
+    });
+
+    location.initState();
+
+    if (state) {
+      Object.assign(location.get('history').state, state);
+    }
+
+    return location;
+  }
+
+  function createMockRouter(container) {
+    var MockRouter = Ember['default'].Object.extend(Ember['default'].Evented, {
+      transitionTo: function transitionTo(url) {
+        var _this = this;
+
+        var location = container.lookup('location:history');
+        var path = location.formatURL(url);
+        var state = {
+          path: path
+        };
+        location.get('history').pushState(state, null, path);
+        location.set('location', new MockBrowser.Location(path));
+        return Ember['default'].RSVP.resolve().then(function () {
+          _this.trigger('didTransition');
+        });
+      }
+    });
+    return MockRouter.create();
+  }
+
+});
+define('frontend-cp/tests/unit/services/tabs-test', ['frontend-cp/tests/helpers/qunit', 'ember'], function (qunit, Ember) {
+
+  'use strict';
+
+  qunit.moduleFor('service:tabs', {
+    beforeEach: function beforeEach() {
+      var localStoreService = createMockLocalStoreService();
+      this.container.register('service:localStore', localStoreService, { instantiate: false });
+    }
+  });
+
+  qunit.test('it exists', function (assert) {
+    assert.expect(1);
+
+    var service = this.subject();
+
+    assert.ok(service);
+  });
+
+  qunit.test('it creates new tabs', function (assert) {
+    assert.expect(2);
+
+    var service = this.subject();
+
+    var defaultTab = service.createTab();
+
+    assert.propertiesEqual(defaultTab, {
+      url: null,
+      baseUrl: null,
+      label: null,
+      selected: false,
+      state: null
+    });
+
+    var tab = service.createTab({
+      url: '/cases/1/user',
+      baseUrl: '/cases/1',
+      label: 'Case 1'
+    });
+
+    assert.propertiesEqual(tab, {
+      url: '/cases/1/user',
+      baseUrl: '/cases/1',
+      label: 'Case 1',
+      selected: false,
+      state: null
+    });
+  });
+
+  qunit.test('it loads tabs from session storage', function (assert) {
+    assert.expect(5);
+
+    var localStoreService = createMockLocalStoreService();
+    this.container.register('service:localStore', localStoreService, { instantiate: false });
+
+    var service = this.subject();
+
+    var emptyTabs = service.loadTabsFromStorage();
+    assert.deepEqual(emptyTabs, []);
+
+    localStoreService.setItem('tabs', [{
+      baseUrl: '/cases/1',
+      url: '/cases/1/user',
+      label: 'Case 1'
+    }, {
+      baseUrl: '/cases/2',
+      url: '/cases/2/user',
+      label: 'Case 2'
+    }, {
+      baseUrl: '/cases/3',
+      url: '/cases/3/user',
+      label: 'Case 3'
+    }]);
+
+    var tabs = service.loadTabsFromStorage();
+    var expectedTabs = [{
+      baseUrl: '/cases/1',
+      url: '/cases/1/user',
+      label: 'Case 1'
+    }, {
+      baseUrl: '/cases/2',
+      url: '/cases/2/user',
+      label: 'Case 2'
+    }, {
+      baseUrl: '/cases/3',
+      url: '/cases/3/user',
+      label: 'Case 3'
+    }];
+    assert.equal(tabs.length, expectedTabs.length);
+    expectedTabs.forEach(function (expected, index) {
+      var tab = tabs[index];
+      assert.propertiesEqual(tab, expected);
+    });
+  });
+
+  qunit.test('it saves tabs to session storage', function (assert) {
+    assert.expect(2);
+
+    var localStoreService = createMockLocalStoreService();
+    this.container.register('service:localStore', localStoreService, { instantiate: false });
+
+    var service = this.subject();
+
+    assert.equal(localStoreService.getItem('tabs'), undefined);
+
+    service.saveTabsToStorage([service.createTab({
+      baseUrl: '/cases/1',
+      url: '/cases/1/user',
+      label: 'Case 1',
+      selected: true,
+      state: {}
+    }), service.createTab({
+      baseUrl: '/cases/2',
+      url: '/cases/2/user',
+      label: 'Case 2',
+      selected: false,
+      state: {}
+    }), service.createTab({
+      baseUrl: '/cases/3',
+      url: '/cases/3/user',
+      label: 'Case 3',
+      selected: false,
+      state: {}
+    })]);
+
+    assert.deepEqual(localStoreService.getItem('tabs'), [{
+      baseUrl: '/cases/1',
+      url: '/cases/1/user',
+      label: 'Case 1'
+    }, {
+      baseUrl: '/cases/2',
+      url: '/cases/2/user',
+      label: 'Case 2'
+    }, {
+      baseUrl: '/cases/3',
+      url: '/cases/3/user',
+      label: 'Case 3'
+    }]);
+  });
+
+  function createMockLocalStoreService() {
+    var MockLocalStore = Ember['default'].Service.extend({
+      _localStore: null,
+      _sessionStore: null,
+
+      init: function init() {
+        this._super();
+        this.set('_localStore', {});
+        this.set('_sessionStore', {});
+      },
+
+      getItem: function getItem(key) {
+        var _ref = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+
+        var _ref$persist = _ref.persist;
+        var persist = _ref$persist === undefined ? false : _ref$persist;
+
+        var store = this.get(persist ? '_localStore' : '_sessionStore');
+        return store[key];
+      },
+
+      setItem: function setItem(key, value) {
+        var _ref2 = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+
+        var _ref2$persist = _ref2.persist;
+        var persist = _ref2$persist === undefined ? false : _ref2$persist;
+
+        var store = this.get(persist ? '_localStore' : '_sessionStore');
+        store[key] = value;
+      },
+
+      removeItem: function removeItem(key) {
+        var _ref3 = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+
+        var _ref3$persist = _ref3.persist;
+        var persist = _ref3$persist === undefined ? false : _ref3$persist;
+
+        var store = this.get(persist ? '_localStore' : '_sessionStore');
+        delete store[key];
+      },
+
+      clearAll: function clearAll() {
+        this.set('_localStore', {});
+        this.set('_sessionStore', {});
+      }
+    });
+    return MockLocalStore.create();
+  }
+
+});
 define('frontend-cp/tests/unit/services/url-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
@@ -47467,7 +48247,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+09289b8c"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+943efd94"});
 }
 
 /* jshint ignore:end */
