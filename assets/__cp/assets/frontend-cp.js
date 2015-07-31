@@ -25726,43 +25726,47 @@ define('frontend-cp/login/controller', ['exports', 'ember', 'frontend-cp/mixins/
       var prevStateMeta = stateMeta[prevSubState];
       var isContentDown = null;
 
-      /**
-       * Determine the direction of movement depending on 'order' of item
-       * Eg. moving from password to otp will move down,
-       * otp to resetPassword will move down again
-       * resetPassword to password will move up (once, we don't want to go 'past' otp)
-       */
+      // Only items within login level 0 state should animate up / down
+      if (this.getStateAtLevel(0, prevState) === 'login') {
 
-      // This should explicitly do nothing if the orders are equal
-      if (currentStateMeta.order > prevStateMeta.order) {
-        isContentDown = true;
-      } else if (currentStateMeta.order < prevStateMeta.order) {
-        isContentDown = false;
-      }
+        /**
+         * Determine the direction of movement depending on 'order' of item
+         * Eg. moving from password to otp will move down,
+         * otp to resetPassword will move down again
+         * resetPassword to password will move up (once, we don't want to go 'past' otp)
+         */
 
-      // Place content area in pre-animation state
-      Ember['default'].run(function () {
-        // Choose where to place the prev and next components
-        _this.setProperties({
-          topFormSet: isContentDown ? prevStateMeta.component : currentStateMeta.component,
-          bottomFormSet: isContentDown ? currentStateMeta.component : prevStateMeta.component
+        // This should explicitly do nothing if the orders are equal
+        if (currentStateMeta.order > prevStateMeta.order) {
+          isContentDown = true;
+        } else if (currentStateMeta.order < prevStateMeta.order) {
+          isContentDown = false;
+        }
+
+        // Place content area in pre-animation state
+        Ember['default'].run(function () {
+          // Choose where to place the prev and next components
+          _this.setProperties({
+            topFormSet: isContentDown ? prevStateMeta.component : currentStateMeta.component,
+            bottomFormSet: isContentDown ? currentStateMeta.component : prevStateMeta.component
+          });
+
+          // Switch off animation
+          _this.set('isAnimatingContent', false);
+
+          if (currentSubState !== prevSubState) {
+            // Move content to show the previous component
+            _this.set('isContentDown', !isContentDown);
+          }
         });
 
-        // Switch off animation
-        _this.set('isAnimatingContent', false);
-
-        if (currentSubState !== prevSubState) {
-          // Move content to show the previous component
-          _this.set('isContentDown', !isContentDown);
-        }
-      });
-
-      // In next run loop run the animation
-      Ember['default'].run.next(function () {
-        // Switch on animation
-        _this.set('isAnimatingContent', true);
-        _this.set('isContentDown', isContentDown);
-      });
+        // In next run loop run the animation
+        Ember['default'].run.next(function () {
+          // Switch on animation
+          _this.set('isAnimatingContent', true);
+          _this.set('isContentDown', isContentDown);
+        });
+      }
 
       // Store prevState for comparison
       this.set('prevLoginState', currentState);
@@ -48247,7 +48251,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+943efd94"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+72a8818b"});
 }
 
 /* jshint ignore:end */
