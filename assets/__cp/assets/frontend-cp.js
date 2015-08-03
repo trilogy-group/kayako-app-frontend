@@ -20275,9 +20275,15 @@ define('frontend-cp/components/ko-search/template', ['exports'], function (expor
 });
 define('frontend-cp/components/ko-session-widgets/component', ['exports', 'ember'], function (exports, Ember) {
 
-	'use strict';
+  'use strict';
 
-	exports['default'] = Ember['default'].Component.extend({});
+  exports['default'] = Ember['default'].Component.extend({
+    session: Ember['default'].inject.service(),
+
+    user: (function () {
+      return this.get('session.user');
+    }).property('session.user')
+  });
 
 });
 define('frontend-cp/components/ko-session-widgets/template', ['exports'], function (exports) {
@@ -20295,8 +20301,8 @@ define('frontend-cp/components/ko-session-widgets/template', ['exports'], functi
             "column": 0
           },
           "end": {
-            "line": 2,
-            "column": 25
+            "line": 3,
+            "column": 0
           }
         },
         "moduleName": "frontend-cp/components/ko-session-widgets/template.hbs"
@@ -20312,6 +20318,8 @@ define('frontend-cp/components/ko-session-widgets/template', ['exports'], functi
         dom.appendChild(el0, el1);
         var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
@@ -20319,11 +20327,10 @@ define('frontend-cp/components/ko-session-widgets/template', ['exports'], functi
         morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
         morphs[1] = dom.createMorphAt(fragment,2,2,contextualElement);
         dom.insertBoundary(fragment, 0);
-        dom.insertBoundary(fragment, null);
         return morphs;
       },
       statements: [
-        ["inline","ko-user-menu",[],["username","Morrigan"],["loc",[null,[1,0],[1,36]]]],
+        ["inline","ko-user-menu",[],["user",["subexpr","@mut",[["get","user",["loc",[null,[1,20],[1,24]]]]],[],[]]],["loc",[null,[1,0],[1,26]]]],
         ["content","ko-notification-badge",["loc",[null,[2,0],[2,25]]]]
       ],
       locals: [],
@@ -24301,8 +24308,8 @@ define('frontend-cp/components/ko-user-menu/template', ['exports'], function (ex
             return morphs;
           },
           statements: [
-            ["inline","ko-avatar",[],["avatar",["subexpr","@mut",[["get","avatar",["loc",[null,[5,27],[5,33]]]]],[],[]]],["loc",[null,[5,8],[5,35]]]],
-            ["content","username",["loc",[null,[8,8],[8,20]]]]
+            ["inline","ko-avatar",[],["avatar",["subexpr","@mut",[["get","user.avatar",["loc",[null,[5,27],[5,38]]]]],[],[]]],["loc",[null,[5,8],[5,40]]]],
+            ["content","user.fullName",["loc",[null,[8,8],[8,25]]]]
           ],
           locals: [],
           templates: []
@@ -32985,29 +32992,44 @@ define('frontend-cp/services/session', ['exports', 'ember'], function (exports, 
      */
     session: null,
     sessionId: null,
+    user: null,
     localStoreService: Ember['default'].inject.service('localStore'),
     store: Ember['default'].inject.service(),
+
+    init: function init() {
+      this._super.apply(this, arguments);
+
+      this.getSession();
+    },
 
     getSession: function getSession() {
       var _this = this;
 
-      // Session exists
-      if (this.get('session')) {
-        return Ember['default'].RSVP.Promise.resolve(this.get('session'));
-      }
-
-      var sessionId = this.get('localStoreService').getItem('sessionId', { persist: true });
-      // sessionId saved in local storage
-      if (sessionId) {
-        this.set('sessionId', sessionId);
-        return this._getSession()['catch'](function (e) {
-          _this.get('localStoreService').removeItem('sessionId', { persist: true });
-          throw e;
-        });
-        // No session information available
-      } else {
-          return Ember['default'].RSVP.Promise.reject(new Error('No session ID'));
+      return new Ember['default'].RSVP.Promise(function (resolve) {
+        // Session exists
+        var session = _this.get('session');
+        if (session) {
+          resolve(session);
         }
+
+        var sessionId = _this.get('localStoreService').getItem('sessionId', { persist: true });
+        // sessionId saved in local storage
+        if (sessionId) {
+          _this.set('sessionId', sessionId);
+          _this._getSession().then(function (session) {
+            resolve(session);
+          })['catch'](function (e) {
+            _this.get('localStoreService').removeItem('sessionId', { persist: true });
+            _this.set('sessionId', null);
+            _this.set('session', null);
+            _this.set('user', null);
+            throw e;
+          });
+          // No session information available
+        } else {
+            resolve(new Error('No session ID'));
+          };
+      });
     },
 
     _getSession: function _getSession() {
@@ -33021,7 +33043,7 @@ define('frontend-cp/services/session', ['exports', 'ember'], function (exports, 
         });
         record.unloadRecord();
         _this2.set('session', session);
-        return session;
+        _this2.set('user', session.get('user'));
       });
     },
 
@@ -43142,6 +43164,21 @@ define('frontend-cp/tests/helpers/resolver', ['exports', 'ember/resolver', 'fron
   exports['default'] = resolver;
 
 });
+define('frontend-cp/tests/helpers/setup-mirage-for-integration', ['exports', 'frontend-cp/initializers/ember-cli-mirage'], function (exports, mirageInitializer) {
+
+  'use strict';
+
+
+
+  exports['default'] = setupMirage; //Work around until this is real
+  //https://github.com/samselikoff/ember-cli-mirage/issues/183
+  function setupMirage(container) {
+    mirageInitializer['default'].initialize(container);
+  }
+
+  ;
+
+});
 define('frontend-cp/tests/helpers/start-app', ['exports', 'ember', 'frontend-cp/app', 'frontend-cp/config/environment', 'frontend-cp/tests/helpers/login', 'frontend-cp/tests/helpers/logout'], function (exports, Ember, Application, config, login, logout) {
 
   'use strict';
@@ -43853,6 +43890,70 @@ define('frontend-cp/tests/integration/components/ko-search/component-test', ['em
     });
 
     this.$('input').click();
+  });
+
+});
+define('frontend-cp/tests/integration/components/ko-session-widgets/component-test', ['frontend-cp/tests/helpers/qunit', 'frontend-cp/tests/helpers/setup-mirage-for-integration', 'ember'], function (qunit, mirage, Ember) {
+
+  'use strict';
+
+  qunit.moduleForComponent('ko-session-widgets', 'Integration | Component | ko session widgets', {
+    integration: true,
+    setup: function setup() {
+      mirage['default'](this.containter);
+      localStorage.setItem('sessionId', '"pPW6tnOyJG6TmWCVea175d1bfc5dbf073a89ffeb6a2a198c61aae941Aqc7ahmzw8a"');
+    },
+    teardown: function teardown() {
+      localStorage.removeItem('sessionId');
+    }
+  });
+
+  qunit.test('it renders', function (assert) {
+    assert.expect(1);
+
+    this.render(Ember['default'].HTMLBars.template((function () {
+      return {
+        meta: {
+          'revision': 'Ember@1.13.3',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 3,
+              'column': 2
+            }
+          }
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode('\n    ');
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode('\n  ');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+          return morphs;
+        },
+        statements: [['content', 'ko-session-widgets', ['loc', [null, [2, 4], [2, 26]]]]],
+        locals: [],
+        templates: []
+      };
+    })()));
+
+    Ember['default'].run.later(this, function () {
+      assert.equal(this.$('div.flag__body').text().trim(), 'John Doe');
+    });
   });
 
 });
@@ -47090,28 +47191,6 @@ define('frontend-cp/tests/unit/components/ko-recent-members/component-test', ['f
   });
 
 });
-define('frontend-cp/tests/unit/components/ko-session-widgets/component-test', ['ember-qunit'], function (ember_qunit) {
-
-  'use strict';
-
-  ember_qunit.moduleForComponent('ko-session-widgets', 'Unit | Component | ko session widgets', {
-    // Specify the other units that are required for this test
-    needs: ['component:ko-user-menu']
-  });
-
-  ember_qunit.test('it renders', function (assert) {
-    assert.expect(2);
-
-    // Creates the component instance
-    var component = this.subject();
-    assert.equal(component._state, 'preRender');
-
-    // Renders the component to the page
-    this.render();
-    assert.equal(component._state, 'inDOM');
-  });
-
-});
 define('frontend-cp/tests/unit/components/ko-table-body/component-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
@@ -48251,7 +48330,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+e6fc1ed5"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+b156b104"});
 }
 
 /* jshint ignore:end */
