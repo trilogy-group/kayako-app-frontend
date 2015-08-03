@@ -3913,9 +3913,22 @@ define('frontend-cp/components/ko-admin/page-header/component', ['exports', 'emb
   'use strict';
 
   exports['default'] = Ember['default'].Component.extend({
+    //Params:
+    title: null,
+
     classNames: ['ko-admin_page-header'],
 
     cancelButtonText: 'Cancel',
+
+    titleTrail: (function () {
+      var title = this.get('title');
+      return title.slice(0, title.lastIndexOf('/') + 1);
+    }).property('title'),
+
+    pageTitle: (function () {
+      var title = this.get('title');
+      return title.slice(title.lastIndexOf('/') + 1).trim();
+    }).property('title'),
 
     actions: {
       cancelAction: function cancelAction() {
@@ -3941,11 +3954,56 @@ define('frontend-cp/components/ko-admin/page-header/template', ['exports'], func
           "loc": {
             "source": null,
             "start": {
-              "line": 5,
+              "line": 2,
+              "column": 2
+            },
+            "end": {
+              "line": 4,
+              "column": 2
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-admin/page-header/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("    ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("span");
+          dom.setAttribute(el1,"class","t-caption");
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]),0,0);
+          return morphs;
+        },
+        statements: [
+          ["content","titleTrail",["loc",[null,[3,28],[3,42]]]]
+        ],
+        locals: [],
+        templates: []
+      };
+    }());
+    var child1 = (function() {
+      return {
+        meta: {
+          "revision": "Ember@1.13.3",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 8,
               "column": 0
             },
             "end": {
-              "line": 9,
+              "line": 12,
               "column": 0
             }
           },
@@ -3979,25 +4037,25 @@ define('frontend-cp/components/ko-admin/page-header/template', ['exports'], func
           return morphs;
         },
         statements: [
-          ["element","action",["cancelAction"],[],["loc",[null,[6,44],[6,69]]]],
-          ["content","cancelButtonText",["loc",[null,[7,6],[7,26]]]]
+          ["element","action",["cancelAction"],[],["loc",[null,[9,44],[9,69]]]],
+          ["content","cancelButtonText",["loc",[null,[10,6],[10,26]]]]
         ],
         locals: [],
         templates: []
       };
     }());
-    var child1 = (function() {
+    var child2 = (function() {
       return {
         meta: {
           "revision": "Ember@1.13.3",
           "loc": {
             "source": null,
             "start": {
-              "line": 11,
+              "line": 14,
               "column": 0
             },
             "end": {
-              "line": 15,
+              "line": 18,
               "column": 0
             }
           },
@@ -4031,8 +4089,8 @@ define('frontend-cp/components/ko-admin/page-header/template', ['exports'], func
           return morphs;
         },
         statements: [
-          ["element","action",["buttonAction"],[],["loc",[null,[12,74],[12,99]]]],
-          ["content","buttonText",["loc",[null,[13,4],[13,18]]]]
+          ["element","action",["buttonAction"],[],["loc",[null,[15,74],[15,99]]]],
+          ["content","buttonText",["loc",[null,[16,4],[16,18]]]]
         ],
         locals: [],
         templates: []
@@ -4048,7 +4106,7 @@ define('frontend-cp/components/ko-admin/page-header/template', ['exports'], func
             "column": 0
           },
           "end": {
-            "line": 15,
+            "line": 18,
             "column": 7
           }
         },
@@ -4061,7 +4119,11 @@ define('frontend-cp/components/ko-admin/page-header/template', ['exports'], func
         var el0 = dom.createDocumentFragment();
         var el1 = dom.createElement("div");
         dom.setAttribute(el1,"class","ko-admin_page-header__title");
-        var el2 = dom.createTextNode("\n  ");
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("  ");
         dom.appendChild(el1, el2);
         var el2 = dom.createComment("");
         dom.appendChild(el1, el2);
@@ -4079,20 +4141,23 @@ define('frontend-cp/components/ko-admin/page-header/template', ['exports'], func
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var morphs = new Array(3);
-        morphs[0] = dom.createMorphAt(dom.childAt(fragment, [0]),1,1);
-        morphs[1] = dom.createMorphAt(fragment,2,2,contextualElement);
-        morphs[2] = dom.createMorphAt(fragment,4,4,contextualElement);
+        var element2 = dom.childAt(fragment, [0]);
+        var morphs = new Array(4);
+        morphs[0] = dom.createMorphAt(element2,1,1);
+        morphs[1] = dom.createMorphAt(element2,3,3);
+        morphs[2] = dom.createMorphAt(fragment,2,2,contextualElement);
+        morphs[3] = dom.createMorphAt(fragment,4,4,contextualElement);
         dom.insertBoundary(fragment, null);
         return morphs;
       },
       statements: [
-        ["content","title",["loc",[null,[2,2],[2,11]]]],
-        ["block","if",[["get","cancelAction",["loc",[null,[5,6],[5,18]]]]],[],0,null,["loc",[null,[5,0],[9,7]]]],
-        ["block","if",[["get","buttonText",["loc",[null,[11,6],[11,16]]]]],[],1,null,["loc",[null,[11,0],[15,7]]]]
+        ["block","if",[["get","titleTrail",["loc",[null,[2,8],[2,18]]]]],[],0,null,["loc",[null,[2,2],[4,9]]]],
+        ["content","pageTitle",["loc",[null,[5,2],[5,15]]]],
+        ["block","if",[["get","cancelAction",["loc",[null,[8,6],[8,18]]]]],[],1,null,["loc",[null,[8,0],[12,7]]]],
+        ["block","if",[["get","buttonText",["loc",[null,[14,6],[14,16]]]]],[],2,null,["loc",[null,[14,0],[18,7]]]]
       ],
       locals: [],
-      templates: [child0, child1]
+      templates: [child0, child1, child2]
     };
   }()));
 
@@ -48330,7 +48395,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+b156b104"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+06a901e4"});
 }
 
 /* jshint ignore:end */
