@@ -48615,7 +48615,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+9c28ca9f"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+d5b31d4c"});
 }
 
 /* jshint ignore:end */
