@@ -29507,7 +29507,7 @@ define('frontend-cp/mirage/fixtures/enusstrings', ['exports'], function (exports
       'resource_type': 'locale_string'
     }, {
       id: 'frontend.api.admin.caseforms.help.is_visible_to_customers',
-      value: 'When customers can see and select case forms, they wil be able to select a case form when submitting a new request in the Help Center. This means that case forms can be used to direct customers to create different types of request and to provide specific pieces of information for that request type."',
+      value: 'When customers can see and select case forms, they will be able to select a case form when submitting a new request in the Help Center. This means that case forms can be used to direct customers to create different types of request and to provide specific pieces of information for that request type.',
       'resource_type': 'locale_string'
     }, {
       id: 'frontend.api.admin.caseforms.label.customer_form_title',
@@ -29519,11 +29519,11 @@ define('frontend-cp/mirage/fixtures/enusstrings', ['exports'], function (exports
       'resource_type': 'locale_string'
     }, {
       id: 'frontend.api.admin.caseforms.help.api_key',
-      value: 'The field key is unique to this form nd is used to reference fields using the Kayako API and in search."',
+      value: 'The field key is unique to this form and is used to reference fields using the Kayako API and in search.',
       'resource_type': 'locale_string'
     }, {
       id: 'frontend.api.admin.caseforms.help.configure_fields',
-      value: 'System fields are included in each case form b default. Add and arrange custom case fields to the case form below. You can manage case fields in the [Case fields] section."',
+      value: 'System fields are included in each case form by default. Add and arrange custom case fields to the case form below. You can manage case fields in the [Case fields] section.',
       'resource_type': 'locale_string'
     }, {
       id: 'frontend.api.admin.caseforms.label.add_new_field',
@@ -29571,7 +29571,7 @@ define('frontend-cp/mirage/fixtures/enusstrings', ['exports'], function (exports
       'resource_type': 'locale_string'
     }, {
       id: 'frontend.api.admin.casefields.type.regex.description',
-      value: 'Choose a regular expression to validate this fied type"',
+      value: 'Choose a regular expression to validate this fied type',
       'resource_type': 'locale_string'
     }, {
       id: 'frontend.api.admin.casefields.type.radio.name',
@@ -29627,7 +29627,7 @@ define('frontend-cp/mirage/fixtures/enusstrings', ['exports'], function (exports
       'resource_type': 'locale_string'
     }, {
       id: 'frontend.api.admin.casefields.type.date.description',
-      value: 'Allow a user to select a date using a date pickr"',
+      value: 'Allow a user to select a date using a date picker',
       'resource_type': 'locale_string'
     }, {
       id: 'frontend.api.admin.casefields.type.checkbox.name',
@@ -29679,7 +29679,7 @@ define('frontend-cp/mirage/fixtures/enusstrings', ['exports'], function (exports
       'resource_type': 'locale_string'
     }, {
       id: 'frontend.api.admin.casefields.description',
-      value: 'Lorem ipsum dolor sit amet, diam appeere facilisis at pri, his vocibus iudicabit te. Te decore feugiat necessitatibus nec, id eos fugit dicunt. Vis ei ubique blandit, in vidit maiestatis disputationi vix, essent perpetua interesset ei mea. Et mea ubique feugait, ne nam unum clita, no his indoctum conclusionemque. Ad pri aperiri definitionem, nec ei dictas blandit."',
+      value: 'Lorem ipsum dolor sit amet, diam appetere facilisis at pri, his vocibus iudicabit te. Te decore feugiat necessitatibus nec, id eos fugit dicunt. Vis ei ubique blandit, in vidit maiestatis disputationi vix, essent perpetua interesset ei mea. Et mea ubique feugait, ne nam unum clita, no his indoctum conclusionemque. Ad pri aperiri definitionem, nec ei dictas blandit.',
       'resource_type': 'locale_string'
     }, {
       id: 'frontend.api.admin.casefields.new.heading',
@@ -29723,7 +29723,7 @@ define('frontend-cp/mirage/fixtures/enusstrings', ['exports'], function (exports
       'resource_type': 'locale_string'
     }, {
       id: 'frontend.api.admin.casefields.edit.help.field_title',
-      value: 'This is the title that is displayed to your agets"',
+      value: 'This is the title that is displayed to your agents',
       'resource_type': 'locale_string'
     }, {
       id: 'frontend.api.admin.casefields.edit.label.is_visible_to_customers',
@@ -29743,7 +29743,7 @@ define('frontend-cp/mirage/fixtures/enusstrings', ['exports'], function (exports
       'resource_type': 'locale_string'
     }, {
       id: 'frontend.api.admin.casefields.edit.help.customer_field_description',
-      value: 'Enter an optional description into this field that will be sho to customers in the help center"',
+      value: 'Enter an optional description into this field that will be show to customers in the help center',
       'resource_type': 'locale_string'
     }, {
       id: 'frontend.api.admin.casefields.edit.label.is_editable_by_customers',
@@ -29751,7 +29751,7 @@ define('frontend-cp/mirage/fixtures/enusstrings', ['exports'], function (exports
       'resource_type': 'locale_string'
     }, {
       id: 'frontend.api.admin.casefields.edit.help.is_editable_by_customers',
-      value: 'Enable this setting to allow your customers to change the vaue of this field from the Help Center or through the API."',
+      value: 'Enable this setting to allow your customers to change the value of this field from the Help Center or through the API.',
       'resource_type': 'locale_string'
     }, {
       id: 'frontend.api.admin.casefields.edit.label.is_required_for_customers',
@@ -29759,7 +29759,7 @@ define('frontend-cp/mirage/fixtures/enusstrings', ['exports'], function (exports
       'resource_type': 'locale_string'
     }, {
       id: 'frontend.api.admin.casefields.edit.help.is_required_for_customers',
-      value: 'Enable this setting to require your customers to complete thi field when creating or updating a case from the Help Center or through the API."',
+      value: 'Enable this setting to require your customers to complete thi field when creating or updating a case from the Help Center or through the API.',
       'resource_type': 'locale_string'
     }, {
       id: 'frontend.api.admin.casefields.edit.label.api_key',
@@ -29767,19 +29767,19 @@ define('frontend-cp/mirage/fixtures/enusstrings', ['exports'], function (exports
       'resource_type': 'locale_string'
     }, {
       id: 'frontend.api.admin.casefields.edit.help.api_key',
-      value: 'The field key is unique to this field and i used to reference fields using the Kayako API and in search."',
+      value: 'The field key is unique to this field and is used to reference fields using the Kayako API and in search.',
       'resource_type': 'locale_string'
     }, {
       id: 'frontend.api.admin.casefields.edit.help.is_enabled',
-      value: 'Disabled case fields will not be available on ases or case forms, but any existing data will still be searchable and can be referenced in reporting."',
+      value: 'Disabled case fields will not be available on cases or case forms, but any existing data will still be searchable and can be referenced in reporting.',
       'resource_type': 'locale_string'
     }, {
       id: 'frontend.api.admin.casefields.edit.label.priorities',
-      value: 'The order of priorities matter: your prioritiesshould go from highest to lowest. If you remove a priority, all cases using that priority will be set to no priority."',
+      value: 'The order of priorities matter: your priorities should go from highest to lowest. If you remove a priority, all cases using that priority will be set to no priority.',
       'resource_type': 'locale_string'
     }, {
       id: 'frontend.api.admin.casefields.help.regex',
-      value: 'Enter a regular expression that willbe evaluated against your users\' input. If the regular expression evaluates to false, the input will be deemed invalid."',
+      value: 'Enter a regular expression that will be evaluated against your users input. If the regular expression evaluates to false, the input will be deemed invalid.',
       'resource_type': 'locale_string'
     }, {
       id: 'frontend.api.admin.predicate_builder.cases.subject',
@@ -29923,7 +29923,7 @@ define('frontend-cp/mirage/fixtures/enusstrings', ['exports'], function (exports
       'resource_type': 'locale_string'
     }, {
       id: 'frontend.api.cases.subheader',
-      value: '{time, date, medium} – {time, time, short} created via {channel}{hasBrand, select,\n    true {, {brand}}\n    false {}\n  }"',
+      value: '{time, date, medium} – {time, time, short} created via {channel}{hasBrand, select,\n    true {, {brand}}\n    false {}\n  }',
       'resource_type': 'locale_string'
     }, {
       id: 'frontend.api.cases.subject',
@@ -29991,7 +29991,7 @@ define('frontend-cp/mirage/fixtures/enusstrings', ['exports'], function (exports
       'resource_type': 'locale_string'
     }, {
       id: 'frontend.api.generic.filesize',
-      value: '{size, number, filesize} unit, select,\n    mb {MB}\n    kb {KB}\n  }"',
+      value: '{size, number, filesize} {unit, select,\n    mb {MB}\n    kb {KB}\n  }',
       'resource_type': 'locale_string'
     }, {
       id: 'frontend.api.generic.logout',
@@ -30151,11 +30151,11 @@ define('frontend-cp/mirage/fixtures/enusstrings', ['exports'], function (exports
       'resource_type': 'locale_string'
     }, {
       id: 'frontend.api.generic.confirm.delete',
-      value: 'Are you sure you want to deletethis"',
+      value: 'Are you sure you want to delete this',
       'resource_type': 'locale_string'
     }, {
       id: 'frontend.api.generic.confirm.lose_changes',
-      value: 'You have unsaved changes on this page Are you sure you want to discard these changes?"',
+      value: 'You have unsaved changes on this page Are you sure you want to discard these changes?',
       'resource_type': 'locale_string'
     }, {
       id: 'frontend.api.login.back',
@@ -43152,6 +43152,35 @@ define('frontend-cp/tests/acceptance/login/reset-password-test', ['ember', 'quni
   });
 
 });
+define('frontend-cp/tests/acceptance/showcase/render-test', ['ember', 'qunit', 'frontend-cp/tests/helpers/start-app'], function (Ember, qunit, startApp) {
+
+  'use strict';
+
+  var application = undefined;
+
+  qunit.module('Acceptance | Showcase| Render', {
+    beforeEach: function beforeEach() {
+      application = startApp['default']();
+      login();
+    },
+
+    afterEach: function afterEach() {
+      logout();
+      Ember['default'].run(application, 'destroy');
+    }
+  });
+
+  qunit.test('no errors occur', function (assert) {
+    assert.expect(1);
+
+    visit('/showcase');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/showcase');
+    });
+  });
+
+});
 define('frontend-cp/tests/assertions/properties-equal', ['exports', 'ember', 'qunit'], function (exports, Ember, QUnit) {
 
   'use strict';
@@ -48615,7 +48644,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+a29e8441"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+be18e33c"});
 }
 
 /* jshint ignore:end */
