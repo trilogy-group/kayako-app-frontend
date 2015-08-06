@@ -829,7 +829,7 @@ define('frontend-cp/components/ko-add-participants-context-menu/template', ['exp
   }()));
 
 });
-define('frontend-cp/components/ko-add-participants-popover/component', ['exports', 'ember', 'npm:lodash'], function (exports, Ember, _) {
+define('frontend-cp/components/ko-add-participants-popover/component', ['exports', 'ember', 'npm:lodash', 'frontend-cp/lib/keycodes'], function (exports, Ember, _, KeyCodes) {
 
   'use strict';
 
@@ -856,31 +856,25 @@ define('frontend-cp/components/ko-add-participants-popover/component', ['exports
     }).on('didInsertElement'),
     // TODO: when RFC implemented and its possible to invoke same actions via multiple events
     keyDown: function keyDown(e) {
-      // downArrow
-      if (e.keyCode === 40) {
+      if (e.keyCode === KeyCodes.down) {
         return false;
       }
-      // upArrow
-      if (e.keyCode === 38) {
+      if (e.keyCode === KeyCodes.up) {
         return false;
       }
-      // enter
-      if (e.keyCode === 13) {
+      if (e.keyCode === KeyCodes.enter) {
         return false;
       }
     },
     // TODO: when RFC implemented and its possible to invoke same actions via multiple events
     keyUp: function keyUp(e) {
-      // downArrow
-      if (e.keyCode === 40) {
+      if (e.keyCode === KeyCodes.down) {
         return false;
       }
-      // upArrow
-      if (e.keyCode === 38) {
+      if (e.keyCode === KeyCodes.up) {
         return false;
       }
-      // enter
-      if (e.keyCode === 13) {
+      if (e.keyCode === KeyCodes.enter) {
         return false;
       }
       return false;
@@ -4337,11 +4331,11 @@ define('frontend-cp/components/ko-admin/page-header/template', ['exports'], func
   }()));
 
 });
-define('frontend-cp/components/ko-agent-dropdown/component', ['exports', 'ember', 'ember-cli-keyboard-actions/mixins/keyboard-actions', 'frontend-cp/components/mixins/drop-down-keyboard-nav'], function (exports, Ember, KeyboardActionsMixin, DropdownKeyboardNav) {
+define('frontend-cp/components/ko-agent-dropdown/component', ['exports', 'ember', 'frontend-cp/lib/keycodes', 'frontend-cp/components/mixins/drop-down-keyboard-nav'], function (exports, Ember, KeyCodes, DropdownKeyboardNav) {
 
   'use strict';
 
-  exports['default'] = Ember['default'].Component.extend(KeyboardActionsMixin['default'], DropdownKeyboardNav['default'], {
+  exports['default'] = Ember['default'].Component.extend(DropdownKeyboardNav['default'], {
     attributeBindings: ['data-region', 'tabindex'],
     dataRegion: 'navigation-new',
     tabindex: 0,
@@ -4374,28 +4368,34 @@ define('frontend-cp/components/ko-agent-dropdown/component', ['exports', 'ember'
       this.set('showDropdown', false);
     },
 
-    keyDownActions: {
-      up: function up() {
-        var navItems = this.get('navItems');
-        this.moveSelectedItem(navItems.length, 'ul', 'up', 'keyboardPosition');
-        return false;
-      },
-      down: function down() {
-        var navItems = this.get('navItems');
-        this.set('showDropdown', true);
-        this.moveSelectedItem(navItems.length, 'ul', 'down', 'keyboardPosition');
-        return false;
-      },
-      tab: function tab() {
-        this.set('showDropdown', false);
-      },
-      enter: function enter() {
-        var keyboardPosition = this.get('keyboardPosition');
-        this.$('ul li:nth-child(' + keyboardPosition + ') a').click();
-        this.$().focus();
-        this.set('showDropdown', false);
-        this.set('keyboardPosition', 0);
-        return false;
+    keyDown: function keyDown(e) {
+      switch (e.keyCode) {
+        case KeyCodes.up:
+          {
+            var navItems = this.get('navItems');
+            this.moveSelectedItem(navItems.length, 'ul', 'up', 'keyboardPosition');
+            return false;
+          }
+        case KeyCodes.down:
+          {
+            var navItems = this.get('navItems');
+            this.set('showDropdown', true);
+            this.moveSelectedItem(navItems.length, 'ul', 'down', 'keyboardPosition');
+            return false;
+          }
+        case KeyCodes.tab:
+          {
+            this.set('showDropdown', false);
+          }
+        case KeyCodes.enter:
+          {
+            var keyboardPosition = this.get('keyboardPosition');
+            this.$('ul li:nth-child(' + keyboardPosition + ') a').click();
+            this.$().focus();
+            this.set('showDropdown', false);
+            this.set('keyboardPosition', 0);
+            return false;
+          }
       }
     },
 
@@ -9150,7 +9150,7 @@ define('frontend-cp/components/ko-channel-select/template', ['exports'], functio
   }()));
 
 });
-define('frontend-cp/components/ko-checkbox/component', ['exports', 'ember'], function (exports, Ember) {
+define('frontend-cp/components/ko-checkbox/component', ['exports', 'ember', 'frontend-cp/lib/keycodes'], function (exports, Ember, KeyCodes) {
 
   'use strict';
 
@@ -9163,16 +9163,14 @@ define('frontend-cp/components/ko-checkbox/component', ['exports', 'ember'], fun
     label: '',
     classNames: ['ko-checkbox'],
 
-    // https://github.com/terrawheat/ember-cli-keyboard-actions/issues/1
-
     keyDown: function keyDown(e) {
-      if (e.keyCode === 32) {
+      if (e.keyCode === KeyCodes.space) {
         return false;
       }
     },
 
     keyUp: function keyUp(e) {
-      if (e.keyCode === 32) {
+      if (e.keyCode === KeyCodes.space) {
         this.send('toggleCheckbox');
       }
       return false;
@@ -9189,7 +9187,6 @@ define('frontend-cp/components/ko-checkbox/component', ['exports', 'ember'], fun
         }
       }
     }
-
   });
 
 });
@@ -10589,11 +10586,11 @@ define('frontend-cp/components/ko-context-modal/template', ['exports'], function
   }()));
 
 });
-define('frontend-cp/components/ko-datepicker/component', ['exports', 'ember', 'npm:lodash', 'moment', 'ember-cli-keyboard-actions/mixins/keyboard-actions'], function (exports, Ember, _, moment, KeyboardActionsMixin) {
+define('frontend-cp/components/ko-datepicker/component', ['exports', 'ember', 'npm:lodash', 'moment', 'frontend-cp/lib/keycodes'], function (exports, Ember, _, moment, KeyCodes) {
 
   'use strict';
 
-  exports['default'] = Ember['default'].Component.extend(KeyboardActionsMixin['default'], {
+  exports['default'] = Ember['default'].Component.extend({
     attributeBindings: ['tabindex'],
     tabindex: '-1',
 
@@ -10693,21 +10690,24 @@ define('frontend-cp/components/ko-datepicker/component', ['exports', 'ember', 'n
       }
     },
 
-    keyDownActions: {
-      up: function up() {
-        return this.jumpDateBy('subtract', 'week');
-      },
-
-      down: function down() {
-        return this.jumpDateBy('add', 'week');
-      },
-
-      left: function left() {
-        return this.jumpDateBy('subtract', 'day');
-      },
-
-      right: function right() {
-        return this.jumpDateBy('add', 'day');
+    keyDown: function keyDown(e) {
+      switch (e.keyCode) {
+        case KeyCodes.up:
+          {
+            return this.jumpDateBy('subtract', 'week');
+          }
+        case KeyCodes.down:
+          {
+            return this.jumpDateBy('add', 'week');
+          }
+        case KeyCodes.left:
+          {
+            return this.jumpDateBy('subtract', 'day');
+          }
+        case KeyCodes.right:
+          {
+            return this.jumpDateBy('add', 'day');
+          }
       }
     }
   });
@@ -13746,11 +13746,11 @@ define('frontend-cp/components/ko-field/drill-down/template', ['exports'], funct
   }()));
 
 });
-define('frontend-cp/components/ko-field/select/component', ['exports', 'ember', 'ember-cli-keyboard-actions/mixins/keyboard-actions'], function (exports, Ember, KeyboardActionsMixin) {
+define('frontend-cp/components/ko-field/select/component', ['exports', 'ember', 'frontend-cp/lib/keycodes'], function (exports, Ember, KeyCodes) {
 
   'use strict';
 
-  exports['default'] = Ember['default'].Component.extend(KeyboardActionsMixin['default'], {
+  exports['default'] = Ember['default'].Component.extend({
     // Params
     title: '',
     options: [],
@@ -13828,25 +13828,31 @@ define('frontend-cp/components/ko-field/select/component', ['exports', 'ember', 
       this.set('showDropdown', false);
     },
 
-    keyDownActions: {
-      up: function up() {
-        this.moveSelectedItem('up');
-        return false;
-      },
-      down: function down() {
-        this.set('showDropdown', true);
-        this.moveSelectedItem('down');
-        return false;
-      },
-      tab: function tab() {
-        this.set('showDropdown', false);
-      },
-      enter: function enter() {
-        var keyboardPosition = this.get('keyboardPosition');
-        this.$('ul li:nth-child(' + keyboardPosition + ')').click();
-        this.set('showDropdown', false);
-        this.set('keyboardPosition', 0);
-        return false;
+    keyDown: function keyDown(e) {
+      switch (e.keyCode) {
+        case KeyCodes.up:
+          {
+            this.moveSelectedItem('up');
+            return false;
+          }
+        case KeyCodes.down:
+          {
+            this.set('showDropdown', true);
+            this.moveSelectedItem('down');
+            return false;
+          }
+        case KeyCodes.tab:
+          {
+            this.set('showDropdown', false);
+          }
+        case KeyCodes.enter:
+          {
+            var keyboardPosition = this.get('keyboardPosition');
+            this.$('ul li:nth-child(' + keyboardPosition + ')').click();
+            this.set('showDropdown', false);
+            this.set('keyboardPosition', 0);
+            return false;
+          }
       }
     },
 
@@ -13987,7 +13993,7 @@ define('frontend-cp/components/ko-field/select/template', ['exports'], function 
   }()));
 
 });
-define('frontend-cp/components/ko-field/tags/component', ['exports', 'ember', 'frontend-cp/components/mixins/suggestions', 'frontend-cp/components/mixins/drop-down-keyboard-nav'], function (exports, Ember, Suggestions, DropDownKeyboardNav) {
+define('frontend-cp/components/ko-field/tags/component', ['exports', 'ember', 'frontend-cp/components/mixins/suggestions', 'frontend-cp/components/mixins/drop-down-keyboard-nav', 'frontend-cp/lib/keycodes'], function (exports, Ember, Suggestions, DropDownKeyboardNav, KeyCodes) {
 
   'use strict';
 
@@ -14061,13 +14067,6 @@ define('frontend-cp/components/ko-field/tags/component', ['exports', 'ember', 'f
     },
 
     keyDown: function keyDown(e) {
-      var left = 37;
-      var up = 38;
-      var right = 39;
-      var down = 40;
-      var backspace = 8;
-      var enter = 13;
-      var tab = 9;
       var searchTerm = this.get('searchTerm');
       var dropdownKeyboardPosition = this.get('dropdownKeyboardPosition');
       var selectedTags = this.get('selectedTags');
@@ -14076,35 +14075,35 @@ define('frontend-cp/components/ko-field/tags/component', ['exports', 'ember', 'f
       var suggestionsListSelector = 'ul:nth-child(3)';
 
       switch (e.keyCode) {
-        case up:
+        case KeyCodes.up:
           {
             this.resetSuggestedTagKeyboardPosition();
             this.moveSelectedItem(suggestedTags.length + 1, suggestionsListSelector, 'up', 'dropdownKeyboardPosition');
             return false;
           }
-        case down:
+        case KeyCodes.down:
           {
             this.resetSuggestedTagKeyboardPosition();
             this.set('showDropdown', true);
             this.moveSelectedItem(suggestedTags.length + 1, suggestionsListSelector, 'down', 'dropdownKeyboardPosition');
             return false;
           }
-        case left:
+        case KeyCodes.left:
           {
             this.moveSelectedItem(selectedTags.length, selectedTagsSelector, 'up', 'selectedTagsKeyboardPosition');
             return false;
           }
-        case right:
+        case KeyCodes.right:
           {
             this.moveSelectedItem(selectedTags.length, selectedTagsSelector, 'down', 'selectedTagsKeyboardPosition');
             return false;
           }
-        case tab:
+        case KeyCodes.tab:
           {
             this.set('showDropdown', false);
             break;
           }
-        case enter:
+        case KeyCodes.enter:
           {
             if (dropdownKeyboardPosition === 0) {
               this.send('addTag', searchTerm);
@@ -14118,7 +14117,7 @@ define('frontend-cp/components/ko-field/tags/component', ['exports', 'ember', 'f
             }
             break;
           }
-        case backspace:
+        case KeyCodes.backspace:
           {
             var tag = this.get('lastTagText');
             if (tag !== '') {
@@ -14138,12 +14137,7 @@ define('frontend-cp/components/ko-field/tags/component', ['exports', 'ember', 'f
     },
 
     keyUp: function keyUp(e) {
-      var up = 38;
-      var down = 40;
-      var enter = 13;
-      var tab = 9;
-
-      if (e.keyCode !== up && e.keyCode !== down && e.keyCode !== enter && e.keyCode !== tab) {
+      if (e.keyCode !== KeyCodes.up && e.keyCode !== KeyCodes.down && e.keyCode !== KeyCodes.enter && e.keyCode !== KeyCodes.tab) {
         this.updateSuggestions();
         this.set('showDropdown', true);
       }
@@ -14516,7 +14510,7 @@ define('frontend-cp/components/ko-field/text-area/template', ['exports'], functi
   }()));
 
 });
-define('frontend-cp/components/ko-field/text/component', ['exports', 'ember'], function (exports, Ember) {
+define('frontend-cp/components/ko-field/text/component', ['exports', 'ember', 'frontend-cp/lib/keycodes'], function (exports, Ember, KeyCodes) {
 
   'use strict';
 
@@ -14534,10 +14528,8 @@ define('frontend-cp/components/ko-field/text/component', ['exports', 'ember'], f
     classNameBindings: ['isEdited:info-bar-item--edited', 'isErrored:info-bar-item--error'],
 
     keyPress: function keyPress(e) {
-      var enter = 13;
-
       switch (e.keyCode) {
-        case enter:
+        case KeyCodes.enter:
           {
             this.$('input').focusout();
             break;
@@ -14883,7 +14875,7 @@ define('frontend-cp/components/ko-limited-text-area/template', ['exports'], func
   }()));
 
 });
-define('frontend-cp/components/ko-linked-cases-context-menu/component', ['exports', 'ember', 'npm:lodash'], function (exports, Ember, _) {
+define('frontend-cp/components/ko-linked-cases-context-menu/component', ['exports', 'ember', 'npm:lodash', 'frontend-cp/lib/keycodes'], function (exports, Ember, _, KeyCodes) {
 
   'use strict';
 
@@ -14909,16 +14901,13 @@ define('frontend-cp/components/ko-linked-cases-context-menu/component', ['export
     // https://github.com/emberjs/rfcs/pull/50
     // https://github.com/emberjs/rfcs/pull/15 (Simplifying Ember Concepts -> Improved actions that are invoked inside components as simple callbacks)
     keyDown: function keyDown(e) {
-      // downArrow
-      if (e.keyCode === 40) {
+      if (e.keyCode === KeyCodes.down) {
         return false;
       }
-      // upArrow
-      if (e.keyCode === 38) {
+      if (e.keyCode === KeyCodes.up) {
         return false;
       }
-      // enter
-      if (e.keyCode === 13) {
+      if (e.keyCode === e.keyCodes.enter) {
         return false;
       }
     },
@@ -14927,16 +14916,13 @@ define('frontend-cp/components/ko-linked-cases-context-menu/component', ['export
     // https://github.com/emberjs/rfcs/pull/50
     // https://github.com/emberjs/rfcs/pull/15 (Simplifying Ember Concepts -> Improved actions that are invoked inside components as simple callbacks)
     keyUp: function keyUp(e) {
-      // downArrow
-      if (e.keyCode === 40) {
+      if (e.keyCode === KeyCodes.down) {
         return false;
       }
-      // upArrow
-      if (e.keyCode === 38) {
+      if (e.keyCode === KeyCodes.up) {
         return false;
       }
-      // enter
-      if (e.keyCode === 13) {
+      if (e.keyCode === KeyCodes.enter) {
         return false;
       }
       return false;
@@ -16048,7 +16034,7 @@ define('frontend-cp/components/ko-notification-badge/template', ['exports'], fun
   }()));
 
 });
-define('frontend-cp/components/ko-option-list-drill-down/component', ['exports', 'ember', 'frontend-cp/components/mixins/suggestions', 'frontend-cp/components/mixins/drop-down-keyboard-nav'], function (exports, Ember, Suggestions, DropDownKeyboardNav) {
+define('frontend-cp/components/ko-option-list-drill-down/component', ['exports', 'ember', 'frontend-cp/components/mixins/suggestions', 'frontend-cp/components/mixins/drop-down-keyboard-nav', 'frontend-cp/lib/keycodes'], function (exports, Ember, Suggestions, DropDownKeyboardNav, KeyCodes) {
 
   'use strict';
 
@@ -16269,18 +16255,12 @@ define('frontend-cp/components/ko-option-list-drill-down/component', ['exports',
     },
 
     keyUp: function keyUp(e) {
-      var up = 38;
-      var down = 40;
-      var right = 39;
-      var enter = 13;
-      var tab = 9;
-      var backspace = 8;
       var searchTerm = this.get('searchTerm');
 
-      if (e.keyCode !== up && e.keyCode !== down && e.keyCode !== right && e.keyCode !== enter && e.keyCode !== tab) {
+      if (e.keyCode !== KeyCodes.up && e.keyCode !== KeyCodes.down && e.keyCode !== KeyCodes.right && e.keyCode !== KeyCodes.enter && e.keyCode !== KeyCodes.tab) {
         this.set('showValue', false);
         this.updateSuggestions();
-        if (e.keyCode === backspace && searchTerm <= 1) {
+        if (e.keyCode === KeyCodes.backspace && searchTerm <= 1) {
           this.showHierarchyDropdown();
         } else {
           this.showSuggestionDropdown();
@@ -16289,11 +16269,6 @@ define('frontend-cp/components/ko-option-list-drill-down/component', ['exports',
     },
 
     keyDown: function keyDown(e) {
-      var up = 38;
-      var down = 40;
-      var right = 39;
-      var enter = 13;
-      var tab = 9;
       var suggestionsListSelector = 'ul:first';
       var hierarchyListSelector = 'ul:last';
       var currentHierarchyList = this.$('ul:last li');
@@ -16301,7 +16276,7 @@ define('frontend-cp/components/ko-option-list-drill-down/component', ['exports',
       var options = this.get('options');
 
       switch (e.keyCode) {
-        case up:
+        case KeyCodes.up:
           {
             if (isSuggestionDropdown) {
               this.moveSelectedItem(options.length, suggestionsListSelector, 'up', 'keyboardPosition');
@@ -16312,7 +16287,7 @@ define('frontend-cp/components/ko-option-list-drill-down/component', ['exports',
             }
             break;
           }
-        case down:
+        case KeyCodes.down:
           {
             if (isSuggestionDropdown) {
               this.moveSelectedItem(options.length, suggestionsListSelector, 'down', 'keyboardPosition');
@@ -16323,12 +16298,12 @@ define('frontend-cp/components/ko-option-list-drill-down/component', ['exports',
             }
             break;
           }
-        case tab:
+        case KeyCodes.tab:
           {
             break;
           }
-        case right:
-        case enter:
+        case KeyCodes.right:
+        case KeyCodes.enter:
           {
             var keyboardPosition = this.get('keyboardPosition');
 
@@ -19149,7 +19124,7 @@ define('frontend-cp/components/ko-profile/template', ['exports'], function (expo
   }()));
 
 });
-define('frontend-cp/components/ko-radio/component', ['exports', 'ember'], function (exports, Ember) {
+define('frontend-cp/components/ko-radio/component', ['exports', 'ember', 'frontend-cp/lib/keycodes'], function (exports, Ember, KeyCodes) {
 
   'use strict';
 
@@ -19166,16 +19141,14 @@ define('frontend-cp/components/ko-radio/component', ['exports', 'ember'], functi
       return this.value === this.checked;
     }).property('value', 'checked'),
 
-    // https://github.com/terrawheat/ember-cli-keyboard-actions/issues/1
-
     keyDown: function keyDown(e) {
-      if (e.keyCode === 32) {
+      if (e.keyCode === KeyCodes.space) {
         return false;
       }
     },
 
     keyUp: function keyUp(e) {
-      if (e.keyCode === 32) {
+      if (e.keyCode === KeyCodes.space) {
         this.send('toggleRadio');
       }
       return false;
@@ -23519,7 +23492,7 @@ define('frontend-cp/components/ko-toggle-context-modal/template', ['exports'], f
   }()));
 
 });
-define('frontend-cp/components/ko-toggle/component', ['exports', 'ember'], function (exports, Ember) {
+define('frontend-cp/components/ko-toggle/component', ['exports', 'ember', 'frontend-cp/lib/keycodes'], function (exports, Ember, KeyCodes) {
 
   'use strict';
 
@@ -23530,13 +23503,13 @@ define('frontend-cp/components/ko-toggle/component', ['exports', 'ember'], funct
     label: '',
 
     keyDown: function keyDown(e) {
-      if (e.keyCode === 32) {
+      if (e.keyCode === KeyCodes.space) {
         return false;
       }
     },
 
     keyUp: function keyUp(e) {
-      if (e.keyCode === 32) {
+      if (e.keyCode === KeyCodes.space) {
         this.send('toggleRadio');
       }
       return false;
@@ -23789,35 +23762,38 @@ define('frontend-cp/components/ko-universal-search/component', ['exports', 'embe
   });
 
 });
-define('frontend-cp/components/ko-universal-search/entry/component', ['exports', 'ember', 'ember-cli-keyboard-actions/mixins/keyboard-actions'], function (exports, Ember, KeyboardActionsMixin) {
+define('frontend-cp/components/ko-universal-search/entry/component', ['exports', 'ember', 'frontend-cp/lib/keycodes'], function (exports, Ember, KeyCodes) {
 
   'use strict';
 
-  exports['default'] = Ember['default'].TextField.extend(KeyboardActionsMixin['default'], {
+  exports['default'] = Ember['default'].TextField.extend({
     classNames: ['universal-search_entry'],
     selectHighlightedResultAction: 'selectHighlightedResultAction',
     highlightNextResultAction: 'highlightNextResult',
     highlightPreviousResultAction: 'highlightPreviousResult',
     stopSearchingAction: 'clearSearchQuery',
 
-    keyDownActions: {
-      down: function down() {
-        this.sendAction('highlightNextResultAction');
-      },
-
-      up: function up() {
-        this.sendAction('highlightPreviousResultAction');
-      },
-
-      enter: function enter() {
-        //event.preventDefault();
-        this.sendAction('selectHighlightedResultAction');
-        this.sendAction('stopSearchingAction');
-        return false;
-      },
-
-      escape: function escape() {
-        this.sendAction('stopSearchingAction');
+    keyDown: function keyDown(e) {
+      switch (e.keyCode) {
+        case KeyCodes.down:
+          {
+            this.sendAction('highlightNextResultAction');
+          }
+        case KeyCodes.up:
+          {
+            this.sendAction('highlightPreviousResultAction');
+          }
+        case KeyCodes.enter:
+          {
+            //event.preventDefault();
+            this.sendAction('selectHighlightedResultAction');
+            this.sendAction('stopSearchingAction');
+            return false;
+          }
+        case KeyCodes.escape:
+          {
+            this.sendAction('stopSearchingAction');
+          }
       }
     }
   });
@@ -25778,6 +25754,211 @@ define('frontend-cp/instance-initializers/ember-intl', ['exports', 'frontend-cp/
         name: 'ember-intl',
         initialize: instanceInitializer
     };
+
+});
+define('frontend-cp/lib/keycodes', ['exports'], function (exports) {
+
+	'use strict';
+
+	var backspace = 8;
+	var tab = 9;
+	var enter = 13;
+	var shift = 16;
+	var ctrl = 17;
+	var alt = 18;
+	var pause = 19;
+	var capsLock = 20;
+	var escape = 27;
+	var space = 32;
+	var pageUp = 33;
+	var pageDown = 34;
+	var end = 35;
+	var home = 36;
+	var left = 37;
+	var up = 38;
+	var right = 39;
+	var down = 40;
+	var insert = 45;
+	var del = 46;
+	var zero = 48;
+	var one = 49;
+	var two = 50;
+	var three = 51;
+	var four = 52;
+	var five = 53;
+	var six = 54;
+	var seven = 55;
+	var eight = 56;
+	var nine = 57;
+	var a = 65;
+	var b = 66;
+	var c = 67;
+	var d = 68;
+	var e = 69;
+	var f = 70;
+	var g = 71;
+	var h = 72;
+	var i = 73;
+	var j = 74;
+	var k = 75;
+	var l = 76;
+	var m = 77;
+	var n = 78;
+	var o = 79;
+	var p = 80;
+	var q = 81;
+	var r = 82;
+	var s = 83;
+	var t = 84;
+	var u = 85;
+	var v = 86;
+	var w = 87;
+	var x = 88;
+	var y = 89;
+	var z = 90;
+	var leftWindowKey = 91;
+	var rightWindowKey = 92;
+	var selectKey = 93;
+	var numpad0 = 96;
+	var numpad1 = 97;
+	var numpad2 = 98;
+	var numpad3 = 99;
+	var numpad4 = 100;
+	var numpad5 = 101;
+	var numpad6 = 102;
+	var numpad7 = 103;
+	var numpad8 = 104;
+	var numpad9 = 105;
+	var multiply = 106;
+	var add = 107;
+	var subtract = 109;
+	var decimalPoint = 110;
+	var divide = 111;
+	var f1 = 112;
+	var f2 = 113;
+	var f3 = 114;
+	var f4 = 115;
+	var f5 = 116;
+	var f6 = 117;
+	var f7 = 118;
+	var f8 = 119;
+	var f9 = 120;
+	var f10 = 121;
+	var f11 = 122;
+	var f12 = 123;
+	var numLock = 144;
+	var scrollLock = 145;
+	var semiColon = 186;
+	var equalSign = 187;
+	var comma = 188;
+	var dash = 189;
+	var period = 190;
+	var forwardSlash = 191;
+	var graveAccent = 192;
+	var openBracket = 219;
+	var backSlash = 220;
+	var closeBracket = 221;
+	var singleQuote = 222;
+
+	exports.backspace = backspace;
+	exports.tab = tab;
+	exports.enter = enter;
+	exports.shift = shift;
+	exports.ctrl = ctrl;
+	exports.alt = alt;
+	exports.pause = pause;
+	exports.capsLock = capsLock;
+	exports.escape = escape;
+	exports.space = space;
+	exports.pageUp = pageUp;
+	exports.pageDown = pageDown;
+	exports.end = end;
+	exports.home = home;
+	exports.left = left;
+	exports.up = up;
+	exports.right = right;
+	exports.down = down;
+	exports.insert = insert;
+	exports.del = del;
+	exports.zero = zero;
+	exports.one = one;
+	exports.two = two;
+	exports.three = three;
+	exports.four = four;
+	exports.five = five;
+	exports.six = six;
+	exports.seven = seven;
+	exports.eight = eight;
+	exports.nine = nine;
+	exports.a = a;
+	exports.b = b;
+	exports.c = c;
+	exports.d = d;
+	exports.e = e;
+	exports.f = f;
+	exports.g = g;
+	exports.h = h;
+	exports.i = i;
+	exports.j = j;
+	exports.k = k;
+	exports.l = l;
+	exports.m = m;
+	exports.n = n;
+	exports.o = o;
+	exports.p = p;
+	exports.q = q;
+	exports.r = r;
+	exports.s = s;
+	exports.t = t;
+	exports.u = u;
+	exports.v = v;
+	exports.w = w;
+	exports.x = x;
+	exports.y = y;
+	exports.z = z;
+	exports.leftWindowKey = leftWindowKey;
+	exports.rightWindowKey = rightWindowKey;
+	exports.selectKey = selectKey;
+	exports.numpad0 = numpad0;
+	exports.numpad1 = numpad1;
+	exports.numpad2 = numpad2;
+	exports.numpad3 = numpad3;
+	exports.numpad4 = numpad4;
+	exports.numpad5 = numpad5;
+	exports.numpad6 = numpad6;
+	exports.numpad7 = numpad7;
+	exports.numpad8 = numpad8;
+	exports.numpad9 = numpad9;
+	exports.multiply = multiply;
+	exports.add = add;
+	exports.subtract = subtract;
+	exports.decimalPoint = decimalPoint;
+	exports.divide = divide;
+	exports.f1 = f1;
+	exports.f2 = f2;
+	exports.f3 = f3;
+	exports.f4 = f4;
+	exports.f5 = f5;
+	exports.f6 = f6;
+	exports.f7 = f7;
+	exports.f8 = f8;
+	exports.f9 = f9;
+	exports.f10 = f10;
+	exports.f11 = f11;
+	exports.f12 = f12;
+	exports.numLock = numLock;
+	exports.scrollLock = scrollLock;
+	exports.semiColon = semiColon;
+	exports.equalSign = equalSign;
+	exports.comma = comma;
+	exports.dash = dash;
+	exports.period = period;
+	exports.forwardSlash = forwardSlash;
+	exports.graveAccent = graveAccent;
+	exports.openBracket = openBracket;
+	exports.backSlash = backSlash;
+	exports.closeBracket = closeBracket;
+	exports.singleQuote = singleQuote;
 
 });
 define('frontend-cp/loading/template', ['exports'], function (exports) {
@@ -43630,14 +43811,13 @@ define('frontend-cp/tests/integration/components/ko-field/text-area/component-te
   });
 
 });
-define('frontend-cp/tests/integration/components/ko-field/text/component-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
+define('frontend-cp/tests/integration/components/ko-field/text/component-test', ['frontend-cp/tests/helpers/qunit', 'frontend-cp/lib/keycodes'], function (qunit, KeyCodes) {
 
   'use strict';
 
   var title = 'span:first';
   var value = 'input';
   var textFieldValue = 'Some other value';
-  var enterKeyPressEvent = new $.Event('keypress', { keyCode: 13 });
 
   qunit.moduleForComponent('ko-field/text', 'Integration | Component | ko field text', {
     integration: true,
@@ -43741,7 +43921,7 @@ define('frontend-cp/tests/integration/components/ko-field/text/component-test', 
     var $inputField = this.$(value);
 
     $inputField.val('Khaleesi');
-    this.$('div:first').trigger(enterKeyPressEvent);
+    this.$('div:first').trigger(new $.Event('keypress', { keyCode: KeyCodes.enter }));
   });
 
 });
@@ -45187,12 +45367,9 @@ define('frontend-cp/tests/unit/components/ko-admin-selectable-card/component-tes
   });
 
 });
-define('frontend-cp/tests/unit/components/ko-agent-dropdown/component-test', ['frontend-cp/tests/helpers/qunit', 'ember'], function (qunit, Ember) {
+define('frontend-cp/tests/unit/components/ko-agent-dropdown/component-test', ['frontend-cp/tests/helpers/qunit', 'ember', 'frontend-cp/lib/keycodes'], function (qunit, Ember, KeyCodes) {
 
   'use strict';
-
-  var downArrow = 40;
-  var enter = 13;
 
   qunit.moduleForComponent('ko-agent-dropdown', 'Unit | Component | ko agent dropdown', {
     // Specify the other units that are required for this test
@@ -45265,7 +45442,7 @@ define('frontend-cp/tests/unit/components/ko-agent-dropdown/component-test', ['f
       component.focusIn();
     });
 
-    this.$().trigger(new $.Event('keydown', { keyCode: downArrow }));
+    this.$().trigger(new $.Event('keydown', { keyCode: KeyCodes.down }));
 
     assert.equal(component.get('showDropdown'), true, 'dropdown menu is expanded');
     assert.equal($.trim(component.$('ul li:first:visible').text()), 'ham', 'the first menu item');
@@ -45286,8 +45463,8 @@ define('frontend-cp/tests/unit/components/ko-agent-dropdown/component-test', ['f
       component.focusIn();
     });
 
-    this.$().trigger(new $.Event('keydown', { keyCode: downArrow }));
-    this.$().trigger(new $.Event('keydown', { keyCode: enter }));
+    this.$().trigger(new $.Event('keydown', { keyCode: KeyCodes.down }));
+    this.$().trigger(new $.Event('keydown', { keyCode: KeyCodes.enter }));
 
     assert.equal(component.get('showDropdown'), false, 'dropdown menu is collapsed');
   });
@@ -45337,12 +45514,11 @@ define('frontend-cp/tests/unit/components/ko-case-metric/component-test', ['fron
   });
 
 });
-define('frontend-cp/tests/unit/components/ko-checkbox/component-test', ['ember', 'frontend-cp/tests/helpers/qunit'], function (Ember, qunit) {
+define('frontend-cp/tests/unit/components/ko-checkbox/component-test', ['ember', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/lib/keycodes'], function (Ember, qunit, KeyCodes) {
 
   'use strict';
 
   var component = undefined;
-  var space = 32;
   var checkbox = 'div:first';
   var label = 'label:first';
 
@@ -45370,7 +45546,7 @@ define('frontend-cp/tests/unit/components/ko-checkbox/component-test', ['ember',
     this.render();
 
     Ember['default'].run(function () {
-      component.keyUp({ keyCode: space });
+      component.keyUp({ keyCode: KeyCodes.space });
     });
 
     assert.equal(component.checked, true, 'it has been checked');
@@ -45389,7 +45565,7 @@ define('frontend-cp/tests/unit/components/ko-checkbox/component-test', ['ember',
     });
 
     Ember['default'].run(function () {
-      component.keyUp({ keyCode: space });
+      component.keyUp({ keyCode: KeyCodes.space });
     });
   });
 
@@ -45403,7 +45579,7 @@ define('frontend-cp/tests/unit/components/ko-checkbox/component-test', ['ember',
     });
 
     Ember['default'].run(function () {
-      component.keyUp({ keyCode: space });
+      component.keyUp({ keyCode: KeyCodes.space });
     });
 
     assert.equal(component.checked, false, 'it has been unchecked');
@@ -45426,7 +45602,7 @@ define('frontend-cp/tests/unit/components/ko-checkbox/component-test', ['ember',
     });
 
     Ember['default'].run(function () {
-      component.keyUp({ keyCode: space });
+      component.keyUp({ keyCode: KeyCodes.space });
     });
   });
 
@@ -46090,7 +46266,7 @@ define('frontend-cp/tests/unit/components/ko-field/checkbox/component-test', ['e
   });
 
 });
-define('frontend-cp/tests/unit/components/ko-field/select/component-test', ['ember', 'frontend-cp/tests/helpers/qunit'], function (Ember, qunit) {
+define('frontend-cp/tests/unit/components/ko-field/select/component-test', ['ember', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/lib/keycodes'], function (Ember, qunit, KeyCodes) {
 
   'use strict';
 
@@ -46185,9 +46361,9 @@ define('frontend-cp/tests/unit/components/ko-field/select/component-test', ['emb
     });
 
     Ember['default'].run(function () {
-      _this2.$().trigger(new $.Event('keydown', { keyCode: 9 }));
-      _this2.$().trigger(new $.Event('keydown', { keyCode: 40 }));
-      _this2.$().trigger(new $.Event('keydown', { keyCode: 13 }));
+      _this2.$().trigger(new $.Event('keydown', { keyCode: KeyCodes.tab }));
+      _this2.$().trigger(new $.Event('keydown', { keyCode: KeyCodes.down }));
+      _this2.$().trigger(new $.Event('keydown', { keyCode: KeyCodes.enter }));
     });
   });
 
@@ -46210,11 +46386,11 @@ define('frontend-cp/tests/unit/components/ko-field/select/component-test', ['emb
     });
 
     Ember['default'].run(function () {
-      _this3.$().trigger(new $.Event('keydown', { keyCode: 9 }));
-      _this3.$().trigger(new $.Event('keydown', { keyCode: 40 }));
-      _this3.$().trigger(new $.Event('keydown', { keyCode: 40 }));
-      _this3.$().trigger(new $.Event('keydown', { keyCode: 40 }));
-      _this3.$().trigger(new $.Event('keydown', { keyCode: 13 }));
+      _this3.$().trigger(new $.Event('keydown', { keyCode: KeyCodes.tab }));
+      _this3.$().trigger(new $.Event('keydown', { keyCode: KeyCodes.down }));
+      _this3.$().trigger(new $.Event('keydown', { keyCode: KeyCodes.down }));
+      _this3.$().trigger(new $.Event('keydown', { keyCode: KeyCodes.down }));
+      _this3.$().trigger(new $.Event('keydown', { keyCode: KeyCodes.enter }));
     });
 
     component.set('targetObject', {
@@ -46224,13 +46400,13 @@ define('frontend-cp/tests/unit/components/ko-field/select/component-test', ['emb
     });
 
     Ember['default'].run(function () {
-      _this3.$().trigger(new $.Event('keydown', { keyCode: 40 }));
-      _this3.$().trigger(new $.Event('keydown', { keyCode: 13 }));
+      _this3.$().trigger(new $.Event('keydown', { keyCode: KeyCodes.down }));
+      _this3.$().trigger(new $.Event('keydown', { keyCode: KeyCodes.enter }));
     });
   });
 
 });
-define('frontend-cp/tests/unit/components/ko-field/tags/component-test', ['ember', 'frontend-cp/tests/helpers/qunit'], function (Ember, qunit) {
+define('frontend-cp/tests/unit/components/ko-field/tags/component-test', ['ember', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/lib/keycodes'], function (Ember, qunit, KeyCodes) {
 
   'use strict';
 
@@ -46243,12 +46419,6 @@ define('frontend-cp/tests/unit/components/ko-field/tags/component-test', ['ember
   var suggestionsList = 'ul:nth-child(3) li';
   var firstSuggestion = 'ul:nth-child(3) li:first';
   var searchField = 'ul:first li input';
-  var downArrow = 40;
-  var enter = 13;
-  var backspace = 8;
-  var d = 68;
-  var g = 71;
-  var y = 89;
 
   qunit.moduleForComponent('ko-field/tags', {
     // Specify the other units that are required for this test
@@ -46267,7 +46437,7 @@ define('frontend-cp/tests/unit/components/ko-field/tags/component-test', ['ember
     Ember['default'].run(function () {
       component.set('tags', ['dog']);
       component.set('searchTerm', 'dog');
-      component.keyUp({ keyCode: g });
+      component.keyUp({ keyCode: KeyCodes.g });
     });
 
     assert.equal(component.get('isSuggested'), true);
@@ -46279,7 +46449,7 @@ define('frontend-cp/tests/unit/components/ko-field/tags/component-test', ['ember
     Ember['default'].run(function () {
       component.set('tags', []);
       component.set('searchTerm', 'dog');
-      component.keyUp({ keyCode: g });
+      component.keyUp({ keyCode: KeyCodes.g });
     });
 
     assert.equal(component.get('isSuggested'), false);
@@ -46303,7 +46473,7 @@ define('frontend-cp/tests/unit/components/ko-field/tags/component-test', ['ember
       component.set('selectedTags', ['dog']);
       component.set('tags', ['dog']);
       component.set('searchTerm', 'dog');
-      component.keyUp({ keyCode: g });
+      component.keyUp({ keyCode: KeyCodes.g });
     });
 
     assert.equal(component.get('isSelected'), true);
@@ -46316,7 +46486,7 @@ define('frontend-cp/tests/unit/components/ko-field/tags/component-test', ['ember
       component.set('selectedTags', []);
       component.set('tags', ['dog']);
       component.set('searchTerm', 'dog');
-      component.keyUp({ keyCode: g });
+      component.keyUp({ keyCode: KeyCodes.g });
     });
 
     assert.equal(component.get('isSelected'), false);
@@ -46351,7 +46521,7 @@ define('frontend-cp/tests/unit/components/ko-field/tags/component-test', ['ember
 
     Ember['default'].run(function () {
       component.set('searchTerm', 'dog');
-      component.keyUp({ keyCode: g });
+      component.keyUp({ keyCode: KeyCodes.g });
     });
 
     assert.equal(this.$(firstSuggestion).text(), 'dog', 'suggestions list');
@@ -46370,7 +46540,7 @@ define('frontend-cp/tests/unit/components/ko-field/tags/component-test', ['ember
       component.set('selectedTags', ['dog']);
       component.set('tags', ['dog', 'duck']);
       component.set('searchTerm', 'd');
-      component.keyUp({ keyCode: d });
+      component.keyUp({ keyCode: KeyCodes.d });
     });
 
     assert.equal(this.$(suggestionsList).text(), 'duckdMESSAGE %%cases.newtag%%', 'suggestions list');
@@ -46392,7 +46562,7 @@ define('frontend-cp/tests/unit/components/ko-field/tags/component-test', ['ember
 
     Ember['default'].run(function () {
       component.set('searchTerm', 'dog');
-      component.keyUp({ keyCode: g });
+      component.keyUp({ keyCode: KeyCodes.g });
     });
 
     assert.equal($.trim(this.$(firstSelectedTagText).text()), '', 'selected tags');
@@ -46433,7 +46603,7 @@ define('frontend-cp/tests/unit/components/ko-field/tags/component-test', ['ember
       component.focusIn({ target: component.$(searchField) });
     });
 
-    this.$().trigger(new $.Event('keydown', { keyCode: downArrow }));
+    this.$().trigger(new $.Event('keydown', { keyCode: KeyCodes.down }));
 
     assert.equal(this.$(suggestionsList).text(), 'dogpigmooseduckdonkeydavedonderek', 'suggestions list');
   });
@@ -46454,13 +46624,13 @@ define('frontend-cp/tests/unit/components/ko-field/tags/component-test', ['ember
 
     Ember['default'].run(function () {
       component.set('searchTerm', 'dog');
-      component.keyUp({ keyCode: g });
+      component.keyUp({ keyCode: KeyCodes.g });
     });
 
-    component.keyDown({ keyCode: downArrow });
+    component.keyDown({ keyCode: KeyCodes.down });
 
     Ember['default'].run(function () {
-      component.keyDown({ keyCode: enter });
+      component.keyDown({ keyCode: KeyCodes.enter });
     });
   });
 
@@ -46484,7 +46654,7 @@ define('frontend-cp/tests/unit/components/ko-field/tags/component-test', ['ember
 
     Ember['default'].run(function () {
       component.focusIn({ target: component.$(secondSelectedTag) });
-      component.keyDown({ keyCode: backspace });
+      component.keyDown({ keyCode: KeyCodes.backspace });
     });
   });
 
@@ -46505,12 +46675,12 @@ define('frontend-cp/tests/unit/components/ko-field/tags/component-test', ['ember
     Ember['default'].run(function () {
       component.set('tags', '');
       component.set('searchTerm', 'qwerty');
-      component.keyUp({ keyCode: y });
+      component.keyUp({ keyCode: KeyCodes.y });
     });
 
-    component.keyDown({ keyCode: downArrow });
+    component.keyDown({ keyCode: KeyCodes.down });
     Ember['default'].run(function () {
-      component.keyDown({ keyCode: enter });
+      component.keyDown({ keyCode: KeyCodes.enter });
     });
   });
 
@@ -46531,8 +46701,8 @@ define('frontend-cp/tests/unit/components/ko-field/tags/component-test', ['ember
     Ember['default'].run(function () {
       component.set('tags', '');
       component.set('searchTerm', 'qwerty');
-      component.keyUp({ keyCode: y });
-      component.keyDown({ keyCode: enter });
+      component.keyUp({ keyCode: KeyCodes.y });
+      component.keyDown({ keyCode: KeyCodes.enter });
     });
   });
 
@@ -46552,13 +46722,13 @@ define('frontend-cp/tests/unit/components/ko-field/tags/component-test', ['ember
 
     Ember['default'].run(function () {
       component.set('searchTerm', 'd');
-      component.keyUp({ keyCode: d });
+      component.keyUp({ keyCode: KeyCodes.d });
     });
 
-    component.keyDown({ keyCode: downArrow });
+    component.keyDown({ keyCode: KeyCodes.down });
 
     Ember['default'].run(function () {
-      component.keyDown({ keyCode: enter });
+      component.keyDown({ keyCode: KeyCodes.enter });
     });
 
     assert.equal(this.$(suggestionsList).text(), 'pigmooseduckdonkeydavedonderek', 'suggestions list');
@@ -46699,17 +46869,11 @@ define('frontend-cp/tests/unit/components/ko-notification-badge/component-test',
   });
 
 });
-define('frontend-cp/tests/unit/components/ko-option-list-drill-down/component-test', ['ember', 'ember-qunit'], function (Ember, ember_qunit) {
+define('frontend-cp/tests/unit/components/ko-option-list-drill-down/component-test', ['ember', 'ember-qunit', 'frontend-cp/lib/keycodes'], function (Ember, ember_qunit, KeyCodes) {
 
   'use strict';
 
   var component = undefined;
-  var e = 69;
-  var j = 74;
-  var downArrow = 40;
-  var rightArrow = 39;
-  var enter = 13;
-  var backspace = 8;
   var title = 'span:first:visible';
   var firstSuggestion = 'ul li:first:visible';
   var value = 'div:first:visible';
@@ -46773,7 +46937,7 @@ define('frontend-cp/tests/unit/components/ko-option-list-drill-down/component-te
 
     Ember['default'].run(function () {
       component.set('searchTerm', 'j');
-      component.keyUp({ keyCode: j });
+      component.keyUp({ keyCode: KeyCodes.j });
     });
 
     var expectedList = ['Team A / Jesse Bennett-Chamberlain', 'Team A / Jamie Edwards', 'Team B / Jesse Bennett-Chamberlain'];
@@ -46792,7 +46956,7 @@ define('frontend-cp/tests/unit/components/ko-option-list-drill-down/component-te
 
     Ember['default'].run(function () {
       component.set('searchTerm', 'j');
-      component.keyUp({ keyCode: j });
+      component.keyUp({ keyCode: KeyCodes.j });
     });
 
     var expectedList = ['Team A / Jesse Bennett-Chamberlain', 'Team A / Jamie Edwards', 'Team B / Jesse Bennett-Chamberlain'];
@@ -46809,7 +46973,7 @@ define('frontend-cp/tests/unit/components/ko-option-list-drill-down/component-te
 
     Ember['default'].run(function () {
       component.set('searchTerm', 'j');
-      component.keyUp({ keyCode: j });
+      component.keyUp({ keyCode: KeyCodes.j });
     });
 
     var expectedListTwo = ['Team A / Jamie Edwards'];
@@ -46843,7 +47007,7 @@ define('frontend-cp/tests/unit/components/ko-option-list-drill-down/component-te
 
     Ember['default'].run(function () {
       component.set('searchTerm', 'Jamie');
-      component.keyUp({ keyCode: e });
+      component.keyUp({ keyCode: KeyCodes.e });
     });
 
     assert.equal(this.$(firstSuggestion).text(), 'Team A / Jamie Edwards', 'suggested list');
@@ -46869,11 +47033,11 @@ define('frontend-cp/tests/unit/components/ko-option-list-drill-down/component-te
 
     Ember['default'].run(function () {
       component.set('searchTerm', 'Jamie');
-      component.keyUp({ keyCode: e });
+      component.keyUp({ keyCode: KeyCodes.e });
     });
 
-    component.keyDown({ keyCode: downArrow });
-    component.keyDown({ keyCode: enter });
+    component.keyDown({ keyCode: KeyCodes.down });
+    component.keyDown({ keyCode: KeyCodes.enter });
   });
 
   ember_qunit.test('suggestions should be able to be selected by right arrow press on keyboard', function (assert) {
@@ -46892,11 +47056,11 @@ define('frontend-cp/tests/unit/components/ko-option-list-drill-down/component-te
 
     Ember['default'].run(function () {
       component.set('searchTerm', 'Jamie');
-      component.keyUp({ keyCode: e });
+      component.keyUp({ keyCode: KeyCodes.e });
     });
 
-    component.keyDown({ keyCode: downArrow });
-    component.keyDown({ keyCode: rightArrow });
+    component.keyDown({ keyCode: KeyCodes.down });
+    component.keyDown({ keyCode: KeyCodes.right });
   });
 
   ember_qunit.test('search input should be cleared after use', function (assert) {
@@ -46906,11 +47070,11 @@ define('frontend-cp/tests/unit/components/ko-option-list-drill-down/component-te
 
     Ember['default'].run(function () {
       component.set('searchTerm', 'Jamie');
-      component.keyUp({ keyCode: e });
+      component.keyUp({ keyCode: KeyCodes.e });
     });
 
-    component.keyDown({ keyCode: downArrow });
-    component.keyDown({ keyCode: enter });
+    component.keyDown({ keyCode: KeyCodes.down });
+    component.keyDown({ keyCode: KeyCodes.enter });
 
     assert.equal(component.get('searchterm'), null, 'searchTerm after selection');
   });
@@ -46934,7 +47098,7 @@ define('frontend-cp/tests/unit/components/ko-option-list-drill-down/component-te
 
     Ember['default'].run(function () {
       component.set('searchTerm', 'j');
-      component.keyUp({ keyCode: j });
+      component.keyUp({ keyCode: KeyCodes.j });
     });
 
     var expectedSuggestionsList = ['Team A / Jesse Bennett-Chamberlain', 'Team A / Jamie Edwards', 'Team B / Jesse Bennett-Chamberlain'];
@@ -46953,7 +47117,7 @@ define('frontend-cp/tests/unit/components/ko-option-list-drill-down/component-te
 
     Ember['default'].run(function () {
       component.set('searchTerm', 'j');
-      component.keyUp({ keyCode: j });
+      component.keyUp({ keyCode: KeyCodes.j });
     });
 
     var expectedSuggestionsList = ['Team A / Jesse Bennett-Chamberlain', 'Team A / Jamie Edwards', 'Team B / Jesse Bennett-Chamberlain'];
@@ -46966,7 +47130,7 @@ define('frontend-cp/tests/unit/components/ko-option-list-drill-down/component-te
 
     Ember['default'].run(function () {
       component.set('searchTerm', '');
-      component.keyUp({ keyCode: backspace });
+      component.keyUp({ keyCode: KeyCodes.backspace });
     });
 
     var expectedHierarchyList = ['Team A', 'Team B', 'Team C', 'Team D'];
@@ -47049,8 +47213,8 @@ define('frontend-cp/tests/unit/components/ko-option-list-drill-down/component-te
       component.focusIn({ target: component.$(searchField) });
     });
 
-    component.keyDown({ keyCode: downArrow });
-    component.keyDown({ keyCode: enter });
+    component.keyDown({ keyCode: KeyCodes.down });
+    component.keyDown({ keyCode: KeyCodes.enter });
 
     var expectedLevel1HierarchyList = ['Back', 'Team A / Jesse Bennett-Chamberlain', 'Team A / Jamie Edwards', 'Team A / Drew Warkentin'];
 
@@ -47060,8 +47224,8 @@ define('frontend-cp/tests/unit/components/ko-option-list-drill-down/component-te
     });
     assert.deepEqual(actualLevel1HierarchyList, expectedLevel1HierarchyList, 'level 1 hierarchy list');
 
-    component.keyDown({ keyCode: downArrow });
-    component.keyDown({ keyCode: enter });
+    component.keyDown({ keyCode: KeyCodes.down });
+    component.keyDown({ keyCode: KeyCodes.enter });
 
     var expectedRootHierarchyList = ['Team A', 'Team B', 'Team C', 'Team D'];
 
@@ -47071,9 +47235,9 @@ define('frontend-cp/tests/unit/components/ko-option-list-drill-down/component-te
     });
     assert.deepEqual(actualRootHierarchyList, expectedRootHierarchyList, 'root hierarchy list');
 
-    component.keyDown({ keyCode: downArrow });
-    component.keyDown({ keyCode: downArrow });
-    component.keyDown({ keyCode: enter });
+    component.keyDown({ keyCode: KeyCodes.down });
+    component.keyDown({ keyCode: KeyCodes.down });
+    component.keyDown({ keyCode: KeyCodes.enter });
 
     var expectedSecondLevel1HierarchyList = ['Back', 'Team B / Jesse Bennett-Chamberlain'];
 
@@ -47102,12 +47266,12 @@ define('frontend-cp/tests/unit/components/ko-option-list-drill-down/component-te
       component.focusIn({ target: component.$(searchField) });
     });
 
-    component.keyDown({ keyCode: downArrow });
-    component.keyDown({ keyCode: enter });
-    component.keyDown({ keyCode: downArrow });
-    component.keyDown({ keyCode: downArrow });
-    component.keyDown({ keyCode: downArrow });
-    component.keyDown({ keyCode: enter });
+    component.keyDown({ keyCode: KeyCodes.down });
+    component.keyDown({ keyCode: KeyCodes.enter });
+    component.keyDown({ keyCode: KeyCodes.down });
+    component.keyDown({ keyCode: KeyCodes.down });
+    component.keyDown({ keyCode: KeyCodes.down });
+    component.keyDown({ keyCode: KeyCodes.enter });
   });
 
   ember_qunit.test('when showExpandedByDefault is true the hierarchy list should be shown by default', function (assert) {
@@ -47149,12 +47313,11 @@ define('frontend-cp/tests/unit/components/ko-pagination/component-test', ['front
   });
 
 });
-define('frontend-cp/tests/unit/components/ko-radio/component-test', ['ember', 'frontend-cp/tests/helpers/qunit'], function (Ember, qunit) {
+define('frontend-cp/tests/unit/components/ko-radio/component-test', ['ember', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/lib/keycodes'], function (Ember, qunit, KeyCodes) {
 
   'use strict';
 
   var component = undefined;
-  var space = 32;
   var radio = 'div:first';
   var label = 'label:first';
 
@@ -47183,7 +47346,7 @@ define('frontend-cp/tests/unit/components/ko-radio/component-test', ['ember', 'f
     this.render();
 
     Ember['default'].run(function () {
-      component.keyUp({ keyCode: space });
+      component.keyUp({ keyCode: KeyCodes.space });
     });
 
     assert.equal(component.value === component.checked, true, 'it has been selected');
@@ -47206,7 +47369,7 @@ define('frontend-cp/tests/unit/components/ko-radio/component-test', ['ember', 'f
     });
 
     Ember['default'].run(function () {
-      component.keyUp({ keyCode: space });
+      component.keyUp({ keyCode: KeyCodes.space });
     });
   });
 
@@ -47220,7 +47383,7 @@ define('frontend-cp/tests/unit/components/ko-radio/component-test', ['ember', 'f
     });
 
     Ember['default'].run(function () {
-      component.keyUp({ keyCode: space });
+      component.keyUp({ keyCode: KeyCodes.space });
     });
 
     assert.equal(component.value === component.checked, true, 'it has not been unselected');
@@ -47247,7 +47410,7 @@ define('frontend-cp/tests/unit/components/ko-radio/component-test', ['ember', 'f
     });
 
     Ember['default'].run(function () {
-      component.keyUp({ keyCode: space });
+      component.keyUp({ keyCode: KeyCodes.space });
     });
   });
 
@@ -47893,12 +48056,11 @@ define('frontend-cp/tests/unit/components/ko-toggle-context-modal/component-test
   });
 
 });
-define('frontend-cp/tests/unit/components/ko-toggle/component-test', ['ember', 'frontend-cp/tests/helpers/qunit'], function (Ember, qunit) {
+define('frontend-cp/tests/unit/components/ko-toggle/component-test', ['ember', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/lib/keycodes'], function (Ember, qunit, KeyCodes) {
 
   'use strict';
 
   var component = undefined;
-  var space = 32;
   var radio = 'div:first';
   var label = 'label:first';
 
@@ -47926,7 +48088,7 @@ define('frontend-cp/tests/unit/components/ko-toggle/component-test', ['ember', '
     this.render();
 
     Ember['default'].run(function () {
-      component.keyUp({ keyCode: space });
+      component.keyUp({ keyCode: KeyCodes.space });
     });
 
     assert.equal(component.activated, true, 'it has been activated');
@@ -47945,7 +48107,7 @@ define('frontend-cp/tests/unit/components/ko-toggle/component-test', ['ember', '
     });
 
     Ember['default'].run(function () {
-      component.keyUp({ keyCode: space });
+      component.keyUp({ keyCode: KeyCodes.space });
     });
   });
 
@@ -47959,7 +48121,7 @@ define('frontend-cp/tests/unit/components/ko-toggle/component-test', ['ember', '
     });
 
     Ember['default'].run(function () {
-      component.keyUp({ keyCode: space });
+      component.keyUp({ keyCode: KeyCodes.space });
     });
 
     assert.equal(component.activated, false, 'it has been deactivated');
@@ -47982,7 +48144,7 @@ define('frontend-cp/tests/unit/components/ko-toggle/component-test', ['ember', '
     });
 
     Ember['default'].run(function () {
-      component.keyUp({ keyCode: space });
+      component.keyUp({ keyCode: KeyCodes.space });
     });
   });
 
@@ -48644,7 +48806,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+be18e33c"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+6a70e5b5"});
 }
 
 /* jshint ignore:end */
