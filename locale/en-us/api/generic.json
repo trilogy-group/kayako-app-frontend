@@ -20,6 +20,7 @@
   "texteditor.italic": "Italic",
   "texteditor.link": "Link",
   "texteditor.list": "List",
+  "texteditor.notes_reminder": "This private note will only be seen by agents",
   "users": "Users",
   "enable": "Enable",
   "enabled": "Enabled",
