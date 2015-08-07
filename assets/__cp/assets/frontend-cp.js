@@ -20191,12 +20191,14 @@ define('frontend-cp/components/ko-scroller/component', ['exports', 'ember'], fun
       $componentElement.scrollLeft(scrollLeft);
 
       $componentElement.on('scroll', function (event) {
-        var scrollTop = Ember['default'].$(event.currentTarget).scrollTop();
-        var scrollLeft = Ember['default'].$(event.currentTarget).scrollLeft();
-        _this.set('_cachedScrollTop', scrollTop);
-        _this.set('_cachedScrollLeft', scrollLeft);
-        _this.set('scrollTop', scrollTop);
-        _this.set('scrollLeft', scrollLeft);
+        Ember['default'].run(function () {
+          var scrollTop = Ember['default'].$(event.currentTarget).scrollTop();
+          var scrollLeft = Ember['default'].$(event.currentTarget).scrollLeft();
+          _this.set('_cachedScrollTop', scrollTop);
+          _this.set('_cachedScrollLeft', scrollLeft);
+          _this.set('scrollTop', scrollTop);
+          _this.set('scrollLeft', scrollLeft);
+        });
       });
     }).on('didInsertElement')
 
@@ -21972,45 +21974,10 @@ define('frontend-cp/components/ko-tabs/component', ['exports', 'ember'], functio
     tabs: null,
 
     /**
-     * Get/set the currently selected tab
-     * @param {string} key Computed property name
-     * @param {Tab} selectedTab Tab to select, or `null` to deselect all tabs
-     * @param {Tab} previousSelectedTab Previously selected tab, or `null` if no tab was selected
-     * @return {Tab} Selected tab, or `null` if no tab is selected
+     * Currently selected tab
+     * @type {Tab}
      */
-    selectedTab: (function (key, selectedTab, previousSelectedTab) {
-      var isSetter = arguments.length > 1;
-      if (isSetter) {
-        selectedTab = selectedTab || null;
-        var tabs = this.get('tabs');
-
-        // If a tab was specified, ensure that it belongs to this service
-        if (selectedTab && !tabs.contains(selectedTab)) {
-          throw new Error('Specified tab does not belong to this service');
-        }
-
-        // Update the 'selected' property on all the tabs
-        tabs.forEach(function (tab) {
-          return tab.set('selected', tab === selectedTab);
-        });
-
-        // Navigate to the tab's page
-        var selectionHasChanged = selectedTab !== previousSelectedTab;
-        if (selectedTab && selectionHasChanged) {
-          this.sendAction('select', selectedTab);
-        }
-
-        return selectedTab;
-      }
-
-      // Find the selected tab
-      return this.get('tabs').find(function (tab) {
-        return tab.get('selected');
-      });
-
-      // Update whenever a tab's 'selected' property changes,
-      // or when tabs are added/removed
-    }).property('tabs.@each.selected'),
+    selectedTab: null,
 
     /**
      * Close a tab and, if it is currently selected, select the tab next to it
@@ -22024,10 +21991,7 @@ define('frontend-cp/components/ko-tabs/component', ['exports', 'ember'], functio
 
       tabs.removeObject(tab);
 
-      var wasLastTab = tabs.length === 0;
-      if (wasLastTab) {
-        this.sendAction('closeAll');
-      } else if (previouslySelectedIndex !== -1) {
+      if (previouslySelectedIndex !== -1) {
         // If the selected tab was closed, select the one that was to the right of it
         var maxSelectedIndex = tabs.length - 1;
         var newSelectedIndex = Math.min(previouslySelectedIndex, maxSelectedIndex);
@@ -22109,9 +22073,9 @@ define('frontend-cp/components/ko-tabs/template', ['exports'], function (exports
           return morphs;
         },
         statements: [
-          ["attribute","class",["concat",["nav-tabs__item",["subexpr","if",[["get","tab.selected",["loc",[null,[2,29],[2,41]]]]," is-active"],[],["loc",[null,[2,24],[2,56]]]]]]],
-          ["attribute","href",["concat",[["get","tab.url",["loc",[null,[2,90],[2,97]]]]]]],
-          ["element","action",["select",["get","tab",["loc",[null,[2,76],[2,79]]]]],[],["loc",[null,[2,58],[2,81]]]],
+          ["attribute","class",["concat",["nav-tabs__item",["subexpr","if",[["subexpr","eq",[["get","tab",["loc",[null,[2,33],[2,36]]]],["get","selectedTab",["loc",[null,[2,37],[2,48]]]]],[],["loc",[null,[2,29],[2,49]]]]," is-active"],[],["loc",[null,[2,24],[2,64]]]]]]],
+          ["attribute","href",["concat",[["get","tab.url",["loc",[null,[2,98],[2,105]]]]]]],
+          ["element","action",["select",["get","tab",["loc",[null,[2,84],[2,87]]]]],[],["loc",[null,[2,66],[2,89]]]],
           ["content","tab.label",["loc",[null,[3,31],[3,44]]]],
           ["element","action",["close",["get","tab",["loc",[null,[3,96],[3,99]]]]],[],["loc",[null,[3,79],[3,101]]]]
         ],
@@ -25532,6 +25496,185 @@ define('frontend-cp/initializers/pusher', ['exports'], function (exports) {
   }
 
 });
+define('frontend-cp/initializers/tabs', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports.initialize = initialize;
+
+  function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
+
+  function initialize(container, application) {
+    Ember['default'].Route.reopen({
+      /**
+       * Whether the route should open in its own tab
+       * @type {boolean}
+       */
+      isTabbedRoute: false,
+
+      /**
+       * Select/create a tab whenever this route becomes active
+       */
+      updateTabSelectionOnActivate: Ember['default'].on('activate', function () {
+        var activeTransition = this.router.router.activeTransition;
+        this.updateTabSelection(activeTransition);
+      }),
+
+      /*
+       * Select/create a tab whenever this route's model changes
+       */
+      resetController: function resetController(controller, isExiting, transition) {
+        this._super(controller, isExiting, transition);
+        var isTransitioningWithinRoute = !isExiting;
+        if (isTransitioningWithinRoute) {
+          this.updateTabSelection(transition);
+        }
+      },
+
+      updateTabSelection: function updateTabSelection(transition) {
+        // We don't need to select a tab for intermediate routes / login / etc
+        var route = this;
+        var shouldIgnoreRoute = shouldSkipSelectingTabForRoute(route, transition);
+        if (shouldIgnoreRoute) {
+          return;
+        }
+
+        // Get/create the corresponding tab for the route, and select it
+        var tabsService = this.container.lookup('service:tabs');
+        var sessionController = this.controllerFor('session');
+        var tab = getTabForRoute(route, transition, tabsService, sessionController);
+        sessionController.set('selectedTab', tab);
+
+        // Store the tab model on the route to allow setting tab label etc.
+        if (route.get('isTabbedRoute')) {
+          route.set('tab', tab);
+        }
+
+        function shouldSkipSelectingTabForRoute(route, transition) {
+          // We only need to create tabs for pages within the logged-in area
+          var isSessionRoute = route.get('routeName').split('.')[0] === 'session';
+          if (!isSessionRoute) {
+            return true;
+          }
+
+          // We always need to get/create a tab for tabbed routes, even if we're
+          // ultimately navigating to one of their child routes
+          var isTabbedRoute = route.get('isTabbedRoute');
+          if (isTabbedRoute) {
+            return false;
+          }
+
+          // If this isn't the final destination, don't bother creating/selecting a tab
+          var isIntermediateRoute = route.get('routeName') !== transition.targetName;
+          if (isIntermediateRoute) {
+            return true;
+          }
+
+          // We're at the destination route, so we want a tab
+          return false;
+        }
+      }
+    });
+
+    /**
+     * Get/create a tab for a route
+     * @param {Route} route The route to create a tab for
+     * @param {Transition} transition Transition containing dynamic route segments
+     * @param {TabsService} tabsService Tabs service used to get/create the tab
+     * @param {SessionController} sessionController Controller for the view that contains the tabs
+     * @return {Tab} Tab model for the specified route
+     */
+    function getTabForRoute(route, transition, tabsService, sessionController) {
+      var targetUrl = getTransitionTargetUrl(transition);
+      var baseUrl = getRouteUrl(route, transition);
+      var isTabbedRoute = route.get('isTabbedRoute');
+      var tab = sessionController.getTabForUrl(isTabbedRoute, targetUrl, baseUrl);
+      return tab;
+
+      /**
+       * Retrieve the URL for a route that includes dynamic segments
+       * @param {Route} route Route whose params we want to fetch
+       * @param {Transition} transition Transition that involves the specified route
+       * @param {TabsService} tabsService Tabs service used to get/create the tab
+       * @return {string} Array of Key/value object containing dynamic route segments, or models
+       */
+      function getRouteUrl(route, transition, tabsService) {
+        var _transition$router;
+
+        var routeName = route.routeName;
+
+        // `transition.handlerInfos` is an array of metadata objects, one for each
+        // of the routes in the transition hierarchy. (e.g. "app", "app.section",
+        // "app.section.subsection").
+        var routeHandlers = transition.handlerInfos;
+
+        // Get the dynamic route segment context objects for each of these levels
+        var routeContexts = routeHandlers.map(function (handlerInfo) {
+          return getHandlerContext(handlerInfo);
+        });
+
+        // Filter out the context objects for routes with no dynamic segments
+        var dynamicRouteContexts = routeContexts.filter(function (context) {
+          return context !== null;
+        });
+
+        // Return the route URL
+        return (_transition$router = transition.router).generate.apply(_transition$router, [routeName].concat(_toConsumableArray(dynamicRouteContexts)));
+
+        /**
+         * Retrieve the context object from a route handler info object
+         * @param {Object} handlerInfo Ember route handler info object
+         * @return {Object} Params object or model for dynamic routes, `null` for static routes
+         */
+        function getHandlerContext(handlerInfo) {
+          // If the transition was initiated by navigating to a URL,
+          // or route name + id, there will be a `params` object containing any
+          // dynamic route segments
+          if (handlerInfo.params) {
+            var hasDynamicSegments = Object.keys(handlerInfo.params).length > 0;
+            return hasDynamicSegments ? handlerInfo.params : null;
+          }
+
+          // If the transition was initiated by navigating to a route name + model,
+          // there will be a `context` object containing the model that corresponds
+          // to the dynamic route segment
+          if (handlerInfo.context) {
+            return handlerInfo.context;
+          }
+
+          // Looks like the route doesn't specify any dynamic segments
+          return null;
+        }
+      }
+
+      /**
+       * Serialize the transition into a target URL
+       * @param {Transition} transition Transition to serialize
+       * @return {string} URL path for the transition's target
+       */
+      function getTransitionTargetUrl(transition) {
+        var _transition$router2;
+
+        // If the transition was initiated by navigating to the URL, we already
+        // have the target URL so we can just return that
+        if (transition.intent.url) {
+          return transition.intent.url;
+        }
+
+        // Otherwise generate a URL based on the transition's target
+        var routeName = transition.intent.name;
+        var dynamicRouteContexts = transition.intent.contexts;
+        return (_transition$router2 = transition.router).generate.apply(_transition$router2, [routeName].concat(_toConsumableArray(dynamicRouteContexts)));
+      }
+    }
+  }
+
+  exports['default'] = {
+    name: 'tabbed-routes',
+    initialize: initialize
+  };
+
+});
 define('frontend-cp/initializers/truth-helpers', ['exports', 'ember-truth-helpers/utils/register-helper', 'ember-truth-helpers/helpers/and', 'ember-truth-helpers/helpers/or', 'ember-truth-helpers/helpers/equal', 'ember-truth-helpers/helpers/not', 'ember-truth-helpers/helpers/is-array'], function (exports, register_helper, and, or, equal, not, is_array) {
 
   'use strict';
@@ -27021,7 +27164,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage'], function (e
   'use strict';
 
   exports['default'] = function(){this.post('admin/index.php',function(){return {'data':{'redirect':'/Base/Dashboard/','session':'AyUeuWPDD8JC2OA0c8335f8d1a99218c84cd7b97f7fcc2269a2e4274ieu04PQxkr2EAjPp9Z2Y2tJKd'},'errors':[],'notifications':{'error':[],'info':[],'success':[],'warning':[]},'status':200,'timestamp':1432593047};});this.get('/api/v1/cases/fields/1',function(){return {'status':200,'data':{'id':1,'fielduuid':'0939abea-4b49-4a10-8bd1-d44af45b8413','type':'SUBJECT','key':'subject','title':'Subject','is_required_for_agents':true,'is_required_on_resolution':true,'is_visible_to_customers':true,'customer_title':'Subject','is_customer_editable':true,'is_required_for_customers':true,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':1,'is_system':true,'options':[],'locales':[],'created_at':'2015-07-30T09:00:51Z','updated_at':'2015-07-30T09:00:51Z','resource_type':'case_field','resource_url':'http://novo/api/index.php?/v1/cases/fields/1'},'resource':'case_field','session_id':'zM6kSQm1SWZCd33805d8b083b2f49499ce75f15dae6dfcada961SCzbSUOnVhi7hcPvKSOJRof'};});this.get('api/v1/locales/en-us',function(){return {'status':200,'data':{'locale':'en-us','name':'English (United States)','native_name':'English (United States)','region':'US','native_region':'United States','script':'','variant':'','direction':'LTR','is_enabled':true,'created_at':'2015-05-28T14:12:59Z','updated_at':'2015-05-28T14:12:59Z','resource_type':'locale'},'resource':'locale'};});this.post('/api/v1/base/password/reset',function(){return {'status':200,'auth_token':'yh5wFffnVzOi5IyYr1aMwojpcRJw0FGid3S9r5iDumvLsPI0fRWBl4VfTEpPkodWwUvLlQXr3zJkfTxC'};});this['delete']('/api/v1/session',function(){return {'status':200};});this.get('api/v1/locales/en-us/strings',function(db){return db.enusstrings[0];});this.get('/api/v1/session',function(){return {'status':200,'data':{'id':'pPW6tnOyJG6TmWCVea175d1bfc5dbf073a89ffeb6a2a198c61aae941Aqc7ahmzw8a','portal':'API','ip_address':'10.0.2.2','user_agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.132 Safari/537.36','user':{'id':1,'resource_type':'user'},'status':'ONLINE','created_at':'2015-07-23T16:32:01Z','last_activity_at':'2015-07-23T16:32:22Z','resource_type':'session'},'resource':'session','resources':{'role':{'1':{'id':1,'title':'Administrator','type':'ADMIN','ip_restriction':null,'password_expires_in_days':'0','is_two_factor_required':false,'created_at':'2015-07-23T12:09:20Z','updated_at':'2015-07-23T12:09:20Z','resource_type':'role','resource_url':'http://novo/api/index.php?/v1/roles/1'}},'business_hour':{'1':{'id':1,'title':'Default Business Hours','zones':{'monday':[9,10,11,12,13,14,15,16,17,18],'tuesday':[9,10,11,12,13,14,15,16,17,18],'wednesday':[9,10,11,12,13,14,15,16,17,18],'thursday':[9,10,11,12,13,14,15,16,17,18],'friday':[9,10,11,12,13,14,15,16,17,18],'saturday':[],'sunday':[]},'holidays':[],'created_at':'2015-07-23T12:09:20Z','updated_at':'2015-07-23T12:09:20Z','resource_type':'business_hour','resource_url':'http://novo/api/index.php?/v1/businesshours/1'}},'team':{'1':{'id':1,'title':'Sales','businesshour':{'id':1,'resource_type':'business_hour'},'followers':[],'created_at':'2015-07-23T12:09:20Z','updated_at':'2015-07-23T12:09:20Z','resource_type':'team','resource_url':'http://novo/api/index.php?/v1/teams/1'},'2':{'id':2,'title':'Support','businesshour':{'id':1,'resource_type':'business_hour'},'followers':[],'created_at':'2015-07-23T12:09:20Z','updated_at':'2015-07-23T12:09:20Z','resource_type':'team','resource_url':'http://novo/api/index.php?/v1/teams/2'},'3':{'id':3,'title':'Finance','businesshour':{'id':1,'resource_type':'business_hour'},'followers':[],'created_at':'2015-07-23T12:09:20Z','updated_at':'2015-07-23T12:09:20Z','resource_type':'team','resource_url':'http://novo/api/index.php?/v1/teams/3'},'4':{'id':4,'title':'Human Resources','businesshour':{'id':1,'resource_type':'business_hour'},'followers':[],'created_at':'2015-07-23T12:09:20Z','updated_at':'2015-07-23T12:09:20Z','resource_type':'team','resource_url':'http://novo/api/index.php?/v1/teams/4'}},'identity_email':{'1':{'id':1,'is_primary':true,'email':'test@kayako.com','is_notification_enabled':false,'is_validated':true,'created_at':'2015-07-23T12:09:20Z','updated_at':'2015-07-23T12:09:20Z','resource_type':'identity_email','resource_url':'http://novo/api/index.php?/v1/users/1/identities/emails/1'}},'user_field':{'1':{'id':1,'fielduuid':'a007fb77-0c64-4b8c-a993-ab355135955c','type':'TEXT','key':'enter_the_name','title':'Enter the name','is_visible_to_customers':true,'customer_title':'Enter the name','is_customer_editable':true,'is_required_for_customers':true,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':1,'is_system':false,'options':[],'locales':[],'created_at':'2015-07-23T12:09:20Z','updated_at':'2015-07-23T12:09:20Z','resource_type':'user_field','resource_url':'http://novo/api/index.php?/v1/users/fields/1'},'2':{'id':2,'fielduuid':'ddde64f0-f40b-4159-8369-9372699b900b','type':'TEXTAREA','key':'contact_address','title':'contact address','is_visible_to_customers':true,'customer_title':'1','is_customer_editable':false,'is_required_for_customers':false,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':2,'is_system':false,'options':[],'locales':[],'created_at':'2015-07-23T12:09:20Z','updated_at':'2015-07-23T12:09:20Z','resource_type':'user_field','resource_url':'http://novo/api/index.php?/v1/users/fields/2'},'3':{'id':3,'fielduuid':'79ec4918-9406-4447-97a7-0b3583fa9df7','type':'CHECKBOX','key':'interests','title':'interests','is_visible_to_customers':false,'customer_title':null,'is_customer_editable':false,'is_required_for_customers':false,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':3,'is_system':false,'options':[{'id':9,'resource_type':'field_option'},{'id':10,'resource_type':'field_option'},{'id':11,'resource_type':'field_option'}],'locales':[],'created_at':'2015-07-23T12:09:20Z','updated_at':'2015-07-23T12:09:20Z','resource_type':'user_field','resource_url':'http://novo/api/index.php?/v1/users/fields/3'}},'field_option':{'9':{'id':9,'fielduuid':'79ec4918-9406-4447-97a7-0b3583fa9df7','value':'googling','tag':'googling','sort_order':9,'created_at':'2015-07-23T12:09:20Z','updated_at':'2015-07-23T12:09:20Z','resource_type':'field_option'},'10':{'id':10,'fielduuid':'79ec4918-9406-4447-97a7-0b3583fa9df7','value':'learning new things','tag':'learningnewthings','sort_order':10,'created_at':'2015-07-23T12:09:20Z','updated_at':'2015-07-23T12:09:20Z','resource_type':'field_option'},'11':{'id':11,'fielduuid':'79ec4918-9406-4447-97a7-0b3583fa9df7','value':'other','tag':null,'sort_order':11,'created_at':'2015-07-23T12:09:20Z','updated_at':'2015-07-23T12:09:20Z','resource_type':'field_option'}},'user':{'1':{'id':1,'full_name':'John Doe','designation':null,'is_enabled':true,'role':{'id':1,'resource_type':'role'},'avatar':'http://novo/index.php?/avatar/get/5dadfafe-ef84-5db9-91f5-d617d0f4e58b','teams':[{'id':1,'resource_type':'team'},{'id':2,'resource_type':'team'},{'id':3,'resource_type':'team'},{'id':4,'resource_type':'team'}],'emails':[{'id':1,'resource_type':'identity_email'}],'phones':[],'twitter':[],'facebook':[],'external_identities':[],'addresses':[],'websites':[],'custom_fields':[{'field':{'id':1,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'},{'field':{'id':2,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'},{'field':{'id':3,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'}],'metadata':{'custom':null,'system':null,'resource_type':'metadata'},'tags':[],'notes':[],'pinned_notes_count':0,'followers':[],'locale':'en-us','time_zone':null,'time_zone_offset':null,'greeting':null,'signature':null,'status_message':null,'access_level':null,'password_updated_at':'2015-07-23T12:09:20Z','avatar_updated_at':null,'activity_at':'2015-07-23T16:32:01Z','visited_at':'2015-07-23T16:32:01Z','created_at':'2015-07-23T12:09:20Z','updated_at':'2015-07-23T16:32:01Z','resource_type':'user','resource_url':'http://novo/api/index.php?/v1/users/1'}}},'session_id':'pPW6tnOyJG6TmWCVea175d1bfc5dbf073a89ffeb6a2a198c61aae941Aqc7ahmzw8a'};});this.get('/api/v1/cases/forms/1',function(){return {'status':200,'data':{'id':1,'title':'Inbox','is_visible_to_customers':true,'customer_title':'Maintenance job form','description':null,'is_enabled':false,'is_default':false,'sort_order':1,'fields':[{'id':1,'resource_type':'case_field'},{'id':2,'resource_type':'case_field'},{'id':3,'resource_type':'case_field'},{'id':4,'resource_type':'case_field'},{'id':5,'resource_type':'case_field'},{'id':6,'resource_type':'case_field'},{'id':7,'resource_type':'case_field'},{'id':8,'resource_type':'case_field'},{'id':9,'resource_type':'case_field'},{'id':10,'resource_type':'case_field'},{'id':11,'resource_type':'case_field'}],'brand':{'id':1,'resource_type':'brand'},'created_at':'2015-07-30T09:00:51Z','updated_at':'2015-07-30T13:45:45Z','resource_type':'case_form','resource_url':'http://novo/api/index.php?/v1/cases/forms/1'},'resource':'case_form','resources':{'case_field':{'1':{'id':1,'fielduuid':'0939abea-4b49-4a10-8bd1-d44af45b8413','type':'SUBJECT','key':'subject','title':'Subject','is_required_for_agents':true,'is_required_on_resolution':true,'is_visible_to_customers':true,'customer_title':'Subject','is_customer_editable':true,'is_required_for_customers':true,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':1,'is_system':true,'options':[],'locales':[],'created_at':'2015-07-30T09:00:51Z','updated_at':'2015-07-30T09:00:51Z','resource_type':'case_field','resource_url':'http://novo/api/index.php?/v1/cases/fields/1'},'2':{'id':2,'fielduuid':'079313dc-dc9c-47db-9af6-029794eef5e6','type':'MESSAGE','key':'message','title':'Message','is_required_for_agents':false,'is_required_on_resolution':true,'is_visible_to_customers':true,'customer_title':'Message','is_customer_editable':true,'is_required_for_customers':true,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':2,'is_system':true,'options':[],'locales':[],'created_at':'2015-07-30T09:00:51Z','updated_at':'2015-07-30T09:00:51Z','resource_type':'case_field','resource_url':'http://novo/api/index.php?/v1/cases/fields/2'},'3':{'id':3,'fielduuid':'f34a13bf-6f32-48af-b2a8-805268b1b7a8','type':'PRIORITY','key':'priority','title':'Priority','is_required_for_agents':false,'is_required_on_resolution':false,'is_visible_to_customers':true,'customer_title':'Priority','is_customer_editable':true,'is_required_for_customers':false,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':3,'is_system':true,'options':[],'locales':[],'created_at':'2015-07-30T09:00:51Z','updated_at':'2015-07-30T09:00:51Z','resource_type':'case_field','resource_url':'http://novo/api/index.php?/v1/cases/fields/3'},'4':{'id':4,'fielduuid':'6b4cd677-ef6a-42f6-a725-5647e5719d34','type':'STATUS','key':'status','title':'Status','is_required_for_agents':false,'is_required_on_resolution':true,'is_visible_to_customers':true,'customer_title':'Priority','is_customer_editable':false,'is_required_for_customers':false,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':4,'is_system':true,'options':[],'locales':[],'created_at':'2015-07-30T09:00:51Z','updated_at':'2015-07-30T09:00:51Z','resource_type':'case_field','resource_url':'http://novo/api/index.php?/v1/cases/fields/4'},'5':{'id':5,'fielduuid':'b306d25c-c3c7-45de-a8d2-860881559208','type':'TYPE','key':'type','title':'Type','is_required_for_agents':false,'is_required_on_resolution':false,'is_visible_to_customers':false,'customer_title':'Type','is_customer_editable':false,'is_required_for_customers':false,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':5,'is_system':true,'options':[],'locales':[],'created_at':'2015-07-30T09:00:51Z','updated_at':'2015-07-30T09:00:51Z','resource_type':'case_field','resource_url':'http://novo/api/index.php?/v1/cases/fields/5'},'6':{'id':6,'fielduuid':'a9062464-7cdb-4062-9828-30ef28da1886','type':'TEAM','key':'team','title':'Team','is_required_for_agents':false,'is_required_on_resolution':false,'is_visible_to_customers':false,'customer_title':'Team','is_customer_editable':false,'is_required_for_customers':false,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':6,'is_system':true,'options':[],'locales':[],'created_at':'2015-07-30T09:00:51Z','updated_at':'2015-07-30T09:00:51Z','resource_type':'case_field','resource_url':'http://novo/api/index.php?/v1/cases/fields/6'},'7':{'id':7,'fielduuid':'4798cdd9-2add-48e2-90a8-67af21483304','type':'ASSIGNEE','key':'assignee','title':'Assignee','is_required_for_agents':false,'is_required_on_resolution':false,'is_visible_to_customers':false,'customer_title':'Assignee','is_customer_editable':false,'is_required_for_customers':false,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':7,'is_system':true,'options':[],'locales':[],'created_at':'2015-07-30T09:00:51Z','updated_at':'2015-07-30T09:00:51Z','resource_type':'case_field','resource_url':'http://novo/api/index.php?/v1/cases/fields/7'},'8':{'id':8,'fielduuid':'f8f53b38-dd7a-432d-9559-d297b417250a','type':'SELECT','key':'product','title':'Product','is_required_for_agents':false,'is_required_on_resolution':false,'is_visible_to_customers':true,'customer_title':'Product','is_customer_editable':true,'is_required_for_customers':true,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':8,'is_system':false,'options':[{'id':1,'resource_type':'field_option'},{'id':2,'resource_type':'field_option'},{'id':3,'resource_type':'field_option'},{'id':4,'resource_type':'field_option'},{'id':5,'resource_type':'field_option'},{'id':6,'resource_type':'field_option'},{'id':7,'resource_type':'field_option'},{'id':8,'resource_type':'field_option'}],'locales':[],'created_at':'2015-07-30T09:00:51Z','updated_at':'2015-07-30T09:00:51Z','resource_type':'case_field','resource_url':'http://novo/api/index.php?/v1/cases/fields/8'},'9':{'id':9,'fielduuid':'98f0682b-7f9f-456b-8302-c665b93cab09','type':'TEXT','key':'serial_number','title':'Serial number','is_required_for_agents':false,'is_required_on_resolution':false,'is_visible_to_customers':true,'customer_title':'Serial number','is_customer_editable':true,'is_required_for_customers':true,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':9,'is_system':false,'options':[],'locales':[],'created_at':'2015-07-30T09:00:51Z','updated_at':'2015-07-30T09:00:51Z','resource_type':'case_field','resource_url':'http://novo/api/index.php?/v1/cases/fields/9'},'10':{'id':10,'fielduuid':'e286c893-d948-47ef-b9c5-870aa8fd6468','type':'TEXTAREA','key':'reported_issues','title':'Reported issues','is_required_for_agents':false,'is_required_on_resolution':false,'is_visible_to_customers':true,'customer_title':'Reported issues','is_customer_editable':true,'is_required_for_customers':true,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':10,'is_system':false,'options':[],'locales':[],'created_at':'2015-07-30T09:00:51Z','updated_at':'2015-07-30T09:00:51Z','resource_type':'case_field','resource_url':'http://novo/api/index.php?/v1/cases/fields/10'},'11':{'id':11,'fielduuid':'d87dbf07-2f46-40fa-9b8a-bc0503b323cd','type':'DATE','key':'date_scheduled','title':'Date scheduled','is_required_for_agents':false,'is_required_on_resolution':false,'is_visible_to_customers':true,'customer_title':'Date scheduled','is_customer_editable':true,'is_required_for_customers':true,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':11,'is_system':false,'options':[],'locales':[],'created_at':'2015-07-30T09:00:51Z','updated_at':'2015-07-30T09:00:51Z','resource_type':'case_field','resource_url':'http://novo/api/index.php?/v1/cases/fields/11'}},'field_option':{'1':{'id':1,'fielduuid':'f8f53b38-dd7a-432d-9559-d297b417250a','value':'Elektra Moderna 2-Group','tag':null,'sort_order':1,'created_at':'2015-07-30T09:00:51Z','updated_at':'2015-07-30T09:00:51Z','resource_type':'field_option'},'2':{'id':2,'fielduuid':'f8f53b38-dd7a-432d-9559-d297b417250a','value':'Elektra Compact 1-Group','tag':null,'sort_order':2,'created_at':'2015-07-30T09:00:51Z','updated_at':'2015-07-30T09:00:51Z','resource_type':'field_option'},'3':{'id':3,'fielduuid':'f8f53b38-dd7a-432d-9559-d297b417250a','value':'Elektra Compact 2-Group','tag':null,'sort_order':3,'created_at':'2015-07-30T09:00:51Z','updated_at':'2015-07-30T09:00:51Z','resource_type':'field_option'},'4':{'id':4,'fielduuid':'f8f53b38-dd7a-432d-9559-d297b417250a','value':'Maidaid Barista MBC1D','tag':null,'sort_order':4,'created_at':'2015-07-30T09:00:51Z','updated_at':'2015-07-30T09:00:51Z','resource_type':'field_option'},'5':{'id':5,'fielduuid':'f8f53b38-dd7a-432d-9559-d297b417250a','value':'Maidaid Barista MBC2D','tag':null,'sort_order':5,'created_at':'2015-07-30T09:00:51Z','updated_at':'2015-07-30T09:00:51Z','resource_type':'field_option'},'6':{'id':6,'fielduuid':'f8f53b38-dd7a-432d-9559-d297b417250a','value':'Fracino Cybercino','tag':null,'sort_order':6,'created_at':'2015-07-30T09:00:51Z','updated_at':'2015-07-30T09:00:51Z','resource_type':'field_option'},'7':{'id':7,'fielduuid':'f8f53b38-dd7a-432d-9559-d297b417250a','value':'Nespresso Gemini CS 200 PRO','tag':null,'sort_order':7,'created_at':'2015-07-30T09:00:51Z','updated_at':'2015-07-30T09:00:51Z','resource_type':'field_option'},'8':{'id':8,'fielduuid':'f8f53b38-dd7a-432d-9559-d297b417250a','value':'Nespresso Gemini CS 220 PRO','tag':null,'sort_order':8,'created_at':'2015-07-30T09:00:51Z','updated_at':'2015-07-30T09:00:51Z','resource_type':'field_option'}},'language':{'1':{'id':1,'locale':'en-us','flag_icon':null,'direction':'LTR','is_enabled':true,'statistics':{'uptodate':0,'outdated':0,'missing':0},'created_at':'2015-07-30T09:00:51Z','updated_at':'2015-07-30T09:00:51Z','resource_type':'language','resource_url':'http://novo/api/index.php?/v1/languages/1'}},'brand':{'1':{'id':1,'name':'Default','url':null,'language':{'id':1,'resource_type':'language'},'is_enabled':true,'created_at':'2015-07-30T09:00:51Z','updated_at':'2015-07-30T09:00:51Z','resource_type':'brand','resource_url':'http://novo/api/index.php?/v1/brands/1'}}},'session_id':'T5egVg5sUShBmlaQmBUEle35fa568f692a4bb8ecb8730dbec798d298a75abwWrkNQHEPYuYTQ1vSESUcStHE'};});this.get('/api/v1/cases/forms',function(){return {'status':200,'data':[{'id':1,'title':'Inbox','is_visible_to_customers':true,'customer_title':'Maintenance job form','description':null,'is_enabled':false,'is_default':false,'sort_order':1,'fields':[{'id':1,'resource_type':'case_field'},{'id':2,'resource_type':'case_field'},{'id':3,'resource_type':'case_field'},{'id':4,'resource_type':'case_field'},{'id':5,'resource_type':'case_field'},{'id':6,'resource_type':'case_field'},{'id':7,'resource_type':'case_field'},{'id':8,'resource_type':'case_field'},{'id':9,'resource_type':'case_field'},{'id':10,'resource_type':'case_field'},{'id':11,'resource_type':'case_field'}],'brand':{'id':1,'resource_type':'brand'},'created_at':'2015-07-30T09:00:51Z','updated_at':'2015-07-30T13:02:52Z','resource_type':'case_form','resource_url':'http://novo/api/index.php?/v1/cases/forms/1'},{'id':2,'title':'Feedback on your coffee','is_visible_to_customers':true,'customer_title':'Feedback on your coffee','description':null,'is_enabled':true,'is_default':false,'sort_order':2,'fields':[{'id':1,'resource_type':'case_field'},{'id':2,'resource_type':'case_field'},{'id':3,'resource_type':'case_field'},{'id':4,'resource_type':'case_field'},{'id':5,'resource_type':'case_field'},{'id':6,'resource_type':'case_field'},{'id':7,'resource_type':'case_field'},{'id':12,'resource_type':'case_field'},{'id':13,'resource_type':'case_field'}],'brand':{'id':1,'resource_type':'brand'},'created_at':'2015-07-30T09:00:51Z','updated_at':'2015-07-30T09:00:51Z','resource_type':'case_form','resource_url':'http://novo/api/index.php?/v1/cases/forms/2'}],'resource':'case_form','resources':{'case_field':{'1':{'id':1,'fielduuid':'0939abea-4b49-4a10-8bd1-d44af45b8413','type':'SUBJECT','key':'subject','title':'Subject','is_required_for_agents':true,'is_required_on_resolution':true,'is_visible_to_customers':true,'customer_title':'Subject','is_customer_editable':true,'is_required_for_customers':true,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':1,'is_system':true,'options':[],'locales':[],'created_at':'2015-07-30T09:00:51Z','updated_at':'2015-07-30T09:00:51Z','resource_type':'case_field','resource_url':'http://novo/api/index.php?/v1/cases/fields/1'},'2':{'id':2,'fielduuid':'079313dc-dc9c-47db-9af6-029794eef5e6','type':'MESSAGE','key':'message','title':'Message','is_required_for_agents':false,'is_required_on_resolution':true,'is_visible_to_customers':true,'customer_title':'Message','is_customer_editable':true,'is_required_for_customers':true,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':2,'is_system':true,'options':[],'locales':[],'created_at':'2015-07-30T09:00:51Z','updated_at':'2015-07-30T09:00:51Z','resource_type':'case_field','resource_url':'http://novo/api/index.php?/v1/cases/fields/2'},'3':{'id':3,'fielduuid':'f34a13bf-6f32-48af-b2a8-805268b1b7a8','type':'PRIORITY','key':'priority','title':'Priority','is_required_for_agents':false,'is_required_on_resolution':false,'is_visible_to_customers':true,'customer_title':'Priority','is_customer_editable':true,'is_required_for_customers':false,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':3,'is_system':true,'options':[],'locales':[],'created_at':'2015-07-30T09:00:51Z','updated_at':'2015-07-30T09:00:51Z','resource_type':'case_field','resource_url':'http://novo/api/index.php?/v1/cases/fields/3'},'4':{'id':4,'fielduuid':'6b4cd677-ef6a-42f6-a725-5647e5719d34','type':'STATUS','key':'status','title':'Status','is_required_for_agents':false,'is_required_on_resolution':true,'is_visible_to_customers':true,'customer_title':'Priority','is_customer_editable':false,'is_required_for_customers':false,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':4,'is_system':true,'options':[],'locales':[],'created_at':'2015-07-30T09:00:51Z','updated_at':'2015-07-30T09:00:51Z','resource_type':'case_field','resource_url':'http://novo/api/index.php?/v1/cases/fields/4'},'5':{'id':5,'fielduuid':'b306d25c-c3c7-45de-a8d2-860881559208','type':'TYPE','key':'type','title':'Type','is_required_for_agents':false,'is_required_on_resolution':false,'is_visible_to_customers':false,'customer_title':'Type','is_customer_editable':false,'is_required_for_customers':false,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':5,'is_system':true,'options':[],'locales':[],'created_at':'2015-07-30T09:00:51Z','updated_at':'2015-07-30T09:00:51Z','resource_type':'case_field','resource_url':'http://novo/api/index.php?/v1/cases/fields/5'},'6':{'id':6,'fielduuid':'a9062464-7cdb-4062-9828-30ef28da1886','type':'TEAM','key':'team','title':'Team','is_required_for_agents':false,'is_required_on_resolution':false,'is_visible_to_customers':false,'customer_title':'Team','is_customer_editable':false,'is_required_for_customers':false,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':6,'is_system':true,'options':[],'locales':[],'created_at':'2015-07-30T09:00:51Z','updated_at':'2015-07-30T09:00:51Z','resource_type':'case_field','resource_url':'http://novo/api/index.php?/v1/cases/fields/6'},'7':{'id':7,'fielduuid':'4798cdd9-2add-48e2-90a8-67af21483304','type':'ASSIGNEE','key':'assignee','title':'Assignee','is_required_for_agents':false,'is_required_on_resolution':false,'is_visible_to_customers':false,'customer_title':'Assignee','is_customer_editable':false,'is_required_for_customers':false,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':7,'is_system':true,'options':[],'locales':[],'created_at':'2015-07-30T09:00:51Z','updated_at':'2015-07-30T09:00:51Z','resource_type':'case_field','resource_url':'http://novo/api/index.php?/v1/cases/fields/7'},'8':{'id':8,'fielduuid':'f8f53b38-dd7a-432d-9559-d297b417250a','type':'SELECT','key':'product','title':'Product','is_required_for_agents':false,'is_required_on_resolution':false,'is_visible_to_customers':true,'customer_title':'Product','is_customer_editable':true,'is_required_for_customers':true,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':8,'is_system':false,'options':[{'id':1,'resource_type':'field_option'},{'id':2,'resource_type':'field_option'},{'id':3,'resource_type':'field_option'},{'id':4,'resource_type':'field_option'},{'id':5,'resource_type':'field_option'},{'id':6,'resource_type':'field_option'},{'id':7,'resource_type':'field_option'},{'id':8,'resource_type':'field_option'}],'locales':[],'created_at':'2015-07-30T09:00:51Z','updated_at':'2015-07-30T09:00:51Z','resource_type':'case_field','resource_url':'http://novo/api/index.php?/v1/cases/fields/8'},'9':{'id':9,'fielduuid':'98f0682b-7f9f-456b-8302-c665b93cab09','type':'TEXT','key':'serial_number','title':'Serial number','is_required_for_agents':false,'is_required_on_resolution':false,'is_visible_to_customers':true,'customer_title':'Serial number','is_customer_editable':true,'is_required_for_customers':true,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':9,'is_system':false,'options':[],'locales':[],'created_at':'2015-07-30T09:00:51Z','updated_at':'2015-07-30T09:00:51Z','resource_type':'case_field','resource_url':'http://novo/api/index.php?/v1/cases/fields/9'},'10':{'id':10,'fielduuid':'e286c893-d948-47ef-b9c5-870aa8fd6468','type':'TEXTAREA','key':'reported_issues','title':'Reported issues','is_required_for_agents':false,'is_required_on_resolution':false,'is_visible_to_customers':true,'customer_title':'Reported issues','is_customer_editable':true,'is_required_for_customers':true,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':10,'is_system':false,'options':[],'locales':[],'created_at':'2015-07-30T09:00:51Z','updated_at':'2015-07-30T09:00:51Z','resource_type':'case_field','resource_url':'http://novo/api/index.php?/v1/cases/fields/10'},'11':{'id':11,'fielduuid':'d87dbf07-2f46-40fa-9b8a-bc0503b323cd','type':'DATE','key':'date_scheduled','title':'Date scheduled','is_required_for_agents':false,'is_required_on_resolution':false,'is_visible_to_customers':true,'customer_title':'Date scheduled','is_customer_editable':true,'is_required_for_customers':true,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':11,'is_system':false,'options':[],'locales':[],'created_at':'2015-07-30T09:00:51Z','updated_at':'2015-07-30T09:00:51Z','resource_type':'case_field','resource_url':'http://novo/api/index.php?/v1/cases/fields/11'},'12':{'id':12,'fielduuid':'afcf2e87-a07a-4cb0-8568-f2234549bdfa','type':'SELECT','key':'your_coffee','title':'Your coffee','is_required_for_agents':false,'is_required_on_resolution':false,'is_visible_to_customers':true,'customer_title':'Your coffee','is_customer_editable':true,'is_required_for_customers':true,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':12,'is_system':false,'options':[{'id':9,'resource_type':'field_option'},{'id':10,'resource_type':'field_option'},{'id':11,'resource_type':'field_option'},{'id':12,'resource_type':'field_option'},{'id':13,'resource_type':'field_option'},{'id':14,'resource_type':'field_option'},{'id':15,'resource_type':'field_option'}],'locales':[],'created_at':'2015-07-30T09:00:51Z','updated_at':'2015-07-30T09:00:51Z','resource_type':'case_field','resource_url':'http://novo/api/index.php?/v1/cases/fields/12'},'13':{'id':13,'fielduuid':'d55cd74a-ba3a-4561-b01d-91eafa261c9d','type':'RADIO','key':'would_you_recommend_this_coffee_to_a_friend','title':'Would you recommend this coffee to a friend?','is_required_for_agents':false,'is_required_on_resolution':false,'is_visible_to_customers':true,'customer_title':'Would you recommend this coffee to a friend?','is_customer_editable':true,'is_required_for_customers':true,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':13,'is_system':false,'options':[{'id':16,'resource_type':'field_option'},{'id':17,'resource_type':'field_option'}],'locales':[],'created_at':'2015-07-30T09:00:51Z','updated_at':'2015-07-30T09:00:51Z','resource_type':'case_field','resource_url':'http://novo/api/index.php?/v1/cases/fields/13'}},'field_option':{'1':{'id':1,'fielduuid':'f8f53b38-dd7a-432d-9559-d297b417250a','value':'Elektra Moderna 2-Group','tag':null,'sort_order':1,'created_at':'2015-07-30T09:00:51Z','updated_at':'2015-07-30T09:00:51Z','resource_type':'field_option'},'2':{'id':2,'fielduuid':'f8f53b38-dd7a-432d-9559-d297b417250a','value':'Elektra Compact 1-Group','tag':null,'sort_order':2,'created_at':'2015-07-30T09:00:51Z','updated_at':'2015-07-30T09:00:51Z','resource_type':'field_option'},'3':{'id':3,'fielduuid':'f8f53b38-dd7a-432d-9559-d297b417250a','value':'Elektra Compact 2-Group','tag':null,'sort_order':3,'created_at':'2015-07-30T09:00:51Z','updated_at':'2015-07-30T09:00:51Z','resource_type':'field_option'},'4':{'id':4,'fielduuid':'f8f53b38-dd7a-432d-9559-d297b417250a','value':'Maidaid Barista MBC1D','tag':null,'sort_order':4,'created_at':'2015-07-30T09:00:51Z','updated_at':'2015-07-30T09:00:51Z','resource_type':'field_option'},'5':{'id':5,'fielduuid':'f8f53b38-dd7a-432d-9559-d297b417250a','value':'Maidaid Barista MBC2D','tag':null,'sort_order':5,'created_at':'2015-07-30T09:00:51Z','updated_at':'2015-07-30T09:00:51Z','resource_type':'field_option'},'6':{'id':6,'fielduuid':'f8f53b38-dd7a-432d-9559-d297b417250a','value':'Fracino Cybercino','tag':null,'sort_order':6,'created_at':'2015-07-30T09:00:51Z','updated_at':'2015-07-30T09:00:51Z','resource_type':'field_option'},'7':{'id':7,'fielduuid':'f8f53b38-dd7a-432d-9559-d297b417250a','value':'Nespresso Gemini CS 200 PRO','tag':null,'sort_order':7,'created_at':'2015-07-30T09:00:51Z','updated_at':'2015-07-30T09:00:51Z','resource_type':'field_option'},'8':{'id':8,'fielduuid':'f8f53b38-dd7a-432d-9559-d297b417250a','value':'Nespresso Gemini CS 220 PRO','tag':null,'sort_order':8,'created_at':'2015-07-30T09:00:51Z','updated_at':'2015-07-30T09:00:51Z','resource_type':'field_option'},'9':{'id':9,'fielduuid':'afcf2e87-a07a-4cb0-8568-f2234549bdfa','value':'Yirgacheffe Oromia - Single Origin','tag':'yirgacheffe-oromia','sort_order':1,'created_at':'2015-07-30T09:00:51Z','updated_at':'2015-07-30T09:00:51Z','resource_type':'field_option'},'10':{'id':10,'fielduuid':'afcf2e87-a07a-4cb0-8568-f2234549bdfa','value':'Kenya Kiunyu Ab - Single Origin','tag':'single-origin','sort_order':2,'created_at':'2015-07-30T09:00:51Z','updated_at':'2015-07-30T09:00:51Z','resource_type':'field_option'},'11':{'id':11,'fielduuid':'afcf2e87-a07a-4cb0-8568-f2234549bdfa','value':'Guatemala Asobagri - Single Origin','tag':'kenya-kiunyu-ab','sort_order':3,'created_at':'2015-07-30T09:00:51Z','updated_at':'2015-07-30T09:00:51Z','resource_type':'field_option'},'12':{'id':12,'fielduuid':'afcf2e87-a07a-4cb0-8568-f2234549bdfa','value':'Two Trees - Blend','tag':'two-trees','sort_order':4,'created_at':'2015-07-30T09:00:51Z','updated_at':'2015-07-30T09:00:51Z','resource_type':'field_option'},'13':{'id':13,'fielduuid':'afcf2e87-a07a-4cb0-8568-f2234549bdfa','value':'Clipper - Blend','tag':'clipper-blend','sort_order':5,'created_at':'2015-07-30T09:00:51Z','updated_at':'2015-07-30T09:00:51Z','resource_type':'field_option'},'14':{'id':14,'fielduuid':'afcf2e87-a07a-4cb0-8568-f2234549bdfa','value':'Honey - Blend','tag':'honey-blend','sort_order':6,'created_at':'2015-07-30T09:00:51Z','updated_at':'2015-07-30T09:00:51Z','resource_type':'field_option'},'15':{'id':15,'fielduuid':'afcf2e87-a07a-4cb0-8568-f2234549bdfa','value':'Brooklyn - Blend','tag':'brooklyn-blend','sort_order':7,'created_at':'2015-07-30T09:00:51Z','updated_at':'2015-07-30T09:00:51Z','resource_type':'field_option'},'16':{'id':16,'fielduuid':'d55cd74a-ba3a-4561-b01d-91eafa261c9d','value':'Yes','tag':null,'sort_order':1,'created_at':'2015-07-30T09:00:51Z','updated_at':'2015-07-30T09:00:51Z','resource_type':'field_option'},'17':{'id':17,'fielduuid':'d55cd74a-ba3a-4561-b01d-91eafa261c9d','value':'No','tag':null,'sort_order':2,'created_at':'2015-07-30T09:00:51Z','updated_at':'2015-07-30T09:00:51Z','resource_type':'field_option'}},'language':{'1':{'id':1,'locale':'en-us','flag_icon':null,'direction':'LTR','is_enabled':true,'statistics':{'uptodate':0,'outdated':0,'missing':0},'created_at':'2015-07-30T09:00:51Z','updated_at':'2015-07-30T09:00:51Z','resource_type':'language','resource_url':'http://novo/api/index.php?/v1/languages/1'}},'brand':{'1':{'id':1,'name':'Default','url':null,'language':{'id':1,'resource_type':'language'},'is_enabled':true,'created_at':'2015-07-30T09:00:51Z','updated_at':'2015-07-30T09:00:51Z','resource_type':'brand','resource_url':'http://novo/api/index.php?/v1/brands/1'}}},'total_count':2,'session_id':'7NZnHJmj7HToQbMKBr01sWzAGT0b5ee4fa97c753581340604e37d8bf18e9885aaaGqOaevCdeKfHwmAB6'};});this.get('/api/v1/views/:viewId/cases',function(){return {'status':200,'data':[{'id':1,'mask_id':'DXX-189-28930','subject':'ERS Audit','portal':null,'source_channel':{'id':'02a60873-8118-453c-8258-8f44029e657d','resource_type':'channel'},'requester':{'id':2,'resource_type':'user'},'creator':{'id':3,'resource_type':'user'},'identity':{'id':2,'resource_type':'identity_email'},'assignee':{'team':{'id':3,'resource_type':'team'}},'brand':{'id':1,'resource_type':'brand'},'status':{'id':1,'resource_type':'case_status'},'priority':{'id':1,'resource_type':'case_priority'},'type':{'id':1,'resource_type':'case_type'},'sla':{'id':1,'resource_type':'sla'},'sla_metrics':[{'title':'FIRST_REPLY_TIME','state':'COMPLETED','is_breached':false,'target_in_seconds':null},{'title':'RESOLUTION_TIME','state':'ACTIVE','is_breached':false,'target_in_seconds':-82656},{'title':'NEXT_REPLY_TIME','state':'ACTIVE','is_breached':false,'target_in_seconds':-83016}],'tags':[{'id':1,'resource_type':'tag'},{'id':2,'resource_type':'tag'}],'form':{'id':1,'resource_type':'case_form'},'custom_fields':[{'field':{'id':8,'resource_type':'case_field'},'value':'Madhur','resource_type':'case_field_value'},{'field':{'id':9,'resource_type':'case_field'},'value':'Second Floor, 207 Old Street, London EC1V 9NR, United Kingdom','resource_type':'case_field_value'}],'followers':[],'metadata':{'custom':null,'system':null,'resource_type':'metadata'},'last_replier':{'id':2,'resource_type':'user'},'last_replier_identity':{'id':2,'resource_type':'identity_email'},'creation_mode':'WEB','state':'ACTIVE','post_count':3,'has_notes':false,'pinned_notes_count':0,'has_attachments':false,'rating':null,'rating_status':'UNOFFERED','created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','last_agent_activity_at':null,'last_customer_activity_at':'2015-07-09T15:36:10Z','resource_type':'case','resource_url':'http://novo/api/index.php?/v1/cases/1'},{'id':2,'mask_id':'PYI-851-88263','subject':'Profile Builder','portal':null,'source_channel':{'id':'02a60873-8118-453c-8258-8f44029e657d','resource_type':'channel'},'requester':{'id':4,'resource_type':'user'},'creator':{'id':5,'resource_type':'user'},'identity':{'id':4,'resource_type':'identity_email'},'assignee':{'team':{'id':2,'resource_type':'team'}},'brand':{'id':1,'resource_type':'brand'},'status':{'id':1,'resource_type':'case_status'},'priority':{'id':4,'resource_type':'case_priority'},'type':{'id':2,'resource_type':'case_type'},'sla':{'id':1,'resource_type':'sla'},'sla_metrics':[{'title':'FIRST_REPLY_TIME','state':'ACTIVE','is_breached':false,'target_in_seconds':-83376},{'title':'RESOLUTION_TIME','state':'ACTIVE','is_breached':false,'target_in_seconds':-82656}],'tags':[{'id':1,'resource_type':'tag'},{'id':3,'resource_type':'tag'}],'form':{'id':2,'resource_type':'case_form'},'custom_fields':[{'field':{'id':9,'resource_type':'case_field'},'value':'Estimated time','resource_type':'case_field_value'},{'field':{'id':10,'resource_type':'case_field'},'value':'1,2','resource_type':'case_field_value'},{'field':{'id':13,'resource_type':'case_field'},'value':'','resource_type':'case_field_value'},{'field':{'id':14,'resource_type':'case_field'},'value':'3','resource_type':'case_field_value'}],'followers':[],'metadata':{'custom':null,'system':null,'resource_type':'metadata'},'last_replier':{'id':4,'resource_type':'user'},'last_replier_identity':{'id':4,'resource_type':'identity_email'},'creation_mode':'WEB','state':'ACTIVE','post_count':3,'has_notes':true,'pinned_notes_count':0,'has_attachments':false,'rating':null,'rating_status':'UNOFFERED','created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','last_agent_activity_at':null,'last_customer_activity_at':'2015-07-09T15:36:10Z','resource_type':'case','resource_url':'http://novo/api/index.php?/v1/cases/2'},{'id':3,'mask_id':'TJS-877-65692','subject':'Windows 7 64 bit Upgrade Project','portal':null,'source_channel':{'id':'02a60873-8118-453c-8258-8f44029e657d','resource_type':'channel'},'requester':{'id':6,'resource_type':'user'},'creator':{'id':7,'resource_type':'user'},'identity':{'id':6,'resource_type':'identity_email'},'assignee':{'team':{'id':1,'resource_type':'team'}},'brand':{'id':1,'resource_type':'brand'},'status':{'id':1,'resource_type':'case_status'},'priority':{'id':2,'resource_type':'case_priority'},'type':{'id':2,'resource_type':'case_type'},'sla':{'id':1,'resource_type':'sla'},'sla_metrics':[{'title':'FIRST_REPLY_TIME','state':'COMPLETED','is_breached':false,'target_in_seconds':null},{'title':'RESOLUTION_TIME','state':'ACTIVE','is_breached':false,'target_in_seconds':-82656}],'tags':[{'id':2,'resource_type':'tag'},{'id':4,'resource_type':'tag'}],'custom_fields':[{'field':{'id':8,'resource_type':'case_field'},'value':'','resource_type':'case_field_value'},{'field':{'id':9,'resource_type':'case_field'},'value':'','resource_type':'case_field_value'},{'field':{'id':10,'resource_type':'case_field'},'value':'','resource_type':'case_field_value'},{'field':{'id':11,'resource_type':'case_field'},'value':'','resource_type':'case_field_value'},{'field':{'id':12,'resource_type':'case_field'},'value':'','resource_type':'case_field_value'},{'field':{'id':13,'resource_type':'case_field'},'value':'','resource_type':'case_field_value'},{'field':{'id':14,'resource_type':'case_field'},'value':'','resource_type':'case_field_value'}],'followers':[],'metadata':{'custom':null,'system':null,'resource_type':'metadata'},'last_replier':{'id':6,'resource_type':'user'},'last_replier_identity':{'id':6,'resource_type':'identity_email'},'creation_mode':'WEB','state':'ACTIVE','post_count':3,'has_notes':true,'pinned_notes_count':0,'has_attachments':false,'rating':null,'rating_status':'UNOFFERED','created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','last_agent_activity_at':null,'last_customer_activity_at':'2015-07-09T15:36:10Z','resource_type':'case','resource_url':'http://novo/api/index.php?/v1/cases/3'},{'id':4,'mask_id':'EXZ-814-50860','subject':'Netapp Disk Corruption','portal':null,'source_channel':{'id':'02a60873-8118-453c-8258-8f44029e657d','resource_type':'channel'},'requester':{'id':8,'resource_type':'user'},'creator':{'id':9,'resource_type':'user'},'identity':{'id':8,'resource_type':'identity_email'},'assignee':{'team':{'id':1,'resource_type':'team'}},'brand':{'id':1,'resource_type':'brand'},'status':{'id':1,'resource_type':'case_status'},'priority':{'id':1,'resource_type':'case_priority'},'type':{'id':3,'resource_type':'case_type'},'sla':{'id':1,'resource_type':'sla'},'sla_metrics':[{'title':'FIRST_REPLY_TIME','state':'COMPLETED','is_breached':false,'target_in_seconds':null},{'title':'RESOLUTION_TIME','state':'ACTIVE','is_breached':false,'target_in_seconds':-82656},{'title':'NEXT_REPLY_TIME','state':'ACTIVE','is_breached':false,'target_in_seconds':-83016}],'tags':[{'id':2,'resource_type':'tag'},{'id':3,'resource_type':'tag'}],'custom_fields':[{'field':{'id':8,'resource_type':'case_field'},'value':'','resource_type':'case_field_value'},{'field':{'id':9,'resource_type':'case_field'},'value':'','resource_type':'case_field_value'},{'field':{'id':10,'resource_type':'case_field'},'value':'','resource_type':'case_field_value'},{'field':{'id':11,'resource_type':'case_field'},'value':'','resource_type':'case_field_value'},{'field':{'id':12,'resource_type':'case_field'},'value':'','resource_type':'case_field_value'},{'field':{'id':13,'resource_type':'case_field'},'value':'','resource_type':'case_field_value'},{'field':{'id':14,'resource_type':'case_field'},'value':'','resource_type':'case_field_value'}],'followers':[],'metadata':{'custom':null,'system':null,'resource_type':'metadata'},'last_replier':{'id':8,'resource_type':'user'},'last_replier_identity':{'id':8,'resource_type':'identity_email'},'creation_mode':'WEB','state':'ACTIVE','post_count':3,'has_notes':true,'pinned_notes_count':0,'has_attachments':false,'rating':null,'rating_status':'UNOFFERED','created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','last_agent_activity_at':null,'last_customer_activity_at':'2015-07-09T15:36:10Z','resource_type':'case','resource_url':'http://novo/api/index.php?/v1/cases/4'},{'id':5,'mask_id':'TPZ-697-83834','subject':'Daily Backup','portal':null,'source_channel':{'id':'02a60873-8118-453c-8258-8f44029e657d','resource_type':'channel'},'requester':{'id':10,'resource_type':'user'},'creator':{'id':11,'resource_type':'user'},'identity':{'id':10,'resource_type':'identity_email'},'assignee':{'team':{'id':3,'resource_type':'team'}},'brand':{'id':1,'resource_type':'brand'},'status':{'id':1,'resource_type':'case_status'},'priority':{'id':2,'resource_type':'case_priority'},'type':{'id':3,'resource_type':'case_type'},'sla':{'id':1,'resource_type':'sla'},'sla_metrics':[{'title':'FIRST_REPLY_TIME','state':'ACTIVE','is_breached':false,'target_in_seconds':-83376},{'title':'RESOLUTION_TIME','state':'ACTIVE','is_breached':false,'target_in_seconds':-82656}],'tags':[{'id':1,'resource_type':'tag'},{'id':4,'resource_type':'tag'}],'custom_fields':[{'field':{'id':8,'resource_type':'case_field'},'value':'','resource_type':'case_field_value'},{'field':{'id':9,'resource_type':'case_field'},'value':'','resource_type':'case_field_value'},{'field':{'id':10,'resource_type':'case_field'},'value':'','resource_type':'case_field_value'},{'field':{'id':11,'resource_type':'case_field'},'value':'','resource_type':'case_field_value'},{'field':{'id':12,'resource_type':'case_field'},'value':'','resource_type':'case_field_value'},{'field':{'id':13,'resource_type':'case_field'},'value':'','resource_type':'case_field_value'},{'field':{'id':14,'resource_type':'case_field'},'value':'','resource_type':'case_field_value'}],'followers':[],'metadata':{'custom':null,'system':null,'resource_type':'metadata'},'last_replier':{'id':10,'resource_type':'user'},'last_replier_identity':{'id':10,'resource_type':'identity_email'},'creation_mode':'WEB','state':'ACTIVE','post_count':3,'has_notes':false,'pinned_notes_count':0,'has_attachments':false,'rating':null,'rating_status':'UNOFFERED','created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','last_agent_activity_at':null,'last_customer_activity_at':'2015-07-09T15:36:10Z','resource_type':'case','resource_url':'http://novo/api/index.php?/v1/cases/5'}],'resource':'case','resources':{'language':{'1':{'id':1,'locale':'en-us','flag_icon':null,'direction':'LTR','is_enabled':true,'statistics':{'uptodate':0,'outdated':0,'missing':0},'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'language','resource_url':'http://novo/api/index.php?/v1/languages/1'}},'brand':{'1':{'id':1,'name':'Default','url':null,'language':{'id':1,'resource_type':'language'},'is_enabled':true,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'brand','resource_url':'http://novo/api/index.php?/v1/brands/1'}},'mailbox':{'1':{'id':1,'uuid':'02a60873-8118-453c-8258-8f44029e657d','service':'STANDARD','encryption':'NONE','address':'support@brewfictus.com','prefix':null,'smtp_type':null,'host':null,'port':null,'username':null,'preserve_mails':false,'brand':{'id':1,'resource_type':'brand'},'is_default':false,'is_enabled':true,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'mailbox','resource_url':'http://novo/api/index.php?/v1/mailboxes/1'}},'channel':{'02a60873-8118-453c-8258-8f44029e657d':{'uuid':'02a60873-8118-453c-8258-8f44029e657d','type':'MAILBOX','character_limit':null,'account':{'id':1,'resource_type':'mailbox'},'resource_type':'channel'}},'role':{'2':{'id':2,'title':'Agent','type':'AGENT','ip_restriction':null,'password_expires_in_days':'0','is_two_factor_required':false,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'role','resource_url':'http://novo/api/index.php?/v1/roles/2'},'3':{'id':3,'title':'Collaborator','type':'COLLABORATOR','ip_restriction':null,'password_expires_in_days':'0','is_two_factor_required':false,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'role','resource_url':'http://novo/api/index.php?/v1/roles/3'},'4':{'id':4,'title':'Customer','type':'CUSTOMER','ip_restriction':null,'password_expires_in_days':'0','is_two_factor_required':false,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'role','resource_url':'http://novo/api/index.php?/v1/roles/4'}},'identity_domain':{'1':{'id':1,'is_primary':true,'domain':'brew.com','is_validated':false,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'identity_domain','resource_url':'http://novo/api/index.php?/v1/organizations/1/identities/domains/1'}},'organization':{'1':{'id':1,'name':'Brew','is_shared':false,'domains':[{'id':1,'resource_type':'identity_domain'}],'phone':[],'addresses':[],'websites':[],'notes':[],'pinned_notes_count':0,'tags':[],'custom_fields':[],'followers':[],'metadata':{'custom':null,'system':null,'resource_type':'metadata'},'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'organization','resource_url':'http://novo/api/index.php?/v1/organizations/1'}},'identity_email':{'2':{'id':2,'is_primary':true,'email':'johndoe2877832066@brew.com','is_notification_enabled':false,'is_validated':false,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'identity_email','resource_url':'http://novo/api/index.php?/v1/users/2/identities/emails/2'},'3':{'id':3,'is_primary':true,'email':'johndoe1867734778@brew.com','is_notification_enabled':false,'is_validated':true,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'identity_email','resource_url':'http://novo/api/index.php?/v1/users/3/identities/emails/3'},'4':{'id':4,'is_primary':true,'email':'johndoe6646073448@brew.com','is_notification_enabled':false,'is_validated':false,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'identity_email','resource_url':'http://novo/api/index.php?/v1/users/4/identities/emails/4'},'5':{'id':5,'is_primary':true,'email':'johndoe2911221560@brew.com','is_notification_enabled':false,'is_validated':true,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'identity_email','resource_url':'http://novo/api/index.php?/v1/users/5/identities/emails/5'},'6':{'id':6,'is_primary':true,'email':'johndoe1296700309@brew.com','is_notification_enabled':false,'is_validated':false,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'identity_email','resource_url':'http://novo/api/index.php?/v1/users/6/identities/emails/6'},'7':{'id':7,'is_primary':true,'email':'johndoe1588706763@brew.com','is_notification_enabled':false,'is_validated':true,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'identity_email','resource_url':'http://novo/api/index.php?/v1/users/7/identities/emails/7'},'8':{'id':8,'is_primary':true,'email':'johndoe1311891368@brew.com','is_notification_enabled':false,'is_validated':false,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'identity_email','resource_url':'http://novo/api/index.php?/v1/users/8/identities/emails/8'},'9':{'id':9,'is_primary':true,'email':'johndoe2573818849@brew.com','is_notification_enabled':false,'is_validated':true,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'identity_email','resource_url':'http://novo/api/index.php?/v1/users/9/identities/emails/9'},'10':{'id':10,'is_primary':true,'email':'johndoe1575498644@brew.com','is_notification_enabled':false,'is_validated':false,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'identity_email','resource_url':'http://novo/api/index.php?/v1/users/10/identities/emails/10'},'11':{'id':11,'is_primary':true,'email':'johndoe3800807592@brew.com','is_notification_enabled':false,'is_validated':true,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'identity_email','resource_url':'http://novo/api/index.php?/v1/users/11/identities/emails/11'}},'user_field':{'1':{'id':1,'fielduuid':'dd1ae5ae-890b-41f1-9c9c-53dd19951f13','type':'TEXT','key':'enter_the_name','title':'Enter the name','is_visible_to_customers':true,'customer_title':'Enter the name','is_customer_editable':true,'is_required_for_customers':true,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':1,'is_system':false,'options':[],'locales':[],'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'user_field','resource_url':'http://novo/api/index.php?/v1/users/fields/1'},'2':{'id':2,'fielduuid':'02b19e7d-782b-41da-9557-ef00ec81232d','type':'TEXTAREA','key':'contact_address','title':'contact address','is_visible_to_customers':true,'customer_title':'1','is_customer_editable':false,'is_required_for_customers':false,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':2,'is_system':false,'options':[],'locales':[],'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'user_field','resource_url':'http://novo/api/index.php?/v1/users/fields/2'},'3':{'id':3,'fielduuid':'a1bab57f-3c04-4dc0-9349-2dea084336b0','type':'CHECKBOX','key':'interests','title':'interests','is_visible_to_customers':false,'customer_title':null,'is_customer_editable':false,'is_required_for_customers':false,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':3,'is_system':false,'options':[{'id':9,'resource_type':'field_option'},{'id':10,'resource_type':'field_option'},{'id':11,'resource_type':'field_option'}],'locales':[],'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'user_field','resource_url':'http://novo/api/index.php?/v1/users/fields/3'}},'field_option':{'1':{'id':1,'fielduuid':'4dfcb17b-00fb-4899-907e-2ee517807651','value':'internetproblem','tag':'internet problem','sort_order':1,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'field_option'},'2':{'id':2,'fielduuid':'4dfcb17b-00fb-4899-907e-2ee517807651','value':'connectivityproblem','tag':'connectivity problem','sort_order':2,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'field_option'},'3':{'id':3,'fielduuid':'4dfcb17b-00fb-4899-907e-2ee517807651','value':'other','tag':null,'sort_order':3,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'field_option'},'4':{'id':4,'fielduuid':'55aeff67-4dbc-4809-8715-0227fae6e369','value':'yes','tag':'yes','sort_order':4,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'field_option'},'5':{'id':5,'fielduuid':'55aeff67-4dbc-4809-8715-0227fae6e369','value':'no','tag':'no','sort_order':5,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'field_option'},'6':{'id':6,'fielduuid':'a626e62e-0637-409d-a9a7-40f5b9bbc5da','value':'temporary','tag':null,'sort_order':6,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'field_option'},'7':{'id':7,'fielduuid':'a626e62e-0637-409d-a9a7-40f5b9bbc5da','value':'regularly','tag':null,'sort_order':7,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'field_option'},'8':{'id':8,'fielduuid':'a626e62e-0637-409d-a9a7-40f5b9bbc5da','value':'permanent','tag':null,'sort_order':8,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'field_option'},'9':{'id':9,'fielduuid':'a1bab57f-3c04-4dc0-9349-2dea084336b0','value':'googling','tag':'googling','sort_order':9,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'field_option'},'10':{'id':10,'fielduuid':'a1bab57f-3c04-4dc0-9349-2dea084336b0','value':'learning new things','tag':'learningnewthings','sort_order':10,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'field_option'},'11':{'id':11,'fielduuid':'a1bab57f-3c04-4dc0-9349-2dea084336b0','value':'other','tag':null,'sort_order':11,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'field_option'}},'user':{'2':{'id':2,'full_name':'John Doe','designation':null,'alias':null,'is_enabled':true,'role':{'id':4,'resource_type':'role'},'avatar':'http://novo/index.php?/Base/Avatar/Get/2dff63d1-bf25-54f6-ba6c-cc344e67f4e1/false/200','organization':{'id':1,'resource_type':'organization'},'teams':[],'emails':[{'id':2,'resource_type':'identity_email'}],'phones':[],'twitter':[],'facebook':[],'external_identities':[],'addresses':[],'websites':[],'custom_fields':[{'field':{'id':1,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'},{'field':{'id':2,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'},{'field':{'id':3,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'}],'metadata':{'custom':null,'system':null,'resource_type':'metadata'},'locale':'en-us','time_zone':null,'time_zone_offset':null,'greeting':null,'signature':null,'status_message':null,'tags':[],'notes':[],'pinned_notes_count':0,'followers':[],'access_level':null,'password_updated_at':'2015-07-09T15:36:10Z','avatar_updated_at':null,'activity_at':'2015-07-09T15:36:10Z','visited_at':null,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'user','resource_url':'http://novo/api/index.php?/v1/users/2'},'3':{'id':3,'full_name':'John Doe','designation':null,'alias':null,'is_enabled':true,'role':{'id':2,'resource_type':'role'},'avatar':'http://novo/index.php?/Base/Avatar/Get/a6bb8433-c714-5e8d-b333-f3743c0bf878/false/200','teams':[],'emails':[{'id':3,'resource_type':'identity_email'}],'phones':[],'twitter':[],'facebook':[],'external_identities':[],'addresses':[],'websites':[],'custom_fields':[{'field':{'id':1,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'},{'field':{'id':2,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'},{'field':{'id':3,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'}],'metadata':{'custom':null,'system':null,'resource_type':'metadata'},'locale':'en-us','time_zone':null,'time_zone_offset':null,'greeting':null,'signature':null,'status_message':null,'tags':[],'notes':[],'pinned_notes_count':0,'followers':[],'access_level':null,'password_updated_at':'2015-07-09T15:36:10Z','avatar_updated_at':null,'activity_at':'2015-07-09T15:36:10Z','visited_at':null,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'user','resource_url':'http://novo/api/index.php?/v1/users/3'},'4':{'id':4,'full_name':'John Doe','designation':null,'alias':null,'is_enabled':true,'role':{'id':4,'resource_type':'role'},'avatar':'http://novo/index.php?/Base/Avatar/Get/4cee7e51-1d55-5285-b24b-3ca57ccff234/false/200','organization':{'id':1,'resource_type':'organization'},'teams':[],'emails':[{'id':4,'resource_type':'identity_email'}],'phones':[],'twitter':[],'facebook':[],'external_identities':[],'addresses':[],'websites':[],'custom_fields':[{'field':{'id':1,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'},{'field':{'id':2,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'},{'field':{'id':3,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'}],'metadata':{'custom':null,'system':null,'resource_type':'metadata'},'locale':'en-us','time_zone':null,'time_zone_offset':null,'greeting':null,'signature':null,'status_message':null,'tags':[],'notes':[],'pinned_notes_count':0,'followers':[],'access_level':null,'password_updated_at':'2015-07-09T15:36:10Z','avatar_updated_at':null,'activity_at':'2015-07-09T15:36:10Z','visited_at':null,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'user','resource_url':'http://novo/api/index.php?/v1/users/4'},'5':{'id':5,'full_name':'John Doe','designation':null,'alias':null,'is_enabled':true,'role':{'id':2,'resource_type':'role'},'avatar':'http://novo/index.php?/Base/Avatar/Get/464d1ca9-f6d3-5eb2-ba4c-0dd80f8ade75/false/200','teams':[],'emails':[{'id':5,'resource_type':'identity_email'}],'phones':[],'twitter':[],'facebook':[],'external_identities':[],'addresses':[],'websites':[],'custom_fields':[{'field':{'id':1,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'},{'field':{'id':2,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'},{'field':{'id':3,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'}],'metadata':{'custom':null,'system':null,'resource_type':'metadata'},'locale':'en-us','time_zone':null,'time_zone_offset':null,'greeting':null,'signature':null,'status_message':null,'tags':[],'notes':[],'pinned_notes_count':0,'followers':[],'access_level':null,'password_updated_at':'2015-07-09T15:36:10Z','avatar_updated_at':null,'activity_at':'2015-07-09T15:36:10Z','visited_at':null,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'user','resource_url':'http://novo/api/index.php?/v1/users/5'},'6':{'id':6,'full_name':'John Doe','designation':null,'alias':null,'is_enabled':true,'role':{'id':4,'resource_type':'role'},'avatar':'http://novo/index.php?/Base/Avatar/Get/d2e29f2d-616f-5abd-9bd0-70d46149efd3/false/200','organization':{'id':1,'resource_type':'organization'},'teams':[],'emails':[{'id':6,'resource_type':'identity_email'}],'phones':[],'twitter':[],'facebook':[],'external_identities':[],'addresses':[],'websites':[],'custom_fields':[{'field':{'id':1,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'},{'field':{'id':2,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'},{'field':{'id':3,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'}],'metadata':{'custom':null,'system':null,'resource_type':'metadata'},'locale':'en-us','time_zone':null,'time_zone_offset':null,'greeting':null,'signature':null,'status_message':null,'tags':[],'notes':[],'pinned_notes_count':0,'followers':[],'access_level':null,'password_updated_at':'2015-07-09T15:36:10Z','avatar_updated_at':null,'activity_at':'2015-07-09T15:36:10Z','visited_at':null,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'user','resource_url':'http://novo/api/index.php?/v1/users/6'},'7':{'id':7,'full_name':'John Doe','designation':null,'alias':null,'is_enabled':true,'role':{'id':3,'resource_type':'role'},'avatar':'http://novo/index.php?/Base/Avatar/Get/3e0df753-1a3c-5ea1-a69e-5b07fd41fbf7/false/200','teams':[],'emails':[{'id':7,'resource_type':'identity_email'}],'phones':[],'twitter':[],'facebook':[],'external_identities':[],'addresses':[],'websites':[],'custom_fields':[{'field':{'id':1,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'},{'field':{'id':2,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'},{'field':{'id':3,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'}],'metadata':{'custom':null,'system':null,'resource_type':'metadata'},'locale':'en-us','time_zone':null,'time_zone_offset':null,'greeting':null,'signature':null,'status_message':null,'tags':[],'notes':[],'pinned_notes_count':0,'followers':[],'access_level':null,'password_updated_at':'2015-07-09T15:36:10Z','avatar_updated_at':null,'activity_at':'2015-07-09T15:36:10Z','visited_at':null,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'user','resource_url':'http://novo/api/index.php?/v1/users/7'},'8':{'id':8,'full_name':'John Doe','designation':null,'alias':null,'is_enabled':true,'role':{'id':4,'resource_type':'role'},'avatar':'http://novo/index.php?/Base/Avatar/Get/1031b1ed-9779-53a6-b603-29db3168ef74/false/200','organization':{'id':1,'resource_type':'organization'},'teams':[],'emails':[{'id':8,'resource_type':'identity_email'}],'phones':[],'twitter':[],'facebook':[],'external_identities':[],'addresses':[],'websites':[],'custom_fields':[{'field':{'id':1,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'},{'field':{'id':2,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'},{'field':{'id':3,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'}],'metadata':{'custom':null,'system':null,'resource_type':'metadata'},'locale':'en-us','time_zone':null,'time_zone_offset':null,'greeting':null,'signature':null,'status_message':null,'tags':[],'notes':[],'pinned_notes_count':0,'followers':[],'access_level':null,'password_updated_at':'2015-07-09T15:36:10Z','avatar_updated_at':null,'activity_at':'2015-07-09T15:36:10Z','visited_at':null,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'user','resource_url':'http://novo/api/index.php?/v1/users/8'},'9':{'id':9,'full_name':'John Doe','designation':null,'alias':null,'is_enabled':true,'role':{'id':2,'resource_type':'role'},'avatar':'http://novo/index.php?/Base/Avatar/Get/bda10775-28e7-50a7-879e-2ac56f67db59/false/200','teams':[],'emails':[{'id':9,'resource_type':'identity_email'}],'phones':[],'twitter':[],'facebook':[],'external_identities':[],'addresses':[],'websites':[],'custom_fields':[{'field':{'id':1,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'},{'field':{'id':2,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'},{'field':{'id':3,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'}],'metadata':{'custom':null,'system':null,'resource_type':'metadata'},'locale':'en-us','time_zone':null,'time_zone_offset':null,'greeting':null,'signature':null,'status_message':null,'tags':[],'notes':[],'pinned_notes_count':0,'followers':[],'access_level':null,'password_updated_at':'2015-07-09T15:36:10Z','avatar_updated_at':null,'activity_at':'2015-07-09T15:36:10Z','visited_at':null,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'user','resource_url':'http://novo/api/index.php?/v1/users/9'},'10':{'id':10,'full_name':'John Doe','designation':null,'alias':null,'is_enabled':true,'role':{'id':4,'resource_type':'role'},'avatar':'http://novo/index.php?/Base/Avatar/Get/2d24e0f1-b9a1-549e-a327-865a9e6058a8/false/200','organization':{'id':1,'resource_type':'organization'},'teams':[],'emails':[{'id':10,'resource_type':'identity_email'}],'phones':[],'twitter':[],'facebook':[],'external_identities':[],'addresses':[],'websites':[],'custom_fields':[{'field':{'id':1,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'},{'field':{'id':2,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'},{'field':{'id':3,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'}],'metadata':{'custom':null,'system':null,'resource_type':'metadata'},'locale':'en-us','time_zone':null,'time_zone_offset':null,'greeting':null,'signature':null,'status_message':null,'tags':[],'notes':[],'pinned_notes_count':0,'followers':[],'access_level':null,'password_updated_at':'2015-07-09T15:36:10Z','avatar_updated_at':null,'activity_at':'2015-07-09T15:36:10Z','visited_at':null,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'user','resource_url':'http://novo/api/index.php?/v1/users/10'},'11':{'id':11,'full_name':'John Doe','designation':null,'alias':null,'is_enabled':true,'role':{'id':3,'resource_type':'role'},'avatar':'http://novo/index.php?/Base/Avatar/Get/b1d1b7dd-df7c-503b-9e34-6789070f6c5d/false/200','teams':[],'emails':[{'id':11,'resource_type':'identity_email'}],'phones':[],'twitter':[],'facebook':[],'external_identities':[],'addresses':[],'websites':[],'custom_fields':[{'field':{'id':1,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'},{'field':{'id':2,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'},{'field':{'id':3,'resource_type':'user_field'},'value':'','resource_type':'user_field_value'}],'metadata':{'custom':null,'system':null,'resource_type':'metadata'},'locale':'en-us','time_zone':null,'time_zone_offset':null,'greeting':null,'signature':null,'status_message':null,'tags':[],'notes':[],'pinned_notes_count':0,'followers':[],'access_level':null,'password_updated_at':'2015-07-09T15:36:10Z','avatar_updated_at':null,'activity_at':'2015-07-09T15:36:10Z','visited_at':null,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'user','resource_url':'http://novo/api/index.php?/v1/users/11'}},'business_hour':{'1':{'id':1,'title':'Default Business Hours','zones':{'monday':[9,10,11,12,13,14,15,16,17,18],'tuesday':[9,10,11,12,13,14,15,16,17,18],'wednesday':[9,10,11,12,13,14,15,16,17,18],'thursday':[9,10,11,12,13,14,15,16,17,18],'friday':[9,10,11,12,13,14,15,16,17,18],'saturday':[],'sunday':[]},'holidays':[],'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'business_hour','resource_url':'http://novo/api/index.php?/v1/businesshours/1'}},'team':{'1':{'id':1,'title':'Sales','businesshour':{'id':1,'resource_type':'business_hour'},'followers':[],'created_at':'2015-07-09T15:36:10Z','updated_at':null,'resource_type':'team','resource_url':'http://novo/api/index.php?/v1/teams/1'},'2':{'id':2,'title':'Support','businesshour':{'id':1,'resource_type':'business_hour'},'followers':[],'created_at':'2015-07-09T15:36:10Z','updated_at':null,'resource_type':'team','resource_url':'http://novo/api/index.php?/v1/teams/2'},'3':{'id':3,'title':'Finance','businesshour':{'id':1,'resource_type':'business_hour'},'followers':[],'created_at':'2015-07-09T15:36:10Z','updated_at':null,'resource_type':'team','resource_url':'http://novo/api/index.php?/v1/teams/3'}},'case_status':{'1':{'id':1,'label':'New','color':null,'visibility':'PUBLIC','type':'NEW','locales':[],'is_sla_active':true,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'case_status','resource_url':'http://novo/api/index.php?/v1/cases/statuses/1'}},'case_priority':{'1':{'id':1,'label':'Low','level':1,'color':null,'locales':[],'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'case_priority','resource_url':'http://novo/api/index.php?/v1/cases/priorities/1'},'2':{'id':2,'label':'Normal','level':2,'color':null,'locales':[],'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'case_priority','resource_url':'http://novo/api/index.php?/v1/cases/priorities/2'},'4':{'id':4,'label':'Urgent','level':4,'color':null,'locales':[],'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'case_priority','resource_url':'http://novo/api/index.php?/v1/cases/priorities/4'}},'case_type':{'1':{'id':1,'label':'Question','created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'case_type','resource_url':'http://novo/api/index.php?/v1/cases/types/1'},'2':{'id':2,'label':'Task','created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'case_type','resource_url':'http://novo/api/index.php?/v1/cases/types/2'},'3':{'id':3,'label':'Problem','created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'case_type','resource_url':'http://novo/api/index.php?/v1/cases/types/3'}},'sla':{'1':{'id':1,'title':'Regular support and sales tickets','description':null,'is_enabled':true,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'sla','resource_url':'http://novo/api/index.php?/v1/sla/1'}},'tag':{'1':{'id':1,'name':'connectivity','resource_type':'tag'},'2':{'id':2,'name':'bug','resource_type':'tag'},'3':{'id':3,'name':'internet','resource_type':'tag'},'4':{'id':4,'name':'printer','resource_type':'tag'}},'case_field':{'1':{'id':1,'fielduuid':'e6bb2845-4b85-455a-9828-07596d9bb506','type':'SUBJECT','key':'subject','title':'Subject','is_required_for_agents':true,'is_required_on_resolution':true,'is_visible_to_customers':true,'customer_title':'Subject','is_customer_editable':true,'is_required_for_customers':true,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':1,'is_system':true,'options':[],'locales':[],'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'case_field','resource_url':'http://novo/api/index.php?/v1/cases/fields/1'},'2':{'id':2,'fielduuid':'6df564a1-12c1-499e-8cb0-85dc9dea183b','type':'MESSAGE','key':'message','title':'Message','is_required_for_agents':false,'is_required_on_resolution':true,'is_visible_to_customers':true,'customer_title':'Message','is_customer_editable':true,'is_required_for_customers':true,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':2,'is_system':true,'options':[],'locales':[],'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'case_field','resource_url':'http://novo/api/index.php?/v1/cases/fields/2'},'3':{'id':3,'fielduuid':'802b6d93-7a4f-4791-aefc-f7d53ea348f5','type':'PRIORITY','key':'priority','title':'Priority','is_required_for_agents':false,'is_required_on_resolution':false,'is_visible_to_customers':true,'customer_title':'Priority','is_customer_editable':true,'is_required_for_customers':false,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':3,'is_system':true,'options':[],'locales':[],'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'case_field','resource_url':'http://novo/api/index.php?/v1/cases/fields/3'},'4':{'id':4,'fielduuid':'f0ec45ee-4ef9-4a13-bbc6-1d2e14d5726b','type':'STATUS','key':'status','title':'Status','is_required_for_agents':false,'is_required_on_resolution':true,'is_visible_to_customers':true,'customer_title':'Priority','is_customer_editable':false,'is_required_for_customers':false,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':4,'is_system':true,'options':[],'locales':[],'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'case_field','resource_url':'http://novo/api/index.php?/v1/cases/fields/4'},'5':{'id':5,'fielduuid':'e8de6e9e-f178-469c-8008-e1096357ac0f','type':'TYPE','key':'type','title':'Type','is_required_for_agents':false,'is_required_on_resolution':false,'is_visible_to_customers':false,'customer_title':'Type','is_customer_editable':false,'is_required_for_customers':false,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':5,'is_system':true,'options':[],'locales':[],'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'case_field','resource_url':'http://novo/api/index.php?/v1/cases/fields/5'},'6':{'id':6,'fielduuid':'a3b1a651-23b1-41dc-815a-e560b8940fc7','type':'TEAM','key':'team','title':'Team','is_required_for_agents':false,'is_required_on_resolution':false,'is_visible_to_customers':false,'customer_title':'Team','is_customer_editable':false,'is_required_for_customers':false,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':6,'is_system':true,'options':[],'locales':[],'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'case_field','resource_url':'http://novo/api/index.php?/v1/cases/fields/6'},'7':{'id':7,'fielduuid':'307fad7a-fe29-499a-9279-e1fdc7f14582','type':'ASSIGNEE','key':'assignee','title':'Assignee','is_required_for_agents':false,'is_required_on_resolution':false,'is_visible_to_customers':false,'customer_title':'Assignee','is_customer_editable':false,'is_required_for_customers':false,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':7,'is_system':true,'options':[],'locales':[],'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'case_field','resource_url':'http://novo/api/index.php?/v1/cases/fields/7'},'8':{'id':8,'fielduuid':'30f9d670-ab63-48a6-a331-98460e7ff281','type':'TEXT','key':'enter_the_name','title':'Enter the name','is_required_for_agents':false,'is_required_on_resolution':true,'is_visible_to_customers':true,'customer_title':'Enter the name','is_customer_editable':true,'is_required_for_customers':true,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':8,'is_system':false,'options':[],'locales':[],'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'case_field','resource_url':'http://novo/api/index.php?/v1/cases/fields/8'},'9':{'id':9,'fielduuid':'969fe14e-fe94-4eba-ad76-384c2469913f','type':'TEXTAREA','key':'contact_address','title':'contact address','is_required_for_agents':false,'is_required_on_resolution':true,'is_visible_to_customers':true,'customer_title':'1','is_customer_editable':false,'is_required_for_customers':false,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':9,'is_system':false,'options':[],'locales':[],'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'case_field','resource_url':'http://novo/api/index.php?/v1/cases/fields/9'},'10':{'id':10,'fielduuid':'4dfcb17b-00fb-4899-907e-2ee517807651','type':'CHECKBOX','key':'relateto','title':'relateto','is_required_for_agents':false,'is_required_on_resolution':false,'is_visible_to_customers':false,'customer_title':null,'is_customer_editable':false,'is_required_for_customers':false,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':10,'is_system':false,'options':[{'id':1,'resource_type':'field_option'},{'id':2,'resource_type':'field_option'},{'id':3,'resource_type':'field_option'}],'locales':[],'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'case_field','resource_url':'http://novo/api/index.php?/v1/cases/fields/10'},'11':{'id':11,'fielduuid':'55aeff67-4dbc-4809-8715-0227fae6e369','type':'RADIO','key':'important','title':'important','is_required_for_agents':false,'is_required_on_resolution':true,'is_visible_to_customers':true,'customer_title':'Important','is_customer_editable':true,'is_required_for_customers':true,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':11,'is_system':false,'options':[{'id':4,'resource_type':'field_option'},{'id':5,'resource_type':'field_option'}],'locales':[],'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'case_field','resource_url':'http://novo/api/index.php?/v1/cases/fields/11'},'12':{'id':12,'fielduuid':'a626e62e-0637-409d-a9a7-40f5b9bbc5da','type':'SELECT','key':'problems','title':'problems','is_required_for_agents':false,'is_required_on_resolution':true,'is_visible_to_customers':true,'customer_title':'problem','is_customer_editable':true,'is_required_for_customers':true,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':12,'is_system':false,'options':[{'id':6,'resource_type':'field_option'},{'id':7,'resource_type':'field_option'},{'id':8,'resource_type':'field_option'}],'locales':[],'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'case_field','resource_url':'http://novo/api/index.php?/v1/cases/fields/12'},'13':{'id':13,'fielduuid':'a2aa541c-f9fe-4617-ab8f-38fa908139c0','type':'DATE','key':'date','title':'date','is_required_for_agents':false,'is_required_on_resolution':true,'is_visible_to_customers':true,'customer_title':'date','is_customer_editable':true,'is_required_for_customers':true,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':13,'is_system':false,'options':[],'locales':[],'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'case_field','resource_url':'http://novo/api/index.php?/v1/cases/fields/13'},'14':{'id':14,'fielduuid':'e7846dfb-fc2a-4efa-bd99-60ce89a7b05d','type':'NUMERIC','key':'days','title':'days','is_required_for_agents':false,'is_required_on_resolution':true,'is_visible_to_customers':true,'customer_title':'days','is_customer_editable':true,'is_required_for_customers':true,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':14,'is_system':false,'options':[],'locales':[],'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'case_field','resource_url':'http://novo/api/index.php?/v1/cases/fields/14'}},'case_form':{'1':{'id':1,'title':'Internet Related Issue','is_visible_to_customers':true,'customer_title':'Internet Related Issue','description':null,'is_enabled':true,'is_default':false,'sort_order':1,'fields':[{'id':1,'resource_type':'case_field'},{'id':2,'resource_type':'case_field'},{'id':3,'resource_type':'case_field'},{'id':4,'resource_type':'case_field'},{'id':5,'resource_type':'case_field'},{'id':6,'resource_type':'case_field'},{'id':7,'resource_type':'case_field'},{'id':8,'resource_type':'case_field'},{'id':9,'resource_type':'case_field'}],'brand':{'id':1,'resource_type':'brand'},'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'case_form','resource_url':'http://novo/api/index.php?/v1/cases/forms/1'},'2':{'id':2,'title':'Computer Related issues','is_visible_to_customers':true,'customer_title':'Computer Related issues','description':null,'is_enabled':true,'is_default':false,'sort_order':2,'fields':[{'id':1,'resource_type':'case_field'},{'id':2,'resource_type':'case_field'},{'id':3,'resource_type':'case_field'},{'id':4,'resource_type':'case_field'},{'id':5,'resource_type':'case_field'},{'id':6,'resource_type':'case_field'},{'id':7,'resource_type':'case_field'},{'id':10,'resource_type':'case_field'},{'id':13,'resource_type':'case_field'},{'id':14,'resource_type':'case_field'},{'id':9,'resource_type':'case_field'}],'brand':null,'created_at':'2015-07-09T15:36:10Z','updated_at':'2015-07-09T15:36:10Z','resource_type':'case_form','resource_url':'http://novo/api/index.php?/v1/cases/forms/2'}}},'offset':0,'limit':5,'total_count':17,'next_url':'http://novo/api/index.php?/v1/cases/base&_flat=true&limit=5&offset=5','last_url':'http://novo/api/index.php?/v1/cases/base&_flat=true&limit=5&offset=15'};}); //todo check payload is correct and case/messages is still required
-  this.get('/api/v1/messages',function(db){return new Mirage['default'].Response(400,{},db.messages);});this.get('/api/v1/views',function(db){return db.views[0];});this.get('/api/v1/cases/:id',function(db,request){if(isNaN(request.params.id)){throw 'Caught by a wild card!';}return db.cases[0];});this.get('/api/v1/cases/:id/notes',function(db){return db.casenotes[0];});this.get('/api/v1/cases/:id/messages',function(db){return db.casemessages[0];});this.get('api/v1/cases/:id/reply/channels',function(db){return db.casechannels[0];});this.get('/api/v1/cases/priorities',function(db){return db.casepriorities[0];});this.get('/api/v1/cases/types',function(db){return db.casetypes[0];});this.get('/api/v1/cases/statuses',function(db){return db.casestatuses[0];});this.get('api/v1/cases/fields',function(db){return db.casefields[0];});this.get('api/v1/cases/reply/channels',function(db){return db.casereplychannels[0];});this.get('api/v1/cases/fields/:id/options',function(){return {'status':200,'data':[{'id':1,'fielduuid':'8d364470-77c1-46b5-8506-810700a2d29a','value':'internetproblem','tag':'internet problem','sort_order':1,'created_at':'2015-07-16T09:30:40Z','updated_at':'2015-07-16T09:30:40Z','resource_type':'field_option','resource_url':'http://novo/api/index.php?/v1/cases/fields/10/options/1'},{'id':2,'fielduuid':'8d364470-77c1-46b5-8506-810700a2d29a','value':'connectivityproblem','tag':'connectivity problem','sort_order':2,'created_at':'2015-07-16T09:30:40Z','updated_at':'2015-07-16T09:30:40Z','resource_type':'field_option','resource_url':'http://novo/api/index.php?/v1/cases/fields/10/options/2'},{'id':3,'fielduuid':'8d364470-77c1-46b5-8506-810700a2d29a','value':'other','tag':null,'sort_order':3,'created_at':'2015-07-16T09:30:40Z','updated_at':'2015-07-16T09:30:40Z','resource_type':'field_option','resource_url':'http://novo/api/index.php?/v1/cases/fields/10/options/3'}],'resource':'field_option','total_count':3,'session_id':'d4XE33cnM105GKla1pFqYDfjr313e422cd61c535941c9a2d5681fe7e39eed1ca6SVNXQCtt07Jlp3jO'};});this.get('api/v1/teams',function(){return {'status':200,'data':[{'id':1,'title':'Sales','businesshour':{'id':1,'title':'Default Business Hours','zones':{'monday':[9,10,11,12,13,14,15,16,17,18],'tuesday':[9,10,11,12,13,14,15,16,17,18],'wednesday':[9,10,11,12,13,14,15,16,17,18],'thursday':[9,10,11,12,13,14,15,16,17,18],'friday':[9,10,11,12,13,14,15,16,17,18],'saturday':[],'sunday':[]},'holidays':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'business_hour','resource_url':'http://novo/api/index.php?/v1/businesshours/1'},'followers':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'team','resource_url':'http://novo/api/index.php?/v1/teams/1'},{'id':2,'title':'Support','businesshour':{'id':1,'title':'Default Business Hours','zones':{'monday':[9,10,11,12,13,14,15,16,17,18],'tuesday':[9,10,11,12,13,14,15,16,17,18],'wednesday':[9,10,11,12,13,14,15,16,17,18],'thursday':[9,10,11,12,13,14,15,16,17,18],'friday':[9,10,11,12,13,14,15,16,17,18],'saturday':[],'sunday':[]},'holidays':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'business_hour','resource_url':'http://novo/api/index.php?/v1/businesshours/1'},'followers':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'team','resource_url':'http://novo/api/index.php?/v1/teams/2'},{'id':3,'title':'Finance','businesshour':{'id':1,'title':'Default Business Hours','zones':{'monday':[9,10,11,12,13,14,15,16,17,18],'tuesday':[9,10,11,12,13,14,15,16,17,18],'wednesday':[9,10,11,12,13,14,15,16,17,18],'thursday':[9,10,11,12,13,14,15,16,17,18],'friday':[9,10,11,12,13,14,15,16,17,18],'saturday':[],'sunday':[]},'holidays':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'business_hour','resource_url':'http://novo/api/index.php?/v1/businesshours/1'},'followers':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'team','resource_url':'http://novo/api/index.php?/v1/teams/3'},{'id':4,'title':'Human Resources','businesshour':{'id':1,'title':'Default Business Hours','zones':{'monday':[9,10,11,12,13,14,15,16,17,18],'tuesday':[9,10,11,12,13,14,15,16,17,18],'wednesday':[9,10,11,12,13,14,15,16,17,18],'thursday':[9,10,11,12,13,14,15,16,17,18],'friday':[9,10,11,12,13,14,15,16,17,18],'saturday':[],'sunday':[]},'holidays':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'business_hour','resource_url':'http://novo/api/index.php?/v1/businesshours/1'},'followers':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'team','resource_url':'http://novo/api/index.php?/v1/teams/4'}],'resource':'team','offset':0,'limit':10,'total_count':4,'session_id':'0VR4CSL7dXUshZtO8EI2a32a89eaa80d3bdecc9964941ec5d235a6632dcrhO2ug8M9VrLV'};});this.get('api/v1/users',function(){return {'status':200,'data':[{'id':1,'full_name':'John Doe','designation':null,'is_enabled':true,'role':{'id':1,'title':'Administrator','type':'ADMIN','created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'role','resource_url':'http://novo/api/index.php?/v1/roles/1'},'avatar':'http://novo/index.php?/avatar/get/3c8227bc-5101-51aa-908f-abc6dcb52dee','teams':[{'id':1,'title':'Sales','businesshour':{'id':1,'title':'Default Business Hours','zones':{'monday':[9,10,11,12,13,14,15,16,17,18],'tuesday':[9,10,11,12,13,14,15,16,17,18],'wednesday':[9,10,11,12,13,14,15,16,17,18],'thursday':[9,10,11,12,13,14,15,16,17,18],'friday':[9,10,11,12,13,14,15,16,17,18],'saturday':[],'sunday':[]},'holidays':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'business_hour','resource_url':'http://novo/api/index.php?/v1/businesshours/1'},'followers':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'team','resource_url':'http://novo/api/index.php?/v1/teams/1'},{'id':2,'title':'Support','businesshour':{'id':1,'title':'Default Business Hours','zones':{'monday':[9,10,11,12,13,14,15,16,17,18],'tuesday':[9,10,11,12,13,14,15,16,17,18],'wednesday':[9,10,11,12,13,14,15,16,17,18],'thursday':[9,10,11,12,13,14,15,16,17,18],'friday':[9,10,11,12,13,14,15,16,17,18],'saturday':[],'sunday':[]},'holidays':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'business_hour','resource_url':'http://novo/api/index.php?/v1/businesshours/1'},'followers':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'team','resource_url':'http://novo/api/index.php?/v1/teams/2'},{'id':3,'title':'Finance','businesshour':{'id':1,'title':'Default Business Hours','zones':{'monday':[9,10,11,12,13,14,15,16,17,18],'tuesday':[9,10,11,12,13,14,15,16,17,18],'wednesday':[9,10,11,12,13,14,15,16,17,18],'thursday':[9,10,11,12,13,14,15,16,17,18],'friday':[9,10,11,12,13,14,15,16,17,18],'saturday':[],'sunday':[]},'holidays':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'business_hour','resource_url':'http://novo/api/index.php?/v1/businesshours/1'},'followers':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'team','resource_url':'http://novo/api/index.php?/v1/teams/3'},{'id':4,'title':'Human Resources','businesshour':{'id':1,'title':'Default Business Hours','zones':{'monday':[9,10,11,12,13,14,15,16,17,18],'tuesday':[9,10,11,12,13,14,15,16,17,18],'wednesday':[9,10,11,12,13,14,15,16,17,18],'thursday':[9,10,11,12,13,14,15,16,17,18],'friday':[9,10,11,12,13,14,15,16,17,18],'saturday':[],'sunday':[]},'holidays':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'business_hour','resource_url':'http://novo/api/index.php?/v1/businesshours/1'},'followers':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'team','resource_url':'http://novo/api/index.php?/v1/teams/4'}],'emails':[{'id':1,'is_primary':true,'email':'test@kayako.com','is_notification_enabled':false,'is_validated':true,'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'identity_email','resource_url':'http://novo/api/index.php?/v1/users/1/identities/emails/1'}],'phones':[],'twitter':[],'facebook':[],'external_identities':[],'addresses':[],'websites':[],'custom_fields':[{'field':{'id':1,'fielduuid':'21cf6eb0-5da3-4054-b054-66c89778fd95','type':'TEXT','key':'enter_the_name','title':'Enter the name','is_visible_to_customers':true,'customer_title':'Enter the name','is_customer_editable':true,'is_required_for_customers':true,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':1,'is_system':false,'options':[],'locales':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'user_field','resource_url':'http://novo/api/index.php?/v1/users/fields/1'},'value':'','resource_type':'user_field_value'},{'field':{'id':2,'fielduuid':'15168ac8-e4cb-477c-8ae1-5c3f91585d89','type':'TEXTAREA','key':'contact_address','title':'contact address','is_visible_to_customers':true,'customer_title':'1','is_customer_editable':false,'is_required_for_customers':false,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':2,'is_system':false,'options':[],'locales':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'user_field','resource_url':'http://novo/api/index.php?/v1/users/fields/2'},'value':'','resource_type':'user_field_value'},{'field':{'id':3,'fielduuid':'52d085c1-dd76-4aa0-b8c8-292414efd893','type':'CHECKBOX','key':'interests','title':'interests','is_visible_to_customers':false,'customer_title':null,'is_customer_editable':false,'is_required_for_customers':false,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':3,'is_system':false,'options':[{'id':9,'fielduuid':'52d085c1-dd76-4aa0-b8c8-292414efd893','value':'googling','tag':'googling','sort_order':9,'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'field_option'},{'id':10,'fielduuid':'52d085c1-dd76-4aa0-b8c8-292414efd893','value':'learning new things','tag':'learningnewthings','sort_order':10,'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'field_option'},{'id':11,'fielduuid':'52d085c1-dd76-4aa0-b8c8-292414efd893','value':'other','tag':null,'sort_order':11,'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'field_option'}],'locales':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'user_field','resource_url':'http://novo/api/index.php?/v1/users/fields/3'},'value':'','resource_type':'user_field_value'}],'metadata':{'custom':null,'system':null,'resource_type':'metadata'},'tags':[],'notes':[],'pinned_notes_count':0,'followers':[],'locale':'en-us','time_zone':null,'time_zone_offset':null,'greeting':null,'signature':null,'status_message':null,'access_level':null,'password_updated_at':'2015-07-23T13:36:12Z','avatar_updated_at':null,'activity_at':'2015-07-24T10:39:04Z','visited_at':'2015-07-24T10:39:49Z','created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-24T10:39:49Z','resource_type':'user','resource_url':'http://novo/api/index.php?/v1/users/1'}],'resource':'user','total_count':10,'session_id':'aFPgO9mG2DdUipMpV0tK5k3mv8zMfJa6d966aaa605f8933fd939e2fa86ea8f6294a577L0dQypQ3vkYo3t25NLuESAA'};});this.get('/api/v1/cases/macros',function(){return {'status':200,'data':[{'id':1,'title':'tests \\\\ assign to blank ','contents':'blank','agent':{'id':1,'full_name':'John Doe','designation':null,'is_enabled':true,'role':{'id':1,'title':'Administrator','type':'ADMIN','created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'role','resource_url':'http://novo/api/index.php?/v1/roles/1'},'avatar':'http://novo/index.php?/avatar/get/3c8227bc-5101-51aa-908f-abc6dcb52dee','teams':[{'id':1,'title':'Sales','businesshour':{'id':1,'title':'Default Business Hours','zones':{'monday':[9,10,11,12,13,14,15,16,17,18],'tuesday':[9,10,11,12,13,14,15,16,17,18],'wednesday':[9,10,11,12,13,14,15,16,17,18],'thursday':[9,10,11,12,13,14,15,16,17,18],'friday':[9,10,11,12,13,14,15,16,17,18],'saturday':[],'sunday':[]},'holidays':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'business_hour','resource_url':'http://novo/api/index.php?/v1/businesshours/1'},'followers':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'team','resource_url':'http://novo/api/index.php?/v1/teams/1'},{'id':2,'title':'Support','businesshour':{'id':1,'title':'Default Business Hours','zones':{'monday':[9,10,11,12,13,14,15,16,17,18],'tuesday':[9,10,11,12,13,14,15,16,17,18],'wednesday':[9,10,11,12,13,14,15,16,17,18],'thursday':[9,10,11,12,13,14,15,16,17,18],'friday':[9,10,11,12,13,14,15,16,17,18],'saturday':[],'sunday':[]},'holidays':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'business_hour','resource_url':'http://novo/api/index.php?/v1/businesshours/1'},'followers':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'team','resource_url':'http://novo/api/index.php?/v1/teams/2'},{'id':3,'title':'Finance','businesshour':{'id':1,'title':'Default Business Hours','zones':{'monday':[9,10,11,12,13,14,15,16,17,18],'tuesday':[9,10,11,12,13,14,15,16,17,18],'wednesday':[9,10,11,12,13,14,15,16,17,18],'thursday':[9,10,11,12,13,14,15,16,17,18],'friday':[9,10,11,12,13,14,15,16,17,18],'saturday':[],'sunday':[]},'holidays':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'business_hour','resource_url':'http://novo/api/index.php?/v1/businesshours/1'},'followers':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'team','resource_url':'http://novo/api/index.php?/v1/teams/3'},{'id':4,'title':'Human Resources','businesshour':{'id':1,'title':'Default Business Hours','zones':{'monday':[9,10,11,12,13,14,15,16,17,18],'tuesday':[9,10,11,12,13,14,15,16,17,18],'wednesday':[9,10,11,12,13,14,15,16,17,18],'thursday':[9,10,11,12,13,14,15,16,17,18],'friday':[9,10,11,12,13,14,15,16,17,18],'saturday':[],'sunday':[]},'holidays':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'business_hour','resource_url':'http://novo/api/index.php?/v1/businesshours/1'},'followers':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'team','resource_url':'http://novo/api/index.php?/v1/teams/4'}],'emails':[{'id':1,'is_primary':true,'email':'test@kayako.com','is_notification_enabled':false,'is_validated':true,'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'identity_email','resource_url':'http://novo/api/index.php?/v1/users/1/identities/emails/1'}],'phones':[],'twitter':[],'facebook':[],'external_identities':[],'addresses':[],'websites':[],'custom_fields':[{'field':{'id':1,'fielduuid':'21cf6eb0-5da3-4054-b054-66c89778fd95','type':'TEXT','key':'enter_the_name','title':'Enter the name','is_visible_to_customers':true,'customer_title':'Enter the name','is_customer_editable':true,'is_required_for_customers':true,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':1,'is_system':false,'options':[],'locales':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'user_field','resource_url':'http://novo/api/index.php?/v1/users/fields/1'},'value':'','resource_type':'user_field_value'},{'field':{'id':2,'fielduuid':'15168ac8-e4cb-477c-8ae1-5c3f91585d89','type':'TEXTAREA','key':'contact_address','title':'contact address','is_visible_to_customers':true,'customer_title':'1','is_customer_editable':false,'is_required_for_customers':false,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':2,'is_system':false,'options':[],'locales':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'user_field','resource_url':'http://novo/api/index.php?/v1/users/fields/2'},'value':'','resource_type':'user_field_value'},{'field':{'id':3,'fielduuid':'52d085c1-dd76-4aa0-b8c8-292414efd893','type':'CHECKBOX','key':'interests','title':'interests','is_visible_to_customers':false,'customer_title':null,'is_customer_editable':false,'is_required_for_customers':false,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':3,'is_system':false,'options':[{'id':9,'fielduuid':'52d085c1-dd76-4aa0-b8c8-292414efd893','value':'googling','tag':'googling','sort_order':9,'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'field_option'},{'id':10,'fielduuid':'52d085c1-dd76-4aa0-b8c8-292414efd893','value':'learning new things','tag':'learningnewthings','sort_order':10,'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'field_option'},{'id':11,'fielduuid':'52d085c1-dd76-4aa0-b8c8-292414efd893','value':'other','tag':null,'sort_order':11,'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'field_option'}],'locales':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'user_field','resource_url':'http://novo/api/index.php?/v1/users/fields/3'},'value':'','resource_type':'user_field_value'}],'metadata':{'custom':null,'system':null,'resource_type':'metadata'},'tags':[],'notes':[],'pinned_notes_count':0,'followers':[],'locale':'en-us','time_zone':null,'time_zone_offset':null,'greeting':null,'signature':null,'status_message':null,'access_level':null,'password_updated_at':'2015-07-23T13:36:12Z','avatar_updated_at':null,'activity_at':'2015-07-24T11:08:54Z','visited_at':'2015-07-24T11:08:54Z','created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-24T11:08:54Z','resource_type':'user','resource_url':'http://novo/api/index.php?/v1/users/1'},'assignee':{'type':'AGENT','team':{'id':1,'title':'Sales','businesshour':{'id':1,'title':'Default Business Hours','zones':{'monday':[9,10,11,12,13,14,15,16,17,18],'tuesday':[9,10,11,12,13,14,15,16,17,18],'wednesday':[9,10,11,12,13,14,15,16,17,18],'thursday':[9,10,11,12,13,14,15,16,17,18],'friday':[9,10,11,12,13,14,15,16,17,18],'saturday':[],'sunday':[]},'holidays':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'business_hour','resource_url':'http://novo/api/index.php?/v1/businesshours/1'},'followers':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'team','resource_url':'http://novo/api/index.php?/v1/teams/1'},'agent':{'id':1,'full_name':'John Doe','designation':null,'is_enabled':true,'role':{'id':1,'title':'Administrator','type':'ADMIN','created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'role','resource_url':'http://novo/api/index.php?/v1/roles/1'},'avatar':'http://novo/index.php?/avatar/get/3c8227bc-5101-51aa-908f-abc6dcb52dee','teams':[{'id':1,'title':'Sales','businesshour':{'id':1,'title':'Default Business Hours','zones':{'monday':[9,10,11,12,13,14,15,16,17,18],'tuesday':[9,10,11,12,13,14,15,16,17,18],'wednesday':[9,10,11,12,13,14,15,16,17,18],'thursday':[9,10,11,12,13,14,15,16,17,18],'friday':[9,10,11,12,13,14,15,16,17,18],'saturday':[],'sunday':[]},'holidays':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'business_hour','resource_url':'http://novo/api/index.php?/v1/businesshours/1'},'followers':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'team','resource_url':'http://novo/api/index.php?/v1/teams/1'},{'id':2,'title':'Support','businesshour':{'id':1,'title':'Default Business Hours','zones':{'monday':[9,10,11,12,13,14,15,16,17,18],'tuesday':[9,10,11,12,13,14,15,16,17,18],'wednesday':[9,10,11,12,13,14,15,16,17,18],'thursday':[9,10,11,12,13,14,15,16,17,18],'friday':[9,10,11,12,13,14,15,16,17,18],'saturday':[],'sunday':[]},'holidays':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'business_hour','resource_url':'http://novo/api/index.php?/v1/businesshours/1'},'followers':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'team','resource_url':'http://novo/api/index.php?/v1/teams/2'},{'id':3,'title':'Finance','businesshour':{'id':1,'title':'Default Business Hours','zones':{'monday':[9,10,11,12,13,14,15,16,17,18],'tuesday':[9,10,11,12,13,14,15,16,17,18],'wednesday':[9,10,11,12,13,14,15,16,17,18],'thursday':[9,10,11,12,13,14,15,16,17,18],'friday':[9,10,11,12,13,14,15,16,17,18],'saturday':[],'sunday':[]},'holidays':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'business_hour','resource_url':'http://novo/api/index.php?/v1/businesshours/1'},'followers':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'team','resource_url':'http://novo/api/index.php?/v1/teams/3'},{'id':4,'title':'Human Resources','businesshour':{'id':1,'title':'Default Business Hours','zones':{'monday':[9,10,11,12,13,14,15,16,17,18],'tuesday':[9,10,11,12,13,14,15,16,17,18],'wednesday':[9,10,11,12,13,14,15,16,17,18],'thursday':[9,10,11,12,13,14,15,16,17,18],'friday':[9,10,11,12,13,14,15,16,17,18],'saturday':[],'sunday':[]},'holidays':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'business_hour','resource_url':'http://novo/api/index.php?/v1/businesshours/1'},'followers':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'team','resource_url':'http://novo/api/index.php?/v1/teams/4'}],'emails':[{'id':1,'is_primary':true,'email':'test@kayako.com','is_notification_enabled':false,'is_validated':true,'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'identity_email','resource_url':'http://novo/api/index.php?/v1/users/1/identities/emails/1'}],'phones':[],'twitter':[],'facebook':[],'external_identities':[],'addresses':[],'websites':[],'custom_fields':[{'field':{'id':1,'fielduuid':'21cf6eb0-5da3-4054-b054-66c89778fd95','type':'TEXT','key':'enter_the_name','title':'Enter the name','is_visible_to_customers':true,'customer_title':'Enter the name','is_customer_editable':true,'is_required_for_customers':true,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':1,'is_system':false,'options':[],'locales':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'user_field','resource_url':'http://novo/api/index.php?/v1/users/fields/1'},'value':'','resource_type':'user_field_value'},{'field':{'id':2,'fielduuid':'15168ac8-e4cb-477c-8ae1-5c3f91585d89','type':'TEXTAREA','key':'contact_address','title':'contact address','is_visible_to_customers':true,'customer_title':'1','is_customer_editable':false,'is_required_for_customers':false,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':2,'is_system':false,'options':[],'locales':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'user_field','resource_url':'http://novo/api/index.php?/v1/users/fields/2'},'value':'','resource_type':'user_field_value'},{'field':{'id':3,'fielduuid':'52d085c1-dd76-4aa0-b8c8-292414efd893','type':'CHECKBOX','key':'interests','title':'interests','is_visible_to_customers':false,'customer_title':null,'is_customer_editable':false,'is_required_for_customers':false,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':3,'is_system':false,'options':[{'id':9,'fielduuid':'52d085c1-dd76-4aa0-b8c8-292414efd893','value':'googling','tag':'googling','sort_order':9,'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'field_option'},{'id':10,'fielduuid':'52d085c1-dd76-4aa0-b8c8-292414efd893','value':'learning new things','tag':'learningnewthings','sort_order':10,'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'field_option'},{'id':11,'fielduuid':'52d085c1-dd76-4aa0-b8c8-292414efd893','value':'other','tag':null,'sort_order':11,'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'field_option'}],'locales':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'user_field','resource_url':'http://novo/api/index.php?/v1/users/fields/3'},'value':'','resource_type':'user_field_value'}],'metadata':{'custom':null,'system':null,'resource_type':'metadata'},'tags':[],'notes':[],'pinned_notes_count':0,'followers':[],'locale':'en-us','time_zone':null,'time_zone_offset':null,'greeting':null,'signature':null,'status_message':null,'access_level':null,'password_updated_at':'2015-07-23T13:36:12Z','avatar_updated_at':null,'activity_at':'2015-07-24T11:08:54Z','visited_at':'2015-07-24T11:08:54Z','created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-24T11:08:54Z','resource_type':'user','resource_url':'http://novo/api/index.php?/v1/users/1'},'resource_type':'macro_assignee'},'properties':{'resource_type':'macro_properties'},'visibility':{'type':'ALL','resource_type':'macro_visibility'},'tags':[],'usage_count':0,'last_used_at':null,'created_at':'2015-07-23T13:38:59Z','updated_at':'2015-07-23T13:38:59Z','resource_type':'macro','resource_url':'http://novo/api/index.php?/v1/cases/macros/1'}],'resource':'macro','total_count':1,'session_id':'hom4BTrYwkPcHH847089d48a9177153bfa85890f20529058a07377544Oo5VgueZyI2RRvScA3ogmGNMZ'};}); // These comments are here to help you get started. Feel free to delete them.
+  this.get('/api/v1/messages',function(db){return new Mirage['default'].Response(400,{},db.messages);});this.get('/api/v1/views',function(db){return db.views[0];});this.get('/api/v1/cases/:id',function(db,request){if(isNaN(request.params.id)){throw 'Caught by a wild card!';}var originalCase=db.cases[0];var id=parseInt(request.params.id);return Object.assign({},originalCase,{id:id,data:Object.assign({},originalCase.data,{id:id,subject:originalCase.data.subject + ' ' + request.params.id})});});this.get('/api/v1/cases/:id/notes',function(db){return db.casenotes[0];});this.get('/api/v1/cases/:id/messages',function(db){return db.casemessages[0];});this.get('api/v1/cases/:id/reply/channels',function(db){return db.casechannels[0];});this.get('/api/v1/cases/priorities',function(db){return db.casepriorities[0];});this.get('/api/v1/cases/types',function(db){return db.casetypes[0];});this.get('/api/v1/cases/statuses',function(db){return db.casestatuses[0];});this.get('api/v1/cases/fields',function(db){return db.casefields[0];});this.get('api/v1/cases/reply/channels',function(db){return db.casereplychannels[0];});this.get('api/v1/cases/fields/:id/options',function(){return {'status':200,'data':[{'id':1,'fielduuid':'8d364470-77c1-46b5-8506-810700a2d29a','value':'internetproblem','tag':'internet problem','sort_order':1,'created_at':'2015-07-16T09:30:40Z','updated_at':'2015-07-16T09:30:40Z','resource_type':'field_option','resource_url':'http://novo/api/index.php?/v1/cases/fields/10/options/1'},{'id':2,'fielduuid':'8d364470-77c1-46b5-8506-810700a2d29a','value':'connectivityproblem','tag':'connectivity problem','sort_order':2,'created_at':'2015-07-16T09:30:40Z','updated_at':'2015-07-16T09:30:40Z','resource_type':'field_option','resource_url':'http://novo/api/index.php?/v1/cases/fields/10/options/2'},{'id':3,'fielduuid':'8d364470-77c1-46b5-8506-810700a2d29a','value':'other','tag':null,'sort_order':3,'created_at':'2015-07-16T09:30:40Z','updated_at':'2015-07-16T09:30:40Z','resource_type':'field_option','resource_url':'http://novo/api/index.php?/v1/cases/fields/10/options/3'}],'resource':'field_option','total_count':3,'session_id':'d4XE33cnM105GKla1pFqYDfjr313e422cd61c535941c9a2d5681fe7e39eed1ca6SVNXQCtt07Jlp3jO'};});this.get('api/v1/teams',function(){return {'status':200,'data':[{'id':1,'title':'Sales','businesshour':{'id':1,'title':'Default Business Hours','zones':{'monday':[9,10,11,12,13,14,15,16,17,18],'tuesday':[9,10,11,12,13,14,15,16,17,18],'wednesday':[9,10,11,12,13,14,15,16,17,18],'thursday':[9,10,11,12,13,14,15,16,17,18],'friday':[9,10,11,12,13,14,15,16,17,18],'saturday':[],'sunday':[]},'holidays':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'business_hour','resource_url':'http://novo/api/index.php?/v1/businesshours/1'},'followers':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'team','resource_url':'http://novo/api/index.php?/v1/teams/1'},{'id':2,'title':'Support','businesshour':{'id':1,'title':'Default Business Hours','zones':{'monday':[9,10,11,12,13,14,15,16,17,18],'tuesday':[9,10,11,12,13,14,15,16,17,18],'wednesday':[9,10,11,12,13,14,15,16,17,18],'thursday':[9,10,11,12,13,14,15,16,17,18],'friday':[9,10,11,12,13,14,15,16,17,18],'saturday':[],'sunday':[]},'holidays':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'business_hour','resource_url':'http://novo/api/index.php?/v1/businesshours/1'},'followers':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'team','resource_url':'http://novo/api/index.php?/v1/teams/2'},{'id':3,'title':'Finance','businesshour':{'id':1,'title':'Default Business Hours','zones':{'monday':[9,10,11,12,13,14,15,16,17,18],'tuesday':[9,10,11,12,13,14,15,16,17,18],'wednesday':[9,10,11,12,13,14,15,16,17,18],'thursday':[9,10,11,12,13,14,15,16,17,18],'friday':[9,10,11,12,13,14,15,16,17,18],'saturday':[],'sunday':[]},'holidays':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'business_hour','resource_url':'http://novo/api/index.php?/v1/businesshours/1'},'followers':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'team','resource_url':'http://novo/api/index.php?/v1/teams/3'},{'id':4,'title':'Human Resources','businesshour':{'id':1,'title':'Default Business Hours','zones':{'monday':[9,10,11,12,13,14,15,16,17,18],'tuesday':[9,10,11,12,13,14,15,16,17,18],'wednesday':[9,10,11,12,13,14,15,16,17,18],'thursday':[9,10,11,12,13,14,15,16,17,18],'friday':[9,10,11,12,13,14,15,16,17,18],'saturday':[],'sunday':[]},'holidays':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'business_hour','resource_url':'http://novo/api/index.php?/v1/businesshours/1'},'followers':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'team','resource_url':'http://novo/api/index.php?/v1/teams/4'}],'resource':'team','offset':0,'limit':10,'total_count':4,'session_id':'0VR4CSL7dXUshZtO8EI2a32a89eaa80d3bdecc9964941ec5d235a6632dcrhO2ug8M9VrLV'};});this.get('api/v1/users',function(){return {'status':200,'data':[{'id':1,'full_name':'John Doe','designation':null,'is_enabled':true,'role':{'id':1,'title':'Administrator','type':'ADMIN','created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'role','resource_url':'http://novo/api/index.php?/v1/roles/1'},'avatar':'http://novo/index.php?/avatar/get/3c8227bc-5101-51aa-908f-abc6dcb52dee','teams':[{'id':1,'title':'Sales','businesshour':{'id':1,'title':'Default Business Hours','zones':{'monday':[9,10,11,12,13,14,15,16,17,18],'tuesday':[9,10,11,12,13,14,15,16,17,18],'wednesday':[9,10,11,12,13,14,15,16,17,18],'thursday':[9,10,11,12,13,14,15,16,17,18],'friday':[9,10,11,12,13,14,15,16,17,18],'saturday':[],'sunday':[]},'holidays':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'business_hour','resource_url':'http://novo/api/index.php?/v1/businesshours/1'},'followers':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'team','resource_url':'http://novo/api/index.php?/v1/teams/1'},{'id':2,'title':'Support','businesshour':{'id':1,'title':'Default Business Hours','zones':{'monday':[9,10,11,12,13,14,15,16,17,18],'tuesday':[9,10,11,12,13,14,15,16,17,18],'wednesday':[9,10,11,12,13,14,15,16,17,18],'thursday':[9,10,11,12,13,14,15,16,17,18],'friday':[9,10,11,12,13,14,15,16,17,18],'saturday':[],'sunday':[]},'holidays':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'business_hour','resource_url':'http://novo/api/index.php?/v1/businesshours/1'},'followers':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'team','resource_url':'http://novo/api/index.php?/v1/teams/2'},{'id':3,'title':'Finance','businesshour':{'id':1,'title':'Default Business Hours','zones':{'monday':[9,10,11,12,13,14,15,16,17,18],'tuesday':[9,10,11,12,13,14,15,16,17,18],'wednesday':[9,10,11,12,13,14,15,16,17,18],'thursday':[9,10,11,12,13,14,15,16,17,18],'friday':[9,10,11,12,13,14,15,16,17,18],'saturday':[],'sunday':[]},'holidays':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'business_hour','resource_url':'http://novo/api/index.php?/v1/businesshours/1'},'followers':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'team','resource_url':'http://novo/api/index.php?/v1/teams/3'},{'id':4,'title':'Human Resources','businesshour':{'id':1,'title':'Default Business Hours','zones':{'monday':[9,10,11,12,13,14,15,16,17,18],'tuesday':[9,10,11,12,13,14,15,16,17,18],'wednesday':[9,10,11,12,13,14,15,16,17,18],'thursday':[9,10,11,12,13,14,15,16,17,18],'friday':[9,10,11,12,13,14,15,16,17,18],'saturday':[],'sunday':[]},'holidays':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'business_hour','resource_url':'http://novo/api/index.php?/v1/businesshours/1'},'followers':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'team','resource_url':'http://novo/api/index.php?/v1/teams/4'}],'emails':[{'id':1,'is_primary':true,'email':'test@kayako.com','is_notification_enabled':false,'is_validated':true,'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'identity_email','resource_url':'http://novo/api/index.php?/v1/users/1/identities/emails/1'}],'phones':[],'twitter':[],'facebook':[],'external_identities':[],'addresses':[],'websites':[],'custom_fields':[{'field':{'id':1,'fielduuid':'21cf6eb0-5da3-4054-b054-66c89778fd95','type':'TEXT','key':'enter_the_name','title':'Enter the name','is_visible_to_customers':true,'customer_title':'Enter the name','is_customer_editable':true,'is_required_for_customers':true,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':1,'is_system':false,'options':[],'locales':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'user_field','resource_url':'http://novo/api/index.php?/v1/users/fields/1'},'value':'','resource_type':'user_field_value'},{'field':{'id':2,'fielduuid':'15168ac8-e4cb-477c-8ae1-5c3f91585d89','type':'TEXTAREA','key':'contact_address','title':'contact address','is_visible_to_customers':true,'customer_title':'1','is_customer_editable':false,'is_required_for_customers':false,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':2,'is_system':false,'options':[],'locales':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'user_field','resource_url':'http://novo/api/index.php?/v1/users/fields/2'},'value':'','resource_type':'user_field_value'},{'field':{'id':3,'fielduuid':'52d085c1-dd76-4aa0-b8c8-292414efd893','type':'CHECKBOX','key':'interests','title':'interests','is_visible_to_customers':false,'customer_title':null,'is_customer_editable':false,'is_required_for_customers':false,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':3,'is_system':false,'options':[{'id':9,'fielduuid':'52d085c1-dd76-4aa0-b8c8-292414efd893','value':'googling','tag':'googling','sort_order':9,'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'field_option'},{'id':10,'fielduuid':'52d085c1-dd76-4aa0-b8c8-292414efd893','value':'learning new things','tag':'learningnewthings','sort_order':10,'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'field_option'},{'id':11,'fielduuid':'52d085c1-dd76-4aa0-b8c8-292414efd893','value':'other','tag':null,'sort_order':11,'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'field_option'}],'locales':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'user_field','resource_url':'http://novo/api/index.php?/v1/users/fields/3'},'value':'','resource_type':'user_field_value'}],'metadata':{'custom':null,'system':null,'resource_type':'metadata'},'tags':[],'notes':[],'pinned_notes_count':0,'followers':[],'locale':'en-us','time_zone':null,'time_zone_offset':null,'greeting':null,'signature':null,'status_message':null,'access_level':null,'password_updated_at':'2015-07-23T13:36:12Z','avatar_updated_at':null,'activity_at':'2015-07-24T10:39:04Z','visited_at':'2015-07-24T10:39:49Z','created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-24T10:39:49Z','resource_type':'user','resource_url':'http://novo/api/index.php?/v1/users/1'}],'resource':'user','total_count':10,'session_id':'aFPgO9mG2DdUipMpV0tK5k3mv8zMfJa6d966aaa605f8933fd939e2fa86ea8f6294a577L0dQypQ3vkYo3t25NLuESAA'};});this.get('/api/v1/cases/macros',function(){return {'status':200,'data':[{'id':1,'title':'tests \\\\ assign to blank ','contents':'blank','agent':{'id':1,'full_name':'John Doe','designation':null,'is_enabled':true,'role':{'id':1,'title':'Administrator','type':'ADMIN','created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'role','resource_url':'http://novo/api/index.php?/v1/roles/1'},'avatar':'http://novo/index.php?/avatar/get/3c8227bc-5101-51aa-908f-abc6dcb52dee','teams':[{'id':1,'title':'Sales','businesshour':{'id':1,'title':'Default Business Hours','zones':{'monday':[9,10,11,12,13,14,15,16,17,18],'tuesday':[9,10,11,12,13,14,15,16,17,18],'wednesday':[9,10,11,12,13,14,15,16,17,18],'thursday':[9,10,11,12,13,14,15,16,17,18],'friday':[9,10,11,12,13,14,15,16,17,18],'saturday':[],'sunday':[]},'holidays':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'business_hour','resource_url':'http://novo/api/index.php?/v1/businesshours/1'},'followers':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'team','resource_url':'http://novo/api/index.php?/v1/teams/1'},{'id':2,'title':'Support','businesshour':{'id':1,'title':'Default Business Hours','zones':{'monday':[9,10,11,12,13,14,15,16,17,18],'tuesday':[9,10,11,12,13,14,15,16,17,18],'wednesday':[9,10,11,12,13,14,15,16,17,18],'thursday':[9,10,11,12,13,14,15,16,17,18],'friday':[9,10,11,12,13,14,15,16,17,18],'saturday':[],'sunday':[]},'holidays':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'business_hour','resource_url':'http://novo/api/index.php?/v1/businesshours/1'},'followers':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'team','resource_url':'http://novo/api/index.php?/v1/teams/2'},{'id':3,'title':'Finance','businesshour':{'id':1,'title':'Default Business Hours','zones':{'monday':[9,10,11,12,13,14,15,16,17,18],'tuesday':[9,10,11,12,13,14,15,16,17,18],'wednesday':[9,10,11,12,13,14,15,16,17,18],'thursday':[9,10,11,12,13,14,15,16,17,18],'friday':[9,10,11,12,13,14,15,16,17,18],'saturday':[],'sunday':[]},'holidays':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'business_hour','resource_url':'http://novo/api/index.php?/v1/businesshours/1'},'followers':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'team','resource_url':'http://novo/api/index.php?/v1/teams/3'},{'id':4,'title':'Human Resources','businesshour':{'id':1,'title':'Default Business Hours','zones':{'monday':[9,10,11,12,13,14,15,16,17,18],'tuesday':[9,10,11,12,13,14,15,16,17,18],'wednesday':[9,10,11,12,13,14,15,16,17,18],'thursday':[9,10,11,12,13,14,15,16,17,18],'friday':[9,10,11,12,13,14,15,16,17,18],'saturday':[],'sunday':[]},'holidays':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'business_hour','resource_url':'http://novo/api/index.php?/v1/businesshours/1'},'followers':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'team','resource_url':'http://novo/api/index.php?/v1/teams/4'}],'emails':[{'id':1,'is_primary':true,'email':'test@kayako.com','is_notification_enabled':false,'is_validated':true,'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'identity_email','resource_url':'http://novo/api/index.php?/v1/users/1/identities/emails/1'}],'phones':[],'twitter':[],'facebook':[],'external_identities':[],'addresses':[],'websites':[],'custom_fields':[{'field':{'id':1,'fielduuid':'21cf6eb0-5da3-4054-b054-66c89778fd95','type':'TEXT','key':'enter_the_name','title':'Enter the name','is_visible_to_customers':true,'customer_title':'Enter the name','is_customer_editable':true,'is_required_for_customers':true,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':1,'is_system':false,'options':[],'locales':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'user_field','resource_url':'http://novo/api/index.php?/v1/users/fields/1'},'value':'','resource_type':'user_field_value'},{'field':{'id':2,'fielduuid':'15168ac8-e4cb-477c-8ae1-5c3f91585d89','type':'TEXTAREA','key':'contact_address','title':'contact address','is_visible_to_customers':true,'customer_title':'1','is_customer_editable':false,'is_required_for_customers':false,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':2,'is_system':false,'options':[],'locales':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'user_field','resource_url':'http://novo/api/index.php?/v1/users/fields/2'},'value':'','resource_type':'user_field_value'},{'field':{'id':3,'fielduuid':'52d085c1-dd76-4aa0-b8c8-292414efd893','type':'CHECKBOX','key':'interests','title':'interests','is_visible_to_customers':false,'customer_title':null,'is_customer_editable':false,'is_required_for_customers':false,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':3,'is_system':false,'options':[{'id':9,'fielduuid':'52d085c1-dd76-4aa0-b8c8-292414efd893','value':'googling','tag':'googling','sort_order':9,'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'field_option'},{'id':10,'fielduuid':'52d085c1-dd76-4aa0-b8c8-292414efd893','value':'learning new things','tag':'learningnewthings','sort_order':10,'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'field_option'},{'id':11,'fielduuid':'52d085c1-dd76-4aa0-b8c8-292414efd893','value':'other','tag':null,'sort_order':11,'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'field_option'}],'locales':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'user_field','resource_url':'http://novo/api/index.php?/v1/users/fields/3'},'value':'','resource_type':'user_field_value'}],'metadata':{'custom':null,'system':null,'resource_type':'metadata'},'tags':[],'notes':[],'pinned_notes_count':0,'followers':[],'locale':'en-us','time_zone':null,'time_zone_offset':null,'greeting':null,'signature':null,'status_message':null,'access_level':null,'password_updated_at':'2015-07-23T13:36:12Z','avatar_updated_at':null,'activity_at':'2015-07-24T11:08:54Z','visited_at':'2015-07-24T11:08:54Z','created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-24T11:08:54Z','resource_type':'user','resource_url':'http://novo/api/index.php?/v1/users/1'},'assignee':{'type':'AGENT','team':{'id':1,'title':'Sales','businesshour':{'id':1,'title':'Default Business Hours','zones':{'monday':[9,10,11,12,13,14,15,16,17,18],'tuesday':[9,10,11,12,13,14,15,16,17,18],'wednesday':[9,10,11,12,13,14,15,16,17,18],'thursday':[9,10,11,12,13,14,15,16,17,18],'friday':[9,10,11,12,13,14,15,16,17,18],'saturday':[],'sunday':[]},'holidays':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'business_hour','resource_url':'http://novo/api/index.php?/v1/businesshours/1'},'followers':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'team','resource_url':'http://novo/api/index.php?/v1/teams/1'},'agent':{'id':1,'full_name':'John Doe','designation':null,'is_enabled':true,'role':{'id':1,'title':'Administrator','type':'ADMIN','created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'role','resource_url':'http://novo/api/index.php?/v1/roles/1'},'avatar':'http://novo/index.php?/avatar/get/3c8227bc-5101-51aa-908f-abc6dcb52dee','teams':[{'id':1,'title':'Sales','businesshour':{'id':1,'title':'Default Business Hours','zones':{'monday':[9,10,11,12,13,14,15,16,17,18],'tuesday':[9,10,11,12,13,14,15,16,17,18],'wednesday':[9,10,11,12,13,14,15,16,17,18],'thursday':[9,10,11,12,13,14,15,16,17,18],'friday':[9,10,11,12,13,14,15,16,17,18],'saturday':[],'sunday':[]},'holidays':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'business_hour','resource_url':'http://novo/api/index.php?/v1/businesshours/1'},'followers':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'team','resource_url':'http://novo/api/index.php?/v1/teams/1'},{'id':2,'title':'Support','businesshour':{'id':1,'title':'Default Business Hours','zones':{'monday':[9,10,11,12,13,14,15,16,17,18],'tuesday':[9,10,11,12,13,14,15,16,17,18],'wednesday':[9,10,11,12,13,14,15,16,17,18],'thursday':[9,10,11,12,13,14,15,16,17,18],'friday':[9,10,11,12,13,14,15,16,17,18],'saturday':[],'sunday':[]},'holidays':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'business_hour','resource_url':'http://novo/api/index.php?/v1/businesshours/1'},'followers':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'team','resource_url':'http://novo/api/index.php?/v1/teams/2'},{'id':3,'title':'Finance','businesshour':{'id':1,'title':'Default Business Hours','zones':{'monday':[9,10,11,12,13,14,15,16,17,18],'tuesday':[9,10,11,12,13,14,15,16,17,18],'wednesday':[9,10,11,12,13,14,15,16,17,18],'thursday':[9,10,11,12,13,14,15,16,17,18],'friday':[9,10,11,12,13,14,15,16,17,18],'saturday':[],'sunday':[]},'holidays':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'business_hour','resource_url':'http://novo/api/index.php?/v1/businesshours/1'},'followers':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'team','resource_url':'http://novo/api/index.php?/v1/teams/3'},{'id':4,'title':'Human Resources','businesshour':{'id':1,'title':'Default Business Hours','zones':{'monday':[9,10,11,12,13,14,15,16,17,18],'tuesday':[9,10,11,12,13,14,15,16,17,18],'wednesday':[9,10,11,12,13,14,15,16,17,18],'thursday':[9,10,11,12,13,14,15,16,17,18],'friday':[9,10,11,12,13,14,15,16,17,18],'saturday':[],'sunday':[]},'holidays':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'business_hour','resource_url':'http://novo/api/index.php?/v1/businesshours/1'},'followers':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'team','resource_url':'http://novo/api/index.php?/v1/teams/4'}],'emails':[{'id':1,'is_primary':true,'email':'test@kayako.com','is_notification_enabled':false,'is_validated':true,'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'identity_email','resource_url':'http://novo/api/index.php?/v1/users/1/identities/emails/1'}],'phones':[],'twitter':[],'facebook':[],'external_identities':[],'addresses':[],'websites':[],'custom_fields':[{'field':{'id':1,'fielduuid':'21cf6eb0-5da3-4054-b054-66c89778fd95','type':'TEXT','key':'enter_the_name','title':'Enter the name','is_visible_to_customers':true,'customer_title':'Enter the name','is_customer_editable':true,'is_required_for_customers':true,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':1,'is_system':false,'options':[],'locales':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'user_field','resource_url':'http://novo/api/index.php?/v1/users/fields/1'},'value':'','resource_type':'user_field_value'},{'field':{'id':2,'fielduuid':'15168ac8-e4cb-477c-8ae1-5c3f91585d89','type':'TEXTAREA','key':'contact_address','title':'contact address','is_visible_to_customers':true,'customer_title':'1','is_customer_editable':false,'is_required_for_customers':false,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':2,'is_system':false,'options':[],'locales':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'user_field','resource_url':'http://novo/api/index.php?/v1/users/fields/2'},'value':'','resource_type':'user_field_value'},{'field':{'id':3,'fielduuid':'52d085c1-dd76-4aa0-b8c8-292414efd893','type':'CHECKBOX','key':'interests','title':'interests','is_visible_to_customers':false,'customer_title':null,'is_customer_editable':false,'is_required_for_customers':false,'description':null,'is_enabled':true,'regular_expression':null,'sort_order':3,'is_system':false,'options':[{'id':9,'fielduuid':'52d085c1-dd76-4aa0-b8c8-292414efd893','value':'googling','tag':'googling','sort_order':9,'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'field_option'},{'id':10,'fielduuid':'52d085c1-dd76-4aa0-b8c8-292414efd893','value':'learning new things','tag':'learningnewthings','sort_order':10,'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'field_option'},{'id':11,'fielduuid':'52d085c1-dd76-4aa0-b8c8-292414efd893','value':'other','tag':null,'sort_order':11,'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'field_option'}],'locales':[],'created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-23T13:36:12Z','resource_type':'user_field','resource_url':'http://novo/api/index.php?/v1/users/fields/3'},'value':'','resource_type':'user_field_value'}],'metadata':{'custom':null,'system':null,'resource_type':'metadata'},'tags':[],'notes':[],'pinned_notes_count':0,'followers':[],'locale':'en-us','time_zone':null,'time_zone_offset':null,'greeting':null,'signature':null,'status_message':null,'access_level':null,'password_updated_at':'2015-07-23T13:36:12Z','avatar_updated_at':null,'activity_at':'2015-07-24T11:08:54Z','visited_at':'2015-07-24T11:08:54Z','created_at':'2015-07-23T13:36:12Z','updated_at':'2015-07-24T11:08:54Z','resource_type':'user','resource_url':'http://novo/api/index.php?/v1/users/1'},'resource_type':'macro_assignee'},'properties':{'resource_type':'macro_properties'},'visibility':{'type':'ALL','resource_type':'macro_visibility'},'tags':[],'usage_count':0,'last_used_at':null,'created_at':'2015-07-23T13:38:59Z','updated_at':'2015-07-23T13:38:59Z','resource_type':'macro','resource_url':'http://novo/api/index.php?/v1/cases/macros/1'}],'resource':'macro','total_count':1,'session_id':'hom4BTrYwkPcHH847089d48a9177153bfa85890f20529058a07377544Oo5VgueZyI2RRvScA3ogmGNMZ'};}); // These comments are here to help you get started. Feel free to delete them.
   /*
       Default config
     */ // this.namespace = '';    // make this `api`, for example, if your API is namespaced
@@ -32190,154 +32333,36 @@ define('frontend-cp/router', ['exports', 'ember', 'frontend-cp/config/environmen
   exports['default'] = Router;
 
 });
-define('frontend-cp/routes/abstract/organisation-route', ['exports', 'ember'], function (exports, Ember) {
-
-	'use strict';
-
-	exports['default'] = Ember['default'].Route.extend({});
-
-});
 define('frontend-cp/routes/abstract/tabbed-route', ['exports', 'ember'], function (exports, Ember) {
 
   'use strict';
 
-  function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
-
   exports['default'] = Ember['default'].Route.extend({
     /**
-     * Store tab so we can set the label once the model has loaded.
+     * Whether the route should open in its own tab
+     * @type {boolean}
+     */
+    isTabbedRoute: true,
+
+    /**
+     * Tab model allocated to this route
+     * (assigned in the `tabs` initializer)
      * @type {Tab}
      */
     tab: null,
-    tabsService: Ember['default'].inject.service('tabs'),
+
+    getTabLabel: function getTabLabel(model) {
+      // Override this method to set the tab label
+      return null;
+    },
 
     setupController: function setupController(controller, model) {
-      controller.set('model', model);
-      var router = this.container.lookup('router:main');
-      var tabsService = this.get('tabsService');
-      var sessionController = this.controllerFor('session');
-
-      var activeTransition = router.router.activeTransition;
-
-      // Get/create a tab for this route
-      var tab = getTabForRoute(this, activeTransition, tabsService, sessionController);
-      var tabAlreadyExists = sessionController.get('tabs').contains(tab);
-      if (!tabAlreadyExists) {
-        sessionController.get('tabs').pushObject(tab);
-      }
-
-      // Make the tab accessible to subclasses of this route
-      this.set('tab', tab);
-
-      // Add and select the tab
-      sessionController.set('selectedTab', tab);
-
-      /**
-       * Get/create a tab for a route
-       * @param {Route} route The route to create a tab for
-       * @param {Transition} transition Transition containing dynamic route segments
-       * @param {TabsService} tabsService Tabs service used to get/create the tab
-       * @param {SessionController} tabsController Controller for the view that contains the tabs
-       * @return {Tab} Tab model for the specified route
-       */
-      function getTabForRoute(route, transition, tabsService, tabsController) {
-        var routeUrl = getRouteUrl(route, transition);
-        var targetUrl = getTransitionTargetUrl(transition);
-        var existingTab = tabsController.getTabForUrl(routeUrl);
-        if (existingTab) {
-          existingTab.set('url', targetUrl);
-          return existingTab;
-        }
-        return tabsService.createTab({
-          url: targetUrl,
-          baseUrl: routeUrl
-        });
-
-        /**
-         * Retrieve the URL for a route that includes dynamic segments
-         * @param {Route} route Route whose params we want to fetch
-         * @param {Transition} transition Transition that involves the specified route
-         * @param {TabsService} tabsService Tabs service used to get/create the tab
-         * @return {string} Array of Key/value object containing dynamic route segments, or models
-         */
-        function getRouteUrl(route, transition, tabsService) {
-          var _transition$router;
-
-          var routeName = route.routeName;
-
-          // `transition.handlerInfos` is an array of metadata objects, one for each
-          // of the routes in the transition hierarchy. (e.g. "app", "app.section",
-          // "app.section.subsection").
-          var routeHandlers = transition.handlerInfos;
-
-          // Get the dynamic route segment context objects for each of these levels
-          var routeContexts = routeHandlers.map(function (handlerInfo) {
-            return getHandlerContext(handlerInfo);
-          });
-
-          // Filter out the context objects for routes with no dynamic segments
-          var dynamicRouteContexts = routeContexts.filter(function (context) {
-            return context !== null;
-          });
-
-          // Return the route URL
-          return (_transition$router = transition.router).generate.apply(_transition$router, [routeName].concat(_toConsumableArray(dynamicRouteContexts)));
-
-          /**
-           * Retrieve the context object from a route handler info object
-           * @param {Object} handlerInfo Ember route handler info object
-           * @return {Object} Params object or model for dynamic routes, `null` for static routes
-           */
-          function getHandlerContext(handlerInfo) {
-            // If the transition was initiated by navigating to a URL,
-            // or route name + id, there will be a `params` object containing any
-            // dynamic route segments
-            if (handlerInfo.params) {
-              var hasDynamicSegments = Object.keys(handlerInfo.params).length > 0;
-              return hasDynamicSegments ? handlerInfo.params : null;
-            }
-
-            // If the transition was initiated by navigating to a route name + model,
-            // there will be a `context` object containing the model that corresponds
-            // to the dynamic route segment
-            if (handlerInfo.context) {
-              return handlerInfo.context;
-            }
-
-            // Looks like the route doesn't specify any dynamic segments
-            return null;
-          }
-        }
-
-        /**
-         * Serialize the transition into a target URL
-         * @param {Transition} transition Transition to serialize
-         * @return {string} URL path for the transition's target
-         */
-        function getTransitionTargetUrl(transition) {
-          var _transition$router2;
-
-          // If the transition was initiated by navigating to the URL, we already
-          // have the target URL so we can just return that
-          if (transition.intent.url) {
-            return transition.intent.url;
-          }
-
-          // Otherwise generate a URL based on the transition's target
-          var routeName = transition.intent.name;
-          var dynamicRouteContexts = transition.intent.contexts;
-          return (_transition$router2 = transition.router).generate.apply(_transition$router2, [routeName].concat(_toConsumableArray(dynamicRouteContexts)));
-        }
-      }
+      this._super(controller, model);
+      var tabModel = this.get('tab');
+      var tabLabel = this.getTabLabel(model);
+      tabModel.set('label', tabLabel);
     }
   });
-
-});
-define('frontend-cp/routes/abstract/user-route', ['exports', 'ember'], function (exports, Ember) {
-
-	'use strict';
-
-	exports['default'] = Ember['default'].Route.extend({});
 
 });
 define('frontend-cp/serializers/application', ['exports', 'ember', 'ember-data', 'npm:lodash'], function (exports, Ember, DS, _) {
@@ -33182,8 +33207,8 @@ define('frontend-cp/services/route-state', ['exports', 'ember'], function (expor
      * @return {Object} Key/value object containing state properties
      */
     getState: function getState() {
-      var location = this.container.lookup('location:history');
-      return location.getState();
+      var location = this.container.lookup('router:main').get('location');
+      return typeof location.getState === 'function' ? location.getState() : null;
     },
 
     /**
@@ -33197,8 +33222,11 @@ define('frontend-cp/services/route-state', ['exports', 'ember'], function (expor
       var state = Object.assign({}, currentState, updates);
 
       // Update the history state
-      var location = this.container.lookup('location:history');
-      (location.get('history') || history).replaceState(state, null);
+      var location = this.container.lookup('router:main').get('location');
+      var history = location.get('history');
+      if (history) {
+        history.replaceState(state, null);
+      }
     },
 
     /**
@@ -36500,11 +36528,11 @@ define('frontend-cp/session/cases/case/loading/template', ['exports'], function 
   }()));
 
 });
-define('frontend-cp/session/cases/case/organisation/route', ['exports', 'frontend-cp/routes/abstract/organisation-route'], function (exports, OrganisationRoute) {
+define('frontend-cp/session/cases/case/organisation/route', ['exports', 'ember'], function (exports, Ember) {
 
   'use strict';
 
-  exports['default'] = OrganisationRoute['default'].extend({
+  exports['default'] = Ember['default'].Route.extend({
 
     model: function model() {
       var parentModel = this.modelFor('case');
@@ -36644,11 +36672,11 @@ define('frontend-cp/session/cases/case/template', ['exports'], function (exports
   }()));
 
 });
-define('frontend-cp/session/cases/case/user/route', ['exports', 'frontend-cp/routes/abstract/user-route'], function (exports, UserRoute) {
+define('frontend-cp/session/cases/case/user/route', ['exports', 'ember'], function (exports, Ember) {
 
   'use strict';
 
-  exports['default'] = UserRoute['default'].extend({
+  exports['default'] = Ember['default'].Route.extend({
 
     // model() {
     //   return this.modelFor('case').get('organization').then((org) => {
@@ -37370,7 +37398,13 @@ define('frontend-cp/session/controller', ['exports', 'ember'], function (exports
     scroll: 0,
 
     /**
-     * Currently active tabs
+     * Main invisible "tab" that holds all non-tabbed pages
+     * @type {Tab}
+     */
+    mainTab: null,
+
+    /**
+     * Currently active tabs, containing all tabbed pages
      * @type {Tab[]}
      */
     tabs: null,
@@ -37387,89 +37421,153 @@ define('frontend-cp/session/controller', ['exports', 'ember'], function (exports
     },
 
     /**
-     * Update the selected tab whenever the current URL changes
-     */
-    currentUrlDidChange: (function () {
-      var _this = this;
-
-      var currentUrl = this.get('urlService.currentUrl') || '';
-
-      // Find out if a matching tab exists
-      var selectedTab = this.get('tabs').find(function (tab) {
-        // Return a match if we've navigated to the tab's base URL,
-        // or to a descendant of that URL
-        return currentUrl.indexOf(tab.get('baseUrl')) === 0;
-      }) || null;
-
-      // Update the tab selection
-      this.set('selectedTab', selectedTab);
-
-      // Update the tab's current URL
-      if (selectedTab) {
-        selectedTab.set('url', currentUrl);
-      }
-
-      var routeStateService = this.get('routeStateService');
-      var state = routeStateService.getState();
-      var scrollPosition = state && state.scroll || 0;
-      if (this.get('scroll') === scrollPosition) {
-        return;
-      }
-      Ember['default'].run.scheduleOnce('afterRender', function () {
-        _this.set('scroll', scrollPosition);
-      });
-
-      // Recalculate whenever the URL changes, or when a tab is added
-    }).observes('tabs.@each', 'urlService.currentUrl').on('init'),
-
-    /**
      * Update local storage whenever the tabs array changes
      */
-    tabsUpdated: (function () {
+    tabsUpdated: Ember['default'].observer('mainTab', 'mainTab.url', 'tabs.@each', 'tabs.@each.url', 'tabs.@each.label', function () {
       var tabsService = this.get('tabsService');
-      var tabModels = this.get('tabs');
-      tabsService.saveTabsToStorage(tabModels);
-    }).observes('tabs.@each', 'tabs.@each.label'),
+      var mainTab = this.get('mainTab');
+      var tabs = this.get('tabs');
+      var savedTabs = [mainTab].concat(tabs);
+      tabsService.saveTabsToStorage(savedTabs);
+    }),
 
     /**
-     * Save the tab state before transitioning away from the tab
+     * Transition to the tab's active page when a tab is selected
      */
-    saveTabStateBeforeTransitioning: (function () {
-      var _this2 = this;
-
+    tabSelected: Ember['default'].observer('selectedTab', function () {
+      var selectedTab = this.get('selectedTab');
+      if (!selectedTab) {
+        this.set('selectedTab', this.get('mainTab'));
+        return;
+      }
+      var targetUrl = selectedTab.get('url') || '/';
+      var targetState = selectedTab.get('state') || null;
       var routeStateService = this.get('routeStateService');
-      var router = this.container.lookup('router:main');
-      router.on('willTransition', function () {
-        var selectedTab = _this2.get('selectedTab');
-        if (!selectedTab) {
-          return;
-        }
-        var state = routeStateService.getState();
-        selectedTab.set('state', state);
-      });
-    }).on('init'),
+      routeStateService.transitionToState(targetUrl, targetState);
+    }),
 
     /**
      * Save the scroll position to the history state whenever the user scrolls
      */
-    scrollChanged: (function () {
-      var routeStateService = this.get('routeStateService');
+    scrollChanged: Ember['default'].observer('scroll', function () {
       var scrollPosition = this.get('scroll');
-      routeStateService.updateState({
+      var currentPath = this.get('urlService.currentPath');
+      var isInLoadingState = currentPath.split('.').pop() === 'loading';
+      if (isInLoadingState) {
+        return;
+      }
+      this.updateTabState({
         'scroll': scrollPosition
       });
-    }).observes('scroll'),
+    }),
+
+    /**
+     * Update the scroll position whenever the router transitions to a new page
+     */
+    updateScrollPosition: Ember['default'].on('init', function () {
+      var _this = this;
+
+      var router = this.container.lookup('router:main');
+      this.addDisposableListener(router, 'didTransition', function () {
+        var routeStateService = _this.get('routeStateService');
+        var tabState = routeStateService.getState();
+
+        // Update the scroll position
+        var scrollPosition = tabState && tabState.scroll || 0;
+        if (_this.get('scroll') === scrollPosition) {
+          return;
+        }
+        Ember['default'].run.scheduleOnce('afterRender', function () {
+          _this.set('scroll', scrollPosition);
+        });
+      });
+    }),
+
+    /**
+     * Add an event listener which will be automatically removed once this controller is destroyed
+     * @param {Evented} subject Event emitter
+     * @param {string} event Event name to listen to
+     * @param {function} handler Listener handler function
+     */
+    addDisposableListener: function addDisposableListener(subject, event, handler) {
+      // Add the listener
+      subject.on(event, handler);
+      this.get('disposableListeners').push({ subject: subject, event: event, handler: handler });
+    },
+
+    /**
+     * Array of listeners which will be automatically removed once this controller is destroyed
+     * @type {Object[]}
+     */
+    disposableListeners: null,
+
+    /**
+     * Initialise the array of disposable listeners
+     */
+    initDisposableListeners: Ember['default'].on('init', function () {
+      this.set('disposableListeners', []);
+    }),
+
+    /**
+     * Remove the disposable listeners once the controller is destroyed
+     */
+    willDestroy: function willDestroy() {
+      this._super();
+      this.get('disposableListeners').forEach(function (listener) {
+        var subject = listener.subject;
+        var event = listener.event;
+        var handler = listener.handler;
+
+        subject.off(event, handler);
+      });
+    },
+
+    /**
+     * Save UI state changes for the currently selected tab
+     * @param {Object} updates Key/value object containing state values
+     */
+    updateTabState: function updateTabState(updates) {
+      var routeStateService = this.get('routeStateService');
+      var selectedTab = this.get('selectedTab');
+      if (!selectedTab) {
+        return;
+      }
+      routeStateService.updateState(updates);
+      var updatedState = Object.assign({}, selectedTab.get('state'), updates);
+      selectedTab.set('state', updatedState);
+    },
 
     /**
      * Returns a tab that matches the specified URL path (or one of its ancestors)
+     * @param {boolean} isTabbedPage Whether the page should be opened in its own tab
      * @param {string} url URL to match against
+     * @param {string} baseUrl Tab base URL to use if creating a new tab
      * @return {Tab} Tab that corresponds to the URL, or `null` if no match was found
      */
-    getTabForUrl: function getTabForUrl(url) {
-      var tab = this.get('tabs').find(function (tab) {
+    getTabForUrl: function getTabForUrl(isTabbedPage, url, baseUrl) {
+      var tabs = this.get('tabs');
+
+      var existingTab = tabs.find(function (tab) {
         return url.startsWith(tab.get('baseUrl'));
       });
-      return tab || null;
+      if (!existingTab && !isTabbedPage) {
+        existingTab = this.get('mainTab');
+      }
+      if (existingTab) {
+        if (existingTab.get('url') !== url) {
+          existingTab.set('url', url);
+          existingTab.set('state', {});
+        }
+        return existingTab;
+      }
+
+      var tabsService = this.get('tabsService');
+      var tab = tabsService.createTab({
+        url: url,
+        baseUrl: baseUrl
+      });
+      this.get('tabs').pushObject(tab);
+      return tab;
     },
 
     actions: {
@@ -37478,7 +37576,7 @@ define('frontend-cp/session/controller', ['exports', 'ember'], function (exports
       },
 
       performUniversalSearch: function performUniversalSearch(query) {
-        var _this3 = this;
+        var _this2 = this;
 
         if (!query) {
           this.set('isSearching', false);
@@ -37491,12 +37589,12 @@ define('frontend-cp/session/controller', ['exports', 'ember'], function (exports
          * just catch the error and empty the searchResults array
          */
         this.store.query('search-result-group', { query: query, fields: 'snippet,resource' }).then(function (results) {
-          _this3.set('searchResults', results);
+          _this2.set('searchResults', results);
         }, function () {
-          _this3.set('searchResults', new Ember['default'].A([]));
+          _this2.set('searchResults', new Ember['default'].A([]));
         }).then(function () {
           //we always want to set isSearching to true (so we get the no results message)
-          _this3.set('isSearching', true);
+          _this2.set('isSearching', true);
         });
       },
 
@@ -37505,17 +37603,6 @@ define('frontend-cp/session/controller', ['exports', 'ember'], function (exports
       loadSearchRoute: function loadSearchRoute(baseURL, targetObjectId) {
         /* this has to be built as a URL - we have a searchResult object, not a user/case object */
         this.transitionToRoute(baseURL + targetObjectId);
-      },
-
-      onTabSelected: function onTabSelected(selectedTab) {
-        var routeStateService = this.get('routeStateService');
-        var targetUrl = selectedTab.get('url');
-        var targetState = selectedTab.get('state');
-        routeStateService.transitionToState(targetUrl, targetState);
-      },
-
-      onAllTabsClosed: function onAllTabsClosed() {
-        this.transitionToRoute('/');
       }
     }
   });
@@ -37643,25 +37730,14 @@ define('frontend-cp/session/route', ['exports', 'ember'], function (exports, Emb
       var tabsService = this.get('tabsService');
       var savedTabs = tabsService.loadTabsFromStorage();
 
-      controller.set('model', model);
-      controller.set('tabs', savedTabs);
-    },
+      // The first item is the "main" tab, all others are tabbed pages
+      var mainTab = savedTabs.objectAt(0) || tabsService.createTab();
+      var tabs = savedTabs.slice(1);
 
-    /**
-     * Listen for a change in the selected tab and open it
-     * as a route. This is used when tabs are automatically
-     * selected, such as when closing the current tab, in
-     * which case the next tab will be selected for you.
-     */
-    selectionDidChange: (function () {
-      var tabsService = this.get('tabsService');
-      var tab = tabsService.get('selectedTab');
-      if (tab) {
-        this.transitionTo(tab.get('url'));
-      } else if (tabsService.get('tabs.length') === 0) {
-        this.transitionTo('session.cases');
-      }
-    }).observes('tabsService.selectedTab')
+      controller.set('model', model);
+      controller.set('mainTab', mainTab);
+      controller.set('tabs', tabs);
+    }
   });
 
 });
@@ -42622,7 +42698,7 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
         ["block","link-to",["session.cases"],["class","nav-main__item i-person"],2,null,["loc",[null,[9,10],[9,82]]]],
         ["block","link-to",["session.cases"],["class","nav-main__item i-help"],3,null,["loc",[null,[10,10],[10,80]]]],
         ["block","link-to",["session.cases"],["class","nav-main__item i-insights"],4,null,["loc",[null,[11,10],[11,84]]]],
-        ["inline","ko-tabs",[],["tabs",["subexpr","@mut",[["get","tabs",["loc",[null,[16,25],[16,29]]]]],[],[]],"selectedTab",["subexpr","@mut",[["get","selectedTab",["loc",[null,[16,42],[16,53]]]]],[],[]],"select","onTabSelected","closeAll","onAllTabsClosed"],["loc",[null,[16,10],[16,105]]]],
+        ["inline","ko-tabs",[],["tabs",["subexpr","@mut",[["get","tabs",["loc",[null,[16,25],[16,29]]]]],[],[]],"selectedTab",["subexpr","@mut",[["get","selectedTab",["loc",[null,[16,42],[16,53]]]]],[],[]]],["loc",[null,[16,10],[16,55]]]],
         ["content","ko-agent-dropdown",["loc",[null,[19,9],[19,30]]]],
         ["inline","ko-universal-search",[],["performSearch","performUniversalSearch","searchResults",["subexpr","@mut",[["get","searchResults",["loc",[null,[24,83],[24,96]]]]],[],[]],"searchingChanged","onSearchingChanged"],["loc",[null,[24,8],[24,136]]]],
         ["block","unless",[["get","hideSessionWidgets",["loc",[null,[28,18],[28,36]]]]],[],5,null,["loc",[null,[28,8],[30,19]]]],
@@ -43209,6 +43285,373 @@ define('frontend-cp/tests/acceptance/showcase/render-test', ['ember', 'qunit', '
   });
 
 });
+define('frontend-cp/tests/acceptance/tabs/tabs-test', ['ember', 'qunit', 'frontend-cp/tests/helpers/start-app', 'frontend-cp/tests/fixtures/location/mock-location'], function (Ember, qunit, startApp, MockLocation) {
+
+  'use strict';
+
+  var application = undefined;
+
+  qunit.module('Acceptance | Tabs', {
+    beforeEach: function beforeEach() {
+      localStorage.clear();
+      sessionStorage.clear();
+
+      application = startApp['default']();
+
+      application.__container__.lookup('router:main').set('location', MockLocation['default'].create());
+    },
+
+    afterEach: function afterEach() {
+      Ember['default'].run(application, 'destroy');
+    }
+  });
+
+  qunit.test('cases open in their own tabs', function (assert) {
+    assert.expect(30);
+
+    login();
+
+    visit('/');
+
+    andThen(function () {
+      var $tabElements = getTabElements();
+      assert.equal($tabElements.length, 0);
+    });
+
+    visit('/styleguide');
+
+    andThen(function () {
+      var $tabElements = getTabElements();
+      assert.equal($tabElements.length, 0);
+    });
+
+    visit('/cases/1');
+
+    andThen(function () {
+      var $tabElements = getTabElements();
+      assert.equal($tabElements.length, 1);
+      var $firstTabElement = getTabElements().eq(0);
+      assert.ok(getIsActiveTabElement($firstTabElement));
+    });
+
+    visit('/cases/1/user');
+
+    andThen(function () {
+      var $tabElements = getTabElements();
+      assert.equal($tabElements.length, 1);
+      var $firstTabElement = getTabElements().eq(0);
+      assert.ok(getIsActiveTabElement($firstTabElement));
+    });
+
+    visit('/cases/1');
+
+    andThen(function () {
+      var $tabElements = getTabElements();
+      assert.equal($tabElements.length, 1);
+      var $firstTabElement = getTabElements().eq(0);
+      assert.ok(getIsActiveTabElement($firstTabElement));
+    });
+
+    visit('/cases/2/user');
+
+    andThen(function () {
+      var $tabElements = getTabElements();
+      assert.equal($tabElements.length, 2);
+      var $firstTabElement = getTabElements().eq(0);
+      var $secondTabElement = getTabElements().eq(1);
+      assert.ok(!getIsActiveTabElement($firstTabElement));
+      assert.ok(getIsActiveTabElement($secondTabElement));
+    });
+
+    visit('/cases/2');
+
+    andThen(function () {
+      var $tabElements = getTabElements();
+      assert.equal($tabElements.length, 2);
+      var $firstTabElement = getTabElements().eq(0);
+      var $secondTabElement = getTabElements().eq(1);
+      assert.ok(!getIsActiveTabElement($firstTabElement));
+      assert.ok(getIsActiveTabElement($secondTabElement));
+    });
+
+    visit('/cases/2/user');
+
+    andThen(function () {
+      var $tabElements = getTabElements();
+      assert.equal($tabElements.length, 2);
+      var $firstTabElement = getTabElements().eq(0);
+      var $secondTabElement = getTabElements().eq(1);
+      assert.ok(!getIsActiveTabElement($firstTabElement));
+      assert.ok(getIsActiveTabElement($secondTabElement));
+    });
+
+    visit('/cases/1');
+
+    andThen(function () {
+      var $tabElements = getTabElements();
+      assert.equal($tabElements.length, 2);
+      var $firstTabElement = getTabElements().eq(0);
+      var $secondTabElement = getTabElements().eq(1);
+      assert.ok(getIsActiveTabElement($firstTabElement));
+      assert.ok(!getIsActiveTabElement($secondTabElement));
+    });
+
+    visit('/cases/2');
+
+    andThen(function () {
+      var $tabElements = getTabElements();
+      assert.equal($tabElements.length, 2);
+      var $firstTabElement = getTabElements().eq(0);
+      var $secondTabElement = getTabElements().eq(1);
+      assert.ok(!getIsActiveTabElement($firstTabElement));
+      assert.ok(getIsActiveTabElement($secondTabElement));
+    });
+
+    visit('/cases/1/user');
+
+    andThen(function () {
+      var $tabElements = getTabElements();
+      assert.equal($tabElements.length, 2);
+      var $firstTabElement = getTabElements().eq(0);
+      var $secondTabElement = getTabElements().eq(1);
+      assert.ok(getIsActiveTabElement($firstTabElement));
+      assert.ok(!getIsActiveTabElement($secondTabElement));
+    });
+
+    visit('/cases/2/user');
+
+    andThen(function () {
+      var $tabElements = getTabElements();
+      assert.equal($tabElements.length, 2);
+      var $firstTabElement = getTabElements().eq(0);
+      var $secondTabElement = getTabElements().eq(1);
+      assert.ok(!getIsActiveTabElement($firstTabElement));
+      assert.ok(getIsActiveTabElement($secondTabElement));
+    });
+
+    visit('/');
+
+    andThen(function () {
+      var $tabElements = getTabElements();
+      assert.equal($tabElements.length, 2);
+    });
+  });
+
+  qunit.test('tab label is set to case name', function (assert) {
+    assert.expect(2);
+
+    login();
+
+    visit('/cases/1');
+
+    andThen(function () {
+      var $tabElement = getTabElements();
+      assert.equal($tabElement.text().trim(), 'ERS Audit 1');
+    });
+
+    visit('/cases/2');
+
+    andThen(function () {
+      var $tabElement = getTabElements().eq(1);
+      assert.equal($tabElement.text().trim(), 'ERS Audit 2');
+    });
+  });
+
+  qunit.test('tabs are loaded from session storage', function (assert) {
+    assert.expect(3);
+
+    sessionStorage.setItem('tabs', JSON.stringify([{
+      baseUrl: null,
+      url: null,
+      label: null
+    }, {
+      baseUrl: '/cases/1',
+      url: '/cases/1/user',
+      label: 'Case 1'
+    }, {
+      baseUrl: '/cases/2',
+      url: '/cases/2/user',
+      label: 'Case 2'
+    }]));
+
+    login();
+
+    visit('/');
+
+    andThen(function () {
+      var $tabElements = getTabElements();
+      assert.equal($tabElements.length, 2);
+
+      var $firstTabElement = $tabElements.eq(0);
+      var $secondTabElement = $tabElements.eq(1);
+      assert.equal($firstTabElement.text().trim(), 'Case 1');
+      assert.equal($secondTabElement.text().trim(), 'Case 2');
+    });
+  });
+
+  qunit.test('tabs can be closed', function (assert) {
+    assert.expect(9);
+
+    login();
+
+    visit('/');
+    visit('/cases/1');
+    visit('/cases/2');
+    visit('/cases/3');
+
+    andThen(function () {
+      var $activeTabElement = getActiveTabElement();
+      closeTab($activeTabElement);
+    });
+
+    andThen(function () {
+      var $tabElements = getTabElements();
+      assert.equal($tabElements.length, 2);
+      var $firstTabElement = $tabElements.eq(0);
+      var $secondTabElement = $tabElements.eq(1);
+      assert.equal(currentURL(), '/cases/2');
+      assert.ok(!getIsActiveTabElement($firstTabElement));
+      assert.ok(getIsActiveTabElement($secondTabElement));
+    });
+
+    andThen(function () {
+      var $firstTabElement = getTabElements().eq(0);
+      closeTab($firstTabElement);
+    });
+
+    andThen(function () {
+      var $tabElements = getTabElements();
+      assert.equal($tabElements.length, 1);
+      var $firstTabElement = $tabElements.eq(0);
+      assert.equal(currentURL(), '/cases/2');
+      assert.ok(getIsActiveTabElement($firstTabElement));
+    });
+
+    andThen(function () {
+      var $firstTabElement = getTabElements().eq(0);
+      closeTab($firstTabElement);
+    });
+
+    andThen(function () {
+      var $tabElements = getTabElements();
+      assert.equal($tabElements.length, 0);
+      assert.equal(currentURL(), '/');
+    });
+  });
+
+  qunit.test('tabs remember scroll position', function (assert) {
+    assert.expect(5);
+
+    login();
+
+    visit('/styleguide');
+
+    andThen(function () {
+      var $scrollPaneElement = getScrollPaneElement();
+      scrollElement($scrollPaneElement, 10);
+    });
+
+    visit('/cases/1');
+
+    andThen(function () {
+      var $scrollPaneElement = getScrollPaneElement();
+      scrollElement($scrollPaneElement, 20);
+    });
+
+    visit('/cases/2');
+
+    andThen(function () {
+      var $scrollPaneElement = getScrollPaneElement();
+      scrollElement($scrollPaneElement, 30);
+    });
+
+    andThen(function () {
+      var $firstTabElement = getTabElements().eq(0);
+      $firstTabElement.click();
+    });
+
+    andThen(function () {
+      var $scrollPaneElement = getScrollPaneElement();
+      var scrollPosition = getScrollPosition($scrollPaneElement);
+      assert.equal(scrollPosition, 20);
+    });
+
+    andThen(function () {
+      var $secondTabElement = getTabElements().eq(1);
+      $secondTabElement.click();
+    });
+
+    andThen(function () {
+      var $scrollPaneElement = getScrollPaneElement();
+      var scrollPosition = getScrollPosition($scrollPaneElement);
+      assert.equal(scrollPosition, 30);
+    });
+
+    visit('/cases/1');
+
+    andThen(function () {
+      var $scrollPaneElement = getScrollPaneElement();
+      var scrollPosition = getScrollPosition($scrollPaneElement);
+      assert.equal(scrollPosition, 20);
+    });
+
+    visit('/cases/2');
+
+    andThen(function () {
+      var $scrollPaneElement = getScrollPaneElement();
+      var scrollPosition = getScrollPosition($scrollPaneElement);
+      assert.equal(scrollPosition, 30);
+    });
+
+    closeAllTabs();
+
+    andThen(function () {
+      var $scrollPaneElement = getScrollPaneElement();
+      var scrollPosition = getScrollPosition($scrollPaneElement);
+      assert.equal(scrollPosition, 10);
+    });
+  });
+
+  function getTabElements() {
+    return find('.nav-tabs__item');
+  }
+
+  function getActiveTabElement() {
+    return getTabElements().filter('.is-active');
+  }
+
+  function getIsActiveTabElement(element) {
+    return $(element).hasClass('is-active');
+  }
+
+  function getScrollPaneElement() {
+    return find('.session__content > .ko-scroller');
+  }
+
+  function scrollElement(element, scrollTop) {
+    $(element).scrollTop(scrollTop).scroll();
+  }
+
+  function getScrollPosition(element) {
+    return $(element).scrollTop();
+  }
+
+  function closeTab(tabElement) {
+    andThen(function () {
+      $(tabElement).find('.nav-tabs__close').click();
+    });
+  }
+
+  function closeAllTabs() {
+    andThen(function () {
+      var $tabElements = getTabElements();
+      $tabElements.each(function (index, tabElement) {
+        closeTab(tabElement);
+      });
+    });
+  }
+
+});
 define('frontend-cp/tests/assertions/properties-equal', ['exports', 'ember', 'qunit'], function (exports, Ember, QUnit) {
 
   'use strict';
@@ -43233,7 +43676,7 @@ define('frontend-cp/tests/assertions/properties-equal', ['exports', 'ember', 'qu
   }
 
 });
-define('frontend-cp/tests/fixtures/MockBrowser', ['exports'], function (exports) {
+define('frontend-cp/tests/fixtures/browser/mock-browser', ['exports'], function (exports) {
 
   'use strict';
 
@@ -43241,21 +43684,43 @@ define('frontend-cp/tests/fixtures/MockBrowser', ['exports'], function (exports)
 
   function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
+  var Location = function Location() {
+    var url = arguments.length <= 0 || arguments[0] === undefined ? '/' : arguments[0];
+
+    _classCallCheck(this, Location);
+
+    var linkElement = document.createElement('a');
+    linkElement.href = url;
+
+    this.hash = linkElement.hash;
+    this.host = linkElement.host;
+    this.hostname = linkElement.hostname;
+    this.href = linkElement.href;
+    this.origin = linkElement.origin;
+    this.pathname = linkElement.pathname;
+    this.port = linkElement.port;
+    this.protocol = linkElement.protocol;
+    this.search = linkElement.search;
+  };
+
   var History = (function () {
     function History() {
       var _ref = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
+      var _ref$location = _ref.location;
+      var location = _ref$location === undefined ? null : _ref$location;
       var _ref$state = _ref.state;
       var state = _ref$state === undefined ? null : _ref$state;
       var _ref$title = _ref.title;
       var title = _ref$title === undefined ? null : _ref$title;
-      var _ref$path = _ref.path;
-      var path = _ref$path === undefined ? '/' : _ref$path;
 
       _classCallCheck(this, History);
 
+      this._location = location || new Location();
       this._entries = [];
       this._currentIndex = -1;
+
+      var path = this._location.href;
       this.pushState(state, title, path);
     }
 
@@ -43291,16 +43756,33 @@ define('frontend-cp/tests/fixtures/MockBrowser', ['exports'], function (exports)
           path: path
         });
         this._currentIndex = this._entries.length - 1;
+        var newLocation = new Location(path);
+        Object.assign(this._location, newLocation);
       }
     }, {
       key: 'replaceState',
       value: function replaceState(state, title, path) {
+        if (arguments.length < 3) {
+          var currentItem = this._entries[this._currentIndex] || {
+            state: null,
+            title: null,
+            path: null
+          };
+          if (arguments.length < 2) {
+            title = currentItem.title;
+          }
+          if (arguments.length < 3) {
+            path = currentItem.path;
+          }
+        }
         this._currentIndex = Math.max(0, this._currentIndex);
         this._entries[this._currentIndex] = {
           state: state,
           title: title,
           path: path
         };
+        var newLocation = this._entries[this._currentIndex];
+        Object.assign(this._location, newLocation);
       }
     }, {
       key: 'length',
@@ -43320,25 +43802,104 @@ define('frontend-cp/tests/fixtures/MockBrowser', ['exports'], function (exports)
     return History;
   })();
 
-  var Location = function Location(url) {
-    _classCallCheck(this, Location);
-
-    var linkElement = document.createElement('a');
-    linkElement.href = url;
-
-    this.hash = linkElement.hash;
-    this.host = linkElement.host;
-    this.hostname = linkElement.hostname;
-    this.href = linkElement.href;
-    this.origin = linkElement.origin;
-    this.pathname = linkElement.pathname;
-    this.port = linkElement.port;
-    this.protocol = linkElement.protocol;
-    this.search = linkElement.search;
-  };
-
-  exports.History = History;
   exports.Location = Location;
+  exports.History = History;
+
+});
+define('frontend-cp/tests/fixtures/location/mock-location', ['exports', 'ember', 'frontend-cp/tests/fixtures/browser/mock-browser'], function (exports, Ember, mock_browser) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].HistoryLocation.extend({
+    init: function init() {
+      var location = new mock_browser.Location();
+      var history = new mock_browser.History({
+        location: location
+      });
+      this.set('location', location);
+      this.set('history', history);
+      this._super();
+      this.initState();
+      this.replaceState(this.formatURL('/'));
+    }
+  });
+
+});
+define('frontend-cp/tests/fixtures/router/mock-router', ['exports', 'ember', 'frontend-cp/tests/fixtures/location/mock-location'], function (exports, Ember, MockLocation) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Object.extend(Ember['default'].Evented, {
+    init: function init() {
+      this._super();
+      this.set('location', this.get('location') || MockLocation['default'].create());
+    },
+    location: null,
+    transitionTo: function transitionTo(url) {
+      var _this = this;
+
+      var location = this.get('location');
+      var path = location.formatURL(url);
+      var state = {
+        path: path
+      };
+      location.get('history').pushState(state, null, path);
+      return Ember['default'].RSVP.resolve().then(function () {
+        _this.trigger('didTransition');
+      });
+    }
+  });
+
+});
+define('frontend-cp/tests/fixtures/services/mock-local-store', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Service.extend({
+    _localStore: null,
+    _sessionStore: null,
+
+    init: function init() {
+      this._super();
+      this.set('_localStore', {});
+      this.set('_sessionStore', {});
+    },
+
+    getItem: function getItem(key) {
+      var _ref = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+
+      var _ref$persist = _ref.persist;
+      var persist = _ref$persist === undefined ? false : _ref$persist;
+
+      var store = this.get(persist ? '_localStore' : '_sessionStore');
+      return store[key];
+    },
+
+    setItem: function setItem(key, value) {
+      var _ref2 = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+
+      var _ref2$persist = _ref2.persist;
+      var persist = _ref2$persist === undefined ? false : _ref2$persist;
+
+      var store = this.get(persist ? '_localStore' : '_sessionStore');
+      store[key] = value;
+    },
+
+    removeItem: function removeItem(key) {
+      var _ref3 = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+
+      var _ref3$persist = _ref3.persist;
+      var persist = _ref3$persist === undefined ? false : _ref3$persist;
+
+      var store = this.get(persist ? '_localStore' : '_sessionStore');
+      delete store[key];
+    },
+
+    clearAll: function clearAll() {
+      this.set('_localStore', {});
+      this.set('_sessionStore', {});
+    }
+  });
 
 });
 define('frontend-cp/tests/helpers/format-date', ['exports', 'ember'], function (exports, Ember) {
@@ -43411,7 +43972,6 @@ define('frontend-cp/tests/helpers/login', ['exports', 'ember'], function (export
   exports['default'] = Ember['default'].Test.registerAsyncHelper('login', function () {
 
     localStorage.removeItem('sessionId');
-    localStorage.removeItem('tabs');
 
     visit('/login');
 
@@ -44397,6 +44957,309 @@ define('frontend-cp/tests/integration/components/ko-session-widgets/component-te
       assert.equal(this.$('div.flag__body').text().trim(), 'John Doe');
     });
   });
+
+});
+define('frontend-cp/tests/integration/components/ko-tabs/component-test', ['ember-qunit', 'ember-truth-helpers/helpers/equal', 'ember-truth-helpers/utils/register-helper', 'ember'], function (ember_qunit, equal, register_helper, Ember) {
+
+  'use strict';
+
+  ember_qunit.moduleForComponent('/ko-tabs', 'Integration | Component | ko tabs', {
+    integration: true,
+    beforeEach: function beforeEach() {
+      register_helper.registerHelper('eq', equal.equalHelper);
+    }
+  });
+
+  ember_qunit.test('it renders an empty component for no items', function (assert) {
+    assert.expect(1);
+
+    this.render(Ember['default'].HTMLBars.template((function () {
+      return {
+        meta: {
+          'revision': 'Ember@1.13.6',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 1,
+              'column': 11
+            }
+          }
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [['content', 'ko-tabs', ['loc', [null, [1, 0], [1, 11]]]]],
+        locals: [],
+        templates: []
+      };
+    })()));
+
+    assert.equal(this.$().text().trim(), '');
+  });
+
+  ember_qunit.test('it renders tabs for each item', function (assert) {
+    var _this = this;
+
+    assert.expect(9);
+
+    var tabs = [{
+      url: '/case/1',
+      label: 'Case 1'
+    }, {
+      url: '/case/2',
+      label: 'Case 2'
+    }];
+    this.set('tabs', tabs);
+
+    this.render(Ember['default'].HTMLBars.template((function () {
+      return {
+        meta: {
+          'revision': 'Ember@1.13.6',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 1,
+              'column': 21
+            }
+          }
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [['inline', 'ko-tabs', [], ['tabs', ['subexpr', '@mut', [['get', 'tabs', ['loc', [null, [1, 15], [1, 19]]]]], [], []]], ['loc', [null, [1, 0], [1, 21]]]]],
+        locals: [],
+        templates: []
+      };
+    })()));
+
+    var $tabElements = this.$('.nav-tabs__item');
+    assert.equal($tabElements.length, 2);
+
+    var $firstItem = $tabElements.eq(0);
+    assert.equal($firstItem.find('.nav-tabs__label').text().trim(), 'Case 1');
+    assert.ok(!$firstItem.hasClass('is-active'));
+
+    var $secondItem = $tabElements.eq(1);
+    assert.equal($secondItem.find('.nav-tabs__label').text().trim(), 'Case 2');
+    assert.ok(!$secondItem.hasClass('is-active'));
+
+    var extraTab = {
+      url: '/case/3',
+      label: 'Case 3'
+    };
+
+    Ember['default'].run(function () {
+      _this.tabs.pushObject(extraTab);
+    });
+
+    $tabElements = this.$('.nav-tabs__item');
+    assert.equal($tabElements.length, 3);
+
+    var $thirdItem = $tabElements.eq(2);
+    assert.equal($thirdItem.find('.nav-tabs__label').text().trim(), 'Case 3');
+    assert.ok(!$thirdItem.hasClass('is-active'));
+
+    Ember['default'].run(function () {
+      _this.tabs.removeObject(extraTab);
+    });
+
+    $tabElements = this.$('.nav-tabs__item');
+    assert.equal($tabElements.length, 2);
+  });
+
+  ember_qunit.test('tabs can be selected', function (assert) {
+    assert.expect(6);
+
+    var tabs = [{
+      url: '/case/1',
+      label: 'Case 1'
+    }, {
+      url: '/case/2',
+      label: 'Case 2'
+    }];
+    this.set('tabs', tabs);
+    this.set('selectedTab', tabs[0]);
+
+    this.render(Ember['default'].HTMLBars.template((function () {
+      return {
+        meta: {
+          'revision': 'Ember@1.13.6',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 1,
+              'column': 45
+            }
+          }
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [['inline', 'ko-tabs', [], ['tabs', ['subexpr', '@mut', [['get', 'tabs', ['loc', [null, [1, 15], [1, 19]]]]], [], []], 'selectedTab', ['subexpr', '@mut', [['get', 'selectedTab', ['loc', [null, [1, 32], [1, 43]]]]], [], []]], ['loc', [null, [1, 0], [1, 45]]]]],
+        locals: [],
+        templates: []
+      };
+    })()));
+
+    var $tabElements = this.$('.nav-tabs__item');
+    var $firstItem = $tabElements.eq(0);
+    var $secondItem = $tabElements.eq(1);
+
+    assert.ok($firstItem.hasClass('is-active'));
+    assert.ok(!$secondItem.hasClass('is-active'));
+
+    this.set('selectedTab', tabs[1]);
+
+    assert.ok(!$firstItem.hasClass('is-active'));
+    assert.ok($secondItem.hasClass('is-active'));
+
+    this.set('selectedTab', null);
+
+    assert.ok(!$firstItem.hasClass('is-active'));
+    assert.ok(!$secondItem.hasClass('is-active'));
+  });
+
+  ember_qunit.test('tabs can be closed', function (assert) {
+    assert.expect(8);
+
+    var firstTab = {
+      url: '/case/1',
+      label: 'Case 1'
+    };
+    var secondTab = {
+      url: '/case/2',
+      label: 'Case 2'
+    };
+    var thirdTab = {
+      url: '/case/3',
+      label: 'Case 3'
+    };
+    var fourthTab = {
+      url: '/case/3',
+      label: 'Case 4'
+    };
+    var tabs = [firstTab, secondTab, thirdTab, fourthTab];
+    this.set('tabs', tabs);
+    this.set('selectedTab', secondTab);
+
+    this.render(Ember['default'].HTMLBars.template((function () {
+      return {
+        meta: {
+          'revision': 'Ember@1.13.6',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 1,
+              'column': 45
+            }
+          }
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [['inline', 'ko-tabs', [], ['tabs', ['subexpr', '@mut', [['get', 'tabs', ['loc', [null, [1, 15], [1, 19]]]]], [], []], 'selectedTab', ['subexpr', '@mut', [['get', 'selectedTab', ['loc', [null, [1, 32], [1, 43]]]]], [], []]], ['loc', [null, [1, 0], [1, 45]]]]],
+        locals: [],
+        templates: []
+      };
+    })()));
+
+    var $tabElements = this.$('.nav-tabs__item');
+    var $firstItem = $tabElements.eq(0);
+    var $secondItem = $tabElements.eq(1);
+    var $thirdItem = $tabElements.eq(2);
+    var $fourthItem = $tabElements.eq(3);
+
+    getTabCloseButton($fourthItem).click();
+
+    assert.deepEqual(this.get('tabs'), [firstTab, secondTab, thirdTab]);
+    assert.equal(this.get('selectedTab'), secondTab);
+
+    getTabCloseButton($secondItem).click();
+
+    assert.deepEqual(this.get('tabs'), [firstTab, thirdTab]);
+    assert.equal(this.get('selectedTab'), thirdTab);
+
+    getTabCloseButton($thirdItem).click();
+
+    assert.deepEqual(this.get('tabs'), [firstTab]);
+    assert.equal(this.get('selectedTab'), firstTab);
+
+    getTabCloseButton($firstItem).click();
+    assert.deepEqual(this.get('tabs'), []);
+    assert.equal(this.get('selectedTab'), null);
+  });
+
+  function getTabCloseButton(tabElement) {
+    return $(tabElement).find('.nav-tabs__close');
+  }
 
 });
 define('frontend-cp/tests/integration/components/ko-viewers/component-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
@@ -48252,14 +49115,13 @@ define('frontend-cp/tests/unit/services/context-modal-test', ['frontend-cp/tests
   });
 
 });
-define('frontend-cp/tests/unit/services/route-state-test', ['frontend-cp/tests/helpers/qunit', 'ember', 'frontend-cp/tests/fixtures/MockBrowser'], function (qunit, Ember, MockBrowser) {
+define('frontend-cp/tests/unit/services/route-state-test', ['frontend-cp/tests/helpers/qunit', 'frontend-cp/tests/fixtures/router/mock-router', 'frontend-cp/tests/fixtures/location/mock-location'], function (qunit, MockRouter, MockLocation) {
 
   'use strict';
 
   qunit.moduleFor('service:route-state', {
     beforeEach: function beforeEach() {
-      this.container.register('location:history', createMockLocation(), { instantiate: false });
-      this.container.register('router:main', createMockRouter(this.container), { instantiate: false });
+      this.container.register('router:main', MockRouter['default'].create(), { instantiate: false });
     }
   });
 
@@ -48274,14 +49136,14 @@ define('frontend-cp/tests/unit/services/route-state-test', ['frontend-cp/tests/h
   qunit.test('it gets the history API state', function (assert) {
     assert.expect(1);
 
-    var mockLocation = createMockLocation({
+    var location = createMockLocation({
       rootUrl: '/root/',
       path: '/initial',
       state: {
         initial: true
       }
     });
-    this.container.register('location:history', mockLocation, { instantiate: false });
+    this.container.lookup('router:main').set('location', location);
 
     var service = this.subject();
 
@@ -48291,50 +49153,50 @@ define('frontend-cp/tests/unit/services/route-state-test', ['frontend-cp/tests/h
   qunit.test('it extends the history API state', function (assert) {
     assert.expect(6);
 
-    var mockLocation = createMockLocation({
+    var location = createMockLocation({
       rootUrl: '/root/',
       path: '/initial'
     });
-    this.container.register('location:history', mockLocation, { instantiate: false });
+    this.container.lookup('router:main').set('location', location);
 
     var service = this.subject();
 
-    assert.equal(mockLocation.get('history').length, 1);
+    assert.equal(location.get('history').length, 1);
     assert.deepEqual(service.getState(), { path: '/root/initial' });
 
     service.updateState({ update1: true, update2: true });
 
-    assert.equal(mockLocation.get('history').length, 1);
+    assert.equal(location.get('history').length, 1);
     assert.deepEqual(service.getState(), { path: '/root/initial', update1: true, update2: true });
 
     service.updateState({ update3: true, update4: true });
 
-    assert.equal(mockLocation.get('history').length, 1);
+    assert.equal(location.get('history').length, 1);
     assert.deepEqual(service.getState(), { path: '/root/initial', update1: true, update2: true, update3: true, update4: true });
   });
 
   qunit.test('it transitions to a history API state', function (assert) {
     assert.expect(6);
 
-    var mockLocation = createMockLocation({
+    var location = createMockLocation({
       rootUrl: '/root/',
       path: '/initial'
     });
-    this.container.register('location:history', mockLocation, { instantiate: false });
+    this.container.lookup('router:main').set('location', location);
 
     var done = assert.async();
 
     var service = this.subject();
 
-    assert.equal(mockLocation.get('history').length, 1);
+    assert.equal(location.get('history').length, 1);
     assert.deepEqual(service.getState(), { path: '/root/initial' });
 
     service.transitionToState('/state', { state: true }).then(function () {
-      assert.equal(mockLocation.get('history').length, 2);
+      assert.equal(location.get('history').length, 2);
       assert.deepEqual(service.getState(), { path: '/root/state', state: true });
 
       service.transitionToState('/stateless').then(function () {
-        assert.equal(mockLocation.get('history').length, 3);
+        assert.equal(location.get('history').length, 3);
         assert.deepEqual(service.getState(), { path: '/root/stateless' });
         done();
       });
@@ -48350,53 +49212,31 @@ define('frontend-cp/tests/unit/services/route-state-test', ['frontend-cp/tests/h
     var path = _ref$path === undefined ? '/' : _ref$path;
     var _ref$state = _ref.state;
     var state = _ref$state === undefined ? null : _ref$state;
-    var _ref$title = _ref.title;
-    var title = _ref$title === undefined ? null : _ref$title;
 
-    var location = Ember['default'].HistoryLocation.create({
-      rootURL: rootUrl,
-      location: new MockBrowser.Location(path),
-      history: new MockBrowser.History()
+    var location = MockLocation['default'].create({
+      rootURL: rootUrl
     });
 
-    location.initState();
+    location.replaceState(location.formatURL(path));
 
     if (state) {
-      Object.assign(location.get('history').state, state);
+      var _history = location.get('history');
+      var currentState = location.getState();
+      var updatedState = Object.assign({}, currentState, state);
+      _history.replaceState(updatedState, null, currentState.path);
     }
 
     return location;
   }
 
-  function createMockRouter(container) {
-    var MockRouter = Ember['default'].Object.extend(Ember['default'].Evented, {
-      transitionTo: function transitionTo(url) {
-        var _this = this;
-
-        var location = container.lookup('location:history');
-        var path = location.formatURL(url);
-        var state = {
-          path: path
-        };
-        location.get('history').pushState(state, null, path);
-        location.set('location', new MockBrowser.Location(path));
-        return Ember['default'].RSVP.resolve().then(function () {
-          _this.trigger('didTransition');
-        });
-      }
-    });
-    return MockRouter.create();
-  }
-
 });
-define('frontend-cp/tests/unit/services/tabs-test', ['frontend-cp/tests/helpers/qunit', 'ember'], function (qunit, Ember) {
+define('frontend-cp/tests/unit/services/tabs-test', ['frontend-cp/tests/helpers/qunit', 'frontend-cp/tests/fixtures/services/mock-local-store'], function (qunit, MockLocalStoreService) {
 
   'use strict';
 
   qunit.moduleFor('service:tabs', {
     beforeEach: function beforeEach() {
-      var localStoreService = createMockLocalStoreService();
-      this.container.register('service:localStore', localStoreService, { instantiate: false });
+      this.container.register('service:localStore', MockLocalStoreService['default']);
     }
   });
 
@@ -48441,7 +49281,7 @@ define('frontend-cp/tests/unit/services/tabs-test', ['frontend-cp/tests/helpers/
   qunit.test('it loads tabs from session storage', function (assert) {
     assert.expect(5);
 
-    var localStoreService = createMockLocalStoreService();
+    var localStoreService = MockLocalStoreService['default'].create();
     this.container.register('service:localStore', localStoreService, { instantiate: false });
 
     var service = this.subject();
@@ -48485,14 +49325,14 @@ define('frontend-cp/tests/unit/services/tabs-test', ['frontend-cp/tests/helpers/
   });
 
   qunit.test('it saves tabs to session storage', function (assert) {
-    assert.expect(2);
+    assert.expect(1);
 
-    var localStoreService = createMockLocalStoreService();
-    this.container.register('service:localStore', localStoreService, { instantiate: false });
+    this.container.register('service:localStore', MockLocalStoreService['default']);
 
     var service = this.subject();
 
-    assert.equal(localStoreService.getItem('tabs'), undefined);
+    var localStoreService = MockLocalStoreService['default'].create();
+    this.container.register('service:localStore', localStoreService, { instantiate: false });
 
     service.saveTabsToStorage([service.createTab({
       baseUrl: '/cases/1',
@@ -48528,55 +49368,6 @@ define('frontend-cp/tests/unit/services/tabs-test', ['frontend-cp/tests/helpers/
       label: 'Case 3'
     }]);
   });
-
-  function createMockLocalStoreService() {
-    var MockLocalStore = Ember['default'].Service.extend({
-      _localStore: null,
-      _sessionStore: null,
-
-      init: function init() {
-        this._super();
-        this.set('_localStore', {});
-        this.set('_sessionStore', {});
-      },
-
-      getItem: function getItem(key) {
-        var _ref = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
-
-        var _ref$persist = _ref.persist;
-        var persist = _ref$persist === undefined ? false : _ref$persist;
-
-        var store = this.get(persist ? '_localStore' : '_sessionStore');
-        return store[key];
-      },
-
-      setItem: function setItem(key, value) {
-        var _ref2 = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
-
-        var _ref2$persist = _ref2.persist;
-        var persist = _ref2$persist === undefined ? false : _ref2$persist;
-
-        var store = this.get(persist ? '_localStore' : '_sessionStore');
-        store[key] = value;
-      },
-
-      removeItem: function removeItem(key) {
-        var _ref3 = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
-
-        var _ref3$persist = _ref3.persist;
-        var persist = _ref3$persist === undefined ? false : _ref3$persist;
-
-        var store = this.get(persist ? '_localStore' : '_sessionStore');
-        delete store[key];
-      },
-
-      clearAll: function clearAll() {
-        this.set('_localStore', {});
-        this.set('_sessionStore', {});
-      }
-    });
-    return MockLocalStore.create();
-  }
 
 });
 define('frontend-cp/tests/unit/services/url-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
@@ -48652,7 +49443,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+7b88162a"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+8e8066f4"});
 }
 
 /* jshint ignore:end */
