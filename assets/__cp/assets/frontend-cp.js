@@ -19779,151 +19779,36 @@ define('frontend-cp/components/ko-reorderable-list/component', ['exports', 'embe
     //Params
     items: null,
 
-    displayList: null,
     draggedItem: null,
-
-    itemToBeDragged: null,
-    ghostItem: null,
-
-    classNames: ['ko-reorderable-list'],
-
-    /*
-     * Fired whenever items is updated on the parent
-     * re-syncs user list with actual.
-     */
-    initDisplayList: (function () {
-      var _this = this;
-
-      this.set('displayList', []);
-
-      // create a new array and add each item individually
-      // else displayList can represent a DS.hasMany relationship
-      // (if the item list is a relationship CP)
-      this.get('items').forEach(function (item) {
-        _this.get('displayList').pushObject(item);
-      });
-    }).on('init').observes('items.@each'),
-
-    ghostItemIndex: (function () {
-      return this.get('displayList').indexOf(this.get('ghostItem'));
-    }).property('displayList.@each', 'ghostItem'),
-
-    draggedItemIndex: (function () {
-      return this.get('displayList').indexOf(this.get('draggedItem'));
-    }).property('displayList.@each', 'draggedItem'),
 
     actions: {
 
       itemStartedBeingDragged: function itemStartedBeingDragged(item) {
-        this.set('itemToBeDragged', item);
-        // clone item (Ember.copy complains about implementing cloneable)
-        var ghostItem = JSON.parse(JSON.stringify(item));
-        this.set('ghostItem', ghostItem);
+        this.set('draggedItem', item);
       },
 
       wasDraggedOverItem: function wasDraggedOverItem(targetItem) {
-        var ghostItem = this.get('ghostItem');
-        var itemBeingDragged = this.get('itemToBeDragged');
-        if (ghostItem === targetItem || itemBeingDragged === targetItem) {
+        var draggedItem = this.get('draggedItem');
+
+        if (targetItem === draggedItem) {
+          // it's dragged over itself
           return;
         }
 
-        //hide original
-        this.set('draggedItem', itemBeingDragged);
+        var items = this.get('items');
+        var draggedItemIndex = items.indexOf(draggedItem);
+        var targetItemIndex = items.indexOf(targetItem);
 
-        var draggedItemIndex = this.get('displayList').indexOf(this.get('draggedItem'));
-        var ghostItemIndex = this.get('displayList').indexOf(ghostItem);
-        var newIndex = this.get('displayList').indexOf(targetItem);
-
-        if (ghostItemIndex > -1) {
-          this.displayList.removeAt(ghostItemIndex);
-        }
-
-        // we haven't moved anywhere before
-        if (ghostItemIndex === -1) {
-          if (newIndex > draggedItemIndex) {
-            // we want to put the new element ahead of the old one
-            newIndex++;
-          }
-        } else if (newIndex > ghostItemIndex && newIndex < this.displayList.length - 1) {
-          // we are moving forward and not already at the end
-          newIndex++;
-        }
-
-        this.displayList.insertAt(newIndex, ghostItem);
+        items.removeAt(draggedItemIndex);
+        items.insertAt(targetItemIndex, draggedItem);
       },
 
       itemDropped: function itemDropped() {
-        var _this2 = this;
-
-        var draggedItem = this.get('draggedItem');
-
-        var originalIndex = this.get('displayList').indexOf(draggedItem);
-        var ghostItemIndex = this.get('displayList').indexOf(this.get('ghostItem'));
-
-        Ember['default'].run(function () {
-          //swap the ghost item (it's a clone) with the original
-          _this2.displayList.removeAt(ghostItemIndex);
-          _this2.displayList.insertAt(ghostItemIndex, draggedItem);
-
-          // remove the original from the array
-          _this2.displayList.removeAt(originalIndex);
-        });
-
         this.set('draggedItem', null);
-        this.set('ghostItem', null);
-        this.sendAction('reorderedListAction', this.get('displayList'));
+        this.sendAction('reorderedListAction', this.get('items'));
       }
-
     }
   });
-
-});
-define('frontend-cp/components/ko-reorderable-list/ghost/component', ['exports', 'ember'], function (exports, Ember) {
-
-  'use strict';
-
-  exports['default'] = Ember['default'].Component.extend({
-    classNames: ['ko-reorderable-list_ghost']
-  });
-
-});
-define('frontend-cp/components/ko-reorderable-list/ghost/template', ['exports'], function (exports) {
-
-  'use strict';
-
-  exports['default'] = Ember.HTMLBars.template((function() {
-    return {
-      meta: {
-        "revision": "Ember@1.13.6",
-        "loc": {
-          "source": null,
-          "start": {
-            "line": 1,
-            "column": 0
-          },
-          "end": {
-            "line": 1,
-            "column": 0
-          }
-        },
-        "moduleName": "frontend-cp/components/ko-reorderable-list/ghost/template.hbs"
-      },
-      arity: 0,
-      cachedFragment: null,
-      hasRendered: false,
-      buildFragment: function buildFragment(dom) {
-        var el0 = dom.createDocumentFragment();
-        return el0;
-      },
-      buildRenderNodes: function buildRenderNodes() { return []; },
-      statements: [
-
-      ],
-      locals: [],
-      templates: []
-    };
-  }()));
 
 });
 define('frontend-cp/components/ko-reorderable-list/item/component', ['exports', 'ember'], function (exports, Ember) {
@@ -19933,11 +19818,6 @@ define('frontend-cp/components/ko-reorderable-list/item/component', ['exports', 
   exports['default'] = Ember['default'].Component.extend({
     // Params
     item: null,
-
-    classNameBindings: [':draggable-item', 'isBeingDragged:draggable-item--dragging', 'isGhostItem:draggable-item--ghost'],
-
-    isBeingDragged: false,
-    isGhostItem: false,
 
     onDraggedOver: 'wasDraggedOverItem',
     onDropped: 'itemDropped',
@@ -19977,7 +19857,6 @@ define('frontend-cp/components/ko-reorderable-list/item/handle/component', ['exp
     onDragStop: 'onDragStop',
 
     isGrabbed: false,
-
     setIsGrabbed: (function () {
       this.set('isGrabbed', true);
     }).on('mouseDown'),
@@ -20045,48 +19924,6 @@ define('frontend-cp/components/ko-reorderable-list/item/template', ['exports'], 
   'use strict';
 
   exports['default'] = Ember.HTMLBars.template((function() {
-    var child0 = (function() {
-      return {
-        meta: {
-          "revision": "Ember@1.13.6",
-          "loc": {
-            "source": null,
-            "start": {
-              "line": 2,
-              "column": 2
-            },
-            "end": {
-              "line": 4,
-              "column": 2
-            }
-          },
-          "moduleName": "frontend-cp/components/ko-reorderable-list/item/template.hbs"
-        },
-        arity: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("    ");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createComment("");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n");
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
-          return morphs;
-        },
-        statements: [
-          ["content","ko-reorderable-list/ghost",["loc",[null,[3,4],[3,33]]]]
-        ],
-        locals: [],
-        templates: []
-      };
-    }());
     return {
       meta: {
         "revision": "Ember@1.13.6",
@@ -20097,7 +19934,7 @@ define('frontend-cp/components/ko-reorderable-list/item/template', ['exports'], 
             "column": 0
           },
           "end": {
-            "line": 10,
+            "line": 5,
             "column": 0
           }
         },
@@ -20110,13 +19947,7 @@ define('frontend-cp/components/ko-reorderable-list/item/template', ['exports'], 
         var el0 = dom.createDocumentFragment();
         var el1 = dom.createElement("div");
         dom.setAttribute(el1,"class","reorderable-list_item");
-        var el2 = dom.createTextNode("\n");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createComment("");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("  ");
+        var el2 = dom.createTextNode("\n  ");
         dom.appendChild(el1, el2);
         var el2 = dom.createComment("");
         dom.appendChild(el1, el2);
@@ -20133,19 +19964,17 @@ define('frontend-cp/components/ko-reorderable-list/item/template', ['exports'], 
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
         var element0 = dom.childAt(fragment, [0]);
-        var morphs = new Array(3);
+        var morphs = new Array(2);
         morphs[0] = dom.createMorphAt(element0,1,1);
-        morphs[1] = dom.createMorphAt(element0,4,4);
-        morphs[2] = dom.createMorphAt(element0,6,6);
+        morphs[1] = dom.createMorphAt(element0,3,3);
         return morphs;
       },
       statements: [
-        ["block","if",[["get","isGhostItem",["loc",[null,[2,8],[2,19]]]]],[],0,null,["loc",[null,[2,2],[4,9]]]],
-        ["content","ko-reorderable-list/item/handle",["loc",[null,[7,2],[7,37]]]],
-        ["inline","yield",[["get","item",["loc",[null,[8,10],[8,14]]]]],[],["loc",[null,[8,2],[8,16]]]]
+        ["content","ko-reorderable-list/item/handle",["loc",[null,[2,2],[2,37]]]],
+        ["inline","yield",[["get","item",["loc",[null,[3,10],[3,14]]]]],[],["loc",[null,[3,2],[3,16]]]]
       ],
       locals: [],
-      templates: [child0]
+      templates: []
     };
   }()));
 
@@ -20163,11 +19992,11 @@ define('frontend-cp/components/ko-reorderable-list/template', ['exports'], funct
             "loc": {
               "source": null,
               "start": {
-                "line": 2,
+                "line": 5,
                 "column": 2
               },
               "end": {
-                "line": 13,
+                "line": 11,
                 "column": 2
               }
             },
@@ -20178,28 +20007,24 @@ define('frontend-cp/components/ko-reorderable-list/template', ['exports'], funct
           hasRendered: false,
           buildFragment: function buildFragment(dom) {
             var el0 = dom.createDocumentFragment();
-            var el1 = dom.createTextNode("\n\n    ");
+            var el1 = dom.createTextNode("    ");
             dom.appendChild(el0, el1);
             var el1 = dom.createElement("div");
-            dom.setAttribute(el1,"style","display: inline-block");
-            var el2 = dom.createTextNode("\n      ");
-            dom.appendChild(el1, el2);
+            dom.setAttribute(el1,"class","u-inline-block");
             var el2 = dom.createComment("");
             dom.appendChild(el1, el2);
-            var el2 = dom.createTextNode("\n    ");
-            dom.appendChild(el1, el2);
             dom.appendChild(el0, el1);
-            var el1 = dom.createTextNode("\n\n");
+            var el1 = dom.createTextNode("\n");
             dom.appendChild(el0, el1);
             return el0;
           },
           buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
             var morphs = new Array(1);
-            morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]),1,1);
+            morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]),0,0);
             return morphs;
           },
           statements: [
-            ["inline","yield",[["get","item",["loc",[null,[10,14],[10,18]]]]],[],["loc",[null,[10,6],[10,20]]]]
+            ["inline","yield",[["get","item",["loc",[null,[10,40],[10,44]]]]],[],["loc",[null,[10,32],[10,46]]]]
           ],
           locals: [],
           templates: []
@@ -20215,7 +20040,7 @@ define('frontend-cp/components/ko-reorderable-list/template', ['exports'], funct
               "column": 0
             },
             "end": {
-              "line": 14,
+              "line": 15,
               "column": 0
             }
           },
@@ -20226,19 +20051,30 @@ define('frontend-cp/components/ko-reorderable-list/template', ['exports'], funct
         hasRendered: false,
         buildFragment: function buildFragment(dom) {
           var el0 = dom.createDocumentFragment();
-          var el1 = dom.createComment("");
+          var el1 = dom.createTextNode("\n  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          var el2 = dom.createTextNode("\n\n");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n  ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n\n");
           dom.appendChild(el0, el1);
           return el0;
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
-          dom.insertBoundary(fragment, 0);
-          dom.insertBoundary(fragment, null);
+          var element0 = dom.childAt(fragment, [1]);
+          var morphs = new Array(2);
+          morphs[0] = dom.createAttrMorph(element0, 'class');
+          morphs[1] = dom.createMorphAt(element0,1,1);
           return morphs;
         },
         statements: [
-          ["block","ko-reorderable-list/item",[],["item",["subexpr","@mut",[["get","item",["loc",[null,[3,11],[3,15]]]]],[],[]],"isGhostItem",["subexpr","eq",[["get","index",["loc",[null,[4,22],[4,27]]]],["get","ghostItemIndex",["loc",[null,[4,28],[4,42]]]]],[],["loc",[null,[4,18],[4,43]]]],"isBeingDragged",["subexpr","eq",[["get","index",["loc",[null,[5,25],[5,30]]]],["get","draggedItemIndex",["loc",[null,[5,31],[5,47]]]]],[],["loc",[null,[5,21],[5,48]]]]],0,null,["loc",[null,[2,2],[13,31]]]]
+          ["attribute","class",["concat",[["subexpr","if",[["subexpr","eq",[["get","item",["loc",[null,[3,23],[3,27]]]],["get","draggedItem",["loc",[null,[3,28],[3,39]]]]],[],["loc",[null,[3,19],[3,40]]]],"reorderable-list_item--dragging"],[],["loc",[null,[3,14],[3,76]]]]]]],
+          ["block","ko-reorderable-list/item",[],["item",["subexpr","@mut",[["get","item",["loc",[null,[6,11],[6,15]]]]],[],[]],"isGhostItem",["subexpr","eq",[["get","index",["loc",[null,[7,22],[7,27]]]],["get","ghostItemIndex",["loc",[null,[7,28],[7,42]]]]],[],["loc",[null,[7,18],[7,43]]]],"isBeingDragged",["subexpr","eq",[["get","index",["loc",[null,[8,25],[8,30]]]],["get","draggedItemIndex",["loc",[null,[8,31],[8,47]]]]],[],["loc",[null,[8,21],[8,48]]]],"onDragStarted","itemStartedBeingDragged"],0,null,["loc",[null,[5,2],[11,31]]]]
         ],
         locals: ["item","index"],
         templates: [child0]
@@ -20254,7 +20090,7 @@ define('frontend-cp/components/ko-reorderable-list/template', ['exports'], funct
             "column": 0
           },
           "end": {
-            "line": 14,
+            "line": 15,
             "column": 9
           }
         },
@@ -20277,7 +20113,7 @@ define('frontend-cp/components/ko-reorderable-list/template', ['exports'], funct
         return morphs;
       },
       statements: [
-        ["block","each",[["get","displayList",["loc",[null,[1,8],[1,19]]]]],[],0,null,["loc",[null,[1,0],[14,9]]]]
+        ["block","each",[["get","items",["loc",[null,[1,8],[1,13]]]]],[],0,null,["loc",[null,[1,0],[15,9]]]]
       ],
       locals: [],
       templates: [child0]
@@ -48816,7 +48652,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+78d42844"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+7b88162a"});
 }
 
 /* jshint ignore:end */
