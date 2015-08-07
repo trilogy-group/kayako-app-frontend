@@ -1,7 +1,17 @@
+"use strict";
 /* jshint ignore:start */
 
 /* jshint ignore:end */
 
+define('frontend-cp/acceptance-tests/main', ['exports', 'ember-cli-sri/acceptance-tests/main'], function (exports, main) {
+
+	'use strict';
+
+
+
+	exports['default'] = main['default'];
+
+});
 define('frontend-cp/adapters/access-log', ['exports', 'frontend-cp/adapters/application'], function (exports, ApplicationAdapter) {
 
   'use strict';
@@ -593,7 +603,7 @@ define('frontend-cp/application/template', ['exports'], function (exports) {
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -671,7 +681,7 @@ define('frontend-cp/components/ko-add-participants-context-menu/template', ['exp
     var child0 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -732,7 +742,7 @@ define('frontend-cp/components/ko-add-participants-context-menu/template', ['exp
     var child1 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -784,7 +794,7 @@ define('frontend-cp/components/ko-add-participants-context-menu/template', ['exp
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -922,7 +932,7 @@ define('frontend-cp/components/ko-add-participants-popover/template', ['exports'
       var child0 = (function() {
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -994,7 +1004,7 @@ define('frontend-cp/components/ko-add-participants-popover/template', ['exports'
       }());
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -1044,7 +1054,7 @@ define('frontend-cp/components/ko-add-participants-popover/template', ['exports'
       var child0 = (function() {
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -1149,7 +1159,7 @@ define('frontend-cp/components/ko-add-participants-popover/template', ['exports'
       }());
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -1213,7 +1223,7 @@ define('frontend-cp/components/ko-add-participants-popover/template', ['exports'
     var child2 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -1260,7 +1270,7 @@ define('frontend-cp/components/ko-add-participants-popover/template', ['exports'
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -1344,7 +1354,7 @@ define('frontend-cp/components/ko-add-user-popover/template', ['exports'], funct
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -1464,7 +1474,7 @@ define('frontend-cp/components/ko-address/template', ['exports'], function (expo
     var child0 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -1530,7 +1540,7 @@ define('frontend-cp/components/ko-address/template', ['exports'], function (expo
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -1612,7 +1622,7 @@ define('frontend-cp/components/ko-admin-card-team/template', ['exports'], functi
       var child0 = (function() {
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -1657,7 +1667,7 @@ define('frontend-cp/components/ko-admin-card-team/template', ['exports'], functi
       }());
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -1745,7 +1755,7 @@ define('frontend-cp/components/ko-admin-card-team/template', ['exports'], functi
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -1799,7 +1809,7 @@ define('frontend-cp/components/ko-admin-card-user/template', ['exports'], functi
     var child0 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -1861,7 +1871,7 @@ define('frontend-cp/components/ko-admin-card-user/template', ['exports'], functi
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -1931,7 +1941,7 @@ define('frontend-cp/components/ko-admin-selectable-card/template', ['exports'], 
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -2048,7 +2058,7 @@ define('frontend-cp/components/ko-admin/case-fields/edit/options/template', ['ex
     var child0 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -2103,7 +2113,7 @@ define('frontend-cp/components/ko-admin/case-fields/edit/options/template', ['ex
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -2180,7 +2190,7 @@ define('frontend-cp/components/ko-admin/case-fields/edit/priorities/template', [
     var child0 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -2228,7 +2238,7 @@ define('frontend-cp/components/ko-admin/case-fields/edit/priorities/template', [
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -2322,7 +2332,7 @@ define('frontend-cp/components/ko-admin/case-fields/edit/regex/template', ['expo
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -2408,7 +2418,7 @@ define('frontend-cp/components/ko-admin/case-fields/edit/template', ['exports'],
     var child0 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -2543,7 +2553,7 @@ define('frontend-cp/components/ko-admin/case-fields/edit/template', ['exports'],
     var child1 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -2585,7 +2595,7 @@ define('frontend-cp/components/ko-admin/case-fields/edit/template', ['exports'],
     var child2 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -2651,7 +2661,7 @@ define('frontend-cp/components/ko-admin/case-fields/edit/template', ['exports'],
     var child3 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -2763,7 +2773,7 @@ define('frontend-cp/components/ko-admin/case-fields/edit/template', ['exports'],
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -2965,7 +2975,7 @@ define('frontend-cp/components/ko-admin/case-fields/select-type/template', ['exp
     var child0 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -3041,7 +3051,7 @@ define('frontend-cp/components/ko-admin/case-fields/select-type/template', ['exp
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -3100,7 +3110,7 @@ define('frontend-cp/components/ko-admin/case-fields/type-icon/template', ['expor
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -3217,7 +3227,7 @@ define('frontend-cp/components/ko-admin/case-forms/edit/fields/template', ['expo
       var child0 = (function() {
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -3279,7 +3289,7 @@ define('frontend-cp/components/ko-admin/case-forms/edit/fields/template', ['expo
       }());
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -3320,7 +3330,7 @@ define('frontend-cp/components/ko-admin/case-forms/edit/fields/template', ['expo
       var child0 = (function() {
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -3394,7 +3404,7 @@ define('frontend-cp/components/ko-admin/case-forms/edit/fields/template', ['expo
       }());
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -3436,7 +3446,7 @@ define('frontend-cp/components/ko-admin/case-forms/edit/fields/template', ['expo
         var child0 = (function() {
           return {
             meta: {
-              "revision": "Ember@1.13.3",
+              "revision": "Ember@1.13.6",
               "loc": {
                 "source": null,
                 "start": {
@@ -3475,7 +3485,7 @@ define('frontend-cp/components/ko-admin/case-forms/edit/fields/template', ['expo
         }());
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -3516,7 +3526,7 @@ define('frontend-cp/components/ko-admin/case-forms/edit/fields/template', ['expo
       }());
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -3555,7 +3565,7 @@ define('frontend-cp/components/ko-admin/case-forms/edit/fields/template', ['expo
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -3614,7 +3624,7 @@ define('frontend-cp/components/ko-admin/case-forms/edit/template', ['exports'], 
     var child0 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -3695,7 +3705,7 @@ define('frontend-cp/components/ko-admin/case-forms/edit/template', ['exports'], 
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -3929,7 +3939,7 @@ define('frontend-cp/components/ko-admin/page-footer/template', ['exports'], func
     var child0 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -3981,7 +3991,7 @@ define('frontend-cp/components/ko-admin/page-footer/template', ['exports'], func
     var child1 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -4032,7 +4042,7 @@ define('frontend-cp/components/ko-admin/page-footer/template', ['exports'], func
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -4119,7 +4129,7 @@ define('frontend-cp/components/ko-admin/page-header/template', ['exports'], func
     var child0 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -4164,7 +4174,7 @@ define('frontend-cp/components/ko-admin/page-header/template', ['exports'], func
     var child1 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -4216,7 +4226,7 @@ define('frontend-cp/components/ko-admin/page-header/template', ['exports'], func
     var child2 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -4267,7 +4277,7 @@ define('frontend-cp/components/ko-admin/page-header/template', ['exports'], func
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -4417,7 +4427,7 @@ define('frontend-cp/components/ko-agent-dropdown/template', ['exports'], functio
       var child0 = (function() {
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -4472,7 +4482,7 @@ define('frontend-cp/components/ko-agent-dropdown/template', ['exports'], functio
       }());
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -4520,7 +4530,7 @@ define('frontend-cp/components/ko-agent-dropdown/template', ['exports'], functio
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -4742,7 +4752,7 @@ define('frontend-cp/components/ko-avatar/template', ['exports'], function (expor
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -4819,7 +4829,7 @@ define('frontend-cp/components/ko-breadcrumbs/template', ['exports'], function (
     var child0 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -4867,7 +4877,7 @@ define('frontend-cp/components/ko-breadcrumbs/template', ['exports'], function (
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -5185,7 +5195,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
         var child0 = (function() {
           return {
             meta: {
-              "revision": "Ember@1.13.3",
+              "revision": "Ember@1.13.6",
               "loc": {
                 "source": null,
                 "start": {
@@ -5226,7 +5236,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
         }());
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -5265,7 +5275,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
       }());
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -5343,7 +5353,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -5660,7 +5670,7 @@ define('frontend-cp/components/ko-case-field/assignee/template', ['exports'], fu
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -5773,7 +5783,7 @@ define('frontend-cp/components/ko-case-field/checkbox/template', ['exports'], fu
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -5902,7 +5912,7 @@ define('frontend-cp/components/ko-case-field/priority/template', ['exports'], fu
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -5957,7 +5967,7 @@ define('frontend-cp/components/ko-case-field/requester/template', ['exports'], f
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -6010,7 +6020,7 @@ define('frontend-cp/components/ko-case-field/select/template', ['exports'], func
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -6083,7 +6093,7 @@ define('frontend-cp/components/ko-case-field/status/template', ['exports'], func
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -6150,7 +6160,7 @@ define('frontend-cp/components/ko-case-field/tags/template', ['exports'], functi
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -6203,7 +6213,7 @@ define('frontend-cp/components/ko-case-field/text/template', ['exports'], functi
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -6266,7 +6276,7 @@ define('frontend-cp/components/ko-case-field/type/template', ['exports'], functi
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -6323,7 +6333,7 @@ define('frontend-cp/components/ko-case-metric/template', ['exports'], function (
     var child0 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -6391,7 +6401,7 @@ define('frontend-cp/components/ko-case-metric/template', ['exports'], function (
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -6483,7 +6493,7 @@ define('frontend-cp/components/ko-case/macro-selector/template', ['exports'], fu
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -6580,7 +6590,7 @@ define('frontend-cp/components/ko-case/sla-sidebar/metric/template', ['exports']
     var child0 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -6614,7 +6624,7 @@ define('frontend-cp/components/ko-case/sla-sidebar/metric/template', ['exports']
     var child1 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -6660,7 +6670,7 @@ define('frontend-cp/components/ko-case/sla-sidebar/metric/template', ['exports']
     var child2 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -6706,7 +6716,7 @@ define('frontend-cp/components/ko-case/sla-sidebar/metric/template', ['exports']
     var child3 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -6751,7 +6761,7 @@ define('frontend-cp/components/ko-case/sla-sidebar/metric/template', ['exports']
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -6854,7 +6864,7 @@ define('frontend-cp/components/ko-case/sla-sidebar/template', ['exports'], funct
     var child0 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -6895,7 +6905,7 @@ define('frontend-cp/components/ko-case/sla-sidebar/template', ['exports'], funct
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -6962,7 +6972,7 @@ define('frontend-cp/components/ko-cases-list/column/assignee/template', ['export
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -7000,7 +7010,7 @@ define('frontend-cp/components/ko-cases-list/column/assignment-due-at/template',
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -7038,7 +7048,7 @@ define('frontend-cp/components/ko-cases-list/column/created-at/template', ['expo
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -7084,7 +7094,7 @@ define('frontend-cp/components/ko-cases-list/column/creator/template', ['exports
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -7122,7 +7132,7 @@ define('frontend-cp/components/ko-cases-list/column/id/template', ['exports'], f
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -7168,7 +7178,7 @@ define('frontend-cp/components/ko-cases-list/column/last-replier/template', ['ex
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -7206,7 +7216,7 @@ define('frontend-cp/components/ko-cases-list/column/priority/template', ['export
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -7252,7 +7262,7 @@ define('frontend-cp/components/ko-cases-list/column/rating/template', ['exports'
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -7290,7 +7300,7 @@ define('frontend-cp/components/ko-cases-list/column/reply-due-at/template', ['ex
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -7328,7 +7338,7 @@ define('frontend-cp/components/ko-cases-list/column/requester/template', ['expor
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -7366,7 +7376,7 @@ define('frontend-cp/components/ko-cases-list/column/resolution-at/template', ['e
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -7404,7 +7414,7 @@ define('frontend-cp/components/ko-cases-list/column/satisfaction-status/template
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -7442,7 +7452,7 @@ define('frontend-cp/components/ko-cases-list/column/status/template', ['exports'
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -7499,7 +7509,7 @@ define('frontend-cp/components/ko-cases-list/column/subject/template', ['exports
     var child0 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -7538,7 +7548,7 @@ define('frontend-cp/components/ko-cases-list/column/subject/template', ['exports
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -7591,7 +7601,7 @@ define('frontend-cp/components/ko-cases-list/column/type/template', ['exports'],
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -7629,7 +7639,7 @@ define('frontend-cp/components/ko-cases-list/column/updated-at/template', ['expo
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -7705,7 +7715,7 @@ define('frontend-cp/components/ko-cases-list/header/assignee/template', ['export
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -7743,7 +7753,7 @@ define('frontend-cp/components/ko-cases-list/header/assignment-due-at/template',
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -7781,7 +7791,7 @@ define('frontend-cp/components/ko-cases-list/header/created-at/template', ['expo
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -7819,7 +7829,7 @@ define('frontend-cp/components/ko-cases-list/header/creator/template', ['exports
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -7857,7 +7867,7 @@ define('frontend-cp/components/ko-cases-list/header/id/template', ['exports'], f
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -7903,7 +7913,7 @@ define('frontend-cp/components/ko-cases-list/header/last-replier/template', ['ex
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -7941,7 +7951,7 @@ define('frontend-cp/components/ko-cases-list/header/priority/template', ['export
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -7987,7 +7997,7 @@ define('frontend-cp/components/ko-cases-list/header/rating/template', ['exports'
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -8025,7 +8035,7 @@ define('frontend-cp/components/ko-cases-list/header/reply-due-at/template', ['ex
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -8063,7 +8073,7 @@ define('frontend-cp/components/ko-cases-list/header/requester/template', ['expor
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -8101,7 +8111,7 @@ define('frontend-cp/components/ko-cases-list/header/resolution-at/template', ['e
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -8139,7 +8149,7 @@ define('frontend-cp/components/ko-cases-list/header/satisfaction-status/template
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -8177,7 +8187,7 @@ define('frontend-cp/components/ko-cases-list/header/status/template', ['exports'
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -8215,7 +8225,7 @@ define('frontend-cp/components/ko-cases-list/header/subject/template', ['exports
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -8261,7 +8271,7 @@ define('frontend-cp/components/ko-cases-list/header/type/template', ['exports'],
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -8299,7 +8309,7 @@ define('frontend-cp/components/ko-cases-list/header/updated-at/template', ['expo
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -8349,7 +8359,7 @@ define('frontend-cp/components/ko-cases-list/template', ['exports'], function (e
           var child0 = (function() {
             return {
               meta: {
-                "revision": "Ember@1.13.3",
+                "revision": "Ember@1.13.6",
                 "loc": {
                   "source": null,
                   "start": {
@@ -8388,7 +8398,7 @@ define('frontend-cp/components/ko-cases-list/template', ['exports'], function (e
           }());
           return {
             meta: {
-              "revision": "Ember@1.13.3",
+              "revision": "Ember@1.13.6",
               "loc": {
                 "source": null,
                 "start": {
@@ -8429,7 +8439,7 @@ define('frontend-cp/components/ko-cases-list/template', ['exports'], function (e
         }());
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -8473,7 +8483,7 @@ define('frontend-cp/components/ko-cases-list/template', ['exports'], function (e
               var child0 = (function() {
                 return {
                   meta: {
-                    "revision": "Ember@1.13.3",
+                    "revision": "Ember@1.13.6",
                     "loc": {
                       "source": null,
                       "start": {
@@ -8512,7 +8522,7 @@ define('frontend-cp/components/ko-cases-list/template', ['exports'], function (e
               }());
               return {
                 meta: {
-                  "revision": "Ember@1.13.3",
+                  "revision": "Ember@1.13.6",
                   "loc": {
                     "source": null,
                     "start": {
@@ -8553,7 +8563,7 @@ define('frontend-cp/components/ko-cases-list/template', ['exports'], function (e
             }());
             return {
               meta: {
-                "revision": "Ember@1.13.3",
+                "revision": "Ember@1.13.6",
                 "loc": {
                   "source": null,
                   "start": {
@@ -8592,7 +8602,7 @@ define('frontend-cp/components/ko-cases-list/template', ['exports'], function (e
           }());
           return {
             meta: {
-              "revision": "Ember@1.13.3",
+              "revision": "Ember@1.13.6",
               "loc": {
                 "source": null,
                 "start": {
@@ -8631,7 +8641,7 @@ define('frontend-cp/components/ko-cases-list/template', ['exports'], function (e
         }());
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -8670,7 +8680,7 @@ define('frontend-cp/components/ko-cases-list/template', ['exports'], function (e
       }());
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -8713,7 +8723,7 @@ define('frontend-cp/components/ko-cases-list/template', ['exports'], function (e
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -8814,7 +8824,7 @@ define('frontend-cp/components/ko-center/template', ['exports'], function (expor
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -8873,7 +8883,7 @@ define('frontend-cp/components/ko-channel-select/button/template', ['exports'], 
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -8945,7 +8955,7 @@ define('frontend-cp/components/ko-channel-select/template', ['exports'], functio
       var child0 = (function() {
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -8988,7 +8998,7 @@ define('frontend-cp/components/ko-channel-select/template', ['exports'], functio
         var child0 = (function() {
           return {
             meta: {
-              "revision": "Ember@1.13.3",
+              "revision": "Ember@1.13.6",
               "loc": {
                 "source": null,
                 "start": {
@@ -9029,7 +9039,7 @@ define('frontend-cp/components/ko-channel-select/template', ['exports'], functio
         }());
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -9068,7 +9078,7 @@ define('frontend-cp/components/ko-channel-select/template', ['exports'], functio
       }());
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -9111,7 +9121,7 @@ define('frontend-cp/components/ko-channel-select/template', ['exports'], functio
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -9198,7 +9208,7 @@ define('frontend-cp/components/ko-checkbox/template', ['exports'], function (exp
     var child0 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -9237,7 +9247,7 @@ define('frontend-cp/components/ko-checkbox/template', ['exports'], function (exp
     var child1 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -9287,7 +9297,7 @@ define('frontend-cp/components/ko-checkbox/template', ['exports'], function (exp
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -9368,7 +9378,7 @@ define('frontend-cp/components/ko-contact-info/template', ['exports'], function 
     var child0 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -9419,7 +9429,7 @@ define('frontend-cp/components/ko-contact-info/template', ['exports'], function 
     var child1 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -9470,7 +9480,7 @@ define('frontend-cp/components/ko-contact-info/template', ['exports'], function 
     var child2 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -9521,7 +9531,7 @@ define('frontend-cp/components/ko-contact-info/template', ['exports'], function 
     var child3 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -9572,7 +9582,7 @@ define('frontend-cp/components/ko-contact-info/template', ['exports'], function 
     var child4 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -9622,7 +9632,7 @@ define('frontend-cp/components/ko-contact-info/template', ['exports'], function 
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -9782,7 +9792,7 @@ define('frontend-cp/components/ko-context-modal-item/template', ['exports'], fun
       var child0 = (function() {
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -9823,7 +9833,7 @@ define('frontend-cp/components/ko-context-modal-item/template', ['exports'], fun
       }());
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -9877,7 +9887,7 @@ define('frontend-cp/components/ko-context-modal-item/template', ['exports'], fun
         var child0 = (function() {
           return {
             meta: {
-              "revision": "Ember@1.13.3",
+              "revision": "Ember@1.13.6",
               "loc": {
                 "source": null,
                 "start": {
@@ -9918,7 +9928,7 @@ define('frontend-cp/components/ko-context-modal-item/template', ['exports'], fun
         }());
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -9957,7 +9967,7 @@ define('frontend-cp/components/ko-context-modal-item/template', ['exports'], fun
       }());
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -9996,7 +10006,7 @@ define('frontend-cp/components/ko-context-modal-item/template', ['exports'], fun
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -10304,7 +10314,7 @@ define('frontend-cp/components/ko-context-modal/template', ['exports'], function
     var child0 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -10350,7 +10360,7 @@ define('frontend-cp/components/ko-context-modal/template', ['exports'], function
     var child1 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -10416,7 +10426,7 @@ define('frontend-cp/components/ko-context-modal/template', ['exports'], function
     var child2 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -10465,7 +10475,7 @@ define('frontend-cp/components/ko-context-modal/template', ['exports'], function
     var child3 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -10509,7 +10519,7 @@ define('frontend-cp/components/ko-context-modal/template', ['exports'], function
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -10721,7 +10731,7 @@ define('frontend-cp/components/ko-datepicker/template', ['exports'], function (e
     var child0 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -10766,7 +10776,7 @@ define('frontend-cp/components/ko-datepicker/template', ['exports'], function (e
     var child1 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -10814,7 +10824,7 @@ define('frontend-cp/components/ko-datepicker/template', ['exports'], function (e
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -11021,7 +11031,7 @@ define('frontend-cp/components/ko-draggable-dropzone/template', ['exports'], fun
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -11096,7 +11106,7 @@ define('frontend-cp/components/ko-drill-down-context-menu/template', ['exports']
     var child0 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -11137,7 +11147,7 @@ define('frontend-cp/components/ko-drill-down-context-menu/template', ['exports']
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -11218,7 +11228,7 @@ define('frontend-cp/components/ko-drill-down-popover/template', ['exports'], fun
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -11272,7 +11282,7 @@ define('frontend-cp/components/ko-dropdown/container/button/template', ['exports
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -11430,7 +11440,7 @@ define('frontend-cp/components/ko-dropdown/container/content/template', ['export
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -11478,7 +11488,7 @@ define('frontend-cp/components/ko-dropdown/container/template', ['exports'], fun
     var child0 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -11520,7 +11530,7 @@ define('frontend-cp/components/ko-dropdown/container/template', ['exports'], fun
     var child1 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -11561,7 +11571,7 @@ define('frontend-cp/components/ko-dropdown/container/template', ['exports'], fun
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -11636,7 +11646,7 @@ define('frontend-cp/components/ko-dropdown/drill-down/template', ['exports'], fu
       var child0 = (function() {
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -11678,7 +11688,7 @@ define('frontend-cp/components/ko-dropdown/drill-down/template', ['exports'], fu
       var child1 = (function() {
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -11719,7 +11729,7 @@ define('frontend-cp/components/ko-dropdown/drill-down/template', ['exports'], fu
       }());
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -11762,7 +11772,7 @@ define('frontend-cp/components/ko-dropdown/drill-down/template', ['exports'], fu
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -11831,7 +11841,7 @@ define('frontend-cp/components/ko-dropdown/list/group/template', ['exports'], fu
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -11896,7 +11906,7 @@ define('frontend-cp/components/ko-dropdown/list/hr/template', ['exports'], funct
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -11973,7 +11983,7 @@ define('frontend-cp/components/ko-dropdown/list/item/template', ['exports'], fun
       var child0 = (function() {
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -12012,7 +12022,7 @@ define('frontend-cp/components/ko-dropdown/list/item/template', ['exports'], fun
       }());
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -12054,7 +12064,7 @@ define('frontend-cp/components/ko-dropdown/list/item/template', ['exports'], fun
     var child1 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -12095,7 +12105,7 @@ define('frontend-cp/components/ko-dropdown/list/item/template', ['exports'], fun
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -12141,7 +12151,7 @@ define('frontend-cp/components/ko-dropdown/list/template', ['exports'], function
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -12199,7 +12209,7 @@ define('frontend-cp/components/ko-dropdown/select/button/template', ['exports'],
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -12265,7 +12275,7 @@ define('frontend-cp/components/ko-dropdown/select/template', ['exports'], functi
       var child0 = (function() {
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -12308,7 +12318,7 @@ define('frontend-cp/components/ko-dropdown/select/template', ['exports'], functi
         var child0 = (function() {
           return {
             meta: {
-              "revision": "Ember@1.13.3",
+              "revision": "Ember@1.13.6",
               "loc": {
                 "source": null,
                 "start": {
@@ -12349,7 +12359,7 @@ define('frontend-cp/components/ko-dropdown/select/template', ['exports'], functi
         }());
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -12388,7 +12398,7 @@ define('frontend-cp/components/ko-dropdown/select/template', ['exports'], functi
       }());
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -12431,7 +12441,7 @@ define('frontend-cp/components/ko-dropdown/select/template', ['exports'], functi
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -12532,7 +12542,7 @@ define('frontend-cp/components/ko-editable-text/template', ['exports'], function
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -12613,7 +12623,7 @@ define('frontend-cp/components/ko-event-button/template', ['exports'], function 
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -12732,7 +12742,7 @@ define('frontend-cp/components/ko-feed/item/menu/template', ['exports'], functio
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -12781,7 +12791,7 @@ define('frontend-cp/components/ko-feed/item/template', ['exports'], function (ex
     var child0 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -12823,7 +12833,7 @@ define('frontend-cp/components/ko-feed/item/template', ['exports'], function (ex
     var child1 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -12866,7 +12876,7 @@ define('frontend-cp/components/ko-feed/item/template', ['exports'], function (ex
       var child0 = (function() {
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -12924,7 +12934,7 @@ define('frontend-cp/components/ko-feed/item/template', ['exports'], function (ex
       }());
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -12963,7 +12973,7 @@ define('frontend-cp/components/ko-feed/item/template', ['exports'], function (ex
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -13067,7 +13077,7 @@ define('frontend-cp/components/ko-feed/template', ['exports'], function (exports
     var child0 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -13108,7 +13118,7 @@ define('frontend-cp/components/ko-feed/template', ['exports'], function (exports
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -13168,7 +13178,7 @@ define('frontend-cp/components/ko-feedback/template', ['exports'], function (exp
     var child0 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -13263,7 +13273,7 @@ define('frontend-cp/components/ko-feedback/template', ['exports'], function (exp
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -13375,7 +13385,7 @@ define('frontend-cp/components/ko-field/checkbox/single/template', ['exports'], 
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -13422,7 +13432,7 @@ define('frontend-cp/components/ko-field/checkbox/template', ['exports'], functio
     var child0 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -13463,7 +13473,7 @@ define('frontend-cp/components/ko-field/checkbox/template', ['exports'], functio
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -13566,7 +13576,7 @@ define('frontend-cp/components/ko-field/date/template', ['exports'], function (e
     var child0 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -13607,7 +13617,7 @@ define('frontend-cp/components/ko-field/date/template', ['exports'], function (e
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -13706,7 +13716,7 @@ define('frontend-cp/components/ko-field/drill-down/template', ['exports'], funct
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -13844,6 +13854,7 @@ define('frontend-cp/components/ko-field/select/component', ['exports', 'ember', 
         case KeyCodes.tab:
           {
             this.set('showDropdown', false);
+            break;
           }
         case KeyCodes.enter:
           {
@@ -13873,7 +13884,7 @@ define('frontend-cp/components/ko-field/select/template', ['exports'], function 
     var child0 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -13926,7 +13937,7 @@ define('frontend-cp/components/ko-field/select/template', ['exports'], function 
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -14175,7 +14186,7 @@ define('frontend-cp/components/ko-field/tags/template', ['exports'], function (e
     var child0 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -14233,7 +14244,7 @@ define('frontend-cp/components/ko-field/tags/template', ['exports'], function (e
     var child1 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -14283,7 +14294,7 @@ define('frontend-cp/components/ko-field/tags/template', ['exports'], function (e
     var child2 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -14339,7 +14350,7 @@ define('frontend-cp/components/ko-field/tags/template', ['exports'], function (e
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -14454,7 +14465,7 @@ define('frontend-cp/components/ko-field/text-area/template', ['exports'], functi
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -14556,7 +14567,7 @@ define('frontend-cp/components/ko-field/text/template', ['exports'], function (e
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -14634,7 +14645,7 @@ define('frontend-cp/components/ko-file-field/template', ['exports'], function (e
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -14708,7 +14719,7 @@ define('frontend-cp/components/ko-file-size/template', ['exports'], function (ex
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -14764,7 +14775,7 @@ define('frontend-cp/components/ko-info-bar/template', ['exports'], function (exp
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -14826,7 +14837,7 @@ define('frontend-cp/components/ko-limited-text-area/template', ['exports'], func
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -14987,7 +14998,7 @@ define('frontend-cp/components/ko-linked-cases-context-menu/template', ['exports
       var child0 = (function() {
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -15041,7 +15052,7 @@ define('frontend-cp/components/ko-linked-cases-context-menu/template', ['exports
       var child1 = (function() {
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -15100,7 +15111,7 @@ define('frontend-cp/components/ko-linked-cases-context-menu/template', ['exports
         var child0 = (function() {
           return {
             meta: {
-              "revision": "Ember@1.13.3",
+              "revision": "Ember@1.13.6",
               "loc": {
                 "source": null,
                 "start": {
@@ -15181,7 +15192,7 @@ define('frontend-cp/components/ko-linked-cases-context-menu/template', ['exports
         }());
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -15238,7 +15249,7 @@ define('frontend-cp/components/ko-linked-cases-context-menu/template', ['exports
       var child3 = (function() {
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -15290,7 +15301,7 @@ define('frontend-cp/components/ko-linked-cases-context-menu/template', ['exports
       }());
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -15411,7 +15422,7 @@ define('frontend-cp/components/ko-linked-cases-context-menu/template', ['exports
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -15493,7 +15504,7 @@ define('frontend-cp/components/ko-linked-cases/template', ['exports'], function 
     var child0 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -15541,7 +15552,7 @@ define('frontend-cp/components/ko-linked-cases/template', ['exports'], function 
     var child1 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -15615,7 +15626,7 @@ define('frontend-cp/components/ko-linked-cases/template', ['exports'], function 
     var child2 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -15660,7 +15671,7 @@ define('frontend-cp/components/ko-linked-cases/template', ['exports'], function 
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -15749,7 +15760,7 @@ define('frontend-cp/components/ko-loader/template', ['exports'], function (expor
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -15803,7 +15814,7 @@ define('frontend-cp/components/ko-login-otp/template', ['exports'], function (ex
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -15868,7 +15879,7 @@ define('frontend-cp/components/ko-login-password/template', ['exports'], functio
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -15933,7 +15944,7 @@ define('frontend-cp/components/ko-login-reset/template', ['exports'], function (
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -15998,7 +16009,7 @@ define('frontend-cp/components/ko-notification-badge/template', ['exports'], fun
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -16389,7 +16400,7 @@ define('frontend-cp/components/ko-option-list-drill-down/template', ['exports'],
     var child0 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -16445,7 +16456,7 @@ define('frontend-cp/components/ko-option-list-drill-down/template', ['exports'],
     var child1 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -16496,7 +16507,7 @@ define('frontend-cp/components/ko-option-list-drill-down/template', ['exports'],
       var child0 = (function() {
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -16550,7 +16561,7 @@ define('frontend-cp/components/ko-option-list-drill-down/template', ['exports'],
         var child0 = (function() {
           return {
             meta: {
-              "revision": "Ember@1.13.3",
+              "revision": "Ember@1.13.6",
               "loc": {
                 "source": null,
                 "start": {
@@ -16609,7 +16620,7 @@ define('frontend-cp/components/ko-option-list-drill-down/template', ['exports'],
         var child1 = (function() {
           return {
             meta: {
-              "revision": "Ember@1.13.3",
+              "revision": "Ember@1.13.6",
               "loc": {
                 "source": null,
                 "start": {
@@ -16662,7 +16673,7 @@ define('frontend-cp/components/ko-option-list-drill-down/template', ['exports'],
         }());
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -16701,7 +16712,7 @@ define('frontend-cp/components/ko-option-list-drill-down/template', ['exports'],
       }());
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -16752,7 +16763,7 @@ define('frontend-cp/components/ko-option-list-drill-down/template', ['exports'],
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -16829,7 +16840,7 @@ define('frontend-cp/components/ko-organisation-content/template', ['exports'], f
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -16884,7 +16895,7 @@ define('frontend-cp/components/ko-page-container/template', ['exports'], functio
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -16960,7 +16971,7 @@ define('frontend-cp/components/ko-pagination/template', ['exports'], function (e
       var child0 = (function() {
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -16999,7 +17010,7 @@ define('frontend-cp/components/ko-pagination/template', ['exports'], function (e
       }());
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -17041,7 +17052,7 @@ define('frontend-cp/components/ko-pagination/template', ['exports'], function (e
     var child1 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -17084,7 +17095,7 @@ define('frontend-cp/components/ko-pagination/template', ['exports'], function (e
       var child0 = (function() {
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -17123,7 +17134,7 @@ define('frontend-cp/components/ko-pagination/template', ['exports'], function (e
       }());
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -17165,7 +17176,7 @@ define('frontend-cp/components/ko-pagination/template', ['exports'], function (e
     var child3 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -17208,7 +17219,7 @@ define('frontend-cp/components/ko-pagination/template', ['exports'], function (e
       var child0 = (function() {
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -17247,7 +17258,7 @@ define('frontend-cp/components/ko-pagination/template', ['exports'], function (e
       }());
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -17289,7 +17300,7 @@ define('frontend-cp/components/ko-pagination/template', ['exports'], function (e
     var child5 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -17332,7 +17343,7 @@ define('frontend-cp/components/ko-pagination/template', ['exports'], function (e
       var child0 = (function() {
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -17371,7 +17382,7 @@ define('frontend-cp/components/ko-pagination/template', ['exports'], function (e
       }());
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -17413,7 +17424,7 @@ define('frontend-cp/components/ko-pagination/template', ['exports'], function (e
     var child7 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -17454,7 +17465,7 @@ define('frontend-cp/components/ko-pagination/template', ['exports'], function (e
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -17591,7 +17602,7 @@ define('frontend-cp/components/ko-participants-add/template', ['exports'], funct
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -17652,7 +17663,7 @@ define('frontend-cp/components/ko-participants/template', ['exports'], function 
     var child0 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -17697,7 +17708,7 @@ define('frontend-cp/components/ko-participants/template', ['exports'], function 
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -17923,7 +17934,7 @@ define('frontend-cp/components/ko-predicate-builder/rule/template', ['exports'],
         var child0 = (function() {
           return {
             meta: {
-              "revision": "Ember@1.13.3",
+              "revision": "Ember@1.13.6",
               "loc": {
                 "source": null,
                 "start": {
@@ -17964,7 +17975,7 @@ define('frontend-cp/components/ko-predicate-builder/rule/template', ['exports'],
         }());
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -18003,7 +18014,7 @@ define('frontend-cp/components/ko-predicate-builder/rule/template', ['exports'],
       }());
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -18045,7 +18056,7 @@ define('frontend-cp/components/ko-predicate-builder/rule/template', ['exports'],
         var child0 = (function() {
           return {
             meta: {
-              "revision": "Ember@1.13.3",
+              "revision": "Ember@1.13.6",
               "loc": {
                 "source": null,
                 "start": {
@@ -18086,7 +18097,7 @@ define('frontend-cp/components/ko-predicate-builder/rule/template', ['exports'],
         }());
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -18125,7 +18136,7 @@ define('frontend-cp/components/ko-predicate-builder/rule/template', ['exports'],
       }());
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -18168,7 +18179,7 @@ define('frontend-cp/components/ko-predicate-builder/rule/template', ['exports'],
           var child0 = (function() {
             return {
               meta: {
-                "revision": "Ember@1.13.3",
+                "revision": "Ember@1.13.6",
                 "loc": {
                   "source": null,
                   "start": {
@@ -18209,7 +18220,7 @@ define('frontend-cp/components/ko-predicate-builder/rule/template', ['exports'],
           }());
           return {
             meta: {
-              "revision": "Ember@1.13.3",
+              "revision": "Ember@1.13.6",
               "loc": {
                 "source": null,
                 "start": {
@@ -18248,7 +18259,7 @@ define('frontend-cp/components/ko-predicate-builder/rule/template', ['exports'],
         }());
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -18287,7 +18298,7 @@ define('frontend-cp/components/ko-predicate-builder/rule/template', ['exports'],
       }());
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -18327,7 +18338,7 @@ define('frontend-cp/components/ko-predicate-builder/rule/template', ['exports'],
     var child3 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -18369,7 +18380,7 @@ define('frontend-cp/components/ko-predicate-builder/rule/template', ['exports'],
     var child4 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -18413,7 +18424,7 @@ define('frontend-cp/components/ko-predicate-builder/rule/template', ['exports'],
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -18524,7 +18535,7 @@ define('frontend-cp/components/ko-predicate-builder/template', ['exports'], func
       var child0 = (function() {
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -18572,7 +18583,7 @@ define('frontend-cp/components/ko-predicate-builder/template', ['exports'], func
       var child1 = (function() {
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -18613,7 +18624,7 @@ define('frontend-cp/components/ko-predicate-builder/template', ['exports'], func
       }());
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -18679,7 +18690,7 @@ define('frontend-cp/components/ko-predicate-builder/template', ['exports'], func
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -18743,7 +18754,7 @@ define('frontend-cp/components/ko-priority/template', ['exports'], function (exp
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -18823,7 +18834,7 @@ define('frontend-cp/components/ko-profile-card/template', ['exports'], function 
     var child0 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -18864,7 +18875,7 @@ define('frontend-cp/components/ko-profile-card/template', ['exports'], function 
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -18934,7 +18945,7 @@ define('frontend-cp/components/ko-profile/template', ['exports'], function (expo
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -19179,7 +19190,7 @@ define('frontend-cp/components/ko-radio/template', ['exports'], function (export
     var child0 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -19222,7 +19233,7 @@ define('frontend-cp/components/ko-radio/template', ['exports'], function (export
     var child1 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -19272,7 +19283,7 @@ define('frontend-cp/components/ko-radio/template', ['exports'], function (export
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -19354,7 +19365,7 @@ define('frontend-cp/components/ko-recent-cases/template', ['exports'], function 
     var child0 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -19408,7 +19419,7 @@ define('frontend-cp/components/ko-recent-cases/template', ['exports'], function 
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -19479,7 +19490,7 @@ define('frontend-cp/components/ko-recent-members/template', ['exports'], functio
     var child0 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -19522,7 +19533,7 @@ define('frontend-cp/components/ko-recent-members/template', ['exports'], functio
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -19615,7 +19626,7 @@ define('frontend-cp/components/ko-reorderable-crud-list/template', ['exports'], 
     var child0 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -19665,7 +19676,7 @@ define('frontend-cp/components/ko-reorderable-crud-list/template', ['exports'], 
     var child1 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -19706,7 +19717,7 @@ define('frontend-cp/components/ko-reorderable-crud-list/template', ['exports'], 
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -19884,7 +19895,7 @@ define('frontend-cp/components/ko-reorderable-list/ghost/template', ['exports'],
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -19996,7 +20007,7 @@ define('frontend-cp/components/ko-reorderable-list/item/handle/template', ['expo
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -20037,7 +20048,7 @@ define('frontend-cp/components/ko-reorderable-list/item/template', ['exports'], 
     var child0 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -20078,7 +20089,7 @@ define('frontend-cp/components/ko-reorderable-list/item/template', ['exports'], 
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -20148,7 +20159,7 @@ define('frontend-cp/components/ko-reorderable-list/template', ['exports'], funct
       var child0 = (function() {
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -20196,7 +20207,7 @@ define('frontend-cp/components/ko-reorderable-list/template', ['exports'], funct
       }());
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -20235,7 +20246,7 @@ define('frontend-cp/components/ko-reorderable-list/template', ['exports'], funct
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -20363,7 +20374,7 @@ define('frontend-cp/components/ko-scroller/template', ['exports'], function (exp
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -20434,7 +20445,7 @@ define('frontend-cp/components/ko-search/template', ['exports'], function (expor
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -20506,7 +20517,7 @@ define('frontend-cp/components/ko-session-widgets/template', ['exports'], functi
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -20569,7 +20580,7 @@ define('frontend-cp/components/ko-sidebar/template', ['exports'], function (expo
         var child0 = (function() {
           return {
             meta: {
-              "revision": "Ember@1.13.3",
+              "revision": "Ember@1.13.6",
               "loc": {
                 "source": null,
                 "start": {
@@ -20604,7 +20615,7 @@ define('frontend-cp/components/ko-sidebar/template', ['exports'], function (expo
         var child1 = (function() {
           return {
             meta: {
-              "revision": "Ember@1.13.3",
+              "revision": "Ember@1.13.6",
               "loc": {
                 "source": null,
                 "start": {
@@ -20657,7 +20668,7 @@ define('frontend-cp/components/ko-sidebar/template', ['exports'], function (expo
         }());
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -20719,7 +20730,7 @@ define('frontend-cp/components/ko-sidebar/template', ['exports'], function (expo
       }());
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -20758,7 +20769,7 @@ define('frontend-cp/components/ko-sidebar/template', ['exports'], function (expo
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -20813,7 +20824,7 @@ define('frontend-cp/components/ko-simple-box-row/template', ['exports'], functio
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -20875,7 +20886,7 @@ define('frontend-cp/components/ko-simple-list/row/template', ['exports'], functi
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -20926,7 +20937,7 @@ define('frontend-cp/components/ko-simple-list/template', ['exports'], function (
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -21010,7 +21021,7 @@ define('frontend-cp/components/ko-suggest/template', ['exports'], function (expo
         var child0 = (function() {
           return {
             meta: {
-              "revision": "Ember@1.13.3",
+              "revision": "Ember@1.13.6",
               "loc": {
                 "source": null,
                 "start": {
@@ -21052,7 +21063,7 @@ define('frontend-cp/components/ko-suggest/template', ['exports'], function (expo
         var child1 = (function() {
           return {
             meta: {
-              "revision": "Ember@1.13.3",
+              "revision": "Ember@1.13.6",
               "loc": {
                 "source": null,
                 "start": {
@@ -21093,7 +21104,7 @@ define('frontend-cp/components/ko-suggest/template', ['exports'], function (expo
         }());
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -21134,7 +21145,7 @@ define('frontend-cp/components/ko-suggest/template', ['exports'], function (expo
         var child0 = (function() {
           return {
             meta: {
-              "revision": "Ember@1.13.3",
+              "revision": "Ember@1.13.6",
               "loc": {
                 "source": null,
                 "start": {
@@ -21175,7 +21186,7 @@ define('frontend-cp/components/ko-suggest/template', ['exports'], function (expo
         }());
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -21214,7 +21225,7 @@ define('frontend-cp/components/ko-suggest/template', ['exports'], function (expo
       }());
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -21260,7 +21271,7 @@ define('frontend-cp/components/ko-suggest/template', ['exports'], function (expo
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -21315,7 +21326,7 @@ define('frontend-cp/components/ko-table/body/template', ['exports'], function (e
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -21370,7 +21381,7 @@ define('frontend-cp/components/ko-table/cell/template', ['exports'], function (e
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -21444,7 +21455,7 @@ define('frontend-cp/components/ko-table/column/template', ['exports'], function 
         var child0 = (function() {
           return {
             meta: {
-              "revision": "Ember@1.13.3",
+              "revision": "Ember@1.13.6",
               "loc": {
                 "source": null,
                 "start": {
@@ -21483,7 +21494,7 @@ define('frontend-cp/components/ko-table/column/template', ['exports'], function 
         var child1 = (function() {
           return {
             meta: {
-              "revision": "Ember@1.13.3",
+              "revision": "Ember@1.13.6",
               "loc": {
                 "source": null,
                 "start": {
@@ -21521,7 +21532,7 @@ define('frontend-cp/components/ko-table/column/template', ['exports'], function 
         }());
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -21567,7 +21578,7 @@ define('frontend-cp/components/ko-table/column/template', ['exports'], function 
       var child1 = (function() {
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -21606,7 +21617,7 @@ define('frontend-cp/components/ko-table/column/template', ['exports'], function 
       }());
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -21645,7 +21656,7 @@ define('frontend-cp/components/ko-table/column/template', ['exports'], function 
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -21770,7 +21781,7 @@ define('frontend-cp/components/ko-table/header/template', ['exports'], function 
       var child0 = (function() {
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -21811,7 +21822,7 @@ define('frontend-cp/components/ko-table/header/template', ['exports'], function 
       }());
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -21850,7 +21861,7 @@ define('frontend-cp/components/ko-table/header/template', ['exports'], function 
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -21938,7 +21949,7 @@ define('frontend-cp/components/ko-table/row/template', ['exports'], function (ex
       var child0 = (function() {
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -21979,7 +21990,7 @@ define('frontend-cp/components/ko-table/row/template', ['exports'], function (ex
       }());
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -22018,7 +22029,7 @@ define('frontend-cp/components/ko-table/row/template', ['exports'], function (ex
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -22069,7 +22080,7 @@ define('frontend-cp/components/ko-table/template', ['exports'], function (export
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -22208,7 +22219,7 @@ define('frontend-cp/components/ko-tabs/template', ['exports'], function (exports
     var child0 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -22274,7 +22285,7 @@ define('frontend-cp/components/ko-tabs/template', ['exports'], function (exports
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -22670,7 +22681,7 @@ define('frontend-cp/components/ko-text-editor/template', ['exports'], function (
         var child0 = (function() {
           return {
             meta: {
-              "revision": "Ember@1.13.3",
+              "revision": "Ember@1.13.6",
               "loc": {
                 "source": null,
                 "start": {
@@ -22709,7 +22720,7 @@ define('frontend-cp/components/ko-text-editor/template', ['exports'], function (
         }());
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -22750,7 +22761,7 @@ define('frontend-cp/components/ko-text-editor/template', ['exports'], function (
       }());
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -22790,7 +22801,7 @@ define('frontend-cp/components/ko-text-editor/template', ['exports'], function (
     var child1 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -22829,7 +22840,7 @@ define('frontend-cp/components/ko-text-editor/template', ['exports'], function (
     var child2 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -22879,7 +22890,7 @@ define('frontend-cp/components/ko-text-editor/template', ['exports'], function (
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -23220,7 +23231,7 @@ define('frontend-cp/components/ko-time-billing/ko-time-billing-context-modal/tem
     var child0 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -23261,7 +23272,7 @@ define('frontend-cp/components/ko-time-billing/ko-time-billing-context-modal/tem
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -23318,7 +23329,7 @@ define('frontend-cp/components/ko-time-billing/ko-time-billing-demo-open/templat
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -23370,7 +23381,7 @@ define('frontend-cp/components/ko-time-billing/template', ['exports'], function 
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -23452,7 +23463,7 @@ define('frontend-cp/components/ko-toggle-context-modal/template', ['exports'], f
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -23536,7 +23547,7 @@ define('frontend-cp/components/ko-toggle/template', ['exports'], function (expor
     var child0 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -23586,7 +23597,7 @@ define('frontend-cp/components/ko-toggle/template', ['exports'], function (expor
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -23822,7 +23833,7 @@ define('frontend-cp/components/ko-universal-search/result/template', ['exports']
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -23884,7 +23895,7 @@ define('frontend-cp/components/ko-universal-search/template', ['exports'], funct
     var child0 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -23931,7 +23942,7 @@ define('frontend-cp/components/ko-universal-search/template', ['exports'], funct
       var child0 = (function() {
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -23972,7 +23983,7 @@ define('frontend-cp/components/ko-universal-search/template', ['exports'], funct
       }());
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -24022,7 +24033,7 @@ define('frontend-cp/components/ko-universal-search/template', ['exports'], funct
       var child0 = (function() {
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -24077,7 +24088,7 @@ define('frontend-cp/components/ko-universal-search/template', ['exports'], funct
       }());
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -24116,7 +24127,7 @@ define('frontend-cp/components/ko-universal-search/template', ['exports'], funct
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -24206,7 +24217,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
       var child0 = (function() {
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -24247,7 +24258,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
       }());
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -24286,7 +24297,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -24464,7 +24475,7 @@ define('frontend-cp/components/ko-user-menu/template', ['exports'], function (ex
       var child0 = (function() {
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -24536,7 +24547,7 @@ define('frontend-cp/components/ko-user-menu/template', ['exports'], function (ex
           var child0 = (function() {
             return {
               meta: {
-                "revision": "Ember@1.13.3",
+                "revision": "Ember@1.13.6",
                 "loc": {
                   "source": null,
                   "start": {
@@ -24570,7 +24581,7 @@ define('frontend-cp/components/ko-user-menu/template', ['exports'], function (ex
           var child1 = (function() {
             return {
               meta: {
-                "revision": "Ember@1.13.3",
+                "revision": "Ember@1.13.6",
                 "loc": {
                   "source": null,
                   "start": {
@@ -24604,7 +24615,7 @@ define('frontend-cp/components/ko-user-menu/template', ['exports'], function (ex
           var child2 = (function() {
             return {
               meta: {
-                "revision": "Ember@1.13.3",
+                "revision": "Ember@1.13.6",
                 "loc": {
                   "source": null,
                   "start": {
@@ -24637,7 +24648,7 @@ define('frontend-cp/components/ko-user-menu/template', ['exports'], function (ex
           }());
           return {
             meta: {
-              "revision": "Ember@1.13.3",
+              "revision": "Ember@1.13.6",
               "loc": {
                 "source": null,
                 "start": {
@@ -24696,7 +24707,7 @@ define('frontend-cp/components/ko-user-menu/template', ['exports'], function (ex
         }());
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -24736,7 +24747,7 @@ define('frontend-cp/components/ko-user-menu/template', ['exports'], function (ex
       }());
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -24779,7 +24790,7 @@ define('frontend-cp/components/ko-user-menu/template', ['exports'], function (ex
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -24855,7 +24866,7 @@ define('frontend-cp/components/ko-viewers/template', ['exports'], function (expo
       var child0 = (function() {
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -24934,7 +24945,7 @@ define('frontend-cp/components/ko-viewers/template', ['exports'], function (expo
       }());
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -24975,7 +24986,7 @@ define('frontend-cp/components/ko-viewers/template', ['exports'], function (expo
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -25969,7 +25980,7 @@ define('frontend-cp/loading/template', ['exports'], function (exports) {
     var child0 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -26008,7 +26019,7 @@ define('frontend-cp/loading/template', ['exports'], function (exports) {
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -26510,7 +26521,7 @@ define('frontend-cp/login/template', ['exports'], function (exports) {
     var child0 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -26563,7 +26574,7 @@ define('frontend-cp/login/template', ['exports'], function (exports) {
       var child0 = (function() {
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -26604,7 +26615,7 @@ define('frontend-cp/login/template', ['exports'], function (exports) {
       }());
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -26653,7 +26664,7 @@ define('frontend-cp/login/template', ['exports'], function (exports) {
     var child2 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -26724,7 +26735,7 @@ define('frontend-cp/login/template', ['exports'], function (exports) {
       var child0 = (function() {
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -26765,7 +26776,7 @@ define('frontend-cp/login/template', ['exports'], function (exports) {
       }());
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -26812,7 +26823,7 @@ define('frontend-cp/login/template', ['exports'], function (exports) {
     var child4 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -26854,7 +26865,7 @@ define('frontend-cp/login/template', ['exports'], function (exports) {
     var child5 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -26895,7 +26906,7 @@ define('frontend-cp/login/template', ['exports'], function (exports) {
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -33719,7 +33730,7 @@ define('frontend-cp/session/admin/manage/case-fields/edit/template', ['exports']
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -33861,7 +33872,7 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
         var child0 = (function() {
           return {
             meta: {
-              "revision": "Ember@1.13.3",
+              "revision": "Ember@1.13.6",
               "loc": {
                 "source": null,
                 "start": {
@@ -33935,7 +33946,7 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
         }());
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -33976,7 +33987,7 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
         var child0 = (function() {
           return {
             meta: {
-              "revision": "Ember@1.13.3",
+              "revision": "Ember@1.13.6",
               "loc": {
                 "source": null,
                 "start": {
@@ -34073,7 +34084,7 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
         }());
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -34112,7 +34123,7 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
       }());
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -34161,7 +34172,7 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
           var child0 = (function() {
             return {
               meta: {
-                "revision": "Ember@1.13.3",
+                "revision": "Ember@1.13.6",
                 "loc": {
                   "source": null,
                   "start": {
@@ -34233,7 +34244,7 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
           }());
           return {
             meta: {
-              "revision": "Ember@1.13.3",
+              "revision": "Ember@1.13.6",
               "loc": {
                 "source": null,
                 "start": {
@@ -34272,7 +34283,7 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
         }());
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -34311,7 +34322,7 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
       }());
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -34350,7 +34361,7 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -34580,7 +34591,7 @@ define('frontend-cp/session/admin/manage/case-fields/new/template', ['exports'],
     var child0 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -34634,7 +34645,7 @@ define('frontend-cp/session/admin/manage/case-fields/new/template', ['exports'],
     var child1 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -34687,7 +34698,7 @@ define('frontend-cp/session/admin/manage/case-fields/new/template', ['exports'],
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -34764,7 +34775,7 @@ define('frontend-cp/session/admin/manage/case-forms/edit/template', ['exports'],
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -34896,7 +34907,7 @@ define('frontend-cp/session/admin/manage/case-forms/index/template', ['exports']
           var child0 = (function() {
             return {
               meta: {
-                "revision": "Ember@1.13.3",
+                "revision": "Ember@1.13.6",
                 "loc": {
                   "source": null,
                   "start": {
@@ -34938,7 +34949,7 @@ define('frontend-cp/session/admin/manage/case-forms/index/template', ['exports']
           var child1 = (function() {
             return {
               meta: {
-                "revision": "Ember@1.13.3",
+                "revision": "Ember@1.13.6",
                 "loc": {
                   "source": null,
                   "start": {
@@ -34985,7 +34996,7 @@ define('frontend-cp/session/admin/manage/case-forms/index/template', ['exports']
           }());
           return {
             meta: {
-              "revision": "Ember@1.13.3",
+              "revision": "Ember@1.13.6",
               "loc": {
                 "source": null,
                 "start": {
@@ -35086,7 +35097,7 @@ define('frontend-cp/session/admin/manage/case-forms/index/template', ['exports']
         }());
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -35125,7 +35136,7 @@ define('frontend-cp/session/admin/manage/case-forms/index/template', ['exports']
       }());
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -35168,7 +35179,7 @@ define('frontend-cp/session/admin/manage/case-forms/index/template', ['exports']
           var child0 = (function() {
             return {
               meta: {
-                "revision": "Ember@1.13.3",
+                "revision": "Ember@1.13.6",
                 "loc": {
                   "source": null,
                   "start": {
@@ -35231,7 +35242,7 @@ define('frontend-cp/session/admin/manage/case-forms/index/template', ['exports']
           }());
           return {
             meta: {
-              "revision": "Ember@1.13.3",
+              "revision": "Ember@1.13.6",
               "loc": {
                 "source": null,
                 "start": {
@@ -35270,7 +35281,7 @@ define('frontend-cp/session/admin/manage/case-forms/index/template', ['exports']
         }());
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -35309,7 +35320,7 @@ define('frontend-cp/session/admin/manage/case-forms/index/template', ['exports']
       }());
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -35348,7 +35359,7 @@ define('frontend-cp/session/admin/manage/case-forms/index/template', ['exports']
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -35490,7 +35501,7 @@ define('frontend-cp/session/admin/manage/case-forms/new/template', ['exports'], 
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -35641,7 +35652,7 @@ define('frontend-cp/session/admin/showcase/template', ['exports'], function (exp
     var child0 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -35688,7 +35699,7 @@ define('frontend-cp/session/admin/showcase/template', ['exports'], function (exp
     var child1 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -35722,7 +35733,7 @@ define('frontend-cp/session/admin/showcase/template', ['exports'], function (exp
     var child2 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -35755,7 +35766,7 @@ define('frontend-cp/session/admin/showcase/template', ['exports'], function (exp
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -36169,7 +36180,7 @@ define('frontend-cp/session/admin/template', ['exports'], function (exports) {
     var child0 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -36211,7 +36222,7 @@ define('frontend-cp/session/admin/template', ['exports'], function (exports) {
     var child1 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -36252,7 +36263,7 @@ define('frontend-cp/session/admin/template', ['exports'], function (exports) {
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -36527,7 +36538,7 @@ define('frontend-cp/session/cases/case/index/template', ['exports'], function (e
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -36575,7 +36586,7 @@ define('frontend-cp/session/cases/case/loading/template', ['exports'], function 
     var child0 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -36614,7 +36625,7 @@ define('frontend-cp/session/cases/case/loading/template', ['exports'], function 
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -36674,7 +36685,7 @@ define('frontend-cp/session/cases/case/organisation/template', ['exports'], func
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -36739,7 +36750,7 @@ define('frontend-cp/session/cases/case/template', ['exports'], function (exports
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -36824,7 +36835,7 @@ define('frontend-cp/session/cases/case/user/template', ['exports'], function (ex
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -36994,7 +37005,7 @@ define('frontend-cp/session/cases/index/template', ['exports'], function (export
       var child0 = (function() {
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -37033,7 +37044,7 @@ define('frontend-cp/session/cases/index/template', ['exports'], function (export
       }());
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -37075,7 +37086,7 @@ define('frontend-cp/session/cases/index/template', ['exports'], function (export
     var child1 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -37118,7 +37129,7 @@ define('frontend-cp/session/cases/index/template', ['exports'], function (export
       var child0 = (function() {
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -37149,7 +37160,7 @@ define('frontend-cp/session/cases/index/template', ['exports'], function (export
       }());
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -37190,7 +37201,7 @@ define('frontend-cp/session/cases/index/template', ['exports'], function (export
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -37299,7 +37310,7 @@ define('frontend-cp/session/cases/loading/template', ['exports'], function (expo
     var child0 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -37338,7 +37349,7 @@ define('frontend-cp/session/cases/loading/template', ['exports'], function (expo
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -37445,7 +37456,7 @@ define('frontend-cp/session/cases/new/template', ['exports'], function (exports)
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -37682,7 +37693,7 @@ define('frontend-cp/session/loading/template', ['exports'], function (exports) {
     var child0 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -37721,7 +37732,7 @@ define('frontend-cp/session/loading/template', ['exports'], function (exports) {
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -38395,7 +38406,7 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
     var child0 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -38437,7 +38448,7 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
       var child0 = (function() {
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -38471,7 +38482,7 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
       var child1 = (function() {
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -38505,7 +38516,7 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
       var child2 = (function() {
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -38539,7 +38550,7 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
       var child3 = (function() {
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -38572,7 +38583,7 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
       }());
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -38632,7 +38643,7 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
     var child2 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -38692,7 +38703,7 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
     var child3 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -38764,7 +38775,7 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
     var child4 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -38806,7 +38817,7 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
     var child5 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -38892,7 +38903,7 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
         var child0 = (function() {
           return {
             meta: {
-              "revision": "Ember@1.13.3",
+              "revision": "Ember@1.13.6",
               "loc": {
                 "source": null,
                 "start": {
@@ -38926,7 +38937,7 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
         var child1 = (function() {
           return {
             meta: {
-              "revision": "Ember@1.13.3",
+              "revision": "Ember@1.13.6",
               "loc": {
                 "source": null,
                 "start": {
@@ -38959,7 +38970,7 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
         }());
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -39010,7 +39021,7 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
             var child0 = (function() {
               return {
                 meta: {
-                  "revision": "Ember@1.13.3",
+                  "revision": "Ember@1.13.6",
                   "loc": {
                     "source": null,
                     "start": {
@@ -39056,7 +39067,7 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
             var child1 = (function() {
               return {
                 meta: {
-                  "revision": "Ember@1.13.3",
+                  "revision": "Ember@1.13.6",
                   "loc": {
                     "source": null,
                     "start": {
@@ -39095,7 +39106,7 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
             }());
             return {
               meta: {
-                "revision": "Ember@1.13.3",
+                "revision": "Ember@1.13.6",
                 "loc": {
                   "source": null,
                   "start": {
@@ -39142,7 +39153,7 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
           }());
           return {
             meta: {
-              "revision": "Ember@1.13.3",
+              "revision": "Ember@1.13.6",
               "loc": {
                 "source": null,
                 "start": {
@@ -39181,7 +39192,7 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
         }());
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -39220,7 +39231,7 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
       }());
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -39263,7 +39274,7 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -41799,7 +41810,7 @@ define('frontend-cp/session/styleguide/template', ['exports'], function (exports
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -42278,7 +42289,7 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
     var child0 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -42310,7 +42321,7 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
     var child1 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -42342,7 +42353,7 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
     var child2 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -42374,7 +42385,7 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
     var child3 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -42406,7 +42417,7 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
     var child4 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -42438,7 +42449,7 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
     var child5 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -42480,7 +42491,7 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
     var child6 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -42514,7 +42525,7 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
     var child7 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -42548,7 +42559,7 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
     var child8 = (function() {
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -42589,7 +42600,7 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -42836,7 +42847,7 @@ define('frontend-cp/session/users/index/template', ['exports'], function (export
       var child0 = (function() {
         return {
           meta: {
-            "revision": "Ember@1.13.3",
+            "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
@@ -42875,7 +42886,7 @@ define('frontend-cp/session/users/index/template', ['exports'], function (export
       }());
       return {
         meta: {
-          "revision": "Ember@1.13.3",
+          "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
@@ -42918,7 +42929,7 @@ define('frontend-cp/session/users/index/template', ['exports'], function (export
     }());
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -43016,7 +43027,7 @@ define('frontend-cp/session/users/user/index/template', ['exports'], function (e
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -43077,7 +43088,7 @@ define('frontend-cp/session/users/user/organisation/template', ['exports'], func
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -43141,7 +43152,7 @@ define('frontend-cp/session/users/user/template', ['exports'], function (exports
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       meta: {
-        "revision": "Ember@1.13.3",
+        "revision": "Ember@1.13.6",
         "loc": {
           "source": null,
           "start": {
@@ -43697,6 +43708,107 @@ define('frontend-cp/tests/helpers/start-app', ['exports', 'ember', 'frontend-cp/
   }
 
 });
+define('frontend-cp/tests/integration/components/ko-agent-dropdown/component-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
+
+  'use strict';
+
+  qunit.moduleForComponent('ko-agent-dropdown', 'Integration | Component | ko agent dropdown', {
+    integration: true
+  });
+
+  qunit.test('it renders', function (assert) {
+    assert.expect(0);
+
+    this.render(Ember.HTMLBars.template((function () {
+      return {
+        meta: {
+          'revision': 'Ember@1.13.6',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 3,
+              'column': 2
+            }
+          }
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode('\n   ');
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode('\n  ');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+          return morphs;
+        },
+        statements: [['content', 'ko-agent-dropdown', ['loc', [null, [2, 3], [2, 24]]]]],
+        locals: [],
+        templates: []
+      };
+    })()));
+  });
+
+  qunit.test('the dropdown can be expanded by mouse', function (assert) {
+    assert.expect(1);
+
+    this.render(Ember.HTMLBars.template((function () {
+      return {
+        meta: {
+          'revision': 'Ember@1.13.6',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 3,
+              'column': 2
+            }
+          }
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode('\n    ');
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode('\n  ');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+          return morphs;
+        },
+        statements: [['content', 'ko-agent-dropdown', ['loc', [null, [2, 4], [2, 25]]]]],
+        locals: [],
+        templates: []
+      };
+    })()));
+
+    this.$('.ko-agent-dropdown__nav-new').click();
+
+    assert.equal(this.$('ul li:first:visible').text().trim(), 'Case', 'the first menu item');
+  });
+
+});
 define('frontend-cp/tests/integration/components/ko-field/text-area/component-test', ['ember-qunit'], function (ember_qunit) {
 
   'use strict';
@@ -43719,7 +43831,7 @@ define('frontend-cp/tests/integration/components/ko-field/text-area/component-te
     this.render(Ember.HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@1.13.3',
+          'revision': 'Ember@1.13.6',
           'loc': {
             'source': null,
             'start': {
@@ -43764,7 +43876,7 @@ define('frontend-cp/tests/integration/components/ko-field/text-area/component-te
     this.render(Ember.HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@1.13.3',
+          'revision': 'Ember@1.13.6',
           'loc': {
             'source': null,
             'start': {
@@ -43832,7 +43944,7 @@ define('frontend-cp/tests/integration/components/ko-field/text/component-test', 
     this.render(Ember.HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@1.13.3',
+          'revision': 'Ember@1.13.6',
           'loc': {
             'source': null,
             'start': {
@@ -43879,7 +43991,7 @@ define('frontend-cp/tests/integration/components/ko-field/text/component-test', 
     this.render(Ember.HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@1.13.3',
+          'revision': 'Ember@1.13.6',
           'loc': {
             'source': null,
             'start': {
@@ -43956,7 +44068,7 @@ define('frontend-cp/tests/integration/components/ko-profile/component-test', ['f
       this.render(Ember.HTMLBars.template((function () {
         return {
           meta: {
-            'revision': 'Ember@1.13.3',
+            'revision': 'Ember@1.13.6',
             'loc': {
               'source': null,
               'start': {
@@ -44116,7 +44228,7 @@ define('frontend-cp/tests/integration/components/ko-scroller/component-test', ['
     this.render(Ember.HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@1.13.3',
+          'revision': 'Ember@1.13.6',
           'loc': {
             'source': null,
             'start': {
@@ -44158,7 +44270,7 @@ define('frontend-cp/tests/integration/components/ko-scroller/component-test', ['
       var child0 = (function () {
         return {
           meta: {
-            'revision': 'Ember@1.13.3',
+            'revision': 'Ember@1.13.6',
             'loc': {
               'source': null,
               'start': {
@@ -44191,7 +44303,7 @@ define('frontend-cp/tests/integration/components/ko-scroller/component-test', ['
 
       return {
         meta: {
-          'revision': 'Ember@1.13.3',
+          'revision': 'Ember@1.13.6',
           'loc': {
             'source': null,
             'start': {
@@ -44248,7 +44360,7 @@ define('frontend-cp/tests/integration/components/ko-search/component-test', ['em
     this.render(Ember.HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@1.13.3',
+          'revision': 'Ember@1.13.6',
           'loc': {
             'source': null,
             'start': {
@@ -44294,7 +44406,7 @@ define('frontend-cp/tests/integration/components/ko-search/component-test', ['em
     this.render(Ember.HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@1.13.3',
+          'revision': 'Ember@1.13.6',
           'loc': {
             'source': null,
             'start': {
@@ -44344,7 +44456,7 @@ define('frontend-cp/tests/integration/components/ko-search/component-test', ['em
     this.render(Ember.HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@1.13.3',
+          'revision': 'Ember@1.13.6',
           'loc': {
             'source': null,
             'start': {
@@ -44408,7 +44520,7 @@ define('frontend-cp/tests/integration/components/ko-session-widgets/component-te
     this.render(Ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@1.13.3',
+          'revision': 'Ember@1.13.6',
           'loc': {
             'source': null,
             'start': {
@@ -44522,7 +44634,7 @@ define('frontend-cp/tests/integration/components/ko-viewers/component-test', ['f
       this.render(Ember.HTMLBars.template((function () {
         return {
           meta: {
-            'revision': 'Ember@1.13.3',
+            'revision': 'Ember@1.13.6',
             'loc': {
               'source': null,
               'start': {
@@ -45364,109 +45476,6 @@ define('frontend-cp/tests/unit/components/ko-admin-selectable-card/component-tes
 
     this.render();
     assert.ok(this.$().hasClass('ko-admin-selectable-card--inactive'));
-  });
-
-});
-define('frontend-cp/tests/unit/components/ko-agent-dropdown/component-test', ['frontend-cp/tests/helpers/qunit', 'ember', 'frontend-cp/lib/keycodes'], function (qunit, Ember, KeyCodes) {
-
-  'use strict';
-
-  qunit.moduleForComponent('ko-agent-dropdown', 'Unit | Component | ko agent dropdown', {
-    // Specify the other units that are required for this test
-    // needs: ['component:foo', 'helper:bar']
-  });
-
-  // TODO:
-  // Source:
-  // TypeError: Cannot read property 'recognizer' of undefined
-  //     at computeLinkViewRouteArgs (http://localhost:4200/assets/vendor.js:29942:204)
-  //     at Descriptor.ComputedPropertyPrototype.get (http://localhost:4200/assets/vendor.js:21613:26)
-  //     at Object.get (http://localhost:4200/assets/vendor.js:26142:19)
-  //     at computeLinkViewLoading (http://localhost:4200/assets/vendor.js:29773:25)
-  //     at Descriptor.ComputedPropertyPrototype.get (http://localhost:4200/assets/vendor.js:21613:26)
-  //     at Object.get (http://localhost:4200/assets/vendor.js:26142:19)
-  //     at computeActive (http://localhost:4200/assets/vendor.js:30025:22)
-  //     at computeLinkViewActive (http://localhost:4200/assets/vendor.js:29729:14)
-  //     at Descriptor.ComputedPropertyPrototype.get (http://localhost:4200/assets/vendor.js:21613:26)
-  //     at Object.get (http://localhost:4200/assets/vendor.js:26142:19)
-
-  // test('it renders', function(assert) {
-  //   assert.expect(2);
-
-  //   // Creates the component instance
-  //   let component = this.subject();
-  //   assert.equal(component._state, 'preRender');
-
-  //   // Renders the component to the page
-  //   this.render();
-  //   assert.equal(component._state, 'inDOM');
-  // });
-
-  qunit.test('the dropdown can be expanded by mouse', function (assert) {
-    assert.expect(2);
-
-    var component = this.subject();
-
-    component.set('navItems', [{ text: 'ham' }]);
-
-    this.$('.ko-agent-dropdown__nav-new').click();
-
-    assert.equal(component.get('showDropdown'), true, 'dropdown menu is expanded');
-    assert.equal($.trim(component.$('ul li:first:visible').text()), 'ham', 'the first menu item');
-  });
-
-  qunit.test('an item can be selected by mouse', function (assert) {
-    assert.expect(2);
-
-    var component = this.subject();
-
-    component.set('navItems', [{ text: 'ham' }]);
-
-    this.$().click(function () {
-      assert.ok(true);
-      assert.equal(component.get('showDropdown'), false, 'dropdown menu is collapsed');
-    });
-
-    this.$('.ko-agent-dropdown__nav-new').click();
-    this.$('.ko-agent-dropdown__nav-new li a:first').click();
-  });
-
-  qunit.test('the dropdown can be expanded by keyboard', function (assert) {
-    assert.expect(2);
-
-    var component = this.subject();
-
-    component.set('navItems', [{ text: 'ham' }]);
-
-    Ember['default'].run(function () {
-      component.focusIn();
-    });
-
-    this.$().trigger(new $.Event('keydown', { keyCode: KeyCodes.down }));
-
-    assert.equal(component.get('showDropdown'), true, 'dropdown menu is expanded');
-    assert.equal($.trim(component.$('ul li:first:visible').text()), 'ham', 'the first menu item');
-  });
-
-  qunit.test('an item can be selected by keyboard', function (assert) {
-    assert.expect(2);
-
-    var component = this.subject();
-
-    component.set('navItems', [{ text: 'ham' }]);
-
-    this.$().click(function () {
-      assert.ok(true);
-    });
-
-    Ember['default'].run(function () {
-      component.focusIn();
-    });
-
-    this.$().trigger(new $.Event('keydown', { keyCode: KeyCodes.down }));
-    this.$().trigger(new $.Event('keydown', { keyCode: KeyCodes.enter }));
-
-    assert.equal(component.get('showDropdown'), false, 'dropdown menu is collapsed');
   });
 
 });
@@ -46343,8 +46352,6 @@ define('frontend-cp/tests/unit/components/ko-field/select/component-test', ['emb
   });
 
   qunit.test('pressing enter on a content item changes the value', function (assert) {
-    var _this2 = this;
-
     assert.expect(1);
 
     var component = this.subject();
@@ -46360,16 +46367,16 @@ define('frontend-cp/tests/unit/components/ko-field/select/component-test', ['emb
       }
     });
 
+    this.render();
+
     Ember['default'].run(function () {
-      _this2.$().trigger(new $.Event('keydown', { keyCode: KeyCodes.tab }));
-      _this2.$().trigger(new $.Event('keydown', { keyCode: KeyCodes.down }));
-      _this2.$().trigger(new $.Event('keydown', { keyCode: KeyCodes.enter }));
+      component.keyDown({ keyCode: KeyCodes.tab });
+      component.keyDown({ keyCode: KeyCodes.down });
+      component.keyDown({ keyCode: KeyCodes.enter });
     });
   });
 
   qunit.test('when repeatedly selecting content items using the keyboard the selection should always start from the first position', function (assert) {
-    var _this3 = this;
-
     assert.expect(2);
 
     var component = this.subject();
@@ -46385,12 +46392,14 @@ define('frontend-cp/tests/unit/components/ko-field/select/component-test', ['emb
       }
     });
 
+    this.render();
+
     Ember['default'].run(function () {
-      _this3.$().trigger(new $.Event('keydown', { keyCode: KeyCodes.tab }));
-      _this3.$().trigger(new $.Event('keydown', { keyCode: KeyCodes.down }));
-      _this3.$().trigger(new $.Event('keydown', { keyCode: KeyCodes.down }));
-      _this3.$().trigger(new $.Event('keydown', { keyCode: KeyCodes.down }));
-      _this3.$().trigger(new $.Event('keydown', { keyCode: KeyCodes.enter }));
+      component.keyDown({ keyCode: KeyCodes.tab });
+      component.keyDown({ keyCode: KeyCodes.down });
+      component.keyDown({ keyCode: KeyCodes.down });
+      component.keyDown({ keyCode: KeyCodes.down });
+      component.keyDown({ keyCode: KeyCodes.enter });
     });
 
     component.set('targetObject', {
@@ -46400,8 +46409,9 @@ define('frontend-cp/tests/unit/components/ko-field/select/component-test', ['emb
     });
 
     Ember['default'].run(function () {
-      _this3.$().trigger(new $.Event('keydown', { keyCode: KeyCodes.down }));
-      _this3.$().trigger(new $.Event('keydown', { keyCode: KeyCodes.enter }));
+      component.keyDown({ keyCode: KeyCodes.tab });
+      component.keyDown({ keyCode: KeyCodes.down });
+      component.keyDown({ keyCode: KeyCodes.enter });
     });
   });
 
@@ -48806,7 +48816,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+6a70e5b5"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+78d42844"});
 }
 
 /* jshint ignore:end */
