@@ -10615,7 +10615,7 @@ define('frontend-cp/components/ko-context-modal/template', ['exports'], function
   }()));
 
 });
-define('frontend-cp/components/ko-datepicker/component', ['exports', 'ember', 'npm:lodash', 'moment', 'frontend-cp/lib/keycodes'], function (exports, Ember, _, moment, KeyCodes) {
+define('frontend-cp/components/ko-datepicker/component', ['exports', 'ember', 'npm:lodash', 'moment', 'frontend-cp/config/environment', 'frontend-cp/lib/keycodes'], function (exports, Ember, _, moment, config, KeyCodes) {
 
   'use strict';
 
@@ -10626,6 +10626,8 @@ define('frontend-cp/components/ko-datepicker/component', ['exports', 'ember', 'n
     today: moment['default'](),
     shownDate: null,
     date: moment['default'](''),
+
+    assetRoot: config['default'].assetRoot,
 
     momentDate: (function () {
       return moment['default'](this.get('date'));
@@ -10914,7 +10916,6 @@ define('frontend-cp/components/ko-datepicker/template', ['exports'], function (e
         dom.setAttribute(el2,"class","ko-datepicker__action");
         var el3 = dom.createElement("span");
         var el4 = dom.createElement("img");
-        dom.setAttribute(el4,"src","/images/icons/datepicker-today.svg");
         dom.setAttribute(el4,"alt","");
         dom.appendChild(el3, el4);
         var el4 = dom.createComment("");
@@ -10927,7 +10928,6 @@ define('frontend-cp/components/ko-datepicker/template', ['exports'], function (e
         dom.setAttribute(el2,"class","ko-datepicker__action");
         var el3 = dom.createElement("span");
         var el4 = dom.createElement("img");
-        dom.setAttribute(el4,"src","/images/icons/datepicker-clear.svg");
         dom.setAttribute(el4,"alt","");
         dom.appendChild(el3, el4);
         var el4 = dom.createComment("");
@@ -10940,7 +10940,6 @@ define('frontend-cp/components/ko-datepicker/template', ['exports'], function (e
         dom.setAttribute(el2,"class","ko-datepicker__action");
         var el3 = dom.createElement("span");
         var el4 = dom.createElement("img");
-        dom.setAttribute(el4,"src","/images/icons/datepicker-close.svg");
         dom.setAttribute(el4,"alt","");
         dom.appendChild(el3, el4);
         var el4 = dom.createComment("");
@@ -10961,9 +10960,12 @@ define('frontend-cp/components/ko-datepicker/template', ['exports'], function (e
         var element4 = dom.childAt(fragment, [3]);
         var element5 = dom.childAt(fragment, [5]);
         var element6 = dom.childAt(element5, [1, 0]);
-        var element7 = dom.childAt(element5, [3, 0]);
-        var element8 = dom.childAt(element5, [5, 0]);
-        var morphs = new Array(12);
+        var element7 = dom.childAt(element6, [0]);
+        var element8 = dom.childAt(element5, [3, 0]);
+        var element9 = dom.childAt(element8, [0]);
+        var element10 = dom.childAt(element5, [5, 0]);
+        var element11 = dom.childAt(element10, [0]);
+        var morphs = new Array(15);
         morphs[0] = dom.createMorphAt(dom.childAt(element1, [1]),0,0);
         morphs[1] = dom.createMorphAt(dom.childAt(element1, [3]),0,0);
         morphs[2] = dom.createElementMorph(element2);
@@ -10971,11 +10973,14 @@ define('frontend-cp/components/ko-datepicker/template', ['exports'], function (e
         morphs[4] = dom.createMorphAt(element4,1,1);
         morphs[5] = dom.createMorphAt(element4,2,2);
         morphs[6] = dom.createElementMorph(element6);
-        morphs[7] = dom.createMorphAt(element6,1,1);
-        morphs[8] = dom.createElementMorph(element7);
-        morphs[9] = dom.createMorphAt(element7,1,1);
-        morphs[10] = dom.createElementMorph(element8);
+        morphs[7] = dom.createAttrMorph(element7, 'src');
+        morphs[8] = dom.createMorphAt(element6,1,1);
+        morphs[9] = dom.createElementMorph(element8);
+        morphs[10] = dom.createAttrMorph(element9, 'src');
         morphs[11] = dom.createMorphAt(element8,1,1);
+        morphs[12] = dom.createElementMorph(element10);
+        morphs[13] = dom.createAttrMorph(element11, 'src');
+        morphs[14] = dom.createMorphAt(element10,1,1);
         return morphs;
       },
       statements: [
@@ -10986,11 +10991,14 @@ define('frontend-cp/components/ko-datepicker/template', ['exports'], function (e
         ["block","each",[["get","weekdays",["loc",[null,[10,10],[10,18]]]]],[],0,null,["loc",[null,[10,2],[12,11]]]],
         ["block","each",[["get","days",["loc",[null,[13,10],[13,14]]]]],[],1,null,["loc",[null,[13,2],[17,11]]]],
         ["element","action",["today"],[],["loc",[null,[21,43],[21,61]]]],
-        ["inline","format-message",[["subexpr","intl-get",["generic.datepicker.today"],[],["loc",[null,[21,134],[21,171]]]]],[],["loc",[null,[21,117],[21,173]]]],
+        ["attribute","src",["concat",[["get","assetRoot",["loc",[null,[21,74],[21,83]]]],"/images/icons/datepicker-today.svg"]]],
+        ["inline","format-message",[["subexpr","intl-get",["generic.datepicker.today"],[],["loc",[null,[21,147],[21,184]]]]],[],["loc",[null,[21,130],[21,186]]]],
         ["element","action",["clear"],[],["loc",[null,[22,43],[22,61]]]],
-        ["inline","format-message",[["subexpr","intl-get",["generic.datepicker.clear"],[],["loc",[null,[22,134],[22,171]]]]],[],["loc",[null,[22,117],[22,173]]]],
+        ["attribute","src",["concat",[["get","assetRoot",["loc",[null,[22,74],[22,83]]]],"/images/icons/datepicker-clear.svg"]]],
+        ["inline","format-message",[["subexpr","intl-get",["generic.datepicker.clear"],[],["loc",[null,[22,147],[22,184]]]]],[],["loc",[null,[22,130],[22,186]]]],
         ["element","action",["close"],[],["loc",[null,[23,43],[23,61]]]],
-        ["inline","format-message",[["subexpr","intl-get",["generic.datepicker.close"],[],["loc",[null,[23,134],[23,171]]]]],[],["loc",[null,[23,117],[23,173]]]]
+        ["attribute","src",["concat",[["get","assetRoot",["loc",[null,[23,74],[23,83]]]],"/images/icons/datepicker-close.svg"]]],
+        ["inline","format-message",[["subexpr","intl-get",["generic.datepicker.close"],[],["loc",[null,[23,147],[23,184]]]]],[],["loc",[null,[23,130],[23,186]]]]
       ],
       locals: [],
       templates: [child0, child1]
@@ -26282,7 +26290,7 @@ define('frontend-cp/loading/template', ['exports'], function (exports) {
   }()));
 
 });
-define('frontend-cp/login/controller', ['exports', 'ember', 'frontend-cp/mixins/simple-state'], function (exports, Ember, SimpleStateMixin) {
+define('frontend-cp/login/controller', ['exports', 'ember', 'frontend-cp/config/environment', 'frontend-cp/mixins/simple-state'], function (exports, Ember, config, SimpleStateMixin) {
 
   'use strict';
 
@@ -26656,12 +26664,12 @@ define('frontend-cp/login/controller', ['exports', 'ember', 'frontend-cp/mixins/
      */
 
     loginFrontImageStyle: (function () {
-      return "background-image: url('/images/user/avatar.png');".htmlSafe();
+      return ('background-image: url(' + config['default'].assetRoot + '\'/images/user/avatar.png\');').htmlSafe();
     }).property(),
 
     loginBackImageStyle: (function () {
       if (this.get('avatarBackground')) {
-        return ("background-image: url('" + this.get('avatarBackground') + "');").htmlSafe();
+        return ('background-image: url(' + config['default'].assetRoot + '\'" + this.get(\'avatarBackground\') + "\');').htmlSafe();
       } else {
         return '';
       }
@@ -38018,11 +38026,13 @@ define('frontend-cp/session/route', ['exports', 'ember'], function (exports, Emb
   });
 
 });
-define('frontend-cp/session/showcase/controller', ['exports', 'ember', 'ember-validations', 'npm:lodash'], function (exports, Ember, EmberValidations, _) {
+define('frontend-cp/session/showcase/controller', ['exports', 'ember', 'ember-validations', 'npm:lodash', 'frontend-cp/config/environment'], function (exports, Ember, EmberValidations, _, config) {
 
   'use strict';
 
   exports['default'] = Ember['default'].Controller.extend(EmberValidations['default'], {
+
+    assetRoot: config['default'].assetRoot,
 
     contextModalService: Ember['default'].inject.service('context-modal'),
 
@@ -41656,7 +41666,6 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
         var el6 = dom.createTextNode("\n          ");
         dom.appendChild(el5, el6);
         var el6 = dom.createElement("img");
-        dom.setAttribute(el6,"src","images/icons/case.svg");
         dom.setAttribute(el6,"alt","");
         dom.appendChild(el5, el6);
         var el6 = dom.createTextNode("\n          ");
@@ -41676,7 +41685,6 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
         var el6 = dom.createTextNode("\n          ");
         dom.appendChild(el5, el6);
         var el6 = dom.createElement("img");
-        dom.setAttribute(el6,"src","images/icons/user.svg");
         dom.setAttribute(el6,"alt","");
         dom.appendChild(el5, el6);
         var el6 = dom.createTextNode("\n          ");
@@ -41695,7 +41703,6 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
         var el6 = dom.createTextNode("\n          ");
         dom.appendChild(el5, el6);
         var el6 = dom.createElement("img");
-        dom.setAttribute(el6,"src","images/icons/organization.svg");
         dom.setAttribute(el6,"alt","");
         dom.appendChild(el5, el6);
         var el6 = dom.createTextNode("\n          ");
@@ -41854,7 +41861,11 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
         var element2 = dom.childAt(element0, [291]);
         var element3 = dom.childAt(element0, [295]);
         var element4 = dom.childAt(element0, [315]);
-        var morphs = new Array(59);
+        var element5 = dom.childAt(element4, [1, 1]);
+        var element6 = dom.childAt(element5, [1, 1]);
+        var element7 = dom.childAt(element5, [3, 1]);
+        var element8 = dom.childAt(element5, [5, 1]);
+        var morphs = new Array(62);
         morphs[0] = dom.createMorphAt(element0,5,5);
         morphs[1] = dom.createMorphAt(element0,7,7);
         morphs[2] = dom.createMorphAt(element0,15,15);
@@ -41914,6 +41925,9 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
         morphs[56] = dom.createMorphAt(dom.childAt(element0, [307]),1,1);
         morphs[57] = dom.createMorphAt(dom.childAt(element0, [309]),0,0);
         morphs[58] = dom.createAttrMorph(element4, 'style');
+        morphs[59] = dom.createAttrMorph(element6, 'src');
+        morphs[60] = dom.createAttrMorph(element7, 'src');
+        morphs[61] = dom.createAttrMorph(element8, 'src');
         return morphs;
       },
       statements: [
@@ -41975,7 +41989,10 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
         ["block","ko-table",[],["selectable",true],6,null,["loc",[null,[907,4],[920,17]]]],
         ["inline","ko-datepicker",[],["date",["subexpr","@mut",[["get","date",["loc",[null,[927,25],[927,29]]]]],[],[]],"on-date-change","dateChange"],["loc",[null,[927,4],[927,59]]]],
         ["inline","escape-html",["{{ko-datepicker date=date on-date-change=\"dateChange\"}}"],[],["loc",[null,[929,8],[929,81]]]],
-        ["attribute","style",["get","boxContainerStyle",["loc",[null,[935,37],[935,54]]]]]
+        ["attribute","style",["get","boxContainerStyle",["loc",[null,[935,37],[935,54]]]]],
+        ["attribute","src",["concat",[["get","assetRoot",["loc",[null,[939,22],[939,31]]]],"/images/icons/case.svg"]]],
+        ["attribute","src",["concat",[["get","assetRoot",["loc",[null,[945,22],[945,31]]]],"/images/icons/user.svg"]]],
+        ["attribute","src",["concat",[["get","assetRoot",["loc",[null,[951,22],[951,31]]]],"/images/icons/organization.svg"]]]
       ],
       locals: [],
       templates: [child0, child1, child2, child3, child4, child5, child6]
@@ -49762,7 +49779,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+4d21103b"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+483464a2"});
 }
 
 /* jshint ignore:end */
