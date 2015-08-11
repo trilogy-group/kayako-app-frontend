@@ -14785,6 +14785,184 @@ define('frontend-cp/components/ko-file-size/template', ['exports'], function (ex
   }()));
 
 });
+define('frontend-cp/components/ko-form-field/component', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Component.extend({
+    // Params
+    /**
+     * Form field label
+     * @type {string}
+     */
+    label: null,
+
+    /**
+     * Optional help text
+     * @type {[string]}
+     */
+    help: null,
+
+    /**
+     * Optional validation errors
+     * @type {[string[]]}
+     */
+    errors: null,
+
+    tagName: 'label',
+    classNames: ['ko-form-field']
+  });
+
+});
+define('frontend-cp/components/ko-form-field/template', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports['default'] = Ember.HTMLBars.template((function() {
+    var child0 = (function() {
+      return {
+        meta: {
+          "revision": "Ember@1.13.6",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 3,
+              "column": 83
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-form-field/template.hbs"
+        },
+        arity: 1,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createElement("p");
+          dom.setAttribute(el1,"class","ko-form-field__validation t-bad");
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(dom.childAt(fragment, [0]),0,0);
+          return morphs;
+        },
+        statements: [
+          ["content","error",["loc",[null,[3,70],[3,79]]]]
+        ],
+        locals: ["error"],
+        templates: []
+      };
+    }());
+    var child1 = (function() {
+      return {
+        meta: {
+          "revision": "Ember@1.13.6",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 4,
+              "column": 0
+            },
+            "end": {
+              "line": 4,
+              "column": 73
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-form-field/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createElement("p");
+          dom.setAttribute(el1,"class","ko-form-field__help t-caption t-small");
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(dom.childAt(fragment, [0]),0,0);
+          return morphs;
+        },
+        statements: [
+          ["content","help",["loc",[null,[4,61],[4,69]]]]
+        ],
+        locals: [],
+        templates: []
+      };
+    }());
+    return {
+      meta: {
+        "revision": "Ember@1.13.6",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 5,
+            "column": 0
+          }
+        },
+        "moduleName": "frontend-cp/components/ko-form-field/template.hbs"
+      },
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","ko-form-field__label");
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var morphs = new Array(4);
+        morphs[0] = dom.createMorphAt(dom.childAt(fragment, [0]),0,0);
+        morphs[1] = dom.createMorphAt(fragment,2,2,contextualElement);
+        morphs[2] = dom.createMorphAt(fragment,4,4,contextualElement);
+        morphs[3] = dom.createMorphAt(fragment,6,6,contextualElement);
+        return morphs;
+      },
+      statements: [
+        ["content","label",["loc",[null,[1,34],[1,43]]]],
+        ["content","yield",["loc",[null,[2,0],[2,9]]]],
+        ["block","each",[["get","errors",["loc",[null,[3,8],[3,14]]]]],[],0,null,["loc",[null,[3,0],[3,92]]]],
+        ["block","if",[["get","help",["loc",[null,[4,6],[4,10]]]]],[],1,null,["loc",[null,[4,0],[4,80]]]]
+      ],
+      locals: [],
+      templates: [child0, child1]
+    };
+  }()));
+
+});
 define('frontend-cp/components/ko-info-bar/component', ['exports', 'ember'], function (exports, Ember) {
 
   'use strict';
@@ -49779,7 +49957,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+483464a2"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+0108275b"});
 }
 
 /* jshint ignore:end */
