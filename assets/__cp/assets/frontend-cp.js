@@ -555,15 +555,7 @@ define('frontend-cp/application/controller', ['exports', 'ember'], function (exp
   'use strict';
 
   exports['default'] = Ember['default'].Controller.extend({
-
     urlService: Ember['default'].inject.service('url'),
-    sessionService: Ember['default'].inject.service('session'),
-
-    exitSession: (function () {
-      if (this.get('sessionService.sessionId') === null) {
-        this.transitionToRoute('login');
-      }
-    }).observes('sessionService.sessionId').on('init'),
 
     currentPathDidChange: (function () {
       this.get('urlService').set('currentPath', this.get('currentPath'));
@@ -571,38 +563,21 @@ define('frontend-cp/application/controller', ['exports', 'ember'], function (exp
   });
 
 });
-define('frontend-cp/application/route', ['exports', 'ember'], function (exports, Ember) {
+define('frontend-cp/application/index/route', ['exports', 'ember'], function (exports, Ember) {
 
   'use strict';
 
   exports['default'] = Ember['default'].Route.extend({
-    navMenu: null,
     sessionService: Ember['default'].inject.service('session'),
 
-    beforeModel: function beforeModel(transition) {
+    beforeModel: function beforeModel() {
       var _this = this;
 
       return this.get('sessionService').getSession().then(function () {
-        // no subroute is requested
-        if (transition.state.handlerInfos.length === 2) {
-          _this.transitionTo('session');
-        }
+        _this.transitionTo('session.agent');
       }, function () {
-        if (transition.targetName !== 'login') {
-          _this.controllerFor('login').set('transitionOnLogin', transition);
-          _this.transitionTo('login');
-        }
+        _this.transitionTo('login.agent');
       });
-    },
-
-    model: function model() {
-      return Ember['default'].Object.create({
-        navMenu: this.get('navMenu')
-      });
-    },
-
-    setupController: function setupController(controller, model) {
-      controller.set('model', model);
     }
   });
 
@@ -4361,7 +4336,7 @@ define('frontend-cp/components/ko-agent-dropdown/component', ['exports', 'ember'
     dataRegion: 'navigation-new',
     tabindex: 0,
     classNames: ['u-inline-block'],
-    navItems: [{ text: 'Case', path: 'session.cases.new', icon: 'images/icons/case.svg' }, { text: 'User', icon: 'images/icons/user.svg' }, { text: 'Organization', icon: 'images/icons/organization.svg' }],
+    navItems: [{ text: 'Case', path: 'session.agent.cases.new', icon: 'images/icons/case.svg' }, { text: 'User', icon: 'images/icons/user.svg' }, { text: 'Organization', icon: 'images/icons/organization.svg' }],
     showDropdown: false,
     isMouseAccess: false,
     keyboardPosition: 0,
@@ -7537,7 +7512,7 @@ define('frontend-cp/components/ko-cases-list/column/subject/template', ['exports
             },
             "end": {
               "line": 2,
-              "column": 75
+              "column": 81
             }
           },
           "moduleName": "frontend-cp/components/ko-cases-list/column/subject/template.hbs"
@@ -7559,7 +7534,7 @@ define('frontend-cp/components/ko-cases-list/column/subject/template', ['exports
           return morphs;
         },
         statements: [
-          ["content","case.subject",["loc",[null,[2,59],[2,75]]]]
+          ["content","case.subject",["loc",[null,[2,65],[2,81]]]]
         ],
         locals: [],
         templates: []
@@ -7605,7 +7580,7 @@ define('frontend-cp/components/ko-cases-list/column/subject/template', ['exports
       },
       statements: [
         ["inline","ko-avatar",[],["class","u-mr-","avatar",["subexpr","@mut",[["get","case.creator.avatar",["loc",[null,[1,33],[1,52]]]]],[],[]]],["loc",[null,[1,0],[1,54]]]],
-        ["block","link-to",["session.cases.case",["get","case",["loc",[null,[2,32],[2,36]]]]],["class","t-naked-link"],0,null,["loc",[null,[2,0],[2,87]]]]
+        ["block","link-to",["session.agent.cases.case",["get","case",["loc",[null,[2,38],[2,42]]]]],["class","t-naked-link"],0,null,["loc",[null,[2,0],[2,93]]]]
       ],
       locals: [],
       templates: [child0]
@@ -20804,7 +20779,7 @@ define('frontend-cp/components/ko-sidebar/template', ['exports'], function (expo
           return morphs;
         },
         statements: [
-          ["block","link-to",["session.cases.index",["subexpr","query-params",[],["view",["get","view.id",["loc",[null,[2,52],[2,59]]]],"page","1"],["loc",[null,[2,33],[2,69]]]]],["class","t-naked-link"],0,null,["loc",[null,[2,0],[15,12]]]]
+          ["block","link-to",["session.agent.cases.index",["subexpr","query-params",[],["view",["get","view.id",["loc",[null,[2,58],[2,65]]]],"page","1"],["loc",[null,[2,39],[2,75]]]]],["class","t-naked-link"],0,null,["loc",[null,[2,0],[15,12]]]]
         ],
         locals: ["view"],
         templates: [child0]
@@ -26468,6 +26443,44 @@ define('frontend-cp/loading/template', ['exports'], function (exports) {
   }()));
 
 });
+define('frontend-cp/login/admin/route', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Route.extend({
+    sessionService: Ember['default'].inject.service('session'),
+
+    beforeModel: function beforeModel() {
+      var _this = this;
+
+      return this.get('sessionService').getSession().then(function () {
+        _this.transitionTo('session.admin');
+      }, function () {
+        _this.controllerFor('login').set('loginType', 'admin');
+      });
+    }
+  });
+
+});
+define('frontend-cp/login/agent/route', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Route.extend({
+    sessionService: Ember['default'].inject.service('session'),
+
+    beforeModel: function beforeModel() {
+      var _this = this;
+
+      return this.get('sessionService').getSession().then(function () {
+        _this.transitionTo('session.agent');
+      }, function () {
+        _this.controllerFor('login').set('loginType', 'agent');
+      });
+    }
+  });
+
+});
 define('frontend-cp/login/controller', ['exports', 'ember', 'frontend-cp/config/environment', 'frontend-cp/mixins/simple-state'], function (exports, Ember, config, SimpleStateMixin) {
 
   'use strict';
@@ -26762,7 +26775,7 @@ define('frontend-cp/login/controller', ['exports', 'ember', 'frontend-cp/config/
           _this3.set('transitionOnLogin', null);
           transitionOnLogin.retry();
         } else {
-          _this3.transitionToRoute('session');
+          _this3.transitionToSession();
         }
       }, function (response) {
         var data = response.responseJSON;
@@ -26796,7 +26809,7 @@ define('frontend-cp/login/controller', ['exports', 'ember', 'frontend-cp/config/
           _this4.get('sessionService').setSessionId(response.data.session);
           _this4.set('newPassword1', null);
           _this4.set('newPassword2', null);
-          _this4.transitionToRoute('session');
+          _this4.transitionToSession();
         } else {
           _this4.setState('login.resetPassword.error');
           _this4.setErrors({ message: 'Session missing' });
@@ -26825,7 +26838,7 @@ define('frontend-cp/login/controller', ['exports', 'ember', 'frontend-cp/config/
             _this5.set('transitionOnLogin', null);
             transitionOnLogin.retry();
           } else {
-            _this5.transitionToRoute('session');
+            _this5.transitionToSession();
           }
         } else {
           _this5.setState('login.otp.error');
@@ -26835,6 +26848,11 @@ define('frontend-cp/login/controller', ['exports', 'ember', 'frontend-cp/config/
         _this5.setState('login.otp.error');
         _this5.setErrors(JSON.parse(response).errors);
       });
+    },
+
+    transitionToSession: function transitionToSession() {
+      var loginType = this.get('loginType');
+      this.transitionToRoute('session.' + loginType);
     },
 
     /**
@@ -26896,19 +26914,22 @@ define('frontend-cp/login/controller', ['exports', 'ember', 'frontend-cp/config/
   });
 
 });
+define('frontend-cp/login/index/route', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Route.extend({
+    beforeModel: function beforeModel() {
+      this.transitionTo('login.agent');
+    }
+  });
+
+});
 define('frontend-cp/login/route', ['exports', 'ember'], function (exports, Ember) {
 
   'use strict';
 
   exports['default'] = Ember['default'].Route.extend({
-    sessionService: Ember['default'].inject.service('session'),
-
-    beforeModel: function beforeModel() {
-      if (this.get('sessionService').isLoggedIn()) {
-        this.transitionTo('session');
-      }
-    },
-
     model: function model() {
       // FIXME temp
       return Ember['default'].Object.create({
@@ -32758,21 +32779,31 @@ define('frontend-cp/router', ['exports', 'ember', 'frontend-cp/config/environmen
   });
 
   Router.map(function () {
-    this.route('login');
+    // path has to stay '/' otherwise everything will break — similar path
+    // is already defined by the session. Looks like the router doesn't
+    // rely on NFA...
+    this.route('login', { path: '/' }, function () {
+      this.route('agent', { path: '/agent/login' });
+      this.route('admin', { path: '/admin/login' });
+    });
+
     this.route('session', { path: '' }, function () {
       this.route('showcase', { path: '/showcase' });
       this.route('styleguide', { path: '/styleguide' });
-      this.route('cases', function () {
-        this.route('new', { path: '/new' });
-        this.route('case', { path: '/:case_id' }, function () {
-          this.route('notes');
-          this.route('organisation');
-          this.route('user');
+
+      this.route('agent', function () {
+        this.route('cases', { path: '/cases' }, function () {
+          this.route('new', { path: '/new' });
+          this.route('case', { path: '/:case_id' }, function () {
+            this.route('notes');
+            this.route('organisation');
+            this.route('user');
+          });
         });
-      });
-      this.route('users', function () {
-        this.route('user', { path: '/:user_id' }, function () {
-          this.route('organisation');
+        this.route('users', { path: '/users' }, function () {
+          this.route('user', { path: '/:user_id' }, function () {
+            this.route('organisation');
+          });
         });
       });
 
@@ -33757,14 +33788,13 @@ define('frontend-cp/services/session', ['exports', 'ember'], function (exports, 
 
     init: function init() {
       this._super.apply(this, arguments);
-
-      this.getSession();
+      this.getSession()['catch'](function () {});
     },
 
     getSession: function getSession() {
       var _this = this;
 
-      return new Ember['default'].RSVP.Promise(function (resolve) {
+      return new Ember['default'].RSVP.Promise(function (resolve, reject) {
         // Session exists
         var session = _this.get('session');
         if (session) {
@@ -33775,18 +33805,16 @@ define('frontend-cp/services/session', ['exports', 'ember'], function (exports, 
         // sessionId saved in local storage
         if (sessionId) {
           _this.set('sessionId', sessionId);
-          _this._getSession().then(function (session) {
-            resolve(session);
-          })['catch'](function (e) {
+          _this._getSession().then(resolve)['catch'](function (e) {
             _this.get('localStoreService').removeItem('sessionId', { persist: true });
             _this.set('sessionId', null);
             _this.set('session', null);
             _this.set('user', null);
-            throw e;
+            reject(e);
           });
           // No session information available
         } else {
-            resolve(new Error('No session ID'));
+            reject(new Error('No session ID'));
           };
       });
     },
@@ -33804,10 +33832,6 @@ define('frontend-cp/services/session', ['exports', 'ember'], function (exports, 
         _this2.set('session', session);
         _this2.set('user', session.get('user'));
       });
-    },
-
-    isLoggedIn: function isLoggedIn() {
-      return !!this.get('session');
     },
 
     updateStorage: (function () {
@@ -35879,6 +35903,41 @@ define('frontend-cp/session/admin/manage/case-forms/new/template', ['exports'], 
   }()));
 
 });
+define('frontend-cp/session/admin/route', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Route.extend({
+    active: false,
+
+    sessionService: Ember['default'].inject.service('session'),
+
+    activate: (function () {
+      this.set('active', true);
+    }).on('activate'),
+
+    deactivate: (function () {
+      this.set('active', false);
+    }).on('deactivate'),
+
+    exitSession: (function () {
+      if (this.get('active') && this.get('sessionService.sessionId') === null) {
+        this.transitionTo('login.admin');
+      }
+    }).observes('sessionService.sessionId'),
+
+    beforeModel: function beforeModel(transition) {
+      var _this = this;
+
+      // Redirect to login if not validated
+      return this.get('sessionService').getSession().then(null, function () {
+        _this.controllerFor('login').set('transitionOnLogin', transition);
+        _this.transitionTo('login.admin');
+      });
+    }
+  });
+
+});
 define('frontend-cp/session/admin/showcase/controller', ['exports', 'ember', 'frontend-cp/mixins/pusher-binding'], function (exports, Ember, PusherBinding) {
 
   'use strict';
@@ -36757,7 +36816,7 @@ define('frontend-cp/session/admin/template', ['exports'], function (exports) {
   }()));
 
 });
-define('frontend-cp/session/cases/case/controller', ['exports', 'ember', 'frontend-cp/mixins/breadcrumbable'], function (exports, Ember, Breadcrumbable) {
+define('frontend-cp/session/agent/cases/case/controller', ['exports', 'ember', 'frontend-cp/mixins/breadcrumbable'], function (exports, Ember, Breadcrumbable) {
 
   'use strict';
 
@@ -36776,17 +36835,17 @@ define('frontend-cp/session/cases/case/controller', ['exports', 'ember', 'fronte
       var caseCrumb = {
         id: 'case',
         name: 'Case',
-        route: 'session.cases.case.index'
+        route: 'session.agent.cases.case.index'
       };
       var userCrumb = {
         id: 'user',
         name: 'User',
-        route: 'session.cases.case.user'
+        route: 'session.agent.cases.case.user'
       };
       var organisationCrumb = {
         id: 'organisation',
         name: 'Organisation',
-        route: 'session.cases.case.organisation'
+        route: 'session.agent.cases.case.organisation'
       };
 
       var crumbs = [];
@@ -36806,14 +36865,14 @@ define('frontend-cp/session/cases/case/controller', ['exports', 'ember', 'fronte
   });
 
 });
-define('frontend-cp/session/cases/case/index/controller', ['exports', 'ember'], function (exports, Ember) {
+define('frontend-cp/session/agent/cases/case/index/controller', ['exports', 'ember'], function (exports, Ember) {
 
 	'use strict';
 
 	exports['default'] = Ember['default'].Controller.extend({});
 
 });
-define('frontend-cp/session/cases/case/index/route', ['exports', 'ember'], function (exports, Ember) {
+define('frontend-cp/session/agent/cases/case/index/route', ['exports', 'ember'], function (exports, Ember) {
 
   'use strict';
 
@@ -36822,7 +36881,7 @@ define('frontend-cp/session/cases/case/index/route', ['exports', 'ember'], funct
 
     model: function model() {
       return Ember['default'].RSVP.hash({
-        'case': this.modelFor('session.cases.case'),
+        'case': this.modelFor('session.agent.cases.case'),
         priorities: this.get('storeCache').findAll('case-priority'),
         types: this.get('storeCache').findAll('case-type'),
         statuses: this.get('storeCache').findAll('case-status'),
@@ -36858,7 +36917,7 @@ define('frontend-cp/session/cases/case/index/route', ['exports', 'ember'], funct
   });
 
 });
-define('frontend-cp/session/cases/case/index/template', ['exports'], function (exports) {
+define('frontend-cp/session/agent/cases/case/index/template', ['exports'], function (exports) {
 
   'use strict';
 
@@ -36877,7 +36936,7 @@ define('frontend-cp/session/cases/case/index/template', ['exports'], function (e
             "column": 0
           }
         },
-        "moduleName": "frontend-cp/session/cases/case/index/template.hbs"
+        "moduleName": "frontend-cp/session/agent/cases/case/index/template.hbs"
       },
       arity: 0,
       cachedFragment: null,
@@ -36905,7 +36964,7 @@ define('frontend-cp/session/cases/case/index/template', ['exports'], function (e
   }()));
 
 });
-define('frontend-cp/session/cases/case/loading/template', ['exports'], function (exports) {
+define('frontend-cp/session/agent/cases/case/loading/template', ['exports'], function (exports) {
 
   'use strict';
 
@@ -36925,7 +36984,7 @@ define('frontend-cp/session/cases/case/loading/template', ['exports'], function 
               "column": 38
             }
           },
-          "moduleName": "frontend-cp/session/cases/case/loading/template.hbs"
+          "moduleName": "frontend-cp/session/agent/cases/case/loading/template.hbs"
         },
         arity: 0,
         cachedFragment: null,
@@ -36964,7 +37023,7 @@ define('frontend-cp/session/cases/case/loading/template', ['exports'], function 
             "column": 52
           }
         },
-        "moduleName": "frontend-cp/session/cases/case/loading/template.hbs"
+        "moduleName": "frontend-cp/session/agent/cases/case/loading/template.hbs"
       },
       arity: 0,
       cachedFragment: null,
@@ -36991,7 +37050,7 @@ define('frontend-cp/session/cases/case/loading/template', ['exports'], function 
   }()));
 
 });
-define('frontend-cp/session/cases/case/organisation/route', ['exports', 'ember'], function (exports, Ember) {
+define('frontend-cp/session/agent/cases/case/organisation/route', ['exports', 'ember'], function (exports, Ember) {
 
   'use strict';
 
@@ -37005,7 +37064,7 @@ define('frontend-cp/session/cases/case/organisation/route', ['exports', 'ember']
   });
 
 });
-define('frontend-cp/session/cases/case/organisation/template', ['exports'], function (exports) {
+define('frontend-cp/session/agent/cases/case/organisation/template', ['exports'], function (exports) {
 
   'use strict';
 
@@ -37024,7 +37083,7 @@ define('frontend-cp/session/cases/case/organisation/template', ['exports'], func
             "column": 0
           }
         },
-        "moduleName": "frontend-cp/session/cases/case/organisation/template.hbs"
+        "moduleName": "frontend-cp/session/agent/cases/case/organisation/template.hbs"
       },
       arity: 0,
       cachedFragment: null,
@@ -37052,7 +37111,7 @@ define('frontend-cp/session/cases/case/organisation/template', ['exports'], func
   }()));
 
 });
-define('frontend-cp/session/cases/case/route', ['exports', 'frontend-cp/routes/abstract/tabbed-route'], function (exports, TabbedRoute) {
+define('frontend-cp/session/agent/cases/case/route', ['exports', 'frontend-cp/routes/abstract/tabbed-route'], function (exports, TabbedRoute) {
 
   'use strict';
 
@@ -37070,7 +37129,7 @@ define('frontend-cp/session/cases/case/route', ['exports', 'frontend-cp/routes/a
   });
 
 });
-define('frontend-cp/session/cases/case/template', ['exports'], function (exports) {
+define('frontend-cp/session/agent/cases/case/template', ['exports'], function (exports) {
 
   'use strict';
 
@@ -37089,7 +37148,7 @@ define('frontend-cp/session/cases/case/template', ['exports'], function (exports
             "column": 6
           }
         },
-        "moduleName": "frontend-cp/session/cases/case/template.hbs"
+        "moduleName": "frontend-cp/session/agent/cases/case/template.hbs"
       },
       arity: 0,
       cachedFragment: null,
@@ -37135,7 +37194,7 @@ define('frontend-cp/session/cases/case/template', ['exports'], function (exports
   }()));
 
 });
-define('frontend-cp/session/cases/case/user/route', ['exports', 'ember'], function (exports, Ember) {
+define('frontend-cp/session/agent/cases/case/user/route', ['exports', 'ember'], function (exports, Ember) {
 
   'use strict';
 
@@ -37155,7 +37214,7 @@ define('frontend-cp/session/cases/case/user/route', ['exports', 'ember'], functi
   });
 
 });
-define('frontend-cp/session/cases/case/user/template', ['exports'], function (exports) {
+define('frontend-cp/session/agent/cases/case/user/template', ['exports'], function (exports) {
 
   'use strict';
 
@@ -37174,7 +37233,7 @@ define('frontend-cp/session/cases/case/user/template', ['exports'], function (ex
             "column": 0
           }
         },
-        "moduleName": "frontend-cp/session/cases/case/user/template.hbs"
+        "moduleName": "frontend-cp/session/agent/cases/case/user/template.hbs"
       },
       arity: 0,
       cachedFragment: null,
@@ -37202,7 +37261,7 @@ define('frontend-cp/session/cases/case/user/template', ['exports'], function (ex
   }()));
 
 });
-define('frontend-cp/session/cases/index/controller', ['exports', 'ember'], function (exports, Ember) {
+define('frontend-cp/session/agent/cases/index/controller', ['exports', 'ember'], function (exports, Ember) {
 
   'use strict';
 
@@ -37226,7 +37285,7 @@ define('frontend-cp/session/cases/index/controller', ['exports', 'ember'], funct
   });
 
 });
-define('frontend-cp/session/cases/index/route', ['exports', 'ember'], function (exports, Ember) {
+define('frontend-cp/session/agent/cases/index/route', ['exports', 'ember'], function (exports, Ember) {
 
   'use strict';
 
@@ -37313,7 +37372,7 @@ define('frontend-cp/session/cases/index/route', ['exports', 'ember'], function (
         }
 
         // Switching between pages on this route won't remove the paginator
-        var controller = this.controllerFor('session.cases.index');
+        var controller = this.controllerFor('session.agent.cases.index');
         controller.set('loadingPage', parseIntOrDefault(transition.queryParams.page, null));
         controller.set('loading', true);
       },
@@ -37323,7 +37382,7 @@ define('frontend-cp/session/cases/index/route', ['exports', 'ember'], function (
   });
 
 });
-define('frontend-cp/session/cases/index/template', ['exports'], function (exports) {
+define('frontend-cp/session/agent/cases/index/template', ['exports'], function (exports) {
 
   'use strict';
 
@@ -37344,7 +37403,7 @@ define('frontend-cp/session/cases/index/template', ['exports'], function (export
                 "column": 50
               }
             },
-            "moduleName": "frontend-cp/session/cases/index/template.hbs"
+            "moduleName": "frontend-cp/session/agent/cases/index/template.hbs"
           },
           arity: 0,
           cachedFragment: null,
@@ -37383,7 +37442,7 @@ define('frontend-cp/session/cases/index/template', ['exports'], function (export
               "column": 10
             }
           },
-          "moduleName": "frontend-cp/session/cases/index/template.hbs"
+          "moduleName": "frontend-cp/session/agent/cases/index/template.hbs"
         },
         arity: 0,
         cachedFragment: null,
@@ -37425,7 +37484,7 @@ define('frontend-cp/session/cases/index/template', ['exports'], function (export
               "column": 10
             }
           },
-          "moduleName": "frontend-cp/session/cases/index/template.hbs"
+          "moduleName": "frontend-cp/session/agent/cases/index/template.hbs"
         },
         arity: 0,
         cachedFragment: null,
@@ -37465,10 +37524,10 @@ define('frontend-cp/session/cases/index/template', ['exports'], function (export
               },
               "end": {
                 "line": 18,
-                "column": 65
+                "column": 71
               }
             },
-            "moduleName": "frontend-cp/session/cases/index/template.hbs"
+            "moduleName": "frontend-cp/session/agent/cases/index/template.hbs"
           },
           arity: 0,
           cachedFragment: null,
@@ -37499,7 +37558,7 @@ define('frontend-cp/session/cases/index/template', ['exports'], function (export
               "column": 8
             }
           },
-          "moduleName": "frontend-cp/session/cases/index/template.hbs"
+          "moduleName": "frontend-cp/session/agent/cases/index/template.hbs"
         },
         arity: 1,
         cachedFragment: null,
@@ -37520,7 +37579,7 @@ define('frontend-cp/session/cases/index/template', ['exports'], function (export
           return morphs;
         },
         statements: [
-          ["block","link-to",["session.cases",["subexpr","query-params",[],["page",["get","number",["loc",[null,[18,56],[18,62]]]]],["loc",[null,[18,37],[18,63]]]]],[],0,null,["loc",[null,[18,10],[18,77]]]]
+          ["block","link-to",["session.agent.cases",["subexpr","query-params",[],["page",["get","number",["loc",[null,[18,62],[18,68]]]]],["loc",[null,[18,43],[18,69]]]]],[],0,null,["loc",[null,[18,10],[18,83]]]]
         ],
         locals: ["number"],
         templates: [child0]
@@ -37540,7 +37599,7 @@ define('frontend-cp/session/cases/index/template', ['exports'], function (export
             "column": 0
           }
         },
-        "moduleName": "frontend-cp/session/cases/index/template.hbs"
+        "moduleName": "frontend-cp/session/agent/cases/index/template.hbs"
       },
       arity: 0,
       cachedFragment: null,
@@ -37548,7 +37607,7 @@ define('frontend-cp/session/cases/index/template', ['exports'], function (export
       buildFragment: function buildFragment(dom) {
         var el0 = dom.createDocumentFragment();
         var el1 = dom.createElement("div");
-        dom.setAttribute(el1,"class","ko-session-cases-index");
+        dom.setAttribute(el1,"class","ko-session-agent-cases-index");
         var el2 = dom.createTextNode("\n  ");
         dom.appendChild(el1, el2);
         var el2 = dom.createElement("div");
@@ -37589,7 +37648,7 @@ define('frontend-cp/session/cases/index/template', ['exports'], function (export
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
         var el4 = dom.createElement("div");
-        dom.setAttribute(el4,"class","ko-session-cases-index__pagination");
+        dom.setAttribute(el4,"class","ko-session-agent-cases-index__pagination");
         var el5 = dom.createTextNode("\n");
         dom.appendChild(el4, el5);
         var el5 = dom.createComment("");
@@ -37629,7 +37688,7 @@ define('frontend-cp/session/cases/index/template', ['exports'], function (export
   }()));
 
 });
-define('frontend-cp/session/cases/loading/template', ['exports'], function (exports) {
+define('frontend-cp/session/agent/cases/loading/template', ['exports'], function (exports) {
 
   'use strict';
 
@@ -37649,7 +37708,7 @@ define('frontend-cp/session/cases/loading/template', ['exports'], function (expo
               "column": 38
             }
           },
-          "moduleName": "frontend-cp/session/cases/loading/template.hbs"
+          "moduleName": "frontend-cp/session/agent/cases/loading/template.hbs"
         },
         arity: 0,
         cachedFragment: null,
@@ -37688,7 +37747,7 @@ define('frontend-cp/session/cases/loading/template', ['exports'], function (expo
             "column": 52
           }
         },
-        "moduleName": "frontend-cp/session/cases/loading/template.hbs"
+        "moduleName": "frontend-cp/session/agent/cases/loading/template.hbs"
       },
       arity: 0,
       cachedFragment: null,
@@ -37715,7 +37774,7 @@ define('frontend-cp/session/cases/loading/template', ['exports'], function (expo
   }()));
 
 });
-define('frontend-cp/session/cases/new/controller', ['exports', 'ember', 'frontend-cp/mixins/breadcrumbable'], function (exports, Ember, Breadcrumbable) {
+define('frontend-cp/session/agent/cases/new/controller', ['exports', 'ember', 'frontend-cp/mixins/breadcrumbable'], function (exports, Ember, Breadcrumbable) {
 
   'use strict';
 
@@ -37728,17 +37787,17 @@ define('frontend-cp/session/cases/new/controller', ['exports', 'ember', 'fronten
       var caseCrumb = {
         id: 'case',
         name: 'Case',
-        route: 'session.cases.case.index'
+        route: 'session.agent.cases.case.index'
       };
       var userCrumb = {
         id: 'user',
         name: 'User',
-        route: 'session.cases.case.user'
+        route: 'session.agent.cases.case.user'
       };
       var organisationCrumb = {
         id: 'organisation',
         name: 'Organisation',
-        route: 'session.cases.case.organisation'
+        route: 'session.agent.cases.case.organisation'
       };
 
       var crumbs = [caseCrumb];
@@ -37756,7 +37815,7 @@ define('frontend-cp/session/cases/new/controller', ['exports', 'ember', 'fronten
   });
 
 });
-define('frontend-cp/session/cases/new/route', ['exports', 'frontend-cp/routes/abstract/tabbed-route'], function (exports, TabbedRoute) {
+define('frontend-cp/session/agent/cases/new/route', ['exports', 'frontend-cp/routes/abstract/tabbed-route'], function (exports, TabbedRoute) {
 
   'use strict';
 
@@ -37776,7 +37835,7 @@ define('frontend-cp/session/cases/new/route', ['exports', 'frontend-cp/routes/ab
   });
 
 });
-define('frontend-cp/session/cases/new/template', ['exports'], function (exports) {
+define('frontend-cp/session/agent/cases/new/template', ['exports'], function (exports) {
 
   'use strict';
 
@@ -37795,7 +37854,7 @@ define('frontend-cp/session/cases/new/template', ['exports'], function (exports)
             "column": 0
           }
         },
-        "moduleName": "frontend-cp/session/cases/new/template.hbs"
+        "moduleName": "frontend-cp/session/agent/cases/new/template.hbs"
       },
       arity: 0,
       cachedFragment: null,
@@ -37836,6 +37895,453 @@ define('frontend-cp/session/cases/new/template', ['exports'], function (exports)
       statements: [
         ["inline","ko-breadcrumbs",[],["breadcrumbs",["subexpr","@mut",[["get","breadcrumbs",["loc",[null,[3,33],[3,44]]]]],[],[]],"activeBreadcrumb",["subexpr","@mut",[["get","activeBreadcrumb",["loc",[null,[3,62],[3,78]]]]],[],[]],"action","breadcrumbChange"],["loc",[null,[3,4],[3,106]]]],
         ["inline","ko-case-content",[],["case",["subexpr","@mut",[["get","case",["loc",[null,[5,25],[5,29]]]]],[],[]],"priorities",["subexpr","@mut",[["get","priorities",["loc",[null,[5,41],[5,51]]]]],[],[]],"types",["subexpr","@mut",[["get","types",["loc",[null,[5,58],[5,63]]]]],[],[]],"statuses",["subexpr","@mut",[["get","statuses",["loc",[null,[5,73],[5,81]]]]],[],[]]],["loc",[null,[5,2],[5,83]]]]
+      ],
+      locals: [],
+      templates: []
+    };
+  }()));
+
+});
+define('frontend-cp/session/agent/route', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Route.extend({
+    active: false,
+
+    sessionService: Ember['default'].inject.service('session'),
+
+    activate: (function () {
+      this.set('active', true);
+    }).on('activate'),
+
+    deactivate: (function () {
+      this.set('active', false);
+    }).on('deactivate'),
+
+    exitSession: (function () {
+      if (this.get('active') && this.get('sessionService.sessionId') === null) {
+        this.transitionTo('login.agent');
+      }
+    }).observes('sessionService.sessionId'),
+
+    beforeModel: function beforeModel(transition) {
+      var _this = this;
+
+      // Redirect to login if not validated
+      return this.get('sessionService').getSession().then(null, function () {
+        _this.controllerFor('login').set('transitionOnLogin', transition);
+        _this.transitionTo('login.agent');
+      });
+    }
+  });
+
+});
+define('frontend-cp/session/agent/users/index/route', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Route.extend({
+    page: 1,
+    limit: 5,
+    offset: 0,
+
+    queryParams: {
+      page: {
+        refreshModel: true
+      }
+    },
+
+    model: function model(params) {
+      if (params.page) {
+        var page = params.page;
+        this.set('page', isNaN(page) ? 1 : Math.floor(Math.abs(page)));
+      }
+      this.set('offset', (this.get('page') - 1) * this.get('limit'));
+
+      return this.store.find('user', {
+        offset: this.get('offset'),
+        limit: this.get('limit')
+      });
+    },
+
+    setupController: function setupController(controller, model) {
+      controller.set('users', model);
+      controller.setProperties({
+        page: this.get('page'),
+        totalPages: Math.ceil(model.get('meta.total') / this.get('limit'))
+      });
+    }
+  });
+
+});
+define('frontend-cp/session/agent/users/index/template', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports['default'] = Ember.HTMLBars.template((function() {
+    var child0 = (function() {
+      var child0 = (function() {
+        return {
+          meta: {
+            "revision": "Ember@1.13.6",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 4,
+                "column": 5
+              },
+              "end": {
+                "line": 4,
+                "column": 66
+              }
+            },
+            "moduleName": "frontend-cp/session/agent/users/index/template.hbs"
+          },
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+            dom.insertBoundary(fragment, 0);
+            dom.insertBoundary(fragment, null);
+            return morphs;
+          },
+          statements: [
+            ["content","user.fullName",["loc",[null,[4,49],[4,66]]]]
+          ],
+          locals: [],
+          templates: []
+        };
+      }());
+      return {
+        meta: {
+          "revision": "Ember@1.13.6",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 5,
+              "column": 0
+            }
+          },
+          "moduleName": "frontend-cp/session/agent/users/index/template.hbs"
+        },
+        arity: 1,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("	");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("li");
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]),0,0);
+          return morphs;
+        },
+        statements: [
+          ["block","link-to",["session.agent.users.user",["get","user",["loc",[null,[4,43],[4,47]]]]],[],0,null,["loc",[null,[4,5],[4,78]]]]
+        ],
+        locals: ["user"],
+        templates: [child0]
+      };
+    }());
+    return {
+      meta: {
+        "revision": "Ember@1.13.6",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 6,
+            "column": 5
+          }
+        },
+        "moduleName": "frontend-cp/session/agent/users/index/template.hbs"
+      },
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createTextNode("List of users\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("ul");
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var morphs = new Array(1);
+        morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]),1,1);
+        return morphs;
+      },
+      statements: [
+        ["block","each",[["get","users",["loc",[null,[3,8],[3,13]]]]],[],0,null,["loc",[null,[3,0],[5,9]]]]
+      ],
+      locals: [],
+      templates: [child0]
+    };
+  }()));
+
+});
+define('frontend-cp/session/agent/users/user/controller', ['exports', 'ember', 'frontend-cp/mixins/breadcrumbable'], function (exports, Ember, Breadcrumbable) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Controller.extend(Breadcrumbable['default'], {
+
+    /**
+     * Returns a breadcrumb hash depending on what
+     * data is available. Should hierarchical:
+     * Organisation>User
+     * @return {Object} Breadcrumb data hash
+     */
+    breadcrumbs: (function () {
+
+      var hasOrganisation = this.get('model.organization.id');
+
+      var userCrumb = {
+        id: 'user',
+        name: 'User',
+        route: 'session.agent.users.user.index'
+      };
+      var organisationCrumb = {
+        id: 'organisation',
+        name: 'Organisation',
+        route: 'session.agent.users.user.organisation'
+      };
+
+      var crumbs = [];
+
+      if (hasOrganisation) {
+        crumbs.push(organisationCrumb);
+      }
+
+      crumbs.push(userCrumb);
+
+      return crumbs;
+    }).property('model.organization.id')
+
+  });
+
+});
+define('frontend-cp/session/agent/users/user/index/route', ['exports', 'ember'], function (exports, Ember) {
+
+	'use strict';
+
+	exports['default'] = Ember['default'].Route.extend({});
+
+});
+define('frontend-cp/session/agent/users/user/index/template', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      meta: {
+        "revision": "Ember@1.13.6",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 0
+          }
+        },
+        "moduleName": "frontend-cp/session/agent/users/user/index/template.hbs"
+      },
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var morphs = new Array(1);
+        morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+        dom.insertBoundary(fragment, 0);
+        return morphs;
+      },
+      statements: [
+        ["inline","ko-user-content",[],["model",["subexpr","@mut",[["get","model",["loc",[null,[1,24],[1,29]]]]],[],[]]],["loc",[null,[1,0],[1,31]]]]
+      ],
+      locals: [],
+      templates: []
+    };
+  }()));
+
+});
+define('frontend-cp/session/agent/users/user/organisation/route', ['exports', 'frontend-cp/routes/abstract/organisation-route'], function (exports, OrganisationRoute) {
+
+  'use strict';
+
+  exports['default'] = OrganisationRoute['default'].extend({
+
+    model: function model() {
+      var parentModel = this.modelFor('user');
+      return parentModel ? parentModel.get('organization') : {};
+    }
+
+  });
+
+});
+define('frontend-cp/session/agent/users/user/organisation/template', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      meta: {
+        "revision": "Ember@1.13.6",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 0
+          }
+        },
+        "moduleName": "frontend-cp/session/agent/users/user/organisation/template.hbs"
+      },
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var morphs = new Array(1);
+        morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+        dom.insertBoundary(fragment, 0);
+        return morphs;
+      },
+      statements: [
+        ["inline","ko-organisation-content",[],["model",["subexpr","@mut",[["get","model",["loc",[null,[1,32],[1,37]]]]],[],[]]],["loc",[null,[1,0],[1,39]]]]
+      ],
+      locals: [],
+      templates: []
+    };
+  }()));
+
+});
+define('frontend-cp/session/agent/users/user/route', ['exports', 'frontend-cp/routes/abstract/tabbed-route'], function (exports, TabbedRoute) {
+
+  'use strict';
+
+  exports['default'] = TabbedRoute['default'].extend({
+
+    model: function model(params) {
+      return this.store.find('user', +params.user_id);
+    },
+
+    setupController: function setupController(controller, model) {
+      this._super(controller, model);
+      this.get('tab').set('label', model.get('fullName'));
+    }
+  });
+
+});
+define('frontend-cp/session/agent/users/user/template', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      meta: {
+        "revision": "Ember@1.13.6",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 7,
+            "column": 0
+          }
+        },
+        "moduleName": "frontend-cp/session/agent/users/user/template.hbs"
+      },
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","content layout--flush");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","layout__item u-1/1");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var element0 = dom.childAt(fragment, [0]);
+        var morphs = new Array(2);
+        morphs[0] = dom.createMorphAt(dom.childAt(element0, [1]),1,1);
+        morphs[1] = dom.createMorphAt(element0,3,3);
+        return morphs;
+      },
+      statements: [
+        ["inline","ko-breadcrumbs",[],["breadcrumbs",["subexpr","@mut",[["get","breadcrumbs",["loc",[null,[3,33],[3,44]]]]],[],[]],"activeBreadcrumb",["subexpr","@mut",[["get","activeBreadcrumb",["loc",[null,[3,62],[3,78]]]]],[],[]],"action","breadcrumbChange"],["loc",[null,[3,4],[3,106]]]],
+        ["content","outlet",["loc",[null,[5,2],[5,12]]]]
       ],
       locals: [],
       templates: []
@@ -38071,6 +38577,19 @@ define('frontend-cp/session/controller', ['exports', 'ember'], function (exports
   });
 
 });
+define('frontend-cp/session/index/route', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Route.extend({
+    sessionService: Ember['default'].inject.service('session'),
+
+    beforeModel: function beforeModel(transition) {
+      this.transitionTo('session.agent');
+    }
+  });
+
+});
 define('frontend-cp/session/loading/template', ['exports'], function (exports) {
 
   'use strict';
@@ -38176,17 +38695,7 @@ define('frontend-cp/session/route', ['exports', 'ember'], function (exports, Emb
    */
 
   exports['default'] = Ember['default'].Route.extend({
-
-    sessionService: Ember['default'].inject.service('session'),
     tabsService: Ember['default'].inject.service('tabs'),
-
-    beforeModel: function beforeModel(transition) {
-      // Redirect to login if not validated
-      if (!this.get('sessionService').isLoggedIn()) {
-        this.controllerFor('login').set('transitionOnLogin', transition);
-        this.transitionTo('login');
-      }
-    },
 
     setupController: function setupController(controller, model) {
       // Retrieve tabs from storage if available
@@ -42682,7 +43191,7 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
             },
             "end": {
               "line": 7,
-              "column": 68
+              "column": 74
             }
           },
           "moduleName": "frontend-cp/session/template.hbs"
@@ -42714,7 +43223,7 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
             },
             "end": {
               "line": 8,
-              "column": 69
+              "column": 75
             }
           },
           "moduleName": "frontend-cp/session/template.hbs"
@@ -42746,7 +43255,7 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
             },
             "end": {
               "line": 9,
-              "column": 70
+              "column": 76
             }
           },
           "moduleName": "frontend-cp/session/template.hbs"
@@ -42778,7 +43287,7 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
             },
             "end": {
               "line": 10,
-              "column": 68
+              "column": 74
             }
           },
           "moduleName": "frontend-cp/session/template.hbs"
@@ -42810,7 +43319,7 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
             },
             "end": {
               "line": 11,
-              "column": 72
+              "column": 78
             }
           },
           "moduleName": "frontend-cp/session/template.hbs"
@@ -43165,11 +43674,11 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
         return morphs;
       },
       statements: [
-        ["block","link-to",["session.cases"],["class","nav-main__item i-home"],0,null,["loc",[null,[7,10],[7,80]]]],
-        ["block","link-to",["session.cases"],["class","nav-main__item i-inbox"],1,null,["loc",[null,[8,10],[8,81]]]],
-        ["block","link-to",["session.cases"],["class","nav-main__item i-person"],2,null,["loc",[null,[9,10],[9,82]]]],
-        ["block","link-to",["session.cases"],["class","nav-main__item i-help"],3,null,["loc",[null,[10,10],[10,80]]]],
-        ["block","link-to",["session.cases"],["class","nav-main__item i-insights"],4,null,["loc",[null,[11,10],[11,84]]]],
+        ["block","link-to",["session.agent.cases"],["class","nav-main__item i-home"],0,null,["loc",[null,[7,10],[7,86]]]],
+        ["block","link-to",["session.agent.cases"],["class","nav-main__item i-inbox"],1,null,["loc",[null,[8,10],[8,87]]]],
+        ["block","link-to",["session.agent.cases"],["class","nav-main__item i-person"],2,null,["loc",[null,[9,10],[9,88]]]],
+        ["block","link-to",["session.agent.cases"],["class","nav-main__item i-help"],3,null,["loc",[null,[10,10],[10,86]]]],
+        ["block","link-to",["session.agent.cases"],["class","nav-main__item i-insights"],4,null,["loc",[null,[11,10],[11,90]]]],
         ["inline","ko-tabs",[],["tabs",["subexpr","@mut",[["get","tabs",["loc",[null,[16,25],[16,29]]]]],[],[]],"selectedTab",["subexpr","@mut",[["get","selectedTab",["loc",[null,[16,42],[16,53]]]]],[],[]]],["loc",[null,[16,10],[16,55]]]],
         ["content","ko-agent-dropdown",["loc",[null,[19,9],[19,30]]]],
         ["inline","ko-universal-search",[],["performSearch","performUniversalSearch","searchResults",["subexpr","@mut",[["get","searchResults",["loc",[null,[24,83],[24,96]]]]],[],[]],"searchingChanged","onSearchingChanged"],["loc",[null,[24,8],[24,136]]]],
@@ -43180,418 +43689,6 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
       ],
       locals: [],
       templates: [child0, child1, child2, child3, child4, child5, child6, child7, child8]
-    };
-  }()));
-
-});
-define('frontend-cp/session/users/index/route', ['exports', 'ember'], function (exports, Ember) {
-
-  'use strict';
-
-  exports['default'] = Ember['default'].Route.extend({
-    page: 1,
-    limit: 5,
-    offset: 0,
-
-    queryParams: {
-      page: {
-        refreshModel: true
-      }
-    },
-
-    model: function model(params) {
-      if (params.page) {
-        var page = params.page;
-        this.set('page', isNaN(page) ? 1 : Math.floor(Math.abs(page)));
-      }
-      this.set('offset', (this.get('page') - 1) * this.get('limit'));
-
-      return this.store.find('user', {
-        offset: this.get('offset'),
-        limit: this.get('limit')
-      });
-    },
-
-    setupController: function setupController(controller, model) {
-      controller.set('users', model);
-      controller.setProperties({
-        page: this.get('page'),
-        totalPages: Math.ceil(model.get('meta.total') / this.get('limit'))
-      });
-    }
-  });
-
-});
-define('frontend-cp/session/users/index/template', ['exports'], function (exports) {
-
-  'use strict';
-
-  exports['default'] = Ember.HTMLBars.template((function() {
-    var child0 = (function() {
-      var child0 = (function() {
-        return {
-          meta: {
-            "revision": "Ember@1.13.6",
-            "loc": {
-              "source": null,
-              "start": {
-                "line": 4,
-                "column": 5
-              },
-              "end": {
-                "line": 4,
-                "column": 60
-              }
-            },
-            "moduleName": "frontend-cp/session/users/index/template.hbs"
-          },
-          arity: 0,
-          cachedFragment: null,
-          hasRendered: false,
-          buildFragment: function buildFragment(dom) {
-            var el0 = dom.createDocumentFragment();
-            var el1 = dom.createComment("");
-            dom.appendChild(el0, el1);
-            return el0;
-          },
-          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-            var morphs = new Array(1);
-            morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
-            dom.insertBoundary(fragment, 0);
-            dom.insertBoundary(fragment, null);
-            return morphs;
-          },
-          statements: [
-            ["content","user.fullName",["loc",[null,[4,43],[4,60]]]]
-          ],
-          locals: [],
-          templates: []
-        };
-      }());
-      return {
-        meta: {
-          "revision": "Ember@1.13.6",
-          "loc": {
-            "source": null,
-            "start": {
-              "line": 3,
-              "column": 0
-            },
-            "end": {
-              "line": 5,
-              "column": 0
-            }
-          },
-          "moduleName": "frontend-cp/session/users/index/template.hbs"
-        },
-        arity: 1,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("	");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createElement("li");
-          var el2 = dom.createComment("");
-          dom.appendChild(el1, el2);
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n");
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]),0,0);
-          return morphs;
-        },
-        statements: [
-          ["block","link-to",["session.users.user",["get","user",["loc",[null,[4,37],[4,41]]]]],[],0,null,["loc",[null,[4,5],[4,72]]]]
-        ],
-        locals: ["user"],
-        templates: [child0]
-      };
-    }());
-    return {
-      meta: {
-        "revision": "Ember@1.13.6",
-        "loc": {
-          "source": null,
-          "start": {
-            "line": 1,
-            "column": 0
-          },
-          "end": {
-            "line": 6,
-            "column": 5
-          }
-        },
-        "moduleName": "frontend-cp/session/users/index/template.hbs"
-      },
-      arity: 0,
-      cachedFragment: null,
-      hasRendered: false,
-      buildFragment: function buildFragment(dom) {
-        var el0 = dom.createDocumentFragment();
-        var el1 = dom.createTextNode("List of users\n");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createElement("ul");
-        var el2 = dom.createTextNode("\n");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createComment("");
-        dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
-        return el0;
-      },
-      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var morphs = new Array(1);
-        morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]),1,1);
-        return morphs;
-      },
-      statements: [
-        ["block","each",[["get","users",["loc",[null,[3,8],[3,13]]]]],[],0,null,["loc",[null,[3,0],[5,9]]]]
-      ],
-      locals: [],
-      templates: [child0]
-    };
-  }()));
-
-});
-define('frontend-cp/session/users/user/controller', ['exports', 'ember', 'frontend-cp/mixins/breadcrumbable'], function (exports, Ember, Breadcrumbable) {
-
-  'use strict';
-
-  exports['default'] = Ember['default'].Controller.extend(Breadcrumbable['default'], {
-
-    /**
-     * Returns a breadcrumb hash depending on what
-     * data is available. Should hierarchical:
-     * Organisation>User
-     * @return {Object} Breadcrumb data hash
-     */
-    breadcrumbs: (function () {
-
-      var hasOrganisation = this.get('model.organization.id');
-
-      var userCrumb = {
-        id: 'user',
-        name: 'User',
-        route: 'session.users.user.index'
-      };
-      var organisationCrumb = {
-        id: 'organisation',
-        name: 'Organisation',
-        route: 'session.users.user.organisation'
-      };
-
-      var crumbs = [];
-
-      if (hasOrganisation) {
-        crumbs.push(organisationCrumb);
-      }
-
-      crumbs.push(userCrumb);
-
-      return crumbs;
-    }).property('model.organization.id')
-
-  });
-
-});
-define('frontend-cp/session/users/user/index/route', ['exports', 'ember'], function (exports, Ember) {
-
-	'use strict';
-
-	exports['default'] = Ember['default'].Route.extend({});
-
-});
-define('frontend-cp/session/users/user/index/template', ['exports'], function (exports) {
-
-  'use strict';
-
-  exports['default'] = Ember.HTMLBars.template((function() {
-    return {
-      meta: {
-        "revision": "Ember@1.13.6",
-        "loc": {
-          "source": null,
-          "start": {
-            "line": 1,
-            "column": 0
-          },
-          "end": {
-            "line": 2,
-            "column": 0
-          }
-        },
-        "moduleName": "frontend-cp/session/users/user/index/template.hbs"
-      },
-      arity: 0,
-      cachedFragment: null,
-      hasRendered: false,
-      buildFragment: function buildFragment(dom) {
-        var el0 = dom.createDocumentFragment();
-        var el1 = dom.createComment("");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
-        dom.appendChild(el0, el1);
-        return el0;
-      },
-      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var morphs = new Array(1);
-        morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
-        dom.insertBoundary(fragment, 0);
-        return morphs;
-      },
-      statements: [
-        ["inline","ko-user-content",[],["model",["subexpr","@mut",[["get","model",["loc",[null,[1,24],[1,29]]]]],[],[]]],["loc",[null,[1,0],[1,31]]]]
-      ],
-      locals: [],
-      templates: []
-    };
-  }()));
-
-});
-define('frontend-cp/session/users/user/organisation/route', ['exports', 'frontend-cp/routes/abstract/organisation-route'], function (exports, OrganisationRoute) {
-
-  'use strict';
-
-  exports['default'] = OrganisationRoute['default'].extend({
-
-    model: function model() {
-      var parentModel = this.modelFor('user');
-      return parentModel ? parentModel.get('organization') : {};
-    }
-
-  });
-
-});
-define('frontend-cp/session/users/user/organisation/template', ['exports'], function (exports) {
-
-  'use strict';
-
-  exports['default'] = Ember.HTMLBars.template((function() {
-    return {
-      meta: {
-        "revision": "Ember@1.13.6",
-        "loc": {
-          "source": null,
-          "start": {
-            "line": 1,
-            "column": 0
-          },
-          "end": {
-            "line": 2,
-            "column": 0
-          }
-        },
-        "moduleName": "frontend-cp/session/users/user/organisation/template.hbs"
-      },
-      arity: 0,
-      cachedFragment: null,
-      hasRendered: false,
-      buildFragment: function buildFragment(dom) {
-        var el0 = dom.createDocumentFragment();
-        var el1 = dom.createComment("");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
-        dom.appendChild(el0, el1);
-        return el0;
-      },
-      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var morphs = new Array(1);
-        morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
-        dom.insertBoundary(fragment, 0);
-        return morphs;
-      },
-      statements: [
-        ["inline","ko-organisation-content",[],["model",["subexpr","@mut",[["get","model",["loc",[null,[1,32],[1,37]]]]],[],[]]],["loc",[null,[1,0],[1,39]]]]
-      ],
-      locals: [],
-      templates: []
-    };
-  }()));
-
-});
-define('frontend-cp/session/users/user/route', ['exports', 'frontend-cp/routes/abstract/tabbed-route'], function (exports, TabbedRoute) {
-
-  'use strict';
-
-  exports['default'] = TabbedRoute['default'].extend({
-
-    model: function model(params) {
-      return this.store.find('user', +params.user_id);
-    },
-
-    setupController: function setupController(controller, model) {
-      this._super(controller, model);
-      this.get('tab').set('label', model.get('fullName'));
-    }
-  });
-
-});
-define('frontend-cp/session/users/user/template', ['exports'], function (exports) {
-
-  'use strict';
-
-  exports['default'] = Ember.HTMLBars.template((function() {
-    return {
-      meta: {
-        "revision": "Ember@1.13.6",
-        "loc": {
-          "source": null,
-          "start": {
-            "line": 1,
-            "column": 0
-          },
-          "end": {
-            "line": 7,
-            "column": 0
-          }
-        },
-        "moduleName": "frontend-cp/session/users/user/template.hbs"
-      },
-      arity: 0,
-      cachedFragment: null,
-      hasRendered: false,
-      buildFragment: function buildFragment(dom) {
-        var el0 = dom.createDocumentFragment();
-        var el1 = dom.createElement("div");
-        dom.setAttribute(el1,"class","content layout--flush");
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","layout__item u-1/1");
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createComment("");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n  ");
-        dom.appendChild(el2, el3);
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createComment("");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n");
-        dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
-        dom.appendChild(el0, el1);
-        return el0;
-      },
-      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var element0 = dom.childAt(fragment, [0]);
-        var morphs = new Array(2);
-        morphs[0] = dom.createMorphAt(dom.childAt(element0, [1]),1,1);
-        morphs[1] = dom.createMorphAt(element0,3,3);
-        return morphs;
-      },
-      statements: [
-        ["inline","ko-breadcrumbs",[],["breadcrumbs",["subexpr","@mut",[["get","breadcrumbs",["loc",[null,[3,33],[3,44]]]]],[],[]],"activeBreadcrumb",["subexpr","@mut",[["get","activeBreadcrumb",["loc",[null,[3,62],[3,78]]]]],[],[]],"action","breadcrumbChange"],["loc",[null,[3,4],[3,106]]]],
-        ["content","outlet",["loc",[null,[5,2],[5,12]]]]
-      ],
-      locals: [],
-      templates: []
     };
   }()));
 
@@ -43617,10 +43714,10 @@ define('frontend-cp/tests/acceptance/case/create-note-test', ['ember', 'qunit', 
   qunit.test('create note', function (assert) {
     assert.expect(3);
 
-    visit('/cases/1');
+    visit('/agent/cases/1');
 
     andThen(function () {
-      assert.equal(currentURL(), '/cases/1');
+      assert.equal(currentURL(), '/agent/cases/1');
       click('.ko-text-editor--reply .ko-text-editor-header-group__item:nth-child(2) span');
     });
 
@@ -43688,10 +43785,10 @@ define('frontend-cp/tests/acceptance/case/list-test', ['ember', 'qunit', 'fronte
   qunit.test('number of cases listed', function (assert) {
     assert.expect(2);
 
-    visit('/cases');
+    visit('/agent/cases');
 
     andThen(function () {
-      assert.equal(currentURL(), '/cases?page=1&view=1');
+      assert.equal(currentURL(), '/agent/cases?page=1&view=1');
       assert.equal(find('tbody tr').length, 5);
     });
   });
@@ -43718,10 +43815,10 @@ define('frontend-cp/tests/acceptance/case/reply-with-quote-test', ['ember', 'qun
   qunit.test('reply with quote to an existing case', function (assert) {
     assert.expect(2);
 
-    visit('/cases/1');
+    visit('/agent/cases/1');
 
     andThen(function () {
-      assert.equal(currentURL(), '/cases/1');
+      assert.equal(currentURL(), '/agent/cases/1');
       click('.ko-feed-item_menu__item:first.i-quote');
     });
 
@@ -43752,7 +43849,7 @@ define('frontend-cp/tests/acceptance/login/reset-password-test', ['ember', 'quni
   qunit.test('user can reset their password', function (assert) {
     assert.expect(1);
 
-    visit('/login');
+    visit('/agent/login');
 
     andThen(function () {
       click('a:contains("Forgot password?")');
@@ -43825,7 +43922,7 @@ define('frontend-cp/tests/acceptance/tabs/tabs-test', ['ember', 'qunit', 'fronte
 
     login();
 
-    visit('/');
+    visit('/agent');
 
     andThen(function () {
       var $tabElements = getTabElements();
@@ -43839,7 +43936,7 @@ define('frontend-cp/tests/acceptance/tabs/tabs-test', ['ember', 'qunit', 'fronte
       assert.equal($tabElements.length, 0);
     });
 
-    visit('/cases/1');
+    visit('/agent/cases/1');
 
     andThen(function () {
       var $tabElements = getTabElements();
@@ -43848,7 +43945,7 @@ define('frontend-cp/tests/acceptance/tabs/tabs-test', ['ember', 'qunit', 'fronte
       assert.ok(getIsActiveTabElement($firstTabElement));
     });
 
-    visit('/cases/1/user');
+    visit('/agent/cases/1/user');
 
     andThen(function () {
       var $tabElements = getTabElements();
@@ -43857,7 +43954,7 @@ define('frontend-cp/tests/acceptance/tabs/tabs-test', ['ember', 'qunit', 'fronte
       assert.ok(getIsActiveTabElement($firstTabElement));
     });
 
-    visit('/cases/1');
+    visit('/agent/cases/1');
 
     andThen(function () {
       var $tabElements = getTabElements();
@@ -43866,7 +43963,7 @@ define('frontend-cp/tests/acceptance/tabs/tabs-test', ['ember', 'qunit', 'fronte
       assert.ok(getIsActiveTabElement($firstTabElement));
     });
 
-    visit('/cases/2/user');
+    visit('/agent/cases/2/user');
 
     andThen(function () {
       var $tabElements = getTabElements();
@@ -43877,7 +43974,7 @@ define('frontend-cp/tests/acceptance/tabs/tabs-test', ['ember', 'qunit', 'fronte
       assert.ok(getIsActiveTabElement($secondTabElement));
     });
 
-    visit('/cases/2');
+    visit('/agent/cases/2');
 
     andThen(function () {
       var $tabElements = getTabElements();
@@ -43888,7 +43985,7 @@ define('frontend-cp/tests/acceptance/tabs/tabs-test', ['ember', 'qunit', 'fronte
       assert.ok(getIsActiveTabElement($secondTabElement));
     });
 
-    visit('/cases/2/user');
+    visit('/agent/cases/2/user');
 
     andThen(function () {
       var $tabElements = getTabElements();
@@ -43899,7 +43996,7 @@ define('frontend-cp/tests/acceptance/tabs/tabs-test', ['ember', 'qunit', 'fronte
       assert.ok(getIsActiveTabElement($secondTabElement));
     });
 
-    visit('/cases/1');
+    visit('/agent/cases/1');
 
     andThen(function () {
       var $tabElements = getTabElements();
@@ -43910,7 +44007,7 @@ define('frontend-cp/tests/acceptance/tabs/tabs-test', ['ember', 'qunit', 'fronte
       assert.ok(!getIsActiveTabElement($secondTabElement));
     });
 
-    visit('/cases/2');
+    visit('/agent/cases/2');
 
     andThen(function () {
       var $tabElements = getTabElements();
@@ -43921,7 +44018,7 @@ define('frontend-cp/tests/acceptance/tabs/tabs-test', ['ember', 'qunit', 'fronte
       assert.ok(getIsActiveTabElement($secondTabElement));
     });
 
-    visit('/cases/1/user');
+    visit('/agent/cases/1/user');
 
     andThen(function () {
       var $tabElements = getTabElements();
@@ -43932,7 +44029,7 @@ define('frontend-cp/tests/acceptance/tabs/tabs-test', ['ember', 'qunit', 'fronte
       assert.ok(!getIsActiveTabElement($secondTabElement));
     });
 
-    visit('/cases/2/user');
+    visit('/agent/cases/2/user');
 
     andThen(function () {
       var $tabElements = getTabElements();
@@ -43956,14 +44053,14 @@ define('frontend-cp/tests/acceptance/tabs/tabs-test', ['ember', 'qunit', 'fronte
 
     login();
 
-    visit('/cases/1');
+    visit('/agent/cases/1');
 
     andThen(function () {
       var $tabElement = getTabElements();
       assert.equal($tabElement.text().trim(), 'ERS Audit 1');
     });
 
-    visit('/cases/2');
+    visit('/agent/cases/2');
 
     andThen(function () {
       var $tabElement = getTabElements().eq(1);
@@ -43979,12 +44076,12 @@ define('frontend-cp/tests/acceptance/tabs/tabs-test', ['ember', 'qunit', 'fronte
       url: null,
       label: null
     }, {
-      baseUrl: '/cases/1',
-      url: '/cases/1/user',
+      baseUrl: '/agent/cases/1',
+      url: '/agent/cases/1/user',
       label: 'Case 1'
     }, {
-      baseUrl: '/cases/2',
-      url: '/cases/2/user',
+      baseUrl: '/agent/cases/2',
+      url: '/agent/cases/2/user',
       label: 'Case 2'
     }]));
 
@@ -44009,9 +44106,9 @@ define('frontend-cp/tests/acceptance/tabs/tabs-test', ['ember', 'qunit', 'fronte
     login();
 
     visit('/');
-    visit('/cases/1');
-    visit('/cases/2');
-    visit('/cases/3');
+    visit('/agent/cases/1');
+    visit('/agent/cases/2');
+    visit('/agent/cases/3');
 
     andThen(function () {
       var $activeTabElement = getActiveTabElement();
@@ -44023,7 +44120,7 @@ define('frontend-cp/tests/acceptance/tabs/tabs-test', ['ember', 'qunit', 'fronte
       assert.equal($tabElements.length, 2);
       var $firstTabElement = $tabElements.eq(0);
       var $secondTabElement = $tabElements.eq(1);
-      assert.equal(currentURL(), '/cases/2');
+      assert.equal(currentURL(), '/agent/cases/2');
       assert.ok(!getIsActiveTabElement($firstTabElement));
       assert.ok(getIsActiveTabElement($secondTabElement));
     });
@@ -44037,7 +44134,7 @@ define('frontend-cp/tests/acceptance/tabs/tabs-test', ['ember', 'qunit', 'fronte
       var $tabElements = getTabElements();
       assert.equal($tabElements.length, 1);
       var $firstTabElement = $tabElements.eq(0);
-      assert.equal(currentURL(), '/cases/2');
+      assert.equal(currentURL(), '/agent/cases/2');
       assert.ok(getIsActiveTabElement($firstTabElement));
     });
 
@@ -44049,7 +44146,7 @@ define('frontend-cp/tests/acceptance/tabs/tabs-test', ['ember', 'qunit', 'fronte
     andThen(function () {
       var $tabElements = getTabElements();
       assert.equal($tabElements.length, 0);
-      assert.equal(currentURL(), '/');
+      assert.equal(currentURL(), '/agent');
     });
   });
 
@@ -44065,14 +44162,14 @@ define('frontend-cp/tests/acceptance/tabs/tabs-test', ['ember', 'qunit', 'fronte
       scrollElement($scrollPaneElement, 10);
     });
 
-    visit('/cases/1');
+    visit('/agent/cases/1');
 
     andThen(function () {
       var $scrollPaneElement = getScrollPaneElement();
       scrollElement($scrollPaneElement, 20);
     });
 
-    visit('/cases/2');
+    visit('/agent/cases/2');
 
     andThen(function () {
       var $scrollPaneElement = getScrollPaneElement();
@@ -44101,7 +44198,7 @@ define('frontend-cp/tests/acceptance/tabs/tabs-test', ['ember', 'qunit', 'fronte
       assert.equal(scrollPosition, 30);
     });
 
-    visit('/cases/1');
+    visit('/agent/cases/1');
 
     andThen(function () {
       var $scrollPaneElement = getScrollPaneElement();
@@ -44109,7 +44206,7 @@ define('frontend-cp/tests/acceptance/tabs/tabs-test', ['ember', 'qunit', 'fronte
       assert.equal(scrollPosition, 20);
     });
 
-    visit('/cases/2');
+    visit('/agent/cases/2');
 
     andThen(function () {
       var $scrollPaneElement = getScrollPaneElement();
@@ -49957,7 +50054,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+0108275b"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+5191bdc1"});
 }
 
 /* jshint ignore:end */
