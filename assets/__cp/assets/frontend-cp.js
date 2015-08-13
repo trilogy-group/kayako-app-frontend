@@ -1993,6 +1993,19 @@ define('frontend-cp/components/ko-admin/case-fields/edit/component', ['exports',
     onOptionAddition: null,
     onOptionRemoval: null,
 
+    isChoiceField: function isChoiceField(fieldType) {
+      return ['DROPDOWN', 'RADIO', 'SELECT', 'CHECKBOX'].indexOf(fieldType) !== -1;
+    },
+
+    getAdminComponentForFieldType: function getAdminComponentForFieldType(fieldType) {
+      switch (fieldType) {
+        case 'REGEX':
+          return 'ko-admin/case-fields/edit/regex';
+        case 'PRIORITY':
+          return 'ko-admin/case-fields/edit/priorities';
+      }
+    },
+
     actions: {
       addNewOption: function addNewOption(name, tag) {
         this.sendAction('onOptionAddition', name, tag);
@@ -2572,7 +2585,7 @@ define('frontend-cp/components/ko-admin/case-fields/edit/template', ['exports'],
           return morphs;
         },
         statements: [
-          ["inline","component",[["get","caseField.fieldType.adminEditComponentName",["loc",[null,[57,14],[57,56]]]]],["options",["subexpr","@mut",[["get","caseField.options",["loc",[null,[57,65],[57,82]]]]],[],[]],"onOptionAddition",["subexpr","@mut",[["get","onOptionAddition",["loc",[null,[57,100],[57,116]]]]],[],[]],"onOptionRemoval",["subexpr","@mut",[["get","onOptionRemoval",["loc",[null,[57,133],[57,148]]]]],[],[]]],["loc",[null,[57,2],[57,150]]]]
+          ["inline","component",[["subexpr","ko-helper",[["get","getAdminComponentForFieldType",["loc",[null,[57,25],[57,54]]]],["get","caseField.fieldType",["loc",[null,[57,55],[57,74]]]]],[],["loc",[null,[57,14],[57,75]]]]],["options",["subexpr","@mut",[["get","caseField.options",["loc",[null,[57,84],[57,101]]]]],[],[]],"onOptionAddition",["subexpr","@mut",[["get","onOptionAddition",["loc",[null,[57,119],[57,135]]]]],[],[]],"onOptionRemoval",["subexpr","@mut",[["get","onOptionRemoval",["loc",[null,[57,152],[57,167]]]]],[],[]]],["loc",[null,[57,2],[57,169]]]]
         ],
         locals: [],
         templates: []
@@ -2928,8 +2941,8 @@ define('frontend-cp/components/ko-admin/case-fields/edit/template', ['exports'],
         ["inline","format-message",[["subexpr","intl-get",["admin.casefields.edit.heading.customer_settings"],[],["loc",[null,[20,48],[20,108]]]]],[],["loc",[null,[20,31],[20,110]]]],
         ["inline","ko-checkbox",[],["label",["subexpr","format-message",[["subexpr","intl-get",["admin.casefields.edit.label.is_visible_to_customers"],[],["loc",[null,[24,42],[24,106]]]]],[],["loc",[null,[24,26],[24,107]]]],"checked",["subexpr","@mut",[["get","caseField.isVisibleToCustomers",["loc",[null,[24,116],[24,146]]]]],[],[]]],["loc",[null,[24,6],[24,148]]]],
         ["block","if",[["get","caseField.isVisibleToCustomers",["loc",[null,[27,10],[27,40]]]]],[],0,null,["loc",[null,[27,4],[52,11]]]],
-        ["block","if",[["get","caseField.fieldType.adminEditComponentName",["loc",[null,[56,6],[56,48]]]]],[],1,null,["loc",[null,[56,0],[58,7]]]],
-        ["block","if",[["get","caseField.fieldType.isChoiceField",["loc",[null,[60,6],[60,39]]]]],[],2,null,["loc",[null,[60,0],[67,7]]]],
+        ["block","if",[["subexpr","ko-helper",[["get","getAdminComponentForFieldType",["loc",[null,[56,17],[56,46]]]],["get","caseField.fieldType",["loc",[null,[56,47],[56,66]]]]],[],["loc",[null,[56,6],[56,67]]]]],[],1,null,["loc",[null,[56,0],[58,7]]]],
+        ["block","if",[["subexpr","ko-helper",[["get","isChoiceField",["loc",[null,[60,17],[60,30]]]],["get","caseField.fieldType",["loc",[null,[60,31],[60,50]]]]],[],["loc",[null,[60,6],[60,51]]]]],[],2,null,["loc",[null,[60,0],[67,7]]]],
         ["block","if",[["subexpr","not",[["get","caseField.isSystem",["loc",[null,[69,11],[69,29]]]]],[],["loc",[null,[69,6],[69,30]]]]],[],3,null,["loc",[null,[69,0],[86,7]]]]
       ],
       locals: [],
@@ -2958,83 +2971,6 @@ define('frontend-cp/components/ko-admin/case-fields/select-type/template', ['exp
   'use strict';
 
   exports['default'] = Ember.HTMLBars.template((function() {
-    var child0 = (function() {
-      return {
-        meta: {
-          "revision": "Ember@1.13.6",
-          "loc": {
-            "source": null,
-            "start": {
-              "line": 1,
-              "column": 0
-            },
-            "end": {
-              "line": 9,
-              "column": 0
-            }
-          },
-          "moduleName": "frontend-cp/components/ko-admin/case-fields/select-type/template.hbs"
-        },
-        arity: 1,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("  ");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createElement("div");
-          dom.setAttribute(el1,"class","ko-admin_case-fields_select-type");
-          var el2 = dom.createTextNode("\n    ");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createElement("div");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n    ");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createElement("div");
-          dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__text");
-          var el3 = dom.createTextNode("\n      ");
-          dom.appendChild(el2, el3);
-          var el3 = dom.createElement("div");
-          var el4 = dom.createComment("");
-          dom.appendChild(el3, el4);
-          dom.appendChild(el2, el3);
-          var el3 = dom.createTextNode("\n      ");
-          dom.appendChild(el2, el3);
-          var el3 = dom.createElement("div");
-          var el4 = dom.createComment("");
-          dom.appendChild(el3, el4);
-          dom.appendChild(el2, el3);
-          var el3 = dom.createTextNode("\n    ");
-          dom.appendChild(el2, el3);
-          dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n  ");
-          dom.appendChild(el1, el2);
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n");
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var element0 = dom.childAt(fragment, [1]);
-          var element1 = dom.childAt(element0, [1]);
-          var element2 = dom.childAt(element0, [3]);
-          var morphs = new Array(4);
-          morphs[0] = dom.createElementMorph(element0);
-          morphs[1] = dom.createAttrMorph(element1, 'class');
-          morphs[2] = dom.createMorphAt(dom.childAt(element2, [1]),0,0);
-          morphs[3] = dom.createMorphAt(dom.childAt(element2, [3]),0,0);
-          return morphs;
-        },
-        statements: [
-          ["element","action",["setCaseFieldType",["get","fieldType",["loc",[null,[2,76],[2,85]]]]],[],["loc",[null,[2,48],[2,87]]]],
-          ["attribute","class",["concat",["ko-admin_case-fields_select-type__icon ",["get","fieldType.id",["loc",[null,[3,57],[3,69]]]]]]],
-          ["inline","format-message",[["subexpr","intl-get",[["get","fieldType.nameIntlKey",["loc",[null,[5,38],[5,59]]]]],[],["loc",[null,[5,28],[5,60]]]]],[],["loc",[null,[5,11],[5,62]]]],
-          ["inline","format-message",[["subexpr","intl-get",[["get","fieldType.descriptionIntlKey",["loc",[null,[6,38],[6,66]]]]],[],["loc",[null,[6,28],[6,67]]]]],[],["loc",[null,[6,11],[6,69]]]]
-        ],
-        locals: ["fieldType"],
-        templates: []
-      };
-    }());
     return {
       meta: {
         "revision": "Ember@1.13.6",
@@ -3045,8 +2981,8 @@ define('frontend-cp/components/ko-admin/case-fields/select-type/template', ['exp
             "column": 0
           },
           "end": {
-            "line": 9,
-            "column": 9
+            "line": 151,
+            "column": 6
           }
         },
         "moduleName": "frontend-cp/components/ko-admin/case-fields/select-type/template.hbs"
@@ -3056,22 +2992,750 @@ define('frontend-cp/components/ko-admin/case-fields/select-type/template', ['exp
       hasRendered: false,
       buildFragment: function buildFragment(dom) {
         var el0 = dom.createDocumentFragment();
-        var el1 = dom.createComment("");
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","ko-admin_case-fields_select-type");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__icon");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__text");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","ko-admin_case-fields_select-type");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__icon");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__text");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","ko-admin_case-fields_select-type");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__icon");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__text");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","ko-admin_case-fields_select-type");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__icon");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__text");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","ko-admin_case-fields_select-type");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__icon");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__text");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","ko-admin_case-fields_select-type");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__icon");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__text");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","ko-admin_case-fields_select-type");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__icon");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__text");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","ko-admin_case-fields_select-type");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__icon");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__text");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","ko-admin_case-fields_select-type");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__icon");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__text");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","ko-admin_case-fields_select-type");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__icon");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__text");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","ko-admin_case-fields_select-type");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__icon");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__text");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","ko-admin_case-fields_select-type");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__icon");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__text");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","ko-admin_case-fields_select-type");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__icon");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__text");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","ko-admin_case-fields_select-type");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__icon");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__text");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","ko-admin_case-fields_select-type");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__icon");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__text");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","ko-admin_case-fields_select-type");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__icon");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__text");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","ko-admin_case-fields_select-type");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__icon");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__text");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","ko-admin_case-fields_select-type");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__icon");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__text");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","ko-admin_case-fields_select-type");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__icon");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__text");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var morphs = new Array(1);
-        morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
-        dom.insertBoundary(fragment, 0);
-        dom.insertBoundary(fragment, null);
+        var element0 = dom.childAt(fragment, [0]);
+        var element1 = dom.childAt(element0, [3]);
+        var element2 = dom.childAt(fragment, [2]);
+        var element3 = dom.childAt(element2, [3]);
+        var element4 = dom.childAt(fragment, [4]);
+        var element5 = dom.childAt(element4, [3]);
+        var element6 = dom.childAt(fragment, [6]);
+        var element7 = dom.childAt(fragment, [8]);
+        var element8 = dom.childAt(element7, [3]);
+        var element9 = dom.childAt(fragment, [10]);
+        var element10 = dom.childAt(element9, [3]);
+        var element11 = dom.childAt(fragment, [12]);
+        var element12 = dom.childAt(element11, [3]);
+        var element13 = dom.childAt(fragment, [14]);
+        var element14 = dom.childAt(element13, [3]);
+        var element15 = dom.childAt(fragment, [16]);
+        var element16 = dom.childAt(element15, [3]);
+        var element17 = dom.childAt(fragment, [18]);
+        var element18 = dom.childAt(element17, [3]);
+        var element19 = dom.childAt(fragment, [20]);
+        var element20 = dom.childAt(element19, [3]);
+        var element21 = dom.childAt(fragment, [22]);
+        var element22 = dom.childAt(element21, [3]);
+        var element23 = dom.childAt(fragment, [24]);
+        var element24 = dom.childAt(element23, [3]);
+        var element25 = dom.childAt(fragment, [26]);
+        var element26 = dom.childAt(element25, [3]);
+        var element27 = dom.childAt(fragment, [28]);
+        var element28 = dom.childAt(element27, [3]);
+        var element29 = dom.childAt(fragment, [30]);
+        var element30 = dom.childAt(element29, [3]);
+        var element31 = dom.childAt(fragment, [32]);
+        var element32 = dom.childAt(element31, [3]);
+        var element33 = dom.childAt(fragment, [34]);
+        var element34 = dom.childAt(element33, [3]);
+        var element35 = dom.childAt(fragment, [36]);
+        var element36 = dom.childAt(element35, [3]);
+        var morphs = new Array(56);
+        morphs[0] = dom.createElementMorph(element0);
+        morphs[1] = dom.createMorphAt(dom.childAt(element1, [1]),0,0);
+        morphs[2] = dom.createMorphAt(dom.childAt(element1, [3]),0,0);
+        morphs[3] = dom.createElementMorph(element2);
+        morphs[4] = dom.createMorphAt(dom.childAt(element3, [1]),0,0);
+        morphs[5] = dom.createMorphAt(dom.childAt(element3, [3]),0,0);
+        morphs[6] = dom.createElementMorph(element4);
+        morphs[7] = dom.createMorphAt(dom.childAt(element5, [1]),0,0);
+        morphs[8] = dom.createMorphAt(dom.childAt(element5, [3]),0,0);
+        morphs[9] = dom.createElementMorph(element6);
+        morphs[10] = dom.createMorphAt(dom.childAt(element6, [3, 1]),0,0);
+        morphs[11] = dom.createElementMorph(element7);
+        morphs[12] = dom.createMorphAt(dom.childAt(element8, [1]),0,0);
+        morphs[13] = dom.createMorphAt(dom.childAt(element8, [3]),0,0);
+        morphs[14] = dom.createElementMorph(element9);
+        morphs[15] = dom.createMorphAt(dom.childAt(element10, [1]),0,0);
+        morphs[16] = dom.createMorphAt(dom.childAt(element10, [3]),0,0);
+        morphs[17] = dom.createElementMorph(element11);
+        morphs[18] = dom.createMorphAt(dom.childAt(element12, [1]),0,0);
+        morphs[19] = dom.createMorphAt(dom.childAt(element12, [3]),0,0);
+        morphs[20] = dom.createElementMorph(element13);
+        morphs[21] = dom.createMorphAt(dom.childAt(element14, [1]),0,0);
+        morphs[22] = dom.createMorphAt(dom.childAt(element14, [3]),0,0);
+        morphs[23] = dom.createElementMorph(element15);
+        morphs[24] = dom.createMorphAt(dom.childAt(element16, [1]),0,0);
+        morphs[25] = dom.createMorphAt(dom.childAt(element16, [3]),0,0);
+        morphs[26] = dom.createElementMorph(element17);
+        morphs[27] = dom.createMorphAt(dom.childAt(element18, [1]),0,0);
+        morphs[28] = dom.createMorphAt(dom.childAt(element18, [3]),0,0);
+        morphs[29] = dom.createElementMorph(element19);
+        morphs[30] = dom.createMorphAt(dom.childAt(element20, [1]),0,0);
+        morphs[31] = dom.createMorphAt(dom.childAt(element20, [3]),0,0);
+        morphs[32] = dom.createElementMorph(element21);
+        morphs[33] = dom.createMorphAt(dom.childAt(element22, [1]),0,0);
+        morphs[34] = dom.createMorphAt(dom.childAt(element22, [3]),0,0);
+        morphs[35] = dom.createElementMorph(element23);
+        morphs[36] = dom.createMorphAt(dom.childAt(element24, [1]),0,0);
+        morphs[37] = dom.createMorphAt(dom.childAt(element24, [3]),0,0);
+        morphs[38] = dom.createElementMorph(element25);
+        morphs[39] = dom.createMorphAt(dom.childAt(element26, [1]),0,0);
+        morphs[40] = dom.createMorphAt(dom.childAt(element26, [3]),0,0);
+        morphs[41] = dom.createElementMorph(element27);
+        morphs[42] = dom.createMorphAt(dom.childAt(element28, [1]),0,0);
+        morphs[43] = dom.createMorphAt(dom.childAt(element28, [3]),0,0);
+        morphs[44] = dom.createElementMorph(element29);
+        morphs[45] = dom.createMorphAt(dom.childAt(element30, [1]),0,0);
+        morphs[46] = dom.createMorphAt(dom.childAt(element30, [3]),0,0);
+        morphs[47] = dom.createElementMorph(element31);
+        morphs[48] = dom.createMorphAt(dom.childAt(element32, [1]),0,0);
+        morphs[49] = dom.createMorphAt(dom.childAt(element32, [3]),0,0);
+        morphs[50] = dom.createElementMorph(element33);
+        morphs[51] = dom.createMorphAt(dom.childAt(element34, [1]),0,0);
+        morphs[52] = dom.createMorphAt(dom.childAt(element34, [3]),0,0);
+        morphs[53] = dom.createElementMorph(element35);
+        morphs[54] = dom.createMorphAt(dom.childAt(element36, [1]),0,0);
+        morphs[55] = dom.createMorphAt(dom.childAt(element36, [3]),0,0);
         return morphs;
       },
       statements: [
-        ["block","each",[["get","caseFieldTypes",["loc",[null,[1,8],[1,22]]]]],[],0,null,["loc",[null,[1,0],[9,9]]]]
+        ["element","action",["setCaseFieldType","TEXT"],[],["loc",[null,[1,46],[1,82]]]],
+        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.text.name"],[],["loc",[null,[4,26],[4,70]]]]],[],["loc",[null,[4,9],[4,72]]]],
+        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.text.description"],[],["loc",[null,[5,26],[5,77]]]]],[],["loc",[null,[5,9],[5,79]]]],
+        ["element","action",["setCaseFieldType","TEXTAREA"],[],["loc",[null,[9,46],[9,86]]]],
+        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.textarea.name"],[],["loc",[null,[12,26],[12,74]]]]],[],["loc",[null,[12,9],[12,76]]]],
+        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.textarea.description"],[],["loc",[null,[13,26],[13,81]]]]],[],["loc",[null,[13,9],[13,83]]]],
+        ["element","action",["setCaseFieldType","CHECKBOX"],[],["loc",[null,[17,46],[17,86]]]],
+        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.checkbox.name"],[],["loc",[null,[20,26],[20,74]]]]],[],["loc",[null,[20,9],[20,76]]]],
+        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.checkbox.description"],[],["loc",[null,[21,26],[21,81]]]]],[],["loc",[null,[21,9],[21,83]]]],
+        ["element","action",["setCaseFieldType","PRIORITY"],[],["loc",[null,[25,46],[25,86]]]],
+        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.priority.name"],[],["loc",[null,[28,26],[28,74]]]]],[],["loc",[null,[28,9],[28,76]]]],
+        ["element","action",["setCaseFieldType","SUBJECT"],[],["loc",[null,[33,46],[33,85]]]],
+        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.subject.name"],[],["loc",[null,[36,26],[36,73]]]]],[],["loc",[null,[36,9],[36,75]]]],
+        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.subject.description"],[],["loc",[null,[37,26],[37,80]]]]],[],["loc",[null,[37,9],[37,82]]]],
+        ["element","action",["setCaseFieldType","MESSAGE"],[],["loc",[null,[41,46],[41,85]]]],
+        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.message.name"],[],["loc",[null,[44,26],[44,73]]]]],[],["loc",[null,[44,9],[44,75]]]],
+        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.message.description"],[],["loc",[null,[45,26],[45,80]]]]],[],["loc",[null,[45,9],[45,82]]]],
+        ["element","action",["setCaseFieldType","STATUS"],[],["loc",[null,[49,46],[49,84]]]],
+        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.status.name"],[],["loc",[null,[52,26],[52,72]]]]],[],["loc",[null,[52,9],[52,74]]]],
+        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.status.description"],[],["loc",[null,[53,26],[53,79]]]]],[],["loc",[null,[53,9],[53,81]]]],
+        ["element","action",["setCaseFieldType","TYPE"],[],["loc",[null,[57,46],[57,82]]]],
+        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.type.name"],[],["loc",[null,[60,26],[60,70]]]]],[],["loc",[null,[60,9],[60,72]]]],
+        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.type.description"],[],["loc",[null,[61,26],[61,77]]]]],[],["loc",[null,[61,9],[61,79]]]],
+        ["element","action",["setCaseFieldType","ASSIGNEE"],[],["loc",[null,[65,46],[65,86]]]],
+        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.assignee.name"],[],["loc",[null,[68,26],[68,74]]]]],[],["loc",[null,[68,9],[68,76]]]],
+        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.assignee.description"],[],["loc",[null,[69,26],[69,81]]]]],[],["loc",[null,[69,9],[69,83]]]],
+        ["element","action",["setCaseFieldType","TEAM"],[],["loc",[null,[73,46],[73,82]]]],
+        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.team.name"],[],["loc",[null,[76,26],[76,70]]]]],[],["loc",[null,[76,9],[76,72]]]],
+        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.team.description"],[],["loc",[null,[77,26],[77,77]]]]],[],["loc",[null,[77,9],[77,79]]]],
+        ["element","action",["setCaseFieldType","REGEX"],[],["loc",[null,[81,46],[81,83]]]],
+        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.regex.name"],[],["loc",[null,[84,26],[84,71]]]]],[],["loc",[null,[84,9],[84,73]]]],
+        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.regex.description"],[],["loc",[null,[85,26],[85,78]]]]],[],["loc",[null,[85,9],[85,80]]]],
+        ["element","action",["setCaseFieldType","DATE"],[],["loc",[null,[89,46],[89,82]]]],
+        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.date.name"],[],["loc",[null,[92,26],[92,70]]]]],[],["loc",[null,[92,9],[92,72]]]],
+        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.date.description"],[],["loc",[null,[93,26],[93,77]]]]],[],["loc",[null,[93,9],[93,79]]]],
+        ["element","action",["setCaseFieldType","YESNO"],[],["loc",[null,[97,46],[97,83]]]],
+        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.yesno.name"],[],["loc",[null,[100,26],[100,71]]]]],[],["loc",[null,[100,9],[100,73]]]],
+        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.yesno.description"],[],["loc",[null,[101,26],[101,78]]]]],[],["loc",[null,[101,9],[101,80]]]],
+        ["element","action",["setCaseFieldType","FILE"],[],["loc",[null,[105,46],[105,82]]]],
+        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.file.name"],[],["loc",[null,[108,26],[108,70]]]]],[],["loc",[null,[108,9],[108,72]]]],
+        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.file.description"],[],["loc",[null,[109,26],[109,77]]]]],[],["loc",[null,[109,9],[109,79]]]],
+        ["element","action",["setCaseFieldType","DECIMAL"],[],["loc",[null,[113,46],[113,85]]]],
+        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.decimal.name"],[],["loc",[null,[116,26],[116,73]]]]],[],["loc",[null,[116,9],[116,75]]]],
+        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.decimal.description"],[],["loc",[null,[117,26],[117,80]]]]],[],["loc",[null,[117,9],[117,82]]]],
+        ["element","action",["setCaseFieldType","NUMERIC"],[],["loc",[null,[121,46],[121,85]]]],
+        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.numeric.name"],[],["loc",[null,[124,26],[124,73]]]]],[],["loc",[null,[124,9],[124,75]]]],
+        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.numeric.description"],[],["loc",[null,[125,26],[125,80]]]]],[],["loc",[null,[125,9],[125,82]]]],
+        ["element","action",["setCaseFieldType","DROPDOWN"],[],["loc",[null,[129,46],[129,86]]]],
+        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.dropdown.name"],[],["loc",[null,[132,26],[132,74]]]]],[],["loc",[null,[132,9],[132,76]]]],
+        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.dropdown.description"],[],["loc",[null,[133,26],[133,81]]]]],[],["loc",[null,[133,9],[133,83]]]],
+        ["element","action",["setCaseFieldType","RADIO"],[],["loc",[null,[137,46],[137,83]]]],
+        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.radio.name"],[],["loc",[null,[140,26],[140,71]]]]],[],["loc",[null,[140,9],[140,73]]]],
+        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.radio.description"],[],["loc",[null,[141,26],[141,78]]]]],[],["loc",[null,[141,9],[141,80]]]],
+        ["element","action",["setCaseFieldType","SELECT"],[],["loc",[null,[145,46],[145,84]]]],
+        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.select.name"],[],["loc",[null,[148,26],[148,72]]]]],[],["loc",[null,[148,9],[148,74]]]],
+        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.select.description"],[],["loc",[null,[149,26],[149,79]]]]],[],["loc",[null,[149,9],[149,81]]]]
       ],
       locals: [],
-      templates: [child0]
+      templates: []
     };
   }()));
 
@@ -3084,7 +3748,7 @@ define('frontend-cp/components/ko-admin/case-fields/type-icon/component', ['expo
     //Params
     fieldType: null,
 
-    iconClass: Ember['default'].computed.readOnly('fieldType.id'),
+    iconClass: Ember['default'].computed.readOnly('fieldType'),
     classNameBindings: [':ko-admin_case-fields_type-icon', 'iconClass']
   });
 
@@ -3267,7 +3931,7 @@ define('frontend-cp/components/ko-admin/case-forms/edit/fields/template', ['expo
           statements: [
             ["content","field.title",["loc",[null,[3,77],[3,92]]]],
             ["inline","ko-admin/case-fields/type-icon",[],["fieldType",["subexpr","@mut",[["get","field.fieldType",["loc",[null,[4,75],[4,90]]]]],[],[]]],["loc",[null,[4,32],[4,92]]]],
-            ["inline","format-message",[["subexpr","intl-get",[["get","field.fieldType.nameIntlKey",["loc",[null,[5,59],[5,86]]]]],[],["loc",[null,[5,49],[5,87]]]]],[],["loc",[null,[5,32],[5,89]]]]
+            ["inline","format-message",[["subexpr","intl-get",[["subexpr","ko-intl-key-for-field-type",[["get","field.fieldType",["loc",[null,[5,87],[5,102]]]]],[],["loc",[null,[5,59],[5,103]]]]],[],["loc",[null,[5,49],[5,104]]]]],[],["loc",[null,[5,32],[5,106]]]]
           ],
           locals: [],
           templates: []
@@ -3380,7 +4044,7 @@ define('frontend-cp/components/ko-admin/case-forms/edit/fields/template', ['expo
           statements: [
             ["content","field.title",["loc",[null,[11,77],[11,92]]]],
             ["inline","ko-admin/case-fields/type-icon",[],["fieldType",["subexpr","@mut",[["get","field.fieldType",["loc",[null,[12,75],[12,90]]]]],[],[]]],["loc",[null,[12,32],[12,92]]]],
-            ["inline","format-message",[["subexpr","intl-get",[["get","field.fieldType.nameIntlKey",["loc",[null,[13,59],[13,86]]]]],[],["loc",[null,[13,49],[13,87]]]]],[],["loc",[null,[13,32],[13,89]]]],
+            ["inline","format-message",[["subexpr","intl-get",[["subexpr","ko-intl-key-for-field-type",[["get","field.fieldType",["loc",[null,[13,87],[13,102]]]]],[],["loc",[null,[13,59],[13,103]]]]],[],["loc",[null,[13,49],[13,104]]]]],[],["loc",[null,[13,32],[13,106]]]],
             ["element","action",["removeCustomField",["get","field",["loc",[null,[14,108],[14,113]]]]],[],["loc",[null,[14,79],[14,115]]]],
             ["inline","format-message",[["subexpr","intl-get",["admin.caseforms.remove_from_form"],[],["loc",[null,[14,133],[14,178]]]]],[],["loc",[null,[14,116],[14,180]]]]
           ],
@@ -5012,7 +5676,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember'],
       /*
        * System fields
        */
-      switch (field.get('fieldType.id')) {
+      switch (field.get('fieldType')) {
         case 'PRIORITY':
           return this.get('store').peekAll('case-priority');
         case 'STATUS':
@@ -5222,7 +5886,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
               return morphs;
             },
             statements: [
-              ["inline","component",[["subexpr","ko-helper",[["get","componentFor",["loc",[null,[56,35],[56,47]]]],["get","field.fieldType.id",["loc",[null,[56,48],[56,66]]]]],[],["loc",[null,[56,24],[56,67]]]]],["case",["subexpr","@mut",[["get","case",["loc",[null,[57,19],[57,23]]]]],[],[]],"field",["subexpr","@mut",[["get","field",["loc",[null,[58,20],[58,25]]]]],[],[]],"errors",["subexpr","@mut",[["get","errors",["loc",[null,[59,21],[59,27]]]]],[],[]],"options",["subexpr","ko-contextual-helper",[["get","optionsForField",["loc",[null,[60,44],[60,59]]]],["get","this",["loc",[null,[60,60],[60,64]]]],["get","field",["loc",[null,[60,65],[60,70]]]]],[],["loc",[null,[60,22],[60,71]]]],"editedCaseFields",["subexpr","@mut",[["get","editedCaseFields",["loc",[null,[61,31],[61,47]]]]],[],[]]],["loc",[null,[56,12],[62,14]]]]
+              ["inline","component",[["subexpr","ko-helper",[["get","componentFor",["loc",[null,[56,35],[56,47]]]],["get","field.fieldType",["loc",[null,[56,48],[56,63]]]]],[],["loc",[null,[56,24],[56,64]]]]],["case",["subexpr","@mut",[["get","case",["loc",[null,[57,19],[57,23]]]]],[],[]],"field",["subexpr","@mut",[["get","field",["loc",[null,[58,20],[58,25]]]]],[],[]],"errors",["subexpr","@mut",[["get","errors",["loc",[null,[59,21],[59,27]]]]],[],[]],"options",["subexpr","ko-contextual-helper",[["get","optionsForField",["loc",[null,[60,44],[60,59]]]],["get","this",["loc",[null,[60,60],[60,64]]]],["get","field",["loc",[null,[60,65],[60,70]]]]],[],["loc",[null,[60,22],[60,71]]]],"editedCaseFields",["subexpr","@mut",[["get","editedCaseFields",["loc",[null,[61,31],[61,47]]]]],[],[]]],["loc",[null,[56,12],[62,14]]]]
             ],
             locals: [],
             templates: []
@@ -5261,7 +5925,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             return morphs;
           },
           statements: [
-            ["block","if",[["subexpr","ko-helper",[["get","componentFor",["loc",[null,[55,27],[55,39]]]],["get","field.fieldType.id",["loc",[null,[55,40],[55,58]]]]],[],["loc",[null,[55,16],[55,59]]]]],[],0,null,["loc",[null,[55,10],[63,17]]]]
+            ["block","if",[["subexpr","ko-helper",[["get","componentFor",["loc",[null,[55,27],[55,39]]]],["get","field.fieldType",["loc",[null,[55,40],[55,55]]]]],[],["loc",[null,[55,16],[55,56]]]]],[],0,null,["loc",[null,[55,10],[63,17]]]]
           ],
           locals: ["field"],
           templates: [child0]
@@ -25502,6 +26166,21 @@ define('frontend-cp/helpers/ko-helper', ['exports', 'ember'], function (exports,
   });
 
 });
+define('frontend-cp/helpers/ko-intl-key-for-field-type', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports.intlKeyForFieldType = intlKeyForFieldType;
+
+  function intlKeyForFieldType(fieldType) {
+    if (fieldType.length) {
+      return 'admin.casefields.type.' + fieldType[0].toLowerCase() + '.name';
+    }
+  }
+
+  exports['default'] = Ember['default'].HTMLBars.makeBoundHelper(intlKeyForFieldType);
+
+});
 define('frontend-cp/helpers/ko-slasherizer', ['exports', 'ember'], function (exports, Ember) {
 
   'use strict';
@@ -25531,127 +26210,6 @@ define('frontend-cp/helpers/or', ['exports', 'ember', 'ember-truth-helpers/helpe
 	exports['default'] = Ember['default'].HTMLBars.makeBoundHelper(orHelper['default']);
 
 	exports.orHelper = orHelper['default'];
-
-});
-define('frontend-cp/initializers/case-field-type', ['exports', 'ember-data'], function (exports, DS) {
-
-  'use strict';
-
-  exports['default'] = {
-    name: 'case-field-type',
-    after: 'store',
-
-    initialize: function initialize(container) {
-      var store = container.lookup('store:main');
-
-      this.fixtures.forEach(function (fixture) {
-        store.createRecord('case-field-type', fixture);
-      });
-    },
-
-    fixtures: [{
-      id: 'TEXT',
-      nameIntlKey: 'admin.casefields.type.text.name',
-      descriptionIntlKey: 'admin.casefields.type.text.description',
-      iconFileName: DS['default'].attr('string')
-    }, {
-      id: 'TEXTAREA',
-      nameIntlKey: 'admin.casefields.type.multiline.name',
-      descriptionIntlKey: 'admin.casefields.type.multiline.description',
-      iconFileName: ''
-    }, {
-      id: 'CHECKBOX',
-      nameIntlKey: 'admin.casefields.type.checkbox.name',
-      descriptionIntlKey: 'admin.casefields.type.checkbox.description',
-      iconFileName: '',
-      isChoiceField: true
-    }, {
-      id: 'PRIORITY',
-      nameIntlKey: 'admin.casefields.type.priority.name',
-      iconFileName: '',
-      adminEditComponentName: 'ko-admin/case-fields/edit/priorities',
-      isSystem: true
-    }, {
-      id: 'SUBJECT',
-      nameIntlKey: 'admin.casefields.type.subject.name',
-      iconFileName: '',
-      isSystem: true
-    }, {
-      id: 'MESSAGE',
-      nameIntlKey: 'admin.casefields.type.message.name',
-      iconFileName: '',
-      isSystem: true
-    }, {
-      id: 'STATUS',
-      nameIntlKey: 'admin.casefields.type.status.name',
-      iconFileName: '',
-      isSystem: true
-    }, {
-      id: 'TYPE',
-      nameIntlKey: 'admin.casefields.type.type.name',
-      iconFileName: '',
-      isSystem: true
-    }, {
-      id: 'ASSIGNEE',
-      nameIntlKey: 'admin.casefields.type.assignee.name',
-      iconFileName: '',
-      isSystem: true
-    }, {
-      id: 'TEAM',
-      nameIntlKey: 'admin.casefields.type.team.name',
-      iconFileName: '',
-      isSystem: true
-    }, {
-      id: 'REGEX',
-      nameIntlKey: 'admin.casefields.type.regex.name',
-      descriptionIntlKey: 'admin.casefields.type.regex.description',
-      iconFileName: '',
-      adminEditComponentName: 'ko-admin/case-fields/edit/regex'
-    }, {
-      id: 'DATE',
-      nameIntlKey: 'admin.casefields.type.date.name',
-      descriptionIntlKey: 'admin.casefields.type.date.description',
-      iconFileName: ''
-    }, {
-      id: 'YESNO',
-      nameIntlKey: 'admin.casefields.type.yesno.name',
-      descriptionIntlKey: 'admin.casefields.type.yesno.description',
-      iconFileName: ''
-    }, {
-      id: 'FILE',
-      nameIntlKey: 'admin.casefields.type.file.name',
-      descriptionIntlKey: 'admin.casefields.type.file.description',
-      iconFileName: ''
-    }, {
-      id: 'DECIMAL',
-      nameIntlKey: 'admin.casefields.type.decimal.name',
-      descriptionIntlKey: 'admin.casefields.type.decimal.description',
-      iconFileName: ''
-    }, {
-      id: 'NUMERIC',
-      nameIntlKey: 'admin.casefields.type.numeric.name',
-      descriptionIntlKey: 'admin.casefields.type.numeric.description',
-      iconFileName: ''
-    }, {
-      id: 'DROPDOWN',
-      nameIntlKey: 'admin.casefields.type.dropdown.name',
-      descriptionIntlKey: 'admin.casefields.type.dropdown.description',
-      iconFileName: '',
-      isChoiceField: true
-    }, {
-      id: 'RADIO',
-      nameIntlKey: 'admin.casefields.type.radio.name',
-      descriptionIntlKey: 'admin.casefields.type.radio.description',
-      iconFileName: '',
-      isChoiceField: true
-    }, {
-      id: 'SELECT',
-      nameIntlKey: 'admin.casefields.type.select.name',
-      descriptionIntlKey: 'admin.casefields.type.select.description',
-      iconFileName: '',
-      isChoiceField: true
-    }]
-  };
 
 });
 define('frontend-cp/initializers/ember-cli-mirage', ['exports', 'frontend-cp/config/environment', 'frontend-cp/mirage/config', 'ember-cli-mirage/server', 'ember-cli-mirage/utils/read-modules'], function (exports, ENV, config, Server, readModules) {
@@ -30832,6 +31390,42 @@ define('frontend-cp/mirage/fixtures/enusstrings', ['exports'], function (exports
       id: 'frontend.api.users.addnewuser',
       value: 'Add New User',
       'resource_type': 'locale_string'
+    }, {
+      id: 'frontend.api.admin.casefields.type.textarea.name',
+      value: 'Multiline Text',
+      'resource_type': 'locale_string'
+    }, {
+      id: 'frontend.api.admin.casefields.type.textarea.description',
+      value: 'Multiline - a text field on two lines!',
+      'resource_type': 'locale_string'
+    }, {
+      id: 'frontend.api.admin.casefields.type.priority.description',
+      value: 'Priority description!!',
+      'resource_type': 'locale_string'
+    }, {
+      id: 'frontend.api.admin.casefields.type.team.description',
+      value: 'Team description',
+      'resource_type': 'locale_string'
+    }, {
+      id: 'frontend.api.admin.casefields.type.assignee.description',
+      value: 'Assignee description',
+      'resource_type': 'locale_string'
+    }, {
+      id: 'frontend.api.admin.casefields.type.type.description',
+      value: 'Type description',
+      'resource_type': 'locale_string'
+    }, {
+      id: 'frontend.api.admin.casefields.type.status.description',
+      value: 'Status Description',
+      'resource_type': 'locale_string'
+    }, {
+      id: 'frontend.api.admin.casefields.type.subject.description',
+      value: 'Subject description',
+      'resource_type': 'locale_string'
+    }, {
+      id: 'frontend.api.admin.casefields.type.message.description',
+      value: 'Message description',
+      'resource_type': 'locale_string'
     }],
     resource: 'locale_string'
   }];
@@ -31422,7 +32016,7 @@ define('frontend-cp/models/case-field', ['exports', 'ember-data', 'frontend-cp/m
 
   exports['default'] = Field['default'].extend({
     fielduuid: DS['default'].attr('string'),
-    fieldType: DS['default'].belongsTo('case-field-type', { async: true }),
+    fieldType: DS['default'].attr('string'),
     key: DS['default'].attr('string'),
     title: DS['default'].attr('string'),
     customerTitle: DS['default'].attr('string'),
@@ -34158,6 +34752,10 @@ define('frontend-cp/session/admin/manage/case-fields/index/controller', ['export
       });
     }).property('model.@each.isEnabled'),
 
+    getIntlKeyForFieldType: function getIntlKeyForFieldType(fieldType) {
+      return 'admin.casefields.type.' + fieldType.toLowerCase() + '.name';
+    },
+
     actions: {
       transitionToNewCaseFieldRoute: function transitionToNewCaseFieldRoute() {
         this.transitionToRoute('session.admin.manage.case-fields.new');
@@ -34287,7 +34885,7 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
             },
             statements: [
               ["content","systemfield.title",["loc",[null,[9,41],[9,62]]]],
-              ["inline","format-message",[["subexpr","intl-get",[["get","systemfield.fieldType.nameIntlKey",["loc",[null,[10,68],[10,101]]]]],[],["loc",[null,[10,58],[10,102]]]]],[],["loc",[null,[10,41],[10,104]]]],
+              ["inline","format-message",[["subexpr","intl-get",[["subexpr","ko-intl-key-for-field-type",[["get","systemfield.fieldType",["loc",[null,[10,96],[10,117]]]]],[],["loc",[null,[10,68],[10,118]]]]],[],["loc",[null,[10,58],[10,119]]]]],[],["loc",[null,[10,41],[10,121]]]],
               ["element","action",["editField",["get","systemfield",["loc",[null,[12,41],[12,52]]]]],[],["loc",[null,[12,20],[12,54]]]],
               ["inline","format-message",[["subexpr","intl-get",["generic.edit"],[],["loc",[null,[12,72],[12,97]]]]],[],["loc",[null,[12,55],[12,99]]]]
             ],
@@ -34421,7 +35019,7 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
             },
             statements: [
               ["content","customfield.title",["loc",[null,[19,41],[19,62]]]],
-              ["inline","format-message",[["subexpr","intl-get",[["get","customfield.fieldType.nameIntlKey",["loc",[null,[20,68],[20,101]]]]],[],["loc",[null,[20,58],[20,102]]]]],[],["loc",[null,[20,41],[20,104]]]],
+              ["inline","format-message",[["subexpr","intl-get",[["subexpr","ko-intl-key-for-field-type",[["get","customfield.fieldType",["loc",[null,[20,96],[20,117]]]]],[],["loc",[null,[20,68],[20,118]]]]],[],["loc",[null,[20,58],[20,119]]]]],[],["loc",[null,[20,41],[20,121]]]],
               ["element","action",["editField",["get","customfield",["loc",[null,[22,41],[22,52]]]]],[],["loc",[null,[22,20],[22,54]]]],
               ["inline","format-message",[["subexpr","intl-get",["generic.edit"],[],["loc",[null,[22,72],[22,97]]]]],[],["loc",[null,[22,55],[22,99]]]],
               ["element","action",["toggleEnabledStatus",["get","customfield",["loc",[null,[23,51],[23,62]]]]],[],["loc",[null,[23,20],[23,64]]]],
@@ -34585,7 +35183,7 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
               },
               statements: [
                 ["content","disabledfield.title",["loc",[null,[34,43],[34,66]]]],
-                ["inline","format-message",[["subexpr","intl-get",[["get","disabledfield.fieldType.nameIntlKey",["loc",[null,[35,70],[35,105]]]]],[],["loc",[null,[35,60],[35,106]]]]],[],["loc",[null,[35,43],[35,108]]]],
+                ["inline","format-message",[["subexpr","intl-get",[["subexpr","ko-intl-key-for-field-type",[["get","disabledfield.fieldType",["loc",[null,[35,98],[35,121]]]]],[],["loc",[null,[35,70],[35,122]]]]],[],["loc",[null,[35,60],[35,123]]]]],[],["loc",[null,[35,43],[35,125]]]],
                 ["element","action",["toggleEnabledStatus",["get","disabledfield",["loc",[null,[37,53],[37,66]]]]],[],["loc",[null,[37,22],[37,68]]]],
                 ["inline","format-message",[["subexpr","intl-get",["generic.enable"],[],["loc",[null,[37,86],[37,113]]]]],[],["loc",[null,[37,69],[37,115]]]]
               ],
@@ -34781,23 +35379,7 @@ define('frontend-cp/session/admin/manage/case-fields/new/controller', ['exports'
   'use strict';
 
   exports['default'] = Ember['default'].Controller.extend({
-    queryParams: ['caseFieldTypeId'],
-    caseFieldTypeId: null,
-
     optionsToBeDeleted: [],
-    customFieldTypes: [],
-
-    updateModelCaseFieldType: (function () {
-      var _this = this;
-
-      // this can be called before the model is set if
-      // 1st page load has caseFieldType set
-      if (this.get('model') !== null && this.get('caseFieldTypeId') !== null) {
-        this.store.find('caseFieldType', this.get('caseFieldTypeId')).then(function (caseFieldType) {
-          _this.set('model.fieldType', caseFieldType);
-        });
-      }
-    }).observes('caseFieldTypeId'),
 
     userHasChangedModel: function userHasChangedModel() {
       return this.get('model').hasDirtyChanges();
@@ -34815,11 +35397,12 @@ define('frontend-cp/session/admin/manage/case-fields/new/controller', ['exports'
       },
 
       transitionToIndexRoute: function transitionToIndexRoute() {
+        this.get('model').rollback();
         this.transitionToRoute('session.admin.manage.case-fields.index');
       },
 
       setCaseFieldType: function setCaseFieldType(caseFieldType) {
-        this.transitionToRoute({ queryParams: { caseFieldTypeId: caseFieldType.id } });
+        this.set('model.fieldType', caseFieldType);
       },
 
       addNewOption: function addNewOption() {
@@ -34839,16 +35422,16 @@ define('frontend-cp/session/admin/manage/case-fields/new/controller', ['exports'
       },
 
       saveCaseField: function saveCaseField() {
-        var _this2 = this;
+        var _this = this;
 
         var savePromiseArray = [];
 
         this.get('model').save().then(function () {
-          var options = _this2.get('model.options');
+          var options = _this.get('model.options');
 
           // saving the model will re-add all the options
           // we have marked for deletion - remove them again
-          _this2.get('optionsToBeDeleted').forEach(function (option) {
+          _this.get('optionsToBeDeleted').forEach(function (option) {
             option.deleteRecord();
             savePromiseArray.push(option.save());
             options.removeObject(option);
@@ -34860,7 +35443,7 @@ define('frontend-cp/session/admin/manage/case-fields/new/controller', ['exports'
           });
 
           Ember['default'].RSVP.all(savePromiseArray).then(function () {
-            _this2.send('transitionToIndexRoute');
+            _this.send('transitionToIndexRoute');
           });
         });
       }
@@ -34878,10 +35461,6 @@ define('frontend-cp/session/admin/manage/case-fields/new/route', ['exports', 'em
 
     model: function model() {
       return this.store.createRecord('case-field');
-    },
-
-    resetController: function resetController(controller) {
-      controller.set('caseFieldTypeId', null);
     },
 
     actions: {
@@ -34909,26 +35488,12 @@ define('frontend-cp/session/admin/manage/case-fields/new/route', ['exports', 'em
     },
 
     setupController: function setupController(controller, model) {
-      if (controller.get('caseFieldTypeId')) {
-        this.store.find('caseFieldType', controller.get('caseFieldTypeId')).then(function (caseFieldType) {
-          model.set('type', caseFieldType);
-        });
-      }
-
       if (model.get('options.length') === 0) {
         // we always need an option for the user to start editing
         model.get('options').pushObject(this.store.createRecord('field-option', {
           sortOrder: 1
         }));
       }
-
-      this.store.find('caseFieldType').then(function (caseFieldTypes) {
-        var customFieldTypes = caseFieldTypes.filter(function (caseFieldType) {
-          return !caseFieldType.isSystem;
-        });
-        controller.set('customFieldTypes', customFieldTypes);
-      });
-
       controller.set('model', model);
     }
   });
@@ -34986,7 +35551,7 @@ define('frontend-cp/session/admin/manage/case-fields/new/template', ['exports'],
         },
         statements: [
           ["inline","ko-admin/page-header",[],["title",["subexpr","format-message",[["subexpr","intl-get",["admin.casefields.new.heading"],[],["loc",[null,[2,47],[2,88]]]]],[],["loc",[null,[2,31],[2,89]]]],"cancelAction","transitionToIndexRoute"],["loc",[null,[2,2],[2,129]]]],
-          ["inline","ko-admin/case-fields/select-type",[],["caseFieldTypes",["subexpr","@mut",[["get","customFieldTypes",["loc",[null,[3,52],[3,68]]]]],[],[]]],["loc",[null,[3,2],[3,70]]]],
+          ["content","ko-admin/case-fields/select-type",["loc",[null,[3,2],[3,38]]]],
           ["inline","ko-admin/page-footer",[],["cancelAction","transitionToIndexRoute","buttonAction","saveCaseField"],["loc",[null,[4,2],[4,93]]]]
         ],
         locals: [],
@@ -35081,7 +35646,7 @@ define('frontend-cp/session/admin/manage/case-fields/new/template', ['exports'],
         return morphs;
       },
       statements: [
-        ["block","if",[["subexpr","not",[["get","caseFieldTypeId",["loc",[null,[1,11],[1,26]]]]],[],["loc",[null,[1,6],[1,27]]]]],[],0,1,["loc",[null,[1,0],[20,7]]]]
+        ["block","if",[["subexpr","not",[["get","model.fieldType",["loc",[null,[1,11],[1,26]]]]],[],["loc",[null,[1,6],[1,27]]]]],[],0,1,["loc",[null,[1,0],[20,7]]]]
       ],
       locals: [],
       templates: [child0, child1]
@@ -50054,7 +50619,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+5191bdc1"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+85090889"});
 }
 
 /* jshint ignore:end */
