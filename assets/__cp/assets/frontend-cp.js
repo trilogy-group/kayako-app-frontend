@@ -12,6 +12,15 @@ define('frontend-cp/acceptance-tests/main', ['exports', 'ember-cli-sri/acceptanc
 	exports['default'] = main['default'];
 
 });
+define('frontend-cp/acceptance-tests/sinon', ['exports', 'ember-sinon/acceptance-tests/sinon'], function (exports, sinon) {
+
+	'use strict';
+
+
+
+	exports['default'] = sinon['default'];
+
+});
 define('frontend-cp/adapters/access-log', ['exports', 'frontend-cp/adapters/application'], function (exports, ApplicationAdapter) {
 
   'use strict';
@@ -6065,81 +6074,641 @@ define('frontend-cp/components/ko-admin/views/edit/template', ['exports'], funct
   }()));
 
 });
-define('frontend-cp/components/ko-agent-dropdown/component', ['exports', 'ember', 'frontend-cp/lib/keycodes', 'frontend-cp/components/mixins/drop-down-keyboard-nav'], function (exports, Ember, KeyCodes, DropdownKeyboardNav) {
+define('frontend-cp/components/ko-agent-dropdown/component', ['exports', 'ember', 'frontend-cp/lib/keycodes'], function (exports, Ember, KeyCodes) {
 
   'use strict';
 
-  exports['default'] = Ember['default'].Component.extend(DropdownKeyboardNav['default'], {
+  exports['default'] = Ember['default'].Component.extend({
     attributeBindings: ['data-region', 'tabindex'],
     dataRegion: 'navigation-new',
-    tabindex: 0,
     classNames: ['u-inline-block'],
-    navItems: [{ text: 'Case', path: 'session.agent.cases.new', icon: 'images/icons/case.svg' }, { text: 'User', icon: 'images/icons/user.svg' }, { text: 'Organization', icon: 'images/icons/organization.svg' }],
-    showDropdown: false,
-    isMouseAccess: false,
-    keyboardPosition: 0,
-    skipNextClick: false,
+    navItems: [{ name: 'case', text: 'Case', path: 'session.agent.cases.new', icon: 'images/icons/case.svg' }, { name: 'user', text: 'User', tab: '', icon: 'images/icons/user.svg' }, { name: 'organization', text: 'Organization', icon: 'images/icons/organization.svg' }],
+    isExpanded: false,
+    selectedTab: null,
 
-    click: function click() {
-      var skipNextClick = this.get('skipNextClick');
-      if (!skipNextClick) {
-        this.set('showDropdown', false);
+    focusIn: function focusIn(event) {
+      this.set('isExpanded', true);
+    },
+
+    focusOut: function focusOut(event) {
+      // `focusout` events bubble, so the user might have just switched focus within the component
+      var isStillFocused = Ember['default'].$.contains(this.$()[0], event.relatedTarget);
+      if (isStillFocused) {
+        return;
       }
-      this.set('skipNextClick', false);
-      this.set('isMouseAccess', true);
+      this.set('isExpanded', false);
     },
 
-    focusIn: function focusIn() {
-      var mouseAccess = this.get('isMouseAccess');
-      if (!mouseAccess) {
-        this.set('showDropdown', true);
+    userTab: Ember['default'].computed('navItems', function () {
+      return this.get('navItems').objectAt(1);
+    }),
+
+    organisationTab: Ember['default'].computed('navItems', function () {
+      return this.get('navItems').objectAt(2);
+    }),
+
+    resetSelectedTabOnHide: Ember['default'].observer('isExpanded', function () {
+      var isExpanded = this.get('isExpanded');
+      if (!isExpanded) {
+        this.set('selectedTab', null);
       }
-    },
+    }),
 
-    focusOut: function focusOut() {
-      this.set('isMouseAccess', false);
-      this.set('keyboardPosition', 0);
-      this.set('showDropdown', false);
-    },
+    maintainFocusDuringTabTransition: Ember['default'].observer('selectedTab', function () {
+      if (!this.get('isExpanded')) {
+        return;
+      }
+      // Switch the focus to the '+' button so that the panel can maintain
+      // focus, even if the new tab contains no focusable elements
+      var $componentElement = this.$();
+      var $focusableElements = getFocusableElements($componentElement);
+      $focusableElements.eq(0).focus();
+    }),
 
     keyDown: function keyDown(e) {
       switch (e.keyCode) {
         case KeyCodes.up:
           {
-            var navItems = this.get('navItems');
-            this.moveSelectedItem(navItems.length, 'ul', 'up', 'keyboardPosition');
+            var isMainTab = !this.get('selectedTab');
+            if (!isMainTab) {
+              return true;
+            }
+            selectPreviousFocusableItem(this.$());
             return false;
           }
         case KeyCodes.down:
           {
-            var navItems = this.get('navItems');
-            this.set('showDropdown', true);
-            this.moveSelectedItem(navItems.length, 'ul', 'down', 'keyboardPosition');
+            var isMainTab = !this.get('selectedTab');
+            if (!isMainTab) {
+              return true;
+            }
+            selectNextFocusableItem(this.$());
             return false;
           }
-        case KeyCodes.tab:
+        case KeyCodes.escape:
           {
-            this.set('showDropdown', false);
-          }
-        case KeyCodes.enter:
-          {
-            var keyboardPosition = this.get('keyboardPosition');
-            this.$('ul li:nth-child(' + keyboardPosition + ') a').click();
-            this.$().focus();
-            this.set('showDropdown', false);
-            this.set('keyboardPosition', 0);
+            if (this.get('selectedTab')) {
+              this.set('selectedTab', null);
+            } else {
+              this.set('isExpanded', false);
+            }
             return false;
           }
       }
     },
 
     actions: {
-      showDropdown: function showDropdown() {
-        this.set('skipNextClick', true);
-        this.set('showDropdown', true);
+      toggleDropdown: function toggleDropdown() {
+        this.set('isExpanded', true);
+      },
+      selectTab: function selectTab(tab) {
+        if (tab.path) {
+          var router = this.container.lookup('router:main');
+          router.router.transitionTo(tab.path);
+          this.set('isExpanded', false);
+        } else {
+          this.set('selectedTab', tab || null);
+        }
+      },
+      onCreateUserSubmitted: function onCreateUserSubmitted(error) {
+        this.maintainFocusDuringTabTransition();
+      },
+      onCreateUserCompleted: function onCreateUserCompleted(userModel) {
+        var router = this.container.lookup('router:main');
+        router.router.transitionTo('session.agent.users.user', userModel);
+        this.set('isExpanded', false);
+      },
+      onCreateUserCancelled: function onCreateUserCancelled() {
+        this.set('selectedTab', null);
       }
     }
   });
+
+  function selectNextFocusableItem($containerElement) {
+    var $focusableElements = getFocusableElements($containerElement);
+    var $focusedElement = $focusableElements.filter(':focus');
+    var focusedIndex = $focusableElements.index($focusedElement);
+    var updatedFocusIndex = focusedIndex >= $focusableElements.length - 1 ? 0 : focusedIndex + 1;
+    $focusableElements.eq(updatedFocusIndex).focus();
+  }
+
+  function selectPreviousFocusableItem($containerElement) {
+    var $focusableElements = getFocusableElements($containerElement);
+    var $focusedElement = $focusableElements.filter(':focus');
+    var focusedIndex = $focusableElements.index($focusedElement);
+    var updatedFocusIndex = focusedIndex <= 0 ? $focusableElements.length - 1 : focusedIndex - 1;
+    $focusableElements.eq(updatedFocusIndex).focus();
+  }
+
+  function getFocusableElements($containerElement) {
+    return $containerElement.find('button,input,textarea,select,[tabindex]').not('[tabindex="-1"],[disabled]');
+  }
+
+});
+define('frontend-cp/components/ko-agent-dropdown/create-user/component', ['exports', 'ember', 'frontend-cp/mixins/autofocus'], function (exports, Ember, AutofocusMixin) {
+
+  'use strict';
+
+  var EMAIL_REGEX = /^[^@]+@([^@\.]+\.)+[^@\.]{2,}$/;
+
+  exports['default'] = Ember['default'].Component.extend(AutofocusMixin['default'], {
+    isDisabled: false,
+
+    store: Ember['default'].inject.service(),
+
+    fields: null,
+    activeRequest: null,
+    validation: null,
+    errors: null,
+
+    fakeSuccess: false,
+    fakeValid: false,
+
+    intlService: Ember['default'].inject.service('intl'),
+
+    init: function init() {
+      this._super();
+      this.set('fields', Ember['default'].Object.create({
+        name: '',
+        email: ''
+      }));
+      this.set('validation', {
+        name: {
+          showErrors: false,
+          isValid: false,
+          errors: null
+        },
+        email: {
+          showErrors: false,
+          isValid: false,
+          errors: null
+        },
+        form: {
+          showErrors: false,
+          isValid: false,
+          errors: null
+        }
+      });
+    },
+
+    validateName: Ember['default'].observer('fields.name', function () {
+      var isValidName = Boolean(this.get('fields.name'));
+      this.set('validation.name.isValid', isValidName);
+      this.set('validation.name.errors', isValidName ? null : [this.getTranslation('generic.create_user_panel.name_required').translation]);
+    }),
+
+    validateEmail: Ember['default'].observer('fields.email', function () {
+      this.set('validation.email.isValid', false);
+      this.set('validation.email.errors', null);
+      var email = this.get('fields.email');
+      if (!email) {
+        this.set('validation.email.isValid', false);
+        this.set('validation.email.errors', [this.getTranslation('generic.create_user_panel.email_required').translation]);
+        return;
+      }
+      var isValidEmail = EMAIL_REGEX.test(email);
+      this.set('validation.email.isValid', isValidEmail);
+      this.set('validation.email.errors', isValidEmail ? null : [this.getTranslation('generic.create_user_panel.email_invalid').translation]);
+    }),
+
+    isFormValid: Ember['default'].computed('validation.name.isValid', 'validation.email.isValid', function () {
+      return this.get('validation.name.isValid') && this.get('validation.email.isValid');
+    }),
+
+    isFormDisabled: Ember['default'].computed('isDisabled', 'isSubmitting', function () {
+      return this.get('isDisabled') || this.get('isSubmitting');
+    }),
+
+    isSubmitDisabled: Ember['default'].computed('isFormValid', 'isFormDisabled', function () {
+      return this.get('isFormDisabled') || !this.get('isFormValid');
+    }),
+
+    isSubmitting: Ember['default'].computed('activeRequest', function () {
+      return Boolean(this.get('activeRequest'));
+    }),
+
+    getTranslation: function getTranslation(key) {
+
+      return this.get('intlService').findTranslationByKey(key);
+
+      // let locales = this.get('intlService.current');
+      // let adapter = this.get('intlService.adapter')
+      // return adapter.findTranslation(locales, key);
+    },
+
+    actions: {
+      onNameBlurred: function onNameBlurred() {
+        this.validateName();
+        this.set('validation.name.showErrors', true);
+      },
+      onEmailBlurred: function onEmailBlurred() {
+        if (!this.get('fields.email')) {
+          this.validateEmail();
+        }
+        this.set('validation.email.showErrors', true);
+      },
+      onCancelled: function onCancelled() {
+        this.set('errors', null);
+        this.set('activeRequest', null);
+        this.sendAction('cancel');
+      },
+      onSubmitted: function onSubmitted() {
+        var _this = this;
+
+        this.set('errors', null);
+        var fields = this.get('fields');
+        var store = this.get('store');
+        var userModel = createUserModel(fields, store);
+        var request = userModel.save().then(function () {
+          _this.set('activeRequest', null);
+          _this.sendAction('create', userModel);
+        })['catch'](function (error) {
+          _this.set('activeRequest', null);
+          _this.set('errors', [error.message]);
+          _this.sendAction('error', error);
+        });
+        this.set('activeRequest', request);
+        this.sendAction('submit', userModel);
+
+        function createUserModel(fields, store) {
+          return store.createRecord('user', {
+            'role_id': 4,
+            'full_name': fields.get('name'),
+            'email': fields.get('email')
+          });
+        }
+      }
+    }
+  });
+
+});
+define('frontend-cp/components/ko-agent-dropdown/create-user/template', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports['default'] = Ember.HTMLBars.template((function() {
+    var child0 = (function() {
+      return {
+        meta: {
+          "revision": "Ember@1.13.6",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 6,
+              "column": 2
+            },
+            "end": {
+              "line": 8,
+              "column": 2
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-agent-dropdown/create-user/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("    ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+          return morphs;
+        },
+        statements: [
+          ["inline","input",[],["type","text","class","input__text","name","name","value",["subexpr","@mut",[["get","fields.name",["loc",[null,[7,62],[7,73]]]]],[],[]],"placeholder","","disabled",["subexpr","@mut",[["get","isFormDisabled",["loc",[null,[7,98],[7,112]]]]],[],[]],"focus-out","onNameBlurred"],["loc",[null,[7,4],[7,140]]]]
+        ],
+        locals: [],
+        templates: []
+      };
+    }());
+    var child1 = (function() {
+      return {
+        meta: {
+          "revision": "Ember@1.13.6",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 10,
+              "column": 2
+            },
+            "end": {
+              "line": 12,
+              "column": 2
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-agent-dropdown/create-user/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("    ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+          return morphs;
+        },
+        statements: [
+          ["inline","input",[],["type","text","class","input__text","name","email","value",["subexpr","@mut",[["get","fields.email",["loc",[null,[11,63],[11,75]]]]],[],[]],"placeholder","","disabled",["subexpr","@mut",[["get","isFormDisabled",["loc",[null,[11,100],[11,114]]]]],[],[]],"focus-out","onEmailBlurred"],["loc",[null,[11,4],[11,143]]]]
+        ],
+        locals: [],
+        templates: []
+      };
+    }());
+    var child2 = (function() {
+      var child0 = (function() {
+        return {
+          meta: {
+            "revision": "Ember@1.13.6",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 18,
+                "column": 2
+              },
+              "end": {
+                "line": 18,
+                "column": 101
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-agent-dropdown/create-user/template.hbs"
+          },
+          arity: 1,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createElement("p");
+            dom.setAttribute(el1,"class","ko-agent-dropdown-create-user__form-error t-bad");
+            var el2 = dom.createComment("");
+            dom.appendChild(el1, el2);
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(dom.childAt(fragment, [0]),0,0);
+            return morphs;
+          },
+          statements: [
+            ["content","error",["loc",[null,[18,88],[18,97]]]]
+          ],
+          locals: ["error"],
+          templates: []
+        };
+      }());
+      return {
+        meta: {
+          "revision": "Ember@1.13.6",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 16,
+              "column": 2
+            },
+            "end": {
+              "line": 20,
+              "column": 2
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-agent-dropdown/create-user/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("ul");
+          dom.setAttribute(el1,"class","ko-agent-dropdown-create-user__form-errors");
+          var el2 = dom.createTextNode("\n  ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n  ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]),1,1);
+          return morphs;
+        },
+        statements: [
+          ["block","each",[["get","errors",["loc",[null,[18,10],[18,16]]]]],[],0,null,["loc",[null,[18,2],[18,110]]]]
+        ],
+        locals: [],
+        templates: [child0]
+      };
+    }());
+    var child3 = (function() {
+      return {
+        meta: {
+          "revision": "Ember@1.13.6",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 23,
+              "column": 2
+            },
+            "end": {
+              "line": 25,
+              "column": 2
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-agent-dropdown/create-user/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+          return morphs;
+        },
+        statements: [
+          ["inline","ko-loader",[],["class","ko-agent-dropdown-create-user__loader"],["loc",[null,[24,2],[24,61]]]]
+        ],
+        locals: [],
+        templates: []
+      };
+    }());
+    var child4 = (function() {
+      return {
+        meta: {
+          "revision": "Ember@1.13.6",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 25,
+              "column": 2
+            },
+            "end": {
+              "line": 27,
+              "column": 2
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-agent-dropdown/create-user/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("button");
+          dom.setAttribute(el1,"type","button");
+          dom.setAttribute(el1,"class","ko-agent-dropdown-create-user__cancel button t-small");
+          dom.setAttribute(el1,"name","cancel");
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var element0 = dom.childAt(fragment, [1]);
+          var morphs = new Array(2);
+          morphs[0] = dom.createElementMorph(element0);
+          morphs[1] = dom.createMorphAt(element0,0,0);
+          return morphs;
+        },
+        statements: [
+          ["element","action",["onCancelled"],[],["loc",[null,[26,99],[26,123]]]],
+          ["inline","format-message",[["subexpr","intl-get",["generic.create_user_panel.cancel"],[],["loc",[null,[26,141],[26,186]]]]],[],["loc",[null,[26,124],[26,188]]]]
+        ],
+        locals: [],
+        templates: []
+      };
+    }());
+    return {
+      meta: {
+        "revision": "Ember@1.13.6",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 28,
+            "column": 7
+          }
+        },
+        "moduleName": "frontend-cp/components/ko-agent-dropdown/create-user/template.hbs"
+      },
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("h6");
+        dom.setAttribute(el1,"class","ko-agent-dropdown-create-user__form-header");
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("form");
+        var el2 = dom.createTextNode("\n\n");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("p");
+        dom.setAttribute(el2,"class","ko-agent-dropdown-create-user__form-footer t-caption t-small");
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("button");
+        dom.setAttribute(el2,"type","submit");
+        dom.setAttribute(el2,"class","ko-agent-dropdown-create-user__submit button button--primary");
+        dom.setAttribute(el2,"name","submit");
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var element1 = dom.childAt(fragment, [2]);
+        var element2 = dom.childAt(element1, [9]);
+        var morphs = new Array(10);
+        morphs[0] = dom.createMorphAt(dom.childAt(fragment, [0]),0,0);
+        morphs[1] = dom.createAttrMorph(element1, 'class');
+        morphs[2] = dom.createElementMorph(element1);
+        morphs[3] = dom.createMorphAt(element1,1,1);
+        morphs[4] = dom.createMorphAt(element1,3,3);
+        morphs[5] = dom.createMorphAt(dom.childAt(element1, [5]),0,0);
+        morphs[6] = dom.createMorphAt(element1,7,7);
+        morphs[7] = dom.createAttrMorph(element2, 'disabled');
+        morphs[8] = dom.createMorphAt(element2,0,0);
+        morphs[9] = dom.createMorphAt(element1,11,11);
+        return morphs;
+      },
+      statements: [
+        ["inline","format-message",[["subexpr","intl-get",["generic.create_user_panel.title"],[],["loc",[null,[1,72],[1,116]]]]],[],["loc",[null,[1,55],[1,118]]]],
+        ["attribute","class",["concat",["ko-agent-dropdown-create-user__form ",["subexpr","if",[["get","isFormValid",["loc",[null,[2,54],[2,65]]]]," is-valid"],[],["loc",[null,[2,49],[2,79]]]],["subexpr","if",[["get","isSubmitting",["loc",[null,[2,84],[2,96]]]]," is-submitting"],[],["loc",[null,[2,79],[2,115]]]]]]],
+        ["element","action",["onSubmitted"],["on","submit"],["loc",[null,[3,2],[3,38]]]],
+        ["block","ko-form-field",[],["label",["subexpr","format-message",[["subexpr","intl-get",["generic.create_user_panel.name_label"],[],["loc",[null,[6,41],[6,90]]]]],[],["loc",[null,[6,25],[6,91]]]],"errors",["subexpr","if",[["get","validation.name.showErrors",["loc",[null,[6,103],[6,129]]]],["get","validation.name.errors",["loc",[null,[6,130],[6,152]]]]],[],["loc",[null,[6,99],[6,153]]]]],0,null,["loc",[null,[6,2],[8,20]]]],
+        ["block","ko-form-field",[],["label",["subexpr","format-message",[["subexpr","intl-get",["generic.create_user_panel.email_label"],[],["loc",[null,[10,41],[10,91]]]]],[],["loc",[null,[10,25],[10,92]]]],"errors",["subexpr","if",[["get","validation.email.showErrors",["loc",[null,[10,104],[10,131]]]],["get","validation.email.errors",["loc",[null,[10,132],[10,155]]]]],[],["loc",[null,[10,100],[10,156]]]]],1,null,["loc",[null,[10,2],[12,20]]]],
+        ["inline","format-message",[["subexpr","intl-get",["generic.create_user_panel.info"],[],["loc",[null,[14,91],[14,134]]]]],[],["loc",[null,[14,74],[14,136]]]],
+        ["block","if",[["get","errors",["loc",[null,[16,8],[16,14]]]]],[],2,null,["loc",[null,[16,2],[20,9]]]],
+        ["attribute","disabled",["get","isSubmitDisabled",["loc",[null,[22,118],[22,134]]]]],
+        ["inline","format-message",[["subexpr","intl-get",["generic.create_user_panel.submit"],[],["loc",[null,[22,154],[22,199]]]]],[],["loc",[null,[22,137],[22,201]]]],
+        ["block","if",[["get","isSubmitting",["loc",[null,[23,8],[23,20]]]]],[],3,4,["loc",[null,[23,2],[27,9]]]]
+      ],
+      locals: [],
+      templates: [child0, child1, child2, child3, child4]
+    };
+  }()));
 
 });
 define('frontend-cp/components/ko-agent-dropdown/template', ['exports'], function (exports) {
@@ -6155,12 +6724,12 @@ define('frontend-cp/components/ko-agent-dropdown/template', ['exports'], functio
             "loc": {
               "source": null,
               "start": {
-                "line": 7,
-                "column": 8
+                "line": 4,
+                "column": 2
               },
               "end": {
-                "line": 12,
-                "column": 8
+                "line": 4,
+                "column": 160
               }
             },
             "moduleName": "frontend-cp/components/ko-agent-dropdown/template.hbs"
@@ -6170,35 +6739,53 @@ define('frontend-cp/components/ko-agent-dropdown/template', ['exports'], functio
           hasRendered: false,
           buildFragment: function buildFragment(dom) {
             var el0 = dom.createDocumentFragment();
-            var el1 = dom.createTextNode("        ");
-            dom.appendChild(el0, el1);
-            var el1 = dom.createElement("img");
-            dom.appendChild(el0, el1);
-            var el1 = dom.createTextNode("\n        ");
-            dom.appendChild(el0, el1);
-            var el1 = dom.createElement("div");
-            dom.setAttribute(el1,"class","t-center");
-            var el2 = dom.createTextNode("\n          ");
-            dom.appendChild(el1, el2);
-            var el2 = dom.createComment("");
-            dom.appendChild(el1, el2);
-            var el2 = dom.createTextNode("\n        ");
-            dom.appendChild(el1, el2);
-            dom.appendChild(el0, el1);
-            var el1 = dom.createTextNode("\n");
+            var el1 = dom.createComment("");
             dom.appendChild(el0, el1);
             return el0;
           },
           buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-            var element0 = dom.childAt(fragment, [1]);
-            var morphs = new Array(2);
-            morphs[0] = dom.createAttrMorph(element0, 'src');
-            morphs[1] = dom.createMorphAt(dom.childAt(fragment, [3]),1,1);
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+            dom.insertBoundary(fragment, 0);
+            dom.insertBoundary(fragment, null);
             return morphs;
           },
           statements: [
-            ["attribute","src",["concat",[["get","item.icon",["loc",[null,[8,20],[8,29]]]]]]],
-            ["content","item.text",["loc",[null,[10,10],[10,23]]]]
+            ["inline","ko-agent-dropdown/create-user",[],["submit","onCreateUserSubmitted","create","onCreateUserCompleted","cancel","onCreateUserCancelled"],["loc",[null,[4,34],[4,160]]]]
+          ],
+          locals: [],
+          templates: []
+        };
+      }());
+      var child1 = (function() {
+        return {
+          meta: {
+            "revision": "Ember@1.13.6",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 5,
+                "column": 2
+              },
+              "end": {
+                "line": 5,
+                "column": 64
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-agent-dropdown/template.hbs"
+          },
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("Create an organisation");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes() { return []; },
+          statements: [
+
           ],
           locals: [],
           templates: []
@@ -6210,30 +6797,283 @@ define('frontend-cp/components/ko-agent-dropdown/template', ['exports'], functio
           "loc": {
             "source": null,
             "start": {
-              "line": 5,
-              "column": 6
+              "line": 3,
+              "column": 2
             },
             "end": {
-              "line": 14,
-              "column": 6
+              "line": 6,
+              "column": 2
             }
           },
           "moduleName": "frontend-cp/components/ko-agent-dropdown/template.hbs"
         },
-        arity: 1,
+        arity: 0,
         cachedFragment: null,
         hasRendered: false,
         buildFragment: function buildFragment(dom) {
           var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("      ");
+          var el1 = dom.createTextNode("  ");
           dom.appendChild(el0, el1);
-          var el1 = dom.createElement("li");
-          dom.setAttribute(el1,"class","ko-agent-dropdown__item");
-          var el2 = dom.createTextNode("\n");
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(2);
+          morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+          morphs[1] = dom.createMorphAt(fragment,3,3,contextualElement);
+          return morphs;
+        },
+        statements: [
+          ["block","if",[["subexpr","eq",[["get","selectedTab",["loc",[null,[4,12],[4,23]]]],["get","userTab",["loc",[null,[4,24],[4,31]]]]],[],["loc",[null,[4,8],[4,32]]]]],[],0,null,["loc",[null,[4,2],[4,167]]]],
+          ["block","if",[["subexpr","eq",[["get","selectedTab",["loc",[null,[5,12],[5,23]]]],["get","organisationTab",["loc",[null,[5,24],[5,39]]]]],[],["loc",[null,[5,8],[5,40]]]]],[],1,null,["loc",[null,[5,2],[5,71]]]]
+        ],
+        locals: [],
+        templates: [child0, child1]
+      };
+    }());
+    var child1 = (function() {
+      var child0 = (function() {
+        return {
+          meta: {
+            "revision": "Ember@1.13.6",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 9,
+                "column": 6
+              },
+              "end": {
+                "line": 18,
+                "column": 6
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-agent-dropdown/template.hbs"
+          },
+          arity: 1,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("      ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("li");
+            dom.setAttribute(el1,"class","ko-agent-dropdown__item");
+            var el2 = dom.createTextNode("\n        ");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createElement("button");
+            dom.setAttribute(el2,"type","button");
+            dom.setAttribute(el2,"class","ko-agent-dropdown__link button-naked");
+            dom.setAttribute(el2,"tabindex","0");
+            var el3 = dom.createTextNode("\n          ");
+            dom.appendChild(el2, el3);
+            var el3 = dom.createElement("img");
+            dom.appendChild(el2, el3);
+            var el3 = dom.createTextNode("\n          ");
+            dom.appendChild(el2, el3);
+            var el3 = dom.createElement("div");
+            dom.setAttribute(el3,"class","t-center");
+            var el4 = dom.createTextNode("\n            ");
+            dom.appendChild(el3, el4);
+            var el4 = dom.createComment("");
+            dom.appendChild(el3, el4);
+            var el4 = dom.createTextNode("\n          ");
+            dom.appendChild(el3, el4);
+            dom.appendChild(el2, el3);
+            var el3 = dom.createTextNode("\n        ");
+            dom.appendChild(el2, el3);
+            dom.appendChild(el1, el2);
+            var el2 = dom.createTextNode("\n      ");
+            dom.appendChild(el1, el2);
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var element0 = dom.childAt(fragment, [1, 1]);
+            var element1 = dom.childAt(element0, [1]);
+            var morphs = new Array(3);
+            morphs[0] = dom.createElementMorph(element0);
+            morphs[1] = dom.createAttrMorph(element1, 'src');
+            morphs[2] = dom.createMorphAt(dom.childAt(element0, [3]),1,1);
+            return morphs;
+          },
+          statements: [
+            ["element","action",["selectTab",["get","item",["loc",[null,[11,109],[11,113]]]]],[],["loc",[null,[11,88],[11,115]]]],
+            ["attribute","src",["concat",[["get","item.icon",["loc",[null,[12,22],[12,31]]]]]]],
+            ["content","item.text",["loc",[null,[14,12],[14,25]]]]
+          ],
+          locals: ["item"],
+          templates: []
+        };
+      }());
+      return {
+        meta: {
+          "revision": "Ember@1.13.6",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 6,
+              "column": 2
+            },
+            "end": {
+              "line": 53,
+              "column": 2
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-agent-dropdown/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1,"class","box box--secondary");
+          var el2 = dom.createTextNode("\n    ");
           dom.appendChild(el1, el2);
-          var el2 = dom.createComment("");
+          var el2 = dom.createElement("ul");
+          dom.setAttribute(el2,"class","list-inline");
+          var el3 = dom.createTextNode("\n");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createComment("");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createTextNode("    ");
+          dom.appendChild(el2, el3);
           dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("      ");
+          var el2 = dom.createTextNode("\n  ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1,"class","box");
+          var el2 = dom.createTextNode("\n    ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("p");
+          dom.setAttribute(el2,"class","t-caption t-small u-mb-");
+          var el3 = dom.createTextNode("\n    Recently viewed:\n    ");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n    ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("div");
+          dom.setAttribute(el2,"class","flag flag--auto flag--small u-mb-");
+          dom.setAttribute(el2,"tabindex","0");
+          dom.setAttribute(el2,"disabled","");
+          var el3 = dom.createTextNode("\n      ");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createElement("div");
+          dom.setAttribute(el3,"class","flag__img");
+          var el4 = dom.createTextNode("\n        ");
+          dom.appendChild(el3, el4);
+          var el4 = dom.createElement("img");
+          dom.setAttribute(el4,"class","avatar");
+          dom.setAttribute(el4,"src","https://s-media-cache-ak0.pinimg.com/736x/ca/c1/18/cac1189a8df5498d17ef09d65ad0f698.jpg");
+          dom.setAttribute(el4,"alt","");
+          dom.appendChild(el3, el4);
+          var el4 = dom.createTextNode("\n      ");
+          dom.appendChild(el3, el4);
+          dom.appendChild(el2, el3);
+          var el3 = dom.createTextNode("\n      ");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createElement("div");
+          dom.setAttribute(el3,"class","flag__body");
+          var el4 = dom.createTextNode("\n        I can't open the internet.\n        ");
+          dom.appendChild(el3, el4);
+          var el4 = dom.createElement("p");
+          dom.setAttribute(el4,"class","t-small t-caption");
+          var el5 = dom.createTextNode("Samantha Jones");
+          dom.appendChild(el4, el5);
+          dom.appendChild(el3, el4);
+          var el4 = dom.createTextNode("\n      ");
+          dom.appendChild(el3, el4);
+          dom.appendChild(el2, el3);
+          var el3 = dom.createTextNode("\n    ");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n    ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("div");
+          dom.setAttribute(el2,"class","flag flag--auto flag--small u-mb-");
+          dom.setAttribute(el2,"tabindex","0");
+          var el3 = dom.createTextNode("\n      ");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createElement("div");
+          dom.setAttribute(el3,"class","flag__img");
+          var el4 = dom.createTextNode("\n        ");
+          dom.appendChild(el3, el4);
+          var el4 = dom.createElement("img");
+          dom.setAttribute(el4,"class","avatar");
+          dom.setAttribute(el4,"src","https://s-media-cache-ak0.pinimg.com/736x/ca/c1/18/cac1189a8df5498d17ef09d65ad0f698.jpg");
+          dom.setAttribute(el4,"alt","");
+          dom.appendChild(el3, el4);
+          var el4 = dom.createTextNode("\n      ");
+          dom.appendChild(el3, el4);
+          dom.appendChild(el2, el3);
+          var el3 = dom.createTextNode("\n      ");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createElement("div");
+          dom.setAttribute(el3,"class","flag__body");
+          var el4 = dom.createTextNode("\n        I can't open the internet.\n        ");
+          dom.appendChild(el3, el4);
+          var el4 = dom.createElement("p");
+          dom.setAttribute(el4,"class","t-small t-caption");
+          var el5 = dom.createTextNode("Samantha Jones");
+          dom.appendChild(el4, el5);
+          dom.appendChild(el3, el4);
+          var el4 = dom.createTextNode("\n      ");
+          dom.appendChild(el3, el4);
+          dom.appendChild(el2, el3);
+          var el3 = dom.createTextNode("\n    ");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n    ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("div");
+          dom.setAttribute(el2,"class","flag flag--auto flag--small");
+          dom.setAttribute(el2,"tabindex","0");
+          var el3 = dom.createTextNode("\n      ");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createElement("div");
+          dom.setAttribute(el3,"class","flag__img");
+          var el4 = dom.createTextNode("\n        ");
+          dom.appendChild(el3, el4);
+          var el4 = dom.createElement("img");
+          dom.setAttribute(el4,"class","avatar");
+          dom.setAttribute(el4,"src","https://s-media-cache-ak0.pinimg.com/736x/ca/c1/18/cac1189a8df5498d17ef09d65ad0f698.jpg");
+          dom.setAttribute(el4,"alt","");
+          dom.appendChild(el3, el4);
+          var el4 = dom.createTextNode("\n      ");
+          dom.appendChild(el3, el4);
+          dom.appendChild(el2, el3);
+          var el3 = dom.createTextNode("\n      ");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createElement("div");
+          dom.setAttribute(el3,"class","flag__body");
+          var el4 = dom.createTextNode("\n        I can't open the internet.\n        ");
+          dom.appendChild(el3, el4);
+          var el4 = dom.createElement("p");
+          dom.setAttribute(el4,"class","t-small t-caption");
+          var el5 = dom.createTextNode("Samantha Jones");
+          dom.appendChild(el4, el5);
+          dom.appendChild(el3, el4);
+          var el4 = dom.createTextNode("\n      ");
+          dom.appendChild(el3, el4);
+          dom.appendChild(el2, el3);
+          var el3 = dom.createTextNode("\n    ");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n  ");
           dom.appendChild(el1, el2);
           dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n");
@@ -6242,13 +7082,13 @@ define('frontend-cp/components/ko-agent-dropdown/template', ['exports'], functio
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
           var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]),1,1);
+          morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1, 1]),1,1);
           return morphs;
         },
         statements: [
-          ["block","link-to",[["get","item.path",["loc",[null,[7,19],[7,28]]]]],["class","ko-agent-dropdown__link"],0,null,["loc",[null,[7,8],[12,20]]]]
+          ["block","each",[["get","navItems",["loc",[null,[9,14],[9,22]]]]],[],0,null,["loc",[null,[9,6],[18,15]]]]
         ],
-        locals: ["item"],
+        locals: [],
         templates: [child0]
       };
     }());
@@ -6262,7 +7102,7 @@ define('frontend-cp/components/ko-agent-dropdown/template', ['exports'], functio
             "column": 0
           },
           "end": {
-            "line": 50,
+            "line": 55,
             "column": 0
           }
         },
@@ -6273,151 +7113,18 @@ define('frontend-cp/components/ko-agent-dropdown/template', ['exports'], functio
       hasRendered: false,
       buildFragment: function buildFragment(dom) {
         var el0 = dom.createDocumentFragment();
-        var el1 = dom.createElement("a");
+        var el1 = dom.createElement("button");
+        dom.setAttribute(el1,"type","button");
+        dom.setAttribute(el1,"tabindex","0");
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
         var el1 = dom.createElement("div");
         dom.setAttribute(el1,"tabindex","-1");
         dom.setAttribute(el1,"role","menu");
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","box box--secondary");
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("ul");
-        dom.setAttribute(el3,"class","list-inline");
-        var el4 = dom.createTextNode("\n");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createComment("");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("    ");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n  ");
-        dom.appendChild(el2, el3);
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","box");
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("p");
-        dom.setAttribute(el3,"class","t-caption t-small u-mb-");
-        var el4 = dom.createTextNode("\n    Recently viewed:\n    ");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("div");
-        dom.setAttribute(el3,"class","flag flag--auto flag--small u-mb-");
-        var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("div");
-        dom.setAttribute(el4,"class","flag__img");
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("img");
-        dom.setAttribute(el5,"class","avatar");
-        dom.setAttribute(el5,"src","https://s-media-cache-ak0.pinimg.com/736x/ca/c1/18/cac1189a8df5498d17ef09d65ad0f698.jpg");
-        dom.setAttribute(el5,"alt","");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("div");
-        dom.setAttribute(el4,"class","flag__body");
-        var el5 = dom.createTextNode("\n        I can't open the internet.\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("p");
-        dom.setAttribute(el5,"class","t-small t-caption");
-        var el6 = dom.createTextNode("Samantha Jones");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n    ");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("div");
-        dom.setAttribute(el3,"class","flag flag--auto flag--small u-mb-");
-        var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("div");
-        dom.setAttribute(el4,"class","flag__img");
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("img");
-        dom.setAttribute(el5,"class","avatar");
-        dom.setAttribute(el5,"src","https://s-media-cache-ak0.pinimg.com/736x/ca/c1/18/cac1189a8df5498d17ef09d65ad0f698.jpg");
-        dom.setAttribute(el5,"alt","");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("div");
-        dom.setAttribute(el4,"class","flag__body");
-        var el5 = dom.createTextNode("\n        I can't open the internet.\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("p");
-        dom.setAttribute(el5,"class","t-small t-caption");
-        var el6 = dom.createTextNode("Samantha Jones");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n    ");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("div");
-        dom.setAttribute(el3,"class","flag flag--auto flag--small");
-        var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("div");
-        dom.setAttribute(el4,"class","flag__img");
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("img");
-        dom.setAttribute(el5,"class","avatar");
-        dom.setAttribute(el5,"src","https://s-media-cache-ak0.pinimg.com/736x/ca/c1/18/cac1189a8df5498d17ef09d65ad0f698.jpg");
-        dom.setAttribute(el5,"alt","");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("div");
-        dom.setAttribute(el4,"class","flag__body");
-        var el5 = dom.createTextNode("\n        I can't open the internet.\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("p");
-        dom.setAttribute(el5,"class","t-small t-caption");
-        var el6 = dom.createTextNode("Samantha Jones");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n    ");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n  ");
-        dom.appendChild(el2, el3);
-        dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
         dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
@@ -6425,23 +7132,23 @@ define('frontend-cp/components/ko-agent-dropdown/template', ['exports'], functio
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var element1 = dom.childAt(fragment, [0]);
-        var element2 = dom.childAt(fragment, [2]);
+        var element2 = dom.childAt(fragment, [0]);
+        var element3 = dom.childAt(fragment, [2]);
         var morphs = new Array(4);
-        morphs[0] = dom.createAttrMorph(element1, 'class');
-        morphs[1] = dom.createElementMorph(element1);
-        morphs[2] = dom.createAttrMorph(element2, 'class');
-        morphs[3] = dom.createMorphAt(dom.childAt(element2, [1, 1]),1,1);
+        morphs[0] = dom.createAttrMorph(element2, 'class');
+        morphs[1] = dom.createElementMorph(element2);
+        morphs[2] = dom.createAttrMorph(element3, 'class');
+        morphs[3] = dom.createMorphAt(element3,1,1);
         return morphs;
       },
       statements: [
-        ["attribute","class",["concat",["ko-agent-dropdown__nav-new i-plus i-size-base",["subexpr","if",[["get","showDropdown",["loc",[null,[1,60],[1,72]]]]," is-active"],[],["loc",[null,[1,55],[1,87]]]]]]],
-        ["element","action",["showDropdown"],[],["loc",[null,[1,89],[1,114]]]],
-        ["attribute","class",["concat",["ko-agent-dropdown__drop box-container ",["subexpr","unless",[["get","showDropdown",["loc",[null,[2,59],[2,71]]]],"u-hidden"],[],["loc",[null,[2,50],[2,84]]]]]]],
-        ["block","each",[["get","navItems",["loc",[null,[5,14],[5,22]]]]],[],0,null,["loc",[null,[5,6],[14,15]]]]
+        ["attribute","class",["concat",["ko-agent-dropdown__nav-new button i-plus i-size-base",["subexpr","if",[["get","isExpanded",["loc",[null,[1,99],[1,109]]]]," is-active"],[],["loc",[null,[1,94],[1,124]]]]]]],
+        ["element","action",["toggleDropdown"],[],["loc",[null,[1,126],[1,153]]]],
+        ["attribute","class",["concat",["ko-agent-dropdown__drop box-container ",["subexpr","unless",[["get","isExpanded",["loc",[null,[2,59],[2,69]]]],"u-hidden"],[],["loc",[null,[2,50],[2,82]]]]]]],
+        ["block","if",[["get","selectedTab",["loc",[null,[3,8],[3,19]]]]],[],0,1,["loc",[null,[3,2],[53,9]]]]
       ],
       locals: [],
-      templates: [child0]
+      templates: [child0, child1]
     };
   }()));
 
@@ -13092,12 +13799,14 @@ define('frontend-cp/components/ko-dropdown/container/component', ['exports', 'em
       if (event.relatedTarget === null || !$['default'].contains(this.get('context.element'), event.relatedTarget)) {
         this.set('isFocussed', false);
         this.sendAction('onFocusChanged', false);
+        this.sendAction('onFocusOut');
       }
     },
 
     focusIn: function focusIn() {
       this.set('isFocussed', true);
       this.sendAction('onFocusChanged', true);
+      this.sendAction('onFocusIn');
     },
 
     actions: {
@@ -13937,7 +14646,10 @@ define('frontend-cp/components/ko-dropdown/select/button/component', ['exports',
   exports['default'] = Ember['default'].Component.extend({
     //Params:
     label: '',
-    classNames: ['ko-dropdown-select__button']
+    isButton: false,
+
+    classNames: ['ko-dropdown-select__button'],
+    classNameBindings: ['isButton']
   });
 
 });
@@ -13996,12 +14708,24 @@ define('frontend-cp/components/ko-dropdown/select/component', ['exports', 'ember
   exports['default'] = Ember['default'].Component.extend({
     //Params
     hideOnClick: true,
+    isButton: false,
+
+    classNameBindings: ['isButton'],
 
     didInsertElement: function didInsertElement() {
       var width = this.$('.ko-dropdown-select__button').outerWidth(true);
       this.set('contentStyle', ('min-width:' + width + 'px;').htmlSafe());
     },
-    contentStyle: null
+    contentStyle: null,
+
+    actions: {
+      onFocusIn: function onFocusIn() {
+        this.sendAction('onFocusIn');
+      },
+      onFocusOut: function onFocusOut() {
+        this.sendAction('onFocusOut');
+      }
+    }
   });
 
 });
@@ -14047,7 +14771,7 @@ define('frontend-cp/components/ko-dropdown/select/template', ['exports'], functi
             return morphs;
           },
           statements: [
-            ["inline","ko-dropdown/select/button",[],["label",["subexpr","@mut",[["get","label",["loc",[null,[3,38],[3,43]]]]],[],[]]],["loc",[null,[3,4],[3,45]]]]
+            ["inline","ko-dropdown/select/button",[],["isButton",["subexpr","@mut",[["get","isButton",["loc",[null,[3,41],[3,49]]]]],[],[]],"label",["subexpr","@mut",[["get","label",["loc",[null,[3,56],[3,61]]]]],[],[]]],["loc",[null,[3,4],[3,63]]]]
           ],
           locals: [],
           templates: []
@@ -14211,7 +14935,7 @@ define('frontend-cp/components/ko-dropdown/select/template', ['exports'], functi
         return morphs;
       },
       statements: [
-        ["block","ko-dropdown/container",[],["hideOnClick",["subexpr","@mut",[["get","hideOnClick",["loc",[null,[1,37],[1,48]]]]],[],[]],"hideOnChildFocus",true],0,null,["loc",[null,[1,0],[10,26]]]]
+        ["block","ko-dropdown/container",[],["onFocusIn","onFocusIn","onFocusOut","onFocusOut","hideOnClick",["subexpr","@mut",[["get","hideOnClick",["loc",[null,[1,83],[1,94]]]]],[],[]],"hideOnChildFocus",true],0,null,["loc",[null,[1,0],[10,26]]]]
       ],
       locals: [],
       templates: [child0]
@@ -29465,6 +30189,60 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage'], function (e
       };
     });
 
+    this.post('/api/v1/users', function () {
+      return {
+        status: 200
+      };
+    });
+
+    this.get('/api/v1/roles', function () {
+      return {
+        'status': 200,
+        'data': [{
+          'id': 1,
+          'title': 'Administrator',
+          'type': 'ADMIN',
+          'ip_restriction': '10.20.30.1',
+          'password_expires_in_days': 2,
+          'is_two_factor_required': false,
+          'created_at': '2015-07-23T13:36:12Z',
+          'updated_at': '2015-07-23T13:36:12Z'
+        }, {
+          'id': 2,
+          'title': 'Agent',
+          'type': 'AGENT',
+          'ip_restriction': null,
+          'password_expires_in_days': '0',
+          'is_two_factor_required': false,
+          'created_at': '2015-07-09T15:36:10Z',
+          'updated_at': '2015-07-09T15:36:10Z'
+        }, {
+          'id': 3,
+          'title': 'Collaborator',
+          'type': 'COLLABORATOR',
+          'ip_restriction': null,
+          'password_expires_in_days': '0',
+          'is_two_factor_required': false,
+          'created_at': '2015-07-09T15:36:10Z',
+          'updated_at': '2015-07-09T15:36:10Z'
+        }, {
+          'id': 4,
+          'title': 'Customer',
+          'type': 'CUSTOMER',
+          'ip_restriction': null,
+          'password_expires_in_days': '0',
+          'is_two_factor_required': false,
+          'created_at': '2015-07-09T15:36:10Z',
+          'updated_at': '2015-07-09T15:36:10Z',
+          'resource_type': 'role'
+        }],
+        'resource': 'role',
+        'offset': 0,
+        'limit': 10,
+        'total_count': 4
+      };
+    });
+
     this.get('/api/v1/cases/macros', function (db) {
       return {
         'status': 200,
@@ -34066,6 +34844,42 @@ define('frontend-cp/mirage/fixtures/enusstrings', ['exports'], function (exports
       id: 'frontend.api.generic.sort.DESC',
       value: 'Descending',
       'resource_type': 'locale_string'
+    }, {
+      'id': 'frontend.api.generic.create_user_panel.title',
+      'value': 'Create a new user',
+      'resource_type': 'locale_string'
+    }, {
+      'id': 'frontend.api.generic.create_user_panel.name_label',
+      'value': 'First and last name',
+      'resource_type': 'locale_string'
+    }, {
+      'id': 'frontend.api.generic.create_user_panel.email_label',
+      'value': 'Email address',
+      'resource_type': 'locale_string'
+    }, {
+      'id': 'frontend.api.generic.create_user_panel.name_required',
+      'value': 'Name is required',
+      'resource_type': 'locale_string'
+    }, {
+      'id': 'frontend.api.generic.create_user_panel.email_required',
+      'value': 'Email address is required',
+      'resource_type': 'locale_string'
+    }, {
+      'id': 'frontend.api.generic.create_user_panel.email_invalid',
+      'value': 'Invalid email address',
+      'resource_type': 'locale_string'
+    }, {
+      'id': 'frontend.api.generic.create_user_panel.submit',
+      'value': 'Add user',
+      'resource_type': 'locale_string'
+    }, {
+      'id': 'frontend.api.generic.create_user_panel.info',
+      'value': 'Other identities can be added once the user has been created.',
+      'resource_type': 'locale_string'
+    }, {
+      'id': 'frontend.api.generic.create_user_panel.cancel',
+      'value': 'cancel',
+      'resource_type': 'locale_string'
     }],
     resource: 'locale_string'
   }];
@@ -37636,6 +38450,17 @@ define('frontend-cp/mirage/fixtures/viewscasesresources', ['exports'], function 
       }
     }
   }];
+
+});
+define('frontend-cp/mixins/autofocus', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Mixin.create({
+    autofocusFirstField: Ember['default'].on('didInsertElement', function () {
+      this.$('input,select,textarea,button,[tabindex]').not('[tabindex="-1"],[disabled]').eq(0).focus();
+    })
+  });
 
 });
 define('frontend-cp/mixins/breadcrumbable', ['exports', 'ember'], function (exports, Ember) {
@@ -52109,7 +52934,7 @@ define('frontend-cp/tests/helpers/qunit', ['exports', 'ember', 'qunit', 'ember-q
   function createModule(Constructor, name, description, callbacks) {
     var actualCallbacks = callbacks || (typeof description === 'object' ? description : {});
     var beforeCallback = actualCallbacks.setup || actualCallbacks.beforeEach;
-    actualCallbacks.setup = function () {
+    actualCallbacks['beforeEach' in actualCallbacks ? 'beforeEach' : 'setup'] = function () {
       Ember['default'].HTMLBars._registerHelper('format-date', FormatDate['default']);
       Ember['default'].HTMLBars._registerHelper('format-time', FormatTime['default']);
       Ember['default'].HTMLBars._registerHelper('format-relative', FormatRelative['default']);
@@ -52304,6 +53129,546 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/component-tes
 
     assert.equal(this.$('ul li:first:visible').text().trim(), 'Case', 'the first menu item');
   });
+
+});
+define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/component-test', ['frontend-cp/tests/helpers/qunit', 'ember', 'sinon'], function (qunit, Ember, sinon) {
+
+  'use strict';
+
+  qunit.moduleForComponent('ko-agent-dropdown/create-user', 'Integration | Component | ko agent dropdown/create user', {
+    integration: true,
+    beforeEach: function beforeEach() {
+      var intlService = this.container.lookup('service:intl');
+
+      initLocale(intlService, 'en-test', ['generic.create_user_panel.name_required', 'generic.create_user_panel.email_required', 'generic.create_user_panel.email_invalid']);
+
+      var mockStore = createMockStore();
+      this.container.unregister('service:store');
+      this.container.register('service:store', mockStore, { instantiate: false });
+
+      function initLocale(intlService, localeId, keys) {
+        var payload = keys.reduce(function (payload, key) {
+          payload['frontend.api.' + key] = key;
+          return payload;
+        }, {});
+        intlService.set('locales', [localeId]);
+        intlService.createLocale(localeId, {});
+        intlService.addMessages(localeId, payload);
+      }
+    }
+  });
+
+  qunit.test('it renders', function (assert) {
+    assert.expect(11);
+
+    this.render(Ember['default'].HTMLBars.template((function () {
+      return {
+        meta: {
+          'revision': 'Ember@1.13.6',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 1,
+              'column': 33
+            }
+          }
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [['content', 'ko-agent-dropdown/create-user', ['loc', [null, [1, 0], [1, 33]]]]],
+        locals: [],
+        templates: []
+      };
+    })()));
+
+    var $formElement = this.$('form');
+    var numFormControls = $formElement.prop('length');
+    assert.equal(numFormControls, ['name', 'email', 'submit', 'cancel'].length);
+
+    var $nameInputElement = getFormControl($formElement, 'name');
+    var $emailInputElement = getFormControl($formElement, 'email');
+    var $submitButtonElement = getFormControl($formElement, 'submit');
+    var $cancelButtonElement = getFormControl($formElement, 'cancel');
+
+    var $infoElement = this.$('.ko-agent-dropdown-create-user__form-footer');
+
+    var $nameLabelElement = $nameInputElement.closest('label');
+    var $emailLabelElement = $emailInputElement.closest('label');
+
+    assert.equal($nameLabelElement.text().trim(), 'MESSAGE %%generic.create_user_panel.name_label%%');
+    assert.equal($nameInputElement.val(), '');
+    assert.equal($nameInputElement.prop('placeholder'), '');
+
+    assert.equal($emailLabelElement.text().trim(), 'MESSAGE %%generic.create_user_panel.email_label%%');
+    assert.equal($emailInputElement.val(), '');
+    assert.equal($nameInputElement.prop('placeholder'), '');
+
+    assert.equal($submitButtonElement.text().trim(), 'MESSAGE %%generic.create_user_panel.submit%%');
+    assert.equal($submitButtonElement.prop('disabled'), true);
+    assert.equal($cancelButtonElement.text().trim(), 'MESSAGE %%generic.create_user_panel.cancel%%');
+
+    assert.equal($infoElement.text().trim(), 'MESSAGE %%generic.create_user_panel.info%%');
+  });
+
+  qunit.test('it validates the form fields before allowing submit', function (assert) {
+    assert.expect(29);
+
+    this.render(Ember['default'].HTMLBars.template((function () {
+      return {
+        meta: {
+          'revision': 'Ember@1.13.6',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 1,
+              'column': 33
+            }
+          }
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [['content', 'ko-agent-dropdown/create-user', ['loc', [null, [1, 0], [1, 33]]]]],
+        locals: [],
+        templates: []
+      };
+    })()));
+
+    var $formElement = this.$('form');
+
+    var $nameInputElement = getFormControl($formElement, 'name');
+    var $emailInputElement = getFormControl($formElement, 'email');
+    var $submitButtonElement = getFormControl($formElement, 'submit');
+
+    var nameErrors = getFieldErrors($formElement, 'name');
+    var emailErrors = getFieldErrors($formElement, 'email');
+    assert.deepEqual(nameErrors, []);
+    assert.deepEqual(emailErrors, []);
+    assert.ok($submitButtonElement.prop('disabled'));
+
+    Ember['default'].run(function () {
+      $nameInputElement.focusin();
+      $nameInputElement.focusout();
+    });
+
+    nameErrors = getFieldErrors($formElement, 'name');
+    emailErrors = getFieldErrors($formElement, 'email');
+    assert.deepEqual(nameErrors, ['generic.create_user_panel.name_required']);
+    assert.deepEqual(emailErrors, []);
+    assert.ok($submitButtonElement.prop('disabled'));
+
+    Ember['default'].run(function () {
+      $emailInputElement.focusin();
+      $emailInputElement.focusout();
+    });
+    nameErrors = getFieldErrors($formElement, 'name');
+    emailErrors = getFieldErrors($formElement, 'email');
+    assert.deepEqual(nameErrors, ['generic.create_user_panel.name_required']);
+    assert.deepEqual(emailErrors, ['generic.create_user_panel.email_required']);
+    assert.ok($submitButtonElement.prop('disabled'));
+
+    Ember['default'].run(function () {
+      fillIn($nameInputElement, 'Tim Kendrick');
+    });
+    nameErrors = getFieldErrors($formElement, 'name');
+    emailErrors = getFieldErrors($formElement, 'email');
+    assert.deepEqual(nameErrors, []);
+    assert.deepEqual(emailErrors, ['generic.create_user_panel.email_required']);
+    assert.ok($submitButtonElement.prop('disabled'));
+
+    Ember['default'].run(function () {
+      fillIn($emailInputElement, 'tim.kendrick@kayako');
+    });
+    emailErrors = getFieldErrors($formElement, 'email');
+    assert.deepEqual(emailErrors, ['generic.create_user_panel.email_invalid']);
+    assert.ok($submitButtonElement.prop('disabled'));
+
+    Ember['default'].run(function () {
+      fillIn($nameInputElement, 'Tim Kendrick');
+      fillIn($emailInputElement, 'tim.kendrick@kayako.com');
+    });
+    nameErrors = getFieldErrors($formElement, 'name');
+    emailErrors = getFieldErrors($formElement, 'email');
+    assert.deepEqual(nameErrors, []);
+    assert.deepEqual(emailErrors, []);
+    assert.ok(!$submitButtonElement.prop('disabled'));
+
+    Ember['default'].run(function () {
+      fillIn($nameInputElement, '');
+    });
+    nameErrors = getFieldErrors($formElement, 'name');
+    emailErrors = getFieldErrors($formElement, 'email');
+    assert.deepEqual(nameErrors, ['generic.create_user_panel.name_required']);
+    assert.deepEqual(emailErrors, []);
+    assert.ok($submitButtonElement.prop('disabled'));
+
+    Ember['default'].run(function () {
+      fillIn($nameInputElement, 'Tim Kendrick');
+    });
+    nameErrors = getFieldErrors($formElement, 'name');
+    emailErrors = getFieldErrors($formElement, 'email');
+    assert.deepEqual(nameErrors, []);
+    assert.deepEqual(emailErrors, []);
+    assert.ok(!$submitButtonElement.prop('disabled'));
+
+    Ember['default'].run(function () {
+      fillIn($emailInputElement, '');
+    });
+    nameErrors = getFieldErrors($formElement, 'name');
+    emailErrors = getFieldErrors($formElement, 'email');
+    assert.deepEqual(nameErrors, []);
+    assert.deepEqual(emailErrors, ['generic.create_user_panel.email_required']);
+    assert.ok($submitButtonElement.prop('disabled'));
+
+    Ember['default'].run(function () {
+      fillIn($emailInputElement, 'tim.kendrick@kayako.com');
+    });
+    nameErrors = getFieldErrors($formElement, 'name');
+    emailErrors = getFieldErrors($formElement, 'email');
+    assert.deepEqual(nameErrors, []);
+    assert.deepEqual(emailErrors, []);
+    assert.ok(!$submitButtonElement.prop('disabled'));
+  });
+
+  qunit.test('it submits the form', function (assert) {
+    var _this = this;
+
+    assert.expect(21);
+    var done = assert.async();
+
+    var onSubmit = sinon['default'].spy();
+    var onCreate = sinon['default'].spy();
+    var onError = sinon['default'].spy();
+
+    this.on('onSubmit', onSubmit);
+    this.on('onCreate', onCreate);
+    this.on('onError', onError);
+
+    this.render(Ember['default'].HTMLBars.template((function () {
+      return {
+        meta: {
+          'revision': 'Ember@1.13.6',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 5,
+              'column': 4
+            }
+          }
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [['inline', 'ko-agent-dropdown/create-user', [], ['submit', 'onSubmit', 'create', 'onCreate', 'error', 'onError'], ['loc', [null, [1, 0], [5, 4]]]]],
+        locals: [],
+        templates: []
+      };
+    })()));
+
+    var $formElement = this.$('form');
+
+    var $nameInputElement = getFormControl($formElement, 'name');
+    var $emailInputElement = getFormControl($formElement, 'email');
+    var $submitButtonElement = getFormControl($formElement, 'submit');
+    var $cancelButtonElement = getFormControl($formElement, 'cancel');
+    var $loaderElement = $formElement.find('.ko-agent-dropdown-create-user__loader');
+
+    assert.equal($formElement.hasClass('is-submitting'), false);
+    assert.equal($cancelButtonElement.length, 1);
+    assert.equal($loaderElement.length, 0);
+
+    fillIn($nameInputElement, 'Tim Kendrick');
+    fillIn($emailInputElement, 'tim.kendrick@kayako.com');
+
+    Ember['default'].run(function () {
+      assert.equal(onSubmit.callCount, 0);
+
+      $formElement.submit();
+
+      var $cancelButtonElement = getFormControl($formElement, 'cancel');
+      var $loaderElement = $formElement.find('.ko-agent-dropdown-create-user__loader');
+
+      assert.equal($formElement.hasClass('is-submitting'), true);
+      assert.equal($submitButtonElement.prop('disabled'), true);
+      assert.equal($cancelButtonElement.length, 0);
+      assert.equal($loaderElement.length, 1);
+
+      var mockStore = _this.container.lookup('service:store');
+      assert.ok(mockStore.createRecord.calledOnce);
+      assert.ok(mockStore.createRecord.calledWith('user', {
+        'role_id': 4, // Users are created as CUSTOMERs
+        'full_name': 'Tim Kendrick',
+        'email': 'tim.kendrick@kayako.com'
+      }));
+
+      assert.equal(onSubmit.callCount, 1);
+      assert.equal(onCreate.callCount, 0);
+      assert.equal(onError.callCount, 0);
+    });
+
+    Ember['default'].run.later(function () {
+      var $cancelButtonElement = getFormControl($formElement, 'cancel');
+      var $loaderElement = $formElement.find('.ko-agent-dropdown-create-user__loader');
+
+      assert.equal($formElement.hasClass('is-submitting'), false);
+      assert.equal($submitButtonElement.prop('disabled'), false);
+      assert.equal($cancelButtonElement.length, 1);
+      assert.equal($loaderElement.length, 0);
+
+      var formErrors = getFormErrors($formElement);
+      assert.deepEqual(formErrors, []);
+
+      assert.equal(onCreate.callCount, 1);
+      assert.equal(onCreate.firstCall.args.length, 1);
+      assert.propertiesEqual(onCreate.firstCall.args[0], {
+        'role_id': 4,
+        'full_name': 'Tim Kendrick',
+        'email': 'tim.kendrick@kayako.com'
+      });
+
+      done();
+    }, 100); // Delay due to inaccurate `createMockStore` behaviour (see below)
+  });
+
+  qunit.test('it handles submit errors', function (assert) {
+    assert.expect(9);
+    var done = assert.async();
+
+    var onCreate = sinon['default'].spy();
+    var onError = sinon['default'].spy();
+
+    this.on('onCreate', onCreate);
+    this.on('onError', onError);
+
+    this.render(Ember['default'].HTMLBars.template((function () {
+      return {
+        meta: {
+          'revision': 'Ember@1.13.6',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 4,
+              'column': 4
+            }
+          }
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [['inline', 'ko-agent-dropdown/create-user', [], ['create', 'onCreate', 'error', 'onError'], ['loc', [null, [1, 0], [4, 4]]]]],
+        locals: [],
+        templates: []
+      };
+    })()));
+
+    var $formElement = this.$('form');
+    var $nameInputElement = getFormControl($formElement, 'name');
+    var $emailInputElement = getFormControl($formElement, 'email');
+
+    fillIn($nameInputElement, 'ERROR');
+    fillIn($emailInputElement, 'tim.kendrick@kayako.com');
+
+    Ember['default'].run(function () {
+      $formElement.submit();
+      var formErrors = getFormErrors($formElement);
+      assert.deepEqual(formErrors, []);
+      assert.equal(onError.callCount, 0);
+    });
+
+    Ember['default'].run.later(function () {
+      assert.equal(onCreate.callCount, 0);
+      assert.equal(onError.callCount, 1);
+      assert.equal(onError.firstCall.args.length, 1);
+      assert.ok(onError.firstCall.args[0] instanceof Error);
+
+      var $cancelButtonElement = getFormControl($formElement, 'cancel');
+      var $loaderElement = $formElement.find('.ko-agent-dropdown-create-user__loader');
+
+      assert.equal($cancelButtonElement.length, 1);
+      assert.equal($loaderElement.length, 0);
+
+      var formErrors = getFormErrors($formElement);
+      assert.deepEqual(formErrors, ['Test error']);
+
+      done();
+    }, 100); // Delay due to inaccurate `createMockStore` behaviour (see below)
+  });
+
+  qunit.test('it emits a cancel event', function (assert) {
+    assert.expect(1);
+
+    var onCancel = sinon['default'].spy();
+
+    this.on('onCancel', onCancel);
+
+    this.render(Ember['default'].HTMLBars.template((function () {
+      return {
+        meta: {
+          'revision': 'Ember@1.13.6',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 3,
+              'column': 4
+            }
+          }
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [['inline', 'ko-agent-dropdown/create-user', [], ['cancel', 'onCancel'], ['loc', [null, [1, 0], [3, 4]]]]],
+        locals: [],
+        templates: []
+      };
+    })()));
+
+    var $formElement = this.$('form');
+    var $cancelButtonElement = getFormControl($formElement, 'cancel');
+
+    Ember['default'].run(function () {
+      $cancelButtonElement.click();
+    });
+
+    assert.equal(onCancel.callCount, 1);
+  });
+
+  function getFormControl(formElement, controlName) {
+    formElement = $(formElement)[0];
+    return $(formElement.elements.namedItem(controlName));
+  }
+
+  function fillIn(inputElement, value) {
+    $(inputElement).val(value).change();
+  }
+
+  function getFormErrors(formElement) {
+    var $errorElements = Ember['default'].$(formElement).find('.ko-agent-dropdown-create-user__form-error');
+    return $errorElements.map(function (index, element) {
+      return Ember['default'].$(element).text().trim();
+    }).get();
+  }
+
+  function getFieldErrors(formElement, inputName) {
+    var $errorElements = Ember['default'].$(formElement).find('[name="' + inputName + '"] + .ko-form-field__validation');
+    return $errorElements.map(function (index, element) {
+      return Ember['default'].$(element).text().trim();
+    }).get();
+  }
+
+  function createMockStore(records) {
+    records = records || {};
+    var store = {
+      createRecord: sinon['default'].spy(function (typeName, fields) {
+        var record = Ember['default'].Object.extend({
+          save: sinon['default'].spy(function () {
+            // FIXME: This sequence doesn't quite accurately reflect the
+            // store's async behaviour (this is why the delay is necessary
+            // in the async tests)
+            var hasErrors = Object.keys(fields).some(function (key) {
+              return fields[key] === 'ERROR';
+            });
+            return new Ember['default'].RSVP.Promise(function (resolve, reject) {
+              setTimeout(function () {
+                if (hasErrors) {
+                  reject(new Error('Test error'));
+                } else {
+                  resolve();
+                }
+              });
+            });
+          })
+        }).create(fields);
+        return record;
+      })
+    };
+    return store;
+  }
 
 });
 define('frontend-cp/tests/integration/components/ko-field/text-area/component-test', ['ember-qunit'], function (ember_qunit) {
@@ -57461,7 +58826,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+86ac11b7"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+ecff6e02"});
 }
 
 /* jshint ignore:end */
