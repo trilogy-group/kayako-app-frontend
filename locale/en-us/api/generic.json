@@ -46,6 +46,7 @@
   "minute_abbreviation": "m",
   "SLA": "SLA",
   "select_placeholder": "Select...",
+  "search_result_select_instruction": "Press enter",
 
   "sort.ASC": "Ascending",
   "sort.DESC": "Descending",

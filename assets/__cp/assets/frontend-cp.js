@@ -457,13 +457,6 @@ define('frontend-cp/adapters/search-result-group', ['exports', 'frontend-cp/adap
   exports['default'] = ApplicationAdapter['default'].extend({
     pathForType: function pathForType() {
       return 'base/search_all';
-    },
-
-    // we don't really want flat. And API is broken anyway.
-    headers: function headers() {
-      var headers = this._super();
-      delete headers['X-Options'];
-      return headers;
     }
   });
 
@@ -26336,6 +26329,8 @@ define('frontend-cp/components/ko-universal-search/component', ['exports', 'embe
     searchResults: null,
     searchQuery: null,
     loadSearchRouteAction: 'loadSearchRoute',
+    store: Ember['default'].inject.service(),
+    highlightedResult: null,
 
     isSearching: Ember['default'].computed.bool('searchQuery'),
 
@@ -26343,7 +26338,30 @@ define('frontend-cp/components/ko-universal-search/component', ['exports', 'embe
       this.sendAction('searchingChanged', this.get('isSearching'));
     }).observes('isSearching').on('init'),
 
-    // returns a flattened array of search results.
+    onSearchQueryChanged: (function () {
+      Ember['default'].run.debounce(this, 'fireSearchAction', 250);
+    }).observes('searchQuery'),
+
+    fireSearchAction: function fireSearchAction() {
+      var _this = this;
+
+      var query = this.get('searchQuery');
+
+      if (!query) {
+        this.set('searchResults', []);
+        return;
+      }
+
+      this.get('store').query('search-result-group', { query: query, fields: 'snippet,resource' }).then(function (results) {
+        _this.set('searchResults', results);
+      })['catch'](function (e) {
+        if (e.errors[0].code !== 'RESOURCE_NOT_FOUND') {
+          throw e;
+        }
+        _this.set('searchResults', []);
+      });
+    },
+
     flattenedResults: (function () {
       return this.get('searchResults').reduce(function (results, searchResultGroup) {
         searchResultGroup.get('results').forEach(function (result) {
@@ -26351,32 +26369,21 @@ define('frontend-cp/components/ko-universal-search/component', ['exports', 'embe
         });
 
         return results;
-      }, new Ember['default'].A([]));
+      }, []);
     }).property('searchResults'),
-
-    onSearchQueryChanged: (function () {
-      Ember['default'].run.debounce(this, 'fireSearchAction', 250);
-    }).observes('searchQuery'),
-
-    fireSearchAction: function fireSearchAction() {
-      this.sendAction('performSearch', this.get('searchQuery'));
-    },
 
     actions: {
       clearSearchQuery: function clearSearchQuery() {
         this.set('searchQuery', '');
-        this.set('searchResults', new Ember['default'].A([]));
+        this.set('searchResults', []);
       },
 
       highlightResult: function highlightResult(highlightedResult) {
-        if (highlightedResult) {
-          this.removeAllHighlighting();
-          highlightedResult.set('isHighlighted', true);
-        }
+        this.set('highlightedResult', highlightedResult);
       },
 
       selectHighlightedResultAction: function selectHighlightedResultAction() {
-        var result = this.getFirstHighlightedResult();
+        var result = this.get('highlightedResult');
 
         switch (result.get('resource')) {
           case 'person':
@@ -26391,51 +26398,41 @@ define('frontend-cp/components/ko-universal-search/component', ['exports', 'embe
       },
 
       highlightNextResult: function highlightNextResult() {
-        var flattenedResults = this.get('flattenedResults');
-        var currentResult = this.getFirstHighlightedResult();
-        var currentResultIndex = flattenedResults.indexOf(currentResult);
-        var newHighlightedObject = flattenedResults.objectAt(currentResultIndex + 1);
+        var currentlyHighlightedResult = this.get('highlightedResult');
+        var results = this.get('flattenedResults');
 
-        if (!newHighlightedObject) {
-          newHighlightedObject = this.get('flattenedResults.firstObject');
+        if (!currentlyHighlightedResult) {
+          this.set('highlightedResult', results.get('firstObject'));
+          return;
         }
 
-        this.send('highlightResult', newHighlightedObject);
+        var newHighlightedIndex = results.indexOf(currentlyHighlightedResult) + 1;
+
+        // back to the start if we try to go above the list
+        if (newHighlightedIndex === results.length) {
+          newHighlightedIndex = 0;
+        }
+        this.set('highlightedResult', results.objectAt(newHighlightedIndex));
       },
 
       highlightPreviousResult: function highlightPreviousResult() {
-        var currentResult = this.getFirstHighlightedResult();
-        var currentResultIndex = this.get('flattenedResults').indexOf(currentResult);
-        var newHighlightedObject = this.get('flattenedResults').objectAt(currentResultIndex - 1);
+        var currentlyHighlightedResult = this.get('highlightedResult');
+        var results = this.get('flattenedResults');
 
-        if (!newHighlightedObject) {
-          newHighlightedObject = this.get('flattenedResults.lastObject');
+        if (!currentlyHighlightedResult) {
+          this.set('highlightedResult', results.get('lastObject'));
+          return;
         }
 
-        this.send('highlightResult', newHighlightedObject);
+        var newHighlightedIndex = results.indexOf(currentlyHighlightedResult) - 1;
+
+        // back to the start if we try to go below the list
+        if (newHighlightedIndex === -1) {
+          newHighlightedIndex = results.length - 1;
+        }
+        this.set('highlightedResult', results.objectAt(newHighlightedIndex));
       }
-    },
-
-    getFirstHighlightedResult: function getFirstHighlightedResult() {
-      return this.get('flattenedResults').filter(function (result) {
-        return result.isHighlighted;
-      }).get('firstObject');
-    },
-
-    removeAllHighlighting: function removeAllHighlighting() {
-      var _this = this;
-
-      // wrapped in .run because otherwise the flushed false gets
-      // applied after the set(true) call :-/
-      Ember['default'].run(function () {
-        _this.get('searchResults').forEach(function (resultGroup) {
-          resultGroup.get('results').forEach(function (result) {
-            result.set('isHighlighted', false);
-          });
-        });
-      });
     }
-
   });
 
 });
@@ -26455,10 +26452,12 @@ define('frontend-cp/components/ko-universal-search/entry/component', ['exports',
         case KeyCodes.down:
           {
             this.sendAction('highlightNextResultAction');
+            break;
           }
         case KeyCodes.up:
           {
             this.sendAction('highlightPreviousResultAction');
+            break;
           }
         case KeyCodes.enter:
           {
@@ -26481,12 +26480,20 @@ define('frontend-cp/components/ko-universal-search/result/component', ['exports'
   'use strict';
 
   exports['default'] = Ember['default'].Component.extend({
-    tagName: 'li',
-    classNameBindings: [':universal-search_result', 'isHighlighted:universal-search_result--highlighted'],
+    //Parmas:
+    resource: null,
+    result: null,
     isHighlighted: false,
 
+    tagName: 'li',
+    classNameBindings: [':universal-search_result', 'isHighlighted:universal-search_result--highlighted'],
+
+    iconClass: Ember['default'].computed('resource', function () {
+      return 'i-' + this.get('resource');
+    }),
+
     highlight: (function () {
-      this.sendAction('on-highlight', this);
+      this.sendAction('on-highlight', this.get('result'));
     }).on('mouseEnter')
 
   });
@@ -26508,7 +26515,7 @@ define('frontend-cp/components/ko-universal-search/result/template', ['exports']
           },
           "end": {
             "line": 3,
-            "column": 66
+            "column": 127
           }
         },
         "moduleName": "frontend-cp/components/ko-universal-search/result/template.hbs"
@@ -26518,7 +26525,7 @@ define('frontend-cp/components/ko-universal-search/result/template', ['exports']
       hasRendered: false,
       buildFragment: function buildFragment(dom) {
         var el0 = dom.createDocumentFragment();
-        var el1 = dom.createElement("div");
+        var el1 = dom.createElement("i");
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
@@ -26531,21 +26538,23 @@ define('frontend-cp/components/ko-universal-search/result/template', ['exports']
         dom.appendChild(el0, el1);
         var el1 = dom.createElement("div");
         dom.setAttribute(el1,"class","universal-search_result-instruction");
-        var el2 = dom.createTextNode("Press enter");
+        var el2 = dom.createComment("");
         dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
         var element0 = dom.childAt(fragment, [0]);
-        var morphs = new Array(2);
+        var morphs = new Array(3);
         morphs[0] = dom.createAttrMorph(element0, 'class');
         morphs[1] = dom.createUnsafeMorphAt(dom.childAt(fragment, [2]),0,0);
+        morphs[2] = dom.createMorphAt(dom.childAt(fragment, [4]),0,0);
         return morphs;
       },
       statements: [
-        ["attribute","class",["concat",["universal-search__icon ",["get","resource",["loc",[null,[1,37],[1,45]]]]]]],
-        ["content","snippet",["loc",[null,[2,45],[2,58]]]]
+        ["attribute","class",["concat",["universal-search__icon ",["get","iconClass",["loc",[null,[1,35],[1,44]]]]]]],
+        ["content","result.snippet",["loc",[null,[2,45],[2,65]]]],
+        ["inline","format-message",[["subexpr","intl-get",["generic.search_result_select_instruction"],[],["loc",[null,[3,66],[3,119]]]]],[],["loc",[null,[3,49],[3,121]]]]
       ],
       locals: [],
       templates: []
@@ -26616,7 +26625,7 @@ define('frontend-cp/components/ko-universal-search/template', ['exports'], funct
                 "column": 6
               },
               "end": {
-                "line": 21,
+                "line": 22,
                 "column": 6
               }
             },
@@ -26641,7 +26650,7 @@ define('frontend-cp/components/ko-universal-search/template', ['exports'], funct
             return morphs;
           },
           statements: [
-            ["inline","ko-universal-search/result",[],["resource",["subexpr","@mut",[["get","resultsGroup.id",["loc",[null,[16,21],[16,36]]]]],[],[]],"snippet",["subexpr","@mut",[["get","result.snippet",["loc",[null,[17,20],[17,34]]]]],[],[]],"isHighlighted",["subexpr","@mut",[["get","result.isHighlighted",["loc",[null,[18,26],[18,46]]]]],[],[]],"on-highlight","highlightResult"],["loc",[null,[15,8],[20,10]]]]
+            ["inline","ko-universal-search/result",[],["result",["subexpr","@mut",[["get","result",["loc",[null,[16,19],[16,25]]]]],[],[]],"resource",["subexpr","@mut",[["get","resultsGroup.id",["loc",[null,[17,21],[17,36]]]]],[],[]],"snippet",["subexpr","@mut",[["get","result.snippet",["loc",[null,[18,20],[18,34]]]]],[],[]],"isHighlighted",["subexpr","eq",[["get","result",["loc",[null,[19,30],[19,36]]]],["get","highlightedResult",["loc",[null,[19,37],[19,54]]]]],[],["loc",[null,[19,26],[19,55]]]],"on-highlight","highlightResult"],["loc",[null,[15,8],[21,10]]]]
           ],
           locals: ["result"],
           templates: []
@@ -26657,7 +26666,7 @@ define('frontend-cp/components/ko-universal-search/template', ['exports'], funct
               "column": 2
             },
             "end": {
-              "line": 24,
+              "line": 25,
               "column": 2
             }
           },
@@ -26689,7 +26698,7 @@ define('frontend-cp/components/ko-universal-search/template', ['exports'], funct
           return morphs;
         },
         statements: [
-          ["block","each",[["get","resultsGroup.results",["loc",[null,[14,14],[14,34]]]]],[],0,null,["loc",[null,[14,6],[21,15]]]]
+          ["block","each",[["get","resultsGroup.results",["loc",[null,[14,14],[14,34]]]]],[],0,null,["loc",[null,[14,6],[22,15]]]]
         ],
         locals: ["resultsGroup"],
         templates: [child0]
@@ -26703,11 +26712,11 @@ define('frontend-cp/components/ko-universal-search/template', ['exports'], funct
             "loc": {
               "source": null,
               "start": {
-                "line": 25,
+                "line": 26,
                 "column": 4
               },
               "end": {
-                "line": 31,
+                "line": 32,
                 "column": 4
               }
             },
@@ -26746,7 +26755,7 @@ define('frontend-cp/components/ko-universal-search/template', ['exports'], funct
             return morphs;
           },
           statements: [
-            ["inline","format-message",[["subexpr","intl-get",["search.no-results"],[],["loc",[null,[28,29],[28,59]]]]],[],["loc",[null,[28,12],[28,61]]]]
+            ["inline","format-message",[["subexpr","intl-get",["search.no-results"],[],["loc",[null,[29,29],[29,59]]]]],[],["loc",[null,[29,12],[29,61]]]]
           ],
           locals: [],
           templates: []
@@ -26758,11 +26767,11 @@ define('frontend-cp/components/ko-universal-search/template', ['exports'], funct
           "loc": {
             "source": null,
             "start": {
-              "line": 24,
+              "line": 25,
               "column": 2
             },
             "end": {
-              "line": 32,
+              "line": 33,
               "column": 2
             }
           },
@@ -26785,7 +26794,7 @@ define('frontend-cp/components/ko-universal-search/template', ['exports'], funct
           return morphs;
         },
         statements: [
-          ["block","if",[["get","isSearching",["loc",[null,[25,10],[25,21]]]]],[],0,null,["loc",[null,[25,4],[31,11]]]]
+          ["block","if",[["get","isSearching",["loc",[null,[26,10],[26,21]]]]],[],0,null,["loc",[null,[26,4],[32,11]]]]
         ],
         locals: [],
         templates: [child0]
@@ -26801,7 +26810,7 @@ define('frontend-cp/components/ko-universal-search/template', ['exports'], funct
             "column": 0
           },
           "end": {
-            "line": 34,
+            "line": 35,
             "column": 0
           }
         },
@@ -26859,7 +26868,7 @@ define('frontend-cp/components/ko-universal-search/template', ['exports'], funct
       statements: [
         ["inline","ko-universal-search/entry",[],["type","text","value",["subexpr","@mut",[["get","searchQuery",["loc",[null,[5,48],[5,59]]]]],[],[]],"placeholder",["subexpr","format-message",[["subexpr","intl-get",["search.placeholder"],[],["loc",[null,[5,88],[5,119]]]]],[],["loc",[null,[5,72],[5,120]]]]],["loc",[null,[5,2],[5,122]]]],
         ["block","if",[["get","searchQuery",["loc",[null,[6,8],[6,19]]]]],[],0,null,["loc",[null,[6,2],[8,9]]]],
-        ["block","each",[["get","searchResults",["loc",[null,[12,10],[12,23]]]]],[],1,2,["loc",[null,[12,2],[32,11]]]]
+        ["block","each",[["get","searchResults",["loc",[null,[12,10],[12,23]]]]],[],1,2,["loc",[null,[12,2],[33,11]]]]
       ],
       locals: [],
       templates: [child0, child1, child2]
@@ -29994,6 +30003,49 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage'], function (e
         },
         'status': 200,
         'timestamp': 1432593047
+      };
+    });
+
+    this.get('/api/v1/base/search_all', function (db, request) {
+      switch (request.queryParams.query) {
+        case 'person':
+          return db.searchResultsPerson[0];
+        case 'case':
+          return db.searchResultsCase[0];
+        case 'both':
+          return db.searchResultsCasePerson[0];
+      }
+    });
+
+    this.get('/api/v1/cases/fields/1', function () {
+      return {
+        'status': 200,
+        'data': {
+          'id': 1,
+          'fielduuid': '0939abea-4b49-4a10-8bd1-d44af45b8413',
+          'type': 'SUBJECT',
+          'key': 'subject',
+          'title': 'Subject',
+          'is_required_for_agents': true,
+          'is_required_on_resolution': true,
+          'is_visible_to_customers': true,
+          'customer_title': 'Subject',
+          'is_customer_editable': true,
+          'is_required_for_customers': true,
+          'description': null,
+          'is_enabled': true,
+          'regular_expression': null,
+          'sort_order': 1,
+          'is_system': true,
+          'options': [],
+          'locales': [],
+          'created_at': '2015-07-30T09:00:51Z',
+          'updated_at': '2015-07-30T09:00:51Z',
+          'resource_type': 'case_field',
+          'resource_url': 'http://novo/api/index.php?/v1/cases/fields/1'
+        },
+        'resource': 'case_field',
+        'session_id': 'zM6kSQm1SWZCd33805d8b083b2f49499ce75f15dae6dfcada961SCzbSUOnVhi7hcPvKSOJRof'
       };
     });
 
@@ -34742,6 +34794,10 @@ define('frontend-cp/mirage/fixtures/enusstrings', ['exports'], function (exports
       value: 'Add New User',
       'resource_type': 'locale_string'
     }, {
+      id: 'frontend.api.generic.search_result_select_instruction',
+      value: 'Press enter',
+      'resource_type': 'locale_string'
+    }, {
       id: 'frontend.api.admin.casefields.type.textarea.name',
       value: 'Multiline Text',
       'resource_type': 'locale_string'
@@ -34919,6 +34975,2416 @@ define('frontend-cp/mirage/fixtures/fieldsoptions', ['exports'], function (expor
     'updated_at': '2015-07-16T09:30:40Z',
     'resource_type': 'field_option',
     'resource_url': 'http://novo/api/index.php?/v1/cases/fields/10/options/3'
+  }];
+
+});
+define('frontend-cp/mirage/fixtures/searchResultsCase', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports['default'] = [{
+    'status': 200,
+    'data': [{
+      'results': [{
+        'id': 26,
+        'title': 'subject the first',
+        'data': {
+          'id': 26,
+          'resource_type': 'case'
+        },
+        'resource': 'case',
+        'snippet': 'subject <em>the</em> first',
+        'relevance': 0.9710342,
+        'date': null,
+        'resource_url': 'http://novo/api//v1/cases/26'
+      }, {
+        'id': 27,
+        'title': 'subject the second',
+        'data': {
+          'id': 27,
+          'resource_type': 'case'
+        },
+        'resource': 'case',
+        'snippet': 'subject <em>the</em> second',
+        'relevance': 0.6986797,
+        'date': null,
+        'resource_url': 'http://novo/api//v1/cases/27'
+      }],
+      'resource': 'case',
+      'total_count': 2,
+      'search_url': 'http://novo/api//v1/base/search?_flat=1&fields=snippet%2Cresource&in=cases&query=the'
+    }],
+    'resource': 'object',
+    'resources': {
+      'language': {
+        '1': {
+          'id': 1,
+          'locale': 'en-us',
+          'flag_icon': null,
+          'direction': 'LTR',
+          'is_enabled': true,
+          'statistics': {
+            'uptodate': 0,
+            'outdated': 0,
+            'missing': 0
+          },
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'language',
+          'resource_url': 'http://novo/api//v1/languages/1'
+        }
+      },
+      'brand': {
+        '1': {
+          'id': 1,
+          'name': 'Default',
+          'url': null,
+          'language': {
+            'id': 1,
+            'resource_type': 'language'
+          },
+          'is_enabled': true,
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'brand',
+          'resource_url': 'http://novo/api//v1/brands/1'
+        }
+      },
+      'mailbox': {
+        '1': {
+          'id': 1,
+          'uuid': '476d54fe-4dd5-40d4-8458-e08d495adc39',
+          'service': 'STANDARD',
+          'encryption': 'NONE',
+          'address': 'support@brewfictus.com',
+          'prefix': null,
+          'smtp_type': null,
+          'host': null,
+          'port': null,
+          'username': null,
+          'preserve_mails': false,
+          'brand': {
+            'id': 1,
+            'resource_type': 'brand'
+          },
+          'is_default': false,
+          'is_enabled': true,
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'mailbox',
+          'resource_url': 'http://novo/api//v1/mailboxes/1'
+        }
+      },
+      'channel': {
+        '476d54fe-4dd5-40d4-8458-e08d495adc39': {
+          'uuid': '476d54fe-4dd5-40d4-8458-e08d495adc39',
+          'type': 'MAILBOX',
+          'character_limit': null,
+          'account': {
+            'id': 1,
+            'resource_type': 'mailbox'
+          },
+          'resource_type': 'channel'
+        }
+      },
+      'role': {
+        '1': {
+          'id': 1,
+          'title': 'Administrator',
+          'type': 'ADMIN',
+          'ip_restriction': null,
+          'password_expires_in_days': '0',
+          'is_two_factor_required': false,
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'role',
+          'resource_url': 'http://novo/api//v1/roles/1'
+        },
+        '4': {
+          'id': 4,
+          'title': 'Customer',
+          'type': 'CUSTOMER',
+          'ip_restriction': null,
+          'password_expires_in_days': '0',
+          'is_two_factor_required': false,
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'role',
+          'resource_url': 'http://novo/api//v1/roles/4'
+        }
+      },
+      'identity_domain': {
+        '1': {
+          'id': 1,
+          'domain': 'atmospherecoffeeinc.com',
+          'is_primary': true,
+          'is_validated': false,
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'identity_domain',
+          'resource_url': 'http://novo/api//v1/organizations/2/identities/domains/1'
+        }
+      },
+      'organization': {
+        '2': {
+          'id': 2,
+          'name': 'Atmospherecoffeeinc',
+          'is_shared': false,
+          'domains': [{
+            'id': 1,
+            'resource_type': 'identity_domain'
+          }],
+          'phone': [],
+          'addresses': [],
+          'websites': [],
+          'notes': [],
+          'pinned_notes_count': 0,
+          'tags': [],
+          'custom_fields': [],
+          'followers': [],
+          'metadata': {
+            'custom': null,
+            'system': null,
+            'resource_type': 'metadata'
+          },
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'organization',
+          'resource_url': 'http://novo/api//v1/organizations/2'
+        }
+      },
+      'identity_email': {
+        '1': {
+          'id': 1,
+          'email': 'test@kayako.com',
+          'is_primary': true,
+          'is_validated': true,
+          'is_notification_enabled': false,
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'identity_email',
+          'resource_url': 'http://novo/api//v1/users/1/identities/emails/1'
+        },
+        '2': {
+          'id': 2,
+          'email': 'caryn.pryor@atmospherecoffeeinc.com',
+          'is_primary': true,
+          'is_validated': false,
+          'is_notification_enabled': false,
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'identity_email',
+          'resource_url': 'http://novo/api//v1/users/2/identities/emails/2'
+        }
+      },
+      'identity_phone': {
+        '1': {
+          'id': 1,
+          'number': '+14515550194',
+          'type': 'NONE',
+          'is_primary': false,
+          'is_validated': false,
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'identity_phone',
+          'resource_url': 'http://novo/api//v1/users/2/identities/phones/1'
+        }
+      },
+      'contact_address': {
+        '2': {
+          'id': 2,
+          'address1': '65 West Alisal Street',
+          'address2': '#210',
+          'city': 'Salinas',
+          'state': 'CA',
+          'postal_code': '93905',
+          'country': 'US',
+          'type': 'OTHER',
+          'is_primary': false,
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'contact_address',
+          'resource_url': 'http://novo/api//v1/users/2/contacts/addresses/2'
+        }
+      },
+      'contact_website': {
+        '2': {
+          'id': 2,
+          'url': 'www.atmospherecoffee.com',
+          'is_primary': false,
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'contact_website',
+          'resource_url': 'http://novo/api//v1/users/2/contacts/websites/2'
+        }
+      },
+      'user_field': {
+        '1': {
+          'id': 1,
+          'fielduuid': 'b8811cb4-027b-414c-9653-ce4fd55a831b',
+          'title': 'Industry',
+          'type': 'TEXT',
+          'key': 'industry',
+          'is_visible_to_customers': true,
+          'customer_title': 'Industry',
+          'is_customer_editable': true,
+          'is_required_for_customers': true,
+          'description': null,
+          'regular_expression': null,
+          'sort_order': 1,
+          'is_enabled': true,
+          'options': [],
+          'locales': [],
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'user_field',
+          'resource_url': 'http://novo/api//v1/users/fields/1'
+        }
+      },
+      'user': {
+        '1': {
+          'id': 1,
+          'full_name': 'John Doe',
+          'designation': null,
+          'is_enabled': true,
+          'role': {
+            'id': 1,
+            'resource_type': 'role'
+          },
+          'avatar': 'http://novo//avatar/get/2362efb4-bd5b-5b49-a7b6-8e94bd9dfebe',
+          'organization': null,
+          'teams': [{
+            'id': 1,
+            'resource_type': 'team'
+          }, {
+            'id': 2,
+            'resource_type': 'team'
+          }, {
+            'id': 3,
+            'resource_type': 'team'
+          }, {
+            'id': 4,
+            'resource_type': 'team'
+          }],
+          'emails': [{
+            'id': 1,
+            'resource_type': 'identity_email'
+          }],
+          'phones': [],
+          'twitter': [],
+          'facebook': [],
+          'external_identifiers': [],
+          'addresses': [],
+          'websites': [],
+          'custom_fields': [{
+            'field': {
+              'id': 1,
+              'resource_type': 'user_field'
+            },
+            'value': '',
+            'resource_type': 'user_field_value'
+          }],
+          'metadata': {
+            'custom': null,
+            'system': null,
+            'resource_type': 'metadata'
+          },
+          'tags': [],
+          'notes': [],
+          'pinned_notes_count': 0,
+          'followers': [],
+          'locale': 'en-us',
+          'time_zone': null,
+          'time_zone_offset': null,
+          'greeting': null,
+          'signature': null,
+          'status_message': null,
+          'access_level': null,
+          'password_updated_at': '2015-08-10T11:20:40Z',
+          'avatar_updated_at': null,
+          'activity_at': '2015-08-12T09:34:34Z',
+          'visited_at': '2015-08-12T09:36:05Z',
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-12T09:36:05Z',
+          'resource_type': 'user',
+          'resource_url': 'http://novo/api//v1/users/1'
+        },
+        '2': {
+          'id': 2,
+          'full_name': 'Caryn Pryor',
+          'designation': '1',
+          'is_enabled': true,
+          'role': {
+            'id': 4,
+            'resource_type': 'role'
+          },
+          'avatar': 'http://novo//avatar/get/bdf917dc-0af7-5025-b033-b956d6001021',
+          'organization': {
+            'id': 2,
+            'resource_type': 'organization'
+          },
+          'teams': [],
+          'emails': [{
+            'id': 2,
+            'resource_type': 'identity_email'
+          }],
+          'phones': [{
+            'id': 1,
+            'resource_type': 'identity_phone'
+          }],
+          'twitter': [],
+          'facebook': [],
+          'external_identifiers': [],
+          'addresses': [{
+            'id': 2,
+            'resource_type': 'contact_address'
+          }],
+          'websites': [{
+            'id': 2,
+            'resource_type': 'contact_website'
+          }],
+          'custom_fields': [{
+            'field': {
+              'id': 1,
+              'resource_type': 'user_field'
+            },
+            'value': '',
+            'resource_type': 'user_field_value'
+          }],
+          'metadata': {
+            'custom': null,
+            'system': null,
+            'resource_type': 'metadata'
+          },
+          'tags': [],
+          'notes': [],
+          'pinned_notes_count': 0,
+          'followers': [],
+          'locale': 'en-us',
+          'time_zone': null,
+          'time_zone_offset': null,
+          'greeting': null,
+          'signature': null,
+          'status_message': null,
+          'access_level': null,
+          'password_updated_at': '2015-08-10T11:20:40Z',
+          'avatar_updated_at': null,
+          'activity_at': '2015-08-10T11:20:40Z',
+          'visited_at': null,
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'user',
+          'resource_url': 'http://novo/api//v1/users/2'
+        }
+      },
+      'business_hour': {
+        '1': {
+          'id': 1,
+          'title': 'Default Business Hours',
+          'zones': {
+            'monday': [9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
+            'tuesday': [9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
+            'wednesday': [9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
+            'thursday': [9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
+            'friday': [9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
+            'saturday': [],
+            'sunday': []
+          },
+          'holidays': [],
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'business_hour',
+          'resource_url': 'http://novo/api//v1/businesshours/1'
+        }
+      },
+      'team': {
+        '1': {
+          'id': 1,
+          'title': 'Sales',
+          'businesshour': {
+            'id': 1,
+            'resource_type': 'business_hour'
+          },
+          'followers': [],
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'team',
+          'resource_url': 'http://novo/api//v1/teams/1'
+        },
+        '2': {
+          'id': 2,
+          'title': 'Support',
+          'businesshour': {
+            'id': 1,
+            'resource_type': 'business_hour'
+          },
+          'followers': [],
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'team',
+          'resource_url': 'http://novo/api//v1/teams/2'
+        },
+        '3': {
+          'id': 3,
+          'title': 'Finance',
+          'businesshour': {
+            'id': 1,
+            'resource_type': 'business_hour'
+          },
+          'followers': [],
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'team',
+          'resource_url': 'http://novo/api//v1/teams/3'
+        },
+        '4': {
+          'id': 4,
+          'title': 'Human Resources',
+          'businesshour': {
+            'id': 1,
+            'resource_type': 'business_hour'
+          },
+          'followers': [],
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'team',
+          'resource_url': 'http://novo/api//v1/teams/4'
+        }
+      },
+      'case_status': {
+        '1': {
+          'id': 1,
+          'label': 'New',
+          'color': null,
+          'visibility': 'PUBLIC',
+          'type': 'NEW',
+          'locales': [],
+          'is_sla_active': true,
+          'is_deleted': false,
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'case_status',
+          'resource_url': 'http://novo/api//v1/cases/statuses/1'
+        }
+      },
+      'collection': {
+        '87cc275b-5dea-4fe8-81a0-f9bf81b83e03': {
+          'uuid': '87cc275b-5dea-4fe8-81a0-f9bf81b83e03',
+          'operator': 'AND',
+          'propositions': [{
+            'field': 'cases.channeltype',
+            'operator': 'string_contains',
+            'value': 'MAILBOX',
+            'resource_type': 'proposition'
+          }],
+          'resource_type': 'collection'
+        }
+      },
+      'case_priority': {
+        '1': {
+          'id': 1,
+          'label': 'Low',
+          'level': 1,
+          'color': null,
+          'locales': [],
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'case_priority',
+          'resource_url': 'http://novo/api//v1/cases/priorities/1'
+        },
+        '2': {
+          'id': 2,
+          'label': 'Normal',
+          'level': 2,
+          'color': null,
+          'locales': [],
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'case_priority',
+          'resource_url': 'http://novo/api//v1/cases/priorities/2'
+        },
+        '3': {
+          'id': 3,
+          'label': 'High',
+          'level': 3,
+          'color': null,
+          'locales': [],
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'case_priority',
+          'resource_url': 'http://novo/api//v1/cases/priorities/3'
+        },
+        '4': {
+          'id': 4,
+          'label': 'Urgent',
+          'level': 4,
+          'color': null,
+          'locales': [],
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'case_priority',
+          'resource_url': 'http://novo/api//v1/cases/priorities/4'
+        }
+      },
+      'sla': {
+        '1': {
+          'id': 1,
+          'title': 'Regular support and sales tickets',
+          'description': null,
+          'filters': [{
+            'id': '87cc275b-5dea-4fe8-81a0-f9bf81b83e03',
+            'resource_type': 'collection'
+          }],
+          'metrics': [{
+            'priority': {
+              'id': 1,
+              'resource_type': 'case_priority'
+            },
+            'type': 'FIRST_REPLY_TIME',
+            'goal': 0.2,
+            'operational_hours': 'CALENDAR_HOURS',
+            'is_deleted': false,
+            'resource_type': 'sla_metric'
+          }, {
+            'priority': {
+              'id': 1,
+              'resource_type': 'case_priority'
+            },
+            'type': 'NEXT_REPLY_TIME',
+            'goal': 0.3,
+            'operational_hours': 'BUSINESS_HOURS',
+            'is_deleted': false,
+            'resource_type': 'sla_metric'
+          }, {
+            'priority': {
+              'id': 1,
+              'resource_type': 'case_priority'
+            },
+            'type': 'RESOLUTION_TIME',
+            'goal': 0.4,
+            'operational_hours': 'BUSINESS_HOURS',
+            'is_deleted': false,
+            'resource_type': 'sla_metric'
+          }, {
+            'priority': {
+              'id': 2,
+              'resource_type': 'case_priority'
+            },
+            'type': 'FIRST_REPLY_TIME',
+            'goal': 0.2,
+            'operational_hours': 'CALENDAR_HOURS',
+            'is_deleted': false,
+            'resource_type': 'sla_metric'
+          }, {
+            'priority': {
+              'id': 2,
+              'resource_type': 'case_priority'
+            },
+            'type': 'NEXT_REPLY_TIME',
+            'goal': 0.3,
+            'operational_hours': 'BUSINESS_HOURS',
+            'is_deleted': false,
+            'resource_type': 'sla_metric'
+          }, {
+            'priority': {
+              'id': 2,
+              'resource_type': 'case_priority'
+            },
+            'type': 'RESOLUTION_TIME',
+            'goal': 0.4,
+            'operational_hours': 'BUSINESS_HOURS',
+            'is_deleted': false,
+            'resource_type': 'sla_metric'
+          }, {
+            'priority': {
+              'id': 3,
+              'resource_type': 'case_priority'
+            },
+            'type': 'FIRST_REPLY_TIME',
+            'goal': 0.2,
+            'operational_hours': 'CALENDAR_HOURS',
+            'is_deleted': false,
+            'resource_type': 'sla_metric'
+          }, {
+            'priority': {
+              'id': 3,
+              'resource_type': 'case_priority'
+            },
+            'type': 'NEXT_REPLY_TIME',
+            'goal': 0.3,
+            'operational_hours': 'BUSINESS_HOURS',
+            'is_deleted': false,
+            'resource_type': 'sla_metric'
+          }, {
+            'priority': {
+              'id': 3,
+              'resource_type': 'case_priority'
+            },
+            'type': 'RESOLUTION_TIME',
+            'goal': 0.4,
+            'operational_hours': 'BUSINESS_HOURS',
+            'is_deleted': false,
+            'resource_type': 'sla_metric'
+          }, {
+            'priority': {
+              'id': 4,
+              'resource_type': 'case_priority'
+            },
+            'type': 'FIRST_REPLY_TIME',
+            'goal': 0.2,
+            'operational_hours': 'CALENDAR_HOURS',
+            'is_deleted': false,
+            'resource_type': 'sla_metric'
+          }, {
+            'priority': {
+              'id': 4,
+              'resource_type': 'case_priority'
+            },
+            'type': 'NEXT_REPLY_TIME',
+            'goal': 0.3,
+            'operational_hours': 'BUSINESS_HOURS',
+            'is_deleted': false,
+            'resource_type': 'sla_metric'
+          }, {
+            'priority': {
+              'id': 4,
+              'resource_type': 'case_priority'
+            },
+            'type': 'RESOLUTION_TIME',
+            'goal': 0.4,
+            'operational_hours': 'BUSINESS_HOURS',
+            'is_deleted': false,
+            'resource_type': 'sla_metric'
+          }, {
+            'priority': null,
+            'type': 'FIRST_REPLY_TIME',
+            'goal': 0.2,
+            'operational_hours': 'CALENDAR_HOURS',
+            'is_deleted': false,
+            'resource_type': 'sla_metric'
+          }, {
+            'priority': null,
+            'type': 'NEXT_REPLY_TIME',
+            'goal': 0.3,
+            'operational_hours': 'BUSINESS_HOURS',
+            'is_deleted': false,
+            'resource_type': 'sla_metric'
+          }, {
+            'priority': null,
+            'type': 'RESOLUTION_TIME',
+            'goal': 0.4,
+            'operational_hours': 'BUSINESS_HOURS',
+            'is_deleted': false,
+            'resource_type': 'sla_metric'
+          }],
+          'is_enabled': true,
+          'is_deleted': false,
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'sla',
+          'resource_url': 'http://novo/api//v1/sla/1'
+        }
+      },
+      'case_form': {
+        '1': {
+          'id': 1,
+          'title': 'Maintenance job form',
+          'is_visible_to_customers': true,
+          'customer_title': 'Maintenance job form',
+          'description': null,
+          'is_enabled': true,
+          'is_default': false,
+          'sort_order': 1,
+          'brand': {
+            'id': 1,
+            'resource_type': 'brand'
+          },
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'case_form',
+          'resource_url': 'http://novo/api//v1/cases/forms/1'
+        }
+      },
+      'field_option': {
+        '1': {
+          'id': 1,
+          'fielduuid': 'e9ffead3-d3be-449b-8a0a-841d6354eec9',
+          'value': 'Elektra Moderna 2-Group',
+          'tag': null,
+          'sort_order': 1,
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'field_option'
+        },
+        '2': {
+          'id': 2,
+          'fielduuid': 'e9ffead3-d3be-449b-8a0a-841d6354eec9',
+          'value': 'Elektra Compact 1-Group',
+          'tag': null,
+          'sort_order': 2,
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'field_option'
+        },
+        '3': {
+          'id': 3,
+          'fielduuid': 'e9ffead3-d3be-449b-8a0a-841d6354eec9',
+          'value': 'Elektra Compact 2-Group',
+          'tag': null,
+          'sort_order': 3,
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'field_option'
+        },
+        '4': {
+          'id': 4,
+          'fielduuid': 'e9ffead3-d3be-449b-8a0a-841d6354eec9',
+          'value': 'Maidaid Barista MBC1D',
+          'tag': null,
+          'sort_order': 4,
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'field_option'
+        },
+        '5': {
+          'id': 5,
+          'fielduuid': 'e9ffead3-d3be-449b-8a0a-841d6354eec9',
+          'value': 'Maidaid Barista MBC2D',
+          'tag': null,
+          'sort_order': 5,
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'field_option'
+        },
+        '6': {
+          'id': 6,
+          'fielduuid': 'e9ffead3-d3be-449b-8a0a-841d6354eec9',
+          'value': 'Fracino Cybercino',
+          'tag': null,
+          'sort_order': 6,
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'field_option'
+        },
+        '7': {
+          'id': 7,
+          'fielduuid': 'e9ffead3-d3be-449b-8a0a-841d6354eec9',
+          'value': 'Nespresso Gemini CS 200 PRO',
+          'tag': null,
+          'sort_order': 7,
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'field_option'
+        },
+        '8': {
+          'id': 8,
+          'fielduuid': 'e9ffead3-d3be-449b-8a0a-841d6354eec9',
+          'value': 'Nespresso Gemini CS 220 PRO',
+          'tag': null,
+          'sort_order': 8,
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'field_option'
+        }
+      },
+      'case_field': {
+        '8': {
+          'id': 8,
+          'fielduuid': 'e9ffead3-d3be-449b-8a0a-841d6354eec9',
+          'title': 'Product',
+          'type': 'SELECT',
+          'key': 'product',
+          'is_required_for_agents': false,
+          'is_required_on_resolution': false,
+          'is_visible_to_customers': true,
+          'customer_title': 'Product',
+          'is_customer_editable': true,
+          'is_required_for_customers': true,
+          'description': null,
+          'regular_expression': null,
+          'sort_order': 8,
+          'is_enabled': true,
+          'is_system': false,
+          'options': [{
+            'id': 1,
+            'resource_type': 'field_option'
+          }, {
+            'id': 2,
+            'resource_type': 'field_option'
+          }, {
+            'id': 3,
+            'resource_type': 'field_option'
+          }, {
+            'id': 4,
+            'resource_type': 'field_option'
+          }, {
+            'id': 5,
+            'resource_type': 'field_option'
+          }, {
+            'id': 6,
+            'resource_type': 'field_option'
+          }, {
+            'id': 7,
+            'resource_type': 'field_option'
+          }, {
+            'id': 8,
+            'resource_type': 'field_option'
+          }],
+          'locales': [],
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'case_field',
+          'resource_url': 'http://novo/api//v1/cases/fields/8'
+        },
+        '9': {
+          'id': 9,
+          'fielduuid': '4ae1060e-de17-41f3-8584-dd94cdce2b04',
+          'title': 'Serial number',
+          'type': 'TEXT',
+          'key': 'serial_number',
+          'is_required_for_agents': false,
+          'is_required_on_resolution': false,
+          'is_visible_to_customers': true,
+          'customer_title': 'Serial number',
+          'is_customer_editable': true,
+          'is_required_for_customers': true,
+          'description': null,
+          'regular_expression': null,
+          'sort_order': 9,
+          'is_enabled': true,
+          'is_system': false,
+          'options': [],
+          'locales': [],
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-11T09:09:24Z',
+          'resource_type': 'case_field',
+          'resource_url': 'http://novo/api//v1/cases/fields/9'
+        }
+      },
+      'case': {
+        '26': {
+          'id': 26,
+          'mask_id': 'MRS-654-10955',
+          'subject': 'subject the first',
+          'portal': null,
+          'source_channel': {
+            'id': '476d54fe-4dd5-40d4-8458-e08d495adc39',
+            'resource_type': 'channel'
+          },
+          'requester': {
+            'id': 2,
+            'resource_type': 'user'
+          },
+          'creator': {
+            'id': 1,
+            'resource_type': 'user'
+          },
+          'identity': {
+            'id': 2,
+            'resource_type': 'identity_email'
+          },
+          'assignee': null,
+          'brand': {
+            'id': 1,
+            'resource_type': 'brand'
+          },
+          'status': {
+            'id': 1,
+            'resource_type': 'case_status'
+          },
+          'priority': null,
+          'type': null,
+          'sla': {
+            'id': 1,
+            'resource_type': 'sla'
+          },
+          'sla_metrics': [{
+            'title': 'FIRST_REPLY_TIME',
+            'state': 'ACTIVE',
+            'is_breached': false,
+            'remaining_seconds': -2845,
+            'time_taken_seconds': 3565,
+            'total_seconds': 720
+          }, {
+            'title': 'RESOLUTION_TIME',
+            'state': 'ACTIVE',
+            'is_breached': false,
+            'remaining_seconds': -2125,
+            'time_taken_seconds': 3565,
+            'total_seconds': 1440
+          }],
+          'tags': [],
+          'form': {
+            'id': 1,
+            'resource_type': 'case_form'
+          },
+          'custom_fields': [{
+            'field': {
+              'id': 8,
+              'resource_type': 'case_field'
+            },
+            'value': '',
+            'resource_type': 'case_field_value'
+          }, {
+            'field': {
+              'id': 9,
+              'resource_type': 'case_field'
+            },
+            'value': '',
+            'resource_type': 'case_field_value'
+          }],
+          'followers': [],
+          'metadata': {
+            'custom': null,
+            'system': {
+              'city': '',
+              'region': '',
+              'timezone': '',
+              'country': '',
+              'latitude': '',
+              'longitude': ''
+            },
+            'resource_type': 'metadata'
+          },
+          'last_replier': {
+            'id': 2,
+            'resource_type': 'user'
+          },
+          'last_replier_identity': {
+            'id': 2,
+            'resource_type': 'identity_email'
+          },
+          'last_completed_by': null,
+          'last_closed_by': null,
+          'creation_mode': 'API',
+          'state': 'ACTIVE',
+          'post_count': 1,
+          'has_notes': false,
+          'pinned_notes_count': 0,
+          'has_attachments': false,
+          'rating': null,
+          'rating_status': 'UNOFFERED',
+          'last_assigned_at': null,
+          'last_opened_at': null,
+          'last_pending_at': null,
+          'last_closed_at': null,
+          'last_completed_at': null,
+          'last_agent_activity_at': null,
+          'last_customer_activity_at': '2015-08-12T08:36:40Z',
+          'created_at': '2015-08-12T08:36:40Z',
+          'updated_at': '2015-08-12T08:36:40Z',
+          'resource_type': 'case',
+          'resource_url': 'http://novo/api//v1/cases/26'
+        },
+        '27': {
+          'id': 27,
+          'mask_id': 'PND-307-57556',
+          'subject': 'subject the second',
+          'portal': null,
+          'source_channel': {
+            'id': '476d54fe-4dd5-40d4-8458-e08d495adc39',
+            'resource_type': 'channel'
+          },
+          'requester': {
+            'id': 2,
+            'resource_type': 'user'
+          },
+          'creator': {
+            'id': 1,
+            'resource_type': 'user'
+          },
+          'identity': {
+            'id': 2,
+            'resource_type': 'identity_email'
+          },
+          'assignee': null,
+          'brand': {
+            'id': 1,
+            'resource_type': 'brand'
+          },
+          'status': {
+            'id': 1,
+            'resource_type': 'case_status'
+          },
+          'priority': null,
+          'type': null,
+          'sla': {
+            'id': 1,
+            'resource_type': 'sla'
+          },
+          'sla_metrics': [{
+            'title': 'FIRST_REPLY_TIME',
+            'state': 'ACTIVE',
+            'is_breached': false,
+            'remaining_seconds': -2830,
+            'time_taken_seconds': 3550,
+            'total_seconds': 720
+          }, {
+            'title': 'RESOLUTION_TIME',
+            'state': 'ACTIVE',
+            'is_breached': false,
+            'remaining_seconds': -2110,
+            'time_taken_seconds': 3550,
+            'total_seconds': 1440
+          }],
+          'tags': [],
+          'form': {
+            'id': 1,
+            'resource_type': 'case_form'
+          },
+          'custom_fields': [{
+            'field': {
+              'id': 8,
+              'resource_type': 'case_field'
+            },
+            'value': '',
+            'resource_type': 'case_field_value'
+          }, {
+            'field': {
+              'id': 9,
+              'resource_type': 'case_field'
+            },
+            'value': '',
+            'resource_type': 'case_field_value'
+          }],
+          'followers': [],
+          'metadata': {
+            'custom': null,
+            'system': {
+              'city': '',
+              'region': '',
+              'timezone': '',
+              'country': '',
+              'latitude': '',
+              'longitude': ''
+            },
+            'resource_type': 'metadata'
+          },
+          'last_replier': {
+            'id': 2,
+            'resource_type': 'user'
+          },
+          'last_replier_identity': {
+            'id': 2,
+            'resource_type': 'identity_email'
+          },
+          'last_completed_by': null,
+          'last_closed_by': null,
+          'creation_mode': 'API',
+          'state': 'ACTIVE',
+          'post_count': 1,
+          'has_notes': false,
+          'pinned_notes_count': 0,
+          'has_attachments': false,
+          'rating': null,
+          'rating_status': 'UNOFFERED',
+          'last_assigned_at': null,
+          'last_opened_at': null,
+          'last_pending_at': null,
+          'last_closed_at': null,
+          'last_completed_at': null,
+          'last_agent_activity_at': null,
+          'last_customer_activity_at': '2015-08-12T08:36:55Z',
+          'created_at': '2015-08-12T08:36:55Z',
+          'updated_at': '2015-08-12T08:36:55Z',
+          'resource_type': 'case',
+          'resource_url': 'http://novo/api//v1/cases/27'
+        }
+      }
+    },
+    'total_count': 2
+  }];
+
+});
+define('frontend-cp/mirage/fixtures/searchResultsCasePerson', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports['default'] = [{
+    'status': 200,
+    'data': [{
+      'results': [{
+        'id': 26,
+        'title': 'subject the first',
+        'data': {
+          'id': 26,
+          'resource_type': 'case'
+        },
+        'resource': 'case',
+        'snippet': 'subject the <em>first</em>',
+        'relevance': 0.9710342,
+        'date': null,
+        'resource_url': 'http://novo/api//v1/cases/26'
+      }],
+      'resource': 'case',
+      'total_count': 1,
+      'search_url': 'http://novo/api//v1/base/search?_flat=1&fields=snippet%2Cresource&in=cases&query=first'
+    }, {
+      'results': [{
+        'id': 62,
+        'title': 'person first',
+        'data': {
+          'id': 62,
+          'resource_type': 'user'
+        },
+        'resource': 'user',
+        'snippet': 'person <em>first</em>',
+        'relevance': 0.20705728,
+        'date': null,
+        'resource_url': 'http://novo/api//v1/users/62'
+      }],
+      'resource': 'user',
+      'total_count': 1,
+      'search_url': 'http://novo/api//v1/base/search?_flat=1&fields=snippet%2Cresource&in=users&query=first'
+    }],
+    'resource': 'object',
+    'resources': {
+      'language': {
+        '1': {
+          'id': 1,
+          'locale': 'en-us',
+          'flag_icon': null,
+          'direction': 'LTR',
+          'is_enabled': true,
+          'statistics': {
+            'uptodate': 0,
+            'outdated': 0,
+            'missing': 0
+          },
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'language',
+          'resource_url': 'http://novo/api//v1/languages/1'
+        }
+      },
+      'brand': {
+        '1': {
+          'id': 1,
+          'name': 'Default',
+          'url': null,
+          'language': {
+            'id': 1,
+            'resource_type': 'language'
+          },
+          'is_enabled': true,
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'brand',
+          'resource_url': 'http://novo/api//v1/brands/1'
+        }
+      },
+      'mailbox': {
+        '1': {
+          'id': 1,
+          'uuid': '476d54fe-4dd5-40d4-8458-e08d495adc39',
+          'service': 'STANDARD',
+          'encryption': 'NONE',
+          'address': 'support@brewfictus.com',
+          'prefix': null,
+          'smtp_type': null,
+          'host': null,
+          'port': null,
+          'username': null,
+          'preserve_mails': false,
+          'brand': {
+            'id': 1,
+            'resource_type': 'brand'
+          },
+          'is_default': false,
+          'is_enabled': true,
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'mailbox',
+          'resource_url': 'http://novo/api//v1/mailboxes/1'
+        }
+      },
+      'channel': {
+        '476d54fe-4dd5-40d4-8458-e08d495adc39': {
+          'uuid': '476d54fe-4dd5-40d4-8458-e08d495adc39',
+          'type': 'MAILBOX',
+          'character_limit': null,
+          'account': {
+            'id': 1,
+            'resource_type': 'mailbox'
+          },
+          'resource_type': 'channel'
+        }
+      },
+      'role': {
+        '1': {
+          'id': 1,
+          'title': 'Administrator',
+          'type': 'ADMIN',
+          'ip_restriction': null,
+          'password_expires_in_days': '0',
+          'is_two_factor_required': false,
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'role',
+          'resource_url': 'http://novo/api//v1/roles/1'
+        },
+        '4': {
+          'id': 4,
+          'title': 'Customer',
+          'type': 'CUSTOMER',
+          'ip_restriction': null,
+          'password_expires_in_days': '0',
+          'is_two_factor_required': false,
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'role',
+          'resource_url': 'http://novo/api//v1/roles/4'
+        }
+      },
+      'identity_domain': {
+        '1': {
+          'id': 1,
+          'domain': 'atmospherecoffeeinc.com',
+          'is_primary': true,
+          'is_validated': false,
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'identity_domain',
+          'resource_url': 'http://novo/api//v1/organizations/2/identities/domains/1'
+        }
+      },
+      'organization': {
+        '2': {
+          'id': 2,
+          'name': 'Atmospherecoffeeinc',
+          'is_shared': false,
+          'domains': [{
+            'id': 1,
+            'resource_type': 'identity_domain'
+          }],
+          'phone': [],
+          'addresses': [],
+          'websites': [],
+          'notes': [],
+          'pinned_notes_count': 0,
+          'tags': [],
+          'custom_fields': [],
+          'followers': [],
+          'metadata': {
+            'custom': null,
+            'system': null,
+            'resource_type': 'metadata'
+          },
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'organization',
+          'resource_url': 'http://novo/api//v1/organizations/2'
+        }
+      },
+      'identity_email': {
+        '1': {
+          'id': 1,
+          'email': 'test@kayako.com',
+          'is_primary': true,
+          'is_validated': true,
+          'is_notification_enabled': false,
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'identity_email',
+          'resource_url': 'http://novo/api//v1/users/1/identities/emails/1'
+        },
+        '2': {
+          'id': 2,
+          'email': 'caryn.pryor@atmospherecoffeeinc.com',
+          'is_primary': true,
+          'is_validated': false,
+          'is_notification_enabled': false,
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'identity_email',
+          'resource_url': 'http://novo/api//v1/users/2/identities/emails/2'
+        },
+        '59': {
+          'id': 59,
+          'email': 'sam@carlson.com',
+          'is_primary': true,
+          'is_validated': true,
+          'is_notification_enabled': false,
+          'created_at': '2015-08-12T08:38:05Z',
+          'updated_at': '2015-08-12T08:38:05Z',
+          'resource_type': 'identity_email',
+          'resource_url': 'http://novo/api//v1/users/62/identities/emails/59'
+        }
+      },
+      'identity_phone': {
+        '1': {
+          'id': 1,
+          'number': '+14515550194',
+          'type': 'NONE',
+          'is_primary': false,
+          'is_validated': false,
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'identity_phone',
+          'resource_url': 'http://novo/api//v1/users/2/identities/phones/1'
+        }
+      },
+      'contact_address': {
+        '2': {
+          'id': 2,
+          'address1': '65 West Alisal Street',
+          'address2': '#210',
+          'city': 'Salinas',
+          'state': 'CA',
+          'postal_code': '93905',
+          'country': 'US',
+          'type': 'OTHER',
+          'is_primary': false,
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'contact_address',
+          'resource_url': 'http://novo/api//v1/users/2/contacts/addresses/2'
+        }
+      },
+      'contact_website': {
+        '2': {
+          'id': 2,
+          'url': 'www.atmospherecoffee.com',
+          'is_primary': false,
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'contact_website',
+          'resource_url': 'http://novo/api//v1/users/2/contacts/websites/2'
+        }
+      },
+      'user_field': {
+        '1': {
+          'id': 1,
+          'fielduuid': 'b8811cb4-027b-414c-9653-ce4fd55a831b',
+          'title': 'Industry',
+          'type': 'TEXT',
+          'key': 'industry',
+          'is_visible_to_customers': true,
+          'customer_title': 'Industry',
+          'is_customer_editable': true,
+          'is_required_for_customers': true,
+          'description': null,
+          'regular_expression': null,
+          'sort_order': 1,
+          'is_enabled': true,
+          'options': [],
+          'locales': [],
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'user_field',
+          'resource_url': 'http://novo/api//v1/users/fields/1'
+        }
+      },
+      'user': {
+        '1': {
+          'id': 1,
+          'full_name': 'John Doe',
+          'designation': null,
+          'is_enabled': true,
+          'role': {
+            'id': 1,
+            'resource_type': 'role'
+          },
+          'avatar': 'http://novo//avatar/get/2362efb4-bd5b-5b49-a7b6-8e94bd9dfebe',
+          'organization': null,
+          'teams': [{
+            'id': 1,
+            'resource_type': 'team'
+          }, {
+            'id': 2,
+            'resource_type': 'team'
+          }, {
+            'id': 3,
+            'resource_type': 'team'
+          }, {
+            'id': 4,
+            'resource_type': 'team'
+          }],
+          'emails': [{
+            'id': 1,
+            'resource_type': 'identity_email'
+          }],
+          'phones': [],
+          'twitter': [],
+          'facebook': [],
+          'external_identifiers': [],
+          'addresses': [],
+          'websites': [],
+          'custom_fields': [{
+            'field': {
+              'id': 1,
+              'resource_type': 'user_field'
+            },
+            'value': '',
+            'resource_type': 'user_field_value'
+          }],
+          'metadata': {
+            'custom': null,
+            'system': null,
+            'resource_type': 'metadata'
+          },
+          'tags': [],
+          'notes': [],
+          'pinned_notes_count': 0,
+          'followers': [],
+          'locale': 'en-us',
+          'time_zone': null,
+          'time_zone_offset': null,
+          'greeting': null,
+          'signature': null,
+          'status_message': null,
+          'access_level': null,
+          'password_updated_at': '2015-08-10T11:20:40Z',
+          'avatar_updated_at': null,
+          'activity_at': '2015-08-12T09:37:42Z',
+          'visited_at': '2015-08-12T09:37:42Z',
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-12T09:37:42Z',
+          'resource_type': 'user',
+          'resource_url': 'http://novo/api//v1/users/1'
+        },
+        '2': {
+          'id': 2,
+          'full_name': 'Caryn Pryor',
+          'designation': '1',
+          'is_enabled': true,
+          'role': {
+            'id': 4,
+            'resource_type': 'role'
+          },
+          'avatar': 'http://novo//avatar/get/bdf917dc-0af7-5025-b033-b956d6001021',
+          'organization': {
+            'id': 2,
+            'resource_type': 'organization'
+          },
+          'teams': [],
+          'emails': [{
+            'id': 2,
+            'resource_type': 'identity_email'
+          }],
+          'phones': [{
+            'id': 1,
+            'resource_type': 'identity_phone'
+          }],
+          'twitter': [],
+          'facebook': [],
+          'external_identifiers': [],
+          'addresses': [{
+            'id': 2,
+            'resource_type': 'contact_address'
+          }],
+          'websites': [{
+            'id': 2,
+            'resource_type': 'contact_website'
+          }],
+          'custom_fields': [{
+            'field': {
+              'id': 1,
+              'resource_type': 'user_field'
+            },
+            'value': '',
+            'resource_type': 'user_field_value'
+          }],
+          'metadata': {
+            'custom': null,
+            'system': null,
+            'resource_type': 'metadata'
+          },
+          'tags': [],
+          'notes': [],
+          'pinned_notes_count': 0,
+          'followers': [],
+          'locale': 'en-us',
+          'time_zone': null,
+          'time_zone_offset': null,
+          'greeting': null,
+          'signature': null,
+          'status_message': null,
+          'access_level': null,
+          'password_updated_at': '2015-08-10T11:20:40Z',
+          'avatar_updated_at': null,
+          'activity_at': '2015-08-10T11:20:40Z',
+          'visited_at': null,
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'user',
+          'resource_url': 'http://novo/api//v1/users/2'
+        },
+        '62': {
+          'id': 62,
+          'full_name': 'person first',
+          'designation': null,
+          'is_enabled': true,
+          'role': {
+            'id': 1,
+            'resource_type': 'role'
+          },
+          'avatar': 'http://novo//avatar/get/2840f4ac-3a69-5b3e-8258-6495bb5eacd7',
+          'organization': null,
+          'teams': [],
+          'emails': [{
+            'id': 59,
+            'resource_type': 'identity_email'
+          }],
+          'phones': [],
+          'twitter': [],
+          'facebook': [],
+          'external_identifiers': [],
+          'addresses': [],
+          'websites': [],
+          'custom_fields': [{
+            'field': {
+              'id': 1,
+              'resource_type': 'user_field'
+            },
+            'value': '',
+            'resource_type': 'user_field_value'
+          }],
+          'metadata': {
+            'custom': null,
+            'system': null,
+            'resource_type': 'metadata'
+          },
+          'tags': [],
+          'notes': [],
+          'pinned_notes_count': 0,
+          'followers': [],
+          'locale': 'en-us',
+          'time_zone': null,
+          'time_zone_offset': null,
+          'greeting': null,
+          'signature': null,
+          'status_message': null,
+          'access_level': null,
+          'password_updated_at': '2015-08-12T08:38:05Z',
+          'avatar_updated_at': null,
+          'activity_at': '2015-08-12T08:38:05Z',
+          'visited_at': null,
+          'created_at': '2015-08-12T08:38:05Z',
+          'updated_at': '2015-08-12T08:38:05Z',
+          'resource_type': 'user',
+          'resource_url': 'http://novo/api//v1/users/62'
+        }
+      },
+      'business_hour': {
+        '1': {
+          'id': 1,
+          'title': 'Default Business Hours',
+          'zones': {
+            'monday': [9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
+            'tuesday': [9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
+            'wednesday': [9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
+            'thursday': [9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
+            'friday': [9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
+            'saturday': [],
+            'sunday': []
+          },
+          'holidays': [],
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'business_hour',
+          'resource_url': 'http://novo/api//v1/businesshours/1'
+        }
+      },
+      'team': {
+        '1': {
+          'id': 1,
+          'title': 'Sales',
+          'businesshour': {
+            'id': 1,
+            'resource_type': 'business_hour'
+          },
+          'followers': [],
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'team',
+          'resource_url': 'http://novo/api//v1/teams/1'
+        },
+        '2': {
+          'id': 2,
+          'title': 'Support',
+          'businesshour': {
+            'id': 1,
+            'resource_type': 'business_hour'
+          },
+          'followers': [],
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'team',
+          'resource_url': 'http://novo/api//v1/teams/2'
+        },
+        '3': {
+          'id': 3,
+          'title': 'Finance',
+          'businesshour': {
+            'id': 1,
+            'resource_type': 'business_hour'
+          },
+          'followers': [],
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'team',
+          'resource_url': 'http://novo/api//v1/teams/3'
+        },
+        '4': {
+          'id': 4,
+          'title': 'Human Resources',
+          'businesshour': {
+            'id': 1,
+            'resource_type': 'business_hour'
+          },
+          'followers': [],
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'team',
+          'resource_url': 'http://novo/api//v1/teams/4'
+        }
+      },
+      'case_status': {
+        '1': {
+          'id': 1,
+          'label': 'New',
+          'color': null,
+          'visibility': 'PUBLIC',
+          'type': 'NEW',
+          'locales': [],
+          'is_sla_active': true,
+          'is_deleted': false,
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'case_status',
+          'resource_url': 'http://novo/api//v1/cases/statuses/1'
+        }
+      },
+      'collection': {
+        '87cc275b-5dea-4fe8-81a0-f9bf81b83e03': {
+          'uuid': '87cc275b-5dea-4fe8-81a0-f9bf81b83e03',
+          'operator': 'AND',
+          'propositions': [{
+            'field': 'cases.channeltype',
+            'operator': 'string_contains',
+            'value': 'MAILBOX',
+            'resource_type': 'proposition'
+          }],
+          'resource_type': 'collection'
+        }
+      },
+      'case_priority': {
+        '1': {
+          'id': 1,
+          'label': 'Low',
+          'level': 1,
+          'color': null,
+          'locales': [],
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'case_priority',
+          'resource_url': 'http://novo/api//v1/cases/priorities/1'
+        },
+        '2': {
+          'id': 2,
+          'label': 'Normal',
+          'level': 2,
+          'color': null,
+          'locales': [],
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'case_priority',
+          'resource_url': 'http://novo/api//v1/cases/priorities/2'
+        },
+        '3': {
+          'id': 3,
+          'label': 'High',
+          'level': 3,
+          'color': null,
+          'locales': [],
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'case_priority',
+          'resource_url': 'http://novo/api//v1/cases/priorities/3'
+        },
+        '4': {
+          'id': 4,
+          'label': 'Urgent',
+          'level': 4,
+          'color': null,
+          'locales': [],
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'case_priority',
+          'resource_url': 'http://novo/api//v1/cases/priorities/4'
+        }
+      },
+      'sla': {
+        '1': {
+          'id': 1,
+          'title': 'Regular support and sales tickets',
+          'description': null,
+          'filters': [{
+            'id': '87cc275b-5dea-4fe8-81a0-f9bf81b83e03',
+            'resource_type': 'collection'
+          }],
+          'metrics': [{
+            'priority': {
+              'id': 1,
+              'resource_type': 'case_priority'
+            },
+            'type': 'FIRST_REPLY_TIME',
+            'goal': 0.2,
+            'operational_hours': 'CALENDAR_HOURS',
+            'is_deleted': false,
+            'resource_type': 'sla_metric'
+          }, {
+            'priority': {
+              'id': 1,
+              'resource_type': 'case_priority'
+            },
+            'type': 'NEXT_REPLY_TIME',
+            'goal': 0.3,
+            'operational_hours': 'BUSINESS_HOURS',
+            'is_deleted': false,
+            'resource_type': 'sla_metric'
+          }, {
+            'priority': {
+              'id': 1,
+              'resource_type': 'case_priority'
+            },
+            'type': 'RESOLUTION_TIME',
+            'goal': 0.4,
+            'operational_hours': 'BUSINESS_HOURS',
+            'is_deleted': false,
+            'resource_type': 'sla_metric'
+          }, {
+            'priority': {
+              'id': 2,
+              'resource_type': 'case_priority'
+            },
+            'type': 'FIRST_REPLY_TIME',
+            'goal': 0.2,
+            'operational_hours': 'CALENDAR_HOURS',
+            'is_deleted': false,
+            'resource_type': 'sla_metric'
+          }, {
+            'priority': {
+              'id': 2,
+              'resource_type': 'case_priority'
+            },
+            'type': 'NEXT_REPLY_TIME',
+            'goal': 0.3,
+            'operational_hours': 'BUSINESS_HOURS',
+            'is_deleted': false,
+            'resource_type': 'sla_metric'
+          }, {
+            'priority': {
+              'id': 2,
+              'resource_type': 'case_priority'
+            },
+            'type': 'RESOLUTION_TIME',
+            'goal': 0.4,
+            'operational_hours': 'BUSINESS_HOURS',
+            'is_deleted': false,
+            'resource_type': 'sla_metric'
+          }, {
+            'priority': {
+              'id': 3,
+              'resource_type': 'case_priority'
+            },
+            'type': 'FIRST_REPLY_TIME',
+            'goal': 0.2,
+            'operational_hours': 'CALENDAR_HOURS',
+            'is_deleted': false,
+            'resource_type': 'sla_metric'
+          }, {
+            'priority': {
+              'id': 3,
+              'resource_type': 'case_priority'
+            },
+            'type': 'NEXT_REPLY_TIME',
+            'goal': 0.3,
+            'operational_hours': 'BUSINESS_HOURS',
+            'is_deleted': false,
+            'resource_type': 'sla_metric'
+          }, {
+            'priority': {
+              'id': 3,
+              'resource_type': 'case_priority'
+            },
+            'type': 'RESOLUTION_TIME',
+            'goal': 0.4,
+            'operational_hours': 'BUSINESS_HOURS',
+            'is_deleted': false,
+            'resource_type': 'sla_metric'
+          }, {
+            'priority': {
+              'id': 4,
+              'resource_type': 'case_priority'
+            },
+            'type': 'FIRST_REPLY_TIME',
+            'goal': 0.2,
+            'operational_hours': 'CALENDAR_HOURS',
+            'is_deleted': false,
+            'resource_type': 'sla_metric'
+          }, {
+            'priority': {
+              'id': 4,
+              'resource_type': 'case_priority'
+            },
+            'type': 'NEXT_REPLY_TIME',
+            'goal': 0.3,
+            'operational_hours': 'BUSINESS_HOURS',
+            'is_deleted': false,
+            'resource_type': 'sla_metric'
+          }, {
+            'priority': {
+              'id': 4,
+              'resource_type': 'case_priority'
+            },
+            'type': 'RESOLUTION_TIME',
+            'goal': 0.4,
+            'operational_hours': 'BUSINESS_HOURS',
+            'is_deleted': false,
+            'resource_type': 'sla_metric'
+          }, {
+            'priority': null,
+            'type': 'FIRST_REPLY_TIME',
+            'goal': 0.2,
+            'operational_hours': 'CALENDAR_HOURS',
+            'is_deleted': false,
+            'resource_type': 'sla_metric'
+          }, {
+            'priority': null,
+            'type': 'NEXT_REPLY_TIME',
+            'goal': 0.3,
+            'operational_hours': 'BUSINESS_HOURS',
+            'is_deleted': false,
+            'resource_type': 'sla_metric'
+          }, {
+            'priority': null,
+            'type': 'RESOLUTION_TIME',
+            'goal': 0.4,
+            'operational_hours': 'BUSINESS_HOURS',
+            'is_deleted': false,
+            'resource_type': 'sla_metric'
+          }],
+          'is_enabled': true,
+          'is_deleted': false,
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'sla',
+          'resource_url': 'http://novo/api//v1/sla/1'
+        }
+      },
+      'case_form': {
+        '1': {
+          'id': 1,
+          'title': 'Maintenance job form',
+          'is_visible_to_customers': true,
+          'customer_title': 'Maintenance job form',
+          'description': null,
+          'is_enabled': true,
+          'is_default': false,
+          'sort_order': 1,
+          'brand': {
+            'id': 1,
+            'resource_type': 'brand'
+          },
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'case_form',
+          'resource_url': 'http://novo/api//v1/cases/forms/1'
+        }
+      },
+      'field_option': {
+        '1': {
+          'id': 1,
+          'fielduuid': 'e9ffead3-d3be-449b-8a0a-841d6354eec9',
+          'value': 'Elektra Moderna 2-Group',
+          'tag': null,
+          'sort_order': 1,
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'field_option'
+        },
+        '2': {
+          'id': 2,
+          'fielduuid': 'e9ffead3-d3be-449b-8a0a-841d6354eec9',
+          'value': 'Elektra Compact 1-Group',
+          'tag': null,
+          'sort_order': 2,
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'field_option'
+        },
+        '3': {
+          'id': 3,
+          'fielduuid': 'e9ffead3-d3be-449b-8a0a-841d6354eec9',
+          'value': 'Elektra Compact 2-Group',
+          'tag': null,
+          'sort_order': 3,
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'field_option'
+        },
+        '4': {
+          'id': 4,
+          'fielduuid': 'e9ffead3-d3be-449b-8a0a-841d6354eec9',
+          'value': 'Maidaid Barista MBC1D',
+          'tag': null,
+          'sort_order': 4,
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'field_option'
+        },
+        '5': {
+          'id': 5,
+          'fielduuid': 'e9ffead3-d3be-449b-8a0a-841d6354eec9',
+          'value': 'Maidaid Barista MBC2D',
+          'tag': null,
+          'sort_order': 5,
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'field_option'
+        },
+        '6': {
+          'id': 6,
+          'fielduuid': 'e9ffead3-d3be-449b-8a0a-841d6354eec9',
+          'value': 'Fracino Cybercino',
+          'tag': null,
+          'sort_order': 6,
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'field_option'
+        },
+        '7': {
+          'id': 7,
+          'fielduuid': 'e9ffead3-d3be-449b-8a0a-841d6354eec9',
+          'value': 'Nespresso Gemini CS 200 PRO',
+          'tag': null,
+          'sort_order': 7,
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'field_option'
+        },
+        '8': {
+          'id': 8,
+          'fielduuid': 'e9ffead3-d3be-449b-8a0a-841d6354eec9',
+          'value': 'Nespresso Gemini CS 220 PRO',
+          'tag': null,
+          'sort_order': 8,
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'field_option'
+        }
+      },
+      'case_field': {
+        '8': {
+          'id': 8,
+          'fielduuid': 'e9ffead3-d3be-449b-8a0a-841d6354eec9',
+          'title': 'Product',
+          'type': 'SELECT',
+          'key': 'product',
+          'is_required_for_agents': false,
+          'is_required_on_resolution': false,
+          'is_visible_to_customers': true,
+          'customer_title': 'Product',
+          'is_customer_editable': true,
+          'is_required_for_customers': true,
+          'description': null,
+          'regular_expression': null,
+          'sort_order': 8,
+          'is_enabled': true,
+          'is_system': false,
+          'options': [{
+            'id': 1,
+            'resource_type': 'field_option'
+          }, {
+            'id': 2,
+            'resource_type': 'field_option'
+          }, {
+            'id': 3,
+            'resource_type': 'field_option'
+          }, {
+            'id': 4,
+            'resource_type': 'field_option'
+          }, {
+            'id': 5,
+            'resource_type': 'field_option'
+          }, {
+            'id': 6,
+            'resource_type': 'field_option'
+          }, {
+            'id': 7,
+            'resource_type': 'field_option'
+          }, {
+            'id': 8,
+            'resource_type': 'field_option'
+          }],
+          'locales': [],
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'case_field',
+          'resource_url': 'http://novo/api//v1/cases/fields/8'
+        },
+        '9': {
+          'id': 9,
+          'fielduuid': '4ae1060e-de17-41f3-8584-dd94cdce2b04',
+          'title': 'Serial number',
+          'type': 'TEXT',
+          'key': 'serial_number',
+          'is_required_for_agents': false,
+          'is_required_on_resolution': false,
+          'is_visible_to_customers': true,
+          'customer_title': 'Serial number',
+          'is_customer_editable': true,
+          'is_required_for_customers': true,
+          'description': null,
+          'regular_expression': null,
+          'sort_order': 9,
+          'is_enabled': true,
+          'is_system': false,
+          'options': [],
+          'locales': [],
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-11T09:09:24Z',
+          'resource_type': 'case_field',
+          'resource_url': 'http://novo/api//v1/cases/fields/9'
+        }
+      },
+      'case': {
+        '26': {
+          'id': 26,
+          'mask_id': 'MRS-654-10955',
+          'subject': 'subject the first',
+          'portal': null,
+          'source_channel': {
+            'id': '476d54fe-4dd5-40d4-8458-e08d495adc39',
+            'resource_type': 'channel'
+          },
+          'requester': {
+            'id': 2,
+            'resource_type': 'user'
+          },
+          'creator': {
+            'id': 1,
+            'resource_type': 'user'
+          },
+          'identity': {
+            'id': 2,
+            'resource_type': 'identity_email'
+          },
+          'assignee': null,
+          'brand': {
+            'id': 1,
+            'resource_type': 'brand'
+          },
+          'status': {
+            'id': 1,
+            'resource_type': 'case_status'
+          },
+          'priority': null,
+          'type': null,
+          'sla': {
+            'id': 1,
+            'resource_type': 'sla'
+          },
+          'sla_metrics': [{
+            'title': 'FIRST_REPLY_TIME',
+            'state': 'ACTIVE',
+            'is_breached': false,
+            'remaining_seconds': -2942,
+            'time_taken_seconds': 3662,
+            'total_seconds': 720
+          }, {
+            'title': 'RESOLUTION_TIME',
+            'state': 'ACTIVE',
+            'is_breached': false,
+            'remaining_seconds': -2222,
+            'time_taken_seconds': 3662,
+            'total_seconds': 1440
+          }],
+          'tags': [],
+          'form': {
+            'id': 1,
+            'resource_type': 'case_form'
+          },
+          'custom_fields': [{
+            'field': {
+              'id': 8,
+              'resource_type': 'case_field'
+            },
+            'value': '',
+            'resource_type': 'case_field_value'
+          }, {
+            'field': {
+              'id': 9,
+              'resource_type': 'case_field'
+            },
+            'value': '',
+            'resource_type': 'case_field_value'
+          }],
+          'followers': [],
+          'metadata': {
+            'custom': null,
+            'system': {
+              'city': '',
+              'region': '',
+              'timezone': '',
+              'country': '',
+              'latitude': '',
+              'longitude': ''
+            },
+            'resource_type': 'metadata'
+          },
+          'last_replier': {
+            'id': 2,
+            'resource_type': 'user'
+          },
+          'last_replier_identity': {
+            'id': 2,
+            'resource_type': 'identity_email'
+          },
+          'last_completed_by': null,
+          'last_closed_by': null,
+          'creation_mode': 'API',
+          'state': 'ACTIVE',
+          'post_count': 1,
+          'has_notes': false,
+          'pinned_notes_count': 0,
+          'has_attachments': false,
+          'rating': null,
+          'rating_status': 'UNOFFERED',
+          'last_assigned_at': null,
+          'last_opened_at': null,
+          'last_pending_at': null,
+          'last_closed_at': null,
+          'last_completed_at': null,
+          'last_agent_activity_at': null,
+          'last_customer_activity_at': '2015-08-12T08:36:40Z',
+          'created_at': '2015-08-12T08:36:40Z',
+          'updated_at': '2015-08-12T08:36:40Z',
+          'resource_type': 'case',
+          'resource_url': 'http://novo/api//v1/cases/26'
+        }
+      }
+    },
+    'total_count': 2,
+    'session_id': 'PgbBuwNkGf6NTl4oo9EEE60123f238db3ea6a9a05a7759cb9099adc3f7495QigT3AL7Fn6hYNsX'
+  }];
+
+});
+define('frontend-cp/mirage/fixtures/searchResultsPerson', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports['default'] = [{
+    'status': 200,
+    'data': [{
+      'results': [{
+        'id': 63,
+        'title': 'person subject',
+        'data': {
+          'id': 63,
+          'resource_type': 'user'
+        },
+        'resource': 'user',
+        'snippet': '<em>person</em> subject',
+        'relevance': 0.28126404,
+        'date': null,
+        'resource_url': 'http://novo/api//v1/users/63'
+      }, {
+        'id': 62,
+        'title': 'person first',
+        'data': {
+          'id': 62,
+          'resource_type': 'user'
+        },
+        'resource': 'user',
+        'snippet': '<em>person</em> first',
+        'relevance': 0.20705728,
+        'date': null,
+        'resource_url': 'http://novo/api//v1/users/62'
+      }],
+      'resource': 'user',
+      'total_count': 2,
+      'search_url': 'http://novo/api//v1/base/search?_flat=1&fields=snippet%2Cresource&in=users&query=person'
+    }],
+    'resource': 'object',
+    'resources': {
+      'role': {
+        '1': {
+          'id': 1,
+          'title': 'Administrator',
+          'type': 'ADMIN',
+          'ip_restriction': null,
+          'password_expires_in_days': '0',
+          'is_two_factor_required': false,
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'role',
+          'resource_url': 'http://novo/api//v1/roles/1'
+        }
+      },
+      'identity_email': {
+        '59': {
+          'id': 59,
+          'email': 'sam@carlson.com',
+          'is_primary': true,
+          'is_validated': true,
+          'is_notification_enabled': false,
+          'created_at': '2015-08-12T08:38:05Z',
+          'updated_at': '2015-08-12T08:38:05Z',
+          'resource_type': 'identity_email',
+          'resource_url': 'http://novo/api//v1/users/62/identities/emails/59'
+        },
+        '60': {
+          'id': 60,
+          'email': 'sam@carlson.org',
+          'is_primary': true,
+          'is_validated': true,
+          'is_notification_enabled': false,
+          'created_at': '2015-08-12T08:39:56Z',
+          'updated_at': '2015-08-12T08:39:56Z',
+          'resource_type': 'identity_email',
+          'resource_url': 'http://novo/api//v1/users/63/identities/emails/60'
+        }
+      },
+      'user_field': {
+        '1': {
+          'id': 1,
+          'fielduuid': 'b8811cb4-027b-414c-9653-ce4fd55a831b',
+          'title': 'Industry',
+          'type': 'TEXT',
+          'key': 'industry',
+          'is_visible_to_customers': true,
+          'customer_title': 'Industry',
+          'is_customer_editable': true,
+          'is_required_for_customers': true,
+          'description': null,
+          'regular_expression': null,
+          'sort_order': 1,
+          'is_enabled': true,
+          'options': [],
+          'locales': [],
+          'created_at': '2015-08-10T11:20:40Z',
+          'updated_at': '2015-08-10T11:20:40Z',
+          'resource_type': 'user_field',
+          'resource_url': 'http://novo/api//v1/users/fields/1'
+        }
+      },
+      'user': {
+        '62': {
+          'id': 62,
+          'full_name': 'person first',
+          'designation': null,
+          'is_enabled': true,
+          'role': {
+            'id': 1,
+            'resource_type': 'role'
+          },
+          'avatar': 'http://novo//avatar/get/2840f4ac-3a69-5b3e-8258-6495bb5eacd7',
+          'organization': null,
+          'teams': [],
+          'emails': [{
+            'id': 59,
+            'resource_type': 'identity_email'
+          }],
+          'phones': [],
+          'twitter': [],
+          'facebook': [],
+          'external_identifiers': [],
+          'addresses': [],
+          'websites': [],
+          'custom_fields': [{
+            'field': {
+              'id': 1,
+              'resource_type': 'user_field'
+            },
+            'value': '',
+            'resource_type': 'user_field_value'
+          }],
+          'metadata': {
+            'custom': null,
+            'system': null,
+            'resource_type': 'metadata'
+          },
+          'tags': [],
+          'notes': [],
+          'pinned_notes_count': 0,
+          'followers': [],
+          'locale': 'en-us',
+          'time_zone': null,
+          'time_zone_offset': null,
+          'greeting': null,
+          'signature': null,
+          'status_message': null,
+          'access_level': null,
+          'password_updated_at': '2015-08-12T08:38:05Z',
+          'avatar_updated_at': null,
+          'activity_at': '2015-08-12T08:38:05Z',
+          'visited_at': null,
+          'created_at': '2015-08-12T08:38:05Z',
+          'updated_at': '2015-08-12T08:38:05Z',
+          'resource_type': 'user',
+          'resource_url': 'http://novo/api//v1/users/62'
+        },
+        '63': {
+          'id': 63,
+          'full_name': 'person subject',
+          'designation': null,
+          'is_enabled': true,
+          'role': {
+            'id': 1,
+            'resource_type': 'role'
+          },
+          'avatar': 'http://novo//avatar/get/36617d5f-f7bf-5df5-8853-16499eef88e7',
+          'organization': null,
+          'teams': [],
+          'emails': [{
+            'id': 60,
+            'resource_type': 'identity_email'
+          }],
+          'phones': [],
+          'twitter': [],
+          'facebook': [],
+          'external_identifiers': [],
+          'addresses': [],
+          'websites': [],
+          'custom_fields': [{
+            'field': {
+              'id': 1,
+              'resource_type': 'user_field'
+            },
+            'value': '',
+            'resource_type': 'user_field_value'
+          }],
+          'metadata': {
+            'custom': null,
+            'system': null,
+            'resource_type': 'metadata'
+          },
+          'tags': [],
+          'notes': [],
+          'pinned_notes_count': 0,
+          'followers': [],
+          'locale': 'en-us',
+          'time_zone': null,
+          'time_zone_offset': null,
+          'greeting': null,
+          'signature': null,
+          'status_message': null,
+          'access_level': null,
+          'password_updated_at': '2015-08-12T08:39:56Z',
+          'avatar_updated_at': null,
+          'activity_at': '2015-08-12T08:39:56Z',
+          'visited_at': null,
+          'created_at': '2015-08-12T08:39:56Z',
+          'updated_at': '2015-08-12T08:39:56Z',
+          'resource_type': 'user',
+          'resource_url': 'http://novo/api//v1/users/63'
+        }
+      }
+    },
+    'total_count': 2
   }];
 
 });
@@ -46674,6 +49140,7 @@ define('frontend-cp/session/controller', ['exports', 'ember'], function (exports
     routeStateService: Ember['default'].inject.service('routeState'),
     searchResults: null,
     isSearching: false,
+    hideSessionWidgets: false,
 
     /**
      * Page scroll position, in pixels
@@ -46858,31 +49325,6 @@ define('frontend-cp/session/controller', ['exports', 'ember'], function (exports
       onSearchingChanged: function onSearchingChanged(isSearching) {
         this.set('hideSessionWidgets', isSearching);
       },
-
-      performUniversalSearch: function performUniversalSearch(query) {
-        var _this2 = this;
-
-        if (!query) {
-          this.set('isSearching', false);
-          this.set('searchResults', new Ember['default'].A([]));
-          return;
-        }
-
-        /*
-         * 404s are expected - it means we don't have any results
-         * just catch the error and empty the searchResults array
-         */
-        this.store.query('search-result-group', { query: query, fields: 'snippet,resource' }).then(function (results) {
-          _this2.set('searchResults', results);
-        }, function () {
-          _this2.set('searchResults', new Ember['default'].A([]));
-        }).then(function () {
-          //we always want to set isSearching to true (so we get the no results message)
-          _this2.set('isSearching', true);
-        });
-      },
-
-      hideSessionWidgets: false,
 
       loadSearchRoute: function loadSearchRoute(baseURL, targetObjectId) {
         /* this has to be built as a URL - we have a searchResult object, not a user/case object */
@@ -51996,7 +54438,7 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
         ["block","link-to",["session.agent.cases"],["class","nav-main__item i-insights"],4,null,["loc",[null,[11,10],[11,90]]]],
         ["inline","ko-tabs",[],["tabs",["subexpr","@mut",[["get","tabs",["loc",[null,[16,25],[16,29]]]]],[],[]],"selectedTab",["subexpr","@mut",[["get","selectedTab",["loc",[null,[16,42],[16,53]]]]],[],[]]],["loc",[null,[16,10],[16,55]]]],
         ["content","ko-agent-dropdown",["loc",[null,[19,9],[19,30]]]],
-        ["inline","ko-universal-search",[],["performSearch","performUniversalSearch","searchResults",["subexpr","@mut",[["get","searchResults",["loc",[null,[24,83],[24,96]]]]],[],[]],"searchingChanged","onSearchingChanged"],["loc",[null,[24,8],[24,136]]]],
+        ["inline","ko-universal-search",[],["searchResults",["subexpr","@mut",[["get","searchResults",["loc",[null,[24,44],[24,57]]]]],[],[]],"searchingChanged","onSearchingChanged"],["loc",[null,[24,8],[24,97]]]],
         ["block","unless",[["get","hideSessionWidgets",["loc",[null,[28,18],[28,36]]]]],[],5,null,["loc",[null,[28,8],[30,19]]]],
         ["block","link-to",["session.showcase"],["class","nav-main__item"],6,null,["loc",[null,[37,0],[37,74]]]],
         ["block","link-to",["session.styleguide"],["class","nav-main__item"],7,null,["loc",[null,[38,0],[38,79]]]],
@@ -58826,7 +61268,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+ecff6e02"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+26e8e5e2"});
 }
 
 /* jshint ignore:end */
