@@ -21368,6 +21368,7 @@ define('frontend-cp/components/ko-predicate-builder/rule/component', ['exports',
           _this.set('selectedDefinition', _this.get('definitions.firstObject'));
         }
 
+        _this.set('rule.field', _this.get('selectedDefinition.id'));
         _this.initializeSelectedOperator();
       });
     },
@@ -42766,7 +42767,7 @@ define('frontend-cp/mixins/change-aware-model', ['exports', 'ember', 'npm:lodash
         if (descriptor.kind === 'hasMany') {
           relationshipObject.forEach(function (relationshipObj) {
             // only check if the relationship model has the change-aware mixin
-            if (typeof relationshipObj.hasDirtyChanges === 'function' && relationshipObj.hasDirtyChanges()) {
+            if (relationshipObject && typeof relationshipObj.hasDirtyChanges === 'function' && relationshipObj.hasDirtyChanges()) {
               hasChanges = true;
             }
 
@@ -42779,7 +42780,7 @@ define('frontend-cp/mixins/change-aware-model', ['exports', 'ember', 'npm:lodash
           var _relationshipObject = _this2.get(descriptor.key);
 
           // only check if the relationship model has the change-aware mixin
-          if (typeof _relationshipObject.hasDirtyChanges === 'function') {
+          if (_relationshipObject && typeof _relationshipObject.hasDirtyChanges === 'function') {
             if (_relationshipObject.hasDirtyChanges()) {
               hasChanges = true;
             }
@@ -42805,7 +42806,7 @@ define('frontend-cp/mixins/change-aware-model', ['exports', 'ember', 'npm:lodash
 
         var currentRelatedObjects = _this3.get(relationshipName);
 
-        if (typeof currentRelatedObjects.forEach === 'function') {
+        if (currentRelatedObjects && typeof currentRelatedObjects.forEach === 'function') {
           // hasMany relationship
           initialRelationships[relationshipName].forEach(function (relatedObject) {
             if (currentRelatedObjects.indexOf(relatedObject) === -1) {
@@ -44439,7 +44440,7 @@ define('frontend-cp/models/view', ['exports', 'ember-data', 'frontend-cp/mixins/
     updatedAt: DS['default'].attr('date'),
 
     // Children fields
-    cases: DS['default'].hasMany('case', { async: true, child: true, url: 'cases' }),
+    cases: DS['default'].hasMany('case', { async: true, child: true, url: 'cases', noCache: true }),
 
     visibilityString: (function () {
       if (this.get('visibilityType') === 'ALL') {
@@ -45204,7 +45205,6 @@ define('frontend-cp/serializers/view', ['exports', 'ember-data', 'frontend-cp/se
 
     attrs: {
       caseCount: { serialize: false },
-      //predicateCollections: { serialize: false },
       updatedAt: { serialize: false },
       createdAt: { serialize: false },
       caseCountAccuracy: { serialize: false },
@@ -45213,12 +45213,13 @@ define('frontend-cp/serializers/view', ['exports', 'ember-data', 'frontend-cp/se
 
     serialize: function serialize(snapshot, options) {
       var json = this._super(snapshot, options);
-      json.columns = snapshot.attr('columns').map(function (column) {
+      json.columns = snapshot.hasMany('columns').map(function (column) {
         return column.get('name');
       });
 
       /* Collections look *nothing* like how they are received */
-      json.collections = snapshot.hasMany('predicateCollections').map(function (collection) {
+      json.predicate_collections = snapshot.hasMany('predicateCollections').map(function (collection) {
+        // eslint-disable-line camelcase
         return collection.get('propositions').map(function (proposition) {
           return {
             field: proposition.get('field'),
@@ -48261,7 +48262,6 @@ define('frontend-cp/session/admin/manage/views/new/controller', ['exports', 'emb
   'use strict';
 
   exports['default'] = Ember['default'].Controller.extend({
-
     actions: {
       transitionToIndexRoute: function transitionToIndexRoute() {
         this.transitionToRoute('session.admin.manage.views.index');
@@ -48270,7 +48270,11 @@ define('frontend-cp/session/admin/manage/views/new/controller', ['exports', 'emb
         this.get('model').rollback();
       },
       saveView: function saveView() {
-        //TODO: when the API is fixed
+        var _this = this;
+
+        this.get('model').save().then(function () {
+          _this.transitionToRoute('session.admin.manage.views.index');
+        });
       }
     },
 
@@ -63300,7 +63304,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+ccf27cb8"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+897ddaa2"});
 }
 
 /* jshint ignore:end */
