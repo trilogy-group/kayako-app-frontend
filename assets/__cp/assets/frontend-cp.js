@@ -92,6 +92,8 @@ define('frontend-cp/adapters/application', ['exports', 'ember', 'ember-data', 'n
     namespace: 'api/v1',
     primaryRecordKey: 'data',
     sessionService: Ember['default'].inject.service('session'),
+    notificationService: Ember['default'].inject.service('notification'),
+    errorMessageService: Ember['default'].inject.service('errorMessage'),
 
     headers: (function () {
       var headers = {
@@ -105,6 +107,48 @@ define('frontend-cp/adapters/application', ['exports', 'ember', 'ember-data', 'n
       }
       return headers;
     }).property('sessionService.sessionId'),
+
+    createRecord: function createRecord(store, type, snapshot) {
+      var _this = this;
+
+      return this._super(store, type, snapshot)['catch'](function (error) {
+        _this.sendErrorNotification(error);
+        throw error;
+      });
+    },
+
+    updateRecord: function updateRecord(store, type, snapshot) {
+      var _this2 = this;
+
+      return this._super(store, type, snapshot)['catch'](function (error) {
+        _this2.sendErrorNotification(error);
+        throw error;
+      });
+    },
+
+    deleteRecord: function deleteRecord(store, type, snapshot) {
+      var _this3 = this;
+
+      return this._super(store, type, snapshot)['catch'](function (error) {
+        _this3.sendErrorNotification(error);
+        throw error;
+      });
+    },
+
+    sendErrorNotification: function sendErrorNotification(error) {
+      var responseErrors = error.errors;
+      var notificationService = this.get('notificationService');
+      var errorMessageService = this.get('errorMessageService');
+      var errorMessages = errorMessageService.parseErrors(responseErrors);
+      errorMessages.forEach(function (errorMessage) {
+        notificationService.add({
+          type: 'error',
+          title: errorMessage.message,
+          body: errorMessage.description,
+          autodismiss: true
+        });
+      });
+    },
 
     buildURL: function buildURL() {
       var url = [];
@@ -207,16 +251,16 @@ define('frontend-cp/adapters/application', ['exports', 'ember', 'ember-data', 'n
     // Ideally it's a job of a serializer, but this is the only place where we can
     // get access the relationship object.
     findHasMany: function findHasMany(store, snapshot, url, relationship) {
-      var _this = this;
+      var _this4 = this;
 
       return this._super.apply(this, arguments).then(function (payload) {
         var inverse = snapshot.type.inverseFor(relationship.key, store);
-        if (inverse && payload[_this.primaryRecordKey]) {
+        if (inverse && payload[_this4.primaryRecordKey]) {
           // required for when collection payload is a hash and not an array - looking at you, locale strings
-          if (!_['default'].isArray(payload[_this.primaryRecordKey])) {
+          if (!_['default'].isArray(payload[_this4.primaryRecordKey])) {
             return payload;
           }
-          payload[_this.primaryRecordKey].forEach(function (entry) {
+          payload[_this4.primaryRecordKey].forEach(function (entry) {
             if (!entry[inverse]) {
               entry[inverse] = {
                 id: snapshot.id,
@@ -36014,6 +36058,10 @@ define('frontend-cp/mirage/fixtures/enusstrings', ['exports'], function (exports
       value: 'replied {ago}',
       'resource_type': 'locale_string'
     }, {
+      id: 'frontend.api.generic.validation_errors',
+      value: 'Please fill in all required fields',
+      'resource_type': 'locale_string'
+    }, {
       id: 'frontend.api.generic.next',
       value: 'Next',
       'resource_type': 'locale_string'
@@ -45240,6 +45288,60 @@ define('frontend-cp/services/context-modal', ['exports', 'ember'], function (exp
       this.close();
     }).observes('urlService.currentUrl')
 
+  });
+
+});
+define('frontend-cp/services/error-message', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Service.extend({
+    intlService: Ember['default'].inject.service('intl'),
+    parseErrors: function parseErrors(responseErrors) {
+      if (!Array.isArray(responseErrors)) {
+        responseErrors = [responseErrors];
+      }
+      var intlService = this.get('intlService');
+      var filteredErrors = getErrorsWithGroupedValidationErrors(responseErrors, intlService).map(function (responseError) {
+        return {
+          message: responseError.message,
+          description: null
+        };
+      });
+
+      return filteredErrors;
+
+      function getErrorsWithGroupedValidationErrors(responseErrors, intlService) {
+        var validationErrors = responseErrors.filter(function (responseError) {
+          return getIsValidationError(responseError);
+        });
+        if (validationErrors.length === 0) {
+          return responseErrors;
+        }
+
+        var nonValidationErrors = responseErrors.filter(function (responseError) {
+          return !getIsValidationError(responseError);
+        });
+        var formValidationError = createFormValidationError(validationErrors, intlService);
+        return [formValidationError].concat(nonValidationErrors);
+
+        function createFormValidationError(validationErrors, intlService) {
+          return {
+            'code': 'FORM_INVALID',
+            'message': intlService.findTranslationByKey('generic.validation_errors').translation,
+            'parameter': validationErrors.map(function (responseError) {
+              return responseError.parameter;
+            }),
+            'more_info': null
+          };
+        }
+
+        function getIsValidationError(responseError) {
+          var VALIDATION_ERROR_CODES = ['FIELD_REQUIRED', 'FIELD_EMPTY', 'FIELD_INVALID'];
+          return VALIDATION_ERROR_CODES.includes(responseError.code);
+        }
+      }
+    }
   });
 
 });
@@ -62924,6 +63026,104 @@ define('frontend-cp/tests/unit/services/context-modal-test', ['frontend-cp/tests
   });
 
 });
+define('frontend-cp/tests/unit/services/error-message-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
+
+  'use strict';
+
+  qunit.moduleFor('service:error-message', 'Unit | Service | error message', {
+    // Specify the other units that are required for this test.
+    needs: ['service:intl', 'ember-intl@adapter:-intl-adapter'],
+    beforeEach: function beforeEach() {
+      var intlService = this.container.lookup('service:intl');
+
+      initLocale(intlService, 'en-test', ['generic.validation_errors']);
+
+      function initLocale(intlService, localeId, keys) {
+        var payload = keys.reduce(function (payload, key) {
+          payload['frontend.api.' + key] = key;
+          return payload;
+        }, {});
+        intlService.set('locales', [localeId]);
+        intlService.createLocale(localeId, {});
+        intlService.addMessages(localeId, payload);
+      }
+    }
+  });
+
+  qunit.test('it parses empty response errors', function (assert) {
+    assert.expect(1);
+    var service = this.subject();
+
+    assert.deepEqual(service.parseErrors([]), []);
+  });
+
+  qunit.test('it parses generic errors', function (assert) {
+    assert.expect(1);
+    var service = this.subject();
+
+    var responseErrors = [{
+      'code': 'TEST_1',
+      'parameter': 'test1',
+      'message': 'Test error 1',
+      'more_info': 'http://developers.kayako.com/errors/TEST1'
+    }, {
+      'code': 'TEST_2',
+      'parameter': 'test2',
+      'message': 'Test error 2',
+      'more_info': 'http://developers.kayako.com/errors/TEST2'
+    }];
+    assert.deepEqual(service.parseErrors(responseErrors), [{
+      message: 'Test error 1',
+      description: null
+    }, {
+      message: 'Test error 2',
+      description: null
+    }]);
+  });
+
+  qunit.test('it parses validation errors', function (assert) {
+    assert.expect(1);
+    var service = this.subject();
+
+    var responseErrors = [{
+      'code': 'TEST_1',
+      'parameter': 'test1',
+      'message': 'Test error 1',
+      'more_info': 'http://developers.kayako.com/errors/TEST1'
+    }, {
+      'code': 'FIELD_REQUIRED',
+      'parameter': 'field_required',
+      'message': 'Field required',
+      'more_info': 'http://developers.kayako.com/errors/FIELD_REQUIRED'
+    }, {
+      'code': 'FIELD_EMPTY',
+      'parameter': 'field_empty',
+      'message': 'Field empty',
+      'more_info': 'http://developers.kayako.com/errors/FIELD_EMPTY'
+    }, {
+      'code': 'FIELD_INVALID',
+      'parameter': 'field_invalid',
+      'message': 'Test error 2',
+      'more_info': 'http://developers.kayako.com/errors/TEST2'
+    }, {
+      'code': 'TEST_2',
+      'parameter': 'test2',
+      'message': 'Test error 2',
+      'more_info': 'http://developers.kayako.com/errors/TEST2'
+    }];
+    assert.deepEqual(service.parseErrors(responseErrors), [{
+      message: 'generic.validation_errors',
+      description: null
+    }, {
+      message: 'Test error 1',
+      description: null
+    }, {
+      message: 'Test error 2',
+      description: null
+    }]);
+  });
+
+});
 define('frontend-cp/tests/unit/services/route-state-test', ['frontend-cp/tests/helpers/qunit', 'frontend-cp/tests/fixtures/router/mock-router', 'frontend-cp/tests/fixtures/location/mock-location'], function (qunit, MockRouter, MockLocation) {
 
   'use strict';
@@ -63252,7 +63452,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+22f7e44d"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+e1dab146"});
 }
 
 /* jshint ignore:end */
