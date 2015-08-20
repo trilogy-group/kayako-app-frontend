@@ -7905,27 +7905,25 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
     store: Ember['default'].inject.service(),
 
     errors: [],
+    posts: null,
+    postsAvailable: true,
+    loading: false,
     macros: [],
     isTagsFieldEdited: false,
     isCaseSubjectEdited: false,
     channel: null,
     resizeStickyEditorRequestID: null,
     repositionStickyEditorRequestID: null,
+    loadPostsRafID: null,
     caseEditorHeight: 0,
     headerSticky: false,
+    afterId: null,
     editedCaseFields: new Ember['default'].Object(),
 
-    initChannel: (function () {
+    initPosts: (function () {
       this.set('channel', this.get('case.sourceChannel'));
-    }).on('init'),
-
-    initMessages: (function () {
-      var _this = this;
-
-      this.get('store').query('case-message', { parent: this.get('case'), page: 1 }).then(function (messages) {
-        _this.set('messages', messages);
-      });
-    }).on('init'),
+      this.set('posts', []);
+    }).on('didReceiveAttrs'),
 
     tags: (function () {
       return this.get('case.tags').map(function (tag) {
@@ -7934,22 +7932,22 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
     }).property('case.tags.@each.name'),
 
     resizeStickyEditor: (function () {
-      var _this2 = this;
+      var _this = this;
 
       this.set('resizeStickyEditorRequestID', window.requestAnimationFrame(function () {
-        var height = _this2.$('.ko-case-content__editor').outerHeight();
+        var height = _this.$('.ko-case-content__editor').outerHeight();
         Ember['default'].run(function () {
-          return _this2.set('caseEditorHeight', height);
+          return _this.set('caseEditorHeight', height);
         });
-        _this2.resizeStickyEditor();
+        _this.resizeStickyEditor();
       }));
     }).on('didInsertElement'),
 
     repositionStickyEditor: (function () {
-      var _this3 = this;
+      var _this2 = this;
 
       this.set('repositionStickyEditorRequestID', window.requestAnimationFrame(function () {
-        var $el = _this3.$('.ko-case-content__editor-container');
+        var $el = _this2.$('.ko-case-content__editor-container');
         if (!$el) {
           return;
         }
@@ -7959,14 +7957,54 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
         var containerTop = _$el$get$getBoundingClientRect.top;
 
         Ember['default'].run(function () {
-          _this3.set('headerSticky', containerTop <= 84);
+          _this2.set('headerSticky', containerTop <= 84);
           var newTop = containerTop <= 84 ? 84 - containerTop : 0;
-          _this3.$('.ko-case-content__editor').css('transform', 'translateY(' + newTop + 'px) translateZ(0)');
-          _this3.$('.ko-case-content__sidebar').css('transform', 'translateY(' + newTop + 'px) translateZ(0)');
-          _this3.$('.ko-case-content__sidebar').css('height', $['default'](window).height() - Math.max(containerTop, 84) + 'px');
+          _this2.$('.ko-case-content__editor').css('transform', 'translateY(' + newTop + 'px) translateZ(0)');
+          _this2.$('.ko-case-content__sidebar').css('transform', 'translateY(' + newTop + 'px) translateZ(0)');
+          _this2.$('.ko-case-content__sidebar').css('height', $['default'](window).height() - Math.max(containerTop, 84) + 'px');
         });
       }));
+    }).on('didInsertElement', 'didReceiveAttrs'),
+
+    loadPostsIfRequired: (function () {
+      var _this3 = this;
+
+      this.set('loadPostsRafID', window.requestAnimationFrame(function () {
+        var _$$get$getBoundingClientRect = _this3.$('.ko-case-content__loader').get(0).getBoundingClientRect();
+
+        var top = _$$get$getBoundingClientRect.top;
+        var height = _$$get$getBoundingClientRect.height;
+
+        var bottomPosition = top + height;
+
+        if (bottomPosition - 50 <= $['default'](window).height()) {
+          _this3.loadPostsAfter(_this3.get('afterId'));
+        }
+        _this3.loadPostsIfRequired();
+      }));
     }).on('didInsertElement'),
+
+    loadPostsAfter: function loadPostsAfter(id) {
+      var _this4 = this;
+
+      if (this.get('loading') || !this.get('postsAvailable')) {
+        return;
+      }
+      Ember['default'].run(function () {
+        _this4.set('loading', true);
+        _this4.get('store').query('post', { parent: _this4.get('case'), after_id: id }).then(function (posts) {
+          posts.forEach(function (post) {
+            return _this4.get('posts').pushObject(post);
+          });
+          _this4.set('loading', false);
+          if (posts.get('length') === 0 || posts.get('lastObject.sequence') === 1) {
+            _this4.set('postsAvailable', false);
+          } else {
+            _this4.set('afterId', posts.get('lastObject.id'));
+          }
+        });
+      });
+    },
 
     onScroll: function onScroll() {
       this.repositionStickyEditor();
@@ -7999,10 +8037,10 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
     }).on('init'),
 
     initMacros: (function () {
-      var _this4 = this;
+      var _this5 = this;
 
       this.get('store').find('macro').then(function (macros) {
-        _this4.set('macros', macros);
+        _this5.set('macros', macros);
       });
     }).on('init'),
 
@@ -8054,7 +8092,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
     },
 
     updateDirtyCaseFieldHash: function updateDirtyCaseFieldHash() {
-      var _this5 = this;
+      var _this6 = this;
 
       var editedCaseFields = this.get('editedCaseFields');
       this.get('caseOrFormFields').forEach(function (field) {
@@ -8067,11 +8105,11 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
 
         /* Hack for assignee - it is made up from two properties (case.assginee.team and case.assignee.agent) */
         if (relationshipKey === 'assignee') {
-          if (_this5.get('case.assignee')) {
-            editedCaseFields.set(field.get('id'), _this5.get('case.assignee').hasDirtyChanges());
+          if (_this6.get('case.assignee')) {
+            editedCaseFields.set(field.get('id'), _this6.get('case.assignee').hasDirtyChanges());
           }
         } else {
-          editedCaseFields.set(field.get('id'), _this5.get('case').hasDirtyBelongsToRelationship(relationshipKey));
+          editedCaseFields.set(field.get('id'), _this6.get('case').hasDirtyBelongsToRelationship(relationshipKey));
         }
       });
       //console.log(editedCaseFields);
@@ -8134,7 +8172,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       },
 
       submit: function submit() {
-        var _this6 = this;
+        var _this7 = this;
 
         var channel = this.get('channel');
         var editor = this.get('postEditor');
@@ -8143,25 +8181,25 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
         if (!post) {
           // we are just updating the case -- don't create a case-reply
           this.get('case').save().then(function () {
-            _this6.resetCaseFormState();
+            _this7.resetCaseFormState();
           }, function (e) {
-            _this6.set('errors', e.errors);
+            _this7.set('errors', e.errors);
           });
         } else {
           if (editor.get('activeMode') === 'note') {
             this.get('case').saveWithNote(post).then(function (caseNote) {
-              _this6.resetCaseFormState();
+              _this7.resetCaseFormState();
             }, function (e) {
-              _this6.set('errors', e.errors);
+              _this7.set('errors', e.errors);
             });
           } else {
             this.get('case').saveWithPost(post, channel).then(function (caseReply) {
               caseReply.get('post').then(function (newPost) {
-                _this6.get('messages').pushObject(newPost);
+                _this7.get('posts').pushObject(newPost);
               });
-              _this6.resetCaseFormState();
+              _this7.resetCaseFormState();
             }, function (e) {
-              _this6.set('errors', e.errors);
+              _this7.set('errors', e.errors);
             });
           }
         }
@@ -8220,11 +8258,93 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 59,
+                "line": 51,
+                "column": 12
+              },
+              "end": {
+                "line": 53,
+                "column": 12
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-case-content/template.hbs"
+          },
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("              ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+            return morphs;
+          },
+          statements: [
+            ["inline","ko-loader",[],["large",true],["loc",[null,[52,14],[52,38]]]]
+          ],
+          locals: [],
+          templates: []
+        };
+      }());
+      return {
+        meta: {
+          "revision": "Ember@1.13.6",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 50,
+              "column": 10
+            },
+            "end": {
+              "line": 54,
+              "column": 10
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-case-content/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [
+          ["block","ko-center",[],[],0,null,["loc",[null,[51,12],[53,26]]]]
+        ],
+        locals: [],
+        templates: [child0]
+      };
+    }());
+    var child1 = (function() {
+      var child0 = (function() {
+        return {
+          meta: {
+            "revision": "Ember@1.13.6",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 66,
                 "column": 10
               },
               "end": {
-                "line": 67,
+                "line": 74,
                 "column": 10
               }
             },
@@ -8249,7 +8369,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             return morphs;
           },
           statements: [
-            ["inline","component",[["subexpr","ko-helper",[["get","componentFor",["loc",[null,[60,35],[60,47]]]],["get","field.fieldType",["loc",[null,[60,48],[60,63]]]]],[],["loc",[null,[60,24],[60,64]]]]],["case",["subexpr","@mut",[["get","case",["loc",[null,[61,19],[61,23]]]]],[],[]],"field",["subexpr","@mut",[["get","field",["loc",[null,[62,20],[62,25]]]]],[],[]],"errors",["subexpr","@mut",[["get","errors",["loc",[null,[63,21],[63,27]]]]],[],[]],"options",["subexpr","ko-contextual-helper",[["get","optionsForField",["loc",[null,[64,44],[64,59]]]],["get","this",["loc",[null,[64,60],[64,64]]]],["get","field",["loc",[null,[64,65],[64,70]]]]],[],["loc",[null,[64,22],[64,71]]]],"editedCaseFields",["subexpr","@mut",[["get","editedCaseFields",["loc",[null,[65,31],[65,47]]]]],[],[]]],["loc",[null,[60,12],[66,14]]]]
+            ["inline","component",[["subexpr","ko-helper",[["get","componentFor",["loc",[null,[67,35],[67,47]]]],["get","field.fieldType",["loc",[null,[67,48],[67,63]]]]],[],["loc",[null,[67,24],[67,64]]]]],["case",["subexpr","@mut",[["get","case",["loc",[null,[68,19],[68,23]]]]],[],[]],"field",["subexpr","@mut",[["get","field",["loc",[null,[69,20],[69,25]]]]],[],[]],"errors",["subexpr","@mut",[["get","errors",["loc",[null,[70,21],[70,27]]]]],[],[]],"options",["subexpr","ko-contextual-helper",[["get","optionsForField",["loc",[null,[71,44],[71,59]]]],["get","this",["loc",[null,[71,60],[71,64]]]],["get","field",["loc",[null,[71,65],[71,70]]]]],[],["loc",[null,[71,22],[71,71]]]],"editedCaseFields",["subexpr","@mut",[["get","editedCaseFields",["loc",[null,[72,31],[72,47]]]]],[],[]]],["loc",[null,[67,12],[73,14]]]]
           ],
           locals: [],
           templates: []
@@ -8261,11 +8381,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 58,
+              "line": 65,
               "column": 8
             },
             "end": {
-              "line": 68,
+              "line": 75,
               "column": 8
             }
           },
@@ -8288,7 +8408,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["block","if",[["subexpr","ko-helper",[["get","componentFor",["loc",[null,[59,27],[59,39]]]],["get","field.fieldType",["loc",[null,[59,40],[59,55]]]]],[],["loc",[null,[59,16],[59,56]]]]],[],0,null,["loc",[null,[59,10],[67,17]]]]
+          ["block","if",[["subexpr","ko-helper",[["get","componentFor",["loc",[null,[66,27],[66,39]]]],["get","field.fieldType",["loc",[null,[66,40],[66,55]]]]],[],["loc",[null,[66,16],[66,56]]]]],[],0,null,["loc",[null,[66,10],[74,17]]]]
         ],
         locals: ["field"],
         templates: [child0]
@@ -8304,7 +8424,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             "column": 0
           },
           "end": {
-            "line": 74,
+            "line": 81,
             "column": 0
           }
         },
@@ -8471,6 +8591,17 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
         dom.appendChild(el4, el5);
         var el5 = dom.createComment("");
         dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("div");
+        dom.setAttribute(el5,"class","ko-case-content__loader");
+        var el6 = dom.createTextNode("\n");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createComment("");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
         var el5 = dom.createTextNode("\n      ");
         dom.appendChild(el4, el5);
         dom.appendChild(el3, el4);
@@ -8544,7 +8675,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
         var element9 = dom.childAt(element8, [1]);
         var element10 = dom.childAt(element6, [3, 1]);
         var element11 = dom.childAt(element10, [1, 1]);
-        var morphs = new Array(17);
+        var morphs = new Array(18);
         morphs[0] = dom.createAttrMorph(element3, 'src');
         morphs[1] = dom.createMorphAt(dom.childAt(element4, [1]),1,1);
         morphs[2] = dom.createMorphAt(dom.childAt(element4, [3]),1,1);
@@ -8555,13 +8686,14 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
         morphs[7] = dom.createAttrMorph(element9, 'class');
         morphs[8] = dom.createMorphAt(element9,1,1);
         morphs[9] = dom.createMorphAt(element7,3,3);
-        morphs[10] = dom.createAttrMorph(element10, 'class');
-        morphs[11] = dom.createElementMorph(element11);
-        morphs[12] = dom.createMorphAt(element11,0,0);
-        morphs[13] = dom.createMorphAt(element10,3,3);
-        morphs[14] = dom.createMorphAt(element10,5,5);
-        morphs[15] = dom.createMorphAt(element10,7,7);
-        morphs[16] = dom.createMorphAt(element10,9,9);
+        morphs[10] = dom.createMorphAt(dom.childAt(element7, [5]),1,1);
+        morphs[11] = dom.createAttrMorph(element10, 'class');
+        morphs[12] = dom.createElementMorph(element11);
+        morphs[13] = dom.createMorphAt(element11,0,0);
+        morphs[14] = dom.createMorphAt(element10,3,3);
+        morphs[15] = dom.createMorphAt(element10,5,5);
+        morphs[16] = dom.createMorphAt(element10,7,7);
+        morphs[17] = dom.createMorphAt(element10,9,9);
         return morphs;
       },
       statements: [
@@ -8574,17 +8706,18 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
         ["attribute","style",["concat",["height: ",["get","caseEditorHeight",["loc",[null,[43,72],[43,88]]]],"px"]]],
         ["attribute","class",["concat",["ko-case-content__editor ",["subexpr","if",[["get","headerSticky",["loc",[null,[44,51],[44,63]]]],"ko-case-content__editor--sticky"],[],["loc",[null,[44,46],[44,99]]]]]]],
         ["inline","ko-text-editor",[],["viewName","postEditor","channels",["subexpr","@mut",[["get","case.replyChannels",["loc",[null,[45,60],[45,78]]]]],[],[]],"channel",["subexpr","@mut",[["get","channel",["loc",[null,[45,87],[45,94]]]]],[],[]],"onChannelChange","setChannel"],["loc",[null,[45,12],[45,125]]]],
-        ["inline","ko-feed",[],["events",["subexpr","@mut",[["get","messages",["loc",[null,[48,25],[48,33]]]]],[],[]],"onReplyWithQuote","replyWithQuote","boundingRect",["subexpr","@mut",[["get","boundingRect",["loc",[null,[48,81],[48,93]]]]],[],[]]],["loc",[null,[48,8],[48,95]]]],
-        ["attribute","class",["concat",["list-bare ko-case-content__sidebar ",["subexpr","if",[["get","headerSticky",["loc",[null,[52,57],[52,69]]]],"ko-case-content__sidebar--sticky"],[],["loc",[null,[52,52],[52,106]]]]]]],
-        ["element","action",["submit"],[],["loc",[null,[54,55],[54,74]]]],
-        ["inline","format-message",[["subexpr","intl-get",["cases.submit"],[],["loc",[null,[54,92],[54,117]]]]],[],["loc",[null,[54,75],[54,119]]]],
-        ["inline","ko-case-field/requester",[],["requester",["subexpr","@mut",[["get","case.requester",["loc",[null,[56,44],[56,58]]]]],[],[]]],["loc",[null,[56,8],[56,60]]]],
-        ["inline","ko-case-field/tags",[],["tags",["subexpr","@mut",[["get","tags",["loc",[null,[57,34],[57,38]]]]],[],[]],"onTagAddition","addTag","onTagRemoval","removeTag","isEdited",["subexpr","@mut",[["get","isTagsFieldEdited",["loc",[null,[57,96],[57,113]]]]],[],[]]],["loc",[null,[57,8],[57,115]]]],
-        ["block","each",[["get","caseOrFormFields",["loc",[null,[58,16],[58,32]]]]],[],0,null,["loc",[null,[58,8],[68,17]]]],
-        ["inline","ko-case/sla-sidebar",[],["sla",["subexpr","@mut",[["get","case.sla",["loc",[null,[69,34],[69,42]]]]],[],[]],"slaMetrics",["subexpr","@mut",[["get","case.slaMetrics",["loc",[null,[69,54],[69,69]]]]],[],[]]],["loc",[null,[69,8],[69,71]]]]
+        ["inline","ko-feed",[],["events",["subexpr","@mut",[["get","posts",["loc",[null,[48,25],[48,30]]]]],[],[]],"onReplyWithQuote","replyWithQuote","boundingRect",["subexpr","@mut",[["get","boundingRect",["loc",[null,[48,78],[48,90]]]]],[],[]]],["loc",[null,[48,8],[48,92]]]],
+        ["block","if",[["get","loading",["loc",[null,[50,16],[50,23]]]]],[],0,null,["loc",[null,[50,10],[54,17]]]],
+        ["attribute","class",["concat",["list-bare ko-case-content__sidebar ",["subexpr","if",[["get","headerSticky",["loc",[null,[59,57],[59,69]]]],"ko-case-content__sidebar--sticky"],[],["loc",[null,[59,52],[59,106]]]]]]],
+        ["element","action",["submit"],[],["loc",[null,[61,55],[61,74]]]],
+        ["inline","format-message",[["subexpr","intl-get",["cases.submit"],[],["loc",[null,[61,92],[61,117]]]]],[],["loc",[null,[61,75],[61,119]]]],
+        ["inline","ko-case-field/requester",[],["requester",["subexpr","@mut",[["get","case.requester",["loc",[null,[63,44],[63,58]]]]],[],[]]],["loc",[null,[63,8],[63,60]]]],
+        ["inline","ko-case-field/tags",[],["tags",["subexpr","@mut",[["get","tags",["loc",[null,[64,34],[64,38]]]]],[],[]],"onTagAddition","addTag","onTagRemoval","removeTag","isEdited",["subexpr","@mut",[["get","isTagsFieldEdited",["loc",[null,[64,96],[64,113]]]]],[],[]]],["loc",[null,[64,8],[64,115]]]],
+        ["block","each",[["get","caseOrFormFields",["loc",[null,[65,16],[65,32]]]]],[],1,null,["loc",[null,[65,8],[75,17]]]],
+        ["inline","ko-case/sla-sidebar",[],["sla",["subexpr","@mut",[["get","case.sla",["loc",[null,[76,34],[76,42]]]]],[],[]],"slaMetrics",["subexpr","@mut",[["get","case.slaMetrics",["loc",[null,[76,54],[76,69]]]]],[],[]]],["loc",[null,[76,8],[76,71]]]]
       ],
       locals: [],
-      templates: [child0]
+      templates: [child0, child1]
     };
   }()));
 
@@ -15994,90 +16127,6 @@ define('frontend-cp/components/ko-feed/item/template', ['exports'], function (ex
 
   exports['default'] = Ember.HTMLBars.template((function() {
     var child0 = (function() {
-      return {
-        meta: {
-          "revision": "Ember@1.13.6",
-          "loc": {
-            "source": null,
-            "start": {
-              "line": 7,
-              "column": 4
-            },
-            "end": {
-              "line": 9,
-              "column": 4
-            }
-          },
-          "moduleName": "frontend-cp/components/ko-feed/item/template.hbs"
-        },
-        arity: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("      ");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createComment("");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n");
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createUnsafeMorphAt(fragment,1,1,contextualElement);
-          return morphs;
-        },
-        statements: [
-          ["content","event.bodyHtml",["loc",[null,[8,6],[8,26]]]]
-        ],
-        locals: [],
-        templates: []
-      };
-    }());
-    var child1 = (function() {
-      return {
-        meta: {
-          "revision": "Ember@1.13.6",
-          "loc": {
-            "source": null,
-            "start": {
-              "line": 9,
-              "column": 4
-            },
-            "end": {
-              "line": 11,
-              "column": 4
-            }
-          },
-          "moduleName": "frontend-cp/components/ko-feed/item/template.hbs"
-        },
-        arity: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("      ");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createComment("");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n");
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
-          return morphs;
-        },
-        statements: [
-          ["content","event.bodyText",["loc",[null,[10,6],[10,24]]]]
-        ],
-        locals: [],
-        templates: []
-      };
-    }());
-    var child2 = (function() {
       var child0 = (function() {
         return {
           meta: {
@@ -16085,11 +16134,11 @@ define('frontend-cp/components/ko-feed/item/template', ['exports'], function (ex
             "loc": {
               "source": null,
               "start": {
-                "line": 14,
+                "line": 10,
                 "column": 4
               },
               "end": {
-                "line": 17,
+                "line": 13,
                 "column": 4
               }
             },
@@ -16129,9 +16178,9 @@ define('frontend-cp/components/ko-feed/item/template', ['exports'], function (ex
             return morphs;
           },
           statements: [
-            ["attribute","src",["concat",[["get","attachment.thumbnails.firstObject.url",["loc",[null,[15,18],[15,55]]]]]]],
-            ["content","attachment.name",["loc",[null,[16,6],[16,25]]]],
-            ["inline","ko-file-size",[],["size",["subexpr","@mut",[["get","attachment.size",["loc",[null,[16,46],[16,61]]]]],[],[]]],["loc",[null,[16,26],[16,63]]]]
+            ["attribute","src",["concat",[["get","attachment.thumbnails.firstObject.url",["loc",[null,[11,18],[11,55]]]]]]],
+            ["content","attachment.name",["loc",[null,[12,6],[12,25]]]],
+            ["inline","ko-file-size",[],["size",["subexpr","@mut",[["get","attachment.size",["loc",[null,[12,46],[12,61]]]]],[],[]]],["loc",[null,[12,26],[12,63]]]]
           ],
           locals: ["attachment"],
           templates: []
@@ -16143,11 +16192,11 @@ define('frontend-cp/components/ko-feed/item/template', ['exports'], function (ex
           "loc": {
             "source": null,
             "start": {
-              "line": 13,
+              "line": 9,
               "column": 2
             },
             "end": {
-              "line": 18,
+              "line": 14,
               "column": 2
             }
           },
@@ -16170,7 +16219,7 @@ define('frontend-cp/components/ko-feed/item/template', ['exports'], function (ex
           return morphs;
         },
         statements: [
-          ["block","each",[["get","event.attachments",["loc",[null,[14,12],[14,29]]]]],[],0,null,["loc",[null,[14,4],[17,13]]]]
+          ["block","each",[["get","event.attachments",["loc",[null,[10,12],[10,29]]]]],[],0,null,["loc",[null,[10,4],[13,13]]]]
         ],
         locals: [],
         templates: [child0]
@@ -16186,7 +16235,7 @@ define('frontend-cp/components/ko-feed/item/template', ['exports'], function (ex
             "column": 0
           },
           "end": {
-            "line": 21,
+            "line": 17,
             "column": 0
           }
         },
@@ -16226,11 +16275,11 @@ define('frontend-cp/components/ko-feed/item/template', ['exports'], function (ex
         dom.appendChild(el1, el2);
         var el2 = dom.createElement("div");
         dom.setAttribute(el2,"class","feed__content");
-        var el3 = dom.createTextNode("\n");
+        var el3 = dom.createTextNode("\n    ");
         dom.appendChild(el2, el3);
         var el3 = dom.createComment("");
         dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("  ");
+        var el3 = dom.createTextNode("\n  ");
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n");
@@ -16264,12 +16313,12 @@ define('frontend-cp/components/ko-feed/item/template', ['exports'], function (ex
         ["inline","ko-avatar",[],["avatar",["subexpr","@mut",[["get","event.creator.avatar",["loc",[null,[2,46],[2,66]]]]],[],[]],"size","large"],["loc",[null,[2,27],[2,81]]]],
         ["content","event.creator.fullName",["loc",[null,[3,27],[3,53]]]],
         ["inline","format-message",[["subexpr","intl-get",["feed.replied"],[],["loc",[null,[4,53],[4,78]]]]],["ago",["subexpr","ago",[["get","event.createdAt",["loc",[null,[4,88],[4,103]]]]],[],["loc",[null,[4,83],[4,104]]]]],["loc",[null,[4,36],[4,106]]]],
-        ["block","if",[["get","event.bodyHtml",["loc",[null,[7,10],[7,24]]]]],[],0,1,["loc",[null,[7,4],[11,11]]]],
-        ["block","if",[["get","event.attachments",["loc",[null,[13,8],[13,25]]]]],[],2,null,["loc",[null,[13,2],[18,9]]]],
-        ["inline","ko-feed/item/menu",[],["showMenu",["subexpr","@mut",[["get","showMenu",["loc",[null,[19,31],[19,39]]]]],[],[]],"onReplyWithQuote","onReplyWithQuote"],["loc",[null,[19,2],[19,77]]]]
+        ["content","event.contents",["loc",[null,[7,4],[7,22]]]],
+        ["block","if",[["get","event.attachments",["loc",[null,[9,8],[9,25]]]]],[],0,null,["loc",[null,[9,2],[14,9]]]],
+        ["inline","ko-feed/item/menu",[],["showMenu",["subexpr","@mut",[["get","showMenu",["loc",[null,[15,31],[15,39]]]]],[],[]],"onReplyWithQuote","onReplyWithQuote"],["loc",[null,[15,2],[15,77]]]]
       ],
       locals: [],
-      templates: [child0, child1, child2]
+      templates: [child0]
     };
   }()));
 
@@ -31622,6 +31671,10 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage'], function (e
       return new Mirage['default'].Response(400, {}, db.messages);
     });
 
+    this.get('/api/v1/cases/:id/posts', function (db) {
+      return db.posts[0];
+    });
+
     this.get('/api/v1/views', function (db) {
       return db.views[0];
     });
@@ -36669,6 +36722,903 @@ define('frontend-cp/mirage/fixtures/organizations', ['exports'], function (expor
     'updated_at': '2015-08-18T08:00:11Z',
     'resource_type': 'organization',
     'resource_url': 'http://novo/api/v1/organizations/5'
+  }];
+
+});
+define('frontend-cp/mirage/fixtures/posts', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports['default'] = [{
+    'status': 200,
+    'data': [{
+      'id': 71,
+      'uuid': 'a2078d1b-d0b4-433c-b36f-ee7496e4aeea',
+      'sequence': 13,
+      'subject': 'Atmosphere Coffee, Inc annual maintenance',
+      'contents': '12',
+      'creator': {
+        'id': 1,
+        'resource_type': 'user'
+      },
+      'identity': {
+        'id': 1,
+        'resource_type': 'identity_email'
+      },
+      'attachments': [],
+      'download_all': null,
+      'original': {
+        'id': 43,
+        'resource_type': 'case_message'
+      },
+      'created_at': '2015-08-17T11:27:00Z',
+      'updated_at': '2015-08-17T11:27:00Z',
+      'resource_type': 'post'
+    }, {
+      'id': 70,
+      'uuid': '85754cc3-a18e-470d-b13c-d2a439e09a64',
+      'sequence': 12,
+      'subject': 'Atmosphere Coffee, Inc annual maintenance',
+      'contents': '11',
+      'creator': {
+        'id': 1,
+        'resource_type': 'user'
+      },
+      'identity': {
+        'id': 1,
+        'resource_type': 'identity_email'
+      },
+      'attachments': [],
+      'download_all': null,
+      'original': {
+        'id': 42,
+        'resource_type': 'case_message'
+      },
+      'created_at': '2015-08-17T11:26:56Z',
+      'updated_at': '2015-08-17T11:26:56Z',
+      'resource_type': 'post'
+    }, {
+      'id': 69,
+      'uuid': '1200a0d0-a2f1-4ec9-9994-ff3d4ceb97fa',
+      'sequence': 11,
+      'subject': 'Atmosphere Coffee, Inc annual maintenance',
+      'contents': '10',
+      'creator': {
+        'id': 1,
+        'resource_type': 'user'
+      },
+      'identity': {
+        'id': 1,
+        'resource_type': 'identity_email'
+      },
+      'attachments': [],
+      'download_all': null,
+      'original': {
+        'id': 41,
+        'resource_type': 'case_message'
+      },
+      'created_at': '2015-08-17T11:26:52Z',
+      'updated_at': '2015-08-17T11:26:52Z',
+      'resource_type': 'post'
+    }, {
+      'id': 68,
+      'uuid': 'f4135dfc-a443-45b3-8fbf-ada21b563d68',
+      'sequence': 10,
+      'subject': 'Atmosphere Coffee, Inc annual maintenance',
+      'contents': '9',
+      'creator': {
+        'id': 1,
+        'resource_type': 'user'
+      },
+      'identity': {
+        'id': 1,
+        'resource_type': 'identity_email'
+      },
+      'attachments': [],
+      'download_all': null,
+      'original': {
+        'id': 40,
+        'resource_type': 'case_message'
+      },
+      'created_at': '2015-08-17T11:26:48Z',
+      'updated_at': '2015-08-17T11:26:48Z',
+      'resource_type': 'post'
+    }, {
+      'id': 67,
+      'uuid': 'cb7ca3a8-7ed2-400c-8e7d-2337385c308a',
+      'sequence': 9,
+      'subject': 'Atmosphere Coffee, Inc annual maintenance',
+      'contents': '8',
+      'creator': {
+        'id': 1,
+        'resource_type': 'user'
+      },
+      'identity': {
+        'id': 1,
+        'resource_type': 'identity_email'
+      },
+      'attachments': [],
+      'download_all': null,
+      'original': {
+        'id': 39,
+        'resource_type': 'case_message'
+      },
+      'created_at': '2015-08-17T11:26:44Z',
+      'updated_at': '2015-08-17T11:26:44Z',
+      'resource_type': 'post'
+    }, {
+      'id': 66,
+      'uuid': '6872187e-4d65-48c0-a11a-23671993a19c',
+      'sequence': 8,
+      'subject': 'Atmosphere Coffee, Inc annual maintenance',
+      'contents': '7',
+      'creator': {
+        'id': 1,
+        'resource_type': 'user'
+      },
+      'identity': {
+        'id': 1,
+        'resource_type': 'identity_email'
+      },
+      'attachments': [],
+      'download_all': null,
+      'original': {
+        'id': 38,
+        'resource_type': 'case_message'
+      },
+      'created_at': '2015-08-17T11:26:40Z',
+      'updated_at': '2015-08-17T11:26:40Z',
+      'resource_type': 'post'
+    }, {
+      'id': 65,
+      'uuid': '43259a20-6f2b-416d-b333-c8117a2fcb94',
+      'sequence': 7,
+      'subject': 'Atmosphere Coffee, Inc annual maintenance',
+      'contents': '6',
+      'creator': {
+        'id': 1,
+        'resource_type': 'user'
+      },
+      'identity': {
+        'id': 1,
+        'resource_type': 'identity_email'
+      },
+      'attachments': [],
+      'download_all': null,
+      'original': {
+        'id': 37,
+        'resource_type': 'case_message'
+      },
+      'created_at': '2015-08-17T11:26:35Z',
+      'updated_at': '2015-08-17T11:26:35Z',
+      'resource_type': 'post'
+    }, {
+      'id': 64,
+      'uuid': '5842c304-9056-4b5b-bfa4-f00cf1a93351',
+      'sequence': 6,
+      'subject': 'Atmosphere Coffee, Inc annual maintenance',
+      'contents': '5',
+      'creator': {
+        'id': 1,
+        'resource_type': 'user'
+      },
+      'identity': {
+        'id': 1,
+        'resource_type': 'identity_email'
+      },
+      'attachments': [],
+      'download_all': null,
+      'original': {
+        'id': 36,
+        'resource_type': 'case_message'
+      },
+      'created_at': '2015-08-17T11:26:30Z',
+      'updated_at': '2015-08-17T11:26:30Z',
+      'resource_type': 'post'
+    }, {
+      'id': 63,
+      'uuid': '7ee90857-6ba7-43db-a7d3-ceb4aed95939',
+      'sequence': 5,
+      'subject': 'Atmosphere Coffee, Inc annual maintenance',
+      'contents': '4',
+      'creator': {
+        'id': 1,
+        'resource_type': 'user'
+      },
+      'identity': {
+        'id': 1,
+        'resource_type': 'identity_email'
+      },
+      'attachments': [],
+      'download_all': null,
+      'original': {
+        'id': 35,
+        'resource_type': 'case_message'
+      },
+      'created_at': '2015-08-17T11:24:57Z',
+      'updated_at': '2015-08-17T11:24:57Z',
+      'resource_type': 'post'
+    }, {
+      'id': 62,
+      'uuid': 'f8ceb70e-6a19-463c-b7fd-a875ed96aba9',
+      'sequence': 4,
+      'subject': 'Atmosphere Coffee, Inc annual maintenance',
+      'contents': '3',
+      'creator': {
+        'id': 1,
+        'resource_type': 'user'
+      },
+      'identity': {
+        'id': 1,
+        'resource_type': 'identity_email'
+      },
+      'attachments': [],
+      'download_all': null,
+      'original': {
+        'id': 34,
+        'resource_type': 'case_message'
+      },
+      'created_at': '2015-08-17T11:24:15Z',
+      'updated_at': '2015-08-17T11:24:15Z',
+      'resource_type': 'post'
+    }],
+    'resource': 'post',
+    'resources': {
+      'role': {
+        '1': {
+          'id': 1,
+          'title': 'Administrator',
+          'type': 'ADMIN',
+          'ip_restriction': null,
+          'password_expires_in_days': '0',
+          'is_two_factor_required': false,
+          'created_at': '2015-08-17T09:48:38Z',
+          'updated_at': '2015-08-17T09:48:38Z',
+          'resource_type': 'role',
+          'resource_url': 'http://novo/api/v1/roles/1'
+        }
+      },
+      'business_hour': {
+        '1': {
+          'id': 1,
+          'title': 'Default Business Hours',
+          'zones': {
+            'monday': [9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
+            'tuesday': [9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
+            'wednesday': [9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
+            'thursday': [9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
+            'friday': [9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
+            'saturday': [],
+            'sunday': []
+          },
+          'holidays': [],
+          'created_at': '2015-08-17T09:48:38Z',
+          'updated_at': '2015-08-17T09:48:38Z',
+          'resource_type': 'business_hour',
+          'resource_url': 'http://novo/api/v1/businesshours/1'
+        }
+      },
+      'team': {
+        '1': {
+          'id': 1,
+          'title': 'Sales',
+          'businesshour': {
+            'id': 1,
+            'resource_type': 'business_hour'
+          },
+          'followers': [],
+          'created_at': '2015-08-17T09:48:38Z',
+          'updated_at': '2015-08-17T09:48:38Z',
+          'resource_type': 'team',
+          'resource_url': 'http://novo/api/v1/teams/1'
+        },
+        '2': {
+          'id': 2,
+          'title': 'Support',
+          'businesshour': {
+            'id': 1,
+            'resource_type': 'business_hour'
+          },
+          'followers': [],
+          'created_at': '2015-08-17T09:48:38Z',
+          'updated_at': '2015-08-17T09:48:38Z',
+          'resource_type': 'team',
+          'resource_url': 'http://novo/api/v1/teams/2'
+        },
+        '3': {
+          'id': 3,
+          'title': 'Finance',
+          'businesshour': {
+            'id': 1,
+            'resource_type': 'business_hour'
+          },
+          'followers': [],
+          'created_at': '2015-08-17T09:48:38Z',
+          'updated_at': '2015-08-17T09:48:38Z',
+          'resource_type': 'team',
+          'resource_url': 'http://novo/api/v1/teams/3'
+        },
+        '4': {
+          'id': 4,
+          'title': 'Human Resources',
+          'businesshour': {
+            'id': 1,
+            'resource_type': 'business_hour'
+          },
+          'followers': [],
+          'created_at': '2015-08-17T09:48:38Z',
+          'updated_at': '2015-08-17T09:48:38Z',
+          'resource_type': 'team',
+          'resource_url': 'http://novo/api/v1/teams/4'
+        }
+      },
+      'identity_email': {
+        '1': {
+          'id': 1,
+          'email': 'test@kayako.com',
+          'is_primary': true,
+          'is_validated': true,
+          'is_notification_enabled': false,
+          'created_at': '2015-08-17T09:48:38Z',
+          'updated_at': '2015-08-17T09:48:38Z',
+          'resource_type': 'identity_email',
+          'resource_url': 'http://novo/api/v1/users/1/identities/emails/1'
+        }
+      },
+      'user_field': {
+        '1': {
+          'id': 1,
+          'fielduuid': 'f91fa014-35a0-41c3-9616-e8eeebd89296',
+          'title': 'Industry',
+          'type': 'TEXT',
+          'key': 'industry',
+          'is_visible_to_customers': true,
+          'customer_title': 'Industry',
+          'is_customer_editable': true,
+          'is_required_for_customers': true,
+          'description': null,
+          'regular_expression': null,
+          'sort_order': 1,
+          'is_enabled': true,
+          'options': [],
+          'locales': [],
+          'created_at': '2015-08-17T09:48:38Z',
+          'updated_at': '2015-08-17T09:48:38Z',
+          'resource_type': 'user_field',
+          'resource_url': 'http://novo/api/v1/users/fields/1'
+        }
+      },
+      'user': {
+        '1': {
+          'id': 1,
+          'full_name': 'John Doe',
+          'designation': null,
+          'is_enabled': true,
+          'role': {
+            'id': 1,
+            'resource_type': 'role'
+          },
+          'avatar': 'http://novo/avatar/get/94fff5c9-bdf5-53ca-ba00-89e33d84dc5f',
+          'organization': null,
+          'teams': [{
+            'id': 1,
+            'resource_type': 'team'
+          }, {
+            'id': 2,
+            'resource_type': 'team'
+          }, {
+            'id': 3,
+            'resource_type': 'team'
+          }, {
+            'id': 4,
+            'resource_type': 'team'
+          }],
+          'emails': [{
+            'id': 1,
+            'resource_type': 'identity_email'
+          }],
+          'phones': [],
+          'twitter': [],
+          'facebook': [],
+          'external_identifiers': [],
+          'addresses': [],
+          'websites': [],
+          'custom_fields': [{
+            'field': {
+              'id': 1,
+              'resource_type': 'user_field'
+            },
+            'value': '',
+            'resource_type': 'user_field_value'
+          }],
+          'metadata': {
+            'custom': null,
+            'system': null,
+            'resource_type': 'metadata'
+          },
+          'tags': [],
+          'notes': [],
+          'pinned_notes_count': 0,
+          'followers': [],
+          'locale': 'en-us',
+          'time_zone': null,
+          'time_zone_offset': null,
+          'greeting': null,
+          'signature': null,
+          'status_message': null,
+          'last_seen_user_agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36',
+          'last_seen_ip': '10.0.2.2',
+          'access_level': null,
+          'password_updated_at': '2015-08-17T09:48:38Z',
+          'avatar_updated_at': null,
+          'last_logged_in_at': '2015-08-20T16:05:45Z',
+          'last_activity_at': '2015-08-20T16:05:45Z',
+          'created_at': '2015-08-17T09:48:38Z',
+          'updated_at': '2015-08-17T09:48:38Z',
+          'resource_type': 'user',
+          'resource_url': 'http://novo/api/v1/users/1'
+        }
+      },
+      'language': {
+        '1': {
+          'id': 1,
+          'locale': 'en-us',
+          'flag_icon': null,
+          'direction': 'LTR',
+          'is_enabled': true,
+          'created_at': '2015-08-17T09:48:38Z',
+          'updated_at': '2015-08-17T09:48:38Z',
+          'resource_type': 'language',
+          'resource_url': 'http://novo/api/v1/languages/1'
+        }
+      },
+      'brand': {
+        '1': {
+          'id': 1,
+          'name': 'Default',
+          'url': null,
+          'language': {
+            'id': 1,
+            'resource_type': 'language'
+          },
+          'is_enabled': true,
+          'created_at': '2015-08-17T09:48:38Z',
+          'updated_at': '2015-08-17T09:48:38Z',
+          'resource_type': 'brand',
+          'resource_url': 'http://novo/api/v1/brands/1'
+        }
+      },
+      'mailbox': {
+        '1': {
+          'id': 1,
+          'uuid': '7cf1ddeb-b7fd-4019-bd25-727635d0d246',
+          'service': 'STANDARD',
+          'encryption': 'NONE',
+          'address': 'support@brewfictus.com',
+          'prefix': null,
+          'smtp_type': null,
+          'host': null,
+          'port': null,
+          'username': null,
+          'preserve_mails': false,
+          'brand': {
+            'id': 1,
+            'resource_type': 'brand'
+          },
+          'is_default': false,
+          'is_enabled': true,
+          'created_at': '2015-08-17T09:48:38Z',
+          'updated_at': '2015-08-17T09:48:38Z',
+          'resource_type': 'mailbox',
+          'resource_url': 'http://novo/api/v1/mailboxes/1'
+        }
+      },
+      'case_message': {
+        '34': {
+          'id': 34,
+          'uuid': 'f8ceb70e-6a19-463c-b7fd-a875ed96aba9',
+          'subject': 'Atmosphere Coffee, Inc annual maintenance',
+          'body_text': '3',
+          'body_html': '3',
+          'recipients': [],
+          'fullname': null,
+          'email': null,
+          'creator': {
+            'id': 1,
+            'resource_type': 'user'
+          },
+          'identity': {
+            'id': 1,
+            'resource_type': 'identity_email'
+          },
+          'mailbox': {
+            'id': 1,
+            'resource_type': 'mailbox'
+          },
+          'attachments': [],
+          'download_all': null,
+          'location': null,
+          'metadata': {
+            'custom': null,
+            'system': {
+              'ipaddress': '',
+              'useragent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36'
+            },
+            'resource_type': 'metadata'
+          },
+          'creation_mode': 'API',
+          'locale': null,
+          'response_time': 0,
+          'created_at': '2015-08-17T11:24:15Z',
+          'updated_at': '2015-08-17T11:24:15Z',
+          'resource_type': 'case_message',
+          'resource_url': 'http://novo/api/v1/cases/1/messages/34'
+        },
+        '35': {
+          'id': 35,
+          'uuid': '7ee90857-6ba7-43db-a7d3-ceb4aed95939',
+          'subject': 'Atmosphere Coffee, Inc annual maintenance',
+          'body_text': '4',
+          'body_html': '4',
+          'recipients': [],
+          'fullname': null,
+          'email': null,
+          'creator': {
+            'id': 1,
+            'resource_type': 'user'
+          },
+          'identity': {
+            'id': 1,
+            'resource_type': 'identity_email'
+          },
+          'mailbox': {
+            'id': 1,
+            'resource_type': 'mailbox'
+          },
+          'attachments': [],
+          'download_all': null,
+          'location': null,
+          'metadata': {
+            'custom': null,
+            'system': {
+              'ipaddress': '',
+              'useragent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36'
+            },
+            'resource_type': 'metadata'
+          },
+          'creation_mode': 'API',
+          'locale': null,
+          'response_time': 0,
+          'created_at': '2015-08-17T11:24:57Z',
+          'updated_at': '2015-08-17T11:24:57Z',
+          'resource_type': 'case_message',
+          'resource_url': 'http://novo/api/v1/cases/1/messages/35'
+        },
+        '36': {
+          'id': 36,
+          'uuid': '5842c304-9056-4b5b-bfa4-f00cf1a93351',
+          'subject': 'Atmosphere Coffee, Inc annual maintenance',
+          'body_text': '5',
+          'body_html': '5',
+          'recipients': [],
+          'fullname': null,
+          'email': null,
+          'creator': {
+            'id': 1,
+            'resource_type': 'user'
+          },
+          'identity': {
+            'id': 1,
+            'resource_type': 'identity_email'
+          },
+          'mailbox': {
+            'id': 1,
+            'resource_type': 'mailbox'
+          },
+          'attachments': [],
+          'download_all': null,
+          'location': null,
+          'metadata': {
+            'custom': null,
+            'system': {
+              'ipaddress': '',
+              'useragent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36'
+            },
+            'resource_type': 'metadata'
+          },
+          'creation_mode': 'API',
+          'locale': null,
+          'response_time': 0,
+          'created_at': '2015-08-17T11:26:30Z',
+          'updated_at': '2015-08-17T11:26:30Z',
+          'resource_type': 'case_message',
+          'resource_url': 'http://novo/api/v1/cases/1/messages/36'
+        },
+        '37': {
+          'id': 37,
+          'uuid': '43259a20-6f2b-416d-b333-c8117a2fcb94',
+          'subject': 'Atmosphere Coffee, Inc annual maintenance',
+          'body_text': '6',
+          'body_html': '6',
+          'recipients': [],
+          'fullname': null,
+          'email': null,
+          'creator': {
+            'id': 1,
+            'resource_type': 'user'
+          },
+          'identity': {
+            'id': 1,
+            'resource_type': 'identity_email'
+          },
+          'mailbox': {
+            'id': 1,
+            'resource_type': 'mailbox'
+          },
+          'attachments': [],
+          'download_all': null,
+          'location': null,
+          'metadata': {
+            'custom': null,
+            'system': {
+              'ipaddress': '',
+              'useragent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36'
+            },
+            'resource_type': 'metadata'
+          },
+          'creation_mode': 'API',
+          'locale': null,
+          'response_time': 0,
+          'created_at': '2015-08-17T11:26:35Z',
+          'updated_at': '2015-08-17T11:26:35Z',
+          'resource_type': 'case_message',
+          'resource_url': 'http://novo/api/v1/cases/1/messages/37'
+        },
+        '38': {
+          'id': 38,
+          'uuid': '6872187e-4d65-48c0-a11a-23671993a19c',
+          'subject': 'Atmosphere Coffee, Inc annual maintenance',
+          'body_text': '7',
+          'body_html': '7',
+          'recipients': [],
+          'fullname': null,
+          'email': null,
+          'creator': {
+            'id': 1,
+            'resource_type': 'user'
+          },
+          'identity': {
+            'id': 1,
+            'resource_type': 'identity_email'
+          },
+          'mailbox': {
+            'id': 1,
+            'resource_type': 'mailbox'
+          },
+          'attachments': [],
+          'download_all': null,
+          'location': null,
+          'metadata': {
+            'custom': null,
+            'system': {
+              'ipaddress': '',
+              'useragent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36'
+            },
+            'resource_type': 'metadata'
+          },
+          'creation_mode': 'API',
+          'locale': null,
+          'response_time': 0,
+          'created_at': '2015-08-17T11:26:40Z',
+          'updated_at': '2015-08-17T11:26:40Z',
+          'resource_type': 'case_message',
+          'resource_url': 'http://novo/api/v1/cases/1/messages/38'
+        },
+        '39': {
+          'id': 39,
+          'uuid': 'cb7ca3a8-7ed2-400c-8e7d-2337385c308a',
+          'subject': 'Atmosphere Coffee, Inc annual maintenance',
+          'body_text': '8',
+          'body_html': '8',
+          'recipients': [],
+          'fullname': null,
+          'email': null,
+          'creator': {
+            'id': 1,
+            'resource_type': 'user'
+          },
+          'identity': {
+            'id': 1,
+            'resource_type': 'identity_email'
+          },
+          'mailbox': {
+            'id': 1,
+            'resource_type': 'mailbox'
+          },
+          'attachments': [],
+          'download_all': null,
+          'location': null,
+          'metadata': {
+            'custom': null,
+            'system': {
+              'ipaddress': '',
+              'useragent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36'
+            },
+            'resource_type': 'metadata'
+          },
+          'creation_mode': 'API',
+          'locale': null,
+          'response_time': 0,
+          'created_at': '2015-08-17T11:26:44Z',
+          'updated_at': '2015-08-17T11:26:44Z',
+          'resource_type': 'case_message',
+          'resource_url': 'http://novo/api/v1/cases/1/messages/39'
+        },
+        '40': {
+          'id': 40,
+          'uuid': 'f4135dfc-a443-45b3-8fbf-ada21b563d68',
+          'subject': 'Atmosphere Coffee, Inc annual maintenance',
+          'body_text': '9',
+          'body_html': '9',
+          'recipients': [],
+          'fullname': null,
+          'email': null,
+          'creator': {
+            'id': 1,
+            'resource_type': 'user'
+          },
+          'identity': {
+            'id': 1,
+            'resource_type': 'identity_email'
+          },
+          'mailbox': {
+            'id': 1,
+            'resource_type': 'mailbox'
+          },
+          'attachments': [],
+          'download_all': null,
+          'location': null,
+          'metadata': {
+            'custom': null,
+            'system': {
+              'ipaddress': '',
+              'useragent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36'
+            },
+            'resource_type': 'metadata'
+          },
+          'creation_mode': 'API',
+          'locale': null,
+          'response_time': 0,
+          'created_at': '2015-08-17T11:26:48Z',
+          'updated_at': '2015-08-17T11:26:48Z',
+          'resource_type': 'case_message',
+          'resource_url': 'http://novo/api/v1/cases/1/messages/40'
+        },
+        '41': {
+          'id': 41,
+          'uuid': '1200a0d0-a2f1-4ec9-9994-ff3d4ceb97fa',
+          'subject': 'Atmosphere Coffee, Inc annual maintenance',
+          'body_text': '10',
+          'body_html': '10',
+          'recipients': [],
+          'fullname': null,
+          'email': null,
+          'creator': {
+            'id': 1,
+            'resource_type': 'user'
+          },
+          'identity': {
+            'id': 1,
+            'resource_type': 'identity_email'
+          },
+          'mailbox': {
+            'id': 1,
+            'resource_type': 'mailbox'
+          },
+          'attachments': [],
+          'download_all': null,
+          'location': null,
+          'metadata': {
+            'custom': null,
+            'system': {
+              'ipaddress': '',
+              'useragent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36'
+            },
+            'resource_type': 'metadata'
+          },
+          'creation_mode': 'API',
+          'locale': null,
+          'response_time': 0,
+          'created_at': '2015-08-17T11:26:52Z',
+          'updated_at': '2015-08-17T11:26:52Z',
+          'resource_type': 'case_message',
+          'resource_url': 'http://novo/api/v1/cases/1/messages/41'
+        },
+        '42': {
+          'id': 42,
+          'uuid': '85754cc3-a18e-470d-b13c-d2a439e09a64',
+          'subject': 'Atmosphere Coffee, Inc annual maintenance',
+          'body_text': '11',
+          'body_html': '11',
+          'recipients': [],
+          'fullname': null,
+          'email': null,
+          'creator': {
+            'id': 1,
+            'resource_type': 'user'
+          },
+          'identity': {
+            'id': 1,
+            'resource_type': 'identity_email'
+          },
+          'mailbox': {
+            'id': 1,
+            'resource_type': 'mailbox'
+          },
+          'attachments': [],
+          'download_all': null,
+          'location': null,
+          'metadata': {
+            'custom': null,
+            'system': {
+              'ipaddress': '',
+              'useragent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36'
+            },
+            'resource_type': 'metadata'
+          },
+          'creation_mode': 'API',
+          'locale': null,
+          'response_time': 0,
+          'created_at': '2015-08-17T11:26:56Z',
+          'updated_at': '2015-08-17T11:26:56Z',
+          'resource_type': 'case_message',
+          'resource_url': 'http://novo/api/v1/cases/1/messages/42'
+        },
+        '43': {
+          'id': 43,
+          'uuid': 'a2078d1b-d0b4-433c-b36f-ee7496e4aeea',
+          'subject': 'Atmosphere Coffee, Inc annual maintenance',
+          'body_text': '12',
+          'body_html': '12',
+          'recipients': [],
+          'fullname': null,
+          'email': null,
+          'creator': {
+            'id': 1,
+            'resource_type': 'user'
+          },
+          'identity': {
+            'id': 1,
+            'resource_type': 'identity_email'
+          },
+          'mailbox': {
+            'id': 1,
+            'resource_type': 'mailbox'
+          },
+          'attachments': [],
+          'download_all': null,
+          'location': null,
+          'metadata': {
+            'custom': null,
+            'system': {
+              'ipaddress': '',
+              'useragent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36'
+            },
+            'resource_type': 'metadata'
+          },
+          'creation_mode': 'API',
+          'locale': null,
+          'response_time': 0,
+          'created_at': '2015-08-17T11:27:00Z',
+          'updated_at': '2015-08-17T11:27:00Z',
+          'resource_type': 'case_message',
+          'resource_url': 'http://novo/api/v1/cases/1/messages/43'
+        }
+      }
+    },
+    'limit': 10,
+    'total_count': 13,
+    'next_url': 'http://novo/api/v1/cases/base/1/post?_flat=true&after_id=62'
   }];
 
 });
@@ -43156,11 +44106,11 @@ define('frontend-cp/models/case-form', ['exports', 'ember-data', 'frontend-cp/mi
   });
 
 });
-define('frontend-cp/models/case-message', ['exports', 'ember-data'], function (exports, DS) {
+define('frontend-cp/models/case-message', ['exports', 'ember-data', 'frontend-cp/models/postable'], function (exports, DS, Postable) {
 
   'use strict';
 
-  exports['default'] = DS['default'].Model.extend({
+  exports['default'] = Postable['default'].extend({
     uuid: DS['default'].attr('string'),
     subject: DS['default'].attr('string'),
     bodyText: DS['default'].attr('string'),
@@ -43185,11 +44135,11 @@ define('frontend-cp/models/case-message', ['exports', 'ember-data'], function (e
   });
 
 });
-define('frontend-cp/models/case-note', ['exports', 'ember-data', 'frontend-cp/models/event'], function (exports, DS, Event) {
+define('frontend-cp/models/case-note', ['exports', 'ember-data', 'frontend-cp/models/postable'], function (exports, DS, Postable) {
 
   'use strict';
 
-  exports['default'] = Event['default'].extend({
+  exports['default'] = Postable['default'].extend({
     uuid: DS['default'].attr('string'),
     subject: DS['default'].attr('string'),
     contents: DS['default'].attr('string'),
@@ -43316,6 +44266,7 @@ define('frontend-cp/models/case', ['exports', 'ember-data', 'frontend-cp/mixins/
     // Children fields
     notes: DS['default'].hasMany('case-note', { async: true, child: true, noCache: true }),
     messages: DS['default'].hasMany('case-message', { async: true, child: true, noCache: true }),
+    posts: DS['default'].hasMany('post', { async: true, child: true, noCache: true }),
     channels: DS['default'].hasMany('channel', { async: true, child: true, url: 'channels', noCache: true }),
     replyChannels: DS['default'].hasMany('channel', { async: true, child: true, url: 'reply/channels', noCache: true }),
     reply: DS['default'].hasMany('case-reply', { async: true, child: true, noCache: true }),
@@ -43557,13 +44508,6 @@ define('frontend-cp/models/definition', ['exports', 'ember-data'], function (exp
     operators: DS['default'].attr('array'),
     values: DS['default'].hasManyFragments('definition-value-fragment') //can be an empty string or an object with keys as value and properties as text
   });
-
-});
-define('frontend-cp/models/event', ['exports', 'ember-data'], function (exports, DS) {
-
-	'use strict';
-
-	exports['default'] = DS['default'].Model.extend({});
 
 });
 define('frontend-cp/models/facebook-account', ['exports', 'ember-data', 'frontend-cp/models/account'], function (exports, DS, Account) {
@@ -43967,11 +44911,11 @@ define('frontend-cp/models/message-recipient', ['exports', 'ember-data'], functi
 	exports['default'] = DS['default'].Model.extend({});
 
 });
-define('frontend-cp/models/note', ['exports', 'ember-data', 'frontend-cp/models/event'], function (exports, DS, Event) {
+define('frontend-cp/models/note', ['exports', 'ember-data', 'frontend-cp/models/postable'], function (exports, DS, Postable) {
 
   'use strict';
 
-  exports['default'] = Event['default'].extend({
+  exports['default'] = Postable['default'].extend({
     contentText: DS['default'].attr('string'),
     contentHtml: DS['default'].attr('string'),
     color: DS['default'].attr('string', { defaultValue: 'YELLOW' }), // TODO enum YELLOW, RED, GREEN, BLUE, ORANGE, PURPLE
@@ -44061,6 +45005,35 @@ define('frontend-cp/models/organization', ['exports', 'ember-data'], function (e
     // Shadow children fields
     domains: DS['default'].hasMany('identity-domain', { async: true, child: true, url: 'identities/domains' })
   });
+
+});
+define('frontend-cp/models/post', ['exports', 'ember-data'], function (exports, DS) {
+
+  'use strict';
+
+  exports['default'] = DS['default'].Model.extend({
+    uuid: DS['default'].attr('string'),
+    sequence: DS['default'].attr('number'),
+    subject: DS['default'].attr('string'),
+    contents: DS['default'].attr('string'),
+    creator: DS['default'].belongsTo('user'),
+    identity: DS['default'].belongsTo('identity'),
+    attachments: DS['default'].hasMany('attachment', { async: true }),
+    downloadAll: DS['default'].attr('string'),
+    original: DS['default'].belongsTo('postable', { async: true, polymorphic: true }),
+    createdAt: DS['default'].attr('date'),
+    updatedAt: DS['default'].attr('date'),
+
+    // Virtual parent field
+    'case': DS['default'].belongsTo('case', { async: true, parent: true })
+  });
+
+});
+define('frontend-cp/models/postable', ['exports', 'ember-data'], function (exports, DS) {
+
+	'use strict';
+
+	exports['default'] = DS['default'].Model.extend({});
 
 });
 define('frontend-cp/models/predicate-collection', ['exports', 'ember-data'], function (exports, DS) {
@@ -63452,7 +64425,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+e1dab146"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+f2cb6a50"});
 }
 
 /* jshint ignore:end */
