@@ -5838,17 +5838,9 @@ define('frontend-cp/components/ko-admin/views/edit/component', ['exports', 'embe
         this.get('currentView.predicateCollections').removeObject(collection);
       },
 
-      createRuleForCollectionAfter: function createRuleForCollectionAfter(collection, rule) {
+      createRuleForCollection: function createRuleForCollection(collection) {
         var newProposition = this.get('store').createFragment('proposition', {});
-
-        var propositions = collection.get('propositions');
-
-        var newPropositionPosition = propositions.indexOf(rule);
-        if (newPropositionPosition !== -1) {
-          propositions.insertAt(newPropositionPosition + 1, newProposition);
-        } else {
-          propositions.pushObject(newProposition);
-        }
+        collection.get('propositions').pushObject(newProposition);
       },
 
       removeRuleFromCollection: function removeRuleFromCollection(collection, rule) {
@@ -6536,7 +6528,7 @@ define('frontend-cp/components/ko-admin/views/edit/template', ['exports'], funct
         ["inline","ko-radio",[],["label","A specific team","checked",["subexpr","@mut",[["get","sharedWithTeam",["loc",[null,[27,51],[27,65]]]]],[],[]],"onRadio","setViewSharingTeam"],["loc",[null,[27,8],[27,97]]]],
         ["block","ko-dropdown/select",[],["label",["subexpr","@mut",[["get","selectedTeamLabel",["loc",[null,[30,38],[30,55]]]]],[],[]]],0,null,["loc",[null,[30,10],[34,33]]]],
         ["inline","format-message",[["subexpr","intl-get",["admin.views.heading.predicate_builder"],[],["loc",[null,[42,48],[42,98]]]]],[],["loc",[null,[42,31],[42,100]]]],
-        ["inline","ko-predicate-builder",[],["definitions",["subexpr","@mut",[["get","definitions",["loc",[null,[44,16],[44,27]]]]],[],[]],"collections",["subexpr","@mut",[["get","currentView.predicateCollections",["loc",[null,[45,16],[45,48]]]]],[],[]],"onCollectionAddition","addCollection","onCollectionRemoval","removeCollection","onAdditionOfRuleToCollection","createRuleForCollectionAfter","onRuleDeletion","removeRuleFromCollection","canDeleteCollection",["subexpr","@mut",[["get","canDeleteCollection",["loc",[null,[50,24],[50,43]]]]],[],[]]],["loc",[null,[43,2],[51,4]]]],
+        ["inline","ko-predicate-builder",[],["definitions",["subexpr","@mut",[["get","definitions",["loc",[null,[44,16],[44,27]]]]],[],[]],"collections",["subexpr","@mut",[["get","currentView.predicateCollections",["loc",[null,[45,16],[45,48]]]]],[],[]],"onCollectionAddition","addCollection","onCollectionRemoval","removeCollection","onAdditionOfRuleToCollection","createRuleForCollection","onRuleDeletion","removeRuleFromCollection","canDeleteCollection",["subexpr","@mut",[["get","canDeleteCollection",["loc",[null,[50,24],[50,43]]]]],[],[]]],["loc",[null,[43,2],[51,4]]]],
         ["inline","format-message",[["subexpr","intl-get",["admin.views.heading.configure_layout"],[],["loc",[null,[56,48],[56,97]]]]],[],["loc",[null,[56,31],[56,99]]]],
         ["inline","format-message",[["subexpr","intl-get",["admin.views.label.configure_layout"],[],["loc",[null,[59,45],[59,92]]]]],[],["loc",[null,[59,28],[59,94]]]],
         ["inline","ko-admin/views/edit/columns",[],["columns",["subexpr","@mut",[["get","currentView.columns",["loc",[null,[60,42],[60,61]]]]],[],[]]],["loc",[null,[60,4],[60,63]]]],
@@ -21242,8 +21234,8 @@ define('frontend-cp/components/ko-predicate-builder/component', ['exports', 'emb
       removeCollection: function removeCollection(collection) {
         this.sendAction('onCollectionRemoval', collection);
       },
-      addRuleToCollectionAfter: function addRuleToCollectionAfter(collection, rule) {
-        this.sendAction('onAdditionOfRuleToCollection', collection, rule);
+      addRuleToCollection: function addRuleToCollection(collection) {
+        this.sendAction('onAdditionOfRuleToCollection', collection);
       },
       removeRuleFromCollection: function removeRuleFromCollection(collection, rule) {
         this.sendAction('onRuleDeletion', collection, rule);
@@ -21955,11 +21947,11 @@ define('frontend-cp/components/ko-predicate-builder/rule/template', ['exports'],
           "loc": {
             "source": null,
             "start": {
-              "line": 44,
+              "line": 43,
               "column": 4
             },
             "end": {
-              "line": 46,
+              "line": 45,
               "column": 4
             }
           },
@@ -21987,7 +21979,7 @@ define('frontend-cp/components/ko-predicate-builder/rule/template', ['exports'],
           return morphs;
         },
         statements: [
-          ["element","action",["deleteRule",["get","rule",["loc",[null,[45,34],[45,38]]]]],[],["loc",[null,[45,12],[45,40]]]]
+          ["element","action",["deleteRule",["get","rule",["loc",[null,[44,34],[44,38]]]]],[],["loc",[null,[44,12],[44,40]]]]
         ],
         locals: [],
         templates: []
@@ -22003,7 +21995,7 @@ define('frontend-cp/components/ko-predicate-builder/rule/template', ['exports'],
             "column": 0
           },
           "end": {
-            "line": 47,
+            "line": 46,
             "column": 6
           }
         },
@@ -22056,29 +22048,18 @@ define('frontend-cp/components/ko-predicate-builder/rule/template', ['exports'],
         dom.setAttribute(el1,"class","u-inline-block predicate-builder_rule__actions");
         var el2 = dom.createTextNode("\n");
         dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("    ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("span");
-        var el3 = dom.createTextNode("ADD");
-        dom.appendChild(el2, el3);
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n");
-        dom.appendChild(el1, el2);
         var el2 = dom.createComment("");
         dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var element1 = dom.childAt(fragment, [8]);
-        var element2 = dom.childAt(element1, [2]);
-        var morphs = new Array(6);
+        var morphs = new Array(5);
         morphs[0] = dom.createMorphAt(dom.childAt(fragment, [0]),1,1);
         morphs[1] = dom.createMorphAt(dom.childAt(fragment, [2]),1,1);
         morphs[2] = dom.createMorphAt(dom.childAt(fragment, [4]),1,1);
         morphs[3] = dom.createMorphAt(dom.childAt(fragment, [6]),1,1);
-        morphs[4] = dom.createElementMorph(element2);
-        morphs[5] = dom.createMorphAt(element1,4,4);
+        morphs[4] = dom.createMorphAt(dom.childAt(fragment, [8]),1,1);
         return morphs;
       },
       statements: [
@@ -22086,8 +22067,7 @@ define('frontend-cp/components/ko-predicate-builder/rule/template', ['exports'],
         ["block","ko-dropdown/select",[],["label",["subexpr","@mut",[["get","selectedDefinitionLabel",["loc",[null,[6,28],[6,51]]]]],[],[]],"hideOnClick",true,"class","predicate-builder_rule__input"],0,null,["loc",[null,[6,0],[12,23]]]],
         ["block","ko-dropdown/select",[],["label",["subexpr","format-message",[["subexpr","intl-get",[["subexpr","ko-concat",["admin.predicate_builder.operators.",["subexpr","or",[["get","rule.operator",["loc",[null,[16,106],[16,119]]]],"none"],[],["loc",[null,[16,102],[16,127]]]]],[],["loc",[null,[16,54],[16,128]]]]],[],["loc",[null,[16,44],[16,129]]]]],[],["loc",[null,[16,28],[16,130]]]],"hideOnClick",true,"class","predicate-builder_rule__input"],1,null,["loc",[null,[16,0],[22,23]]]],
         ["block","if",[["get","availableProperties.length",["loc",[null,[26,8],[26,34]]]]],[],2,3,["loc",[null,[26,2],[38,9]]]],
-        ["element","action",["appendRule",["get","rule",["loc",[null,[43,32],[43,36]]]]],[],["loc",[null,[43,10],[43,38]]]],
-        ["block","if",[["get","canDeleteRule",["loc",[null,[44,10],[44,23]]]]],[],4,null,["loc",[null,[44,4],[46,11]]]]
+        ["block","if",[["get","canDeleteRule",["loc",[null,[43,10],[43,23]]]]],[],4,null,["loc",[null,[43,4],[45,11]]]]
       ],
       locals: [],
       templates: [child0, child1, child2, child3, child4]
@@ -22160,7 +22140,7 @@ define('frontend-cp/components/ko-predicate-builder/template', ['exports'], func
                 "column": 4
               },
               "end": {
-                "line": 20,
+                "line": 19,
                 "column": 4
               }
             },
@@ -22185,7 +22165,7 @@ define('frontend-cp/components/ko-predicate-builder/template', ['exports'], func
             return morphs;
           },
           statements: [
-            ["inline","ko-predicate-builder/rule",[],["definitions",["subexpr","@mut",[["get","definitions",["loc",[null,[14,22],[14,33]]]]],[],[]],"rule",["subexpr","@mut",[["get","proposition",["loc",[null,[15,15],[15,26]]]]],[],[]],"canDeleteRule",["subexpr","not",[["subexpr","eq",[["get","collection.propositions.length",["loc",[null,[16,33],[16,63]]]],1],[],["loc",[null,[16,29],[16,66]]]]],[],["loc",[null,[16,24],[16,67]]]],"appendRule",["subexpr","action",["addRuleToCollectionAfter",["get","collection",["loc",[null,[17,56],[17,66]]]]],[],["loc",[null,[17,21],[17,67]]]],"deleteRule",["subexpr","action",["removeRuleFromCollection",["get","collection",["loc",[null,[18,56],[18,66]]]]],[],["loc",[null,[18,21],[18,67]]]]],["loc",[null,[13,6],[19,8]]]]
+            ["inline","ko-predicate-builder/rule",[],["definitions",["subexpr","@mut",[["get","definitions",["loc",[null,[14,22],[14,33]]]]],[],[]],"rule",["subexpr","@mut",[["get","proposition",["loc",[null,[15,15],[15,26]]]]],[],[]],"canDeleteRule",["subexpr","not",[["subexpr","eq",[["get","collection.propositions.length",["loc",[null,[16,33],[16,63]]]],1],[],["loc",[null,[16,29],[16,66]]]]],[],["loc",[null,[16,24],[16,67]]]],"deleteRule",["subexpr","action",["removeRuleFromCollection",["get","collection",["loc",[null,[17,56],[17,66]]]]],[],["loc",[null,[17,21],[17,67]]]]],["loc",[null,[13,6],[18,8]]]]
           ],
           locals: ["proposition"],
           templates: []
@@ -22233,7 +22213,14 @@ define('frontend-cp/components/ko-predicate-builder/template', ['exports'], func
           dom.appendChild(el1, el2);
           var el2 = dom.createComment("");
           dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("  ");
+          var el2 = dom.createTextNode("    ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("div");
+          dom.setAttribute(el2,"class","");
+          var el3 = dom.createTextNode("+ New Criteria");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n  ");
           dom.appendChild(el1, el2);
           dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n");
@@ -22242,16 +22229,19 @@ define('frontend-cp/components/ko-predicate-builder/template', ['exports'], func
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
           var element1 = dom.childAt(fragment, [1]);
-          var morphs = new Array(3);
+          var element2 = dom.childAt(element1, [6]);
+          var morphs = new Array(4);
           morphs[0] = dom.createMorphAt(dom.childAt(element1, [1]),1,1);
           morphs[1] = dom.createMorphAt(element1,3,3);
           morphs[2] = dom.createMorphAt(element1,4,4);
+          morphs[3] = dom.createElementMorph(element2);
           return morphs;
         },
         statements: [
           ["inline","format-message",[["subexpr","intl-get",["generic.and"],[],["loc",[null,[4,23],[4,47]]]]],[],["loc",[null,[4,6],[4,49]]]],
           ["block","if",[["get","canDeleteCollection",["loc",[null,[7,10],[7,29]]]]],[],0,null,["loc",[null,[7,4],[11,11]]]],
-          ["block","each",[["get","collection.propositions",["loc",[null,[12,12],[12,35]]]]],[],1,null,["loc",[null,[12,4],[20,13]]]]
+          ["block","each",[["get","collection.propositions",["loc",[null,[12,12],[12,35]]]]],[],1,null,["loc",[null,[12,4],[19,13]]]],
+          ["element","action",["addRuleToCollection",["get","collection",["loc",[null,[20,49],[20,59]]]]],[],["loc",[null,[20,18],[20,61]]]]
         ],
         locals: ["collection"],
         templates: [child0, child1]
@@ -22290,11 +22280,11 @@ define('frontend-cp/components/ko-predicate-builder/template', ['exports'], func
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var element2 = dom.childAt(fragment, [2]);
+        var element3 = dom.childAt(fragment, [2]);
         var morphs = new Array(3);
         morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
-        morphs[1] = dom.createElementMorph(element2);
-        morphs[2] = dom.createMorphAt(element2,0,0);
+        morphs[1] = dom.createElementMorph(element3);
+        morphs[2] = dom.createMorphAt(element3,0,0);
         dom.insertBoundary(fragment, 0);
         return morphs;
       },
@@ -29394,7 +29384,7 @@ define('frontend-cp/helpers/ko-get-key', ['exports', 'ember'], function (exports
   'use strict';
 
   exports['default'] = Ember['default'].Handlebars.makeBoundHelper(function (value, key) {
-    return value[key];
+    return value.get(key);
   });
 
 });
@@ -63262,7 +63252,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+51820a18"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+22f7e44d"});
 }
 
 /* jshint ignore:end */
