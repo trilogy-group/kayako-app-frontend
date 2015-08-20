@@ -1,3 +1,18 @@
 {
-  "addnewuser": "Add New User"
+  "addnewuser": "Add New User",
+  "infobar.organization": "Organization",
+  "infobar.role": "Role",
+  "infobar.timezone": "Timezone",
+
+  "newteam": "New Team",
+  "addteam": "Add a team...",
+  "teams": "Teams",
+
+  "newtag": "New Tag",
+  "addtag": "Add a tag...",
+  "tags": "Tags",
+
+  "metadata.created": "Created",
+  "metadata.updated": "Updated",
+  "metadata.lastseen": "Last seen"
 }
