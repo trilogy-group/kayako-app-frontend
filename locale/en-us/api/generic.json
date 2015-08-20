@@ -1,4 +1,5 @@
 {
+  "validation_errors": "Please fill in all required fields",
   "next": "Next",
   "close": "close",
   "datepicker.clear": "Clear",
