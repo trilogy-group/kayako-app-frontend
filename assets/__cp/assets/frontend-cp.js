@@ -49357,28 +49357,26 @@ define('frontend-cp/session/agent/cases/case/controller', ['exports', 'ember', '
       var hasUser = this.get('model.creator.id');
       var caseCrumb = {
         id: 'case',
-        name: 'Case',
+        name: 'Case ' + this.get('model.id'),
         route: 'session.agent.cases.case.index'
-      };
-      var userCrumb = {
-        id: 'user',
-        name: 'User',
-        route: 'session.agent.cases.case.user'
-      };
-      var organisationCrumb = {
-        id: 'organisation',
-        name: 'Organisation',
-        route: 'session.agent.cases.case.organisation'
       };
 
       var crumbs = [];
 
       if (hasOrganisation) {
-        crumbs.push(organisationCrumb);
+        crumbs.push({
+          id: 'organisation',
+          name: this.get('model.creator.organization.name'),
+          route: 'session.agent.cases.case.organisation'
+        });
       }
 
       if (hasUser) {
-        crumbs.push(userCrumb);
+        crumbs.push({
+          id: 'user',
+          name: this.get('model.creator.fullName'),
+          route: 'session.agent.cases.case.user'
+        });
       }
 
       crumbs.push(caseCrumb);
@@ -63304,7 +63302,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+897ddaa2"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+80684232"});
 }
 
 /* jshint ignore:end */
