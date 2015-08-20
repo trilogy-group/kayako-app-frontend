@@ -9898,52 +9898,6 @@ define('frontend-cp/components/ko-case/sla-sidebar/metric/template', ['exports']
         templates: []
       };
     }());
-    var child3 = (function() {
-      return {
-        meta: {
-          "revision": "Ember@1.13.6",
-          "loc": {
-            "source": null,
-            "start": {
-              "line": 20,
-              "column": 2
-            },
-            "end": {
-              "line": 22,
-              "column": 2
-            }
-          },
-          "moduleName": "frontend-cp/components/ko-case/sla-sidebar/metric/template.hbs"
-        },
-        arity: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("    ");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createComment("");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createComment("");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n");
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(2);
-          morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
-          morphs[1] = dom.createMorphAt(fragment,2,2,contextualElement);
-          return morphs;
-        },
-        statements: [
-          ["content","metric.numberOfWholeMinutesRemaining",["loc",[null,[21,4],[21,44]]]],
-          ["inline","format-message",[["subexpr","intl-get",["generic.minute_abbreviation"],[],["loc",[null,[21,61],[21,101]]]]],[],["loc",[null,[21,44],[21,103]]]]
-        ],
-        locals: [],
-        templates: []
-      };
-    }());
     return {
       meta: {
         "revision": "Ember@1.13.6",
@@ -9954,7 +9908,7 @@ define('frontend-cp/components/ko-case/sla-sidebar/metric/template', ['exports']
             "column": 0
           },
           "end": {
-            "line": 26,
+            "line": 24,
             "column": 0
           }
         },
@@ -9998,11 +9952,13 @@ define('frontend-cp/components/ko-case/sla-sidebar/metric/template', ['exports']
         dom.appendChild(el1, el2);
         var el2 = dom.createComment("");
         dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n");
+        var el2 = dom.createTextNode("\n  ");
         dom.appendChild(el1, el2);
         var el2 = dom.createComment("");
         dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n  ");
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n  ");
         dom.appendChild(el1, el2);
         var el2 = dom.createElement("i");
         dom.appendChild(el1, el2);
@@ -10015,15 +9971,16 @@ define('frontend-cp/components/ko-case/sla-sidebar/metric/template', ['exports']
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
         var element0 = dom.childAt(fragment, [4]);
-        var element1 = dom.childAt(element0, [9]);
-        var morphs = new Array(7);
+        var element1 = dom.childAt(element0, [10]);
+        var morphs = new Array(8);
         morphs[0] = dom.createMorphAt(dom.childAt(fragment, [0]),1,1);
         morphs[1] = dom.createAttrMorph(element0, 'class');
         morphs[2] = dom.createMorphAt(element0,1,1);
         morphs[3] = dom.createMorphAt(element0,3,3);
         morphs[4] = dom.createMorphAt(element0,5,5);
         morphs[5] = dom.createMorphAt(element0,7,7);
-        morphs[6] = dom.createAttrMorph(element1, 'class');
+        morphs[6] = dom.createMorphAt(element0,8,8);
+        morphs[7] = dom.createAttrMorph(element1, 'class');
         return morphs;
       },
       statements: [
@@ -10032,11 +9989,12 @@ define('frontend-cp/components/ko-case/sla-sidebar/metric/template', ['exports']
         ["block","if",[["get","metric.isBreached",["loc",[null,[8,8],[8,25]]]]],[],0,null,["loc",[null,[8,2],[10,9]]]],
         ["block","if",[["get","metric.numberOfWholeDaysRemaining",["loc",[null,[12,8],[12,41]]]]],[],1,null,["loc",[null,[12,2],[14,9]]]],
         ["block","if",[["get","metric.numberOfWholeHoursRemaining",["loc",[null,[16,8],[16,42]]]]],[],2,null,["loc",[null,[16,2],[18,9]]]],
-        ["block","if",[["get","metric.numberOfWholeMinutesRemaining",["loc",[null,[20,8],[20,44]]]]],[],3,null,["loc",[null,[20,2],[22,9]]]],
-        ["attribute","class",["concat",[["get","iconClass",["loc",[null,[24,14],[24,23]]]]," i-size-base i-after"]]]
+        ["content","metric.numberOfWholeMinutesRemaining",["loc",[null,[20,2],[20,42]]]],
+        ["inline","format-message",[["subexpr","intl-get",["generic.minute_abbreviation"],[],["loc",[null,[20,59],[20,99]]]]],[],["loc",[null,[20,42],[20,101]]]],
+        ["attribute","class",["concat",[["get","iconClass",["loc",[null,[22,14],[22,23]]]]," i-size-base i-after"]]]
       ],
       locals: [],
-      templates: [child0, child1, child2, child3]
+      templates: [child0, child1, child2]
     };
   }()));
 
@@ -29436,7 +29394,7 @@ define('frontend-cp/helpers/ko-get-key', ['exports', 'ember'], function (exports
   'use strict';
 
   exports['default'] = Ember['default'].Handlebars.makeBoundHelper(function (value, key) {
-    return value[key];
+    return value.get(key);
   });
 
 });
@@ -44145,7 +44103,7 @@ define('frontend-cp/models/session', ['exports', 'ember-data'], function (export
   });
 
 });
-define('frontend-cp/models/sla-metric', ['exports', 'ember-data'], function (exports, DS) {
+define('frontend-cp/models/sla-metric', ['exports', 'ember-data', 'moment'], function (exports, DS, moment) {
 
   'use strict';
 
@@ -44155,6 +44113,7 @@ define('frontend-cp/models/sla-metric', ['exports', 'ember-data'], function (exp
     isBreached: DS['default'].attr('boolean'),
     remainingSeconds: DS['default'].attr('number'),
     totalSeconds: DS['default'].attr('number'),
+    timeTakenSeconds: DS['default'].attr('number'),
 
     status: (function () {
       // OK | OPEN | WARNING | BREACHED
@@ -44180,18 +44139,19 @@ define('frontend-cp/models/sla-metric', ['exports', 'ember-data'], function (exp
     }).property('remainingSeconds', 'totalSeconds'),
 
     numberOfWholeDaysRemaining: (function () {
-      return Math.abs(Math.floor(this.get('remainingSeconds') / 86400)); //86400 = 60*60*24
-    }).property('remainingSeconds'),
+      var timeInSeconds = this.get('isCompleted') ? this.get('timeTakenSeconds') : this.get('remainingSeconds');
+      return moment['default'].duration(timeInSeconds, 'seconds').days();
+    }).property('remainingSeconds', 'isCompleted', 'timeTakenSeconds'),
 
     numberOfWholeHoursRemaining: (function () {
-      var remainingHours = Math.abs(Math.floor(this.get('remainingSeconds') / 3600));
-      return remainingHours % 24; //will be shown in days
-    }).property('remainingSeconds'),
+      var timeInSeconds = this.get('isCompleted') ? this.get('timeTakenSeconds') : this.get('remainingSeconds');
+      return moment['default'].duration(timeInSeconds, 'seconds').hours();
+    }).property('remainingSeconds', 'isCompleted', 'timeTakenSeconds'),
 
     numberOfWholeMinutesRemaining: (function () {
-      var remainingMinutes = Math.abs(Math.floor(this.get('remainingSeconds') / 60));
-      return remainingMinutes % 60;
-    }).property('remainingSeconds')
+      var timeInSeconds = this.get('isCompleted') ? this.get('timeTakenSeconds') : this.get('remainingSeconds');
+      return moment['default'].duration(timeInSeconds, 'seconds').minutes();
+    }).property('remainingSeconds', 'isCompleted', 'timeTakenSeconds')
   });
 
 });
@@ -63302,7 +63262,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+80684232"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+6e441c10"});
 }
 
 /* jshint ignore:end */
