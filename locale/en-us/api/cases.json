@@ -10,6 +10,7 @@
   "metric.total": "{number, number} Total",
   "metric.unresolved": "Unresolved",
   "newtag": "New Tag",
+  "addtag": "Add a tag...",
   "note": "Note",
   "priority": "Priority",
   "requester": "Requester",
