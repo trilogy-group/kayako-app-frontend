@@ -7993,6 +7993,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       Ember['default'].run(function () {
         _this4.set('loading', true);
         _this4.get('store').query('post', { parent: _this4.get('case'), after_id: id }).then(function (posts) {
+          // eslint-disable-line camelcase
           posts.forEach(function (post) {
             return _this4.get('posts').pushObject(post);
           });
@@ -8188,14 +8189,15 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
         } else {
           if (editor.get('activeMode') === 'note') {
             this.get('case').saveWithNote(post).then(function (caseNote) {
+              _this7.get('posts').pushObject(caseNote.get('post'));
               _this7.resetCaseFormState();
             }, function (e) {
               _this7.set('errors', e.errors);
             });
           } else {
             this.get('case').saveWithPost(post, channel).then(function (caseReply) {
-              caseReply.get('post').then(function (newPost) {
-                _this7.get('posts').pushObject(newPost);
+              caseReply.get('posts').forEach(function (post) {
+                _this7.get('posts').pushObject(post);
               });
               _this7.resetCaseFormState();
             }, function (e) {
@@ -16034,6 +16036,9 @@ define('frontend-cp/components/ko-feed/item/component', ['exports', 'ember'], fu
     //params
     event: null,
 
+    classNameBindings: ['isPrivate'],
+    isPrivate: Ember['default'].computed.equal('event.original.postType', 'note'),
+
     showMenu: false,
 
     mouseEnter: function mouseEnter() {
@@ -16134,12 +16139,12 @@ define('frontend-cp/components/ko-feed/item/template', ['exports'], function (ex
             "loc": {
               "source": null,
               "start": {
-                "line": 10,
-                "column": 4
+                "line": 9,
+                "column": 2
               },
               "end": {
-                "line": 13,
-                "column": 4
+                "line": 12,
+                "column": 2
               }
             },
             "moduleName": "frontend-cp/components/ko-feed/item/template.hbs"
@@ -16149,7 +16154,7 @@ define('frontend-cp/components/ko-feed/item/template', ['exports'], function (ex
           hasRendered: false,
           buildFragment: function buildFragment(dom) {
             var el0 = dom.createDocumentFragment();
-            var el1 = dom.createTextNode("      ");
+            var el1 = dom.createTextNode("    ");
             dom.appendChild(el0, el1);
             var el1 = dom.createElement("img");
             dom.appendChild(el0, el1);
@@ -16157,7 +16162,7 @@ define('frontend-cp/components/ko-feed/item/template', ['exports'], function (ex
             dom.appendChild(el0, el1);
             var el1 = dom.createElement("br");
             dom.appendChild(el0, el1);
-            var el1 = dom.createTextNode("\n      ");
+            var el1 = dom.createTextNode("\n    ");
             dom.appendChild(el0, el1);
             var el1 = dom.createComment("");
             dom.appendChild(el0, el1);
@@ -16178,9 +16183,9 @@ define('frontend-cp/components/ko-feed/item/template', ['exports'], function (ex
             return morphs;
           },
           statements: [
-            ["attribute","src",["concat",[["get","attachment.thumbnails.firstObject.url",["loc",[null,[11,18],[11,55]]]]]]],
-            ["content","attachment.name",["loc",[null,[12,6],[12,25]]]],
-            ["inline","ko-file-size",[],["size",["subexpr","@mut",[["get","attachment.size",["loc",[null,[12,46],[12,61]]]]],[],[]]],["loc",[null,[12,26],[12,63]]]]
+            ["attribute","src",["concat",[["get","attachment.thumbnails.firstObject.url",["loc",[null,[10,16],[10,53]]]]]]],
+            ["content","attachment.name",["loc",[null,[11,4],[11,23]]]],
+            ["inline","ko-file-size",[],["size",["subexpr","@mut",[["get","attachment.size",["loc",[null,[11,44],[11,59]]]]],[],[]]],["loc",[null,[11,24],[11,61]]]]
           ],
           locals: ["attachment"],
           templates: []
@@ -16192,12 +16197,12 @@ define('frontend-cp/components/ko-feed/item/template', ['exports'], function (ex
           "loc": {
             "source": null,
             "start": {
-              "line": 9,
-              "column": 2
+              "line": 8,
+              "column": 0
             },
             "end": {
-              "line": 14,
-              "column": 2
+              "line": 13,
+              "column": 0
             }
           },
           "moduleName": "frontend-cp/components/ko-feed/item/template.hbs"
@@ -16219,7 +16224,7 @@ define('frontend-cp/components/ko-feed/item/template', ['exports'], function (ex
           return morphs;
         },
         statements: [
-          ["block","each",[["get","event.attachments",["loc",[null,[10,12],[10,29]]]]],[],0,null,["loc",[null,[10,4],[13,13]]]]
+          ["block","each",[["get","event.attachments",["loc",[null,[9,10],[9,27]]]]],[],0,null,["loc",[null,[9,2],[12,11]]]]
         ],
         locals: [],
         templates: [child0]
@@ -16235,7 +16240,7 @@ define('frontend-cp/components/ko-feed/item/template', ['exports'], function (ex
             "column": 0
           },
           "end": {
-            "line": 17,
+            "line": 15,
             "column": 0
           }
         },
@@ -16247,46 +16252,31 @@ define('frontend-cp/components/ko-feed/item/template', ['exports'], function (ex
       buildFragment: function buildFragment(dom) {
         var el0 = dom.createDocumentFragment();
         var el1 = dom.createElement("div");
-        dom.setAttribute(el1,"class","feed__item");
-        var el2 = dom.createTextNode("\n  ");
+        dom.setAttribute(el1,"class","feed__image");
+        var el2 = dom.createComment("");
         dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","feed__image");
-        var el3 = dom.createComment("");
-        dom.appendChild(el2, el3);
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","feed__title");
-        var el3 = dom.createComment("");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("div");
-        dom.setAttribute(el3,"class","feed__title--small");
-        var el4 = dom.createComment("");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n  ");
-        dom.appendChild(el2, el3);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","feed__title");
+        var el2 = dom.createComment("");
         dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n  ");
         dom.appendChild(el1, el2);
         var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","feed__content");
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
+        dom.setAttribute(el2,"class","feed__title--small");
         var el3 = dom.createComment("");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n  ");
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n");
         dom.appendChild(el1, el2);
-        var el2 = dom.createComment("");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("  ");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","feed__content");
+        var el2 = dom.createTextNode("\n  ");
         dom.appendChild(el1, el2);
         var el2 = dom.createComment("");
         dom.appendChild(el1, el2);
@@ -16295,27 +16285,32 @@ define('frontend-cp/components/ko-feed/item/template', ['exports'], function (ex
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var element1 = dom.childAt(fragment, [0]);
-        var element2 = dom.childAt(element1, [3]);
+        var element1 = dom.childAt(fragment, [2]);
         var morphs = new Array(6);
-        morphs[0] = dom.createMorphAt(dom.childAt(element1, [1]),0,0);
-        morphs[1] = dom.createMorphAt(element2,0,0);
-        morphs[2] = dom.createMorphAt(dom.childAt(element2, [2]),0,0);
-        morphs[3] = dom.createMorphAt(dom.childAt(element1, [5]),1,1);
-        morphs[4] = dom.createMorphAt(element1,7,7);
-        morphs[5] = dom.createMorphAt(element1,9,9);
+        morphs[0] = dom.createMorphAt(dom.childAt(fragment, [0]),0,0);
+        morphs[1] = dom.createMorphAt(element1,0,0);
+        morphs[2] = dom.createMorphAt(dom.childAt(element1, [2]),0,0);
+        morphs[3] = dom.createMorphAt(dom.childAt(fragment, [4]),1,1);
+        morphs[4] = dom.createMorphAt(fragment,6,6,contextualElement);
+        morphs[5] = dom.createMorphAt(fragment,7,7,contextualElement);
         return morphs;
       },
       statements: [
-        ["inline","ko-avatar",[],["avatar",["subexpr","@mut",[["get","event.creator.avatar",["loc",[null,[2,46],[2,66]]]]],[],[]],"size","large"],["loc",[null,[2,27],[2,81]]]],
-        ["content","event.creator.fullName",["loc",[null,[3,27],[3,53]]]],
-        ["inline","format-message",[["subexpr","intl-get",["feed.replied"],[],["loc",[null,[4,53],[4,78]]]]],["ago",["subexpr","ago",[["get","event.createdAt",["loc",[null,[4,88],[4,103]]]]],[],["loc",[null,[4,83],[4,104]]]]],["loc",[null,[4,36],[4,106]]]],
-        ["content","event.contents",["loc",[null,[7,4],[7,22]]]],
-        ["block","if",[["get","event.attachments",["loc",[null,[9,8],[9,25]]]]],[],0,null,["loc",[null,[9,2],[14,9]]]],
-        ["inline","ko-feed/item/menu",[],["showMenu",["subexpr","@mut",[["get","showMenu",["loc",[null,[15,31],[15,39]]]]],[],[]],"onReplyWithQuote","onReplyWithQuote"],["loc",[null,[15,2],[15,77]]]]
+        ["inline","ko-avatar",[],["avatar",["subexpr","@mut",[["get","event.creator.avatar",["loc",[null,[1,44],[1,64]]]]],[],[]],"size","large"],["loc",[null,[1,25],[1,79]]]],
+        ["content","event.creator.fullName",["loc",[null,[2,25],[2,51]]]],
+        ["inline","format-message",[["subexpr","intl-get",["feed.replied"],[],["loc",[null,[3,51],[3,76]]]]],["ago",["subexpr","ago",[["get","event.createdAt",["loc",[null,[3,86],[3,101]]]]],[],["loc",[null,[3,81],[3,102]]]]],["loc",[null,[3,34],[3,104]]]],
+        ["content","event.contents",["loc",[null,[6,2],[6,20]]]],
+        ["block","if",[["get","event.attachments",["loc",[null,[8,6],[8,23]]]]],[],0,null,["loc",[null,[8,0],[13,7]]]],
+        ["inline","ko-feed/item/menu",[],["showMenu",["subexpr","@mut",[["get","showMenu",["loc",[null,[14,29],[14,37]]]]],[],[]],"onReplyWithQuote","onReplyWithQuote"],["loc",[null,[14,0],[14,75]]]]
       ],
       locals: [],
       templates: [child0]
@@ -27749,10 +27744,10 @@ define('frontend-cp/components/ko-universal-search/component', ['exports', 'embe
 
         switch (result.get('resource')) {
           case 'person':
-            this.sendAction('loadSearchRouteAction', '/users/', result.get('objectId'));
+            this.sendAction('loadSearchRouteAction', '/agent/users/', result.get('objectId'));
             break;
           case 'case':
-            this.sendAction('loadSearchRouteAction', '/cases/', result.get('objectId'));
+            this.sendAction('loadSearchRouteAction', '/agent/cases/', result.get('objectId'));
             break;
           default:
             break;
@@ -27845,6 +27840,8 @@ define('frontend-cp/components/ko-universal-search/result/component', ['exports'
     resource: null,
     result: null,
     isHighlighted: false,
+    selectHighlightedResultAction: 'selectHighlightedResultAction',
+    stopSearchingAction: 'clearSearchQuery',
 
     tagName: 'li',
     classNameBindings: ['isHighlighted:is-active'],
@@ -27855,7 +27852,12 @@ define('frontend-cp/components/ko-universal-search/result/component', ['exports'
 
     highlight: (function () {
       this.sendAction('on-highlight', this.get('result'));
-    }).on('mouseEnter')
+    }).on('mouseEnter'),
+
+    click: function click() {
+      this.sendAction('selectHighlightedResultAction');
+      this.sendAction('stopSearchingAction');
+    }
 
   });
 
@@ -44377,7 +44379,9 @@ define('frontend-cp/models/case-message', ['exports', 'ember-data', 'frontend-cp
     updatedAt: DS['default'].attr('date'),
 
     // Parent field
-    'case': DS['default'].belongsTo('case', { async: true, parent: true })
+    'case': DS['default'].belongsTo('case', { async: true, parent: true }),
+
+    postType: 'message'
   });
 
 });
@@ -44397,7 +44401,8 @@ define('frontend-cp/models/case-note', ['exports', 'ember-data', 'frontend-cp/mo
     updatedAt: DS['default'].attr('date'),
 
     'case': DS['default'].belongsTo('case', { async: false, parent: true }),
-    note: DS['default'].belongsTo('note', { async: false })
+    note: DS['default'].belongsTo('note', { async: false }),
+    post: DS['default'].belongsTo('post', { async: true })
   });
 
 });
@@ -44437,7 +44442,7 @@ define('frontend-cp/models/case-reply', ['exports', 'ember-data'], function (exp
     // _filename: DS.belongsTo('?'),
 
     'case': DS['default'].belongsTo('case', { async: true, parent: true }),
-    post: DS['default'].belongsTo('case-message', { async: true })
+    posts: DS['default'].hasMany('post', { async: true })
   });
 
 });
@@ -44769,12 +44774,32 @@ define('frontend-cp/models/facebook-account', ['exports', 'ember-data', 'fronten
   });
 
 });
+define('frontend-cp/models/facebook-comment', ['exports', 'ember-data', 'frontend-cp/models/postable'], function (exports, DS, Postable) {
+
+  'use strict';
+
+  exports['default'] = Postable['default'].extend({
+    uuid: DS['default'].attr('string'),
+    postType: 'facebookComment'
+  });
+
+});
 define('frontend-cp/models/facebook-page', ['exports', 'ember-data'], function (exports, DS) {
 
   'use strict';
 
   exports['default'] = DS['default'].Model.extend({
     title: DS['default'].attr('string')
+  });
+
+});
+define('frontend-cp/models/facebook-post', ['exports', 'ember-data', 'frontend-cp/models/postable'], function (exports, DS, Postable) {
+
+  'use strict';
+
+  exports['default'] = Postable['default'].extend({
+    uuid: DS['default'].attr('string'),
+    postType: 'facebookPost'
   });
 
 });
@@ -45171,7 +45196,9 @@ define('frontend-cp/models/note', ['exports', 'ember-data', 'frontend-cp/models/
     'case': DS['default'].belongsTo('case', { async: true, parent: true }),
 
     createdAt: DS['default'].attr('date'),
-    updatedAt: DS['default'].attr('date')
+    updatedAt: DS['default'].attr('date'),
+
+    postType: 'note'
   });
 
 });
@@ -45525,6 +45552,16 @@ define('frontend-cp/models/twitter-account', ['exports', 'ember-data', 'frontend
     isEnabled: DS['default'].attr('boolean'),
     createdAt: DS['default'].attr('date'),
     updatedAt: DS['default'].attr('date')
+  });
+
+});
+define('frontend-cp/models/twitter-tweet', ['exports', 'ember-data', 'frontend-cp/models/postable'], function (exports, DS, Postable) {
+
+  'use strict';
+
+  exports['default'] = Postable['default'].extend({
+    uuid: DS['default'].attr('string'),
+    postType: 'twitter'
   });
 
 });
@@ -64671,7 +64708,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+74b4df77"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+ef6ff974"});
 }
 
 /* jshint ignore:end */
