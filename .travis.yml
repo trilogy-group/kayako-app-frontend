@@ -4,7 +4,7 @@ script: echo 'build'
 notifications:
   webhooks:
     urls:
-    - https://my.kayako.com/KayakoTravis
+    - https://my.kayako.com/Backend/Travis
     on_success: always
     on_failure: always
     on_start: never
