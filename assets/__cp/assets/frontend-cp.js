@@ -29542,20 +29542,6 @@ define('frontend-cp/helpers/or', ['exports', 'ember', 'ember-truth-helpers/helpe
 	exports.orHelper = orHelper['default'];
 
 });
-define('frontend-cp/helpers/pluralize', ['exports', 'ember-inflector/lib/helpers/pluralize'], function (exports, pluralize) {
-
-	'use strict';
-
-	exports['default'] = pluralize['default'];
-
-});
-define('frontend-cp/helpers/singularize', ['exports', 'ember-inflector/lib/helpers/singularize'], function (exports, singularize) {
-
-	'use strict';
-
-	exports['default'] = singularize['default'];
-
-});
 define('frontend-cp/initializers/ember-cli-mirage', ['exports', 'frontend-cp/config/environment', 'frontend-cp/mirage/config', 'ember-cli-mirage/server', 'ember-cli-mirage/utils/read-modules'], function (exports, ENV, config, Server, readModules) {
 
   'use strict';
@@ -64425,7 +64411,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+f2cb6a50"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+fe26aaf5"});
 }
 
 /* jshint ignore:end */
