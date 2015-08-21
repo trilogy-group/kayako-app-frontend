@@ -14,5 +14,9 @@
 
   "metadata.created": "Created",
   "metadata.updated": "Updated",
-  "metadata.lastseen": "Last seen"
+  "metadata.lastseen": "Last seen",
+
+  "infobar.accesslevel": "Organization access",
+  "infobar.accesslevel.self": "Own cases only",
+  "infobar.accesslevel.organization": "All organization's cases"
 }
