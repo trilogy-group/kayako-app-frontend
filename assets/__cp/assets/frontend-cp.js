@@ -27687,6 +27687,7 @@ define('frontend-cp/components/ko-universal-search/component', ['exports', 'embe
   'use strict';
 
   exports['default'] = Ember['default'].Component.extend({
+    classNameBindings: ['isSearching:is-active'],
     searchResults: null,
     searchQuery: null,
     loadSearchRouteAction: 'loadSearchRoute',
@@ -27802,7 +27803,6 @@ define('frontend-cp/components/ko-universal-search/entry/component', ['exports',
   'use strict';
 
   exports['default'] = Ember['default'].TextField.extend({
-    classNames: ['universal-search_entry'],
     selectHighlightedResultAction: 'selectHighlightedResultAction',
     highlightNextResultAction: 'highlightNextResult',
     highlightPreviousResultAction: 'highlightPreviousResult',
@@ -27847,7 +27847,7 @@ define('frontend-cp/components/ko-universal-search/result/component', ['exports'
     isHighlighted: false,
 
     tagName: 'li',
-    classNameBindings: [':universal-search_result', 'isHighlighted:universal-search_result--highlighted'],
+    classNameBindings: ['isHighlighted:is-active'],
 
     iconClass: Ember['default'].computed('resource', function () {
       return 'i-' + this.get('resource');
@@ -27875,8 +27875,8 @@ define('frontend-cp/components/ko-universal-search/result/template', ['exports']
             "column": 0
           },
           "end": {
-            "line": 3,
-            "column": 127
+            "line": 4,
+            "column": 0
           }
         },
         "moduleName": "frontend-cp/components/ko-universal-search/result/template.hbs"
@@ -27891,16 +27891,18 @@ define('frontend-cp/components/ko-universal-search/result/template', ['exports']
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
         var el1 = dom.createElement("div");
-        dom.setAttribute(el1,"class","universal-search_result-snippet");
+        dom.setAttribute(el1,"class","universal-search_result__content");
         var el2 = dom.createComment("");
         dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
         var el1 = dom.createElement("div");
-        dom.setAttribute(el1,"class","universal-search_result-instruction");
+        dom.setAttribute(el1,"class","universal-search_result__action");
         var el2 = dom.createComment("");
         dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
         return el0;
       },
@@ -27913,9 +27915,9 @@ define('frontend-cp/components/ko-universal-search/result/template', ['exports']
         return morphs;
       },
       statements: [
-        ["attribute","class",["concat",["universal-search__icon ",["get","iconClass",["loc",[null,[1,35],[1,44]]]]]]],
-        ["content","result.snippet",["loc",[null,[2,45],[2,65]]]],
-        ["inline","format-message",[["subexpr","intl-get",["generic.search_result_select_instruction"],[],["loc",[null,[3,66],[3,119]]]]],[],["loc",[null,[3,49],[3,121]]]]
+        ["attribute","class",["concat",["universal-search_result__icon ",["get","iconClass",["loc",[null,[1,42],[1,51]]]]]]],
+        ["content","result.snippet",["loc",[null,[2,46],[2,66]]]],
+        ["inline","format-message",[["subexpr","intl-get",["generic.search_result_select_instruction"],[],["loc",[null,[3,62],[3,115]]]]],[],["loc",[null,[3,45],[3,117]]]]
       ],
       locals: [],
       templates: []
@@ -27935,11 +27937,11 @@ define('frontend-cp/components/ko-universal-search/template', ['exports'], funct
           "loc": {
             "source": null,
             "start": {
-              "line": 6,
+              "line": 8,
               "column": 2
             },
             "end": {
-              "line": 8,
+              "line": 10,
               "column": 2
             }
           },
@@ -27953,8 +27955,9 @@ define('frontend-cp/components/ko-universal-search/template', ['exports'], funct
           var el1 = dom.createTextNode("    ");
           dom.appendChild(el0, el1);
           var el1 = dom.createElement("div");
-          dom.setAttribute(el1,"style","display: inline-block");
-          var el2 = dom.createTextNode("X");
+          dom.setAttribute(el1,"class","universal-search__action");
+          var el2 = dom.createElement("span");
+          dom.setAttribute(el2,"class","i-cross");
           dom.appendChild(el1, el2);
           dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n");
@@ -27962,13 +27965,13 @@ define('frontend-cp/components/ko-universal-search/template', ['exports'], funct
           return el0;
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var element0 = dom.childAt(fragment, [1]);
+          var element1 = dom.childAt(fragment, [1]);
           var morphs = new Array(1);
-          morphs[0] = dom.createElementMorph(element0);
+          morphs[0] = dom.createElementMorph(element1);
           return morphs;
         },
         statements: [
-          ["element","action",["clearSearchQuery"],[],["loc",[null,[7,39],[7,68]]]]
+          ["element","action",["clearSearchQuery"],[],["loc",[null,[9,42],[9,71]]]]
         ],
         locals: [],
         templates: []
@@ -27976,18 +27979,60 @@ define('frontend-cp/components/ko-universal-search/template', ['exports'], funct
     }());
     var child1 = (function() {
       var child0 = (function() {
+        var child0 = (function() {
+          return {
+            meta: {
+              "revision": "Ember@1.13.6",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 18,
+                  "column": 6
+                },
+                "end": {
+                  "line": 26,
+                  "column": 6
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-universal-search/template.hbs"
+            },
+            arity: 1,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode("      ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(1);
+              morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+              return morphs;
+            },
+            statements: [
+              ["inline","ko-universal-search/result",[],["result",["subexpr","@mut",[["get","result",["loc",[null,[20,13],[20,19]]]]],[],[]],"resource",["subexpr","@mut",[["get","resultsGroup.id",["loc",[null,[21,15],[21,30]]]]],[],[]],"snippet",["subexpr","@mut",[["get","result.snippet",["loc",[null,[22,14],[22,28]]]]],[],[]],"isHighlighted",["subexpr","eq",[["get","result",["loc",[null,[23,24],[23,30]]]],["get","highlightedResult",["loc",[null,[23,31],[23,48]]]]],[],["loc",[null,[23,20],[23,49]]]],"on-highlight","highlightResult"],["loc",[null,[19,6],[25,8]]]]
+            ],
+            locals: ["result"],
+            templates: []
+          };
+        }());
         return {
           meta: {
             "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
-                "line": 14,
-                "column": 6
+                "line": 16,
+                "column": 4
               },
               "end": {
-                "line": 22,
-                "column": 6
+                "line": 29,
+                "column": 4
               }
             },
             "moduleName": "frontend-cp/components/ko-universal-search/template.hbs"
@@ -27997,87 +28042,94 @@ define('frontend-cp/components/ko-universal-search/template', ['exports'], funct
           hasRendered: false,
           buildFragment: function buildFragment(dom) {
             var el0 = dom.createDocumentFragment();
-            var el1 = dom.createTextNode("        ");
+            var el1 = dom.createTextNode("    ");
             dom.appendChild(el0, el1);
-            var el1 = dom.createComment("");
+            var el1 = dom.createElement("ul");
+            dom.setAttribute(el1,"class","list-bare");
+            var el2 = dom.createTextNode("\n");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createComment("");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createTextNode("    ");
+            dom.appendChild(el1, el2);
             dom.appendChild(el0, el1);
-            var el1 = dom.createTextNode("\n");
+            var el1 = dom.createTextNode("\n\n");
             dom.appendChild(el0, el1);
             return el0;
           },
           buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
             var morphs = new Array(1);
-            morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+            morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]),1,1);
             return morphs;
           },
           statements: [
-            ["inline","ko-universal-search/result",[],["result",["subexpr","@mut",[["get","result",["loc",[null,[16,19],[16,25]]]]],[],[]],"resource",["subexpr","@mut",[["get","resultsGroup.id",["loc",[null,[17,21],[17,36]]]]],[],[]],"snippet",["subexpr","@mut",[["get","result.snippet",["loc",[null,[18,20],[18,34]]]]],[],[]],"isHighlighted",["subexpr","eq",[["get","result",["loc",[null,[19,30],[19,36]]]],["get","highlightedResult",["loc",[null,[19,37],[19,54]]]]],[],["loc",[null,[19,26],[19,55]]]],"on-highlight","highlightResult"],["loc",[null,[15,8],[21,10]]]]
+            ["block","each",[["get","resultsGroup.results",["loc",[null,[18,14],[18,34]]]]],[],0,null,["loc",[null,[18,6],[26,15]]]]
           ],
-          locals: ["result"],
-          templates: []
+          locals: ["resultsGroup"],
+          templates: [child0]
         };
       }());
-      return {
-        meta: {
-          "revision": "Ember@1.13.6",
-          "loc": {
-            "source": null,
-            "start": {
-              "line": 12,
-              "column": 2
+      var child1 = (function() {
+        var child0 = (function() {
+          return {
+            meta: {
+              "revision": "Ember@1.13.6",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 30,
+                  "column": 4
+                },
+                "end": {
+                  "line": 34,
+                  "column": 4
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-universal-search/template.hbs"
             },
-            "end": {
-              "line": 25,
-              "column": 2
-            }
-          },
-          "moduleName": "frontend-cp/components/ko-universal-search/template.hbs"
-        },
-        arity: 1,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("    ");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createElement("ul");
-          dom.setAttribute(el1,"class","universal-search__result-group list-bare");
-          var el2 = dom.createTextNode("\n");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createComment("");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("    ");
-          dom.appendChild(el1, el2);
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n\n");
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]),1,1);
-          return morphs;
-        },
-        statements: [
-          ["block","each",[["get","resultsGroup.results",["loc",[null,[14,14],[14,34]]]]],[],0,null,["loc",[null,[14,6],[22,15]]]]
-        ],
-        locals: ["resultsGroup"],
-        templates: [child0]
-      };
-    }());
-    var child2 = (function() {
-      var child0 = (function() {
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode("      ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createElement("p");
+              dom.setAttribute(el1,"class","u-p");
+              var el2 = dom.createTextNode("\n        ");
+              dom.appendChild(el1, el2);
+              var el2 = dom.createComment("");
+              dom.appendChild(el1, el2);
+              var el2 = dom.createTextNode("\n      ");
+              dom.appendChild(el1, el2);
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(1);
+              morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]),1,1);
+              return morphs;
+            },
+            statements: [
+              ["inline","format-message",[["subexpr","intl-get",["search.no-results"],[],["loc",[null,[32,25],[32,55]]]]],[],["loc",[null,[32,8],[32,57]]]]
+            ],
+            locals: [],
+            templates: []
+          };
+        }());
         return {
           meta: {
             "revision": "Ember@1.13.6",
             "loc": {
               "source": null,
               "start": {
-                "line": 26,
+                "line": 29,
                 "column": 4
               },
               "end": {
-                "line": 32,
+                "line": 35,
                 "column": 4
               }
             },
@@ -28088,35 +28140,131 @@ define('frontend-cp/components/ko-universal-search/template', ['exports'], funct
           hasRendered: false,
           buildFragment: function buildFragment(dom) {
             var el0 = dom.createDocumentFragment();
-            var el1 = dom.createTextNode("      ");
+            var el1 = dom.createComment("");
             dom.appendChild(el0, el1);
-            var el1 = dom.createElement("ul");
-            dom.setAttribute(el1,"class","universal-search__result-group list-bare");
-            var el2 = dom.createTextNode("\n          ");
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+            dom.insertBoundary(fragment, 0);
+            dom.insertBoundary(fragment, null);
+            return morphs;
+          },
+          statements: [
+            ["block","if",[["get","isSearching",["loc",[null,[30,10],[30,21]]]]],[],0,null,["loc",[null,[30,4],[34,11]]]]
+          ],
+          locals: [],
+          templates: [child0]
+        };
+      }());
+      var child2 = (function() {
+        return {
+          meta: {
+            "revision": "Ember@1.13.6",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 38,
+                "column": 2
+              },
+              "end": {
+                "line": 56,
+                "column": 3
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-universal-search/template.hbs"
+          },
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode(" ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("-GET RID OF ME!!!! ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n  ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("div");
+            dom.setAttribute(el1,"class","universal-search__preview typography");
+            var el2 = dom.createTextNode("\n    ");
             dom.appendChild(el1, el2);
-            var el2 = dom.createElement("li");
-            dom.setAttribute(el2,"class","universal-search__result universal-search__no-results-message");
-            var el3 = dom.createTextNode("\n            ");
-            dom.appendChild(el2, el3);
-            var el3 = dom.createComment("");
-            dom.appendChild(el2, el3);
-            var el3 = dom.createTextNode("\n          ");
+            var el2 = dom.createElement("h6");
+            dom.setAttribute(el2,"class","heading heading--capitalized t-small");
+            var el3 = dom.createTextNode("case preview");
             dom.appendChild(el2, el3);
             dom.appendChild(el1, el2);
-            var el2 = dom.createTextNode("\n      ");
+            var el2 = dom.createTextNode("\n     ");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createElement("h4");
+            dom.setAttribute(el2,"class","heading u-mv-");
+            var el3 = dom.createTextNode("My internet doesn't seem to work");
+            dom.appendChild(el2, el3);
+            dom.appendChild(el1, el2);
+            var el2 = dom.createTextNode("\n     ");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createElement("h6");
+            dom.setAttribute(el2,"class","t-caption");
+            var el3 = dom.createTextNode("989-0989 - Bug Report");
+            dom.appendChild(el2, el3);
+            dom.appendChild(el1, el2);
+            var el2 = dom.createTextNode("\n\n     ");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createElement("div");
+            dom.setAttribute(el2,"class","flag flag--top");
+            var el3 = dom.createTextNode("\n       ");
+            dom.appendChild(el2, el3);
+            var el3 = dom.createElement("div");
+            dom.setAttribute(el3,"class","flag__img");
+            var el4 = dom.createTextNode("\n         ");
+            dom.appendChild(el3, el4);
+            var el4 = dom.createElement("img");
+            dom.setAttribute(el4,"width","42");
+            dom.setAttribute(el4,"height","42");
+            dom.setAttribute(el4,"src","http://i.imgur.com/IYz9i5N.jpg");
+            dom.setAttribute(el4,"alt","");
+            dom.appendChild(el3, el4);
+            var el4 = dom.createTextNode("\n       ");
+            dom.appendChild(el3, el4);
+            dom.appendChild(el2, el3);
+            var el3 = dom.createTextNode("\n       ");
+            dom.appendChild(el2, el3);
+            var el3 = dom.createElement("div");
+            dom.setAttribute(el3,"class","flag__body");
+            var el4 = dom.createTextNode("\n         ");
+            dom.appendChild(el3, el4);
+            var el4 = dom.createElement("p");
+            var el5 = dom.createTextNode("Grace Lawson ");
+            dom.appendChild(el4, el5);
+            var el5 = dom.createElement("span");
+            dom.setAttribute(el5,"class","t-caption");
+            var el6 = dom.createTextNode("Yesterday at 11:24am");
+            dom.appendChild(el5, el6);
+            dom.appendChild(el4, el5);
+            dom.appendChild(el3, el4);
+            var el4 = dom.createTextNode("\n         ");
+            dom.appendChild(el3, el4);
+            var el4 = dom.createElement("p");
+            var el5 = dom.createTextNode("\n          Etiam porta sem malesuada magna mollis euismod. Aenean lacinia bibendum nulla sed consectetur. Nulla vitae elit libero, a pharetra augue. Curabitur blandit tempus porttitor. Etiam porta sem malesuada magna mollis euismod. Aenean lacinia bibendum nulla sed consectetur. Nulla vitae elit libero, a pharetra augue. Curabitur blandit tempus porttitor.\n         ");
+            dom.appendChild(el4, el5);
+            dom.appendChild(el3, el4);
+            var el4 = dom.createTextNode("\n       ");
+            dom.appendChild(el3, el4);
+            dom.appendChild(el2, el3);
+            var el3 = dom.createTextNode("\n     ");
+            dom.appendChild(el2, el3);
+            dom.appendChild(el1, el2);
+            var el2 = dom.createTextNode("\n   ");
             dom.appendChild(el1, el2);
             dom.appendChild(el0, el1);
             var el1 = dom.createTextNode("\n");
             dom.appendChild(el0, el1);
             return el0;
           },
-          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-            var morphs = new Array(1);
-            morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1, 1]),1,1);
-            return morphs;
-          },
+          buildRenderNodes: function buildRenderNodes() { return []; },
           statements: [
-            ["inline","format-message",[["subexpr","intl-get",["search.no-results"],[],["loc",[null,[29,29],[29,59]]]]],[],["loc",[null,[29,12],[29,61]]]]
+
           ],
           locals: [],
           templates: []
@@ -28128,12 +28276,12 @@ define('frontend-cp/components/ko-universal-search/template', ['exports'], funct
           "loc": {
             "source": null,
             "start": {
-              "line": 25,
-              "column": 2
+              "line": 13,
+              "column": 0
             },
             "end": {
-              "line": 33,
-              "column": 2
+              "line": 58,
+              "column": 0
             }
           },
           "moduleName": "frontend-cp/components/ko-universal-search/template.hbs"
@@ -28143,22 +28291,41 @@ define('frontend-cp/components/ko-universal-search/template', ['exports'], funct
         hasRendered: false,
         buildFragment: function buildFragment(dom) {
           var el0 = dom.createDocumentFragment();
-          var el1 = dom.createComment("");
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1,"class","universal-search__content");
+          var el2 = dom.createTextNode("\n  ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("div");
+          dom.setAttribute(el2,"class","universal-search__results");
+          var el3 = dom.createTextNode("\n");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createComment("");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createTextNode("  ");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n\n  ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
           dom.appendChild(el0, el1);
           return el0;
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
-          dom.insertBoundary(fragment, 0);
-          dom.insertBoundary(fragment, null);
+          var element0 = dom.childAt(fragment, [0]);
+          var morphs = new Array(2);
+          morphs[0] = dom.createMorphAt(dom.childAt(element0, [1]),1,1);
+          morphs[1] = dom.createMorphAt(element0,3,3);
           return morphs;
         },
         statements: [
-          ["block","if",[["get","isSearching",["loc",[null,[26,10],[26,21]]]]],[],0,null,["loc",[null,[26,4],[32,11]]]]
+          ["block","each",[["get","searchResults",["loc",[null,[16,12],[16,25]]]]],[],0,1,["loc",[null,[16,4],[35,13]]]],
+          ["block","if",[["get","searchQuery",["loc",[null,[38,8],[38,19]]]]],[],2,null,["loc",[null,[38,2],[56,10]]]]
         ],
         locals: [],
-        templates: [child0]
+        templates: [child0, child1, child2]
       };
     }());
     return {
@@ -28171,7 +28338,7 @@ define('frontend-cp/components/ko-universal-search/template', ['exports'], funct
             "column": 0
           },
           "end": {
-            "line": 35,
+            "line": 59,
             "column": 0
           }
         },
@@ -28183,11 +28350,11 @@ define('frontend-cp/components/ko-universal-search/template', ['exports'], funct
       buildFragment: function buildFragment(dom) {
         var el0 = dom.createDocumentFragment();
         var el1 = dom.createElement("div");
-        dom.setAttribute(el1,"class","universal-search");
+        dom.setAttribute(el1,"class","universal-search__input");
         var el2 = dom.createTextNode("\n  ");
         dom.appendChild(el1, el2);
         var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","ko-universal-search__icon");
+        dom.setAttribute(el2,"class","universal-search__icon");
         var el3 = dom.createTextNode("\n    ");
         dom.appendChild(el2, el3);
         var el3 = dom.createElement("span");
@@ -28196,43 +28363,37 @@ define('frontend-cp/components/ko-universal-search/template', ['exports'], funct
         var el3 = dom.createTextNode("\n  ");
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n  ");
+        var el2 = dom.createTextNode("\n\n  ");
         dom.appendChild(el1, el2);
         var el2 = dom.createComment("");
         dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n");
+        var el2 = dom.createTextNode("\n\n");
         dom.appendChild(el1, el2);
         var el2 = dom.createComment("");
         dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n\n");
         dom.appendChild(el0, el1);
-        var el1 = dom.createElement("div");
-        dom.setAttribute(el1,"class","universal-search__results");
-        var el2 = dom.createTextNode("\n");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createComment("");
-        dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
+        var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var element1 = dom.childAt(fragment, [0]);
+        var element2 = dom.childAt(fragment, [0]);
         var morphs = new Array(3);
-        morphs[0] = dom.createMorphAt(element1,3,3);
-        morphs[1] = dom.createMorphAt(element1,5,5);
-        morphs[2] = dom.createMorphAt(dom.childAt(fragment, [2]),1,1);
+        morphs[0] = dom.createMorphAt(element2,3,3);
+        morphs[1] = dom.createMorphAt(element2,5,5);
+        morphs[2] = dom.createMorphAt(fragment,2,2,contextualElement);
+        dom.insertBoundary(fragment, null);
         return morphs;
       },
       statements: [
-        ["inline","ko-universal-search/entry",[],["type","text","value",["subexpr","@mut",[["get","searchQuery",["loc",[null,[5,48],[5,59]]]]],[],[]],"placeholder",["subexpr","format-message",[["subexpr","intl-get",["search.placeholder"],[],["loc",[null,[5,88],[5,119]]]]],[],["loc",[null,[5,72],[5,120]]]]],["loc",[null,[5,2],[5,122]]]],
-        ["block","if",[["get","searchQuery",["loc",[null,[6,8],[6,19]]]]],[],0,null,["loc",[null,[6,2],[8,9]]]],
-        ["block","each",[["get","searchResults",["loc",[null,[12,10],[12,23]]]]],[],1,2,["loc",[null,[12,2],[33,11]]]]
+        ["inline","ko-universal-search/entry",[],["type","text","value",["subexpr","@mut",[["get","searchQuery",["loc",[null,[6,48],[6,59]]]]],[],[]],"placeholder",["subexpr","format-message",[["subexpr","intl-get",["search.placeholder"],[],["loc",[null,[6,88],[6,119]]]]],[],["loc",[null,[6,72],[6,120]]]]],["loc",[null,[6,2],[6,122]]]],
+        ["block","if",[["get","searchQuery",["loc",[null,[8,8],[8,19]]]]],[],0,null,["loc",[null,[8,2],[10,9]]]],
+        ["block","if",[["get","searchQuery",["loc",[null,[13,6],[13,17]]]]],[],1,null,["loc",[null,[13,0],[58,7]]]]
       ],
       locals: [],
-      templates: [child0, child1, child2]
+      templates: [child0, child1]
     };
   }()));
 
@@ -38762,9 +38923,21 @@ define('frontend-cp/mirage/fixtures/searchResultsCasePerson', ['exports'], funct
         'relevance': 0.20705728,
         'date': null,
         'resource_url': 'http://novo/api//v1/users/62'
+      }, {
+        'id': 63,
+        'title': 'person first',
+        'data': {
+          'id': 63,
+          'resource_type': 'user'
+        },
+        'resource': 'user',
+        'snippet': 'person <em>first</em>',
+        'relevance': 0.21705728,
+        'date': null,
+        'resource_url': 'http://novo/api//v1/users/62'
       }],
       'resource': 'user',
-      'total_count': 1,
+      'total_count': 2,
       'search_url': 'http://novo/api//v1/base/search?_flat=1&fields=snippet%2Cresource&in=users&query=first'
     }],
     'resource': 'object',
@@ -39822,6 +39995,18 @@ define('frontend-cp/mirage/fixtures/searchResultsPerson', ['exports'], function 
         'date': null,
         'resource_url': 'http://novo/api//v1/users/63'
       }, {
+        'id': 64,
+        'title': 'person subject',
+        'data': {
+          'id': 64,
+          'resource_type': 'user'
+        },
+        'resource': 'user',
+        'snippet': '<em>person</em> subject',
+        'relevance': 0.27126404,
+        'date': null,
+        'resource_url': 'http://novo/api//v1/users/64'
+      }, {
         'id': 62,
         'title': 'person first',
         'data': {
@@ -39835,7 +40020,7 @@ define('frontend-cp/mirage/fixtures/searchResultsPerson', ['exports'], function 
         'resource_url': 'http://novo/api//v1/users/62'
       }],
       'resource': 'user',
-      'total_count': 2,
+      'total_count': 3,
       'search_url': 'http://novo/api//v1/base/search?_flat=1&fields=snippet%2Cresource&in=users&query=person'
     }],
     'resource': 'object',
@@ -64411,7 +64596,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+fe26aaf5"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+4ef7934c"});
 }
 
 /* jshint ignore:end */
