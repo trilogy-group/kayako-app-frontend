@@ -26,5 +26,6 @@
   "channelType.TWITTER": "Twitter",
   "channelType.FACEBOOK": "Facebook",
 
-  "field_title.requester": "Requester"
+  "field_title.requester": "Requester",
+  "notes": "Notes"
 }
