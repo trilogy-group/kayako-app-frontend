@@ -47530,6 +47530,8 @@ define('frontend-cp/session/admin/manage/case-fields/index/controller', ['export
   /*eslint no-alert:0*/
   exports['default'] = Ember['default'].Controller.extend({
 
+    session: Ember['default'].inject.service(),
+
     systemfields: (function () {
       return this.get('model').filter(function (field) {
         return field.get('isSystem');
@@ -47576,18 +47578,29 @@ define('frontend-cp/session/admin/manage/case-fields/index/controller', ['export
       },
 
       reorderCustomFields: function reorderCustomFields(orderedCustomFields) {
+        var startingSortOrderNumber = this.get('systemfields.length');
+        var orderedIds = orderedCustomFields.map(function (field) {
+          return field.id;
+        });
 
-        // API includes system fields in the ordering
-        var order = this.get('systemfields.length') + 1;
+        var sortOrder = startingSortOrderNumber;
+        orderedCustomFields.forEach(function (customField) {
+          customField.set('sortOrder', sortOrder);
+          sortOrder++;
+        });
 
-        orderedCustomFields.forEach(function (field) {
-          // only fire set if the order has changed - otherwise it makes a
-          // put request for every custom field
-          if (field.get('sortOrder') !== order) {
-            field.set('sortOrder', order);
-            field.save();
+        var payload = {
+          field_ids: orderedIds.toString() // eslint-disable-line camelcase
+        };
+
+        Ember['default'].$.ajax('/api/v1/cases/fields/reorder', {
+          method: 'PUT',
+          contentType: 'application/json',
+          data: JSON.stringify(payload),
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Session-ID': this.get('session.sessionId')
           }
-          order++;
         });
       }
     }
@@ -65004,7 +65017,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+eac268ca"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+51861df9"});
 }
 
 /* jshint ignore:end */
