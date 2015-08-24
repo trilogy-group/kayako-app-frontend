@@ -28439,18 +28439,16 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
     }).on('init'),
 
     userTeams: (function () {
-      var user = this.get('model.creator');
-      return user.get('teams').map(function (tag) {
+      return this.get('model.teams').map(function (tag) {
         return tag.get('title');
       });
-    }).property('model.creator.teams.@each.title'),
+    }).property('model.teams.@each.title'),
 
     userTags: (function () {
-      var user = this.get('model.creator');
-      return user.get('tags').map(function (tag) {
+      return this.get('model.tags').map(function (tag) {
         return tag.get('name');
       });
-    }).property('model.creator.tags.@each.name'),
+    }).property('model.tags.@each.name'),
 
     accessLevels: Ember['default'].computed(function () {
       return [Ember['default'].Object.create({
@@ -28462,11 +28460,11 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
       })];
     }),
 
-    userDates: Ember['default'].computed('model.creator.createdAt', 'model.creator.updatedAt', 'model.creator.activityAt', function () {
+    userDates: Ember['default'].computed('model.createdAt', 'model.updatedAt', 'model.activityAt', function () {
       return [{ title: this.get('intl').findTranslationByKey('users.metadata.created').translation,
-        value: this.get('model.creator.createdAt') }, { title: this.get('intl').findTranslationByKey('users.metadata.updated').translation,
-        value: this.get('model.creator.updatedAt') }, { title: this.get('intl').findTranslationByKey('users.metadata.lastseen').translation,
-        value: this.get('model.creator.visitedAt') }];
+        value: this.get('model.createdAt') }, { title: this.get('intl').findTranslationByKey('users.metadata.updated').translation,
+        value: this.get('model.updatedAt') }, { title: this.get('intl').findTranslationByKey('users.metadata.lastseen').translation,
+        value: this.get('model.visitedAt') }];
     }),
 
     resetForm: function resetForm() {
@@ -28481,69 +28479,61 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
 
     actions: {
       roleSelect: function roleSelect(role) {
-        var user = this.get('model.creator');
-        user.set('role', role);
-        this.set('isRoleEdited', user.hasDirtyBelongsToRelationship('role'));
+        this.set('model.role', role);
+        this.set('isRoleEdited', this.get('model').hasDirtyBelongsToRelationship('role'));
       },
 
       organizationSelect: function organizationSelect(org) {
-        var user = this.get('model.creator');
-        user.set('organization', org);
-        this.set('isOrganizationEdited', user.hasDirtyBelongsToRelationship('organization'));
+        this.set('model.organization', org);
+        this.set('isOrganizationEdited', this.get('model').hasDirtyBelongsToRelationship('organization'));
       },
 
       accessLevelSelect: function accessLevelSelect(level) {
-        var user = this.get('model.creator');
-        user.set('accessLevel', level);
-        this.set('isAccessLevelEdited', user.hasDirtyBelongsToRelationship('accessLevel'));
+        this.set('model.accessLevel', level);
+        this.set('isAccessLevelEdited', this.get('model').hasDirtyBelongsToRelationship('accessLevel'));
       },
 
       timezoneSelect: function timezoneSelect(timezone) {
-        var user = this.get('model.creator');
-        user.set('timeZone', timezone.get('name'));
-        this.set('isTimezoneEdited', user.hasDirtyAttribute('timeZone'));
+        this.set('model.timeZone', timezone.get('name'));
+        this.set('isTimezoneEdited', this.get('model').hasDirtyAttribute('timeZone'));
       },
 
       addTeam: function addTeam(team) {
-        var user = this.get('model.creator');
         var newTeam = this.get('store').createRecord('team', { title: team });
-        user.get('teams').pushObject(newTeam);
-        this.set('isTeamsFieldEdited', user.hasDirtyHasManyRelationship('teams'));
+        this.get('model.teams').pushObject(newTeam);
+        this.set('isTeamsFieldEdited', this.get('model').hasDirtyHasManyRelationship('teams'));
       },
 
       removeTeam: function removeTeam(teamName) {
-        var user = this.get('model.creator');
-        var team = user.get('teams').find(function (team) {
+        var team = this.get('model.teams').find(function (team) {
           return team.get('title') === teamName;
         });
         if (team) {
-          user.get('teams').removeObject(team);
-          this.set('isTeamsFieldEdited', user.hasDirtyHasManyRelationship('teams'));
+          this.get('model.teams').removeObject(team);
+          this.set('isTeamsFieldEdited', this.get('model').hasDirtyHasManyRelationship('teams'));
         }
       },
 
       addTag: function addTag(tag) {
-        var user = this.get('model.creator');
         var newTag = this.get('store').createRecord('tag', { name: tag });
-        user.get('tags').pushObject(newTag);
-        this.set('isTagsFieldEdited', user.hasDirtyHasManyRelationship('tags'));
+        this.get('model.tags').pushObject(newTag);
+        this.set('isTagsFieldEdited', this.get('model').hasDirtyHasManyRelationship('tags'));
       },
 
       removeTag: function removeTag(tagName) {
-        var user = this.get('model.creator');
-        var tag = user.get('tags').find(function (tag) {
+        var tag = this.get('model.tags').find(function (tag) {
           return tag.get('name') === tagName;
         });
         if (tag) {
-          user.get('tags').removeObject(tag);
-          this.set('isTagsFieldEdited', user.hasDirtyHasManyRelationship('tags'));
+          this.get('model.tags').removeObject(tag);
+          this.set('isTagsFieldEdited', this.get('model').hasDirtyHasManyRelationship('tags'));
         }
       },
 
       submit: function submit() {
         var _this4 = this;
 
-        this.get('model.creator').save().then(function () {
+        this.get('model').save().then(function () {
           _this4.resetForm();
         }, function (e) {
           _this4.set('errors', e.errors);
@@ -28595,7 +28585,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
             return morphs;
           },
           statements: [
-            ["inline","ko-field/select",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.infobar.accesslevel"],[],["loc",[null,[49,35],[49,73]]]]],[],["loc",[null,[49,19],[49,74]]]],"options",["subexpr","@mut",[["get","accessLevels",["loc",[null,[50,21],[50,33]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isAccessLevelEdited",["loc",[null,[51,22],[51,41]]]]],[],[]],"value",["subexpr","@mut",[["get","model.creator.accessLevel",["loc",[null,[52,19],[52,44]]]]],[],[]],"onValueChange","accessLevelSelect","idPath","value","labelPath","name"],["loc",[null,[48,11],[56,13]]]]
+            ["inline","ko-field/select",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.infobar.accesslevel"],[],["loc",[null,[49,35],[49,73]]]]],[],["loc",[null,[49,19],[49,74]]]],"options",["subexpr","@mut",[["get","accessLevels",["loc",[null,[50,21],[50,33]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isAccessLevelEdited",["loc",[null,[51,22],[51,41]]]]],[],[]],"value",["subexpr","@mut",[["get","model.accessLevel",["loc",[null,[52,19],[52,36]]]]],[],[]],"onValueChange","accessLevelSelect","idPath","value","labelPath","name"],["loc",[null,[48,11],[56,13]]]]
           ],
           locals: [],
           templates: []
@@ -28685,10 +28675,10 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
         statements: [
           ["element","action",["submit"],[],["loc",[null,[31,55],[31,74]]]],
           ["inline","format-message",[["subexpr","intl-get",["cases.submit"],[],["loc",[null,[31,92],[31,117]]]]],[],["loc",[null,[31,75],[31,119]]]],
-          ["inline","ko-case-field/suggest",[],["selectedItem",["subexpr","@mut",[["get","model.creator.role.title",["loc",[null,[34,45],[34,69]]]]],[],[]],"items",["subexpr","@mut",[["get","roles",["loc",[null,[35,38],[35,43]]]]],[],[]],"searchKey","title","title",["subexpr","intl-get",["users.infobar.role"],[],["loc",[null,[37,38],[37,69]]]],"isEdited",["subexpr","@mut",[["get","isRoleEdited",["loc",[null,[38,41],[38,53]]]]],[],[]],"onItemSelect","roleSelect"],["loc",[null,[34,8],[39,59]]]],
-          ["inline","ko-case-field/suggest",[],["selectedItem",["subexpr","@mut",[["get","model.creator.organization.name",["loc",[null,[41,45],[41,76]]]]],[],[]],"items",["subexpr","@mut",[["get","organizations",["loc",[null,[42,38],[42,51]]]]],[],[]],"title",["subexpr","intl-get",["users.infobar.organization"],[],["loc",[null,[43,38],[43,77]]]],"isEdited",["subexpr","@mut",[["get","isOrganizationEdited",["loc",[null,[44,41],[44,61]]]]],[],[]],"onItemSelect","organizationSelect"],["loc",[null,[41,8],[45,67]]]],
-          ["block","if",[["subexpr","eq",[["get","model.creator.role.type",["loc",[null,[47,18],[47,41]]]],"CUSTOMER"],[],["loc",[null,[47,14],[47,53]]]]],[],0,null,["loc",[null,[47,8],[57,15]]]],
-          ["inline","ko-timezone-select",[],["timezone",["subexpr","@mut",[["get","model.creator.timeZone",["loc",[null,[60,38],[60,60]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isTimezoneEdited",["loc",[null,[61,38],[61,54]]]]],[],[]],"onChangeTimezone","timezoneSelect"],["loc",[null,[60,8],[62,64]]]],
+          ["inline","ko-case-field/suggest",[],["selectedItem",["subexpr","@mut",[["get","model.role.title",["loc",[null,[34,45],[34,61]]]]],[],[]],"items",["subexpr","@mut",[["get","roles",["loc",[null,[35,38],[35,43]]]]],[],[]],"searchKey","title","title",["subexpr","intl-get",["users.infobar.role"],[],["loc",[null,[37,38],[37,69]]]],"isEdited",["subexpr","@mut",[["get","isRoleEdited",["loc",[null,[38,41],[38,53]]]]],[],[]],"onItemSelect","roleSelect"],["loc",[null,[34,8],[39,59]]]],
+          ["inline","ko-case-field/suggest",[],["selectedItem",["subexpr","@mut",[["get","model.organization.name",["loc",[null,[41,45],[41,68]]]]],[],[]],"items",["subexpr","@mut",[["get","organizations",["loc",[null,[42,38],[42,51]]]]],[],[]],"title",["subexpr","intl-get",["users.infobar.organization"],[],["loc",[null,[43,38],[43,77]]]],"isEdited",["subexpr","@mut",[["get","isOrganizationEdited",["loc",[null,[44,41],[44,61]]]]],[],[]],"onItemSelect","organizationSelect"],["loc",[null,[41,8],[45,67]]]],
+          ["block","if",[["subexpr","eq",[["get","model.role.type",["loc",[null,[47,18],[47,33]]]],"CUSTOMER"],[],["loc",[null,[47,14],[47,45]]]]],[],0,null,["loc",[null,[47,8],[57,15]]]],
+          ["inline","ko-timezone-select",[],["timezone",["subexpr","@mut",[["get","model.timeZone",["loc",[null,[60,38],[60,52]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isTimezoneEdited",["loc",[null,[61,38],[61,54]]]]],[],[]],"onChangeTimezone","timezoneSelect"],["loc",[null,[60,8],[62,64]]]],
           ["inline","ko-field/tags",[],["selectedTags",["subexpr","@mut",[["get","userTeams",["loc",[null,[64,37],[64,46]]]]],[],[]],"tags",["subexpr","@mut",[["get","teams",["loc",[null,[65,29],[65,34]]]]],[],[]],"title",["subexpr","format-message",[["subexpr","intl-get",["users.teams"],[],["loc",[null,[66,46],[66,70]]]]],[],["loc",[null,[66,30],[66,71]]]],"newTagText",["subexpr","format-message",[["subexpr","intl-get",["users.newteam"],[],["loc",[null,[67,51],[67,77]]]]],[],["loc",[null,[67,35],[67,78]]]],"addTagText",["subexpr","format-message",[["subexpr","intl-get",["users.addteam"],[],["loc",[null,[68,51],[68,77]]]]],[],["loc",[null,[68,35],[68,78]]]],"onTagAddition","addTeam","onTagRemoval","removeTeam","isEdited",["subexpr","@mut",[["get","isTeamsFieldEdited",["loc",[null,[71,33],[71,51]]]]],[],[]]],["loc",[null,[64,8],[71,53]]]],
           ["inline","ko-field/tags",[],["selectedTags",["subexpr","@mut",[["get","userTags",["loc",[null,[73,37],[73,45]]]]],[],[]],"title",["subexpr","format-message",[["subexpr","intl-get",["users.tags"],[],["loc",[null,[74,46],[74,69]]]]],[],["loc",[null,[74,30],[74,70]]]],"newTagText",["subexpr","format-message",[["subexpr","intl-get",["users.newtag"],[],["loc",[null,[75,51],[75,76]]]]],[],["loc",[null,[75,35],[75,77]]]],"addTagText",["subexpr","format-message",[["subexpr","intl-get",["users.addtag"],[],["loc",[null,[76,51],[76,76]]]]],[],["loc",[null,[76,35],[76,77]]]],"onTagAddition","addTag","onTagRemoval","removeTag","isEdited",["subexpr","@mut",[["get","isTagsFieldEdited",["loc",[null,[79,33],[79,50]]]]],[],[]]],["loc",[null,[73,8],[79,52]]]],
           ["inline","ko-info-bar/metadata",[],["rows",["subexpr","@mut",[["get","userDates",["loc",[null,[82,36],[82,45]]]]],[],[]]],["loc",[null,[82,8],[82,47]]]]
@@ -28842,8 +28832,8 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
         return morphs;
       },
       statements: [
-        ["attribute","src",["concat",[["get","model.creator.avatar",["loc",[null,[6,22],[6,42]]]]]]],
-        ["content","model.creator.fullName",["loc",[null,[10,12],[10,38]]]],
+        ["attribute","src",["concat",[["get","model.avatar",["loc",[null,[6,22],[6,34]]]]]]],
+        ["content","model.fullName",["loc",[null,[10,12],[10,30]]]],
         ["inline","ko-text-editor",[],["viewName","postEditor","activeMode","note"],["loc",[null,[25,8],[25,66]]]],
         ["block","ko-info-bar",[],[],0,null,["loc",[null,[29,6],[83,22]]]]
       ],
@@ -36615,15 +36605,15 @@ define('frontend-cp/mirage/fixtures/enusstrings', ['exports'], function (exports
       value: 'Last seen',
       'resource_type': 'locale_string'
     }, {
-      id: 'frontend.api.users.accesslevel',
+      id: 'frontend.api.users.infobar.accesslevel',
       value: 'Organization access',
       'resource_type': 'locale_string'
     }, {
-      id: 'frontend.api.users.accesslevel.self',
+      id: 'frontend.api.users.infobar.accesslevel.self',
       value: 'Own cases only',
       'resource_type': 'locale_string'
     }, {
-      id: 'frontend.api.users.accesslevel.organization',
+      id: 'frontend.api.users.infobar.accesslevel.organization',
       value: 'All organization cases',
       'resource_type': 'locale_string'
     }, {
@@ -50661,8 +50651,8 @@ define('frontend-cp/session/agent/cases/case/controller', ['exports', 'ember', '
      */
     breadcrumbs: (function () {
 
-      var hasOrganisation = this.get('model.creator.organization.id');
-      var hasUser = this.get('model.creator.id');
+      var hasOrganisation = this.get('model.requester.organization.id');
+      var hasUser = this.get('model.requester.id');
       var caseCrumb = {
         id: 'case',
         name: 'Case ' + this.get('model.id'),
@@ -50674,7 +50664,7 @@ define('frontend-cp/session/agent/cases/case/controller', ['exports', 'ember', '
       if (hasOrganisation) {
         crumbs.push({
           id: 'organisation',
-          name: this.get('model.creator.organization.name'),
+          name: this.get('model.requester.organization.name'),
           route: 'session.agent.cases.case.organisation'
         });
       }
@@ -50682,7 +50672,7 @@ define('frontend-cp/session/agent/cases/case/controller', ['exports', 'ember', '
       if (hasUser) {
         crumbs.push({
           id: 'user',
-          name: this.get('model.creator.fullName'),
+          name: this.get('model.requester.fullName'),
           route: 'session.agent.cases.case.user'
         });
       }
@@ -50690,7 +50680,7 @@ define('frontend-cp/session/agent/cases/case/controller', ['exports', 'ember', '
       crumbs.push(caseCrumb);
 
       return crumbs;
-    }).property('model.creator.organization.id', 'model.creator.id')
+    }).property('model.requester.organization.id', 'model.requester.id')
   });
 
 });
@@ -51039,6 +51029,9 @@ define('frontend-cp/session/agent/cases/case/user/route', ['exports', 'ember'], 
     // let parentModel = this.modelFor('case');
     // return parentModel ? parentModel.get('organization') : {};
     // }
+    model: function model() {
+      return this.modelFor('session.agent.cases.case').get('requester');
+    }
 
   });
 
@@ -64708,7 +64701,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+ef6ff974"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+c6188d90"});
 }
 
 /* jshint ignore:end */
