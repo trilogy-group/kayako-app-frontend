@@ -7903,27 +7903,31 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
     caseFields: null,
 
     store: Ember['default'].inject.service(),
+    timelineCacheService: Ember['default'].inject.service('case-timeline-cache'),
 
-    errors: [],
-    posts: null,
+    // Case-specific properties
+    channel: null,
     postsAvailable: true,
     loading: false,
+    posts: null,
+
+    errors: [],
     macros: [],
     isTagsFieldEdited: false,
     isCaseSubjectEdited: false,
-    channel: null,
     resizeStickyEditorRequestID: null,
     repositionStickyEditorRequestID: null,
     loadPostsRafID: null,
     caseEditorHeight: 0,
     headerSticky: false,
-    afterId: null,
     editedCaseFields: new Ember['default'].Object(),
     replyType: 'MESSAGE',
 
-    initPosts: (function () {
+    initCase: (function () {
       this.set('channel', this.get('case.sourceChannel'));
       this.set('posts', []);
+      this.set('loading', false);
+      this.set('postsAvailable', true);
     }).on('didReceiveAttrs'),
 
     tags: (function () {
@@ -7979,13 +7983,13 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
         var bottomPosition = top + height;
 
         if (bottomPosition - 50 <= $['default'](window).height()) {
-          _this3.loadPostsAfter(_this3.get('afterId'));
+          _this3.loadOlderPosts(_this3.get('posts.lastObject.id'));
         }
         _this3.loadPostsIfRequired();
       }));
     }).on('didInsertElement'),
 
-    loadPostsAfter: function loadPostsAfter(id) {
+    loadOlderPosts: function loadOlderPosts(id) {
       var _this4 = this;
 
       if (this.get('loading') || !this.get('postsAvailable')) {
@@ -7993,17 +7997,16 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       }
       Ember['default'].run(function () {
         _this4.set('loading', true);
-        _this4.get('store').query('post', { parent: _this4.get('case'), after_id: id }).then(function (posts) {
-          // eslint-disable-line camelcase
-          posts.forEach(function (post) {
-            return _this4.get('posts').pushObject(post);
+        _this4.get('timelineCacheService').getOlderPosts(_this4.get('case'), id).then(function (posts) {
+          Ember['default'].run(function () {
+            posts.forEach(function (post) {
+              return _this4.get('posts').pushObject(post);
+            });
+            _this4.set('loading', false);
+            if (posts.get('length') === 0 || posts.get('lastObject.sequence') === 1) {
+              _this4.set('postsAvailable', false);
+            }
           });
-          _this4.set('loading', false);
-          if (posts.get('length') === 0 || posts.get('lastObject.sequence') === 1) {
-            _this4.set('postsAvailable', false);
-          } else {
-            _this4.set('afterId', posts.get('lastObject.id'));
-          }
         });
       });
     },
@@ -16365,7 +16368,7 @@ define('frontend-cp/components/ko-feed/component', ['exports', 'ember'], functio
         //no events yet
         return;
       }
-      return events.sortBy('createdAt').reverse();
+      return events;
     }).property('events.@each'),
 
     actions: {
@@ -46625,6 +46628,158 @@ define('frontend-cp/serializers/view', ['exports', 'ember-data', 'frontend-cp/se
   });
 
 });
+define('frontend-cp/services/case-timeline-cache', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  var Promise = Ember['default'].RSVP.Promise;
+
+  exports['default'] = Ember['default'].Service.extend({
+    store: Ember['default'].inject.service(),
+
+    cache: null,
+
+    initCache: (function () {
+      this.set('cache', {});
+    }).on('init'),
+
+    /**
+     * Return cache object for a given case
+     *
+     * @param {DS.Model} caseModel case
+     * @return {*} cache object
+     */
+    getCaseCache: function getCaseCache(caseModel) {
+      var caseCache = this.get('cache')[caseModel.get('id')];
+      if (!caseCache) {
+        caseCache = this.get('cache')[caseModel.get('id')] = {
+          posts: {},
+          newestPost: null,
+          total: null
+        };
+      }
+      return caseCache;
+    },
+
+    /**
+     * Return the most recent post, or null if no posts. Result is wrapped
+     * in a Promise.
+     *
+     * @param {DS.Model} caseModel case
+     * @return {Promise} post
+     */
+    getNewestPost: function getNewestPost(caseModel) {
+      var caseCache = this.getCaseCache(caseModel);
+      if (caseCache.newestPost) {
+        return Promise.resolve(caseCache.newestPost);
+      } else if (caseCache.total === 0) {
+        return null;
+      } else {
+        return this.fetchPosts(caseModel).then(function () {
+          return caseCache.newestPost;
+        });
+      }
+    },
+
+    /**
+     * Return posts for a given case older than a given postId.
+     *
+     * @param {DS.Model} caseModel case
+     * @param {Number} postId post id
+     * @param {[Number]} count post count
+     * @return {Promise} posts
+     */
+    getOlderPosts: function getOlderPosts(caseModel, postId) {
+      var _this = this;
+
+      var count = arguments.length <= 2 || arguments[2] === undefined ? 10 : arguments[2];
+
+      if (postId) {
+        var post = this.get('store').peekRecord('post', postId);
+        return this.getOlderPostsRecursive(caseModel, post, count);
+      } else {
+        return this.getNewestPost(caseModel).then(function (newestPost) {
+          if (!newestPost) {
+            return [];
+          } else {
+            return _this.getOlderPostsRecursive(caseModel, newestPost, count - 1).then(function (newPosts) {
+              return [newestPost].concat(newPosts);
+            });
+          }
+        });
+      }
+    },
+
+    /**
+     * Recursive function used by getOlderPosts
+     *
+     * @param {DS.Model} caseModel case
+     * @param {DS.Model} post post
+     * @param {[Number]} count count
+     * @return {Promise} posts
+     */
+    getOlderPostsRecursive: function getOlderPostsRecursive(caseModel, post) {
+      var _this2 = this;
+
+      var count = arguments.length <= 2 || arguments[2] === undefined ? 10 : arguments[2];
+
+      if (count === 0) {
+        return Promise.resolve([]);
+      }
+
+      var nextSequence = post.get('sequence') - 1;
+      if (nextSequence === 0) {
+        return Promise.resolve([]);
+      }
+
+      var caseCache = this.getCaseCache(caseModel);
+      var nextPost = caseCache.posts[nextSequence];
+
+      return (nextPost ? Promise.resolve(nextPost) : this.fetchPosts(caseModel, { beforeId: post.get('id') }).then(function () {
+        return caseCache.posts[nextSequence];
+      })).then(function (post) {
+        return _this2.getOlderPostsRecursive(caseModel, post, count - 1).then(function (posts) {
+          return [post].concat(posts);
+        });
+      });
+    },
+
+    /**
+     * Retrieves posts from the server. Returns a promise which resolves when
+     * fetch is successful
+     * @param {DS.Model} caseModel case
+     * @param {[Number]} options.afterId id of the post
+     * @param {[Number]} options.beforeId id of the post
+     * @return {Promise} promise
+     */
+    fetchPosts: function fetchPosts(caseModel) {
+      var _this3 = this;
+
+      var _ref = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+
+      var _ref$afterId = _ref.afterId;
+      var afterId = _ref$afterId === undefined ? undefined : _ref$afterId;
+      var _ref$beforeId = _ref.beforeId;
+      var beforeId = _ref$beforeId === undefined ? undefined : _ref$beforeId;
+
+      var caseCache = this.getCaseCache(caseModel);
+      return this.get('store').query('post', {
+        parent: caseModel,
+        after_id: afterId, // eslint-disable-line camelcase
+        before_id: beforeId // eslint-disable-line camelcase
+      }).then(function (newPosts) {
+        caseCache.total = _this3.get('store').metadataFor('post').total;
+        newPosts.forEach(function (post) {
+          caseCache.posts[post.get('sequence')] = post;
+          if (post.get('sequence') === caseCache.total) {
+            caseCache.newestPost = post;
+          }
+        });
+      });
+    }
+  });
+
+});
 define('frontend-cp/services/context-modal', ['exports', 'ember'], function (exports, Ember) {
 
   'use strict';
@@ -64849,7 +65004,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+67e3c77c"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+eac268ca"});
 }
 
 /* jshint ignore:end */
