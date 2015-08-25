@@ -8190,9 +8190,9 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
             _this7.set('errors', e.errors);
           });
         } else {
-          if (editor.get('activeMode') === 'note') {
+          if (this.get('replyType') === 'NOTE') {
             this.get('case').saveWithNote(post).then(function (caseNote) {
-              _this7.get('posts').pushObject(caseNote.get('post'));
+              _this7.get('posts').insertAt(0, caseNote.get('post'));
               _this7.resetCaseFormState();
             }, function (e) {
               _this7.set('errors', e.errors);
@@ -8200,7 +8200,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
           } else {
             this.get('case').saveWithPost(post, channel).then(function (caseReply) {
               caseReply.get('posts').forEach(function (post) {
-                _this7.get('posts').pushObject(post);
+                _this7.get('posts').insertAt(0, post);
               });
               _this7.resetCaseFormState();
             }, function (e) {
@@ -28584,8 +28584,12 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
       },
 
       organizationSelect: function organizationSelect(org) {
+        var _this4 = this;
+
         this.set('model.organization', org);
-        this.set('isOrganizationEdited', this.get('model').hasDirtyBelongsToRelationship('organization'));
+        this.get('model').hasDirtyBelongsToRelationship('organization').then(function (relationshipIsDirty) {
+          _this4.set('isOrganizationEdited', relationshipIsDirty);
+        });
       },
 
       accessLevelSelect: function accessLevelSelect(level) {
@@ -28631,12 +28635,12 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
       },
 
       submit: function submit() {
-        var _this4 = this;
+        var _this5 = this;
 
         this.get('model').save().then(function () {
-          _this4.resetForm();
+          _this5.resetForm();
         }, function (e) {
-          _this4.set('errors', e.errors);
+          _this5.set('errors', e.errors);
         });
       }
     }
@@ -44006,7 +44010,7 @@ define('frontend-cp/mixins/change-aware-model', ['exports', 'ember', 'npm:lodash
   'use strict';
 
   exports['default'] = Ember['default'].Mixin.create({
-    initialRelationships: [],
+    initialRelationships: {},
 
     // build an array of all relationships whenever the model is loaded
     // so we can check against them to see if any have been added or removed
@@ -44036,20 +44040,46 @@ define('frontend-cp/mixins/change-aware-model', ['exports', 'ember', 'npm:lodash
     },
 
     initialize: (function () {
-      this.cacheRelationships();
-    }).on('didUpdate', 'ready'),
+      var _this2 = this;
 
+      Ember['default'].run.next(function () {
+        //TODO: Try to discover why this must be in a run loop
+        // Without the run.next, the async promise resolves to null
+        // With run.next, everything resolves perfectly.
+        // there's some private API stuff `_updatingRecordArraysLater: true` which might be something?
+        _this2.cacheRelationships();
+      });
+    }).on('ready', 'didUpdate'),
+
+    /*
+     * Returns a promise if the relationship is async
+     */
     hasDirtyBelongsToRelationship: function hasDirtyBelongsToRelationship(relationshipKey) {
       var initialRelationships = this.get('initialRelationships');
-      var initialRelationshipId = initialRelationships[relationshipKey];
-      var currentRelationshipId = this.get(relationshipKey);
+      var initialRelationship = initialRelationships[relationshipKey];
+      var currentRelationship = this.get(relationshipKey);
 
-      return initialRelationshipId !== currentRelationshipId;
+      if (!currentRelationship) {
+        return false;
+      }
+
+      if (typeof currentRelationship.then === 'function') {
+        // relationship is async - get both, wait for them to resolve and then compare
+        return Ember['default'].RSVP.hash({
+          currentRelationship: currentRelationship,
+          initialRelationship: initialRelationship
+        }).then(function (relationshipHash) {
+          return relationshipHash.initialRelationship !== relationshipHash.currentRelationship;
+        });
+      }
+
+      return initialRelationship !== currentRelationship;
     },
 
     hasDirtyHasManyRelationship: function hasDirtyHasManyRelationship(relationshipKey) {
       var initialRelationships = this.get('initialRelationships');
       var initialRelationship = initialRelationships[relationshipKey];
+
       var currentRelationship = this.get(relationshipKey);
 
       if (initialRelationship.length !== currentRelationship.length) {
@@ -44087,7 +44117,7 @@ define('frontend-cp/mixins/change-aware-model', ['exports', 'ember', 'npm:lodash
     },
 
     hasNewOrDirtyRelations: function hasNewOrDirtyRelations() {
-      var _this2 = this;
+      var _this3 = this;
 
       var initialRelationships = this.get('initialRelationships');
       var hasChanges = false;
@@ -44096,7 +44126,7 @@ define('frontend-cp/mixins/change-aware-model', ['exports', 'ember', 'npm:lodash
         if (descriptor.options.noCache) {
           return;
         }
-        var relationshipObject = _this2.get(descriptor.key);
+        var relationshipObject = _this3.get(descriptor.key);
 
         if (descriptor.kind === 'hasMany') {
           relationshipObject.forEach(function (relationshipObj) {
@@ -44111,7 +44141,7 @@ define('frontend-cp/mixins/change-aware-model', ['exports', 'ember', 'npm:lodash
             }
           });
         } else if (descriptor.kind === 'belongsTo') {
-          var _relationshipObject = _this2.get(descriptor.key);
+          var _relationshipObject = _this3.get(descriptor.key);
 
           // only check if the relationship model has the change-aware mixin
           if (_relationshipObject && typeof _relationshipObject.hasDirtyChanges === 'function') {
@@ -44126,7 +44156,7 @@ define('frontend-cp/mixins/change-aware-model', ['exports', 'ember', 'npm:lodash
     },
 
     hasDeletedRelationships: function hasDeletedRelationships() {
-      var _this3 = this;
+      var _this4 = this;
 
       var hasChanges = false;
       var initialRelationships = this.get('initialRelationships');
@@ -44138,7 +44168,7 @@ define('frontend-cp/mixins/change-aware-model', ['exports', 'ember', 'npm:lodash
           return;
         }
 
-        var currentRelatedObjects = _this3.get(relationshipName);
+        var currentRelatedObjects = _this4.get(relationshipName);
 
         if (currentRelatedObjects && typeof currentRelatedObjects.forEach === 'function') {
           // hasMany relationship
@@ -44361,7 +44391,7 @@ define('frontend-cp/models/attachment', ['exports', 'ember-data'], function (exp
     type: DS['default'].attr('string'), // TODO should exist on attachment within posts/:id
     url: DS['default'].attr('string'), // TODO should exist on attachment within posts/:id
     urlDownload: DS['default'].attr('string'), // TODO should exist on attachment within posts/:id
-    thumbnails: DS['default'].hasMany('thumbnail', { async: true, child: true }),
+    thumbnails: DS['default'].hasManyFragments('thumbnail'),
     createdAt: DS['default'].attr('date'), // TODO should exist on attachment within posts/:id
 
     // Virtual parent field
@@ -44827,6 +44857,29 @@ define('frontend-cp/models/channel', ['exports', 'ember-data', 'ember'], functio
         return handle || 'Reply';
       }
     })
+  });
+
+});
+define('frontend-cp/models/chat', ['exports', 'ember-data', 'frontend-cp/models/account'], function (exports, DS, Account) {
+
+  'use strict';
+
+  exports['default'] = Account['default'].extend({
+    agent: DS['default'].belongsTo('user', { async: true }),
+    brand: DS['default'].belongsTo('brand'),
+    createdAt: DS['default'].attr('date'),
+    creator: DS['default'].belongsTo('user', { async: true }),
+    email: DS['default'].attr('string'),
+    isProactive: DS['default'].attr('boolean'),
+    lastactivityAt: DS['default'].attr('date'),
+    name: DS['default'].attr('string'),
+    startedAt: DS['default'].attr('date'),
+    status: DS['default'].attr('string'),
+    subject: DS['default'].attr('string'),
+    team: DS['default'].belongsTo('team', { async: true }),
+    token: DS['default'].attr('string'),
+    uuid: DS['default'].attr('string'),
+    waitTime: DS['default'].attr('number')
   });
 
 });
@@ -45675,16 +45728,14 @@ define('frontend-cp/models/thumbnail', ['exports', 'ember-data'], function (expo
 
   'use strict';
 
-  exports['default'] = DS['default'].Model.extend({
+  exports['default'] = DS['default'].ModelFragment.extend({
     name: DS['default'].attr('string'),
     size: DS['default'].attr('number'),
     width: DS['default'].attr('number'),
     height: DS['default'].attr('number'),
     thumbnailType: DS['default'].attr('string'),
     url: DS['default'].attr('string'),
-    createdAt: DS['default'].attr('date'),
-
-    attachment: DS['default'].belongsTo('attachment', { async: true, parent: true })
+    createdAt: DS['default'].attr('date')
   });
 
 });
@@ -45706,13 +45757,23 @@ define('frontend-cp/models/twitter-account', ['exports', 'ember-data', 'frontend
   });
 
 });
+define('frontend-cp/models/twitter-message', ['exports', 'ember-data', 'frontend-cp/models/postable'], function (exports, DS, Postable) {
+
+  'use strict';
+
+  exports['default'] = Postable['default'].extend({
+    uuid: DS['default'].attr('string'),
+    postType: 'twitterMessage'
+  });
+
+});
 define('frontend-cp/models/twitter-tweet', ['exports', 'ember-data', 'frontend-cp/models/postable'], function (exports, DS, Postable) {
 
   'use strict';
 
   exports['default'] = Postable['default'].extend({
     uuid: DS['default'].attr('string'),
-    postType: 'twitter'
+    postType: 'twitterTweet'
   });
 
 });
@@ -65027,7 +65088,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+80f3541a"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+ad70a8a0"});
 }
 
 /* jshint ignore:end */
