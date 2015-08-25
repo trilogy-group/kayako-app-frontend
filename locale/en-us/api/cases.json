@@ -24,6 +24,8 @@
   "applymacroplaceholder": "Type to search macros",
   "channelType.MAILBOX": "email",
   "channelType.TWITTER": "Twitter",
+  "channelType.TWITTER_DM": "Twitter",
+  "channelType.CHAT": "Chat",
   "channelType.FACEBOOK": "Facebook",
 
   "field_title.requester": "Requester",
