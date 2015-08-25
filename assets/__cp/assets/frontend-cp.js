@@ -3004,6 +3004,8 @@ define('frontend-cp/components/ko-admin/case-fields/select-type/component', ['ex
   exports['default'] = Ember['default'].Component.extend({
     setCaseFieldTypeAction: 'setCaseFieldType',
 
+    availableTypes: [{ name: 'TEXT', nameIntlKey: 'admin.casefields.type.text.name', descriptionIntlKey: 'admin.casefields.type.text.description' }, { name: 'TEXTAREA', nameIntlKey: 'admin.casefields.type.textarea.name', descriptionIntlKey: 'admin.casefields.type.textarea.description' }, { name: 'RADIO', nameIntlKey: 'admin.casefields.type.radio.name', descriptionIntlKey: 'admin.casefields.type.radio.description' }, { name: 'DROPDOWN', nameIntlKey: 'admin.casefields.type.dropdown.name', descriptionIntlKey: 'admin.casefields.type.dropdown.description' }, { name: 'CHECKBOX', nameIntlKey: 'admin.casefields.type.checkbox.name', descriptionIntlKey: 'admin.casefields.type.checkbox.description' }, { name: 'NUMERIC', nameIntlKey: 'admin.casefields.type.numeric.name', descriptionIntlKey: 'admin.casefields.type.numeric.description' }, { name: 'DECIMAL', nameIntlKey: 'admin.casefields.type.decimal.name', descriptionIntlKey: 'admin.casefields.type.decimal.description' }, { name: 'FILE', nameIntlKey: 'admin.casefields.type.file.name', descriptionIntlKey: 'admin.casefields.type.file.description' }, { name: 'YESNO', nameIntlKey: 'admin.casefields.type.yesno.name', descriptionIntlKey: 'admin.casefields.type.yesno.description' }, { name: 'CASCADINGSELECT', nameIntlKey: 'admin.casefields.type.cascadingselect.name', descriptionIntlKey: 'admin.casefields.type.cascadingselect.description' }, { name: 'DATE', nameIntlKey: 'admin.casefields.type.date.name', descriptionIntlKey: 'admin.casefields.type.date.description' }, { name: 'REGEX', nameIntlKey: 'admin.casefields.type.regex.name', descriptionIntlKey: 'admin.casefields.type.regex.description' }],
+
     actions: {
       setCaseFieldType: function setCaseFieldType(caseFieldType) {
         this.sendAction('setCaseFieldTypeAction', caseFieldType);
@@ -3017,6 +3019,81 @@ define('frontend-cp/components/ko-admin/case-fields/select-type/template', ['exp
   'use strict';
 
   exports['default'] = Ember.HTMLBars.template((function() {
+    var child0 = (function() {
+      return {
+        meta: {
+          "revision": "Ember@1.13.6",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 1,
+              "column": 0
+            },
+            "end": {
+              "line": 9,
+              "column": 0
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-admin/case-fields/select-type/template.hbs"
+        },
+        arity: 1,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1,"class","ko-admin_case-fields_select-type");
+          var el2 = dom.createTextNode("\n      ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("div");
+          dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__icon");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n      ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("div");
+          dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__text");
+          var el3 = dom.createTextNode("\n          ");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createElement("div");
+          var el4 = dom.createComment("");
+          dom.appendChild(el3, el4);
+          dom.appendChild(el2, el3);
+          var el3 = dom.createTextNode("\n          ");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createElement("div");
+          var el4 = dom.createComment("");
+          dom.appendChild(el3, el4);
+          dom.appendChild(el2, el3);
+          var el3 = dom.createTextNode("\n      ");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n  ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var element0 = dom.childAt(fragment, [1]);
+          var element1 = dom.childAt(element0, [3]);
+          var morphs = new Array(3);
+          morphs[0] = dom.createElementMorph(element0);
+          morphs[1] = dom.createMorphAt(dom.childAt(element1, [1]),0,0);
+          morphs[2] = dom.createMorphAt(dom.childAt(element1, [3]),0,0);
+          return morphs;
+        },
+        statements: [
+          ["element","action",["setCaseFieldType",["get","availableType.name",["loc",[null,[2,76],[2,94]]]]],[],["loc",[null,[2,48],[2,96]]]],
+          ["inline","format-message",[["subexpr","intl-get",[["get","availableType.nameIntlKey",["loc",[null,[5,42],[5,67]]]]],[],["loc",[null,[5,32],[5,68]]]]],[],["loc",[null,[5,15],[5,70]]]],
+          ["inline","format-message",[["subexpr","intl-get",[["get","availableType.descriptionIntlKey",["loc",[null,[6,42],[6,74]]]]],[],["loc",[null,[6,32],[6,75]]]]],[],["loc",[null,[6,15],[6,77]]]]
+        ],
+        locals: ["availableType"],
+        templates: []
+      };
+    }());
     return {
       meta: {
         "revision": "Ember@1.13.6",
@@ -3027,8 +3104,8 @@ define('frontend-cp/components/ko-admin/case-fields/select-type/template', ['exp
             "column": 0
           },
           "end": {
-            "line": 151,
-            "column": 6
+            "line": 10,
+            "column": 0
           }
         },
         "moduleName": "frontend-cp/components/ko-admin/case-fields/select-type/template.hbs"
@@ -3038,750 +3115,22 @@ define('frontend-cp/components/ko-admin/case-fields/select-type/template', ['exp
       hasRendered: false,
       buildFragment: function buildFragment(dom) {
         var el0 = dom.createDocumentFragment();
-        var el1 = dom.createElement("div");
-        dom.setAttribute(el1,"class","ko-admin_case-fields_select-type");
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__icon");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__text");
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("div");
-        var el4 = dom.createComment("");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("div");
-        var el4 = dom.createComment("");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n  ");
-        dom.appendChild(el2, el3);
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n");
-        dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n\n");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createElement("div");
-        dom.setAttribute(el1,"class","ko-admin_case-fields_select-type");
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__icon");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__text");
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("div");
-        var el4 = dom.createComment("");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("div");
-        var el4 = dom.createComment("");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n  ");
-        dom.appendChild(el2, el3);
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n");
-        dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n\n");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createElement("div");
-        dom.setAttribute(el1,"class","ko-admin_case-fields_select-type");
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__icon");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__text");
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("div");
-        var el4 = dom.createComment("");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("div");
-        var el4 = dom.createComment("");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n  ");
-        dom.appendChild(el2, el3);
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n");
-        dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n\n");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createElement("div");
-        dom.setAttribute(el1,"class","ko-admin_case-fields_select-type");
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__icon");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__text");
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("div");
-        var el4 = dom.createComment("");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("div");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n  ");
-        dom.appendChild(el2, el3);
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n");
-        dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n\n");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createElement("div");
-        dom.setAttribute(el1,"class","ko-admin_case-fields_select-type");
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__icon");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__text");
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("div");
-        var el4 = dom.createComment("");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("div");
-        var el4 = dom.createComment("");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n  ");
-        dom.appendChild(el2, el3);
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n");
-        dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n\n");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createElement("div");
-        dom.setAttribute(el1,"class","ko-admin_case-fields_select-type");
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__icon");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__text");
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("div");
-        var el4 = dom.createComment("");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("div");
-        var el4 = dom.createComment("");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n  ");
-        dom.appendChild(el2, el3);
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n");
-        dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n\n");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createElement("div");
-        dom.setAttribute(el1,"class","ko-admin_case-fields_select-type");
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__icon");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__text");
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("div");
-        var el4 = dom.createComment("");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("div");
-        var el4 = dom.createComment("");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n  ");
-        dom.appendChild(el2, el3);
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n");
-        dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n\n");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createElement("div");
-        dom.setAttribute(el1,"class","ko-admin_case-fields_select-type");
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__icon");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__text");
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("div");
-        var el4 = dom.createComment("");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("div");
-        var el4 = dom.createComment("");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n  ");
-        dom.appendChild(el2, el3);
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n");
-        dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n\n");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createElement("div");
-        dom.setAttribute(el1,"class","ko-admin_case-fields_select-type");
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__icon");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__text");
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("div");
-        var el4 = dom.createComment("");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("div");
-        var el4 = dom.createComment("");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n  ");
-        dom.appendChild(el2, el3);
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n");
-        dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n\n");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createElement("div");
-        dom.setAttribute(el1,"class","ko-admin_case-fields_select-type");
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__icon");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__text");
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("div");
-        var el4 = dom.createComment("");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("div");
-        var el4 = dom.createComment("");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n  ");
-        dom.appendChild(el2, el3);
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n");
-        dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n\n");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createElement("div");
-        dom.setAttribute(el1,"class","ko-admin_case-fields_select-type");
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__icon");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__text");
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("div");
-        var el4 = dom.createComment("");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("div");
-        var el4 = dom.createComment("");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n  ");
-        dom.appendChild(el2, el3);
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n");
-        dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n\n");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createElement("div");
-        dom.setAttribute(el1,"class","ko-admin_case-fields_select-type");
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__icon");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__text");
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("div");
-        var el4 = dom.createComment("");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("div");
-        var el4 = dom.createComment("");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n  ");
-        dom.appendChild(el2, el3);
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n");
-        dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n\n");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createElement("div");
-        dom.setAttribute(el1,"class","ko-admin_case-fields_select-type");
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__icon");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__text");
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("div");
-        var el4 = dom.createComment("");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("div");
-        var el4 = dom.createComment("");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n  ");
-        dom.appendChild(el2, el3);
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n");
-        dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n\n");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createElement("div");
-        dom.setAttribute(el1,"class","ko-admin_case-fields_select-type");
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__icon");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__text");
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("div");
-        var el4 = dom.createComment("");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("div");
-        var el4 = dom.createComment("");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n  ");
-        dom.appendChild(el2, el3);
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n");
-        dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n\n");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createElement("div");
-        dom.setAttribute(el1,"class","ko-admin_case-fields_select-type");
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__icon");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__text");
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("div");
-        var el4 = dom.createComment("");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("div");
-        var el4 = dom.createComment("");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n  ");
-        dom.appendChild(el2, el3);
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n");
-        dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n\n");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createElement("div");
-        dom.setAttribute(el1,"class","ko-admin_case-fields_select-type");
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__icon");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__text");
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("div");
-        var el4 = dom.createComment("");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("div");
-        var el4 = dom.createComment("");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n  ");
-        dom.appendChild(el2, el3);
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n");
-        dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n\n");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createElement("div");
-        dom.setAttribute(el1,"class","ko-admin_case-fields_select-type");
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__icon");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__text");
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("div");
-        var el4 = dom.createComment("");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("div");
-        var el4 = dom.createComment("");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n  ");
-        dom.appendChild(el2, el3);
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n");
-        dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n\n");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createElement("div");
-        dom.setAttribute(el1,"class","ko-admin_case-fields_select-type");
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__icon");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__text");
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("div");
-        var el4 = dom.createComment("");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("div");
-        var el4 = dom.createComment("");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n  ");
-        dom.appendChild(el2, el3);
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n");
-        dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n\n");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createElement("div");
-        dom.setAttribute(el1,"class","ko-admin_case-fields_select-type");
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__icon");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__text");
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("div");
-        var el4 = dom.createComment("");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("div");
-        var el4 = dom.createComment("");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n  ");
-        dom.appendChild(el2, el3);
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n");
-        dom.appendChild(el1, el2);
+        var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var element0 = dom.childAt(fragment, [0]);
-        var element1 = dom.childAt(element0, [3]);
-        var element2 = dom.childAt(fragment, [2]);
-        var element3 = dom.childAt(element2, [3]);
-        var element4 = dom.childAt(fragment, [4]);
-        var element5 = dom.childAt(element4, [3]);
-        var element6 = dom.childAt(fragment, [6]);
-        var element7 = dom.childAt(fragment, [8]);
-        var element8 = dom.childAt(element7, [3]);
-        var element9 = dom.childAt(fragment, [10]);
-        var element10 = dom.childAt(element9, [3]);
-        var element11 = dom.childAt(fragment, [12]);
-        var element12 = dom.childAt(element11, [3]);
-        var element13 = dom.childAt(fragment, [14]);
-        var element14 = dom.childAt(element13, [3]);
-        var element15 = dom.childAt(fragment, [16]);
-        var element16 = dom.childAt(element15, [3]);
-        var element17 = dom.childAt(fragment, [18]);
-        var element18 = dom.childAt(element17, [3]);
-        var element19 = dom.childAt(fragment, [20]);
-        var element20 = dom.childAt(element19, [3]);
-        var element21 = dom.childAt(fragment, [22]);
-        var element22 = dom.childAt(element21, [3]);
-        var element23 = dom.childAt(fragment, [24]);
-        var element24 = dom.childAt(element23, [3]);
-        var element25 = dom.childAt(fragment, [26]);
-        var element26 = dom.childAt(element25, [3]);
-        var element27 = dom.childAt(fragment, [28]);
-        var element28 = dom.childAt(element27, [3]);
-        var element29 = dom.childAt(fragment, [30]);
-        var element30 = dom.childAt(element29, [3]);
-        var element31 = dom.childAt(fragment, [32]);
-        var element32 = dom.childAt(element31, [3]);
-        var element33 = dom.childAt(fragment, [34]);
-        var element34 = dom.childAt(element33, [3]);
-        var element35 = dom.childAt(fragment, [36]);
-        var element36 = dom.childAt(element35, [3]);
-        var morphs = new Array(56);
-        morphs[0] = dom.createElementMorph(element0);
-        morphs[1] = dom.createMorphAt(dom.childAt(element1, [1]),0,0);
-        morphs[2] = dom.createMorphAt(dom.childAt(element1, [3]),0,0);
-        morphs[3] = dom.createElementMorph(element2);
-        morphs[4] = dom.createMorphAt(dom.childAt(element3, [1]),0,0);
-        morphs[5] = dom.createMorphAt(dom.childAt(element3, [3]),0,0);
-        morphs[6] = dom.createElementMorph(element4);
-        morphs[7] = dom.createMorphAt(dom.childAt(element5, [1]),0,0);
-        morphs[8] = dom.createMorphAt(dom.childAt(element5, [3]),0,0);
-        morphs[9] = dom.createElementMorph(element6);
-        morphs[10] = dom.createMorphAt(dom.childAt(element6, [3, 1]),0,0);
-        morphs[11] = dom.createElementMorph(element7);
-        morphs[12] = dom.createMorphAt(dom.childAt(element8, [1]),0,0);
-        morphs[13] = dom.createMorphAt(dom.childAt(element8, [3]),0,0);
-        morphs[14] = dom.createElementMorph(element9);
-        morphs[15] = dom.createMorphAt(dom.childAt(element10, [1]),0,0);
-        morphs[16] = dom.createMorphAt(dom.childAt(element10, [3]),0,0);
-        morphs[17] = dom.createElementMorph(element11);
-        morphs[18] = dom.createMorphAt(dom.childAt(element12, [1]),0,0);
-        morphs[19] = dom.createMorphAt(dom.childAt(element12, [3]),0,0);
-        morphs[20] = dom.createElementMorph(element13);
-        morphs[21] = dom.createMorphAt(dom.childAt(element14, [1]),0,0);
-        morphs[22] = dom.createMorphAt(dom.childAt(element14, [3]),0,0);
-        morphs[23] = dom.createElementMorph(element15);
-        morphs[24] = dom.createMorphAt(dom.childAt(element16, [1]),0,0);
-        morphs[25] = dom.createMorphAt(dom.childAt(element16, [3]),0,0);
-        morphs[26] = dom.createElementMorph(element17);
-        morphs[27] = dom.createMorphAt(dom.childAt(element18, [1]),0,0);
-        morphs[28] = dom.createMorphAt(dom.childAt(element18, [3]),0,0);
-        morphs[29] = dom.createElementMorph(element19);
-        morphs[30] = dom.createMorphAt(dom.childAt(element20, [1]),0,0);
-        morphs[31] = dom.createMorphAt(dom.childAt(element20, [3]),0,0);
-        morphs[32] = dom.createElementMorph(element21);
-        morphs[33] = dom.createMorphAt(dom.childAt(element22, [1]),0,0);
-        morphs[34] = dom.createMorphAt(dom.childAt(element22, [3]),0,0);
-        morphs[35] = dom.createElementMorph(element23);
-        morphs[36] = dom.createMorphAt(dom.childAt(element24, [1]),0,0);
-        morphs[37] = dom.createMorphAt(dom.childAt(element24, [3]),0,0);
-        morphs[38] = dom.createElementMorph(element25);
-        morphs[39] = dom.createMorphAt(dom.childAt(element26, [1]),0,0);
-        morphs[40] = dom.createMorphAt(dom.childAt(element26, [3]),0,0);
-        morphs[41] = dom.createElementMorph(element27);
-        morphs[42] = dom.createMorphAt(dom.childAt(element28, [1]),0,0);
-        morphs[43] = dom.createMorphAt(dom.childAt(element28, [3]),0,0);
-        morphs[44] = dom.createElementMorph(element29);
-        morphs[45] = dom.createMorphAt(dom.childAt(element30, [1]),0,0);
-        morphs[46] = dom.createMorphAt(dom.childAt(element30, [3]),0,0);
-        morphs[47] = dom.createElementMorph(element31);
-        morphs[48] = dom.createMorphAt(dom.childAt(element32, [1]),0,0);
-        morphs[49] = dom.createMorphAt(dom.childAt(element32, [3]),0,0);
-        morphs[50] = dom.createElementMorph(element33);
-        morphs[51] = dom.createMorphAt(dom.childAt(element34, [1]),0,0);
-        morphs[52] = dom.createMorphAt(dom.childAt(element34, [3]),0,0);
-        morphs[53] = dom.createElementMorph(element35);
-        morphs[54] = dom.createMorphAt(dom.childAt(element36, [1]),0,0);
-        morphs[55] = dom.createMorphAt(dom.childAt(element36, [3]),0,0);
+        var morphs = new Array(1);
+        morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+        dom.insertBoundary(fragment, 0);
+        dom.insertBoundary(fragment, null);
         return morphs;
       },
       statements: [
-        ["element","action",["setCaseFieldType","TEXT"],[],["loc",[null,[1,46],[1,82]]]],
-        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.text.name"],[],["loc",[null,[4,26],[4,70]]]]],[],["loc",[null,[4,9],[4,72]]]],
-        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.text.description"],[],["loc",[null,[5,26],[5,77]]]]],[],["loc",[null,[5,9],[5,79]]]],
-        ["element","action",["setCaseFieldType","TEXTAREA"],[],["loc",[null,[9,46],[9,86]]]],
-        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.textarea.name"],[],["loc",[null,[12,26],[12,74]]]]],[],["loc",[null,[12,9],[12,76]]]],
-        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.textarea.description"],[],["loc",[null,[13,26],[13,81]]]]],[],["loc",[null,[13,9],[13,83]]]],
-        ["element","action",["setCaseFieldType","CHECKBOX"],[],["loc",[null,[17,46],[17,86]]]],
-        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.checkbox.name"],[],["loc",[null,[20,26],[20,74]]]]],[],["loc",[null,[20,9],[20,76]]]],
-        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.checkbox.description"],[],["loc",[null,[21,26],[21,81]]]]],[],["loc",[null,[21,9],[21,83]]]],
-        ["element","action",["setCaseFieldType","PRIORITY"],[],["loc",[null,[25,46],[25,86]]]],
-        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.priority.name"],[],["loc",[null,[28,26],[28,74]]]]],[],["loc",[null,[28,9],[28,76]]]],
-        ["element","action",["setCaseFieldType","SUBJECT"],[],["loc",[null,[33,46],[33,85]]]],
-        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.subject.name"],[],["loc",[null,[36,26],[36,73]]]]],[],["loc",[null,[36,9],[36,75]]]],
-        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.subject.description"],[],["loc",[null,[37,26],[37,80]]]]],[],["loc",[null,[37,9],[37,82]]]],
-        ["element","action",["setCaseFieldType","MESSAGE"],[],["loc",[null,[41,46],[41,85]]]],
-        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.message.name"],[],["loc",[null,[44,26],[44,73]]]]],[],["loc",[null,[44,9],[44,75]]]],
-        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.message.description"],[],["loc",[null,[45,26],[45,80]]]]],[],["loc",[null,[45,9],[45,82]]]],
-        ["element","action",["setCaseFieldType","STATUS"],[],["loc",[null,[49,46],[49,84]]]],
-        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.status.name"],[],["loc",[null,[52,26],[52,72]]]]],[],["loc",[null,[52,9],[52,74]]]],
-        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.status.description"],[],["loc",[null,[53,26],[53,79]]]]],[],["loc",[null,[53,9],[53,81]]]],
-        ["element","action",["setCaseFieldType","TYPE"],[],["loc",[null,[57,46],[57,82]]]],
-        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.type.name"],[],["loc",[null,[60,26],[60,70]]]]],[],["loc",[null,[60,9],[60,72]]]],
-        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.type.description"],[],["loc",[null,[61,26],[61,77]]]]],[],["loc",[null,[61,9],[61,79]]]],
-        ["element","action",["setCaseFieldType","ASSIGNEE"],[],["loc",[null,[65,46],[65,86]]]],
-        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.assignee.name"],[],["loc",[null,[68,26],[68,74]]]]],[],["loc",[null,[68,9],[68,76]]]],
-        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.assignee.description"],[],["loc",[null,[69,26],[69,81]]]]],[],["loc",[null,[69,9],[69,83]]]],
-        ["element","action",["setCaseFieldType","TEAM"],[],["loc",[null,[73,46],[73,82]]]],
-        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.team.name"],[],["loc",[null,[76,26],[76,70]]]]],[],["loc",[null,[76,9],[76,72]]]],
-        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.team.description"],[],["loc",[null,[77,26],[77,77]]]]],[],["loc",[null,[77,9],[77,79]]]],
-        ["element","action",["setCaseFieldType","REGEX"],[],["loc",[null,[81,46],[81,83]]]],
-        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.regex.name"],[],["loc",[null,[84,26],[84,71]]]]],[],["loc",[null,[84,9],[84,73]]]],
-        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.regex.description"],[],["loc",[null,[85,26],[85,78]]]]],[],["loc",[null,[85,9],[85,80]]]],
-        ["element","action",["setCaseFieldType","DATE"],[],["loc",[null,[89,46],[89,82]]]],
-        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.date.name"],[],["loc",[null,[92,26],[92,70]]]]],[],["loc",[null,[92,9],[92,72]]]],
-        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.date.description"],[],["loc",[null,[93,26],[93,77]]]]],[],["loc",[null,[93,9],[93,79]]]],
-        ["element","action",["setCaseFieldType","YESNO"],[],["loc",[null,[97,46],[97,83]]]],
-        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.yesno.name"],[],["loc",[null,[100,26],[100,71]]]]],[],["loc",[null,[100,9],[100,73]]]],
-        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.yesno.description"],[],["loc",[null,[101,26],[101,78]]]]],[],["loc",[null,[101,9],[101,80]]]],
-        ["element","action",["setCaseFieldType","FILE"],[],["loc",[null,[105,46],[105,82]]]],
-        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.file.name"],[],["loc",[null,[108,26],[108,70]]]]],[],["loc",[null,[108,9],[108,72]]]],
-        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.file.description"],[],["loc",[null,[109,26],[109,77]]]]],[],["loc",[null,[109,9],[109,79]]]],
-        ["element","action",["setCaseFieldType","DECIMAL"],[],["loc",[null,[113,46],[113,85]]]],
-        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.decimal.name"],[],["loc",[null,[116,26],[116,73]]]]],[],["loc",[null,[116,9],[116,75]]]],
-        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.decimal.description"],[],["loc",[null,[117,26],[117,80]]]]],[],["loc",[null,[117,9],[117,82]]]],
-        ["element","action",["setCaseFieldType","NUMERIC"],[],["loc",[null,[121,46],[121,85]]]],
-        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.numeric.name"],[],["loc",[null,[124,26],[124,73]]]]],[],["loc",[null,[124,9],[124,75]]]],
-        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.numeric.description"],[],["loc",[null,[125,26],[125,80]]]]],[],["loc",[null,[125,9],[125,82]]]],
-        ["element","action",["setCaseFieldType","DROPDOWN"],[],["loc",[null,[129,46],[129,86]]]],
-        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.dropdown.name"],[],["loc",[null,[132,26],[132,74]]]]],[],["loc",[null,[132,9],[132,76]]]],
-        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.dropdown.description"],[],["loc",[null,[133,26],[133,81]]]]],[],["loc",[null,[133,9],[133,83]]]],
-        ["element","action",["setCaseFieldType","RADIO"],[],["loc",[null,[137,46],[137,83]]]],
-        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.radio.name"],[],["loc",[null,[140,26],[140,71]]]]],[],["loc",[null,[140,9],[140,73]]]],
-        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.radio.description"],[],["loc",[null,[141,26],[141,78]]]]],[],["loc",[null,[141,9],[141,80]]]],
-        ["element","action",["setCaseFieldType","SELECT"],[],["loc",[null,[145,46],[145,84]]]],
-        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.select.name"],[],["loc",[null,[148,26],[148,72]]]]],[],["loc",[null,[148,9],[148,74]]]],
-        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.type.select.description"],[],["loc",[null,[149,26],[149,79]]]]],[],["loc",[null,[149,9],[149,81]]]]
+        ["block","each",[["get","availableTypes",["loc",[null,[1,8],[1,22]]]]],[],0,null,["loc",[null,[1,0],[9,9]]]]
       ],
       locals: [],
-      templates: []
+      templates: [child0]
     };
   }()));
 
@@ -48261,6 +47610,11 @@ define('frontend-cp/session/admin/manage/case-fields/new/controller', ['exports'
   exports['default'] = Ember['default'].Controller.extend({
     optionsToBeDeleted: [],
 
+    // This route has two pages in it - when we roll back the model
+    // the info for which page to display is lost. This prevents the
+    // page flicking when we cancel
+    canDisplaySelectTypeSection: true,
+
     userHasChangedModel: function userHasChangedModel() {
       return this.get('model').hasDirtyChanges();
     },
@@ -48283,6 +47637,7 @@ define('frontend-cp/session/admin/manage/case-fields/new/controller', ['exports'
 
       setCaseFieldType: function setCaseFieldType(caseFieldType) {
         this.set('model.fieldType', caseFieldType);
+        this.set('canDisplaySelectTypeSection', false);
       },
 
       addNewOption: function addNewOption() {
@@ -48375,6 +47730,7 @@ define('frontend-cp/session/admin/manage/case-fields/new/route', ['exports', 'em
         }));
       }
       controller.set('model', model);
+      controller.set('canDisplaySelectTypeSection', true);
     }
   });
 
@@ -48526,7 +47882,7 @@ define('frontend-cp/session/admin/manage/case-fields/new/template', ['exports'],
         return morphs;
       },
       statements: [
-        ["block","if",[["subexpr","not",[["get","model.fieldType",["loc",[null,[1,11],[1,26]]]]],[],["loc",[null,[1,6],[1,27]]]]],[],0,1,["loc",[null,[1,0],[20,7]]]]
+        ["block","if",[["get","canDisplaySelectTypeSection",["loc",[null,[1,6],[1,33]]]]],[],0,1,["loc",[null,[1,0],[20,7]]]]
       ],
       locals: [],
       templates: [child0, child1]
@@ -65088,7 +64444,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+ad70a8a0"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+7b819c0c"});
 }
 
 /* jshint ignore:end */
