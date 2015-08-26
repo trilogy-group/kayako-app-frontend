@@ -7250,6 +7250,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
     // Params
     'case': null,
     caseFields: null,
+    onTopPostChange: function onTopPostChange() {},
 
     store: Ember['default'].inject.service(),
     timelineCacheService: Ember['default'].inject.service('case-timeline-cache'),
@@ -7266,6 +7267,8 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
     isCaseSubjectEdited: false,
     resizeStickyEditorRequestID: null,
     repositionStickyEditorRequestID: null,
+    timelineVisibleTop: 0,
+    timelineVisibleLeft: 0,
     loadPostsRafID: null,
     caseEditorHeight: 0,
     headerSticky: false,
@@ -7289,9 +7292,13 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       var _this = this;
 
       this.set('resizeStickyEditorRequestID', window.requestAnimationFrame(function () {
-        var height = _this.$('.ko-case-content__editor').outerHeight();
+        var $editor = _this.$('.ko-case-content__editor');
+        var height = $editor.outerHeight();
+        var boundingRect = $editor.get(0).getBoundingClientRect();
         Ember['default'].run(function () {
-          return _this.set('caseEditorHeight', height);
+          _this.set('caseEditorHeight', height);
+          _this.set('timelineVisibleTop', boundingRect.top + boundingRect.height);
+          _this.set('timelineVisibleLeft', boundingRect.left);
         });
         _this.resizeStickyEditor();
       }));
@@ -8055,7 +8062,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
         ["attribute","style",["concat",["height: ",["get","caseEditorHeight",["loc",[null,[43,72],[43,88]]]],"px"]]],
         ["attribute","class",["concat",["ko-case-content__editor ",["subexpr","if",[["get","headerSticky",["loc",[null,[44,51],[44,63]]]],"ko-case-content__editor--sticky"],[],["loc",[null,[44,46],[44,99]]]]]]],
         ["inline","ko-case-field/post",[],["viewName","casePostEditor","channels",["subexpr","@mut",[["get","case.replyChannels",["loc",[null,[45,68],[45,86]]]]],[],[]],"channel",["subexpr","@mut",[["get","channel",["loc",[null,[45,95],[45,102]]]]],[],[]],"onChannelChange","setChannel","replyType",["subexpr","@mut",[["get","replyType",["loc",[null,[45,142],[45,151]]]]],[],[]]],["loc",[null,[45,12],[45,153]]]],
-        ["inline","ko-feed",[],["events",["subexpr","@mut",[["get","posts",["loc",[null,[48,25],[48,30]]]]],[],[]],"onReplyWithQuote","replyWithQuote","boundingRect",["subexpr","@mut",[["get","boundingRect",["loc",[null,[48,78],[48,90]]]]],[],[]]],["loc",[null,[48,8],[48,92]]]],
+        ["inline","ko-feed",[],["events",["subexpr","@mut",[["get","posts",["loc",[null,[48,25],[48,30]]]]],[],[]],"onReplyWithQuote","replyWithQuote","top",["subexpr","@mut",[["get","timelineVisibleTop",["loc",[null,[48,69],[48,87]]]]],[],[]],"left",["subexpr","@mut",[["get","timelineVisibleLeft",["loc",[null,[48,93],[48,112]]]]],[],[]],"onTopPostChange",["subexpr","@mut",[["get","onTopPostChange",["loc",[null,[48,129],[48,144]]]]],[],[]]],["loc",[null,[48,8],[48,146]]]],
         ["block","if",[["get","loading",["loc",[null,[50,16],[50,23]]]]],[],0,null,["loc",[null,[50,10],[54,17]]]],
         ["attribute","class",["concat",["list-bare ko-case-content__sidebar ",["subexpr","if",[["get","headerSticky",["loc",[null,[59,57],[59,69]]]],"ko-case-content__sidebar--sticky"],[],["loc",[null,[59,52],[59,106]]]]]]],
         ["element","action",["submit"],[],["loc",[null,[61,55],[61,74]]]],
@@ -15707,22 +15714,60 @@ define('frontend-cp/components/ko-feed/component', ['exports', 'ember'], functio
   'use strict';
 
   exports['default'] = Ember['default'].Component.extend({
-    //Params
+    // Params
     events: null,
+    top: 0,
+    left: 0,
+    onTopPostChange: function onTopPostChange() {},
 
-    orderedEvents: (function () {
-      var events = this.get('events');
+    // State
+    timeoutId: null,
+    childItemsById: null,
+    currentTopPostId: null,
 
-      if (!events || !events.get('length')) {
-        //no events yet
-        return;
-      }
-      return events;
-    }).property('events.@each'),
+    setupTopElementListener: (function () {
+      var _this = this;
+
+      this.set('timeoutId', setTimeout(function () {
+        Ember['default'].run(function () {
+          var el = document.elementFromPoint(_this.get('left') + 40, _this.get('top'));
+          var $item = $(el).closest('.ko-feed_item');
+          if ($item.length > 0) {
+            var id = $item.get(0).id;
+            var item = _this.get('childItemsById')[id];
+            var post = item.get('event');
+            if (_this.get('currentTopPostId') !== post.get('id')) {
+              _this.attrs.onTopPostChange(post.get('id'));
+              _this.set('currentTopPostId', post.get('id'));
+            }
+          }
+          _this.setupTopElementListener();
+        });
+      }, 300));
+    }).on('didInsertElement'),
+
+    teardownTopElementListener: (function () {
+      clearTimeout(this.get('timeoutId'));
+    }).on('willDestroyElement'),
+
+    setupChildItems: (function () {
+      this.set('childItemsById', {});
+    }).on('init'),
 
     actions: {
       onReplyWithQuote: function onReplyWithQuote(quote) {
         this.sendAction('onReplyWithQuote', quote);
+      },
+
+      register: function register(item) {
+        this.get('childItemsById')[item.get('elementId')] = item;
+      },
+
+      teardown: function teardown(item) {
+        delete this.get('childItemsById')[item.get('event.id')];
+        if (this.get('currentTopPostId') === item.get('event.id')) {
+          this.set('currentTopPostId', null);
+        }
       }
     }
   });
@@ -15736,10 +15781,19 @@ define('frontend-cp/components/ko-feed/item/component', ['exports', 'ember'], fu
     //params
     event: null,
 
+    classNames: ['ko-feed_item'],
     classNameBindings: ['isPrivate'],
     isPrivate: Ember['default'].computed.equal('event.original.postType', 'note'),
 
     showMenu: false,
+
+    register: (function () {
+      this.attrs.onRegister(this);
+    }).on('didInsertElement'),
+
+    teardown: (function () {
+      this.attrs.onTeardown(this);
+    }).on('willDestroyElement'),
 
     mouseEnter: function mouseEnter() {
       this.set('showMenu', true);
@@ -16034,7 +16088,7 @@ define('frontend-cp/components/ko-feed/template', ['exports'], function (exports
               "column": 0
             },
             "end": {
-              "line": 3,
+              "line": 7,
               "column": 0
             }
           },
@@ -16059,7 +16113,7 @@ define('frontend-cp/components/ko-feed/template', ['exports'], function (exports
           return morphs;
         },
         statements: [
-          ["inline","ko-feed/item",[],["event",["subexpr","@mut",[["get","event",["loc",[null,[2,23],[2,28]]]]],[],[]],"onReplyWithQuote","onReplyWithQuote"],["loc",[null,[2,2],[2,66]]]]
+          ["inline","ko-feed/item",[],["event",["subexpr","@mut",[["get","event",["loc",[null,[3,10],[3,15]]]]],[],[]],"onReplyWithQuote","onReplyWithQuote","onRegister",["subexpr","action",["register"],[],["loc",[null,[5,15],[5,34]]]],"onTeardown",["subexpr","action",["teardown"],[],["loc",[null,[6,15],[6,34]]]]],["loc",[null,[2,2],[6,36]]]]
         ],
         locals: ["event"],
         templates: []
@@ -16075,8 +16129,8 @@ define('frontend-cp/components/ko-feed/template', ['exports'], function (exports
             "column": 0
           },
           "end": {
-            "line": 4,
-            "column": 0
+            "line": 7,
+            "column": 9
           }
         },
         "moduleName": "frontend-cp/components/ko-feed/template.hbs"
@@ -16098,7 +16152,7 @@ define('frontend-cp/components/ko-feed/template', ['exports'], function (exports
         return morphs;
       },
       statements: [
-        ["block","each",[["get","orderedEvents",["loc",[null,[1,8],[1,21]]]]],[],0,null,["loc",[null,[1,0],[3,9]]]]
+        ["block","each",[["get","events",["loc",[null,[1,8],[1,14]]]]],[],0,null,["loc",[null,[1,0],[7,9]]]]
       ],
       locals: [],
       templates: [child0]
@@ -29518,11 +29572,44 @@ define('frontend-cp/initializers/tabs', ['exports', 'ember'], function (exports,
       isTabbedRoute: false,
 
       /**
+       * Hash change listener
+       * @type {function}
+       */
+      onHashUpdate: function onHashUpdate() {
+        var tabModel = this.get('tab');
+        var currentHash = location.hash;
+        var tabUrl = tabModel.get('url').split('#')[0] + (currentHash === '#' ? '' : currentHash);
+        tabModel.set('url', tabUrl);
+      },
+
+      /**
        * Select/create a tab whenever this route becomes active
        */
       updateTabSelectionOnActivate: Ember['default'].on('activate', function () {
         var activeTransition = this.router.router.activeTransition;
         this.updateTabSelection(activeTransition);
+      }),
+
+      /**
+       * Track hash change events while the route is active
+       */
+      watchHashOnActivate: Ember['default'].on('activate', function () {
+        if (!this.get('isTabbedRoute')) {
+          return;
+        }
+
+        this.onHashUpdate = this.onHashUpdate.bind(this);
+        $(window).on('hashchange', this.onHashUpdate);
+      }),
+
+      /**
+       * Stop tracking hash change events when the route is deactivated
+       */
+      unwatchHashOnDectivate: Ember['default'].on('deactivate', function () {
+        if (!this.get('isTabbedRoute')) {
+          return;
+        }
+        $(window).off('hashchange', this.onHashUpdate);
       }),
 
       /*
@@ -46534,6 +46621,17 @@ define('frontend-cp/services/route-state', ['exports', 'ember'], function (expor
     },
 
     /**
+     * Update the current URL including the hash
+     * @param {[string]} url URL value to update, including hash if available
+     */
+    updateUrlWithHash: function updateUrlWithHash(url) {
+      var location = this.container.lookup('router:main').get('location');
+      if (location.replaceURL) {
+        location.replaceURL(url);
+      }
+    },
+
+    /**
      * Transition to a path with a corresponding history state object
      * @param {string} url URL path for the target route
      * @param {object} state History state properties to be added after transition with `history.replaceState(state)`
@@ -46556,25 +46654,28 @@ define('frontend-cp/services/route-state', ['exports', 'ember'], function (expor
       // so this will run before all other `didTransition` listeners
       // (unless others were added after `transitionTo()` was called).
 
-      var self = this;
       var didReceiveTransitionEvent = false;
+      var onTransitionSucceeded = function onTransitionSucceeded() {
+        didReceiveTransitionEvent = true;
+        _this.updateUrlWithHash(url);
+        _this.updateState(state);
+      };
+
       router.on('didTransition', onTransitionSucceeded);
 
       // Let Ember's router take care of the transition
-      return router.transitionTo(url).then(function () {
-        // If we were already at this path, we won't have received a
-        // `didTransition` event, so we still need to set the state
+      var pageUrl = url.split('#')[0];
+      return router.transitionTo(pageUrl).then(function () {
+        // If the user we were already on this page, there will not
+        // have been a `didTransition` event, so we still need to
+        // update the state for this
         if (!didReceiveTransitionEvent) {
+          _this.updateUrlWithHash(url);
           _this.updateState(state);
         }
       })['finally'](function () {
         router.off('didTransition', onTransitionSucceeded);
       });
-
-      function onTransitionSucceeded() {
-        didReceiveTransitionEvent = true;
-        self.updateState(state);
-      }
     }
   });
 
@@ -50429,9 +50530,15 @@ define('frontend-cp/session/agent/cases/case/controller', ['exports', 'ember', '
 });
 define('frontend-cp/session/agent/cases/case/index/controller', ['exports', 'ember'], function (exports, Ember) {
 
-	'use strict';
+  'use strict';
 
-	exports['default'] = Ember['default'].Controller.extend({});
+  exports['default'] = Ember['default'].Controller.extend({
+    actions: {
+      onTopPostChange: function onTopPostChange(postId) {
+        this.get('target').send('onTopPostChange', postId);
+      }
+    }
+  });
 
 });
 define('frontend-cp/session/agent/cases/case/index/route', ['exports', 'ember'], function (exports, Ember) {
@@ -50474,6 +50581,23 @@ define('frontend-cp/session/agent/cases/case/index/route', ['exports', 'ember'],
           //assuming that status ID 3 will always be pending
           editingCase.set('status', pendingStatus);
         });
+      }
+    },
+
+    actions: {
+      onTopPostChange: function onTopPostChange(postId) {
+        var locationService = this.container.lookup('router:main').get('location');
+        var rootURL = Ember['default'].get(locationService, 'rootURL').replace(/\/$/, '');
+        var location = Ember['default'].get(locationService, 'location');
+        var path = location.pathname;
+        var baseURL = Ember['default'].get(locationService, 'baseURL').replace(/\/$/, '');
+        var search = location.search || '';
+        var url = path.replace(baseURL, '').replace(rootURL, '') + search + '#' + postId;
+
+        if (locationService.replaceURL) {
+          locationService.replaceURL(url);
+          this.send('onHashUpdate');
+        }
       }
     }
   });
@@ -50518,7 +50642,7 @@ define('frontend-cp/session/agent/cases/case/index/template', ['exports'], funct
         return morphs;
       },
       statements: [
-        ["inline","ko-case-content",[],["case",["subexpr","@mut",[["get","case",["loc",[null,[1,23],[1,27]]]]],[],[]],"caseFields",["subexpr","@mut",[["get","caseFields",["loc",[null,[1,39],[1,49]]]]],[],[]]],["loc",[null,[1,0],[1,51]]]]
+        ["inline","ko-case-content",[],["case",["subexpr","@mut",[["get","case",["loc",[null,[1,23],[1,27]]]]],[],[]],"caseFields",["subexpr","@mut",[["get","caseFields",["loc",[null,[1,39],[1,49]]]]],[],[]],"onTopPostChange",["subexpr","action",["onTopPostChange"],[],["loc",[null,[1,66],[1,92]]]]],["loc",[null,[1,0],[1,94]]]]
       ],
       locals: [],
       templates: []
@@ -50686,8 +50810,13 @@ define('frontend-cp/session/agent/cases/case/route', ['exports', 'frontend-cp/ro
     setupController: function setupController(controller, model) {
       this._super(controller, model);
       this.get('tab').set('label', model.get('subject'));
-    }
+    },
 
+    actions: {
+      onHashUpdate: function onHashUpdate() {
+        this.onHashUpdate();
+      }
+    }
   });
 
 });
@@ -57504,22 +57633,11 @@ define('frontend-cp/session/test/entry/template', ['exports'], function (exports
   }()));
 
 });
-define('frontend-cp/tests/acceptance/case/create-note-test', ['ember', 'qunit', 'frontend-cp/tests/helpers/start-app'], function (Ember, qunit, startApp) {
+define('frontend-cp/tests/acceptance/case/create-note-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
 
-  var application = undefined;
-
-  qunit.module('Acceptance | Case | Create note', {
-    beforeEach: function beforeEach() {
-      application = startApp['default']();
-    },
-
-    afterEach: function afterEach() {
-      logout();
-      Ember['default'].run(application, 'destroy');
-    }
-  });
+  qunit.app('Acceptance | Case | Create note');
 
   qunit.test('create note', function (assert) {
     assert.expect(3);
@@ -57546,21 +57664,17 @@ define('frontend-cp/tests/acceptance/case/create-note-test', ['ember', 'qunit', 
   });
 
 });
-define('frontend-cp/tests/acceptance/case/create-test', ['ember', 'qunit', 'frontend-cp/tests/helpers/start-app'], function (Ember, qunit, startApp) {
+define('frontend-cp/tests/acceptance/case/create-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
 
-  var application = undefined;
-
-  qunit.module('Acceptance | Case | Create case', {
+  qunit.app('Acceptance | Case | Create case', {
     beforeEach: function beforeEach() {
-      application = startApp['default']();
       login();
     },
 
     afterEach: function afterEach() {
       logout();
-      Ember['default'].run(application, 'destroy');
     }
   });
 
@@ -57575,21 +57689,17 @@ define('frontend-cp/tests/acceptance/case/create-test', ['ember', 'qunit', 'fron
   //});
 
 });
-define('frontend-cp/tests/acceptance/case/list-test', ['ember', 'qunit', 'frontend-cp/tests/helpers/start-app'], function (Ember, qunit, startApp) {
+define('frontend-cp/tests/acceptance/case/list-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
 
-  var application = undefined;
-
-  qunit.module('Acceptance | Case | List', {
+  qunit.app('Acceptance | Case | List', {
     beforeEach: function beforeEach() {
-      application = startApp['default']();
       login();
     },
 
     afterEach: function afterEach() {
       logout();
-      Ember['default'].run(application, 'destroy');
     }
   });
 
@@ -57605,21 +57715,17 @@ define('frontend-cp/tests/acceptance/case/list-test', ['ember', 'qunit', 'fronte
   });
 
 });
-define('frontend-cp/tests/acceptance/case/reply-with-quote-test', ['ember', 'qunit', 'frontend-cp/tests/helpers/start-app'], function (Ember, qunit, startApp) {
+define('frontend-cp/tests/acceptance/case/reply-with-quote-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
 
-  var application = undefined;
-
-  qunit.module('Acceptance | Case | Reply with quote', {
+  qunit.app('Acceptance | Case | Reply with quote', {
     beforeEach: function beforeEach() {
-      application = startApp['default']();
       login();
     },
 
     afterEach: function afterEach() {
       logout();
-      Ember['default'].run(application, 'destroy');
     }
   });
 
@@ -57641,21 +57747,11 @@ define('frontend-cp/tests/acceptance/case/reply-with-quote-test', ['ember', 'qun
   });
 
 });
-define('frontend-cp/tests/acceptance/login/reset-password-test', ['ember', 'qunit', 'frontend-cp/tests/helpers/start-app'], function (Ember, qunit, startApp) {
+define('frontend-cp/tests/acceptance/login/reset-password-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
 
-  var application = undefined;
-
-  qunit.module('Acceptance | Login | Reset password', {
-    beforeEach: function beforeEach() {
-      application = startApp['default']();
-    },
-
-    afterEach: function afterEach() {
-      Ember['default'].run(application, 'destroy');
-    }
-  });
+  qunit.app('Acceptance | Login | Reset password');
 
   qunit.test('user can reset their password', function (assert) {
     assert.expect(1);
@@ -57678,21 +57774,17 @@ define('frontend-cp/tests/acceptance/login/reset-password-test', ['ember', 'quni
   });
 
 });
-define('frontend-cp/tests/acceptance/showcase/render-test', ['ember', 'qunit', 'frontend-cp/tests/helpers/start-app'], function (Ember, qunit, startApp) {
+define('frontend-cp/tests/acceptance/showcase/render-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
 
-  var application = undefined;
-
-  qunit.module('Acceptance | Showcase| Render', {
+  qunit.app('Acceptance | Showcase| Render', {
     beforeEach: function beforeEach() {
-      application = startApp['default']();
       login();
     },
 
     afterEach: function afterEach() {
       logout();
-      Ember['default'].run(application, 'destroy');
     }
   });
 
@@ -57707,24 +57799,13 @@ define('frontend-cp/tests/acceptance/showcase/render-test', ['ember', 'qunit', '
   });
 
 });
-define('frontend-cp/tests/acceptance/tabs/tabs-test', ['ember', 'qunit', 'frontend-cp/tests/helpers/start-app', 'frontend-cp/tests/fixtures/location/mock-location'], function (Ember, qunit, startApp, MockLocation) {
+define('frontend-cp/tests/acceptance/tabs/tabs-test', ['frontend-cp/tests/helpers/qunit', 'frontend-cp/tests/fixtures/location/mock-location'], function (qunit, MockLocation) {
 
   'use strict';
 
-  var application = undefined;
-
-  qunit.module('Acceptance | Tabs', {
-    beforeEach: function beforeEach() {
-      localStorage.clear();
-      sessionStorage.clear();
-
-      application = startApp['default']();
-
+  qunit.app('Acceptance | Tabs', {
+    beforeEach: function beforeEach(application) {
       application.__container__.lookup('router:main').set('location', MockLocation['default'].create());
-    },
-
-    afterEach: function afterEach() {
-      Ember['default'].run(application, 'destroy');
     }
   });
 
@@ -58416,7 +58497,7 @@ define('frontend-cp/tests/helpers/logout', ['exports', 'ember'], function (expor
   });
 
 });
-define('frontend-cp/tests/helpers/qunit', ['exports', 'ember', 'qunit', 'ember-qunit/qunit-module', 'ember-test-helpers', 'ember-qunit/test', 'frontend-cp/tests/helpers/format-date', 'frontend-cp/tests/helpers/format-time', 'frontend-cp/tests/helpers/format-relative', 'frontend-cp/tests/helpers/format-number', 'frontend-cp/tests/helpers/format-html-message', 'frontend-cp/tests/helpers/format-message', 'frontend-cp/tests/helpers/intl-get', 'ember-truth-helpers/helpers/and', 'ember-truth-helpers/helpers/equal', 'ember-truth-helpers/helpers/not', 'ember-truth-helpers/helpers/or', 'ember-truth-helpers/utils/register-helper', 'ember-get-helper/helpers/get-glimmer', 'ember-get-helper/utils/register-helper', 'frontend-cp/tests/assertions/properties-equal'], function (exports, Ember, QUnit, qunit_module, ember_test_helpers, test, FormatDate, FormatTime, FormatRelative, FormatNumber, FormatHtmlMessage, FormatMessage, IntlGet, and, equal, not, or, register_helper, getHelper, utils__register_helper, propertiesEqualAssertion) {
+define('frontend-cp/tests/helpers/qunit', ['exports', 'ember', 'qunit', 'ember-qunit/qunit-module', 'ember-test-helpers', 'ember-qunit/test', 'frontend-cp/tests/helpers/start-app', 'frontend-cp/tests/helpers/format-date', 'frontend-cp/tests/helpers/format-time', 'frontend-cp/tests/helpers/format-relative', 'frontend-cp/tests/helpers/format-number', 'frontend-cp/tests/helpers/format-html-message', 'frontend-cp/tests/helpers/format-message', 'frontend-cp/tests/helpers/intl-get', 'ember-truth-helpers/helpers/and', 'ember-truth-helpers/helpers/equal', 'ember-truth-helpers/helpers/not', 'ember-truth-helpers/helpers/or', 'ember-truth-helpers/utils/register-helper', 'ember-get-helper/helpers/get-glimmer', 'ember-get-helper/utils/register-helper', 'frontend-cp/tests/assertions/properties-equal'], function (exports, Ember, QUnit, qunit_module, ember_test_helpers, test, startApp, FormatDate, FormatTime, FormatRelative, FormatNumber, FormatHtmlMessage, FormatMessage, IntlGet, and, equal, not, or, register_helper, getHelper, utils__register_helper, propertiesEqualAssertion) {
 
   'use strict';
 
@@ -58424,6 +58505,7 @@ define('frontend-cp/tests/helpers/qunit', ['exports', 'ember', 'qunit', 'ember-q
   exports.moduleForComponent = moduleForComponent;
   exports.moduleForModel = moduleForModel;
   exports.moduleFor = moduleFor;
+  exports.app = app;
 
   QUnit['default'].assert.propertiesEqual = propertiesEqualAssertion['default'];
 
@@ -58468,6 +58550,29 @@ define('frontend-cp/tests/helpers/qunit', ['exports', 'ember', 'qunit', 'ember-q
 
   function moduleFor(name, description, callbacks) {
     createModule(ember_test_helpers.TestModule, name, description, callbacks);
+  }
+
+  function app(name) {
+    var callbacks = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+
+    var application = null;
+    return QUnit['default'].module(name, {
+      beforeEach: function beforeEach() {
+        localStorage.clear();
+        sessionStorage.clear();
+        application = startApp['default']();
+        if (callbacks.beforeEach) {
+          callbacks.beforeEach.call(this, application);
+        }
+      },
+
+      afterEach: function afterEach() {
+        if (callbacks.afterEach) {
+          callbacks.afterEach.call(this, application);
+        }
+        Ember['default'].run(application, 'destroy');
+      }
+    });
   }
 
   exports.test = test['default'];
@@ -64444,7 +64549,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+7b819c0c"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+c3405538"});
 }
 
 /* jshint ignore:end */
