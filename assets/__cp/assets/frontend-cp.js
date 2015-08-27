@@ -31761,20 +31761,40 @@ define('frontend-cp/mirage/fixtures/cases', ['exports'], function (exports) {
         'resource_type': 'sla'
       },
       'sla_metrics': [{
-        'title': 'FIRST_REPLY_TIME',
+        'type': 'FIRST_REPLY_TIME',
         'state': 'COMPLETED',
         'is_breached': false,
-        'target_in_seconds': null
+        'time_taken_seconds': 839356,
+        'target_in_seconds': null,
+        'total_seconds': null
       }, {
-        'title': 'RESOLUTION_TIME',
+        'type': 'FIRST_REPLY_TIME',
+        'state': 'COMPLETED',
+        'is_breached': true,
+        'time_taken_seconds': -123456,
+        'target_in_seconds': null,
+        'total_seconds': null
+      }, {
+        'type': 'RESOLUTION_TIME',
+        'state': 'ACTIVE',
+        'is_breached': true,
+        'remaining_seconds': -233678,
+        'time_taken_seconds': 266678,
+        'total_seconds': 33000
+      }, {
+        'type': 'RESOLUTION_TIME',
         'state': 'ACTIVE',
         'is_breached': false,
-        'target_in_seconds': -233678
+        'remaining_seconds': 100,
+        'time_taken_seconds': 266678,
+        'total_seconds': 266778
       }, {
-        'title': 'NEXT_REPLY_TIME',
+        'type': 'NEXT_REPLY_TIME',
         'state': 'ACTIVE',
         'is_breached': false,
-        'target_in_seconds': -234038
+        'remaining_seconds': 100000,
+        'time_taken_seconds': 266678,
+        'total_seconds': 366678
       }],
       'tags': [{
         'id': 1,
@@ -43880,24 +43900,6 @@ define('frontend-cp/models/case-assignee', ['exports', 'ember-data', 'frontend-c
   });
 
 });
-define('frontend-cp/models/case-field-type', ['exports', 'ember-data'], function (exports, DS) {
-
-  'use strict';
-
-  exports['default'] = DS['default'].Model.extend({
-    nameIntlKey: null,
-    descriptionIntlKey: null,
-    iconFileName: null,
-
-    adminEditComponentName: null,
-    isSystem: false,
-    isChoiceField: false,
-    isValid: function isValid() {
-      return true;
-    }
-  });
-
-});
 define('frontend-cp/models/case-field-value', ['exports', 'ember-data'], function (exports, DS) {
 
   'use strict';
@@ -44464,7 +44466,7 @@ define('frontend-cp/models/field', ['exports', 'ember-data', 'frontend-cp/mixins
   'use strict';
 
   exports['default'] = DS['default'].Model.extend(ChangeAwareModel['default'], {
-    options: DS['default'].hasMany('field-option', { child: true, async: true, url: 'options', inverse: 'parent' })
+    options: DS['default'].hasMany('field-option', { child: true, async: false, url: 'options', inverse: 'parent' })
   });
 
 });
@@ -45059,22 +45061,22 @@ define('frontend-cp/models/sla-metric', ['exports', 'ember-data', 'moment'], fun
 
     hasLessThan20PercentRemaining: (function () {
       var percentageLeft = 100 * this.get('remainingSeconds') / this.get('totalSeconds');
-      return percentageLeft > 20;
+      return percentageLeft < 20;
     }).property('remainingSeconds', 'totalSeconds'),
 
     numberOfWholeDaysRemaining: (function () {
       var timeInSeconds = this.get('isCompleted') ? this.get('timeTakenSeconds') : this.get('remainingSeconds');
-      return moment['default'].duration(timeInSeconds, 'seconds').days();
+      return Math.abs(moment['default'].duration(timeInSeconds, 'seconds').days());
     }).property('remainingSeconds', 'isCompleted', 'timeTakenSeconds'),
 
     numberOfWholeHoursRemaining: (function () {
       var timeInSeconds = this.get('isCompleted') ? this.get('timeTakenSeconds') : this.get('remainingSeconds');
-      return moment['default'].duration(timeInSeconds, 'seconds').hours();
+      return Math.abs(moment['default'].duration(timeInSeconds, 'seconds').hours());
     }).property('remainingSeconds', 'isCompleted', 'timeTakenSeconds'),
 
     numberOfWholeMinutesRemaining: (function () {
       var timeInSeconds = this.get('isCompleted') ? this.get('timeTakenSeconds') : this.get('remainingSeconds');
-      return moment['default'].duration(timeInSeconds, 'seconds').minutes();
+      return Math.abs(moment['default'].duration(timeInSeconds, 'seconds').minutes());
     }).property('remainingSeconds', 'isCompleted', 'timeTakenSeconds')
   });
 
@@ -64549,7 +64551,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+c3405538"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+50893625"});
 }
 
 /* jshint ignore:end */
