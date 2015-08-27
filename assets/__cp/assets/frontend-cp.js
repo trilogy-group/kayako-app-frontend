@@ -48070,12 +48070,14 @@ define('frontend-cp/session/admin/manage/case-forms/edit/template', ['exports'],
   }()));
 
 });
-define('frontend-cp/session/admin/manage/case-forms/index/controller', ['exports', 'ember', 'jquery'], function (exports, Ember, $) {
+define('frontend-cp/session/admin/manage/case-forms/index/controller', ['exports', 'ember'], function (exports, Ember) {
 
   'use strict';
 
   /*eslint no-alert:0*/
   exports['default'] = Ember['default'].Controller.extend({
+
+    session: Ember['default'].inject.service(),
 
     enabledForms: (function () {
       return this.get('model').filter(function (form) {
@@ -48092,13 +48094,22 @@ define('frontend-cp/session/admin/manage/case-forms/index/controller', ['exports
     actions: {
       makeDefault: function makeDefault(caseform) {
         this.store.peekAll('case-form').forEach(function (caseform) {
-          caseform.isDefault = false;
+          caseform.set('isDefault', false);
         });
-        caseform.isDefault = true;
+        caseform.set('isDefault', true);
+        //TODO: this model is left dirty - it is not an issue,
+        //but ideally we would mark this as clean.
 
-        $['default'].ajax({
-          url: '/api/v1/cases/forms/' + caseform.get('id') + '/default.json',
-          type: 'PUT'
+        var payload = { form_id: caseform.get('id') };
+
+        Ember['default'].$.ajax('/api/v1/cases/forms/default', {
+          method: 'PUT',
+          contentType: 'application/json',
+          data: JSON.stringify(payload),
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Session-ID': this.get('session.sessionId')
+          }
         });
       },
 
@@ -64713,7 +64724,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+3aec8b68"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+7d26a922"});
 }
 
 /* jshint ignore:end */
