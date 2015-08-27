@@ -12,6 +12,8 @@
   "addtag": "Add a tag...",
   "tags": "Tags",
 
+  "editsignature": "Edit Signature",
+
   "metadata.created": "Created",
   "metadata.updated": "Updated",
   "metadata.lastseen": "Last seen",
