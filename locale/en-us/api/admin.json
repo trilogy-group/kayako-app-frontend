@@ -1,6 +1,7 @@
 {
   "navigation.apps": "Apps",
   "navigation.manage": "Manage",
+  "navigation.people": "People",
 
   "administration": "Administration",
   "apps": "Apps",
@@ -20,6 +21,9 @@
   "views.label.configure_layout": "Customize what information is shown in this view by adding, removing and reordering fields below. You can add up to 10 columns in your view",
   "views.heading.sorting": "Sorting",
   "views.label.sorting": "In this view, default to sorting cases by",
+
+  "teams": "Teams",
+  "teams.agent": "{numAgents, plural, =1 {agent} other {agents}}",
 
   "caseforms": "Case Forms",
   "caseforms.buttons.add_new_caseform": "Add new form",

@@ -1628,20 +1628,8 @@ define('frontend-cp/components/ko-admin-card-team/component', ['exports', 'ember
 
   exports['default'] = Ember['default'].Component.extend({
     teamName: null,
-    memberType: 'Agent',
     members: null,
-
-    memberCount: (function () {
-      return this.get('members.length');
-    }).property('members'),
-
-    pluralizedMemberType: (function () {
-      if (this.get('memberCount') === 1) {
-        return this.get('memberType');
-      }
-      return Ember['default'].Inflector.inflector.pluralize(this.get('memberType'));
-    }).property('memberType', 'memberCount')
-
+    hasMembers: Ember['default'].computed.gt('members.length', 0)
   });
 
 });
@@ -1658,12 +1646,12 @@ define('frontend-cp/components/ko-admin-card-team/template', ['exports'], functi
             "loc": {
               "source": null,
               "start": {
-                "line": 10,
-                "column": 10
+                "line": 11,
+                "column": 6
               },
               "end": {
-                "line": 12,
-                "column": 10
+                "line": 13,
+                "column": 6
               }
             },
             "moduleName": "frontend-cp/components/ko-admin-card-team/template.hbs"
@@ -1673,11 +1661,9 @@ define('frontend-cp/components/ko-admin-card-team/template', ['exports'], functi
           hasRendered: false,
           buildFragment: function buildFragment(dom) {
             var el0 = dom.createDocumentFragment();
-            var el1 = dom.createTextNode("              ");
+            var el1 = dom.createTextNode("        ");
             dom.appendChild(el0, el1);
             var el1 = dom.createElement("li");
-            var el2 = dom.createTextNode(" ");
-            dom.appendChild(el1, el2);
             var el2 = dom.createComment("");
             dom.appendChild(el1, el2);
             dom.appendChild(el0, el1);
@@ -1687,11 +1673,11 @@ define('frontend-cp/components/ko-admin-card-team/template', ['exports'], functi
           },
           buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
             var morphs = new Array(1);
-            morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]),1,1);
+            morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]),0,0);
             return morphs;
           },
           statements: [
-            ["inline","ko-avatar",[],["avatar",["subexpr","@mut",[["get","member.avatar",["loc",[null,[11,38],[11,51]]]]],[],[]]],["loc",[null,[11,19],[11,53]]]]
+            ["inline","ko-avatar",[],["avatar",["subexpr","@mut",[["get","member.avatar",["loc",[null,[12,31],[12,44]]]]],[],[]]],["loc",[null,[12,12],[12,46]]]]
           ],
           locals: ["member"],
           templates: []
@@ -1703,7 +1689,7 @@ define('frontend-cp/components/ko-admin-card-team/template', ['exports'], functi
           "loc": {
             "source": null,
             "start": {
-              "line": 1,
+              "line": 8,
               "column": 0
             },
             "end": {
@@ -1718,36 +1704,11 @@ define('frontend-cp/components/ko-admin-card-team/template', ['exports'], functi
         hasRendered: false,
         buildFragment: function buildFragment(dom) {
           var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("\n    ");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createElement("div");
-          dom.setAttribute(el1,"class","ko-admin-card-team__header");
-          var el2 = dom.createTextNode("\n        ");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createElement("div");
-          dom.setAttribute(el2,"class","ko-admin-card-team__team-name");
-          var el3 = dom.createComment("");
-          dom.appendChild(el2, el3);
-          dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n        ");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createElement("div");
-          dom.setAttribute(el2,"class","ko-admin-card-team__membership");
-          var el3 = dom.createComment("");
-          dom.appendChild(el2, el3);
-          var el3 = dom.createTextNode(" ");
-          dom.appendChild(el2, el3);
-          var el3 = dom.createComment("");
-          dom.appendChild(el2, el3);
-          dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n    ");
-          dom.appendChild(el1, el2);
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n\n    ");
+          var el1 = dom.createTextNode("  ");
           dom.appendChild(el0, el1);
           var el1 = dom.createElement("div");
           dom.setAttribute(el1,"class","ko-admin-card-team__content");
-          var el2 = dom.createTextNode("\n        ");
+          var el2 = dom.createTextNode("\n    ");
           dom.appendChild(el1, el2);
           var el2 = dom.createElement("ul");
           dom.setAttribute(el2,"class","list-inline");
@@ -1755,31 +1716,23 @@ define('frontend-cp/components/ko-admin-card-team/template', ['exports'], functi
           dom.appendChild(el2, el3);
           var el3 = dom.createComment("");
           dom.appendChild(el2, el3);
-          var el3 = dom.createTextNode("        ");
+          var el3 = dom.createTextNode("    ");
           dom.appendChild(el2, el3);
           dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n    ");
+          var el2 = dom.createTextNode("\n  ");
           dom.appendChild(el1, el2);
           dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n\n");
+          var el1 = dom.createTextNode("\n");
           dom.appendChild(el0, el1);
           return el0;
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var element0 = dom.childAt(fragment, [1]);
-          var element1 = dom.childAt(element0, [3]);
-          var morphs = new Array(4);
-          morphs[0] = dom.createMorphAt(dom.childAt(element0, [1]),0,0);
-          morphs[1] = dom.createMorphAt(element1,0,0);
-          morphs[2] = dom.createMorphAt(element1,2,2);
-          morphs[3] = dom.createMorphAt(dom.childAt(fragment, [3, 1]),1,1);
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1, 1]),1,1);
           return morphs;
         },
         statements: [
-          ["content","teamName",["loc",[null,[4,51],[4,63]]]],
-          ["content","members.length",["loc",[null,[5,52],[5,70]]]],
-          ["content","pluralizedMemberType",["loc",[null,[5,71],[5,95]]]],
-          ["block","each",[["get","members",["loc",[null,[10,18],[10,25]]]]],[],0,null,["loc",[null,[10,10],[12,19]]]]
+          ["block","each",[["get","members",["loc",[null,[11,14],[11,21]]]]],[],0,null,["loc",[null,[11,6],[13,15]]]]
         ],
         locals: [],
         templates: [child0]
@@ -1796,7 +1749,7 @@ define('frontend-cp/components/ko-admin-card-team/template', ['exports'], functi
           },
           "end": {
             "line": 16,
-            "column": 29
+            "column": 7
           }
         },
         "moduleName": "frontend-cp/components/ko-admin-card-team/template.hbs"
@@ -1806,19 +1759,55 @@ define('frontend-cp/components/ko-admin-card-team/template', ['exports'], functi
       hasRendered: false,
       buildFragment: function buildFragment(dom) {
         var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","ko-admin-card-team__header");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","ko-admin-card-team__team-name");
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","ko-admin-card-team__membership");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode(" ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
         var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var morphs = new Array(1);
-        morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
-        dom.insertBoundary(fragment, 0);
+        var element0 = dom.childAt(fragment, [0]);
+        var element1 = dom.childAt(element0, [3]);
+        var morphs = new Array(4);
+        morphs[0] = dom.createMorphAt(dom.childAt(element0, [1]),0,0);
+        morphs[1] = dom.createMorphAt(element1,1,1);
+        morphs[2] = dom.createMorphAt(element1,3,3);
+        morphs[3] = dom.createMorphAt(fragment,2,2,contextualElement);
         dom.insertBoundary(fragment, null);
         return morphs;
       },
       statements: [
-        ["block","ko-admin-selectable-card",[],[],0,null,["loc",[null,[1,0],[16,29]]]]
+        ["content","teamName",["loc",[null,[2,45],[2,57]]]],
+        ["content","members.length",["loc",[null,[4,4],[4,22]]]],
+        ["inline","format-message",[["subexpr","intl-get",["admin.teams.agent"],[],["loc",[null,[4,40],[4,70]]]]],["numAgents",["subexpr","@mut",[["get","members.length",["loc",[null,[4,81],[4,95]]]]],[],[]]],["loc",[null,[4,23],[4,97]]]],
+        ["block","if",[["get","hasMembers",["loc",[null,[8,6],[8,16]]]]],[],0,null,["loc",[null,[8,0],[16,7]]]]
       ],
       locals: [],
       templates: [child0]
@@ -45152,13 +45141,9 @@ define('frontend-cp/models/team', ['exports', 'ember-data'], function (exports, 
 
   exports['default'] = DS['default'].Model.extend({
     title: DS['default'].attr('string'),
-
-    emails: DS['default'].hasMany('identity-email', { async: true, child: true, url: 'identities/emails' }),
-    facebook: DS['default'].hasMany('identity-facebook', { async: true, child: true, url: 'identities/facebook' }),
-    phones: DS['default'].hasMany('identity-phone', { async: true, child: true, url: 'identities/phones' }),
-    slack: DS['default'].hasMany('identity-slack', { async: true, child: true, url: 'identities/slack' }),
-    twitter: DS['default'].hasMany('identity-twitter', { async: true, child: true, url: 'identities/twitter' }),
-    websites: DS['default'].hasMany('contact-website', { async: true, child: true, url: 'contacts/websites' })
+    businesshour: DS['default'].belongsTo('businessHour'),
+    followers: DS['default'].hasMany('user'),
+    members: DS['default'].hasMany('user', { async: true, child: true, inverse: 'teams', url: 'members' })
   });
 
 });
@@ -45440,6 +45425,10 @@ define('frontend-cp/router', ['exports', 'ember', 'frontend-cp/config/environmen
             this.route('new');
             this.route('edit', { path: '/:case_form_id' });
           });
+        });
+
+        this.route('people', function () {
+          this.route('teams');
         });
       });
     });
@@ -49516,6 +49505,116 @@ define('frontend-cp/session/admin/manage/views/new/template', ['exports'], funct
   }()));
 
 });
+define('frontend-cp/session/admin/people/teams/route', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Route.extend({
+    model: function model() {
+      return this.store.findAll('team');
+    }
+  });
+
+});
+define('frontend-cp/session/admin/people/teams/template', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports['default'] = Ember.HTMLBars.template((function() {
+    var child0 = (function() {
+      return {
+        meta: {
+          "revision": "Ember@1.13.6",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 5,
+              "column": 0
+            }
+          },
+          "moduleName": "frontend-cp/session/admin/people/teams/template.hbs"
+        },
+        arity: 1,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+          return morphs;
+        },
+        statements: [
+          ["inline","ko-admin-card-team",[],["teamName",["subexpr","@mut",[["get","team.title",["loc",[null,[4,32],[4,42]]]]],[],[]],"members",["subexpr","@mut",[["get","team.members",["loc",[null,[4,51],[4,63]]]]],[],[]]],["loc",[null,[4,2],[4,65]]]]
+        ],
+        locals: ["team"],
+        templates: []
+      };
+    }());
+    return {
+      meta: {
+        "revision": "Ember@1.13.6",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 7,
+            "column": 10
+          }
+        },
+        "moduleName": "frontend-cp/session/admin/people/teams/template.hbs"
+      },
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("h2");
+        var el2 = dom.createTextNode("Teams");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var morphs = new Array(2);
+        morphs[0] = dom.createMorphAt(fragment,2,2,contextualElement);
+        morphs[1] = dom.createMorphAt(fragment,4,4,contextualElement);
+        dom.insertBoundary(fragment, null);
+        return morphs;
+      },
+      statements: [
+        ["block","each",[["get","model",["loc",[null,[3,8],[3,13]]]]],[],0,null,["loc",[null,[3,0],[5,9]]]],
+        ["content","outlet",["loc",[null,[7,0],[7,10]]]]
+      ],
+      locals: [],
+      templates: [child0]
+    };
+  }()));
+
+});
 define('frontend-cp/session/admin/route', ['exports', 'ember'], function (exports, Ember) {
 
   'use strict';
@@ -50183,12 +50282,12 @@ define('frontend-cp/session/admin/template', ['exports'], function (exports) {
           "loc": {
             "source": null,
             "start": {
-              "line": 23,
-              "column": 14
+              "line": 21,
+              "column": 12
             },
             "end": {
-              "line": 25,
-              "column": 14
+              "line": 23,
+              "column": 12
             }
           },
           "moduleName": "frontend-cp/session/admin/template.hbs"
@@ -50198,7 +50297,7 @@ define('frontend-cp/session/admin/template', ['exports'], function (exports) {
         hasRendered: false,
         buildFragment: function buildFragment(dom) {
           var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("                ");
+          var el1 = dom.createTextNode("              ");
           dom.appendChild(el0, el1);
           var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
@@ -50212,7 +50311,7 @@ define('frontend-cp/session/admin/template', ['exports'], function (exports) {
           return morphs;
         },
         statements: [
-          ["inline","format-message",[["subexpr","intl-get",["admin.views"],[],["loc",[null,[24,33],[24,57]]]]],[],["loc",[null,[24,16],[24,59]]]]
+          ["inline","format-message",[["subexpr","intl-get",["admin.teams"],[],["loc",[null,[22,31],[22,55]]]]],[],["loc",[null,[22,14],[22,57]]]]
         ],
         locals: [],
         templates: []
@@ -50225,11 +50324,11 @@ define('frontend-cp/session/admin/template', ['exports'], function (exports) {
           "loc": {
             "source": null,
             "start": {
-              "line": 28,
+              "line": 30,
               "column": 14
             },
             "end": {
-              "line": 30,
+              "line": 32,
               "column": 14
             }
           },
@@ -50254,7 +50353,7 @@ define('frontend-cp/session/admin/template', ['exports'], function (exports) {
           return morphs;
         },
         statements: [
-          ["inline","format-message",[["subexpr","intl-get",["admin.casefields"],[],["loc",[null,[29,33],[29,62]]]]],[],["loc",[null,[29,16],[29,64]]]]
+          ["inline","format-message",[["subexpr","intl-get",["admin.views"],[],["loc",[null,[31,33],[31,57]]]]],[],["loc",[null,[31,16],[31,59]]]]
         ],
         locals: [],
         templates: []
@@ -50267,11 +50366,11 @@ define('frontend-cp/session/admin/template', ['exports'], function (exports) {
           "loc": {
             "source": null,
             "start": {
-              "line": 33,
+              "line": 35,
               "column": 14
             },
             "end": {
-              "line": 35,
+              "line": 37,
               "column": 14
             }
           },
@@ -50296,7 +50395,49 @@ define('frontend-cp/session/admin/template', ['exports'], function (exports) {
           return morphs;
         },
         statements: [
-          ["inline","format-message",[["subexpr","intl-get",["admin.caseforms"],[],["loc",[null,[34,33],[34,61]]]]],[],["loc",[null,[34,16],[34,63]]]]
+          ["inline","format-message",[["subexpr","intl-get",["admin.casefields"],[],["loc",[null,[36,33],[36,62]]]]],[],["loc",[null,[36,16],[36,64]]]]
+        ],
+        locals: [],
+        templates: []
+      };
+    }());
+    var child3 = (function() {
+      return {
+        meta: {
+          "revision": "Ember@1.13.6",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 40,
+              "column": 14
+            },
+            "end": {
+              "line": 42,
+              "column": 14
+            }
+          },
+          "moduleName": "frontend-cp/session/admin/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("                ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+          return morphs;
+        },
+        statements: [
+          ["inline","format-message",[["subexpr","intl-get",["admin.caseforms"],[],["loc",[null,[41,33],[41,61]]]]],[],["loc",[null,[41,16],[41,63]]]]
         ],
         locals: [],
         templates: []
@@ -50312,7 +50453,7 @@ define('frontend-cp/session/admin/template', ['exports'], function (exports) {
             "column": 0
           },
           "end": {
-            "line": 46,
+            "line": 53,
             "column": 6
           }
         },
@@ -50323,11 +50464,9 @@ define('frontend-cp/session/admin/template', ['exports'], function (exports) {
       hasRendered: false,
       buildFragment: function buildFragment(dom) {
         var el0 = dom.createDocumentFragment();
-        var el1 = dom.createTextNode("\n");
-        dom.appendChild(el0, el1);
         var el1 = dom.createElement("div");
         dom.setAttribute(el1,"class","session-admin");
-        var el2 = dom.createTextNode("\n\n  ");
+        var el2 = dom.createTextNode("\n  ");
         dom.appendChild(el1, el2);
         var el2 = dom.createElement("div");
         dom.setAttribute(el2,"class","session-admin--page-title");
@@ -50369,6 +50508,30 @@ define('frontend-cp/session/admin/template', ['exports'], function (exports) {
         dom.appendChild(el4, el5);
         var el5 = dom.createElement("li");
         var el6 = dom.createComment("");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n\n        ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","session-admin-navigation__heading");
+        var el5 = dom.createComment("");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n        ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("ul");
+        dom.setAttribute(el4,"class","session-admin-navigation__list-group");
+        var el5 = dom.createTextNode("\n          ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("li");
+        var el6 = dom.createTextNode("\n");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createComment("");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("          ");
         dom.appendChild(el5, el6);
         dom.appendChild(el4, el5);
         var el5 = dom.createTextNode("\n        ");
@@ -50447,38 +50610,42 @@ define('frontend-cp/session/admin/template', ['exports'], function (exports) {
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var element0 = dom.childAt(fragment, [1]);
+        var element0 = dom.childAt(fragment, [0]);
         var element1 = dom.childAt(element0, [3]);
         var element2 = dom.childAt(element1, [1]);
         var element3 = dom.childAt(element2, [4]);
-        var element4 = dom.childAt(element2, [8]);
-        var morphs = new Array(10);
+        var element4 = dom.childAt(element2, [12]);
+        var morphs = new Array(12);
         morphs[0] = dom.createMorphAt(dom.childAt(element0, [1]),1,1);
         morphs[1] = dom.createMorphAt(dom.childAt(element2, [2]),0,0);
         morphs[2] = dom.createMorphAt(dom.childAt(element3, [1]),0,0);
         morphs[3] = dom.createMorphAt(dom.childAt(element3, [3]),0,0);
         morphs[4] = dom.createMorphAt(dom.childAt(element2, [6]),0,0);
-        morphs[5] = dom.createMorphAt(dom.childAt(element4, [1]),1,1);
-        morphs[6] = dom.createMorphAt(dom.childAt(element4, [3]),1,1);
-        morphs[7] = dom.createMorphAt(dom.childAt(element4, [5]),1,1);
-        morphs[8] = dom.createMorphAt(dom.childAt(element4, [7]),0,0);
-        morphs[9] = dom.createMorphAt(dom.childAt(element1, [3]),1,1);
+        morphs[5] = dom.createMorphAt(dom.childAt(element2, [8, 1]),1,1);
+        morphs[6] = dom.createMorphAt(dom.childAt(element2, [10]),0,0);
+        morphs[7] = dom.createMorphAt(dom.childAt(element4, [1]),1,1);
+        morphs[8] = dom.createMorphAt(dom.childAt(element4, [3]),1,1);
+        morphs[9] = dom.createMorphAt(dom.childAt(element4, [5]),1,1);
+        morphs[10] = dom.createMorphAt(dom.childAt(element4, [7]),0,0);
+        morphs[11] = dom.createMorphAt(dom.childAt(element1, [3]),1,1);
         return morphs;
       },
       statements: [
-        ["inline","format-message",[["subexpr","intl-get",["admin.administration"],[],["loc",[null,[5,21],[5,54]]]]],[],["loc",[null,[5,4],[5,56]]]],
-        ["inline","format-message",[["subexpr","intl-get",["admin.navigation.apps"],[],["loc",[null,[14,72],[14,106]]]]],[],["loc",[null,[14,55],[14,108]]]],
-        ["inline","format-message",[["subexpr","intl-get",["admin.apps"],[],["loc",[null,[16,33],[16,56]]]]],[],["loc",[null,[16,16],[16,58]]]],
-        ["inline","format-message",[["subexpr","intl-get",["admin.endpoints"],[],["loc",[null,[17,33],[17,61]]]]],[],["loc",[null,[17,16],[17,63]]]],
-        ["inline","format-message",[["subexpr","intl-get",["admin.navigation.manage"],[],["loc",[null,[20,72],[20,108]]]]],[],["loc",[null,[20,55],[20,110]]]],
-        ["block","link-to",["session.admin.manage.views"],[],0,null,["loc",[null,[23,14],[25,26]]]],
-        ["block","link-to",["session.admin.manage.case-fields"],[],1,null,["loc",[null,[28,14],[30,26]]]],
-        ["block","link-to",["session.admin.manage.case-forms"],[],2,null,["loc",[null,[33,14],[35,26]]]],
-        ["inline","format-message",[["subexpr","intl-get",["admin.endpoints"],[],["loc",[null,[37,33],[37,61]]]]],[],["loc",[null,[37,16],[37,63]]]],
-        ["content","outlet",["loc",[null,[43,8],[43,20]]]]
+        ["inline","format-message",[["subexpr","intl-get",["admin.administration"],[],["loc",[null,[3,21],[3,54]]]]],[],["loc",[null,[3,4],[3,56]]]],
+        ["inline","format-message",[["subexpr","intl-get",["admin.navigation.apps"],[],["loc",[null,[12,72],[12,106]]]]],[],["loc",[null,[12,55],[12,108]]]],
+        ["inline","format-message",[["subexpr","intl-get",["admin.apps"],[],["loc",[null,[14,33],[14,56]]]]],[],["loc",[null,[14,16],[14,58]]]],
+        ["inline","format-message",[["subexpr","intl-get",["admin.endpoints"],[],["loc",[null,[15,33],[15,61]]]]],[],["loc",[null,[15,16],[15,63]]]],
+        ["inline","format-message",[["subexpr","intl-get",["admin.navigation.people"],[],["loc",[null,[18,72],[18,108]]]]],[],["loc",[null,[18,55],[18,110]]]],
+        ["block","link-to",["session.admin.people.teams"],[],0,null,["loc",[null,[21,12],[23,24]]]],
+        ["inline","format-message",[["subexpr","intl-get",["admin.navigation.manage"],[],["loc",[null,[27,72],[27,108]]]]],[],["loc",[null,[27,55],[27,110]]]],
+        ["block","link-to",["session.admin.manage.views"],[],1,null,["loc",[null,[30,14],[32,26]]]],
+        ["block","link-to",["session.admin.manage.case-fields"],[],2,null,["loc",[null,[35,14],[37,26]]]],
+        ["block","link-to",["session.admin.manage.case-forms"],[],3,null,["loc",[null,[40,14],[42,26]]]],
+        ["inline","format-message",[["subexpr","intl-get",["admin.endpoints"],[],["loc",[null,[44,33],[44,61]]]]],[],["loc",[null,[44,16],[44,63]]]],
+        ["content","outlet",["loc",[null,[50,8],[50,20]]]]
       ],
       locals: [],
-      templates: [child0, child1, child2]
+      templates: [child0, child1, child2, child3]
     };
   }()));
 
@@ -61087,8 +61254,7 @@ define('frontend-cp/tests/unit/components/ko-admin-card-team/component-test', ['
   var people = new Ember['default'].A([{
     avatar: {
       url: 'https://s-media-cache-ak0.pinimg.com/736x/ca/c1/18/cac1189a8df5498d17ef09d65ad0f698.jpg'
-    }
-  }, {
+    } }, {
     avatar: {
       url: 'https://s-media-cache-ak0.pinimg.com/736x/ca/c1/18/cac1189a8df5498d17ef09d65ad0f698.jpg'
     }
@@ -61106,25 +61272,6 @@ define('frontend-cp/tests/unit/components/ko-admin-card-team/component-test', ['
       component = this.subject();
     },
     teardown: function teardown() {}
-  });
-
-  qunit.test('it correctly calculates number of members', function (assert) {
-    component.set('members', people);
-    assert.equal(component.get('memberCount'), people.length);
-  });
-
-  qunit.test('it doesn\'t pluralize member type if only 1 member is present', function (assert) {
-    component.set('members', [people.firstObject]);
-    component.set('memberType', 'Agent');
-
-    assert.equal(component.get('pluralizedMemberType'), 'Agent');
-  });
-
-  qunit.test('it pluralizes member type if there are 3 members present', function (assert) {
-    component.set('members', people);
-    component.set('memberType', 'Agent');
-
-    assert.equal(component.get('pluralizedMemberType'), 'Agents');
   });
 
   qunit.test('it renders a member', function (assert) {
@@ -64494,6 +64641,21 @@ define('frontend-cp/tests/unit/services/url-test', ['frontend-cp/tests/helpers/q
   });
 
 });
+define('frontend-cp/tests/unit/session/admin/people/teams/route-test', ['ember-qunit'], function (ember_qunit) {
+
+  'use strict';
+
+  ember_qunit.moduleFor('route:session/admin/people/teams', 'Unit | Route | session/admin/people/teams', {
+    // Specify the other units that are required for this test.
+    // needs: ['controller:foo']
+  });
+
+  ember_qunit.test('it exists', function (assert) {
+    var route = this.subject();
+    assert.ok(route);
+  });
+
+});
 define('frontend-cp/transforms/array', ['exports', 'ember-data'], function (exports, DS) {
 
   'use strict';
@@ -64551,7 +64713,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+50893625"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+3aec8b68"});
 }
 
 /* jshint ignore:end */
