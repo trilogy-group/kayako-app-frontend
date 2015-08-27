@@ -15636,6 +15636,144 @@ define('frontend-cp/components/ko-editable-text/template', ['exports'], function
   }()));
 
 });
+define('frontend-cp/components/ko-editor-modal/component', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Component.extend({
+    classNameBindings: ['hidden:u-hidden'],
+
+    initModal: (function () {
+      this.set('hidden', true);
+    }).on('init'),
+
+    show: function show() {
+      this.set('hidden', false);
+    },
+
+    actions: {
+      close: function close() {
+        this.set('hidden', true);
+        return this.sendAction();
+      },
+      save: function save() {
+        this.set('hidden', true);
+        return this.sendAction('onSave');
+      }
+    }
+  });
+
+});
+define('frontend-cp/components/ko-editor-modal/template', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      meta: {
+        "revision": "Ember@1.13.6",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 13,
+            "column": 0
+          }
+        },
+        "moduleName": "frontend-cp/components/ko-editor-modal/template.hbs"
+      },
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","ko-editor-modal__overlay");
+        var el2 = dom.createTextNode(" \n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","ko-editor-modal__modal u-h-center");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","box");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("h4");
+        dom.setAttribute(el3,"class","ko-editor-modal__title");
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","box t-right");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("a");
+        dom.setAttribute(el3,"class","ko-editor-modal__cancel t-bad");
+        var el4 = dom.createTextNode("Cancel");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("button");
+        dom.setAttribute(el3,"class","button button--primary");
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var element0 = dom.childAt(fragment, [0]);
+        var element1 = dom.childAt(fragment, [2]);
+        var element2 = dom.childAt(element1, [5]);
+        var element3 = dom.childAt(element2, [1]);
+        var element4 = dom.childAt(element2, [3]);
+        var morphs = new Array(6);
+        morphs[0] = dom.createElementMorph(element0);
+        morphs[1] = dom.createMorphAt(dom.childAt(element1, [1, 1]),0,0);
+        morphs[2] = dom.createMorphAt(element1,3,3);
+        morphs[3] = dom.createElementMorph(element3);
+        morphs[4] = dom.createElementMorph(element4);
+        morphs[5] = dom.createMorphAt(element4,0,0);
+        return morphs;
+      },
+      statements: [
+        ["element","action",["close"],[],["loc",[null,[1,38],[1,56]]]],
+        ["content","title",["loc",[null,[5,39],[5,48]]]],
+        ["content","yield",["loc",[null,[7,2],[7,11]]]],
+        ["element","action",["close"],[],["loc",[null,[9,7],[9,25]]]],
+        ["element","action",["save"],[],["loc",[null,[10,43],[10,60]]]],
+        ["inline","format-message",[["subexpr","intl-get",["generic.save"],[],["loc",[null,[10,78],[10,103]]]]],[],["loc",[null,[10,61],[10,105]]]]
+      ],
+      locals: [],
+      templates: []
+    };
+  }()));
+
+});
 define('frontend-cp/components/ko-event-button/component', ['exports', 'ember'], function (exports, Ember) {
 
   'use strict';
@@ -27966,6 +28104,10 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
     },
 
     actions: {
+      editSignature: function editSignature() {
+        this.get('signatureModal').show();
+      },
+
       roleSelect: function roleSelect(role) {
         this.set('model.role', role);
         this.set('isRoleEdited', this.get('model').hasDirtyBelongsToRelationship('role'));
@@ -28047,11 +28189,11 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 25,
+              "line": 26,
               "column": 8
             },
             "end": {
-              "line": 27,
+              "line": 28,
               "column": 8
             }
           },
@@ -28076,7 +28218,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["inline","format-message",[["subexpr","intl-get",["users.add_a_note"],[],["loc",[null,[26,27],[26,56]]]]],[],["loc",[null,[26,10],[26,58]]]]
+          ["inline","format-message",[["subexpr","intl-get",["users.add_a_note"],[],["loc",[null,[27,27],[27,56]]]]],[],["loc",[null,[27,10],[27,58]]]]
         ],
         locals: [],
         templates: []
@@ -28090,11 +28232,11 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 50,
+                "line": 51,
                 "column": 8
               },
               "end": {
-                "line": 60,
+                "line": 61,
                 "column": 8
               }
             },
@@ -28119,7 +28261,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
             return morphs;
           },
           statements: [
-            ["inline","ko-field/select",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.infobar.accesslevel"],[],["loc",[null,[52,35],[52,73]]]]],[],["loc",[null,[52,19],[52,74]]]],"options",["subexpr","@mut",[["get","accessLevels",["loc",[null,[53,21],[53,33]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isAccessLevelEdited",["loc",[null,[54,22],[54,41]]]]],[],[]],"value",["subexpr","@mut",[["get","model.accessLevel",["loc",[null,[55,19],[55,36]]]]],[],[]],"onValueChange","accessLevelSelect","idPath","value","labelPath","name"],["loc",[null,[51,11],[59,13]]]]
+            ["inline","ko-field/select",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.infobar.accesslevel"],[],["loc",[null,[53,35],[53,73]]]]],[],["loc",[null,[53,19],[53,74]]]],"options",["subexpr","@mut",[["get","accessLevels",["loc",[null,[54,21],[54,33]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isAccessLevelEdited",["loc",[null,[55,22],[55,41]]]]],[],[]],"value",["subexpr","@mut",[["get","model.accessLevel",["loc",[null,[56,19],[56,36]]]]],[],[]],"onValueChange","accessLevelSelect","idPath","value","labelPath","name"],["loc",[null,[52,11],[60,13]]]]
           ],
           locals: [],
           templates: []
@@ -28131,11 +28273,11 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 32,
+              "line": 33,
               "column": 6
             },
             "end": {
-              "line": 86,
+              "line": 87,
               "column": 6
             }
           },
@@ -28207,18 +28349,60 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["element","action",["submit"],[],["loc",[null,[34,55],[34,74]]]],
-          ["inline","format-message",[["subexpr","intl-get",["cases.submit"],[],["loc",[null,[34,92],[34,117]]]]],[],["loc",[null,[34,75],[34,119]]]],
-          ["inline","ko-case-field/suggest",[],["selectedItem",["subexpr","@mut",[["get","model.role.title",["loc",[null,[37,45],[37,61]]]]],[],[]],"items",["subexpr","@mut",[["get","roles",["loc",[null,[38,38],[38,43]]]]],[],[]],"searchKey","title","title",["subexpr","intl-get",["users.infobar.role"],[],["loc",[null,[40,38],[40,69]]]],"isEdited",["subexpr","@mut",[["get","isRoleEdited",["loc",[null,[41,41],[41,53]]]]],[],[]],"onItemSelect","roleSelect"],["loc",[null,[37,8],[42,59]]]],
-          ["inline","ko-case-field/suggest",[],["selectedItem",["subexpr","@mut",[["get","model.organization.name",["loc",[null,[44,45],[44,68]]]]],[],[]],"items",["subexpr","@mut",[["get","organizations",["loc",[null,[45,38],[45,51]]]]],[],[]],"title",["subexpr","intl-get",["users.infobar.organization"],[],["loc",[null,[46,38],[46,77]]]],"isEdited",["subexpr","@mut",[["get","isOrganizationEdited",["loc",[null,[47,41],[47,61]]]]],[],[]],"onItemSelect","organizationSelect"],["loc",[null,[44,8],[48,67]]]],
-          ["block","if",[["subexpr","eq",[["get","model.role.type",["loc",[null,[50,18],[50,33]]]],"CUSTOMER"],[],["loc",[null,[50,14],[50,45]]]]],[],0,null,["loc",[null,[50,8],[60,15]]]],
-          ["inline","ko-timezone-select",[],["timezone",["subexpr","@mut",[["get","model.timeZone",["loc",[null,[63,38],[63,52]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isTimezoneEdited",["loc",[null,[64,38],[64,54]]]]],[],[]],"onChangeTimezone","timezoneSelect"],["loc",[null,[63,8],[65,64]]]],
-          ["inline","ko-field/tags",[],["selectedTags",["subexpr","@mut",[["get","userTeams",["loc",[null,[67,37],[67,46]]]]],[],[]],"tags",["subexpr","@mut",[["get","teams",["loc",[null,[68,29],[68,34]]]]],[],[]],"title",["subexpr","format-message",[["subexpr","intl-get",["users.teams"],[],["loc",[null,[69,46],[69,70]]]]],[],["loc",[null,[69,30],[69,71]]]],"newTagText",["subexpr","format-message",[["subexpr","intl-get",["users.newteam"],[],["loc",[null,[70,51],[70,77]]]]],[],["loc",[null,[70,35],[70,78]]]],"addTagText",["subexpr","format-message",[["subexpr","intl-get",["users.addteam"],[],["loc",[null,[71,51],[71,77]]]]],[],["loc",[null,[71,35],[71,78]]]],"onTagAddition","addTeam","onTagRemoval","removeTeam","isEdited",["subexpr","@mut",[["get","isTeamsFieldEdited",["loc",[null,[74,33],[74,51]]]]],[],[]]],["loc",[null,[67,8],[74,53]]]],
-          ["inline","ko-field/tags",[],["selectedTags",["subexpr","@mut",[["get","userTags",["loc",[null,[76,37],[76,45]]]]],[],[]],"title",["subexpr","format-message",[["subexpr","intl-get",["users.tags"],[],["loc",[null,[77,46],[77,69]]]]],[],["loc",[null,[77,30],[77,70]]]],"newTagText",["subexpr","format-message",[["subexpr","intl-get",["users.newtag"],[],["loc",[null,[78,51],[78,76]]]]],[],["loc",[null,[78,35],[78,77]]]],"addTagText",["subexpr","format-message",[["subexpr","intl-get",["users.addtag"],[],["loc",[null,[79,51],[79,76]]]]],[],["loc",[null,[79,35],[79,77]]]],"onTagAddition","addTag","onTagRemoval","removeTag","isEdited",["subexpr","@mut",[["get","isTagsFieldEdited",["loc",[null,[82,33],[82,50]]]]],[],[]]],["loc",[null,[76,8],[82,52]]]],
-          ["inline","ko-info-bar/metadata",[],["rows",["subexpr","@mut",[["get","userDates",["loc",[null,[85,36],[85,45]]]]],[],[]]],["loc",[null,[85,8],[85,47]]]]
+          ["element","action",["submit"],[],["loc",[null,[35,55],[35,74]]]],
+          ["inline","format-message",[["subexpr","intl-get",["cases.submit"],[],["loc",[null,[35,92],[35,117]]]]],[],["loc",[null,[35,75],[35,119]]]],
+          ["inline","ko-case-field/suggest",[],["selectedItem",["subexpr","@mut",[["get","model.role.title",["loc",[null,[38,45],[38,61]]]]],[],[]],"items",["subexpr","@mut",[["get","roles",["loc",[null,[39,38],[39,43]]]]],[],[]],"searchKey","title","title",["subexpr","intl-get",["users.infobar.role"],[],["loc",[null,[41,38],[41,69]]]],"isEdited",["subexpr","@mut",[["get","isRoleEdited",["loc",[null,[42,41],[42,53]]]]],[],[]],"onItemSelect","roleSelect"],["loc",[null,[38,8],[43,59]]]],
+          ["inline","ko-case-field/suggest",[],["selectedItem",["subexpr","@mut",[["get","model.organization.name",["loc",[null,[45,45],[45,68]]]]],[],[]],"items",["subexpr","@mut",[["get","organizations",["loc",[null,[46,38],[46,51]]]]],[],[]],"title",["subexpr","intl-get",["users.infobar.organization"],[],["loc",[null,[47,38],[47,77]]]],"isEdited",["subexpr","@mut",[["get","isOrganizationEdited",["loc",[null,[48,41],[48,61]]]]],[],[]],"onItemSelect","organizationSelect"],["loc",[null,[45,8],[49,67]]]],
+          ["block","if",[["subexpr","eq",[["get","model.role.type",["loc",[null,[51,18],[51,33]]]],"CUSTOMER"],[],["loc",[null,[51,14],[51,45]]]]],[],0,null,["loc",[null,[51,8],[61,15]]]],
+          ["inline","ko-timezone-select",[],["timezone",["subexpr","@mut",[["get","model.timeZone",["loc",[null,[64,38],[64,52]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isTimezoneEdited",["loc",[null,[65,38],[65,54]]]]],[],[]],"onChangeTimezone","timezoneSelect"],["loc",[null,[64,8],[66,64]]]],
+          ["inline","ko-field/tags",[],["selectedTags",["subexpr","@mut",[["get","userTeams",["loc",[null,[68,37],[68,46]]]]],[],[]],"tags",["subexpr","@mut",[["get","teams",["loc",[null,[69,29],[69,34]]]]],[],[]],"title",["subexpr","format-message",[["subexpr","intl-get",["users.teams"],[],["loc",[null,[70,46],[70,70]]]]],[],["loc",[null,[70,30],[70,71]]]],"newTagText",["subexpr","format-message",[["subexpr","intl-get",["users.newteam"],[],["loc",[null,[71,51],[71,77]]]]],[],["loc",[null,[71,35],[71,78]]]],"addTagText",["subexpr","format-message",[["subexpr","intl-get",["users.addteam"],[],["loc",[null,[72,51],[72,77]]]]],[],["loc",[null,[72,35],[72,78]]]],"onTagAddition","addTeam","onTagRemoval","removeTeam","isEdited",["subexpr","@mut",[["get","isTeamsFieldEdited",["loc",[null,[75,33],[75,51]]]]],[],[]]],["loc",[null,[68,8],[75,53]]]],
+          ["inline","ko-field/tags",[],["selectedTags",["subexpr","@mut",[["get","userTags",["loc",[null,[77,37],[77,45]]]]],[],[]],"title",["subexpr","format-message",[["subexpr","intl-get",["users.tags"],[],["loc",[null,[78,46],[78,69]]]]],[],["loc",[null,[78,30],[78,70]]]],"newTagText",["subexpr","format-message",[["subexpr","intl-get",["users.newtag"],[],["loc",[null,[79,51],[79,76]]]]],[],["loc",[null,[79,35],[79,77]]]],"addTagText",["subexpr","format-message",[["subexpr","intl-get",["users.addtag"],[],["loc",[null,[80,51],[80,76]]]]],[],["loc",[null,[80,35],[80,77]]]],"onTagAddition","addTag","onTagRemoval","removeTag","isEdited",["subexpr","@mut",[["get","isTagsFieldEdited",["loc",[null,[83,33],[83,50]]]]],[],[]]],["loc",[null,[77,8],[83,52]]]],
+          ["inline","ko-info-bar/metadata",[],["rows",["subexpr","@mut",[["get","userDates",["loc",[null,[86,36],[86,45]]]]],[],[]]],["loc",[null,[86,8],[86,47]]]]
         ],
         locals: [],
         templates: [child0]
+      };
+    }());
+    var child2 = (function() {
+      return {
+        meta: {
+          "revision": "Ember@1.13.6",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 92,
+              "column": 0
+            },
+            "end": {
+              "line": 96,
+              "column": 0
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-user-content/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+          return morphs;
+        },
+        statements: [
+          ["inline","textarea",[],["value",["subexpr","@mut",[["get","model.signature",["loc",[null,[95,19],[95,34]]]]],[],[]],"class","input__text-area--clean"],["loc",[null,[95,2],[95,68]]]]
+        ],
+        locals: [],
+        templates: []
       };
     }());
     return {
@@ -28231,7 +28415,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
             "column": 0
           },
           "end": {
-            "line": 90,
+            "line": 97,
             "column": 0
           }
         },
@@ -28301,6 +28485,12 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
         dom.appendChild(el3, el4);
         var el4 = dom.createElement("div");
         dom.setAttribute(el4,"class","flag");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("a");
+        var el6 = dom.createTextNode("Edit Signature");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
         var el5 = dom.createTextNode("\n      ");
         dom.appendChild(el4, el5);
         dom.appendChild(el3, el4);
@@ -28349,30 +28539,39 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
         var el2 = dom.createTextNode("\n");
         dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
+        var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
         var element1 = dom.childAt(fragment, [0]);
-        var element2 = dom.childAt(element1, [1, 1, 1]);
+        var element2 = dom.childAt(element1, [1]);
         var element3 = dom.childAt(element2, [1, 1]);
-        var element4 = dom.childAt(element1, [3]);
-        var morphs = new Array(4);
-        morphs[0] = dom.createAttrMorph(element3, 'src');
-        morphs[1] = dom.createMorphAt(dom.childAt(element2, [3, 1]),1,1);
-        morphs[2] = dom.createMorphAt(dom.childAt(element4, [1, 1]),1,1);
-        morphs[3] = dom.createMorphAt(dom.childAt(element4, [3]),1,1);
+        var element4 = dom.childAt(element3, [1, 1]);
+        var element5 = dom.childAt(element2, [3, 1, 1]);
+        var element6 = dom.childAt(element1, [3]);
+        var morphs = new Array(6);
+        morphs[0] = dom.createAttrMorph(element4, 'src');
+        morphs[1] = dom.createMorphAt(dom.childAt(element3, [3, 1]),1,1);
+        morphs[2] = dom.createElementMorph(element5);
+        morphs[3] = dom.createMorphAt(dom.childAt(element6, [1, 1]),1,1);
+        morphs[4] = dom.createMorphAt(dom.childAt(element6, [3]),1,1);
+        morphs[5] = dom.createMorphAt(fragment,2,2,contextualElement);
+        dom.insertBoundary(fragment, null);
         return morphs;
       },
       statements: [
         ["attribute","src",["concat",[["get","model.avatar",["loc",[null,[6,22],[6,34]]]]]]],
         ["content","model.fullName",["loc",[null,[10,12],[10,30]]]],
-        ["block","ko-text-editor",[],["viewName","postEditor"],0,null,["loc",[null,[25,8],[27,27]]]],
-        ["block","ko-info-bar",[],[],1,null,["loc",[null,[32,6],[86,22]]]]
+        ["element","action",["editSignature"],[],["loc",[null,[18,11],[18,37]]]],
+        ["block","ko-text-editor",[],["viewName","postEditor"],0,null,["loc",[null,[26,8],[28,27]]]],
+        ["block","ko-info-bar",[],[],1,null,["loc",[null,[33,6],[87,22]]]],
+        ["block","ko-editor-modal",[],["onSave","submit","viewName","signatureModal","title",["subexpr","format-message",[["subexpr","intl-get",["users.editsignature"],[],["loc",[null,[94,41],[94,73]]]]],[],["loc",[null,[94,25],[94,74]]]]],2,null,["loc",[null,[92,0],[96,20]]]]
       ],
       locals: [],
-      templates: [child0, child1]
+      templates: [child0, child1, child2]
     };
   }()));
 
@@ -36166,6 +36365,10 @@ define('frontend-cp/mirage/fixtures/enusstrings', ['exports'], function (exports
     }, {
       id: 'frontend.api.users.teams',
       value: 'Teams',
+      'resource_type': 'locale_string'
+    }, {
+      id: 'frontend.api.users.editsignature',
+      value: 'Edit Signature',
       'resource_type': 'locale_string'
     }, {
       id: 'frontend.api.users.newtag',
@@ -62097,6 +62300,28 @@ define('frontend-cp/tests/unit/components/ko-editable-text/component-test', ['em
   });
 
 });
+define('frontend-cp/tests/unit/components/ko-editor-modal/component-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
+
+  'use strict';
+
+  qunit.moduleForComponent('ko-editor-modal', {
+    // Specify the other units that are required for this test
+    // needs: ['component:foo', 'helper:bar']
+  });
+
+  qunit.test('it renders', function (assert) {
+    assert.expect(2);
+
+    // Creates the component instance
+    var component = this.subject();
+    assert.equal(component._state, 'preRender');
+
+    // Renders the component to the page
+    this.render();
+    assert.equal(component._state, 'inDOM');
+  });
+
+});
 define('frontend-cp/tests/unit/components/ko-feedback/component-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
@@ -64719,7 +64944,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+c4cc6931"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+f3d354a1"});
 }
 
 /* jshint ignore:end */
