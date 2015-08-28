@@ -46746,8 +46746,8 @@ define('frontend-cp/models/user', ['exports', 'ember-data', 'ember', 'frontend-c
     updatedAt: DS['default'].attr('date'),
 
     // Shadow children fields
-    accesslogs: DS['default'].hasMany('access-log', { async: true, child: true }),
-    slack: DS['default'].hasMany('identity-slack', { async: true, child: true }),
+    accesslogs: DS['default'].hasMany('access-log', { async: true, child: true, noCache: true }),
+    slack: DS['default'].hasMany('identity-slack', { async: true, child: true, url: 'identities/slack' }),
 
     primaryEmail: (function () {
       var emails = this.get('emails');
@@ -68746,7 +68746,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+18ba3a38"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+f106c631"});
 }
 
 /* jshint ignore:end */
