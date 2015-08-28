@@ -46274,8 +46274,8 @@ define('frontend-cp/models/note', ['exports', 'ember-data', 'frontend-cp/models/
   'use strict';
 
   exports['default'] = Postable['default'].extend({
-    contentText: DS['default'].attr('string'),
-    contentHtml: DS['default'].attr('string'),
+    bodyText: DS['default'].attr('string'),
+    bodyHtml: DS['default'].attr('string'),
     color: DS['default'].attr('string', { defaultValue: 'YELLOW' }), // TODO enum YELLOW, RED, GREEN, BLUE, ORANGE, PURPLE
     isPinned: DS['default'].attr('boolean'),
 
@@ -68746,7 +68746,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+f106c631"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+61e6fe02"});
 }
 
 /* jshint ignore:end */
