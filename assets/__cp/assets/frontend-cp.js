@@ -42924,11 +42924,36 @@ define('frontend-cp/mirage/fixtures/views', ['exports'], function (exports) {
       'order_by': 'ASC',
       'order_by_column': 'id',
       'predicate_collections': [{
-        'id': 'd2cc8164-6567-4023-9689-0f6e89e6d5a3',
-        'resource_type': 'predicate_collection'
+        'operator': 'OR',
+        'propositions': [{
+          'field': 'cases.casestatusid',
+          'operator': 'comparison_equalto',
+          'resource_type': 'proposition',
+          'value': '1'
+        }, {
+          'field': 'cases.casestatusid',
+          'operator': 'comparison_equalto',
+          'resource_type': 'proposition',
+          'value': '2'
+        }]
       }, {
-        'id': 'dc4b3a90-83f2-4ac2-a3b6-f0c3b32f8c98',
-        'resource_type': 'predicate_collection'
+        'operator': 'OR',
+        'propositions': [{
+          'field': 'cases.assigneeteamid',
+          'operator': 'comparison_equalto',
+          'resource_type': 'proposition',
+          'value': '0'
+        }, {
+          'field': 'cases.assigneeagentid',
+          'operator': 'comparison_equalto',
+          'resource_type': 'proposition',
+          'value': '-1'
+        }, {
+          'field': 'cases.assigneeteamid',
+          'operator': 'comparison_equalto',
+          'resource_type': 'proposition',
+          'value': '-2'
+        }]
       }],
       'resource_type': 'view',
       'resource_url': 'http://novo/api/index.php?/v1/views/1',
@@ -42940,47 +42965,7 @@ define('frontend-cp/mirage/fixtures/views', ['exports'], function (exports) {
     'limit': 10,
     'offset': 0,
     'resource': 'view',
-    'resources': {
-      'predicate_collection': {
-        'd2cc8164-6567-4023-9689-0f6e89e6d5a3': {
-          'operator': 'OR',
-          'propositions': [{
-            'field': 'cases.casestatusid',
-            'operator': 'comparison_equalto',
-            'resource_type': 'proposition',
-            'value': '1'
-          }, {
-            'field': 'cases.casestatusid',
-            'operator': 'comparison_equalto',
-            'resource_type': 'proposition',
-            'value': '2'
-          }],
-          'resource_type': 'predicate_collection',
-          'uuid': 'd2cc8164-6567-4023-9689-0f6e89e6d5a3'
-        },
-        'dc4b3a90-83f2-4ac2-a3b6-f0c3b32f8c98': {
-          'operator': 'OR',
-          'propositions': [{
-            'field': 'cases.assigneeteamid',
-            'operator': 'comparison_equalto',
-            'resource_type': 'proposition',
-            'value': '0'
-          }, {
-            'field': 'cases.assigneeagentid',
-            'operator': 'comparison_equalto',
-            'resource_type': 'proposition',
-            'value': '-1'
-          }, {
-            'field': 'cases.assigneeteamid',
-            'operator': 'comparison_equalto',
-            'resource_type': 'proposition',
-            'value': '-2'
-          }],
-          'resource_type': 'predicate_collection',
-          'uuid': 'dc4b3a90-83f2-4ac2-a3b6-f0c3b32f8c98'
-        }
-      }
-    },
+    'resources': {},
     'session_id': 'elalu1lDneXAzAmO01LtjyvNKbrb28034758317e047682bec73a05884c500725a788D7w1Kvkyef7TgAPXczQqbrvHsKuy0f',
     'status': 200,
     'total_count': 1
@@ -47029,7 +47014,7 @@ define('frontend-cp/models/predicate-collection', ['exports', 'ember-data'], fun
 
   'use strict';
 
-  exports['default'] = DS['default'].Model.extend({
+  exports['default'] = DS['default'].ModelFragment.extend({
     operator: DS['default'].attr('string', { 'default': 'OR' }),
     propositions: DS['default'].hasManyFragments('proposition')
   });
@@ -47403,7 +47388,7 @@ define('frontend-cp/models/view', ['exports', 'ember-data', 'frontend-cp/mixins/
     visibilityType: DS['default'].attr('string'), // ALL | TEAM
     visibilityToTeams: DS['default'].hasMany('team', { async: false }),
     columns: DS['default'].hasMany('column'),
-    predicateCollections: DS['default'].hasMany('predicate-collection', { async: false }),
+    predicateCollections: DS['default'].hasManyFragments('predicate-collection', { async: false }),
     orderByColumn: DS['default'].attr('string', { defaultValue: null }),
     caseCount: DS['default'].attr('number'),
     caseCountAccuracy: DS['default'].attr('string'),
@@ -48038,15 +48023,6 @@ define('frontend-cp/serializers/organization', ['exports', 'frontend-cp/serializ
       updatedAt: { serialize: false }
       // TODO fieldValues
     }
-  });
-
-});
-define('frontend-cp/serializers/predicate-collection', ['exports', 'frontend-cp/serializers/application'], function (exports, ApplicationSerializer) {
-
-  'use strict';
-
-  exports['default'] = ApplicationSerializer['default'].extend({
-    primaryKey: 'uuid'
   });
 
 });
@@ -69316,7 +69292,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+1e8edf9e"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+68f85d57"});
 }
 
 /* jshint ignore:end */
