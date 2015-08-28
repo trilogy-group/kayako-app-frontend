@@ -7207,7 +7207,7 @@ define('frontend-cp/components/ko-agent-dropdown/component', ['exports', 'ember'
           this.set('selectedTab', tab || null);
         }
       },
-      onCreateUserSubmitted: function onCreateUserSubmitted(error) {
+      onCreateUserSubmitted: function onCreateUserSubmitted() {
         this.maintainFocusDuringTabTransition();
       },
       onCreateUserCompleted: function onCreateUserCompleted(userModel) {
@@ -7256,7 +7256,6 @@ define('frontend-cp/components/ko-agent-dropdown/create-user/component', ['expor
     fields: null,
     activeRequest: null,
     validation: null,
-    errors: null,
 
     fakeSuccess: false,
     fakeValid: false,
@@ -7289,23 +7288,25 @@ define('frontend-cp/components/ko-agent-dropdown/create-user/component', ['expor
     },
 
     validateName: Ember['default'].observer('fields.name', function () {
+      var intlService = this.get('intlService');
       var isValidName = Boolean(this.get('fields.name'));
       this.set('validation.name.isValid', isValidName);
-      this.set('validation.name.errors', isValidName ? null : [this.getTranslation('generic.create_user_panel.name_required').translation]);
+      this.set('validation.name.errors', isValidName ? null : [intlService.findTranslationByKey('generic.create_user_panel.name_required').translation]);
     }),
 
     validateEmail: Ember['default'].observer('fields.email', function () {
+      var intlService = this.get('intlService');
       this.set('validation.email.isValid', false);
       this.set('validation.email.errors', null);
       var email = this.get('fields.email');
       if (!email) {
         this.set('validation.email.isValid', false);
-        this.set('validation.email.errors', [this.getTranslation('generic.create_user_panel.email_required').translation]);
+        this.set('validation.email.errors', [intlService.findTranslationByKey('generic.create_user_panel.email_required').translation]);
         return;
       }
       var isValidEmail = EMAIL_REGEX.test(email);
       this.set('validation.email.isValid', isValidEmail);
-      this.set('validation.email.errors', isValidEmail ? null : [this.getTranslation('generic.create_user_panel.email_invalid').translation]);
+      this.set('validation.email.errors', isValidEmail ? null : [intlService.findTranslationByKey('generic.create_user_panel.email_invalid').translation]);
     }),
 
     isFormValid: Ember['default'].computed('validation.name.isValid', 'validation.email.isValid', function () {
@@ -7324,13 +7325,37 @@ define('frontend-cp/components/ko-agent-dropdown/create-user/component', ['expor
       return Boolean(this.get('activeRequest'));
     }),
 
-    getTranslation: function getTranslation(key) {
+    submitForm: function submitForm() {
+      var _this = this;
 
-      return this.get('intlService').findTranslationByKey(key);
+      var fields = this.get('fields');
+      var store = this.get('store');
+      var request = createUserModel(fields, store).then(function (userModel) {
+        return userModel.save();
+      }).then(function (userModel) {
+        _this.set('activeRequest', null);
+        _this.sendAction('create', userModel);
+      })['catch'](function (error) {
+        _this.set('activeRequest', null);
+        _this.sendAction('error', error);
+      });
+      this.set('activeRequest', request);
+      this.sendAction('submit');
 
-      // let locales = this.get('intlService.current');
-      // let adapter = this.get('intlService.adapter')
-      // return adapter.findTranslation(locales, key);
+      function createUserModel(fields, store) {
+        return store.findRecord('role', 4).then(function (roleModel) {
+          var email = store.createRecord('identity-email', {
+            'isPrimary': true,
+            'email': fields.get('email')
+          });
+          var user = store.createRecord('user', {
+            'role': roleModel,
+            'fullName': fields.get('name'),
+            'emails': [email]
+          });
+          return user;
+        });
+      }
     },
 
     actions: {
@@ -7344,36 +7369,12 @@ define('frontend-cp/components/ko-agent-dropdown/create-user/component', ['expor
         }
         this.set('validation.email.showErrors', true);
       },
-      onCancelled: function onCancelled() {
-        this.set('errors', null);
+      onFormSubmitted: function onFormSubmitted() {
+        this.submitForm();
+      },
+      onCancelClicked: function onCancelClicked() {
         this.set('activeRequest', null);
         this.sendAction('cancel');
-      },
-      onSubmitted: function onSubmitted() {
-        var _this = this;
-
-        this.set('errors', null);
-        var fields = this.get('fields');
-        var store = this.get('store');
-        var userModel = createUserModel(fields, store);
-        var request = userModel.save().then(function () {
-          _this.set('activeRequest', null);
-          _this.sendAction('create', userModel);
-        })['catch'](function (error) {
-          _this.set('activeRequest', null);
-          _this.set('errors', [error.message]);
-          _this.sendAction('error', error);
-        });
-        this.set('activeRequest', request);
-        this.sendAction('submit', userModel);
-
-        function createUserModel(fields, store) {
-          return store.createRecord('user', {
-            'role_id': 4,
-            'full_name': fields.get('name'),
-            'email': fields.get('email')
-          });
-        }
       }
     }
   });
@@ -7469,107 +7470,17 @@ define('frontend-cp/components/ko-agent-dropdown/create-user/template', ['export
       };
     }());
     var child2 = (function() {
-      var child0 = (function() {
-        return {
-          meta: {
-            "revision": "Ember@1.13.6",
-            "loc": {
-              "source": null,
-              "start": {
-                "line": 18,
-                "column": 2
-              },
-              "end": {
-                "line": 18,
-                "column": 101
-              }
-            },
-            "moduleName": "frontend-cp/components/ko-agent-dropdown/create-user/template.hbs"
-          },
-          arity: 1,
-          cachedFragment: null,
-          hasRendered: false,
-          buildFragment: function buildFragment(dom) {
-            var el0 = dom.createDocumentFragment();
-            var el1 = dom.createElement("p");
-            dom.setAttribute(el1,"class","ko-agent-dropdown-create-user__form-error t-bad");
-            var el2 = dom.createComment("");
-            dom.appendChild(el1, el2);
-            dom.appendChild(el0, el1);
-            return el0;
-          },
-          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-            var morphs = new Array(1);
-            morphs[0] = dom.createMorphAt(dom.childAt(fragment, [0]),0,0);
-            return morphs;
-          },
-          statements: [
-            ["content","error",["loc",[null,[18,88],[18,97]]]]
-          ],
-          locals: ["error"],
-          templates: []
-        };
-      }());
       return {
         meta: {
           "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
-              "line": 16,
+              "line": 17,
               "column": 2
             },
             "end": {
-              "line": 20,
-              "column": 2
-            }
-          },
-          "moduleName": "frontend-cp/components/ko-agent-dropdown/create-user/template.hbs"
-        },
-        arity: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("  ");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createElement("ul");
-          dom.setAttribute(el1,"class","ko-agent-dropdown-create-user__form-errors");
-          var el2 = dom.createTextNode("\n  ");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createComment("");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n  ");
-          dom.appendChild(el1, el2);
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n");
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]),1,1);
-          return morphs;
-        },
-        statements: [
-          ["block","each",[["get","errors",["loc",[null,[18,10],[18,16]]]]],[],0,null,["loc",[null,[18,2],[18,110]]]]
-        ],
-        locals: [],
-        templates: [child0]
-      };
-    }());
-    var child3 = (function() {
-      return {
-        meta: {
-          "revision": "Ember@1.13.6",
-          "loc": {
-            "source": null,
-            "start": {
-              "line": 23,
-              "column": 2
-            },
-            "end": {
-              "line": 25,
+              "line": 19,
               "column": 2
             }
           },
@@ -7594,24 +7505,24 @@ define('frontend-cp/components/ko-agent-dropdown/create-user/template', ['export
           return morphs;
         },
         statements: [
-          ["inline","ko-loader",[],["class","ko-agent-dropdown-create-user__loader"],["loc",[null,[24,2],[24,61]]]]
+          ["inline","ko-loader",[],["class","ko-agent-dropdown-create-user__loader"],["loc",[null,[18,2],[18,61]]]]
         ],
         locals: [],
         templates: []
       };
     }());
-    var child4 = (function() {
+    var child3 = (function() {
       return {
         meta: {
           "revision": "Ember@1.13.6",
           "loc": {
             "source": null,
             "start": {
-              "line": 25,
+              "line": 19,
               "column": 2
             },
             "end": {
-              "line": 27,
+              "line": 21,
               "column": 2
             }
           },
@@ -7643,8 +7554,8 @@ define('frontend-cp/components/ko-agent-dropdown/create-user/template', ['export
           return morphs;
         },
         statements: [
-          ["element","action",["onCancelled"],[],["loc",[null,[26,99],[26,123]]]],
-          ["inline","format-message",[["subexpr","intl-get",["generic.create_user_panel.cancel"],[],["loc",[null,[26,141],[26,186]]]]],[],["loc",[null,[26,124],[26,188]]]]
+          ["element","action",["onCancelClicked"],[],["loc",[null,[20,99],[20,127]]]],
+          ["inline","format-message",[["subexpr","intl-get",["generic.create_user_panel.cancel"],[],["loc",[null,[20,145],[20,190]]]]],[],["loc",[null,[20,128],[20,192]]]]
         ],
         locals: [],
         templates: []
@@ -7660,7 +7571,7 @@ define('frontend-cp/components/ko-agent-dropdown/create-user/template', ['export
             "column": 0
           },
           "end": {
-            "line": 28,
+            "line": 22,
             "column": 7
           }
         },
@@ -7694,11 +7605,7 @@ define('frontend-cp/components/ko-agent-dropdown/create-user/template', ['export
         var el3 = dom.createComment("");
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n\n");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createComment("");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n  ");
+        var el2 = dom.createTextNode("\n\n  ");
         dom.appendChild(el1, el2);
         var el2 = dom.createElement("button");
         dom.setAttribute(el2,"type","submit");
@@ -7716,34 +7623,32 @@ define('frontend-cp/components/ko-agent-dropdown/create-user/template', ['export
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
         var element1 = dom.childAt(fragment, [2]);
-        var element2 = dom.childAt(element1, [9]);
-        var morphs = new Array(10);
+        var element2 = dom.childAt(element1, [7]);
+        var morphs = new Array(9);
         morphs[0] = dom.createMorphAt(dom.childAt(fragment, [0]),0,0);
         morphs[1] = dom.createAttrMorph(element1, 'class');
         morphs[2] = dom.createElementMorph(element1);
         morphs[3] = dom.createMorphAt(element1,1,1);
         morphs[4] = dom.createMorphAt(element1,3,3);
         morphs[5] = dom.createMorphAt(dom.childAt(element1, [5]),0,0);
-        morphs[6] = dom.createMorphAt(element1,7,7);
-        morphs[7] = dom.createAttrMorph(element2, 'disabled');
-        morphs[8] = dom.createMorphAt(element2,0,0);
-        morphs[9] = dom.createMorphAt(element1,11,11);
+        morphs[6] = dom.createAttrMorph(element2, 'disabled');
+        morphs[7] = dom.createMorphAt(element2,0,0);
+        morphs[8] = dom.createMorphAt(element1,9,9);
         return morphs;
       },
       statements: [
         ["inline","format-message",[["subexpr","intl-get",["generic.create_user_panel.title"],[],["loc",[null,[1,72],[1,116]]]]],[],["loc",[null,[1,55],[1,118]]]],
         ["attribute","class",["concat",["ko-agent-dropdown-create-user__form ",["subexpr","if",[["get","isFormValid",["loc",[null,[2,54],[2,65]]]]," is-valid"],[],["loc",[null,[2,49],[2,79]]]],["subexpr","if",[["get","isSubmitting",["loc",[null,[2,84],[2,96]]]]," is-submitting"],[],["loc",[null,[2,79],[2,115]]]]]]],
-        ["element","action",["onSubmitted"],["on","submit"],["loc",[null,[3,2],[3,38]]]],
+        ["element","action",["onFormSubmitted"],["on","submit"],["loc",[null,[3,2],[3,42]]]],
         ["block","ko-form-field",[],["label",["subexpr","format-message",[["subexpr","intl-get",["generic.create_user_panel.name_label"],[],["loc",[null,[6,41],[6,90]]]]],[],["loc",[null,[6,25],[6,91]]]],"errors",["subexpr","if",[["get","validation.name.showErrors",["loc",[null,[6,103],[6,129]]]],["get","validation.name.errors",["loc",[null,[6,130],[6,152]]]]],[],["loc",[null,[6,99],[6,153]]]]],0,null,["loc",[null,[6,2],[8,20]]]],
         ["block","ko-form-field",[],["label",["subexpr","format-message",[["subexpr","intl-get",["generic.create_user_panel.email_label"],[],["loc",[null,[10,41],[10,91]]]]],[],["loc",[null,[10,25],[10,92]]]],"errors",["subexpr","if",[["get","validation.email.showErrors",["loc",[null,[10,104],[10,131]]]],["get","validation.email.errors",["loc",[null,[10,132],[10,155]]]]],[],["loc",[null,[10,100],[10,156]]]]],1,null,["loc",[null,[10,2],[12,20]]]],
         ["inline","format-message",[["subexpr","intl-get",["generic.create_user_panel.info"],[],["loc",[null,[14,91],[14,134]]]]],[],["loc",[null,[14,74],[14,136]]]],
-        ["block","if",[["get","errors",["loc",[null,[16,8],[16,14]]]]],[],2,null,["loc",[null,[16,2],[20,9]]]],
-        ["attribute","disabled",["get","isSubmitDisabled",["loc",[null,[22,118],[22,134]]]]],
-        ["inline","format-message",[["subexpr","intl-get",["generic.create_user_panel.submit"],[],["loc",[null,[22,154],[22,199]]]]],[],["loc",[null,[22,137],[22,201]]]],
-        ["block","if",[["get","isSubmitting",["loc",[null,[23,8],[23,20]]]]],[],3,4,["loc",[null,[23,2],[27,9]]]]
+        ["attribute","disabled",["get","isSubmitDisabled",["loc",[null,[16,118],[16,134]]]]],
+        ["inline","format-message",[["subexpr","intl-get",["generic.create_user_panel.submit"],[],["loc",[null,[16,154],[16,199]]]]],[],["loc",[null,[16,137],[16,201]]]],
+        ["block","if",[["get","isSubmitting",["loc",[null,[17,8],[17,20]]]]],[],2,3,["loc",[null,[17,2],[21,9]]]]
       ],
       locals: [],
-      templates: [child0, child1, child2, child3, child4]
+      templates: [child0, child1, child2, child3]
     };
   }()));
 
@@ -33002,51 +32907,24 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage'], function (e
       };
     });
 
-    this.get('/api/v1/roles', function () {
+    this.get('/api/v1/roles', function (db) {
       return {
         'status': 200,
-        'data': [{
-          'id': 1,
-          'title': 'Administrator',
-          'type': 'ADMIN',
-          'ip_restriction': '10.20.30.1',
-          'password_expires_in_days': 2,
-          'is_two_factor_required': false,
-          'created_at': '2015-07-23T13:36:12Z',
-          'updated_at': '2015-07-23T13:36:12Z'
-        }, {
-          'id': 2,
-          'title': 'Agent',
-          'type': 'AGENT',
-          'ip_restriction': null,
-          'password_expires_in_days': '0',
-          'is_two_factor_required': false,
-          'created_at': '2015-07-09T15:36:10Z',
-          'updated_at': '2015-07-09T15:36:10Z'
-        }, {
-          'id': 3,
-          'title': 'Collaborator',
-          'type': 'COLLABORATOR',
-          'ip_restriction': null,
-          'password_expires_in_days': '0',
-          'is_two_factor_required': false,
-          'created_at': '2015-07-09T15:36:10Z',
-          'updated_at': '2015-07-09T15:36:10Z'
-        }, {
-          'id': 4,
-          'title': 'Customer',
-          'type': 'CUSTOMER',
-          'ip_restriction': null,
-          'password_expires_in_days': '0',
-          'is_two_factor_required': false,
-          'created_at': '2015-07-09T15:36:10Z',
-          'updated_at': '2015-07-09T15:36:10Z',
-          'resource_type': 'role'
-        }],
+        'data': db.rolesdata,
         'resource': 'role',
         'offset': 0,
         'limit': 10,
         'total_count': 4
+      };
+    });
+
+    this.get('api/v1/roles/:id', function (db, request) {
+
+      var id = request.params.id;
+
+      return {
+        'status': 200,
+        'data': db.rolesdata[id]
       };
     });
 
@@ -38875,6 +38753,50 @@ define('frontend-cp/mirage/fixtures/posts', ['exports'], function (exports) {
     'limit': 10,
     'total_count': 13,
     'next_url': 'http://novo/api/v1/cases/base/1/post?_flat=true&after_id=62'
+  }];
+
+});
+define('frontend-cp/mirage/fixtures/rolesdata', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports['default'] = [{
+    'id': 1,
+    'title': 'Administrator',
+    'type': 'ADMIN',
+    'ip_restriction': '10.20.30.1',
+    'password_expires_in_days': 2,
+    'is_two_factor_required': false,
+    'created_at': '2015-07-23T13:36:12Z',
+    'updated_at': '2015-07-23T13:36:12Z'
+  }, {
+    'id': 2,
+    'title': 'Agent',
+    'type': 'AGENT',
+    'ip_restriction': null,
+    'password_expires_in_days': '0',
+    'is_two_factor_required': false,
+    'created_at': '2015-07-09T15:36:10Z',
+    'updated_at': '2015-07-09T15:36:10Z'
+  }, {
+    'id': 3,
+    'title': 'Collaborator',
+    'type': 'COLLABORATOR',
+    'ip_restriction': null,
+    'password_expires_in_days': '0',
+    'is_two_factor_required': false,
+    'created_at': '2015-07-09T15:36:10Z',
+    'updated_at': '2015-07-09T15:36:10Z'
+  }, {
+    'id': 4,
+    'title': 'Customer',
+    'type': 'CUSTOMER',
+    'ip_restriction': null,
+    'password_expires_in_days': '0',
+    'is_two_factor_required': false,
+    'created_at': '2015-07-09T15:36:10Z',
+    'updated_at': '2015-07-09T15:36:10Z',
+    'resource_type': 'role'
   }];
 
 });
@@ -47543,6 +47465,19 @@ define('frontend-cp/serializers/user', ['exports', 'frontend-cp/serializers/appl
       visitedAt: { serialize: false },
       createdAt: { serialize: false },
       updatedAt: { serialize: false }
+    },
+    serialize: function serialize(snapshot, options) {
+      var serialisedModel = this._super(snapshot, options);
+      serialisedModel.email = getPrimaryEmailAddress(snapshot);
+      return serialisedModel;
+
+      function getPrimaryEmailAddress(snapshot) {
+        return snapshot.hasMany('emails').filter(function (identityEmail) {
+          return identityEmail.get('isPrimary');
+        }).map(function (identityEmail) {
+          return identityEmail.get('email');
+        })[0] || null;
+      }
     }
   });
 
@@ -62354,8 +62289,40 @@ define('frontend-cp/tests/assertions/properties-equal', ['exports', 'ember', 'qu
     this.push(objectsAreEqual, actualProperties, expectedProperties, message);
   }
 
-  function getEmberObjectProperties(object) {
-    return object.getProperties(Object.keys(object));
+  function getEmberObjectProperties(value) {
+    if (!value) {
+      return parsePrimitive(value);
+    } else if (Array.isArray(value)) {
+      return parseArray(value);
+    } else if (value instanceof Ember['default'].Object) {
+      return parseEmberObject(value);
+    } else if (value instanceof Object) {
+      return parseObject(value);
+    } else {
+      return value;
+    }
+
+    function parsePrimitive(value) {
+      return value;
+    }
+
+    function parseEmberObject(value) {
+      var properties = value.getProperties(Object.keys(value));
+      return parseObject(properties);
+    }
+
+    function parseObject(value) {
+      return Object.keys(value).reduce(function (fields, key) {
+        fields[key] = getEmberObjectProperties(value[key]);
+        return fields;
+      }, {});
+    }
+
+    function parseArray(value) {
+      return value.map(function (item) {
+        return getEmberObjectProperties(item);
+      });
+    }
   }
 
 });
@@ -63226,14 +63193,6 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
       assert.equal($cancelButtonElement.length, 0);
       assert.equal($loaderElement.length, 1);
 
-      var mockStore = _this.container.lookup('service:store');
-      assert.ok(mockStore.createRecord.calledOnce);
-      assert.ok(mockStore.createRecord.calledWith('user', {
-        'role_id': 4, // Users are created as CUSTOMERs
-        'full_name': 'Tim Kendrick',
-        'email': 'tim.kendrick@kayako.com'
-      }));
-
       assert.equal(onSubmit.callCount, 1);
       assert.equal(onCreate.callCount, 0);
       assert.equal(onError.callCount, 0);
@@ -63248,15 +63207,34 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
       assert.equal($cancelButtonElement.length, 1);
       assert.equal($loaderElement.length, 0);
 
-      var formErrors = getFormErrors($formElement);
-      assert.deepEqual(formErrors, []);
-
-      assert.equal(onCreate.callCount, 1);
-      assert.equal(onCreate.firstCall.args.length, 1);
-      assert.propertiesEqual(onCreate.firstCall.args[0], {
-        'role_id': 4,
-        'full_name': 'Tim Kendrick',
+      var mockStore = _this.container.lookup('service:store');
+      assert.ok(mockStore.createRecord.calledTwice);
+      assert.ok(mockStore.createRecord.calledWith('identity-email', {
+        'isPrimary': true,
         'email': 'tim.kendrick@kayako.com'
+      }));
+      assert.equal(mockStore.createRecord.secondCall.args[0], 'user');
+      assert.propertiesEqual(mockStore.createRecord.secondCall.args[1], {
+        'fullName': 'Tim Kendrick',
+        'emails': [{
+          'email': 'tim.kendrick@kayako.com',
+          'isPrimary': true
+        }],
+        'role': {
+          id: 4 // Users are created as CUSTOMERs
+        }
+      });
+
+      assert.ok(onCreate.calledOnce);
+      assert.propertiesEqual(onCreate.firstCall.args[0], {
+        'fullName': 'Tim Kendrick',
+        'emails': [{
+          'email': 'tim.kendrick@kayako.com',
+          'isPrimary': true
+        }],
+        'role': {
+          id: 4
+        }
       });
 
       done();
@@ -63264,7 +63242,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
   });
 
   qunit.test('it handles submit errors', function (assert) {
-    assert.expect(9);
+    assert.expect(7);
     var done = assert.async();
 
     var onCreate = sinon['default'].spy();
@@ -63320,8 +63298,6 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
 
     Ember['default'].run(function () {
       $formElement.submit();
-      var formErrors = getFormErrors($formElement);
-      assert.deepEqual(formErrors, []);
       assert.equal(onError.callCount, 0);
     });
 
@@ -63336,9 +63312,6 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
 
       assert.equal($cancelButtonElement.length, 1);
       assert.equal($loaderElement.length, 0);
-
-      var formErrors = getFormErrors($formElement);
-      assert.deepEqual(formErrors, ['Test error']);
 
       done();
     }, 100); // Delay due to inaccurate `createMockStore` behaviour (see below)
@@ -63408,13 +63381,6 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
     $(inputElement).val(value).change();
   }
 
-  function getFormErrors(formElement) {
-    var $errorElements = Ember['default'].$(formElement).find('.ko-agent-dropdown-create-user__form-error');
-    return $errorElements.map(function (index, element) {
-      return Ember['default'].$(element).text().trim();
-    }).get();
-  }
-
   function getFieldErrors(formElement, inputName) {
     var $errorElements = Ember['default'].$(formElement).find('[name="' + inputName + '"] + .ko-form-field__validation');
     return $errorElements.map(function (index, element) {
@@ -63425,7 +63391,16 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
   function createMockStore(records) {
     records = records || {};
     var store = {
+      findRecord: sinon['default'].spy(function (typeName, id) {
+        var record = Ember['default'].Object.create({
+          id: id
+        });
+        return Ember['default'].RSVP.Promise.resolve(record);
+      }),
       createRecord: sinon['default'].spy(function (typeName, fields) {
+        if (typeName === 'user') {
+          fields = Object.assign({ emails: [] }, fields);
+        }
         var record = Ember['default'].Object.extend({
           save: sinon['default'].spy(function () {
             // FIXME: This sequence doesn't quite accurately reflect the
@@ -63439,7 +63414,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
                 if (hasErrors) {
                   reject(new Error('Test error'));
                 } else {
-                  resolve();
+                  resolve(record);
                 }
               });
             });
@@ -68746,7 +68721,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+61e6fe02"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+82e09d63"});
 }
 
 /* jshint ignore:end */
