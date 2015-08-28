@@ -43,6 +43,7 @@
   "caseforms.help.configure_fields": "System fields are included in each case form by default. Add and arrange custom case fields to the case form below. You can manage case fields in the [Case fields] section.",
   "caseforms.label.add_new_field": "Add new field",
   "caseforms.remove_from_form": "Remove from form",
+  "caseforms.edit.help.is_enabled": "Form is enabled",
 
   "casefields": "Case Fields",
   "casefields.headings.enabled_fields": "Enabled Fields",
