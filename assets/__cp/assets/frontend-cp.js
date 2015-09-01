@@ -3877,6 +3877,15 @@ define('frontend-cp/components/ko-admin/case-forms/edit/fields/component', ['exp
       },
       removeCustomField: function removeCustomField(customField) {
         this.sendAction('removeCaseFieldFromForm', customField);
+      },
+
+      reorderFields: function reorderFields(reorderedFields) {
+        var sortOrder = this.get('systemCaseFields.length') - 1;
+
+        reorderedFields.forEach(function (reorderedField) {
+          reorderedField.set('sortOrder', sortOrder);
+          sortOrder++;
+        });
       }
     }
 
@@ -47792,6 +47801,7 @@ define('frontend-cp/serializers/case-form', ['exports', 'ember', 'frontend-cp/se
 
   'use strict';
 
+  /*eslint-disable camelcase */
   exports['default'] = ApplicationSerializer['default'].extend({
     keyForRelationship: function keyForRelationship(key, relationship, method) {
       if (!method || method === 'serialize') {
@@ -47807,12 +47817,18 @@ define('frontend-cp/serializers/case-form', ['exports', 'ember', 'frontend-cp/se
       return Ember['default'].String.underscore(key);
     },
 
-    serialize: function serialize() {
-      var serializedForm = this._super.apply(this, arguments);
+    serialize: function serialize(snapshot, options) {
 
-      // We need a comma separated list of values, not a JSON array
-      serializedForm.case_field_ids = serializedForm.case_field_ids.toString(); //eslint-disable-line camelcase
-      return serializedForm;
+      var json = this._super.apply(this, arguments);
+
+      /*
+       * Pull case field ids, ordered by sort order as a comma separated list
+       */
+      json.case_field_ids = snapshot.hasMany('fields') //eslint-disable-line camelcase
+      .sortBy('sortOrder').map(function (field) {
+        return field.get('id');
+      }).toString();
+      return json;
     }
   });
 
@@ -69291,7 +69307,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+f7f72dd8"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+8f0487c6"});
 }
 
 /* jshint ignore:end */
