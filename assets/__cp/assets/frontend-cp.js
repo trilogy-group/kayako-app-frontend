@@ -47488,7 +47488,7 @@ define('frontend-cp/router', ['exports', 'ember', 'frontend-cp/config/environmen
           });
           this.route('case-fields', function () {
             this.route('select-type', { path: '/select-type' });
-            this.route('new', { path: '/new' });
+            this.route('new', { path: '/new/:type' });
             this.route('edit', { path: '/:case_field_id' });
           });
 
@@ -51695,8 +51695,8 @@ define('frontend-cp/session/admin/manage/case-fields/new/route', ['exports', 'em
   /*eslint no-alert:0*/
   exports['default'] = Ember['default'].Route.extend({
 
-    model: function model() {
-      return this.store.createRecord('case-field');
+    model: function model(params) {
+      return this.store.createRecord('case-field', { fieldType: params.type });
     },
 
     actions: {
@@ -51724,8 +51724,6 @@ define('frontend-cp/session/admin/manage/case-fields/new/route', ['exports', 'em
     },
 
     setupController: function setupController(controller, model) {
-      model.set('fieldType', controller.get('caseFieldType'));
-
       if (model.get('isChoiceField') && model.get('options.length') === 0) {
         // we always need an option for the user to start editing
         model.get('options').pushObject(this.store.createRecord('field-option', {
@@ -51733,7 +51731,6 @@ define('frontend-cp/session/admin/manage/case-fields/new/route', ['exports', 'em
         }));
       }
       controller.set('model', model);
-      controller.set('canDisplaySelectTypeSection', true);
     }
   });
 
@@ -51803,13 +51800,15 @@ define('frontend-cp/session/admin/manage/case-fields/select-type/controller', ['
   'use strict';
 
   exports['default'] = Ember['default'].Controller.extend({
-
     actions: {
       setCaseFieldType: function setCaseFieldType(caseFieldType) {
-        this.transitionTo('session.admin.manage.case-fields.new', { queryParams: { caseFieldType: caseFieldType } });
+        this.transitionTo('session.admin.manage.case-fields.new', caseFieldType);
+      },
+
+      transitionToIndexRoute: function transitionToIndexRoute() {
+        this.transitionToRoute('session.admin.manage.case-fields.index');
       }
     }
-
   });
 
 });
@@ -51996,7 +51995,7 @@ define('frontend-cp/session/admin/manage/case-forms/index/controller', ['exports
         //TODO: this model is left dirty - it is not an issue,
         //but ideally we would mark this as clean.
 
-        var payload = { form_id: caseform.get('id') };
+        var payload = { form_id: caseform.get('id') }; // eslint-disable-line camelcase
 
         Ember['default'].$.ajax('/api/v1/cases/forms/default', {
           method: 'PUT',
@@ -69292,7 +69291,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+12bbef85"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+f7f72dd8"});
 }
 
 /* jshint ignore:end */
