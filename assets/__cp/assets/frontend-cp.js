@@ -9300,6 +9300,12 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       this.set('isCaseSubjectEdited', this.get('case').hasDirtyAttribute('subject'));
     },
 
+    caseHasTagWithName: function caseHasTagWithName(tagName) {
+      return !!this.get('case.tags').filter(function (tag) {
+        return tag.get('name') === tagName;
+      }).length;
+    },
+
     actions: {
       setChannel: function setChannel(channel) {
         this.set('channel', channel);
@@ -9334,6 +9340,9 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       },
 
       addTag: function addTag(tagName) {
+        if (this.caseHasTagWithName(tagName)) {
+          return;
+        }
         var newTag = this.get('store').createRecord('tag', { name: tagName });
         this.get('case.tags').pushObject(newTag);
         this.set('isTagsFieldEdited', this.get('case').hasDirtyHasManyRelationship('tags'));
@@ -9408,6 +9417,8 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       },
 
       applyMacro: function applyMacro(macro) {
+        var _this8 = this;
+
         var currentCase = this.get('case');
         var contentsToAdd = macro.get('replyContents');
         var newStatus = macro.get('properties.status');
@@ -9415,6 +9426,8 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
         var newType = macro.get('properties.macroType');
         var newAssignedTeam = macro.get('assignee') ? macro.get('assignee.team') : null;
         var newAssignedAgent = macro.get('assignee') ? macro.get('assignee.agent') : null;
+        var priorityAction = macro.get('properties.priorityAction');
+        var tags = macro.get('tags');
 
         if (contentsToAdd) {
           this.get('casePostEditor.postEditor').insertOrAppendHTML(contentsToAdd);
@@ -9426,11 +9439,44 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
         if (newPriority) {
           currentCase.set('priority', newPriority);
         }
+        if (priorityAction) {
+          (function () {
+            var newPriorityLevel = undefined;
+
+            if (priorityAction === 'INCREASE_ONE_LEVEL') {
+              newPriorityLevel = currentCase.get('priority.level') + 1;
+            } else {
+              newPriorityLevel = currentCase.get('priority.level') - 1;
+
+              // if we can't find a valid priority, it should have the lowest priority.
+              if (newPriorityLevel < 1) {
+                newPriorityLevel = 1;
+              }
+            }
+
+            var newPriority = _this8.get('store').peekAll('case-priority').filter(function (priority) {
+              return priority.get('level') === newPriorityLevel;
+            }).get('firstObject');
+
+            if (newPriority) {
+              currentCase.set('priority', newPriority);
+            }
+          })();
+        }
         if (newType) {
           currentCase.set('caseType', newType);
         }
         if (newAssignedTeam) {
           this.send('setAssignee', newAssignedTeam, newAssignedAgent);
+        }
+        if (tags.get('length')) {
+          tags.forEach(function (tag) {
+            if (tag.get('type') === 'ADD') {
+              _this8.send('addTag', tag.get('name'));
+            } else {
+              _this8.send('removeTag', tag.get('name'));
+            }
+          });
         }
       }
     }
@@ -47280,7 +47326,19 @@ define('frontend-cp/models/macro-properties', ['exports', 'ember-data'], functio
     priorityFragment: DS['default'].hasOneFragment('relationship-fragment'),
     priority: (function () {
       return this.store.getById('case-priority', this.get('priorityFragment.relationshipId'));
-    }).property('priorityFragment.relationshipId')
+    }).property('priorityFragment.relationshipId'),
+
+    priorityAction: DS['default'].attr('string')
+  });
+
+});
+define('frontend-cp/models/macro-tag', ['exports', 'ember-data'], function (exports, DS) {
+
+  'use strict';
+
+  exports['default'] = DS['default'].Model.extend({
+    name: DS['default'].attr('string'),
+    type: DS['default'].attr('string')
   });
 
 });
@@ -47304,6 +47362,7 @@ define('frontend-cp/models/macro', ['exports', 'ember-data'], function (exports,
     replyContents: DS['default'].attr('string'),
     replyType: DS['default'].attr('string'), // REPLY | NOTE
     agent: DS['default'].belongsTo('user'),
+    tags: DS['default'].hasMany('macro-tag'),
     assignee: DS['default'].hasOneFragment('macro-assignee'),
     properties: DS['default'].hasOneFragment('macro-properties'),
     visibility: DS['default'].hasOneFragment('macro-visibility')
@@ -48026,6 +48085,12 @@ define('frontend-cp/serializers/application', ['exports', 'ember', 'ember-data',
 
       var sideloaded = payload[this.sideloadedRecordsKey];
       if (sideloaded) {
+        // TODO(sc) Hack: remove after KF-2144
+        if (sideloaded.macro_tags) {
+          // eslint-disable-line
+          sideloaded.macro_tag = sideloaded.macro_tags; // eslint-disable-line
+          delete sideloaded.macro_tags; // eslint-disable-line
+        }
         this.extractSideloaded(sideloaded);
         delete payload[this.sideloadedRecordsKey];
       }
@@ -48064,6 +48129,12 @@ define('frontend-cp/serializers/application', ['exports', 'ember', 'ember-data',
       var type = store.modelFor(typeKey);
       if (!data.links) {
         data.links = {};
+      }
+
+      // TODO(sc) Hack: remove after KF-2144
+      if (data.resource_type === 'macro_tags') {
+        // eslint-disable-line
+        data.resource_type = 'macro_tag'; // eslint-disable-line
       }
 
       type.eachRelationship(function (name, relationship) {
@@ -48112,6 +48183,13 @@ define('frontend-cp/serializers/application', ['exports', 'ember', 'ember-data',
       _['default'].each(sideloaded, function (resources, type) {
         models[type] = [];
         _['default'].each(resources, function (resource) {
+
+          // TODO(sc) Hack: remove after KF-2144
+          if (resource.resource_type === "macro_tags") {
+            // eslint-disable-line
+            resource.resource_type = "macro_tag"; // eslint-disable-line
+          }
+
           // TODO remove || type — this is a temporary fix
           type = resource.resource_type || type;
           _this2.extractRelationships(resource);
@@ -48155,6 +48233,13 @@ define('frontend-cp/serializers/application', ['exports', 'ember', 'ember-data',
         } else if (_['default'].isArray(value)) {
           resource[key] = value.map(function (v) {
             if (v.id && v.resource_type) {
+
+              // TODO(sc) Hack: remove after KF-2144
+              if (v.resource_type === "macro_tags") {
+                // eslint-disable-line
+                v.resource_type = "macro_tag"; // eslint-disable-line
+              }
+
               return {
                 id: v.id,
                 type: v.resource_type
@@ -69842,7 +69927,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+0d71d40a"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+b9b33247"});
 }
 
 /* jshint ignore:end */
