@@ -49019,12 +49019,6 @@ define('frontend-cp/serializers/application', ['exports', 'ember', 'ember-data',
 
       var sideloaded = payload[this.sideloadedRecordsKey];
       if (sideloaded) {
-        // TODO(sc) Hack: remove after KF-2144
-        if (sideloaded.macro_tags) {
-          // eslint-disable-line
-          sideloaded.macro_tag = sideloaded.macro_tags; // eslint-disable-line
-          delete sideloaded.macro_tags; // eslint-disable-line
-        }
         this.extractSideloaded(sideloaded);
         delete payload[this.sideloadedRecordsKey];
       }
@@ -49063,12 +49057,6 @@ define('frontend-cp/serializers/application', ['exports', 'ember', 'ember-data',
       var type = store.modelFor(typeKey);
       if (!data.links) {
         data.links = {};
-      }
-
-      // TODO(sc) Hack: remove after KF-2144
-      if (data.resource_type === 'macro_tags') {
-        // eslint-disable-line
-        data.resource_type = 'macro_tag'; // eslint-disable-line
       }
 
       type.eachRelationship(function (name, relationship) {
@@ -49117,13 +49105,6 @@ define('frontend-cp/serializers/application', ['exports', 'ember', 'ember-data',
       _['default'].each(sideloaded, function (resources, type) {
         models[type] = [];
         _['default'].each(resources, function (resource) {
-
-          // TODO(sc) Hack: remove after KF-2144
-          if (resource.resource_type === "macro_tags") {
-            // eslint-disable-line
-            resource.resource_type = "macro_tag"; // eslint-disable-line
-          }
-
           // TODO remove || type — this is a temporary fix
           type = resource.resource_type || type;
           _this2.extractRelationships(resource);
@@ -49167,13 +49148,6 @@ define('frontend-cp/serializers/application', ['exports', 'ember', 'ember-data',
         } else if (_['default'].isArray(value)) {
           resource[key] = value.map(function (v) {
             if (v.id && v.resource_type) {
-
-              // TODO(sc) Hack: remove after KF-2144
-              if (v.resource_type === "macro_tags") {
-                // eslint-disable-line
-                v.resource_type = "macro_tag"; // eslint-disable-line
-              }
-
               return {
                 id: v.id,
                 type: v.resource_type
@@ -69685,7 +69659,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+4fe020d8"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+ce5cb3ab"});
 }
 
 /* jshint ignore:end */
