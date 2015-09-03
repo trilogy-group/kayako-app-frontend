@@ -6625,8 +6625,8 @@ define('frontend-cp/components/ko-admin/tags/template', ['exports'], function (e
               return morphs;
             },
             statements: [
-              ["inline","input",[],["type","text","value",["subexpr","@mut",[["get","searchTerm",["loc",[null,[4,32],[4,42]]]]],[],[]],"class","suggest__input","enter","addTag"],["loc",[null,[4,6],[4,83]]]],
-              ["element","action",["addTag"],[],["loc",[null,[4,134],[4,153]]]]
+              ["inline","input",[],["type","text","value",["subexpr","@mut",[["get","searchTerm",["loc",[null,[4,32],[4,42]]]]],[],[]],"class","suggest__input","enter","addTag"],["loc",[null,[4,6],[4,82]]]],
+              ["element","action",["addTag"],[],["loc",[null,[4,133],[4,152]]]]
             ],
             locals: [],
             templates: []
@@ -62532,7 +62532,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+89d3b272"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+db54e4a9"});
 }
 
 /* jshint ignore:end */
