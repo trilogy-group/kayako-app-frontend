@@ -1678,6 +1678,7 @@ define('frontend-cp/components/ko-admin-card-team/template', ['exports'], functi
             var el1 = dom.createTextNode("        ");
             dom.appendChild(el0, el1);
             var el1 = dom.createElement("li");
+            dom.setAttribute(el1,"class","ko-admin-card-members__item");
             var el2 = dom.createComment("");
             dom.appendChild(el1, el2);
             dom.appendChild(el0, el1);
@@ -1691,7 +1692,7 @@ define('frontend-cp/components/ko-admin-card-team/template', ['exports'], functi
             return morphs;
           },
           statements: [
-            ["inline","ko-avatar",[],["avatar",["subexpr","@mut",[["get","member.avatar",["loc",[null,[12,31],[12,44]]]]],[],[]]],["loc",[null,[12,12],[12,46]]]]
+            ["inline","ko-avatar",[],["avatar",["subexpr","@mut",[["get","member.avatar",["loc",[null,[12,67],[12,80]]]]],[],[]]],["loc",[null,[12,48],[12,82]]]]
           ],
           locals: ["member"],
           templates: []
@@ -1725,7 +1726,7 @@ define('frontend-cp/components/ko-admin-card-team/template', ['exports'], functi
           var el2 = dom.createTextNode("\n    ");
           dom.appendChild(el1, el2);
           var el2 = dom.createElement("ul");
-          dom.setAttribute(el2,"class","list-inline");
+          dom.setAttribute(el2,"class","ko-admin-card-team-members");
           var el3 = dom.createTextNode("\n");
           dom.appendChild(el2, el3);
           var el3 = dom.createComment("");
@@ -1777,15 +1778,15 @@ define('frontend-cp/components/ko-admin-card-team/template', ['exports'], functi
         dom.setAttribute(el1,"class","ko-admin-card-team__header");
         var el2 = dom.createTextNode("\n  ");
         dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","ko-admin-card-team__team-name");
+        var el2 = dom.createElement("h4");
+        dom.setAttribute(el2,"class","ko-admin-card-team__title");
         var el3 = dom.createComment("");
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n  ");
         dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","ko-admin-card-team__membership");
+        var el2 = dom.createElement("p");
+        dom.setAttribute(el2,"class","t-caption");
         var el3 = dom.createTextNode("\n    ");
         dom.appendChild(el2, el3);
         var el3 = dom.createComment("");
@@ -1818,7 +1819,7 @@ define('frontend-cp/components/ko-admin-card-team/template', ['exports'], functi
         return morphs;
       },
       statements: [
-        ["content","teamName",["loc",[null,[2,45],[2,57]]]],
+        ["content","teamName",["loc",[null,[2,40],[2,52]]]],
         ["content","members.length",["loc",[null,[4,4],[4,22]]]],
         ["inline","format-message",[["subexpr","intl-get",["admin.teams.agent"],[],["loc",[null,[4,40],[4,70]]]]],["numAgents",["subexpr","@mut",[["get","members.length",["loc",[null,[4,81],[4,95]]]]],[],[]]],["loc",[null,[4,23],[4,97]]]],
         ["block","if",[["get","hasMembers",["loc",[null,[8,6],[8,16]]]]],[],0,null,["loc",[null,[8,0],[16,7]]]]
@@ -47605,12 +47606,12 @@ define('frontend-cp/session/admin/people/teams/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 3,
-              "column": 0
+              "line": 5,
+              "column": 2
             },
             "end": {
               "line": 5,
-              "column": 0
+              "column": 128
             }
           },
           "moduleName": "frontend-cp/session/admin/people/teams/template.hbs"
@@ -47620,21 +47621,20 @@ define('frontend-cp/session/admin/people/teams/template', ['exports'], function 
         hasRendered: false,
         buildFragment: function buildFragment(dom) {
           var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("  ");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createComment("");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n");
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1,"class","layout__item u-1/2");
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
           dom.appendChild(el0, el1);
           return el0;
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
           var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+          morphs[0] = dom.createMorphAt(dom.childAt(fragment, [0]),0,0);
           return morphs;
         },
         statements: [
-          ["inline","ko-admin-card-team",[],["teamName",["subexpr","@mut",[["get","team.title",["loc",[null,[4,32],[4,42]]]]],[],[]],"members",["subexpr","@mut",[["get","team.members",["loc",[null,[4,51],[4,63]]]]],[],[]]],["loc",[null,[4,2],[4,65]]]]
+          ["inline","ko-admin-card-team",[],["teamName",["subexpr","@mut",[["get","team.title",["loc",[null,[5,89],[5,99]]]]],[],[]],"members",["subexpr","@mut",[["get","team.members",["loc",[null,[5,108],[5,120]]]]],[],[]]],["loc",[null,[5,59],[5,122]]]]
         ],
         locals: ["team"],
         templates: []
@@ -47650,8 +47650,8 @@ define('frontend-cp/session/admin/people/teams/template', ['exports'], function 
             "column": 0
           },
           "end": {
-            "line": 7,
-            "column": 10
+            "line": 9,
+            "column": 0
           }
         },
         "moduleName": "frontend-cp/session/admin/people/teams/template.hbs"
@@ -47667,24 +47667,32 @@ define('frontend-cp/session/admin/people/teams/template', ['exports'], function 
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n\n");
         dom.appendChild(el0, el1);
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","layout");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
         var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
         var morphs = new Array(2);
-        morphs[0] = dom.createMorphAt(fragment,2,2,contextualElement);
+        morphs[0] = dom.createMorphAt(dom.childAt(fragment, [2]),1,1);
         morphs[1] = dom.createMorphAt(fragment,4,4,contextualElement);
-        dom.insertBoundary(fragment, null);
         return morphs;
       },
       statements: [
-        ["block","each",[["get","model",["loc",[null,[3,8],[3,13]]]]],[],0,null,["loc",[null,[3,0],[5,9]]]],
-        ["content","outlet",["loc",[null,[7,0],[7,10]]]]
+        ["block","each",[["get","model",["loc",[null,[5,10],[5,15]]]]],[],0,null,["loc",[null,[5,2],[5,137]]]],
+        ["content","outlet",["loc",[null,[8,0],[8,10]]]]
       ],
       locals: [],
       templates: [child0]
@@ -62532,7 +62540,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+db54e4a9"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+c157a9f4"});
 }
 
 /* jshint ignore:end */
