@@ -20352,14 +20352,14 @@ define('frontend-cp/components/ko-file-size/component', ['exports', 'ember'], fu
     options: (function () {
       var size = this.size;
       var options = undefined;
-      if (size > 1024 * 1024) {
+      if (size > 1000 * 1000) {
         options = {
-          size: size / 1024 / 1024,
+          size: size / 1000 / 1000,
           unit: 'mb'
         };
       } else {
         options = {
-          size: size / 1024,
+          size: size / 1000,
           unit: 'kb'
         };
       }
@@ -42835,6 +42835,7 @@ define('frontend-cp/services/file-upload', ['exports', 'ember', 'jquery'], funct
           uploadFile.set('progress', 100);
           uploadFile.set('status', 'SUCCESS');
           uploadFile.set('contentUrl', response.data.content_url);
+          uploadFile.set('size', response.data.size);
           uploadFile.set('attachmentId', response.data.id);
         },
         error: function error(response) {
@@ -62540,7 +62541,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+c157a9f4"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+d3f8285b"});
 }
 
 /* jshint ignore:end */
