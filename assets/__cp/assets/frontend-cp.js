@@ -3,15 +3,6 @@
 
 /* jshint ignore:end */
 
-define('frontend-cp/acceptance-tests/main', ['exports', 'ember-cli-sri/acceptance-tests/main'], function (exports, main) {
-
-	'use strict';
-
-
-
-	exports['default'] = main['default'];
-
-});
 define('frontend-cp/acceptance-tests/sinon', ['exports', 'ember-sinon/acceptance-tests/sinon'], function (exports, sinon) {
 
 	'use strict';
@@ -33056,7 +33047,8 @@ define('frontend-cp/initializers/export-application-global', ['exports', 'ember'
 
   exports.initialize = initialize;
 
-  function initialize(container, application) {
+  function initialize() {
+    var application = arguments[1] || arguments[0];
     if (config['default'].exportApplicationGlobal !== false) {
       var value = config['default'].exportApplicationGlobal;
       var globalName;
@@ -62702,7 +62694,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+0ec55537"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+d71d58c4"});
 }
 
 /* jshint ignore:end */
