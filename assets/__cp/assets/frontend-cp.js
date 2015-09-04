@@ -6180,8 +6180,7 @@ define('frontend-cp/components/ko-admin/sidebar/component', ['exports', 'ember']
   'use strict';
 
   exports['default'] = Ember['default'].Component.extend({
-    classNames: ['ko-admin-sidebar', 'layout__item', 'u-1/5']
-
+    classNames: ['layout__item', 'u-1/5']
   });
 
 });
@@ -6197,12 +6196,12 @@ define('frontend-cp/components/ko-admin/sidebar/template', ['exports'], function
           "loc": {
             "source": null,
             "start": {
-              "line": 2,
-              "column": 0
+              "line": 5,
+              "column": 2
             },
             "end": {
-              "line": 4,
-              "column": 0
+              "line": 7,
+              "column": 2
             }
           },
           "moduleName": "frontend-cp/components/ko-admin/sidebar/template.hbs"
@@ -6214,10 +6213,7 @@ define('frontend-cp/components/ko-admin/sidebar/template', ['exports'], function
           var el0 = dom.createDocumentFragment();
           var el1 = dom.createTextNode("    ");
           dom.appendChild(el0, el1);
-          var el1 = dom.createElement("div");
-          dom.setAttribute(el1,"class","sidebar__item");
-          var el2 = dom.createComment("");
-          dom.appendChild(el1, el2);
+          var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n");
           dom.appendChild(el0, el1);
@@ -6225,11 +6221,11 @@ define('frontend-cp/components/ko-admin/sidebar/template', ['exports'], function
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
           var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]),0,0);
+          morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
           return morphs;
         },
         statements: [
-          ["inline","format-message",[["subexpr","intl-get",["admin.views"],[],["loc",[null,[3,48],[3,72]]]]],[],["loc",[null,[3,31],[3,74]]]]
+          ["inline","format-message",[["subexpr","intl-get",["admin.views"],[],["loc",[null,[6,21],[6,45]]]]],[],["loc",[null,[6,4],[6,47]]]]
         ],
         locals: [],
         templates: []
@@ -6242,12 +6238,12 @@ define('frontend-cp/components/ko-admin/sidebar/template', ['exports'], function
           "loc": {
             "source": null,
             "start": {
-              "line": 6,
-              "column": 0
+              "line": 9,
+              "column": 2
             },
             "end": {
-              "line": 8,
-              "column": 0
+              "line": 11,
+              "column": 2
             }
           },
           "moduleName": "frontend-cp/components/ko-admin/sidebar/template.hbs"
@@ -6257,12 +6253,9 @@ define('frontend-cp/components/ko-admin/sidebar/template', ['exports'], function
         hasRendered: false,
         buildFragment: function buildFragment(dom) {
           var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("  ");
+          var el1 = dom.createTextNode("    ");
           dom.appendChild(el0, el1);
-          var el1 = dom.createElement("div");
-          dom.setAttribute(el1,"class","sidebar__item");
-          var el2 = dom.createComment("");
-          dom.appendChild(el1, el2);
+          var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n");
           dom.appendChild(el0, el1);
@@ -6270,11 +6263,11 @@ define('frontend-cp/components/ko-admin/sidebar/template', ['exports'], function
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
           var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]),0,0);
+          morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
           return morphs;
         },
         statements: [
-          ["inline","format-message",[["subexpr","intl-get",["admin.casefields"],[],["loc",[null,[7,46],[7,75]]]]],[],["loc",[null,[7,29],[7,77]]]]
+          ["inline","format-message",[["subexpr","intl-get",["admin.casefields"],[],["loc",[null,[10,21],[10,50]]]]],[],["loc",[null,[10,4],[10,52]]]]
         ],
         locals: [],
         templates: []
@@ -6287,12 +6280,12 @@ define('frontend-cp/components/ko-admin/sidebar/template', ['exports'], function
           "loc": {
             "source": null,
             "start": {
-              "line": 10,
-              "column": 0
+              "line": 13,
+              "column": 2
             },
             "end": {
-              "line": 12,
-              "column": 0
+              "line": 15,
+              "column": 2
             }
           },
           "moduleName": "frontend-cp/components/ko-admin/sidebar/template.hbs"
@@ -6302,12 +6295,9 @@ define('frontend-cp/components/ko-admin/sidebar/template', ['exports'], function
         hasRendered: false,
         buildFragment: function buildFragment(dom) {
           var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("  ");
+          var el1 = dom.createTextNode("    ");
           dom.appendChild(el0, el1);
-          var el1 = dom.createElement("div");
-          dom.setAttribute(el1,"class","sidebar__item");
-          var el2 = dom.createComment("");
-          dom.appendChild(el1, el2);
+          var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n");
           dom.appendChild(el0, el1);
@@ -6315,11 +6305,11 @@ define('frontend-cp/components/ko-admin/sidebar/template', ['exports'], function
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
           var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]),0,0);
+          morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
           return morphs;
         },
         statements: [
-          ["inline","format-message",[["subexpr","intl-get",["admin.caseforms"],[],["loc",[null,[11,46],[11,74]]]]],[],["loc",[null,[11,29],[11,76]]]]
+          ["inline","format-message",[["subexpr","intl-get",["admin.caseforms"],[],["loc",[null,[14,21],[14,49]]]]],[],["loc",[null,[14,4],[14,51]]]]
         ],
         locals: [],
         templates: []
@@ -6332,12 +6322,12 @@ define('frontend-cp/components/ko-admin/sidebar/template', ['exports'], function
           "loc": {
             "source": null,
             "start": {
-              "line": 16,
-              "column": 0
+              "line": 23,
+              "column": 2
             },
             "end": {
-              "line": 18,
-              "column": 0
+              "line": 25,
+              "column": 2
             }
           },
           "moduleName": "frontend-cp/components/ko-admin/sidebar/template.hbs"
@@ -6349,10 +6339,7 @@ define('frontend-cp/components/ko-admin/sidebar/template', ['exports'], function
           var el0 = dom.createDocumentFragment();
           var el1 = dom.createTextNode("    ");
           dom.appendChild(el0, el1);
-          var el1 = dom.createElement("div");
-          dom.setAttribute(el1,"class","sidebar__item");
-          var el2 = dom.createComment("");
-          dom.appendChild(el1, el2);
+          var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n");
           dom.appendChild(el0, el1);
@@ -6360,11 +6347,11 @@ define('frontend-cp/components/ko-admin/sidebar/template', ['exports'], function
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
           var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]),0,0);
+          morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
           return morphs;
         },
         statements: [
-          ["inline","format-message",[["subexpr","intl-get",["admin.caseforms"],[],["loc",[null,[17,48],[17,76]]]]],[],["loc",[null,[17,31],[17,78]]]]
+          ["inline","format-message",[["subexpr","intl-get",["admin.caseforms"],[],["loc",[null,[24,21],[24,49]]]]],[],["loc",[null,[24,4],[24,51]]]]
         ],
         locals: [],
         templates: []
@@ -6380,8 +6367,8 @@ define('frontend-cp/components/ko-admin/sidebar/template', ['exports'], function
             "column": 0
           },
           "end": {
-            "line": 18,
-            "column": 12
+            "line": 27,
+            "column": 0
           }
         },
         "moduleName": "frontend-cp/components/ko-admin/sidebar/template.hbs"
@@ -6391,49 +6378,75 @@ define('frontend-cp/components/ko-admin/sidebar/template', ['exports'], function
       hasRendered: false,
       buildFragment: function buildFragment(dom) {
         var el0 = dom.createDocumentFragment();
-        var el1 = dom.createComment("");
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","ko-admin_sidebar__group");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("p");
+        dom.setAttribute(el2,"class","ko-admin_sidebar__header");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","ko-admin_sidebar__group");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("p");
+        dom.setAttribute(el2,"class","ko-admin_sidebar__header");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createComment("");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createComment("");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createComment("");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n\n");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createComment("");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var element0 = dom.childAt(fragment, [0]);
+        var element1 = dom.childAt(fragment, [2]);
         var morphs = new Array(6);
-        morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
-        morphs[1] = dom.createMorphAt(fragment,2,2,contextualElement);
-        morphs[2] = dom.createMorphAt(fragment,4,4,contextualElement);
-        morphs[3] = dom.createMorphAt(fragment,6,6,contextualElement);
-        morphs[4] = dom.createMorphAt(fragment,8,8,contextualElement);
-        morphs[5] = dom.createMorphAt(fragment,10,10,contextualElement);
-        dom.insertBoundary(fragment, 0);
-        dom.insertBoundary(fragment, null);
+        morphs[0] = dom.createMorphAt(dom.childAt(element0, [1]),1,1);
+        morphs[1] = dom.createMorphAt(element0,3,3);
+        morphs[2] = dom.createMorphAt(element0,5,5);
+        morphs[3] = dom.createMorphAt(element0,7,7);
+        morphs[4] = dom.createMorphAt(dom.childAt(element1, [1]),1,1);
+        morphs[5] = dom.createMorphAt(element1,3,3);
         return morphs;
       },
       statements: [
-        ["inline","format-message",[["subexpr","intl-get",["admin.navigation.manage"],[],["loc",[null,[1,17],[1,53]]]]],[],["loc",[null,[1,0],[1,55]]]],
-        ["block","link-to",["session.admin.manage.views"],["class","t-naked-link"],0,null,["loc",[null,[2,0],[4,12]]]],
-        ["block","link-to",["session.admin.manage.case-fields"],["class","t-naked-link"],1,null,["loc",[null,[6,0],[8,12]]]],
-        ["block","link-to",["session.admin.manage.case-forms"],["class","t-naked-link"],2,null,["loc",[null,[10,0],[12,12]]]],
-        ["inline","format-message",[["subexpr","intl-get",["admin.navigation.people"],[],["loc",[null,[15,17],[15,53]]]]],[],["loc",[null,[15,0],[15,55]]]],
-        ["block","link-to",["session.admin.people.teams"],["class","t-naked-link"],3,null,["loc",[null,[16,0],[18,12]]]]
+        ["inline","format-message",[["subexpr","intl-get",["admin.navigation.manage"],[],["loc",[null,[3,21],[3,57]]]]],[],["loc",[null,[3,4],[3,59]]]],
+        ["block","link-to",["session.admin.manage.views"],["class","t-naked-link ko-admin_sidebar__item"],0,null,["loc",[null,[5,2],[7,14]]]],
+        ["block","link-to",["session.admin.manage.case-fields"],["class","t-naked-link ko-admin_sidebar__item"],1,null,["loc",[null,[9,2],[11,14]]]],
+        ["block","link-to",["session.admin.manage.case-forms"],["class","t-naked-link ko-admin_sidebar__item"],2,null,["loc",[null,[13,2],[15,14]]]],
+        ["inline","format-message",[["subexpr","intl-get",["admin.navigation.people"],[],["loc",[null,[21,21],[21,57]]]]],[],["loc",[null,[21,4],[21,59]]]],
+        ["block","link-to",["session.admin.people.teams"],["class","t-naked-link ko-admin_sidebar__item"],3,null,["loc",[null,[23,2],[25,14]]]]
       ],
       locals: [],
       templates: [child0, child1, child2, child3]
@@ -62694,7 +62707,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+d71d58c4"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+d7089088"});
 }
 
 /* jshint ignore:end */
