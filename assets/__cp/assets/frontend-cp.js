@@ -34898,6 +34898,8 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
 
   'use strict';
 
+  /*eslint-disable camelcase*/
+
   exports['default'] = function () {
     function arrayToObjectWithNumberedKeys(source) {
       var pos = 1;
@@ -35342,6 +35344,8 @@ define('frontend-cp/mirage/factories/account', ['exports', 'ember-cli-mirage'], 
 
   'use strict';
 
+  /*eslint-disable camelcase*/
+
   exports['default'] = Mirage['default'].Factory.extend({
     id: 1,
     resource_type: 'mailbox'
@@ -35352,6 +35356,8 @@ define('frontend-cp/mirage/factories/assignee', ['exports', 'ember-cli-mirage'],
 
   'use strict';
 
+  /*eslint-disable camelcase*/
+
   exports['default'] = Mirage['default'].Factory.extend({
     team: {}
   });
@@ -35360,6 +35366,8 @@ define('frontend-cp/mirage/factories/assignee', ['exports', 'ember-cli-mirage'],
 define('frontend-cp/mirage/factories/brand', ['exports', 'ember-cli-mirage'], function (exports, ember_cli_mirage) {
 
   'use strict';
+
+  /*eslint-disable camelcase*/
 
   exports['default'] = ember_cli_mirage['default'].Factory.extend({
     id: ember_cli_mirage.faker.random.number,
@@ -35377,6 +35385,8 @@ define('frontend-cp/mirage/factories/brand', ['exports', 'ember-cli-mirage'], fu
 define('frontend-cp/mirage/factories/businesshour', ['exports', 'ember-cli-mirage'], function (exports, Mirage) {
 
   'use strict';
+
+  /*eslint-disable camelcase*/
 
   exports['default'] = Mirage['default'].Factory.extend({
     id: 1,
@@ -35402,6 +35412,8 @@ define('frontend-cp/mirage/factories/case-field-value', ['exports', 'ember-cli-m
 
   'use strict';
 
+  /*eslint-disable camelcase*/
+
   exports['default'] = ember_cli_mirage['default'].Factory.extend({
     field: {},
     value: ember_cli_mirage.faker.random.title,
@@ -35412,6 +35424,8 @@ define('frontend-cp/mirage/factories/case-field-value', ['exports', 'ember-cli-m
 define('frontend-cp/mirage/factories/case-field', ['exports', 'ember-cli-mirage'], function (exports, ember_cli_mirage) {
 
   'use strict';
+
+  /*eslint-disable camelcase*/
 
   exports['default'] = ember_cli_mirage['default'].Factory.extend({
     id: ember_cli_mirage.faker.random.number,
@@ -35443,6 +35457,8 @@ define('frontend-cp/mirage/factories/case-form', ['exports', 'ember-cli-mirage']
 
   'use strict';
 
+  /*eslint-disable camelcase*/
+
   exports['default'] = Mirage['default'].Factory.extend({
     id: 1,
     title: 'Internet Related Issue',
@@ -35465,6 +35481,8 @@ define('frontend-cp/mirage/factories/case-message', ['exports', 'ember-cli-mirag
 
   'use strict';
 
+  /*eslint-disable camelcase*/
+
   exports['default'] = Mirage['default'].Factory.extend({
     id: 1,
     resource_type: 'case_message'
@@ -35474,6 +35492,8 @@ define('frontend-cp/mirage/factories/case-message', ['exports', 'ember-cli-mirag
 define('frontend-cp/mirage/factories/case-priority', ['exports', 'ember-cli-mirage'], function (exports, ember_cli_mirage) {
 
   'use strict';
+
+  /*eslint-disable camelcase*/
 
   exports['default'] = ember_cli_mirage['default'].Factory.extend({
     id: 1,
@@ -35491,6 +35511,8 @@ define('frontend-cp/mirage/factories/case-priority', ['exports', 'ember-cli-mira
 define('frontend-cp/mirage/factories/case-status', ['exports', 'ember-cli-mirage'], function (exports, ember_cli_mirage) {
 
   'use strict';
+
+  /*eslint-disable camelcase*/
 
   exports['default'] = ember_cli_mirage['default'].Factory.extend({
     id: 1,
@@ -35512,6 +35534,8 @@ define('frontend-cp/mirage/factories/case-type', ['exports', 'ember-cli-mirage']
 
   'use strict';
 
+  /*eslint-disable camelcase*/
+
   exports['default'] = ember_cli_mirage['default'].Factory.extend({
     id: 1,
     label: ember_cli_mirage.faker.list.cycle('Question', 'Task', 'Problem', 'Incident'),
@@ -35525,6 +35549,8 @@ define('frontend-cp/mirage/factories/case-type', ['exports', 'ember-cli-mirage']
 define('frontend-cp/mirage/factories/case', ['exports', 'ember-cli-mirage'], function (exports, ember_cli_mirage) {
 
   'use strict';
+
+  /*eslint-disable camelcase*/
 
   exports['default'] = ember_cli_mirage['default'].Factory.extend({
     id: 1,
@@ -35573,6 +35599,8 @@ define('frontend-cp/mirage/factories/channel', ['exports', 'ember-cli-mirage'], 
 
   'use strict';
 
+  /*eslint-disable camelcase*/
+
   exports['default'] = ember_cli_mirage['default'].Factory.extend({
     uuid: ember_cli_mirage.faker.random.uuid,
     account: {},
@@ -35585,6 +35613,8 @@ define('frontend-cp/mirage/factories/column', ['exports', 'ember-cli-mirage'], f
 
   'use strict';
 
+  /*eslint-disable camelcase*/
+
   exports['default'] = ember_cli_mirage['default'].Factory.extend({
     name: ember_cli_mirage.faker.list.cycle('id', 'subject', 'status', 'assignee', 'requester'),
     resource_type: 'column'
@@ -35594,6 +35624,8 @@ define('frontend-cp/mirage/factories/column', ['exports', 'ember-cli-mirage'], f
 define('frontend-cp/mirage/factories/contact-address', ['exports', 'ember-cli-mirage'], function (exports, Mirage) {
 
   'use strict';
+
+  /*eslint-disable camelcase*/
 
   exports['default'] = Mirage['default'].Factory.extend({
     address1: '30 Avenue',
@@ -35616,6 +35648,8 @@ define('frontend-cp/mirage/factories/contact-website', ['exports', 'ember-cli-mi
 
   'use strict';
 
+  /*eslint-disable camelcase*/
+
   exports['default'] = Mirage['default'].Factory.extend({
     created_at: '2015-08-27T11:02:47Z',
     id: 5,
@@ -35631,6 +35665,8 @@ define('frontend-cp/mirage/factories/creator', ['exports', 'ember-cli-mirage'], 
 
   'use strict';
 
+  /*eslint-disable camelcase*/
+
   exports['default'] = ember_cli_mirage['default'].Factory.extend({
     id: ember_cli_mirage.faker.random.number,
     resource_type: 'user'
@@ -35640,6 +35676,8 @@ define('frontend-cp/mirage/factories/creator', ['exports', 'ember-cli-mirage'], 
 define('frontend-cp/mirage/factories/facebook-account', ['exports', 'ember-cli-mirage'], function (exports, ember_cli_mirage) {
 
   'use strict';
+
+  /*eslint-disable camelcase*/
 
   exports['default'] = ember_cli_mirage['default'].Factory.extend({
     id: ember_cli_mirage.faker.random.number,
@@ -35656,6 +35694,8 @@ define('frontend-cp/mirage/factories/facebook-account', ['exports', 'ember-cli-m
 define('frontend-cp/mirage/factories/facebook-pages', ['exports', 'ember-cli-mirage'], function (exports, ember_cli_mirage) {
 
   'use strict';
+
+  /*eslint-disable camelcase*/
 
   exports['default'] = ember_cli_mirage['default'].Factory.extend({
     id: ember_cli_mirage.faker.random.number,
@@ -35676,6 +35716,8 @@ define('frontend-cp/mirage/factories/field-option', ['exports', 'ember-cli-mirag
 
   'use strict';
 
+  /*eslint-disable camelcase*/
+
   exports['default'] = ember_cli_mirage['default'].Factory.extend({
     id: ember_cli_mirage.faker.random.number,
     fielduuid: ember_cli_mirage.faker.list.cycle('fake-XXXX-1', 'fake-XXXX-2', 'fake-XXXX-3', 'fake-XXXX-4', 'fake-XXXX-5'),
@@ -35692,6 +35734,8 @@ define('frontend-cp/mirage/factories/form', ['exports', 'ember-cli-mirage'], fun
 
   'use strict';
 
+  /*eslint-disable camelcase*/
+
   exports['default'] = ember_cli_mirage['default'].Factory.extend({
     id: ember_cli_mirage.faker.random.number,
     resource_type: 'case_form'
@@ -35701,6 +35745,8 @@ define('frontend-cp/mirage/factories/form', ['exports', 'ember-cli-mirage'], fun
 define('frontend-cp/mirage/factories/identity-domain', ['exports', 'ember-cli-mirage'], function (exports, Mirage) {
 
   'use strict';
+
+  /*eslint-disable camelcase*/
 
   exports['default'] = Mirage['default'].Factory.extend({
     id: 1,
@@ -35717,6 +35763,8 @@ define('frontend-cp/mirage/factories/identity-domain', ['exports', 'ember-cli-mi
 define('frontend-cp/mirage/factories/identity-email', ['exports', 'ember-cli-mirage'], function (exports, ember_cli_mirage) {
 
   'use strict';
+
+  /*eslint-disable camelcase*/
 
   exports['default'] = ember_cli_mirage['default'].Factory.extend({
     id: 1,
@@ -35735,6 +35783,8 @@ define('frontend-cp/mirage/factories/identity-phone', ['exports', 'ember-cli-mir
 
   'use strict';
 
+  /*eslint-disable camelcase*/
+
   exports['default'] = Mirage['default'].Factory.extend({
     created_at: '2015-08-27T11:02:47Z',
     id: 4,
@@ -35752,6 +35802,8 @@ define('frontend-cp/mirage/factories/identity', ['exports', 'ember-cli-mirage'],
 
   'use strict';
 
+  /*eslint-disable camelcase*/
+
   exports['default'] = Mirage['default'].Factory.extend({
     id: 2,
     resource_type: 'identity_email'
@@ -35761,6 +35813,8 @@ define('frontend-cp/mirage/factories/identity', ['exports', 'ember-cli-mirage'],
 define('frontend-cp/mirage/factories/language', ['exports', 'ember-cli-mirage'], function (exports, Mirage) {
 
   'use strict';
+
+  /*eslint-disable camelcase*/
 
   exports['default'] = Mirage['default'].Factory.extend({
     id: 1,
@@ -35784,6 +35838,8 @@ define('frontend-cp/mirage/factories/last-replier-identity', ['exports', 'ember-
 
   'use strict';
 
+  /*eslint-disable camelcase*/
+
   exports['default'] = Mirage['default'].Factory.extend({
     id: 2,
     resource_type: 'identity_email'
@@ -35793,6 +35849,8 @@ define('frontend-cp/mirage/factories/last-replier-identity', ['exports', 'ember-
 define('frontend-cp/mirage/factories/last-replier', ['exports', 'ember-cli-mirage'], function (exports, Mirage) {
 
   'use strict';
+
+  /*eslint-disable camelcase*/
 
   exports['default'] = Mirage['default'].Factory.extend({
     id: 2,
@@ -35804,6 +35862,8 @@ define('frontend-cp/mirage/factories/log', ['exports', 'ember-cli-mirage'], func
 
   'use strict';
 
+  /*eslint-disable camelcase*/
+
   exports['default'] = Mirage['default'].Factory.extend({
     level: 'NOTICE',
     message: 'Redundant request parameters supplied: page'
@@ -35813,6 +35873,8 @@ define('frontend-cp/mirage/factories/log', ['exports', 'ember-cli-mirage'], func
 define('frontend-cp/mirage/factories/mailbox', ['exports', 'ember-cli-mirage'], function (exports, Mirage) {
 
   'use strict';
+
+  /*eslint-disable camelcase*/
 
   exports['default'] = Mirage['default'].Factory.extend({
     id: 1,
@@ -35840,6 +35902,8 @@ define('frontend-cp/mirage/factories/message-recipient', ['exports', 'ember-cli-
 
   'use strict';
 
+  /*eslint-disable camelcase*/
+
   exports['default'] = Mirage['default'].Factory.extend({
     id: 1,
     identity: { id: 2, resource_type: 'identity_email' },
@@ -35853,6 +35917,8 @@ define('frontend-cp/mirage/factories/metadata', ['exports', 'ember-cli-mirage'],
 
   'use strict';
 
+  /*eslint-disable camelcase*/
+
   exports['default'] = Mirage['default'].Factory.extend({
     custom: null,
     system: null,
@@ -35863,6 +35929,8 @@ define('frontend-cp/mirage/factories/metadata', ['exports', 'ember-cli-mirage'],
 define('frontend-cp/mirage/factories/organization', ['exports', 'ember-cli-mirage'], function (exports, Mirage) {
 
   'use strict';
+
+  /*eslint-disable camelcase*/
 
   exports['default'] = Mirage['default'].Factory.extend({
     id: 1,
@@ -35889,6 +35957,8 @@ define('frontend-cp/mirage/factories/post', ['exports', 'ember-cli-mirage'], fun
 
   'use strict';
 
+  /*eslint-disable camelcase*/
+
   exports['default'] = Mirage['default'].Factory.extend({
     attachments: [],
     contents: 'This is the the text from contents',
@@ -35911,6 +35981,8 @@ define('frontend-cp/mirage/factories/predicate-collection', ['exports', 'ember-c
 
   'use strict';
 
+  /*eslint-disable camelcase*/
+
   exports['default'] = Mirage['default'].Factory.extend({
     id: 1,
     operator: 'OR',
@@ -35923,6 +35995,8 @@ define('frontend-cp/mirage/factories/priority', ['exports', 'ember-cli-mirage'],
 
   'use strict';
 
+  /*eslint-disable camelcase*/
+
   exports['default'] = ember_cli_mirage['default'].Factory.extend({
     id: ember_cli_mirage.faker.random.number,
     resource_type: 'case_priority'
@@ -35932,6 +36006,8 @@ define('frontend-cp/mirage/factories/priority', ['exports', 'ember-cli-mirage'],
 define('frontend-cp/mirage/factories/proposition', ['exports', 'ember-cli-mirage'], function (exports, Mirage) {
 
   'use strict';
+
+  /*eslint-disable camelcase*/
 
   exports['default'] = Mirage['default'].Factory.extend({
     field: 'cases.assigneeteamid',
@@ -35945,6 +36021,8 @@ define('frontend-cp/mirage/factories/requester', ['exports', 'ember-cli-mirage']
 
   'use strict';
 
+  /*eslint-disable camelcase*/
+
   exports['default'] = ember_cli_mirage['default'].Factory.extend({
     id: ember_cli_mirage.faker.random.number,
     resource_type: 'user'
@@ -35954,6 +36032,8 @@ define('frontend-cp/mirage/factories/requester', ['exports', 'ember-cli-mirage']
 define('frontend-cp/mirage/factories/role', ['exports', 'ember-cli-mirage'], function (exports, ember_cli_mirage) {
 
   'use strict';
+
+  /*eslint-disable camelcase*/
 
   exports['default'] = ember_cli_mirage['default'].Factory.extend({
     id: ember_cli_mirage.faker.random.number,
@@ -35973,6 +36053,8 @@ define('frontend-cp/mirage/factories/session', ['exports', 'ember-cli-mirage'], 
 
   'use strict';
 
+  /*eslint-disable camelcase*/
+
   exports['default'] = ember_cli_mirage['default'].Factory.extend({
     id: 'pPW6tnOyJG6TmWCVea175d1bfc5dbf073a89ffeb6a2a198c61aae941Aqc7ahmzw8a',
     portal: 'API',
@@ -35990,6 +36072,8 @@ define('frontend-cp/mirage/factories/sla-metric', ['exports', 'ember-cli-mirage'
 
   'use strict';
 
+  /*eslint-disable camelcase*/
+
   exports['default'] = ember_cli_mirage['default'].Factory.extend({
     title: ember_cli_mirage.faker.list.cycle('FIRST_REPLY_TIME', 'RESOLUTION_TIME', 'NEXT_REPLY_TIME'),
     state: ember_cli_mirage.faker.list.cycle('ACTIVE', 'COMPLETED'),
@@ -36002,6 +36086,8 @@ define('frontend-cp/mirage/factories/sla', ['exports', 'ember-cli-mirage'], func
 
   'use strict';
 
+  /*eslint-disable camelcase*/
+
   exports['default'] = ember_cli_mirage['default'].Factory.extend({
     id: ember_cli_mirage.faker.random.number,
     title: 'Regular support and sales tickets',
@@ -36013,6 +36099,8 @@ define('frontend-cp/mirage/factories/source-channel', ['exports', 'ember-cli-mir
 
   'use strict';
 
+  /*eslint-disable camelcase*/
+
   exports['default'] = ember_cli_mirage['default'].Factory.extend({
     id: ember_cli_mirage.faker.random.uuid,
     resource_type: 'channel'
@@ -36022,6 +36110,8 @@ define('frontend-cp/mirage/factories/source-channel', ['exports', 'ember-cli-mir
 define('frontend-cp/mirage/factories/status', ['exports', 'ember-cli-mirage'], function (exports, ember_cli_mirage) {
 
   'use strict';
+
+  /*eslint-disable camelcase*/
 
   exports['default'] = ember_cli_mirage['default'].Factory.extend({
     id: ember_cli_mirage.faker.random.number,
@@ -36033,6 +36123,8 @@ define('frontend-cp/mirage/factories/tag', ['exports', 'ember-cli-mirage'], func
 
   'use strict';
 
+  /*eslint-disable camelcase*/
+
   exports['default'] = ember_cli_mirage['default'].Factory.extend({
     id: ember_cli_mirage.faker.random.number,
     name: ember_cli_mirage.faker.list.cycle('solution', 'status'),
@@ -36043,6 +36135,8 @@ define('frontend-cp/mirage/factories/tag', ['exports', 'ember-cli-mirage'], func
 define('frontend-cp/mirage/factories/team', ['exports', 'ember-cli-mirage'], function (exports, ember_cli_mirage) {
 
   'use strict';
+
+  /*eslint-disable camelcase*/
 
   exports['default'] = ember_cli_mirage['default'].Factory.extend({
     id: 1,
@@ -36059,6 +36153,8 @@ define('frontend-cp/mirage/factories/team', ['exports', 'ember-cli-mirage'], fun
 define('frontend-cp/mirage/factories/twitter-account', ['exports', 'ember-cli-mirage'], function (exports, Mirage) {
 
   'use strict';
+
+  /*eslint-disable camelcase*/
 
   exports['default'] = Mirage['default'].Factory.extend({
     account_id: '3155953718',
@@ -36082,6 +36178,8 @@ define('frontend-cp/mirage/factories/type', ['exports', 'ember-cli-mirage'], fun
 
   'use strict';
 
+  /*eslint-disable camelcase*/
+
   exports['default'] = ember_cli_mirage['default'].Factory.extend({
     id: ember_cli_mirage.faker.random.number,
     resource_type: 'case_type'
@@ -36092,6 +36190,8 @@ define('frontend-cp/mirage/factories/user-email', ['exports', 'ember-cli-mirage'
 
   'use strict';
 
+  /*eslint-disable camelcase*/
+
   exports['default'] = ember_cli_mirage['default'].Factory.extend({
     id: ember_cli_mirage.faker.random.number,
     resource_type: 'user'
@@ -36101,6 +36201,8 @@ define('frontend-cp/mirage/factories/user-email', ['exports', 'ember-cli-mirage'
 define('frontend-cp/mirage/factories/user-field-value', ['exports', 'ember-cli-mirage'], function (exports, ember_cli_mirage) {
 
   'use strict';
+
+  /*eslint-disable camelcase*/
 
   exports['default'] = ember_cli_mirage['default'].Factory.extend({
     field: {
@@ -36115,6 +36217,8 @@ define('frontend-cp/mirage/factories/user-field-value', ['exports', 'ember-cli-m
 define('frontend-cp/mirage/factories/user-field', ['exports', 'ember-cli-mirage'], function (exports, ember_cli_mirage) {
 
   'use strict';
+
+  /*eslint-disable camelcase*/
 
   exports['default'] = ember_cli_mirage['default'].Factory.extend({
     id: ember_cli_mirage.faker.random.number,
@@ -36143,6 +36247,8 @@ define('frontend-cp/mirage/factories/user-field', ['exports', 'ember-cli-mirage'
 define('frontend-cp/mirage/factories/user', ['exports', 'ember-cli-mirage'], function (exports, ember_cli_mirage) {
 
   'use strict';
+
+  /*eslint-disable camelcase*/
 
   exports['default'] = ember_cli_mirage['default'].Factory.extend({
     id: ember_cli_mirage.faker.random.number,
@@ -36186,6 +36292,8 @@ define('frontend-cp/mirage/factories/user', ['exports', 'ember-cli-mirage'], fun
 define('frontend-cp/mirage/factories/view', ['exports', 'ember-cli-mirage'], function (exports, Mirage) {
 
   'use strict';
+
+  /*eslint-disable camelcase*/
 
   exports['default'] = Mirage['default'].Factory.extend({
     agent: null,
@@ -39647,6 +39755,8 @@ define('frontend-cp/mirage/fixtures/search-results-person', ['exports'], functio
 define('frontend-cp/mirage/scenarios/default', ['exports', 'ember-cli-mirage'], function (exports, ember_cli_mirage) {
 
   'use strict';
+
+  /*eslint-disable camelcase*/
 
   exports['default'] = function (server) {
     var businessHour = server.create('businesshour', {
@@ -56573,13 +56683,13 @@ define('frontend-cp/tests/helpers/intl-get', ['exports', 'ember'], function (exp
   });
 
 });
-define('frontend-cp/tests/helpers/login', ['exports', 'ember', 'frontend-cp/mirage/scenarios/default'], function (exports, Ember, DefaultScenario) {
+define('frontend-cp/tests/helpers/login', ['exports', 'ember', 'frontend-cp/mirage/scenarios/default'], function (exports, Ember, defaultScenario) {
 
   'use strict';
 
   exports['default'] = Ember['default'].Test.registerAsyncHelper('login', function () {
 
-    DefaultScenario['default'](server); //eslint-disable-line no-undef
+    defaultScenario['default'](server); //eslint-disable-line no-undef
 
     localStorage.removeItem('sessionId');
 
@@ -58077,26 +58187,28 @@ define('frontend-cp/tests/integration/components/ko-search/component-test', ['em
   });
 
 });
-define('frontend-cp/tests/integration/components/ko-session-widgets/component-test', ['frontend-cp/tests/helpers/qunit', 'frontend-cp/tests/helpers/setup-mirage-for-integration', 'ember', 'frontend-cp/mirage/scenarios/default'], function (qunit, mirage, Ember, DefaultScenario) {
+define('frontend-cp/tests/integration/components/ko-session-widgets/component-test', ['frontend-cp/tests/helpers/qunit', 'frontend-cp/tests/helpers/setup-mirage-for-integration', 'ember'], function (qunit, mirage, Ember) {
 
   'use strict';
 
   qunit.moduleForComponent('ko-session-widgets', 'Integration | Component | ko session widgets', {
     integration: true,
     setup: function setup() {
+      /*eslint-disable no-undef, camelcase */
       mirage['default'](this.containter);
-      var role = server.create('role'); //eslint-disable-line no-undef
-      var defaultUser = server.create('user', { //eslint-disable-line no-undef
+      var role = server.create('role');
+      var defaultUser = server.create('user', {
         id: 1,
         full_name: 'John Doe',
         role: role
       });
 
-      server.create('session', { //eslint-disable-line no-undef
+      server.create('session', {
         user: defaultUser
       });
 
       localStorage.setItem('sessionId', '"pPW6tnOyJG6TmWCVea175d1bfc5dbf073a89ffeb6a2a198c61aae941Aqc7ahmzw8a"');
+      /*eslint-enable no-undef, camelcase */
     },
     teardown: function teardown() {
       localStorage.removeItem('sessionId');
@@ -62704,7 +62816,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+c91e6fdc"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+7273c3eb"});
 }
 
 /* jshint ignore:end */
