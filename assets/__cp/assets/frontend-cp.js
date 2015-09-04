@@ -18477,6 +18477,7 @@ define('frontend-cp/components/ko-feed/item/component', ['exports', 'ember'], fu
   exports['default'] = Ember['default'].Component.extend({
     //params
     event: null,
+    sessionService: Ember['default'].inject.service('session'),
 
     classNames: ['ko-feed_item'],
     classNameBindings: ['isPrivate'],
@@ -18499,6 +18500,10 @@ define('frontend-cp/components/ko-feed/item/component', ['exports', 'ember'], fu
     mouseLeave: function mouseLeave() {
       this.set('showMenu', false);
     },
+
+    sessionToken: Ember['default'].computed(function () {
+      return '?_session_id=' + this.get('sessionService.sessionId');
+    }),
 
     actions: {
       onReplyWithQuote: function onReplyWithQuote() {
@@ -18594,7 +18599,7 @@ define('frontend-cp/components/ko-feed/item/template', ['exports'], function (ex
                 "column": 2
               },
               "end": {
-                "line": 13,
+                "line": 15,
                 "column": 2
               }
             },
@@ -18617,7 +18622,13 @@ define('frontend-cp/components/ko-feed/item/template', ['exports'], function (ex
             dom.appendChild(el0, el1);
             var el1 = dom.createElement("div");
             dom.setAttribute(el1,"class","feed__attachment-name");
-            var el2 = dom.createComment("");
+            var el2 = dom.createTextNode("\n      ");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createElement("a");
+            var el3 = dom.createComment("");
+            dom.appendChild(el2, el3);
+            dom.appendChild(el1, el2);
+            var el2 = dom.createTextNode("\n    ");
             dom.appendChild(el1, el2);
             dom.appendChild(el0, el1);
             var el1 = dom.createTextNode("\n    ");
@@ -18633,16 +18644,19 @@ define('frontend-cp/components/ko-feed/item/template', ['exports'], function (ex
           },
           buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
             var element0 = dom.childAt(fragment, [1]);
-            var morphs = new Array(3);
+            var element1 = dom.childAt(fragment, [5, 1]);
+            var morphs = new Array(4);
             morphs[0] = dom.createAttrMorph(element0, 'src');
-            morphs[1] = dom.createMorphAt(dom.childAt(fragment, [5]),0,0);
-            morphs[2] = dom.createMorphAt(dom.childAt(fragment, [7]),0,0);
+            morphs[1] = dom.createAttrMorph(element1, 'href');
+            morphs[2] = dom.createMorphAt(element1,0,0);
+            morphs[3] = dom.createMorphAt(dom.childAt(fragment, [7]),0,0);
             return morphs;
           },
           statements: [
             ["attribute","src",["concat",[["get","attachment.thumbnails.firstObject.url",["loc",[null,[10,16],[10,53]]]]]]],
-            ["content","attachment.name",["loc",[null,[11,39],[11,58]]]],
-            ["inline","ko-file-size",[],["size",["subexpr","@mut",[["get","attachment.size",["loc",[null,[12,59],[12,74]]]]],[],[]]],["loc",[null,[12,39],[12,76]]]]
+            ["attribute","href",["concat",[["get","attachment.urlDownload",["loc",[null,[12,17],[12,39]]]],["get","sessionToken",["loc",[null,[12,43],[12,55]]]]]]],
+            ["content","attachment.name",["loc",[null,[12,59],[12,78]]]],
+            ["inline","ko-file-size",[],["size",["subexpr","@mut",[["get","attachment.size",["loc",[null,[14,59],[14,74]]]]],[],[]]],["loc",[null,[14,39],[14,76]]]]
           ],
           locals: ["attachment"],
           templates: []
@@ -18658,7 +18672,7 @@ define('frontend-cp/components/ko-feed/item/template', ['exports'], function (ex
               "column": 0
             },
             "end": {
-              "line": 14,
+              "line": 16,
               "column": 0
             }
           },
@@ -18681,7 +18695,7 @@ define('frontend-cp/components/ko-feed/item/template', ['exports'], function (ex
           return morphs;
         },
         statements: [
-          ["block","each",[["get","event.attachments",["loc",[null,[9,10],[9,27]]]]],[],0,null,["loc",[null,[9,2],[13,11]]]]
+          ["block","each",[["get","event.attachments",["loc",[null,[9,10],[9,27]]]]],[],0,null,["loc",[null,[9,2],[15,11]]]]
         ],
         locals: [],
         templates: [child0]
@@ -18697,7 +18711,7 @@ define('frontend-cp/components/ko-feed/item/template', ['exports'], function (ex
             "column": 0
           },
           "end": {
-            "line": 16,
+            "line": 18,
             "column": 0
           }
         },
@@ -18751,11 +18765,11 @@ define('frontend-cp/components/ko-feed/item/template', ['exports'], function (ex
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var element1 = dom.childAt(fragment, [2]);
+        var element2 = dom.childAt(fragment, [2]);
         var morphs = new Array(6);
         morphs[0] = dom.createMorphAt(dom.childAt(fragment, [0]),0,0);
-        morphs[1] = dom.createMorphAt(element1,0,0);
-        morphs[2] = dom.createMorphAt(dom.childAt(element1, [2]),0,0);
+        morphs[1] = dom.createMorphAt(element2,0,0);
+        morphs[2] = dom.createMorphAt(dom.childAt(element2, [2]),0,0);
         morphs[3] = dom.createMorphAt(dom.childAt(fragment, [4]),1,1);
         morphs[4] = dom.createMorphAt(fragment,6,6,contextualElement);
         morphs[5] = dom.createMorphAt(fragment,7,7,contextualElement);
@@ -18766,8 +18780,8 @@ define('frontend-cp/components/ko-feed/item/template', ['exports'], function (ex
         ["content","event.creator.fullName",["loc",[null,[2,25],[2,51]]]],
         ["inline","format-message",[["subexpr","intl-get",["feed.replied"],[],["loc",[null,[3,51],[3,76]]]]],["ago",["subexpr","ago",[["get","event.createdAt",["loc",[null,[3,86],[3,101]]]]],[],["loc",[null,[3,81],[3,102]]]]],["loc",[null,[3,34],[3,104]]]],
         ["content","event.contents",["loc",[null,[6,2],[6,20]]]],
-        ["block","if",[["get","event.attachments",["loc",[null,[8,6],[8,23]]]]],[],0,null,["loc",[null,[8,0],[14,7]]]],
-        ["inline","ko-feed/item/menu",[],["showMenu",["subexpr","@mut",[["get","showMenu",["loc",[null,[15,29],[15,37]]]]],[],[]],"onReplyWithQuote","onReplyWithQuote"],["loc",[null,[15,0],[15,75]]]]
+        ["block","if",[["get","event.attachments",["loc",[null,[8,6],[8,23]]]]],[],0,null,["loc",[null,[8,0],[16,7]]]],
+        ["inline","ko-feed/item/menu",[],["showMenu",["subexpr","@mut",[["get","showMenu",["loc",[null,[17,29],[17,37]]]]],[],[]],"onReplyWithQuote","onReplyWithQuote"],["loc",[null,[17,0],[17,75]]]]
       ],
       locals: [],
       templates: [child0]
@@ -62865,7 +62879,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+58eb330f"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+3cd4bbd7"});
 }
 
 /* jshint ignore:end */
