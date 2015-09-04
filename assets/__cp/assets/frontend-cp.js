@@ -20423,7 +20423,7 @@ define('frontend-cp/components/ko-file-upload/component', ['exports', 'ember'], 
     uploads: null,
 
     classNameBindings: ['empty:u-hidden'],
-    empty: Ember['default'].computed.empty('uploads', []),
+    empty: Ember['default'].computed.empty('uploads'),
 
     initUploader: (function () {
       this.clear();
@@ -20445,6 +20445,11 @@ define('frontend-cp/components/ko-file-upload/component', ['exports', 'ember'], 
         files.forEach(function (file) {
           return _this.uploadFile(file);
         });
+      },
+      onCancel: function onCancel(upload) {
+        this.set('uploads', this.get('uploads').filter(function (u) {
+          u.get('status') !== 'CANCELLED';
+        }));
       }
     }
   });
@@ -20491,7 +20496,7 @@ define('frontend-cp/components/ko-file-upload/template', ['exports'], function (
           return morphs;
         },
         statements: [
-          ["inline","ko-file-upload/upload-item",[],["upload",["subexpr","@mut",[["get","upload",["loc",[null,[4,42],[4,48]]]]],[],[]]],["loc",[null,[4,6],[4,50]]]]
+          ["inline","ko-file-upload/upload-item",[],["upload",["subexpr","@mut",[["get","upload",["loc",[null,[4,42],[4,48]]]]],[],[]],"onCancel","onCancel"],["loc",[null,[4,6],[4,70]]]]
         ],
         locals: ["upload"],
         templates: []
@@ -20578,6 +20583,7 @@ define('frontend-cp/components/ko-file-upload/upload-item/component', ['exports'
     actions: {
       cancel: function cancel() {
         this.get('upload').cancel();
+        this.sendAction('onCancel', this.get('upload'));
       }
     }
   });
@@ -62541,7 +62547,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+d3f8285b"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+4d0b7eb6"});
 }
 
 /* jshint ignore:end */
