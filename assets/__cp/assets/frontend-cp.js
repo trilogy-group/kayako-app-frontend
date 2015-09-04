@@ -47845,6 +47845,32 @@ define('frontend-cp/session/admin/manage/views/new/template', ['exports'], funct
   }()));
 
 });
+define('frontend-cp/session/admin/people/teams/controller', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Controller.extend({
+    filter: '',
+    filteredResults: Ember['default'].computed('model.[]', 'filter', function () {
+      var teams = this.get('model');
+      var filter = this.get('filter');
+      var regEx = new RegExp(filter, 'i');
+      if (filter === '') {
+        return teams;
+      } else {
+        return teams.filter(function (team) {
+          return regEx.test(team.get('title'));
+        });
+      }
+    }),
+    actions: {
+      transitionToAddNewTeam: function transitionToAddNewTeam() {
+        //TODO(sg): Coming soon in a PR near you.
+      }
+    }
+  });
+
+});
 define('frontend-cp/session/admin/people/teams/route', ['exports', 'ember'], function (exports, Ember) {
 
   'use strict';
@@ -47868,12 +47894,12 @@ define('frontend-cp/session/admin/people/teams/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 5,
+              "line": 11,
               "column": 2
             },
             "end": {
-              "line": 5,
-              "column": 128
+              "line": 11,
+              "column": 138
             }
           },
           "moduleName": "frontend-cp/session/admin/people/teams/template.hbs"
@@ -47896,7 +47922,7 @@ define('frontend-cp/session/admin/people/teams/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["inline","ko-admin-card-team",[],["teamName",["subexpr","@mut",[["get","team.title",["loc",[null,[5,89],[5,99]]]]],[],[]],"members",["subexpr","@mut",[["get","team.members",["loc",[null,[5,108],[5,120]]]]],[],[]]],["loc",[null,[5,59],[5,122]]]]
+          ["inline","ko-admin-card-team",[],["teamName",["subexpr","@mut",[["get","team.title",["loc",[null,[11,99],[11,109]]]]],[],[]],"members",["subexpr","@mut",[["get","team.members",["loc",[null,[11,118],[11,130]]]]],[],[]]],["loc",[null,[11,69],[11,132]]]]
         ],
         locals: ["team"],
         templates: []
@@ -47912,7 +47938,7 @@ define('frontend-cp/session/admin/people/teams/template', ['exports'], function 
             "column": 0
           },
           "end": {
-            "line": 9,
+            "line": 18,
             "column": 0
           }
         },
@@ -47923,9 +47949,11 @@ define('frontend-cp/session/admin/people/teams/template', ['exports'], function 
       hasRendered: false,
       buildFragment: function buildFragment(dom) {
         var el0 = dom.createDocumentFragment();
-        var el1 = dom.createElement("h2");
-        var el2 = dom.createTextNode("Teams");
-        dom.appendChild(el1, el2);
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n\n");
         dom.appendChild(el0, el1);
@@ -47947,14 +47975,19 @@ define('frontend-cp/session/admin/people/teams/template', ['exports'], function 
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var morphs = new Array(2);
-        morphs[0] = dom.createMorphAt(dom.childAt(fragment, [2]),1,1);
-        morphs[1] = dom.createMorphAt(fragment,4,4,contextualElement);
+        var morphs = new Array(4);
+        morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+        morphs[1] = dom.createMorphAt(fragment,2,2,contextualElement);
+        morphs[2] = dom.createMorphAt(dom.childAt(fragment, [4]),1,1);
+        morphs[3] = dom.createMorphAt(fragment,6,6,contextualElement);
+        dom.insertBoundary(fragment, 0);
         return morphs;
       },
       statements: [
-        ["block","each",[["get","model",["loc",[null,[5,10],[5,15]]]]],[],0,null,["loc",[null,[5,2],[5,137]]]],
-        ["content","outlet",["loc",[null,[8,0],[8,10]]]]
+        ["inline","ko-admin/page-header",[],["title",["subexpr","format-message",[["subexpr","intl-get",["admin.teams.headings.index"],[],["loc",[null,[2,24],[2,63]]]]],[],["loc",[null,[2,8],[2,64]]]],"buttonText",["subexpr","format-message",[["subexpr","intl-get",["admin.teams.buttons.add"],[],["loc",[null,[3,29],[3,65]]]]],[],["loc",[null,[3,13],[3,66]]]],"buttonAction","transitionToAddNewTeam"],["loc",[null,[1,0],[5,2]]]],
+        ["inline","input",[],["type","text","value",["subexpr","@mut",[["get","filter",["loc",[null,[7,26],[7,32]]]]],[],[]],"placeholder",["subexpr","format-message",[["subexpr","intl-get",["admin.teams.labels.filterTeams"],[],["loc",[null,[7,61],[7,104]]]]],[],["loc",[null,[7,45],[7,105]]]]],["loc",[null,[7,0],[7,107]]]],
+        ["block","each",[["get","filteredResults",["loc",[null,[11,10],[11,25]]]]],[],0,null,["loc",[null,[11,2],[11,147]]]],
+        ["inline","ko-admin/page-footer",[],["buttonText",["subexpr","format-message",[["subexpr","intl-get",["admin.teams.buttons.add"],[],["loc",[null,[15,29],[15,65]]]]],[],["loc",[null,[15,13],[15,66]]]],"buttonAction","transitionToAddNewTeam"],["loc",[null,[14,0],[17,2]]]]
       ],
       locals: [],
       templates: [child0]
@@ -62744,6 +62777,22 @@ define('frontend-cp/tests/unit/services/url-test', ['frontend-cp/tests/helpers/q
   });
 
 });
+define('frontend-cp/tests/unit/session/admin/people/teams/controller-test', ['ember-qunit'], function (ember_qunit) {
+
+  'use strict';
+
+  ember_qunit.moduleFor('controller:session/admin/people/teams', {
+    // Specify the other units that are required for this test.
+    // needs: ['controller:foo']
+  });
+
+  // Replace this with your real tests.
+  ember_qunit.test('it exists', function (assert) {
+    var controller = this.subject();
+    assert.ok(controller);
+  });
+
+});
 define('frontend-cp/tests/unit/session/admin/people/teams/route-test', ['ember-qunit'], function (ember_qunit) {
 
   'use strict';
@@ -62816,7 +62865,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+7273c3eb"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+58eb330f"});
 }
 
 /* jshint ignore:end */

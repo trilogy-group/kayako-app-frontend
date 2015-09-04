@@ -25,6 +25,9 @@
 
   "teams": "Teams",
   "teams.agent": "{numAgents, plural, =1 {agent} other {agents}}",
+  "teams.headings.index": "Teams",
+  "teams.buttons.add": "Add New",
+  "teams.labels.filterTeams": "Filter teams",
 
   "caseforms": "Case Forms",
   "caseforms.buttons.add_new_caseform": "Add new form",
