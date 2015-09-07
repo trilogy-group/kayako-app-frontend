@@ -9716,11 +9716,28 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
 
   'use strict';
 
+  var dimensions = {
+    pageHeaderHeight: 84,
+    breadcrumbsMarginTop: 36,
+    breadcrumbsHeight: 56,
+    titleMarginTop: 18,
+    headerHeight: 64,
+    contentsMarginTop: 18,
+    topLoaderHeight: 70
+  };
+
+  // When the distance between bottom of the viewport and the bottom of what has
+  // been currently rendered in the timeline falls below this number, fetch new posts.
+  var scrollBufferDistance = 50;
+
+  var totalHeaderHeight = dimensions.breadcrumbsMarginTop + dimensions.breadcrumbsHeight + dimensions.titleMarginTop + dimensions.headerHeight + dimensions.contentsMarginTop;
+
   exports['default'] = Ember['default'].Component.extend({
     // Params
     'case': null,
     caseFields: null,
     onTopPostChange: function onTopPostChange() {},
+    postId: null,
 
     store: Ember['default'].inject.service(),
     timelineCacheService: Ember['default'].inject.service('case-timeline-cache'),
@@ -9729,9 +9746,12 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
 
     // Case-specific properties
     channel: null,
-    postsAvailable: true,
-    loading: false,
+    topPostsAvailable: false,
+    bottomPostsAvailable: true,
+    loadingTop: false,
+    loadingBottom: false,
     posts: null,
+    newPosts: null,
 
     errors: [],
     macros: [],
@@ -9746,12 +9766,30 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
     headerSticky: false,
     editedCaseFields: new Ember['default'].Object(),
     replyType: 'MESSAGE',
+    scroller: null,
 
-    initCase: (function () {
-      this.set('channel', this.get('case.sourceChannel'));
-      this.set('posts', []);
-      this.set('loading', false);
-      this.set('postsAvailable', true);
+    initCase: (function (_ref) {
+      var _this = this;
+
+      var oldAttrs = _ref.oldAttrs;
+      var newAttrs = _ref.newAttrs;
+
+      if (!oldAttrs || newAttrs['case'].value !== oldAttrs['case'].value) {
+        this.set('channel', this.get('case.sourceChannel'));
+        this.set('posts', []);
+        this.set('newPosts', []);
+        this.set('loadingTop', false);
+        this.set('loadingBottom', false);
+        this.set('bottomPostsAvailable', true);
+        if (newAttrs.postId.value) {
+          this.set('topPostsAvailable', true);
+          window.requestAnimationFrame(function () {
+            _this.get('scroller').scrollTop(totalHeaderHeight + dimensions.topLoaderHeight);
+          });
+        } else {
+          this.set('topPostsAvailable', false);
+        }
+      }
     }).on('didReceiveAttrs'),
 
     suggestedTags: [],
@@ -9763,26 +9801,28 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
     }).property('case.tags.@each.name'),
 
     resizeSidebarAndContent: (function () {
-      var _this = this;
+      var _this2 = this;
 
       this.set('resizeStickyEditorRequestID', window.requestAnimationFrame(function () {
-        var $editor = _this.$('.ko-case-content__editor');
+        var $editor = _this2.$('.ko-case-content__editor');
         var height = $editor.outerHeight();
         var boundingRect = $editor.get(0).getBoundingClientRect();
         Ember['default'].run(function () {
-          _this.set('caseEditorHeight', height);
-          _this.set('timelineVisibleTop', boundingRect.top + boundingRect.height);
-          _this.set('timelineVisibleLeft', boundingRect.left);
+          _this2.set('caseEditorHeight', height);
+          _this2.set('timelineVisibleTop', boundingRect.top + boundingRect.height);
+          _this2.set('timelineVisibleLeft', boundingRect.left);
         });
-        _this.resizeSidebarAndContent();
+        _this2.resizeSidebarAndContent();
       }));
+
+      this.set('scroller', $['default']('.ko-scroller'));
     }).on('didInsertElement'),
 
     repositionStickyEditor: (function () {
-      var _this2 = this;
+      var _this3 = this;
 
       this.set('repositionStickyEditorRequestID', window.requestAnimationFrame(function () {
-        var $el = _this2.$('.ko-case-content__editor-container');
+        var $el = _this3.$('.ko-case-content__editor-container');
         if (!$el) {
           return;
         }
@@ -9792,49 +9832,85 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
         var containerTop = _$el$get$getBoundingClientRect.top;
 
         Ember['default'].run(function () {
-          _this2.set('headerSticky', containerTop <= 84);
-          var newTop = containerTop <= 84 ? 84 - containerTop : 0;
-          _this2.$('.ko-case-content__editor').css('transform', 'translateY(' + newTop + 'px) translateZ(0)');
-          _this2.$('.ko-case-content__info-bar').css('transform', 'translateY(' + newTop + 'px) translateZ(0)');
-          _this2.$('.ko-case-content__info-bar').css('height', $['default'](window).height() - Math.max(containerTop, 84) + 'px');
+          _this3.set('headerSticky', containerTop <= dimensions.pageHeaderHeight);
+          var newTop = containerTop <= dimensions.pageHeaderHeight ? dimensions.pageHeaderHeight - containerTop : 0;
+          _this3.$('.ko-case-content__editor').css('transform', 'translateY(' + newTop + 'px) translateZ(0)');
+          _this3.$('.ko-case-content__info-bar').css('transform', 'translateY(' + newTop + 'px) translateZ(0)');
+          _this3.$('.ko-case-content__info-bar').css('height', $['default'](window).height() - Math.max(containerTop, dimensions.pageHeaderHeight) + 'px');
         });
       }));
     }).on('didInsertElement', 'didReceiveAttrs'),
 
     loadPostsIfRequired: (function () {
-      var _this3 = this;
+      var _this4 = this;
 
       this.set('loadPostsRafID', window.requestAnimationFrame(function () {
-        var _$$get$getBoundingClientRect = _this3.$('.ko-case-content__loader').get(0).getBoundingClientRect();
-
-        var top = _$$get$getBoundingClientRect.top;
-        var height = _$$get$getBoundingClientRect.height;
-
-        var bottomPosition = top + height;
-
-        if (bottomPosition - 50 <= $['default'](window).height()) {
-          _this3.loadOlderPosts(_this3.get('posts.lastObject.id'));
+        if (!_this4.get('loadingTop') && _this4.get('topPostsAvailable') && _this4.get('scroller').scrollTop() < totalHeaderHeight + dimensions.topLoaderHeight) {
+          _this4.loadNewerPosts(_this4.get('posts.firstObject.id') || _this4.get('postId'));
         }
-        _this3.loadPostsIfRequired();
+
+        var _$$get$getBoundingClientRect = _this4.$('.ko-case-content__loaderBottom').get(0).getBoundingClientRect();
+
+        var bottomTop = _$$get$getBoundingClientRect.top;
+        var bottomHeight = _$$get$getBoundingClientRect.height;
+
+        var bottomPosition = bottomTop + bottomHeight;
+
+        if (!_this4.get('loadingBottom') && _this4.get('bottomPostsAvailable') && bottomPosition - scrollBufferDistance <= $['default'](window).height()) {
+          _this4.loadOlderPosts(_this4.get('posts.lastObject.id') || _this4.get('postId'), {
+            including: !_this4.get('posts.lastObject.id')
+          });
+        }
+
+        _this4.loadPostsIfRequired();
       }));
     }).on('didInsertElement'),
 
-    loadOlderPosts: function loadOlderPosts(id) {
-      var _this4 = this;
+    loadNewerPosts: function loadNewerPosts(id) {
+      var _this5 = this;
 
-      if (this.get('loading') || !this.get('postsAvailable')) {
-        return;
-      }
       Ember['default'].run(function () {
-        _this4.set('loading', true);
-        _this4.get('timelineCacheService').getOlderPosts(_this4.get('case'), id).then(function (posts) {
+        _this5.set('loadingTop', true);
+        _this5.get('timelineCacheService').getNewerPosts(_this5.get('case'), id).then(function (posts) {
+          Ember['default'].run(function () {
+            _this5.set('newPosts', posts);
+            window.requestAnimationFrame(function () {
+              var height = _this5.$('.ko-case-content__fakeFeed').height();
+              _this5.set('newPosts', []);
+              posts.forEach(function (post) {
+                return _this5.get('posts').unshiftObject(post);
+              });
+              var scrollTop = _this5.get('scroller').scrollTop();
+              var newScrollPosition = scrollTop + height;
+              _this5.set('loadingTop', false);
+              if (posts.get('length') === 0) {
+                newScrollPosition -= dimensions.topLoaderHeight;
+                _this5.set('topPostsAvailable', false);
+              }
+              Ember['default'].run.scheduleOnce('afterRender', function () {
+                _this5.get('scroller').scrollTop(newScrollPosition);
+              });
+            });
+          });
+        });
+      });
+    },
+
+    loadOlderPosts: function loadOlderPosts(id, _ref2) {
+      var _this6 = this;
+
+      var including = _ref2.including;
+
+      Ember['default'].run(function () {
+        _this6.set('loadingBottom', true);
+        _this6.get('timelineCacheService').getOlderPosts(_this6.get('case'), id, { including: including }).then(function (posts) {
           Ember['default'].run(function () {
             posts.forEach(function (post) {
-              return _this4.get('posts').pushObject(post);
+              return _this6.get('posts').pushObject(post);
             });
-            _this4.set('loading', false);
+            _this6.set('loadingBottom', false);
             if (posts.get('length') === 0 || posts.get('lastObject.sequence') === 1) {
-              _this4.set('postsAvailable', false);
+              _this6.set('bottomPostsAvailable', false);
             }
           });
         });
@@ -9842,6 +9918,13 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
     },
 
     onScroll: function onScroll() {
+      if (this.get('topPostsAvailable')) {
+        var currentScrollTop = this.get('scroller').scrollTop();
+        if (currentScrollTop < totalHeaderHeight) {
+          this.get('scroller').scrollTop(totalHeaderHeight);
+        }
+      }
+
       this.repositionStickyEditor();
     },
 
@@ -9851,14 +9934,15 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
 
     startListeners: (function () {
       this.onScroll = this.onScroll.bind(this);
-      $['default']('.ko-scroller').on('scroll', this.onScroll).scroll();
+      this.set('scroller', $['default']('.ko-scroller'));
+      this.get('scroller').on('scroll', this.onScroll).scroll();
 
       this.onResize = this.onResize.bind(this);
       $['default'](window).on('resize', this.onResize);
     }).on('didInsertElement'),
 
     cleanup: (function () {
-      $['default']('.ko-scroller').off('scroll', this.onScroll);
+      this.get('scroller').off('scroll', this.onScroll);
       $['default'](window).off('resize', this.onResize);
       window.cancelAnimationFrame(this.get('resizeStickyEditorRequestID'));
       window.cancelAnimationFrame(this.get('loadPostsRafID'));
@@ -9872,10 +9956,10 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
     }).on('init'),
 
     initMacros: (function () {
-      var _this5 = this;
+      var _this7 = this;
 
       this.get('store').find('macro').then(function (macros) {
-        _this5.set('macros', macros);
+        _this7.set('macros', macros);
       });
     }).on('init'),
 
@@ -9927,7 +10011,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
     },
 
     updateDirtyCaseFieldHash: function updateDirtyCaseFieldHash() {
-      var _this6 = this;
+      var _this8 = this;
 
       var editedCaseFields = this.get('editedCaseFields');
       this.get('caseOrFormFields').forEach(function (field) {
@@ -9940,11 +10024,11 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
 
         /* Hack for assignee - it is made up from two properties (case.assginee.team and case.assignee.agent) */
         if (relationshipKey === 'assignee') {
-          if (_this6.get('case.assignee')) {
-            editedCaseFields.set(field.get('id'), _this6.get('case.assignee').hasDirtyChanges());
+          if (_this8.get('case.assignee')) {
+            editedCaseFields.set(field.get('id'), _this8.get('case.assignee').hasDirtyChanges());
           }
         } else {
-          editedCaseFields.set(field.get('id'), _this6.get('case').hasDirtyBelongsToRelationship(relationshipKey));
+          editedCaseFields.set(field.get('id'), _this8.get('case').hasDirtyBelongsToRelationship(relationshipKey));
         }
       });
     },
@@ -9969,6 +10053,23 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       return !!this.get('case.tags').filter(function (tag) {
         return tag.get('name') === tagName;
       }).length;
+    },
+
+    /*
+     * Whenever we scroll to the top of the timeline and the header “unsticks”,
+     * this informs parent to remove postId from the URL.
+     */
+    sendTopPost: Ember['default'].observer('headerSticky', function () {
+      if (!this.get('headerSticky')) {
+        this.attrs.onTopPostChange(null);
+      }
+    }),
+
+    addPostFromReply: function addPostFromReply(post) {
+      if (!this.get('topPostsAvailable')) {
+        this.get('timelineCacheService').addPost(this.get('case'), post);
+        this.get('posts').unshiftObject(post);
+      }
     },
 
     actions: {
@@ -10024,7 +10125,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       },
 
       suggestTags: function suggestTags(searchTerm, selectedTags) {
-        var _this7 = this;
+        var _this9 = this;
 
         if (!searchTerm) {
           this.set('suggestedTags', []);
@@ -10036,14 +10137,14 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
         suggestionService.suggest(searchTerm).then(function (data) {
           data = suggestionService.exclude(data, selectedTags);
 
-          _this7.set('suggestedTags', data.map(function (tag) {
+          _this9.set('suggestedTags', data.map(function (tag) {
             return tag.get('name');
           }));
         });
       },
 
       submit: function submit() {
-        var _this8 = this;
+        var _this10 = this;
 
         var channel = this.get('channel');
         var editor = this.get('casePostEditor.postEditor');
@@ -10070,26 +10171,26 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
         if (!post && !attachmentIds.length) {
           // we are just updating the case -- don't create a case-reply
           this.get('case').save().then(function () {
-            _this8.resetCaseFormState();
+            _this10.resetCaseFormState();
           }, function (e) {
-            _this8.set('errors', e.errors);
+            _this10.set('errors', e.errors);
           });
         } else {
           if (this.get('replyType') === 'NOTE') {
             this.get('case').saveWithNote(post).then(function (caseNote) {
-              _this8.get('posts').insertAt(0, caseNote.get('post'));
-              _this8.resetCaseFormState();
+              _this10.addPostFromReply(caseNote.get('post'));
+              _this10.resetCaseFormState();
             }, function (e) {
-              _this8.set('errors', e.errors);
+              _this10.set('errors', e.errors);
             });
           } else {
             this.get('case').saveWithPost(post, channel, attachmentIds).then(function (caseReply) {
               caseReply.get('posts').forEach(function (post) {
-                _this8.get('posts').insertAt(0, post);
+                return _this10.addPostFromReply(post);
               });
-              _this8.resetCaseFormState();
+              _this10.resetCaseFormState();
             }, function (e) {
-              _this8.set('errors', e.errors);
+              _this10.set('errors', e.errors);
             });
           }
         }
@@ -10101,7 +10202,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       },
 
       applyMacro: function applyMacro(macro) {
-        var _this9 = this;
+        var _this11 = this;
 
         var currentCase = this.get('case');
         var contentsToAdd = macro.get('replyContents');
@@ -10138,7 +10239,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
               }
             }
 
-            var newPriority = _this9.get('store').peekAll('case-priority').filter(function (priority) {
+            var newPriority = _this11.get('store').peekAll('case-priority').filter(function (priority) {
               return priority.get('level') === newPriorityLevel;
             }).get('firstObject');
 
@@ -10156,11 +10257,17 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
         if (tags.get('length')) {
           tags.forEach(function (tag) {
             if (tag.get('type') === 'ADD') {
-              _this9.send('addTag', tag.get('name'));
+              _this11.send('addTag', tag.get('name'));
             } else {
-              _this9.send('removeTag', tag.get('name'));
+              _this11.send('removeTag', tag.get('name'));
             }
           });
+        }
+      },
+
+      changeTopPost: function changeTopPost(id) {
+        if (this.get('headerSticky')) {
+          this.attrs.onTopPostChange(id);
         }
       }
     }
@@ -10174,17 +10281,190 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
   exports['default'] = Ember.HTMLBars.template((function() {
     var child0 = (function() {
       var child0 = (function() {
+        var child0 = (function() {
+          return {
+            meta: {
+              "revision": "Ember@1.13.7",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 51,
+                  "column": 14
+                },
+                "end": {
+                  "line": 53,
+                  "column": 14
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-case-content/template.hbs"
+            },
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode("                ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(1);
+              morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+              return morphs;
+            },
+            statements: [
+              ["inline","ko-loader",[],["large",true],["loc",[null,[52,16],[52,40]]]]
+            ],
+            locals: [],
+            templates: []
+          };
+        }());
         return {
           meta: {
             "revision": "Ember@1.13.7",
             "loc": {
               "source": null,
               "start": {
-                "line": 51,
+                "line": 50,
                 "column": 12
               },
               "end": {
-                "line": 53,
+                "line": 54,
+                "column": 12
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-case-content/template.hbs"
+          },
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+            dom.insertBoundary(fragment, 0);
+            dom.insertBoundary(fragment, null);
+            return morphs;
+          },
+          statements: [
+            ["block","ko-center",[],[],0,null,["loc",[null,[51,14],[53,28]]]]
+          ],
+          locals: [],
+          templates: [child0]
+        };
+      }());
+      return {
+        meta: {
+          "revision": "Ember@1.13.7",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 48,
+              "column": 8
+            },
+            "end": {
+              "line": 56,
+              "column": 8
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-case-content/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("          ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1,"class","ko-case-content__loaderTop");
+          var el2 = dom.createTextNode("\n");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("          ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]),1,1);
+          return morphs;
+        },
+        statements: [
+          ["block","if",[["get","loadingTop",["loc",[null,[50,18],[50,28]]]]],[],0,null,["loc",[null,[50,12],[54,19]]]]
+        ],
+        locals: [],
+        templates: [child0]
+      };
+    }());
+    var child1 = (function() {
+      return {
+        meta: {
+          "revision": "Ember@1.13.7",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 58,
+              "column": 10
+            },
+            "end": {
+              "line": 60,
+              "column": 10
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-case-content/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("            ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+          return morphs;
+        },
+        statements: [
+          ["inline","ko-feed",[],["events",["subexpr","@mut",[["get","newPosts",["loc",[null,[59,29],[59,37]]]]],[],[]]],["loc",[null,[59,12],[59,39]]]]
+        ],
+        locals: [],
+        templates: []
+      };
+    }());
+    var child2 = (function() {
+      var child0 = (function() {
+        return {
+          meta: {
+            "revision": "Ember@1.13.7",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 65,
+                "column": 12
+              },
+              "end": {
+                "line": 67,
                 "column": 12
               }
             },
@@ -10209,7 +10489,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             return morphs;
           },
           statements: [
-            ["inline","ko-loader",[],["large",true],["loc",[null,[52,14],[52,38]]]]
+            ["inline","ko-loader",[],["large",true],["loc",[null,[66,14],[66,38]]]]
           ],
           locals: [],
           templates: []
@@ -10221,11 +10501,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 50,
+              "line": 64,
               "column": 10
             },
             "end": {
-              "line": 54,
+              "line": 68,
               "column": 10
             }
           },
@@ -10248,13 +10528,13 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["block","ko-center",[],[],0,null,["loc",[null,[51,12],[53,26]]]]
+          ["block","ko-center",[],[],0,null,["loc",[null,[65,12],[67,26]]]]
         ],
         locals: [],
         templates: [child0]
       };
     }());
-    var child1 = (function() {
+    var child3 = (function() {
       var child0 = (function() {
         return {
           meta: {
@@ -10262,11 +10542,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 74,
+                "line": 88,
                 "column": 10
               },
               "end": {
-                "line": 82,
+                "line": 96,
                 "column": 10
               }
             },
@@ -10291,7 +10571,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             return morphs;
           },
           statements: [
-            ["inline","component",[["subexpr","ko-helper",[["get","componentFor",["loc",[null,[75,35],[75,47]]]],["get","field.fieldType",["loc",[null,[75,48],[75,63]]]]],[],["loc",[null,[75,24],[75,64]]]]],["case",["subexpr","@mut",[["get","case",["loc",[null,[76,19],[76,23]]]]],[],[]],"field",["subexpr","@mut",[["get","field",["loc",[null,[77,20],[77,25]]]]],[],[]],"errors",["subexpr","@mut",[["get","errors",["loc",[null,[78,21],[78,27]]]]],[],[]],"options",["subexpr","ko-contextual-helper",[["get","optionsForField",["loc",[null,[79,44],[79,59]]]],["get","this",["loc",[null,[79,60],[79,64]]]],["get","field",["loc",[null,[79,65],[79,70]]]]],[],["loc",[null,[79,22],[79,71]]]],"editedCaseFields",["subexpr","@mut",[["get","editedCaseFields",["loc",[null,[80,31],[80,47]]]]],[],[]]],["loc",[null,[75,12],[81,14]]]]
+            ["inline","component",[["subexpr","ko-helper",[["get","componentFor",["loc",[null,[89,35],[89,47]]]],["get","field.fieldType",["loc",[null,[89,48],[89,63]]]]],[],["loc",[null,[89,24],[89,64]]]]],["case",["subexpr","@mut",[["get","case",["loc",[null,[90,19],[90,23]]]]],[],[]],"field",["subexpr","@mut",[["get","field",["loc",[null,[91,20],[91,25]]]]],[],[]],"errors",["subexpr","@mut",[["get","errors",["loc",[null,[92,21],[92,27]]]]],[],[]],"options",["subexpr","ko-contextual-helper",[["get","optionsForField",["loc",[null,[93,44],[93,59]]]],["get","this",["loc",[null,[93,60],[93,64]]]],["get","field",["loc",[null,[93,65],[93,70]]]]],[],["loc",[null,[93,22],[93,71]]]],"editedCaseFields",["subexpr","@mut",[["get","editedCaseFields",["loc",[null,[94,31],[94,47]]]]],[],[]]],["loc",[null,[89,12],[95,14]]]]
           ],
           locals: [],
           templates: []
@@ -10303,11 +10583,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 73,
+              "line": 87,
               "column": 8
             },
             "end": {
-              "line": 83,
+              "line": 97,
               "column": 8
             }
           },
@@ -10330,7 +10610,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["block","if",[["subexpr","ko-helper",[["get","componentFor",["loc",[null,[74,27],[74,39]]]],["get","field.fieldType",["loc",[null,[74,40],[74,55]]]]],[],["loc",[null,[74,16],[74,56]]]]],[],0,null,["loc",[null,[74,10],[82,17]]]]
+          ["block","if",[["subexpr","ko-helper",[["get","componentFor",["loc",[null,[88,27],[88,39]]]],["get","field.fieldType",["loc",[null,[88,40],[88,55]]]]],[],["loc",[null,[88,16],[88,56]]]]],[],0,null,["loc",[null,[88,10],[96,17]]]]
         ],
         locals: ["field"],
         templates: [child0]
@@ -10346,7 +10626,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             "column": 0
           },
           "end": {
-            "line": 89,
+            "line": 103,
             "column": 0
           }
         },
@@ -10509,6 +10789,21 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
         var el6 = dom.createTextNode("\n        ");
         dom.appendChild(el5, el6);
         dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createComment("");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("div");
+        dom.setAttribute(el5,"class","ko-case-content__fakeFeed");
+        var el6 = dom.createTextNode("\n");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createComment("");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
         var el5 = dom.createTextNode("\n        ");
         dom.appendChild(el4, el5);
         var el5 = dom.createComment("");
@@ -10516,7 +10811,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
         var el5 = dom.createTextNode("\n        ");
         dom.appendChild(el4, el5);
         var el5 = dom.createElement("div");
-        dom.setAttribute(el5,"class","ko-case-content__loader");
+        dom.setAttribute(el5,"class","ko-case-content__loaderBottom");
         var el6 = dom.createTextNode("\n");
         dom.appendChild(el5, el6);
         var el6 = dom.createComment("");
@@ -10597,7 +10892,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
         var element9 = dom.childAt(element8, [1]);
         var element10 = dom.childAt(element6, [3, 1]);
         var element11 = dom.childAt(element10, [1, 1]);
-        var morphs = new Array(18);
+        var morphs = new Array(20);
         morphs[0] = dom.createAttrMorph(element3, 'src');
         morphs[1] = dom.createMorphAt(dom.childAt(element4, [1]),1,1);
         morphs[2] = dom.createMorphAt(dom.childAt(element4, [3]),1,1);
@@ -10609,13 +10904,15 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
         morphs[8] = dom.createMorphAt(element9,1,1);
         morphs[9] = dom.createMorphAt(element7,3,3);
         morphs[10] = dom.createMorphAt(dom.childAt(element7, [5]),1,1);
-        morphs[11] = dom.createAttrMorph(element10, 'class');
-        morphs[12] = dom.createElementMorph(element11);
-        morphs[13] = dom.createMorphAt(element11,0,0);
-        morphs[14] = dom.createMorphAt(element10,3,3);
-        morphs[15] = dom.createMorphAt(element10,5,5);
-        morphs[16] = dom.createMorphAt(element10,7,7);
-        morphs[17] = dom.createMorphAt(element10,9,9);
+        morphs[11] = dom.createMorphAt(element7,7,7);
+        morphs[12] = dom.createMorphAt(dom.childAt(element7, [9]),1,1);
+        morphs[13] = dom.createAttrMorph(element10, 'class');
+        morphs[14] = dom.createElementMorph(element11);
+        morphs[15] = dom.createMorphAt(element11,0,0);
+        morphs[16] = dom.createMorphAt(element10,3,3);
+        morphs[17] = dom.createMorphAt(element10,5,5);
+        morphs[18] = dom.createMorphAt(element10,7,7);
+        morphs[19] = dom.createMorphAt(element10,9,9);
         return morphs;
       },
       statements: [
@@ -10628,18 +10925,20 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
         ["attribute","style",["concat",["height: ",["get","caseEditorHeight",["loc",[null,[43,72],[43,88]]]],"px"]]],
         ["attribute","class",["concat",["ko-case-content__editor ",["subexpr","if",[["get","headerSticky",["loc",[null,[44,51],[44,63]]]],"ko-case-content__editor--sticky"],[],["loc",[null,[44,46],[44,99]]]]]]],
         ["inline","ko-case-field/post",[],["viewName","casePostEditor","channels",["subexpr","@mut",[["get","case.replyChannels",["loc",[null,[45,68],[45,86]]]]],[],[]],"channel",["subexpr","@mut",[["get","channel",["loc",[null,[45,95],[45,102]]]]],[],[]],"onChannelChange","setChannel","replyType",["subexpr","@mut",[["get","replyType",["loc",[null,[45,142],[45,151]]]]],[],[]]],["loc",[null,[45,12],[45,153]]]],
-        ["inline","ko-feed",[],["events",["subexpr","@mut",[["get","posts",["loc",[null,[48,25],[48,30]]]]],[],[]],"onReplyWithQuote","replyWithQuote","top",["subexpr","@mut",[["get","timelineVisibleTop",["loc",[null,[48,69],[48,87]]]]],[],[]],"left",["subexpr","@mut",[["get","timelineVisibleLeft",["loc",[null,[48,93],[48,112]]]]],[],[]],"onTopPostChange",["subexpr","@mut",[["get","onTopPostChange",["loc",[null,[48,129],[48,144]]]]],[],[]]],["loc",[null,[48,8],[48,146]]]],
-        ["block","if",[["get","loading",["loc",[null,[50,16],[50,23]]]]],[],0,null,["loc",[null,[50,10],[54,17]]]],
-        ["attribute","class",["concat",["list-bare ko-case-content__info-bar ",["subexpr","if",[["get","headerSticky",["loc",[null,[59,58],[59,70]]]],"ko-case-content__info-bar--sticky"],[],["loc",[null,[59,53],[59,108]]]]]]],
-        ["element","action",["submit"],[],["loc",[null,[61,55],[61,74]]]],
-        ["inline","format-message",[["subexpr","intl-get",["cases.submit"],[],["loc",[null,[61,92],[61,117]]]]],[],["loc",[null,[61,75],[61,119]]]],
-        ["inline","ko-case-field/requester",[],["requester",["subexpr","@mut",[["get","case.requester",["loc",[null,[63,44],[63,58]]]]],[],[]]],["loc",[null,[63,8],[63,60]]]],
-        ["inline","ko-case-field/tags",[],["tags",["subexpr","@mut",[["get","tags",["loc",[null,[66,15],[66,19]]]]],[],[]],"suggestedTags",["subexpr","@mut",[["get","suggestedTags",["loc",[null,[67,24],[67,37]]]]],[],[]],"onTagAddition","addTag","onTagRemoval","removeTag","onTagSuggestion","suggestTags","isEdited",["subexpr","@mut",[["get","isTagsFieldEdited",["loc",[null,[71,19],[71,36]]]]],[],[]]],["loc",[null,[65,8],[71,38]]]],
-        ["block","each",[["get","caseOrFormFields",["loc",[null,[73,16],[73,32]]]]],[],1,null,["loc",[null,[73,8],[83,17]]]],
-        ["inline","ko-case/sla-sidebar",[],["sla",["subexpr","@mut",[["get","case.sla",["loc",[null,[84,34],[84,42]]]]],[],[]],"slaMetrics",["subexpr","@mut",[["get","case.slaMetrics",["loc",[null,[84,54],[84,69]]]]],[],[]]],["loc",[null,[84,8],[84,71]]]]
+        ["block","if",[["get","topPostsAvailable",["loc",[null,[48,14],[48,31]]]]],[],0,null,["loc",[null,[48,8],[56,15]]]],
+        ["block","if",[["get","newPosts",["loc",[null,[58,16],[58,24]]]]],[],1,null,["loc",[null,[58,10],[60,17]]]],
+        ["inline","ko-feed",[],["events",["subexpr","@mut",[["get","posts",["loc",[null,[62,25],[62,30]]]]],[],[]],"onReplyWithQuote","replyWithQuote","top",["subexpr","@mut",[["get","timelineVisibleTop",["loc",[null,[62,69],[62,87]]]]],[],[]],"left",["subexpr","@mut",[["get","timelineVisibleLeft",["loc",[null,[62,93],[62,112]]]]],[],[]],"onTopPostChange",["subexpr","action",["changeTopPost"],[],["loc",[null,[62,129],[62,153]]]]],["loc",[null,[62,8],[62,155]]]],
+        ["block","if",[["get","loadingBottom",["loc",[null,[64,16],[64,29]]]]],[],2,null,["loc",[null,[64,10],[68,17]]]],
+        ["attribute","class",["concat",["list-bare ko-case-content__info-bar ",["subexpr","if",[["get","headerSticky",["loc",[null,[73,58],[73,70]]]],"ko-case-content__info-bar--sticky"],[],["loc",[null,[73,53],[73,108]]]]]]],
+        ["element","action",["submit"],[],["loc",[null,[75,55],[75,74]]]],
+        ["inline","format-message",[["subexpr","intl-get",["cases.submit"],[],["loc",[null,[75,92],[75,117]]]]],[],["loc",[null,[75,75],[75,119]]]],
+        ["inline","ko-case-field/requester",[],["requester",["subexpr","@mut",[["get","case.requester",["loc",[null,[77,44],[77,58]]]]],[],[]]],["loc",[null,[77,8],[77,60]]]],
+        ["inline","ko-case-field/tags",[],["tags",["subexpr","@mut",[["get","tags",["loc",[null,[80,15],[80,19]]]]],[],[]],"suggestedTags",["subexpr","@mut",[["get","suggestedTags",["loc",[null,[81,24],[81,37]]]]],[],[]],"onTagAddition","addTag","onTagRemoval","removeTag","onTagSuggestion","suggestTags","isEdited",["subexpr","@mut",[["get","isTagsFieldEdited",["loc",[null,[85,19],[85,36]]]]],[],[]]],["loc",[null,[79,8],[85,38]]]],
+        ["block","each",[["get","caseOrFormFields",["loc",[null,[87,16],[87,32]]]]],[],3,null,["loc",[null,[87,8],[97,17]]]],
+        ["inline","ko-case/sla-sidebar",[],["sla",["subexpr","@mut",[["get","case.sla",["loc",[null,[98,34],[98,42]]]]],[],[]],"slaMetrics",["subexpr","@mut",[["get","case.slaMetrics",["loc",[null,[98,54],[98,69]]]]],[],[]]],["loc",[null,[98,8],[98,71]]]]
       ],
       locals: [],
-      templates: [child0, child1]
+      templates: [child0, child1, child2, child3]
     };
   }()));
 
@@ -18493,8 +18792,8 @@ define('frontend-cp/components/ko-feed/item/component', ['exports', 'ember'], fu
     sessionService: Ember['default'].inject.service('session'),
 
     classNames: ['ko-feed_item'],
-    classNameBindings: ['isPrivate'],
-    isPrivate: Ember['default'].computed.equal('event.original.postType', 'note'),
+    classNameBindings: ['isNote:ko-feed_item--note:ko-feed_item--post'],
+    isNote: Ember['default'].computed.equal('event.original.postType', 'note'),
 
     showMenu: false,
 
@@ -18608,11 +18907,11 @@ define('frontend-cp/components/ko-feed/item/template', ['exports'], function (ex
             "loc": {
               "source": null,
               "start": {
-                "line": 9,
+                "line": 10,
                 "column": 2
               },
               "end": {
-                "line": 15,
+                "line": 16,
                 "column": 2
               }
             },
@@ -18634,7 +18933,7 @@ define('frontend-cp/components/ko-feed/item/template', ['exports'], function (ex
             var el1 = dom.createTextNode("\n    ");
             dom.appendChild(el0, el1);
             var el1 = dom.createElement("div");
-            dom.setAttribute(el1,"class","feed__attachment-name");
+            dom.setAttribute(el1,"class","ko-feed_item__attachment-name");
             var el2 = dom.createTextNode("\n      ");
             dom.appendChild(el1, el2);
             var el2 = dom.createElement("a");
@@ -18647,7 +18946,7 @@ define('frontend-cp/components/ko-feed/item/template', ['exports'], function (ex
             var el1 = dom.createTextNode("\n    ");
             dom.appendChild(el0, el1);
             var el1 = dom.createElement("div");
-            dom.setAttribute(el1,"class","feed__attachment-size");
+            dom.setAttribute(el1,"class","ko-feed_item__attachment-size");
             var el2 = dom.createComment("");
             dom.appendChild(el1, el2);
             dom.appendChild(el0, el1);
@@ -18666,10 +18965,10 @@ define('frontend-cp/components/ko-feed/item/template', ['exports'], function (ex
             return morphs;
           },
           statements: [
-            ["attribute","src",["concat",[["get","attachment.thumbnails.firstObject.url",["loc",[null,[10,16],[10,53]]]]]]],
-            ["attribute","href",["concat",[["get","attachment.urlDownload",["loc",[null,[12,17],[12,39]]]],["get","sessionToken",["loc",[null,[12,43],[12,55]]]]]]],
-            ["content","attachment.name",["loc",[null,[12,59],[12,78]]]],
-            ["inline","ko-file-size",[],["size",["subexpr","@mut",[["get","attachment.size",["loc",[null,[14,59],[14,74]]]]],[],[]]],["loc",[null,[14,39],[14,76]]]]
+            ["attribute","src",["concat",[["get","attachment.thumbnails.firstObject.url",["loc",[null,[11,16],[11,53]]]]]]],
+            ["attribute","href",["concat",[["get","attachment.urlDownload",["loc",[null,[13,17],[13,39]]]],["get","sessionToken",["loc",[null,[13,43],[13,55]]]]]]],
+            ["content","attachment.name",["loc",[null,[13,59],[13,78]]]],
+            ["inline","ko-file-size",[],["size",["subexpr","@mut",[["get","attachment.size",["loc",[null,[15,67],[15,82]]]]],[],[]]],["loc",[null,[15,47],[15,84]]]]
           ],
           locals: ["attachment"],
           templates: []
@@ -18681,11 +18980,11 @@ define('frontend-cp/components/ko-feed/item/template', ['exports'], function (ex
           "loc": {
             "source": null,
             "start": {
-              "line": 8,
+              "line": 9,
               "column": 0
             },
             "end": {
-              "line": 16,
+              "line": 17,
               "column": 0
             }
           },
@@ -18708,7 +19007,7 @@ define('frontend-cp/components/ko-feed/item/template', ['exports'], function (ex
           return morphs;
         },
         statements: [
-          ["block","each",[["get","event.attachments",["loc",[null,[9,10],[9,27]]]]],[],0,null,["loc",[null,[9,2],[15,11]]]]
+          ["block","each",[["get","event.attachments",["loc",[null,[10,10],[10,27]]]]],[],0,null,["loc",[null,[10,2],[16,11]]]]
         ],
         locals: [],
         templates: [child0]
@@ -18724,7 +19023,7 @@ define('frontend-cp/components/ko-feed/item/template', ['exports'], function (ex
             "column": 0
           },
           "end": {
-            "line": 18,
+            "line": 19,
             "column": 0
           }
         },
@@ -18736,20 +19035,25 @@ define('frontend-cp/components/ko-feed/item/template', ['exports'], function (ex
       buildFragment: function buildFragment(dom) {
         var el0 = dom.createDocumentFragment();
         var el1 = dom.createElement("div");
-        dom.setAttribute(el1,"class","feed__image");
+        dom.setAttribute(el1,"class","ko-feed_item__border");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","ko-feed_item__image");
         var el2 = dom.createComment("");
         dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
         var el1 = dom.createElement("div");
-        dom.setAttribute(el1,"class","feed__title");
+        dom.setAttribute(el1,"class","ko-feed_item__title");
         var el2 = dom.createComment("");
         dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n  ");
         dom.appendChild(el1, el2);
         var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","feed__title--small");
+        dom.setAttribute(el2,"class","ko-feed_item__title--small");
         var el3 = dom.createComment("");
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
@@ -18759,7 +19063,7 @@ define('frontend-cp/components/ko-feed/item/template', ['exports'], function (ex
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
         var el1 = dom.createElement("div");
-        dom.setAttribute(el1,"class","feed__content");
+        dom.setAttribute(el1,"class","ko-feed_item__content");
         var el2 = dom.createTextNode("\n  ");
         dom.appendChild(el1, el2);
         var el2 = dom.createComment("");
@@ -18778,23 +19082,23 @@ define('frontend-cp/components/ko-feed/item/template', ['exports'], function (ex
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var element2 = dom.childAt(fragment, [2]);
+        var element2 = dom.childAt(fragment, [4]);
         var morphs = new Array(6);
-        morphs[0] = dom.createMorphAt(dom.childAt(fragment, [0]),0,0);
+        morphs[0] = dom.createMorphAt(dom.childAt(fragment, [2]),0,0);
         morphs[1] = dom.createMorphAt(element2,0,0);
         morphs[2] = dom.createMorphAt(dom.childAt(element2, [2]),0,0);
-        morphs[3] = dom.createMorphAt(dom.childAt(fragment, [4]),1,1);
-        morphs[4] = dom.createMorphAt(fragment,6,6,contextualElement);
-        morphs[5] = dom.createMorphAt(fragment,7,7,contextualElement);
+        morphs[3] = dom.createMorphAt(dom.childAt(fragment, [6]),1,1);
+        morphs[4] = dom.createMorphAt(fragment,8,8,contextualElement);
+        morphs[5] = dom.createMorphAt(fragment,9,9,contextualElement);
         return morphs;
       },
       statements: [
-        ["inline","ko-avatar",[],["avatar",["subexpr","@mut",[["get","event.creator.avatar",["loc",[null,[1,44],[1,64]]]]],[],[]],"size","large"],["loc",[null,[1,25],[1,79]]]],
-        ["content","event.creator.fullName",["loc",[null,[2,25],[2,51]]]],
-        ["inline","format-message",[["subexpr","intl-get",["feed.replied"],[],["loc",[null,[3,51],[3,76]]]]],["ago",["subexpr","ago",[["get","event.createdAt",["loc",[null,[3,86],[3,101]]]]],[],["loc",[null,[3,81],[3,102]]]]],["loc",[null,[3,34],[3,104]]]],
-        ["content","event.contents",["loc",[null,[6,2],[6,20]]]],
-        ["block","if",[["get","event.attachments",["loc",[null,[8,6],[8,23]]]]],[],0,null,["loc",[null,[8,0],[16,7]]]],
-        ["inline","ko-feed/item/menu",[],["showMenu",["subexpr","@mut",[["get","showMenu",["loc",[null,[17,29],[17,37]]]]],[],[]],"onReplyWithQuote","onReplyWithQuote"],["loc",[null,[17,0],[17,75]]]]
+        ["inline","ko-avatar",[],["avatar",["subexpr","@mut",[["get","event.creator.avatar",["loc",[null,[2,52],[2,72]]]]],[],[]],"size","large"],["loc",[null,[2,33],[2,87]]]],
+        ["content","event.creator.fullName",["loc",[null,[3,33],[3,59]]]],
+        ["inline","format-message",[["subexpr","intl-get",["feed.replied"],[],["loc",[null,[4,59],[4,84]]]]],["ago",["subexpr","ago",[["get","event.createdAt",["loc",[null,[4,94],[4,109]]]]],[],["loc",[null,[4,89],[4,110]]]]],["loc",[null,[4,42],[4,112]]]],
+        ["content","event.contents",["loc",[null,[7,2],[7,20]]]],
+        ["block","if",[["get","event.attachments",["loc",[null,[9,6],[9,23]]]]],[],0,null,["loc",[null,[9,0],[17,7]]]],
+        ["inline","ko-feed/item/menu",[],["showMenu",["subexpr","@mut",[["get","showMenu",["loc",[null,[18,29],[18,37]]]]],[],[]],"onReplyWithQuote","onReplyWithQuote"],["loc",[null,[18,0],[18,75]]]]
       ],
       locals: [],
       templates: [child0]
@@ -28784,6 +29088,8 @@ define('frontend-cp/components/ko-text-editor/component', ['exports', 'ember', '
 
   'use strict';
 
+  Quill['default'].themes.snow.prototype.extendToolbar = function () {};
+
   exports['default'] = Ember['default'].Component.extend({
     quill: null,
     cursor: 0,
@@ -29269,7 +29575,7 @@ define('frontend-cp/components/ko-text-editor/template', ['exports'], function (
         var el2 = dom.createTextNode("\n  ");
         dom.appendChild(el1, el2);
         var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","js-toolbar");
+        dom.setAttribute(el2,"class","js-toolbar ql-snow");
         var el3 = dom.createTextNode("\n    ");
         dom.appendChild(el2, el3);
         var el3 = dom.createElement("div");
@@ -42863,7 +43169,10 @@ define('frontend-cp/services/case-timeline-cache', ['exports', 'ember'], functio
 
   'use strict';
 
+  function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
   var Promise = Ember['default'].RSVP.Promise;
+  var defaultPostCount = 10;
 
   exports['default'] = Ember['default'].Service.extend({
     store: Ember['default'].inject.service(),
@@ -42886,6 +43195,7 @@ define('frontend-cp/services/case-timeline-cache', ['exports', 'ember'], functio
         caseCache = this.get('cache')[caseModel.get('id')] = {
           posts: {},
           newestPost: null,
+          oldestPost: null,
           total: null
         };
       }
@@ -42904,7 +43214,7 @@ define('frontend-cp/services/case-timeline-cache', ['exports', 'ember'], functio
       if (caseCache.newestPost) {
         return Promise.resolve(caseCache.newestPost);
       } else if (caseCache.total === 0) {
-        return null;
+        return Promise.resolve(null);
       } else {
         return this.fetchPosts(caseModel).then(function () {
           return caseCache.newestPost;
@@ -42913,28 +43223,159 @@ define('frontend-cp/services/case-timeline-cache', ['exports', 'ember'], functio
     },
 
     /**
+     * Add post to the cache.
+     *
+     * @param {DS.Model} caseModel case
+     * @param {DS.Model} post post
+     */
+    addPost: function addPost(caseModel, post) {
+      var caseCache = this.getCaseCache(caseModel);
+      caseCache.posts[post.get('sequence')] = post;
+      var previousPost = caseCache.newestPost;
+      if (!previousPost || previousPost.get('sequence') < post.get('sequence')) {
+        caseCache.newestPost = post;
+      }
+    },
+
+    /**
+     * Return the oldest post, or null if no posts. Result is wrapped
+     * in a Promise.
+     *
+     * @param {DS.Model} caseModel case
+     * @return {Promise<DS.Model>} post
+     */
+    getOldestPost: function getOldestPost(caseModel) {
+      var caseCache = this.getCaseCache(caseModel);
+      if (caseCache.oldestPost) {
+        return Promise.resolve(caseCache.oldestPost);
+      } else if (caseCache.total === 0) {
+        return Promise.resolve(null);
+      } else {
+        return this.fetchPosts(caseModel).then(function () {
+          return caseCache.oldestPost;
+        });
+      }
+    },
+
+    /**
+     * Get a single post.
+     *
+     * @param {DS.Model} caseModel case
+     * @param {DS.Model} postId post id
+     * @return {Promise<DS.Model>} post
+     */
+    getSinglePost: function getSinglePost(caseModel, postId) {
+      var post = this.get('store').peekRecord('post', postId);
+      if (post) {
+        if (post.get('isReloading')) {
+          return post.reload();
+        } else {
+          return Promise.resolve(post);
+        }
+      } else {
+        // TODO FIXME the API should allow fetching post without providing case id
+        post = this.get('store').createRecord('post', { id: postId });
+        post.set('case', caseModel);
+        return post.reload();
+      }
+    },
+
+    /**
      * Return posts for a given case older than a given postId.
      *
      * @param {DS.Model} caseModel case
      * @param {Number} postId post id
-     * @param {[Number]} count post count
+     * @param {[Number]} options.count post count
+     * @param {[Number]} options.including whether to include the post with specified id
      * @return {Promise} posts
      */
     getOlderPosts: function getOlderPosts(caseModel, postId) {
+      var _ref = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+
+      var _ref$count = _ref.count;
+      var count = _ref$count === undefined ? defaultPostCount : _ref$count;
+      var _ref$including = _ref.including;
+      var including = _ref$including === undefined ? false : _ref$including;
+
+      return this.getPosts(caseModel, postId, {
+        order: 'newestFirst',
+        direction: 'older',
+        count: count,
+        including: including
+      });
+    },
+
+    /**
+     * Return posts for a given case newer than a given postId.
+     *
+     * @param {DS.Model} caseModel case
+     * @param {Number} postId post id
+     * @param {[Number]} options.count post count
+     * @param {[Number]} options.including whether to include the post with specified id
+     * @return {Promise} posts
+     */
+    getNewerPosts: function getNewerPosts(caseModel, postId) {
+      var _ref2 = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+
+      var _ref2$count = _ref2.count;
+      var count = _ref2$count === undefined ? defaultPostCount : _ref2$count;
+      var _ref2$including = _ref2.including;
+      var including = _ref2$including === undefined ? false : _ref2$including;
+
+      return this.getPosts(caseModel, postId, {
+        order: 'oldestFirst',
+        direction: 'newer',
+        count: count,
+        including: including
+      });
+    },
+
+    /**
+     * Return posts for a given case.
+     *
+     * @param {DS.Model} caseModel case
+     * @param {Number} postId reference post id
+     * @param {[String]} options.order sorting order: 'newestFirst' or 'oldestFirst'
+     * @param {[String]} options.direction whether to request 'older' or 'newer' posts
+     * @param {[Number]} options.count post count
+     * @param {[Number]} options.including whether to include the post with specified id
+     * @return {Promise} posts
+     */
+    getPosts: function getPosts(caseModel, postId) {
       var _this = this;
 
-      var count = arguments.length <= 2 || arguments[2] === undefined ? 10 : arguments[2];
+      var _ref3 = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+
+      var _ref3$order = _ref3.order;
+      var order = _ref3$order === undefined ? 'newestFirst' : _ref3$order;
+      var _ref3$direction = _ref3.direction;
+      var direction = _ref3$direction === undefined ? 'older' : _ref3$direction;
+      var _ref3$count = _ref3.count;
+      var count = _ref3$count === undefined ? defaultPostCount : _ref3$count;
+      var _ref3$including = _ref3.including;
+      var including = _ref3$including === undefined ? false : _ref3$including;
 
       if (postId) {
-        var post = this.get('store').peekRecord('post', postId);
-        return this.getOlderPostsRecursive(caseModel, post, count);
+        return this.getSinglePost(caseModel, postId).then(function (post) {
+          return _this.getPostsRecursive(caseModel, post, direction, including ? count - 1 : count).then(function (posts) {
+            return including ? [post].concat(posts) : posts;
+          }).then(function (posts) {
+            return posts.sortBy('sequence');
+          }).then(function (posts) {
+            return order === 'newestFirst' ? posts.reverse() : posts;
+          });
+        });
       } else {
         return this.getNewestPost(caseModel).then(function (newestPost) {
           if (!newestPost) {
             return [];
           } else {
-            return _this.getOlderPostsRecursive(caseModel, newestPost, count - 1).then(function (newPosts) {
+            return _this.getPostsRecursive(caseModel, newestPost, direction, count - 1).then(function (newPosts) {
               return [newestPost].concat(newPosts);
+            }).then(function (posts) {
+              return posts.sortBy('sequence');
+            }).then(function (posts) {
+              return order === 'newestFirst' ? posts.reverse() : posts;
             });
           }
         });
@@ -42946,32 +43387,39 @@ define('frontend-cp/services/case-timeline-cache', ['exports', 'ember'], functio
      *
      * @param {DS.Model} caseModel case
      * @param {DS.Model} post post
+     * @param {DS.Model} direction 'older' or 'newer'
      * @param {[Number]} count count
      * @return {Promise} posts
      */
-    getOlderPostsRecursive: function getOlderPostsRecursive(caseModel, post) {
+    getPostsRecursive: function getPostsRecursive(caseModel, post, direction) {
       var _this2 = this;
 
-      var count = arguments.length <= 2 || arguments[2] === undefined ? 10 : arguments[2];
+      var count = arguments.length <= 3 || arguments[3] === undefined ? defaultPostCount : arguments[3];
 
       if (count === 0) {
         return Promise.resolve([]);
       }
 
-      var nextSequence = post.get('sequence') - 1;
-      if (nextSequence === 0) {
+      var caseCache = this.getCaseCache(caseModel);
+
+      var nextSequence = post.get('sequence') + (direction === 'older' ? -1 : 1);
+      if (caseCache.total !== null && (nextSequence === 0 || nextSequence > caseCache.total)) {
         return Promise.resolve([]);
       }
 
-      var caseCache = this.getCaseCache(caseModel);
       var nextPost = caseCache.posts[nextSequence];
+      var queryParamName = direction === 'older' ? 'beforeId' : 'afterId';
 
-      return (nextPost ? Promise.resolve(nextPost) : this.fetchPosts(caseModel, { beforeId: post.get('id') }).then(function () {
+      return (nextPost ? Promise.resolve(nextPost) : this.fetchPosts(caseModel, _defineProperty({}, queryParamName, post.get('id'))).then(function () {
         return caseCache.posts[nextSequence];
       })).then(function (post) {
-        return _this2.getOlderPostsRecursive(caseModel, post, count - 1).then(function (posts) {
-          return [post].concat(posts);
-        });
+        if (!post) {
+          return [];
+        } else {
+          return _this2.getPostsRecursive(caseModel, post, direction, count - 1).then(function (posts) {
+            return [post].concat(posts);
+          });
+        }
       });
     },
 
@@ -42986,12 +43434,12 @@ define('frontend-cp/services/case-timeline-cache', ['exports', 'ember'], functio
     fetchPosts: function fetchPosts(caseModel) {
       var _this3 = this;
 
-      var _ref = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+      var _ref4 = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
-      var _ref$afterId = _ref.afterId;
-      var afterId = _ref$afterId === undefined ? undefined : _ref$afterId;
-      var _ref$beforeId = _ref.beforeId;
-      var beforeId = _ref$beforeId === undefined ? undefined : _ref$beforeId;
+      var _ref4$afterId = _ref4.afterId;
+      var afterId = _ref4$afterId === undefined ? undefined : _ref4$afterId;
+      var _ref4$beforeId = _ref4.beforeId;
+      var beforeId = _ref4$beforeId === undefined ? undefined : _ref4$beforeId;
 
       var caseCache = this.getCaseCache(caseModel);
       return this.get('store').query('post', {
@@ -43004,6 +43452,9 @@ define('frontend-cp/services/case-timeline-cache', ['exports', 'ember'], functio
           caseCache.posts[post.get('sequence')] = post;
           if (post.get('sequence') === caseCache.total) {
             caseCache.newestPost = post;
+          }
+          if (post.get('sequence') === 1) {
+            caseCache.oldestPost = post;
           }
         });
       });
@@ -43511,6 +43962,13 @@ define('frontend-cp/services/route-state', ['exports', 'ember'], function (expor
     transitionToState: function transitionToState(url, state) {
       var _this = this;
 
+      // `path` is a special state property maintained by Ember,
+      // and we don't want to allow overriding it.
+      // The common case of inadvertently passing the `path` it will occur if we
+      // retrieve existing state (which will always contain `path`), make changes
+      // to it and pass it to `transitionToState`.
+      var stateWithoutPath = Object.assign({}, state);
+      delete stateWithoutPath.path;
       var router = this.container.lookup('router:main');
 
       // Ember's router doesn't allow us to hook into the `pushState`
@@ -43529,7 +43987,7 @@ define('frontend-cp/services/route-state', ['exports', 'ember'], function (expor
       var onTransitionSucceeded = function onTransitionSucceeded() {
         didReceiveTransitionEvent = true;
         _this.updateUrlWithHash(url);
-        _this.updateState(state);
+        _this.updateState(stateWithoutPath);
       };
 
       router.on('didTransition', onTransitionSucceeded);
@@ -43542,7 +44000,7 @@ define('frontend-cp/services/route-state', ['exports', 'ember'], function (expor
         // update the state for this
         if (!didReceiveTransitionEvent) {
           _this.updateUrlWithHash(url);
-          _this.updateState(state);
+          _this.updateState(stateWithoutPath);
         }
       })['finally'](function () {
         router.off('didTransition', onTransitionSucceeded);
@@ -47591,6 +48049,12 @@ define('frontend-cp/session/agent/cases/case/index/controller', ['exports', 'emb
   'use strict';
 
   exports['default'] = Ember['default'].Controller.extend({
+    queryParams: {
+      postId: {
+        refreshModel: false
+      }
+    },
+
     actions: {
       onTopPostChange: function onTopPostChange(postId) {
         this.get('target').send('onTopPostChange', postId);
@@ -47605,6 +48069,14 @@ define('frontend-cp/session/agent/cases/case/index/route', ['exports', 'ember'],
 
   exports['default'] = Ember['default'].Route.extend({
     storeCache: Ember['default'].inject.service('store-cache'),
+    routeStateService: Ember['default'].inject.service('route-state'),
+
+    queryParams: {
+      postId: {
+        refreshModel: false,
+        replace: true
+      }
+    },
 
     model: function model() {
       return Ember['default'].RSVP.hash({
@@ -47649,13 +48121,12 @@ define('frontend-cp/session/agent/cases/case/index/route', ['exports', 'ember'],
         var location = Ember['default'].get(locationService, 'location');
         var path = location.pathname;
         var baseURL = Ember['default'].get(locationService, 'baseURL').replace(/\/$/, '');
-        var search = location.search || '';
-        var url = path.replace(baseURL, '').replace(rootURL, '') + search + '#' + postId;
+        var search = postId ? '?postId=' + postId : '';
+        var url = path.replace(baseURL, '').replace(rootURL, '') + search;
 
-        if (locationService.replaceURL) {
-          locationService.replaceURL(url);
-          this.send('onHashUpdate');
-        }
+        var currentState = this.get('routeStateService').getState();
+        this.get('routeStateService').transitionToState(url, currentState);
+        this.send('updateTabUrl', url);
       }
     }
   });
@@ -47676,7 +48147,7 @@ define('frontend-cp/session/agent/cases/case/index/template', ['exports'], funct
             "column": 0
           },
           "end": {
-            "line": 3,
+            "line": 8,
             "column": 0
           }
         },
@@ -47700,7 +48171,7 @@ define('frontend-cp/session/agent/cases/case/index/template', ['exports'], funct
         return morphs;
       },
       statements: [
-        ["inline","ko-case-content",[],["case",["subexpr","@mut",[["get","case",["loc",[null,[1,23],[1,27]]]]],[],[]],"caseFields",["subexpr","@mut",[["get","caseFields",["loc",[null,[1,39],[1,49]]]]],[],[]],"onTopPostChange",["subexpr","action",["onTopPostChange"],[],["loc",[null,[1,66],[1,92]]]]],["loc",[null,[1,0],[1,94]]]]
+        ["inline","ko-case-content",[],["case",["subexpr","@mut",[["get","case",["loc",[null,[2,7],[2,11]]]]],[],[]],"postId",["subexpr","@mut",[["get","postId",["loc",[null,[3,9],[3,15]]]]],[],[]],"caseFields",["subexpr","@mut",[["get","caseFields",["loc",[null,[4,13],[4,23]]]]],[],[]],"onTopPostChange",["subexpr","action",["onTopPostChange"],[],["loc",[null,[5,18],[5,44]]]]],["loc",[null,[1,0],[6,2]]]]
       ],
       locals: [],
       templates: []
@@ -47871,8 +48342,8 @@ define('frontend-cp/session/agent/cases/case/route', ['exports', 'frontend-cp/ro
     },
 
     actions: {
-      onHashUpdate: function onHashUpdate() {
-        this.onHashUpdate();
+      updateTabUrl: function updateTabUrl(url) {
+        this.get('tab').set('url', url);
       }
     }
   });
@@ -61713,7 +62184,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+d3814623"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+a5de467f"});
 }
 
 /* jshint ignore:end */
