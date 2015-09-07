@@ -42719,15 +42719,16 @@ define('frontend-cp/serializers/application', ['exports', 'ember', 'ember-data',
       }
 
       type.eachRelationship(function (name, relationship) {
+        // If relationship is defined as a child...
         if (relationship.options.child) {
+          // ...use `url` property to fetch children
           if (relationship.options.url) {
             data.links[name] = relationship.options.url;
+            /// ...or in its absence use default path for relationship's model
           } else {
-            var inverseRelationship = type.inverseFor(name, store);
-            var childType = inverseRelationship.type;
-            var childAdapter = store.adapterFor(childType.modelName);
-            data.links[name] = childAdapter.pathForType(childType.modelName);
-          }
+              var childAdapter = store.adapterFor(relationship.type);
+              data.links[name] = childAdapter.pathForType(relationship.type);
+            }
         }
       });
 
@@ -62353,7 +62354,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+2b8e5e6c"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+ac20846e"});
 }
 
 /* jshint ignore:end */
