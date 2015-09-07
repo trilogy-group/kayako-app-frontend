@@ -35503,8 +35503,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
         status: 200,
         data: db.organizations,
         resource: 'organization',
-        total_count: db.organizations.length,
-        session_id: 'hom4BTrYwkPcHH847089d48a9177153bfa85890f20529058a07377544Oo5VgueZyI2RRvScA3ogmGNMZ'
+        total_count: db.organizations.length
       };
     });
 
@@ -35518,8 +35517,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
           predicate_collection: arrayToObjectWithNumberedKeys(db['predicate-collections'])
         },
         status: 200,
-        total_count: db.views.length,
-        session_id: 'pPW6tnOyJG6TmWCVea175d1bfc5dbf073a89ffeb6a2a198c61aae941Aqc7ahmzw8a'
+        total_count: db.views.length
       };
     });
 
@@ -35530,15 +35528,14 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
         data: db.sessions[0],
         resource: 'session',
         resources: {
-          business_hour: arrayToObjectWithNumberedKeys(db.businesshours),
+          business_hour: arrayToObjectWithNumberedKeys(db['business-hours']),
           field_option: arrayToObjectWithNumberedKeys(db['field-options']),
           identity_email: arrayToObjectWithNumberedKeys(db['identity-emails']),
           role: arrayToObjectWithNumberedKeys(db.roles),
           team: arrayToObjectWithNumberedKeys(db.teams),
           user: arrayToObjectWithNumberedKeys([db.users[0]]),
           user_field: arrayToObjectWithNumberedKeys(db['user-fields'])
-        },
-        session_id: 'pPW6tnOyJG6TmWCVea175d1bfc5dbf073a89ffeb6a2a198c61aae941Aqc7ahmzw8a'
+        }
       };
     });
 
@@ -35549,8 +35546,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
         resource: 'team',
         offset: 0,
         limit: 10,
-        total_count: db.teams.length,
-        session_id: '0VR4CSL7dXUshZtO8EI2a32a89eaa80d3bdecc9964941ec5d235a6632dcrhO2ug8M9VrLV'
+        total_count: db.teams.length
       };
     });
 
@@ -35562,7 +35558,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
         limit: 10,
         offset: 0,
         resources: {
-          business_hour: arrayToObjectWithNumberedKeys(db.businesshours), //TODO rename to business-hours
+          business_hour: arrayToObjectWithNumberedKeys(db['business-hours']),
           field_option: arrayToObjectWithNumberedKeys(db['field-options']),
           identity_email: arrayToObjectWithNumberedKeys(db['identity-emails']),
           role: arrayToObjectWithNumberedKeys(db.roles),
@@ -35609,9 +35605,9 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
 
       return {
         status: 200,
-        data: db.casesformsdata.find(id),
+        data: db['case-forms'].find(id),
         resource: 'case_form',
-        resources: db.casesformsresources[0]
+        resources: {}
       };
     });
 
@@ -35636,7 +35632,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
         data: db.cases,
         resource: 'case',
         resources: {
-          business_hour: arrayToObjectWithNumberedKeys(db.businesshours),
+          business_hour: arrayToObjectWithNumberedKeys(db['business-hours']),
           language: db.languages,
           brand: arrayToObjectWithNumberedKeys(db.brands),
           mailbox: arrayToObjectWithNumberedKeys(db.mailboxes),
@@ -35701,7 +35697,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
         resources: {
           language: db.languages,
           brand: arrayToObjectWithNumberedKeys(db.brands),
-          business_hour: arrayToObjectWithNumberedKeys(db.businesshours),
+          business_hour: arrayToObjectWithNumberedKeys(db['business-hours']),
           mailbox: arrayToObjectWithNumberedKeys(db.mailboxes),
           channel: arrayToObjectWithNumberedKeys(db.channels),
           role: arrayToObjectWithNumberedKeys(db.roles),
@@ -35739,7 +35735,6 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       return {
         data: [],
         limit: 10,
-        logs: db.logs,
         offset: 0,
         resource: 'case_message',
         status: 200,
@@ -35814,8 +35809,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       return {
         status: 200,
         data: db.casesfields.find(id),
-        resource: 'case_field',
-        session_id: 'zM6kSQm1SWZCd33805d8b083b2f49499ce75f15dae6dfcada961SCzbSUOnVhi7hcPvKSOJRof'
+        resource: 'case_field'
       };
     });
 
@@ -35879,18 +35873,6 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
   }
 
 });
-define('frontend-cp/mirage/factories/account', ['exports', 'ember-cli-mirage'], function (exports, Mirage) {
-
-  'use strict';
-
-  /*eslint-disable camelcase*/
-
-  exports['default'] = Mirage['default'].Factory.extend({
-    id: 1,
-    resource_type: 'mailbox'
-  });
-
-});
 define('frontend-cp/mirage/factories/assignee', ['exports', 'ember-cli-mirage'], function (exports, Mirage) {
 
   'use strict';
@@ -35921,7 +35903,7 @@ define('frontend-cp/mirage/factories/brand', ['exports', 'ember-cli-mirage'], fu
   });
 
 });
-define('frontend-cp/mirage/factories/businesshour', ['exports', 'ember-cli-mirage'], function (exports, Mirage) {
+define('frontend-cp/mirage/factories/business-hour', ['exports', 'ember-cli-mirage'], function (exports, Mirage) {
 
   'use strict';
 
@@ -36200,18 +36182,6 @@ define('frontend-cp/mirage/factories/contact-website', ['exports', 'ember-cli-mi
   });
 
 });
-define('frontend-cp/mirage/factories/creator', ['exports', 'ember-cli-mirage'], function (exports, ember_cli_mirage) {
-
-  'use strict';
-
-  /*eslint-disable camelcase*/
-
-  exports['default'] = ember_cli_mirage['default'].Factory.extend({
-    id: ember_cli_mirage.faker.random.number,
-    resource_type: 'user'
-  });
-
-});
 define('frontend-cp/mirage/factories/facebook-account', ['exports', 'ember-cli-mirage'], function (exports, ember_cli_mirage) {
 
   'use strict';
@@ -36230,7 +36200,7 @@ define('frontend-cp/mirage/factories/facebook-account', ['exports', 'ember-cli-m
   });
 
 });
-define('frontend-cp/mirage/factories/facebook-pages', ['exports', 'ember-cli-mirage'], function (exports, ember_cli_mirage) {
+define('frontend-cp/mirage/factories/facebook-page', ['exports', 'ember-cli-mirage'], function (exports, ember_cli_mirage) {
 
   'use strict';
 
@@ -36266,18 +36236,6 @@ define('frontend-cp/mirage/factories/field-option', ['exports', 'ember-cli-mirag
     created_at: '2015-07-23T12:09:20Z',
     updated_at: '2015-07-23T12:09:20Z',
     resource_type: 'field_option'
-  });
-
-});
-define('frontend-cp/mirage/factories/form', ['exports', 'ember-cli-mirage'], function (exports, ember_cli_mirage) {
-
-  'use strict';
-
-  /*eslint-disable camelcase*/
-
-  exports['default'] = ember_cli_mirage['default'].Factory.extend({
-    id: ember_cli_mirage.faker.random.number,
-    resource_type: 'case_form'
   });
 
 });
@@ -36337,18 +36295,6 @@ define('frontend-cp/mirage/factories/identity-phone', ['exports', 'ember-cli-mir
   });
 
 });
-define('frontend-cp/mirage/factories/identity', ['exports', 'ember-cli-mirage'], function (exports, Mirage) {
-
-  'use strict';
-
-  /*eslint-disable camelcase*/
-
-  exports['default'] = Mirage['default'].Factory.extend({
-    id: 2,
-    resource_type: 'identity_email'
-  });
-
-});
 define('frontend-cp/mirage/factories/language', ['exports', 'ember-cli-mirage'], function (exports, Mirage) {
 
   'use strict';
@@ -36370,42 +36316,6 @@ define('frontend-cp/mirage/factories/language', ['exports', 'ember-cli-mirage'],
     updated_at: '2015-07-09T15:36:10Z',
     resource_type: 'language',
     resource_url: 'http://novo/api/index.php?/v1/languages/1'
-  });
-
-});
-define('frontend-cp/mirage/factories/last-replier-identity', ['exports', 'ember-cli-mirage'], function (exports, Mirage) {
-
-  'use strict';
-
-  /*eslint-disable camelcase*/
-
-  exports['default'] = Mirage['default'].Factory.extend({
-    id: 2,
-    resource_type: 'identity_email'
-  });
-
-});
-define('frontend-cp/mirage/factories/last-replier', ['exports', 'ember-cli-mirage'], function (exports, Mirage) {
-
-  'use strict';
-
-  /*eslint-disable camelcase*/
-
-  exports['default'] = Mirage['default'].Factory.extend({
-    id: 2,
-    resource_type: 'user'
-  });
-
-});
-define('frontend-cp/mirage/factories/log', ['exports', 'ember-cli-mirage'], function (exports, Mirage) {
-
-  'use strict';
-
-  /*eslint-disable camelcase*/
-
-  exports['default'] = Mirage['default'].Factory.extend({
-    level: 'NOTICE',
-    message: 'Redundant request parameters supplied: page'
   });
 
 });
@@ -36553,18 +36463,6 @@ define('frontend-cp/mirage/factories/proposition', ['exports', 'ember-cli-mirage
     operator: 'comparison_equalto',
     resource_type: 'proposition',
     value: 1
-  });
-
-});
-define('frontend-cp/mirage/factories/requester', ['exports', 'ember-cli-mirage'], function (exports, ember_cli_mirage) {
-
-  'use strict';
-
-  /*eslint-disable camelcase*/
-
-  exports['default'] = ember_cli_mirage['default'].Factory.extend({
-    id: ember_cli_mirage.faker.random.number,
-    resource_type: 'user'
   });
 
 });
@@ -36722,18 +36620,6 @@ define('frontend-cp/mirage/factories/type', ['exports', 'ember-cli-mirage'], fun
   exports['default'] = ember_cli_mirage['default'].Factory.extend({
     id: ember_cli_mirage.faker.random.number,
     resource_type: 'case_type'
-  });
-
-});
-define('frontend-cp/mirage/factories/user-email', ['exports', 'ember-cli-mirage'], function (exports, ember_cli_mirage) {
-
-  'use strict';
-
-  /*eslint-disable camelcase*/
-
-  exports['default'] = ember_cli_mirage['default'].Factory.extend({
-    id: ember_cli_mirage.faker.random.number,
-    resource_type: 'user'
   });
 
 });
@@ -40298,7 +40184,7 @@ define('frontend-cp/mirage/scenarios/default', ['exports', 'ember-cli-mirage'], 
   /*eslint-disable camelcase*/
 
   exports['default'] = function (server) {
-    var businessHour = server.create('businesshour', {
+    var businessHour = server.create('business-hour', {
       title: 'Default Business Hours'
     });
 
@@ -40371,15 +40257,6 @@ define('frontend-cp/mirage/scenarios/default', ['exports', 'ember-cli-mirage'], 
     var sourceChannel = server.create('source-channel', {
       id: 1 //channel uuid
     });
-    var requester = server.create('requester', {
-      id: 1 //user id
-    });
-    var creator = server.create('creator', {
-      id: 1 //user id
-    });
-    var identity = server.create('identity', {
-      id: 1 //user id
-    });
     var assignee = server.create('assignee', {
       agent: defaultUser
     });
@@ -40410,12 +40287,6 @@ define('frontend-cp/mirage/scenarios/default', ['exports', 'ember-cli-mirage'], 
       }
     });
     var customFields = server.createList('case-field-value', 2, { field: caseFields[0] });
-    var lastReplier = server.create('last-replier', {
-      id: 1 //user id
-    });
-    var lastReplierIdentity = server.create('last-replier-identity', {
-      id: 1 //lastReplierIdentityEmail id
-    });
     server.createList('case', 5, {
       id: function id(i) {
         return ++i;
@@ -40427,9 +40298,9 @@ define('frontend-cp/mirage/scenarios/default', ['exports', 'ember-cli-mirage'], 
       mask_id: function mask_id(i) {
         return 'DXX-' + ++i + '-' + ember_cli_mirage.faker.random.number();
       },
-      requester: requester,
-      creator: creator,
-      identity: identity,
+      requester: defaultUser,
+      creator: defaultUser,
+      identity: identityEmail,
       assignee: assignee,
       brand: brand,
       status: status,
@@ -40440,19 +40311,16 @@ define('frontend-cp/mirage/scenarios/default', ['exports', 'ember-cli-mirage'], 
       tags: tags,
       custom_fields: customFields,
       metadata: metadata,
-      last_replier: lastReplier,
-      last_replier_identity: lastReplierIdentity
+      last_replier: defaultUser,
+      last_replier_identity: identityEmail
     });
 
-    server.create('mailbox', {
+    var mailbox = server.create('mailbox', {
       brand: brand
-    });
-    var account = server.create('account', {
-      id: 1
     });
     server.create('channel', {
       uuid: 1,
-      account: account
+      account: mailbox
     });
     var identityDomain = server.create('identity-domain');
     server.create('organization', {
@@ -40487,12 +40355,10 @@ define('frontend-cp/mirage/scenarios/default', ['exports', 'ember-cli-mirage'], 
       brand: brand
     });
 
-    server.create('log');
-
     var caseMessage = server.create('case-message');
     server.create('post', {
-      creator: creator,
-      identity: identity,
+      creator: defaultUser,
+      identity: identityEmail,
       original: caseMessage
     });
 
@@ -57729,8 +57595,8 @@ define('frontend-cp/tests/integration/components/ko-session-widgets/component-te
         user: defaultUser
       });
 
-      localStorage.setItem('sessionId', '"pPW6tnOyJG6TmWCVea175d1bfc5dbf073a89ffeb6a2a198c61aae941Aqc7ahmzw8a"');
       /*eslint-enable no-undef, camelcase */
+      localStorage.setItem('sessionId', '"pPW6tnOyJG6TmWCVea175d1bfc5dbf073a89ffeb6a2a198c61aae941Aqc7ahmzw8a"');
     },
     teardown: function teardown() {
       localStorage.removeItem('sessionId');
@@ -62354,7 +62220,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+ac20846e"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+116ddf47"});
 }
 
 /* jshint ignore:end */
