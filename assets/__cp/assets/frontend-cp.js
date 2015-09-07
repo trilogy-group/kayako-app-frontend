@@ -2196,7 +2196,7 @@ define('frontend-cp/components/ko-admin/case-fields/edit/options/component', ['e
 
     orderedOptionList: (function () {
       return this.get('options').sortBy('sortOrder');
-    }).property('options', 'options.@each.sortOrder'),
+    }).property('options', 'options.[].sortOrder'),
 
     actions: {
       reorderList: function reorderList(list) {
@@ -2323,7 +2323,7 @@ define('frontend-cp/components/ko-admin/case-fields/edit/priorities/component', 
 
     orderedOptionList: (function () {
       return this.get('options').sortBy('sortOrder');
-    }).property('options', 'options.@each.sortOrder'),
+    }).property('options', 'options.[].sortOrder'),
 
     actions: {
       reorderList: function reorderList(list) {
@@ -3959,13 +3959,13 @@ define('frontend-cp/components/ko-admin/case-forms/edit/fields/component', ['exp
       return this.get('caseFields').filter(function (caseField) {
         return caseField.get('isSystem');
       });
-    }).property('caseFields', 'caseFields.@each.isSystem'),
+    }).property('caseFields', 'caseFields.[].isSystem'),
 
     customCaseFields: (function () {
       return this.get('caseFields').filter(function (caseField) {
         return !caseField.get('isSystem');
       });
-    }).property('caseFields', 'caseFields.@each.isSystem'),
+    }).property('caseFields', 'caseFields.[].isSystem'),
 
     unusedCaseFields: (function () {
       var usedCustomFields = this.get('customCaseFields');
@@ -7048,7 +7048,7 @@ define('frontend-cp/components/ko-admin/views/edit/columns/component', ['exports
       });
     }).on('init'),
 
-    unusedColumns: Ember['default'].computed('availableColumns.@each', 'columns.@each', function () {
+    unusedColumns: Ember['default'].computed('availableColumns.[]', 'columns.[]', function () {
       var usedColumns = this.get('columns');
       if (!usedColumns) {
         return this.get('availableColumns');
@@ -7335,7 +7335,7 @@ define('frontend-cp/components/ko-admin/views/edit/component', ['exports', 'embe
       });
     }).on('init'),
 
-    selectedTeamLabel: Ember['default'].computed('currentView.visibilityToTeams.@each', function () {
+    selectedTeamLabel: Ember['default'].computed('currentView.visibilityToTeams.[]', function () {
       var selectedTeam = this.get('currentView.visibilityToTeams.firstObject');
       if (!selectedTeam) {
         return this.get('intl').findTranslationByKey('generic.select_placeholder').translation;
@@ -7345,7 +7345,7 @@ define('frontend-cp/components/ko-admin/views/edit/component', ['exports', 'embe
 
     canDeleteCollection: Ember['default'].computed.gt('currentView.predicateCollections.length', 1),
 
-    selectedSortingLabel: Ember['default'].computed('currentView.orderByColumn', 'currentView.columns.@each', function () {
+    selectedSortingLabel: Ember['default'].computed('currentView.orderByColumn', 'currentView.columns.[]', function () {
       var orderByString = this.get('currentView.orderByColumn');
       var selectedColumns = this.get('currentView.columns');
 
@@ -9876,7 +9876,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       return this.get('case.tags').map(function (tag) {
         return tag.get('name');
       });
-    }).property('case.tags.@each.name'),
+    }).property('case.tags.[].name'),
 
     resizeSidebarAndContent: (function () {
       var _this2 = this;
@@ -11286,7 +11286,7 @@ define('frontend-cp/components/ko-case-field/custom/component', ['exports', 'emb
 
     valueObject: (function () {
       return findCustomFieldValue(this.get('allValues'), this.get('field'));
-    }).property('allValues.@each.field', 'field'),
+    }).property('allValues.[].field', 'field'),
 
     isEdited: (function () {
       var valueObject = this.get('valueObject');
@@ -11299,7 +11299,7 @@ define('frontend-cp/components/ko-case-field/custom/component', ['exports', 'emb
       this.set('isErrored', this.get('errors').reduce(function (acc, error) {
         return acc || error.parameter === _this.get('field.key');
       }, false));
-    }).observes('errors.@each'),
+    }).observes('errors.[]'),
 
     actions: {
       valueChanged: function valueChanged(value) {
@@ -11695,7 +11695,7 @@ define('frontend-cp/components/ko-case-field/priority/component', ['exports', 'e
       this.set('isErrored', this.get('errors').reduce(function (acc, error) {
         return acc || error.parameter === 'priority_id';
       }, false));
-    }).observes('errors.@each')
+    }).observes('errors.[]')
   });
 
 });
@@ -11876,7 +11876,7 @@ define('frontend-cp/components/ko-case-field/status/component', ['exports', 'emb
       this.set('isErrored', this.get('errors').reduce(function (acc, error) {
         return acc || error.parameter === 'status_id';
       }, false));
-    }).observes('errors.@each')
+    }).observes('errors.[]')
   });
 
 });
@@ -12483,7 +12483,7 @@ define('frontend-cp/components/ko-case/macro-selector/component', ['exports', 'e
         return { id: macro.get('id'), value: macro.get('title') };
       });
       return valueList;
-    }).property('macros.@each'),
+    }).property('macros.[]'),
 
     actions: {
       onMacroSelected: function onMacroSelected(macroId) {
@@ -23103,7 +23103,7 @@ define('frontend-cp/components/ko-option-list-drill-down/component', ['exports',
 
     didUpdateOptions: (function () {
       this.resetState();
-    }).observes('options.@each'),
+    }).observes('options.[]'),
 
     didInsertElement: function didInsertElement() {
       this.resetState();
@@ -24695,7 +24695,7 @@ define('frontend-cp/components/ko-predicate-builder/rule/component', ['exports',
       return possibleProperties.filter(function (property) {
         return property.get('string').indexOf(searchTerm) !== -1;
       });
-    }).property('searchTerm', 'availableProperties.@each.string'),
+    }).property('searchTerm', 'availableProperties.[].string'),
 
     isChoiceField: (function () {
       return !!this.get('availableProperties.length');
@@ -24761,7 +24761,7 @@ define('frontend-cp/components/ko-predicate-builder/rule/component', ['exports',
       return this.get('selectedDefinition.values').find(function (choice) {
         return String(choice.get('value')) === ruleValue;
       });
-    }).property('isChoiceField', 'rule.value', 'selectedDefinition.values.@each'),
+    }).property('isChoiceField', 'rule.value', 'selectedDefinition.values.[]'),
 
     selectedDefinitionLabel: (function () {
       var selectedDefinition = this.get('selectedDefinition');
@@ -31817,13 +31817,13 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
       return this.get('model.teams').map(function (tag) {
         return tag.get('title');
       });
-    }).property('model.teams.@each.title'),
+    }).property('model.teams.[].title'),
 
     userTags: (function () {
       return this.get('model.tags').map(function (tag) {
         return tag.get('name');
       });
-    }).property('model.tags.@each.name'),
+    }).property('model.tags.[].name'),
 
     accessLevels: Ember['default'].computed(function () {
       return [Ember['default'].Object.create({
@@ -34520,13 +34520,13 @@ define('frontend-cp/login/controller', ['exports', 'ember', 'frontend-cp/config/
 
     hasErrorMessages: (function () {
       return this.get('fieldErrors').length > 0;
-    }).property('fieldErrors.@each'),
+    }).property('fieldErrors.[]'),
 
     errorMessages: (function () {
       return this.get('fieldErrors').map(function (error) {
         return error.message;
       });
-    }).property('fieldErrors.@each'),
+    }).property('fieldErrors.[]'),
 
     // Methods
 
@@ -44491,19 +44491,19 @@ define('frontend-cp/session/admin/manage/case-fields/index/controller', ['export
       return this.get('model').filter(function (field) {
         return field.get('isSystem');
       });
-    }).property('model.@each'),
+    }).property('model.[]'),
 
     customfields: (function () {
       return this.get('model').filter(function (field) {
         return field.get('isEnabled') && !field.get('isSystem');
       }).sortBy('sortOrder');
-    }).property('model.@each.isEnabled', 'model.@each.isEnabled', 'model.@each.sortOrder'),
+    }).property('model.[].isEnabled', 'model.[].isEnabled', 'model.[].sortOrder'),
 
     disabledfields: (function () {
       return this.get('model').filter(function (field) {
         return !field.get('isEnabled');
       });
-    }).property('model.@each.isEnabled'),
+    }).property('model.[].isEnabled'),
 
     getIntlKeyForFieldType: function getIntlKeyForFieldType(fieldType) {
       return 'admin.casefields.type.' + fieldType.toLowerCase() + '.name';
@@ -45596,13 +45596,13 @@ define('frontend-cp/session/admin/manage/case-forms/index/controller', ['exports
       return this.get('model').filter(function (form) {
         return form.get('isEnabled');
       }).sortBy('sortOrder');
-    }).property('model.@each.isEnabled', 'model.@each.sortOrder'),
+    }).property('model.[].isEnabled', 'model.[].sortOrder'),
 
     disabledForms: (function () {
       return this.get('model').filter(function (form) {
         return !form.get('isEnabled');
       });
-    }).property('model.@each.isEnabled'),
+    }).property('model.[].isEnabled'),
 
     actions: {
       makeDefault: function makeDefault(caseform) {
@@ -46469,13 +46469,13 @@ define('frontend-cp/session/admin/manage/views/index/controller', ['exports', 'e
       return this.get('model').filter(function (view) {
         return view.get('isEnabled');
       }).sortBy('sortOrder');
-    }).property('model.@each.isEnabled', 'model.@each.sortOrder'),
+    }).property('model.[].isEnabled', 'model.[].sortOrder'),
 
     disabledViews: (function () {
       return this.get('model').filter(function (view) {
         return !view.get('isEnabled');
       }).sortBy('sortOrder');
-    }).property('model.@each.isEnabled', 'model.@each.sortOrder'),
+    }).property('model.[].isEnabled', 'model.[].sortOrder'),
 
     canDeleteOrDisableViews: Ember['default'].computed.gt('enabledViews.length', 1),
 
@@ -49685,7 +49685,7 @@ define('frontend-cp/session/controller', ['exports', 'ember'], function (exports
     /**
      * Update local storage whenever the tabs array changes
      */
-    tabsUpdated: Ember['default'].observer('mainTab', 'mainTab.url', 'tabs.@each', 'tabs.@each.url', 'tabs.@each.label', function () {
+    tabsUpdated: Ember['default'].observer('mainTab', 'mainTab.url', 'tabs.[]', 'tabs.[].url', 'tabs.[].label', function () {
       var tabsService = this.get('tabsService');
       var mainTab = this.get('mainTab');
       var tabs = this.get('tabs');
@@ -62180,7 +62180,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+09702ecf"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+ce29b03f"});
 }
 
 /* jshint ignore:end */
