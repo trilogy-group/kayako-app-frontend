@@ -27087,7 +27087,7 @@ define('frontend-cp/components/ko-sidebar/template', ['exports'], function (expo
                 },
                 "end": {
                   "line": 8,
-                  "column": 55
+                  "column": 62
                 }
               },
               "moduleName": "frontend-cp/components/ko-sidebar/template.hbs"
@@ -27157,8 +27157,8 @@ define('frontend-cp/components/ko-sidebar/template', ['exports'], function (expo
               return morphs;
             },
             statements: [
-              ["inline","if",[["subexpr","eq",[["get","view.caseCountAccuracy",["loc",[null,[12,15],[12,37]]]],"RELATIVE"],[],["loc",[null,[12,11],[12,49]]]],"~"],[],["loc",[null,[12,6],[12,55]]]],
-              ["content","view.caseCount",["loc",[null,[12,55],[12,73]]]]
+              ["inline","if",[["subexpr","eq",[["get","currentView.caseCountAccuracy",["loc",[null,[12,15],[12,44]]]],"RELATIVE"],[],["loc",[null,[12,11],[12,56]]]],"~"],[],["loc",[null,[12,6],[12,62]]]],
+              ["content","currentView.caseCount",["loc",[null,[12,62],[12,87]]]]
             ],
             locals: [],
             templates: []
@@ -27217,10 +27217,10 @@ define('frontend-cp/components/ko-sidebar/template', ['exports'], function (expo
             return morphs;
           },
           statements: [
-            ["attribute","class",["concat",["sidebar__item\n  ",["subexpr","if",[["subexpr","eq",[["get","view",["loc",[null,[5,11],[5,15]]]],["get","activeView",["loc",[null,[5,16],[5,26]]]]],[],["loc",[null,[5,7],[5,27]]]],"sidebar__item--is-active",""],[],["loc",[null,[5,2],[5,59]]]],"\n  ",["subexpr","if",[["subexpr","eq",[["get","view.caseCount",["loc",[null,[6,11],[6,25]]]],0],[],["loc",[null,[6,7],[6,28]]]],"sidebar__item--is-disabled",""],[],["loc",[null,[6,2],[6,62]]]],"\n  "]]],
-            ["block","if",[["get","view.isDefault",["loc",[null,[8,10],[8,24]]]]],[],0,null,["loc",[null,[8,4],[8,62]]]],
-            ["content","view.title",["loc",[null,[9,6],[9,20]]]],
-            ["block","if",[["subexpr","not",[["subexpr","eq",[["get","view.caseCountAccuracy",["loc",[null,[10,19],[10,41]]]],"UNKNOWN"],[],["loc",[null,[10,15],[10,52]]]]],[],["loc",[null,[10,10],[10,53]]]]],[],1,null,["loc",[null,[10,4],[14,11]]]]
+            ["attribute","class",["concat",["sidebar__item\n  ",["subexpr","if",[["subexpr","eq",[["get","currentView",["loc",[null,[5,11],[5,22]]]],["get","activeView",["loc",[null,[5,23],[5,33]]]]],[],["loc",[null,[5,7],[5,34]]]],"sidebar__item--is-active",""],[],["loc",[null,[5,2],[5,66]]]],"\n  ",["subexpr","if",[["subexpr","eq",[["get","currentView.caseCount",["loc",[null,[6,11],[6,32]]]],0],[],["loc",[null,[6,7],[6,35]]]],"sidebar__item--is-disabled",""],[],["loc",[null,[6,2],[6,69]]]],"\n  "]]],
+            ["block","if",[["get","currentView.isDefault",["loc",[null,[8,10],[8,31]]]]],[],0,null,["loc",[null,[8,4],[8,69]]]],
+            ["content","currentView.title",["loc",[null,[9,6],[9,27]]]],
+            ["block","if",[["subexpr","not",[["subexpr","eq",[["get","currentView.caseCountAccuracy",["loc",[null,[10,19],[10,48]]]],"UNKNOWN"],[],["loc",[null,[10,15],[10,59]]]]],[],["loc",[null,[10,10],[10,60]]]]],[],1,null,["loc",[null,[10,4],[14,11]]]]
           ],
           locals: [],
           templates: [child0, child1]
@@ -27259,9 +27259,9 @@ define('frontend-cp/components/ko-sidebar/template', ['exports'], function (expo
           return morphs;
         },
         statements: [
-          ["block","link-to",["session.agent.cases.index",["subexpr","query-params",[],["view",["get","view.id",["loc",[null,[3,58],[3,65]]]],"page","1"],["loc",[null,[3,39],[3,75]]]]],["class","t-naked-link"],0,null,["loc",[null,[3,0],[16,12]]]]
+          ["block","link-to",["session.agent.cases.index",["subexpr","query-params",[],["view",["get","currentView.id",["loc",[null,[3,58],[3,72]]]],"page","1"],["loc",[null,[3,39],[3,82]]]]],["class","t-naked-link"],0,null,["loc",[null,[3,0],[16,12]]]]
         ],
-        locals: ["view"],
+        locals: ["currentView"],
         templates: [child0]
       };
     }());
@@ -46069,10 +46069,10 @@ define('frontend-cp/session/admin/manage/views/index/template', ['exports'], fun
                   return morphs;
                 },
                 statements: [
-                  ["element","action",["toggleEnabledStatus",["get","view",["loc",[null,[13,86],[13,90]]]]],[],["loc",[null,[13,55],[13,92]]]],
-                  ["inline","format-message",[["subexpr","intl-get",["generic.disable"],[],["loc",[null,[13,110],[13,138]]]]],[],["loc",[null,[13,93],[13,140]]]],
-                  ["element","action",["showDeleteConfirmation",["get","view",["loc",[null,[14,89],[14,93]]]]],[],["loc",[null,[14,55],[14,95]]]],
-                  ["inline","format-message",[["subexpr","intl-get",["generic.delete"],[],["loc",[null,[14,113],[14,140]]]]],[],["loc",[null,[14,96],[14,142]]]]
+                  ["element","action",["toggleEnabledStatus",["get","enabledView",["loc",[null,[13,86],[13,97]]]]],[],["loc",[null,[13,55],[13,99]]]],
+                  ["inline","format-message",[["subexpr","intl-get",["generic.disable"],[],["loc",[null,[13,117],[13,145]]]]],[],["loc",[null,[13,100],[13,147]]]],
+                  ["element","action",["showDeleteConfirmation",["get","enabledView",["loc",[null,[14,89],[14,100]]]]],[],["loc",[null,[14,55],[14,102]]]],
+                  ["inline","format-message",[["subexpr","intl-get",["generic.delete"],[],["loc",[null,[14,120],[14,147]]]]],[],["loc",[null,[14,103],[14,149]]]]
                 ],
                 locals: [],
                 templates: []
@@ -46153,11 +46153,11 @@ define('frontend-cp/session/admin/manage/views/index/template', ['exports'], fun
                 return morphs;
               },
               statements: [
-                ["content","view.title",["loc",[null,[8,33],[8,47]]]],
+                ["content","enabledView.title",["loc",[null,[8,33],[8,54]]]],
                 ["inline","format-message",[["subexpr","intl-get",["generic.shared_with"],[],["loc",[null,[9,47],[9,79]]]]],[],["loc",[null,[9,30],[9,81]]]],
-                ["content","view.visibilityString",["loc",[null,[9,82],[9,107]]]],
-                ["element","action",["editView",["get","view",["loc",[null,[11,40],[11,44]]]]],[],["loc",[null,[11,20],[11,46]]]],
-                ["inline","format-message",[["subexpr","intl-get",["generic.edit"],[],["loc",[null,[11,64],[11,89]]]]],[],["loc",[null,[11,47],[11,91]]]],
+                ["content","enabledView.visibilityString",["loc",[null,[9,82],[9,114]]]],
+                ["element","action",["editView",["get","enabledView",["loc",[null,[11,40],[11,51]]]]],[],["loc",[null,[11,20],[11,53]]]],
+                ["inline","format-message",[["subexpr","intl-get",["generic.edit"],[],["loc",[null,[11,71],[11,96]]]]],[],["loc",[null,[11,54],[11,98]]]],
                 ["block","if",[["get","canDeleteOrDisableViews",["loc",[null,[12,14],[12,37]]]]],[],0,null,["loc",[null,[12,8],[15,15]]]]
               ],
               locals: [],
@@ -46199,7 +46199,7 @@ define('frontend-cp/session/admin/manage/views/index/template', ['exports'], fun
             statements: [
               ["block","ko-simple-list/row",[],[],0,null,["loc",[null,[7,4],[17,27]]]]
             ],
-            locals: ["view"],
+            locals: ["enabledView"],
             templates: [child0]
           };
         }());
@@ -46333,13 +46333,13 @@ define('frontend-cp/session/admin/manage/views/index/template', ['exports'], fun
                   return morphs;
                 },
                 statements: [
-                  ["content","view.title",["loc",[null,[27,29],[27,43]]]],
+                  ["content","disabledView.title",["loc",[null,[27,29],[27,51]]]],
                   ["inline","format-message",[["subexpr","intl-get",["generic.shared_with"],[],["loc",[null,[28,49],[28,81]]]]],[],["loc",[null,[28,32],[28,83]]]],
-                  ["content","view.visibilityString",["loc",[null,[28,84],[28,109]]]],
-                  ["element","action",["toggleEnabledStatus",["get","view",["loc",[null,[30,55],[30,59]]]]],[],["loc",[null,[30,24],[30,61]]]],
-                  ["inline","format-message",[["subexpr","intl-get",["generic.enable"],[],["loc",[null,[30,79],[30,106]]]]],[],["loc",[null,[30,62],[30,108]]]],
-                  ["element","action",["showDeleteConfirmation",["get","view",["loc",[null,[31,91],[31,95]]]]],[],["loc",[null,[31,57],[31,97]]]],
-                  ["inline","format-message",[["subexpr","intl-get",["generic.delete"],[],["loc",[null,[31,115],[31,142]]]]],[],["loc",[null,[31,98],[31,144]]]]
+                  ["content","disabledView.visibilityString",["loc",[null,[28,84],[28,117]]]],
+                  ["element","action",["toggleEnabledStatus",["get","disabledView",["loc",[null,[30,55],[30,67]]]]],[],["loc",[null,[30,24],[30,69]]]],
+                  ["inline","format-message",[["subexpr","intl-get",["generic.enable"],[],["loc",[null,[30,87],[30,114]]]]],[],["loc",[null,[30,70],[30,116]]]],
+                  ["element","action",["showDeleteConfirmation",["get","disabledView",["loc",[null,[31,91],[31,103]]]]],[],["loc",[null,[31,57],[31,105]]]],
+                  ["inline","format-message",[["subexpr","intl-get",["generic.delete"],[],["loc",[null,[31,123],[31,150]]]]],[],["loc",[null,[31,106],[31,152]]]]
                 ],
                 locals: [],
                 templates: []
@@ -46380,7 +46380,7 @@ define('frontend-cp/session/admin/manage/views/index/template', ['exports'], fun
               statements: [
                 ["block","ko-simple-list/row",[],[],0,null,["loc",[null,[26,6],[33,29]]]]
               ],
-              locals: ["view"],
+              locals: ["disabledView"],
               templates: [child0]
             };
           }());
@@ -46877,7 +46877,7 @@ define('frontend-cp/session/admin/showcase/controller', ['exports', 'ember', 'fr
   'use strict';
 
   exports['default'] = Ember['default'].Controller.extend(PusherBinding['default'], {
-    view: null,
+    currentView: null,
 
     // Pusher is off because we're still using my expired personal key
     //PUSHER_SUBSCRIPTIONS: {
@@ -46887,18 +46887,18 @@ define('frontend-cp/session/admin/showcase/controller', ['exports', 'ember', 'fr
     //},
 
     canDeleteCollection: (function () {
-      return this.get('view.collections.length') > 1;
-    }).property('view.collections.length'),
+      return this.get('currentView.collections.length') > 1;
+    }).property('currentView.collections.length'),
 
     actions: {
       addCollection: function addCollection() {
         var newProposition = this.store.createFragment('predicate-proposition', {});
         var newCollection = this.store.createFragment('predicate-collection', { propositions: [newProposition] });
 
-        this.get('view.collections').pushObject(newCollection);
+        this.get('currentView.collections').pushObject(newCollection);
       },
       removeCollection: function removeCollection(collection) {
-        this.get('view.collections').removeObject(collection);
+        this.get('currentView.collections').removeObject(collection);
       },
       createRuleForCollectionAfter: function createRuleForCollectionAfter(collection, rule) {
         var newProposition = this.store.createFragment('predicate-proposition', {});
@@ -46953,8 +46953,8 @@ define('frontend-cp/session/admin/showcase/route', ['exports', 'ember'], functio
       controller.set('userModel', userModel);
       controller.set('predicateDefinitions', this.store.peekAll('definition'));
 
-      this.store.find('view', 4).then(function (view) {
-        controller.set('view', view);
+      this.store.find('view', 4).then(function (currentView) {
+        controller.set('currentView', currentView);
       });
     },
 
@@ -47465,7 +47465,7 @@ define('frontend-cp/session/admin/showcase/template', ['exports'], function (exp
         return morphs;
       },
       statements: [
-        ["inline","ko-predicate-builder",[],["definitions",["subexpr","@mut",[["get","predicateDefinitions",["loc",[null,[5,18],[5,38]]]]],[],[]],"collections",["subexpr","@mut",[["get","view.collections",["loc",[null,[6,18],[6,34]]]]],[],[]],"onCollectionAddition","addCollection","onCollectionRemoval","removeCollection","onAdditionOfRuleToCollection","createRuleForCollectionAfter","onRuleDeletion","removeRuleFromCollection","canDeleteCollection",["subexpr","@mut",[["get","canDeleteCollection",["loc",[null,[11,26],[11,45]]]]],[],[]]],["loc",[null,[4,2],[11,47]]]],
+        ["inline","ko-predicate-builder",[],["definitions",["subexpr","@mut",[["get","predicateDefinitions",["loc",[null,[5,18],[5,38]]]]],[],[]],"collections",["subexpr","@mut",[["get","currentView.collections",["loc",[null,[6,18],[6,41]]]]],[],[]],"onCollectionAddition","addCollection","onCollectionRemoval","removeCollection","onAdditionOfRuleToCollection","createRuleForCollectionAfter","onRuleDeletion","removeRuleFromCollection","canDeleteCollection",["subexpr","@mut",[["get","canDeleteCollection",["loc",[null,[11,26],[11,45]]]]],[],[]]],["loc",[null,[4,2],[11,47]]]],
         ["block","ko-reorderable-list",[],["items",["subexpr","@mut",[["get","items",["loc",[null,[15,33],[15,38]]]]],[],[]]],0,null,["loc",[null,[15,4],[17,28]]]],
         ["block","ko-admin-selectable-card",[],[],1,null,["loc",[null,[20,2],[22,31]]]],
         ["block","ko-admin-selectable-card",[],["isActive",false],2,null,["loc",[null,[30,2],[32,31]]]],
@@ -61713,7 +61713,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+b3ab42ec"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+d3814623"});
 }
 
 /* jshint ignore:end */
