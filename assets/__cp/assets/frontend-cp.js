@@ -130,27 +130,35 @@ define('frontend-cp/adapters/application', ['exports', 'ember', 'ember-data', 'n
       });
     },
 
-    findMany: function findMany(store, type, ids, snapshots) {
+    findBelongsTo: function findBelongsTo(store, snapshot, url) {
       var _this5 = this;
 
-      return this._super(store, type, ids, snapshots)['catch'](function (error) {
+      return this._super(store, snapshot, url)['catch'](function (error) {
         _this5.get('errorService').handleServerError(error);
       });
     },
 
-    findRecord: function findRecord(store, type, id, snapshot) {
+    findMany: function findMany(store, type, ids, snapshots) {
       var _this6 = this;
 
-      return this._super(store, type, id, snapshot)['catch'](function (error) {
+      return this._super(store, type, ids, snapshots)['catch'](function (error) {
         _this6.get('errorService').handleServerError(error);
       });
     },
 
-    queryRecord: function queryRecord(store, type, query) {
+    findRecord: function findRecord(store, type, id, snapshot) {
       var _this7 = this;
 
-      return this._super(store, type, query)['catch'](function (error) {
+      return this._super(store, type, id, snapshot)['catch'](function (error) {
         _this7.get('errorService').handleServerError(error);
+      });
+    },
+
+    queryRecord: function queryRecord(store, type, query) {
+      var _this8 = this;
+
+      return this._super(store, type, query)['catch'](function (error) {
+        _this8.get('errorService').handleServerError(error);
       });
     },
 
@@ -255,16 +263,16 @@ define('frontend-cp/adapters/application', ['exports', 'ember', 'ember-data', 'n
     // Ideally it's a job of a serializer, but this is the only place where we can
     // get access the relationship object.
     findHasMany: function findHasMany(store, snapshot, url, relationship) {
-      var _this8 = this;
+      var _this9 = this;
 
       return this._super.apply(this, arguments).then(function (payload) {
         var inverse = snapshot.type.inverseFor(relationship.key, store);
-        if (inverse && payload[_this8.primaryRecordKey]) {
+        if (inverse && payload[_this9.primaryRecordKey]) {
           // required for when collection payload is a hash and not an array - looking at you, locale strings
-          if (!_['default'].isArray(payload[_this8.primaryRecordKey])) {
+          if (!_['default'].isArray(payload[_this9.primaryRecordKey])) {
             return payload;
           }
-          payload[_this8.primaryRecordKey].forEach(function (entry) {
+          payload[_this9.primaryRecordKey].forEach(function (entry) {
             if (!entry[inverse]) {
               entry[inverse] = {
                 id: snapshot.id,
@@ -274,6 +282,8 @@ define('frontend-cp/adapters/application', ['exports', 'ember', 'ember-data', 'n
           });
         }
         return payload;
+      })['catch'](function (error) {
+        _this9.get('errorService').handleServerError(error);
       });
     },
 
@@ -617,10 +627,27 @@ define('frontend-cp/application/controller', ['exports', 'ember'], function (exp
 
   exports['default'] = Ember['default'].Controller.extend({
     urlService: Ember['default'].inject.service('url'),
+    notificationService: Ember['default'].inject.service('notification'),
 
     currentPathDidChange: (function () {
       this.get('urlService').set('currentPath', this.get('currentPath'));
-    }).observes('currentPath')
+    }).observes('currentPath'),
+
+    /**
+     * Active notifications
+     * @return {Object[]} Array of notification objects
+     */
+    notifications: Ember['default'].computed('notificationService.notifications.@each', function () {
+      var notificationService = this.get('notificationService');
+      return notificationService.get('notifications');
+    }),
+
+    actions: {
+      onNotificationClosed: function onNotificationClosed(notification) {
+        var notificationService = this.get('notificationService');
+        notificationService.remove(notification);
+      }
+    }
   });
 
 });
@@ -648,6 +675,48 @@ define('frontend-cp/application/template', ['exports'], function (exports) {
   'use strict';
 
   exports['default'] = Ember.HTMLBars.template((function() {
+    var child0 = (function() {
+      return {
+        meta: {
+          "revision": "Ember@1.13.7",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 6,
+              "column": 2
+            },
+            "end": {
+              "line": 15,
+              "column": 2
+            }
+          },
+          "moduleName": "frontend-cp/application/template.hbs"
+        },
+        arity: 1,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("    ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+          return morphs;
+        },
+        statements: [
+          ["inline","ko-toast",[],["type",["subexpr","@mut",[["get","notification.type",["loc",[null,[8,9],[8,26]]]]],[],[]],"dismissable",["subexpr","@mut",[["get","notification.dismissable",["loc",[null,[9,16],[9,40]]]]],[],[]],"autodismiss",["subexpr","@mut",[["get","notification.autodismiss",["loc",[null,[10,16],[10,40]]]]],[],[]],"title",["subexpr","@mut",[["get","notification.title",["loc",[null,[11,10],[11,28]]]]],[],[]],"body",["subexpr","@mut",[["get","notification.body",["loc",[null,[12,9],[12,26]]]]],[],[]],"close",["subexpr","action",["onNotificationClosed",["get","notification",["loc",[null,[13,41],[13,53]]]]],[],["loc",[null,[13,10],[13,54]]]]],["loc",[null,[7,4],[14,6]]]]
+        ],
+        locals: ["notification"],
+        templates: []
+      };
+    }());
     return {
       meta: {
         "revision": "Ember@1.13.7",
@@ -658,8 +727,8 @@ define('frontend-cp/application/template', ['exports'], function (exports) {
             "column": 0
           },
           "end": {
-            "line": 5,
-            "column": 0
+            "line": 16,
+            "column": 6
           }
         },
         "moduleName": "frontend-cp/application/template.hbs"
@@ -677,21 +746,30 @@ define('frontend-cp/application/template', ['exports'], function (exports) {
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n\n");
         dom.appendChild(el0, el1);
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","application__notifications");
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var morphs = new Array(2);
+        var morphs = new Array(3);
         morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
         morphs[1] = dom.createMorphAt(fragment,2,2,contextualElement);
+        morphs[2] = dom.createMorphAt(dom.childAt(fragment, [4]),1,1);
         dom.insertBoundary(fragment, 0);
         return morphs;
       },
       statements: [
         ["content","outlet",["loc",[null,[1,0],[1,10]]]],
-        ["inline","ko-context-modal",[],["floating",true],["loc",[null,[3,0],[3,34]]]]
+        ["inline","ko-context-modal",[],["floating",true],["loc",[null,[3,0],[3,34]]]],
+        ["block","each",[["get","notifications",["loc",[null,[6,10],[6,23]]]]],[],0,null,["loc",[null,[6,2],[15,11]]]]
       ],
       locals: [],
-      templates: []
+      templates: [child0]
     };
   }()));
 
@@ -35086,48 +35164,6 @@ define('frontend-cp/login/template', ['exports'], function (exports) {
         templates: []
       };
     }());
-    var child6 = (function() {
-      return {
-        meta: {
-          "revision": "Ember@1.13.7",
-          "loc": {
-            "source": null,
-            "start": {
-              "line": 84,
-              "column": 2
-            },
-            "end": {
-              "line": 93,
-              "column": 2
-            }
-          },
-          "moduleName": "frontend-cp/login/template.hbs"
-        },
-        arity: 1,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("    ");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createComment("");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n");
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
-          return morphs;
-        },
-        statements: [
-          ["inline","ko-toast",[],["type",["subexpr","@mut",[["get","notification.type",["loc",[null,[86,9],[86,26]]]]],[],[]],"dismissable",["subexpr","@mut",[["get","notification.dismissable",["loc",[null,[87,16],[87,40]]]]],[],[]],"autodismiss",["subexpr","@mut",[["get","notification.autodismiss",["loc",[null,[88,16],[88,40]]]]],[],[]],"title",["subexpr","@mut",[["get","notification.title",["loc",[null,[89,10],[89,28]]]]],[],[]],"body",["subexpr","@mut",[["get","notification.body",["loc",[null,[90,9],[90,26]]]]],[],[]],"close",["subexpr","action",["onNotificationClosed",["get","notification",["loc",[null,[91,41],[91,53]]]]],[],["loc",[null,[91,10],[91,54]]]]],["loc",[null,[85,4],[92,6]]]]
-        ],
-        locals: ["notification"],
-        templates: []
-      };
-    }());
     return {
       meta: {
         "revision": "Ember@1.13.7",
@@ -35138,7 +35174,7 @@ define('frontend-cp/login/template', ['exports'], function (exports) {
             "column": 0
           },
           "end": {
-            "line": 94,
+            "line": 81,
             "column": 6
           }
         },
@@ -35332,15 +35368,6 @@ define('frontend-cp/login/template', ['exports'], function (exports) {
         var el2 = dom.createTextNode("\n");
         dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n\n");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createElement("div");
-        dom.setAttribute(el1,"class","session__notifications");
-        var el2 = dom.createTextNode("\n");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createComment("");
-        dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
@@ -35356,7 +35383,7 @@ define('frontend-cp/login/template', ['exports'], function (exports) {
         var element10 = dom.childAt(element9, [5, 1]);
         var element11 = dom.childAt(element9, [7, 1]);
         var element12 = dom.childAt(element9, [9, 1]);
-        var morphs = new Array(23);
+        var morphs = new Array(22);
         morphs[0] = dom.createAttrMorph(element2, 'class');
         morphs[1] = dom.createAttrMorph(element4, 'style');
         morphs[2] = dom.createAttrMorph(element5, 'style');
@@ -35379,7 +35406,6 @@ define('frontend-cp/login/template', ['exports'], function (exports) {
         morphs[19] = dom.createAttrMorph(element12, 'class');
         morphs[20] = dom.createElementMorph(element12);
         morphs[21] = dom.createMorphAt(element12,0,0);
-        morphs[22] = dom.createMorphAt(dom.childAt(fragment, [2]),1,1);
         return morphs;
       },
       statements: [
@@ -35404,11 +35430,10 @@ define('frontend-cp/login/template', ['exports'], function (exports) {
         ["inline","format-message",[["subexpr","intl-get",["login.login"],[],["loc",[null,[71,131],[71,155]]]]],[],["loc",[null,[71,114],[71,157]]]],
         ["attribute","class",["concat",["js-slide ",["subexpr","if",[["get","isLoading",["loc",[null,[75,63],[75,72]]]],"u-disable-link"],[],["loc",[null,[75,58],[75,91]]]]]]],
         ["element","action",["gotoForgotPassword"],[],["loc",[null,[75,93],[75,124]]]],
-        ["inline","format-message",[["subexpr","intl-get",["login.forgot"],[],["loc",[null,[75,142],[75,167]]]]],[],["loc",[null,[75,125],[75,169]]]],
-        ["block","each",[["get","notifications",["loc",[null,[84,10],[84,23]]]]],[],6,null,["loc",[null,[84,2],[93,11]]]]
+        ["inline","format-message",[["subexpr","intl-get",["login.forgot"],[],["loc",[null,[75,142],[75,167]]]]],[],["loc",[null,[75,125],[75,169]]]]
       ],
       locals: [],
-      templates: [child0, child1, child2, child3, child4, child5, child6]
+      templates: [child0, child1, child2, child3, child4, child5]
     };
   }()));
 
@@ -44131,6 +44156,8 @@ define('frontend-cp/services/session', ['exports', 'ember'], function (exports, 
       var session = this.get('session');
       return session.destroyRecord().then(function () {
         _this4.set('session', null);
+      }, function () {
+        // catch the error - we don't care it it's already deleted etc.
       });
     },
 
@@ -49622,7 +49649,6 @@ define('frontend-cp/session/controller', ['exports', 'ember'], function (exports
     urlService: Ember['default'].inject.service('url'),
     tabsService: Ember['default'].inject.service('tabs'),
     routeStateService: Ember['default'].inject.service('routeState'),
-    notificationService: Ember['default'].inject.service('notification'),
     searchResults: null,
     isSearching: false,
     hideSessionWidgets: false,
@@ -49650,15 +49676,6 @@ define('frontend-cp/session/controller', ['exports', 'ember'], function (exports
      * @type {Tab}
      */
     selectedTab: null,
-
-    /**
-     * Active notifications
-     * @return {Object[]} Array of notification objects
-     */
-    notifications: Ember['default'].computed('notificationService.notifications.@each', function () {
-      var notificationService = this.get('notificationService');
-      return notificationService.get('notifications');
-    }),
 
     init: function init() {
       this._super();
@@ -49823,10 +49840,6 @@ define('frontend-cp/session/controller', ['exports', 'ember'], function (exports
       loadSearchRoute: function loadSearchRoute(baseURL, targetObjectId) {
         /* this has to be built as a URL - we have a searchResult object, not a user/case object */
         this.transitionToRoute(baseURL + targetObjectId);
-      },
-      onNotificationClosed: function onNotificationClosed(notification) {
-        var notificationService = this.get('notificationService');
-        notificationService.remove(notification);
       }
     }
   });
@@ -54895,48 +54908,6 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
         templates: []
       };
     }());
-    var child9 = (function() {
-      return {
-        meta: {
-          "revision": "Ember@1.13.7",
-          "loc": {
-            "source": null,
-            "start": {
-              "line": 47,
-              "column": 2
-            },
-            "end": {
-              "line": 56,
-              "column": 2
-            }
-          },
-          "moduleName": "frontend-cp/session/template.hbs"
-        },
-        arity: 1,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("  ");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createComment("");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n");
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
-          return morphs;
-        },
-        statements: [
-          ["inline","ko-toast",[],["type",["subexpr","@mut",[["get","notification.type",["loc",[null,[49,9],[49,26]]]]],[],[]],"dismissable",["subexpr","@mut",[["get","notification.dismissable",["loc",[null,[50,16],[50,40]]]]],[],[]],"autodismiss",["subexpr","@mut",[["get","notification.autodismiss",["loc",[null,[51,16],[51,40]]]]],[],[]],"title",["subexpr","@mut",[["get","notification.title",["loc",[null,[52,10],[52,28]]]]],[],[]],"body",["subexpr","@mut",[["get","notification.body",["loc",[null,[53,9],[53,26]]]]],[],[]],"close",["subexpr","action",["onNotificationClosed",["get","notification",["loc",[null,[54,41],[54,53]]]]],[],["loc",[null,[54,10],[54,54]]]]],["loc",[null,[48,2],[55,4]]]]
-        ],
-        locals: ["notification"],
-        templates: []
-      };
-    }());
     return {
       meta: {
         "revision": "Ember@1.13.7",
@@ -54947,7 +54918,7 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
             "column": 0
           },
           "end": {
-            "line": 58,
+            "line": 45,
             "column": 0
           }
         },
@@ -55095,15 +55066,6 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
         var el2 = dom.createComment("");
         dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n\n");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createElement("div");
-        dom.setAttribute(el1,"class","session__notifications");
-        var el2 = dom.createTextNode("\n");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createComment("");
-        dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
         return el0;
@@ -55113,7 +55075,7 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
         var element1 = dom.childAt(element0, [1]);
         var element2 = dom.childAt(element1, [3, 1]);
         var element3 = dom.childAt(element0, [3, 1]);
-        var morphs = new Array(13);
+        var morphs = new Array(12);
         morphs[0] = dom.createMorphAt(element2,1,1);
         morphs[1] = dom.createMorphAt(element2,3,3);
         morphs[2] = dom.createMorphAt(element2,5,5);
@@ -55126,7 +55088,6 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
         morphs[9] = dom.createMorphAt(fragment,2,2,contextualElement);
         morphs[10] = dom.createMorphAt(fragment,4,4,contextualElement);
         morphs[11] = dom.createMorphAt(dom.childAt(fragment, [6]),1,1);
-        morphs[12] = dom.createMorphAt(dom.childAt(fragment, [8]),1,1);
         return morphs;
       },
       statements: [
@@ -55141,11 +55102,10 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
         ["block","unless",[["get","hideSessionWidgets",["loc",[null,[28,18],[28,36]]]]],[],5,null,["loc",[null,[28,8],[30,19]]]],
         ["block","link-to",["session.showcase"],["class","nav-main__item"],6,null,["loc",[null,[37,0],[37,74]]]],
         ["block","link-to",["session.styleguide"],["class","nav-main__item"],7,null,["loc",[null,[38,0],[38,79]]]],
-        ["block","ko-scroller",[],["scrollTop",["subexpr","@mut",[["get","scroll",["loc",[null,[41,27],[41,33]]]]],[],[]]],8,null,["loc",[null,[41,2],[43,18]]]],
-        ["block","each",[["get","notifications",["loc",[null,[47,10],[47,23]]]]],[],9,null,["loc",[null,[47,2],[56,11]]]]
+        ["block","ko-scroller",[],["scrollTop",["subexpr","@mut",[["get","scroll",["loc",[null,[41,27],[41,33]]]]],[],[]]],8,null,["loc",[null,[41,2],[43,18]]]]
       ],
       locals: [],
-      templates: [child0, child1, child2, child3, child4, child5, child6, child7, child8, child9]
+      templates: [child0, child1, child2, child3, child4, child5, child6, child7, child8]
     };
   }()));
 
@@ -62220,7 +62180,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+35a25c97"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+09702ecf"});
 }
 
 /* jshint ignore:end */
