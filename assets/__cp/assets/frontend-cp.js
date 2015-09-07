@@ -31695,6 +31695,7 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
 
   exports['default'] = Ember['default'].Component.extend({
     store: Ember['default'].inject.service(),
+    sessionService: Ember['default'].inject.service('session'),
     errors: {},
     intl: Ember['default'].inject.service(),
 
@@ -31896,11 +31897,53 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 34,
+              "line": 25,
+              "column": 9
+            },
+            "end": {
+              "line": 27,
+              "column": 9
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-user-content/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("           ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+          return morphs;
+        },
+        statements: [
+          ["inline","ko-user-action-menu",[],["editSignature","editSignature"],["loc",[null,[26,11],[26,64]]]]
+        ],
+        locals: [],
+        templates: []
+      };
+    }());
+    var child1 = (function() {
+      return {
+        meta: {
+          "revision": "Ember@1.13.7",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 36,
               "column": 8
             },
             "end": {
-              "line": 36,
+              "line": 38,
               "column": 8
             }
           },
@@ -31925,13 +31968,13 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["inline","format-message",[["subexpr","intl-get",["users.add_a_note"],[],["loc",[null,[35,27],[35,56]]]]],[],["loc",[null,[35,10],[35,58]]]]
+          ["inline","format-message",[["subexpr","intl-get",["users.add_a_note"],[],["loc",[null,[37,27],[37,56]]]]],[],["loc",[null,[37,10],[37,58]]]]
         ],
         locals: [],
         templates: []
       };
     }());
-    var child1 = (function() {
+    var child2 = (function() {
       var child0 = (function() {
         return {
           meta: {
@@ -31939,11 +31982,11 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 59,
+                "line": 61,
                 "column": 8
               },
               "end": {
-                "line": 69,
+                "line": 71,
                 "column": 8
               }
             },
@@ -31968,7 +32011,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
             return morphs;
           },
           statements: [
-            ["inline","ko-field/select",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.infobar.accesslevel"],[],["loc",[null,[61,35],[61,73]]]]],[],["loc",[null,[61,19],[61,74]]]],"options",["subexpr","@mut",[["get","accessLevels",["loc",[null,[62,21],[62,33]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isAccessLevelEdited",["loc",[null,[63,22],[63,41]]]]],[],[]],"value",["subexpr","@mut",[["get","model.accessLevel",["loc",[null,[64,19],[64,36]]]]],[],[]],"onValueChange","accessLevelSelect","idPath","value","labelPath","name"],["loc",[null,[60,11],[68,13]]]]
+            ["inline","ko-field/select",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.infobar.accesslevel"],[],["loc",[null,[63,35],[63,73]]]]],[],["loc",[null,[63,19],[63,74]]]],"options",["subexpr","@mut",[["get","accessLevels",["loc",[null,[64,21],[64,33]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isAccessLevelEdited",["loc",[null,[65,22],[65,41]]]]],[],[]],"value",["subexpr","@mut",[["get","model.accessLevel",["loc",[null,[66,19],[66,36]]]]],[],[]],"onValueChange","accessLevelSelect","idPath","value","labelPath","name"],["loc",[null,[62,11],[70,13]]]]
           ],
           locals: [],
           templates: []
@@ -31980,11 +32023,11 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 41,
+              "line": 43,
               "column": 6
             },
             "end": {
-              "line": 98,
+              "line": 100,
               "column": 6
             }
           },
@@ -32056,32 +32099,32 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["element","action",["submit"],[],["loc",[null,[43,55],[43,74]]]],
-          ["inline","format-message",[["subexpr","intl-get",["cases.submit"],[],["loc",[null,[43,92],[43,117]]]]],[],["loc",[null,[43,75],[43,119]]]],
-          ["inline","ko-case-field/suggest",[],["selectedItem",["subexpr","@mut",[["get","model.role.title",["loc",[null,[46,45],[46,61]]]]],[],[]],"items",["subexpr","@mut",[["get","roles",["loc",[null,[47,38],[47,43]]]]],[],[]],"searchKey","title","title",["subexpr","intl-get",["users.infobar.role"],[],["loc",[null,[49,38],[49,69]]]],"isEdited",["subexpr","@mut",[["get","isRoleEdited",["loc",[null,[50,41],[50,53]]]]],[],[]],"onItemSelect","roleSelect"],["loc",[null,[46,8],[51,59]]]],
-          ["inline","ko-case-field/suggest",[],["selectedItem",["subexpr","@mut",[["get","model.organization.name",["loc",[null,[53,45],[53,68]]]]],[],[]],"items",["subexpr","@mut",[["get","organizations",["loc",[null,[54,38],[54,51]]]]],[],[]],"title",["subexpr","intl-get",["users.infobar.organization"],[],["loc",[null,[55,38],[55,77]]]],"isEdited",["subexpr","@mut",[["get","isOrganizationEdited",["loc",[null,[56,41],[56,61]]]]],[],[]],"onItemSelect","organizationSelect"],["loc",[null,[53,8],[57,67]]]],
-          ["block","if",[["subexpr","eq",[["get","model.role.type",["loc",[null,[59,18],[59,33]]]],"CUSTOMER"],[],["loc",[null,[59,14],[59,45]]]]],[],0,null,["loc",[null,[59,8],[69,15]]]],
-          ["inline","ko-timezone-select",[],["timezone",["subexpr","@mut",[["get","model.timeZone",["loc",[null,[72,38],[72,52]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isTimezoneEdited",["loc",[null,[73,38],[73,54]]]]],[],[]],"onChangeTimezone","timezoneSelect"],["loc",[null,[72,8],[74,64]]]],
-          ["inline","ko-field/tags",[],["selectedTags",["subexpr","@mut",[["get","userTeams",["loc",[null,[76,37],[76,46]]]]],[],[]],"suggestedTags",["subexpr","@mut",[["get","suggestedTeams",["loc",[null,[77,38],[77,52]]]]],[],[]],"title",["subexpr","format-message",[["subexpr","intl-get",["users.teams"],[],["loc",[null,[78,46],[78,70]]]]],[],["loc",[null,[78,30],[78,71]]]],"newTagText",["subexpr","format-message",[["subexpr","intl-get",["users.newteam"],[],["loc",[null,[79,51],[79,77]]]]],[],["loc",[null,[79,35],[79,78]]]],"addTagText",["subexpr","format-message",[["subexpr","intl-get",["users.addteam"],[],["loc",[null,[80,51],[80,77]]]]],[],["loc",[null,[80,35],[80,78]]]],"onTagAddition","addTeam","onTagRemoval","removeTeam","onTagSuggestion","suggestTeams","isEdited",["subexpr","@mut",[["get","isTeamsFieldEdited",["loc",[null,[84,33],[84,51]]]]],[],[]]],["loc",[null,[76,8],[84,53]]]],
-          ["inline","ko-field/tags",[],["selectedTags",["subexpr","@mut",[["get","userTags",["loc",[null,[86,37],[86,45]]]]],[],[]],"suggestedTags",["subexpr","@mut",[["get","suggestedTags",["loc",[null,[87,38],[87,51]]]]],[],[]],"title",["subexpr","format-message",[["subexpr","intl-get",["users.tags"],[],["loc",[null,[88,46],[88,69]]]]],[],["loc",[null,[88,30],[88,70]]]],"newTagText",["subexpr","format-message",[["subexpr","intl-get",["users.newtag"],[],["loc",[null,[89,51],[89,76]]]]],[],["loc",[null,[89,35],[89,77]]]],"addTagText",["subexpr","format-message",[["subexpr","intl-get",["users.addtag"],[],["loc",[null,[90,51],[90,76]]]]],[],["loc",[null,[90,35],[90,77]]]],"onTagAddition","addTag","onTagRemoval","removeTag","onTagSuggestion","suggestTags","isEdited",["subexpr","@mut",[["get","isTagsFieldEdited",["loc",[null,[94,33],[94,50]]]]],[],[]]],["loc",[null,[86,8],[94,52]]]],
-          ["inline","ko-info-bar/metadata",[],["rows",["subexpr","@mut",[["get","userDates",["loc",[null,[97,36],[97,45]]]]],[],[]]],["loc",[null,[97,8],[97,47]]]]
+          ["element","action",["submit"],[],["loc",[null,[45,55],[45,74]]]],
+          ["inline","format-message",[["subexpr","intl-get",["cases.submit"],[],["loc",[null,[45,92],[45,117]]]]],[],["loc",[null,[45,75],[45,119]]]],
+          ["inline","ko-case-field/suggest",[],["selectedItem",["subexpr","@mut",[["get","model.role.title",["loc",[null,[48,45],[48,61]]]]],[],[]],"items",["subexpr","@mut",[["get","roles",["loc",[null,[49,38],[49,43]]]]],[],[]],"searchKey","title","title",["subexpr","intl-get",["users.infobar.role"],[],["loc",[null,[51,38],[51,69]]]],"isEdited",["subexpr","@mut",[["get","isRoleEdited",["loc",[null,[52,41],[52,53]]]]],[],[]],"onItemSelect","roleSelect"],["loc",[null,[48,8],[53,59]]]],
+          ["inline","ko-case-field/suggest",[],["selectedItem",["subexpr","@mut",[["get","model.organization.name",["loc",[null,[55,45],[55,68]]]]],[],[]],"items",["subexpr","@mut",[["get","organizations",["loc",[null,[56,38],[56,51]]]]],[],[]],"title",["subexpr","intl-get",["users.infobar.organization"],[],["loc",[null,[57,38],[57,77]]]],"isEdited",["subexpr","@mut",[["get","isOrganizationEdited",["loc",[null,[58,41],[58,61]]]]],[],[]],"onItemSelect","organizationSelect"],["loc",[null,[55,8],[59,67]]]],
+          ["block","if",[["subexpr","eq",[["get","model.role.roleType",["loc",[null,[61,18],[61,37]]]],"CUSTOMER"],[],["loc",[null,[61,14],[61,49]]]]],[],0,null,["loc",[null,[61,8],[71,15]]]],
+          ["inline","ko-timezone-select",[],["timezone",["subexpr","@mut",[["get","model.timeZone",["loc",[null,[74,38],[74,52]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isTimezoneEdited",["loc",[null,[75,38],[75,54]]]]],[],[]],"onChangeTimezone","timezoneSelect"],["loc",[null,[74,8],[76,64]]]],
+          ["inline","ko-field/tags",[],["selectedTags",["subexpr","@mut",[["get","userTeams",["loc",[null,[78,37],[78,46]]]]],[],[]],"suggestedTags",["subexpr","@mut",[["get","suggestedTeams",["loc",[null,[79,38],[79,52]]]]],[],[]],"title",["subexpr","format-message",[["subexpr","intl-get",["users.teams"],[],["loc",[null,[80,46],[80,70]]]]],[],["loc",[null,[80,30],[80,71]]]],"newTagText",["subexpr","format-message",[["subexpr","intl-get",["users.newteam"],[],["loc",[null,[81,51],[81,77]]]]],[],["loc",[null,[81,35],[81,78]]]],"addTagText",["subexpr","format-message",[["subexpr","intl-get",["users.addteam"],[],["loc",[null,[82,51],[82,77]]]]],[],["loc",[null,[82,35],[82,78]]]],"onTagAddition","addTeam","onTagRemoval","removeTeam","onTagSuggestion","suggestTeams","isEdited",["subexpr","@mut",[["get","isTeamsFieldEdited",["loc",[null,[86,33],[86,51]]]]],[],[]]],["loc",[null,[78,8],[86,53]]]],
+          ["inline","ko-field/tags",[],["selectedTags",["subexpr","@mut",[["get","userTags",["loc",[null,[88,37],[88,45]]]]],[],[]],"suggestedTags",["subexpr","@mut",[["get","suggestedTags",["loc",[null,[89,38],[89,51]]]]],[],[]],"title",["subexpr","format-message",[["subexpr","intl-get",["users.tags"],[],["loc",[null,[90,46],[90,69]]]]],[],["loc",[null,[90,30],[90,70]]]],"newTagText",["subexpr","format-message",[["subexpr","intl-get",["users.newtag"],[],["loc",[null,[91,51],[91,76]]]]],[],["loc",[null,[91,35],[91,77]]]],"addTagText",["subexpr","format-message",[["subexpr","intl-get",["users.addtag"],[],["loc",[null,[92,51],[92,76]]]]],[],["loc",[null,[92,35],[92,77]]]],"onTagAddition","addTag","onTagRemoval","removeTag","onTagSuggestion","suggestTags","isEdited",["subexpr","@mut",[["get","isTagsFieldEdited",["loc",[null,[96,33],[96,50]]]]],[],[]]],["loc",[null,[88,8],[96,52]]]],
+          ["inline","ko-info-bar/metadata",[],["rows",["subexpr","@mut",[["get","userDates",["loc",[null,[99,36],[99,45]]]]],[],[]]],["loc",[null,[99,8],[99,47]]]]
         ],
         locals: [],
         templates: [child0]
       };
     }());
-    var child2 = (function() {
+    var child3 = (function() {
       return {
         meta: {
           "revision": "Ember@1.13.7",
           "loc": {
             "source": null,
             "start": {
-              "line": 103,
+              "line": 105,
               "column": 0
             },
             "end": {
-              "line": 107,
+              "line": 109,
               "column": 0
             }
           },
@@ -32106,7 +32149,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["inline","textarea",[],["value",["subexpr","@mut",[["get","model.signature",["loc",[null,[106,19],[106,34]]]]],[],[]],"class","input__text-area--clean"],["loc",[null,[106,2],[106,68]]]]
+          ["inline","textarea",[],["value",["subexpr","@mut",[["get","model.signature",["loc",[null,[108,19],[108,34]]]]],[],[]],"class","input__text-area--clean"],["loc",[null,[108,2],[108,68]]]]
         ],
         locals: [],
         templates: []
@@ -32122,7 +32165,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
             "column": 0
           },
           "end": {
-            "line": 108,
+            "line": 110,
             "column": 0
           }
         },
@@ -32221,11 +32264,11 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
         var el5 = dom.createTextNode("\n       ");
         dom.appendChild(el4, el5);
         var el5 = dom.createElement("li");
-        var el6 = dom.createTextNode("\n         ");
+        var el6 = dom.createTextNode("\n");
         dom.appendChild(el5, el6);
         var el6 = dom.createComment("");
         dom.appendChild(el5, el6);
-        var el6 = dom.createTextNode("\n       ");
+        var el6 = dom.createTextNode("       ");
         dom.appendChild(el5, el6);
         dom.appendChild(el4, el5);
         var el5 = dom.createTextNode("\n     ");
@@ -32301,13 +32344,13 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
       statements: [
         ["attribute","src",["concat",[["get","model.avatar",["loc",[null,[6,22],[6,34]]]]]]],
         ["content","model.fullName",["loc",[null,[10,12],[10,30]]]],
-        ["inline","ko-user-action-menu",[],["editSignature","editSignature"],["loc",[null,[25,9],[25,62]]]],
-        ["block","ko-text-editor",[],["viewName","postEditor"],0,null,["loc",[null,[34,8],[36,27]]]],
-        ["block","ko-info-bar",[],[],1,null,["loc",[null,[41,6],[98,22]]]],
-        ["block","ko-editor-modal",[],["onSave","submit","viewName","signatureModal","title",["subexpr","format-message",[["subexpr","intl-get",["users.editsignature"],[],["loc",[null,[105,41],[105,73]]]]],[],["loc",[null,[105,25],[105,74]]]]],2,null,["loc",[null,[103,0],[107,20]]]]
+        ["block","if",[["subexpr","ko-has-permission",["app.edit.signature",["get","sessionService.permissions",["loc",[null,[25,55],[25,81]]]],["get","model.role.roleType",["loc",[null,[25,82],[25,101]]]]],[],["loc",[null,[25,15],[25,102]]]]],[],0,null,["loc",[null,[25,9],[27,16]]]],
+        ["block","ko-text-editor",[],["viewName","postEditor"],1,null,["loc",[null,[36,8],[38,27]]]],
+        ["block","ko-info-bar",[],[],2,null,["loc",[null,[43,6],[100,22]]]],
+        ["block","ko-editor-modal",[],["onSave","submit","viewName","signatureModal","title",["subexpr","format-message",[["subexpr","intl-get",["users.editsignature"],[],["loc",[null,[107,41],[107,73]]]]],[],["loc",[null,[107,25],[107,74]]]]],3,null,["loc",[null,[105,0],[109,20]]]]
       ],
       locals: [],
-      templates: [child0, child1, child2]
+      templates: [child0, child1, child2, child3]
     };
   }()));
 
@@ -33163,6 +33206,81 @@ define('frontend-cp/helpers/ko-get-key', ['exports', 'ember'], function (exports
 
   exports['default'] = Ember['default'].Handlebars.makeBoundHelper(function (value, key) {
     return value.get(key);
+  });
+
+});
+define('frontend-cp/helpers/ko-has-permission', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  var roleTypes = {
+    ADMIN: {
+      rank: 4,
+      permissions: []
+    },
+    AGENT: {
+      rank: 3,
+      permissions: []
+    },
+    COLLABORATOR: {
+      rank: 2,
+      permissions: []
+    },
+    CUSTOMER: {
+      rank: 1,
+      permissions: []
+    }
+  };
+
+  /*
+   * A map of system actions to a function that checks if the roleType provided
+   * has the ability to carry out this action.
+   * The actions should match values in `permissions` list for a given roleType
+   *
+   * The 1st argument of the function will always be the roleType of the current
+   * logged in user. Any other arguments passed to the helper are provided as
+   * a list.
+   *
+   * The function allows us to perform additional checks on top of the existence
+   * of the permission e.g. 'app.delete.user' requires that the roleType.rank of
+   * the logged in user be greater than that of the user they are trying to
+   * delete.
+   */
+  var applicationActions = {
+    'app.edit.signature': function appEditSignature(roleType, args) {
+      var userRoleType = roleTypes[args[0]];
+      return roleType.rank > userRoleType.rank;
+    }
+  };
+
+  /**
+   * Assign the appropriate actions to each users `permissions` list.
+   * permissions Cascade so an AGENT = CUSTOMER + COLLABORATOR + AGENT
+   */
+  roleTypes.CUSTOMER.permissions = [];
+  roleTypes.COLLABORATOR.permissions = roleTypes.CUSTOMER.permissions.concat([]);
+  roleTypes.AGENT.permissions = roleTypes.COLLABORATOR.permissions.concat(['app.delete.user', 'app.edit.signature']);
+  roleTypes.ADMIN.permissions = roleTypes.AGENT.permissions.concat(['app.admin.stuff']);
+
+  exports['default'] = Ember['default'].Helper.extend({
+    sessionService: Ember['default'].inject.service('session'),
+    compute: function compute(params, hash) {
+      var role = this.get('sessionService.user.role');
+      var roleType = roleTypes[role.get('roleType')];
+      var action = params[0];
+      var permissions = params[1];
+
+      // First check the permission exists
+      if (roleType && roleType.permissions.indexOf(action) > -1) {
+        // Then allow the permission function to run
+        return applicationActions[action](roleType, params.splice(2));
+      }
+
+      // Check role permissions
+      return permissions.filter(function (perm) {
+        return perm.get('name') === action && perm.get('value');
+      }).length > 0;
+    }
   });
 
 });
@@ -35349,6 +35467,15 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
+    this.get('/api/v1/users/:id/identities/slack', function (db) {
+      return {
+        status: 200,
+        data: [],
+        resource: 'identity_slack',
+        total_count: 0
+      };
+    });
+
     this.get('/api/v1/roles', function (db) {
       return {
         status: 200,
@@ -35357,6 +35484,17 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
         offset: 0,
         limit: 10,
         total_count: db.roles.length
+      };
+    });
+
+    this.get('/api/v1/roles/:id/permissions', function (db) {
+      return {
+        status: 200,
+        data: [],
+        resource: 'permission',
+        offset: 0,
+        limit: 10,
+        total_count: 0
       };
     });
 
@@ -41938,6 +42076,16 @@ define('frontend-cp/models/organization', ['exports', 'ember-data'], function (e
   });
 
 });
+define('frontend-cp/models/permission', ['exports', 'ember-data'], function (exports, DS) {
+
+  'use strict';
+
+  exports['default'] = DS['default'].Model.extend({
+    name: DS['default'].attr('string'),
+    value: DS['default'].attr('boolean')
+  });
+
+});
 define('frontend-cp/models/post', ['exports', 'ember-data'], function (exports, DS) {
 
   'use strict';
@@ -42004,7 +42152,8 @@ define('frontend-cp/models/role', ['exports', 'ember-data'], function (exports, 
 
   exports['default'] = DS['default'].Model.extend({
     title: DS['default'].attr('string'),
-    type: DS['default'].attr('string')
+    roleType: DS['default'].attr('string'),
+    permissions: DS['default'].hasMany('permission', { child: true, async: true, url: 'permissions' })
   });
 
 });
@@ -42617,8 +42766,7 @@ define('frontend-cp/serializers/application', ['exports', 'ember', 'ember-data',
         _['default'].each(resources, function (resource) {
           // TODO remove || type — this is a temporary fix
           type = resource.resource_type || type;
-          _this2.extractRelationships(resource);
-          models[type].push(resource);
+          models[type].push(_this2.extractItem(resource, type));
         });
       });
 
@@ -42998,6 +43146,17 @@ define('frontend-cp/serializers/relationship-fragment', ['exports', 'frontend-cp
     attrs: {
       relationshipId: { key: 'id' },
       relationshipType: { key: 'resource_type' }
+    }
+  });
+
+});
+define('frontend-cp/serializers/role', ['exports', 'frontend-cp/serializers/application'], function (exports, ApplicationSerializer) {
+
+  'use strict';
+
+  exports['default'] = ApplicationSerializer['default'].extend({
+    attrs: {
+      roleType: { key: 'type' }
     }
   });
 
@@ -44059,18 +44218,28 @@ define('frontend-cp/services/session', ['exports', 'ember'], function (exports, 
       });
     },
 
-    _getSession: function _getSession() {
+    permissions: [],
+    getPermissions: function getPermissions() {
       var _this2 = this;
+
+      this.get('user.role.permissions').then(function (perms) {
+        _this2.set('permissions', perms);
+      });
+    },
+
+    _getSession: function _getSession() {
+      var _this3 = this;
 
       return this.get('store').find('session', 'current').then(function (session) {
         // We have to explicitly delete a record with id=current.
         // Thank you, Ember Data, for this mess.
-        var record = _this2.get('store').peekAll('session').find(function (record) {
+        var record = _this3.get('store').peekAll('session').find(function (record) {
           return record.id === 'current';
         });
         record.unloadRecord();
-        _this2.set('session', session);
-        _this2.set('user', session.get('user'));
+        _this3.set('session', session);
+        _this3.set('user', session.get('user'));
+        _this3.getPermissions();
       });
     },
 
@@ -44090,11 +44259,11 @@ define('frontend-cp/services/session', ['exports', 'ember'], function (exports, 
      * @return {Promise} Ember.RSVP.Promise resolving when logout is complete
      */
     logout: function logout() {
-      var _this3 = this;
+      var _this4 = this;
 
       var session = this.get('session');
       return session.destroyRecord().then(function () {
-        _this3.set('session', null);
+        _this4.set('session', null);
       });
     },
 
@@ -44105,11 +44274,11 @@ define('frontend-cp/services/session', ['exports', 'ember'], function (exports, 
      * @return {Promise} Ember.RSVP.Promise containing session
      */
     requestSession: function requestSession(email, password) {
-      var _this4 = this;
+      var _this5 = this;
 
       var unset = function unset() {
-        _this4.set('email', null);
-        _this4.set('password', null);
+        _this5.set('email', null);
+        _this5.set('password', null);
       };
 
       this.set('email', email);
@@ -62184,7 +62353,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+a5de467f"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+2b8e5e6c"});
 }
 
 /* jshint ignore:end */
