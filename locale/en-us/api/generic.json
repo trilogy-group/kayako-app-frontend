@@ -48,6 +48,7 @@
   "SLA": "SLA",
   "select_placeholder": "Select...",
   "search_result_select_instruction": "Press enter",
+  "shared_with": "Shared with",
 
   "sort.ASC": "Ascending",
   "sort.DESC": "Descending",
@@ -66,5 +67,8 @@
   "create_user_panel.email_invalid": "Invalid email address",
   "create_user_panel.submit": "Add user",
   "create_user_panel.info": "Other identities can be added once the user has been created.",
-  "create_user_panel.cancel": "cancel"
+  "create_user_panel.cancel": "cancel",
+
+  "user_logged_out": "You have been logged out",
+  "session_expired": "Your session has expired"
 }
