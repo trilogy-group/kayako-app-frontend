@@ -442,6 +442,17 @@ define('frontend-cp/adapters/facebook-account', ['exports', 'frontend-cp/adapter
   });
 
 });
+define('frontend-cp/adapters/identity-domain', ['exports', 'frontend-cp/adapters/application'], function (exports, ApplicationAdapter) {
+
+  'use strict';
+
+  exports['default'] = ApplicationAdapter['default'].extend({
+    pathForType: function pathForType() {
+      return 'autocomplete/domains';
+    }
+  });
+
+});
 define('frontend-cp/adapters/identity-twitter', ['exports', 'frontend-cp/adapters/application'], function (exports, ApplicationAdapter) {
 
   'use strict';
@@ -8710,6 +8721,308 @@ define('frontend-cp/components/ko-agent-dropdown/component', ['exports', 'ember'
   }
 
 });
+define('frontend-cp/components/ko-agent-dropdown/create-organisation/component', ['exports', 'ember', 'frontend-cp/mixins/autofocus'], function (exports, Ember, AutofocusMixin) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Component.extend(AutofocusMixin['default'], {
+    domains: [],
+    name: null,
+
+    store: Ember['default'].inject.service(),
+
+    validateName: function validateName() {},
+
+    submitForm: function submitForm() {
+      var _this = this;
+
+      var identityDomains = this.get('domains').map(function (domain) {
+        return _this.get('store').createRecord('identity-domain', {
+          'name': domain
+        });
+      });
+
+      var organisation = this.get('store').createRecord('organization', {
+        'name': this.get('name'),
+        'domains': identityDomains
+      });
+
+      console.log('SAVING');
+      organisation.save();
+    },
+
+    actions: {
+      onNameBlurred: function onNameBlurred() {
+        this.validateName();
+        this.set('validation.name.showErrors', true);
+      },
+      onFormSubmitted: function onFormSubmitted() {
+        this.submitForm();
+      },
+      onCancelClicked: function onCancelClicked() {
+        this.set('activeRequest', null);
+        this.sendAction('cancel');
+      },
+      addDomain: function addDomain(domain) {
+        this.get('domains').pushObject(domain);
+      },
+      removeDomain: function removeDomain(domain) {},
+      suggestDomains: function suggestDomains(searchTerm, selectedDomains) {
+        return [];
+      }
+    }
+  });
+
+});
+define('frontend-cp/components/ko-agent-dropdown/create-organisation/template', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports['default'] = Ember.HTMLBars.template((function() {
+    var child0 = (function() {
+      return {
+        meta: {
+          "revision": "Ember@1.13.7",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 7,
+              "column": 2
+            },
+            "end": {
+              "line": 17,
+              "column": 2
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-agent-dropdown/create-organisation/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("    ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+          return morphs;
+        },
+        statements: [
+          ["inline","input",[],["type","text","class","input__text","name","name","value",["subexpr","@mut",[["get","name",["loc",[null,[13,12],[13,16]]]]],[],[]],"placeholder","","disabled",["subexpr","@mut",[["get","isFormDisabled",["loc",[null,[15,15],[15,29]]]]],[],[]],"focus-out","onNameBlurred"],["loc",[null,[10,4],[16,33]]]]
+        ],
+        locals: [],
+        templates: []
+      };
+    }());
+    var child1 = (function() {
+      return {
+        meta: {
+          "revision": "Ember@1.13.7",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 39,
+              "column": 2
+            },
+            "end": {
+              "line": 41,
+              "column": 2
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-agent-dropdown/create-organisation/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+          return morphs;
+        },
+        statements: [
+          ["inline","ko-loader",[],["class","ko-agent-dropdown-create-user__loader"],["loc",[null,[40,2],[40,61]]]]
+        ],
+        locals: [],
+        templates: []
+      };
+    }());
+    var child2 = (function() {
+      return {
+        meta: {
+          "revision": "Ember@1.13.7",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 41,
+              "column": 2
+            },
+            "end": {
+              "line": 47,
+              "column": 2
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-agent-dropdown/create-organisation/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("button");
+          dom.setAttribute(el1,"type","button");
+          dom.setAttribute(el1,"class","ko-agent-dropdown-create-user__cancel button t-small");
+          dom.setAttribute(el1,"name","cancel");
+          var el2 = dom.createTextNode("\n    ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n  ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var element0 = dom.childAt(fragment, [1]);
+          var morphs = new Array(2);
+          morphs[0] = dom.createElementMorph(element0);
+          morphs[1] = dom.createMorphAt(element0,1,1);
+          return morphs;
+        },
+        statements: [
+          ["element","action",["onCancelClicked"],[],["loc",[null,[44,18],[44,46]]]],
+          ["inline","format-message",[["subexpr","intl-get",["generic.create_organisation_panel.cancel"],[],["loc",[null,[45,21],[45,74]]]]],[],["loc",[null,[45,4],[45,76]]]]
+        ],
+        locals: [],
+        templates: []
+      };
+    }());
+    return {
+      meta: {
+        "revision": "Ember@1.13.7",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 49,
+            "column": 0
+          }
+        },
+        "moduleName": "frontend-cp/components/ko-agent-dropdown/create-organisation/template.hbs"
+      },
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("h6");
+        dom.setAttribute(el1,"class","ko-agent-dropdown-create-user__form-header");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("form");
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n    ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("p");
+        dom.setAttribute(el2,"class","ko-agent-dropdown-create-user__form-footer t-caption t-small");
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("button");
+        dom.setAttribute(el2,"type","submit");
+        dom.setAttribute(el2,"class","ko-agent-dropdown-create-user__submit button button--primary");
+        dom.setAttribute(el2,"name","submit");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var element1 = dom.childAt(fragment, [2]);
+        var element2 = dom.childAt(element1, [7]);
+        var morphs = new Array(9);
+        morphs[0] = dom.createMorphAt(dom.childAt(fragment, [0]),1,1);
+        morphs[1] = dom.createAttrMorph(element1, 'class');
+        morphs[2] = dom.createElementMorph(element1);
+        morphs[3] = dom.createMorphAt(element1,1,1);
+        morphs[4] = dom.createMorphAt(element1,3,3);
+        morphs[5] = dom.createMorphAt(dom.childAt(element1, [5]),1,1);
+        morphs[6] = dom.createAttrMorph(element2, 'disabled');
+        morphs[7] = dom.createMorphAt(element2,1,1);
+        morphs[8] = dom.createMorphAt(element1,9,9);
+        return morphs;
+      },
+      statements: [
+        ["inline","format-message",[["subexpr","intl-get",["generic.create_organisation_panel.title"],[],["loc",[null,[2,19],[2,71]]]]],[],["loc",[null,[2,2],[2,73]]]],
+        ["attribute","class",["concat",["ko-agent-dropdown-create-user__form ",["subexpr","if",[["get","isFormValid",["loc",[null,[4,54],[4,65]]]]," is-valid"],[],["loc",[null,[4,49],[4,79]]]],["subexpr","if",[["get","isSubmitting",["loc",[null,[4,84],[4,96]]]]," is-submitting"],[],["loc",[null,[4,79],[4,115]]]]]]],
+        ["element","action",["onFormSubmitted"],["on","submit"],["loc",[null,[5,2],[5,42]]]],
+        ["block","ko-form-field",[],["label",["subexpr","format-message",[["subexpr","intl-get",["generic.create_organisation_panel.name_label"],[],["loc",[null,[8,26],[8,83]]]]],[],["loc",[null,[8,10],[8,84]]]],"errors",["subexpr","if",[["get","validation.name.showErrors",["loc",[null,[9,15],[9,41]]]],["get","validation.name.errors",["loc",[null,[9,42],[9,64]]]]],[],["loc",[null,[9,11],[9,65]]]]],0,null,["loc",[null,[7,2],[17,20]]]],
+        ["inline","ko-field/tags",[],["title",["subexpr","format-message",[["subexpr","intl-get",["generic.create_organisation_panel.domain_label"],[],["loc",[null,[20,28],[20,87]]]]],[],["loc",[null,[20,12],[20,88]]]],"selectedTags",["subexpr","@mut",[["get","domains",["loc",[null,[21,19],[21,26]]]]],[],[]],"suggestedTags",["subexpr","@mut",[["get","domains",["loc",[null,[22,20],[22,27]]]]],[],[]],"onTagAddition","addDomain","onTagRemoval","removeDomain","onTagSuggestion","suggestDomains","isEdited",["subexpr","@mut",[["get","isEdited",["loc",[null,[26,15],[26,23]]]]],[],[]],"newTagText",["subexpr","format-message",[["subexpr","intl-get",["cases.newtag"],[],["loc",[null,[27,33],[27,58]]]]],[],["loc",[null,[27,17],[27,59]]]],"addTagText",["subexpr","format-message",[["subexpr","intl-get",["cases.addtag"],[],["loc",[null,[28,33],[28,58]]]]],[],["loc",[null,[28,17],[28,59]]]]],["loc",[null,[19,4],[28,61]]]],
+        ["inline","format-message",[["subexpr","intl-get",["generic.create_organisation_panel.info"],[],["loc",[null,[31,19],[31,70]]]]],[],["loc",[null,[31,2],[31,72]]]],
+        ["attribute","disabled",["get","isSubmitDisabled",["loc",[null,[36,15],[36,31]]]]],
+        ["inline","format-message",[["subexpr","intl-get",["generic.create_organisation_panel.submit"],[],["loc",[null,[37,21],[37,74]]]]],[],["loc",[null,[37,4],[37,76]]]],
+        ["block","if",[["get","isSubmitting",["loc",[null,[39,8],[39,20]]]]],[],1,2,["loc",[null,[39,2],[47,9]]]]
+      ],
+      locals: [],
+      templates: [child0, child1, child2]
+    };
+  }()));
+
+});
 define('frontend-cp/components/ko-agent-dropdown/create-user/component', ['exports', 'ember', 'frontend-cp/mixins/autofocus'], function (exports, Ember, AutofocusMixin) {
 
   'use strict';
@@ -12036,9 +12349,11 @@ define('frontend-cp/components/ko-case-field/priority/component', ['exports', 'e
     value: Ember['default'].computed.readOnly('case.priority'),
 
     onErrors: (function () {
-      this.set('isErrored', this.get('errors').reduce(function (acc, error) {
-        return acc || error.parameter === 'priority_id';
-      }, false));
+      if (this.get('errors')) {
+        this.set('isErrored', this.get('errors').reduce(function (acc, error) {
+          return acc || error.parameter === 'priority_id';
+        }, false));
+      }
     }).observes('errors.[]')
   });
 
@@ -12217,9 +12532,11 @@ define('frontend-cp/components/ko-case-field/status/component', ['exports', 'emb
     value: Ember['default'].computed.readOnly('case.status'),
 
     onErrors: (function () {
-      this.set('isErrored', this.get('errors').reduce(function (acc, error) {
-        return acc || error.parameter === 'status_id';
-      }, false));
+      if (this.get('errors')) {
+        this.set('isErrored', this.get('errors').reduce(function (acc, error) {
+          return acc || error.parameter === 'status_id';
+        }, false));
+      }
     }).observes('errors.[]')
   });
 
@@ -32306,7 +32623,7 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
     store: Ember['default'].inject.service(),
     sessionService: Ember['default'].inject.service('session'),
     permissionService: Ember['default'].inject.service('permissions'),
-    errors: {},
+    errors: [],
     intl: Ember['default'].inject.service(),
 
     tagSuggestionService: Ember['default'].inject.service('tag-suggestion'),
@@ -32314,6 +32631,11 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
     teamRecords: [],
     suggestedTeams: [],
     suggestedTags: [],
+    editedCustomFields: null,
+
+    initCustomFields: (function () {
+      this.set('editedCustomFields', new Ember['default'].Object());
+    }).on('init'),
 
     roles: [],
     initRoles: (function () {
@@ -32374,8 +32696,14 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
         value: this.get('model.visitedAt') }];
     }),
 
+    customFields: Ember['default'].computed('model.customFields', function () {
+      return this.get('model.customFields').map(function (field) {
+        return field.get('field');
+      });
+    }),
+
     resetForm: function resetForm() {
-      this.set('errors', {});
+      this.set('errors', []);
       this.set('isRoleEdited', false);
       this.set('isOrganizationEdited', false);
       this.set('isTimezoneEdited', false);
@@ -32395,6 +32723,37 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
     }),
 
     isEnabled: Ember['default'].computed.bool('model.isEnabled'),
+
+    componentFor: function componentFor(fieldType) {
+      switch (fieldType) {
+        case 'TEXT':
+          return 'ko-user-field/text';
+        case 'TEXTAREA':
+          return 'ko-user-field/text';
+        case 'CHECKBOX':
+          return 'ko-user-field/checkbox';
+        case 'SELECT':
+          return 'ko-user-field/select';
+        default:
+          return '';
+      }
+    },
+
+    optionsForField: function optionsForField(field) {
+      /*
+       * System fields
+       */
+      switch (field.get('fieldType')) {
+        case 'PRIORITY':
+          return this.get('store').peekAll('case-priority');
+        case 'STATUS':
+          return this.get('store').peekAll('case-status').filter(function (status) {
+            return status.get('statusType') !== 'NEW' && status.get('statusType') !== 'CLOSED';
+          });
+        case 'TYPE':
+          return this.get('store').peekAll('case-type');
+      }
+    },
 
     actions: {
       toggleUserState: function toggleUserState() {
@@ -32649,6 +33008,88 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
           templates: []
         };
       }());
+      var child1 = (function() {
+        var child0 = (function() {
+          return {
+            meta: {
+              "revision": "Ember@1.13.7",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 95,
+                  "column": 10
+                },
+                "end": {
+                  "line": 105,
+                  "column": 10
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-user-content/template.hbs"
+            },
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode("            ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(1);
+              morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+              return morphs;
+            },
+            statements: [
+              ["inline","component",[["subexpr","ko-helper",[["get","componentFor",["loc",[null,[96,35],[96,47]]]],["get","field.fieldType",["loc",[null,[96,48],[96,63]]]]],[],["loc",[null,[96,24],[96,64]]]]],["user",["subexpr","@mut",[["get","model",["loc",[null,[97,19],[97,24]]]]],[],[]],"field",["subexpr","@mut",[["get","field",["loc",[null,[98,20],[98,25]]]]],[],[]],"title",["subexpr","@mut",[["get","field.title",["loc",[null,[99,20],[99,31]]]]],[],[]],"value",["subexpr","@mut",[["get","field.value",["loc",[null,[100,20],[100,31]]]]],[],[]],"errors",["subexpr","@mut",[["get","errors",["loc",[null,[101,21],[101,27]]]]],[],[]],"options",["subexpr","ko-contextual-helper",[["get","optionsForField",["loc",[null,[102,44],[102,59]]]],["get","this",["loc",[null,[102,60],[102,64]]]],["get","field",["loc",[null,[102,65],[102,70]]]]],[],["loc",[null,[102,22],[102,71]]]],"editedCustomFields",["subexpr","@mut",[["get","editedCustomFields",["loc",[null,[103,33],[103,51]]]]],[],[]]],["loc",[null,[96,12],[104,14]]]]
+            ],
+            locals: [],
+            templates: []
+          };
+        }());
+        return {
+          meta: {
+            "revision": "Ember@1.13.7",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 94,
+                "column": 8
+              },
+              "end": {
+                "line": 106,
+                "column": 8
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-user-content/template.hbs"
+          },
+          arity: 1,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+            dom.insertBoundary(fragment, 0);
+            dom.insertBoundary(fragment, null);
+            return morphs;
+          },
+          statements: [
+            ["block","if",[["subexpr","ko-helper",[["get","componentFor",["loc",[null,[95,27],[95,39]]]],["get","field.fieldType",["loc",[null,[95,40],[95,55]]]]],[],["loc",[null,[95,16],[95,56]]]]],[],0,null,["loc",[null,[95,10],[105,17]]]]
+          ],
+          locals: ["field"],
+          templates: [child0]
+        };
+      }());
       return {
         meta: {
           "revision": "Ember@1.13.7",
@@ -32659,7 +33100,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
               "column": 6
             },
             "end": {
-              "line": 115,
+              "line": 130,
               "column": 6
             }
           },
@@ -32700,7 +33141,11 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
           dom.appendChild(el0, el1);
           var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n\n        ");
+          var el1 = dom.createTextNode("\n\n\n");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n        ");
           dom.appendChild(el0, el1);
           var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
@@ -32718,7 +33163,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
           var element0 = dom.childAt(fragment, [1, 1]);
-          var morphs = new Array(9);
+          var morphs = new Array(10);
           morphs[0] = dom.createElementMorph(element0);
           morphs[1] = dom.createMorphAt(element0,0,0);
           morphs[2] = dom.createMorphAt(fragment,3,3,contextualElement);
@@ -32728,6 +33173,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
           morphs[6] = dom.createMorphAt(fragment,11,11,contextualElement);
           morphs[7] = dom.createMorphAt(fragment,13,13,contextualElement);
           morphs[8] = dom.createMorphAt(fragment,15,15,contextualElement);
+          morphs[9] = dom.createMorphAt(fragment,17,17,contextualElement);
           return morphs;
         },
         statements: [
@@ -32737,12 +33183,13 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
           ["inline","ko-case-field/suggest",[],["selectedItem",["subexpr","@mut",[["get","model.organization.name",["loc",[null,[70,45],[70,68]]]]],[],[]],"items",["subexpr","@mut",[["get","organizations",["loc",[null,[71,38],[71,51]]]]],[],[]],"title",["subexpr","intl-get",["users.infobar.organization"],[],["loc",[null,[72,38],[72,77]]]],"isEdited",["subexpr","@mut",[["get","isOrganizationEdited",["loc",[null,[73,41],[73,61]]]]],[],[]],"onItemSelect","organizationSelect"],["loc",[null,[70,8],[74,67]]]],
           ["block","if",[["subexpr","eq",[["get","model.role.roleType",["loc",[null,[76,18],[76,37]]]],"CUSTOMER"],[],["loc",[null,[76,14],[76,49]]]]],[],0,null,["loc",[null,[76,8],[86,15]]]],
           ["inline","ko-timezone-select",[],["timezone",["subexpr","@mut",[["get","model.timeZone",["loc",[null,[89,38],[89,52]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isTimezoneEdited",["loc",[null,[90,38],[90,54]]]]],[],[]],"onChangeTimezone","timezoneSelect"],["loc",[null,[89,8],[91,64]]]],
-          ["inline","ko-field/tags",[],["selectedTags",["subexpr","@mut",[["get","userTeams",["loc",[null,[93,37],[93,46]]]]],[],[]],"suggestedTags",["subexpr","@mut",[["get","suggestedTeams",["loc",[null,[94,38],[94,52]]]]],[],[]],"title",["subexpr","format-message",[["subexpr","intl-get",["users.teams"],[],["loc",[null,[95,46],[95,70]]]]],[],["loc",[null,[95,30],[95,71]]]],"newTagText",["subexpr","format-message",[["subexpr","intl-get",["users.newteam"],[],["loc",[null,[96,51],[96,77]]]]],[],["loc",[null,[96,35],[96,78]]]],"addTagText",["subexpr","format-message",[["subexpr","intl-get",["users.addteam"],[],["loc",[null,[97,51],[97,77]]]]],[],["loc",[null,[97,35],[97,78]]]],"onTagAddition","addTeam","onTagRemoval","removeTeam","onTagSuggestion","suggestTeams","isEdited",["subexpr","@mut",[["get","isTeamsFieldEdited",["loc",[null,[101,33],[101,51]]]]],[],[]]],["loc",[null,[93,8],[101,53]]]],
-          ["inline","ko-field/tags",[],["selectedTags",["subexpr","@mut",[["get","userTags",["loc",[null,[103,37],[103,45]]]]],[],[]],"suggestedTags",["subexpr","@mut",[["get","suggestedTags",["loc",[null,[104,38],[104,51]]]]],[],[]],"title",["subexpr","format-message",[["subexpr","intl-get",["users.tags"],[],["loc",[null,[105,46],[105,69]]]]],[],["loc",[null,[105,30],[105,70]]]],"newTagText",["subexpr","format-message",[["subexpr","intl-get",["users.newtag"],[],["loc",[null,[106,51],[106,76]]]]],[],["loc",[null,[106,35],[106,77]]]],"addTagText",["subexpr","format-message",[["subexpr","intl-get",["users.addtag"],[],["loc",[null,[107,51],[107,76]]]]],[],["loc",[null,[107,35],[107,77]]]],"onTagAddition","addTag","onTagRemoval","removeTag","onTagSuggestion","suggestTags","isEdited",["subexpr","@mut",[["get","isTagsFieldEdited",["loc",[null,[111,33],[111,50]]]]],[],[]]],["loc",[null,[103,8],[111,52]]]],
-          ["inline","ko-info-bar/metadata",[],["rows",["subexpr","@mut",[["get","userDates",["loc",[null,[114,36],[114,45]]]]],[],[]]],["loc",[null,[114,8],[114,47]]]]
+          ["block","each",[["get","customFields",["loc",[null,[94,16],[94,28]]]]],[],1,null,["loc",[null,[94,8],[106,17]]]],
+          ["inline","ko-field/tags",[],["selectedTags",["subexpr","@mut",[["get","userTeams",["loc",[null,[108,37],[108,46]]]]],[],[]],"suggestedTags",["subexpr","@mut",[["get","suggestedTeams",["loc",[null,[109,38],[109,52]]]]],[],[]],"title",["subexpr","format-message",[["subexpr","intl-get",["users.teams"],[],["loc",[null,[110,46],[110,70]]]]],[],["loc",[null,[110,30],[110,71]]]],"newTagText",["subexpr","format-message",[["subexpr","intl-get",["users.newteam"],[],["loc",[null,[111,51],[111,77]]]]],[],["loc",[null,[111,35],[111,78]]]],"addTagText",["subexpr","format-message",[["subexpr","intl-get",["users.addteam"],[],["loc",[null,[112,51],[112,77]]]]],[],["loc",[null,[112,35],[112,78]]]],"onTagAddition","addTeam","onTagRemoval","removeTeam","onTagSuggestion","suggestTeams","isEdited",["subexpr","@mut",[["get","isTeamsFieldEdited",["loc",[null,[116,33],[116,51]]]]],[],[]]],["loc",[null,[108,8],[116,53]]]],
+          ["inline","ko-field/tags",[],["selectedTags",["subexpr","@mut",[["get","userTags",["loc",[null,[118,37],[118,45]]]]],[],[]],"suggestedTags",["subexpr","@mut",[["get","suggestedTags",["loc",[null,[119,38],[119,51]]]]],[],[]],"title",["subexpr","format-message",[["subexpr","intl-get",["users.tags"],[],["loc",[null,[120,46],[120,69]]]]],[],["loc",[null,[120,30],[120,70]]]],"newTagText",["subexpr","format-message",[["subexpr","intl-get",["users.newtag"],[],["loc",[null,[121,51],[121,76]]]]],[],["loc",[null,[121,35],[121,77]]]],"addTagText",["subexpr","format-message",[["subexpr","intl-get",["users.addtag"],[],["loc",[null,[122,51],[122,76]]]]],[],["loc",[null,[122,35],[122,77]]]],"onTagAddition","addTag","onTagRemoval","removeTag","onTagSuggestion","suggestTags","isEdited",["subexpr","@mut",[["get","isTagsFieldEdited",["loc",[null,[126,33],[126,50]]]]],[],[]]],["loc",[null,[118,8],[126,52]]]],
+          ["inline","ko-info-bar/metadata",[],["rows",["subexpr","@mut",[["get","userDates",["loc",[null,[129,36],[129,45]]]]],[],[]]],["loc",[null,[129,8],[129,47]]]]
         ],
         locals: [],
-        templates: [child0]
+        templates: [child0, child1]
       };
     }());
     var child3 = (function() {
@@ -32752,11 +33199,11 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 120,
+              "line": 135,
               "column": 0
             },
             "end": {
-              "line": 124,
+              "line": 139,
               "column": 0
             }
           },
@@ -32781,7 +33228,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["inline","textarea",[],["value",["subexpr","@mut",[["get","model.signature",["loc",[null,[123,19],[123,34]]]]],[],[]],"class","input__text-area--clean"],["loc",[null,[123,2],[123,68]]]]
+          ["inline","textarea",[],["value",["subexpr","@mut",[["get","model.signature",["loc",[null,[138,19],[138,34]]]]],[],[]],"class","input__text-area--clean"],["loc",[null,[138,2],[138,68]]]]
         ],
         locals: [],
         templates: []
@@ -32797,7 +33244,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
             "column": 0
           },
           "end": {
-            "line": 125,
+            "line": 140,
             "column": 0
           }
         },
@@ -32977,11 +33424,328 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
         ["inline","ko-stateful-button",[],["activeText","User Enabled","activeHoverText","Disable User","inactiveText","User Disabled","inactiveHoverText","Enable User","isActive",["subexpr","@mut",[["get","model.isEnabled",["loc",[null,[34,20],[34,35]]]]],[],[]],"isEnabled",["subexpr","@mut",[["get","canModifyUserState",["loc",[null,[35,21],[35,39]]]]],[],[]],"isLoading",["subexpr","@mut",[["get","isStateSaving",["loc",[null,[36,21],[36,34]]]]],[],[]],"onClick","toggleUserState"],["loc",[null,[29,9],[37,38]]]],
         ["block","if",[["subexpr","ko-has-permission",["app.user.signature.edit",["get","sessionService.permissions",["loc",[null,[40,60],[40,86]]]],["get","model.role.roleType",["loc",[null,[40,87],[40,106]]]]],[],["loc",[null,[40,15],[40,107]]]]],[],0,null,["loc",[null,[40,9],[42,16]]]],
         ["block","ko-text-editor",[],["viewName","postEditor"],1,null,["loc",[null,[51,8],[53,27]]]],
-        ["block","ko-info-bar",[],[],2,null,["loc",[null,[58,6],[115,22]]]],
-        ["block","ko-editor-modal",[],["onSave","submit","viewName","signatureModal","title",["subexpr","format-message",[["subexpr","intl-get",["users.editsignature"],[],["loc",[null,[122,41],[122,73]]]]],[],["loc",[null,[122,25],[122,74]]]]],3,null,["loc",[null,[120,0],[124,20]]]]
+        ["block","ko-info-bar",[],[],2,null,["loc",[null,[58,6],[130,22]]]],
+        ["block","ko-editor-modal",[],["onSave","submit","viewName","signatureModal","title",["subexpr","format-message",[["subexpr","intl-get",["users.editsignature"],[],["loc",[null,[137,41],[137,73]]]]],[],["loc",[null,[137,25],[137,74]]]]],3,null,["loc",[null,[135,0],[139,20]]]]
       ],
       locals: [],
       templates: [child0, child1, child2, child3]
+    };
+  }()));
+
+});
+define('frontend-cp/components/ko-user-field/checkbox/component', ['exports', 'frontend-cp/components/ko-user-field/custom/component'], function (exports, Custom) {
+
+  'use strict';
+
+  var valueToArray = function valueToArray(value) {
+    return (value || '').split(',').filter(function (v) {
+      return v !== '';
+    });
+  };
+
+  exports['default'] = Custom['default'].extend({
+    value: (function () {
+      return valueToArray(this.get('valueObject.value'));
+    }).property('valueObject.value'),
+
+    isEdited: (function () {
+      var valueObject = this.get('valueObject');
+      var originalValue = this.get('valueObject._data.value');
+      if (originalValue === undefined && valueObject) {
+        // Special treatment when the value didn't exist before and is set
+        // to an empty array
+        return !!valueObject.get('value.length');
+      } else {
+        return !!valueObject && !!valueObject.changedAttributes().value;
+      }
+    }).property('valueObject', 'valueObject.value'),
+
+    actions: {
+      selectionChanged: function selectionChanged(value) {
+        this.send('valueChanged', value.join(','));
+      }
+    }
+  });
+
+});
+define('frontend-cp/components/ko-user-field/checkbox/template', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      meta: {
+        "revision": "Ember@1.13.7",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 8,
+            "column": 2
+          }
+        },
+        "moduleName": "frontend-cp/components/ko-user-field/checkbox/template.hbs"
+      },
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var morphs = new Array(1);
+        morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+        dom.insertBoundary(fragment, 0);
+        dom.insertBoundary(fragment, null);
+        return morphs;
+      },
+      statements: [
+        ["inline","ko-field/checkbox",[],["title",["subexpr","@mut",[["get","field.title",["loc",[null,[2,8],[2,19]]]]],[],[]],"options",["subexpr","@mut",[["get","field.options",["loc",[null,[3,10],[3,23]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isEdited",["loc",[null,[4,11],[4,19]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","isErrored",["loc",[null,[5,12],[5,21]]]]],[],[]],"value",["subexpr","@mut",[["get","value",["loc",[null,[6,8],[6,13]]]]],[],[]],"onValueChange","selectionChanged"],["loc",[null,[1,0],[8,2]]]]
+      ],
+      locals: [],
+      templates: []
+    };
+  }()));
+
+});
+define('frontend-cp/components/ko-user-field/custom/component', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  var findCustomFieldValue = function findCustomFieldValue(customFields, field) {
+    var fields = customFields.toArray();
+    for (var i = 0; i < fields.length; i++) {
+      if (fields[i].get('field') === field) {
+        return fields[i];
+      }
+    }
+  };
+
+  exports['default'] = Ember['default'].Component.extend({
+    // params
+    user: null,
+    field: null,
+    errors: [],
+
+    tagName: '',
+    store: Ember['default'].inject.service(),
+
+    allValues: Ember['default'].computed.oneWay('user.customFields'),
+
+    valueObject: (function () {
+      return findCustomFieldValue(this.get('allValues'), this.get('field'));
+    }).property('allValues.@each.field', 'field'),
+
+    isEdited: (function () {
+      var valueObject = this.get('valueObject');
+      return !!valueObject && valueObject.get('isDirty');
+    }).property('valueObject', 'valueObject.value'),
+
+    onErrors: (function () {
+      var _this = this;
+
+      if (this.get('errors')) {
+        this.set('isErrored', this.get('errors').reduce(function (acc, error) {
+          return acc || error.parameter === _this.get('field.key');
+        }, false));
+      }
+    }).observes('errors.@each'),
+
+    actions: {
+      valueChanged: function valueChanged(value) {
+        this.set('isErrored', false);
+        var field = this.get('field');
+        var valueObject = findCustomFieldValue(this.get('allValues'), field);
+        if (!valueObject) {
+          valueObject = this.get('allValues').createFragment({
+            fieldFragment: this.get('store').createFragment('relationship-fragment', {
+              relationshipId: field.id,
+              relationshipType: field.type
+            })
+          });
+        }
+        valueObject.set('value', value);
+      }
+    }
+  });
+
+});
+define('frontend-cp/components/ko-user-field/select/component', ['exports', 'frontend-cp/components/ko-user-field/custom/component'], function (exports, Custom) {
+
+	'use strict';
+
+	exports['default'] = Custom['default'].extend({});
+
+});
+define('frontend-cp/components/ko-user-field/select/template', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      meta: {
+        "revision": "Ember@1.13.7",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 10,
+            "column": 2
+          }
+        },
+        "moduleName": "frontend-cp/components/ko-user-field/select/template.hbs"
+      },
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var morphs = new Array(1);
+        morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+        dom.insertBoundary(fragment, 0);
+        dom.insertBoundary(fragment, null);
+        return morphs;
+      },
+      statements: [
+        ["inline","ko-field/select",[],["title",["subexpr","@mut",[["get","field.title",["loc",[null,[2,8],[2,19]]]]],[],[]],"options",["subexpr","@mut",[["get","field.options",["loc",[null,[3,10],[3,23]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isEdited",["loc",[null,[4,11],[4,19]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","isErrored",["loc",[null,[5,12],[5,21]]]]],[],[]],"value",["subexpr","@mut",[["get","valueObject.value",["loc",[null,[6,8],[6,25]]]]],[],[]],"onValueChange","valueChanged","idPath","id","labelPath","value"],["loc",[null,[1,0],[10,2]]]]
+      ],
+      locals: [],
+      templates: []
+    };
+  }()));
+
+});
+define('frontend-cp/components/ko-user-field/tags/component', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Component.extend({
+    //Params:
+    tags: [],
+    onTagAddition: null,
+    onTagRemoval: null,
+
+    actions: {
+      onTagAddition: function onTagAddition(tagName) {
+        this.sendAction('onTagAddition', tagName);
+      },
+      onTagRemoval: function onTagRemoval(tagName) {
+        this.sendAction('onTagRemoval', tagName);
+      }
+    }
+  });
+
+});
+define('frontend-cp/components/ko-user-field/tags/template', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      meta: {
+        "revision": "Ember@1.13.7",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 4,
+            "column": 0
+          }
+        },
+        "moduleName": "frontend-cp/components/ko-user-field/tags/template.hbs"
+      },
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var morphs = new Array(1);
+        morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+        dom.insertBoundary(fragment, 0);
+        return morphs;
+      },
+      statements: [
+        ["inline","ko-field/tags",[],["selectedTags",["subexpr","@mut",[["get","tags",["loc",[null,[1,29],[1,33]]]]],[],[]],"onTagAddition","onTagAddition","onTagRemoval","onTagRemoval","isEdited",["subexpr","@mut",[["get","isEdited",["loc",[null,[1,101],[1,109]]]]],[],[]],"newTagText",["subexpr","format-message",[["subexpr","intl-get",["cases.newtag"],[],["loc",[null,[2,29],[2,54]]]]],[],["loc",[null,[2,13],[2,55]]]],"addTagText",["subexpr","format-message",[["subexpr","intl-get",["cases.addtag"],[],["loc",[null,[3,29],[3,54]]]]],[],["loc",[null,[3,13],[3,55]]]]],["loc",[null,[1,0],[3,57]]]]
+      ],
+      locals: [],
+      templates: []
+    };
+  }()));
+
+});
+define('frontend-cp/components/ko-user-field/text/component', ['exports', 'frontend-cp/components/ko-user-field/custom/component'], function (exports, Custom) {
+
+	'use strict';
+
+	exports['default'] = Custom['default'].extend({});
+
+});
+define('frontend-cp/components/ko-user-field/text/template', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      meta: {
+        "revision": "Ember@1.13.7",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 7,
+            "column": 2
+          }
+        },
+        "moduleName": "frontend-cp/components/ko-user-field/text/template.hbs"
+      },
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var morphs = new Array(1);
+        morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+        dom.insertBoundary(fragment, 0);
+        dom.insertBoundary(fragment, null);
+        return morphs;
+      },
+      statements: [
+        ["inline","ko-field/text",[],["title",["subexpr","@mut",[["get","field.title",["loc",[null,[2,8],[2,19]]]]],[],[]],"value",["subexpr","@mut",[["get","valueObject.value",["loc",[null,[3,8],[3,25]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isEdited",["loc",[null,[4,11],[4,19]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","isErrored",["loc",[null,[5,12],[5,21]]]]],[],[]],"onValueChange","valueChanged"],["loc",[null,[1,0],[7,2]]]]
+      ],
+      locals: [],
+      templates: []
     };
   }()));
 
@@ -41133,6 +41897,22 @@ define('frontend-cp/mixins/change-aware-model', ['exports', 'ember', 'npm:lodash
   });
 
 });
+define('frontend-cp/mixins/custom-field-serialization', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Mixin.create({
+    serializeCustomFields: function serializeCustomFields(customFields) {
+      var fieldValues = {};
+      customFields.forEach(function (customField) {
+        fieldValues[customField.get('field.key')] = customField.get('value');
+      });
+
+      return fieldValues;
+    }
+  });
+
+});
 define('frontend-cp/mixins/pusher-binding', ['exports', 'ember'], function (exports, Ember) {
 
   'use strict';
@@ -41605,7 +42385,6 @@ define('frontend-cp/models/case', ['exports', 'ember-data', 'frontend-cp/mixins/
     tags: DS['default'].hasMany('tag', { async: false }),
     form: DS['default'].belongsTo('case-form', { async: false }),
     customFields: DS['default'].hasManyFragments('case-field-value'),
-    fieldValues: DS['default'].hasManyFragments('case-field-value', { defaultValue: [] }), // write only
     // metadata // TODO nested json
     lastReplier: DS['default'].belongsTo('user', { async: false }),
     lastReplierIdentity: DS['default'].belongsTo('identity', { async: false }),
@@ -41635,22 +42414,6 @@ define('frontend-cp/models/case', ['exports', 'ember-data', 'frontend-cp/mixins/
     // Parent field
     view: DS['default'].belongsTo('view', { async: true, parent: true }),
 
-    save: function save() {
-      var _this = this;
-
-      this.get('customFields').forEach(function (customField) {
-        _this.get('fieldValues').createFragment({
-          fieldFragment: _this.get('store').createFragment('relationship-fragment', {
-            relationshipId: customField.get('field.id'),
-            relationshipType: customField.get('field.type')
-          }),
-          value: customField.get('value') === '' ? null : customField.get('value')
-        });
-      });
-
-      return this._super();
-    },
-
     saveWithNote: function saveWithNote(contents) {
       var note = this.get('store').createRecord('case-note', {
         contents: contents,
@@ -41661,7 +42424,7 @@ define('frontend-cp/models/case', ['exports', 'ember-data', 'frontend-cp/mixins/
     },
 
     saveWithPost: function saveWithPost(contents, channel, attachmentIds) {
-      var _this2 = this;
+      var _this = this;
 
       var account = channel.get('account');
       var channelType = channel.get('channelType');
@@ -41682,15 +42445,17 @@ define('frontend-cp/models/case', ['exports', 'ember-data', 'frontend-cp/mixins/
 
       reply.get('case.customFields').forEach(function (customField) {
         reply.get('fieldValues').createFragment({
-          fieldFragment: _this2.get('store').createFragment('relationship-fragment', {
+          fieldFragment: _this.get('store').createFragment('relationship-fragment', {
             relationshipId: customField.get('field.id'),
             relationshipType: customField.get('field.type')
           }),
           value: customField.get('value') === '' ? null : customField.get('value')
         });
       });
-
-      return reply.save();
+      return reply.save().then(function (caseReply) {
+        _this.cacheRelationships();
+        return caseReply;
+      });
     },
 
     hasDirtyHasManyRelationship: function hasDirtyHasManyRelationship(relationshipKey) {
@@ -42811,6 +43576,7 @@ define('frontend-cp/models/user', ['exports', 'ember-data', 'ember', 'frontend-c
     addresses: DS['default'].hasMany('contact-address', { async: true, url: 'contacts/addresses' }),
     websites: DS['default'].hasMany('contact-website', { async: true, url: 'contacts/websites' }),
     customFields: DS['default'].hasManyFragments('user-field-value'),
+    fieldValues: DS['default'].hasManyFragments('user-field-value', { defaultValue: [] }), // write only
     tags: DS['default'].hasMany('tag', { async: false }),
     notes: DS['default'].hasMany('user-note', { child: true, url: 'notes' }),
     accessLevel: DS['default'].attr('string'),
@@ -42830,6 +43596,22 @@ define('frontend-cp/models/user', ['exports', 'ember-data', 'ember', 'frontend-c
     // Shadow children fields
     accesslogs: DS['default'].hasMany('access-log', { async: true, child: true, noCache: true }),
     slack: DS['default'].hasMany('identity-slack', { async: true, child: true, url: 'identities/slack' }),
+
+    save: function save() {
+      var _this = this;
+
+      this.get('customFields').forEach(function (customField) {
+        _this.get('fieldValues').createFragment({
+          fieldFragment: _this.get('store').createFragment('relationship-fragment', {
+            relationshipId: customField.get('field.id'),
+            relationshipType: customField.get('field.type')
+          }),
+          value: customField.get('value') === '' ? null : customField.get('value')
+        });
+      });
+
+      return this._super();
+    },
 
     primaryEmail: (function () {
       var emails = this.get('emails');
@@ -43295,11 +44077,11 @@ define('frontend-cp/serializers/case-form', ['exports', 'ember', 'frontend-cp/se
   });
 
 });
-define('frontend-cp/serializers/case-reply', ['exports', 'frontend-cp/serializers/application'], function (exports, ApplicationSerializer) {
+define('frontend-cp/serializers/case-reply', ['exports', 'frontend-cp/serializers/application', 'frontend-cp/mixins/custom-field-serialization'], function (exports, ApplicationSerializer, CustomFieldSerializationMixin) {
 
   'use strict';
 
-  exports['default'] = ApplicationSerializer['default'].extend({
+  exports['default'] = ApplicationSerializer['default'].extend(CustomFieldSerializationMixin['default'], {
     attrs: {
       channelType: { key: 'channel' },
       caseType: { key: 'type_id' },
@@ -43309,11 +44091,7 @@ define('frontend-cp/serializers/case-reply', ['exports', 'frontend-cp/serializer
 
     serialize: function serialize(snapshot, options) {
       var json = this._super(snapshot, options);
-      json.field_values = {}; // eslint-disable-line camelcase
-
-      snapshot.attr('fieldValues').forEach(function (fieldValue) {
-        json.field_values[fieldValue.get('field.key')] = fieldValue.get('value');
-      });
+      json.field_values = this.serializeCustomFields(snapshot.attr('fieldValues'));
 
       return json;
     }
@@ -43331,22 +44109,18 @@ define('frontend-cp/serializers/case-status', ['exports', 'frontend-cp/serialize
   });
 
 });
-define('frontend-cp/serializers/case', ['exports', 'frontend-cp/serializers/application'], function (exports, ApplicationSerializer) {
+define('frontend-cp/serializers/case', ['exports', 'frontend-cp/serializers/application', 'frontend-cp/mixins/custom-field-serialization'], function (exports, ApplicationSerializer, CustomFieldSerializationMixin) {
 
   'use strict';
 
-  exports['default'] = ApplicationSerializer['default'].extend({
+  exports['default'] = ApplicationSerializer['default'].extend(CustomFieldSerializationMixin['default'], {
     attrs: {
       caseType: { key: 'type' }
     },
 
     serialize: function serialize(snapshot, options) {
       var json = this._super(snapshot, options);
-      json.field_values = {}; // eslint-disable-line camelcase
-
-      snapshot.attr('fieldValues').forEach(function (fieldValue) {
-        json.field_values[fieldValue.get('field.key')] = fieldValue.get('value');
-      });
+      json.field_values = this.serializeCustomFields(snapshot.attr('customFields'));
 
       var assignee = snapshot.attr('assignee');
       json.assignee_agent_id = assignee.get('agentFragment.relationshipId'); // eslint-disable-line camelcase
@@ -43592,6 +44366,24 @@ define('frontend-cp/serializers/twitter-account', ['exports', 'frontend-cp/seria
   });
 
 });
+define('frontend-cp/serializers/user-field-type', ['exports', 'ember-data'], function (exports, DS) {
+
+	'use strict';
+
+	exports['default'] = DS['default'].JSONSerializer.extend({});
+
+});
+define('frontend-cp/serializers/user-field-value', ['exports', 'frontend-cp/serializers/application'], function (exports, ApplicationSerializer) {
+
+  'use strict';
+
+  exports['default'] = ApplicationSerializer['default'].extend({
+    attrs: {
+      fieldFragment: { key: 'field' }
+    }
+  });
+
+});
 define('frontend-cp/serializers/user-field', ['exports', 'frontend-cp/serializers/application'], function (exports, ApplicationSerializer) {
 
   'use strict';
@@ -43615,11 +44407,11 @@ define('frontend-cp/serializers/user-note', ['exports', 'frontend-cp/serializers
   });
 
 });
-define('frontend-cp/serializers/user', ['exports', 'frontend-cp/serializers/application'], function (exports, ApplicationSerializer) {
+define('frontend-cp/serializers/user', ['exports', 'frontend-cp/serializers/application', 'frontend-cp/mixins/custom-field-serialization'], function (exports, ApplicationSerializer, CustomFieldSerializationMixin) {
 
   'use strict';
 
-  exports['default'] = ApplicationSerializer['default'].extend({
+  exports['default'] = ApplicationSerializer['default'].extend(CustomFieldSerializationMixin['default'], {
     attrs: {
       avatar: { serialize: false },
       emails: { serialize: false },
@@ -43639,9 +44431,11 @@ define('frontend-cp/serializers/user', ['exports', 'frontend-cp/serializers/appl
       updatedAt: { serialize: false }
     },
     serialize: function serialize(snapshot, options) {
-      var serialisedModel = this._super(snapshot, options);
-      serialisedModel.email = getPrimaryEmailAddress(snapshot);
-      return serialisedModel;
+      var json = this._super(snapshot, options);
+      json.email = getPrimaryEmailAddress(snapshot);
+      json.field_values = this.serializeCustomFields(snapshot.attr('customFields'));
+
+      return json;
 
       function getPrimaryEmailAddress(snapshot) {
         return snapshot.hasMany('emails').filter(function (identityEmail) {
@@ -49771,6 +50565,60 @@ define('frontend-cp/session/agent/organisations/organisation/controller', ['expo
     }).property('model.organization.id')
 
   });
+
+});
+define('frontend-cp/session/agent/organisations/organisation/index/route', ['exports', 'ember'], function (exports, Ember) {
+
+	'use strict';
+
+	exports['default'] = Ember['default'].Route.extend({});
+
+});
+define('frontend-cp/session/agent/organisations/organisation/index/template', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      meta: {
+        "revision": "Ember@1.13.7",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 0
+          }
+        },
+        "moduleName": "frontend-cp/session/agent/organisations/organisation/index/template.hbs"
+      },
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var morphs = new Array(1);
+        morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+        dom.insertBoundary(fragment, 0);
+        return morphs;
+      },
+      statements: [
+        ["inline","ko-organisation-content",[],["model",["subexpr","@mut",[["get","model",["loc",[null,[1,32],[1,37]]]]],[],[]]],["loc",[null,[1,0],[1,39]]]]
+      ],
+      locals: [],
+      templates: []
+    };
+  }()));
 
 });
 define('frontend-cp/session/agent/organisations/organisation/route', ['exports', 'frontend-cp/routes/abstract/tabbed-route'], function (exports, TabbedRoute) {
@@ -62843,7 +63691,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+0cf3386e"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+96dd6afb"});
 }
 
 /* jshint ignore:end */
