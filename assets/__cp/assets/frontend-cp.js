@@ -42945,6 +42945,9 @@ define('frontend-cp/router', ['exports', 'ember', 'frontend-cp/config/environmen
             this.route('organisation');
           });
         });
+        this.route('organisations', { path: '/organisations' }, function () {
+          this.route('organisation', { path: '/:organisation_id' });
+        });
       });
 
       this.route('admin', function () {
@@ -49741,6 +49744,112 @@ define('frontend-cp/session/agent/cases/new/template', ['exports'], function (ex
       statements: [
         ["inline","ko-breadcrumbs",[],["breadcrumbs",["subexpr","@mut",[["get","breadcrumbs",["loc",[null,[3,33],[3,44]]]]],[],[]],"activeBreadcrumb",["subexpr","@mut",[["get","activeBreadcrumb",["loc",[null,[3,62],[3,78]]]]],[],[]],"action","breadcrumbChange"],["loc",[null,[3,4],[3,106]]]],
         ["inline","ko-case-content",[],["case",["subexpr","@mut",[["get","case",["loc",[null,[5,25],[5,29]]]]],[],[]]],["loc",[null,[5,2],[5,31]]]]
+      ],
+      locals: [],
+      templates: []
+    };
+  }()));
+
+});
+define('frontend-cp/session/agent/organisations/organisation/controller', ['exports', 'ember', 'frontend-cp/mixins/breadcrumbable'], function (exports, Ember, Breadcrumbable) {
+
+  'use strict';
+
+
+  exports['default'] = Ember['default'].Controller.extend(Breadcrumbable['default'], {
+
+    /**
+     * Returns a breadcrumb containing the Organisation
+     * @return {Object} Breadcrumb data hash
+     */
+    breadcrumbs: (function () {
+      return [{
+        id: 'organisation',
+        name: this.get('model.name'),
+        route: 'session.agent.organisations.organisation'
+      }];
+    }).property('model.organization.id')
+
+  });
+
+});
+define('frontend-cp/session/agent/organisations/organisation/route', ['exports', 'frontend-cp/routes/abstract/tabbed-route'], function (exports, TabbedRoute) {
+
+  'use strict';
+
+  exports['default'] = TabbedRoute['default'].extend({
+
+    model: function model(params) {
+      return this.store.find('organization', params.organisation_id);
+    },
+
+    setupController: function setupController(controller, model) {
+      this._super(controller, model);
+      this.get('tab').set('label', model.get('name'));
+    }
+  });
+
+});
+define('frontend-cp/session/agent/organisations/organisation/template', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      meta: {
+        "revision": "Ember@1.13.7",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 7,
+            "column": 0
+          }
+        },
+        "moduleName": "frontend-cp/session/agent/organisations/organisation/template.hbs"
+      },
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","content layout--flush");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","layout__item u-1/1");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var element0 = dom.childAt(fragment, [0]);
+        var morphs = new Array(2);
+        morphs[0] = dom.createMorphAt(dom.childAt(element0, [1]),1,1);
+        morphs[1] = dom.createMorphAt(element0,3,3);
+        return morphs;
+      },
+      statements: [
+        ["inline","ko-breadcrumbs",[],["breadcrumbs",["subexpr","@mut",[["get","breadcrumbs",["loc",[null,[3,33],[3,44]]]]],[],[]],"activeBreadcrumb",["subexpr","@mut",[["get","activeBreadcrumb",["loc",[null,[3,62],[3,78]]]]],[],[]],"action","breadcrumbChange"],["loc",[null,[3,4],[3,106]]]],
+        ["content","outlet",["loc",[null,[5,2],[5,12]]]]
       ],
       locals: [],
       templates: []
@@ -62734,7 +62843,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+4960bfa5"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+0cf3386e"});
 }
 
 /* jshint ignore:end */
