@@ -10996,7 +10996,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
       statements: [
         ["attribute","src",["concat",[["get","case.requester.avatar",["loc",[null,[6,22],[6,43]]]]]]],
         ["inline","ko-editable-text",[],["value",["subexpr","@mut",[["get","case.subject",["loc",[null,[10,37],[10,49]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isCaseSubjectEdited",["loc",[null,[10,59],[10,78]]]]],[],[]],"onValueChange","setSubject"],["loc",[null,[10,12],[10,107]]]],
-        ["inline","format-message",[["subexpr","intl-get",["cases.subheader"],[],["loc",[null,[13,29],[13,57]]]]],["time",["subexpr","@mut",[["get","case.createdAt",["loc",[null,[14,17],[14,31]]]]],[],[]],"channel",["subexpr","format-message",[["subexpr","intl-get",[["subexpr","ko-concat",["cases.channelType.",["get","case.sourceChannel.channelType",["loc",[null,[15,78],[15,108]]]]],[],["loc",[null,[15,46],[15,109]]]]],[],["loc",[null,[15,36],[15,110]]]]],[],["loc",[null,[15,20],[15,111]]]],"hasBrand",["subexpr","@mut",[["get","hasBrand",["loc",[null,[16,21],[16,29]]]]],[],[]],"brand",["subexpr","@mut",[["get","case.brand.companyName",["loc",[null,[17,18],[17,40]]]]],[],[]]],["loc",[null,[13,12],[17,42]]]],
+        ["inline","format-message",[["subexpr","intl-get",["cases.subheader"],[],["loc",[null,[13,29],[13,57]]]]],["time",["subexpr","@mut",[["get","case.createdAt",["loc",[null,[14,17],[14,31]]]]],[],[]],"channel",["subexpr","format-message",[["subexpr","intl-get",[["subexpr","concat",["cases.channelType.",["get","case.sourceChannel.channelType",["loc",[null,[15,75],[15,105]]]]],[],["loc",[null,[15,46],[15,106]]]]],[],["loc",[null,[15,36],[15,107]]]]],[],["loc",[null,[15,20],[15,108]]]],"hasBrand",["subexpr","@mut",[["get","hasBrand",["loc",[null,[16,21],[16,29]]]]],[],[]],"brand",["subexpr","@mut",[["get","case.brand.companyName",["loc",[null,[17,18],[17,40]]]]],[],[]]],["loc",[null,[13,12],[17,42]]]],
         ["inline","ko-case/macro-selector",[],["macros",["subexpr","@mut",[["get","macros",["loc",[null,[27,46],[27,52]]]]],[],[]],"onMacroSelected","applyMacro"],["loc",[null,[27,14],[27,83]]]],
         ["inline","ko-case/macro-selector",[],["macros",["subexpr","@mut",[["get","macros",["loc",[null,[30,46],[30,52]]]]],[],[]],"onMacroSelected","applyMacro"],["loc",[null,[30,14],[30,83]]]],
         ["inline","ko-case/macro-selector",[],["macros",["subexpr","@mut",[["get","macros",["loc",[null,[33,46],[33,52]]]]],[],[]],"onMacroSelected","applyMacro"],["loc",[null,[33,14],[33,83]]]],
@@ -11980,7 +11980,7 @@ define('frontend-cp/components/ko-case-field/suggest/template', ['exports'], fun
                   "column": 4
                 },
                 "end": {
-                  "line": 6,
+                  "line": 7,
                   "column": 4
                 }
               },
@@ -11993,6 +11993,10 @@ define('frontend-cp/components/ko-case-field/suggest/template', ['exports'], fun
               var el0 = dom.createDocumentFragment();
               var el1 = dom.createTextNode("      ");
               dom.appendChild(el0, el1);
+              var el1 = dom.createComment("TODO currently this is coming from ember-get-helper addon but will par of ember 2.1");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n      ");
+              dom.appendChild(el0, el1);
               var el1 = dom.createComment("");
               dom.appendChild(el0, el1);
               var el1 = dom.createTextNode("\n");
@@ -12001,11 +12005,11 @@ define('frontend-cp/components/ko-case-field/suggest/template', ['exports'], fun
             },
             buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
               var morphs = new Array(1);
-              morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+              morphs[0] = dom.createMorphAt(fragment,3,3,contextualElement);
               return morphs;
             },
             statements: [
-              ["inline","ko-get-key",[["get","opt",["loc",[null,[5,19],[5,22]]]],["get","searchKey",["loc",[null,[5,23],[5,32]]]]],[],["loc",[null,[5,6],[5,34]]]]
+              ["inline","get",[["get","opt",["loc",[null,[6,12],[6,15]]]],["get","searchKey",["loc",[null,[6,16],[6,25]]]]],[],["loc",[null,[6,6],[6,27]]]]
             ],
             locals: [],
             templates: []
@@ -12021,7 +12025,7 @@ define('frontend-cp/components/ko-case-field/suggest/template', ['exports'], fun
                 "column": 2
               },
               "end": {
-                "line": 7,
+                "line": 8,
                 "column": 2
               }
             },
@@ -12044,7 +12048,7 @@ define('frontend-cp/components/ko-case-field/suggest/template', ['exports'], fun
             return morphs;
           },
           statements: [
-            ["block","ko-dropdown/list/item",[],["action","itemSelect","content",["subexpr","@mut",[["get","opt",["loc",[null,[4,57],[4,60]]]]],[],[]]],0,null,["loc",[null,[4,4],[6,30]]]]
+            ["block","ko-dropdown/list/item",[],["action","itemSelect","content",["subexpr","@mut",[["get","opt",["loc",[null,[4,57],[4,60]]]]],[],[]]],0,null,["loc",[null,[4,4],[7,30]]]]
           ],
           locals: ["opt"],
           templates: [child0]
@@ -12060,7 +12064,7 @@ define('frontend-cp/components/ko-case-field/suggest/template', ['exports'], fun
               "column": 0
             },
             "end": {
-              "line": 8,
+              "line": 9,
               "column": 0
             }
           },
@@ -12083,7 +12087,7 @@ define('frontend-cp/components/ko-case-field/suggest/template', ['exports'], fun
           return morphs;
         },
         statements: [
-          ["block","each",[["get","filteredItems",["loc",[null,[3,10],[3,23]]]]],[],0,null,["loc",[null,[3,2],[7,11]]]]
+          ["block","each",[["get","filteredItems",["loc",[null,[3,10],[3,23]]]]],[],0,null,["loc",[null,[3,2],[8,11]]]]
         ],
         locals: [],
         templates: [child0]
@@ -12099,7 +12103,7 @@ define('frontend-cp/components/ko-case-field/suggest/template', ['exports'], fun
             "column": 0
           },
           "end": {
-            "line": 9,
+            "line": 10,
             "column": 0
           }
         },
@@ -12129,7 +12133,7 @@ define('frontend-cp/components/ko-case-field/suggest/template', ['exports'], fun
       },
       statements: [
         ["inline","format-message",[["get","title",["loc",[null,[1,24],[1,29]]]]],[],["loc",[null,[1,7],[1,31]]]],
-        ["block","ko-suggest",[],["selectedItem",["subexpr","@mut",[["get","selectedItem",["loc",[null,[2,27],[2,39]]]]],[],[]],"onSearchTermUpdated","itemSearch"],0,null,["loc",[null,[2,0],[8,15]]]]
+        ["block","ko-suggest",[],["selectedItem",["subexpr","@mut",[["get","selectedItem",["loc",[null,[2,27],[2,39]]]]],[],[]],"onSearchTermUpdated","itemSearch"],0,null,["loc",[null,[2,0],[9,15]]]]
       ],
       locals: [],
       templates: [child0]
@@ -24869,7 +24873,7 @@ define('frontend-cp/components/ko-predicate-builder/rule/template', ['exports'],
               return morphs;
             },
             statements: [
-              ["inline","format-message",[["subexpr","intl-get",[["subexpr","ko-concat",["admin.predicate_builder.",["get","possibleDefinition.id",["loc",[null,[10,73],[10,94]]]]],[],["loc",[null,[10,35],[10,95]]]]],[],["loc",[null,[10,25],[10,96]]]]],[],["loc",[null,[10,8],[10,98]]]]
+              ["inline","format-message",[["subexpr","intl-get",[["subexpr","concat",["admin.predicate_builder.",["get","possibleDefinition.id",["loc",[null,[10,70],[10,91]]]]],[],["loc",[null,[10,35],[10,92]]]]],[],["loc",[null,[10,25],[10,93]]]]],[],["loc",[null,[10,8],[10,95]]]]
             ],
             locals: [],
             templates: []
@@ -24991,7 +24995,7 @@ define('frontend-cp/components/ko-predicate-builder/rule/template', ['exports'],
               return morphs;
             },
             statements: [
-              ["inline","format-message",[["subexpr","intl-get",[["subexpr","ko-concat",["admin.predicate_builder.operators.",["get","possibleOperator",["loc",[null,[19,83],[19,99]]]]],[],["loc",[null,[19,35],[19,100]]]]],[],["loc",[null,[19,25],[19,101]]]]],[],["loc",[null,[19,8],[19,103]]]]
+              ["inline","format-message",[["subexpr","intl-get",[["subexpr","concat",["admin.predicate_builder.operators.",["get","possibleOperator",["loc",[null,[19,80],[19,96]]]]],[],["loc",[null,[19,35],[19,97]]]]],[],["loc",[null,[19,25],[19,98]]]]],[],["loc",[null,[19,8],[19,100]]]]
             ],
             locals: [],
             templates: []
@@ -25510,7 +25514,7 @@ define('frontend-cp/components/ko-predicate-builder/rule/template', ['exports'],
       statements: [
         ["inline","format-message",[["subexpr","intl-get",["generic.or"],[],["loc",[null,[2,19],[2,42]]]]],[],["loc",[null,[2,2],[2,44]]]],
         ["block","ko-dropdown/select",[],["label",["subexpr","@mut",[["get","selectedDefinitionLabel",["loc",[null,[7,30],[7,53]]]]],[],[]],"hideOnClick",true,"class","ko-predicate-builder_rule__input"],0,null,["loc",[null,[7,2],[13,25]]]],
-        ["block","ko-dropdown/select",[],["label",["subexpr","format-message",[["subexpr","intl-get",[["subexpr","ko-concat",["admin.predicate_builder.operators.",["subexpr","or",[["get","rule.operator",["loc",[null,[16,108],[16,121]]]],"none"],[],["loc",[null,[16,104],[16,129]]]]],[],["loc",[null,[16,56],[16,130]]]]],[],["loc",[null,[16,46],[16,131]]]]],[],["loc",[null,[16,30],[16,132]]]],"hideOnClick",true,"class","ko-predicate-builder_rule__input"],1,null,["loc",[null,[16,2],[22,25]]]],
+        ["block","ko-dropdown/select",[],["label",["subexpr","format-message",[["subexpr","intl-get",[["subexpr","concat",["admin.predicate_builder.operators.",["subexpr","or",[["get","rule.operator",["loc",[null,[16,105],[16,118]]]],"none"],[],["loc",[null,[16,101],[16,126]]]]],[],["loc",[null,[16,56],[16,127]]]]],[],["loc",[null,[16,46],[16,128]]]]],[],["loc",[null,[16,30],[16,129]]]],"hideOnClick",true,"class","ko-predicate-builder_rule__input"],1,null,["loc",[null,[16,2],[22,25]]]],
         ["block","if",[["get","availableProperties.length",["loc",[null,[25,10],[25,36]]]]],[],2,3,["loc",[null,[25,4],[37,11]]]],
         ["block","if",[["get","canDeleteRule",["loc",[null,[40,10],[40,23]]]]],[],4,null,["loc",[null,[40,4],[44,11]]]]
       ],
@@ -33357,7 +33361,12 @@ define('frontend-cp/helpers/-intl-get', ['exports', 'ember'], function (exports,
 
   'use strict';
 
-  exports['default'] = Ember['default'].Handlebars.makeBoundHelper(function (value) {
+  var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
+
+  exports['default'] = Ember['default'].Helper.helper(function (_ref) {
+    var _ref2 = _slicedToArray(_ref, 1);
+
+    var value = _ref2[0];
     return '%' + value + '%';
   });
 
@@ -33384,7 +33393,7 @@ define('frontend-cp/helpers/escape-html', ['exports', 'ember'], function (export
 
   'use strict';
 
-  exports['default'] = Ember['default'].Handlebars.makeBoundHelper(function (value) {
+  exports['default'] = Ember['default'].Helper.helper(function (value) {
     return value;
   });
 
@@ -33420,7 +33429,14 @@ define('frontend-cp/helpers/is-last-item-in-list', ['exports', 'ember'], functio
 
   'use strict';
 
-  exports['default'] = Ember['default'].Handlebars.makeBoundHelper(function (item, list) {
+  var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
+
+  exports['default'] = Ember['default'].Helper.helper(function (_ref) {
+    var _ref2 = _slicedToArray(_ref, 2);
+
+    var item = _ref2[0];
+    var list = _ref2[1];
+
     var listLength = list.get('length');
     if (listLength === 0) {
       return false;
@@ -33430,30 +33446,12 @@ define('frontend-cp/helpers/is-last-item-in-list', ['exports', 'ember'], functio
   });
 
 });
-define('frontend-cp/helpers/ko-concat', ['exports', 'ember'], function (exports, Ember) {
-
-  'use strict';
-
-  exports['default'] = Ember['default'].Handlebars.makeBoundHelper(function () {
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    // remove context from end of arguments
-    return args.slice(0, -1).join('');
-  });
-
-});
 define('frontend-cp/helpers/ko-contextual-helper', ['exports', 'ember'], function (exports, Ember) {
 
   'use strict';
 
-  exports['default'] = Ember['default'].Handlebars.makeBoundHelper(function () {
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    return args[0].apply(args[1], args.slice(2, -1));
+  exports['default'] = Ember['default'].Helper.helper(function (args) {
+    return args[0].apply(args[1], args.slice(2));
   });
 
 });
@@ -33461,7 +33459,13 @@ define('frontend-cp/helpers/ko-datetime-format', ['exports', 'ember', 'moment'],
 
   'use strict';
 
-  exports['default'] = Ember['default'].Handlebars.makeBoundHelper(function (dateTime) {
+  var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
+
+  exports['default'] = Ember['default'].Helper.helper(function (_ref) {
+    var _ref2 = _slicedToArray(_ref, 1);
+
+    var dateTime = _ref2[0];
+
     var date = moment['default'](dateTime);
 
     if (date.isBefore(moment['default']().subtract('1', 'days'))) {
@@ -33478,7 +33482,7 @@ define('frontend-cp/helpers/ko-embolden', ['exports', 'ember'], function (export
 
   var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
 
-  exports['default'] = Ember['default'].HTMLBars.makeBoundHelper(function (_ref) {
+  exports['default'] = Ember['default'].Helper.helper(function (_ref) {
     var _ref2 = _slicedToArray(_ref, 2);
 
     var fullString = _ref2[0];
@@ -33486,15 +33490,6 @@ define('frontend-cp/helpers/ko-embolden', ['exports', 'ember'], function (export
 
     var regExp = new RegExp(emboldenString, 'gi');
     return Ember['default'].String.htmlSafe(fullString.replace(regExp, '<b>$&</b>'));
-  });
-
-});
-define('frontend-cp/helpers/ko-get-key', ['exports', 'ember'], function (exports, Ember) {
-
-  'use strict';
-
-  exports['default'] = Ember['default'].Handlebars.makeBoundHelper(function (value, key) {
-    return value.get(key);
   });
 
 });
@@ -33518,12 +33513,8 @@ define('frontend-cp/helpers/ko-helper', ['exports', 'ember'], function (exports,
 
   var _this = undefined;
 
-  exports['default'] = Ember['default'].Handlebars.makeBoundHelper(function () {
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    return args[0].apply(_this, args.slice(1, -1));
+  exports['default'] = Ember['default'].Helper.helper(function (args) {
+    return args[0].apply(_this, args.slice(1));
   });
 
 });
@@ -33531,28 +33522,20 @@ define('frontend-cp/helpers/ko-intl-key-for-field-type', ['exports', 'ember'], f
 
   'use strict';
 
-  exports.intlKeyForFieldType = intlKeyForFieldType;
-
-  function intlKeyForFieldType(fieldType) {
+  exports['default'] = Ember['default'].Helper.helper(function (fieldType) {
     if (fieldType.length) {
       return 'admin.casefields.type.' + fieldType[0].toLowerCase() + '.name';
     }
-  }
-
-  exports['default'] = Ember['default'].HTMLBars.makeBoundHelper(intlKeyForFieldType);
+  });
 
 });
 define('frontend-cp/helpers/ko-slasherizer', ['exports', 'ember'], function (exports, Ember) {
 
   'use strict';
 
-  exports.slasherizer = slasherizer;
-
-  function slasherizer(params /*, hash*/) {
-    return params[0].split(',').join(' / ');
-  }
-
-  exports['default'] = Ember['default'].HTMLBars.makeBoundHelper(slasherizer);
+  exports['default'] = Ember['default'].Helper.helper(function (args) {
+    return args[0].split(',').join(' / ');
+  });
 
 });
 define('frontend-cp/helpers/not', ['exports', 'ember', 'ember-truth-helpers/helpers/not'], function (exports, Ember, notHelper) {
@@ -62413,7 +62396,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+35391c72"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+4a00876b"});
 }
 
 /* jshint ignore:end */
