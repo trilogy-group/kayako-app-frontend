@@ -10352,6 +10352,350 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
   });
 
 });
+define('frontend-cp/components/ko-case-content/dropdown/component', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Component.extend({
+    //Params
+    label: '',
+    action: null,
+    options: null,
+    value: null,
+
+    contentStyle: null,
+
+    currentValueLabel: Ember['default'].computed('value', 'options', function () {
+      var content = this.get('value');
+      var option = this.get('options').find(function (option) {
+        return option.content === content;
+      });
+      if (option) {
+        return option.label;
+      } else {
+        return '';
+      }
+    }),
+
+    didInsertElement: function didInsertElement() {
+      var width = this.$('.ko-case-content_dropdown__button').outerWidth(true);
+      this.set('contentStyle', ('min-width:' + width + 'px;').htmlSafe());
+    }
+  });
+
+});
+define('frontend-cp/components/ko-case-content/dropdown/template', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports['default'] = Ember.HTMLBars.template((function() {
+    var child0 = (function() {
+      var child0 = (function() {
+        return {
+          meta: {
+            "revision": "Ember@1.13.7",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 2,
+                "column": 2
+              },
+              "end": {
+                "line": 4,
+                "column": 2
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-case-content/dropdown/template.hbs"
+          },
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("    ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("span");
+            dom.setAttribute(el1,"class","ko-case-content_dropdown__label");
+            var el2 = dom.createComment("");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createTextNode(": ");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createElement("span");
+            dom.setAttribute(el2,"class","ko-case-content_dropdown__current-value");
+            var el3 = dom.createComment("");
+            dom.appendChild(el2, el3);
+            dom.appendChild(el1, el2);
+            var el2 = dom.createTextNode(" ");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createElement("span");
+            dom.setAttribute(el2,"class","i-select");
+            dom.appendChild(el1, el2);
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var element0 = dom.childAt(fragment, [1]);
+            var morphs = new Array(2);
+            morphs[0] = dom.createMorphAt(element0,0,0);
+            morphs[1] = dom.createMorphAt(dom.childAt(element0, [2]),0,0);
+            return morphs;
+          },
+          statements: [
+            ["content","label",["loc",[null,[3,50],[3,59]]]],
+            ["content","currentValueLabel",["loc",[null,[3,115],[3,136]]]]
+          ],
+          locals: [],
+          templates: []
+        };
+      }());
+      var child1 = (function() {
+        var child0 = (function() {
+          var child0 = (function() {
+            var child0 = (function() {
+              return {
+                meta: {
+                  "revision": "Ember@1.13.7",
+                  "loc": {
+                    "source": null,
+                    "start": {
+                      "line": 8,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 8,
+                      "column": 87
+                    }
+                  },
+                  "moduleName": "frontend-cp/components/ko-case-content/dropdown/template.hbs"
+                },
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                  var el0 = dom.createDocumentFragment();
+                  var el1 = dom.createComment("");
+                  dom.appendChild(el0, el1);
+                  return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                  var morphs = new Array(1);
+                  morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+                  dom.insertBoundary(fragment, 0);
+                  dom.insertBoundary(fragment, null);
+                  return morphs;
+                },
+                statements: [
+                  ["content","option.label",["loc",[null,[8,71],[8,87]]]]
+                ],
+                locals: [],
+                templates: []
+              };
+            }());
+            return {
+              meta: {
+                "revision": "Ember@1.13.7",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 7,
+                    "column": 6
+                  },
+                  "end": {
+                    "line": 9,
+                    "column": 6
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-case-content/dropdown/template.hbs"
+              },
+              arity: 1,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createTextNode("        ");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var morphs = new Array(1);
+                morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+                return morphs;
+              },
+              statements: [
+                ["block","ko-dropdown/list/item",[],["action",["subexpr","@mut",[["get","action",["loc",[null,[8,40],[8,46]]]]],[],[]],"content",["subexpr","@mut",[["get","option.content",["loc",[null,[8,55],[8,69]]]]],[],[]]],0,null,["loc",[null,[8,8],[8,113]]]]
+              ],
+              locals: ["option"],
+              templates: [child0]
+            };
+          }());
+          return {
+            meta: {
+              "revision": "Ember@1.13.7",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 6,
+                  "column": 4
+                },
+                "end": {
+                  "line": 10,
+                  "column": 4
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-case-content/dropdown/template.hbs"
+            },
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(1);
+              morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+              dom.insertBoundary(fragment, 0);
+              dom.insertBoundary(fragment, null);
+              return morphs;
+            },
+            statements: [
+              ["block","each",[["get","options",["loc",[null,[7,14],[7,21]]]]],[],0,null,["loc",[null,[7,6],[9,15]]]]
+            ],
+            locals: [],
+            templates: [child0]
+          };
+        }());
+        return {
+          meta: {
+            "revision": "Ember@1.13.7",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 5,
+                "column": 2
+              },
+              "end": {
+                "line": 11,
+                "column": 2
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-case-content/dropdown/template.hbs"
+          },
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+            dom.insertBoundary(fragment, 0);
+            dom.insertBoundary(fragment, null);
+            return morphs;
+          },
+          statements: [
+            ["block","ko-dropdown/list",[],["style",["subexpr","@mut",[["get","contentStyle",["loc",[null,[6,30],[6,42]]]]],[],[]]],0,null,["loc",[null,[6,4],[10,25]]]]
+          ],
+          locals: [],
+          templates: [child0]
+        };
+      }());
+      return {
+        meta: {
+          "revision": "Ember@1.13.7",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 1,
+              "column": 0
+            },
+            "end": {
+              "line": 12,
+              "column": 0
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-case-content/dropdown/template.hbs"
+        },
+        arity: 2,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(2);
+          morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+          morphs[1] = dom.createMorphAt(fragment,1,1,contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [
+          ["block","if",[["subexpr","eq",[["get","name",["loc",[null,[2,12],[2,16]]]],"button"],[],["loc",[null,[2,8],[2,26]]]]],[],0,null,["loc",[null,[2,2],[4,9]]]],
+          ["block","if",[["subexpr","eq",[["get","name",["loc",[null,[5,12],[5,16]]]],"content"],[],["loc",[null,[5,8],[5,27]]]]],[],1,null,["loc",[null,[5,2],[11,9]]]]
+        ],
+        locals: ["name","dropdownContext"],
+        templates: [child0, child1]
+      };
+    }());
+    return {
+      meta: {
+        "revision": "Ember@1.13.7",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 13,
+            "column": 0
+          }
+        },
+        "moduleName": "frontend-cp/components/ko-case-content/dropdown/template.hbs"
+      },
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var morphs = new Array(1);
+        morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+        dom.insertBoundary(fragment, 0);
+        dom.insertBoundary(fragment, null);
+        return morphs;
+      },
+      statements: [
+        ["block","ko-dropdown/container",[],["hideOnClick",true,"hideOnChildFocus",true],0,null,["loc",[null,[1,0],[12,26]]]]
+      ],
+      locals: [],
+      templates: [child0]
+    };
+  }()));
+
+});
 define('frontend-cp/components/ko-case-content/template', ['exports'], function (exports) {
 
   'use strict';
@@ -18183,10 +18527,7 @@ define('frontend-cp/components/ko-dropdown/select/button/component', ['exports',
 
   exports['default'] = Ember['default'].Component.extend({
     //Params:
-    label: '',
-    isButton: false,
-
-    classNameBindings: ['isButton']
+    label: ''
   });
 
 });
@@ -18245,9 +18586,6 @@ define('frontend-cp/components/ko-dropdown/select/component', ['exports', 'ember
   exports['default'] = Ember['default'].Component.extend({
     //Params
     hideOnClick: true,
-    isButton: false,
-
-    classNameBindings: ['isButton'],
 
     didInsertElement: function didInsertElement() {
       var width = this.$('.ko-dropdown-select__button').outerWidth(true);
@@ -18308,7 +18646,7 @@ define('frontend-cp/components/ko-dropdown/select/template', ['exports'], functi
             return morphs;
           },
           statements: [
-            ["inline","ko-dropdown/select/button",[],["isButton",["subexpr","@mut",[["get","isButton",["loc",[null,[3,41],[3,49]]]]],[],[]],"label",["subexpr","@mut",[["get","label",["loc",[null,[3,56],[3,61]]]]],[],[]]],["loc",[null,[3,4],[3,63]]]]
+            ["inline","ko-dropdown/select/button",[],["label",["subexpr","@mut",[["get","label",["loc",[null,[3,38],[3,43]]]]],[],[]]],["loc",[null,[3,4],[3,45]]]]
           ],
           locals: [],
           templates: []
@@ -62396,7 +62734,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+4a00876b"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+4960bfa5"});
 }
 
 /* jshint ignore:end */
