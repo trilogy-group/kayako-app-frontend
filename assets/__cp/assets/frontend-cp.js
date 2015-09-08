@@ -85,7 +85,7 @@ define('frontend-cp/adapters/application', ['exports', 'ember', 'ember-data', 'n
     sessionService: Ember['default'].inject.service('session'),
     errorService: Ember['default'].inject.service('errorHandler'),
 
-    headers: (function () {
+    headers: Ember['default'].computed('sessionService.sessionId', function () {
       var headers = {
         'Accept': 'application/json',
         'X-Options': 'flat',
@@ -96,7 +96,7 @@ define('frontend-cp/adapters/application', ['exports', 'ember', 'ember-data', 'n
         headers['X-Session-ID'] = sessionId;
       }
       return headers;
-    }).property('sessionService.sessionId'),
+    }),
 
     createRecord: function createRecord(store, type, snapshot) {
       var _this = this;
@@ -512,11 +512,11 @@ define('frontend-cp/adapters/metric', ['exports', 'frontend-cp/adapters/applicat
 });
 define('frontend-cp/adapters/private', ['exports', 'frontend-cp/adapters/application'], function (exports, ApplicationAdapter) {
 
-	'use strict';
+    'use strict';
 
-	exports['default'] = ApplicationAdapter['default'].extend({
-		namespace: 'base/admin/index.php?/Base'
-	});
+    exports['default'] = ApplicationAdapter['default'].extend({
+        namespace: 'base/admin/index.php?/Base'
+    });
 
 });
 define('frontend-cp/adapters/search-result-group', ['exports', 'frontend-cp/adapters/application'], function (exports, ApplicationAdapter) {
@@ -530,7 +530,7 @@ define('frontend-cp/adapters/search-result-group', ['exports', 'frontend-cp/adap
   });
 
 });
-define('frontend-cp/adapters/session', ['exports', 'frontend-cp/adapters/application'], function (exports, ApplicationAdapter) {
+define('frontend-cp/adapters/session', ['exports', 'ember', 'frontend-cp/adapters/application'], function (exports, Ember, ApplicationAdapter) {
 
   'use strict';
 
@@ -541,7 +541,7 @@ define('frontend-cp/adapters/session', ['exports', 'frontend-cp/adapters/applica
       return 'session';
     },
 
-    headers: (function () {
+    headers: Ember['default'].computed('sessionService.{email,password,sessionId}', function () {
       var sessionId = this.get('sessionService.sessionId');
       var email = this.get('sessionService.email');
       var password = this.get('sessionService.password');
@@ -555,7 +555,7 @@ define('frontend-cp/adapters/session', ['exports', 'frontend-cp/adapters/applica
         'Authorization': withPassword ? authorizationHeader : undefined,
         'X-Requested-With': 'XMLHttpRequest'
       };
-    }).property('sessionService.email', 'sessionService.password', 'sessionService.sessionId')
+    })
   });
 
 });
@@ -640,9 +640,9 @@ define('frontend-cp/application/controller', ['exports', 'ember'], function (exp
     urlService: Ember['default'].inject.service('url'),
     notificationService: Ember['default'].inject.service('notification'),
 
-    currentPathDidChange: (function () {
+    currentPathDidChange: Ember['default'].observer('currentPath', function () {
       this.get('urlService').set('currentPath', this.get('currentPath'));
-    }).observes('currentPath'),
+    }),
 
     /**
      * Active notifications
@@ -1004,16 +1004,16 @@ define('frontend-cp/components/ko-add-participants-popover/component', ['exports
     filteredParticipants: null,
     selectedParticipants: null,
 
-    didShowingChange: (function () {
+    didShowingChange: Ember['default'].on('init', Ember['default'].observer('isShowing', function () {
       if (this.get('isShowing')) {
         this.$().find('.input__text').focus();
       }
-    }).observes('isShowing').on('init'),
+    })),
 
-    setupParticipants: (function () {
+    setupParticipants: Ember['default'].on('didInsertElement', function () {
       this.set('selectedParticipants', new Ember['default'].A([]));
       this.set('filteredParticipants', this.get('results'));
-    }).on('didInsertElement'),
+    }),
     // TODO: when RFC implemented and its possible to invoke same actions via multiple events
     keyDown: function keyDown(e) {
       if (e.keyCode === KeyCodes.down) {
@@ -2092,13 +2092,13 @@ define('frontend-cp/components/ko-admin-selectable-card/component', ['exports', 
 
     classNameBindings: ['isActive::ko-admin-selectable-card--inactive'],
 
-    modelWasSelectedOrDeSelected: (function () {
+    modelWasSelectedOrDeSelected: Ember['default'].observer('isSelected', function () {
       if (this.get('isSelected')) {
         this.sendAction('onComponentWasSelectedAction', this.get('selectableModelId'));
       } else {
         this.sendAction('onComponentWasDeselectedAction', this.get('selectableModelId'));
       }
-    }).observes('isSelected')
+    })
   });
 
 });
@@ -2205,9 +2205,9 @@ define('frontend-cp/components/ko-admin/case-fields/edit/options/component', ['e
     //Params
     options: [],
 
-    orderedOptionList: (function () {
+    orderedOptionList: Ember['default'].computed('options', 'options.[].sortOrder', function () {
       return this.get('options').sortBy('sortOrder');
-    }).property('options', 'options.[].sortOrder'),
+    }),
 
     actions: {
       reorderList: function reorderList(list) {
@@ -2332,9 +2332,9 @@ define('frontend-cp/components/ko-admin/case-fields/edit/priorities/component', 
     //Params
     options: [],
 
-    orderedOptionList: (function () {
+    orderedOptionList: Ember['default'].computed('options', 'options.[].sortOrder', function () {
       return this.get('options').sortBy('sortOrder');
-    }).property('options', 'options.[].sortOrder'),
+    }),
 
     actions: {
       reorderList: function reorderList(list) {
@@ -4106,27 +4106,27 @@ define('frontend-cp/components/ko-admin/case-forms/edit/fields/component', ['exp
     addCaseFieldToForm: 'addCaseFieldToForm',
     removeCaseFieldFromForm: 'removeCaseFieldFromForm',
 
-    initAvailableCaseFields: (function () {
+    initAvailableCaseFields: Ember['default'].on('init', function () {
       var _this = this;
 
       this.get('store').find('case-field').then(function (caseFields) {
         _this.set('availableCaseFields', caseFields);
       });
-    }).on('init'),
+    }),
 
-    systemCaseFields: (function () {
+    systemCaseFields: Ember['default'].computed('caseFields', 'caseFields.[].isSystem', function () {
       return this.get('caseFields').filter(function (caseField) {
         return caseField.get('isSystem');
       });
-    }).property('caseFields', 'caseFields.[].isSystem'),
+    }),
 
-    customCaseFields: (function () {
+    customCaseFields: Ember['default'].computed('caseFields', 'caseFields.[].isSystem', function () {
       return this.get('caseFields').filter(function (caseField) {
         return !caseField.get('isSystem');
       });
-    }).property('caseFields', 'caseFields.[].isSystem'),
+    }),
 
-    unusedCaseFields: (function () {
+    unusedCaseFields: Ember['default'].computed('customCaseFields', 'availableCaseFields', function () {
       var usedCustomFields = this.get('customCaseFields');
 
       var availableCustomFields = this.get('availableCaseFields').filter(function (field) {
@@ -4136,7 +4136,7 @@ define('frontend-cp/components/ko-admin/case-forms/edit/fields/component', ['exp
       return availableCustomFields.filter(function (customField) {
         return usedCustomFields.indexOf(customField) === -1;
       });
-    }).property('customCaseFields', 'availableCaseFields'),
+    }),
 
     actions: {
       addCustomField: function addCustomField(customField) {
@@ -5800,7 +5800,7 @@ define('frontend-cp/components/ko-admin/page-container/component', ['exports', '
     // State
     resizeSidebarsRequestID: null,
 
-    resizeSidebarAndContent: (function () {
+    resizeSidebarAndContent: Ember['default'].on('didInsertElement', function () {
       var _this = this;
 
       this.set('resizeSidebarsRequestID', window.requestAnimationFrame(function () {
@@ -5810,11 +5810,11 @@ define('frontend-cp/components/ko-admin/page-container/component', ['exports', '
 
         _this.resizeSidebarAndContent();
       }));
-    }).on('didInsertElement'),
+    }),
 
-    cleanup: (function () {
+    cleanup: Ember['default'].on('willDestroyElement', function () {
       window.cancelAnimationFrame(this.get('resizeSidebarsRequestID'));
-    }).on('willDestroyElement')
+    })
 
   });
 
@@ -6139,15 +6139,15 @@ define('frontend-cp/components/ko-admin/page-header/component', ['exports', 'emb
     title: null,
     cancelButtonText: 'Cancel',
 
-    titleTrail: (function () {
+    titleTrail: Ember['default'].computed('title', function () {
       var title = this.get('title');
       return title.slice(0, title.lastIndexOf('/') + 1);
-    }).property('title'),
+    }),
 
-    pageTitle: (function () {
+    pageTitle: Ember['default'].computed('title', function () {
       var title = this.get('title');
       return title.slice(title.lastIndexOf('/') + 1).trim();
-    }).property('title'),
+    }),
 
     actions: {
       cancelAction: function cancelAction() {
@@ -6717,9 +6717,9 @@ define('frontend-cp/components/ko-admin/tags/component', ['exports', 'ember'], f
 
     shouldFocusOut: false,
 
-    filterResults: (function () {
+    filterResults: Ember['default'].observer('searchTerm', function () {
       this.sendAction('onSearchTermUpdated', this.get('searchTerm'));
-    }).observes('searchTerm'),
+    }),
 
     didInsertElement: function didInsertElement() {
       var width = this.$('.ko-dropdown-select__button').outerWidth(true);
@@ -7199,13 +7199,13 @@ define('frontend-cp/components/ko-admin/views/edit/columns/component', ['exports
     store: Ember['default'].inject.service(),
     availableColumns: [],
 
-    initAvailableColumns: (function () {
+    initAvailableColumns: Ember['default'].on('init', function () {
       var _this = this;
 
       this.get('store').findAll('column').then(function (columns) {
         _this.set('availableColumns', columns);
       });
-    }).on('init'),
+    }),
 
     unusedColumns: Ember['default'].computed('availableColumns.[]', 'columns.[]', function () {
       var usedColumns = this.get('columns');
@@ -7481,18 +7481,18 @@ define('frontend-cp/components/ko-admin/views/edit/component', ['exports', 'embe
     sharedWithAll: Ember['default'].computed.equal('currentView.visibilityType', 'ALL'),
     sharedWithTeam: Ember['default'].computed.equal('currentView.visibilityType', 'TEAM'),
 
-    initDefinitions: (function () {
+    initDefinitions: Ember['default'].on('init', function () {
       this.set('definitions', this.get('store').find('definition'));
-    }).on('init'),
+    }),
 
     teams: [],
-    initTeams: (function () {
+    initTeams: Ember['default'].on('init', function () {
       var _this = this;
 
       this.get('store').findAll('team').then(function (teams) {
         _this.set('teams', teams);
       });
-    }).on('init'),
+    }),
 
     selectedTeamLabel: Ember['default'].computed('currentView.visibilityToTeams.[]', function () {
       var selectedTeam = this.get('currentView.visibilityToTeams.firstObject');
@@ -10032,18 +10032,18 @@ define('frontend-cp/components/ko-avatar/component', ['exports', 'ember'], funct
     avatar: null,
     size: 'normal', // [small | normal | large]
 
-    isLarge: (function () {
+    isLarge: Ember['default'].computed('size', function () {
       return this.get('size') === 'large';
-    }).property('size'),
+    }),
 
-    isSmall: (function () {
+    isSmall: Ember['default'].computed('size', function () {
       return this.get('size') === 'small';
-    }).property('size'),
+    }),
 
     // will be used flip between avatar / gravatar etc when we need that functionality!
-    imageURL: (function () {
+    imageURL: Ember['default'].computed('avatar', function () {
       return this.get('avatar');
-    }).property('avatar')
+    })
   });
 
 });
@@ -10109,11 +10109,11 @@ define('frontend-cp/components/ko-breadcrumbs/component', ['exports', 'ember'], 
     breadcrumbs: null,
     activeBreadcrumb: null,
 
-    initBreadcrumbs: (function () {
+    initBreadcrumbs: Ember['default'].on('init', function () {
       if (!this.get('breadcrumbs')) {
         this.set('breadcrumbs', []);
       }
-    }).on('init'),
+    }),
 
     actions: {
       breadcrumbChange: function breadcrumbChange(id) {
@@ -10307,7 +10307,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
     replyType: 'MESSAGE',
     scroller: null,
 
-    initCase: (function (_ref) {
+    initCase: Ember['default'].on('didReceiveAttrs', function (_ref) {
       var _this = this;
 
       var oldAttrs = _ref.oldAttrs;
@@ -10329,17 +10329,17 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
           this.set('topPostsAvailable', false);
         }
       }
-    }).on('didReceiveAttrs'),
+    }),
 
     suggestedTags: [],
 
-    tags: (function () {
+    tags: Ember['default'].computed('case.tags.[].name', function () {
       return this.get('case.tags').map(function (tag) {
         return tag.get('name');
       });
-    }).property('case.tags.[].name'),
+    }),
 
-    resizeSidebarAndContent: (function () {
+    resizeSidebarAndContent: Ember['default'].on('didInsertElement', function () {
       var _this2 = this;
 
       this.set('resizeStickyEditorRequestID', window.requestAnimationFrame(function () {
@@ -10355,9 +10355,9 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       }));
 
       this.set('scroller', $['default']('.ko-scroller'));
-    }).on('didInsertElement'),
+    }),
 
-    repositionStickyEditor: (function () {
+    repositionStickyEditor: Ember['default'].on('didInsertElement', 'didReceiveAttrs', function () {
       var _this3 = this;
 
       this.set('repositionStickyEditorRequestID', window.requestAnimationFrame(function () {
@@ -10378,9 +10378,9 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
           _this3.$('.ko-case-content__info-bar').css('height', $['default'](window).height() - Math.max(containerTop, dimensions.pageHeaderHeight) + 'px');
         });
       }));
-    }).on('didInsertElement', 'didReceiveAttrs'),
+    }),
 
-    loadPostsIfRequired: (function () {
+    loadPostsIfRequired: Ember['default'].on('didInsertElement', function () {
       var _this4 = this;
 
       this.set('loadPostsRafID', window.requestAnimationFrame(function () {
@@ -10403,7 +10403,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
 
         _this4.loadPostsIfRequired();
       }));
-    }).on('didInsertElement'),
+    }),
 
     loadNewerPosts: function loadNewerPosts(id) {
       var _this5 = this;
@@ -10471,46 +10471,46 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       this.repositionStickyEditor();
     },
 
-    startListeners: (function () {
+    startListeners: Ember['default'].on('didInsertElement', function () {
       this.onScroll = this.onScroll.bind(this);
       this.set('scroller', $['default']('.ko-scroller'));
       this.get('scroller').on('scroll', this.onScroll).scroll();
 
       this.onResize = this.onResize.bind(this);
       $['default'](window).on('resize', this.onResize);
-    }).on('didInsertElement'),
+    }),
 
-    cleanup: (function () {
+    cleanup: Ember['default'].on('willDestroyElement', function () {
       this.get('scroller').off('scroll', this.onScroll);
       $['default'](window).off('resize', this.onResize);
       window.cancelAnimationFrame(this.get('resizeStickyEditorRequestID'));
       window.cancelAnimationFrame(this.get('loadPostsRafID'));
       window.cancelAnimationFrame(this.get('repositionStickyEditorRequestID'));
-    }).on('willDestroyElement'),
+    }),
 
-    initDirtyCaseFieldHash: (function () {
+    initDirtyCaseFieldHash: Ember['default'].on('init', function () {
       this.updateDirtyCaseFieldHash();
       this.set('isCaseSubjectEdited', this.get('case').hasDirtyAttribute('subject'));
       this.set('isTagsFieldEdited', this.get('case').hasDirtyHasManyRelationship('tags'));
-    }).on('init'),
+    }),
 
-    initMacros: (function () {
+    initMacros: Ember['default'].on('init', function () {
       var _this7 = this;
 
       this.get('store').find('macro').then(function (macros) {
         _this7.set('macros', macros);
       });
-    }).on('init'),
+    }),
 
-    caseOrFormFields: (function () {
+    caseOrFormFields: Ember['default'].computed('caseFields', 'case.form', function () {
       var caseFields = this.get('caseFields');
       var form = this.get('case.form');
       return form ? form.get('fields') : caseFields;
-    }).property('caseFields', 'case.form'),
+    }),
 
-    hasBrand: (function () {
+    hasBrand: Ember['default'].computed('case.brand.companyName', function () {
       return !!this.get('case.brand.companyName');
-    }).property('case.brand.companyName'),
+    }),
 
     componentFor: function componentFor(fieldType) {
       switch (fieldType) {
@@ -11838,13 +11838,13 @@ define('frontend-cp/components/ko-case-field/assignee/component', ['exports', 'e
     assigneeValues: [],
     store: Ember['default'].inject.service(),
 
-    currentlySelectedValue: (function () {
+    currentlySelectedValue: Ember['default'].computed('case.assignee.agent.fullName', 'case.assignee.team.title', function () {
       var agentName = this.get('case.assignee.agent.fullName');
       var teamName = this.get('case.assignee.team.title');
       return this.generateTeamAgentValue(teamName, agentName).split(',').join('/');
-    }).property('case.assignee.agent.fullName', 'case.assignee.team.title'),
+    }),
 
-    setAssigneeValues: (function () {
+    setAssigneeValues: Ember['default'].on('init', function () {
       var _this = this;
 
       var assigneeValuePromises = {
@@ -11870,7 +11870,7 @@ define('frontend-cp/components/ko-case-field/assignee/component', ['exports', 'e
 
         _this.set('assigneeValues', assigneeValues);
       });
-    }).on('init'),
+    }),
 
     actions: {
       onAssigneeSelected: function onAssigneeSelected(agentTeamId) {
@@ -11962,7 +11962,7 @@ define('frontend-cp/components/ko-case-field/base/component', ['exports', 'ember
   exports['default'] = Ember['default'].Component.extend({
     tagName: '',
     isEdited: false,
-    updateIsEditedFromHash: (function () {
+    updateIsEditedFromHash: Ember['default'].on('init', Ember['default'].observer('field.id', function () {
       var _this = this;
 
       /*
@@ -11975,7 +11975,7 @@ define('frontend-cp/components/ko-case-field/base/component', ['exports', 'ember
       this.set('isEdited', Ember['default'].computed('editedCaseFields.' + this.get('field.id'), function () {
         return _this.get('editedCaseFields').get(_this.get('field.id'));
       }));
-    }).observes('field.id').on('init'),
+    })),
 
     actions: {
       valueChanged: function valueChanged(newValue) {
@@ -11987,7 +11987,7 @@ define('frontend-cp/components/ko-case-field/base/component', ['exports', 'ember
   });
 
 });
-define('frontend-cp/components/ko-case-field/checkbox/component', ['exports', 'frontend-cp/components/ko-case-field/custom/component'], function (exports, Custom) {
+define('frontend-cp/components/ko-case-field/checkbox/component', ['exports', 'ember', 'frontend-cp/components/ko-case-field/custom/component'], function (exports, Ember, Custom) {
 
   'use strict';
 
@@ -11998,11 +11998,11 @@ define('frontend-cp/components/ko-case-field/checkbox/component', ['exports', 'f
   };
 
   exports['default'] = Custom['default'].extend({
-    value: (function () {
+    value: Ember['default'].computed('valueObject.value', function () {
       return valueToArray(this.get('valueObject.value'));
-    }).property('valueObject.value'),
+    }),
 
-    isEdited: (function () {
+    isEdited: Ember['default'].computed('valueObject', 'valueObject.value', function () {
       var valueObject = this.get('valueObject');
       var originalValue = this.get('valueObject._data.value');
       if (originalValue === undefined && valueObject) {
@@ -12012,7 +12012,7 @@ define('frontend-cp/components/ko-case-field/checkbox/component', ['exports', 'f
       } else {
         return !!valueObject && !!valueObject.changedAttributes().value;
       }
-    }).property('valueObject', 'valueObject.value'),
+    }),
 
     actions: {
       selectionChanged: function selectionChanged(value) {
@@ -12089,22 +12089,22 @@ define('frontend-cp/components/ko-case-field/custom/component', ['exports', 'emb
 
     allValues: Ember['default'].computed.oneWay('case.customFields'),
 
-    valueObject: (function () {
+    valueObject: Ember['default'].computed('allValues.[].field', 'field', function () {
       return findCustomFieldValue(this.get('allValues'), this.get('field'));
-    }).property('allValues.[].field', 'field'),
+    }),
 
-    isEdited: (function () {
+    isEdited: Ember['default'].computed('valueObject', 'valueObject.value', function () {
       var valueObject = this.get('valueObject');
       return !!valueObject && !!valueObject.changedAttributes().value;
-    }).property('valueObject', 'valueObject.value'),
+    }),
 
-    onErrors: (function () {
+    onErrors: Ember['default'].observer('errors.[]', function () {
       var _this = this;
 
       this.set('isErrored', this.get('errors').reduce(function (acc, error) {
         return acc || error.parameter === _this.get('field.key');
       }, false));
-    }).observes('errors.[]'),
+    }),
 
     actions: {
       valueChanged: function valueChanged(value) {
@@ -12496,13 +12496,13 @@ define('frontend-cp/components/ko-case-field/priority/component', ['exports', 'e
 
     value: Ember['default'].computed.readOnly('case.priority'),
 
-    onErrors: (function () {
+    onErrors: Ember['default'].observer('errors.[]', function () {
       if (this.get('errors')) {
         this.set('isErrored', this.get('errors').reduce(function (acc, error) {
           return acc || error.parameter === 'priority_id';
         }, false));
       }
-    }).observes('errors.[]')
+    })
   });
 
 });
@@ -12679,13 +12679,13 @@ define('frontend-cp/components/ko-case-field/status/component', ['exports', 'emb
 
     value: Ember['default'].computed.readOnly('case.status'),
 
-    onErrors: (function () {
+    onErrors: Ember['default'].observer('errors.[]', function () {
       if (this.get('errors')) {
         this.set('isErrored', this.get('errors').reduce(function (acc, error) {
           return acc || error.parameter === 'status_id';
         }, false));
       }
-    }).observes('errors.[]')
+    })
   });
 
 });
@@ -13291,12 +13291,12 @@ define('frontend-cp/components/ko-case/macro-selector/component', ['exports', 'e
     onMacroSelected: null,
 
     // build a value list for the option drilldown
-    macroValueList: (function () {
+    macroValueList: Ember['default'].computed('macros.[]', function () {
       var valueList = this.get('macros').map(function (macro) {
         return { id: macro.get('id'), value: macro.get('title') };
       });
       return valueList;
-    }).property('macros.[]'),
+    }),
 
     actions: {
       onMacroSelected: function onMacroSelected(macroId) {
@@ -13377,18 +13377,18 @@ define('frontend-cp/components/ko-case/sla-sidebar/metric/component', ['exports'
 
     tagName: 'tr',
 
-    statusClassName: (function () {
+    statusClassName: Ember['default'].computed('metric.status', function () {
       var status = this.get('metric.status');
       return 'ko-case_sla-sidebar__data--' + status.toLowerCase();
-    }).property('metric.status'),
+    }),
 
-    iconClass: (function () {
+    iconClass: Ember['default'].computed('metric.state', 'metric.status', function () {
       var state = this.get('metric.state'),
           status = this.get('metric.status');
 
       var iconClass = this.getIconClassName(state, status);
       return iconClass + ' t-' + status.toLowerCase();
-    }).property('metric.state', 'metric.status'),
+    }),
 
     getIconClassName: function getIconClassName(state, status) {
       if (state === 'PAUSED') {
@@ -16525,23 +16525,23 @@ define('frontend-cp/components/ko-context-modal-item/component', ['exports', 'em
      * Check this is the correct modal set
      * @return {undefined}
      */
-    isContextModalActive: (function () {
+    isContextModalActive: Ember['default'].computed('activeContextModalId', 'contextModalId', function () {
       return this.get('activeContextModalId') === this.get('contextModalId') && this.get('activeContextModalId') !== null;
-    }).property('activeContextModalId', 'contextModalId'),
+    }),
 
     /**
      * Check the modal set is both active and that we are on the correct index (page)
      * @return {undefined}
      */
-    isHidden: (function () {
+    isHidden: Ember['default'].computed('activeIndex', 'index', 'isContextModalActive', function () {
       return this.get('activeIndex') !== Number(this.get('index')) || !this.get('isContextModalActive');
-    }).property('activeIndex', 'index', 'isContextModalActive'),
+    }),
 
-    inline: (function () {
+    inline: Ember['default'].computed('isContextModalActive', 'contextModalService.inline', function () {
       return this.get('isContextModalActive') ? this.get('contextModalService.inline') : false;
-    }).property('isContextModalActive', 'contextModalService.inline'),
+    }),
 
-    didShow: (function () {
+    didShow: Ember['default'].on('init', Ember['default'].observer('isHidden', function () {
       var _this = this;
 
       if (!this.get('isHidden')) {
@@ -16551,17 +16551,17 @@ define('frontend-cp/components/ko-context-modal-item/component', ['exports', 'em
       Ember['default'].run.next(function () {
         _this.set('isShowing', !_this.get('isHidden'));
       });
-    }).observes('isHidden').on('init'),
+    })),
 
     /**
      * Need to SafeString bound style attributes
      */
 
-    modalItemStyle: (function () {
+    modalItemStyle: Ember['default'].computed('isHidden', function () {
       if (this.get('isHidden')) {
         return 'display: none;'.htmlSafe();
       }
-    }).property('isHidden')
+    })
   });
 
 });
@@ -16888,17 +16888,17 @@ define('frontend-cp/components/ko-context-modal/component', ['exports', 'ember',
       }
     },
 
-    isHiddenFloatingModal: (function () {
+    isHiddenFloatingModal: Ember['default'].computed('floating', 'contextModalService.inline', function () {
       return !!(this.get('floating') && this.get('contextModalService.inline'));
-    }).property('floating', 'contextModalService.inline'),
+    }),
 
-    eventDidChange: (function () {
+    eventDidChange: Ember['default'].on('init', Ember['default'].observer('event', 'activeContextModalId', 'activeIndex', function () {
       this.set('modalVisible', false);
       this.get('activeContextModalId');
       this.get('activeIndex');
       this.get('event');
       Ember['default'].run.next(this, this.updatePositionInputs);
-    }).observes('event', 'activeContextModalId', 'activeIndex').on('init'),
+    })),
 
     updatePositionInputs: function updatePositionInputs() {
       var _this2 = this;
@@ -16942,57 +16942,57 @@ define('frontend-cp/components/ko-context-modal/component', ['exports', 'ember',
      * Calculates the x position of the arrow, relative to the left of the modal.
      * @return {Number} Arrow x Position
      */
-    arrowX: (function () {
+    arrowX: Ember['default'].computed('modalWidth', 'boundingOffsetX', function () {
       return this.get('modalWidth') / 2 + this.get('boundingOffsetX') - ARROW_SIZE / 2;
-    }).property('modalWidth', 'boundingOffsetX'),
+    }),
 
     /**
      * Based on the vertical position of the modal, set the arrow to appear on the top or bottom of the modal
      * @return {[type]} [description]
      */
-    arrowClass: (function () {
+    arrowClass: Ember['default'].computed('isArrowUnderneath', function () {
       return 'arrow--' + (this.get('isArrowUnderneath') ? 'bottom' : 'top') + ' arrow';
-    }).property('isArrowUnderneath'),
+    }),
 
-    targetModalOriginX: (function () {
+    targetModalOriginX: Ember['default'].computed('eventX', 'buttonWidth', 'modalWidth', function () {
       var originX = this.get('eventX') + this.get('buttonWidth') / 2; // Find the coordinate for the centre of the element clicked
       return originX - this.get('modalWidth') / 2; // Move the modal 50% of its width to the left of the centre of element clicked
-    }).property('eventX', 'buttonWidth', 'modalWidth'),
+    }),
 
-    positionX: (function () {
+    positionX: Ember['default'].computed('targetModalOriginX', 'windowWidth', 'modalWidth', function () {
       return Math.max(POSITION_MARGIN, Math.min(this.get('targetModalOriginX'), this.get('windowWidth') - this.get('modalWidth') - POSITION_MARGIN));
-    }).property('targetModalOriginX', 'windowWidth', 'modalWidth'),
+    }),
 
-    positionY: (function () {
+    positionY: Ember['default'].computed('isModalBelowClickedElement', 'eventY', 'eventInlineY', 'buttonHeight', 'constrainedModalHeight', 'inline', function () {
       var y = this.get('inline') ? this.get('eventInlineY') : this.get('eventY');
       if (this.get('isModalBelowClickedElement')) {
         return y + this.get('buttonHeight') + ARROW_OFFSET;
       } else {
         return y - this.get('constrainedModalHeight') - ARROW_OFFSET - ARROW_SIZE;
       }
-    }).property('isModalBelowClickedElement', 'eventY', 'eventInlineY', 'buttonHeight', 'constrainedModalHeight', 'inline'),
+    }),
 
-    constrainedModalHeight: (function () {
+    constrainedModalHeight: Ember['default'].computed('isModalBelowClickedElement', 'spaceAbove', 'spaceBelow', 'naturalModalHeight', function () {
       if (!this.get('scrollableModalContents')) {
         return this.get('naturalModalHeight');
       }
       return Math.min(this.get('isModalBelowClickedElement') ? this.get('spaceBelow') : this.get('spaceAbove'), this.get('naturalModalHeight'));
-    }).property('isModalBelowClickedElement', 'spaceAbove', 'spaceBelow', 'naturalModalHeight'),
+    }),
 
-    modalContentHeightStyle: (function () {
+    modalContentHeightStyle: Ember['default'].computed('modalContentHeight', function () {
       return 'height:' + this.get('modalContentHeight') + 'px';
-    }).property('modalContentHeight'),
+    }),
 
-    isConstrained: (function () {
+    isConstrained: Ember['default'].computed('naturalModalHeight', 'constrainedModalHeight', 'isResetting', function () {
       if (this.get('isResetting')) {
         return false;
       }
       return this.get('naturalModalHeight') !== this.get('constrainedModalHeight');
-    }).property('naturalModalHeight', 'constrainedModalHeight', 'isResetting'),
+    }),
 
-    modalContentHeight: (function () {
+    modalContentHeight: Ember['default'].computed('headerHeight', 'constrainedModalHeight', function () {
       return this.get('constrainedModalHeight') - this.get('headerHeight') - ARROW_SIZE;
-    }).property('headerHeight', 'constrainedModalHeight'),
+    }),
 
     isArrowUnderneath: Ember['default'].computed.not('isModalBelowClickedElement'),
 
@@ -17000,31 +17000,31 @@ define('frontend-cp/components/ko-context-modal/component', ['exports', 'ember',
      * Will place the modal above if there is enough space and there is more space above than below
      * @return {Boolean} [description]
      */
-    isModalBelowClickedElement: (function () {
+    isModalBelowClickedElement: Ember['default'].computed('spaceAbove', 'spaceBelow', 'inline', 'naturalModalHeight', function () {
       if (this.get('inline')) {
         return !(this.get('spaceAbove') > this.get('spaceBelow') && this.get('naturalModalHeight') < this.get('spaceAbove'));
       } else {
         return this.get('spaceAbove') < this.get('spaceBelow');
       }
-    }).property('spaceAbove', 'spaceBelow', 'inline', 'naturalModalHeight'),
+    }),
 
-    spaceAbove: (function () {
+    spaceAbove: Ember['default'].computed('eventY', function () {
       var space = this.get('eventY') - POSITION_MARGIN - ARROW_SIZE;
       return space;
-    }).property('eventY'),
+    }),
 
-    spaceBelow: (function () {
+    spaceBelow: Ember['default'].computed('windowHeight', 'eventY', 'buttonHeight', function () {
       var space = this.get('windowHeight') - this.get('eventY') - this.get('buttonHeight') - POSITION_MARGIN - ARROW_SIZE;
       return space;
-    }).property('windowHeight', 'eventY', 'buttonHeight'),
+    }),
 
     /**
      * Distance between where we want to put the modal, and where the bounding logic has moved it
      * @return {Number} X Distance in px between bounded and unbounded modal position
      */
-    boundingOffsetX: (function () {
+    boundingOffsetX: Ember['default'].computed('targetModalOriginX', 'positionX', function () {
       return this.get('targetModalOriginX') - this.get('positionX');
-    }).property('targetModalOriginX', 'positionX'),
+    }),
 
     /**
      * Returns the x and y coordinates of the element passed in.
@@ -17057,33 +17057,33 @@ define('frontend-cp/components/ko-context-modal/component', ['exports', 'ember',
      * Need to SafeString all bound style attributes
      */
 
-    floatingModalStyle: (function () {
+    floatingModalStyle: Ember['default'].computed('isHiddenFloatingModal', function () {
       if (this.get('isHiddenFloatingModal')) {
         return 'display: none;'.htmlSafe();
       }
-    }).property('isHiddenFloatingModal'),
+    }),
 
-    overlayStyle: (function () {
+    overlayStyle: Ember['default'].computed('documentWidth', 'documentHeight', function () {
       return ('width:' + this.get('documentWidth') + 'px;' + 'height:' + this.get('documentHeight') + 'px;').htmlSafe();
-    }).property('documentWidth', 'documentHeight'),
+    }),
 
-    containerStyle: (function () {
+    containerStyle: Ember['default'].computed('positionY', 'positionX', 'modalVisible', function () {
       var visibility = undefined;
       if (!this.get('modalVisible')) {
         visibility = 'visibility: hidden;';
       }
       return ('top:' + this.get('positionY') + 'px;' + 'left:' + this.get('positionX') + 'px;' + visibility).htmlSafe();
-    }).property('positionY', 'positionX', 'modalVisible'),
+    }),
 
-    contentStyle: (function () {
+    contentStyle: Ember['default'].computed('isConstrained', 'modalContentHeightStyle', function () {
       if (this.get('isConstrained')) {
         return this.get('modalContentHeightStyle').htmlSafe();
       }
-    }).property('isConstrained', 'modalContentHeightStyle'),
+    }),
 
-    arrowStyle: (function () {
+    arrowStyle: Ember['default'].computed('arrowX', function () {
       return ('left:' + this.get('arrowX') + 'px;').htmlSafe();
-    }).property('arrowX')
+    })
 
   });
 
@@ -17392,32 +17392,32 @@ define('frontend-cp/components/ko-datepicker/component', ['exports', 'ember', 'n
 
     assetRoot: config['default'].assetRoot,
 
-    momentDate: (function () {
+    momentDate: Ember['default'].computed('date', function () {
       return moment['default'](this.get('date'));
-    }).property('date'),
+    }),
 
-    onDateParamChange: (function () {
+    onDateParamChange: Ember['default'].on('init', Ember['default'].observer('momentDate', function () {
       this.set('shownDate', moment['default'](this.get('momentDate').isValid() ? this.get('momentDate') : this.get('today')).toDate());
-    }).observes('momentDate').on('init'),
+    })),
 
-    month: (function () {
+    month: Ember['default'].computed('shownDate', function () {
       return moment['default'](this.get('shownDate')).month();
-    }).property('shownDate'),
+    }),
 
-    year: (function () {
+    year: Ember['default'].computed('shownDate', function () {
       return moment['default'](this.get('shownDate')).year();
-    }).property('shownDate'),
+    }),
 
-    weekdays: (function () {
+    weekdays: Ember['default'].computed(function () {
       var weekdays = moment['default'].weekdaysShort();
       var firstDayOfWeek = moment['default'].localeData().firstDayOfWeek();
       _['default'].times(firstDayOfWeek, function () {
         return weekdays.push(weekdays.shift());
       });
       return weekdays;
-    }).property(),
+    }),
 
-    days: (function () {
+    days: Ember['default'].computed('year', 'month', 'today', 'momentDate', function () {
       var date = moment['default']({
         year: this.get('year'),
         month: this.get('month'),
@@ -17441,7 +17441,7 @@ define('frontend-cp/components/ko-datepicker/component', ['exports', 'ember', 'n
         date.add(1, 'day');
       }
       return dates;
-    }).property('year', 'month', 'today', 'momentDate'),
+    }),
 
     jumpDateBy: function jumpDateBy(method, range) {
       if (this.get('momentDate').isValid()) {
@@ -17994,13 +17994,13 @@ define('frontend-cp/components/ko-drill-down-popover/component', ['exports', 'em
 
     tagName: 'div',
 
-    didShowingChange: (function () {
+    didShowingChange: Ember['default'].on('init', Ember['default'].observer('isShowing', function () {
       var isShowing = this.get('isShowing');
 
       if (isShowing) {
         this.$().find('input:input').focus();
       }
-    }).observes('isShowing').on('init'),
+    })),
 
     actions: {
       onComponentValueChange: function onComponentValueChange(value) {
@@ -18132,12 +18132,12 @@ define('frontend-cp/components/ko-dropdown/container/component', ['exports', 'em
     classNames: 'ko-dropdown-container',
     classNameBindings: ['alignRight'],
 
-    onHideDropdown: (function () {
+    onHideDropdown: Ember['default'].observer('hideDropdown', function () {
       var hideDropdown = this.get('hideDropdown');
       if (hideDropdown) {
         this.send('onContentRequestClose');
       }
-    }).observes('hideDropdown'),
+    }),
 
     focusOut: function focusOut(event) {
       // Ignore focusOut events that are focusing on another item which is a child of this one
@@ -18191,9 +18191,9 @@ define('frontend-cp/components/ko-dropdown/container/content/component', ['expor
 
     isParentBlurred: Ember['default'].computed.not('isParentFocussed'),
 
-    registerOnParent: (function () {
+    registerOnParent: Ember['default'].on('init', function () {
       this.set('registerAs', this);
-    }).on('init'),
+    }),
 
     mouseUp: function mouseUp() {
       if (this.get('hideOnChildFocus') || this.get('hideOnClick')) {
@@ -19295,12 +19295,12 @@ define('frontend-cp/components/ko-editable-text/component', ['exports', 'ember']
     isEdited: false,
     valueToSave: null,
 
-    valueDidChange: (function () {
+    valueDidChange: Ember['default'].observer('value', function () {
       if (this.get('isEditing')) {
         return;
       }
       this.set('valueToSave', this.get('value'));
-    }).observes('value'),
+    }),
 
     actions: {
       edit: function edit() {
@@ -19414,9 +19414,9 @@ define('frontend-cp/components/ko-editor-modal/component', ['exports', 'ember'],
   exports['default'] = Ember['default'].Component.extend({
     classNameBindings: ['hidden:u-hidden'],
 
-    initModal: (function () {
+    initModal: Ember['default'].on('init', function () {
       this.set('hidden', true);
-    }).on('init'),
+    }),
 
     show: function show() {
       this.set('hidden', false);
@@ -19619,7 +19619,7 @@ define('frontend-cp/components/ko-feed/component', ['exports', 'ember'], functio
     childItemsById: null,
     currentTopPostId: null,
 
-    setupTopElementListener: (function () {
+    setupTopElementListener: Ember['default'].on('didInsertElement', function () {
       var _this = this;
 
       this.set('timeoutId', setTimeout(function () {
@@ -19638,15 +19638,15 @@ define('frontend-cp/components/ko-feed/component', ['exports', 'ember'], functio
           _this.setupTopElementListener();
         });
       }, 300));
-    }).on('didInsertElement'),
+    }),
 
-    teardownTopElementListener: (function () {
+    teardownTopElementListener: Ember['default'].on('willDestroyElement', function () {
       clearTimeout(this.get('timeoutId'));
-    }).on('willDestroyElement'),
+    }),
 
-    setupChildItems: (function () {
+    setupChildItems: Ember['default'].on('init', function () {
       this.set('childItemsById', {});
-    }).on('init'),
+    }),
 
     actions: {
       onReplyWithQuote: function onReplyWithQuote(quote) {
@@ -19682,13 +19682,13 @@ define('frontend-cp/components/ko-feed/item/component', ['exports', 'ember'], fu
 
     showMenu: false,
 
-    register: (function () {
+    register: Ember['default'].on('didInsertElement', function () {
       this.attrs.onRegister(this);
-    }).on('didInsertElement'),
+    }),
 
-    teardown: (function () {
+    teardown: Ember['default'].on('willDestroyElement', function () {
       this.attrs.onTeardown(this);
-    }).on('willDestroyElement'),
+    }),
 
     mouseEnter: function mouseEnter() {
       this.set('showMenu', true);
@@ -20704,7 +20704,7 @@ define('frontend-cp/components/ko-field/select/component', ['exports', 'ember', 
 
     role: 'menuitem',
 
-    selectedItem: (function () {
+    selectedItem: Ember['default'].computed('options', 'value', 'idPath', function () {
       var _this = this;
 
       var currentValue = this.get('value');
@@ -20716,7 +20716,7 @@ define('frontend-cp/components/ko-field/select/component', ['exports', 'ember', 
         var id = _this.get('idPath') ? Ember['default'].get(value, _this.get('idPath')) : value;
         return acc || (id === currentValue ? value : acc);
       }, null);
-    }).property('options', 'value', 'idPath'),
+    }),
 
     moveSelectedItem: function moveSelectedItem(direction) {
       var options = this.get('options');
@@ -20962,21 +20962,21 @@ define('frontend-cp/components/ko-field/tags/component', ['exports', 'ember', 'f
       this.set('selectedTagsKeyboardPosition', selectedTags.length + 1);
     },
 
-    isSuggested: (function () {
+    isSuggested: Ember['default'].computed('searchTerm', 'suggestedTags', function () {
       var searchTerm = this.get('searchTerm');
       var suggestedTags = this.get('suggestedTags');
       return suggestedTags.contains(searchTerm);
-    }).property('searchTerm', 'suggestedTags'),
+    }),
 
-    isSelected: (function () {
+    isSelected: Ember['default'].computed('searchTerm', 'selectedTags', function () {
       var searchTerm = this.get('searchTerm');
       var selectedTags = this.get('selectedTags');
       return selectedTags.contains(searchTerm);
-    }).property('searchTerm', 'selectedTags'),
+    }),
 
-    onSearchTermChange: (function () {
+    onSearchTermChange: Ember['default'].observer('searchTerm', function () {
       this.resetSuggestedTagKeyboardPosition();
-    }).observes('searchTerm'),
+    }),
 
     didInsertElement: function didInsertElement() {
       this.set('suggestedTags', this.get('tags'));
@@ -21626,7 +21626,7 @@ define('frontend-cp/components/ko-file-size/component', ['exports', 'ember'], fu
     tagName: 'span',
     size: null,
 
-    options: (function () {
+    options: Ember['default'].computed('size', function () {
       var size = this.size;
       var options = undefined;
       if (size > 1000 * 1000) {
@@ -21641,7 +21641,7 @@ define('frontend-cp/components/ko-file-size/component', ['exports', 'ember'], fu
         };
       }
       return options;
-    }).property('size')
+    })
   });
 
 });
@@ -21702,9 +21702,9 @@ define('frontend-cp/components/ko-file-upload/component', ['exports', 'ember'], 
     classNameBindings: ['empty:u-hidden'],
     empty: Ember['default'].computed.empty('uploads'),
 
-    initUploader: (function () {
+    initUploader: Ember['default'].on('init', function () {
       this.clear();
-    }).on('init'),
+    }),
 
     clear: function clear() {
       this.set('uploads', []);
@@ -22516,9 +22516,9 @@ define('frontend-cp/components/ko-limited-text-area/component', ['exports', 'emb
 
     text: '',
 
-    counter: (function () {
+    counter: Ember['default'].computed('max', 'text', function () {
       return this.get('max') - this.get('text').length;
-    }).property('max', 'text')
+    })
   });
 
 });
@@ -22596,9 +22596,9 @@ define('frontend-cp/components/ko-linked-cases-context-menu/component', ['export
     filteredCases: null,
     selectedCases: new Ember['default'].A([]),
 
-    setupParticipants: (function () {
+    setupParticipants: Ember['default'].on('didInsertElement', function () {
       this.set('filteredCases', this.get('cases'));
-    }).on('didInsertElement'),
+    }),
     // TODO: when RFC implemented and its possible to invoke same actions via multiple events
     // https://github.com/emberjs/rfcs/blob/action/active/0000-improved-actions.md
     // https://github.com/emberjs/rfcs/pull/50
@@ -23908,9 +23908,9 @@ define('frontend-cp/components/ko-option-list-drill-down/component', ['exports',
       this.set('keyboardPosition', 0);
     },
 
-    didUpdateOptions: (function () {
+    didUpdateOptions: Ember['default'].observer('options.[]', function () {
       this.resetState();
-    }).observes('options.[]'),
+    }),
 
     didInsertElement: function didInsertElement() {
       this.resetState();
@@ -24636,21 +24636,21 @@ define('frontend-cp/components/ko-pagination/component', ['exports', 'ember'], f
     loadingPage: null,
     pageCount: 1,
 
-    previousPage: (function () {
+    previousPage: Ember['default'].computed('currentPage', function () {
       return this.get('currentPage') - 1;
-    }).property('currentPage'),
+    }),
 
-    nextPage: (function () {
+    nextPage: Ember['default'].computed('currentPage', function () {
       return this.get('currentPage') + 1;
-    }).property('currentPage'),
+    }),
 
-    hasPreviousPage: (function () {
+    hasPreviousPage: Ember['default'].computed('currentPage', function () {
       return this.get('currentPage') > 1;
-    }).property('currentPage'),
+    }),
 
-    hasNextPage: (function () {
+    hasNextPage: Ember['default'].computed('currentPage', 'pageCount', function () {
       return this.get('currentPage') < this.get('pageCount');
-    }).property('currentPage', 'pageCount')
+    })
   });
 
 });
@@ -25488,31 +25488,31 @@ define('frontend-cp/components/ko-predicate-builder/rule/component', ['exports',
 
     selectedDefinition: null,
 
-    availableProperties: (function () {
+    availableProperties: Ember['default'].computed('selectedDefinition.values', function () {
       if (!this.get('selectedDefinition')) {
         return false;
       }
       return this.get('selectedDefinition.values');
-    }).property('selectedDefinition.values'),
+    }),
 
-    filteredProperties: (function () {
+    filteredProperties: Ember['default'].computed('searchTerm', 'availableProperties.[].string', function () {
       var searchTerm = this.get('searchTerm');
 
       var possibleProperties = this.get('availableProperties');
       return possibleProperties.filter(function (property) {
         return property.get('string').indexOf(searchTerm) !== -1;
       });
-    }).property('searchTerm', 'availableProperties.[].string'),
+    }),
 
-    isChoiceField: (function () {
+    isChoiceField: Ember['default'].computed('availableProperties.length', function () {
       return !!this.get('availableProperties.length');
-    }).property('availableProperties.length'),
+    }),
 
     isCollectionField: Ember['default'].computed.equal('selectedDefinition.definitionType', 'collection'),
 
-    possibleOperators: (function () {
+    possibleOperators: Ember['default'].computed('selectedDefinition', function () {
       return this.get('selectedDefinition.operators');
-    }).property('selectedDefinition'),
+    }),
 
     /*
      * Fired whenever we change selectedDefinition
@@ -25526,9 +25526,9 @@ define('frontend-cp/components/ko-predicate-builder/rule/component', ['exports',
       }
     },
 
-    setSelectedDefaults: (function () {
+    setSelectedDefaults: Ember['default'].on('init', function () {
       this.initializeSelectedDefinition();
-    }).on('init'),
+    }),
 
     initializeSelectedDefinition: function initializeSelectedDefinition() {
       var _this = this;
@@ -25557,7 +25557,7 @@ define('frontend-cp/components/ko-predicate-builder/rule/component', ['exports',
       }
     },
 
-    selectedProperty: (function () {
+    selectedProperty: Ember['default'].computed('isChoiceField', 'rule.value', 'selectedDefinition.values.[]', function () {
       if (!this.get('isChoiceField')) {
         // this field is not a choice so two-way binding (not DDAU) (we don't use it)
         return;
@@ -25568,19 +25568,19 @@ define('frontend-cp/components/ko-predicate-builder/rule/component', ['exports',
       return this.get('selectedDefinition.values').find(function (choice) {
         return String(choice.get('value')) === ruleValue;
       });
-    }).property('isChoiceField', 'rule.value', 'selectedDefinition.values.[]'),
+    }),
 
-    selectedDefinitionLabel: (function () {
+    selectedDefinitionLabel: Ember['default'].computed('selectedDefinition', function () {
       var selectedDefinition = this.get('selectedDefinition');
       if (selectedDefinition) {
         var translation = this.get('intlService').findTranslationByKey('admin.predicate_builder.' + selectedDefinition.id);
         return translation.translation;
       }
-    }).property('selectedDefinition'),
+    }),
 
-    propertyValueName: (function () {
+    propertyValueName: Ember['default'].computed('selectedProperty', function () {
       return this.get('selectedProperty.string');
-    }).property('selectedProperty'),
+    }),
 
     actions: {
       selectDefinition: function selectDefinition(definition) {
@@ -26962,9 +26962,9 @@ define('frontend-cp/components/ko-radio/component', ['exports', 'ember', 'fronte
     tabindex: 0,
     label: '',
 
-    selected: (function () {
+    selected: Ember['default'].computed('value', 'checked', function () {
       return this.value === this.checked;
-    }).property('value', 'checked'),
+    }),
 
     keyDown: function keyDown(e) {
       if (e.keyCode === KeyCodes.space) {
@@ -27414,9 +27414,9 @@ define('frontend-cp/components/ko-reorderable-crud-list/component', ['exports', 
     reorderListAction: null,
     userWantsToSeeNewItemForm: false,
 
-    isShowingNewItemForm: (function () {
+    isShowingNewItemForm: Ember['default'].computed('userWantsToSeeNewItemForm', function () {
       return this.get('userWantsToSeeNewItemForm');
-    }).property('userWantsToSeeNewItemForm'),
+    }),
 
     actions: {
       removeItem: function removeItem(item) {
@@ -27703,9 +27703,9 @@ define('frontend-cp/components/ko-reorderable-list/item/component', ['exports', 
       }
     },
 
-    handleDragEnter: (function () {
+    handleDragEnter: Ember['default'].on('dragEnter', function () {
       this.sendAction('onDraggedOver', this.get('item'));
-    }).on('dragEnter'),
+    }),
 
     dragOver: function dragOver(event) {
       event.preventDefault();
@@ -27729,25 +27729,25 @@ define('frontend-cp/components/ko-reorderable-list/item/handle/component', ['exp
     onDragStop: 'onDragStop',
 
     isGrabbed: false,
-    setIsGrabbed: (function () {
+    setIsGrabbed: Ember['default'].on('mouseDown', function () {
       this.set('isGrabbed', true);
-    }).on('mouseDown'),
-    unsetIsGrabbed: (function () {
+    }),
+    unsetIsGrabbed: Ember['default'].on('mouseUp', function () {
       this.set('isGrabbed', false);
-    }).on('mouseUp'),
+    }),
 
-    handleDragStart: (function (e) {
+    handleDragStart: Ember['default'].on('dragStart', function (e) {
       e.dataTransfer.effectAllowed = 'move';
       e.dataTransfer.dropEffect = 'move';
       e.dataTransfer.setDragImage(e.target.parentElement, 0, 0);
 
       this.sendAction('onDragStart', this.get('item'));
-    }).on('dragStart'),
+    }),
 
-    handleDragEnd: (function () {
+    handleDragEnd: Ember['default'].on('dragEnd', function () {
       this.set('isGrabbed', false);
       this.sendAction('onDragStop');
-    }).on('dragEnd')
+    })
   });
 
 });
@@ -27997,7 +27997,7 @@ define('frontend-cp/components/ko-scroller/component', ['exports', 'ember'], fun
     /**
      * Update the DOM when the scrollTop property is changed
      */
-    scrollTopUpdated: (function () {
+    scrollTopUpdated: Ember['default'].observer('scrollTop', function () {
       var scrollTop = this.get('scrollTop');
       if (scrollTop === this.get('_cachedScrollTop')) {
         return;
@@ -28007,12 +28007,12 @@ define('frontend-cp/components/ko-scroller/component', ['exports', 'ember'], fun
         return;
       }
       $componentElement.scrollTop(scrollTop);
-    }).observes('scrollTop'),
+    }),
 
     /**
      * Update the DOM when the scrollLeft property is changed
      */
-    scrollLeftUpdated: (function () {
+    scrollLeftUpdated: Ember['default'].observer('scrollLeft', function () {
       var scrollLeft = this.get('scrollLeft');
       if (scrollLeft === this.get('_cachedScrollLeft')) {
         return;
@@ -28022,12 +28022,12 @@ define('frontend-cp/components/ko-scroller/component', ['exports', 'ember'], fun
         return;
       }
       $componentElement.scrollLeft(scrollLeft);
-    }).observes('scrollLeft'),
+    }),
 
     /**
      * Add a scroll listener when the view is rendered
      */
-    didInsertElement: (function () {
+    didInsertElement: Ember['default'].on('didInsertElement', function () {
       var _this = this;
 
       var $componentElement = this.$();
@@ -28049,7 +28049,7 @@ define('frontend-cp/components/ko-scroller/component', ['exports', 'ember'], fun
           _this.set('scrollLeft', scrollLeft);
         });
       });
-    }).on('didInsertElement')
+    })
 
   });
 
@@ -28191,9 +28191,9 @@ define('frontend-cp/components/ko-session-widgets/component', ['exports', 'ember
   exports['default'] = Ember['default'].Component.extend({
     session: Ember['default'].inject.service(),
 
-    user: (function () {
+    user: Ember['default'].computed('session.user', function () {
       return this.get('session.user');
-    }).property('session.user')
+    })
   });
 
 });
@@ -28861,9 +28861,9 @@ define('frontend-cp/components/ko-suggest/component', ['exports', 'ember'], func
     searchTerm: null,
     isFocussed: false,
 
-    filterResults: (function () {
+    filterResults: Ember['default'].observer('searchTerm', function () {
       this.sendAction('onSearchTermUpdated', this.get('searchTerm'));
-    }).observes('searchTerm'),
+    }),
 
     didInsertElement: function didInsertElement() {
       var width = this.$('.ko-dropdown-select__button').outerWidth(true);
@@ -29577,9 +29577,9 @@ define('frontend-cp/components/ko-table/component', ['exports', 'ember'], functi
     tagName: 'table',
     rows: null,
 
-    initRows: (function () {
+    initRows: Ember['default'].on('init', function () {
       this.set('rows', new Ember['default'].A([]));
-    }).on('init'),
+    }),
 
     rowStatuses: Ember['default'].computed.mapBy('rows', 'selected'),
     unselectedRowStatuses: Ember['default'].computed.filter('rowStatuses', function (status) {
@@ -29794,17 +29794,17 @@ define('frontend-cp/components/ko-table/row/component', ['exports', 'ember'], fu
 
     classNameBindings: [':ko-table_row', 'selected:ko-table_row--selected'],
 
-    registerRow: (function () {
+    registerRow: Ember['default'].on('didInsertElement', function () {
       var table = this.get('parentView.parentView');
       table.send('registerRow', this);
-    }).on('didInsertElement'),
+    }),
 
-    unregisterRow: (function () {
+    unregisterRow: Ember['default'].on('willDestroyElement', function () {
       var table = this.get('parentView.parentView');
       if (table) {
         table.send('unregisterRow', this);
       }
-    }).on('willDestroyElement')
+    })
   });
 
 });
@@ -30209,10 +30209,10 @@ define('frontend-cp/components/ko-text-editor/component', ['exports', 'ember', '
      * IMPLEMENTATION
      */
 
-    initFiles: (function () {
+    initFiles: Ember['default'].on('init', function () {
       this.set('attachedFiles', []);
       this.set('inlineFiles', new Ember['default'].A([]));
-    }).on('init'),
+    }),
 
     fileIsNotTooBig: function fileIsNotTooBig(file) {
       return file.size < this.maxFileSize && this.totalSize < this.maxFileSize;
@@ -30224,7 +30224,7 @@ define('frontend-cp/components/ko-text-editor/component', ['exports', 'ember', '
 
     tagDictionary: null,
 
-    setupQuill: (function () {
+    setupQuill: Ember['default'].on('didInsertElement', function () {
       var _this = this;
 
       var tagDictionary = {
@@ -30371,7 +30371,7 @@ define('frontend-cp/components/ko-text-editor/component', ['exports', 'ember', '
           _this.set('cursor', _this.quill.getSelection().start);
         }
       });
-    }).on('didInsertElement'),
+    }),
 
     process: function process(elem, prefix, postfix) {
       return prefix + this.parseChildren(elem) + postfix;
@@ -30967,11 +30967,11 @@ define('frontend-cp/components/ko-time-billing/component', ['exports', 'ember'],
     humanReadableDuration: 'test', //length of time tracked as : separated hour:minute
     isValid: true,
 
-    onDurationParamChange: (function () {
+    onDurationParamChange: Ember['default'].on('init', Ember['default'].observer('timeBillingDuration', function () {
       this.set('humanReadableDuration', this.parseDurationToHumanReadable(this.get('timeBillingDuration')));
-    }).observes('timeBillingDuration').on('init'),
+    })),
 
-    onDurationTextChange: (function () {
+    onDurationTextChange: Ember['default'].on('focusOut', function () {
       var durationArray = this.parseHumanReadableDuration(this.get('humanReadableDuration'));
       var hours = durationArray[0];
       var minutes = durationArray[1];
@@ -30983,7 +30983,7 @@ define('frontend-cp/components/ko-time-billing/component', ['exports', 'ember'],
         this.set('isValid', true);
         this.setDuration(duration);
       }
-    }).on('focusOut'),
+    }),
 
     parseHumanReadableDuration: function parseHumanReadableDuration(humanDuration) {
       if (humanDuration.indexOf(':') === -1) {
@@ -31785,13 +31785,13 @@ define('frontend-cp/components/ko-universal-search/component', ['exports', 'embe
 
     isSearching: Ember['default'].computed.bool('searchQuery'),
 
-    didChangeSearchingStatus: (function () {
+    didChangeSearchingStatus: Ember['default'].on('init', Ember['default'].observer('isSearching', function () {
       this.sendAction('searchingChanged', this.get('isSearching'));
-    }).observes('isSearching').on('init'),
+    })),
 
-    onSearchQueryChanged: (function () {
+    onSearchQueryChanged: Ember['default'].observer('searchQuery', function () {
       Ember['default'].run.debounce(this, 'fireSearchAction', 250);
-    }).observes('searchQuery'),
+    }),
 
     fireSearchAction: function fireSearchAction() {
       var _this = this;
@@ -31813,7 +31813,7 @@ define('frontend-cp/components/ko-universal-search/component', ['exports', 'embe
       });
     },
 
-    flattenedResults: (function () {
+    flattenedResults: Ember['default'].computed('searchResults', function () {
       return this.get('searchResults').reduce(function (results, searchResultGroup) {
         searchResultGroup.get('results').forEach(function (result) {
           results.pushObject(result);
@@ -31821,7 +31821,7 @@ define('frontend-cp/components/ko-universal-search/component', ['exports', 'embe
 
         return results;
       }, []);
-    }).property('searchResults'),
+    }),
 
     actions: {
       clearSearchQuery: function clearSearchQuery() {
@@ -31944,9 +31944,9 @@ define('frontend-cp/components/ko-universal-search/result/component', ['exports'
       return 'i-' + this.get('resource');
     }),
 
-    highlight: (function () {
+    highlight: Ember['default'].on('mouseEnter', function () {
       this.sendAction('on-highlight', this.get('result'));
-    }).on('mouseEnter'),
+    }),
 
     click: function click() {
       this.sendAction('selectHighlightedResultAction');
@@ -32781,20 +32781,20 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
     suggestedTags: [],
     editedCustomFields: null,
 
-    initCustomFields: (function () {
+    initCustomFields: Ember['default'].on('init', function () {
       this.set('editedCustomFields', new Ember['default'].Object());
-    }).on('init'),
+    }),
 
     roles: [],
-    initRoles: (function () {
+    initRoles: Ember['default'].on('init', function () {
       var _this = this;
 
       this.get('store').findAll('role').then(function (roles) {
         _this.set('roles', roles);
       });
-    }).on('init'),
+    }),
 
-    initTeams: (function () {
+    initTeams: Ember['default'].on('init', function () {
       var _this2 = this;
 
       this.set('teams', []);
@@ -32804,28 +32804,28 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
         }));
         _this2.set('teamRecords', teams);
       });
-    }).on('init'),
+    }),
 
     organizations: [],
-    initOrganizations: (function () {
+    initOrganizations: Ember['default'].on('init', function () {
       var _this3 = this;
 
       this.get('store').findAll('organization').then(function (organizations) {
         _this3.set('organizations', organizations);
       });
-    }).on('init'),
+    }),
 
-    userTeams: (function () {
+    userTeams: Ember['default'].computed('model.teams.[].title', function () {
       return this.get('model.teams').map(function (tag) {
         return tag.get('title');
       });
-    }).property('model.teams.[].title'),
+    }),
 
-    userTags: (function () {
+    userTags: Ember['default'].computed('model.tags.[].name', function () {
       return this.get('model.tags').map(function (tag) {
         return tag.get('name');
       });
-    }).property('model.tags.[].name'),
+    }),
 
     accessLevels: Ember['default'].computed(function () {
       return [Ember['default'].Object.create({
@@ -33581,7 +33581,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
   }()));
 
 });
-define('frontend-cp/components/ko-user-field/checkbox/component', ['exports', 'frontend-cp/components/ko-user-field/custom/component'], function (exports, Custom) {
+define('frontend-cp/components/ko-user-field/checkbox/component', ['exports', 'ember', 'frontend-cp/components/ko-user-field/custom/component'], function (exports, Ember, Custom) {
 
   'use strict';
 
@@ -33592,11 +33592,11 @@ define('frontend-cp/components/ko-user-field/checkbox/component', ['exports', 'f
   };
 
   exports['default'] = Custom['default'].extend({
-    value: (function () {
+    value: Ember['default'].computed('valueObject.value', function () {
       return valueToArray(this.get('valueObject.value'));
-    }).property('valueObject.value'),
+    }),
 
-    isEdited: (function () {
+    isEdited: Ember['default'].computed('valueObject', 'valueObject.value', function () {
       var valueObject = this.get('valueObject');
       var originalValue = this.get('valueObject._data.value');
       if (originalValue === undefined && valueObject) {
@@ -33606,7 +33606,7 @@ define('frontend-cp/components/ko-user-field/checkbox/component', ['exports', 'f
       } else {
         return !!valueObject && !!valueObject.changedAttributes().value;
       }
-    }).property('valueObject', 'valueObject.value'),
+    }),
 
     actions: {
       selectionChanged: function selectionChanged(value) {
@@ -33686,16 +33686,16 @@ define('frontend-cp/components/ko-user-field/custom/component', ['exports', 'emb
 
     allValues: Ember['default'].computed.oneWay('user.customFields'),
 
-    valueObject: (function () {
+    valueObject: Ember['default'].computed('allValues.@each.field', 'field', function () {
       return findCustomFieldValue(this.get('allValues'), this.get('field'));
-    }).property('allValues.@each.field', 'field'),
+    }),
 
-    isEdited: (function () {
+    isEdited: Ember['default'].computed('valueObject', 'valueObject.value', function () {
       var valueObject = this.get('valueObject');
       return !!valueObject && valueObject.get('isDirty');
-    }).property('valueObject', 'valueObject.value'),
+    }),
 
-    onErrors: (function () {
+    onErrors: Ember['default'].observer('errors.@each', function () {
       var _this = this;
 
       if (this.get('errors')) {
@@ -33703,7 +33703,7 @@ define('frontend-cp/components/ko-user-field/custom/component', ['exports', 'emb
           return acc || error.parameter === _this.get('field.key');
         }, false));
       }
-    }).observes('errors.@each'),
+    }),
 
     actions: {
       valueChanged: function valueChanged(value) {
@@ -35854,23 +35854,23 @@ define('frontend-cp/login/controller', ['exports', 'ember', 'frontend-cp/config/
 
     // Observers
 
-    flipAvatar: (function () {
+    flipAvatar: Ember['default'].computed('validAvatar', 'avatarBackground', function () {
       return this.get('validAvatar') && this.get('avatarBackground');
-    }).property('validAvatar', 'avatarBackground'),
+    }),
 
-    emailValidDidChange: (function () {
+    emailValidDidChange: Ember['default'].on('render', Ember['default'].observer('emailValid', function () {
       if (this.get('emailValid')) {
         this.requestAvatar(this.get('model.email'));
       }
-    }).observes('emailValid').on('render'),
+    })),
 
-    sessionDidClear: (function () {
+    sessionDidClear: Ember['default'].on('init', Ember['default'].observer('sessionService.session.id', function () {
       if (this.get('sessionService.session.id') === null) {
         this.setState('login.password.input');
       }
-    }).observes('sessionService.session.id').on('init'),
+    })),
 
-    currentStateDidChange: (function () {
+    currentStateDidChange: Ember['default'].on('init', Ember['default'].observer('currentState', function () {
       var _this = this;
 
       var currentState = this.get('currentState');
@@ -35947,7 +35947,7 @@ define('frontend-cp/login/controller', ['exports', 'ember', 'frontend-cp/config/
 
       // Store prevState for comparison
       this.set('prevLoginState', currentState);
-    }).observes('currentState').on('init'),
+    })),
 
     // Computed Properties
 
@@ -35960,7 +35960,7 @@ define('frontend-cp/login/controller', ['exports', 'ember', 'frontend-cp/config/
       return notificationService.get('notifications');
     }),
 
-    isLogin: (function () {
+    isLogin: Ember['default'].computed('currentState', 'prevLoginState', function () {
       var currentState = this.get('currentState');
       var prevState = this.get('prevLoginState');
       var isInLogin = this.isInState('login', currentState);
@@ -35969,64 +35969,64 @@ define('frontend-cp/login/controller', ['exports', 'ember', 'frontend-cp/config/
         this.clearErrors();
       }
       return isInLogin;
-    }).property('currentState', 'prevLoginState'),
+    }),
 
-    isLoading: (function () {
+    isLoading: Ember['default'].computed('currentState', function () {
       return this.endsWithSubState('loading', this.get('currentState'));
-    }).property('currentState'),
+    }),
 
-    isOtp: (function () {
+    isOtp: Ember['default'].computed('currentState', function () {
       return this.isInState('login.otp', this.get('currentState'));
-    }).property('currentState'),
+    }),
 
-    isPassword: (function () {
+    isPassword: Ember['default'].computed('currentState', function () {
       return this.isInState('login.password', this.get('currentState'));
-    }).property('currentState'),
+    }),
 
-    isResetPassword: (function () {
+    isResetPassword: Ember['default'].computed('currentState', function () {
       return this.isInState('login.resetPassword', this.get('currentState'));
-    }).property('currentState'),
+    }),
 
-    isError: (function () {
+    isError: Ember['default'].computed('currentState', function () {
       return this.endsWithSubState('error', this.get('currentState'));
-    }).property('currentState'),
+    }),
 
-    isForgotPasswordEmailSent: (function () {
+    isForgotPasswordEmailSent: Ember['default'].computed('currentState', function () {
       return this.isInState('forgotPassword.confirmed', this.get('currentState'));
-    }).property('currentState'),
+    }),
 
-    emailValid: (function () {
+    emailValid: Ember['default'].computed('model.email', function () {
       var emailRegex = /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b/i;
       return !!this.get('model.email').match(emailRegex);
-    }).property('model.email'),
+    }),
 
-    passwordValid: (function () {
+    passwordValid: Ember['default'].computed('model.password', function () {
       return this.get('model.password').length > 0;
-    }).property('model.password'),
+    }),
 
-    canAttemptLogin: (function () {
+    canAttemptLogin: Ember['default'].computed('emailValid', 'passwordValid', function () {
       return this.get('emailValid') && this.get('passwordValid');
-    }).property('emailValid', 'passwordValid'),
+    }),
 
-    loginButtonDisabled: (function () {
+    loginButtonDisabled: Ember['default'].computed('canAttemptLogin', 'isLoading', 'newPasswordValid', 'isResetPassword', function () {
       return !this.get('canAttemptLogin') || this.get('isLoading') || !this.get('newPasswordValid') && this.get('isResetPassword');
-    }).property('canAttemptLogin', 'isLoading', 'newPasswordValid', 'isResetPassword'),
+    }),
 
-    newPasswordValid: (function () {
+    newPasswordValid: Ember['default'].computed('newPassword1', 'newPassword2', function () {
       var password1 = this.get('newPassword1');
       var password2 = this.get('newPassword2');
       return password1 === password2 && !!password1 && password1.length > 7;
-    }).property('newPassword1', 'newPassword2'),
+    }),
 
-    hasErrorMessages: (function () {
+    hasErrorMessages: Ember['default'].computed('fieldErrors.[]', function () {
       return this.get('fieldErrors').length > 0;
-    }).property('fieldErrors.[]'),
+    }),
 
-    errorMessages: (function () {
+    errorMessages: Ember['default'].computed('fieldErrors.[]', function () {
       return this.get('fieldErrors').map(function (error) {
         return error.message;
       });
-    }).property('fieldErrors.[]'),
+    }),
 
     // Methods
 
@@ -36183,17 +36183,17 @@ define('frontend-cp/login/controller', ['exports', 'ember', 'frontend-cp/config/
      * Need to SafeString all bound style attributes
      */
 
-    loginFrontImageStyle: (function () {
+    loginFrontImageStyle: Ember['default'].computed(function () {
       return ('background-image: url(' + config['default'].assetRoot + '\'/images/user/avatar.png\');').htmlSafe();
-    }).property(),
+    }),
 
-    loginBackImageStyle: (function () {
+    loginBackImageStyle: Ember['default'].computed('avatarBackground', function () {
       if (this.get('avatarBackground')) {
         return ('background-image: url(' + config['default'].assetRoot + '\'" + this.get(\'avatarBackground\') + "\');').htmlSafe();
       } else {
         return '';
       }
-    }).property('avatarBackground'),
+    }),
 
     actions: {
       login: function login() {
@@ -41919,7 +41919,7 @@ define('frontend-cp/mixins/breadcrumbable', ['exports', 'ember'], function (expo
   exports['default'] = Ember['default'].Mixin.create({
     urlService: Ember['default'].inject.service('url'),
 
-    activeBreadcrumb: (function () {
+    activeBreadcrumb: Ember['default'].computed('urlService.currentPath', 'breadcrumbs', function () {
       var breadcrumbs = this.get('breadcrumbs');
       if (!breadcrumbs) {
         return null;
@@ -41935,7 +41935,7 @@ define('frontend-cp/mixins/breadcrumbable', ['exports', 'ember'], function (expo
       });
 
       return selected ? selected.id : null;
-    }).property('urlService.currentPath', 'breadcrumbs'),
+    }),
 
     setBreadcrumb: function setBreadcrumb(id) {
       var breadcrumb = this.get('breadcrumbs').find(function (breadcrumb) {
@@ -41986,7 +41986,7 @@ define('frontend-cp/mixins/change-aware-model', ['exports', 'ember', 'npm:lodash
       this.set('initialRelationships', initialRelationships);
     },
 
-    initialize: (function () {
+    initialize: Ember['default'].on('ready', function () {
       var _this2 = this;
 
       Ember['default'].run.next(function () {
@@ -41996,15 +41996,15 @@ define('frontend-cp/mixins/change-aware-model', ['exports', 'ember', 'npm:lodash
         // there's some private API stuff `_updatingRecordArraysLater: true` which might be something?
         _this2.cacheRelationships();
       });
-    }).on('ready'),
+    }),
 
-    reInitialize: (function () {
+    reInitialize: Ember['default'].on('didUpdate', function () {
       var _this3 = this;
 
       Ember['default'].run(function () {
         _this3.cacheRelationships();
       });
-    }).on('didUpdate'),
+    }),
 
     /*
      * Returns a promise if the relationship is async
@@ -42201,7 +42201,7 @@ define('frontend-cp/mixins/pusher-binding', ['exports', 'ember'], function (expo
      *  }
      */
 
-    initializeSubscriptions: (function () {
+    initializeSubscriptions: Ember['default'].on('init', function () {
       var _this = this;
 
       this._super();
@@ -42220,9 +42220,9 @@ define('frontend-cp/mixins/pusher-binding', ['exports', 'ember'], function (expo
           _this.get('pusher').subscribeTo(channelName, eventName, _this, actionName);
         });
       });
-    }).on('init'),
+    }),
 
-    cleanUp: (function () {
+    cleanUp: Ember['default'].on('willDestroy', function () {
       var _this2 = this;
 
       this._super();
@@ -42239,7 +42239,7 @@ define('frontend-cp/mixins/pusher-binding', ['exports', 'ember'], function (expo
           _this2.get('pusher').unsubscribeTo(channelName, eventName);
         });
       });
-    }).on('willDestroy')
+    })
 
   });
 
@@ -42270,9 +42270,9 @@ define('frontend-cp/mixins/simple-state', ['exports', 'ember'], function (export
      * in computed properties to observe when state changes
      * @return {String} current state as a dot separated list representing the state hierarchy
      */
-    currentState: (function () {
+    currentState: Ember['default'].computed('_currentState', function () {
       return this.get('_currentState');
-    }).property('_currentState'),
+    }),
 
     /**
      * Sets the current state as a dot separated
@@ -42418,25 +42418,25 @@ define('frontend-cp/models/business-hour', ['exports', 'ember-data'], function (
   });
 
 });
-define('frontend-cp/models/case-assignee', ['exports', 'ember-data', 'frontend-cp/mixins/change-aware-model'], function (exports, DS, ChangeAwareModel) {
+define('frontend-cp/models/case-assignee', ['exports', 'ember', 'ember-data', 'frontend-cp/mixins/change-aware-model'], function (exports, Ember, DS, ChangeAwareModel) {
 
   'use strict';
 
   exports['default'] = DS['default'].ModelFragment.extend(ChangeAwareModel['default'], {
     teamFragment: DS['default'].hasOneFragment('relationship-fragment'),
 
-    team: (function () {
+    team: Ember['default'].computed('teamFragment', 'teamFragment.relationshipId', function () {
       return this.store.getById('team', this.get('teamFragment.relationshipId'));
-    }).property('teamFragment', 'teamFragment.relationshipId'),
+    }),
 
     agentFragment: DS['default'].hasOneFragment('relationship-fragment'),
-    agent: (function () {
+    agent: Ember['default'].computed('agentFragment', function () {
       return this.store.getById('user', this.get('agentFragment.relationshipId'));
-    }).property('agentFragment')
+    })
   });
 
 });
-define('frontend-cp/models/case-field-value', ['exports', 'ember-data'], function (exports, DS) {
+define('frontend-cp/models/case-field-value', ['exports', 'ember', 'ember-data'], function (exports, Ember, DS) {
 
   'use strict';
 
@@ -42444,15 +42444,15 @@ define('frontend-cp/models/case-field-value', ['exports', 'ember-data'], functio
     // TODO fix when relationship support lands to ember-data.model-fragments
     // field: DS.belongsTo('case-field', { async: true }),
     fieldFragment: DS['default'].hasOneFragment('relationship-fragment'),
-    field: (function () {
+    field: Ember['default'].computed('fieldFragment.relationshipId', function () {
       return this.store.peekRecord('case-field', this.get('fieldFragment.relationshipId'));
-    }).property('fieldFragment.relationshipId'),
+    }),
 
     value: DS['default'].attr('string')
   });
 
 });
-define('frontend-cp/models/case-field', ['exports', 'ember-data', 'frontend-cp/models/field'], function (exports, DS, Field) {
+define('frontend-cp/models/case-field', ['exports', 'ember', 'ember-data', 'frontend-cp/models/field'], function (exports, Ember, DS, Field) {
 
   'use strict';
 
@@ -42477,7 +42477,7 @@ define('frontend-cp/models/case-field', ['exports', 'ember-data', 'frontend-cp/m
     createdAt: DS['default'].attr('date'),
     updatedAt: DS['default'].attr('date'),
 
-    isChoiceField: (function () {
+    isChoiceField: Ember['default'].computed('fieldType', function () {
       switch (this.get('fieldType')) {
         case 'RADIO':
         case 'DROPDOWN':
@@ -42489,7 +42489,7 @@ define('frontend-cp/models/case-field', ['exports', 'ember-data', 'frontend-cp/m
         default:
           return false;
       }
-    }).property('fieldType')
+    })
   });
 
 });
@@ -42842,7 +42842,7 @@ define('frontend-cp/models/chat', ['exports', 'ember-data', 'frontend-cp/models/
 
   exports['default'] = Account['default'].extend({
     agent: DS['default'].belongsTo('user', { async: true }),
-    brand: DS['default'].belongsTo('brand'),
+    brand: DS['default'].belongsTo('brand', { async: false }),
     createdAt: DS['default'].attr('date'),
     creator: DS['default'].belongsTo('user', { async: true }),
     email: DS['default'].attr('string'),
@@ -43268,7 +43268,7 @@ define('frontend-cp/models/location', ['exports', 'ember-data'], function (expor
   });
 
 });
-define('frontend-cp/models/macro-assignee', ['exports', 'ember-data'], function (exports, DS) {
+define('frontend-cp/models/macro-assignee', ['exports', 'ember', 'ember-data'], function (exports, Ember, DS) {
 
   'use strict';
 
@@ -43276,36 +43276,36 @@ define('frontend-cp/models/macro-assignee', ['exports', 'ember-data'], function 
     type: DS['default'].attr('string'), //UNASSIGNED, CURRENT_AGENT, TEAM, AGENT
 
     teamFragment: DS['default'].hasOneFragment('relationship-fragment'),
-    team: (function () {
+    team: Ember['default'].computed('teamFragment.relationshipId', function () {
       return this.store.getById('team', this.get('teamFragment.relationshipId'));
-    }).property('teamFragment.relationshipId'),
+    }),
 
     agentFragment: DS['default'].hasOneFragment('relationship-fragment'),
-    agent: (function () {
+    agent: Ember['default'].computed('agentFragment.relationshipId', function () {
       return this.store.getById('user', this.get('agentFragment.relationshipId'));
-    }).property('agentFragment.relationshipId')
+    })
   });
 
 });
-define('frontend-cp/models/macro-properties', ['exports', 'ember-data'], function (exports, DS) {
+define('frontend-cp/models/macro-properties', ['exports', 'ember', 'ember-data'], function (exports, Ember, DS) {
 
   'use strict';
 
   exports['default'] = DS['default'].ModelFragment.extend({
     typeFragment: DS['default'].hasOneFragment('relationship-fragment'),
-    macroType: (function () {
+    macroType: Ember['default'].computed('typeFragment.relationshipId', function () {
       return this.store.getById('case-type', this.get('typeFragment.relationshipId'));
-    }).property('typeFragment.relationshipId'),
+    }),
 
     statusFragment: DS['default'].hasOneFragment('relationship-fragment'),
-    status: (function () {
+    status: Ember['default'].computed('statusFragment.relationshipId', function () {
       return this.store.getById('case-status', this.get('statusFragment.relationshipId'));
-    }).property('statusFragment.relationshipId'),
+    }),
 
     priorityFragment: DS['default'].hasOneFragment('relationship-fragment'),
-    priority: (function () {
+    priority: Ember['default'].computed('priorityFragment.relationshipId', function () {
       return this.store.getById('case-priority', this.get('priorityFragment.relationshipId'));
-    }).property('priorityFragment.relationshipId'),
+    }),
 
     priorityAction: DS['default'].attr('string')
   });
@@ -43327,8 +43327,8 @@ define('frontend-cp/models/macro-visibility', ['exports', 'ember-data'], functio
 
   exports['default'] = DS['default'].ModelFragment.extend({
     type: DS['default'].attr('string'), // ALL, TEAM, PRIVATE
-    status: DS['default'].belongsTo('status'),
-    priority: DS['default'].belongsTo('priority')
+    status: DS['default'].belongsTo('status', { async: false }),
+    priority: DS['default'].belongsTo('priority', { async: false })
   });
 
 });
@@ -43340,8 +43340,8 @@ define('frontend-cp/models/macro', ['exports', 'ember-data'], function (exports,
     title: DS['default'].attr('string'),
     replyContents: DS['default'].attr('string'),
     replyType: DS['default'].attr('string'), // REPLY | NOTE
-    agent: DS['default'].belongsTo('user'),
-    tags: DS['default'].hasMany('macro-tag'),
+    agent: DS['default'].belongsTo('user', { async: false }),
+    tags: DS['default'].hasMany('macro-tag', { async: false }),
     assignee: DS['default'].hasOneFragment('macro-assignee'),
     properties: DS['default'].hasOneFragment('macro-properties'),
     visibility: DS['default'].hasOneFragment('macro-visibility')
@@ -43362,7 +43362,7 @@ define('frontend-cp/models/mailbox', ['exports', 'ember-data', 'frontend-cp/mode
     port: DS['default'].attr('number'),
     username: DS['default'].attr('string'),
     preserveMails: DS['default'].attr('boolean'),
-    brand: DS['default'].belongsTo('brand'),
+    brand: DS['default'].belongsTo('brand', { async: false }),
     isDefault: DS['default'].attr('boolean'),
     isEnabled: DS['default'].attr('boolean')
   });
@@ -43401,12 +43401,12 @@ define('frontend-cp/models/object', ['exports', 'ember-data'], function (exports
 
   exports['default'] = DS['default'].Model.extend({
     title: DS['default'].attr('string'),
-    icon: DS['default'].hasMany('attachment'),
+    icon: DS['default'].hasMany('attachment', { async: false }),
     createdAt: DS['default'].attr('date')
   });
 
 });
-define('frontend-cp/models/organization-field-value', ['exports', 'ember-data'], function (exports, DS) {
+define('frontend-cp/models/organization-field-value', ['exports', 'ember', 'ember-data'], function (exports, Ember, DS) {
 
   'use strict';
 
@@ -43414,9 +43414,9 @@ define('frontend-cp/models/organization-field-value', ['exports', 'ember-data'],
     // TODO fix when relationship support lands to ember-data.model-fragments
     // field: DS.belongsTo('organization-field', { async: true }),
     fieldFragment: DS['default'].hasOneFragment('relationship-fragment'),
-    field: (function () {
+    field: Ember['default'].computed('fieldFragment.relationshipId', function () {
       return this.store.peekRecord('organization-field', this.get('fieldFragment.relationshipId'));
-    }).property('fieldFragment.relationshipId'),
+    }),
 
     value: DS['default'].attr('string')
   });
@@ -43440,7 +43440,7 @@ define('frontend-cp/models/organization-field', ['exports', 'ember-data'], funct
     isEnabled: DS['default'].attr('boolean'),
     regularExpression: DS['default'].attr('string'),
     sortOrder: DS['default'].attr('number'),
-    options: DS['default'].hasMany('field-option'),
+    options: DS['default'].hasMany('field-option', { async: false }),
     createdAt: DS['default'].attr('date'),
     updatedAt: DS['default'].attr('date')
   });
@@ -43492,8 +43492,8 @@ define('frontend-cp/models/post', ['exports', 'ember-data'], function (exports, 
     sequence: DS['default'].attr('number'),
     subject: DS['default'].attr('string'),
     contents: DS['default'].attr('string'),
-    creator: DS['default'].belongsTo('user'),
-    identity: DS['default'].belongsTo('identity'),
+    creator: DS['default'].belongsTo('user', { async: false }),
+    identity: DS['default'].belongsTo('identity', { async: false }),
     attachments: DS['default'].hasMany('attachment', { async: true }),
     downloadAll: DS['default'].attr('string'),
     original: DS['default'].belongsTo('postable', { async: true, polymorphic: true }),
@@ -43584,14 +43584,14 @@ define('frontend-cp/models/session', ['exports', 'ember-data'], function (export
     portal: DS['default'].attr('string'),
     ipAddress: DS['default'].attr('string'),
     userAgent: DS['default'].attr('string'),
-    user: DS['default'].belongsTo('user'),
+    user: DS['default'].belongsTo('user', { async: false }),
     status: DS['default'].attr('string'),
     createdAt: DS['default'].attr('date'),
     lastActivityAt: DS['default'].attr('date')
   });
 
 });
-define('frontend-cp/models/sla-metric', ['exports', 'ember-data', 'moment'], function (exports, DS, moment) {
+define('frontend-cp/models/sla-metric', ['exports', 'ember', 'ember-data', 'moment'], function (exports, Ember, DS, moment) {
 
   'use strict';
 
@@ -43603,7 +43603,7 @@ define('frontend-cp/models/sla-metric', ['exports', 'ember-data', 'moment'], fun
     totalSeconds: DS['default'].attr('number'),
     timeTakenSeconds: DS['default'].attr('number'),
 
-    status: (function () {
+    status: Ember['default'].computed('isBreached', 'isCompleted', 'hasLessThan20PercentRemaining', function () {
       // OK | OPEN | WARNING | BREACHED
       if (this.get('isBreached')) {
         return 'BAD';
@@ -43615,31 +43615,31 @@ define('frontend-cp/models/sla-metric', ['exports', 'ember-data', 'moment'], fun
         return 'WARNING';
       }
       return 'OPEN';
-    }).property('isBreached', 'isCompleted', 'hasLessThan20PercentRemaining'),
+    }),
 
-    isCompleted: (function () {
+    isCompleted: Ember['default'].computed('state', function () {
       return this.get('state') === 'COMPLETED';
-    }).property('state'),
+    }),
 
-    hasLessThan20PercentRemaining: (function () {
+    hasLessThan20PercentRemaining: Ember['default'].computed('remainingSeconds', 'totalSeconds', function () {
       var percentageLeft = 100 * this.get('remainingSeconds') / this.get('totalSeconds');
       return percentageLeft < 20;
-    }).property('remainingSeconds', 'totalSeconds'),
+    }),
 
-    numberOfWholeDaysRemaining: (function () {
+    numberOfWholeDaysRemaining: Ember['default'].computed('remainingSeconds', 'isCompleted', 'timeTakenSeconds', function () {
       var timeInSeconds = this.get('isCompleted') ? this.get('timeTakenSeconds') : this.get('remainingSeconds');
       return Math.abs(moment['default'].duration(timeInSeconds, 'seconds').days());
-    }).property('remainingSeconds', 'isCompleted', 'timeTakenSeconds'),
+    }),
 
-    numberOfWholeHoursRemaining: (function () {
+    numberOfWholeHoursRemaining: Ember['default'].computed('remainingSeconds', 'isCompleted', 'timeTakenSeconds', function () {
       var timeInSeconds = this.get('isCompleted') ? this.get('timeTakenSeconds') : this.get('remainingSeconds');
       return Math.abs(moment['default'].duration(timeInSeconds, 'seconds').hours());
-    }).property('remainingSeconds', 'isCompleted', 'timeTakenSeconds'),
+    }),
 
-    numberOfWholeMinutesRemaining: (function () {
+    numberOfWholeMinutesRemaining: Ember['default'].computed('remainingSeconds', 'isCompleted', 'timeTakenSeconds', function () {
       var timeInSeconds = this.get('isCompleted') ? this.get('timeTakenSeconds') : this.get('remainingSeconds');
       return Math.abs(moment['default'].duration(timeInSeconds, 'seconds').minutes());
-    }).property('remainingSeconds', 'isCompleted', 'timeTakenSeconds')
+    })
   });
 
 });
@@ -43714,8 +43714,8 @@ define('frontend-cp/models/team', ['exports', 'ember-data'], function (exports, 
 
   exports['default'] = DS['default'].Model.extend({
     title: DS['default'].attr('string'),
-    businesshour: DS['default'].belongsTo('businessHour'),
-    followers: DS['default'].hasMany('user'),
+    businesshour: DS['default'].belongsTo('business-hour', { async: false }),
+    followers: DS['default'].hasMany('user', { async: false }),
     members: DS['default'].hasMany('user', { async: true, child: true, inverse: 'teams', url: 'members' })
   });
 
@@ -43737,20 +43737,20 @@ define('frontend-cp/models/thumbnail', ['exports', 'ember-data'], function (expo
 });
 define('frontend-cp/models/twitter-account', ['exports', 'ember-data', 'frontend-cp/models/account'], function (exports, DS, Account) {
 
-  'use strict';
+    'use strict';
 
-  exports['default'] = Account['default'].extend({
-    twitterId: DS['default'].attr('string'),
-    screenName: DS['default'].attr('string'),
-    brand: DS['default'].belongsTo('brand', { async: false }),
-    routeMentions: DS['default'].attr('boolean'),
-    routeMessages: DS['default'].attr('boolean'),
-    routeFavorites: DS['default'].attr('boolean'),
-    isPublic: DS['default'].attr('boolean'),
-    isEnabled: DS['default'].attr('boolean'),
-    createdAt: DS['default'].attr('date'),
-    updatedAt: DS['default'].attr('date')
-  });
+    exports['default'] = Account['default'].extend({
+        twitterId: DS['default'].attr('string'),
+        screenName: DS['default'].attr('string'),
+        brand: DS['default'].belongsTo('brand', { async: false }),
+        routeMentions: DS['default'].attr('boolean'),
+        routeMessages: DS['default'].attr('boolean'),
+        routeFavorites: DS['default'].attr('boolean'),
+        isPublic: DS['default'].attr('boolean'),
+        isEnabled: DS['default'].attr('boolean'),
+        createdAt: DS['default'].attr('date'),
+        updatedAt: DS['default'].attr('date')
+    });
 
 });
 define('frontend-cp/models/twitter-message', ['exports', 'ember-data', 'frontend-cp/models/postable'], function (exports, DS, Postable) {
@@ -43773,7 +43773,7 @@ define('frontend-cp/models/twitter-tweet', ['exports', 'ember-data', 'frontend-c
   });
 
 });
-define('frontend-cp/models/user-field-value', ['exports', 'ember-data'], function (exports, DS) {
+define('frontend-cp/models/user-field-value', ['exports', 'ember', 'ember-data'], function (exports, Ember, DS) {
 
   'use strict';
 
@@ -43781,9 +43781,9 @@ define('frontend-cp/models/user-field-value', ['exports', 'ember-data'], functio
     // TODO fix when relationship support lands to ember-data.model-fragments
     // field: DS.belongsTo('user-field', { async: true }),
     fieldFragment: DS['default'].hasOneFragment('relationship-fragment'),
-    field: (function () {
+    field: Ember['default'].computed('fieldFragment.relationshipId', function () {
       return this.store.peekRecord('user-field', this.get('fieldFragment.relationshipId'));
-    }).property('fieldFragment.relationshipId'),
+    }),
 
     value: DS['default'].attr('string')
   });
@@ -43806,7 +43806,7 @@ define('frontend-cp/models/user-field', ['exports', 'ember-data'], function (exp
     isEnabled: DS['default'].attr('boolean'),
     regularExpression: DS['default'].attr('string'),
     sortOrder: DS['default'].attr('number'),
-    options: DS['default'].hasMany('field-option'),
+    options: DS['default'].hasMany('field-option', { async: false }),
     createdAt: DS['default'].attr('date'),
     updatedAt: DS['default'].attr('date')
   });
@@ -43848,7 +43848,7 @@ define('frontend-cp/models/user', ['exports', 'ember-data', 'ember', 'frontend-c
     customFields: DS['default'].hasManyFragments('user-field-value'),
     fieldValues: DS['default'].hasManyFragments('user-field-value', { defaultValue: [] }), // write only
     tags: DS['default'].hasMany('tag', { async: false }),
-    notes: DS['default'].hasMany('user-note', { child: true, url: 'notes' }),
+    notes: DS['default'].hasMany('user-note', { child: true, url: 'notes', async: false }),
     accessLevel: DS['default'].attr('string'),
     locale: DS['default'].attr('string'),
     timeZone: DS['default'].attr('string'),
@@ -43883,22 +43883,22 @@ define('frontend-cp/models/user', ['exports', 'ember-data', 'ember', 'frontend-c
       return this._super();
     },
 
-    primaryEmail: (function () {
+    primaryEmail: Ember['default'].computed('emails', function () {
       var emails = this.get('emails');
       var primaryEmails = emails.filter(function (email) {
         return email.isPrimary;
       });
 
       return Ember['default'].isEmpty(primaryEmails) ? primaryEmails.get('firstObject') : emails.get('firstObject');
-    }).property('emails'),
+    }),
 
-    primaryEmailAddress: (function () {
+    primaryEmailAddress: Ember['default'].computed('primaryEmail', function () {
       return this.get('primaryEmail.email');
-    }).property('primaryEmail')
+    })
   });
 
 });
-define('frontend-cp/models/view', ['exports', 'ember-data', 'frontend-cp/mixins/change-aware-model'], function (exports, DS, ChangeAwareModel) {
+define('frontend-cp/models/view', ['exports', 'ember', 'ember-data', 'frontend-cp/mixins/change-aware-model'], function (exports, Ember, DS, ChangeAwareModel) {
 
   'use strict';
 
@@ -43907,7 +43907,7 @@ define('frontend-cp/models/view', ['exports', 'ember-data', 'frontend-cp/mixins/
     agent: DS['default'].belongsTo('user', { async: false }),
     visibilityType: DS['default'].attr('string'), // ALL | TEAM
     visibilityToTeams: DS['default'].hasMany('team', { async: false }),
-    columns: DS['default'].hasMany('column'),
+    columns: DS['default'].hasMany('column', { async: false }),
     predicateCollections: DS['default'].hasManyFragments('predicate-collection', { defaultValue: [], async: false }),
     orderByColumn: DS['default'].attr('string', { defaultValue: null }),
     caseCount: DS['default'].attr('number'),
@@ -43921,14 +43921,14 @@ define('frontend-cp/models/view', ['exports', 'ember-data', 'frontend-cp/mixins/
     // Children fields
     cases: DS['default'].hasMany('case', { async: true, child: true, url: 'cases', noCache: true }),
 
-    visibilityString: (function () {
+    visibilityString: Ember['default'].computed('visibilityType', 'visibilityToTeams', function () {
       if (this.get('visibilityType') === 'ALL') {
         return 'ALL';
       }
       return this.get('visibilityToTeams').map(function (team) {
         return team.get('title');
       }).join(', ');
-    }).property('visibilityType', 'visibilityToTeams')
+    })
   });
 
 });
@@ -43956,10 +43956,10 @@ define('frontend-cp/router', ['exports', 'ember', 'frontend-cp/config/environmen
   'use strict';
 
   Ember['default'].Router.reopen({
-    urlDidChange: (function () {
+    urlDidChange: Ember['default'].on('didTransition', function () {
       var urlService = this.get('container').lookup('service:url');
       urlService.set('currentUrl', this.get('url'));
-    }).on('didTransition')
+    })
   });
 
   var Router = Ember['default'].Router.extend({
@@ -44768,9 +44768,9 @@ define('frontend-cp/services/case-timeline-cache', ['exports', 'ember'], functio
 
     cache: null,
 
-    initCache: (function () {
+    initCache: Ember['default'].on('init', function () {
       this.set('cache', {});
-    }).on('init'),
+    }),
 
     /**
      * Return cache object for a given case
@@ -45100,13 +45100,13 @@ define('frontend-cp/services/context-modal', ['exports', 'ember'], function (exp
      * service without first manually using 'get' on it somewhere or using
      * it as a property in a template
      */
-    initializeService: (function () {
+    initializeService: Ember['default'].on('init', function () {
       this.get('urlService.currentUrl');
-    }).on('init'),
+    }),
 
-    update: (function () {
+    update: Ember['default'].observer('urlService.currentUrl', function () {
       this.close();
-    }).observes('urlService.currentUrl')
+    })
 
   });
 
@@ -45248,14 +45248,14 @@ define('frontend-cp/services/file-upload', ['exports', 'ember', 'jquery'], funct
   exports['default'] = Ember['default'].Service.extend({
     sessionService: Ember['default'].inject.service('session'),
 
-    headers: (function () {
+    headers: Ember['default'].computed('sessionService.sessionId', function () {
       var headers = {};
       var sessionId = this.get('sessionService.sessionId');
       if (sessionId) {
         headers['X-Session-ID'] = sessionId;
       }
       return headers;
-    }).property('sessionService.sessionId'),
+    }),
 
     uploadFile: function uploadFile(file) {
       this._super();
@@ -45756,7 +45756,7 @@ define('frontend-cp/services/session', ['exports', 'ember'], function (exports, 
       });
     },
 
-    updateStorage: (function () {
+    updateStorage: Ember['default'].observer('session.id', function () {
       var sessionId = this.get('session.id');
       if (sessionId) {
         this.set('sessionId', sessionId);
@@ -45765,7 +45765,7 @@ define('frontend-cp/services/session', ['exports', 'ember'], function (exports, 
         this.set('sessionId', null);
         this.get('localStoreService').removeItem('sessionId', { persist: true });
       }
-    }).observes('session.id'),
+    }),
 
     /**
      * Removes sessionId from store and from local variable.
@@ -45816,10 +45816,10 @@ define('frontend-cp/services/store-cache', ['exports', 'ember', 'npm:lodash'], f
     allCache: null,
     queryCache: null,
 
-    initCache: (function () {
+    initCache: Ember['default'].on('init', function () {
       this.set('allCache', {});
       this.set('queryCache', {});
-    }).on('init'),
+    }),
 
     findAll: function findAll(type) {
       var _this = this;
@@ -46108,23 +46108,23 @@ define('frontend-cp/session/admin/manage/case-fields/index/controller', ['export
 
     session: Ember['default'].inject.service(),
 
-    systemfields: (function () {
+    systemfields: Ember['default'].computed('model.[]', function () {
       return this.get('model').filter(function (field) {
         return field.get('isSystem');
       });
-    }).property('model.[]'),
+    }),
 
-    customfields: (function () {
+    customfields: Ember['default'].computed('model.[].isEnabled', 'model.[].isEnabled', 'model.[].sortOrder', function () {
       return this.get('model').filter(function (field) {
         return field.get('isEnabled') && !field.get('isSystem');
       }).sortBy('sortOrder');
-    }).property('model.[].isEnabled', 'model.[].isEnabled', 'model.[].sortOrder'),
+    }),
 
-    disabledfields: (function () {
+    disabledfields: Ember['default'].computed('model.[].isEnabled', function () {
       return this.get('model').filter(function (field) {
         return !field.get('isEnabled');
       });
-    }).property('model.[].isEnabled'),
+    }),
 
     getIntlKeyForFieldType: function getIntlKeyForFieldType(fieldType) {
       return 'admin.casefields.type.' + fieldType.toLowerCase() + '.name';
@@ -47212,17 +47212,17 @@ define('frontend-cp/session/admin/manage/case-forms/index/controller', ['exports
 
     session: Ember['default'].inject.service(),
 
-    enabledForms: (function () {
+    enabledForms: Ember['default'].computed('model.[].isEnabled', 'model.[].sortOrder', function () {
       return this.get('model').filter(function (form) {
         return form.get('isEnabled');
       }).sortBy('sortOrder');
-    }).property('model.[].isEnabled', 'model.[].sortOrder'),
+    }),
 
-    disabledForms: (function () {
+    disabledForms: Ember['default'].computed('model.[].isEnabled', function () {
       return this.get('model').filter(function (form) {
         return !form.get('isEnabled');
       });
-    }).property('model.[].isEnabled'),
+    }),
 
     actions: {
       makeDefault: function makeDefault(caseform) {
@@ -48085,17 +48085,17 @@ define('frontend-cp/session/admin/manage/views/index/controller', ['exports', 'e
   exports['default'] = Ember['default'].Controller.extend({
     intl: Ember['default'].inject.service(),
 
-    enabledViews: (function () {
+    enabledViews: Ember['default'].computed('model.[].isEnabled', 'model.[].sortOrder', function () {
       return this.get('model').filter(function (view) {
         return view.get('isEnabled');
       }).sortBy('sortOrder');
-    }).property('model.[].isEnabled', 'model.[].sortOrder'),
+    }),
 
-    disabledViews: (function () {
+    disabledViews: Ember['default'].computed('model.[].isEnabled', 'model.[].sortOrder', function () {
       return this.get('model').filter(function (view) {
         return !view.get('isEnabled');
       }).sortBy('sortOrder');
-    }).property('model.[].isEnabled', 'model.[].sortOrder'),
+    }),
 
     canDeleteOrDisableViews: Ember['default'].computed.gt('enabledViews.length', 1),
 
@@ -48987,19 +48987,19 @@ define('frontend-cp/session/admin/route', ['exports', 'ember'], function (export
 
     sessionService: Ember['default'].inject.service('session'),
 
-    activate: (function () {
+    activate: Ember['default'].on('activate', function () {
       this.set('active', true);
-    }).on('activate'),
+    }),
 
-    deactivate: (function () {
+    deactivate: Ember['default'].on('deactivate', function () {
       this.set('active', false);
-    }).on('deactivate'),
+    }),
 
-    exitSession: (function () {
+    exitSession: Ember['default'].observer('sessionService.sessionId', function () {
       if (this.get('active') && this.get('sessionService.sessionId') === null) {
         this.transitionTo('login.admin');
       }
-    }).observes('sessionService.sessionId'),
+    }),
 
     beforeModel: function beforeModel(transition) {
       var _this = this;
@@ -49027,9 +49027,9 @@ define('frontend-cp/session/admin/showcase/controller', ['exports', 'ember', 'fr
     //  }
     //},
 
-    canDeleteCollection: (function () {
+    canDeleteCollection: Ember['default'].computed('currentView.collections.length', function () {
       return this.get('currentView.collections.length') > 1;
-    }).property('currentView.collections.length'),
+    }),
 
     actions: {
       addCollection: function addCollection() {
@@ -49692,7 +49692,7 @@ define('frontend-cp/session/agent/cases/case/controller', ['exports', 'ember', '
      * Organisation>User>Case
      * @return {Object} Breadcrumb data hash
      */
-    breadcrumbs: (function () {
+    breadcrumbs: Ember['default'].computed('model.requester.organization.id', 'model.requester.id', function () {
 
       var hasOrganisation = this.get('model.requester.organization.id');
       var hasUser = this.get('model.requester.id');
@@ -49723,7 +49723,7 @@ define('frontend-cp/session/agent/cases/case/controller', ['exports', 'ember', '
       crumbs.push(caseCrumb);
 
       return crumbs;
-    }).property('model.requester.organization.id', 'model.requester.id')
+    })
   });
 
 });
@@ -50692,7 +50692,7 @@ define('frontend-cp/session/agent/cases/new/controller', ['exports', 'ember', 'f
 
   exports['default'] = Ember['default'].Controller.extend(Breadcrumbable['default'], {
 
-    breadcrumbs: (function () {
+    breadcrumbs: Ember['default'].computed('model.creator.organization.id', 'model.creator.id', function () {
 
       var hasOrganisation = this.get('model.creator.organization.id');
       var hasUser = this.get('model.creator.id');
@@ -50723,7 +50723,7 @@ define('frontend-cp/session/agent/cases/new/controller', ['exports', 'ember', 'f
       }
 
       return crumbs;
-    }).property('model.creator.organization.id', 'model.creator.id')
+    })
   });
 
 });
@@ -50825,13 +50825,13 @@ define('frontend-cp/session/agent/organisations/organisation/controller', ['expo
      * Returns a breadcrumb containing the Organisation
      * @return {Object} Breadcrumb data hash
      */
-    breadcrumbs: (function () {
+    breadcrumbs: Ember['default'].computed('model.organization.id', function () {
       return [{
         id: 'organisation',
         name: this.get('model.name'),
         route: 'session.agent.organisations.organisation'
       }];
-    }).property('model.organization.id')
+    })
 
   });
 
@@ -50983,19 +50983,19 @@ define('frontend-cp/session/agent/route', ['exports', 'ember'], function (export
 
     sessionService: Ember['default'].inject.service('session'),
 
-    activate: (function () {
+    activate: Ember['default'].on('activate', function () {
       this.set('active', true);
-    }).on('activate'),
+    }),
 
-    deactivate: (function () {
+    deactivate: Ember['default'].on('deactivate', function () {
       this.set('active', false);
-    }).on('deactivate'),
+    }),
 
-    exitSession: (function () {
+    exitSession: Ember['default'].observer('sessionService.sessionId', function () {
       if (this.get('active') && this.get('sessionService.sessionId') === null) {
         this.transitionTo('login.agent');
       }
-    }).observes('sessionService.sessionId'),
+    }),
 
     beforeModel: function beforeModel(transition) {
       var _this = this;
@@ -51193,7 +51193,7 @@ define('frontend-cp/session/agent/users/user/controller', ['exports', 'ember', '
      * Organisation>User
      * @return {Object} Breadcrumb data hash
      */
-    breadcrumbs: (function () {
+    breadcrumbs: Ember['default'].computed('model.organization.id', function () {
 
       var hasOrganisation = this.get('model.organization.id');
 
@@ -51217,7 +51217,7 @@ define('frontend-cp/session/agent/users/user/controller', ['exports', 'ember', '
       crumbs.push(userCrumb);
 
       return crumbs;
-    }).property('model.organization.id')
+    })
 
   });
 
@@ -52373,9 +52373,9 @@ define('frontend-cp/session/showcase/controller', ['exports', 'ember', 'ember-va
     checkboxFieldInitiaValue: ['1'],
     checkboxFieldValue: ['1'],
 
-    isCheckboxEdited: (function () {
+    isCheckboxEdited: Ember['default'].computed('checkboxFieldValue', 'checkboxFieldInitiaValue', function () {
       return !_['default'].isEqual(this.get('checkboxFieldValue'), this.get('checkboxFieldInitiaValue'));
-    }).property('checkboxFieldValue', 'checkboxFieldInitiaValue'),
+    }),
 
     selectFieldsChanged: false,
     isDateEdited: false,
@@ -64053,7 +64053,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+34a62aa7"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+f7317ff2"});
 }
 
 /* jshint ignore:end */
