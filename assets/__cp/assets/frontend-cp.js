@@ -34621,22 +34621,34 @@ define('frontend-cp/helpers/-intl-get', ['exports', 'ember'], function (exports,
   });
 
 });
-define('frontend-cp/helpers/and', ['exports', 'ember', 'ember-truth-helpers/helpers/and'], function (exports, Ember, andHelper) {
+define('frontend-cp/helpers/and', ['exports', 'ember', 'ember-truth-helpers/helpers/and'], function (exports, Ember, and) {
 
-	'use strict';
+  'use strict';
 
-	exports['default'] = Ember['default'].HTMLBars.makeBoundHelper(andHelper['default']);
+  var forExport = null;
 
-	exports.andHelper = andHelper['default'];
+  if (Ember['default'].Helper) {
+    forExport = Ember['default'].Helper.helper(and.andHelper);
+  } else if (Ember['default'].HTMLBars.makeBoundHelper) {
+    forExport = Ember['default'].HTMLBars.makeBoundHelper(and.andHelper);
+  }
+
+  exports['default'] = forExport;
 
 });
-define('frontend-cp/helpers/equal', ['exports', 'ember', 'ember-truth-helpers/helpers/equal'], function (exports, Ember, equalHelper) {
+define('frontend-cp/helpers/eq', ['exports', 'ember', 'ember-truth-helpers/helpers/equal'], function (exports, Ember, equal) {
 
-	'use strict';
+  'use strict';
 
-	exports['default'] = Ember['default'].HTMLBars.makeBoundHelper(equalHelper['default']);
+  var forExport = null;
 
-	exports.equalHelper = equalHelper['default'];
+  if (Ember['default'].Helper) {
+    forExport = Ember['default'].Helper.helper(equal.equalHelper);
+  } else if (Ember['default'].HTMLBars.makeBoundHelper) {
+    forExport = Ember['default'].HTMLBars.makeBoundHelper(equal.equalHelper);
+  }
+
+  exports['default'] = forExport;
 
 });
 define('frontend-cp/helpers/escape-html', ['exports', 'ember'], function (exports, Ember) {
@@ -34646,6 +34658,36 @@ define('frontend-cp/helpers/escape-html', ['exports', 'ember'], function (export
   exports['default'] = Ember['default'].Helper.helper(function (value) {
     return value;
   });
+
+});
+define('frontend-cp/helpers/gt', ['exports', 'ember', 'ember-truth-helpers/helpers/gt'], function (exports, Ember, gt) {
+
+  'use strict';
+
+  var forExport = null;
+
+  if (Ember['default'].Helper) {
+    forExport = Ember['default'].Helper.helper(gt.gtHelper);
+  } else if (Ember['default'].HTMLBars.makeBoundHelper) {
+    forExport = Ember['default'].HTMLBars.makeBoundHelper(gt.gtHelper);
+  }
+
+  exports['default'] = forExport;
+
+});
+define('frontend-cp/helpers/gte', ['exports', 'ember', 'ember-truth-helpers/helpers/gte'], function (exports, Ember, gte) {
+
+  'use strict';
+
+  var forExport = null;
+
+  if (Ember['default'].Helper) {
+    forExport = Ember['default'].Helper.helper(gte.gteHelper);
+  } else if (Ember['default'].HTMLBars.makeBoundHelper) {
+    forExport = Ember['default'].HTMLBars.makeBoundHelper(gte.gteHelper);
+  }
+
+  exports['default'] = forExport;
 
 });
 define('frontend-cp/helpers/intl-get', ['exports', 'ember', 'ember-intl/legacy/helpers/intl-get', 'ember-intl/helpers/intl-get'], function (exports, Ember, legacyIntlGet, IntlGet) {
@@ -34666,13 +34708,19 @@ define('frontend-cp/helpers/intl-get', ['exports', 'ember', 'ember-intl/legacy/h
   exports['default'] = Helper;
 
 });
-define('frontend-cp/helpers/is-array', ['exports', 'ember', 'ember-truth-helpers/helpers/is-array'], function (exports, Ember, isArrayHelper) {
+define('frontend-cp/helpers/is-array', ['exports', 'ember', 'ember-truth-helpers/helpers/is-array'], function (exports, Ember, is_array) {
 
-	'use strict';
+  'use strict';
 
-	exports['default'] = Ember['default'].HTMLBars.makeBoundHelper(isArrayHelper['default']);
+  var forExport = null;
 
-	exports.isArrayHelper = isArrayHelper['default'];
+  if (Ember['default'].Helper) {
+    forExport = Ember['default'].Helper.helper(is_array.isArrayHelper);
+  } else if (Ember['default'].HTMLBars.makeBoundHelper) {
+    forExport = Ember['default'].HTMLBars.makeBoundHelper(is_array.isArrayHelper);
+  }
+
+  exports['default'] = forExport;
 
 });
 define('frontend-cp/helpers/is-last-item-in-list', ['exports', 'ember'], function (exports, Ember) {
@@ -34788,22 +34836,79 @@ define('frontend-cp/helpers/ko-slasherizer', ['exports', 'ember'], function (exp
   });
 
 });
-define('frontend-cp/helpers/not', ['exports', 'ember', 'ember-truth-helpers/helpers/not'], function (exports, Ember, notHelper) {
+define('frontend-cp/helpers/lt', ['exports', 'ember', 'ember-truth-helpers/helpers/lt'], function (exports, Ember, lt) {
 
-	'use strict';
+  'use strict';
 
-	exports['default'] = Ember['default'].HTMLBars.makeBoundHelper(notHelper['default']);
+  var forExport = null;
 
-	exports.notHelper = notHelper['default'];
+  if (Ember['default'].Helper) {
+    forExport = Ember['default'].Helper.helper(lt.ltHelper);
+  } else if (Ember['default'].HTMLBars.makeBoundHelper) {
+    forExport = Ember['default'].HTMLBars.makeBoundHelper(lt.ltHelper);
+  }
+
+  exports['default'] = forExport;
 
 });
-define('frontend-cp/helpers/or', ['exports', 'ember', 'ember-truth-helpers/helpers/or'], function (exports, Ember, orHelper) {
+define('frontend-cp/helpers/lte', ['exports', 'ember', 'ember-truth-helpers/helpers/lte'], function (exports, Ember, lte) {
 
-	'use strict';
+  'use strict';
 
-	exports['default'] = Ember['default'].HTMLBars.makeBoundHelper(orHelper['default']);
+  var forExport = null;
 
-	exports.orHelper = orHelper['default'];
+  if (Ember['default'].Helper) {
+    forExport = Ember['default'].Helper.helper(lte.lteHelper);
+  } else if (Ember['default'].HTMLBars.makeBoundHelper) {
+    forExport = Ember['default'].HTMLBars.makeBoundHelper(lte.lteHelper);
+  }
+
+  exports['default'] = forExport;
+
+});
+define('frontend-cp/helpers/not-eq', ['exports', 'ember', 'ember-truth-helpers/helpers/not-equal'], function (exports, Ember, not_equal) {
+
+  'use strict';
+
+  var forExport = null;
+
+  if (Ember['default'].Helper) {
+    forExport = Ember['default'].Helper.helper(not_equal.notEqualHelper);
+  } else if (Ember['default'].HTMLBars.makeBoundHelper) {
+    forExport = Ember['default'].HTMLBars.makeBoundHelper(not_equal.notEqualHelper);
+  }
+
+  exports['default'] = forExport;
+
+});
+define('frontend-cp/helpers/not', ['exports', 'ember', 'ember-truth-helpers/helpers/not'], function (exports, Ember, not) {
+
+  'use strict';
+
+  var forExport = null;
+
+  if (Ember['default'].Helper) {
+    forExport = Ember['default'].Helper.helper(not.notHelper);
+  } else if (Ember['default'].HTMLBars.makeBoundHelper) {
+    forExport = Ember['default'].HTMLBars.makeBoundHelper(not.notHelper);
+  }
+
+  exports['default'] = forExport;
+
+});
+define('frontend-cp/helpers/or', ['exports', 'ember', 'ember-truth-helpers/helpers/or'], function (exports, Ember, or) {
+
+  'use strict';
+
+  var forExport = null;
+
+  if (Ember['default'].Helper) {
+    forExport = Ember['default'].Helper.helper(or.orHelper);
+  } else if (Ember['default'].HTMLBars.makeBoundHelper) {
+    forExport = Ember['default'].HTMLBars.makeBoundHelper(or.orHelper);
+  }
+
+  exports['default'] = forExport;
 
 });
 define('frontend-cp/helpers/pluralize', ['exports', 'ember-inflector/lib/helpers/pluralize'], function (exports, pluralize) {
@@ -35297,18 +35402,30 @@ define('frontend-cp/initializers/tabs', ['exports', 'ember'], function (exports,
   };
 
 });
-define('frontend-cp/initializers/truth-helpers', ['exports', 'ember-truth-helpers/utils/register-helper', 'ember-truth-helpers/helpers/and', 'ember-truth-helpers/helpers/or', 'ember-truth-helpers/helpers/equal', 'ember-truth-helpers/helpers/not', 'ember-truth-helpers/helpers/is-array'], function (exports, register_helper, and, or, equal, not, is_array) {
+define('frontend-cp/initializers/truth-helpers', ['exports', 'ember', 'ember-truth-helpers/utils/register-helper', 'ember-truth-helpers/helpers/and', 'ember-truth-helpers/helpers/or', 'ember-truth-helpers/helpers/equal', 'ember-truth-helpers/helpers/not', 'ember-truth-helpers/helpers/is-array', 'ember-truth-helpers/helpers/not-equal', 'ember-truth-helpers/helpers/gt', 'ember-truth-helpers/helpers/gte', 'ember-truth-helpers/helpers/lt', 'ember-truth-helpers/helpers/lte'], function (exports, Ember, register_helper, and, or, equal, not, is_array, not_equal, gt, gte, lt, lte) {
 
   'use strict';
 
   exports.initialize = initialize;
 
   function initialize() /* container, application */{
+
+    // Do not register helpers from Ember 1.13 onwards, starting from 1.13 they
+    // will be auto-discovered.
+    if (Ember['default'].Helper) {
+      return;
+    }
+
     register_helper.registerHelper('and', and.andHelper);
     register_helper.registerHelper('or', or.orHelper);
     register_helper.registerHelper('eq', equal.equalHelper);
     register_helper.registerHelper('not', not.notHelper);
     register_helper.registerHelper('is-array', is_array.isArrayHelper);
+    register_helper.registerHelper('not-eq', not_equal.notEqualHelper);
+    register_helper.registerHelper('gt', gt.gtHelper);
+    register_helper.registerHelper('gte', gte.gteHelper);
+    register_helper.registerHelper('lt', lt.ltHelper);
+    register_helper.registerHelper('lte', lte.lteHelper);
   }
 
   exports['default'] = {
@@ -58508,6 +58625,59 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
   }
 
 });
+define('frontend-cp/tests/integration/components/ko-dropdown/select/component-test', ['ember-qunit'], function (ember_qunit) {
+
+  'use strict';
+
+  ember_qunit.moduleForComponent('ko-dropdown/select', 'Integration | Component | ko dropdown select', {
+    integration: true
+  });
+
+  ember_qunit.test('it renders', function (assert) {
+    assert.expect(0);
+
+    this.render(Ember.HTMLBars.template((function () {
+      return {
+        meta: {
+          'revision': 'Ember@1.13.7',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 3,
+              'column': 2
+            }
+          }
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode('\n    ');
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode('\n  ');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+          return morphs;
+        },
+        statements: [['content', 'ko-dropdown/select', ['loc', [null, [2, 4], [2, 26]]]]],
+        locals: [],
+        templates: []
+      };
+    })()));
+  });
+
+});
 define('frontend-cp/tests/integration/components/ko-field/text-area/component-test', ['ember-qunit'], function (ember_qunit) {
 
   'use strict';
@@ -58733,6 +58903,59 @@ define('frontend-cp/tests/integration/components/ko-field/text/component-test', 
 
     $inputField.val('Khaleesi');
     this.$('div:first').trigger(new $.Event('keypress', { keyCode: KeyCodes.enter }));
+  });
+
+});
+define('frontend-cp/tests/integration/components/ko-pagination/component-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
+
+  'use strict';
+
+  qunit.moduleForComponent('ko-pagination', 'Integration | Component | ko pagination', {
+    integration: true
+  });
+
+  qunit.test('it renders', function (assert) {
+    assert.expect(0);
+
+    this.render(Ember.HTMLBars.template((function () {
+      return {
+        meta: {
+          'revision': 'Ember@1.13.7',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 3,
+              'column': 2
+            }
+          }
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode('\n   ');
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode('\n  ');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+          return morphs;
+        },
+        statements: [['content', 'ko-pagination', ['loc', [null, [2, 3], [2, 20]]]]],
+        locals: [],
+        templates: []
+      };
+    })()));
   });
 
 });
@@ -59576,6 +59799,59 @@ define('frontend-cp/tests/integration/components/ko-tabs/component-test', ['embe
   function getTabCloseButton(tabElement) {
     return $(tabElement).find('.nav-tabs__close');
   }
+
+});
+define('frontend-cp/tests/integration/components/ko-user-menu/component-test', ['ember-qunit'], function (ember_qunit) {
+
+  'use strict';
+
+  ember_qunit.moduleForComponent('ko-user-menu', 'Integration | Component | ko user menu', {
+    integration: true
+  });
+
+  ember_qunit.test('it renders', function (assert) {
+    assert.expect(0);
+
+    this.render(Ember.HTMLBars.template((function () {
+      return {
+        meta: {
+          'revision': 'Ember@1.13.7',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 3,
+              'column': 2
+            }
+          }
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode('\n    ');
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode('\n  ');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+          return morphs;
+        },
+        statements: [['content', 'ko-user-menu', ['loc', [null, [2, 4], [2, 20]]]]],
+        locals: [],
+        templates: []
+      };
+    })()));
+  });
 
 });
 define('frontend-cp/tests/integration/components/ko-viewers/component-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
@@ -61041,28 +61317,6 @@ define('frontend-cp/tests/unit/components/ko-dropdown/list/item/component-test',
   });
 
 });
-define('frontend-cp/tests/unit/components/ko-dropdown/select/component-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
-
-  'use strict';
-
-  qunit.moduleForComponent('ko-dropdown/select', 'Unit | Component | ko dropdown select', {
-    // Specify the other units that are required for this test
-    needs: ['component:ko-dropdown/container', 'component:ko-dropdown/list']
-  });
-
-  qunit.test('it renders', function (assert) {
-    assert.expect(2);
-
-    // Creates the component instance
-    var component = this.subject();
-    assert.equal(component._state, 'preRender');
-
-    // Renders the component to the page
-    this.render();
-    assert.equal(component._state, 'inDOM');
-  });
-
-});
 define('frontend-cp/tests/unit/components/ko-editable-text/component-test', ['ember', 'frontend-cp/tests/helpers/qunit'], function (Ember, qunit) {
 
   'use strict';
@@ -62310,28 +62564,6 @@ define('frontend-cp/tests/unit/components/ko-option-list-drill-down/component-te
   });
 
 });
-define('frontend-cp/tests/unit/components/ko-pagination/component-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
-
-  'use strict';
-
-  qunit.moduleForComponent('ko-pagination', {
-    // Specify the other units that are required for this test
-    // needs: ['component:foo', 'helper:bar']
-  });
-
-  qunit.test('it renders', function (assert) {
-    assert.expect(2);
-
-    // Creates the component instance
-    var component = this.subject();
-    assert.equal(component._state, 'preRender');
-
-    // Renders the component to the page
-    this.render();
-    assert.equal(component._state, 'inDOM');
-  });
-
-});
 define('frontend-cp/tests/unit/components/ko-radio/component-test', ['ember', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/lib/keycodes'], function (Ember, qunit, KeyCodes) {
 
   'use strict';
@@ -63233,28 +63465,6 @@ define('frontend-cp/tests/unit/components/ko-toggle/component-test', ['ember', '
   });
 
 });
-define('frontend-cp/tests/unit/components/ko-user-menu/component-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
-
-  'use strict';
-
-  qunit.moduleForComponent('ko-user-menu', 'Unit | Component | ko user menu', {
-    // Specify the other units that are required for this test
-    needs: ['component:ko-dropdown/container']
-  });
-
-  qunit.test('it renders', function (assert) {
-    assert.expect(2);
-
-    // Creates the component instance
-    var component = this.subject();
-    assert.equal(component._state, 'preRender');
-
-    // Renders the component to the page
-    this.render();
-    assert.equal(component._state, 'inDOM');
-  });
-
-});
 define('frontend-cp/tests/unit/components/mixins/drop-down-keyboard-nav-test', ['ember', 'frontend-cp/components/mixins/drop-down-keyboard-nav', 'qunit'], function (Ember, DropDownKeyboardNavMixin, qunit) {
 
   'use strict';
@@ -63843,7 +64053,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+6dbceae1"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+34a62aa7"});
 }
 
 /* jshint ignore:end */
