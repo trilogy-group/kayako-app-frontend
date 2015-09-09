@@ -10299,6 +10299,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
     titleMarginTop: 18,
     headerHeight: 64,
     contentsMarginTop: 18,
+    filterHeight: 18,
     topLoaderHeight: 70
   };
 
@@ -10328,6 +10329,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
     loadingBottom: false,
     posts: null,
     newPosts: null,
+    sortOrder: '',
 
     errors: [],
     macros: [],
@@ -10344,6 +10346,8 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
     replyType: 'MESSAGE',
     scroller: null,
 
+    sortOptions: [{ label: 'Newest first', content: 'newest' }, { label: 'Oldest first', content: 'oldest' }],
+
     initCase: Ember['default'].on('didReceiveAttrs', function (_ref) {
       var _this = this;
 
@@ -10359,12 +10363,16 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
         this.set('bottomPostsAvailable', true);
         if (newAttrs.postId.value) {
           this.set('topPostsAvailable', true);
-          window.requestAnimationFrame(function () {
-            _this.get('scroller').scrollTop(totalHeaderHeight + dimensions.topLoaderHeight);
+          Ember['default'].run.scheduleOnce('afterRender', function () {
+            _this.get('scroller').scrollTop(totalHeaderHeight + dimensions.filterHeight + dimensions.topLoaderHeight);
           });
         } else {
           this.set('topPostsAvailable', false);
         }
+      } else if (newAttrs.sortOrder.value !== oldAttrs.sortOrder.value) {
+        this.set('posts', []);
+        this.set('topPostsAvailable', false);
+        this.set('bottomPostsAvailable', true);
       }
     }),
 
@@ -10421,8 +10429,8 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       var _this4 = this;
 
       this.set('loadPostsRafID', window.requestAnimationFrame(function () {
-        if (!_this4.get('loadingTop') && _this4.get('topPostsAvailable') && _this4.get('scroller').scrollTop() < totalHeaderHeight + dimensions.topLoaderHeight) {
-          _this4.loadNewerPosts(_this4.get('posts.firstObject.id') || _this4.get('postId'));
+        if (!_this4.get('loadingTop') && _this4.get('topPostsAvailable') && _this4.get('scroller').scrollTop() < totalHeaderHeight + dimensions.filterHeight + dimensions.topLoaderHeight) {
+          _this4.loadTopPosts(_this4.get('posts.firstObject.id') || _this4.get('postId'));
         }
 
         var _$$get$getBoundingClientRect = _this4.$('.ko-case-content__loaderBottom').get(0).getBoundingClientRect();
@@ -10433,7 +10441,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
         var bottomPosition = bottomTop + bottomHeight;
 
         if (!_this4.get('loadingBottom') && _this4.get('bottomPostsAvailable') && bottomPosition - scrollBufferDistance <= $['default'](window).height()) {
-          _this4.loadOlderPosts(_this4.get('posts.lastObject.id') || _this4.get('postId'), {
+          _this4.loadBottomPosts(_this4.get('posts.lastObject.id') || _this4.get('postId'), {
             including: !_this4.get('posts.lastObject.id')
           });
         }
@@ -10442,18 +10450,21 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       }));
     }),
 
-    loadNewerPosts: function loadNewerPosts(id) {
+    loadTopPosts: function loadTopPosts(id) {
       var _this5 = this;
 
       Ember['default'].run(function () {
         _this5.set('loadingTop', true);
-        _this5.get('timelineCacheService').getNewerPosts(_this5.get('case'), id).then(function (posts) {
+        _this5.get('timelineCacheService').getPosts(_this5.get('case'), id, {
+          order: _this5.get('sortOrder'),
+          direction: _this5.get('sortOrder') === 'newest' ? 'newer' : 'older'
+        }).then(function (posts) {
           Ember['default'].run(function () {
             _this5.set('newPosts', posts);
             window.requestAnimationFrame(function () {
               var height = _this5.$('.ko-case-content__fakeFeed').height();
               _this5.set('newPosts', []);
-              posts.forEach(function (post) {
+              posts.reverse().forEach(function (post) {
                 return _this5.get('posts').unshiftObject(post);
               });
               var scrollTop = _this5.get('scroller').scrollTop();
@@ -10472,14 +10483,18 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       });
     },
 
-    loadOlderPosts: function loadOlderPosts(id, _ref2) {
+    loadBottomPosts: function loadBottomPosts(id, _ref2) {
       var _this6 = this;
 
       var including = _ref2.including;
 
       Ember['default'].run(function () {
         _this6.set('loadingBottom', true);
-        _this6.get('timelineCacheService').getOlderPosts(_this6.get('case'), id, { including: including }).then(function (posts) {
+        _this6.get('timelineCacheService').getPosts(_this6.get('case'), id, {
+          order: _this6.get('sortOrder'),
+          direction: _this6.get('sortOrder') === 'newest' ? 'older' : 'newer',
+          including: including
+        }).then(function (posts) {
           Ember['default'].run(function () {
             posts.forEach(function (post) {
               return _this6.get('posts').pushObject(post);
@@ -10496,8 +10511,8 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
     onScroll: function onScroll() {
       if (this.get('topPostsAvailable')) {
         var currentScrollTop = this.get('scroller').scrollTop();
-        if (currentScrollTop < totalHeaderHeight) {
-          this.get('scroller').scrollTop(totalHeaderHeight);
+        if (currentScrollTop < totalHeaderHeight + dimensions.filterHeight) {
+          this.get('scroller').scrollTop(totalHeaderHeight + dimensions.filterHeight);
         }
       }
 
@@ -10641,10 +10656,18 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       }
     }),
 
+    /**
+     * Add newly added post to the cache and append or prepend it to the timeline
+     * depending on sort settings and whether there'll be no gaps in the timeline
+     * by doing so.
+     * @param {DS.Model} post post
+     */
     addPostFromReply: function addPostFromReply(post) {
-      if (!this.get('topPostsAvailable')) {
-        this.get('timelineCacheService').addPost(this.get('case'), post);
+      this.get('timelineCacheService').addPost(this.get('case'), post);
+      if (this.get('sortOrder') === 'newest' && !this.get('topPostsAvailable')) {
         this.get('posts').unshiftObject(post);
+      } else if (this.get('sortOrder') === 'oldest' && !this.get('bottomPostsAvailable')) {
+        this.get('posts').pushObject(post);
       }
     },
 
@@ -10845,6 +10868,10 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
         if (this.get('headerSticky')) {
           this.attrs.onTopPostChange(id);
         }
+      },
+
+      sort: function sort(sortOrder) {
+        this.attrs.onSort(sortOrder);
       }
     }
   });
@@ -11208,11 +11235,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 51,
+                  "line": 52,
                   "column": 14
                 },
                 "end": {
-                  "line": 53,
+                  "line": 54,
                   "column": 14
                 }
               },
@@ -11237,7 +11264,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
               return morphs;
             },
             statements: [
-              ["inline","ko-loader",[],["large",true],["loc",[null,[52,16],[52,40]]]]
+              ["inline","ko-loader",[],["large",true],["loc",[null,[53,16],[53,40]]]]
             ],
             locals: [],
             templates: []
@@ -11249,11 +11276,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 50,
+                "line": 51,
                 "column": 12
               },
               "end": {
-                "line": 54,
+                "line": 55,
                 "column": 12
               }
             },
@@ -11276,7 +11303,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             return morphs;
           },
           statements: [
-            ["block","ko-center",[],[],0,null,["loc",[null,[51,14],[53,28]]]]
+            ["block","ko-center",[],[],0,null,["loc",[null,[52,14],[54,28]]]]
           ],
           locals: [],
           templates: [child0]
@@ -11288,11 +11315,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 48,
+              "line": 49,
               "column": 8
             },
             "end": {
-              "line": 56,
+              "line": 57,
               "column": 8
             }
           },
@@ -11324,7 +11351,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["block","if",[["get","loadingTop",["loc",[null,[50,18],[50,28]]]]],[],0,null,["loc",[null,[50,12],[54,19]]]]
+          ["block","if",[["get","loadingTop",["loc",[null,[51,18],[51,28]]]]],[],0,null,["loc",[null,[51,12],[55,19]]]]
         ],
         locals: [],
         templates: [child0]
@@ -11337,11 +11364,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 58,
+              "line": 59,
               "column": 10
             },
             "end": {
-              "line": 60,
+              "line": 61,
               "column": 10
             }
           },
@@ -11366,7 +11393,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["inline","ko-feed",[],["events",["subexpr","@mut",[["get","newPosts",["loc",[null,[59,29],[59,37]]]]],[],[]]],["loc",[null,[59,12],[59,39]]]]
+          ["inline","ko-feed",[],["events",["subexpr","@mut",[["get","newPosts",["loc",[null,[60,29],[60,37]]]]],[],[]]],["loc",[null,[60,12],[60,39]]]]
         ],
         locals: [],
         templates: []
@@ -11380,11 +11407,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 65,
+                "line": 66,
                 "column": 12
               },
               "end": {
-                "line": 67,
+                "line": 68,
                 "column": 12
               }
             },
@@ -11409,7 +11436,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             return morphs;
           },
           statements: [
-            ["inline","ko-loader",[],["large",true],["loc",[null,[66,14],[66,38]]]]
+            ["inline","ko-loader",[],["large",true],["loc",[null,[67,14],[67,38]]]]
           ],
           locals: [],
           templates: []
@@ -11421,11 +11448,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 64,
+              "line": 65,
               "column": 10
             },
             "end": {
-              "line": 68,
+              "line": 69,
               "column": 10
             }
           },
@@ -11448,7 +11475,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["block","ko-center",[],[],0,null,["loc",[null,[65,12],[67,26]]]]
+          ["block","ko-center",[],[],0,null,["loc",[null,[66,12],[68,26]]]]
         ],
         locals: [],
         templates: [child0]
@@ -11462,11 +11489,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 88,
+                "line": 89,
                 "column": 10
               },
               "end": {
-                "line": 96,
+                "line": 97,
                 "column": 10
               }
             },
@@ -11491,7 +11518,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             return morphs;
           },
           statements: [
-            ["inline","component",[["subexpr","ko-helper",[["get","componentFor",["loc",[null,[89,35],[89,47]]]],["get","field.fieldType",["loc",[null,[89,48],[89,63]]]]],[],["loc",[null,[89,24],[89,64]]]]],["case",["subexpr","@mut",[["get","case",["loc",[null,[90,19],[90,23]]]]],[],[]],"field",["subexpr","@mut",[["get","field",["loc",[null,[91,20],[91,25]]]]],[],[]],"errors",["subexpr","@mut",[["get","errors",["loc",[null,[92,21],[92,27]]]]],[],[]],"options",["subexpr","ko-contextual-helper",[["get","optionsForField",["loc",[null,[93,44],[93,59]]]],["get","this",["loc",[null,[93,60],[93,64]]]],["get","field",["loc",[null,[93,65],[93,70]]]]],[],["loc",[null,[93,22],[93,71]]]],"editedCaseFields",["subexpr","@mut",[["get","editedCaseFields",["loc",[null,[94,31],[94,47]]]]],[],[]]],["loc",[null,[89,12],[95,14]]]]
+            ["inline","component",[["subexpr","ko-helper",[["get","componentFor",["loc",[null,[90,35],[90,47]]]],["get","field.fieldType",["loc",[null,[90,48],[90,63]]]]],[],["loc",[null,[90,24],[90,64]]]]],["case",["subexpr","@mut",[["get","case",["loc",[null,[91,19],[91,23]]]]],[],[]],"field",["subexpr","@mut",[["get","field",["loc",[null,[92,20],[92,25]]]]],[],[]],"errors",["subexpr","@mut",[["get","errors",["loc",[null,[93,21],[93,27]]]]],[],[]],"options",["subexpr","ko-contextual-helper",[["get","optionsForField",["loc",[null,[94,44],[94,59]]]],["get","this",["loc",[null,[94,60],[94,64]]]],["get","field",["loc",[null,[94,65],[94,70]]]]],[],["loc",[null,[94,22],[94,71]]]],"editedCaseFields",["subexpr","@mut",[["get","editedCaseFields",["loc",[null,[95,31],[95,47]]]]],[],[]]],["loc",[null,[90,12],[96,14]]]]
           ],
           locals: [],
           templates: []
@@ -11503,11 +11530,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 87,
+              "line": 88,
               "column": 8
             },
             "end": {
-              "line": 97,
+              "line": 98,
               "column": 8
             }
           },
@@ -11530,7 +11557,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["block","if",[["subexpr","ko-helper",[["get","componentFor",["loc",[null,[88,27],[88,39]]]],["get","field.fieldType",["loc",[null,[88,40],[88,55]]]]],[],["loc",[null,[88,16],[88,56]]]]],[],0,null,["loc",[null,[88,10],[96,17]]]]
+          ["block","if",[["subexpr","ko-helper",[["get","componentFor",["loc",[null,[89,27],[89,39]]]],["get","field.fieldType",["loc",[null,[89,40],[89,55]]]]],[],["loc",[null,[89,16],[89,56]]]]],[],0,null,["loc",[null,[89,10],[97,17]]]]
         ],
         locals: ["field"],
         templates: [child0]
@@ -11546,7 +11573,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             "column": 0
           },
           "end": {
-            "line": 103,
+            "line": 104,
             "column": 0
           }
         },
@@ -11709,6 +11736,13 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
         var el6 = dom.createTextNode("\n        ");
         dom.appendChild(el5, el6);
         dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("div");
+        dom.setAttribute(el5,"class","ko-case-content__sort-dropdown");
+        var el6 = dom.createComment("");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
         var el5 = dom.createTextNode("\n");
         dom.appendChild(el4, el5);
         var el5 = dom.createComment("");
@@ -11812,7 +11846,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
         var element9 = dom.childAt(element8, [1]);
         var element10 = dom.childAt(element6, [3, 1]);
         var element11 = dom.childAt(element10, [1, 1]);
-        var morphs = new Array(20);
+        var morphs = new Array(21);
         morphs[0] = dom.createAttrMorph(element3, 'src');
         morphs[1] = dom.createMorphAt(dom.childAt(element4, [1]),1,1);
         morphs[2] = dom.createMorphAt(dom.childAt(element4, [3]),1,1);
@@ -11822,17 +11856,18 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
         morphs[6] = dom.createAttrMorph(element8, 'style');
         morphs[7] = dom.createAttrMorph(element9, 'class');
         morphs[8] = dom.createMorphAt(element9,1,1);
-        morphs[9] = dom.createMorphAt(element7,3,3);
-        morphs[10] = dom.createMorphAt(dom.childAt(element7, [5]),1,1);
-        morphs[11] = dom.createMorphAt(element7,7,7);
-        morphs[12] = dom.createMorphAt(dom.childAt(element7, [9]),1,1);
-        morphs[13] = dom.createAttrMorph(element10, 'class');
-        morphs[14] = dom.createElementMorph(element11);
-        morphs[15] = dom.createMorphAt(element11,0,0);
-        morphs[16] = dom.createMorphAt(element10,3,3);
-        morphs[17] = dom.createMorphAt(element10,5,5);
-        morphs[18] = dom.createMorphAt(element10,7,7);
-        morphs[19] = dom.createMorphAt(element10,9,9);
+        morphs[9] = dom.createMorphAt(dom.childAt(element7, [3]),0,0);
+        morphs[10] = dom.createMorphAt(element7,5,5);
+        morphs[11] = dom.createMorphAt(dom.childAt(element7, [7]),1,1);
+        morphs[12] = dom.createMorphAt(element7,9,9);
+        morphs[13] = dom.createMorphAt(dom.childAt(element7, [11]),1,1);
+        morphs[14] = dom.createAttrMorph(element10, 'class');
+        morphs[15] = dom.createElementMorph(element11);
+        morphs[16] = dom.createMorphAt(element11,0,0);
+        morphs[17] = dom.createMorphAt(element10,3,3);
+        morphs[18] = dom.createMorphAt(element10,5,5);
+        morphs[19] = dom.createMorphAt(element10,7,7);
+        morphs[20] = dom.createMorphAt(element10,9,9);
         return morphs;
       },
       statements: [
@@ -11845,17 +11880,18 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
         ["attribute","style",["concat",["height: ",["get","caseEditorHeight",["loc",[null,[43,72],[43,88]]]],"px"]]],
         ["attribute","class",["concat",["ko-case-content__editor ",["subexpr","if",[["get","headerSticky",["loc",[null,[44,51],[44,63]]]],"ko-case-content__editor--sticky"],[],["loc",[null,[44,46],[44,99]]]]]]],
         ["inline","ko-case-field/post",[],["viewName","casePostEditor","channels",["subexpr","@mut",[["get","case.replyChannels",["loc",[null,[45,68],[45,86]]]]],[],[]],"channel",["subexpr","@mut",[["get","channel",["loc",[null,[45,95],[45,102]]]]],[],[]],"onChannelChange","setChannel","replyType",["subexpr","@mut",[["get","replyType",["loc",[null,[45,142],[45,151]]]]],[],[]]],["loc",[null,[45,12],[45,153]]]],
-        ["block","if",[["get","topPostsAvailable",["loc",[null,[48,14],[48,31]]]]],[],0,null,["loc",[null,[48,8],[56,15]]]],
-        ["block","if",[["get","newPosts",["loc",[null,[58,16],[58,24]]]]],[],1,null,["loc",[null,[58,10],[60,17]]]],
-        ["inline","ko-feed",[],["events",["subexpr","@mut",[["get","posts",["loc",[null,[62,25],[62,30]]]]],[],[]],"onReplyWithQuote","replyWithQuote","top",["subexpr","@mut",[["get","timelineVisibleTop",["loc",[null,[62,69],[62,87]]]]],[],[]],"left",["subexpr","@mut",[["get","timelineVisibleLeft",["loc",[null,[62,93],[62,112]]]]],[],[]],"onTopPostChange",["subexpr","action",["changeTopPost"],[],["loc",[null,[62,129],[62,153]]]]],["loc",[null,[62,8],[62,155]]]],
-        ["block","if",[["get","loadingBottom",["loc",[null,[64,16],[64,29]]]]],[],2,null,["loc",[null,[64,10],[68,17]]]],
-        ["attribute","class",["concat",["list-bare ko-case-content__info-bar ",["subexpr","if",[["get","headerSticky",["loc",[null,[73,58],[73,70]]]],"ko-case-content__info-bar--sticky"],[],["loc",[null,[73,53],[73,108]]]]]]],
-        ["element","action",["submit"],[],["loc",[null,[75,55],[75,74]]]],
-        ["inline","format-message",[["subexpr","intl-get",["cases.submit"],[],["loc",[null,[75,92],[75,117]]]]],[],["loc",[null,[75,75],[75,119]]]],
-        ["inline","ko-case-field/requester",[],["requester",["subexpr","@mut",[["get","case.requester",["loc",[null,[77,44],[77,58]]]]],[],[]]],["loc",[null,[77,8],[77,60]]]],
-        ["inline","ko-case-field/tags",[],["tags",["subexpr","@mut",[["get","tags",["loc",[null,[80,15],[80,19]]]]],[],[]],"suggestedTags",["subexpr","@mut",[["get","suggestedTags",["loc",[null,[81,24],[81,37]]]]],[],[]],"onTagAddition","addTag","onTagRemoval","removeTag","onTagSuggestion","suggestTags","isEdited",["subexpr","@mut",[["get","isTagsFieldEdited",["loc",[null,[85,19],[85,36]]]]],[],[]]],["loc",[null,[79,8],[85,38]]]],
-        ["block","each",[["get","caseOrFormFields",["loc",[null,[87,16],[87,32]]]]],[],3,null,["loc",[null,[87,8],[97,17]]]],
-        ["inline","ko-case/sla-sidebar",[],["sla",["subexpr","@mut",[["get","case.sla",["loc",[null,[98,34],[98,42]]]]],[],[]],"slaMetrics",["subexpr","@mut",[["get","case.slaMetrics",["loc",[null,[98,54],[98,69]]]]],[],[]]],["loc",[null,[98,8],[98,71]]]]
+        ["inline","ko-case-content/dropdown",[],["label","Sort","value",["subexpr","@mut",[["get","sortOrder",["loc",[null,[48,98],[48,107]]]]],[],[]],"options",["subexpr","@mut",[["get","sortOptions",["loc",[null,[48,116],[48,127]]]]],[],[]],"action",["subexpr","action",["sort"],[],["loc",[null,[48,135],[48,150]]]]],["loc",[null,[48,52],[48,152]]]],
+        ["block","if",[["get","topPostsAvailable",["loc",[null,[49,14],[49,31]]]]],[],0,null,["loc",[null,[49,8],[57,15]]]],
+        ["block","if",[["get","newPosts",["loc",[null,[59,16],[59,24]]]]],[],1,null,["loc",[null,[59,10],[61,17]]]],
+        ["inline","ko-feed",[],["events",["subexpr","@mut",[["get","posts",["loc",[null,[63,25],[63,30]]]]],[],[]],"onReplyWithQuote","replyWithQuote","top",["subexpr","@mut",[["get","timelineVisibleTop",["loc",[null,[63,69],[63,87]]]]],[],[]],"left",["subexpr","@mut",[["get","timelineVisibleLeft",["loc",[null,[63,93],[63,112]]]]],[],[]],"onTopPostChange",["subexpr","action",["changeTopPost"],[],["loc",[null,[63,129],[63,153]]]]],["loc",[null,[63,8],[63,155]]]],
+        ["block","if",[["get","loadingBottom",["loc",[null,[65,16],[65,29]]]]],[],2,null,["loc",[null,[65,10],[69,17]]]],
+        ["attribute","class",["concat",["list-bare ko-case-content__info-bar ",["subexpr","if",[["get","headerSticky",["loc",[null,[74,58],[74,70]]]],"ko-case-content__info-bar--sticky"],[],["loc",[null,[74,53],[74,108]]]]]]],
+        ["element","action",["submit"],[],["loc",[null,[76,55],[76,74]]]],
+        ["inline","format-message",[["subexpr","intl-get",["cases.submit"],[],["loc",[null,[76,92],[76,117]]]]],[],["loc",[null,[76,75],[76,119]]]],
+        ["inline","ko-case-field/requester",[],["requester",["subexpr","@mut",[["get","case.requester",["loc",[null,[78,44],[78,58]]]]],[],[]]],["loc",[null,[78,8],[78,60]]]],
+        ["inline","ko-case-field/tags",[],["tags",["subexpr","@mut",[["get","tags",["loc",[null,[81,15],[81,19]]]]],[],[]],"suggestedTags",["subexpr","@mut",[["get","suggestedTags",["loc",[null,[82,24],[82,37]]]]],[],[]],"onTagAddition","addTag","onTagRemoval","removeTag","onTagSuggestion","suggestTags","isEdited",["subexpr","@mut",[["get","isTagsFieldEdited",["loc",[null,[86,19],[86,36]]]]],[],[]]],["loc",[null,[80,8],[86,38]]]],
+        ["block","each",[["get","caseOrFormFields",["loc",[null,[88,16],[88,32]]]]],[],3,null,["loc",[null,[88,8],[98,17]]]],
+        ["inline","ko-case/sla-sidebar",[],["sla",["subexpr","@mut",[["get","case.sla",["loc",[null,[99,34],[99,42]]]]],[],[]],"slaMetrics",["subexpr","@mut",[["get","case.slaMetrics",["loc",[null,[99,54],[99,69]]]]],[],[]]],["loc",[null,[99,8],[99,71]]]]
       ],
       locals: [],
       templates: [child0, child1, child2, child3]
@@ -44926,61 +44962,11 @@ define('frontend-cp/services/case-timeline-cache', ['exports', 'ember'], functio
     },
 
     /**
-     * Return posts for a given case older than a given postId.
-     *
-     * @param {DS.Model} caseModel case
-     * @param {Number} postId post id
-     * @param {[Number]} options.count post count
-     * @param {[Number]} options.including whether to include the post with specified id
-     * @return {Promise} posts
-     */
-    getOlderPosts: function getOlderPosts(caseModel, postId) {
-      var _ref = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
-
-      var _ref$count = _ref.count;
-      var count = _ref$count === undefined ? defaultPostCount : _ref$count;
-      var _ref$including = _ref.including;
-      var including = _ref$including === undefined ? false : _ref$including;
-
-      return this.getPosts(caseModel, postId, {
-        order: 'newestFirst',
-        direction: 'older',
-        count: count,
-        including: including
-      });
-    },
-
-    /**
-     * Return posts for a given case newer than a given postId.
-     *
-     * @param {DS.Model} caseModel case
-     * @param {Number} postId post id
-     * @param {[Number]} options.count post count
-     * @param {[Number]} options.including whether to include the post with specified id
-     * @return {Promise} posts
-     */
-    getNewerPosts: function getNewerPosts(caseModel, postId) {
-      var _ref2 = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
-
-      var _ref2$count = _ref2.count;
-      var count = _ref2$count === undefined ? defaultPostCount : _ref2$count;
-      var _ref2$including = _ref2.including;
-      var including = _ref2$including === undefined ? false : _ref2$including;
-
-      return this.getPosts(caseModel, postId, {
-        order: 'oldestFirst',
-        direction: 'newer',
-        count: count,
-        including: including
-      });
-    },
-
-    /**
      * Return posts for a given case.
      *
      * @param {DS.Model} caseModel case
      * @param {Number} postId reference post id
-     * @param {[String]} options.order sorting order: 'newestFirst' or 'oldestFirst'
+     * @param {[String]} options.order sorting order: 'newest' or 'oldest'
      * @param {[String]} options.direction whether to request 'older' or 'newer' posts
      * @param {[Number]} options.count post count
      * @param {[Number]} options.including whether to include the post with specified id
@@ -44989,46 +44975,30 @@ define('frontend-cp/services/case-timeline-cache', ['exports', 'ember'], functio
     getPosts: function getPosts(caseModel, postId) {
       var _this = this;
 
-      var _ref3 = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+      var _ref = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
 
-      var _ref3$order = _ref3.order;
-      var order = _ref3$order === undefined ? 'newestFirst' : _ref3$order;
-      var _ref3$direction = _ref3.direction;
-      var direction = _ref3$direction === undefined ? 'older' : _ref3$direction;
-      var _ref3$count = _ref3.count;
-      var count = _ref3$count === undefined ? defaultPostCount : _ref3$count;
-      var _ref3$including = _ref3.including;
-      var including = _ref3$including === undefined ? false : _ref3$including;
+      var _ref$order = _ref.order;
+      var order = _ref$order === undefined ? 'newest' : _ref$order;
+      var _ref$direction = _ref.direction;
+      var direction = _ref$direction === undefined ? 'older' : _ref$direction;
+      var _ref$count = _ref.count;
+      var count = _ref$count === undefined ? defaultPostCount : _ref$count;
+      var _ref$including = _ref.including;
+      var including = _ref$including === undefined ? false : _ref$including;
 
-      if (postId) {
-        return this.getSinglePost(caseModel, postId).then(function (post) {
-          return _this.getPostsRecursive(caseModel, post, direction, including ? count - 1 : count).then(function (posts) {
-            return including ? [post].concat(posts) : posts;
-          }).then(function (posts) {
-            return posts.sortBy('sequence');
-          }).then(function (posts) {
-            return order === 'newestFirst' ? posts.reverse() : posts;
-          });
+      return (postId ? this.getSinglePost(caseModel, postId) : order === 'newest' ? this.getNewestPost(caseModel) : this.getOldestPost(caseModel)).then(function (post) {
+        return !post ? [] : _this.getPostsRecursive(caseModel, post, direction, including ? count - 1 : count).then(function (posts) {
+          return including ? [post].concat(posts) : posts;
+        }).then(function (posts) {
+          return posts.sortBy('sequence');
+        }).then(function (posts) {
+          return order === 'newest' ? posts.reverse() : posts;
         });
-      } else {
-        return this.getNewestPost(caseModel).then(function (newestPost) {
-          if (!newestPost) {
-            return [];
-          } else {
-            return _this.getPostsRecursive(caseModel, newestPost, direction, count - 1).then(function (newPosts) {
-              return [newestPost].concat(newPosts);
-            }).then(function (posts) {
-              return posts.sortBy('sequence');
-            }).then(function (posts) {
-              return order === 'newestFirst' ? posts.reverse() : posts;
-            });
-          }
-        });
-      }
+      });
     },
 
     /**
-     * Recursive function used by getOlderPosts
+     * Recursive function used by getPosts
      *
      * @param {DS.Model} caseModel case
      * @param {DS.Model} post post
@@ -45079,12 +45049,12 @@ define('frontend-cp/services/case-timeline-cache', ['exports', 'ember'], functio
     fetchPosts: function fetchPosts(caseModel) {
       var _this3 = this;
 
-      var _ref4 = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+      var _ref2 = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
-      var _ref4$afterId = _ref4.afterId;
-      var afterId = _ref4$afterId === undefined ? undefined : _ref4$afterId;
-      var _ref4$beforeId = _ref4.beforeId;
-      var beforeId = _ref4$beforeId === undefined ? undefined : _ref4$beforeId;
+      var _ref2$afterId = _ref2.afterId;
+      var afterId = _ref2$afterId === undefined ? undefined : _ref2$afterId;
+      var _ref2$beforeId = _ref2.beforeId;
+      var beforeId = _ref2$beforeId === undefined ? undefined : _ref2$beforeId;
 
       var caseCache = this.getCaseCache(caseModel);
       return this.get('store').query('post', {
@@ -49791,12 +49761,25 @@ define('frontend-cp/session/agent/cases/case/index/controller', ['exports', 'emb
     queryParams: {
       postId: {
         refreshModel: false
+      },
+
+      sort: {
+        refreshModel: false
       }
     },
 
+    sortOrder: Ember['default'].computed('sort', function () {
+      var sort = this.get('sort');
+      return sort ? sort : 'newest';
+    }),
+
     actions: {
-      onTopPostChange: function onTopPostChange(postId) {
-        this.get('target').send('onTopPostChange', postId);
+      changeTopPost: function changeTopPost(postId) {
+        this.get('target').send('changeTopPost', postId);
+      },
+
+      sort: function sort(sortOrder) {
+        this.get('target').send('sort', sortOrder);
       }
     }
   });
@@ -49812,6 +49795,11 @@ define('frontend-cp/session/agent/cases/case/index/route', ['exports', 'ember'],
 
     queryParams: {
       postId: {
+        refreshModel: false,
+        replace: true
+      },
+
+      sort: {
         refreshModel: false,
         replace: true
       }
@@ -49853,19 +49841,35 @@ define('frontend-cp/session/agent/cases/case/index/route', ['exports', 'ember'],
       }
     },
 
-    actions: {
-      onTopPostChange: function onTopPostChange(postId) {
-        var locationService = this.container.lookup('router:main').get('location');
-        var rootURL = Ember['default'].get(locationService, 'rootURL').replace(/\/$/, '');
-        var location = Ember['default'].get(locationService, 'location');
-        var path = location.pathname;
-        var baseURL = Ember['default'].get(locationService, 'baseURL').replace(/\/$/, '');
-        var search = postId ? '?postId=' + postId : '';
-        var url = path.replace(baseURL, '').replace(rootURL, '') + search;
+    updateUrl: function updateUrl(params) {
+      var locationService = this.container.lookup('router:main').get('location');
+      var rootURL = locationService.get('rootURL').replace(/\/$/, '');
+      var location = locationService.get('location');
+      var path = location.pathname;
+      var baseURL = locationService.get('baseURL').replace(/\/$/, '');
+      var postId = params.postId !== undefined ? params.postId : this.get('controller').get('postId');
+      var sort = params.sort !== undefined ? params.sort : this.get('controller').get('sort');
 
-        var currentState = this.get('routeStateService').getState();
-        this.get('routeStateService').transitionToState(url, currentState);
-        this.send('updateTabUrl', url);
+      var postParam = postId ? 'postId=' + postId : '';
+      var sortParam = sort ? 'sort=' + sort : '';
+
+      var search = [postParam, sortParam].filter(function (x) {
+        return x;
+      }).join('&');
+      var url = path.replace(baseURL, '').replace(rootURL, '') + (search ? '?' + search : '');
+
+      var currentState = this.get('routeStateService').getState();
+      this.get('routeStateService').transitionToState(url, currentState);
+      this.send('updateTabUrl', url);
+    },
+
+    actions: {
+      changeTopPost: function changeTopPost(postId) {
+        this.updateUrl({ postId: postId });
+      },
+
+      sort: function sort(sortOrder) {
+        this.updateUrl({ sort: sortOrder, postId: null });
       }
     }
   });
@@ -49886,7 +49890,7 @@ define('frontend-cp/session/agent/cases/case/index/template', ['exports'], funct
             "column": 0
           },
           "end": {
-            "line": 8,
+            "line": 10,
             "column": 0
           }
         },
@@ -49910,7 +49914,7 @@ define('frontend-cp/session/agent/cases/case/index/template', ['exports'], funct
         return morphs;
       },
       statements: [
-        ["inline","ko-case-content",[],["case",["subexpr","@mut",[["get","case",["loc",[null,[2,7],[2,11]]]]],[],[]],"postId",["subexpr","@mut",[["get","postId",["loc",[null,[3,9],[3,15]]]]],[],[]],"caseFields",["subexpr","@mut",[["get","caseFields",["loc",[null,[4,13],[4,23]]]]],[],[]],"onTopPostChange",["subexpr","action",["onTopPostChange"],[],["loc",[null,[5,18],[5,44]]]]],["loc",[null,[1,0],[6,2]]]]
+        ["inline","ko-case-content",[],["case",["subexpr","@mut",[["get","case",["loc",[null,[2,7],[2,11]]]]],[],[]],"postId",["subexpr","@mut",[["get","postId",["loc",[null,[3,9],[3,15]]]]],[],[]],"sortOrder",["subexpr","@mut",[["get","sortOrder",["loc",[null,[4,12],[4,21]]]]],[],[]],"caseFields",["subexpr","@mut",[["get","caseFields",["loc",[null,[5,13],[5,23]]]]],[],[]],"onTopPostChange",["subexpr","action",["changeTopPost"],[],["loc",[null,[6,18],[6,42]]]],"onSort",["subexpr","action",["sort"],[],["loc",[null,[7,9],[7,24]]]]],["loc",[null,[1,0],[8,2]]]]
       ],
       locals: [],
       templates: []
@@ -64109,7 +64113,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+7a0ca7f7"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+931b2bea"});
 }
 
 /* jshint ignore:end */
