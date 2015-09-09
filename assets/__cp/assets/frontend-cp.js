@@ -681,6 +681,43 @@ define('frontend-cp/application/index/route', ['exports', 'ember'], function (ex
   });
 
 });
+define('frontend-cp/application/route', ['exports', 'moment', 'ember'], function (exports, moment, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Route.extend({
+    store: Ember['default'].inject.service(),
+    intl: Ember['default'].inject.service(),
+    localeId: '',
+
+    beforeModel: function beforeModel() {
+      var store = this.get('store');
+      var intl = this.get('intl');
+
+      intl.set('adapterType', 'intl');
+
+      var localeId = window.navigator.language ? window.navigator.language.toLowerCase() : 'en-us';
+      this.set('localeId', localeId);
+
+      return store.find('locale', localeId)['catch'](function () {
+        return store.find('locale', 'en-us');
+      }).then(function (locale) {
+        intl.createLocale(locale.id, {});
+        intl.set('locale', locale.id);
+        moment['default'].locale(locale.id);
+
+        var translationObj = {};
+        return locale.get('strings').then(function (strings) {
+          strings.forEach(function (string) {
+            translationObj[string.id] = string.get('value');
+          });
+          intl.addMessages(locale.id, translationObj);
+        });
+      });
+    }
+  });
+
+});
 define('frontend-cp/application/template', ['exports'], function (exports) {
 
   'use strict';
@@ -35174,7 +35211,7 @@ define('frontend-cp/initializers/get-helper', ['exports', 'ember', 'ember-get-he
   };
 
 });
-define('frontend-cp/initializers/intl', ['exports', 'moment', 'ember-intl/models/translation'], function (exports, moment, TranslationModel) {
+define('frontend-cp/initializers/intl', ['exports', 'ember-intl/models/translation'], function (exports, TranslationModel) {
 
   'use strict';
 
@@ -35190,32 +35227,7 @@ define('frontend-cp/initializers/intl', ['exports', 'moment', 'ember-intl/models
     name: 'intl',
     after: 'store',
 
-    initialize: function initialize(container, application) {
-      application.deferReadiness();
-
-      var intl = container.lookup('service:intl');
-      var store = container.lookup('store:main');
-      intl.set('adapterType', 'intl');
-
-      var localeId = window.navigator.language ? window.navigator.language.toLowerCase() : 'en-us';
-
-      return store.find('locale', localeId)['catch'](function () {
-        return store.find('locale', 'en-us');
-      }).then(function (locale) {
-        intl.createLocale(locale.id, {});
-        intl.set('locale', locale.id);
-        moment['default'].locale(locale.id);
-
-        var translationObj = {};
-        return locale.get('strings').then(function (strings) {
-          strings.forEach(function (string) {
-            translationObj[string.id] = string.get('value');
-          });
-          intl.addMessages(locale.id, translationObj);
-          application.advanceReadiness();
-        });
-      });
-    }
+    initialize: function initialize(registry) {}
   };
 
 });
@@ -64097,7 +64109,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+a2704605"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+7a0ca7f7"});
 }
 
 /* jshint ignore:end */
