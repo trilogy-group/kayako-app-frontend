@@ -34621,6 +34621,18 @@ define('frontend-cp/helpers/-intl-get', ['exports', 'ember'], function (exports,
   });
 
 });
+define('frontend-cp/helpers/ago', ['exports', 'ember', 'frontend-cp/helpers/moment-from-now'], function (exports, Ember, Helper) {
+
+  'use strict';
+
+  exports['default'] = Helper['default'].extend({
+    compute: function compute() {
+      Ember['default'].deprecate('ember-moment: `ago` helper has been renamed to `moment-from-now`');
+      return this._super.apply(this, arguments);
+    }
+  });
+
+});
 define('frontend-cp/helpers/and', ['exports', 'ember', 'ember-truth-helpers/helpers/and'], function (exports, Ember, and) {
 
   'use strict';
@@ -34634,6 +34646,18 @@ define('frontend-cp/helpers/and', ['exports', 'ember', 'ember-truth-helpers/help
   }
 
   exports['default'] = forExport;
+
+});
+define('frontend-cp/helpers/duration', ['exports', 'ember', 'frontend-cp/helpers/moment-duration'], function (exports, Ember, Helper) {
+
+  'use strict';
+
+  exports['default'] = Helper['default'].extend({
+    compute: function compute() {
+      Ember['default'].deprecate('ember-moment: `duration` helper has been renamed to `moment-duration`');
+      return this._super.apply(this, arguments);
+    }
+  });
 
 });
 define('frontend-cp/helpers/eq', ['exports', 'ember', 'ember-truth-helpers/helpers/equal'], function (exports, Ember, equal) {
@@ -34866,6 +34890,55 @@ define('frontend-cp/helpers/lte', ['exports', 'ember', 'ember-truth-helpers/help
   exports['default'] = forExport;
 
 });
+define('frontend-cp/helpers/moment-duration', ['exports', 'ember-moment/helpers/moment-duration'], function (exports, moment_duration) {
+
+	'use strict';
+
+
+
+	exports['default'] = moment_duration['default'];
+
+});
+define('frontend-cp/helpers/moment-format', ['exports', 'ember', 'frontend-cp/config/environment', 'ember-moment/helpers/moment-format'], function (exports, Ember, config, Helper) {
+
+  'use strict';
+
+  exports['default'] = Helper['default'].extend({
+    globalOutputFormat: Ember['default'].get(config['default'], 'moment.outputFormat'),
+    globalAllowEmpty: !!Ember['default'].get(config['default'], 'moment.allowEmpty')
+  });
+
+});
+define('frontend-cp/helpers/moment-from-now', ['exports', 'ember', 'frontend-cp/config/environment', 'ember-moment/helpers/moment-from-now'], function (exports, Ember, config, Helper) {
+
+  'use strict';
+
+  exports['default'] = Helper['default'].extend({
+    globalAllowEmpty: !!Ember['default'].get(config['default'], 'moment.allowEmpty')
+  });
+
+});
+define('frontend-cp/helpers/moment-to-now', ['exports', 'ember', 'frontend-cp/config/environment', 'ember-moment/helpers/moment-to-now'], function (exports, Ember, config, Helper) {
+
+  'use strict';
+
+  exports['default'] = Helper['default'].extend({
+    globalAllowEmpty: !!Ember['default'].get(config['default'], 'moment.allowEmpty')
+  });
+
+});
+define('frontend-cp/helpers/moment', ['exports', 'ember', 'frontend-cp/helpers/moment-format'], function (exports, Ember, Helper) {
+
+  'use strict';
+
+  exports['default'] = Helper['default'].extend({
+    compute: function compute() {
+      Ember['default'].deprecate('ember-moment: `moment` helper has been renamed to `moment-format`');
+      return this._super.apply(this, arguments);
+    }
+  });
+
+});
 define('frontend-cp/helpers/not-eq', ['exports', 'ember', 'ember-truth-helpers/helpers/not-equal'], function (exports, Ember, not_equal) {
 
   'use strict';
@@ -35039,35 +35112,6 @@ define('frontend-cp/initializers/ember-intl', ['exports', 'ember', 'ember-intl/h
         name: 'ember-intl',
         initialize: initializer
     };
-
-});
-define('frontend-cp/initializers/ember-moment', ['exports', 'ember-moment/helpers/moment', 'ember-moment/helpers/ago', 'ember-moment/helpers/duration', 'ember'], function (exports, moment, ago, duration, Ember) {
-
-  'use strict';
-
-  var initialize = function initialize() /* container, app */{
-    var registerHelper;
-
-    if (Ember['default'].HTMLBars) {
-      registerHelper = function (helperName, fn) {
-        Ember['default'].HTMLBars._registerHelper(helperName, Ember['default'].HTMLBars.makeBoundHelper(fn));
-      };
-    } else {
-      registerHelper = Ember['default'].Handlebars.helper;
-    };
-
-    registerHelper('moment', moment['default']);
-    registerHelper('ago', ago['default']);
-    registerHelper('duration', duration['default']);
-  };
-
-  exports['default'] = {
-    name: 'ember-moment',
-
-    initialize: initialize
-  };
-
-  exports.initialize = initialize;
 
 });
 define('frontend-cp/initializers/export-application-global', ['exports', 'ember', 'frontend-cp/config/environment'], function (exports, Ember, config) {
@@ -64053,7 +64097,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+f7317ff2"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+a2704605"});
 }
 
 /* jshint ignore:end */
