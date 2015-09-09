@@ -34752,7 +34752,12 @@ define('frontend-cp/helpers/escape-html', ['exports', 'ember'], function (export
 
   'use strict';
 
-  exports['default'] = Ember['default'].Helper.helper(function (value) {
+  var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
+
+  exports['default'] = Ember['default'].Helper.helper(function (_ref) {
+    var _ref2 = _slicedToArray(_ref, 1);
+
+    var value = _ref2[0];
     return value;
   });
 
@@ -57812,7 +57817,12 @@ define('frontend-cp/tests/helpers/format-date', ['exports', 'ember'], function (
 
   'use strict';
 
-  exports['default'] = Ember['default'].Handlebars.makeBoundHelper(function (value) {
+  var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
+
+  exports['default'] = Ember['default'].Helper.helper(function (_ref) {
+    var _ref2 = _slicedToArray(_ref, 1);
+
+    var value = _ref2[0];
     return 'DATE %' + value + '%';
   });
 
@@ -57821,7 +57831,12 @@ define('frontend-cp/tests/helpers/format-html-message', ['exports', 'ember'], fu
 
   'use strict';
 
-  exports['default'] = Ember['default'].Handlebars.makeBoundHelper(function (value) {
+  var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
+
+  exports['default'] = Ember['default'].Helper.helper(function (_ref) {
+    var _ref2 = _slicedToArray(_ref, 1);
+
+    var value = _ref2[0];
     return 'HTML MESSAGE %' + value + '%';
   });
 
@@ -57830,7 +57845,12 @@ define('frontend-cp/tests/helpers/format-message', ['exports', 'ember'], functio
 
   'use strict';
 
-  exports['default'] = Ember['default'].Handlebars.makeBoundHelper(function (value) {
+  var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
+
+  exports['default'] = Ember['default'].Helper.helper(function (_ref) {
+    var _ref2 = _slicedToArray(_ref, 1);
+
+    var value = _ref2[0];
     return 'MESSAGE %' + value + '%';
   });
 
@@ -57839,7 +57859,12 @@ define('frontend-cp/tests/helpers/format-number', ['exports', 'ember'], function
 
   'use strict';
 
-  exports['default'] = Ember['default'].Handlebars.makeBoundHelper(function (value) {
+  var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
+
+  exports['default'] = Ember['default'].Helper.helper(function (_ref) {
+    var _ref2 = _slicedToArray(_ref, 1);
+
+    var value = _ref2[0];
     return 'NUMBER %' + value + '%';
   });
 
@@ -57848,7 +57873,12 @@ define('frontend-cp/tests/helpers/format-relative', ['exports', 'ember'], functi
 
   'use strict';
 
-  exports['default'] = Ember['default'].Handlebars.makeBoundHelper(function (value) {
+  var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
+
+  exports['default'] = Ember['default'].Helper.helper(function (_ref) {
+    var _ref2 = _slicedToArray(_ref, 1);
+
+    var value = _ref2[0];
     return 'RELATIVE %' + value + '%';
   });
 
@@ -57857,7 +57887,12 @@ define('frontend-cp/tests/helpers/format-time', ['exports', 'ember'], function (
 
   'use strict';
 
-  exports['default'] = Ember['default'].Handlebars.makeBoundHelper(function (value) {
+  var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
+
+  exports['default'] = Ember['default'].Helper.helper(function (_ref) {
+    var _ref2 = _slicedToArray(_ref, 1);
+
+    var value = _ref2[0];
     return 'TIME %' + value + '%';
   });
 
@@ -57866,7 +57901,12 @@ define('frontend-cp/tests/helpers/intl-get', ['exports', 'ember'], function (exp
 
   'use strict';
 
-  exports['default'] = Ember['default'].Handlebars.makeBoundHelper(function (value) {
+  var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
+
+  exports['default'] = Ember['default'].Helper.helper(function (_ref) {
+    var _ref2 = _slicedToArray(_ref, 1);
+
+    var value = _ref2[0];
     return '%' + value + '%';
   });
 
@@ -64113,7 +64153,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+931b2bea"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+cedd8430"});
 }
 
 /* jshint ignore:end */
