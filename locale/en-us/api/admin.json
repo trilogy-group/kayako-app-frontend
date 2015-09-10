@@ -26,8 +26,13 @@
   "teams": "Teams",
   "teams.agent": "{numAgents, plural, =1 {agent} other {agents}}",
   "teams.headings.index": "Teams",
+  "teams.headings.edit": "Teams / {title}",
+  "teams.headings.new": "Teams / New",
   "teams.buttons.add": "Add New",
   "teams.labels.filterTeams": "Filter teams",
+  "teams.labels.filterAgents": "Filter agents",
+  "teams.labels.deleteTeam": "Delete team",
+  "teams.labels.deleteTeamConfirmation": "Are you sure you wish to delete this team?",
 
   "caseforms": "Case Forms",
   "caseforms.buttons.add_new_caseform": "Add new form",
