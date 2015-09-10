@@ -37033,12 +37033,10 @@ define('frontend-cp/initializers/ember-cli-mirage', ['exports', 'frontend-cp/con
         var hasFactories = hasModulesOfType(modulesMap, 'factories');
         var hasDefaultScenario = modulesMap['scenarios'].hasOwnProperty('default');
         var hasModels = hasModulesOfType(modulesMap, 'models');
-        var hasSerializers = hasModulesOfType(modulesMap, 'serializers');
 
         var server = new Server['default']({
           environment: env,
-          modelsMap: hasModels ? modulesMap['models'] : null,
-          serializersMap: hasSerializers ? modulesMap['serializers'] : null
+          modelsMap: hasModels ? modulesMap['models'] : null
         });
 
         server.loadConfig(config['default']);
@@ -39054,7 +39052,11 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
 
     this.get('/api/v1/views', function (db) {
       return {
-        data: db.views,
+        data: db.views.map(function (v) {
+          return Object.assign({}, v, { columns: v.columns.map(function (c) {
+              delete c.id;return c;
+            }) });
+        }),
         limit: 10,
         offset: 0,
         resource: 'view',
@@ -39502,14 +39504,13 @@ define('frontend-cp/mirage/factories/assignee', ['exports', 'ember-cli-mirage'],
   });
 
 });
-define('frontend-cp/mirage/factories/brand', ['exports', 'ember-cli-mirage'], function (exports, ember_cli_mirage) {
+define('frontend-cp/mirage/factories/brand', ['exports', 'ember-cli-mirage'], function (exports, Mirage) {
 
   'use strict';
 
   /*eslint-disable camelcase*/
 
-  exports['default'] = ember_cli_mirage['default'].Factory.extend({
-    id: ember_cli_mirage.faker.random.number,
+  exports['default'] = Mirage['default'].Factory.extend({
     is_enabled: true,
     language: {},
     name: 'Default',
@@ -39528,7 +39529,6 @@ define('frontend-cp/mirage/factories/business-hour', ['exports', 'ember-cli-mira
   /*eslint-disable camelcase*/
 
   exports['default'] = Mirage['default'].Factory.extend({
-    id: 1,
     title: 'Default Business Hours',
     zones: {
       monday: [9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
@@ -39567,8 +39567,9 @@ define('frontend-cp/mirage/factories/case-field', ['exports', 'ember-cli-mirage'
   /*eslint-disable camelcase*/
 
   exports['default'] = ember_cli_mirage['default'].Factory.extend({
-    id: ember_cli_mirage.faker.random.number,
-    fielduuid: 'fake-XXXX-default',
+    fielduuid: function fielduuid(i) {
+      return 'fake-xxx-' + i;
+    },
     type: ember_cli_mirage.faker.list.cycle('SUBJECT', 'MESSAGE', 'PRIORITY', 'STATUS', 'TYPE', 'TEAM', 'ASSIGNEE', 'TEXT', 'TEXTAREA', 'CHECKBOX', 'RADIO', 'SELECT', 'DATE', 'NUMERIC'),
     key: ember_cli_mirage.faker.list.cycle('subject', 'message', 'priority', 'status', 'type', 'team', 'assignee', 'text', 'textarea', 'checkbox', 'radio', 'select', 'date', 'numeric'),
     title: ember_cli_mirage.faker.list.cycle('Subject', 'Message', 'Priority', 'Status', 'Type', 'Team', 'Assignee', 'Text', 'Textarea', 'Checkbox', 'Radio', 'Select', 'Date', 'Numeric'),
@@ -39599,7 +39600,6 @@ define('frontend-cp/mirage/factories/case-form', ['exports', 'ember-cli-mirage']
   /*eslint-disable camelcase*/
 
   exports['default'] = Mirage['default'].Factory.extend({
-    id: 1,
     title: 'Internet Related Issue',
     is_visible_to_customers: true,
     customer_title: 'Internet Related Issue',
@@ -39623,7 +39623,6 @@ define('frontend-cp/mirage/factories/case-message', ['exports', 'ember-cli-mirag
   /*eslint-disable camelcase*/
 
   exports['default'] = Mirage['default'].Factory.extend({
-    id: 1,
     resource_type: 'case_message'
   });
 
@@ -39635,7 +39634,6 @@ define('frontend-cp/mirage/factories/case-priority', ['exports', 'ember-cli-mira
   /*eslint-disable camelcase*/
 
   exports['default'] = ember_cli_mirage['default'].Factory.extend({
-    id: 1,
     label: ember_cli_mirage.faker.list.cycle('Low', 'Normal', 'Urgent'),
     level: 1,
     color: null,
@@ -39654,7 +39652,6 @@ define('frontend-cp/mirage/factories/case-status', ['exports', 'ember-cli-mirage
   /*eslint-disable camelcase*/
 
   exports['default'] = ember_cli_mirage['default'].Factory.extend({
-    id: 1,
     label: ember_cli_mirage.faker.list.cycle('New', 'Open', 'Pending', 'Completed', 'Closed'),
     color: null,
     visibility: 'PUBLIC',
@@ -39676,7 +39673,6 @@ define('frontend-cp/mirage/factories/case-type', ['exports', 'ember-cli-mirage']
   /*eslint-disable camelcase*/
 
   exports['default'] = ember_cli_mirage['default'].Factory.extend({
-    id: 1,
     label: ember_cli_mirage.faker.list.cycle('Question', 'Task', 'Problem', 'Incident'),
     created_at: '2015-07-09T15:36:10Z',
     updated_at: '2015-07-09T15:36:10Z',
@@ -39692,9 +39688,12 @@ define('frontend-cp/mirage/factories/case', ['exports', 'ember-cli-mirage'], fun
   /*eslint-disable camelcase*/
 
   exports['default'] = ember_cli_mirage['default'].Factory.extend({
-    id: 1,
-    mask_id: ember_cli_mirage.faker.random.number,
-    subject: 'ERS Audit',
+    subject: function subject(i) {
+      return 'ERS Audit ' + (i + 1);
+    },
+    mask_id: function mask_id(i) {
+      return 'DXX-' + (i + 1) + '-' + ember_cli_mirage.faker.random.number();
+    },
     portal: null,
     source_channel: {},
     requester: {},
@@ -39772,7 +39771,6 @@ define('frontend-cp/mirage/factories/contact-address', ['exports', 'ember-cli-mi
     city: 'Salinas',
     country: 'US',
     created_at: '2015-08-27T11:02:47Z',
-    id: 5,
     is_primary: false,
     postal_code: '93905',
     resource_type: 'contact_address',
@@ -39791,7 +39789,6 @@ define('frontend-cp/mirage/factories/contact-website', ['exports', 'ember-cli-mi
 
   exports['default'] = Mirage['default'].Factory.extend({
     created_at: '2015-08-27T11:02:47Z',
-    id: 5,
     is_primary: false,
     resource_type: 'contact_website',
     resource_url: 'http://novo/api/v1/users/5/contacts/websites/5',
@@ -39807,7 +39804,6 @@ define('frontend-cp/mirage/factories/facebook-account', ['exports', 'ember-cli-m
   /*eslint-disable camelcase*/
 
   exports['default'] = ember_cli_mirage['default'].Factory.extend({
-    id: ember_cli_mirage.faker.random.number,
     account_id: ember_cli_mirage.faker.random.number,
     is_enabled: true,
     resource_type: 'facebook_account',
@@ -39825,7 +39821,6 @@ define('frontend-cp/mirage/factories/facebook-page', ['exports', 'ember-cli-mira
   /*eslint-disable camelcase*/
 
   exports['default'] = ember_cli_mirage['default'].Factory.extend({
-    id: ember_cli_mirage.faker.random.number,
     uuid: 'fake-XXXX-default',
     is_enabled: true,
     page_id: ember_cli_mirage.faker.random.number,
@@ -39846,7 +39841,6 @@ define('frontend-cp/mirage/factories/field-option', ['exports', 'ember-cli-mirag
   /*eslint-disable camelcase*/
 
   exports['default'] = ember_cli_mirage['default'].Factory.extend({
-    id: ember_cli_mirage.faker.random.number,
     fielduuid: ember_cli_mirage.faker.list.cycle('fake-XXXX-1', 'fake-XXXX-2', 'fake-XXXX-3', 'fake-XXXX-4', 'fake-XXXX-5'),
     value: ember_cli_mirage.faker.hacker.verb,
     tag: ember_cli_mirage.faker.list.cycle('internet', 'connectivity', 'yes'),
@@ -39864,7 +39858,6 @@ define('frontend-cp/mirage/factories/identity-domain', ['exports', 'ember-cli-mi
   /*eslint-disable camelcase*/
 
   exports['default'] = Mirage['default'].Factory.extend({
-    id: 1,
     is_primary: true,
     domain: 'brew.com',
     is_validated: false,
@@ -39882,7 +39875,6 @@ define('frontend-cp/mirage/factories/identity-email', ['exports', 'ember-cli-mir
   /*eslint-disable camelcase*/
 
   exports['default'] = ember_cli_mirage['default'].Factory.extend({
-    id: 1,
     is_primary: true,
     email: 'dave@unreal.com',
     is_notification_enabled: ember_cli_mirage.faker.random.boolean,
@@ -39902,7 +39894,6 @@ define('frontend-cp/mirage/factories/identity-phone', ['exports', 'ember-cli-mir
 
   exports['default'] = Mirage['default'].Factory.extend({
     created_at: '2015-08-27T11:02:47Z',
-    id: 4,
     is_primary: false,
     is_validated: false,
     number: '+494928581322',
@@ -39920,7 +39911,6 @@ define('frontend-cp/mirage/factories/language', ['exports', 'ember-cli-mirage'],
   /*eslint-disable camelcase*/
 
   exports['default'] = Mirage['default'].Factory.extend({
-    id: 1,
     locale: 'en-us',
     flag_icon: null,
     direction: 'LTR',
@@ -39944,7 +39934,6 @@ define('frontend-cp/mirage/factories/mailbox', ['exports', 'ember-cli-mirage'], 
   /*eslint-disable camelcase*/
 
   exports['default'] = Mirage['default'].Factory.extend({
-    id: 1,
     uuid: '02a60873-8118-453c-8258-8f44029e657d',
     service: 'STANDARD',
     encryption: 'NONE',
@@ -39972,7 +39961,6 @@ define('frontend-cp/mirage/factories/message-recipient', ['exports', 'ember-cli-
   /*eslint-disable camelcase*/
 
   exports['default'] = Mirage['default'].Factory.extend({
-    id: 1,
     identity: { id: 2, resource_type: 'identity_email' },
     name: 'Caryn Pryor',
     resource_type: 'message_recipient',
@@ -40000,7 +39988,6 @@ define('frontend-cp/mirage/factories/organization', ['exports', 'ember-cli-mirag
   /*eslint-disable camelcase*/
 
   exports['default'] = Mirage['default'].Factory.extend({
-    id: 1,
     name: 'Brew',
     is_shared: false,
     domains: [],
@@ -40032,7 +40019,6 @@ define('frontend-cp/mirage/factories/post', ['exports', 'ember-cli-mirage'], fun
     created_at: ember_cli_mirage.faker.date.recent,
     creator: { id: 5, resource_type: 'user' },
     download_all: null,
-    id: 1,
     identity: { id: 5, resource_type: 'identity_email' },
     original: { id: 1, resource_type: 'case_message' },
     resource_type: 'post',
@@ -40042,7 +40028,9 @@ define('frontend-cp/mirage/factories/post', ['exports', 'ember-cli-mirage'], fun
     }, // Sequence needs to be contiguous, used for sorting infinite scroll
     subject: 'Atmosphere Coffee, Inc annual maintenance',
     updated_at: '2015-08-27T11:02:47Z',
-    uuid: 'fake-XXXX-1'
+    uuid: function uuid(i) {
+      return 'post-' + (i + 1);
+    }
   });
 
 });
@@ -40053,21 +40041,19 @@ define('frontend-cp/mirage/factories/predicate-collection', ['exports', 'ember-c
   /*eslint-disable camelcase*/
 
   exports['default'] = Mirage['default'].Factory.extend({
-    id: 1,
     operator: 'OR',
     propositions: [],
     resource_type: 'predicate_collection'
   });
 
 });
-define('frontend-cp/mirage/factories/priority', ['exports', 'ember-cli-mirage'], function (exports, ember_cli_mirage) {
+define('frontend-cp/mirage/factories/priority', ['exports', 'ember-cli-mirage'], function (exports, Mirage) {
 
   'use strict';
 
   /*eslint-disable camelcase*/
 
-  exports['default'] = ember_cli_mirage['default'].Factory.extend({
-    id: ember_cli_mirage.faker.random.number,
+  exports['default'] = Mirage['default'].Factory.extend({
     resource_type: 'case_priority'
   });
 
@@ -40082,7 +40068,9 @@ define('frontend-cp/mirage/factories/proposition', ['exports', 'ember-cli-mirage
     field: 'cases.assigneeteamid',
     operator: 'comparison_equalto',
     resource_type: 'proposition',
-    value: 1
+    value: function value(i) {
+      return 'value' + i;
+    }
   });
 
 });
@@ -40093,7 +40081,6 @@ define('frontend-cp/mirage/factories/role', ['exports', 'ember-cli-mirage'], fun
   /*eslint-disable camelcase*/
 
   exports['default'] = ember_cli_mirage['default'].Factory.extend({
-    id: ember_cli_mirage.faker.random.number,
     title: 'Administrator',
     type: 'ADMIN',
     ip_restriction: null,
@@ -40139,39 +40126,36 @@ define('frontend-cp/mirage/factories/sla-metric', ['exports', 'ember-cli-mirage'
   });
 
 });
-define('frontend-cp/mirage/factories/sla', ['exports', 'ember-cli-mirage'], function (exports, ember_cli_mirage) {
+define('frontend-cp/mirage/factories/sla', ['exports', 'ember-cli-mirage'], function (exports, Mirage) {
 
   'use strict';
 
   /*eslint-disable camelcase*/
 
-  exports['default'] = ember_cli_mirage['default'].Factory.extend({
-    id: ember_cli_mirage.faker.random.number,
+  exports['default'] = Mirage['default'].Factory.extend({
     title: 'Regular support and sales tickets',
     resource_type: 'sla'
   });
 
 });
-define('frontend-cp/mirage/factories/source-channel', ['exports', 'ember-cli-mirage'], function (exports, ember_cli_mirage) {
+define('frontend-cp/mirage/factories/source-channel', ['exports', 'ember-cli-mirage'], function (exports, Mirage) {
 
   'use strict';
 
   /*eslint-disable camelcase*/
 
-  exports['default'] = ember_cli_mirage['default'].Factory.extend({
-    id: ember_cli_mirage.faker.random.uuid,
+  exports['default'] = Mirage['default'].Factory.extend({
     resource_type: 'channel'
   });
 
 });
-define('frontend-cp/mirage/factories/status', ['exports', 'ember-cli-mirage'], function (exports, ember_cli_mirage) {
+define('frontend-cp/mirage/factories/status', ['exports', 'ember-cli-mirage'], function (exports, Mirage) {
 
   'use strict';
 
   /*eslint-disable camelcase*/
 
-  exports['default'] = ember_cli_mirage['default'].Factory.extend({
-    id: ember_cli_mirage.faker.random.number,
+  exports['default'] = Mirage['default'].Factory.extend({
     resource_type: 'case_status'
   });
 
@@ -40183,7 +40167,6 @@ define('frontend-cp/mirage/factories/tag', ['exports', 'ember-cli-mirage'], func
   /*eslint-disable camelcase*/
 
   exports['default'] = ember_cli_mirage['default'].Factory.extend({
-    id: ember_cli_mirage.faker.random.number,
     name: ember_cli_mirage.faker.list.cycle('solution', 'status'),
     resource_type: 'tag'
   });
@@ -40196,7 +40179,6 @@ define('frontend-cp/mirage/factories/team', ['exports', 'ember-cli-mirage'], fun
   /*eslint-disable camelcase*/
 
   exports['default'] = ember_cli_mirage['default'].Factory.extend({
-    id: 1,
     title: ember_cli_mirage.faker.list.cycle('Sales', 'Support', 'Finance', 'Human Resources'),
     businesshour: {},
     followers: [],
@@ -40217,7 +40199,6 @@ define('frontend-cp/mirage/factories/twitter-account', ['exports', 'ember-cli-mi
     account_id: '3155953718',
     brand: {},
     created_at: '2015-08-05T06:13:59Z',
-    id: 1,
     is_enabled: true,
     is_public: true,
     resource_type: 'twitter_account',
@@ -40231,14 +40212,13 @@ define('frontend-cp/mirage/factories/twitter-account', ['exports', 'ember-cli-mi
   });
 
 });
-define('frontend-cp/mirage/factories/type', ['exports', 'ember-cli-mirage'], function (exports, ember_cli_mirage) {
+define('frontend-cp/mirage/factories/type', ['exports', 'ember-cli-mirage'], function (exports, Mirage) {
 
   'use strict';
 
   /*eslint-disable camelcase*/
 
-  exports['default'] = ember_cli_mirage['default'].Factory.extend({
-    id: ember_cli_mirage.faker.random.number,
+  exports['default'] = Mirage['default'].Factory.extend({
     resource_type: 'case_type'
   });
 
@@ -40266,10 +40246,11 @@ define('frontend-cp/mirage/factories/user-field', ['exports', 'ember-cli-mirage'
   /*eslint-disable camelcase*/
 
   exports['default'] = ember_cli_mirage['default'].Factory.extend({
-    id: ember_cli_mirage.faker.random.number,
     fielduuid: ember_cli_mirage.faker.random.uuid,
     type: ember_cli_mirage.faker.list.cycle('TEXT', 'TEXTAREA', 'CHECKBOX'),
-    key: 'enter_the_name',
+    key: function key(i) {
+      return 'key ' + i;
+    },
     title: 'title here',
     is_visible_to_customers: true,
     customer_title: true,
@@ -40296,7 +40277,6 @@ define('frontend-cp/mirage/factories/user', ['exports', 'ember-cli-mirage'], fun
   /*eslint-disable camelcase*/
 
   exports['default'] = ember_cli_mirage['default'].Factory.extend({
-    id: ember_cli_mirage.faker.random.number,
     full_name: ember_cli_mirage.faker.name.firstName,
     designation: null,
     is_enabled: ember_cli_mirage.faker.random.boolean,
@@ -40346,7 +40326,6 @@ define('frontend-cp/mirage/factories/view', ['exports', 'ember-cli-mirage'], fun
     case_count_accuracy: 'UNKNOWN',
     columns: [],
     created_at: '2015-07-21T14:24:09Z',
-    id: 1,
     is_default: true,
     is_enabled: true,
     order_by: 'ASC',
@@ -43841,31 +43820,21 @@ define('frontend-cp/mirage/fixtures/search-results-person', ['exports'], functio
   }];
 
 });
-define('frontend-cp/mirage/scenarios/default', ['exports', 'ember-cli-mirage'], function (exports, ember_cli_mirage) {
+define('frontend-cp/mirage/scenarios/default', ['exports'], function (exports) {
 
   'use strict';
 
   /*eslint-disable camelcase*/
 
   exports['default'] = function (server) {
-    var businessHour = server.create('business-hour', {
-      title: 'Default Business Hours'
-    });
-
-    var teams = server.createList('team', 4, {
-      id: function id(i) {
-        return ++i;
-      },
-      businesshour: businessHour
-    });
-
+    var businesshour = server.create('business-hour', { title: 'Default Business Hours' });
+    var teams = server.createList('team', 4, { businesshour: businesshour });
     var role = server.create('role');
 
     var emails = server.createList('identity-email', 1);
     var userFieldValues = server.createList('user-field-value', 3);
     var metadata = server.create('metadata');
     var defaultUser = server.create('user', {
-      id: 1,
       role: role,
       teams: teams,
       emails: emails,
@@ -43873,24 +43842,11 @@ define('frontend-cp/mirage/scenarios/default', ['exports', 'ember-cli-mirage'], 
       metadata: metadata
     });
 
-    server.create('session', {
-      user: defaultUser
-    });
+    server.create('session', { user: defaultUser });
 
     var identityEmail = server.create('identity-email');
-    server.createList('user-field', 2, {
-      id: function id(i) {
-        return ++i;
-      },
-      key: function key(i) {
-        return 'tag ' + ++i;
-      }
-    });
-    server.createList('field-option', 3, {
-      id: function id(i) {
-        return ++i;
-      }
-    });
+    server.createList('user-field', 2);
+    server.createList('field-option', 3);
 
     //ids have to match the predicate_collection ids.
     //Current ids are cycling and must match in
@@ -43898,20 +43854,8 @@ define('frontend-cp/mirage/scenarios/default', ['exports', 'ember-cli-mirage'], 
     //They are uuids in real life but i have changed them to integers
     //to make things easier.
     var columns = server.createList('column', 5);
-    var propositions = server.createList('proposition', 2, {
-      value: function value(i) {
-        return '' + ++i;
-      }
-    });
-    var predicateCollections = server.createList('predicate-collection', 2, {
-      id: function id(i) {
-        return ++i;
-      },
-      uuid: function uuid(i) {
-        return ++i;
-      },
-      propositions: propositions
-    });
+    var propositions = server.createList('proposition', 2);
+    var predicateCollections = server.createList('predicate-collection', 2, { propositions: propositions });
 
     server.create('view', {
       is_default: true,
@@ -43919,50 +43863,20 @@ define('frontend-cp/mirage/scenarios/default', ['exports', 'ember-cli-mirage'], 
       predicate_collections: predicateCollections
     });
 
-    var sourceChannel = server.create('source-channel', {
-      id: 1 //channel uuid
-    });
-    var assignee = server.create('assignee', {
-      agent: defaultUser
-    });
+    var sourceChannel = server.create('source-channel');
+    var assignee = server.create('assignee', { agent: defaultUser });
     var language = server.create('language');
     var brand = server.create('brand', { language: language });
-    var status = server.create('status', {
-      id: 1 //case_status id
-    });
-    var priority = server.create('priority', {
-      id: 1 //case_priority id
-    });
-    var type = server.create('type', {
-      id: 1 //case_type id
-    });
+    var status = server.create('status');
+    var priority = server.create('priority');
+    var type = server.create('type');
     var sla = server.create('sla');
     var slaMetrics = server.createList('sla-metric', 3);
-    var tags = server.createList('tag', 2, {
-      id: function id(i) {
-        return ++i;
-      }
-    });
-    var caseFields = server.createList('case-field', 14, {
-      id: function id(i) {
-        return ++i;
-      },
-      fielduuid: function fielduuid(i) {
-        return 'fake-xxx-' + ++i;
-      }
-    });
+    var tags = server.createList('tag', 2);
+    var caseFields = server.createList('case-field', 14);
     var customFields = server.createList('case-field-value', 2, { field: caseFields[0] });
     server.createList('case', 5, {
-      id: function id(i) {
-        return ++i;
-      },
       source_channel: sourceChannel,
-      subject: function subject(i) {
-        return 'ERS Audit ' + ++i;
-      },
-      mask_id: function mask_id(i) {
-        return 'DXX-' + ++i + '-' + ember_cli_mirage.faker.random.number();
-      },
       requester: defaultUser,
       creator: defaultUser,
       identity: identityEmail,
@@ -43980,9 +43894,7 @@ define('frontend-cp/mirage/scenarios/default', ['exports', 'ember-cli-mirage'], 
       last_replier_identity: identityEmail
     });
 
-    var mailbox = server.create('mailbox', {
-      brand: brand
-    });
+    var mailbox = server.create('mailbox', { brand: brand });
     server.create('channel', {
       uuid: 1,
       account: mailbox
@@ -43994,18 +43906,12 @@ define('frontend-cp/mirage/scenarios/default', ['exports', 'ember-cli-mirage'], 
     });
     server.createList('identity-email', 10);
     server.createList('case-status', 5, {
-      id: function id(i) {
-        return ++i;
-      },
       resource_url: function resource_url(i) {
         return 'http://novo/api/index.php?/v1/cases/statuses/' + ++i;
       }
     });
     server.createList('case-priority', 3);
     server.createList('case-type', 4, {
-      id: function id(i) {
-        return ++i;
-      },
       resource_url: function resource_url(i) {
         return 'http://novo/api/index.php?/v1/cases/types/' + ++i;
       }
@@ -44025,9 +43931,6 @@ define('frontend-cp/mirage/scenarios/default', ['exports', 'ember-cli-mirage'], 
     // If possible this endpoint should implement pagination (plus limit) in order to behave
     // as it would in the real world app, to be able to use infinite scroll
     server.createList('post', 30, {
-      id: function id(i) {
-        return i + 1;
-      },
       uuid: function uuid(i) {
         return 'post-' + (i + 1);
       },
@@ -67632,7 +67535,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+f0161a12"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+7f6dcb9b"});
 }
 
 /* jshint ignore:end */
