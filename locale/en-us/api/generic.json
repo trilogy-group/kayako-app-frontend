@@ -71,6 +71,15 @@
   "create_user_panel.info": "Other identities can be added once the user has been created.",
   "create_user_panel.cancel": "cancel",
 
+  "create_organisation_panel.title": "Create a new organization",
+  "create_organisation_panel.name_label": "Organization Name",
+  "create_organisation_panel.domain_label": "Domain(s):",
+  "create_organisation_panel.name_required": "Name is required",
+  "create_organisation_panel.domain_required": "Email address is required",
+  "create_organisation_panel.domain_invalid": "Invalid email address",
+  "create_organisation_panel.submit": "Add Organization",
+  "create_organisation_panel.info": "Other details can be added once the organization has been created.",
+
   "user_logged_out": "You have been logged out",
   "session_expired": "Your session has expired",
 
