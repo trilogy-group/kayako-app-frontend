@@ -39138,16 +39138,16 @@ define('frontend-cp/mirage/factories/organization', ['exports', 'ember-cli-mirag
   });
 
 });
-define('frontend-cp/mirage/factories/post', ['exports', 'ember-cli-mirage'], function (exports, Mirage) {
+define('frontend-cp/mirage/factories/post', ['exports', 'ember-cli-mirage'], function (exports, ember_cli_mirage) {
 
   'use strict';
 
   /*eslint-disable camelcase*/
 
-  exports['default'] = Mirage['default'].Factory.extend({
+  exports['default'] = ember_cli_mirage['default'].Factory.extend({
     attachments: [],
-    contents: 'This is the the text from contents',
-    created_at: '2015-08-27T11:02:47Z',
+    contents: ember_cli_mirage.faker.lorem.sentence,
+    created_at: ember_cli_mirage.faker.date.recent,
     creator: { id: 5, resource_type: 'user' },
     download_all: null,
     id: 1,
@@ -39155,7 +39155,9 @@ define('frontend-cp/mirage/factories/post', ['exports', 'ember-cli-mirage'], fun
     original: { id: 1, resource_type: 'case_message' },
     resource_type: 'post',
     resource_url: 'http://novo/api/v1/cases/1/posts/1',
-    sequence: 1,
+    sequence: function sequence(i) {
+      return i + 1;
+    }, // Sequence needs to be contiguous, used for sorting infinite scroll
     subject: 'Atmosphere Coffee, Inc annual maintenance',
     updated_at: '2015-08-27T11:02:47Z',
     uuid: 'fake-XXXX-1'
@@ -43136,7 +43138,16 @@ define('frontend-cp/mirage/scenarios/default', ['exports', 'ember-cli-mirage'], 
     });
 
     var caseMessage = server.create('case-message');
-    server.create('post', {
+
+    // If possible this endpoint should implement pagination (plus limit) in order to behave
+    // as it would in the real world app, to be able to use infinite scroll
+    server.createList('post', 30, {
+      id: function id(i) {
+        return i + 1;
+      },
+      uuid: function uuid(i) {
+        return 'post-' + (i + 1);
+      },
       creator: defaultUser,
       identity: identityEmail,
       original: caseMessage
@@ -43149,7 +43160,7 @@ define('frontend-cp/mirage/scenarios/default', ['exports', 'ember-cli-mirage'], 
     server.create('message-recipient', {
       identity: identityEmail
     });
-  };
+  }
 
 });
 define('frontend-cp/mixins/autofocus', ['exports', 'ember'], function (exports, Ember) {
@@ -66532,7 +66543,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+4fb55629"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+2910c538"});
 }
 
 /* jshint ignore:end */
