@@ -59879,6 +59879,119 @@ define('frontend-cp/tests/helpers/start-app', ['exports', 'ember', 'frontend-cp/
   }
 
 });
+define('frontend-cp/tests/integration/components/ko-add-user-popover/component-test', ['ember-qunit'], function (ember_qunit) {
+
+  'use strict';
+
+  ember_qunit.moduleForComponent('ko-add-user-popover', 'Integration | Component | ko add user popover', {
+    integration: true
+  });
+
+  ember_qunit.test('it renders', function (assert) {
+    assert.expect(2);
+
+    // Set any properties with this.set('myProperty', 'value');
+    // Handle any actions with this.on('myAction', function(val) { ... });
+
+    this.render(Ember.HTMLBars.template((function () {
+      return {
+        meta: {
+          'revision': 'Ember@1.13.7',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 1,
+              'column': 23
+            }
+          }
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [['content', 'ko-add-user-popover', ['loc', [null, [1, 0], [1, 23]]]]],
+        locals: [],
+        templates: []
+      };
+    })()));
+
+    assert.equal(this.$('strong:first').text().trim(), 'Name');
+    assert.equal(this.$('strong:last').text().trim(), 'Email Address');
+  });
+
+});
+define('frontend-cp/tests/integration/components/ko-address/component-test', ['ember-qunit'], function (ember_qunit) {
+
+  'use strict';
+
+  ember_qunit.moduleForComponent('ko-address', 'Integration | Component | ko address', {
+    integration: true
+  });
+
+  ember_qunit.test('it renders', function (assert) {
+    assert.expect(1);
+
+    // Set any properties with this.set('myProperty', 'value');
+    // Handle any actions with this.on('myAction', function(val) { ... });
+
+    this.render(Ember.HTMLBars.template((function () {
+      return {
+        meta: {
+          'revision': 'Ember@1.13.7',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 1,
+              'column': 14
+            }
+          }
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [['content', 'ko-address', ['loc', [null, [1, 0], [1, 14]]]]],
+        locals: [],
+        templates: []
+      };
+    })()));
+
+    assert.equal(this.$().text().trim(), '');
+  });
+
+});
 define('frontend-cp/tests/integration/components/ko-agent-dropdown/component-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
@@ -60528,6 +60641,454 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
   }
 
 });
+define('frontend-cp/tests/integration/components/ko-avatar/component-test', ['ember-qunit'], function (ember_qunit) {
+
+  'use strict';
+
+  ember_qunit.moduleForComponent('ko-avatar', 'Integration | Component | ko avatar', {
+    integration: true
+  });
+
+  ember_qunit.test('it renders', function (assert) {
+    assert.expect(1);
+
+    // Set any properties with this.set('myProperty', 'value');
+    // Handle any actions with this.on('myAction', function(val) { ... });
+
+    this.render(Ember.HTMLBars.template((function () {
+      return {
+        meta: {
+          'revision': 'Ember@1.13.7',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 1,
+              'column': 13
+            }
+          }
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [['content', 'ko-avatar', ['loc', [null, [1, 0], [1, 13]]]]],
+        locals: [],
+        templates: []
+      };
+    })()));
+
+    assert.equal(this.$().text().trim(), '');
+  });
+
+});
+define('frontend-cp/tests/integration/components/ko-case-metric/component-test', ['ember-qunit'], function (ember_qunit) {
+
+  'use strict';
+
+  ember_qunit.moduleForComponent('ko-case-metric', 'Integration | Component | ko case metric', {
+    integration: true
+  });
+
+  ember_qunit.test('it renders', function (assert) {
+    assert.expect(1);
+
+    // Set any properties with this.set('myProperty', 'value');
+    // Handle any actions with this.on('myAction', function(val) { ... });
+
+    this.render(Ember.HTMLBars.template((function () {
+      return {
+        meta: {
+          'revision': 'Ember@1.13.7',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 1,
+              'column': 18
+            }
+          }
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [['content', 'ko-case-metric', ['loc', [null, [1, 0], [1, 18]]]]],
+        locals: [],
+        templates: []
+      };
+    })()));
+
+    assert.equal(this.$().text().trim(), '');
+  });
+
+});
+define('frontend-cp/tests/integration/components/ko-contact-info/component-test', ['ember-qunit'], function (ember_qunit) {
+
+  'use strict';
+
+  ember_qunit.moduleForComponent('ko-contact-info', 'Integration | Component | ko contact info', {
+    integration: true
+  });
+
+  ember_qunit.test('it renders', function (assert) {
+    assert.expect(1);
+
+    // Set any properties with this.set('myProperty', 'value');
+    // Handle any actions with this.on('myAction', function(val) { ... });
+
+    this.render(Ember.HTMLBars.template((function () {
+      return {
+        meta: {
+          'revision': 'Ember@1.13.7',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 1,
+              'column': 19
+            }
+          }
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [['content', 'ko-contact-info', ['loc', [null, [1, 0], [1, 19]]]]],
+        locals: [],
+        templates: []
+      };
+    })()));
+
+    assert.equal(this.$().text().trim(), '');
+  });
+
+});
+define('frontend-cp/tests/integration/components/ko-dropdown/container/component-test', ['ember-qunit'], function (ember_qunit) {
+
+  'use strict';
+
+  ember_qunit.moduleForComponent('ko-dropdown/container', 'Integration | Component | ko dropdown container', {
+    integration: true
+  });
+
+  ember_qunit.test('it renders', function (assert) {
+    assert.expect(1);
+
+    // Set any properties with this.set('myProperty', 'value');
+    // Handle any actions with this.on('myAction', function(val) { ... });
+
+    this.render(Ember.HTMLBars.template((function () {
+      return {
+        meta: {
+          'revision': 'Ember@1.13.7',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 1,
+              'column': 25
+            }
+          }
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [['content', 'ko-dropdown/container', ['loc', [null, [1, 0], [1, 25]]]]],
+        locals: [],
+        templates: []
+      };
+    })()));
+
+    assert.equal(this.$().text().trim(), '');
+  });
+
+});
+define('frontend-cp/tests/integration/components/ko-dropdown/list/component-test', ['ember-qunit'], function (ember_qunit) {
+
+  'use strict';
+
+  ember_qunit.moduleForComponent('ko-dropdown/list', 'Integration | Component | ko dropdown list', {
+    integration: true
+  });
+
+  ember_qunit.test('it renders', function (assert) {
+    assert.expect(1);
+
+    // Set any properties with this.set('myProperty', 'value');
+    // Handle any actions with this.on('myAction', function(val) { ... });
+
+    this.render(Ember.HTMLBars.template((function () {
+      return {
+        meta: {
+          'revision': 'Ember@1.13.7',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 1,
+              'column': 20
+            }
+          }
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [['content', 'ko-dropdown/list', ['loc', [null, [1, 0], [1, 20]]]]],
+        locals: [],
+        templates: []
+      };
+    })()));
+
+    assert.equal(this.$().text().trim(), '');
+  });
+
+});
+define('frontend-cp/tests/integration/components/ko-dropdown/list/group/component-test', ['ember-qunit'], function (ember_qunit) {
+
+  'use strict';
+
+  ember_qunit.moduleForComponent('ko-dropdown/list/group', 'Integration | Component | ko dropdown list group', {
+    integration: true
+  });
+
+  ember_qunit.test('it renders', function (assert) {
+    assert.expect(1);
+
+    // Set any properties with this.set('myProperty', 'value');
+    // Handle any actions with this.on('myAction', function(val) { ... });
+
+    this.render(Ember.HTMLBars.template((function () {
+      return {
+        meta: {
+          'revision': 'Ember@1.13.7',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 1,
+              'column': 26
+            }
+          }
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [['content', 'ko-dropdown/list/group', ['loc', [null, [1, 0], [1, 26]]]]],
+        locals: [],
+        templates: []
+      };
+    })()));
+
+    assert.equal(this.$().text().trim(), '');
+  });
+
+});
+define('frontend-cp/tests/integration/components/ko-dropdown/list/hr/component-test', ['ember-qunit'], function (ember_qunit) {
+
+  'use strict';
+
+  ember_qunit.moduleForComponent('ko-dropdown/list/hr', 'Integration | Component | ko dropdown list hr', {
+    integration: true
+  });
+
+  ember_qunit.test('it renders', function (assert) {
+    assert.expect(1);
+
+    // Set any properties with this.set('myProperty', 'value');
+    // Handle any actions with this.on('myAction', function(val) { ... });
+
+    this.render(Ember.HTMLBars.template((function () {
+      return {
+        meta: {
+          'revision': 'Ember@1.13.7',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 1,
+              'column': 23
+            }
+          }
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [['content', 'ko-dropdown/list/hr', ['loc', [null, [1, 0], [1, 23]]]]],
+        locals: [],
+        templates: []
+      };
+    })()));
+
+    assert.equal(this.$().text().trim(), '');
+  });
+
+});
+define('frontend-cp/tests/integration/components/ko-dropdown/list/item/component-test', ['ember-qunit'], function (ember_qunit) {
+
+  'use strict';
+
+  ember_qunit.moduleForComponent('ko-dropdown/list/item', 'Integration | Component | ko dropdown/list/item', {
+    integration: true
+  });
+
+  ember_qunit.test('it renders', function (assert) {
+    assert.expect(1);
+
+    // Set any properties with this.set('myProperty', 'value');
+    // Handle any actions with this.on('myAction', function(val) { ... });
+
+    this.render(Ember.HTMLBars.template((function () {
+      return {
+        meta: {
+          'revision': 'Ember@1.13.7',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 1,
+              'column': 25
+            }
+          }
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [['content', 'ko-dropdown/list/item', ['loc', [null, [1, 0], [1, 25]]]]],
+        locals: [],
+        templates: []
+      };
+    })()));
+
+    assert.equal(this.$().text().trim(), '');
+  });
+
+});
 define('frontend-cp/tests/integration/components/ko-dropdown/select/component-test', ['ember-qunit'], function (ember_qunit) {
 
   'use strict';
@@ -60578,6 +61139,62 @@ define('frontend-cp/tests/integration/components/ko-dropdown/select/component-te
         templates: []
       };
     })()));
+  });
+
+});
+define('frontend-cp/tests/integration/components/ko-feedback/component-test', ['ember-qunit'], function (ember_qunit) {
+
+  'use strict';
+
+  ember_qunit.moduleForComponent('ko-feedback', 'Integration | Component | ko feedback', {
+    integration: true
+  });
+
+  ember_qunit.test('it renders', function (assert) {
+    assert.expect(1);
+
+    // Set any properties with this.set('myProperty', 'value');
+    // Handle any actions with this.on('myAction', function(val) { ... });
+
+    this.render(Ember.HTMLBars.template((function () {
+      return {
+        meta: {
+          'revision': 'Ember@1.13.7',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 1,
+              'column': 15
+            }
+          }
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [['content', 'ko-feedback', ['loc', [null, [1, 0], [1, 15]]]]],
+        locals: [],
+        templates: []
+      };
+    })()));
+
+    assert.equal(this.$().text().trim(), '');
   });
 
 });
@@ -60809,6 +61426,174 @@ define('frontend-cp/tests/integration/components/ko-field/text/component-test', 
   });
 
 });
+define('frontend-cp/tests/integration/components/ko-file-field/component-test', ['ember-qunit'], function (ember_qunit) {
+
+  'use strict';
+
+  ember_qunit.moduleForComponent('ko-file-field', 'Integration | Component | ko file field', {
+    integration: true
+  });
+
+  ember_qunit.test('it renders', function (assert) {
+    assert.expect(1);
+
+    // Set any properties with this.set('myProperty', 'value');
+    // Handle any actions with this.on('myAction', function(val) { ... });
+
+    this.render(Ember.HTMLBars.template((function () {
+      return {
+        meta: {
+          'revision': 'Ember@1.13.7',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 1,
+              'column': 17
+            }
+          }
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [['content', 'ko-file-field', ['loc', [null, [1, 0], [1, 17]]]]],
+        locals: [],
+        templates: []
+      };
+    })()));
+
+    assert.equal(this.$().text().trim(), '');
+  });
+
+});
+define('frontend-cp/tests/integration/components/ko-info-bar/component-test', ['ember-qunit'], function (ember_qunit) {
+
+  'use strict';
+
+  ember_qunit.moduleForComponent('ko-info-bar', 'Integration | Component | ko info bar', {
+    integration: true
+  });
+
+  ember_qunit.test('it renders', function (assert) {
+    assert.expect(1);
+
+    // Set any properties with this.set('myProperty', 'value');
+    // Handle any actions with this.on('myAction', function(val) { ... });
+
+    this.render(Ember.HTMLBars.template((function () {
+      return {
+        meta: {
+          'revision': 'Ember@1.13.7',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 1,
+              'column': 15
+            }
+          }
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [['content', 'ko-info-bar', ['loc', [null, [1, 0], [1, 15]]]]],
+        locals: [],
+        templates: []
+      };
+    })()));
+
+    assert.equal(this.$().text().trim(), '');
+  });
+
+});
+define('frontend-cp/tests/integration/components/ko-notification-badge/component-test', ['ember-qunit'], function (ember_qunit) {
+
+  'use strict';
+
+  ember_qunit.moduleForComponent('ko-notification-badge', 'Integration | Component | ko notification badge', {
+    integration: true
+  });
+
+  ember_qunit.test('it renders', function (assert) {
+    assert.expect(1);
+
+    // Set any properties with this.set('myProperty', 'value');
+    // Handle any actions with this.on('myAction', function(val) { ... });
+
+    this.render(Ember.HTMLBars.template((function () {
+      return {
+        meta: {
+          'revision': 'Ember@1.13.7',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 1,
+              'column': 25
+            }
+          }
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [['content', 'ko-notification-badge', ['loc', [null, [1, 0], [1, 25]]]]],
+        locals: [],
+        templates: []
+      };
+    })()));
+
+    assert.equal(this.$().text().trim(), '');
+  });
+
+});
 define('frontend-cp/tests/integration/components/ko-pagination/component-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
@@ -61033,6 +61818,118 @@ define('frontend-cp/tests/integration/components/ko-profile/component-test', ['f
     });
 
     $profileDetail.click();
+  });
+
+});
+define('frontend-cp/tests/integration/components/ko-recent-cases/component-test', ['ember-qunit'], function (ember_qunit) {
+
+  'use strict';
+
+  ember_qunit.moduleForComponent('ko-address', 'Integration | Component | ko recent cases', {
+    integration: true
+  });
+
+  ember_qunit.test('it renders', function (assert) {
+    assert.expect(1);
+
+    // Set any properties with this.set('myProperty', 'value');
+    // Handle any actions with this.on('myAction', function(val) { ... });
+
+    this.render(Ember.HTMLBars.template((function () {
+      return {
+        meta: {
+          'revision': 'Ember@1.13.7',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 1,
+              'column': 19
+            }
+          }
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [['content', 'ko-recent-cases', ['loc', [null, [1, 0], [1, 19]]]]],
+        locals: [],
+        templates: []
+      };
+    })()));
+
+    assert.equal(this.$().text().trim(), '');
+  });
+
+});
+define('frontend-cp/tests/integration/components/ko-recent-members/component-test', ['ember-qunit'], function (ember_qunit) {
+
+  'use strict';
+
+  ember_qunit.moduleForComponent('ko-recent-members', 'Integration | Component | ko recent members', {
+    integration: true
+  });
+
+  ember_qunit.test('it renders', function (assert) {
+    assert.expect(1);
+
+    // Set any properties with this.set('myProperty', 'value');
+    // Handle any actions with this.on('myAction', function(val) { ... });
+
+    this.render(Ember.HTMLBars.template((function () {
+      return {
+        meta: {
+          'revision': 'Ember@1.13.7',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 1,
+              'column': 21
+            }
+          }
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [['content', 'ko-recent-members', ['loc', [null, [1, 0], [1, 21]]]]],
+        locals: [],
+        templates: []
+      };
+    })()));
+
+    assert.equal(this.$().text().trim(), '');
   });
 
 });
@@ -61401,6 +62298,118 @@ define('frontend-cp/tests/integration/components/ko-session-widgets/component-te
   });
 
 });
+define('frontend-cp/tests/integration/components/ko-table-body/component-test', ['ember-qunit'], function (ember_qunit) {
+
+  'use strict';
+
+  ember_qunit.moduleForComponent('ko-table/body', 'Integration | Component | ko table body', {
+    integration: true
+  });
+
+  ember_qunit.test('it renders', function (assert) {
+    assert.expect(1);
+
+    // Set any properties with this.set('myProperty', 'value');
+    // Handle any actions with this.on('myAction', function(val) { ... });
+
+    this.render(Ember.HTMLBars.template((function () {
+      return {
+        meta: {
+          'revision': 'Ember@1.13.7',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 1,
+              'column': 17
+            }
+          }
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [['content', 'ko-table/body', ['loc', [null, [1, 0], [1, 17]]]]],
+        locals: [],
+        templates: []
+      };
+    })()));
+
+    assert.equal(this.$().text().trim(), '');
+  });
+
+});
+define('frontend-cp/tests/integration/components/ko-table-cell/component-test', ['ember-qunit'], function (ember_qunit) {
+
+  'use strict';
+
+  ember_qunit.moduleForComponent('ko-table/cell', 'Integration | Component | ko table cell', {
+    integration: true
+  });
+
+  ember_qunit.test('it renders', function (assert) {
+    assert.expect(1);
+
+    // Set any properties with this.set('myProperty', 'value');
+    // Handle any actions with this.on('myAction', function(val) { ... });
+
+    this.render(Ember.HTMLBars.template((function () {
+      return {
+        meta: {
+          'revision': 'Ember@1.13.7',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 1,
+              'column': 17
+            }
+          }
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [['content', 'ko-table/cell', ['loc', [null, [1, 0], [1, 17]]]]],
+        locals: [],
+        templates: []
+      };
+    })()));
+
+    assert.equal(this.$().text().trim(), '');
+  });
+
+});
 define('frontend-cp/tests/integration/components/ko-tabs/component-test', ['ember-qunit', 'ember-truth-helpers/helpers/equal', 'ember-truth-helpers/utils/register-helper', 'ember'], function (ember_qunit, equal, register_helper, Ember) {
 
   'use strict';
@@ -61702,6 +62711,62 @@ define('frontend-cp/tests/integration/components/ko-tabs/component-test', ['embe
   function getTabCloseButton(tabElement) {
     return $(tabElement).find('.nav-tabs__close');
   }
+
+});
+define('frontend-cp/tests/integration/components/ko-toggle-context-modal/component-test', ['ember-qunit'], function (ember_qunit) {
+
+  'use strict';
+
+  ember_qunit.moduleForComponent('ko-toggle-context-modal', 'Integration | Component | ko toggle context modal', {
+    integration: true
+  });
+
+  ember_qunit.test('it renders', function (assert) {
+    assert.expect(1);
+
+    // Set any properties with this.set('myProperty', 'value');
+    // Handle any actions with this.on('myAction', function(val) { ... });
+
+    this.render(Ember.HTMLBars.template((function () {
+      return {
+        meta: {
+          'revision': 'Ember@1.13.7',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 1,
+              'column': 27
+            }
+          }
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [['content', 'ko-toggle-context-modal', ['loc', [null, [1, 0], [1, 27]]]]],
+        locals: [],
+        templates: []
+      };
+    })()));
+
+    assert.equal(this.$('').text().trim(), '');
+  });
 
 });
 define('frontend-cp/tests/integration/components/ko-user-menu/component-test', ['ember-qunit'], function (ember_qunit) {
@@ -62460,50 +63525,6 @@ define('frontend-cp/tests/unit/components/ko-add-participants-popover/component-
   });
 
 });
-define('frontend-cp/tests/unit/components/ko-add-user-popover/component-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
-
-  'use strict';
-
-  qunit.moduleForComponent('ko-add-user-popover', {
-    // Specify the other units that are required for this test
-    // needs: ['component:foo', 'helper:bar']
-  });
-
-  qunit.test('it renders', function (assert) {
-    assert.expect(2);
-
-    // Creates the component instance
-    var component = this.subject();
-    assert.equal(component._state, 'preRender');
-
-    // Renders the component to the page
-    this.render();
-    assert.equal(component._state, 'inDOM');
-  });
-
-});
-define('frontend-cp/tests/unit/components/ko-address/component-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
-
-  'use strict';
-
-  qunit.moduleForComponent('ko-address', 'Unit | Component | ko address', {
-    // Specify the other units that are required for this test
-    // needs: ['component:foo', 'helper:bar']
-  });
-
-  qunit.test('it renders', function (assert) {
-    assert.expect(2);
-
-    // Creates the component instance
-    var component = this.subject();
-    assert.equal(component._state, 'preRender');
-
-    // Renders the component to the page
-    this.render();
-    assert.equal(component._state, 'inDOM');
-  });
-
-});
 define('frontend-cp/tests/unit/components/ko-admin-card-team/component-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
@@ -62602,50 +63623,6 @@ define('frontend-cp/tests/unit/components/ko-admin-selectable-card/component-tes
   });
 
 });
-define('frontend-cp/tests/unit/components/ko-avatar/component-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
-
-  'use strict';
-
-  qunit.moduleForComponent('ko-avatar', 'Unit | Component | ko avatar', {
-    // Specify the other units that are required for this test
-    // needs: ['component:foo', 'helper:bar']
-  });
-
-  qunit.test('it renders', function (assert) {
-    assert.expect(2);
-
-    // Creates the component instance
-    var component = this.subject();
-    assert.equal(component._state, 'preRender');
-
-    // Renders the component to the page
-    this.render();
-    assert.equal(component._state, 'inDOM');
-  });
-
-});
-define('frontend-cp/tests/unit/components/ko-case-metric/component-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
-
-  'use strict';
-
-  qunit.moduleForComponent('ko-case-metric', 'Unit | Component | ko case metric', {
-    // Specify the other units that are required for this test
-    // needs: ['component:foo', 'helper:bar']
-  });
-
-  qunit.test('it renders', function (assert) {
-    assert.expect(2);
-
-    // Creates the component instance
-    var component = this.subject();
-    assert.equal(component._state, 'preRender');
-
-    // Renders the component to the page
-    this.render();
-    assert.equal(component._state, 'inDOM');
-  });
-
-});
 define('frontend-cp/tests/unit/components/ko-checkbox/component-test', ['ember', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/lib/keycodes'], function (Ember, qunit, KeyCodes) {
 
   'use strict';
@@ -62655,6 +63632,7 @@ define('frontend-cp/tests/unit/components/ko-checkbox/component-test', ['ember',
   var label = 'label:first';
 
   qunit.moduleForComponent('ko-checkbox', {
+    unit: true,
     setup: function setup() {
       component = this.subject();
       component.set('label', 'Remember my preferences');
@@ -62928,35 +63906,14 @@ define('frontend-cp/tests/unit/components/ko-checkbox/component-test', ['ember',
   });
 
 });
-define('frontend-cp/tests/unit/components/ko-contact-info/component-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
-
-  'use strict';
-
-  qunit.moduleForComponent('ko-contact-info', 'Unit | Component | ko contact info', {
-    // Specify the other units that are required for this test
-    // needs: ['component:foo', 'helper:bar']
-  });
-
-  qunit.test('it renders', function (assert) {
-    assert.expect(2);
-
-    // Creates the component instance
-    var component = this.subject();
-    assert.equal(component._state, 'preRender');
-
-    // Renders the component to the page
-    this.render();
-    assert.equal(component._state, 'inDOM');
-  });
-
-});
 define('frontend-cp/tests/unit/components/ko-datepicker/component-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
 
   qunit.moduleForComponent('ko-datepicker', {
-    // Specify the other units that are required for this test
+    //Specify the other units that are required for this test
     // needs: ['component:foo', 'helper:bar']
+    unit: true
   });
 
   qunit.test('it renders', function (assert) {
@@ -62985,6 +63942,7 @@ define('frontend-cp/tests/unit/components/ko-draggable-dropzone/component-test',
   eventMock.dataTransfer = { data: {}, files: filesMock };
 
   qunit.moduleForComponent('ko-draggable-dropzone', {
+    unit: true,
     setup: function setup() {
       component = this.subject();
     },
@@ -63059,116 +64017,6 @@ define('frontend-cp/tests/unit/components/ko-draggable-dropzone/component-test',
   });
 
 });
-define('frontend-cp/tests/unit/components/ko-dropdown/container/component-test', ['ember-qunit'], function (ember_qunit) {
-
-  'use strict';
-
-  ember_qunit.moduleForComponent('ko-dropdown/container', 'Unit | Component | ko dropdown container', {
-    // Specify the other units that are required for this test
-    needs: ['component:ko-dropdown/container/content', 'component:ko-dropdown/container/button']
-  });
-
-  ember_qunit.test('it renders', function (assert) {
-    assert.expect(2);
-
-    // Creates the component instance
-    var component = this.subject();
-    assert.equal(component._state, 'preRender');
-
-    // Renders the component to the page
-    this.render();
-    assert.equal(component._state, 'inDOM');
-  });
-
-});
-define('frontend-cp/tests/unit/components/ko-dropdown/list/component-test', ['ember-qunit'], function (ember_qunit) {
-
-  'use strict';
-
-  ember_qunit.moduleForComponent('ko-dropdown/list', 'Unit | Component | ko dropdown list', {
-    // Specify the other units that are required for this test
-    // needs: ['component:foo', 'helper:bar']
-  });
-
-  ember_qunit.test('it renders', function (assert) {
-    assert.expect(2);
-
-    // Creates the component instance
-    var component = this.subject();
-    assert.equal(component._state, 'preRender');
-
-    // Renders the component to the page
-    this.render();
-    assert.equal(component._state, 'inDOM');
-  });
-
-});
-define('frontend-cp/tests/unit/components/ko-dropdown/list/group/component-test', ['ember-qunit'], function (ember_qunit) {
-
-  'use strict';
-
-  ember_qunit.moduleForComponent('ko-dropdown/list/group', 'Unit | Component | ko dropdown list/group', {
-    // Specify the other units that are required for this test
-    // needs: ['component:foo', 'helper:bar']
-  });
-
-  ember_qunit.test('it renders', function (assert) {
-    assert.expect(2);
-
-    // Creates the component instance
-    var component = this.subject();
-    assert.equal(component._state, 'preRender');
-
-    // Renders the component to the page
-    this.render();
-    assert.equal(component._state, 'inDOM');
-  });
-
-});
-define('frontend-cp/tests/unit/components/ko-dropdown/list/hr/component-test', ['ember-qunit'], function (ember_qunit) {
-
-  'use strict';
-
-  ember_qunit.moduleForComponent('ko-dropdown/list/hr', 'Unit | Component | ko dropdown list/hr', {
-    // Specify the other units that are required for this test
-    // needs: ['component:foo', 'helper:bar']
-  });
-
-  ember_qunit.test('it renders', function (assert) {
-    assert.expect(2);
-
-    // Creates the component instance
-    var component = this.subject();
-    assert.equal(component._state, 'preRender');
-
-    // Renders the component to the page
-    this.render();
-    assert.equal(component._state, 'inDOM');
-  });
-
-});
-define('frontend-cp/tests/unit/components/ko-dropdown/list/item/component-test', ['ember-qunit'], function (ember_qunit) {
-
-  'use strict';
-
-  ember_qunit.moduleForComponent('ko-dropdown/list/item', 'Unit | Component | ko dropdown list/item', {
-    // Specify the other units that are required for this test
-    // needs: ['component:foo', 'helper:bar']
-  });
-
-  ember_qunit.test('it renders', function (assert) {
-    assert.expect(2);
-
-    // Creates the component instance
-    var component = this.subject();
-    assert.equal(component._state, 'preRender');
-
-    // Renders the component to the page
-    this.render();
-    assert.equal(component._state, 'inDOM');
-  });
-
-});
 define('frontend-cp/tests/unit/components/ko-editable-text/component-test', ['ember', 'frontend-cp/tests/helpers/qunit'], function (Ember, qunit) {
 
   'use strict';
@@ -63177,6 +64025,7 @@ define('frontend-cp/tests/unit/components/ko-editable-text/component-test', ['em
   var edit = 'div:first';
 
   qunit.moduleForComponent('ko-editable-text', {
+    unit: true,
     setup: function setup() {
       component = this.subject();
       component.set('value', 'I am a hunky munky');
@@ -63284,28 +64133,7 @@ define('frontend-cp/tests/unit/components/ko-editor-modal/component-test', ['fro
   qunit.moduleForComponent('ko-editor-modal', {
     // Specify the other units that are required for this test
     // needs: ['component:foo', 'helper:bar']
-  });
-
-  qunit.test('it renders', function (assert) {
-    assert.expect(2);
-
-    // Creates the component instance
-    var component = this.subject();
-    assert.equal(component._state, 'preRender');
-
-    // Renders the component to the page
-    this.render();
-    assert.equal(component._state, 'inDOM');
-  });
-
-});
-define('frontend-cp/tests/unit/components/ko-feedback/component-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
-
-  'use strict';
-
-  qunit.moduleForComponent('ko-feedback', 'Unit | Component | ko feedback', {
-    // Specify the other units that are required for this test
-    // needs: ['component:foo', 'helper:bar']
+    unit: true
   });
 
   qunit.test('it renders', function (assert) {
@@ -63554,6 +64382,7 @@ define('frontend-cp/tests/unit/components/ko-field/tags/component-test', ['ember
   var searchField = 'ul:first li input';
 
   qunit.moduleForComponent('ko-field/tags', {
+    unit: true,
     setup: function setup() {
       component = this.subject();
 
@@ -63860,28 +64689,6 @@ define('frontend-cp/tests/unit/components/ko-field/tags/component-test', ['ember
   });
 
 });
-define('frontend-cp/tests/unit/components/ko-file-field/component-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
-
-  'use strict';
-
-  qunit.moduleForComponent('ko-file-field', {
-    // Specify the other units that are required for this test
-    // needs: ['component:foo', 'helper:bar']
-  });
-
-  qunit.test('it renders', function (assert) {
-    assert.expect(2);
-
-    // Creates the component instance
-    var component = this.subject();
-    assert.equal(component._state, 'preRender');
-
-    // Renders the component to the page
-    this.render();
-    assert.equal(component._state, 'inDOM');
-  });
-
-});
 define('frontend-cp/tests/unit/components/ko-file-size/component-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
@@ -63889,28 +64696,7 @@ define('frontend-cp/tests/unit/components/ko-file-size/component-test', ['fronte
   qunit.moduleForComponent('ko-file-size', {
     // Specify the other units that are required for this test
     // needs: ['component:foo', 'helper:bar']
-  });
-
-  qunit.test('it renders', function (assert) {
-    assert.expect(2);
-
-    // Creates the component instance
-    var component = this.subject();
-    assert.equal(component._state, 'preRender');
-
-    // Renders the component to the page
-    this.render();
-    assert.equal(component._state, 'inDOM');
-  });
-
-});
-define('frontend-cp/tests/unit/components/ko-info-bar/component-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
-
-  'use strict';
-
-  qunit.moduleForComponent('ko-info-bar', {
-    // Specify the other units that are required for this test
-    // needs: ['component:foo', 'helper:bar']
+    unit: true
   });
 
   qunit.test('it renders', function (assert) {
@@ -63957,28 +64743,6 @@ define('frontend-cp/tests/unit/components/ko-linked-cases/component-test', ['emb
     // Specify the other units that are required for this test
     // needs: ['component:foo', 'helper:bar']
     needs: ['component:ko-linked-cases-context-menu', 'component:ko-toggle-context-modal']
-  });
-
-  ember_qunit.test('it renders', function (assert) {
-    assert.expect(2);
-
-    // Creates the component instance
-    var component = this.subject();
-    assert.equal(component._state, 'preRender');
-
-    // Renders the component to the page
-    this.render();
-    assert.equal(component._state, 'inDOM');
-  });
-
-});
-define('frontend-cp/tests/unit/components/ko-notification-badge/component-test', ['ember-qunit'], function (ember_qunit) {
-
-  'use strict';
-
-  ember_qunit.moduleForComponent('ko-notification-badge', 'Unit | Component | ko notification badge', {
-    // Specify the other units that are required for this test
-    // needs: ['component:foo', 'helper:bar']
   });
 
   ember_qunit.test('it renders', function (assert) {
@@ -64425,6 +65189,7 @@ define('frontend-cp/tests/unit/components/ko-radio/component-test', ['ember', 'f
   var label = 'label:first';
 
   qunit.moduleForComponent('ko-radio', {
+    unit: true,
     setup: function setup() {
       component = this.subject();
       component.set('label', 'You can do this!');
@@ -64644,94 +65409,6 @@ define('frontend-cp/tests/unit/components/ko-radio/component-test', ['ember', 'f
   });
 
 });
-define('frontend-cp/tests/unit/components/ko-recent-cases/component-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
-
-  'use strict';
-
-  qunit.moduleForComponent('ko-recent-cases', 'Unit | Component | ko recent cases', {
-    // Specify the other units that are required for this test
-    // needs: ['component:foo', 'helper:bar']
-  });
-
-  qunit.test('it renders', function (assert) {
-    assert.expect(2);
-
-    // Creates the component instance
-    var component = this.subject();
-    assert.equal(component._state, 'preRender');
-
-    // Renders the component to the page
-    this.render();
-    assert.equal(component._state, 'inDOM');
-  });
-
-});
-define('frontend-cp/tests/unit/components/ko-recent-members/component-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
-
-  'use strict';
-
-  qunit.moduleForComponent('ko-recent-members', 'Unit | Component | ko recent members', {
-    // Specify the other units that are required for this test
-    // needs: ['component:foo', 'helper:bar']
-  });
-
-  qunit.test('it renders', function (assert) {
-    assert.expect(2);
-
-    // Creates the component instance
-    var component = this.subject();
-    assert.equal(component._state, 'preRender');
-
-    // Renders the component to the page
-    this.render();
-    assert.equal(component._state, 'inDOM');
-  });
-
-});
-define('frontend-cp/tests/unit/components/ko-table-body/component-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
-
-  'use strict';
-
-  qunit.moduleForComponent('ko-table/body', 'Unit | Component | ko table body', {
-    // Specify the other units that are required for this test
-    // needs: ['component:foo', 'helper:bar']
-  });
-
-  qunit.test('it renders', function (assert) {
-    assert.expect(2);
-
-    // Creates the component instance
-    var component = this.subject();
-    assert.equal(component._state, 'preRender');
-
-    // Renders the component to the page
-    this.render();
-    assert.equal(component._state, 'inDOM');
-  });
-
-});
-define('frontend-cp/tests/unit/components/ko-table-cell/component-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
-
-  'use strict';
-
-  qunit.moduleForComponent('ko-table/cell', 'Unit | Component | ko table cell', {
-    // Specify the other units that are required for this test
-    // needs: ['component:foo', 'helper:bar']
-  });
-
-  qunit.test('it renders', function (assert) {
-    assert.expect(2);
-
-    // Creates the component instance
-    var component = this.subject();
-    assert.equal(component._state, 'preRender');
-
-    // Renders the component to the page
-    this.render();
-    assert.equal(component._state, 'inDOM');
-  });
-
-});
 define('frontend-cp/tests/unit/components/ko-table-column/component-test', ['ember-qunit'], function (ember_qunit) {
 
   'use strict';
@@ -64741,6 +65418,7 @@ define('frontend-cp/tests/unit/components/ko-table-column/component-test', ['emb
   ember_qunit.moduleForComponent('ko-table/column', 'Unit | Component | ko table column', {
     // Specify the other units that are required for this test
     // needs: ['helper:eq']
+    unit: true,
     setup: function setup() {
       component = this.subject();
     }
@@ -64984,6 +65662,7 @@ define('frontend-cp/tests/unit/components/ko-table/component-test', ['frontend-c
   qunit.moduleForComponent('ko-table', 'Unit | Component | ko table', {
     // Specify the other units that are required for this test
     // needs: ['component:foo', 'helper:bar']
+    unit: true,
     setup: function setup() {
       component = this.subject();
       rows = [Ember['default'].Object.create({ selected: false }), Ember['default'].Object.create({ selected: false }), Ember['default'].Object.create({ selected: false })];
@@ -65054,28 +65733,6 @@ define('frontend-cp/tests/unit/components/ko-text-editor/component-test', ['fron
   });
 
 });
-define('frontend-cp/tests/unit/components/ko-toggle-context-modal/component-test', ['ember-qunit'], function (ember_qunit) {
-
-  'use strict';
-
-  ember_qunit.moduleForComponent('ko-toggle-context-modal', 'Unit | Component | ko toggle context modal', {
-    // Specify the other units that are required for this test
-    // needs: ['component:foo', 'helper:bar']
-  });
-
-  ember_qunit.test('it renders', function (assert) {
-    assert.expect(2);
-
-    // Creates the component instance
-    var component = this.subject();
-    assert.equal(component._state, 'preRender');
-
-    // Renders the component to the page
-    this.render();
-    assert.equal(component._state, 'inDOM');
-  });
-
-});
 define('frontend-cp/tests/unit/components/ko-toggle/component-test', ['ember', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/lib/keycodes'], function (Ember, qunit, KeyCodes) {
 
   'use strict';
@@ -65085,6 +65742,7 @@ define('frontend-cp/tests/unit/components/ko-toggle/component-test', ['ember', '
   var label = 'label:first';
 
   qunit.moduleForComponent('ko-toggle', {
+    unit: true,
     setup: function setup() {
       component = this.subject();
       component.set('label', 'Nuclear bomb switch');
@@ -65874,7 +66532,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+6726d952"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+4fb55629"});
 }
 
 /* jshint ignore:end */
