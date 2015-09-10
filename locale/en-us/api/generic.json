@@ -48,6 +48,7 @@
   "SLA": "SLA",
   "select_placeholder": "Select...",
   "search_result_select_instruction": "Press enter",
+  "search.no_results": "No results found",
   "shared_with": "Shared with",
 
   "sort.ASC": "Ascending",
@@ -71,5 +72,14 @@
   "create_user_panel.cancel": "cancel",
 
   "user_logged_out": "You have been logged out",
-  "session_expired": "Your session has expired"
+  "session_expired": "Your session has expired",
+
+  "create_case_panel.title": "Create a new case",
+  "create_case_panel.requester_label": "Requester/Recipient",
+  "create_case_panel.requester_required": "Required",
+  "create_case_panel.loading_label": "Loading users…",
+  "create_case_panel.filter_label": "Showing {numFilteredUsers, number} of {numUsers, number}",
+  "create_case_panel.info": "Other details can be added after continuing.",
+  "create_case_panel.submit": "Continue",
+  "create_case_panel.cancel": "cancel"
 }

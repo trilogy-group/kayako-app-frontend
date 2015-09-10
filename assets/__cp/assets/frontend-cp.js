@@ -79,6 +79,8 @@ define('frontend-cp/adapters/application', ['exports', 'ember', 'ember-data', 'n
 
   var get = Ember['default'].get;
 
+  //TODO: override handleResponse and not create/find/update/delete/.../../.. for error handling
+
   exports['default'] = DS['default'].RESTAdapter.extend({
     namespace: 'api/v1',
     primaryRecordKey: 'data',
@@ -293,13 +295,17 @@ define('frontend-cp/adapters/application', ['exports', 'ember', 'ember-data', 'n
     },
 
     query: function query(store, type, _query) {
+      var _this10 = this;
+
       var url = this.buildURL(type.modelName, null, null, 'query', _query);
 
       if (this.sortQueryParams) {
         _query = this.sortQueryParams(_query);
       }
 
-      return this.ajax(url, 'GET', { data: _query });
+      return this.ajax(url, 'GET', { data: _query })['catch'](function (error) {
+        _this10.get('errorService').handleServerError(error);
+      });
     },
 
     /* TODO: Remove when Ember 2.0 is released (just for deprecation warnings) */
@@ -405,6 +411,17 @@ define('frontend-cp/adapters/case-type', ['exports', 'frontend-cp/adapters/appli
   exports['default'] = ApplicationAdapter['default'].extend({
     pathForType: function pathForType() {
       return 'cases/types';
+    }
+  });
+
+});
+define('frontend-cp/adapters/channel', ['exports', 'frontend-cp/adapters/application'], function (exports, ApplicationAdapter) {
+
+  'use strict';
+
+  exports['default'] = ApplicationAdapter['default'].extend({
+    pathForType: function pathForType() {
+      return 'cases/channels';
     }
   });
 
@@ -8743,7 +8760,7 @@ define('frontend-cp/components/ko-agent-dropdown/component', ['exports', 'ember'
     attributeBindings: ['data-region', 'tabindex'],
     dataRegion: 'navigation-new',
     classNames: ['u-inline-block'],
-    navItems: [{ name: 'case', text: 'Case', path: 'session.agent.cases.new', icon: 'images/icons/case.svg' }, { name: 'user', text: 'User', tab: '', icon: 'images/icons/user.svg' }, { name: 'organization', text: 'Organization', icon: 'images/icons/organization.svg' }],
+    navItems: [{ name: 'case', text: 'Case', path: null, icon: 'images/icons/case.svg' }, { name: 'user', text: 'User', path: null, icon: 'images/icons/user.svg' }, { name: 'organization', text: 'Organization', path: null, icon: 'images/icons/organization.svg' }],
     isExpanded: false,
     selectedTab: null,
 
@@ -8759,6 +8776,10 @@ define('frontend-cp/components/ko-agent-dropdown/component', ['exports', 'ember'
       }
       this.set('isExpanded', false);
     },
+
+    caseTab: Ember['default'].computed('navItems', function () {
+      return this.get('navItems').objectAt(0);
+    }),
 
     userTab: Ember['default'].computed('navItems', function () {
       return this.get('navItems').objectAt(1);
@@ -8841,6 +8862,17 @@ define('frontend-cp/components/ko-agent-dropdown/component', ['exports', 'ember'
       },
       onCreateUserCancelled: function onCreateUserCancelled() {
         this.set('selectedTab', null);
+      },
+      onCreateCaseSubmitted: function onCreateCaseSubmitted(error) {
+        this.maintainFocusDuringTabTransition();
+      },
+      onCreateCaseCompleted: function onCreateCaseCompleted(caseModel) {
+        var router = this.container.lookup('router:main');
+        router.router.transitionTo('session.agent.cases.case', caseModel);
+        this.set('isExpanded', false);
+      },
+      onCreateCaseCancelled: function onCreateCaseCancelled() {
+        this.set('selectedTab', null);
       }
     }
   });
@@ -8864,6 +8896,884 @@ define('frontend-cp/components/ko-agent-dropdown/component', ['exports', 'ember'
   function getFocusableElements($containerElement) {
     return $containerElement.find('button,input,textarea,select,[tabindex]').not('[tabindex="-1"],[disabled]');
   }
+
+});
+define('frontend-cp/components/ko-agent-dropdown/create-case/component', ['exports', 'ember', 'frontend-cp/mixins/autofocus'], function (exports, Ember, AutofocusMixin) {
+
+  'use strict';
+
+  var NEW_STATUS_ID = 1;
+  var SUGGESTION_DEBOUNCE_DURATION = 250;
+
+  exports['default'] = Ember['default'].Component.extend(AutofocusMixin['default'], {
+    isDisabled: false,
+
+    store: Ember['default'].inject.service(),
+    intlService: Ember['default'].inject.service('intl'),
+
+    fields: null,
+    activeRequest: null,
+    validation: null,
+
+    fakeSuccess: false,
+    fakeValid: false,
+
+    filteredUsers: null,
+    activeFilterRequest: null,
+    pendingRequests: 0,
+
+    totalRequesterResults: 0,
+    hasCompletedSearchRequest: false,
+
+    init: function init() {
+      this._super();
+      this.set('fields', Ember['default'].Object.create({
+        requester: null
+      }));
+      this.set('validation', {
+        requester: {
+          showErrors: false,
+          isValid: false,
+          errors: null
+        }
+      });
+      this.set('filteredUsers', null);
+    },
+
+    isLoading: Ember['default'].computed('pendingRequests', function () {
+      return this.get('pendingRequests') > 0;
+    }),
+
+    filterUpdated: Ember['default'].on('init', Ember['default'].observer('userFilterString', function () {
+      var debounceDuration = SUGGESTION_DEBOUNCE_DURATION;
+      Ember['default'].run.debounce(this, 'updateFilteredUsers', debounceDuration);
+    })),
+
+    updateFilteredUsers: function updateFilteredUsers() {
+      var _this = this;
+
+      var store = this.get('store');
+      var filterString = this.get('userFilterString') || '';
+      if (!filterString) {
+        this.set('filteredUsers', null);
+        return;
+      }
+      this.set('pendingRequests', this.get('pendingRequests') + 1);
+      var filterRequest = this.searchUsers(store, filterString).then(function (userModels) {
+        var isMostRecentRequest = filterRequest === _this.get('activeFilterRequest');
+        if (!isMostRecentRequest) {
+          return;
+        }
+        _this.set('filteredUsers', userModels);
+      })['catch'](function (error) {
+        throw error;
+      })['finally'](function () {
+        _this.set('pendingRequests', _this.get('pendingRequests') - 1);
+        var isMostRecentRequest = filterRequest === _this.get('activeFilterRequest');
+        if (isMostRecentRequest) {
+          _this.set('activeFilterRequest', null);
+        }
+      });
+      this.set('activeFilterRequest', filterRequest);
+    },
+
+    searchUsers: function searchUsers(store, filterString) {
+      var _this2 = this;
+
+      // TODO: Use `/search` endpoint instead of `/search_all`
+      return store.query('search-result-group', {
+        'in': 'users',
+        query: filterString
+      })['catch'](function (error) {
+        var noResultsFound = error.errors && error.errors[0].code === 'RESOURCE_NOT_FOUND';
+        if (noResultsFound) {
+          return null;
+        }
+        throw error;
+      }).then(function (searchResultGroup) {
+        if (!searchResultGroup) {
+          _this2.set('totalRequesterResults', 0);
+          return null;
+        }
+        var searchResults = searchResultGroup.objectAt('0').get('results');
+        _this2.set('totalRequesterResults', searchResultGroup.meta.total);
+
+        return searchResults.map(function (resultModel) {
+          var typeName = resultModel.get('resource');
+          var id = resultModel.get('objectId');
+          return store.peekRecord(typeName, id);
+        });
+      })['finally'](function () {
+        _this2.set('hasCompletedSearchRequest', true);
+      });
+    },
+
+    validateRequester: Ember['default'].observer('fields.requester', function () {
+      var intlService = this.get('intlService');
+      var isValid = Boolean(this.get('fields.requester'));
+      this.set('validation.requester.isValid', isValid);
+      this.set('validation.requester.errors', isValid ? null : [intlService.findTranslationByKey('generic.create_case_panel.requester_required').translation]);
+    }),
+
+    isFormValid: Ember['default'].computed('validation.requester.isValid', function () {
+      return this.get('validation.requester.isValid');
+    }),
+
+    isFormDisabled: Ember['default'].computed('isDisabled', 'isSubmitting', function () {
+      return this.get('isDisabled') || this.get('isSubmitting');
+    }),
+
+    isSubmitDisabled: Ember['default'].computed('isFormValid', 'isFormDisabled', function () {
+      return this.get('isFormDisabled') || !this.get('isFormValid');
+    }),
+
+    isSubmitting: Ember['default'].computed('activeRequest', function () {
+      return Boolean(this.get('activeRequest'));
+    }),
+
+    submitForm: function submitForm() {
+      var _this3 = this;
+
+      var store = this.get('store');
+      var fields = this.get('fields');
+      var request = createCaseModel(fields, store).then(function (caseModel) {
+        _this3.set('activeRequest', null);
+        _this3.sendAction('create', caseModel);
+      })['catch'](function (error) {
+        _this3.set('activeRequest', null);
+        _this3.sendAction('error', error);
+      });
+      this.set('activeRequest', request);
+      this.sendAction('submit');
+
+      function createCaseModel(fields, store) {
+        var userModel = fields.requester;
+        var userId = userModel.get('id');
+
+        return findUserPrimaryChannel(userId).then(function (channelModel) {
+          return findDefaultStatus().then(function (statusModel) {
+            return createCase(userModel, channelModel, statusModel);
+          });
+        });
+
+        function findDefaultStatus() {
+          return store.findRecord('case-status', NEW_STATUS_ID);
+        }
+
+        function findUserPrimaryChannel(userId) {
+          return store.query('channel', {
+            'user_id': userId
+          }).then(function (channelModels) {
+            return channelModels.objectAt(0);
+          });
+        }
+
+        function createCase(userModel, channelModel, statusModel) {
+          return store.createRecord('case', {
+            'requester': userModel,
+            'sourceChannel': channelModel,
+            'status': statusModel
+          });
+        }
+      }
+    },
+
+    actions: {
+      onNameBlurred: function onNameBlurred() {
+        this.validateName();
+        this.set('validation.name.showErrors', true);
+      },
+      onEmailBlurred: function onEmailBlurred() {
+        if (!this.get('fields.email')) {
+          this.validateEmail();
+        }
+        this.set('validation.email.showErrors', true);
+      },
+      onFormSubmitted: function onFormSubmitted() {
+        this.submitForm();
+      },
+      onCancelClicked: function onCancelClicked() {
+        this.set('activeRequest', null);
+        this.sendAction('cancel');
+      },
+      onRequesterSelected: function onRequesterSelected(user) {
+        var _this4 = this;
+
+        this.set('fields.requester', user);
+        Ember['default'].run.scheduleOnce('afterRender', function () {
+          _this4.$('button[type="submit"]').focus();
+        });
+      }
+    }
+  });
+
+});
+define('frontend-cp/components/ko-agent-dropdown/create-case/template', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports['default'] = Ember.HTMLBars.template((function() {
+    var child0 = (function() {
+      var child0 = (function() {
+        var child0 = (function() {
+          var child0 = (function() {
+            return {
+              meta: {
+                "revision": "Ember@1.13.7",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 18,
+                    "column": 12
+                  },
+                  "end": {
+                    "line": 23,
+                    "column": 12
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-agent-dropdown/create-case/template.hbs"
+              },
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createTextNode("              ");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var morphs = new Array(1);
+                morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+                return morphs;
+              },
+              statements: [
+                ["inline","format-message",[["subexpr","intl-get",["cases.search.request.result_meta"],[],["loc",[null,[19,31],[19,76]]]]],["numDisplayResults",["subexpr","@mut",[["get","filteredUsers.length",["loc",[null,[20,36],[20,56]]]]],[],[]],"totalResults",["subexpr","@mut",[["get","totalRequesterResults",["loc",[null,[21,31],[21,52]]]]],[],[]]],["loc",[null,[19,14],[22,16]]]]
+              ],
+              locals: [],
+              templates: []
+            };
+          }());
+          var child1 = (function() {
+            var child0 = (function() {
+              var child0 = (function() {
+                return {
+                  meta: {
+                    "revision": "Ember@1.13.7",
+                    "loc": {
+                      "source": null,
+                      "start": {
+                        "line": 32,
+                        "column": 64
+                      },
+                      "end": {
+                        "line": 32,
+                        "column": 146
+                      }
+                    },
+                    "moduleName": "frontend-cp/components/ko-agent-dropdown/create-case/template.hbs"
+                  },
+                  arity: 0,
+                  cachedFragment: null,
+                  hasRendered: false,
+                  buildFragment: function buildFragment(dom) {
+                    var el0 = dom.createDocumentFragment();
+                    var el1 = dom.createTextNode(", ");
+                    dom.appendChild(el0, el1);
+                    var el1 = dom.createElement("span");
+                    dom.setAttribute(el1,"class","caption");
+                    var el2 = dom.createComment("");
+                    dom.appendChild(el1, el2);
+                    dom.appendChild(el0, el1);
+                    return el0;
+                  },
+                  buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                    var morphs = new Array(1);
+                    morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]),0,0);
+                    return morphs;
+                  },
+                  statements: [
+                    ["content","user.organization.name",["loc",[null,[32,113],[32,139]]]]
+                  ],
+                  locals: [],
+                  templates: []
+                };
+              }());
+              return {
+                meta: {
+                  "revision": "Ember@1.13.7",
+                  "loc": {
+                    "source": null,
+                    "start": {
+                      "line": 25,
+                      "column": 14
+                    },
+                    "end": {
+                      "line": 39,
+                      "column": 14
+                    }
+                  },
+                  "moduleName": "frontend-cp/components/ko-agent-dropdown/create-case/template.hbs"
+                },
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                  var el0 = dom.createDocumentFragment();
+                  var el1 = dom.createTextNode("                  ");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createElement("div");
+                  dom.setAttribute(el1,"class","ko-agent-dropdown-create-case__dropdown-user");
+                  var el2 = dom.createTextNode("\n                      ");
+                  dom.appendChild(el1, el2);
+                  var el2 = dom.createElement("div");
+                  dom.setAttribute(el2,"class","flag--small flag--auto");
+                  var el3 = dom.createTextNode("\n                          ");
+                  dom.appendChild(el2, el3);
+                  var el3 = dom.createElement("div");
+                  dom.setAttribute(el3,"class","flag__img");
+                  var el4 = dom.createTextNode("\n                              ");
+                  dom.appendChild(el3, el4);
+                  var el4 = dom.createElement("img");
+                  dom.setAttribute(el4,"class","ko-agent-dropdown-create-case__dropdown-user-image");
+                  dom.setAttribute(el4,"alt","");
+                  dom.appendChild(el3, el4);
+                  var el4 = dom.createTextNode("\n                          ");
+                  dom.appendChild(el3, el4);
+                  dom.appendChild(el2, el3);
+                  var el3 = dom.createTextNode("\n                          ");
+                  dom.appendChild(el2, el3);
+                  var el3 = dom.createElement("div");
+                  dom.setAttribute(el3,"class","flag__body");
+                  var el4 = dom.createTextNode("\n                              ");
+                  dom.appendChild(el3, el4);
+                  var el4 = dom.createElement("strong");
+                  var el5 = dom.createComment("");
+                  dom.appendChild(el4, el5);
+                  dom.appendChild(el3, el4);
+                  var el4 = dom.createComment("");
+                  dom.appendChild(el3, el4);
+                  var el4 = dom.createTextNode("\n                              ");
+                  dom.appendChild(el3, el4);
+                  var el4 = dom.createElement("p");
+                  dom.setAttribute(el4,"class","caption");
+                  var el5 = dom.createTextNode("\n                                ");
+                  dom.appendChild(el4, el5);
+                  var el5 = dom.createComment("");
+                  dom.appendChild(el4, el5);
+                  var el5 = dom.createTextNode("\n                              ");
+                  dom.appendChild(el4, el5);
+                  dom.appendChild(el3, el4);
+                  var el4 = dom.createTextNode("\n                          ");
+                  dom.appendChild(el3, el4);
+                  dom.appendChild(el2, el3);
+                  var el3 = dom.createTextNode("\n                      ");
+                  dom.appendChild(el2, el3);
+                  dom.appendChild(el1, el2);
+                  var el2 = dom.createTextNode("\n                  ");
+                  dom.appendChild(el1, el2);
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createTextNode("\n");
+                  dom.appendChild(el0, el1);
+                  return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                  var element1 = dom.childAt(fragment, [1, 1]);
+                  var element2 = dom.childAt(element1, [1, 1]);
+                  var element3 = dom.childAt(element1, [3]);
+                  var morphs = new Array(4);
+                  morphs[0] = dom.createAttrMorph(element2, 'src');
+                  morphs[1] = dom.createMorphAt(dom.childAt(element3, [1]),0,0);
+                  morphs[2] = dom.createMorphAt(element3,2,2);
+                  morphs[3] = dom.createMorphAt(dom.childAt(element3, [4]),1,1);
+                  return morphs;
+                },
+                statements: [
+                  ["attribute","src",["concat",[["get","user.avatar",["loc",[null,[29,101],[29,112]]]]]]],
+                  ["content","user.fullName",["loc",[null,[32,38],[32,55]]]],
+                  ["block","if",[["get","user.organization",["loc",[null,[32,70],[32,87]]]]],[],0,null,["loc",[null,[32,64],[32,153]]]],
+                  ["content","user.primaryEmailAddress",["loc",[null,[34,32],[34,60]]]]
+                ],
+                locals: [],
+                templates: [child0]
+              };
+            }());
+            return {
+              meta: {
+                "revision": "Ember@1.13.7",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 24,
+                    "column": 12
+                  },
+                  "end": {
+                    "line": 40,
+                    "column": 12
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-agent-dropdown/create-case/template.hbs"
+              },
+              arity: 1,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var morphs = new Array(1);
+                morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+                dom.insertBoundary(fragment, 0);
+                dom.insertBoundary(fragment, null);
+                return morphs;
+              },
+              statements: [
+                ["block","ko-dropdown/list/item",[],["action","onRequesterSelected","content",["subexpr","@mut",[["get","user",["loc",[null,[25,76],[25,80]]]]],[],[]]],0,null,["loc",[null,[25,14],[39,40]]]]
+              ],
+              locals: ["user"],
+              templates: [child0]
+            };
+          }());
+          return {
+            meta: {
+              "revision": "Ember@1.13.7",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 17,
+                  "column": 10
+                },
+                "end": {
+                  "line": 41,
+                  "column": 10
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-agent-dropdown/create-case/template.hbs"
+            },
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(2);
+              morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+              morphs[1] = dom.createMorphAt(fragment,1,1,contextualElement);
+              dom.insertBoundary(fragment, 0);
+              dom.insertBoundary(fragment, null);
+              return morphs;
+            },
+            statements: [
+              ["block","ko-dropdown/list/item",[],[],0,null,["loc",[null,[18,12],[23,38]]]],
+              ["block","each",[["get","filteredUsers",["loc",[null,[24,20],[24,33]]]]],[],1,null,["loc",[null,[24,12],[40,21]]]]
+            ],
+            locals: [],
+            templates: [child0, child1]
+          };
+        }());
+        var child1 = (function() {
+          var child0 = (function() {
+            return {
+              meta: {
+                "revision": "Ember@1.13.7",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 42,
+                    "column": 14
+                  },
+                  "end": {
+                    "line": 44,
+                    "column": 14
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-agent-dropdown/create-case/template.hbs"
+              },
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createTextNode("                ");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var morphs = new Array(1);
+                morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+                return morphs;
+              },
+              statements: [
+                ["inline","format-message",[["subexpr","intl-get",["generic.search.no_results"],[],["loc",[null,[43,33],[43,71]]]]],[],["loc",[null,[43,16],[43,73]]]]
+              ],
+              locals: [],
+              templates: []
+            };
+          }());
+          return {
+            meta: {
+              "revision": "Ember@1.13.7",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 41,
+                  "column": 10
+                },
+                "end": {
+                  "line": 45,
+                  "column": 10
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-agent-dropdown/create-case/template.hbs"
+            },
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(1);
+              morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+              dom.insertBoundary(fragment, 0);
+              dom.insertBoundary(fragment, null);
+              return morphs;
+            },
+            statements: [
+              ["block","if",[["subexpr","and",[["get","hasCompletedSearchRequest",["loc",[null,[42,25],[42,50]]]],["subexpr","not",[["get","isLoading",["loc",[null,[42,56],[42,65]]]]],[],["loc",[null,[42,51],[42,66]]]]],[],["loc",[null,[42,20],[42,67]]]]],[],0,null,["loc",[null,[42,14],[44,21]]]]
+            ],
+            locals: [],
+            templates: [child0]
+          };
+        }());
+        return {
+          meta: {
+            "revision": "Ember@1.13.7",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 8,
+                "column": 8
+              },
+              "end": {
+                "line": 46,
+                "column": 8
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-agent-dropdown/create-case/template.hbs"
+          },
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+            dom.insertBoundary(fragment, 0);
+            dom.insertBoundary(fragment, null);
+            return morphs;
+          },
+          statements: [
+            ["block","if",[["get","filteredUsers",["loc",[null,[17,16],[17,29]]]]],[],0,1,["loc",[null,[17,10],[45,17]]]]
+          ],
+          locals: [],
+          templates: [child0, child1]
+        };
+      }());
+      return {
+        meta: {
+          "revision": "Ember@1.13.7",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 7,
+              "column": 6
+            },
+            "end": {
+              "line": 47,
+              "column": 6
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-agent-dropdown/create-case/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [
+          ["block","ko-suggest",[],["hideOnClick",false,"selectedItem",["subexpr","@mut",[["get","fields.requester.fullName",["loc",[null,[10,23],[10,48]]]]],[],[]],"searchTerm",["subexpr","@mut",[["get","userFilterString",["loc",[null,[11,21],[11,37]]]]],[],[]],"disabled",["subexpr","@mut",[["get","isFormDisabled",["loc",[null,[12,19],[12,33]]]]],[],[]],"focus-out","onNameBlurred","shouldAutoFocus",true,"displayIcon",false],0,null,["loc",[null,[8,8],[46,23]]]]
+        ],
+        locals: [],
+        templates: [child0]
+      };
+    }());
+    var child1 = (function() {
+      return {
+        meta: {
+          "revision": "Ember@1.13.7",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 48,
+              "column": 6
+            },
+            "end": {
+              "line": 48,
+              "column": 92
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-agent-dropdown/create-case/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [
+          ["inline","ko-loader",[],["class","ko-agent-dropdown-create-case__requester-loader"],["loc",[null,[48,23],[48,92]]]]
+        ],
+        locals: [],
+        templates: []
+      };
+    }());
+    var child2 = (function() {
+      return {
+        meta: {
+          "revision": "Ember@1.13.7",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 54,
+              "column": 2
+            },
+            "end": {
+              "line": 56,
+              "column": 2
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-agent-dropdown/create-case/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("    ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+          return morphs;
+        },
+        statements: [
+          ["inline","ko-loader",[],["class","ko-agent-dropdown-create-case__loader"],["loc",[null,[55,4],[55,63]]]]
+        ],
+        locals: [],
+        templates: []
+      };
+    }());
+    var child3 = (function() {
+      return {
+        meta: {
+          "revision": "Ember@1.13.7",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 56,
+              "column": 2
+            },
+            "end": {
+              "line": 58,
+              "column": 2
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-agent-dropdown/create-case/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("      ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("button");
+          dom.setAttribute(el1,"type","button");
+          dom.setAttribute(el1,"class","ko-agent-dropdown-create-case__cancel button t-small");
+          dom.setAttribute(el1,"name","cancel");
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var element0 = dom.childAt(fragment, [1]);
+          var morphs = new Array(2);
+          morphs[0] = dom.createElementMorph(element0);
+          morphs[1] = dom.createMorphAt(element0,0,0);
+          return morphs;
+        },
+        statements: [
+          ["element","action",["onCancelClicked"],[],["loc",[null,[57,103],[57,131]]]],
+          ["inline","format-message",[["subexpr","intl-get",["generic.create_case_panel.cancel"],[],["loc",[null,[57,149],[57,194]]]]],[],["loc",[null,[57,132],[57,196]]]]
+        ],
+        locals: [],
+        templates: []
+      };
+    }());
+    return {
+      meta: {
+        "revision": "Ember@1.13.7",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 59,
+            "column": 7
+          }
+        },
+        "moduleName": "frontend-cp/components/ko-agent-dropdown/create-case/template.hbs"
+      },
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("h6");
+        dom.setAttribute(el1,"class","ko-agent-dropdown-create-case__form-header");
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("form");
+        var el2 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","ko-agent-dropdown-create-case__requester");
+        var el3 = dom.createTextNode("\n");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("      ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("p");
+        dom.setAttribute(el2,"class","ko-agent-dropdown-create-case__form-footer t-caption t-small");
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("button");
+        dom.setAttribute(el2,"type","submit");
+        dom.setAttribute(el2,"class","ko-agent-dropdown-create-case__submit button button--primary");
+        dom.setAttribute(el2,"name","submit");
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var element4 = dom.childAt(fragment, [2]);
+        var element5 = dom.childAt(element4, [1]);
+        var element6 = dom.childAt(element4, [5]);
+        var morphs = new Array(9);
+        morphs[0] = dom.createMorphAt(dom.childAt(fragment, [0]),0,0);
+        morphs[1] = dom.createAttrMorph(element4, 'class');
+        morphs[2] = dom.createElementMorph(element4);
+        morphs[3] = dom.createMorphAt(element5,1,1);
+        morphs[4] = dom.createMorphAt(element5,3,3);
+        morphs[5] = dom.createMorphAt(dom.childAt(element4, [3]),0,0);
+        morphs[6] = dom.createAttrMorph(element6, 'disabled');
+        morphs[7] = dom.createMorphAt(element6,0,0);
+        morphs[8] = dom.createMorphAt(element4,7,7);
+        return morphs;
+      },
+      statements: [
+        ["inline","format-message",[["subexpr","intl-get",["generic.create_case_panel.title"],[],["loc",[null,[1,72],[1,116]]]]],[],["loc",[null,[1,55],[1,118]]]],
+        ["attribute","class",["concat",["ko-agent-dropdown-create-case__form ",["subexpr","if",[["get","isLoading",["loc",[null,[2,54],[2,63]]]]," is-loading"],[],["loc",[null,[2,49],[2,79]]]],["subexpr","if",[["get","isFormValid",["loc",[null,[2,84],[2,95]]]]," is-valid"],[],["loc",[null,[2,79],[2,109]]]],["subexpr","if",[["get","isSubmitting",["loc",[null,[2,114],[2,126]]]]," is-submitting"],[],["loc",[null,[2,109],[2,145]]]]]]],
+        ["element","action",["onFormSubmitted"],["on","submit"],["loc",[null,[3,2],[3,42]]]],
+        ["block","ko-form-field",[],["label",["subexpr","format-message",[["subexpr","intl-get",["generic.create_case_panel.requester_label"],[],["loc",[null,[7,45],[7,99]]]]],[],["loc",[null,[7,29],[7,100]]]],"errors",["subexpr","if",[["get","validation.requester.showErrors",["loc",[null,[7,112],[7,143]]]],["get","validation.requester.errors",["loc",[null,[7,144],[7,171]]]]],[],["loc",[null,[7,108],[7,172]]]]],0,null,["loc",[null,[7,6],[47,24]]]],
+        ["block","if",[["get","isLoading",["loc",[null,[48,12],[48,21]]]]],[],1,null,["loc",[null,[48,6],[48,99]]]],
+        ["inline","format-message",[["subexpr","intl-get",["generic.create_case_panel.info"],[],["loc",[null,[51,93],[51,136]]]]],[],["loc",[null,[51,76],[51,138]]]],
+        ["attribute","disabled",["get","isSubmitDisabled",["loc",[null,[53,120],[53,136]]]]],
+        ["inline","format-message",[["subexpr","intl-get",["generic.create_case_panel.submit"],[],["loc",[null,[53,156],[53,201]]]]],[],["loc",[null,[53,139],[53,203]]]],
+        ["block","if",[["get","isSubmitting",["loc",[null,[54,8],[54,20]]]]],[],2,3,["loc",[null,[54,2],[58,9]]]]
+      ],
+      locals: [],
+      templates: [child0, child1, child2, child3]
+    };
+  }()));
 
 });
 define('frontend-cp/components/ko-agent-dropdown/create-organisation/component', ['exports', 'ember', 'frontend-cp/mixins/autofocus'], function (exports, Ember, AutofocusMixin) {
@@ -8892,7 +9802,6 @@ define('frontend-cp/components/ko-agent-dropdown/create-organisation/component',
         'domains': identityDomains
       });
 
-      console.log('SAVING');
       organisation.save();
     },
 
@@ -9593,11 +10502,11 @@ define('frontend-cp/components/ko-agent-dropdown/template', ['exports'], functio
               "source": null,
               "start": {
                 "line": 4,
-                "column": 2
+                "column": 4
               },
               "end": {
                 "line": 4,
-                "column": 160
+                "column": 162
               }
             },
             "moduleName": "frontend-cp/components/ko-agent-dropdown/template.hbs"
@@ -9619,7 +10528,7 @@ define('frontend-cp/components/ko-agent-dropdown/template', ['exports'], functio
             return morphs;
           },
           statements: [
-            ["inline","ko-agent-dropdown/create-user",[],["submit","onCreateUserSubmitted","create","onCreateUserCompleted","cancel","onCreateUserCancelled"],["loc",[null,[4,34],[4,160]]]]
+            ["inline","ko-agent-dropdown/create-user",[],["submit","onCreateUserSubmitted","create","onCreateUserCompleted","cancel","onCreateUserCancelled"],["loc",[null,[4,36],[4,162]]]]
           ],
           locals: [],
           templates: []
@@ -9633,11 +10542,51 @@ define('frontend-cp/components/ko-agent-dropdown/template', ['exports'], functio
               "source": null,
               "start": {
                 "line": 5,
-                "column": 2
+                "column": 4
               },
               "end": {
                 "line": 5,
-                "column": 64
+                "column": 162
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-agent-dropdown/template.hbs"
+          },
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+            dom.insertBoundary(fragment, 0);
+            dom.insertBoundary(fragment, null);
+            return morphs;
+          },
+          statements: [
+            ["inline","ko-agent-dropdown/create-case",[],["submit","onCreateCaseSubmitted","create","onCreateCaseCompleted","cancel","onCreateCaseCancelled"],["loc",[null,[5,36],[5,162]]]]
+          ],
+          locals: [],
+          templates: []
+        };
+      }());
+      var child2 = (function() {
+        return {
+          meta: {
+            "revision": "Ember@1.13.7",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 6,
+                "column": 4
+              },
+              "end": {
+                "line": 6,
+                "column": 66
               }
             },
             "moduleName": "frontend-cp/components/ko-agent-dropdown/template.hbs"
@@ -9669,7 +10618,7 @@ define('frontend-cp/components/ko-agent-dropdown/template', ['exports'], functio
               "column": 2
             },
             "end": {
-              "line": 6,
+              "line": 7,
               "column": 2
             }
           },
@@ -9680,11 +10629,15 @@ define('frontend-cp/components/ko-agent-dropdown/template', ['exports'], functio
         hasRendered: false,
         buildFragment: function buildFragment(dom) {
           var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("  ");
+          var el1 = dom.createTextNode("    ");
           dom.appendChild(el0, el1);
           var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n  ");
+          var el1 = dom.createTextNode("\n    ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n    ");
           dom.appendChild(el0, el1);
           var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
@@ -9693,17 +10646,19 @@ define('frontend-cp/components/ko-agent-dropdown/template', ['exports'], functio
           return el0;
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(2);
+          var morphs = new Array(3);
           morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
           morphs[1] = dom.createMorphAt(fragment,3,3,contextualElement);
+          morphs[2] = dom.createMorphAt(fragment,5,5,contextualElement);
           return morphs;
         },
         statements: [
-          ["block","if",[["subexpr","eq",[["get","selectedTab",["loc",[null,[4,12],[4,23]]]],["get","userTab",["loc",[null,[4,24],[4,31]]]]],[],["loc",[null,[4,8],[4,32]]]]],[],0,null,["loc",[null,[4,2],[4,167]]]],
-          ["block","if",[["subexpr","eq",[["get","selectedTab",["loc",[null,[5,12],[5,23]]]],["get","organisationTab",["loc",[null,[5,24],[5,39]]]]],[],["loc",[null,[5,8],[5,40]]]]],[],1,null,["loc",[null,[5,2],[5,71]]]]
+          ["block","if",[["subexpr","eq",[["get","selectedTab",["loc",[null,[4,14],[4,25]]]],["get","userTab",["loc",[null,[4,26],[4,33]]]]],[],["loc",[null,[4,10],[4,34]]]]],[],0,null,["loc",[null,[4,4],[4,169]]]],
+          ["block","if",[["subexpr","eq",[["get","selectedTab",["loc",[null,[5,14],[5,25]]]],["get","caseTab",["loc",[null,[5,26],[5,33]]]]],[],["loc",[null,[5,10],[5,34]]]]],[],1,null,["loc",[null,[5,4],[5,169]]]],
+          ["block","if",[["subexpr","eq",[["get","selectedTab",["loc",[null,[6,14],[6,25]]]],["get","organisationTab",["loc",[null,[6,26],[6,41]]]]],[],["loc",[null,[6,10],[6,42]]]]],[],2,null,["loc",[null,[6,4],[6,73]]]]
         ],
         locals: [],
-        templates: [child0, child1]
+        templates: [child0, child1, child2]
       };
     }());
     var child1 = (function() {
@@ -9714,11 +10669,11 @@ define('frontend-cp/components/ko-agent-dropdown/template', ['exports'], functio
             "loc": {
               "source": null,
               "start": {
-                "line": 9,
+                "line": 10,
                 "column": 6
               },
               "end": {
-                "line": 18,
+                "line": 19,
                 "column": 6
               }
             },
@@ -9774,9 +10729,9 @@ define('frontend-cp/components/ko-agent-dropdown/template', ['exports'], functio
             return morphs;
           },
           statements: [
-            ["element","action",["selectTab",["get","item",["loc",[null,[11,109],[11,113]]]]],[],["loc",[null,[11,88],[11,115]]]],
-            ["attribute","src",["concat",[["get","item.icon",["loc",[null,[12,22],[12,31]]]]]]],
-            ["content","item.text",["loc",[null,[14,12],[14,25]]]]
+            ["element","action",["selectTab",["get","item",["loc",[null,[12,109],[12,113]]]]],[],["loc",[null,[12,88],[12,115]]]],
+            ["attribute","src",["concat",[["get","item.icon",["loc",[null,[13,22],[13,31]]]]]]],
+            ["content","item.text",["loc",[null,[15,12],[15,25]]]]
           ],
           locals: ["item"],
           templates: []
@@ -9788,11 +10743,11 @@ define('frontend-cp/components/ko-agent-dropdown/template', ['exports'], functio
           "loc": {
             "source": null,
             "start": {
-              "line": 6,
+              "line": 7,
               "column": 2
             },
             "end": {
-              "line": 53,
+              "line": 54,
               "column": 2
             }
           },
@@ -9954,7 +10909,7 @@ define('frontend-cp/components/ko-agent-dropdown/template', ['exports'], functio
           return morphs;
         },
         statements: [
-          ["block","each",[["get","navItems",["loc",[null,[9,14],[9,22]]]]],[],0,null,["loc",[null,[9,6],[18,15]]]]
+          ["block","each",[["get","navItems",["loc",[null,[10,14],[10,22]]]]],[],0,null,["loc",[null,[10,6],[19,15]]]]
         ],
         locals: [],
         templates: [child0]
@@ -9970,7 +10925,7 @@ define('frontend-cp/components/ko-agent-dropdown/template', ['exports'], functio
             "column": 0
           },
           "end": {
-            "line": 55,
+            "line": 56,
             "column": 0
           }
         },
@@ -10013,7 +10968,7 @@ define('frontend-cp/components/ko-agent-dropdown/template', ['exports'], functio
         ["attribute","class",["concat",["ko-agent-dropdown__nav-new button i-plus i-size-base",["subexpr","if",[["get","isExpanded",["loc",[null,[1,99],[1,109]]]]," is-active"],[],["loc",[null,[1,94],[1,124]]]]]]],
         ["element","action",["toggleDropdown"],[],["loc",[null,[1,126],[1,153]]]],
         ["attribute","class",["concat",["ko-agent-dropdown__drop box-container ",["subexpr","unless",[["get","isExpanded",["loc",[null,[2,59],[2,69]]]],"u-hidden"],[],["loc",[null,[2,50],[2,82]]]]]]],
-        ["block","if",[["get","selectedTab",["loc",[null,[3,8],[3,19]]]]],[],0,1,["loc",[null,[3,2],[53,9]]]]
+        ["block","if",[["get","selectedTab",["loc",[null,[3,8],[3,19]]]]],[],0,1,["loc",[null,[3,2],[54,9]]]]
       ],
       locals: [],
       templates: [child0, child1]
@@ -10305,6 +11260,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
     editedCaseFields: new Ember['default'].Object(),
     replyType: 'MESSAGE',
     scroller: null,
+    updateTabNameAction: 'updateTabName',
 
     sortOptions: [{ label: 'Newest first', content: 'newest' }, { label: 'Oldest first', content: 'oldest' }],
 
@@ -10389,23 +11345,26 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       var _this4 = this;
 
       this.set('loadPostsRafID', window.requestAnimationFrame(function () {
-        if (!_this4.get('loadingTop') && _this4.get('topPostsAvailable') && _this4.get('scroller').scrollTop() < totalHeaderHeight + dimensions.filterHeight + dimensions.topLoaderHeight) {
-          _this4.loadTopPosts(_this4.get('posts.firstObject.id') || _this4.get('postId'));
+        if (_this4.get('case.id')) {
+          // we don't want to load posts for new cases
+
+          if (!_this4.get('loadingTop') && _this4.get('topPostsAvailable') && _this4.get('scroller').scrollTop() < totalHeaderHeight + dimensions.filterHeight + dimensions.topLoaderHeight) {
+            _this4.loadTopPosts(_this4.get('posts.firstObject.id') || _this4.get('postId'));
+          }
+
+          var _$$get$getBoundingClientRect = _this4.$('.ko-case-content__loaderBottom').get(0).getBoundingClientRect();
+
+          var bottomTop = _$$get$getBoundingClientRect.top;
+          var bottomHeight = _$$get$getBoundingClientRect.height;
+
+          var bottomPosition = bottomTop + bottomHeight;
+
+          if (!_this4.get('loadingBottom') && _this4.get('bottomPostsAvailable') && bottomPosition - scrollBufferDistance <= $['default'](window).height()) {
+            _this4.loadBottomPosts(_this4.get('posts.lastObject.id') || _this4.get('postId'), {
+              including: !_this4.get('posts.lastObject.id')
+            });
+          }
         }
-
-        var _$$get$getBoundingClientRect = _this4.$('.ko-case-content__loaderBottom').get(0).getBoundingClientRect();
-
-        var bottomTop = _$$get$getBoundingClientRect.top;
-        var bottomHeight = _$$get$getBoundingClientRect.height;
-
-        var bottomPosition = bottomTop + bottomHeight;
-
-        if (!_this4.get('loadingBottom') && _this4.get('bottomPostsAvailable') && bottomPosition - scrollBufferDistance <= $['default'](window).height()) {
-          _this4.loadBottomPosts(_this4.get('posts.lastObject.id') || _this4.get('postId'), {
-            including: !_this4.get('posts.lastObject.id')
-          });
-        }
-
         _this4.loadPostsIfRequired();
       }));
     }),
@@ -10552,10 +11511,6 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       switch (field.get('fieldType')) {
         case 'PRIORITY':
           return this.get('store').peekAll('case-priority');
-        case 'STATUS':
-          return this.get('store').peekAll('case-status').filter(function (status) {
-            return status.get('statusType') !== 'NEW' && status.get('statusType') !== 'CLOSED';
-          });
         case 'TYPE':
           return this.get('store').peekAll('case-type');
       }
@@ -10714,6 +11669,8 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
         }).filter(function (id) {
           return id !== null;
         });
+
+        this.sendAction('updateTabNameAction', this.get('case.subject'));
 
         // @TODO we need to do something better here, UI wise.
         if (uploads.filter(function (u) {
@@ -11195,11 +12152,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 52,
+                  "line": 57,
                   "column": 14
                 },
                 "end": {
-                  "line": 54,
+                  "line": 59,
                   "column": 14
                 }
               },
@@ -11224,7 +12181,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
               return morphs;
             },
             statements: [
-              ["inline","ko-loader",[],["large",true],["loc",[null,[53,16],[53,40]]]]
+              ["inline","ko-loader",[],["large",true],["loc",[null,[58,16],[58,40]]]]
             ],
             locals: [],
             templates: []
@@ -11236,11 +12193,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 51,
+                "line": 56,
                 "column": 12
               },
               "end": {
-                "line": 55,
+                "line": 60,
                 "column": 12
               }
             },
@@ -11263,7 +12220,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             return morphs;
           },
           statements: [
-            ["block","ko-center",[],[],0,null,["loc",[null,[52,14],[54,28]]]]
+            ["block","ko-center",[],[],0,null,["loc",[null,[57,14],[59,28]]]]
           ],
           locals: [],
           templates: [child0]
@@ -11275,11 +12232,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 49,
+              "line": 54,
               "column": 8
             },
             "end": {
-              "line": 57,
+              "line": 62,
               "column": 8
             }
           },
@@ -11311,7 +12268,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["block","if",[["get","loadingTop",["loc",[null,[51,18],[51,28]]]]],[],0,null,["loc",[null,[51,12],[55,19]]]]
+          ["block","if",[["get","loadingTop",["loc",[null,[56,18],[56,28]]]]],[],0,null,["loc",[null,[56,12],[60,19]]]]
         ],
         locals: [],
         templates: [child0]
@@ -11324,11 +12281,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 59,
+              "line": 64,
               "column": 10
             },
             "end": {
-              "line": 61,
+              "line": 66,
               "column": 10
             }
           },
@@ -11353,7 +12310,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["inline","ko-feed",[],["events",["subexpr","@mut",[["get","newPosts",["loc",[null,[60,29],[60,37]]]]],[],[]]],["loc",[null,[60,12],[60,39]]]]
+          ["inline","ko-feed",[],["events",["subexpr","@mut",[["get","newPosts",["loc",[null,[65,29],[65,37]]]]],[],[]]],["loc",[null,[65,12],[65,39]]]]
         ],
         locals: [],
         templates: []
@@ -11367,11 +12324,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 66,
+                "line": 71,
                 "column": 12
               },
               "end": {
-                "line": 68,
+                "line": 73,
                 "column": 12
               }
             },
@@ -11396,7 +12353,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             return morphs;
           },
           statements: [
-            ["inline","ko-loader",[],["large",true],["loc",[null,[67,14],[67,38]]]]
+            ["inline","ko-loader",[],["large",true],["loc",[null,[72,14],[72,38]]]]
           ],
           locals: [],
           templates: []
@@ -11408,11 +12365,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 65,
+              "line": 70,
               "column": 10
             },
             "end": {
-              "line": 69,
+              "line": 74,
               "column": 10
             }
           },
@@ -11435,7 +12392,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["block","ko-center",[],[],0,null,["loc",[null,[66,12],[68,26]]]]
+          ["block","ko-center",[],[],0,null,["loc",[null,[71,12],[73,26]]]]
         ],
         locals: [],
         templates: [child0]
@@ -11449,11 +12406,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 89,
+                "line": 94,
                 "column": 10
               },
               "end": {
-                "line": 97,
+                "line": 102,
                 "column": 10
               }
             },
@@ -11478,7 +12435,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             return morphs;
           },
           statements: [
-            ["inline","component",[["subexpr","ko-helper",[["get","componentFor",["loc",[null,[90,35],[90,47]]]],["get","field.fieldType",["loc",[null,[90,48],[90,63]]]]],[],["loc",[null,[90,24],[90,64]]]]],["case",["subexpr","@mut",[["get","case",["loc",[null,[91,19],[91,23]]]]],[],[]],"field",["subexpr","@mut",[["get","field",["loc",[null,[92,20],[92,25]]]]],[],[]],"errors",["subexpr","@mut",[["get","errors",["loc",[null,[93,21],[93,27]]]]],[],[]],"options",["subexpr","ko-contextual-helper",[["get","optionsForField",["loc",[null,[94,44],[94,59]]]],["get","this",["loc",[null,[94,60],[94,64]]]],["get","field",["loc",[null,[94,65],[94,70]]]]],[],["loc",[null,[94,22],[94,71]]]],"editedCaseFields",["subexpr","@mut",[["get","editedCaseFields",["loc",[null,[95,31],[95,47]]]]],[],[]]],["loc",[null,[90,12],[96,14]]]]
+            ["inline","component",[["subexpr","ko-helper",[["get","componentFor",["loc",[null,[95,35],[95,47]]]],["get","field.fieldType",["loc",[null,[95,48],[95,63]]]]],[],["loc",[null,[95,24],[95,64]]]]],["case",["subexpr","@mut",[["get","case",["loc",[null,[96,19],[96,23]]]]],[],[]],"field",["subexpr","@mut",[["get","field",["loc",[null,[97,20],[97,25]]]]],[],[]],"errors",["subexpr","@mut",[["get","errors",["loc",[null,[98,21],[98,27]]]]],[],[]],"options",["subexpr","ko-contextual-helper",[["get","optionsForField",["loc",[null,[99,44],[99,59]]]],["get","this",["loc",[null,[99,60],[99,64]]]],["get","field",["loc",[null,[99,65],[99,70]]]]],[],["loc",[null,[99,22],[99,71]]]],"editedCaseFields",["subexpr","@mut",[["get","editedCaseFields",["loc",[null,[100,31],[100,47]]]]],[],[]]],["loc",[null,[95,12],[101,14]]]]
           ],
           locals: [],
           templates: []
@@ -11490,11 +12447,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 88,
+              "line": 93,
               "column": 8
             },
             "end": {
-              "line": 98,
+              "line": 103,
               "column": 8
             }
           },
@@ -11517,7 +12474,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["block","if",[["subexpr","ko-helper",[["get","componentFor",["loc",[null,[89,27],[89,39]]]],["get","field.fieldType",["loc",[null,[89,40],[89,55]]]]],[],["loc",[null,[89,16],[89,56]]]]],[],0,null,["loc",[null,[89,10],[97,17]]]]
+          ["block","if",[["subexpr","ko-helper",[["get","componentFor",["loc",[null,[94,27],[94,39]]]],["get","field.fieldType",["loc",[null,[94,40],[94,55]]]]],[],["loc",[null,[94,16],[94,56]]]]],[],0,null,["loc",[null,[94,10],[102,17]]]]
         ],
         locals: ["field"],
         templates: [child0]
@@ -11533,7 +12490,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             "column": 0
           },
           "end": {
-            "line": 104,
+            "line": 109,
             "column": 0
           }
         },
@@ -11832,26 +12789,26 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
       },
       statements: [
         ["attribute","src",["concat",[["get","case.requester.avatar",["loc",[null,[6,22],[6,43]]]]]]],
-        ["inline","ko-editable-text",[],["value",["subexpr","@mut",[["get","case.subject",["loc",[null,[10,37],[10,49]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isCaseSubjectEdited",["loc",[null,[10,59],[10,78]]]]],[],[]],"onValueChange","setSubject"],["loc",[null,[10,12],[10,107]]]],
-        ["inline","format-message",[["subexpr","intl-get",["cases.subheader"],[],["loc",[null,[13,29],[13,57]]]]],["time",["subexpr","@mut",[["get","case.createdAt",["loc",[null,[14,17],[14,31]]]]],[],[]],"channel",["subexpr","format-message",[["subexpr","intl-get",[["subexpr","concat",["cases.channelType.",["get","case.sourceChannel.channelType",["loc",[null,[15,75],[15,105]]]]],[],["loc",[null,[15,46],[15,106]]]]],[],["loc",[null,[15,36],[15,107]]]]],[],["loc",[null,[15,20],[15,108]]]],"hasBrand",["subexpr","@mut",[["get","hasBrand",["loc",[null,[16,21],[16,29]]]]],[],[]],"brand",["subexpr","@mut",[["get","case.brand.companyName",["loc",[null,[17,18],[17,40]]]]],[],[]]],["loc",[null,[13,12],[17,42]]]],
-        ["inline","ko-case/macro-selector",[],["macros",["subexpr","@mut",[["get","macros",["loc",[null,[27,46],[27,52]]]]],[],[]],"onMacroSelected","applyMacro"],["loc",[null,[27,14],[27,83]]]],
-        ["inline","ko-case/macro-selector",[],["macros",["subexpr","@mut",[["get","macros",["loc",[null,[30,46],[30,52]]]]],[],[]],"onMacroSelected","applyMacro"],["loc",[null,[30,14],[30,83]]]],
-        ["inline","ko-case/macro-selector",[],["macros",["subexpr","@mut",[["get","macros",["loc",[null,[33,46],[33,52]]]]],[],[]],"onMacroSelected","applyMacro"],["loc",[null,[33,14],[33,83]]]],
-        ["attribute","style",["concat",["height: ",["get","caseEditorHeight",["loc",[null,[43,72],[43,88]]]],"px"]]],
-        ["attribute","class",["concat",["ko-case-content__editor ",["subexpr","if",[["get","headerSticky",["loc",[null,[44,51],[44,63]]]],"ko-case-content__editor--sticky"],[],["loc",[null,[44,46],[44,99]]]]]]],
-        ["inline","ko-case-field/post",[],["viewName","casePostEditor","channels",["subexpr","@mut",[["get","case.replyChannels",["loc",[null,[45,68],[45,86]]]]],[],[]],"channel",["subexpr","@mut",[["get","channel",["loc",[null,[45,95],[45,102]]]]],[],[]],"onChannelChange","setChannel","replyType",["subexpr","@mut",[["get","replyType",["loc",[null,[45,142],[45,151]]]]],[],[]]],["loc",[null,[45,12],[45,153]]]],
-        ["inline","ko-case-content/dropdown",[],["label","Sort","value",["subexpr","@mut",[["get","sortOrder",["loc",[null,[48,98],[48,107]]]]],[],[]],"options",["subexpr","@mut",[["get","sortOptions",["loc",[null,[48,116],[48,127]]]]],[],[]],"action",["subexpr","action",["sort"],[],["loc",[null,[48,135],[48,150]]]]],["loc",[null,[48,52],[48,152]]]],
-        ["block","if",[["get","topPostsAvailable",["loc",[null,[49,14],[49,31]]]]],[],0,null,["loc",[null,[49,8],[57,15]]]],
-        ["block","if",[["get","newPosts",["loc",[null,[59,16],[59,24]]]]],[],1,null,["loc",[null,[59,10],[61,17]]]],
-        ["inline","ko-feed",[],["events",["subexpr","@mut",[["get","posts",["loc",[null,[63,25],[63,30]]]]],[],[]],"onReplyWithQuote","replyWithQuote","top",["subexpr","@mut",[["get","timelineVisibleTop",["loc",[null,[63,69],[63,87]]]]],[],[]],"left",["subexpr","@mut",[["get","timelineVisibleLeft",["loc",[null,[63,93],[63,112]]]]],[],[]],"onTopPostChange",["subexpr","action",["changeTopPost"],[],["loc",[null,[63,129],[63,153]]]]],["loc",[null,[63,8],[63,155]]]],
-        ["block","if",[["get","loadingBottom",["loc",[null,[65,16],[65,29]]]]],[],2,null,["loc",[null,[65,10],[69,17]]]],
-        ["attribute","class",["concat",["list-bare ko-case-content__info-bar ",["subexpr","if",[["get","headerSticky",["loc",[null,[74,58],[74,70]]]],"ko-case-content__info-bar--sticky"],[],["loc",[null,[74,53],[74,108]]]]]]],
-        ["element","action",["submit"],[],["loc",[null,[76,55],[76,74]]]],
-        ["inline","format-message",[["subexpr","intl-get",["cases.submit"],[],["loc",[null,[76,92],[76,117]]]]],[],["loc",[null,[76,75],[76,119]]]],
-        ["inline","ko-case-field/requester",[],["requester",["subexpr","@mut",[["get","case.requester",["loc",[null,[78,44],[78,58]]]]],[],[]]],["loc",[null,[78,8],[78,60]]]],
-        ["inline","ko-case-field/tags",[],["tags",["subexpr","@mut",[["get","tags",["loc",[null,[81,15],[81,19]]]]],[],[]],"suggestedTags",["subexpr","@mut",[["get","suggestedTags",["loc",[null,[82,24],[82,37]]]]],[],[]],"onTagAddition","addTag","onTagRemoval","removeTag","onTagSuggestion","suggestTags","isEdited",["subexpr","@mut",[["get","isTagsFieldEdited",["loc",[null,[86,19],[86,36]]]]],[],[]]],["loc",[null,[80,8],[86,38]]]],
-        ["block","each",[["get","caseOrFormFields",["loc",[null,[88,16],[88,32]]]]],[],3,null,["loc",[null,[88,8],[98,17]]]],
-        ["inline","ko-case/sla-sidebar",[],["sla",["subexpr","@mut",[["get","case.sla",["loc",[null,[99,34],[99,42]]]]],[],[]],"slaMetrics",["subexpr","@mut",[["get","case.slaMetrics",["loc",[null,[99,54],[99,69]]]]],[],[]]],["loc",[null,[99,8],[99,71]]]]
+        ["inline","ko-editable-text",[],["value",["subexpr","@mut",[["get","case.subject",["loc",[null,[11,22],[11,34]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isCaseSubjectEdited",["loc",[null,[12,25],[12,44]]]]],[],[]],"onValueChange","setSubject","placeholder",["subexpr","format-message",[["subexpr","intl-get",["cases.new_case_subject_placeholder"],[],["loc",[null,[14,44],[14,91]]]]],[],["loc",[null,[14,28],[14,92]]]]],["loc",[null,[10,12],[15,14]]]],
+        ["inline","format-message",[["subexpr","intl-get",["cases.subheader"],[],["loc",[null,[18,29],[18,57]]]]],["time",["subexpr","@mut",[["get","case.createdAt",["loc",[null,[19,17],[19,31]]]]],[],[]],"channel",["subexpr","format-message",[["subexpr","intl-get",[["subexpr","concat",["cases.channelType.",["get","case.sourceChannel.channelType",["loc",[null,[20,75],[20,105]]]]],[],["loc",[null,[20,46],[20,106]]]]],[],["loc",[null,[20,36],[20,107]]]]],[],["loc",[null,[20,20],[20,108]]]],"hasBrand",["subexpr","@mut",[["get","hasBrand",["loc",[null,[21,21],[21,29]]]]],[],[]],"brand",["subexpr","@mut",[["get","case.brand.companyName",["loc",[null,[22,18],[22,40]]]]],[],[]]],["loc",[null,[18,12],[22,42]]]],
+        ["inline","ko-case/macro-selector",[],["macros",["subexpr","@mut",[["get","macros",["loc",[null,[32,46],[32,52]]]]],[],[]],"onMacroSelected","applyMacro"],["loc",[null,[32,14],[32,83]]]],
+        ["inline","ko-case/macro-selector",[],["macros",["subexpr","@mut",[["get","macros",["loc",[null,[35,46],[35,52]]]]],[],[]],"onMacroSelected","applyMacro"],["loc",[null,[35,14],[35,83]]]],
+        ["inline","ko-case/macro-selector",[],["macros",["subexpr","@mut",[["get","macros",["loc",[null,[38,46],[38,52]]]]],[],[]],"onMacroSelected","applyMacro"],["loc",[null,[38,14],[38,83]]]],
+        ["attribute","style",["concat",["height: ",["get","caseEditorHeight",["loc",[null,[48,72],[48,88]]]],"px"]]],
+        ["attribute","class",["concat",["ko-case-content__editor ",["subexpr","if",[["get","headerSticky",["loc",[null,[49,51],[49,63]]]],"ko-case-content__editor--sticky"],[],["loc",[null,[49,46],[49,99]]]]]]],
+        ["inline","ko-case-field/post",[],["viewName","casePostEditor","channels",["subexpr","@mut",[["get","case.replyChannels",["loc",[null,[50,68],[50,86]]]]],[],[]],"channel",["subexpr","@mut",[["get","channel",["loc",[null,[50,95],[50,102]]]]],[],[]],"onChannelChange","setChannel","replyType",["subexpr","@mut",[["get","replyType",["loc",[null,[50,142],[50,151]]]]],[],[]]],["loc",[null,[50,12],[50,153]]]],
+        ["inline","ko-case-content/dropdown",[],["label","Sort","value",["subexpr","@mut",[["get","sortOrder",["loc",[null,[53,98],[53,107]]]]],[],[]],"options",["subexpr","@mut",[["get","sortOptions",["loc",[null,[53,116],[53,127]]]]],[],[]],"action",["subexpr","action",["sort"],[],["loc",[null,[53,135],[53,150]]]]],["loc",[null,[53,52],[53,152]]]],
+        ["block","if",[["get","topPostsAvailable",["loc",[null,[54,14],[54,31]]]]],[],0,null,["loc",[null,[54,8],[62,15]]]],
+        ["block","if",[["get","newPosts",["loc",[null,[64,16],[64,24]]]]],[],1,null,["loc",[null,[64,10],[66,17]]]],
+        ["inline","ko-feed",[],["events",["subexpr","@mut",[["get","posts",["loc",[null,[68,25],[68,30]]]]],[],[]],"onReplyWithQuote","replyWithQuote","top",["subexpr","@mut",[["get","timelineVisibleTop",["loc",[null,[68,69],[68,87]]]]],[],[]],"left",["subexpr","@mut",[["get","timelineVisibleLeft",["loc",[null,[68,93],[68,112]]]]],[],[]],"onTopPostChange",["subexpr","action",["changeTopPost"],[],["loc",[null,[68,129],[68,153]]]]],["loc",[null,[68,8],[68,155]]]],
+        ["block","if",[["get","loadingBottom",["loc",[null,[70,16],[70,29]]]]],[],2,null,["loc",[null,[70,10],[74,17]]]],
+        ["attribute","class",["concat",["list-bare ko-case-content__info-bar ",["subexpr","if",[["get","headerSticky",["loc",[null,[79,58],[79,70]]]],"ko-case-content__info-bar--sticky"],[],["loc",[null,[79,53],[79,108]]]]]]],
+        ["element","action",["submit"],[],["loc",[null,[81,55],[81,74]]]],
+        ["inline","format-message",[["subexpr","intl-get",["cases.submit"],[],["loc",[null,[81,92],[81,117]]]]],[],["loc",[null,[81,75],[81,119]]]],
+        ["inline","ko-case-field/requester",[],["requester",["subexpr","@mut",[["get","case.requester",["loc",[null,[83,44],[83,58]]]]],[],[]]],["loc",[null,[83,8],[83,60]]]],
+        ["inline","ko-case-field/tags",[],["tags",["subexpr","@mut",[["get","tags",["loc",[null,[86,15],[86,19]]]]],[],[]],"suggestedTags",["subexpr","@mut",[["get","suggestedTags",["loc",[null,[87,24],[87,37]]]]],[],[]],"onTagAddition","addTag","onTagRemoval","removeTag","onTagSuggestion","suggestTags","isEdited",["subexpr","@mut",[["get","isTagsFieldEdited",["loc",[null,[91,19],[91,36]]]]],[],[]]],["loc",[null,[85,8],[91,38]]]],
+        ["block","each",[["get","caseOrFormFields",["loc",[null,[93,16],[93,32]]]]],[],3,null,["loc",[null,[93,8],[103,17]]]],
+        ["inline","ko-case/sla-sidebar",[],["sla",["subexpr","@mut",[["get","case.sla",["loc",[null,[104,34],[104,42]]]]],[],[]],"slaMetrics",["subexpr","@mut",[["get","case.slaMetrics",["loc",[null,[104,54],[104,69]]]]],[],[]]],["loc",[null,[104,8],[104,71]]]]
       ],
       locals: [],
       templates: [child0, child1, child2, child3]
@@ -12106,9 +13063,9 @@ define('frontend-cp/components/ko-case-field/custom/component', ['exports', 'emb
   'use strict';
 
   var findCustomFieldValue = function findCustomFieldValue(values, field) {
-    return values.reduce(function (acc, value) {
+    return values ? values.reduce(function (acc, value) {
       return acc || (value.get('field') === field ? value : acc);
-    });
+    }, null) : null;
   };
 
   exports['default'] = Ember['default'].Component.extend({
@@ -12702,7 +13659,6 @@ define('frontend-cp/components/ko-case-field/status/component', ['exports', 'emb
     'case': null,
     field: null,
     errors: [],
-    options: [],
 
     tagName: '',
     store: Ember['default'].inject.service(),
@@ -12718,6 +13674,20 @@ define('frontend-cp/components/ko-case-field/status/component', ['exports', 'emb
           return acc || error.parameter === 'status_id';
         }, false));
       }
+    }),
+
+    statuses: Ember['default'].computed('case.id', function () {
+      var caseIsPersisted = !!this.get('case.id');
+
+      return this.get('store').peekAll('case-status').filter(function (status) {
+
+        // statuses can only be NEW if they've never been saved
+        if (caseIsPersisted && status.get('statusType') === 'NEW') {
+          return false;
+        }
+
+        return status.get('statusType') !== 'CLOSED';
+      });
     })
   });
 
@@ -12760,7 +13730,7 @@ define('frontend-cp/components/ko-case-field/status/template', ['exports'], func
         return morphs;
       },
       statements: [
-        ["inline","ko-field/select",[],["title",["subexpr","@mut",[["get","field.title",["loc",[null,[2,8],[2,19]]]]],[],[]],"options",["subexpr","@mut",[["get","options",["loc",[null,[3,10],[3,17]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isEdited",["loc",[null,[4,11],[4,19]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","isErrored",["loc",[null,[5,12],[5,21]]]]],[],[]],"value",["subexpr","@mut",[["get","value",["loc",[null,[6,8],[6,13]]]]],[],[]],"onValueChange","valueChanged","labelPath","label"],["loc",[null,[1,0],[9,2]]]]
+        ["inline","ko-field/select",[],["title",["subexpr","@mut",[["get","field.title",["loc",[null,[2,8],[2,19]]]]],[],[]],"options",["subexpr","@mut",[["get","statuses",["loc",[null,[3,10],[3,18]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isEdited",["loc",[null,[4,11],[4,19]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","isErrored",["loc",[null,[5,12],[5,21]]]]],[],[]],"value",["subexpr","@mut",[["get","value",["loc",[null,[6,8],[6,13]]]]],[],[]],"onValueChange","valueChanged","labelPath","label"],["loc",[null,[1,0],[9,2]]]]
       ],
       locals: [],
       templates: []
@@ -18785,6 +19755,7 @@ define('frontend-cp/components/ko-dropdown/list/item/component', ['exports', 'em
     content: null,
 
     tagName: 'li',
+    classNames: ['ko-dropdown--list--item'],
     classNameBindings: ['link:ko-dropdown-list_item--link', 'alignRight'],
 
     click: function click() {
@@ -19025,7 +19996,8 @@ define('frontend-cp/components/ko-dropdown/select/button/component', ['exports',
 
   exports['default'] = Ember['default'].Component.extend({
     //Params:
-    label: ''
+    label: '',
+    displayIcon: true
   });
 
 });
@@ -19034,6 +20006,41 @@ define('frontend-cp/components/ko-dropdown/select/button/template', ['exports'],
   'use strict';
 
   exports['default'] = Ember.HTMLBars.template((function() {
+    var child0 = (function() {
+      return {
+        meta: {
+          "revision": "Ember@1.13.7",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 1,
+              "column": 9
+            },
+            "end": {
+              "line": 1,
+              "column": 83
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-dropdown/select/button/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createElement("span");
+          dom.setAttribute(el1,"class","ko-dropdown-select__icon i-select");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes() { return []; },
+        statements: [
+
+        ],
+        locals: [],
+        templates: []
+      };
+    }());
     return {
       meta: {
         "revision": "Ember@1.13.7",
@@ -19045,7 +20052,7 @@ define('frontend-cp/components/ko-dropdown/select/button/template', ['exports'],
           },
           "end": {
             "line": 1,
-            "column": 64
+            "column": 90
           }
         },
         "moduleName": "frontend-cp/components/ko-dropdown/select/button/template.hbs"
@@ -19057,22 +20064,24 @@ define('frontend-cp/components/ko-dropdown/select/button/template', ['exports'],
         var el0 = dom.createDocumentFragment();
         var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
-        var el1 = dom.createElement("span");
-        dom.setAttribute(el1,"class","ko-dropdown-select__icon i-select");
+        var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var morphs = new Array(1);
+        var morphs = new Array(2);
         morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+        morphs[1] = dom.createMorphAt(fragment,1,1,contextualElement);
         dom.insertBoundary(fragment, 0);
+        dom.insertBoundary(fragment, null);
         return morphs;
       },
       statements: [
-        ["content","label",["loc",[null,[1,0],[1,9]]]]
+        ["content","label",["loc",[null,[1,0],[1,9]]]],
+        ["block","if",[["get","displayIcon",["loc",[null,[1,15],[1,26]]]]],[],0,null,["loc",[null,[1,9],[1,90]]]]
       ],
       locals: [],
-      templates: []
+      templates: [child0]
     };
   }()));
 
@@ -19323,6 +20332,8 @@ define('frontend-cp/components/ko-editable-text/component', ['exports', 'ember']
   exports['default'] = Ember['default'].Component.extend({
     //Params:
     onValueChange: null,
+    placeholder: null,
+    value: null,
 
     isEditing: false,
     isEdited: false,
@@ -19333,6 +20344,10 @@ define('frontend-cp/components/ko-editable-text/component', ['exports', 'ember']
         return;
       }
       this.set('valueToSave', this.get('value'));
+    }),
+
+    displayText: Ember['default'].computed('value', 'placeholder', function () {
+      return this.get('value') ? this.get('value') : this.get('placeholder');
     }),
 
     actions: {
@@ -19430,7 +20445,7 @@ define('frontend-cp/components/ko-editable-text/template', ['exports'], function
       statements: [
         ["attribute","class",["concat",["editable-text__text ",["subexpr","if",[["get","isEditing",["loc",[null,[1,55],[1,64]]]],"u-hidden"],[],["loc",[null,[1,50],[1,77]]]]," ",["subexpr","if",[["get","isEdited",["loc",[null,[1,84],[1,92]]]],"editable-text__text--edited"],[],["loc",[null,[1,78],[1,125]]]]]]],
         ["element","action",["edit"],[],["loc",[null,[1,5],[1,22]]]],
-        ["content","value",["loc",[null,[1,127],[1,136]]]],
+        ["content","displayText",["loc",[null,[1,127],[1,142]]]],
         ["attribute","class",["concat",[["subexpr","unless",[["get","isEditing",["loc",[null,[4,21],[4,30]]]],"u-hidden"],[],["loc",[null,[4,12],[4,43]]]]]]],
         ["inline","input",[],["value",["subexpr","@mut",[["get","valueToSave",["loc",[null,[4,59],[4,70]]]]],[],[]],"enter","editComplete","class","editable-text__input"],["loc",[null,[4,45],[4,122]]]]
       ],
@@ -28946,6 +29961,9 @@ define('frontend-cp/components/ko-suggest/component', ['exports', 'ember'], func
     //Params:
     searchTerm: null,
     isFocussed: false,
+    hideOnClick: true,
+    shouldAutoFocus: false,
+    displayIcon: true,
 
     filterResults: Ember['default'].observer('searchTerm', function () {
       this.sendAction('onSearchTermUpdated', this.get('searchTerm'));
@@ -28954,6 +29972,11 @@ define('frontend-cp/components/ko-suggest/component', ['exports', 'ember'], func
     willInsertElement: function willInsertElement() {
       var width = this.$('.ko-dropdown-select__button').outerWidth(true);
       this.set('contentStyle', ('min-width:' + width + 'px;').htmlSafe());
+
+      if (this.get('shouldAutoFocus')) {
+        this.set('isFocussed', true);
+        this.$('.suggest__input').focus();
+      }
     },
 
     actions: {
@@ -29050,7 +30073,7 @@ define('frontend-cp/components/ko-suggest/template', ['exports'], function (expo
               return morphs;
             },
             statements: [
-              ["inline","ko-dropdown/select/button",[],["label",["subexpr","@mut",[["get","selectedItem",["loc",[null,[7,40],[7,52]]]]],[],[]]],["loc",[null,[7,6],[7,54]]]]
+              ["inline","ko-dropdown/select/button",[],["label",["subexpr","@mut",[["get","selectedItem",["loc",[null,[7,40],[7,52]]]]],[],[]],"displayIcon",["subexpr","@mut",[["get","displayIcon",["loc",[null,[7,65],[7,76]]]]],[],[]]],["loc",[null,[7,6],[7,78]]]]
             ],
             locals: [],
             templates: []
@@ -29256,7 +30279,7 @@ define('frontend-cp/components/ko-suggest/template', ['exports'], function (expo
         return morphs;
       },
       statements: [
-        ["block","ko-dropdown/container",[],["hideOnClick",true,"hideOnChildFocus",true,"onFocusChanged","onFocusChanged"],0,null,["loc",[null,[1,0],[17,26]]]]
+        ["block","ko-dropdown/container",[],["hideOnClick",["subexpr","@mut",[["get","hideOnClick",["loc",[null,[1,37],[1,48]]]]],[],[]],"hideOnChildFocus",true,"onFocusChanged","onFocusChanged"],0,null,["loc",[null,[1,0],[17,26]]]]
       ],
       locals: [],
       templates: [child0]
@@ -37048,7 +38071,7 @@ define('frontend-cp/login/template', ['exports'], function (exports) {
   }()));
 
 });
-define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp/mirage/fixtures/en-us-strings', 'frontend-cp/mirage/fixtures/search-results-person', 'frontend-cp/mirage/fixtures/search-results-case', 'frontend-cp/mirage/fixtures/search-results-case-person'], function (exports, Mirage, EnUsStrings, SearchResultsPerson, SearchResultsCase, SearchResultsCasePerson) {
+define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp/mirage/fixtures/en-us-strings', 'frontend-cp/mirage/fixtures/search-results-person', 'frontend-cp/mirage/fixtures/search-results-case', 'frontend-cp/mirage/fixtures/search-results-case-person'], function (exports, ember_cli_mirage, EnUsStrings, SearchResultsPerson, SearchResultsCase, SearchResultsCasePerson) {
 
   'use strict';
 
@@ -37363,7 +38386,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
     });
 
     this.post('/api/v1/cases/:id/notes', function (db) {
-      return new Mirage['default'].Response(200, {}, '');
+      return new ember_cli_mirage['default'].Response(200, {}, '');
     });
 
     this.get('/api/v1/cases/:id/messages', function (db) {
@@ -37395,7 +38418,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
     });
 
     this.post('/api/v1/cases/:id/reply', function (db) {
-      return new Mirage['default'].Response(200, {}, '');
+      return new ember_cli_mirage['default'].Response(200, {}, '');
     });
 
     this.get('/api/v1/cases/priorities', function (db) {
@@ -37454,10 +38477,70 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
 
     this.get('/api/v1/cases/fields/:id/options', function (db) {
       return {
+        'status': 200,
+        'data': db.fieldsoptions,
+        'resource': 'field_option',
+        'total_count': 3,
+        'session_id': 'd4XE33cnM105GKla1pFqYDfjr313e422cd61c535941c9a2d5681fe7e39eed1ca6SVNXQCtt07Jlp3jO'
+      };
+    });
+
+    this.get('api/v1/teams', function (db) {
+      return {
+        'status': 200,
+        'data': db.teamsdata,
+        'resource': 'team',
+        'offset': 0,
+        'limit': 10,
+        'total_count': 4,
+        'session_id': '0VR4CSL7dXUshZtO8EI2a32a89eaa80d3bdecc9964941ec5d235a6632dcrhO2ug8M9VrLV'
+      };
+    });
+
+    var users = null;
+    this.get('api/v1/users', function (db) {
+      users = users || getRandomUsers(db.usersdata, 10);
+      return {
+        'status': 200,
+        'data': users,
+        'resource': 'user',
+        'total_count': users.length,
+        'session_id': 'aFPgO9mG2DdUipMpV0tK5k3mv8zMfJa6d966aaa605f8933fd939e2fa86ea8f6294a577L0dQypQ3vkYo3t25NLuESAA'
+      };
+
+      function getRandomUsers(dummyUsers, count) {
+        return createRandomlyNamedUsers(dummyUsers, count);
+
+        function createRandomlyNamedUsers(dummyUsers, count) {
+          var users = [];
+          for (var index = 0; index < count; index++) {
+            var dummyUser = dummyUsers[Math.floor(Math.random() * dummyUsers.length)];
+            var id = dummyUsers.length + 1;
+            users.push(createRandomlyNamedUser(dummyUser, id + index));
+          }
+          return users;
+
+          function createRandomlyNamedUser(dummyUser, id) {
+            var randomName = generateRandomFullName();
+            return Object.assign({}, dummyUser, {
+              'id': id,
+              'full_name': randomName
+            });
+
+            function generateRandomFullName() {
+              return ember_cli_mirage.faker.name.findName();
+            }
+          }
+        }
+      }
+    });
+
+    this.post('/api/v1/users', function () {
+      return {
         status: 200,
-        data: db['field-options'],
-        resource: 'field_option',
-        total_count: db['field-options'].length
+        data: [],
+        resource: 'user',
+        total_count: 1
       };
     });
 
@@ -39366,6 +40449,34 @@ define('frontend-cp/mirage/fixtures/en-us-strings', ['exports'], function (expor
       'value': 'cancel',
       'resource_type': 'locale_string'
     }, {
+      'id': 'frontend.api.generic.create_case_panel.title',
+      'value': 'Create a new case',
+      'resource_type': 'locale_string'
+    }, {
+      'id': 'frontend.api.generic.create_case_panel.requester_label',
+      'value': 'Requester/Recipient',
+      'resource_type': 'locale_string'
+    }, {
+      'id': 'frontend.api.generic.create_case_panel.loading_label',
+      'value': 'Loading users…',
+      'resource_type': 'locale_string'
+    }, {
+      'id': 'frontend.api.generic.create_case_panel.filter_label',
+      'value': 'Showing {numFilteredUsers, number} of {numUsers, number}',
+      'resource_type': 'locale_string'
+    }, {
+      'id': 'frontend.api.generic.create_case_panel.info',
+      'value': 'Other details can be added after continuing.',
+      'resource_type': 'locale_string'
+    }, {
+      'id': 'frontend.api.generic.create_case_panel.submit',
+      'value': 'Continue',
+      'resource_type': 'locale_string'
+    }, {
+      'id': 'frontend.api.generic.create_case_panel.cancel',
+      'value': 'cancel',
+      'resource_type': 'locale_string'
+    }, {
       'id': 'frontend.api.users.add_a_note',
       'value': 'Add a note',
       'resource_type': 'locale_string'
@@ -39376,6 +40487,18 @@ define('frontend-cp/mirage/fixtures/en-us-strings', ['exports'], function (expor
     }, {
       'id': 'frontend.api.admin.casefields.edit.label.field_options',
       'value': 'The drop-down field will contain the options specified below.',
+      'resource_type': 'locale_string'
+    }, {
+      'id': 'frontend.api.cases.new_case_subject_placeholder',
+      'value': 'Click to add a subject',
+      'resource_type': 'locale_string'
+    }, {
+      'id': 'frontend.api.cases.new_case_tab_placeholder',
+      'value': 'New Case',
+      'resource_type': 'locale_string'
+    }, {
+      'id': 'frontend.api.cases.new_case',
+      'value': 'New case',
       'resource_type': 'locale_string'
     }],
     resource: 'locale_string'
@@ -43975,7 +45098,7 @@ define('frontend-cp/models/user', ['exports', 'ember-data', 'ember', 'frontend-c
 
     // Shadow children fields
     accesslogs: DS['default'].hasMany('access-log', { async: true, child: true, noCache: true }),
-    slack: DS['default'].hasMany('identity-slack', { async: true, child: true, url: 'identities/slack' }),
+    slack: DS['default'].hasMany('identity-slack', { async: true, child: true, url: 'identities/slack', noCache: true }),
 
     save: function save() {
       var _this = this;
@@ -44095,7 +45218,6 @@ define('frontend-cp/router', ['exports', 'ember', 'frontend-cp/config/environmen
 
       this.route('agent', function () {
         this.route('cases', { path: '/cases' }, function () {
-          this.route('new', { path: '/new' });
           this.route('case', { path: '/:case_id' }, function () {
             this.route('notes');
             this.route('organisation');
@@ -44471,7 +45593,7 @@ define('frontend-cp/serializers/case-reply', ['exports', 'frontend-cp/serializer
 
     serialize: function serialize(snapshot, options) {
       var json = this._super(snapshot, options);
-      json.field_values = this.serializeCustomFields(snapshot.attr('fieldValues'));
+      json.field_values = this.serializeCustomFields(snapshot.attr('fieldValues')); //eslint-disable-line camelcase
 
       return json;
     }
@@ -44500,7 +45622,7 @@ define('frontend-cp/serializers/case', ['exports', 'frontend-cp/serializers/appl
 
     serialize: function serialize(snapshot, options) {
       var json = this._super(snapshot, options);
-      json.field_values = this.serializeCustomFields(snapshot.attr('customFields'));
+      json.field_values = this.serializeCustomFields(snapshot.attr('customFields')); //eslint-disable-line camelcase
 
       var assignee = snapshot.attr('assignee');
       json.assignee_agent_id = assignee.get('agentFragment.relationshipId'); // eslint-disable-line camelcase
@@ -44813,7 +45935,7 @@ define('frontend-cp/serializers/user', ['exports', 'frontend-cp/serializers/appl
     serialize: function serialize(snapshot, options) {
       var json = this._super(snapshot, options);
       json.email = getPrimaryEmailAddress(snapshot);
-      json.field_values = this.serializeCustomFields(snapshot.attr('customFields'));
+      json.field_values = this.serializeCustomFields(snapshot.attr('customFields')); //eslint-disable-line camelcase
 
       return json;
 
@@ -45160,6 +46282,7 @@ define('frontend-cp/services/error-handler', ['exports', 'ember'], function (exp
   'use strict';
 
   var SESSION_LOADING_FAILED = 'SESSION_LOADING_FAILED';
+  var RESOURCE_NOT_FOUND = 'RESOURCE_NOT_FOUND';
 
   exports['default'] = Ember['default'].Service.extend({
     notificationService: Ember['default'].inject.service('notification'),
@@ -45172,6 +46295,11 @@ define('frontend-cp/services/error-handler', ['exports', 'ember'], function (exp
 
       if (responseErrors[0].code === SESSION_LOADING_FAILED) {
         this.handleSessionErrors();
+        return;
+      }
+
+      if (responseErrors[0].code === RESOURCE_NOT_FOUND) {
+        // swallow 404s - they're (hopefully) from search
         return;
       }
 
@@ -49730,6 +50858,8 @@ define('frontend-cp/session/agent/cases/case/controller', ['exports', 'ember', '
 
   exports['default'] = Ember['default'].Controller.extend(Breadcrumbable['default'], {
 
+    intlService: Ember['default'].inject.service('intl'),
+
     /**
      * Returns a breadcrumb hash depending on what
      * data is available. Should hierarchical:
@@ -49740,9 +50870,12 @@ define('frontend-cp/session/agent/cases/case/controller', ['exports', 'ember', '
 
       var hasOrganisation = this.get('model.requester.organization.id');
       var hasUser = this.get('model.requester.id');
+
+      var caseName = this.get('model.id') ? 'Case ' + this.get('model.id') : this.get('intlService').findTranslationByKey('cases.new_case').translation;
+
       var caseCrumb = {
         id: 'case',
-        name: 'Case ' + this.get('model.id'),
+        name: caseName,
         route: 'session.agent.cases.case.index'
       };
 
@@ -49851,7 +50984,7 @@ define('frontend-cp/session/agent/cases/case/index/route', ['exports', 'ember'],
 
     validateCaseStatus: function validateCaseStatus(editingCase) {
       var caseStatus = editingCase.get('status');
-      if (caseStatus.get('statusType') === 'NEW') {
+      if (editingCase.get('id') && caseStatus.get('statusType') === 'NEW') {
         this.store.find('case-status', 3).then(function (pendingStatus) {
           //assuming that status ID 3 will always be pending
           editingCase.set('status', pendingStatus);
@@ -50087,24 +51220,41 @@ define('frontend-cp/session/agent/cases/case/organisation/template', ['exports']
   }()));
 
 });
-define('frontend-cp/session/agent/cases/case/route', ['exports', 'frontend-cp/routes/abstract/tabbed-route'], function (exports, TabbedRoute) {
+define('frontend-cp/session/agent/cases/case/route', ['exports', 'frontend-cp/routes/abstract/tabbed-route', 'ember'], function (exports, TabbedRoute, Ember) {
 
   'use strict';
 
   exports['default'] = TabbedRoute['default'].extend({
+    intlService: Ember['default'].inject.service('intl'),
 
     model: function model(params) {
+      if (params.case_id === 'new') {
+        this.transitionTo('session.agent.cases');
+        return;
+      }
       return this.store.find('case', +params.case_id);
     },
 
     setupController: function setupController(controller, model) {
       this._super(controller, model);
-      this.get('tab').set('label', model.get('subject'));
+
+      var tabName = model.get('subject') ? model.get('subject') : this.get('intlService').findTranslationByKey('cases.new_case_tab_placeholder').translation;
+
+      this.get('tab').set('label', tabName);
+    },
+
+    serialize: function serialize(model) {
+      return {
+        'case_id': model.get ? model.get('id') || 'new' : model.case_id
+      };
     },
 
     actions: {
       updateTabUrl: function updateTabUrl(url) {
         this.get('tab').set('url', url);
+      },
+      updateTabName: function updateTabName(label) {
+        this.get('tab').set('label', label);
       }
     }
   });
@@ -50803,93 +51953,6 @@ define('frontend-cp/session/agent/cases/new/controller', ['exports', 'ember', 'f
       return crumbs;
     })
   });
-
-});
-define('frontend-cp/session/agent/cases/new/route', ['exports', 'frontend-cp/routes/abstract/tabbed-route'], function (exports, TabbedRoute) {
-
-  'use strict';
-
-  exports['default'] = TabbedRoute['default'].extend({
-
-    model: function model() {
-      return this.store.createRecord('case', {
-        subject: 'New Case'
-      });
-    },
-
-    setupController: function setupController(controller, model) {
-      this._super(controller, model);
-      this.get('tab').set('label', model.get('subject'));
-    }
-
-  });
-
-});
-define('frontend-cp/session/agent/cases/new/template', ['exports'], function (exports) {
-
-  'use strict';
-
-  exports['default'] = Ember.HTMLBars.template((function() {
-    return {
-      meta: {
-        "revision": "Ember@1.13.7",
-        "loc": {
-          "source": null,
-          "start": {
-            "line": 1,
-            "column": 0
-          },
-          "end": {
-            "line": 7,
-            "column": 0
-          }
-        },
-        "moduleName": "frontend-cp/session/agent/cases/new/template.hbs"
-      },
-      arity: 0,
-      cachedFragment: null,
-      hasRendered: false,
-      buildFragment: function buildFragment(dom) {
-        var el0 = dom.createDocumentFragment();
-        var el1 = dom.createElement("div");
-        dom.setAttribute(el1,"class","content layout--flush");
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","layout__item u-1/1");
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createComment("");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n  ");
-        dom.appendChild(el2, el3);
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createComment("");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n");
-        dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
-        dom.appendChild(el0, el1);
-        return el0;
-      },
-      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var element0 = dom.childAt(fragment, [0]);
-        var morphs = new Array(2);
-        morphs[0] = dom.createMorphAt(dom.childAt(element0, [1]),1,1);
-        morphs[1] = dom.createMorphAt(element0,3,3);
-        return morphs;
-      },
-      statements: [
-        ["inline","ko-breadcrumbs",[],["breadcrumbs",["subexpr","@mut",[["get","breadcrumbs",["loc",[null,[3,33],[3,44]]]]],[],[]],"activeBreadcrumb",["subexpr","@mut",[["get","activeBreadcrumb",["loc",[null,[3,62],[3,78]]]]],[],[]],"action","breadcrumbChange"],["loc",[null,[3,4],[3,106]]]],
-        ["inline","ko-case-content",[],["case",["subexpr","@mut",[["get","case",["loc",[null,[5,25],[5,29]]]]],[],[]]],["loc",[null,[5,2],[5,31]]]]
-      ],
-      locals: [],
-      templates: []
-    };
-  }()));
 
 });
 define('frontend-cp/session/agent/organisations/organisation/controller', ['exports', 'ember', 'frontend-cp/mixins/breadcrumbable'], function (exports, Ember, Breadcrumbable) {
@@ -52037,6 +53100,32 @@ define('frontend-cp/session/showcase/controller', ['exports', 'ember', 'ember-va
             });
           }
         }
+      },
+      onCreateCaseSubmitted: function onCreateCaseSubmitted() {},
+      onCreateCaseCompleted: function onCreateCaseCompleted(caseModel) {
+        var log = alert;
+        log('Case created');
+      },
+      onCreateCaseFailed: function onCreateCaseFailed(error) {
+        var log = alert;
+        log('Case creation failed: ' + error.message);
+      },
+      onCreateCaseCancelled: function onCreateCaseCancelled() {
+        var log = alert;
+        log('Cancelled case creation');
+      },
+      onCreateUserSubmitted: function onCreateUserSubmitted() {},
+      onCreateUserCompleted: function onCreateUserCompleted(caseModel) {
+        var log = alert;
+        log('User created');
+      },
+      onCreateUserFailed: function onCreateUserFailed(error) {
+        var log = alert;
+        log('User creation failed:' + error.message);
+      },
+      onCreateUserCancelled: function onCreateUserCancelled() {
+        var log = alert;
+        log('Cancelled user creation');
       }
     },
 
@@ -52532,11 +53621,11 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
             "loc": {
               "source": null,
               "start": {
-                "line": 87,
+                "line": 125,
                 "column": 4
               },
               "end": {
-                "line": 87,
+                "line": 125,
                 "column": 66
               }
             },
@@ -52566,11 +53655,11 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
             "loc": {
               "source": null,
               "start": {
-                "line": 88,
+                "line": 126,
                 "column": 4
               },
               "end": {
-                "line": 88,
+                "line": 126,
                 "column": 35
               }
             },
@@ -52600,11 +53689,11 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
             "loc": {
               "source": null,
               "start": {
-                "line": 89,
+                "line": 127,
                 "column": 4
               },
               "end": {
-                "line": 89,
+                "line": 127,
                 "column": 55
               }
             },
@@ -52634,11 +53723,11 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
             "loc": {
               "source": null,
               "start": {
-                "line": 90,
+                "line": 128,
                 "column": 4
               },
               "end": {
-                "line": 90,
+                "line": 128,
                 "column": 35
               }
             },
@@ -52667,11 +53756,11 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
           "loc": {
             "source": null,
             "start": {
-              "line": 86,
+              "line": 124,
               "column": 2
             },
             "end": {
-              "line": 91,
+              "line": 129,
               "column": 2
             }
           },
@@ -52711,10 +53800,10 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
           return morphs;
         },
         statements: [
-          ["block","ko-dropdown/list/item",[],["link","session.styleguide"],0,null,["loc",[null,[87,4],[87,92]]]],
-          ["block","ko-dropdown/list/item",[],[],1,null,["loc",[null,[88,4],[88,61]]]],
-          ["block","ko-dropdown/list/item",[],["action","sayyeah"],2,null,["loc",[null,[89,4],[89,81]]]],
-          ["block","ko-dropdown/list/item",[],[],3,null,["loc",[null,[90,4],[90,61]]]]
+          ["block","ko-dropdown/list/item",[],["link","session.styleguide"],0,null,["loc",[null,[125,4],[125,92]]]],
+          ["block","ko-dropdown/list/item",[],[],1,null,["loc",[null,[126,4],[126,61]]]],
+          ["block","ko-dropdown/list/item",[],["action","sayyeah"],2,null,["loc",[null,[127,4],[127,81]]]],
+          ["block","ko-dropdown/list/item",[],[],3,null,["loc",[null,[128,4],[128,61]]]]
         ],
         locals: [],
         templates: [child0, child1, child2, child3]
@@ -52727,11 +53816,11 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
           "loc": {
             "source": null,
             "start": {
-              "line": 464,
+              "line": 502,
               "column": 2
             },
             "end": {
-              "line": 469,
+              "line": 507,
               "column": 2
             }
           },
@@ -52771,10 +53860,10 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
           return morphs;
         },
         statements: [
-          ["inline","ko-contact-info",[],["title",["subexpr","@mut",[["get","contactTitle",["loc",[null,[465,28],[465,40]]]]],[],[]],"facebook",["subexpr","@mut",[["get","facebook",["loc",[null,[465,50],[465,58]]]]],[],[]],"twitter",["subexpr","@mut",[["get","twitter",["loc",[null,[465,67],[465,74]]]]],[],[]],"linkedin",["subexpr","@mut",[["get","linkedin",["loc",[null,[465,84],[465,92]]]]],[],[]],"emails",["subexpr","@mut",[["get","email",["loc",[null,[465,100],[465,105]]]]],[],[]],"phones",["subexpr","@mut",[["get","phone",["loc",[null,[465,113],[465,118]]]]],[],[]]],["loc",[null,[465,4],[465,120]]]],
-          ["inline","ko-feedback",[],["title",["subexpr","@mut",[["get","feedbackTitle",["loc",[null,[466,24],[466,37]]]]],[],[]],"feedback",["subexpr","@mut",[["get","feedback",["loc",[null,[466,47],[466,55]]]]],[],[]]],["loc",[null,[466,4],[466,57]]]],
-          ["inline","ko-recent-cases",[],["title",["subexpr","@mut",[["get","casesTitle",["loc",[null,[467,28],[467,38]]]]],[],[]],"cases",["subexpr","@mut",[["get","cases",["loc",[null,[467,45],[467,50]]]]],[],[]]],["loc",[null,[467,4],[467,52]]]],
-          ["inline","ko-address",[],["title",["subexpr","@mut",[["get","addressTitle",["loc",[null,[468,23],[468,35]]]]],[],[]],"address",["subexpr","@mut",[["get","address",["loc",[null,[468,44],[468,51]]]]],[],[]]],["loc",[null,[468,4],[468,53]]]]
+          ["inline","ko-contact-info",[],["title",["subexpr","@mut",[["get","contactTitle",["loc",[null,[503,28],[503,40]]]]],[],[]],"facebook",["subexpr","@mut",[["get","facebook",["loc",[null,[503,50],[503,58]]]]],[],[]],"twitter",["subexpr","@mut",[["get","twitter",["loc",[null,[503,67],[503,74]]]]],[],[]],"linkedin",["subexpr","@mut",[["get","linkedin",["loc",[null,[503,84],[503,92]]]]],[],[]],"emails",["subexpr","@mut",[["get","email",["loc",[null,[503,100],[503,105]]]]],[],[]],"phones",["subexpr","@mut",[["get","phone",["loc",[null,[503,113],[503,118]]]]],[],[]]],["loc",[null,[503,4],[503,120]]]],
+          ["inline","ko-feedback",[],["title",["subexpr","@mut",[["get","feedbackTitle",["loc",[null,[504,24],[504,37]]]]],[],[]],"feedback",["subexpr","@mut",[["get","feedback",["loc",[null,[504,47],[504,55]]]]],[],[]]],["loc",[null,[504,4],[504,57]]]],
+          ["inline","ko-recent-cases",[],["title",["subexpr","@mut",[["get","casesTitle",["loc",[null,[505,28],[505,38]]]]],[],[]],"cases",["subexpr","@mut",[["get","cases",["loc",[null,[505,45],[505,50]]]]],[],[]]],["loc",[null,[505,4],[505,52]]]],
+          ["inline","ko-address",[],["title",["subexpr","@mut",[["get","addressTitle",["loc",[null,[506,23],[506,35]]]]],[],[]],"address",["subexpr","@mut",[["get","address",["loc",[null,[506,44],[506,51]]]]],[],[]]],["loc",[null,[506,4],[506,53]]]]
         ],
         locals: [],
         templates: []
@@ -52787,11 +53876,11 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
           "loc": {
             "source": null,
             "start": {
-              "line": 476,
+              "line": 514,
               "column": 2
             },
             "end": {
-              "line": 483,
+              "line": 521,
               "column": 2
             }
           },
@@ -52841,12 +53930,12 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
           return morphs;
         },
         statements: [
-          ["inline","ko-case-metric",[],["title",["subexpr","@mut",[["get","metricTitle",["loc",[null,[477,27],[477,38]]]]],[],[]],"metrics",["subexpr","@mut",[["get","metrics",["loc",[null,[477,47],[477,54]]]]],[],[]]],["loc",[null,[477,4],[477,56]]]],
-          ["inline","ko-recent-members",[],["title",["subexpr","@mut",[["get","membersTitle",["loc",[null,[478,30],[478,42]]]]],[],[]],"members",["subexpr","@mut",[["get","members",["loc",[null,[478,51],[478,58]]]]],[],[]]],["loc",[null,[478,4],[478,60]]]],
-          ["inline","ko-contact-info",[],["title",["subexpr","@mut",[["get","contactTitle",["loc",[null,[479,28],[479,40]]]]],[],[]],"facebook",["subexpr","@mut",[["get","facebook",["loc",[null,[479,50],[479,58]]]]],[],[]],"twitter",["subexpr","@mut",[["get","twitter",["loc",[null,[479,67],[479,74]]]]],[],[]],"linkedin",["subexpr","@mut",[["get","linkedin",["loc",[null,[479,84],[479,92]]]]],[],[]],"emails",["subexpr","@mut",[["get","email",["loc",[null,[479,100],[479,105]]]]],[],[]],"phones",["subexpr","@mut",[["get","phone",["loc",[null,[479,113],[479,118]]]]],[],[]]],["loc",[null,[479,4],[479,120]]]],
-          ["inline","ko-feedback",[],["title",["subexpr","@mut",[["get","feedbackTitle",["loc",[null,[480,24],[480,37]]]]],[],[]],"feedback",["subexpr","@mut",[["get","feedback",["loc",[null,[480,47],[480,55]]]]],[],[]]],["loc",[null,[480,4],[480,57]]]],
-          ["inline","ko-recent-cases",[],["title",["subexpr","@mut",[["get","casesTitle",["loc",[null,[481,28],[481,38]]]]],[],[]],"cases",["subexpr","@mut",[["get","cases",["loc",[null,[481,45],[481,50]]]]],[],[]]],["loc",[null,[481,4],[481,52]]]],
-          ["inline","ko-address",[],["title",["subexpr","@mut",[["get","addressTitle",["loc",[null,[482,23],[482,35]]]]],[],[]],"address",["subexpr","@mut",[["get","address",["loc",[null,[482,44],[482,51]]]]],[],[]]],["loc",[null,[482,4],[482,53]]]]
+          ["inline","ko-case-metric",[],["title",["subexpr","@mut",[["get","metricTitle",["loc",[null,[515,27],[515,38]]]]],[],[]],"metrics",["subexpr","@mut",[["get","metrics",["loc",[null,[515,47],[515,54]]]]],[],[]]],["loc",[null,[515,4],[515,56]]]],
+          ["inline","ko-recent-members",[],["title",["subexpr","@mut",[["get","membersTitle",["loc",[null,[516,30],[516,42]]]]],[],[]],"members",["subexpr","@mut",[["get","members",["loc",[null,[516,51],[516,58]]]]],[],[]]],["loc",[null,[516,4],[516,60]]]],
+          ["inline","ko-contact-info",[],["title",["subexpr","@mut",[["get","contactTitle",["loc",[null,[517,28],[517,40]]]]],[],[]],"facebook",["subexpr","@mut",[["get","facebook",["loc",[null,[517,50],[517,58]]]]],[],[]],"twitter",["subexpr","@mut",[["get","twitter",["loc",[null,[517,67],[517,74]]]]],[],[]],"linkedin",["subexpr","@mut",[["get","linkedin",["loc",[null,[517,84],[517,92]]]]],[],[]],"emails",["subexpr","@mut",[["get","email",["loc",[null,[517,100],[517,105]]]]],[],[]],"phones",["subexpr","@mut",[["get","phone",["loc",[null,[517,113],[517,118]]]]],[],[]]],["loc",[null,[517,4],[517,120]]]],
+          ["inline","ko-feedback",[],["title",["subexpr","@mut",[["get","feedbackTitle",["loc",[null,[518,24],[518,37]]]]],[],[]],"feedback",["subexpr","@mut",[["get","feedback",["loc",[null,[518,47],[518,55]]]]],[],[]]],["loc",[null,[518,4],[518,57]]]],
+          ["inline","ko-recent-cases",[],["title",["subexpr","@mut",[["get","casesTitle",["loc",[null,[519,28],[519,38]]]]],[],[]],"cases",["subexpr","@mut",[["get","cases",["loc",[null,[519,45],[519,50]]]]],[],[]]],["loc",[null,[519,4],[519,52]]]],
+          ["inline","ko-address",[],["title",["subexpr","@mut",[["get","addressTitle",["loc",[null,[520,23],[520,35]]]]],[],[]],"address",["subexpr","@mut",[["get","address",["loc",[null,[520,44],[520,51]]]]],[],[]]],["loc",[null,[520,4],[520,53]]]]
         ],
         locals: [],
         templates: []
@@ -52859,11 +53948,11 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
           "loc": {
             "source": null,
             "start": {
-              "line": 489,
+              "line": 527,
               "column": 2
             },
             "end": {
-              "line": 498,
+              "line": 536,
               "column": 2
             }
           },
@@ -52888,7 +53977,7 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
           return morphs;
         },
         statements: [
-          ["inline","ko-linked-cases",[],["title",["subexpr","@mut",[["get","linkedCasesTitle",["loc",[null,[491,12],[491,28]]]]],[],[]],"types",["subexpr","@mut",[["get","linkedCaseTypes",["loc",[null,[492,12],[492,27]]]]],[],[]],"removeCaseLink","removeCaseLink","addCaseLink","addCaseLink","cases",["subexpr","@mut",[["get","linkedCases",["loc",[null,[495,12],[495,23]]]]],[],[]],"selectedType",["subexpr","@mut",[["get","selectedType",["loc",[null,[496,19],[496,31]]]]],[],[]]],["loc",[null,[490,4],[497,6]]]]
+          ["inline","ko-linked-cases",[],["title",["subexpr","@mut",[["get","linkedCasesTitle",["loc",[null,[529,12],[529,28]]]]],[],[]],"types",["subexpr","@mut",[["get","linkedCaseTypes",["loc",[null,[530,12],[530,27]]]]],[],[]],"removeCaseLink","removeCaseLink","addCaseLink","addCaseLink","cases",["subexpr","@mut",[["get","linkedCases",["loc",[null,[533,12],[533,23]]]]],[],[]],"selectedType",["subexpr","@mut",[["get","selectedType",["loc",[null,[534,19],[534,31]]]]],[],[]]],["loc",[null,[528,4],[535,6]]]]
         ],
         locals: [],
         templates: []
@@ -52901,11 +53990,11 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
           "loc": {
             "source": null,
             "start": {
-              "line": 863,
+              "line": 901,
               "column": 4
             },
             "end": {
-              "line": 911,
+              "line": 949,
               "column": 4
             }
           },
@@ -52965,14 +54054,14 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
           return morphs;
         },
         statements: [
-          ["inline","ko-field/select",[],["options",["subexpr","@mut",[["get","selectFields",["loc",[null,[865,16],[865,28]]]]],[],[]],"title","Status","isErrored",["subexpr","@mut",[["get","caseFieldError",["loc",[null,[867,18],[867,32]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","selectFieldsChanged",["loc",[null,[868,17],[868,36]]]]],[],[]],"action","caseFieldSelected","value",["subexpr","@mut",[["get","selectedField",["loc",[null,[870,14],[870,27]]]]],[],[]],"idPath","id","labelPath","label"],["loc",[null,[864,6],[873,8]]]],
-          ["inline","ko-field/date",[],["title","Date","value",["subexpr","@mut",[["get","selectedDate",["loc",[null,[876,14],[876,26]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isDateEdited",["loc",[null,[877,17],[877,29]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","caseFieldError",["loc",[null,[878,18],[878,32]]]]],[],[]],"onValueChange","dateFieldChanged"],["loc",[null,[874,6],[880,8]]]],
-          ["inline","ko-field/drill-down",[],["title","Assignee","options",["subexpr","@mut",[["get","teamsAndPeople",["loc",[null,[883,16],[883,30]]]]],[],[]],"value",["subexpr","@mut",[["get","drillDownFieldValue",["loc",[null,[884,14],[884,33]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isDrillDownEdited",["loc",[null,[885,17],[885,34]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","caseFieldError",["loc",[null,[886,18],[886,32]]]]],[],[]],"onValueChange","drillDownValueChanged"],["loc",[null,[881,6],[888,8]]]],
-          ["inline","ko-field/tags",[],["selectedTags",["subexpr","@mut",[["get","selectedTags",["loc",[null,[890,21],[890,33]]]]],[],[]],"tags",["subexpr","@mut",[["get","allTags",["loc",[null,[891,13],[891,20]]]]],[],[]],"onTagSelectionChange",["subexpr","@mut",[["get","tagSelectionChanged",["loc",[null,[892,29],[892,48]]]]],[],[]],"onTagAddition",["subexpr","@mut",[["get","tagAdded",["loc",[null,[893,22],[893,30]]]]],[],[]]],["loc",[null,[889,6],[894,8]]]],
-          ["inline","ko-field/checkbox",[],["title","Color","options",["subexpr","@mut",[["get","checkboxField",["loc",[null,[895,48],[895,61]]]]],[],[]],"value",["subexpr","@mut",[["get","checkboxFieldValue",["loc",[null,[895,68],[895,86]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isCheckboxEdited",["loc",[null,[895,96],[895,112]]]]],[],[]],"onValueChange","checkboxValueChanged"],["loc",[null,[895,6],[895,151]]]],
-          ["inline","ko-field/text",[],["title","Some other field","value",["subexpr","@mut",[["get","textFieldValue",["loc",[null,[898,16],[898,30]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isTextFieldEdited",["loc",[null,[899,19],[899,36]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","caseFieldError",["loc",[null,[900,20],[900,34]]]]],[],[]],"onValueChange","textFieldValueChanged"],["loc",[null,[896,6],[902,8]]]],
-          ["inline","ko-field/text-area",[],["title","Some other field","value",["subexpr","@mut",[["get","textAreaFieldValue",["loc",[null,[905,16],[905,34]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isTextAreaFieldEdited",["loc",[null,[906,19],[906,40]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","caseFieldError",["loc",[null,[907,20],[907,34]]]]],[],[]],"onValueChange","textAreaFieldValueChanged"],["loc",[null,[903,6],[909,8]]]],
-          ["inline","ko-viewers",[],["viewers",["subexpr","@mut",[["get","viewers",["loc",[null,[910,27],[910,34]]]]],[],[]]],["loc",[null,[910,6],[910,36]]]]
+          ["inline","ko-field/select",[],["options",["subexpr","@mut",[["get","selectFields",["loc",[null,[903,16],[903,28]]]]],[],[]],"title","Status","isErrored",["subexpr","@mut",[["get","caseFieldError",["loc",[null,[905,18],[905,32]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","selectFieldsChanged",["loc",[null,[906,17],[906,36]]]]],[],[]],"action","caseFieldSelected","value",["subexpr","@mut",[["get","selectedField",["loc",[null,[908,14],[908,27]]]]],[],[]],"idPath","id","labelPath","label"],["loc",[null,[902,6],[911,8]]]],
+          ["inline","ko-field/date",[],["title","Date","value",["subexpr","@mut",[["get","selectedDate",["loc",[null,[914,14],[914,26]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isDateEdited",["loc",[null,[915,17],[915,29]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","caseFieldError",["loc",[null,[916,18],[916,32]]]]],[],[]],"onValueChange","dateFieldChanged"],["loc",[null,[912,6],[918,8]]]],
+          ["inline","ko-field/drill-down",[],["title","Assignee","options",["subexpr","@mut",[["get","teamsAndPeople",["loc",[null,[921,16],[921,30]]]]],[],[]],"value",["subexpr","@mut",[["get","drillDownFieldValue",["loc",[null,[922,14],[922,33]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isDrillDownEdited",["loc",[null,[923,17],[923,34]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","caseFieldError",["loc",[null,[924,18],[924,32]]]]],[],[]],"onValueChange","drillDownValueChanged"],["loc",[null,[919,6],[926,8]]]],
+          ["inline","ko-field/tags",[],["selectedTags",["subexpr","@mut",[["get","selectedTags",["loc",[null,[928,21],[928,33]]]]],[],[]],"tags",["subexpr","@mut",[["get","allTags",["loc",[null,[929,13],[929,20]]]]],[],[]],"onTagSelectionChange",["subexpr","@mut",[["get","tagSelectionChanged",["loc",[null,[930,29],[930,48]]]]],[],[]],"onTagAddition",["subexpr","@mut",[["get","tagAdded",["loc",[null,[931,22],[931,30]]]]],[],[]]],["loc",[null,[927,6],[932,8]]]],
+          ["inline","ko-field/checkbox",[],["title","Color","options",["subexpr","@mut",[["get","checkboxField",["loc",[null,[933,48],[933,61]]]]],[],[]],"value",["subexpr","@mut",[["get","checkboxFieldValue",["loc",[null,[933,68],[933,86]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isCheckboxEdited",["loc",[null,[933,96],[933,112]]]]],[],[]],"onValueChange","checkboxValueChanged"],["loc",[null,[933,6],[933,151]]]],
+          ["inline","ko-field/text",[],["title","Some other field","value",["subexpr","@mut",[["get","textFieldValue",["loc",[null,[936,16],[936,30]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isTextFieldEdited",["loc",[null,[937,19],[937,36]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","caseFieldError",["loc",[null,[938,20],[938,34]]]]],[],[]],"onValueChange","textFieldValueChanged"],["loc",[null,[934,6],[940,8]]]],
+          ["inline","ko-field/text-area",[],["title","Some other field","value",["subexpr","@mut",[["get","textAreaFieldValue",["loc",[null,[943,16],[943,34]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isTextAreaFieldEdited",["loc",[null,[944,19],[944,40]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","caseFieldError",["loc",[null,[945,20],[945,34]]]]],[],[]],"onValueChange","textAreaFieldValueChanged"],["loc",[null,[941,6],[947,8]]]],
+          ["inline","ko-viewers",[],["viewers",["subexpr","@mut",[["get","viewers",["loc",[null,[948,27],[948,34]]]]],[],[]]],["loc",[null,[948,6],[948,36]]]]
         ],
         locals: [],
         templates: []
@@ -52987,11 +54076,11 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 920,
+                  "line": 958,
                   "column": 8
                 },
                 "end": {
-                  "line": 920,
+                  "line": 958,
                   "column": 69
                 }
               },
@@ -53021,11 +54110,11 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 921,
+                  "line": 959,
                   "column": 8
                 },
                 "end": {
-                  "line": 921,
+                  "line": 959,
                   "column": 73
                 }
               },
@@ -53054,11 +54143,11 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
             "loc": {
               "source": null,
               "start": {
-                "line": 919,
+                "line": 957,
                 "column": 6
               },
               "end": {
-                "line": 922,
+                "line": 960,
                 "column": 6
               }
             },
@@ -53088,8 +54177,8 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
             return morphs;
           },
           statements: [
-            ["block","ko-table/column",[],["style","width: 150px","sortable","name"],0,null,["loc",[null,[920,8],[920,89]]]],
-            ["block","ko-table/column",[],["style","width: 100px","sortable","status"],1,null,["loc",[null,[921,8],[921,93]]]]
+            ["block","ko-table/column",[],["style","width: 150px","sortable","name"],0,null,["loc",[null,[958,8],[958,89]]]],
+            ["block","ko-table/column",[],["style","width: 100px","sortable","status"],1,null,["loc",[null,[959,8],[959,93]]]]
           ],
           locals: [],
           templates: [child0, child1]
@@ -53105,11 +54194,11 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
                   "loc": {
                     "source": null,
                     "start": {
-                      "line": 926,
+                      "line": 964,
                       "column": 12
                     },
                     "end": {
-                      "line": 926,
+                      "line": 964,
                       "column": 74
                     }
                   },
@@ -53137,8 +54226,8 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
                   return morphs;
                 },
                 statements: [
-                  ["inline","ko-avatar",[],["avatar",["subexpr","@mut",[["get","row.avatar",["loc",[null,[926,49],[926,59]]]]],[],[]]],["loc",[null,[926,30],[926,61]]]],
-                  ["content","row.name",["loc",[null,[926,62],[926,74]]]]
+                  ["inline","ko-avatar",[],["avatar",["subexpr","@mut",[["get","row.avatar",["loc",[null,[964,49],[964,59]]]]],[],[]]],["loc",[null,[964,30],[964,61]]]],
+                  ["content","row.name",["loc",[null,[964,62],[964,74]]]]
                 ],
                 locals: [],
                 templates: []
@@ -53151,11 +54240,11 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
                   "loc": {
                     "source": null,
                     "start": {
-                      "line": 927,
+                      "line": 965,
                       "column": 12
                     },
                     "end": {
-                      "line": 927,
+                      "line": 965,
                       "column": 44
                     }
                   },
@@ -53178,7 +54267,7 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
                   return morphs;
                 },
                 statements: [
-                  ["content","row.status",["loc",[null,[927,30],[927,44]]]]
+                  ["content","row.status",["loc",[null,[965,30],[965,44]]]]
                 ],
                 locals: [],
                 templates: []
@@ -53190,11 +54279,11 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 925,
+                    "line": 963,
                     "column": 10
                   },
                   "end": {
-                    "line": 928,
+                    "line": 966,
                     "column": 10
                   }
                 },
@@ -53224,8 +54313,8 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
                 return morphs;
               },
               statements: [
-                ["block","ko-table/cell",[],[],0,null,["loc",[null,[926,12],[926,92]]]],
-                ["block","ko-table/cell",[],[],1,null,["loc",[null,[927,12],[927,62]]]]
+                ["block","ko-table/cell",[],[],0,null,["loc",[null,[964,12],[964,92]]]],
+                ["block","ko-table/cell",[],[],1,null,["loc",[null,[965,12],[965,62]]]]
               ],
               locals: [],
               templates: [child0, child1]
@@ -53237,11 +54326,11 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 924,
+                  "line": 962,
                   "column": 8
                 },
                 "end": {
-                  "line": 929,
+                  "line": 967,
                   "column": 8
                 }
               },
@@ -53264,7 +54353,7 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
               return morphs;
             },
             statements: [
-              ["block","ko-table/row",[],[],0,null,["loc",[null,[925,10],[928,27]]]]
+              ["block","ko-table/row",[],[],0,null,["loc",[null,[963,10],[966,27]]]]
             ],
             locals: ["row"],
             templates: [child0]
@@ -53276,11 +54365,11 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
             "loc": {
               "source": null,
               "start": {
-                "line": 923,
+                "line": 961,
                 "column": 6
               },
               "end": {
-                "line": 930,
+                "line": 968,
                 "column": 6
               }
             },
@@ -53303,7 +54392,7 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
             return morphs;
           },
           statements: [
-            ["block","each",[["get","sortedTableData",["loc",[null,[924,16],[924,31]]]]],[],0,null,["loc",[null,[924,8],[929,17]]]]
+            ["block","each",[["get","sortedTableData",["loc",[null,[962,16],[962,31]]]]],[],0,null,["loc",[null,[962,8],[967,17]]]]
           ],
           locals: [],
           templates: [child0]
@@ -53315,11 +54404,11 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
           "loc": {
             "source": null,
             "start": {
-              "line": 918,
+              "line": 956,
               "column": 4
             },
             "end": {
-              "line": 931,
+              "line": 969,
               "column": 4
             }
           },
@@ -53345,8 +54434,8 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
           return morphs;
         },
         statements: [
-          ["block","ko-table/header",[],["onSort","tableSorted"],0,null,["loc",[null,[919,6],[922,26]]]],
-          ["block","ko-table/body",[],[],1,null,["loc",[null,[923,6],[930,24]]]]
+          ["block","ko-table/header",[],["onSort","tableSorted"],0,null,["loc",[null,[957,6],[960,26]]]],
+          ["block","ko-table/body",[],[],1,null,["loc",[null,[961,6],[968,24]]]]
         ],
         locals: [],
         templates: [child0, child1]
@@ -53362,7 +54451,7 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
             "column": 0
           },
           "end": {
-            "line": 1006,
+            "line": 1044,
             "column": 0
           }
         },
@@ -53546,7 +54635,53 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
         var el2 = dom.createElement("div");
         dom.setAttribute(el2,"class","showcase-spacer");
         dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("h2");
+        var el3 = dom.createTextNode("Create case panel");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("code");
+        var el3 = dom.createTextNode("\n      ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("{{ko-agent-dropdown/create-case\n        submit=\"onCreateCaseSubmitted\"\n        create=\"onCreateCaseCompleted\"\n        error=\"onCreateCaseFailed\"\n        cancel=\"onCreateCaseCancelled\"\n        }}\n    ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","showcase-spacer");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n    ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("h2");
+        var el3 = dom.createTextNode("Create user panel");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("code");
+        var el3 = dom.createTextNode("\n      ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("{{ko-agent-dropdown/create-user\n        submit=\"onCreateUserSubmitted\"\n        create=\"onCreateUserCompleted\"\n        error=\"onCreateUserFailed\"\n        cancel=\"onCreateUserCancelled\"\n        }}\n    ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","showcase-spacer");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
         dom.appendChild(el1, el2);
         var el2 = dom.createElement("h2");
         var el3 = dom.createTextNode("ko-dropdown/select");
@@ -55809,15 +56944,15 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
         var element4 = dom.childAt(element1, [5]);
         var element5 = dom.childAt(element1, [7]);
         var element6 = dom.childAt(element1, [9]);
-        var element7 = dom.childAt(element0, [295]);
-        var element8 = dom.childAt(element0, [297]);
-        var element9 = dom.childAt(element0, [301]);
-        var element10 = dom.childAt(element0, [321]);
+        var element7 = dom.childAt(element0, [311]);
+        var element8 = dom.childAt(element0, [313]);
+        var element9 = dom.childAt(element0, [317]);
+        var element10 = dom.childAt(element0, [337]);
         var element11 = dom.childAt(element10, [1, 1]);
         var element12 = dom.childAt(element11, [1, 1]);
         var element13 = dom.childAt(element11, [3, 1]);
         var element14 = dom.childAt(element11, [5, 1]);
-        var morphs = new Array(67);
+        var morphs = new Array(69);
         morphs[0] = dom.createElementMorph(element2);
         morphs[1] = dom.createElementMorph(element3);
         morphs[2] = dom.createElementMorph(element4);
@@ -55830,61 +56965,63 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
         morphs[9] = dom.createMorphAt(element0,31,31);
         morphs[10] = dom.createMorphAt(element0,33,33);
         morphs[11] = dom.createMorphAt(element0,41,41);
-        morphs[12] = dom.createMorphAt(element0,47,47);
-        morphs[13] = dom.createMorphAt(element0,61,61);
+        morphs[12] = dom.createMorphAt(element0,49,49);
+        morphs[13] = dom.createMorphAt(element0,57,57);
         morphs[14] = dom.createMorphAt(element0,63,63);
-        morphs[15] = dom.createMorphAt(element0,65,65);
-        morphs[16] = dom.createMorphAt(element0,71,71);
-        morphs[17] = dom.createMorphAt(element0,77,77);
-        morphs[18] = dom.createMorphAt(element0,85,85);
-        morphs[19] = dom.createMorphAt(element0,91,91);
-        morphs[20] = dom.createMorphAt(element0,99,99);
+        morphs[15] = dom.createMorphAt(element0,77,77);
+        morphs[16] = dom.createMorphAt(element0,79,79);
+        morphs[17] = dom.createMorphAt(element0,81,81);
+        morphs[18] = dom.createMorphAt(element0,87,87);
+        morphs[19] = dom.createMorphAt(element0,93,93);
+        morphs[20] = dom.createMorphAt(element0,101,101);
         morphs[21] = dom.createMorphAt(element0,107,107);
         morphs[22] = dom.createMorphAt(element0,115,115);
         morphs[23] = dom.createMorphAt(element0,123,123);
         morphs[24] = dom.createMorphAt(element0,131,131);
         morphs[25] = dom.createMorphAt(element0,139,139);
         morphs[26] = dom.createMorphAt(element0,147,147);
-        morphs[27] = dom.createMorphAt(element0,153,153);
-        morphs[28] = dom.createMorphAt(element0,159,159);
-        morphs[29] = dom.createMorphAt(element0,165,165);
-        morphs[30] = dom.createMorphAt(element0,169,169);
-        morphs[31] = dom.createMorphAt(element0,173,173);
-        morphs[32] = dom.createMorphAt(element0,177,177);
-        morphs[33] = dom.createMorphAt(element0,181,181);
-        morphs[34] = dom.createMorphAt(element0,191,191);
-        morphs[35] = dom.createMorphAt(element0,193,193);
-        morphs[36] = dom.createMorphAt(element0,195,195);
-        morphs[37] = dom.createMorphAt(element0,197,197);
-        morphs[38] = dom.createMorphAt(element0,199,199);
-        morphs[39] = dom.createMorphAt(element0,207,207);
-        morphs[40] = dom.createMorphAt(element0,211,211);
-        morphs[41] = dom.createMorphAt(element0,215,215);
-        morphs[42] = dom.createMorphAt(element0,219,219);
-        morphs[43] = dom.createMorphAt(dom.childAt(element0, [229]),0,0);
-        morphs[44] = dom.createMorphAt(element0,237,237);
-        morphs[45] = dom.createMorphAt(dom.childAt(element0, [247]),0,0);
-        morphs[46] = dom.createMorphAt(dom.childAt(element0, [251]),0,0);
-        morphs[47] = dom.createMorphAt(dom.childAt(element0, [255]),0,0);
-        morphs[48] = dom.createMorphAt(dom.childAt(element0, [259]),0,0);
-        morphs[49] = dom.createMorphAt(dom.childAt(element0, [263]),0,0);
-        morphs[50] = dom.createMorphAt(dom.childAt(element0, [267]),0,0);
-        morphs[51] = dom.createMorphAt(dom.childAt(element0, [271]),0,0);
-        morphs[52] = dom.createMorphAt(dom.childAt(element0, [275]),0,0);
-        morphs[53] = dom.createMorphAt(dom.childAt(element0, [279]),0,0);
-        morphs[54] = dom.createMorphAt(dom.childAt(element0, [285]),0,0);
-        morphs[55] = dom.createMorphAt(dom.childAt(element0, [289, 3, 1]),1,1);
-        morphs[56] = dom.createElementMorph(element7);
-        morphs[57] = dom.createElementMorph(element8);
-        morphs[58] = dom.createAttrMorph(element9, 'style');
-        morphs[59] = dom.createMorphAt(element9,1,1);
-        morphs[60] = dom.createMorphAt(dom.childAt(element0, [307]),1,1);
-        morphs[61] = dom.createMorphAt(dom.childAt(element0, [313]),1,1);
-        morphs[62] = dom.createMorphAt(dom.childAt(element0, [315]),0,0);
-        morphs[63] = dom.createAttrMorph(element10, 'style');
-        morphs[64] = dom.createAttrMorph(element12, 'src');
-        morphs[65] = dom.createAttrMorph(element13, 'src');
-        morphs[66] = dom.createAttrMorph(element14, 'src');
+        morphs[27] = dom.createMorphAt(element0,155,155);
+        morphs[28] = dom.createMorphAt(element0,163,163);
+        morphs[29] = dom.createMorphAt(element0,169,169);
+        morphs[30] = dom.createMorphAt(element0,175,175);
+        morphs[31] = dom.createMorphAt(element0,181,181);
+        morphs[32] = dom.createMorphAt(element0,185,185);
+        morphs[33] = dom.createMorphAt(element0,189,189);
+        morphs[34] = dom.createMorphAt(element0,193,193);
+        morphs[35] = dom.createMorphAt(element0,197,197);
+        morphs[36] = dom.createMorphAt(element0,207,207);
+        morphs[37] = dom.createMorphAt(element0,209,209);
+        morphs[38] = dom.createMorphAt(element0,211,211);
+        morphs[39] = dom.createMorphAt(element0,213,213);
+        morphs[40] = dom.createMorphAt(element0,215,215);
+        morphs[41] = dom.createMorphAt(element0,223,223);
+        morphs[42] = dom.createMorphAt(element0,227,227);
+        morphs[43] = dom.createMorphAt(element0,231,231);
+        morphs[44] = dom.createMorphAt(element0,235,235);
+        morphs[45] = dom.createMorphAt(dom.childAt(element0, [245]),0,0);
+        morphs[46] = dom.createMorphAt(element0,253,253);
+        morphs[47] = dom.createMorphAt(dom.childAt(element0, [263]),0,0);
+        morphs[48] = dom.createMorphAt(dom.childAt(element0, [267]),0,0);
+        morphs[49] = dom.createMorphAt(dom.childAt(element0, [271]),0,0);
+        morphs[50] = dom.createMorphAt(dom.childAt(element0, [275]),0,0);
+        morphs[51] = dom.createMorphAt(dom.childAt(element0, [279]),0,0);
+        morphs[52] = dom.createMorphAt(dom.childAt(element0, [283]),0,0);
+        morphs[53] = dom.createMorphAt(dom.childAt(element0, [287]),0,0);
+        morphs[54] = dom.createMorphAt(dom.childAt(element0, [291]),0,0);
+        morphs[55] = dom.createMorphAt(dom.childAt(element0, [295]),0,0);
+        morphs[56] = dom.createMorphAt(dom.childAt(element0, [301]),0,0);
+        morphs[57] = dom.createMorphAt(dom.childAt(element0, [305, 3, 1]),1,1);
+        morphs[58] = dom.createElementMorph(element7);
+        morphs[59] = dom.createElementMorph(element8);
+        morphs[60] = dom.createAttrMorph(element9, 'style');
+        morphs[61] = dom.createMorphAt(element9,1,1);
+        morphs[62] = dom.createMorphAt(dom.childAt(element0, [323]),1,1);
+        morphs[63] = dom.createMorphAt(dom.childAt(element0, [329]),1,1);
+        morphs[64] = dom.createMorphAt(dom.childAt(element0, [331]),0,0);
+        morphs[65] = dom.createAttrMorph(element10, 'style');
+        morphs[66] = dom.createAttrMorph(element12, 'src');
+        morphs[67] = dom.createAttrMorph(element13, 'src');
+        morphs[68] = dom.createAttrMorph(element14, 'src');
         return morphs;
       },
       statements: [
@@ -55899,62 +57036,64 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
         ["inline","ko-add-participants-context-menu",[],["copyInParticipants",["subexpr","@mut",[["get","copyInParticipants",["loc",[null,[43,23],[43,41]]]]],[],[]],"contextModalId","addParticipantsInline"],["loc",[null,[42,2],[44,44]]]],
         ["block","ko-toggle-context-modal",[],["toggleModal","drillDownInline"],0,null,["loc",[null,[59,2],[61,30]]]],
         ["inline","ko-drill-down-context-menu",[],["title",["subexpr","format-message",[["subexpr","intl-get",["cases.applymacro"],[],["loc",[null,[64,26],[64,55]]]]],[],["loc",[null,[64,10],[64,56]]]],"placeholder",["subexpr","format-message",[["subexpr","intl-get",["cases.applymacroplaceholder"],[],["loc",[null,[65,32],[65,72]]]]],[],["loc",[null,[65,16],[65,73]]]],"options",["subexpr","@mut",[["get","macros",["loc",[null,[66,12],[66,18]]]]],[],[]],"contextModalId","drillDownInline","onSelect","drillDownSelected"],["loc",[null,[63,2],[68,34]]]],
-        ["block","ko-dropdown/select",[],["label","Primary"],1,null,["loc",[null,[86,2],[91,25]]]],
-        ["inline","ko-dropdown/drill-down",[],["label","Macro","title",["subexpr","format-message",[["subexpr","intl-get",["cases.applymacro"],[],["loc",[null,[99,26],[99,55]]]]],[],["loc",[null,[99,10],[99,56]]]],"placeholder",["subexpr","format-message",[["subexpr","intl-get",["cases.applymacroplaceholder"],[],["loc",[null,[100,32],[100,72]]]]],[],["loc",[null,[100,16],[100,73]]]],"options",["subexpr","@mut",[["get","macros",["loc",[null,[101,12],[101,18]]]]],[],[]],"contextModalId","drillDownInline","onSelect","drillDownSelected"],["loc",[null,[97,2],[103,34]]]],
-        ["inline","ko-time-billing/ko-time-billing-demo-open",[],["addTimeBilling","addTimeBilling"],["loc",[null,[373,2],[373,79]]]],
-        ["inline","ko-time-billing/ko-time-billing-context-modal",[],["contextModalId","addTimeBilling","timeBillingDuration",["subexpr","@mut",[["get","timeBillingDuration",["loc",[null,[374,102],[374,121]]]]],[],[]],"on-duration-change","onDurationChanged"],["loc",[null,[374,2],[374,162]]]],
-        ["content","timeBillingDuration",["loc",[null,[376,12],[376,35]]]],
-        ["content","ko-loader",["loc",[null,[380,2],[380,15]]]],
-        ["inline","ko-loader",[],["large",true],["loc",[null,[387,2],[387,26]]]],
-        ["inline","ko-feed",[],["events",["subexpr","@mut",[["get","events",["loc",[null,[395,19],[395,25]]]]],[],[]]],["loc",[null,[395,2],[395,27]]]],
-        ["inline","ko-contact-info",[],["title",["subexpr","@mut",[["get","contactTitle",["loc",[null,[400,26],[400,38]]]]],[],[]],"facebook",["subexpr","@mut",[["get","facebook",["loc",[null,[400,48],[400,56]]]]],[],[]],"twitter",["subexpr","@mut",[["get","twitter",["loc",[null,[400,65],[400,72]]]]],[],[]],"linkedin",["subexpr","@mut",[["get","linkedin",["loc",[null,[400,82],[400,90]]]]],[],[]],"emails",["subexpr","@mut",[["get","email",["loc",[null,[400,98],[400,103]]]]],[],[]],"phones",["subexpr","@mut",[["get","phone",["loc",[null,[400,111],[400,116]]]]],[],[]]],["loc",[null,[400,2],[400,118]]]],
-        ["inline","ko-feedback",[],["title",["subexpr","@mut",[["get","feedbackTitle",["loc",[null,[409,22],[409,35]]]]],[],[]],"feedback",["subexpr","@mut",[["get","feedback",["loc",[null,[409,45],[409,53]]]]],[],[]]],["loc",[null,[409,2],[409,55]]]],
-        ["inline","ko-recent-cases",[],["title",["subexpr","@mut",[["get","casesTitle",["loc",[null,[418,26],[418,36]]]]],[],[]],"cases",["subexpr","@mut",[["get","cases",["loc",[null,[418,43],[418,48]]]]],[],[]]],["loc",[null,[418,2],[418,50]]]],
-        ["inline","ko-case-metric",[],["title",["subexpr","@mut",[["get","metricTitle",["loc",[null,[427,25],[427,36]]]]],[],[]],"metrics",["subexpr","@mut",[["get","metrics",["loc",[null,[427,45],[427,52]]]]],[],[]]],["loc",[null,[427,2],[427,54]]]],
-        ["inline","ko-avatar",[],["avatar",["subexpr","@mut",[["get","avatar",["loc",[null,[436,21],[436,27]]]]],[],[]]],["loc",[null,[436,2],[436,29]]]],
-        ["inline","ko-recent-members",[],["title",["subexpr","@mut",[["get","membersTitle",["loc",[null,[445,28],[445,40]]]]],[],[]],"members",["subexpr","@mut",[["get","people",["loc",[null,[445,49],[445,55]]]]],[],[]]],["loc",[null,[445,2],[445,57]]]],
-        ["inline","ko-address",[],["title",["subexpr","@mut",[["get","addressTitle",["loc",[null,[454,21],[454,33]]]]],[],[]],"address",["subexpr","@mut",[["get","address",["loc",[null,[454,42],[454,49]]]]],[],[]]],["loc",[null,[454,2],[454,51]]]],
-        ["block","ko-info-bar",[],[],2,null,["loc",[null,[464,2],[469,18]]]],
-        ["block","ko-info-bar",[],[],3,null,["loc",[null,[476,2],[483,18]]]],
-        ["block","ko-info-bar",[],[],4,null,["loc",[null,[489,2],[498,18]]]],
-        ["inline","ko-radio",[],["label","You can choose this","large",true,"disabled",false,"tabindex",0,"checked",["subexpr","@mut",[["get","selection",["loc",[null,[508,12],[508,21]]]]],[],[]],"value","one"],["loc",[null,[503,2],[510,4]]]],
-        ["inline","ko-radio",[],["label","or this","large",true,"disabled",false,"tabindex",0,"checked",["subexpr","@mut",[["get","selection",["loc",[null,[517,12],[517,21]]]]],[],[]],"value","two"],["loc",[null,[512,2],[519,4]]]],
-        ["inline","ko-radio",[],["label","but not this","large",true,"disabled",true,"tabindex",0,"checked",["subexpr","@mut",[["get","selection",["loc",[null,[526,12],[526,21]]]]],[],[]],"value","three"],["loc",[null,[521,2],[528,4]]]],
-        ["inline","ko-radio",[],["label","nor this","large",false,"disabled",true,"tabindex",0,"checked",["subexpr","@mut",[["get","selection",["loc",[null,[535,12],[535,21]]]]],[],[]],"value","four"],["loc",[null,[530,2],[537,4]]]],
-        ["inline","ko-radio",[],["label","This is fine however","large",false,"disabled",false,"tabindex",0,"checked",["subexpr","@mut",[["get","selection",["loc",[null,[544,12],[544,21]]]]],[],[]],"value","five"],["loc",[null,[539,2],[546,4]]]],
-        ["inline","ko-checkbox",[],["label","Remember my preferences","large",true,"disabled",false,"tabindex",0,"checked",false],["loc",[null,[601,2],[607,4]]]],
-        ["inline","ko-checkbox",[],["label","Remember my preferences","large",true,"disabled",false,"tabindex",0,"checked",true],["loc",[null,[609,2],[615,4]]]],
-        ["inline","ko-checkbox",[],["label","Remember my diet","large",true,"disabled",true,"tabindex",0,"checked",false],["loc",[null,[617,2],[623,4]]]],
-        ["inline","ko-checkbox",[],["label","Remember my color","large",false,"disabled",true,"tabindex",0,"checked",false],["loc",[null,[625,2],[631,4]]]],
-        ["inline","ko-checkbox",[],["label","Remember my name","large",false,"disabled",false,"tabindex",0,"checked",false],["loc",[null,[633,2],[639,4]]]],
-        ["inline","ko-toggle",[],["activated",false,"label","Nuclear bomb switch","micro",false,"tabindex",0],["loc",[null,[688,2],[693,4]]]],
-        ["inline","ko-toggle",[],["activated",true,"label","Nuclear bomb switch","micro",false,"tabindex",0],["loc",[null,[695,2],[700,4]]]],
-        ["inline","ko-toggle",[],["activated",false,"label","Nuclear bomb switch","micro",true,"tabindex",0],["loc",[null,[702,2],[707,4]]]],
-        ["inline","ko-toggle",[],["activated",true,"label","Nuclear bomb switch","micro",true,"tabindex",0],["loc",[null,[709,2],[714,4]]]],
-        ["inline","ko-breadcrumbs",[],["breadcrumbs",["subexpr","@mut",[["get","tabs",["loc",[null,[750,36],[750,40]]]]],[],[]],"activeTab",["subexpr","@mut",[["get","activeTab",["loc",[null,[750,51],[750,60]]]]],[],[]],"action","tabChange"],["loc",[null,[750,7],[750,81]]]],
-        ["inline","ko-search",[],["placeholder","search","onSearchTermChange","logIt"],["loc",[null,[757,2],[759,32]]]],
-        ["inline","escape-html",["<button class=\"button button--default\">Button</button>"],[],["loc",[null,[769,8],[769,80]]]],
-        ["inline","escape-html",["<button class=\"button button--default\" disabled=\"disabled\">Disabled button</button>"],[],["loc",[null,[774,8],[774,109]]]],
-        ["inline","escape-html",["<button class=\"button button--action i--chevrons\">Actions</button>"],[],["loc",[null,[779,8],[779,92]]]],
-        ["inline","escape-html",["<button class=\"button button--primary\">Primary button</button>"],[],["loc",[null,[785,8],[785,88]]]],
-        ["inline","escape-html",["<button class=\"button button--highlight\">Highlight button</button>"],[],["loc",[null,[791,8],[791,92]]]],
-        ["inline","escape-html",["<button class=\"button button--alert\">Alert button</button>"],[],["loc",[null,[797,8],[797,84]]]],
-        ["inline","escape-html",["<button class=\"button button--twitter\">Twitter button</button>"],[],["loc",[null,[802,8],[802,88]]]],
-        ["inline","escape-html",["<button class=\"button button--facebook\">Facebook button</button>"],[],["loc",[null,[807,8],[807,90]]]],
-        ["inline","escape-html",["<div class=\"button-group\">\n  \t<button class=\"button-group__item\">Button</button><button class=\"button-group__item toggled\">Toggled button</button><button class=\"button-group__item\">Button</button>\n  </div>"],[],["loc",[null,[817,8],[819,11]]]],
-        ["inline","escape-html",["<button class=\"button button--primary button--dropdown\">Split button</button>"],[],["loc",[null,[835,8],[835,103]]]],
-        ["inline","ko-editable-text",[],["value",["subexpr","@mut",[["get","editableTextVal",["loc",[null,[845,33],[845,48]]]]],[],[]]],["loc",[null,[845,8],[845,50]]]],
-        ["element","action",["toggleCaseFieldError"],[],["loc",[null,[857,10],[857,43]]]],
-        ["element","action",["clearChanges"],[],["loc",[null,[858,10],[858,35]]]],
-        ["attribute","style",["get","infoBarStyle",["loc",[null,[862,15],[862,27]]]]],
-        ["block","ko-info-bar",[],[],5,null,["loc",[null,[863,4],[911,20]]]],
-        ["block","ko-table",[],["selectable",true],6,null,["loc",[null,[918,4],[931,17]]]],
-        ["inline","ko-datepicker",[],["date",["subexpr","@mut",[["get","date",["loc",[null,[938,25],[938,29]]]]],[],[]],"on-date-change","dateChange"],["loc",[null,[938,4],[938,59]]]],
-        ["inline","escape-html",["{{ko-datepicker date=date on-date-change=\"dateChange\"}}"],[],["loc",[null,[940,8],[940,81]]]],
-        ["attribute","style",["get","boxContainerStyle",["loc",[null,[946,37],[946,54]]]]],
-        ["attribute","src",["concat",[["get","assetRoot",["loc",[null,[950,22],[950,31]]]],"/images/icons/case.svg"]]],
-        ["attribute","src",["concat",[["get","assetRoot",["loc",[null,[956,22],[956,31]]]],"/images/icons/user.svg"]]],
-        ["attribute","src",["concat",[["get","assetRoot",["loc",[null,[962,22],[962,31]]]],"/images/icons/organization.svg"]]]
+        ["inline","ko-agent-dropdown/create-case",[],["submit","onCreateCaseSubmitted","create","onCreateCaseCompleted","error","onCreateCaseFailed","cancel","onCreateCaseCancelled"],["loc",[null,[86,2],[91,4]]]],
+        ["inline","ko-agent-dropdown/create-user",[],["submit","onCreateUserSubmitted","create","onCreateUserCompleted","error","onCreateUserFailed","cancel","onCreateUserCancelled"],["loc",[null,[105,4],[110,6]]]],
+        ["block","ko-dropdown/select",[],["label","Primary"],1,null,["loc",[null,[124,2],[129,25]]]],
+        ["inline","ko-dropdown/drill-down",[],["label","Macro","title",["subexpr","format-message",[["subexpr","intl-get",["cases.applymacro"],[],["loc",[null,[137,26],[137,55]]]]],[],["loc",[null,[137,10],[137,56]]]],"placeholder",["subexpr","format-message",[["subexpr","intl-get",["cases.applymacroplaceholder"],[],["loc",[null,[138,32],[138,72]]]]],[],["loc",[null,[138,16],[138,73]]]],"options",["subexpr","@mut",[["get","macros",["loc",[null,[139,12],[139,18]]]]],[],[]],"contextModalId","drillDownInline","onSelect","drillDownSelected"],["loc",[null,[135,2],[141,34]]]],
+        ["inline","ko-time-billing/ko-time-billing-demo-open",[],["addTimeBilling","addTimeBilling"],["loc",[null,[411,2],[411,79]]]],
+        ["inline","ko-time-billing/ko-time-billing-context-modal",[],["contextModalId","addTimeBilling","timeBillingDuration",["subexpr","@mut",[["get","timeBillingDuration",["loc",[null,[412,102],[412,121]]]]],[],[]],"on-duration-change","onDurationChanged"],["loc",[null,[412,2],[412,162]]]],
+        ["content","timeBillingDuration",["loc",[null,[414,12],[414,35]]]],
+        ["content","ko-loader",["loc",[null,[418,2],[418,15]]]],
+        ["inline","ko-loader",[],["large",true],["loc",[null,[425,2],[425,26]]]],
+        ["inline","ko-feed",[],["events",["subexpr","@mut",[["get","events",["loc",[null,[433,19],[433,25]]]]],[],[]]],["loc",[null,[433,2],[433,27]]]],
+        ["inline","ko-contact-info",[],["title",["subexpr","@mut",[["get","contactTitle",["loc",[null,[438,26],[438,38]]]]],[],[]],"facebook",["subexpr","@mut",[["get","facebook",["loc",[null,[438,48],[438,56]]]]],[],[]],"twitter",["subexpr","@mut",[["get","twitter",["loc",[null,[438,65],[438,72]]]]],[],[]],"linkedin",["subexpr","@mut",[["get","linkedin",["loc",[null,[438,82],[438,90]]]]],[],[]],"emails",["subexpr","@mut",[["get","email",["loc",[null,[438,98],[438,103]]]]],[],[]],"phones",["subexpr","@mut",[["get","phone",["loc",[null,[438,111],[438,116]]]]],[],[]]],["loc",[null,[438,2],[438,118]]]],
+        ["inline","ko-feedback",[],["title",["subexpr","@mut",[["get","feedbackTitle",["loc",[null,[447,22],[447,35]]]]],[],[]],"feedback",["subexpr","@mut",[["get","feedback",["loc",[null,[447,45],[447,53]]]]],[],[]]],["loc",[null,[447,2],[447,55]]]],
+        ["inline","ko-recent-cases",[],["title",["subexpr","@mut",[["get","casesTitle",["loc",[null,[456,26],[456,36]]]]],[],[]],"cases",["subexpr","@mut",[["get","cases",["loc",[null,[456,43],[456,48]]]]],[],[]]],["loc",[null,[456,2],[456,50]]]],
+        ["inline","ko-case-metric",[],["title",["subexpr","@mut",[["get","metricTitle",["loc",[null,[465,25],[465,36]]]]],[],[]],"metrics",["subexpr","@mut",[["get","metrics",["loc",[null,[465,45],[465,52]]]]],[],[]]],["loc",[null,[465,2],[465,54]]]],
+        ["inline","ko-avatar",[],["avatar",["subexpr","@mut",[["get","avatar",["loc",[null,[474,21],[474,27]]]]],[],[]]],["loc",[null,[474,2],[474,29]]]],
+        ["inline","ko-recent-members",[],["title",["subexpr","@mut",[["get","membersTitle",["loc",[null,[483,28],[483,40]]]]],[],[]],"members",["subexpr","@mut",[["get","people",["loc",[null,[483,49],[483,55]]]]],[],[]]],["loc",[null,[483,2],[483,57]]]],
+        ["inline","ko-address",[],["title",["subexpr","@mut",[["get","addressTitle",["loc",[null,[492,21],[492,33]]]]],[],[]],"address",["subexpr","@mut",[["get","address",["loc",[null,[492,42],[492,49]]]]],[],[]]],["loc",[null,[492,2],[492,51]]]],
+        ["block","ko-info-bar",[],[],2,null,["loc",[null,[502,2],[507,18]]]],
+        ["block","ko-info-bar",[],[],3,null,["loc",[null,[514,2],[521,18]]]],
+        ["block","ko-info-bar",[],[],4,null,["loc",[null,[527,2],[536,18]]]],
+        ["inline","ko-radio",[],["label","You can choose this","large",true,"disabled",false,"tabindex",0,"checked",["subexpr","@mut",[["get","selection",["loc",[null,[546,12],[546,21]]]]],[],[]],"value","one"],["loc",[null,[541,2],[548,4]]]],
+        ["inline","ko-radio",[],["label","or this","large",true,"disabled",false,"tabindex",0,"checked",["subexpr","@mut",[["get","selection",["loc",[null,[555,12],[555,21]]]]],[],[]],"value","two"],["loc",[null,[550,2],[557,4]]]],
+        ["inline","ko-radio",[],["label","but not this","large",true,"disabled",true,"tabindex",0,"checked",["subexpr","@mut",[["get","selection",["loc",[null,[564,12],[564,21]]]]],[],[]],"value","three"],["loc",[null,[559,2],[566,4]]]],
+        ["inline","ko-radio",[],["label","nor this","large",false,"disabled",true,"tabindex",0,"checked",["subexpr","@mut",[["get","selection",["loc",[null,[573,12],[573,21]]]]],[],[]],"value","four"],["loc",[null,[568,2],[575,4]]]],
+        ["inline","ko-radio",[],["label","This is fine however","large",false,"disabled",false,"tabindex",0,"checked",["subexpr","@mut",[["get","selection",["loc",[null,[582,12],[582,21]]]]],[],[]],"value","five"],["loc",[null,[577,2],[584,4]]]],
+        ["inline","ko-checkbox",[],["label","Remember my preferences","large",true,"disabled",false,"tabindex",0,"checked",false],["loc",[null,[639,2],[645,4]]]],
+        ["inline","ko-checkbox",[],["label","Remember my preferences","large",true,"disabled",false,"tabindex",0,"checked",true],["loc",[null,[647,2],[653,4]]]],
+        ["inline","ko-checkbox",[],["label","Remember my diet","large",true,"disabled",true,"tabindex",0,"checked",false],["loc",[null,[655,2],[661,4]]]],
+        ["inline","ko-checkbox",[],["label","Remember my color","large",false,"disabled",true,"tabindex",0,"checked",false],["loc",[null,[663,2],[669,4]]]],
+        ["inline","ko-checkbox",[],["label","Remember my name","large",false,"disabled",false,"tabindex",0,"checked",false],["loc",[null,[671,2],[677,4]]]],
+        ["inline","ko-toggle",[],["activated",false,"label","Nuclear bomb switch","micro",false,"tabindex",0],["loc",[null,[726,2],[731,4]]]],
+        ["inline","ko-toggle",[],["activated",true,"label","Nuclear bomb switch","micro",false,"tabindex",0],["loc",[null,[733,2],[738,4]]]],
+        ["inline","ko-toggle",[],["activated",false,"label","Nuclear bomb switch","micro",true,"tabindex",0],["loc",[null,[740,2],[745,4]]]],
+        ["inline","ko-toggle",[],["activated",true,"label","Nuclear bomb switch","micro",true,"tabindex",0],["loc",[null,[747,2],[752,4]]]],
+        ["inline","ko-breadcrumbs",[],["breadcrumbs",["subexpr","@mut",[["get","tabs",["loc",[null,[788,36],[788,40]]]]],[],[]],"activeTab",["subexpr","@mut",[["get","activeTab",["loc",[null,[788,51],[788,60]]]]],[],[]],"action","tabChange"],["loc",[null,[788,7],[788,81]]]],
+        ["inline","ko-search",[],["placeholder","search","onSearchTermChange","logIt"],["loc",[null,[795,2],[797,32]]]],
+        ["inline","escape-html",["<button class=\"button button--default\">Button</button>"],[],["loc",[null,[807,8],[807,80]]]],
+        ["inline","escape-html",["<button class=\"button button--default\" disabled=\"disabled\">Disabled button</button>"],[],["loc",[null,[812,8],[812,109]]]],
+        ["inline","escape-html",["<button class=\"button button--action i--chevrons\">Actions</button>"],[],["loc",[null,[817,8],[817,92]]]],
+        ["inline","escape-html",["<button class=\"button button--primary\">Primary button</button>"],[],["loc",[null,[823,8],[823,88]]]],
+        ["inline","escape-html",["<button class=\"button button--highlight\">Highlight button</button>"],[],["loc",[null,[829,8],[829,92]]]],
+        ["inline","escape-html",["<button class=\"button button--alert\">Alert button</button>"],[],["loc",[null,[835,8],[835,84]]]],
+        ["inline","escape-html",["<button class=\"button button--twitter\">Twitter button</button>"],[],["loc",[null,[840,8],[840,88]]]],
+        ["inline","escape-html",["<button class=\"button button--facebook\">Facebook button</button>"],[],["loc",[null,[845,8],[845,90]]]],
+        ["inline","escape-html",["<div class=\"button-group\">\n  \t<button class=\"button-group__item\">Button</button><button class=\"button-group__item toggled\">Toggled button</button><button class=\"button-group__item\">Button</button>\n  </div>"],[],["loc",[null,[855,8],[857,11]]]],
+        ["inline","escape-html",["<button class=\"button button--primary button--dropdown\">Split button</button>"],[],["loc",[null,[873,8],[873,103]]]],
+        ["inline","ko-editable-text",[],["value",["subexpr","@mut",[["get","editableTextVal",["loc",[null,[883,33],[883,48]]]]],[],[]]],["loc",[null,[883,8],[883,50]]]],
+        ["element","action",["toggleCaseFieldError"],[],["loc",[null,[895,10],[895,43]]]],
+        ["element","action",["clearChanges"],[],["loc",[null,[896,10],[896,35]]]],
+        ["attribute","style",["get","infoBarStyle",["loc",[null,[900,15],[900,27]]]]],
+        ["block","ko-info-bar",[],[],5,null,["loc",[null,[901,4],[949,20]]]],
+        ["block","ko-table",[],["selectable",true],6,null,["loc",[null,[956,4],[969,17]]]],
+        ["inline","ko-datepicker",[],["date",["subexpr","@mut",[["get","date",["loc",[null,[976,25],[976,29]]]]],[],[]],"on-date-change","dateChange"],["loc",[null,[976,4],[976,59]]]],
+        ["inline","escape-html",["{{ko-datepicker date=date on-date-change=\"dateChange\"}}"],[],["loc",[null,[978,8],[978,81]]]],
+        ["attribute","style",["get","boxContainerStyle",["loc",[null,[984,37],[984,54]]]]],
+        ["attribute","src",["concat",[["get","assetRoot",["loc",[null,[988,22],[988,31]]]],"/images/icons/case.svg"]]],
+        ["attribute","src",["concat",[["get","assetRoot",["loc",[null,[994,22],[994,31]]]],"/images/icons/user.svg"]]],
+        ["attribute","src",["concat",[["get","assetRoot",["loc",[null,[1000,22],[1000,31]]]],"/images/icons/organization.svg"]]]
       ],
       locals: [],
       templates: [child0, child1, child2, child3, child4, child5, child6]
@@ -64166,7 +65305,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+6d937ca8"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+0651085c"});
 }
 
 /* jshint ignore:end */
