@@ -1047,7 +1047,7 @@ define('frontend-cp/components/ko-add-participants-popover/component', ['exports
       }
     })),
 
-    setupParticipants: Ember['default'].on('didInsertElement', function () {
+    setupParticipants: Ember['default'].on('willInsertElement', function () {
       this.set('selectedParticipants', new Ember['default'].A([]));
       this.set('filteredParticipants', this.get('results'));
     }),
@@ -5837,7 +5837,7 @@ define('frontend-cp/components/ko-admin/page-container/component', ['exports', '
     // State
     resizeSidebarsRequestID: null,
 
-    resizeSidebarAndContent: Ember['default'].on('didInsertElement', function () {
+    resizeSidebarAndContent: Ember['default'].on('willInsertElement', function () {
       var _this = this;
 
       this.set('resizeSidebarsRequestID', window.requestAnimationFrame(function () {
@@ -6758,7 +6758,7 @@ define('frontend-cp/components/ko-admin/tags/component', ['exports', 'ember'], f
       this.sendAction('onSearchTermUpdated', this.get('searchTerm'));
     }),
 
-    didInsertElement: function didInsertElement() {
+    willInsertElement: function willInsertElement() {
       var width = this.$('.ko-dropdown-select__button').outerWidth(true);
       this.set('contentStyle', ('min-width:' + width + 'px;').htmlSafe());
     },
@@ -10344,7 +10344,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       });
     }),
 
-    resizeSidebarAndContent: Ember['default'].on('didInsertElement', function () {
+    resizeSidebarAndContent: Ember['default'].on('willInsertElement', function () {
       var _this2 = this;
 
       this.set('resizeStickyEditorRequestID', window.requestAnimationFrame(function () {
@@ -10362,7 +10362,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       this.set('scroller', $['default']('.ko-scroller'));
     }),
 
-    repositionStickyEditor: Ember['default'].on('didInsertElement', 'didReceiveAttrs', function () {
+    repositionStickyEditor: Ember['default'].on('willInsertElement', 'didReceiveAttrs', function () {
       var _this3 = this;
 
       this.set('repositionStickyEditorRequestID', window.requestAnimationFrame(function () {
@@ -10385,7 +10385,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       }));
     }),
 
-    loadPostsIfRequired: Ember['default'].on('didInsertElement', function () {
+    loadPostsIfRequired: Ember['default'].on('willInsertElement', function () {
       var _this4 = this;
 
       this.set('loadPostsRafID', window.requestAnimationFrame(function () {
@@ -10483,7 +10483,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       this.repositionStickyEditor();
     },
 
-    startListeners: Ember['default'].on('didInsertElement', function () {
+    startListeners: Ember['default'].on('willInsertElement', function () {
       this.onScroll = this.onScroll.bind(this);
       this.set('scroller', $['default']('.ko-scroller'));
       this.get('scroller').on('scroll', this.onScroll).scroll();
@@ -10862,7 +10862,7 @@ define('frontend-cp/components/ko-case-content/dropdown/component', ['exports', 
       }
     }),
 
-    didInsertElement: function didInsertElement() {
+    willInsertElement: function willInsertElement() {
       var width = this.$('.ko-case-content_dropdown__button').outerWidth(true);
       this.set('contentStyle', ('min-width:' + width + 'px;').htmlSafe());
     }
@@ -15753,7 +15753,7 @@ define('frontend-cp/components/ko-channel-select/component', ['exports', 'ember'
     //Params
     hideOnClick: false,
 
-    didInsertElement: function didInsertElement() {
+    willInsertElement: function willInsertElement() {
       var width = this.$('.ko-channel-select__button').outerWidth(true);
       this.set('contentStyle', ('min-width:' + width + 'px;').htmlSafe());
     },
@@ -16901,7 +16901,7 @@ define('frontend-cp/components/ko-context-modal/component', ['exports', 'ember',
     scrollableModalContents: Ember['default'].computed.not('inline'),
     preventBodyScroll: Ember['default'].computed.not('inline'),
 
-    didInsertElement: function didInsertElement() {
+    willInsertElement: function willInsertElement() {
       var _this = this;
 
       this.set('$modal', this.$().find('.ko-context-modal__container'));
@@ -19085,7 +19085,7 @@ define('frontend-cp/components/ko-dropdown/select/component', ['exports', 'ember
     //Params
     hideOnClick: true,
 
-    didInsertElement: function didInsertElement() {
+    willInsertElement: function willInsertElement() {
       var width = this.$('.ko-dropdown-select__button').outerWidth(true);
       this.set('contentStyle', ('min-width:' + width + 'px;').htmlSafe());
     },
@@ -19652,7 +19652,7 @@ define('frontend-cp/components/ko-feed/component', ['exports', 'ember'], functio
     childItemsById: null,
     currentTopPostId: null,
 
-    setupTopElementListener: Ember['default'].on('didInsertElement', function () {
+    setupTopElementListener: Ember['default'].on('willInsertElement', function () {
       var _this = this;
 
       this.set('timeoutId', setTimeout(function () {
@@ -19715,7 +19715,7 @@ define('frontend-cp/components/ko-feed/item/component', ['exports', 'ember'], fu
 
     showMenu: false,
 
-    register: Ember['default'].on('didInsertElement', function () {
+    register: Ember['default'].on('willInsertElement', function () {
       this.attrs.onRegister(this);
     }),
 
@@ -21011,7 +21011,7 @@ define('frontend-cp/components/ko-field/tags/component', ['exports', 'ember', 'f
       this.resetSuggestedTagKeyboardPosition();
     }),
 
-    didInsertElement: function didInsertElement() {
+    willInsertElement: function willInsertElement() {
       this.set('suggestedTags', this.get('tags'));
       this.resetSuggestedTagKeyboardPosition();
     },
@@ -22682,7 +22682,7 @@ define('frontend-cp/components/ko-linked-cases-context-menu/component', ['export
     filteredCases: null,
     selectedCases: new Ember['default'].A([]),
 
-    setupParticipants: Ember['default'].on('didInsertElement', function () {
+    setupParticipants: Ember['default'].on('willInsertElement', function () {
       this.set('filteredCases', this.get('cases'));
     }),
     // TODO: when RFC implemented and its possible to invoke same actions via multiple events
@@ -23998,7 +23998,7 @@ define('frontend-cp/components/ko-option-list-drill-down/component', ['exports',
       this.resetState();
     }),
 
-    didInsertElement: function didInsertElement() {
+    willInsertElement: function willInsertElement() {
       this.resetState();
     },
 
@@ -28113,7 +28113,7 @@ define('frontend-cp/components/ko-scroller/component', ['exports', 'ember'], fun
     /**
      * Add a scroll listener when the view is rendered
      */
-    didInsertElement: Ember['default'].on('didInsertElement', function () {
+    willInsertElement: Ember['default'].on('willInsertElement', function () {
       var _this = this;
 
       var $componentElement = this.$();
@@ -28951,7 +28951,7 @@ define('frontend-cp/components/ko-suggest/component', ['exports', 'ember'], func
       this.sendAction('onSearchTermUpdated', this.get('searchTerm'));
     }),
 
-    didInsertElement: function didInsertElement() {
+    willInsertElement: function willInsertElement() {
       var width = this.$('.ko-dropdown-select__button').outerWidth(true);
       this.set('contentStyle', ('min-width:' + width + 'px;').htmlSafe());
     },
@@ -29880,7 +29880,7 @@ define('frontend-cp/components/ko-table/row/component', ['exports', 'ember'], fu
 
     classNameBindings: [':ko-table_row', 'selected:ko-table_row--selected'],
 
-    registerRow: Ember['default'].on('didInsertElement', function () {
+    registerRow: Ember['default'].on('willInsertElement', function () {
       var table = this.get('parentView.parentView');
       table.send('registerRow', this);
     }),
@@ -31427,12 +31427,12 @@ define('frontend-cp/components/ko-toast/component', ['exports', 'ember'], functi
     autodismiss: false,
     isClosing: false,
 
-    animateIn: Ember['default'].on('didInsertElement', function () {
+    animateIn: Ember['default'].on('willInsertElement', function () {
       var $componentElement = this.$();
       animate($componentElement, 'ko-toast--add');
     }),
 
-    initAutoDismiss: Ember['default'].on('didInsertElement', function () {
+    initAutoDismiss: Ember['default'].on('willInsertElement', function () {
       var _this = this;
 
       var autodismiss = this.get('autodismiss');
@@ -42016,7 +42016,7 @@ define('frontend-cp/mixins/autofocus', ['exports', 'ember'], function (exports, 
   'use strict';
 
   exports['default'] = Ember['default'].Mixin.create({
-    autofocusFirstField: Ember['default'].on('didInsertElement', function () {
+    autofocusFirstField: Ember['default'].on('willInsertElement', function () {
       this.$('input,select,textarea,button,[tabindex]').not('[tabindex="-1"],[disabled]').eq(0).focus();
     })
   });
@@ -64166,7 +64166,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+fdd70179"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+6d937ca8"});
 }
 
 /* jshint ignore:end */
