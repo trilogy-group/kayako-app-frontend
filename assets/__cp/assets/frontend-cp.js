@@ -22558,7 +22558,7 @@ define('frontend-cp/components/ko-field/pills/component', ['exports', 'ember', '
     pills: null,
     erroredPills: null,
 
-    classNames: ['input__text'],
+    classNames: ['input-text'],
     classNameBindings: [],
     attributeBindings: ['tabindex', 'role'],
 
@@ -67828,7 +67828,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+a5425143"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+a1f561e2"});
 }
 
 /* jshint ignore:end */
