@@ -45977,11 +45977,11 @@ define('frontend-cp/models/user', ['exports', 'ember-data', 'ember', 'frontend-c
     facebook: DS['default'].hasMany('identity-facebook', { async: true, url: 'identities/facebook' }),
     addresses: DS['default'].hasMany('contact-address', { async: true, url: 'contacts/addresses' }),
     websites: DS['default'].hasMany('contact-website', { async: true, url: 'contacts/websites' }),
-    customFields: DS['default'].hasManyFragments('user-field-value'),
+    customFields: DS['default'].hasManyFragments('user-field-value', { defaultValue: [] }),
     fieldValues: DS['default'].hasManyFragments('user-field-value', { defaultValue: [] }), // write only
     tags: DS['default'].hasMany('tag', { async: false }),
     notes: DS['default'].hasMany('user-note', { child: true, url: 'notes', async: false }),
-    accessLevel: DS['default'].attr('string'),
+    accessLevel: DS['default'].attr('string', { defaultValue: 'SELF' }),
     locale: DS['default'].attr('string'),
     timeZone: DS['default'].attr('string'),
     timeZoneOffset: DS['default'].attr('number'),
@@ -67828,7 +67828,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+a1f561e2"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+eb8b89f6"});
 }
 
 /* jshint ignore:end */
