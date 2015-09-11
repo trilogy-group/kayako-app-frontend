@@ -26026,11 +26026,7 @@ define('frontend-cp/components/ko-option-list-drill-down/component', ['exports',
       this.set('keyboardPosition', 0);
     },
 
-    didUpdateOptions: Ember['default'].observer('options.[]', function () {
-      this.resetState();
-    }),
-
-    willInsertElement: function willInsertElement() {
+    didReceiveAttrs: function didReceiveAttrs() {
       this.resetState();
     },
 
@@ -67832,7 +67828,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+9892be6e"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+a5425143"});
 }
 
 /* jshint ignore:end */
