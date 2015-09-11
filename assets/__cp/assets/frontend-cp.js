@@ -39047,6 +39047,10 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
   /*eslint-disable camelcase*/
 
   exports['default'] = function () {
+    // Config
+    this.namespace = '/api/v1';
+
+    // Helper functios
     function arrayToObjectWithNumberedKeys(source) {
       var pos = 1;
       var object = {};
@@ -39059,7 +39063,8 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       return object;
     };
 
-    this.get('api/v1/locales/en-us/strings', function (db) {
+    // Endpoints
+    this.get('/locales/en-us/strings', function (db) {
       if (!db['en-us-strings']) {
         db.createCollection('en-us-strings');
         db['en-us-strings'].insert(EnUsStrings['default']);
@@ -39067,7 +39072,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       return db['en-us-strings'][0];
     });
 
-    this.get('api/v1/locales/en-us', function () {
+    this.get('/locales/en-us', function () {
       return {
         status: 200,
         data: {
@@ -39088,13 +39093,13 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.post('/api/v1/users', function (db) {
+    this.post('/users', function (db) {
       return {
         status: 200
       };
     });
 
-    this.get('/api/v1/users/:id/identities/slack', function (db) {
+    this.get('/users/:id/identities/slack', function (db) {
       return {
         status: 200,
         data: [],
@@ -39103,7 +39108,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('/api/v1/roles', function (db) {
+    this.get('/roles', function (db) {
       return {
         status: 200,
         data: db.roles,
@@ -39114,7 +39119,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('/api/v1/roles/:id/permissions', function (db) {
+    this.get('/roles/:id/permissions', function (db) {
       return {
         status: 200,
         data: [],
@@ -39125,7 +39130,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('/api/v1/organizations', function (db) {
+    this.get('/organizations', function (db) {
       return {
         status: 200,
         data: db.organizations,
@@ -39134,7 +39139,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('/api/v1/views', function (db) {
+    this.get('/views', function (db) {
       return {
         data: db.views.map(function (v) {
           return Object.assign({}, v, { columns: v.columns.map(function (c) {
@@ -39152,7 +39157,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('/api/v1/session', function (db) {
+    this.get('/session', function (db) {
       return {
         id: 1,
         status: 200,
@@ -39170,7 +39175,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('/api/v1/teams', function (db) {
+    this.get('/teams', function (db) {
       return {
         status: 200,
         data: db.teams,
@@ -39181,7 +39186,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('/api/v1/users', function (db) {
+    this.get('/users', function (db) {
       return {
         status: 200,
         data: db.users,
@@ -39200,38 +39205,20 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this['delete']('/api/v1/session', function () {
+    this['delete']('/session', function () {
       return {
         status: 200
       };
     });
 
-    this.post('/admin/index.php', function () {
-      return {
-        data: {
-          redirect: '/Base/Dashboard/',
-          session: 'AyUeuWPDD8JC2OA0c8335f8d1a99218c84cd7b97f7fcc2269a2e4274ieu04PQxkr2EAjPp9Z2Y2tJKd'
-        },
-        errors: [],
-        notifications: {
-          error: [],
-          info: [],
-          success: [],
-          warning: []
-        },
-        status: 200,
-        timestamp: 1432593047
-      };
-    });
-
-    this.post('/api/v1/base/password/reset', function () {
+    this.post('/base/password/reset', function () {
       return {
         status: 200,
         auth_token: 'yh5wFffnVzOi5IyYr1aMwojpcRJw0FGid3S9r5iDumvLsPI0fRWBl4VfTEpPkodWwUvLlQXr3zJkfTxC'
       };
     });
 
-    this.get('/api/v1/cases/forms/:id', function (db, request) {
+    this.get('/cases/forms/:id', function (db, request) {
       var id = request.params.id;
 
       return {
@@ -39242,7 +39229,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('/api/v1/cases/forms', function (db) {
+    this.get('/cases/forms', function (db) {
       return {
         data: db['case-forms'],
         resource: 'case_form',
@@ -39257,7 +39244,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('/api/v1/views/:viewId/cases', function (db) {
+    this.get('/views/:viewId/cases', function (db) {
       return {
         status: 200,
         data: db.cases,
@@ -39291,7 +39278,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('/api/v1/cases/:id/posts', function (db) {
+    this.get('/cases/:id/posts', function (db) {
       return {
         data: db.posts,
         limit: 10,
@@ -39316,7 +39303,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('/api/v1/cases/:id', function (db, request) {
+    this.get('/cases/:id', function (db, request) {
       if (isNaN(request.params.id)) {
         throw 'Caught by a wild card!';
       }
@@ -39354,15 +39341,15 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('/api/v1/cases/:id/notes', function (db) {
+    this.get('/cases/:id/notes', function (db) {
       return db.casesnotes[0];
     });
 
-    this.post('/api/v1/cases/:id/notes', function (db) {
+    this.post('/cases/:id/notes', function (db) {
       return new Mirage['default'].Response(200, {}, '');
     });
 
-    this.get('/api/v1/cases/:id/messages', function (db) {
+    this.get('/cases/:id/messages', function (db) {
       return {
         data: [],
         limit: 10,
@@ -39373,7 +39360,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('/api/v1/cases/:id/reply/channels', function (db) {
+    this.get('/cases/:id/reply/channels', function (db) {
       return {
         data: db.channels,
         resource: 'channel',
@@ -39390,11 +39377,11 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.post('/api/v1/cases/:id/reply', function (db) {
+    this.post('/cases/:id/reply', function (db) {
       return new Mirage['default'].Response(200, {}, '');
     });
 
-    this.get('/api/v1/cases/priorities', function (db) {
+    this.get('/cases/priorities', function (db) {
       return {
         data: db['case-priorities'],
         resource: 'case_priority',
@@ -39403,7 +39390,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('/api/v1/cases/types', function (db) {
+    this.get('/cases/types', function (db) {
       return {
         data: db['case-types'],
         resource: 'case_type',
@@ -39412,7 +39399,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('/api/v1/cases/statuses', function (db) {
+    this.get('/cases/statuses', function (db) {
       return {
         data: db['case-statuses'],
         resource: 'case_status',
@@ -39421,7 +39408,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('/api/v1/cases/statuses/:id', function (db, request) {
+    this.get('/cases/statuses/:id', function (db, request) {
       var id = request.params.id;
       return {
         data: db['case-statuses'].find(id),
@@ -39430,7 +39417,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('/api/v1/cases/fields', function (db) {
+    this.get('/cases/fields', function (db) {
       return {
         data: db['case-fields'],
         resource: 'case_field',
@@ -39442,7 +39429,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('/api/v1/cases/fields/:id', function (db, request) {
+    this.get('/cases/fields/:id', function (db, request) {
 
       var id = request.params.id;
 
@@ -39453,11 +39440,11 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('/api/v1/cases/reply/channels', function (db) {
+    this.get('/cases/reply/channels', function (db) {
       return db.casesreplychannels[0];
     });
 
-    this.get('/api/v1/cases/fields/:id/options', function (db) {
+    this.get('/cases/fields/:id/options', function (db) {
       return {
         'status': 200,
         'data': db.fieldsoptions,
@@ -39467,7 +39454,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('api/v1/teams', function (db) {
+    this.get('/teams', function (db) {
       return {
         'status': 200,
         'data': db.teamsdata,
@@ -39480,7 +39467,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
     });
 
     //let users = null;
-    //this.get('api/v1/users', (db) => {
+    //this.get('/users', (db) => {
     //  users = users || getRandomUsers(db.usersdata, 10);
     //  return {
     //    'status': 200,
@@ -39521,7 +39508,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
     //  }
     //});
 
-    this.post('/api/v1/users', function () {
+    this.post('/users', function () {
       return {
         status: 200,
         data: [],
@@ -39530,7 +39517,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('api/v1/roles/:id', function (db, request) {
+    this.get('/roles/:id', function (db, request) {
 
       var id = request.params.id;
 
@@ -39540,7 +39527,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('/api/v1/cases/macros', function (db) {
+    this.get('/cases/macros', function (db) {
       return {
         status: 200,
         data: [],
@@ -39549,7 +39536,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('/api/v1/base/search_all', function (db, request) {
+    this.get('/base/search_all', function (db, request) {
       if (!db['search-results-person']) {
         db.createCollection('search-results-person');
         db['search-results-person'].insert(SearchResultsPerson['default']);
@@ -67828,7 +67815,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+eb8b89f6"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+24f31dcc"});
 }
 
 /* jshint ignore:end */
