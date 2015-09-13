@@ -96,6 +96,9 @@
   "casefields.type.cascadingselect.name": "Cascading select",
   "casefields.type.cascadingselect.description": "Allow users to drill down through categories to organize a lot of select options.",
   "casefields.edit.label.field_options": "The drop-down field will contain the options specified below.",
+  "casefields.edit.help.types": "Case types blah. Case types blah blah. Case types blah. Case types blah blah. Case types blah. Case types blah blah. Case types blah.",
+  "casefields.edit.heading.types": "Types",
+  "casefields.edit.add_new_type": "Add a new type",
 
   "casefields.edit.heading.agent_settings": "Agent Settings",
   "casefields.edit.heading.customer_settings": "Customer Settings",
