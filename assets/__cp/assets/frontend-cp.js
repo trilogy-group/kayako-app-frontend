@@ -20438,7 +20438,6 @@ define('frontend-cp/components/ko-dropdown/container/content/component', ['expor
 
   exports['default'] = Ember['default'].Component.extend({
     // Params
-    isParentFocussed: null,
     // hideOnChildFocus is useful because links become focussed when clicked so you can
     // hide the dropdown when someone clicks a link
     hideOnChildFocus: null,
@@ -20450,10 +20449,6 @@ define('frontend-cp/components/ko-dropdown/container/content/component', ['expor
     attributeBindings: ['role'],
     isFocussed: false,
     focussedObject: null,
-
-    classNameBindings: ['isParentBlurred:u-hidden'],
-
-    isParentBlurred: Ember['default'].computed.not('isParentFocussed'),
 
     registerOnParent: Ember['default'].on('init', function () {
       this.set('registerAs', this);
@@ -20586,6 +20581,48 @@ define('frontend-cp/components/ko-dropdown/container/template', ['exports'], fun
       };
     }());
     var child1 = (function() {
+      var child0 = (function() {
+        return {
+          meta: {
+            "revision": "Ember@1.13.7",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 6,
+                "column": 2
+              },
+              "end": {
+                "line": 8,
+                "column": 2
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-dropdown/container/template.hbs"
+          },
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("    ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+            return morphs;
+          },
+          statements: [
+            ["inline","yield",["content",["get","this",["loc",[null,[7,22],[7,26]]]]],[],["loc",[null,[7,4],[7,28]]]]
+          ],
+          locals: [],
+          templates: []
+        };
+      }());
       return {
         meta: {
           "revision": "Ember@1.13.7",
@@ -20596,7 +20633,7 @@ define('frontend-cp/components/ko-dropdown/container/template', ['exports'], fun
               "column": 0
             },
             "end": {
-              "line": 7,
+              "line": 9,
               "column": 0
             }
           },
@@ -20607,24 +20644,22 @@ define('frontend-cp/components/ko-dropdown/container/template', ['exports'], fun
         hasRendered: false,
         buildFragment: function buildFragment(dom) {
           var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("  ");
-          dom.appendChild(el0, el1);
           var el1 = dom.createComment("");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n");
           dom.appendChild(el0, el1);
           return el0;
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
           var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+          morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
           return morphs;
         },
         statements: [
-          ["inline","yield",["content",["get","this",["loc",[null,[6,20],[6,24]]]]],[],["loc",[null,[6,2],[6,26]]]]
+          ["block","ko-dropdown/container/content",[],["registerAs",["subexpr","@mut",[["get","contentComponent",["loc",[null,[6,46],[6,62]]]]],[],[]],"hideOnChildFocus",["subexpr","@mut",[["get","hideOnChildFocus",["loc",[null,[6,80],[6,96]]]]],[],[]],"hideOnClick",["subexpr","@mut",[["get","hideOnClick",["loc",[null,[6,109],[6,120]]]]],[],[]],"onClose","onContentRequestClose"],0,null,["loc",[null,[6,2],[8,36]]]]
         ],
         locals: [],
-        templates: []
+        templates: [child0]
       };
     }());
     return {
@@ -20637,7 +20672,7 @@ define('frontend-cp/components/ko-dropdown/container/template', ['exports'], fun
             "column": 0
           },
           "end": {
-            "line": 9,
+            "line": 10,
             "column": 0
           }
         },
@@ -20654,8 +20689,6 @@ define('frontend-cp/components/ko-dropdown/container/template', ['exports'], fun
         dom.appendChild(el0, el1);
         var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
-        dom.appendChild(el0, el1);
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
@@ -20663,11 +20696,12 @@ define('frontend-cp/components/ko-dropdown/container/template', ['exports'], fun
         morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
         morphs[1] = dom.createMorphAt(fragment,2,2,contextualElement);
         dom.insertBoundary(fragment, 0);
+        dom.insertBoundary(fragment, null);
         return morphs;
       },
       statements: [
         ["block","ko-dropdown/container/button",[],[],0,null,["loc",[null,[1,0],[3,33]]]],
-        ["block","ko-dropdown/container/content",[],["registerAs",["subexpr","@mut",[["get","contentComponent",["loc",[null,[5,44],[5,60]]]]],[],[]],"isParentFocussed",["subexpr","@mut",[["get","isFocussed",["loc",[null,[5,78],[5,88]]]]],[],[]],"hideOnChildFocus",["subexpr","@mut",[["get","hideOnChildFocus",["loc",[null,[5,106],[5,122]]]]],[],[]],"hideOnClick",["subexpr","@mut",[["get","hideOnClick",["loc",[null,[5,135],[5,146]]]]],[],[]],"onClose","onContentRequestClose"],1,null,["loc",[null,[5,0],[7,34]]]]
+        ["block","if",[["get","isFocussed",["loc",[null,[5,6],[5,16]]]]],[],1,null,["loc",[null,[5,0],[9,7]]]]
       ],
       locals: [],
       templates: [child0, child1]
@@ -68321,7 +68355,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+23c1f4e8"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+43108b04"});
 }
 
 /* jshint ignore:end */
