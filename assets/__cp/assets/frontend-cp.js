@@ -35063,11 +35063,22 @@ define('frontend-cp/components/ko-user-action-menu/component', ['exports', 'embe
     userRoleType: null,
     userModel: null,
 
+    permissionService: Ember['default'].inject.service('permissions'),
+
     editSignature: 'editSignature',
     changeUserPassword: 'changeUserPassword',
 
-    classNameBindings: ['menuActive'],
+    classNameBindings: ['menuActive', 'noItems:u-hidden'],
     menuActive: false,
+
+    noItems: Ember['default'].computed(function () {
+      var permService = this.get('permissionService');
+      var roleType = [this.get('userRoleType')];
+      var passItem = permService.has('app.user.password.change', this.get('permissions'), roleType) && this.get('userModel.emails').toArray().length;
+      var signatureItem = permService.has('app.user.signature.edit', this.get('permissions'), roleType);
+
+      return !passItem && !signatureItem;
+    }),
 
     actions: {
       editSignature: function editSignature() {
@@ -68762,7 +68773,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+0aa38723"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+d075df74"});
 }
 
 /* jshint ignore:end */
