@@ -586,6 +586,16 @@ define('frontend-cp/adapters/session', ['exports', 'ember', 'frontend-cp/adapter
       return 'session';
     },
 
+    normalizeErrorResponse: function normalizeErrorResponse(status, headers, payload) {
+      // Sneaks the auth token into each error response if it's
+      // not already there
+      var authToken = payload.auth_token;
+      return payload.errors.map(function (error) {
+        error.auth_token = authToken;
+        return error;
+      });
+    },
+
     headers: Ember['default'].computed('sessionService.{email,password,sessionId}', function () {
       var sessionId = this.get('sessionService.sessionId');
       var email = this.get('sessionService.email');
@@ -26253,8 +26263,8 @@ define('frontend-cp/components/ko-login-reset/template', ['exports'], function (
             "column": 0
           },
           "end": {
-            "line": 4,
-            "column": 6
+            "line": 5,
+            "column": 0
           }
         },
         "moduleName": "frontend-cp/components/ko-login-reset/template.hbs"
@@ -26276,6 +26286,8 @@ define('frontend-cp/components/ko-login-reset/template', ['exports'], function (
         dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n");
         dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
         return el0;
       },
@@ -38542,6 +38554,7 @@ define('frontend-cp/login/controller', ['exports', 'ember', 'frontend-cp/config/
 
     sessionService: Ember['default'].inject.service('session'),
     notificationService: Ember['default'].inject.service('notification'),
+    intlService: Ember['default'].inject.service('intl'),
     newPassword1: '',
     newPassword2: '',
     forgotPasswordMessage: '',
@@ -38555,6 +38568,7 @@ define('frontend-cp/login/controller', ['exports', 'ember', 'frontend-cp/config/
     bottomFormSet: null,
     isAnimatingContent: null,
     transitionOnLogin: null,
+    authToken: null,
 
     init: function init() {
       this.setState('login.password.input');
@@ -38592,6 +38606,13 @@ define('frontend-cp/login/controller', ['exports', 'ember', 'frontend-cp/config/
     },
 
     // Observers
+    actionButtonText: Ember['default'].computed('currentState', function () {
+      if (this.get('currentState') === 'login.resetPassword.input') {
+        return this.get('intlService').findTranslationByKey('login.updatepassword').translation;
+      } else {
+        return this.get('intlService').findTranslationByKey('login.login').translation;
+      }
+    }),
 
     flipAvatar: Ember['default'].computed('validAvatar', 'avatarBackground', function () {
       return this.get('validAvatar') && this.get('avatarBackground');
@@ -38777,6 +38798,27 @@ define('frontend-cp/login/controller', ['exports', 'ember', 'frontend-cp/config/
       this.set('fieldErrors', []);
     },
 
+    resetRequest: function resetRequest(endpoint, params) {
+      var _this2 = this;
+
+      return new Ember['default'].RSVP.Promise(function (resolve, reject) {
+        Ember['default'].$.ajax({
+          type: 'PUT',
+          url: endpoint,
+          contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+          dataType: 'json',
+          data: Ember['default'].$.param(params),
+          headers: { 'X-Token': _this2.get('authToken') },
+          success: function success(data) {
+            resolve(data);
+          },
+          error: function error(xhr) {
+            reject(xhr.responseText);
+          }
+        });
+      });
+    },
+
     authRequest: function authRequest(endpoint, params) {
       return new Ember['default'].RSVP.Promise(function (resolve, reject) {
         Ember['default'].$.ajax({
@@ -38796,7 +38838,7 @@ define('frontend-cp/login/controller', ['exports', 'ember', 'frontend-cp/config/
     },
 
     requestAvatar: function requestAvatar(email) {
-      var _this2 = this;
+      var _this3 = this;
 
       Ember['default'].$.ajax({
         type: 'POST',
@@ -38813,10 +38855,10 @@ define('frontend-cp/login/controller', ['exports', 'ember', 'frontend-cp/config/
 
           var valid = !!response.data.is_user;
 
-          _this2.set('validAvatar', valid);
+          _this3.set('validAvatar', valid);
 
           if (valid) {
-            _this2.set('avatarBackground', response.data.data);
+            _this3.set('avatarBackground', response.data.data);
           }
         },
         error: function error() {
@@ -38826,65 +38868,71 @@ define('frontend-cp/login/controller', ['exports', 'ember', 'frontend-cp/config/
     },
 
     login: function login() {
-      var _this3 = this;
+      var _this4 = this;
 
       this.setState('login.password.loading');
       this.get('sessionService').requestSession(this.get('model.email'), this.get('model.password')).then(function () {
         // No additional info required, log in.
-        _this3.setState('login.password.confirmed');
+        _this4.setState('login.password.confirmed');
 
-        var transitionOnLogin = _this3.get('transitionOnLogin');
+        var transitionOnLogin = _this4.get('transitionOnLogin');
         if (transitionOnLogin) {
-          _this3.set('transitionOnLogin', null);
+          _this4.set('transitionOnLogin', null);
           transitionOnLogin.retry();
         } else {
-          _this3.transitionToSession();
+          _this4.transitionToSession();
         }
       }, function (response) {
+        var errorCodes = response.errors.map(function (error) {
+          return error.code;
+        });
         var data = response.responseJSON;
-        if (data.otp_required) {
+
+        if (errorCodes.indexOf('CREDENTIAL_EXPIRED') > -1) {
+          _this4.set('authToken', response.errors[0].auth_token);
+          _this4.setState('login.resetPassword.input');
+        } else if (errorCodes.indexOf('OTP_EXPECTED') > -1) {
           // User needs to enter one time password for two factor authentication
-          _this3.set('stepToken', data.step_token);
-          _this3.setState('login.otp.input');
-        } else if (data.password_expired) {
-          // User needs to enter a new password to continue
-          _this3.set('stepToken', data.step_token);
-          _this3.setState('login.resetPassword.input');
+          _this4.set('stepToken', data.step_token);
+          _this4.setState('login.otp.input');
         } else {
-          _this3.setState('login.password.error');
-          _this3.setErrors(data.notifications);
+          _this4.setState('login.password.error');
+          _this4.setErrors(data.notifications);
         }
       });
     },
 
     resetPassword: function resetPassword() {
-      var _this4 = this;
+      var _this5 = this;
 
       this.setState('login.resetPassword.loading');
       this.setErrors([]);
-      this.authRequest('ResetPassword', {
-        newpassword: this.get('newPassword1'),
-        hash: this.get('steptoken')
+
+      this.resetRequest('/api/v1/base/profile/password', {
+        password: this.get('model.password'),
+        new_password: this.get('newPassword1')
       }).then(function (response) {
+        _this5.get('notificationService').removeAll();
         if (response.data.session) {
-          _this4.setState('login.resetPassword.confirmed');
-          _this4.set('resetPasswordMessage', response.notifications.success[0]);
-          _this4.get('sessionService').setSessionId(response.data.session);
-          _this4.set('newPassword1', null);
-          _this4.set('newPassword2', null);
-          _this4.transitionToSession();
+          _this5.set('model.password', _this5.get('newPassword1'));
+          _this5.setState('login.resetPassword.confirmed');
+          _this5.set('resetPasswordMessage', response.notifications.success[0]);
+          _this5.set('sessionService.sessionId', response.data.session.id);
+          _this5.set('newPassword1', null);
+          _this5.set('newPassword2', null);
+          _this5.login();
         } else {
-          _this4.setState('login.resetPassword.error');
-          _this4.setErrors({ message: 'Session missing' });
+          _this5.setState('login.resetPassword.error');
+          _this5.setErrors({ message: 'Session missing' });
         }
       }, function (response) {
-        _this4.setState('login.resetPassword.error');
-        _this4.setErrors(JSON.parse(response).errors);
+        _this5.setState('login.resetPassword.error');
+        _this5.setErrors(JSON.parse(response).errors);
       });
     },
 
     submitOtp: function submitOtp() {
-      var _this5 = this;
+      var _this6 = this;
 
       this.setState('login.otp.loading');
       this.setErrors([]);
@@ -38893,23 +38941,23 @@ define('frontend-cp/login/controller', ['exports', 'ember', 'frontend-cp/config/
         token: this.get('steptoken')
       }).then(function (response) {
         if (response.data.session) {
-          _this5.setState('login.otp.confirmed');
-          _this5.get('sessionService').setSessionId(response.data.session);
-          _this5.set('otp', null);
-          var transitionOnLogin = _this5.get('transitionOnLogin');
+          _this6.setState('login.otp.confirmed');
+          _this6.get('sessionService').setSessionId(response.data.session);
+          _this6.set('otp', null);
+          var transitionOnLogin = _this6.get('transitionOnLogin');
           if (transitionOnLogin) {
-            _this5.set('transitionOnLogin', null);
+            _this6.set('transitionOnLogin', null);
             transitionOnLogin.retry();
           } else {
-            _this5.transitionToSession();
+            _this6.transitionToSession();
           }
         } else {
-          _this5.setState('login.otp.error');
-          _this5.setErrors([{ message: 'Session missing' }]);
+          _this6.setState('login.otp.error');
+          _this6.setErrors([{ message: 'Session missing' }]);
         }
       }, function (response) {
-        _this5.setState('login.otp.error');
-        _this5.setErrors(JSON.parse(response).errors);
+        _this6.setState('login.otp.error');
+        _this6.setErrors(JSON.parse(response).errors);
       });
     },
 
@@ -38960,17 +39008,17 @@ define('frontend-cp/login/controller', ['exports', 'ember', 'frontend-cp/config/
       },
 
       sendForgotPasswordEmail: function sendForgotPasswordEmail() {
-        var _this6 = this;
+        var _this7 = this;
 
         this.setState('forgotPassword.loading');
         this.setErrors([]);
         this.authRequest('/api/v1/base/password/reset', { email: this.get('model.email') }).then(function () {
-          _this6.setState('forgotPassword.confirmed');
-          _this6.set('forgotPasswordMessage', 'An email with a reset link has been sent to your inbox');
+          _this7.setState('forgotPassword.confirmed');
+          _this7.set('forgotPasswordMessage', 'An email with a reset link has been sent to your inbox');
         }, function (response) {
           var data = JSON.parse(response);
-          _this6.setState('forgotPassword.error');
-          _this6.setErrors(data.errors);
+          _this7.setState('forgotPassword.error');
+          _this7.setErrors(data.errors);
         });
       },
 
@@ -39212,12 +39260,12 @@ define('frontend-cp/login/template', ['exports'], function (exports) {
           return el0;
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var element0 = dom.childAt(fragment, [3, 1]);
+          var element1 = dom.childAt(fragment, [3, 1]);
           var morphs = new Array(4);
           morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]),1,1);
-          morphs[1] = dom.createAttrMorph(element0, 'disabled');
-          morphs[2] = dom.createElementMorph(element0);
-          morphs[3] = dom.createMorphAt(element0,0,0);
+          morphs[1] = dom.createAttrMorph(element1, 'disabled');
+          morphs[2] = dom.createElementMorph(element1);
+          morphs[3] = dom.createMorphAt(element1,0,0);
           return morphs;
         },
         statements: [
@@ -39403,6 +39451,63 @@ define('frontend-cp/login/template', ['exports'], function (exports) {
         templates: []
       };
     }());
+    var child6 = (function() {
+      return {
+        meta: {
+          "revision": "Ember@1.13.7",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 73,
+              "column": 10
+            },
+            "end": {
+              "line": 77,
+              "column": 10
+            }
+          },
+          "moduleName": "frontend-cp/login/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("          ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1,"class","login-form__wrapper login__actions");
+          var el2 = dom.createTextNode("\n            ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("a");
+          dom.setAttribute(el2,"href","javascript:void(0);");
+          var el3 = dom.createComment("");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n          ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var element0 = dom.childAt(fragment, [1, 1]);
+          var morphs = new Array(3);
+          morphs[0] = dom.createAttrMorph(element0, 'class');
+          morphs[1] = dom.createElementMorph(element0);
+          morphs[2] = dom.createMorphAt(element0,0,0);
+          return morphs;
+        },
+        statements: [
+          ["attribute","class",["concat",["js-slide ",["subexpr","if",[["get","isLoading",["loc",[null,[75,63],[75,72]]]],"u-disable-link"],[],["loc",[null,[75,58],[75,91]]]]]]],
+          ["element","action",["gotoForgotPassword"],[],["loc",[null,[75,93],[75,124]]]],
+          ["inline","format-message",[["subexpr","intl-get",["login.forgot"],[],["loc",[null,[75,142],[75,167]]]]],[],["loc",[null,[75,125],[75,169]]]]
+        ],
+        locals: [],
+        templates: []
+      };
+    }());
     return {
       meta: {
         "revision": "Ember@1.13.7",
@@ -39413,8 +39518,8 @@ define('frontend-cp/login/template', ['exports'], function (exports) {
             "column": 0
           },
           "end": {
-            "line": 81,
-            "column": 6
+            "line": 83,
+            "column": 0
           }
         },
         "moduleName": "frontend-cp/login/template.hbs"
@@ -39578,21 +39683,11 @@ define('frontend-cp/login/template', ['exports'], function (exports) {
         var el7 = dom.createTextNode("\n          ");
         dom.appendChild(el6, el7);
         dom.appendChild(el5, el6);
-        var el6 = dom.createTextNode("\n\n          ");
+        var el6 = dom.createTextNode("\n");
         dom.appendChild(el5, el6);
-        var el6 = dom.createElement("div");
-        dom.setAttribute(el6,"class","login-form__wrapper login__actions");
-        var el7 = dom.createTextNode("\n            ");
-        dom.appendChild(el6, el7);
-        var el7 = dom.createElement("a");
-        dom.setAttribute(el7,"href","javascript:void(0);");
-        var el8 = dom.createComment("");
-        dom.appendChild(el7, el8);
-        dom.appendChild(el6, el7);
-        var el7 = dom.createTextNode("\n          ");
-        dom.appendChild(el6, el7);
+        var el6 = dom.createComment("");
         dom.appendChild(el5, el6);
-        var el6 = dom.createTextNode("\n        ");
+        var el6 = dom.createTextNode("        ");
         dom.appendChild(el5, el6);
         dom.appendChild(el4, el5);
         var el5 = dom.createTextNode("\n      ");
@@ -39607,44 +39702,43 @@ define('frontend-cp/login/template', ['exports'], function (exports) {
         var el2 = dom.createTextNode("\n");
         dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var element1 = dom.childAt(fragment, [0, 1]);
-        var element2 = dom.childAt(element1, [1]);
+        var element2 = dom.childAt(fragment, [0, 1]);
         var element3 = dom.childAt(element2, [1]);
-        var element4 = dom.childAt(element3, [1, 1]);
-        var element5 = dom.childAt(element3, [3, 1]);
-        var element6 = dom.childAt(element1, [3, 1]);
-        var element7 = dom.childAt(element6, [1]);
-        var element8 = dom.childAt(element7, [9, 1]);
-        var element9 = dom.childAt(element6, [3]);
-        var element10 = dom.childAt(element9, [5, 1]);
-        var element11 = dom.childAt(element9, [7, 1]);
-        var element12 = dom.childAt(element9, [9, 1]);
-        var morphs = new Array(22);
-        morphs[0] = dom.createAttrMorph(element2, 'class');
-        morphs[1] = dom.createAttrMorph(element4, 'style');
-        morphs[2] = dom.createAttrMorph(element5, 'style');
-        morphs[3] = dom.createAttrMorph(element6, 'class');
-        morphs[4] = dom.createMorphAt(dom.childAt(element7, [1]),0,0);
-        morphs[5] = dom.createMorphAt(element7,3,3);
-        morphs[6] = dom.createMorphAt(element7,5,5);
-        morphs[7] = dom.createMorphAt(element7,7,7);
-        morphs[8] = dom.createAttrMorph(element8, 'class');
-        morphs[9] = dom.createElementMorph(element8);
-        morphs[10] = dom.createMorphAt(element8,0,0);
-        morphs[11] = dom.createMorphAt(dom.childAt(element9, [1]),0,0);
-        morphs[12] = dom.createMorphAt(element9,3,3);
-        morphs[13] = dom.createAttrMorph(element10, 'class');
-        morphs[14] = dom.createMorphAt(dom.childAt(element10, [1]),1,1);
-        morphs[15] = dom.createMorphAt(dom.childAt(element10, [3]),1,1);
-        morphs[16] = dom.createAttrMorph(element11, 'disabled');
-        morphs[17] = dom.createElementMorph(element11);
-        morphs[18] = dom.createMorphAt(element11,0,0);
-        morphs[19] = dom.createAttrMorph(element12, 'class');
-        morphs[20] = dom.createElementMorph(element12);
-        morphs[21] = dom.createMorphAt(element12,0,0);
+        var element4 = dom.childAt(element3, [1]);
+        var element5 = dom.childAt(element4, [1, 1]);
+        var element6 = dom.childAt(element4, [3, 1]);
+        var element7 = dom.childAt(element2, [3, 1]);
+        var element8 = dom.childAt(element7, [1]);
+        var element9 = dom.childAt(element8, [9, 1]);
+        var element10 = dom.childAt(element7, [3]);
+        var element11 = dom.childAt(element10, [5, 1]);
+        var element12 = dom.childAt(element10, [7, 1]);
+        var morphs = new Array(20);
+        morphs[0] = dom.createAttrMorph(element3, 'class');
+        morphs[1] = dom.createAttrMorph(element5, 'style');
+        morphs[2] = dom.createAttrMorph(element6, 'style');
+        morphs[3] = dom.createAttrMorph(element7, 'class');
+        morphs[4] = dom.createMorphAt(dom.childAt(element8, [1]),0,0);
+        morphs[5] = dom.createMorphAt(element8,3,3);
+        morphs[6] = dom.createMorphAt(element8,5,5);
+        morphs[7] = dom.createMorphAt(element8,7,7);
+        morphs[8] = dom.createAttrMorph(element9, 'class');
+        morphs[9] = dom.createElementMorph(element9);
+        morphs[10] = dom.createMorphAt(element9,0,0);
+        morphs[11] = dom.createMorphAt(dom.childAt(element10, [1]),0,0);
+        morphs[12] = dom.createMorphAt(element10,3,3);
+        morphs[13] = dom.createAttrMorph(element11, 'class');
+        morphs[14] = dom.createMorphAt(dom.childAt(element11, [1]),1,1);
+        morphs[15] = dom.createMorphAt(dom.childAt(element11, [3]),1,1);
+        morphs[16] = dom.createAttrMorph(element12, 'disabled');
+        morphs[17] = dom.createElementMorph(element12);
+        morphs[18] = dom.createMorphAt(element12,0,0);
+        morphs[19] = dom.createMorphAt(element10,9,9);
         return morphs;
       },
       statements: [
@@ -39666,13 +39760,11 @@ define('frontend-cp/login/template', ['exports'], function (exports) {
         ["block","if",[["get","bottomFormSet",["loc",[null,[63,22],[63,35]]]]],[],5,null,["loc",[null,[63,16],[65,23]]]],
         ["attribute","disabled",["get","loginButtonDisabled",["loc",[null,[71,73],[71,92]]]]],
         ["element","action",["login"],[],["loc",[null,[71,95],[71,113]]]],
-        ["inline","format-message",[["subexpr","intl-get",["login.login"],[],["loc",[null,[71,131],[71,155]]]]],[],["loc",[null,[71,114],[71,157]]]],
-        ["attribute","class",["concat",["js-slide ",["subexpr","if",[["get","isLoading",["loc",[null,[75,63],[75,72]]]],"u-disable-link"],[],["loc",[null,[75,58],[75,91]]]]]]],
-        ["element","action",["gotoForgotPassword"],[],["loc",[null,[75,93],[75,124]]]],
-        ["inline","format-message",[["subexpr","intl-get",["login.forgot"],[],["loc",[null,[75,142],[75,167]]]]],[],["loc",[null,[75,125],[75,169]]]]
+        ["content","actionButtonText",["loc",[null,[71,114],[71,134]]]],
+        ["block","if",[["subexpr","not",[["subexpr","eq",[["get","currentState",["loc",[null,[73,25],[73,37]]]],"login.resetPassword.input"],[],["loc",[null,[73,21],[73,66]]]]],[],["loc",[null,[73,16],[73,67]]]]],[],6,null,["loc",[null,[73,10],[77,17]]]]
       ],
       locals: [],
-      templates: [child0, child1, child2, child3, child4, child5]
+      templates: [child0, child1, child2, child3, child4, child5, child6]
     };
   }()));
 
@@ -39794,7 +39886,50 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('/session', function (db) {
+    this.put('/base/profile/password', function (db) {
+      return {
+        id: 1,
+        status: 200,
+        data: { session: db.sessions[0] },
+        resource: 'session',
+        notifications: { success: ['test'] }, // TODO work out what notification should look like
+        resources: {
+          business_hour: arrayToObjectWithNumberedKeys(db['business-hours']),
+          field_option: arrayToObjectWithNumberedKeys(db['field-options']),
+          identity_email: arrayToObjectWithNumberedKeys(db['identity-emails']),
+          role: arrayToObjectWithNumberedKeys(db.roles),
+          team: arrayToObjectWithNumberedKeys(db.teams),
+          user: arrayToObjectWithNumberedKeys([db.users[0]]),
+          user_field: arrayToObjectWithNumberedKeys(db['user-fields'])
+        }
+      };
+    });
+
+    this.get('/session', function (db, request) {
+      if (request.requestHeaders.Authorization === 'Basic b3RwQGtheWFrby5jb206c2V0dXA=') {
+        var response = {
+          data: {},
+          status: 403,
+          errors: [{
+            code: 'OTP_EXPECTED',
+            message: 'To complete logging in you need to provide the one-time password'
+          }]
+        };
+        return new Mirage['default'].Response(403, {}, response);
+      }
+
+      if (request.requestHeaders.Authorization === 'Basic cmVzZXRAa2F5YWtvLmNvbTpzZXR1cA==') {
+        var response = {
+          data: {},
+          status: 403,
+          errors: [{
+            code: 'CREDENTIAL_EXPIRED',
+            message: 'The credential (e.g. password) is valid but has expired'
+          }]
+        };
+        return new Mirage['default'].Response(403, {}, response);
+      }
+
       return {
         id: 1,
         status: 200,
@@ -41809,6 +41944,10 @@ define('frontend-cp/mirage/fixtures/en-us-strings', ['exports'], function (expor
     }, {
       id: 'frontend.api.login.repeatpassword',
       value: 'Password (repeat)',
+      'resource_type': 'locale_string'
+    }, {
+      id: 'frontend.api.login.updatepassword',
+      value: 'Change password',
       'resource_type': 'locale_string'
     }, {
       id: 'frontend.api.login.resetpassword',
@@ -47820,6 +47959,7 @@ define('frontend-cp/services/error-handler', ['exports', 'ember'], function (exp
 
   var SESSION_LOADING_FAILED = 'SESSION_LOADING_FAILED';
   var RESOURCE_NOT_FOUND = 'RESOURCE_NOT_FOUND';
+  var CREDENTIAL_EXPIRED = 'CREDENTIAL_EXPIRED';
 
   exports['default'] = Ember['default'].Service.extend({
     notificationService: Ember['default'].inject.service('notification'),
@@ -47829,6 +47969,10 @@ define('frontend-cp/services/error-handler', ['exports', 'ember'], function (exp
 
     handleServerError: function handleServerError(error) {
       var responseErrors = error.errors;
+      var options = {
+        autodismiss: true,
+        dismissable: false
+      };
 
       if (responseErrors[0].code === SESSION_LOADING_FAILED) {
         this.handleSessionErrors();
@@ -47840,11 +47984,21 @@ define('frontend-cp/services/error-handler', ['exports', 'ember'], function (exp
         return;
       }
 
-      this.sendErrorNotification(responseErrors);
+      if (responseErrors[0].code === CREDENTIAL_EXPIRED) {
+        options.autodismiss = false;
+        options.dismissable = true;
+      }
+
+      this.sendErrorNotification(responseErrors, options);
       throw error;
     },
 
-    sendErrorNotification: function sendErrorNotification(responseErrors) {
+    sendErrorNotification: function sendErrorNotification(responseErrors, _ref) {
+      var _ref$dismissable = _ref.dismissable;
+      var dismissable = _ref$dismissable === undefined ? false : _ref$dismissable;
+      var _ref$autodismiss = _ref.autodismiss;
+      var autodismiss = _ref$autodismiss === undefined ? true : _ref$autodismiss;
+
       var notificationService = this.get('notificationService');
       var errorMessageService = this.get('errorMessageService');
       var errorMessages = errorMessageService.parseErrors(responseErrors);
@@ -47853,7 +48007,8 @@ define('frontend-cp/services/error-handler', ['exports', 'ember'], function (exp
           type: 'error',
           title: errorMessage.message,
           body: errorMessage.description,
-          autodismiss: true
+          autodismiss: autodismiss,
+          dismissable: dismissable
         });
       });
     },
@@ -48136,6 +48291,10 @@ define('frontend-cp/services/notification', ['exports', 'ember'], function (expo
     add: function add(notification) {
       var notifications = this.get('notifications');
       notifications.pushObject(notification);
+    },
+
+    removeAll: function removeAll() {
+      this.get('notifications').clear();
     },
 
     /**
@@ -68626,7 +68785,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+4e36778d"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+49e7bd68"});
 }
 
 /* jshint ignore:end */

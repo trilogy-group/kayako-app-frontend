@@ -7,5 +7,6 @@
   "password": "Password",
   "repeatpassword": "Password (repeat)",
   "resetpassword": "Reset your password",
+  "updatepassword": "Change password",
   "welcome": "Welcome to Kayako"
 }
