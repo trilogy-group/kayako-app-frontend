@@ -13,6 +13,7 @@
   "tags": "Tags",
 
   "editsignature": "Edit Signature",
+  "changepassword": "Change password",
 
   "metadata.created": "Created",
   "metadata.updated": "Updated",
@@ -20,5 +21,7 @@
   "infobar.accesslevel": "Organization access",
   "infobar.accesslevel.self": "Own cases only",
   "infobar.accesslevel.organization": "All organization's cases",
-  "add_a_note": "Add a note"
+  "add_a_note": "Add a note",
+
+  "password_reset_email.success": "Password reset email has been sent"
 }
