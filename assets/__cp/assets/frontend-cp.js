@@ -35118,11 +35118,11 @@ define('frontend-cp/components/ko-user-action-menu/template', ['exports'], funct
             "loc": {
               "source": null,
               "start": {
-                "line": 7,
+                "line": 8,
                 "column": 2
               },
               "end": {
-                "line": 11,
+                "line": 12,
                 "column": 2
               }
             },
@@ -35149,14 +35149,9 @@ define('frontend-cp/components/ko-user-action-menu/template', ['exports'], funct
             dom.appendChild(el0, el1);
             return el0;
           },
-          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-            var element0 = dom.childAt(fragment, [1]);
-            var morphs = new Array(1);
-            morphs[0] = dom.createElementMorph(element0);
-            return morphs;
-          },
+          buildRenderNodes: function buildRenderNodes() { return []; },
           statements: [
-            ["element","action",["showMenu"],[],["loc",[null,[8,60],[8,81]]]]
+
           ],
           locals: [],
           templates: []
@@ -35172,11 +35167,11 @@ define('frontend-cp/components/ko-user-action-menu/template', ['exports'], funct
                   "loc": {
                     "source": null,
                     "start": {
-                      "line": 15,
+                      "line": 16,
                       "column": 8
                     },
                     "end": {
-                      "line": 17,
+                      "line": 18,
                       "column": 8
                     }
                   },
@@ -35201,7 +35196,7 @@ define('frontend-cp/components/ko-user-action-menu/template', ['exports'], funct
                   return morphs;
                 },
                 statements: [
-                  ["inline","format-message",[["subexpr","intl-get",["users.editsignature"],[],["loc",[null,[16,27],[16,59]]]]],[],["loc",[null,[16,10],[16,61]]]]
+                  ["inline","format-message",[["subexpr","intl-get",["users.editsignature"],[],["loc",[null,[17,27],[17,59]]]]],[],["loc",[null,[17,10],[17,61]]]]
                 ],
                 locals: [],
                 templates: []
@@ -35213,11 +35208,11 @@ define('frontend-cp/components/ko-user-action-menu/template', ['exports'], funct
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 14,
+                    "line": 15,
                     "column": 6
                   },
                   "end": {
-                    "line": 18,
+                    "line": 19,
                     "column": 6
                   }
                 },
@@ -35240,7 +35235,7 @@ define('frontend-cp/components/ko-user-action-menu/template', ['exports'], funct
                 return morphs;
               },
               statements: [
-                ["block","ko-dropdown/list/item",[],["action","editSignature"],0,null,["loc",[null,[15,8],[17,34]]]]
+                ["block","ko-dropdown/list/item",[],["action","editSignature"],0,null,["loc",[null,[16,8],[18,34]]]]
               ],
               locals: [],
               templates: [child0]
@@ -35254,11 +35249,11 @@ define('frontend-cp/components/ko-user-action-menu/template', ['exports'], funct
                   "loc": {
                     "source": null,
                     "start": {
-                      "line": 21,
+                      "line": 22,
                       "column": 8
                     },
                     "end": {
-                      "line": 23,
+                      "line": 24,
                       "column": 8
                     }
                   },
@@ -35283,7 +35278,7 @@ define('frontend-cp/components/ko-user-action-menu/template', ['exports'], funct
                   return morphs;
                 },
                 statements: [
-                  ["inline","format-message",[["subexpr","intl-get",["users.changepassword"],[],["loc",[null,[22,27],[22,60]]]]],[],["loc",[null,[22,10],[22,62]]]]
+                  ["inline","format-message",[["subexpr","intl-get",["users.changepassword"],[],["loc",[null,[23,27],[23,60]]]]],[],["loc",[null,[23,10],[23,62]]]]
                 ],
                 locals: [],
                 templates: []
@@ -35295,11 +35290,11 @@ define('frontend-cp/components/ko-user-action-menu/template', ['exports'], funct
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 20,
+                    "line": 21,
                     "column": 6
                   },
                   "end": {
-                    "line": 24,
+                    "line": 25,
                     "column": 6
                   }
                 },
@@ -35322,7 +35317,7 @@ define('frontend-cp/components/ko-user-action-menu/template', ['exports'], funct
                 return morphs;
               },
               statements: [
-                ["block","ko-dropdown/list/item",[],["action","changeUserPassword"],0,null,["loc",[null,[21,8],[23,34]]]]
+                ["block","ko-dropdown/list/item",[],["action","changeUserPassword"],0,null,["loc",[null,[22,8],[24,34]]]]
               ],
               locals: [],
               templates: [child0]
@@ -35334,11 +35329,11 @@ define('frontend-cp/components/ko-user-action-menu/template', ['exports'], funct
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 13,
+                  "line": 14,
                   "column": 4
                 },
                 "end": {
-                  "line": 25,
+                  "line": 26,
                   "column": 4
                 }
               },
@@ -35366,8 +35361,8 @@ define('frontend-cp/components/ko-user-action-menu/template', ['exports'], funct
               return morphs;
             },
             statements: [
-              ["block","if",[["subexpr","ko-has-permission",["app.user.signature.edit",["get","permissions",["loc",[null,[14,57],[14,68]]]],["get","userRoleType",["loc",[null,[14,69],[14,81]]]]],[],["loc",[null,[14,12],[14,82]]]]],[],0,null,["loc",[null,[14,6],[18,13]]]],
-              ["block","if",[["subexpr","and",[["subexpr","ko-has-permission",["app.user.password.change",["get","permissions",["loc",[null,[20,63],[20,74]]]],["get","userRoleType",["loc",[null,[20,75],[20,87]]]]],[],["loc",[null,[20,17],[20,88]]]],["get","userModel.emails.length",["loc",[null,[20,89],[20,112]]]]],[],["loc",[null,[20,12],[20,113]]]]],[],1,null,["loc",[null,[20,6],[24,13]]]]
+              ["block","if",[["subexpr","ko-has-permission",["app.user.signature.edit",["get","permissions",["loc",[null,[15,57],[15,68]]]],["get","userRoleType",["loc",[null,[15,69],[15,81]]]]],[],["loc",[null,[15,12],[15,82]]]]],[],0,null,["loc",[null,[15,6],[19,13]]]],
+              ["block","if",[["subexpr","and",[["subexpr","ko-has-permission",["app.user.password.change",["get","permissions",["loc",[null,[21,63],[21,74]]]],["get","userRoleType",["loc",[null,[21,75],[21,87]]]]],[],["loc",[null,[21,17],[21,88]]]],["get","userModel.emails.length",["loc",[null,[21,89],[21,112]]]]],[],["loc",[null,[21,12],[21,113]]]]],[],1,null,["loc",[null,[21,6],[25,13]]]]
             ],
             locals: [],
             templates: [child0, child1]
@@ -35379,11 +35374,11 @@ define('frontend-cp/components/ko-user-action-menu/template', ['exports'], funct
             "loc": {
               "source": null,
               "start": {
-                "line": 12,
+                "line": 13,
                 "column": 2
               },
               "end": {
-                "line": 26,
+                "line": 27,
                 "column": 2
               }
             },
@@ -35406,7 +35401,7 @@ define('frontend-cp/components/ko-user-action-menu/template', ['exports'], funct
             return morphs;
           },
           statements: [
-            ["block","ko-dropdown/list",[],["class","ko-dropdown-select__content","style",["subexpr","@mut",[["get","contentStyle",["loc",[null,[13,66],[13,78]]]]],[],[]]],0,null,["loc",[null,[13,4],[25,25]]]]
+            ["block","ko-dropdown/list",[],["class","ko-dropdown-select__content","style",["subexpr","@mut",[["get","contentStyle",["loc",[null,[14,66],[14,78]]]]],[],[]]],0,null,["loc",[null,[14,4],[26,25]]]]
           ],
           locals: [],
           templates: [child0]
@@ -35422,7 +35417,7 @@ define('frontend-cp/components/ko-user-action-menu/template', ['exports'], funct
               "column": 0
             },
             "end": {
-              "line": 27,
+              "line": 28,
               "column": 0
             }
           },
@@ -35449,8 +35444,8 @@ define('frontend-cp/components/ko-user-action-menu/template', ['exports'], funct
           return morphs;
         },
         statements: [
-          ["block","if",[["subexpr","eq",[["get","name",["loc",[null,[7,12],[7,16]]]],"button"],[],["loc",[null,[7,8],[7,26]]]]],[],0,null,["loc",[null,[7,2],[11,9]]]],
-          ["block","if",[["subexpr","eq",[["get","name",["loc",[null,[12,12],[12,16]]]],"content"],[],["loc",[null,[12,8],[12,27]]]]],[],1,null,["loc",[null,[12,2],[26,9]]]]
+          ["block","if",[["subexpr","eq",[["get","name",["loc",[null,[8,12],[8,16]]]],"button"],[],["loc",[null,[8,8],[8,26]]]]],[],0,null,["loc",[null,[8,2],[12,9]]]],
+          ["block","if",[["subexpr","eq",[["get","name",["loc",[null,[13,12],[13,16]]]],"content"],[],["loc",[null,[13,8],[13,27]]]]],[],1,null,["loc",[null,[13,2],[27,9]]]]
         ],
         locals: ["name","dropdownContext"],
         templates: [child0, child1]
@@ -35466,7 +35461,7 @@ define('frontend-cp/components/ko-user-action-menu/template', ['exports'], funct
             "column": 0
           },
           "end": {
-            "line": 28,
+            "line": 29,
             "column": 0
           }
         },
@@ -35489,7 +35484,7 @@ define('frontend-cp/components/ko-user-action-menu/template', ['exports'], funct
         return morphs;
       },
       statements: [
-        ["block","ko-dropdown/container",[],["alignRight",true,"onFocusOut","hideMenu","hideOnChildFocus",true,"hideOnClick",true],0,null,["loc",[null,[1,0],[27,26]]]]
+        ["block","ko-dropdown/container",[],["alignRight",true,"onFocusOut","hideMenu","onFocusIn","showMenu","hideOnChildFocus",true,"hideOnClick",true],0,null,["loc",[null,[1,0],[28,26]]]]
       ],
       locals: [],
       templates: [child0]
@@ -48356,7 +48351,8 @@ define('frontend-cp/services/permissions', ['exports', 'ember'], function (expor
   var applicationActions = {
     'app.user.signature.edit': function appUserSignatureEdit(roleType, args) {
       var userRoleType = roleTypes[args[0]];
-      return roleType.rank > userRoleType.rank;
+      // If I'm a higher rank and they are not a CUSTOMER
+      return roleType.rank > userRoleType.rank && userRoleType.rank !== roleTypes.CUSTOMER.rank;
     },
     // ADMIN can disable all, AGENT only CUSTOMER
     'app.user.disable': function appUserDisable(roleType, args) {
@@ -68785,7 +68781,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+49e7bd68"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+2aa96eed"});
 }
 
 /* jshint ignore:end */
