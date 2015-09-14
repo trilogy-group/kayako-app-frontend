@@ -20422,7 +20422,6 @@ define('frontend-cp/components/ko-dropdown/container/component', ['exports', 'em
     isFocussed: null,
     attributeBindings: ['tabindex'],
     classNames: 'ko-dropdown-container',
-    classNameBindings: ['alignRight'],
 
     onHideDropdown: Ember['default'].observer('hideDropdown', function () {
       var hideDropdown = this.get('hideDropdown');
@@ -20943,8 +20942,7 @@ define('frontend-cp/components/ko-dropdown/list/component', ['exports', 'ember']
     // {{/ko-dropdown/list}}
     attributeBindings: ['style'],
 
-    classNames: ['ko-dropdown-list'],
-    classNameBindings: ['alignRight']
+    classNames: ['ko-dropdown-list']
   });
 
 });
@@ -35082,12 +35080,21 @@ define('frontend-cp/components/ko-user-action-menu/component', ['exports', 'embe
     editSignature: 'editSignature',
     changeUserPassword: 'changeUserPassword',
 
+    classNameBindings: ['menuActive'],
+    menuActive: false,
+
     actions: {
       editSignature: function editSignature() {
         this.sendAction('editSignature');
       },
       changeUserPassword: function changeUserPassword() {
         this.sendAction('changeUserPassword');
+      },
+      showMenu: function showMenu() {
+        this.set('menuActive', true);
+      },
+      hideMenu: function hideMenu() {
+        this.set('menuActive', false);
       }
     }
   });
@@ -35106,11 +35113,11 @@ define('frontend-cp/components/ko-user-action-menu/template', ['exports'], funct
             "loc": {
               "source": null,
               "start": {
-                "line": 2,
+                "line": 7,
                 "column": 2
               },
               "end": {
-                "line": 6,
+                "line": 11,
                 "column": 2
               }
             },
@@ -35124,7 +35131,7 @@ define('frontend-cp/components/ko-user-action-menu/template', ['exports'], funct
             var el1 = dom.createTextNode("    ");
             dom.appendChild(el0, el1);
             var el1 = dom.createElement("button");
-            dom.setAttribute(el1,"class","button button--default");
+            dom.setAttribute(el1,"class","button button--default button--dropdown");
             var el2 = dom.createTextNode("\n      ");
             dom.appendChild(el1, el2);
             var el2 = dom.createElement("i");
@@ -35137,9 +35144,14 @@ define('frontend-cp/components/ko-user-action-menu/template', ['exports'], funct
             dom.appendChild(el0, el1);
             return el0;
           },
-          buildRenderNodes: function buildRenderNodes() { return []; },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var element0 = dom.childAt(fragment, [1]);
+            var morphs = new Array(1);
+            morphs[0] = dom.createElementMorph(element0);
+            return morphs;
+          },
           statements: [
-
+            ["element","action",["showMenu"],[],["loc",[null,[8,60],[8,81]]]]
           ],
           locals: [],
           templates: []
@@ -35147,17 +35159,181 @@ define('frontend-cp/components/ko-user-action-menu/template', ['exports'], funct
       }());
       var child1 = (function() {
         var child0 = (function() {
+          var child0 = (function() {
+            var child0 = (function() {
+              return {
+                meta: {
+                  "revision": "Ember@1.13.7",
+                  "loc": {
+                    "source": null,
+                    "start": {
+                      "line": 15,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 17,
+                      "column": 8
+                    }
+                  },
+                  "moduleName": "frontend-cp/components/ko-user-action-menu/template.hbs"
+                },
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                  var el0 = dom.createDocumentFragment();
+                  var el1 = dom.createTextNode("          ");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createComment("");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createTextNode("\n");
+                  dom.appendChild(el0, el1);
+                  return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                  var morphs = new Array(1);
+                  morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+                  return morphs;
+                },
+                statements: [
+                  ["inline","format-message",[["subexpr","intl-get",["users.editsignature"],[],["loc",[null,[16,27],[16,59]]]]],[],["loc",[null,[16,10],[16,61]]]]
+                ],
+                locals: [],
+                templates: []
+              };
+            }());
+            return {
+              meta: {
+                "revision": "Ember@1.13.7",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 14,
+                    "column": 6
+                  },
+                  "end": {
+                    "line": 18,
+                    "column": 6
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-user-action-menu/template.hbs"
+              },
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var morphs = new Array(1);
+                morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+                dom.insertBoundary(fragment, 0);
+                dom.insertBoundary(fragment, null);
+                return morphs;
+              },
+              statements: [
+                ["block","ko-dropdown/list/item",[],["action","editSignature"],0,null,["loc",[null,[15,8],[17,34]]]]
+              ],
+              locals: [],
+              templates: [child0]
+            };
+          }());
+          var child1 = (function() {
+            var child0 = (function() {
+              return {
+                meta: {
+                  "revision": "Ember@1.13.7",
+                  "loc": {
+                    "source": null,
+                    "start": {
+                      "line": 21,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 23,
+                      "column": 8
+                    }
+                  },
+                  "moduleName": "frontend-cp/components/ko-user-action-menu/template.hbs"
+                },
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                  var el0 = dom.createDocumentFragment();
+                  var el1 = dom.createTextNode("          ");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createComment("");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createTextNode("\n");
+                  dom.appendChild(el0, el1);
+                  return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                  var morphs = new Array(1);
+                  morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+                  return morphs;
+                },
+                statements: [
+                  ["inline","format-message",[["subexpr","intl-get",["users.changepassword"],[],["loc",[null,[22,27],[22,60]]]]],[],["loc",[null,[22,10],[22,62]]]]
+                ],
+                locals: [],
+                templates: []
+              };
+            }());
+            return {
+              meta: {
+                "revision": "Ember@1.13.7",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 20,
+                    "column": 6
+                  },
+                  "end": {
+                    "line": 24,
+                    "column": 6
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-user-action-menu/template.hbs"
+              },
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var morphs = new Array(1);
+                morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+                dom.insertBoundary(fragment, 0);
+                dom.insertBoundary(fragment, null);
+                return morphs;
+              },
+              statements: [
+                ["block","ko-dropdown/list/item",[],["action","changeUserPassword"],0,null,["loc",[null,[21,8],[23,34]]]]
+              ],
+              locals: [],
+              templates: [child0]
+            };
+          }());
           return {
             meta: {
               "revision": "Ember@1.13.7",
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 10,
+                  "line": 13,
                   "column": 4
                 },
                 "end": {
-                  "line": 12,
+                  "line": 25,
                   "column": 4
                 }
               },
@@ -35168,76 +35344,28 @@ define('frontend-cp/components/ko-user-action-menu/template', ['exports'], funct
             hasRendered: false,
             buildFragment: function buildFragment(dom) {
               var el0 = dom.createDocumentFragment();
-              var el1 = dom.createTextNode("      ");
-              dom.appendChild(el0, el1);
-              var el1 = dom.createElement("li");
-              var el2 = dom.createComment("");
-              dom.appendChild(el1, el2);
+              var el1 = dom.createComment("");
               dom.appendChild(el0, el1);
               var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createComment("");
               dom.appendChild(el0, el1);
               return el0;
             },
             buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-              var element1 = dom.childAt(fragment, [1]);
               var morphs = new Array(2);
-              morphs[0] = dom.createElementMorph(element1);
-              morphs[1] = dom.createMorphAt(element1,0,0);
+              morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+              morphs[1] = dom.createMorphAt(fragment,2,2,contextualElement);
+              dom.insertBoundary(fragment, 0);
+              dom.insertBoundary(fragment, null);
               return morphs;
             },
             statements: [
-              ["element","action",["editSignature"],[],["loc",[null,[11,10],[11,36]]]],
-              ["inline","format-message",[["subexpr","intl-get",["users.editsignature"],[],["loc",[null,[11,54],[11,86]]]]],[],["loc",[null,[11,37],[11,88]]]]
+              ["block","if",[["subexpr","ko-has-permission",["app.user.signature.edit",["get","permissions",["loc",[null,[14,57],[14,68]]]],["get","userRoleType",["loc",[null,[14,69],[14,81]]]]],[],["loc",[null,[14,12],[14,82]]]]],[],0,null,["loc",[null,[14,6],[18,13]]]],
+              ["block","if",[["subexpr","and",[["subexpr","ko-has-permission",["app.user.password.change",["get","permissions",["loc",[null,[20,63],[20,74]]]],["get","userRoleType",["loc",[null,[20,75],[20,87]]]]],[],["loc",[null,[20,17],[20,88]]]],["get","userModel.emails.length",["loc",[null,[20,89],[20,112]]]]],[],["loc",[null,[20,12],[20,113]]]]],[],1,null,["loc",[null,[20,6],[24,13]]]]
             ],
             locals: [],
-            templates: []
-          };
-        }());
-        var child1 = (function() {
-          return {
-            meta: {
-              "revision": "Ember@1.13.7",
-              "loc": {
-                "source": null,
-                "start": {
-                  "line": 16,
-                  "column": 4
-                },
-                "end": {
-                  "line": 21,
-                  "column": 4
-                }
-              },
-              "moduleName": "frontend-cp/components/ko-user-action-menu/template.hbs"
-            },
-            arity: 0,
-            cachedFragment: null,
-            hasRendered: false,
-            buildFragment: function buildFragment(dom) {
-              var el0 = dom.createDocumentFragment();
-              var el1 = dom.createTextNode("      ");
-              dom.appendChild(el0, el1);
-              var el1 = dom.createElement("li");
-              var el2 = dom.createComment("");
-              dom.appendChild(el1, el2);
-              dom.appendChild(el0, el1);
-              var el1 = dom.createTextNode("\n");
-              dom.appendChild(el0, el1);
-              return el0;
-            },
-            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-              var element0 = dom.childAt(fragment, [1]);
-              var morphs = new Array(2);
-              morphs[0] = dom.createElementMorph(element0);
-              morphs[1] = dom.createMorphAt(element0,0,0);
-              return morphs;
-            },
-            statements: [
-              ["element","action",["changeUserPassword"],[],["loc",[null,[20,10],[20,41]]]],
-              ["inline","format-message",[["subexpr","intl-get",["users.changepassword"],[],["loc",[null,[20,59],[20,92]]]]],[],["loc",[null,[20,42],[20,94]]]]
-            ],
-            locals: [],
-            templates: []
+            templates: [child0, child1]
           };
         }());
         return {
@@ -35246,11 +35374,11 @@ define('frontend-cp/components/ko-user-action-menu/template', ['exports'], funct
             "loc": {
               "source": null,
               "start": {
-                "line": 7,
+                "line": 12,
                 "column": 2
               },
               "end": {
-                "line": 24,
+                "line": 26,
                 "column": 2
               }
             },
@@ -35261,48 +35389,22 @@ define('frontend-cp/components/ko-user-action-menu/template', ['exports'], funct
           hasRendered: false,
           buildFragment: function buildFragment(dom) {
             var el0 = dom.createDocumentFragment();
-            var el1 = dom.createTextNode("    ");
-            dom.appendChild(el0, el1);
-            var el1 = dom.createElement("ul");
-            dom.setAttribute(el1,"class","list-bare");
-            var el2 = dom.createTextNode("\n\n");
-            dom.appendChild(el1, el2);
-            var el2 = dom.createComment("");
-            dom.appendChild(el1, el2);
-            var el2 = dom.createTextNode("\n      ");
-            dom.appendChild(el1, el2);
-            var el2 = dom.createElement("li");
-            var el3 = dom.createComment("");
-            dom.appendChild(el2, el3);
-            var el3 = dom.createTextNode(" ");
-            dom.appendChild(el2, el3);
-            dom.appendChild(el1, el2);
-            var el2 = dom.createTextNode("\n\n");
-            dom.appendChild(el1, el2);
-            var el2 = dom.createComment("");
-            dom.appendChild(el1, el2);
-            var el2 = dom.createTextNode("\n    ");
-            dom.appendChild(el1, el2);
-            dom.appendChild(el0, el1);
-            var el1 = dom.createTextNode("\n");
+            var el1 = dom.createComment("");
             dom.appendChild(el0, el1);
             return el0;
           },
           buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-            var element2 = dom.childAt(fragment, [1]);
-            var morphs = new Array(3);
-            morphs[0] = dom.createMorphAt(element2,1,1);
-            morphs[1] = dom.createMorphAt(dom.childAt(element2, [3]),0,0);
-            morphs[2] = dom.createMorphAt(element2,5,5);
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+            dom.insertBoundary(fragment, 0);
+            dom.insertBoundary(fragment, null);
             return morphs;
           },
           statements: [
-            ["block","if",[["subexpr","ko-has-permission",["app.user.signature.edit",["get","permissions",["loc",[null,[10,55],[10,66]]]],["get","userRoleType",["loc",[null,[10,67],[10,79]]]]],[],["loc",[null,[10,10],[10,80]]]]],[],0,null,["loc",[null,[10,4],[12,11]]]],
-            ["content","usermodel.emails.length",["loc",[null,[14,10],[14,37]]]],
-            ["block","if",[["subexpr","and",[["subexpr","ko-has-permission",["app.user.password.change",["get","permissions",["loc",[null,[17,50],[17,61]]]],["get","userRoleType",["loc",[null,[17,62],[17,74]]]]],[],["loc",[null,[17,4],[17,75]]]],["get","userModel.emails.length",["loc",[null,[18,4],[18,27]]]]],[],["loc",[null,[16,10],[18,28]]]]],[],1,null,["loc",[null,[16,4],[21,11]]]]
+            ["block","ko-dropdown/list",[],["class","ko-dropdown-select__content","style",["subexpr","@mut",[["get","contentStyle",["loc",[null,[13,66],[13,78]]]]],[],[]]],0,null,["loc",[null,[13,4],[25,25]]]]
           ],
           locals: [],
-          templates: [child0, child1]
+          templates: [child0]
         };
       }());
       return {
@@ -35315,7 +35417,7 @@ define('frontend-cp/components/ko-user-action-menu/template', ['exports'], funct
               "column": 0
             },
             "end": {
-              "line": 25,
+              "line": 27,
               "column": 0
             }
           },
@@ -35326,6 +35428,8 @@ define('frontend-cp/components/ko-user-action-menu/template', ['exports'], funct
         hasRendered: false,
         buildFragment: function buildFragment(dom) {
           var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
           var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
           var el1 = dom.createComment("");
@@ -35334,15 +35438,14 @@ define('frontend-cp/components/ko-user-action-menu/template', ['exports'], funct
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
           var morphs = new Array(2);
-          morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
-          morphs[1] = dom.createMorphAt(fragment,1,1,contextualElement);
-          dom.insertBoundary(fragment, 0);
+          morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+          morphs[1] = dom.createMorphAt(fragment,2,2,contextualElement);
           dom.insertBoundary(fragment, null);
           return morphs;
         },
         statements: [
-          ["block","if",[["subexpr","eq",[["get","name",["loc",[null,[2,12],[2,16]]]],"button"],[],["loc",[null,[2,8],[2,26]]]]],[],0,null,["loc",[null,[2,2],[6,9]]]],
-          ["block","if",[["subexpr","eq",[["get","name",["loc",[null,[7,12],[7,16]]]],"content"],[],["loc",[null,[7,8],[7,27]]]]],[],1,null,["loc",[null,[7,2],[24,9]]]]
+          ["block","if",[["subexpr","eq",[["get","name",["loc",[null,[7,12],[7,16]]]],"button"],[],["loc",[null,[7,8],[7,26]]]]],[],0,null,["loc",[null,[7,2],[11,9]]]],
+          ["block","if",[["subexpr","eq",[["get","name",["loc",[null,[12,12],[12,16]]]],"content"],[],["loc",[null,[12,8],[12,27]]]]],[],1,null,["loc",[null,[12,2],[26,9]]]]
         ],
         locals: ["name","dropdownContext"],
         templates: [child0, child1]
@@ -35358,7 +35461,7 @@ define('frontend-cp/components/ko-user-action-menu/template', ['exports'], funct
             "column": 0
           },
           "end": {
-            "line": 26,
+            "line": 28,
             "column": 0
           }
         },
@@ -35381,7 +35484,7 @@ define('frontend-cp/components/ko-user-action-menu/template', ['exports'], funct
         return morphs;
       },
       statements: [
-        ["block","ko-dropdown/container",[],["alignRight",true,"hideOnChildFocus",true,"hideOnClick",true],0,null,["loc",[null,[1,0],[25,26]]]]
+        ["block","ko-dropdown/container",[],["alignRight",true,"onFocusOut","hideMenu","hideOnChildFocus",true,"hideOnClick",true],0,null,["loc",[null,[1,0],[27,26]]]]
       ],
       locals: [],
       templates: [child0]
@@ -36031,7 +36134,6 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
         var el4 = dom.createElement("div");
-        dom.setAttribute(el4,"class","flag--bottom");
         var el5 = dom.createTextNode("\n        ");
         dom.appendChild(el4, el5);
         var el5 = dom.createElement("div");
@@ -36048,7 +36150,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
         var el5 = dom.createTextNode("\n        ");
         dom.appendChild(el4, el5);
         var el5 = dom.createElement("div");
-        dom.setAttribute(el5,"class","flag__body");
+        dom.setAttribute(el5,"class","flag__body u-v-align-top");
         var el6 = dom.createTextNode("\n          ");
         dom.appendChild(el5, el6);
         var el6 = dom.createElement("h4");
@@ -36072,14 +36174,15 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
         var el3 = dom.createComment("\n\n ");
         dom.appendChild(el2, el3);
         var el3 = dom.createElement("div");
-        dom.setAttribute(el3,"class","layout__item u-1/3");
+        dom.setAttribute(el3,"class","layout__item u-1/3 u-mt");
         var el4 = dom.createTextNode("\n     ");
         dom.appendChild(el3, el4);
         var el4 = dom.createElement("ul");
-        dom.setAttribute(el4,"class","list-inline");
+        dom.setAttribute(el4,"class","list-inline t-right");
         var el5 = dom.createTextNode("\n       ");
         dom.appendChild(el4, el5);
         var el5 = dom.createElement("li");
+        dom.setAttribute(el5,"class","u-v-align-top");
         var el6 = dom.createTextNode("\n         ");
         dom.appendChild(el5, el6);
         var el6 = dom.createComment("");
@@ -36090,6 +36193,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
         var el5 = dom.createTextNode("\n       ");
         dom.appendChild(el4, el5);
         var el5 = dom.createElement("li");
+        dom.setAttribute(el5,"class","u-v-align-top");
         var el6 = dom.createTextNode("\n         ");
         dom.appendChild(el5, el6);
         var el6 = dom.createComment("");
@@ -36100,6 +36204,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
         var el5 = dom.createTextNode("\n       ");
         dom.appendChild(el4, el5);
         var el5 = dom.createElement("li");
+        dom.setAttribute(el5,"class","u-v-align-top");
         var el6 = dom.createTextNode("\n        ");
         dom.appendChild(el5, el6);
         var el6 = dom.createComment("");
@@ -68383,7 +68488,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+53997cc3"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+fdb497cf"});
 }
 
 /* jshint ignore:end */
