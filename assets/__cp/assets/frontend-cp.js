@@ -87,6 +87,16 @@ define('frontend-cp/adapters/application', ['exports', 'ember', 'ember-data', 'n
     sessionService: Ember['default'].inject.service('session'),
     errorService: Ember['default'].inject.service('errorHandler'),
 
+    /*
+     * Each time we findAll on a model, we check to see if we've
+     * loaded it - we don't reload the model once this has happened.
+     * (all new models will be pushed to the store via pusher)
+     */
+    foundAllHash: null,
+    initFoundAllHash: Ember['default'].on('init', function () {
+      this.set('foundAllHash', {});
+    }),
+
     headers: Ember['default'].computed('sessionService.sessionId', function () {
       var headers = {
         'Accept': 'application/json',
@@ -308,14 +318,32 @@ define('frontend-cp/adapters/application', ['exports', 'ember', 'ember-data', 'n
       });
     },
 
-    /* TODO: Remove when Ember 2.0 is released (just for deprecation warnings) */
+    /*
+     * If we've already requested a resource, we will never
+     * need to update it (pusher will handle all the things)
+     *
+     * We're never background reloading.
+     */
+
     shouldReloadAll: function shouldReloadAll(store, snapshotRecordArray) {
+      if (this.get('foundAllHash.' + snapshotRecordArray.type.modelName)) {
+        return false;
+      }
+      this.set('foundAllHash.' + snapshotRecordArray.type.modelName, true);
       return true;
     },
 
-    /* TODO: Remove when Ember 2.0 is relased (just for deprecation warnings) */
-    shouldBackgroundReloadRecord: function shouldBackgroundReloadRecord(store, snapshot) {
+    shouldBackgroundReloadAll: function shouldBackgroundReloadAll(store, snapshotRecordArray) {
       return false;
+    },
+
+    /* TODO: Remove when Ember 2.0 is relased (just for deprecation warnings) */
+    shouldReloadRecord: function shouldReloadRecord(store, snapshot) {
+      return false;
+    },
+
+    shouldBackgroundReloadRecord: function shouldBackgroundReloadRecord(store, snapshot) {
+      return true;
     }
   });
 
@@ -68355,7 +68383,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+43108b04"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+53997cc3"});
 }
 
 /* jshint ignore:end */
