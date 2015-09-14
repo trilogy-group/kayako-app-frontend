@@ -1096,16 +1096,16 @@ define('frontend-cp/components/ko-add-participants-popover/component', ['exports
     filteredParticipants: null,
     selectedParticipants: null,
 
-    didShowingChange: Ember['default'].on('init', Ember['default'].observer('isShowing', function () {
+    willRender: function willRender() {
       if (this.get('isShowing')) {
         this.$().find('.input-text').focus();
       }
-    })),
+    },
 
-    setupParticipants: Ember['default'].on('willInsertElement', function () {
+    didReceiveAttrs: function didReceiveAttrs() {
       this.set('selectedParticipants', new Ember['default'].A([]));
       this.set('filteredParticipants', this.get('results'));
-    }),
+    },
     // TODO: when RFC implemented and its possible to invoke same actions via multiple events
     keyDown: function keyDown(e) {
       if (e.keyCode === KeyCodes.down) {
@@ -7983,11 +7983,6 @@ define('frontend-cp/components/ko-admin/tags/component', ['exports', 'ember'], f
       this.sendAction('onSearchTermUpdated', this.get('searchTerm'));
     }),
 
-    willInsertElement: function willInsertElement() {
-      var width = this.$('.ko-dropdown-select__button').outerWidth(true);
-      this.set('contentStyle', ('min-width:' + width + 'px;').htmlSafe());
-    },
-
     actions: {
       onFocusChanged: function onFocusChanged(focusState) {
         // can get into a loop when there are no tags to display, so the focus state cycles
@@ -13105,12 +13100,7 @@ define('frontend-cp/components/ko-case-content/dropdown/component', ['exports', 
       } else {
         return '';
       }
-    }),
-
-    willInsertElement: function willInsertElement() {
-      var width = this.$('.ko-case-content_dropdown__button').outerWidth(true);
-      this.set('contentStyle', ('min-width:' + width + 'px;').htmlSafe());
-    }
+    })
   });
 
 });
@@ -18011,10 +18001,6 @@ define('frontend-cp/components/ko-channel-select/component', ['exports', 'ember'
     //Params
     hideOnClick: false,
 
-    willInsertElement: function willInsertElement() {
-      var width = this.$('.ko-channel-select__button').outerWidth(true);
-      this.set('contentStyle', ('min-width:' + width + 'px;').htmlSafe());
-    },
     contentStyle: null
   });
 
@@ -21418,10 +21404,6 @@ define('frontend-cp/components/ko-dropdown/select/component', ['exports', 'ember
     //Params
     hideOnClick: true,
 
-    willInsertElement: function willInsertElement() {
-      var width = this.$('.ko-dropdown-select__button').outerWidth(true);
-      this.set('contentStyle', ('min-width:' + width + 'px;').htmlSafe());
-    },
     contentStyle: null,
 
     actions: {
@@ -23543,7 +23525,7 @@ define('frontend-cp/components/ko-field/tags/component', ['exports', 'ember', 'f
       this.resetSuggestedTagKeyboardPosition();
     }),
 
-    willInsertElement: function willInsertElement() {
+    didReceiveAttrs: function didReceiveAttrs() {
       this.set('suggestedTags', this.get('tags'));
       this.resetSuggestedTagKeyboardPosition();
     },
@@ -31438,13 +31420,12 @@ define('frontend-cp/components/ko-suggest/component', ['exports', 'ember'], func
       this.sendAction('onSearchTermUpdated', this.get('searchTerm'));
     }),
 
-    willInsertElement: function willInsertElement() {
-      var width = this.$('.ko-dropdown-select__button').outerWidth(true);
-      this.set('contentStyle', ('min-width:' + width + 'px;').htmlSafe());
-
+    willRender: function willRender() {
       if (this.get('shouldAutoFocus')) {
-        this.set('isFocussed', true);
-        this.$('.suggest__input').focus();
+        if (this.$('.suggest__input')) {
+          this.set('isFocussed', true);
+          this.$('.suggest__input').focus();
+        }
       }
     },
 
@@ -68781,7 +68762,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+2aa96eed"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+0aa38723"});
 }
 
 /* jshint ignore:end */
