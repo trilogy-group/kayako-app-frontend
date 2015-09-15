@@ -34,5 +34,8 @@
   "search.request.result_meta": "Showing {numDisplayResults} of {totalResults} users",
 
   "field_title.requester": "Requester",
-  "notes": "Notes"
+  "notes": "Notes",
+  "form-select": "Case form",
+  "null_form_selected": "No form selected"
+
 }
