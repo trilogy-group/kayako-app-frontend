@@ -44360,7 +44360,7 @@ define('frontend-cp/mixins/change-aware-model', ['exports', 'ember', 'npm:lodash
         return true;
       }
 
-      return currentRelationship.some(function (relationship, index) {
+      return currentRelationship.any(function (relationship, index) {
         return relationship !== initialRelationship[index];
       });
     },
@@ -45066,7 +45066,7 @@ define('frontend-cp/models/case', ['exports', 'ember-data', 'frontend-cp/mixins/
         return true;
       }
 
-      return currentTags.some(function (tag, index) {
+      return currentTags.any(function (tag, index) {
         return tag.get('name') !== initialTags[index].get('name');
       });
     }
@@ -68221,7 +68221,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+8c44d4f4"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+af4f3ebc"});
 }
 
 /* jshint ignore:end */
