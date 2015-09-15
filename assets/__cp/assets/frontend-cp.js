@@ -15695,8 +15695,8 @@ define('frontend-cp/components/ko-cases-list/column/created-at/template', ['expo
             "column": 0
           },
           "end": {
-            "line": 1,
-            "column": 22
+            "line": 2,
+            "column": 0
           }
         },
         "moduleName": "frontend-cp/components/ko-cases-list/column/created-at/template.hbs"
@@ -15708,17 +15708,18 @@ define('frontend-cp/components/ko-cases-list/column/created-at/template', ['expo
         var el0 = dom.createDocumentFragment();
         var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
         var morphs = new Array(1);
         morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
         dom.insertBoundary(fragment, 0);
-        dom.insertBoundary(fragment, null);
         return morphs;
       },
       statements: [
-        ["inline","ago",[["get","case.createdAt",["loc",[null,[1,6],[1,20]]]]],[],["loc",[null,[1,0],[1,22]]]]
+        ["inline","moment-from-now",[["get","case.createdAt",["loc",[null,[1,18],[1,32]]]]],[],["loc",[null,[1,0],[1,34]]]]
       ],
       locals: [],
       templates: []
@@ -16286,8 +16287,8 @@ define('frontend-cp/components/ko-cases-list/column/updated-at/template', ['expo
             "column": 0
           },
           "end": {
-            "line": 1,
-            "column": 22
+            "line": 2,
+            "column": 0
           }
         },
         "moduleName": "frontend-cp/components/ko-cases-list/column/updated-at/template.hbs"
@@ -16299,17 +16300,18 @@ define('frontend-cp/components/ko-cases-list/column/updated-at/template', ['expo
         var el0 = dom.createDocumentFragment();
         var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
         var morphs = new Array(1);
         morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
         dom.insertBoundary(fragment, 0);
-        dom.insertBoundary(fragment, null);
         return morphs;
       },
       statements: [
-        ["inline","ago",[["get","case.updatedAt",["loc",[null,[1,6],[1,20]]]]],[],["loc",[null,[1,0],[1,22]]]]
+        ["inline","moment-from-now",[["get","case.updatedAt",["loc",[null,[1,18],[1,32]]]]],[],["loc",[null,[1,0],[1,34]]]]
       ],
       locals: [],
       templates: []
@@ -21736,7 +21738,7 @@ define('frontend-cp/components/ko-feed/item/template', ['exports'], function (ex
       statements: [
         ["inline","ko-avatar",[],["avatar",["subexpr","@mut",[["get","event.creator.avatar",["loc",[null,[2,52],[2,72]]]]],[],[]],"size","large"],["loc",[null,[2,33],[2,87]]]],
         ["content","event.creator.fullName",["loc",[null,[3,33],[3,59]]]],
-        ["inline","format-message",[["subexpr","intl-get",["feed.replied"],[],["loc",[null,[4,59],[4,84]]]]],["ago",["subexpr","ago",[["get","event.createdAt",["loc",[null,[4,94],[4,109]]]]],[],["loc",[null,[4,89],[4,110]]]]],["loc",[null,[4,42],[4,112]]]],
+        ["inline","format-message",[["subexpr","intl-get",["feed.replied"],[],["loc",[null,[4,59],[4,84]]]]],["ago",["subexpr","moment-from-now",[["get","event.createdAt",["loc",[null,[4,106],[4,121]]]]],[],["loc",[null,[4,89],[4,122]]]]],["loc",[null,[4,42],[4,124]]]],
         ["content","event.contents",["loc",[null,[7,2],[7,20]]]],
         ["block","if",[["get","event.attachments",["loc",[null,[9,6],[9,23]]]]],[],0,null,["loc",[null,[9,0],[17,7]]]],
         ["inline","ko-feed/item/menu",[],["showMenu",["subexpr","@mut",[["get","showMenu",["loc",[null,[18,29],[18,37]]]]],[],[]],"onReplyWithQuote","onReplyWithQuote"],["loc",[null,[18,0],[18,75]]]]
@@ -29315,7 +29317,7 @@ define('frontend-cp/components/ko-recent-cases/template', ['exports'], function 
         },
         statements: [
           ["content","case.subject",["loc",[null,[5,4],[5,20]]]],
-          ["inline","format-message",[["subexpr","intl-get",["cases.lastupdated"],[],["loc",[null,[6,50],[6,80]]]]],["time",["subexpr","ago",[["get","case.createdAt",["loc",[null,[6,91],[6,105]]]]],[],["loc",[null,[6,86],[6,106]]]]],["loc",[null,[6,33],[6,108]]]]
+          ["inline","format-message",[["subexpr","intl-get",["cases.lastupdated"],[],["loc",[null,[6,50],[6,80]]]]],["time",["subexpr","moment-from-now",[["get","case.createdAt",["loc",[null,[6,103],[6,117]]]]],[],["loc",[null,[6,86],[6,118]]]]],["loc",[null,[6,33],[6,120]]]]
         ],
         locals: ["case"],
         templates: []
@@ -68219,7 +68221,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+6cdf12d7"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+8c44d4f4"});
 }
 
 /* jshint ignore:end */
