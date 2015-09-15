@@ -24481,7 +24481,7 @@ define('frontend-cp/components/ko-limited-text-area/template', ['exports'], func
         return morphs;
       },
       statements: [
-        ["inline","textarea",[],["value",["subexpr","@mut",[["get","text",["loc",[null,[1,17],[1,21]]]]],[],[]],"maxlength",["subexpr","@mut",[["get","max",["loc",[null,[1,32],[1,35]]]]],[],[]],"placeholder",["subexpr","@mut",[["get","placeholder",["loc",[null,[1,48],[1,59]]]]],[],[]],"class","input-text-area--clean"],["loc",[null,[1,0],[1,92]]]],
+        ["inline","textarea",[],["value",["subexpr","@mut",[["get","text",["loc",[null,[1,17],[1,21]]]]],[],[]],"maxlength",["subexpr","@mut",[["get","max",["loc",[null,[1,32],[1,35]]]]],[],[]],"placeholder",["subexpr","@mut",[["get","placeholder",["loc",[null,[1,48],[1,59]]]]],[],[]],"class","text-area--clean"],["loc",[null,[1,0],[1,86]]]],
         ["content","counter",["loc",[null,[2,29],[2,40]]]]
       ],
       locals: [],
@@ -32341,7 +32341,7 @@ define('frontend-cp/components/ko-text-editor/template', ['exports'], function (
           var el1 = dom.createTextNode("  ");
           dom.appendChild(el0, el1);
           var el1 = dom.createElement("div");
-          dom.setAttribute(el1,"class","input-text-area--clean js-editor");
+          dom.setAttribute(el1,"class","text-area--clean js-editor");
           dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n");
           dom.appendChild(el0, el1);
@@ -35252,7 +35252,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["inline","textarea",[],["value",["subexpr","@mut",[["get","model.signature",["loc",[null,[140,19],[140,34]]]]],[],[]],"class","input-text-area--clean"],["loc",[null,[140,2],[140,67]]]]
+          ["inline","textarea",[],["value",["subexpr","@mut",[["get","model.signature",["loc",[null,[140,19],[140,34]]]]],[],[]],"class","text-area--clean"],["loc",[null,[140,2],[140,61]]]]
         ],
         locals: [],
         templates: []
@@ -67800,7 +67800,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+30a86307"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+3981e805"});
 }
 
 /* jshint ignore:end */
