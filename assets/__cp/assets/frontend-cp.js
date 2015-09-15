@@ -51400,7 +51400,7 @@ define('frontend-cp/session/admin/people/teams/edit/route', ['exports', 'ember']
   var inject = Ember['default'].inject;
 
   exports['default'] = Route.extend({
-    intl: inject.service('intl'),
+    intl: inject.service(),
     controllerName: 'session.admin.people.teams.new',
     model: function model(params) {
       return this.store.findRecord('team', params.team_id);
@@ -51409,7 +51409,6 @@ define('frontend-cp/session/admin/people/teams/edit/route', ['exports', 'ember']
       this._super.apply(this, arguments);
       this.store.query('user', { role: 'AGENT' }).then(function (agents) {
         controller.set('agents', agents);
-        controller.set('loadingMembers', false);
       });
     },
     actions: {
@@ -52001,20 +52000,19 @@ define('frontend-cp/session/admin/people/teams/new/controller', ['exports', 'emb
   var inject = Ember['default'].inject;
 
   exports['default'] = Controller.extend({
-    intl: inject.service('intl'),
+    intl: inject.service(),
     agents: [],
     membersToAdd: [],
     membersToRemove: [],
     filter: '',
-    loadingMembers: true,
-    nonMembers: computed('agents', 'model.members.[]', function () {
+    nonMembers: computed('agents.[]', 'model.members.[]', function () {
       var _this = this;
 
       return this.get('agents').filter(function (agent) {
         return !_this.get('model.members').contains(agent);
       });
     }),
-    filteredMembers: computed('model.members.[]', 'filter', function () {
+    filteredMembers: computed('filter', function () {
       var members = this.get('model.members');
       if (this.get('filter') === '') {
         return members;
@@ -52022,7 +52020,7 @@ define('frontend-cp/session/admin/people/teams/new/controller', ['exports', 'emb
         return this.filterByFullName(members);
       }
     }),
-    filteredNonMembers: computed('agents.[]', 'filter', function () {
+    filteredNonMembers: computed('filter', 'nonMembers', function () {
       var members = this.get('nonMembers');
       if (this.get('filter') === '') {
         return members;
@@ -52104,7 +52102,7 @@ define('frontend-cp/session/admin/people/teams/new/route', ['exports', 'ember'],
   var inject = Ember['default'].inject;
 
   exports['default'] = Route.extend({
-    intl: inject.service('intl'),
+    intl: inject.service(),
     model: function model() {
       return this.store.createRecord('team');
     },
@@ -52112,7 +52110,6 @@ define('frontend-cp/session/admin/people/teams/new/route', ['exports', 'ember'],
       this._super.apply(this, arguments);
       this.store.query('user', { role: 'AGENT' }).then(function (agents) {
         controller.set('agents', agents);
-        controller.set('loadingMembers', false);
       });
     },
     actions: {
@@ -68082,7 +68079,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+fe8c351c"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+943951cd"});
 }
 
 /* jshint ignore:end */
