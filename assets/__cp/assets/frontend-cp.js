@@ -703,7 +703,7 @@ define('frontend-cp/application/controller', ['exports', 'ember'], function (exp
      * Active notifications
      * @return {Object[]} Array of notification objects
      */
-    notifications: Ember['default'].computed('notificationService.notifications.@each', function () {
+    notifications: Ember['default'].computed('notificationService.notifications.[]', function () {
       var notificationService = this.get('notificationService');
       return notificationService.get('notifications');
     }),
@@ -38125,7 +38125,7 @@ define('frontend-cp/login/controller', ['exports', 'ember', 'frontend-cp/config/
      * Active notifications
      * @return {Object[]} Array of notification objects
      */
-    notifications: Ember['default'].computed('notificationService.notifications.@each', function () {
+    notifications: Ember['default'].computed('notificationService.notifications.[]', function () {
       var notificationService = this.get('notificationService');
       return notificationService.get('notifications');
     }),
@@ -68082,7 +68082,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+51976904"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+fe8c351c"});
 }
 
 /* jshint ignore:end */
