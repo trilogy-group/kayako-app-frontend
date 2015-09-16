@@ -45835,7 +45835,7 @@ define('frontend-cp/models/predicate-collection', ['exports', 'ember-data'], fun
 
   'use strict';
 
-  exports['default'] = DS['default'].ModelFragment.extend({
+  exports['default'] = DS['default'].Model.extend({
     operator: DS['default'].attr('string', { 'default': 'OR' }),
     propositions: DS['default'].hasManyFragments('proposition')
   });
@@ -46227,7 +46227,7 @@ define('frontend-cp/models/view', ['exports', 'ember', 'ember-data', 'frontend-c
     visibilityType: DS['default'].attr('string'), // ALL | TEAM
     visibilityToTeams: DS['default'].hasMany('team', { async: false }),
     columns: DS['default'].hasMany('column', { async: false }),
-    predicateCollections: DS['default'].hasManyFragments('predicate-collection', { defaultValue: [], async: false }),
+    predicateCollections: DS['default'].hasMany('predicate-collection', { defaultValue: [], async: false }),
     orderByColumn: DS['default'].attr('string', { defaultValue: null }),
     caseCount: DS['default'].attr('number'),
     caseCountAccuracy: DS['default'].attr('string'),
@@ -46876,6 +46876,17 @@ define('frontend-cp/serializers/organization', ['exports', 'frontend-cp/serializ
   });
 
 });
+define('frontend-cp/serializers/predicate-collection', ['exports', 'frontend-cp/serializers/application'], function (exports, ApplicationSerializer) {
+
+  'use strict';
+
+  exports['default'] = ApplicationSerializer['default'].extend({
+    attrs: {
+      id: { key: 'uuid' }
+    }
+  });
+
+});
 define('frontend-cp/serializers/relationship-fragment', ['exports', 'frontend-cp/serializers/application'], function (exports, ApplicationSerializer) {
 
   'use strict';
@@ -47067,7 +47078,7 @@ define('frontend-cp/serializers/view', ['exports', 'ember-data', 'frontend-cp/se
       });
 
       /* Collections look *nothing* like how they are received */
-      json.predicate_collections = snapshot.attr('predicateCollections').map(function (collection) {
+      json.predicate_collections = snapshot.hasMany('predicateCollections').map(function (collection) {
         // eslint-disable-line camelcase
         return collection.get('propositions').map(function (proposition) {
           return {
@@ -51318,7 +51329,7 @@ define('frontend-cp/session/admin/manage/views/new/route', ['exports', 'ember'],
       //  propositions: [firstProposition]
       //});
 
-      newView.get('predicateCollections').createFragment({
+      newView.get('predicateCollections').createRecord({
         propositions: [firstProposition]
       });
       newView.cacheRelationships();
@@ -68221,7 +68232,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+af4f3ebc"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+cd2ce461"});
 }
 
 /* jshint ignore:end */
