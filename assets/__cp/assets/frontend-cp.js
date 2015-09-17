@@ -30745,9 +30745,19 @@ define('frontend-cp/components/ko-simple-list/component', ['exports', 'ember'], 
 });
 define('frontend-cp/components/ko-simple-list/row/component', ['exports', 'ember'], function (exports, Ember) {
 
-	'use strict';
+  'use strict';
 
-	exports['default'] = Ember['default'].Component.extend({});
+  exports['default'] = Ember['default'].Component.extend({
+    //Parmas
+    action: null,
+    content: null,
+
+    click: function click() {
+      if (this.get('action')) {
+        this.sendAction('action', this.get('content'));
+      }
+    }
+  });
 
 });
 define('frontend-cp/components/ko-simple-list/row/template', ['exports'], function (exports) {
@@ -46401,6 +46411,7 @@ define('frontend-cp/models/view', ['exports', 'ember', 'ember-data', 'frontend-c
     caseCount: DS['default'].attr('number'),
     caseCountAccuracy: DS['default'].attr('string'),
     orderBy: DS['default'].attr('string'),
+    sortOrder: DS['default'].attr('number'),
     isEnabled: DS['default'].attr('boolean'),
     isDefault: DS['default'].attr('boolean'),
     createdAt: DS['default'].attr('date'),
@@ -48696,7 +48707,7 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
                     "column": 6
                   },
                   "end": {
-                    "line": 24,
+                    "line": 23,
                     "column": 6
                   }
                 },
@@ -48758,13 +48769,6 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
                 var el5 = dom.createComment("");
                 dom.appendChild(el4, el5);
                 dom.appendChild(el3, el4);
-                var el4 = dom.createTextNode(" |\n              ");
-                dom.appendChild(el3, el4);
-                var el4 = dom.createElement("a");
-                dom.setAttribute(el4,"href","#");
-                var el5 = dom.createComment("");
-                dom.appendChild(el4, el5);
-                dom.appendChild(el3, el4);
                 var el4 = dom.createTextNode("\n            ");
                 dom.appendChild(el3, el4);
                 dom.appendChild(el2, el3);
@@ -48780,25 +48784,19 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
               },
               buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
                 var element10 = dom.childAt(fragment, [1]);
-                var element11 = dom.childAt(element10, [5, 1]);
-                var element12 = dom.childAt(element11, [1]);
-                var element13 = dom.childAt(element11, [3]);
-                var morphs = new Array(6);
+                var element11 = dom.childAt(element10, [5, 1, 1]);
+                var morphs = new Array(4);
                 morphs[0] = dom.createMorphAt(dom.childAt(element10, [1, 1]),0,0);
                 morphs[1] = dom.createMorphAt(dom.childAt(element10, [3]),1,1);
-                morphs[2] = dom.createElementMorph(element12);
-                morphs[3] = dom.createMorphAt(element12,0,0);
-                morphs[4] = dom.createElementMorph(element13);
-                morphs[5] = dom.createMorphAt(element13,0,0);
+                morphs[2] = dom.createElementMorph(element11);
+                morphs[3] = dom.createMorphAt(element11,0,0);
                 return morphs;
               },
               statements: [
                 ["content","systemfield.title",["loc",[null,[12,33],[12,54]]]],
                 ["inline","format-message",[["subexpr","intl-get",[["subexpr","ko-intl-key-for-field-type",[["get","systemfield.fieldType",["loc",[null,[15,67],[15,88]]]]],[],["loc",[null,[15,39],[15,89]]]]],[],["loc",[null,[15,29],[15,90]]]]],[],["loc",[null,[15,12],[15,92]]]],
                 ["element","action",["editField",["get","systemfield",["loc",[null,[19,47],[19,58]]]]],[],["loc",[null,[19,26],[19,60]]]],
-                ["inline","format-message",[["subexpr","intl-get",["generic.edit"],[],["loc",[null,[19,78],[19,103]]]]],[],["loc",[null,[19,61],[19,105]]]],
-                ["element","action",["showDeleteConfirmation",["get","customfield",["loc",[null,[20,60],[20,71]]]]],[],["loc",[null,[20,26],[20,73]]]],
-                ["inline","format-message",[["subexpr","intl-get",["generic.delete"],[],["loc",[null,[20,91],[20,118]]]]],[],["loc",[null,[20,74],[20,120]]]]
+                ["inline","format-message",[["subexpr","intl-get",["generic.edit"],[],["loc",[null,[19,78],[19,103]]]]],[],["loc",[null,[19,61],[19,105]]]]
               ],
               locals: [],
               templates: []
@@ -48814,7 +48812,7 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
                   "column": 4
                 },
                 "end": {
-                  "line": 25,
+                  "line": 24,
                   "column": 4
                 }
               },
@@ -48837,7 +48835,7 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
               return morphs;
             },
             statements: [
-              ["block","ko-simple-list/row",[],[],0,null,["loc",[null,[9,6],[24,29]]]]
+              ["block","ko-simple-list/row",[],["action","editField","content",["subexpr","@mut",[["get","systemfield",["loc",[null,[9,55],[9,66]]]]],[],[]]],0,null,["loc",[null,[9,6],[23,29]]]]
             ],
             locals: ["systemfield"],
             templates: [child0]
@@ -48851,11 +48849,11 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 28,
+                    "line": 27,
                     "column": 6
                   },
                   "end": {
-                    "line": 44,
+                    "line": 43,
                     "column": 6
                   }
                 },
@@ -48955,14 +48953,14 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
                 return morphs;
               },
               statements: [
-                ["content","customfield.title",["loc",[null,[31,33],[31,54]]]],
-                ["inline","format-message",[["subexpr","intl-get",[["subexpr","ko-intl-key-for-field-type",[["get","customfield.fieldType",["loc",[null,[34,67],[34,88]]]]],[],["loc",[null,[34,39],[34,89]]]]],[],["loc",[null,[34,29],[34,90]]]]],[],["loc",[null,[34,12],[34,92]]]],
-                ["element","action",["editField",["get","customfield",["loc",[null,[38,47],[38,58]]]]],[],["loc",[null,[38,26],[38,60]]]],
-                ["inline","format-message",[["subexpr","intl-get",["generic.edit"],[],["loc",[null,[38,78],[38,103]]]]],[],["loc",[null,[38,61],[38,105]]]],
-                ["element","action",["toggleEnabledStatus",["get","customfield",["loc",[null,[39,57],[39,68]]]]],[],["loc",[null,[39,26],[39,70]]]],
-                ["inline","format-message",[["subexpr","intl-get",["generic.disable"],[],["loc",[null,[39,88],[39,116]]]]],[],["loc",[null,[39,71],[39,118]]]],
-                ["element","action",["showDeleteConfirmation",["get","customfield",["loc",[null,[40,60],[40,71]]]]],[],["loc",[null,[40,26],[40,73]]]],
-                ["inline","format-message",[["subexpr","intl-get",["generic.delete"],[],["loc",[null,[40,91],[40,118]]]]],[],["loc",[null,[40,74],[40,120]]]]
+                ["content","customfield.title",["loc",[null,[30,33],[30,54]]]],
+                ["inline","format-message",[["subexpr","intl-get",[["subexpr","ko-intl-key-for-field-type",[["get","customfield.fieldType",["loc",[null,[33,67],[33,88]]]]],[],["loc",[null,[33,39],[33,89]]]]],[],["loc",[null,[33,29],[33,90]]]]],[],["loc",[null,[33,12],[33,92]]]],
+                ["element","action",["editField",["get","customfield",["loc",[null,[37,47],[37,58]]]]],[],["loc",[null,[37,26],[37,60]]]],
+                ["inline","format-message",[["subexpr","intl-get",["generic.edit"],[],["loc",[null,[37,78],[37,103]]]]],[],["loc",[null,[37,61],[37,105]]]],
+                ["element","action",["toggleEnabledStatus",["get","customfield",["loc",[null,[38,57],[38,68]]]]],[],["loc",[null,[38,26],[38,70]]]],
+                ["inline","format-message",[["subexpr","intl-get",["generic.disable"],[],["loc",[null,[38,88],[38,116]]]]],[],["loc",[null,[38,71],[38,118]]]],
+                ["element","action",["showDeleteConfirmation",["get","customfield",["loc",[null,[39,60],[39,71]]]]],[],["loc",[null,[39,26],[39,73]]]],
+                ["inline","format-message",[["subexpr","intl-get",["generic.delete"],[],["loc",[null,[39,91],[39,118]]]]],[],["loc",[null,[39,74],[39,120]]]]
               ],
               locals: [],
               templates: []
@@ -48974,11 +48972,11 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 27,
+                  "line": 26,
                   "column": 4
                 },
                 "end": {
-                  "line": 45,
+                  "line": 44,
                   "column": 4
                 }
               },
@@ -49001,7 +48999,7 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
               return morphs;
             },
             statements: [
-              ["block","ko-simple-list/row",[],[],0,null,["loc",[null,[28,6],[44,29]]]]
+              ["block","ko-simple-list/row",[],["action","editField","content",["subexpr","@mut",[["get","customField",["loc",[null,[27,55],[27,66]]]]],[],[]]],0,null,["loc",[null,[27,6],[43,29]]]]
             ],
             locals: ["customfield"],
             templates: [child0]
@@ -49017,7 +49015,7 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
                 "column": 2
               },
               "end": {
-                "line": 46,
+                "line": 45,
                 "column": 2
               }
             },
@@ -49059,8 +49057,8 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
           },
           statements: [
             ["inline","format-message",[["subexpr","intl-get",["generic.enabled"],[],["loc",[null,[6,23],[6,51]]]]],[],["loc",[null,[6,6],[6,53]]]],
-            ["block","each",[["get","systemfields",["loc",[null,[8,12],[8,24]]]]],[],0,null,["loc",[null,[8,4],[25,13]]]],
-            ["block","ko-reorderable-list",[],["reorderedListAction",null,"items",["subexpr","@mut",[["get","customfields",["loc",[null,[27,58],[27,70]]]]],[],[]]],1,null,["loc",[null,[27,4],[45,28]]]]
+            ["block","each",[["get","systemfields",["loc",[null,[8,12],[8,24]]]]],[],0,null,["loc",[null,[8,4],[24,13]]]],
+            ["block","ko-reorderable-list",[],["reorderedListAction","reorderCustomFields","items",["subexpr","@mut",[["get","customfields",["loc",[null,[26,75],[26,87]]]]],[],[]]],1,null,["loc",[null,[26,4],[44,28]]]]
           ],
           locals: [],
           templates: [child0, child1]
@@ -49076,11 +49074,11 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
                   "loc": {
                     "source": null,
                     "start": {
-                      "line": 54,
+                      "line": 53,
                       "column": 6
                     },
                     "end": {
-                      "line": 72,
+                      "line": 71,
                       "column": 6
                     }
                   },
@@ -49187,14 +49185,14 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
                   return morphs;
                 },
                 statements: [
-                  ["content","disabledfield.title",["loc",[null,[57,43],[57,66]]]],
-                  ["inline","format-message",[["subexpr","intl-get",[["subexpr","ko-intl-key-for-field-type",[["get","disabledfield.fieldType",["loc",[null,[61,70],[61,93]]]]],[],["loc",[null,[61,42],[61,94]]]]],[],["loc",[null,[61,32],[61,95]]]]],[],["loc",[null,[61,15],[61,97]]]],
-                  ["element","action",["editField",["get","disabledfield",["loc",[null,[66,47],[66,60]]]]],[],["loc",[null,[66,26],[66,62]]]],
-                  ["inline","format-message",[["subexpr","intl-get",["generic.edit"],[],["loc",[null,[66,80],[66,105]]]]],[],["loc",[null,[66,63],[66,107]]]],
-                  ["element","action",["toggleEnabledStatus",["get","disabledfield",["loc",[null,[67,57],[67,70]]]]],[],["loc",[null,[67,26],[67,72]]]],
-                  ["inline","format-message",[["subexpr","intl-get",["generic.enable"],[],["loc",[null,[67,90],[67,117]]]]],[],["loc",[null,[67,73],[67,119]]]],
-                  ["element","action",["showDeleteConfirmation",["get","disabledfield",["loc",[null,[68,60],[68,73]]]]],[],["loc",[null,[68,26],[68,75]]]],
-                  ["inline","format-message",[["subexpr","intl-get",["generic.delete"],[],["loc",[null,[68,93],[68,120]]]]],[],["loc",[null,[68,76],[68,122]]]]
+                  ["content","disabledfield.title",["loc",[null,[56,43],[56,66]]]],
+                  ["inline","format-message",[["subexpr","intl-get",[["subexpr","ko-intl-key-for-field-type",[["get","disabledfield.fieldType",["loc",[null,[60,70],[60,93]]]]],[],["loc",[null,[60,42],[60,94]]]]],[],["loc",[null,[60,32],[60,95]]]]],[],["loc",[null,[60,15],[60,97]]]],
+                  ["element","action",["editField",["get","disabledfield",["loc",[null,[65,47],[65,60]]]]],[],["loc",[null,[65,26],[65,62]]]],
+                  ["inline","format-message",[["subexpr","intl-get",["generic.edit"],[],["loc",[null,[65,80],[65,105]]]]],[],["loc",[null,[65,63],[65,107]]]],
+                  ["element","action",["toggleEnabledStatus",["get","disabledfield",["loc",[null,[66,57],[66,70]]]]],[],["loc",[null,[66,26],[66,72]]]],
+                  ["inline","format-message",[["subexpr","intl-get",["generic.enable"],[],["loc",[null,[66,90],[66,117]]]]],[],["loc",[null,[66,73],[66,119]]]],
+                  ["element","action",["showDeleteConfirmation",["get","disabledfield",["loc",[null,[67,60],[67,73]]]]],[],["loc",[null,[67,26],[67,75]]]],
+                  ["inline","format-message",[["subexpr","intl-get",["generic.delete"],[],["loc",[null,[67,93],[67,120]]]]],[],["loc",[null,[67,76],[67,122]]]]
                 ],
                 locals: [],
                 templates: []
@@ -49206,11 +49204,11 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 53,
+                    "line": 52,
                     "column": 4
                   },
                   "end": {
-                    "line": 73,
+                    "line": 72,
                     "column": 4
                   }
                 },
@@ -49233,7 +49231,7 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
                 return morphs;
               },
               statements: [
-                ["block","ko-simple-list/row",[],[],0,null,["loc",[null,[54,6],[72,29]]]]
+                ["block","ko-simple-list/row",[],[],0,null,["loc",[null,[53,6],[71,29]]]]
               ],
               locals: ["disabledfield"],
               templates: [child0]
@@ -49245,11 +49243,11 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 49,
+                  "line": 48,
                   "column": 2
                 },
                 "end": {
-                  "line": 74,
+                  "line": 73,
                   "column": 2
                 }
               },
@@ -49285,8 +49283,8 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
               return morphs;
             },
             statements: [
-              ["inline","format-message",[["subexpr","intl-get",["generic.disabled"],[],["loc",[null,[51,23],[51,52]]]]],[],["loc",[null,[51,6],[51,54]]]],
-              ["block","each",[["get","disabledfields",["loc",[null,[53,12],[53,26]]]]],[],0,null,["loc",[null,[53,4],[73,13]]]]
+              ["inline","format-message",[["subexpr","intl-get",["generic.disabled"],[],["loc",[null,[50,23],[50,52]]]]],[],["loc",[null,[50,6],[50,54]]]],
+              ["block","each",[["get","disabledfields",["loc",[null,[52,12],[52,26]]]]],[],0,null,["loc",[null,[52,4],[72,13]]]]
             ],
             locals: [],
             templates: [child0]
@@ -49298,11 +49296,11 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
             "loc": {
               "source": null,
               "start": {
-                "line": 48,
+                "line": 47,
                 "column": 0
               },
               "end": {
-                "line": 75,
+                "line": 74,
                 "column": 0
               }
             },
@@ -49325,7 +49323,7 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
             return morphs;
           },
           statements: [
-            ["block","ko-simple-list",[],[],0,null,["loc",[null,[49,2],[74,21]]]]
+            ["block","ko-simple-list",[],[],0,null,["loc",[null,[48,2],[73,21]]]]
           ],
           locals: [],
           templates: [child0]
@@ -49341,7 +49339,7 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
               "column": 0
             },
             "end": {
-              "line": 76,
+              "line": 75,
               "column": 0
             }
           },
@@ -49369,8 +49367,8 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
           return morphs;
         },
         statements: [
-          ["block","ko-simple-list",[],[],0,null,["loc",[null,[4,2],[46,21]]]],
-          ["block","if",[["get","disabledfields.length",["loc",[null,[48,6],[48,27]]]]],[],1,null,["loc",[null,[48,0],[75,7]]]]
+          ["block","ko-simple-list",[],[],0,null,["loc",[null,[4,2],[45,21]]]],
+          ["block","if",[["get","disabledfields.length",["loc",[null,[47,6],[47,27]]]]],[],1,null,["loc",[null,[47,0],[74,7]]]]
         ],
         locals: [],
         templates: [child0, child1]
@@ -49386,7 +49384,7 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
             "column": 0
           },
           "end": {
-            "line": 79,
+            "line": 78,
             "column": 0
           }
         },
@@ -49421,8 +49419,8 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
       },
       statements: [
         ["inline","ko-admin/page-header",[],["title","Case Fields","buttonText",["subexpr","format-message",[["subexpr","intl-get",["admin.casefields.buttons.add_new_casefield"],[],["loc",[null,[1,70],[1,125]]]]],[],["loc",[null,[1,54],[1,126]]]],"buttonAction","transitionToNewCaseFieldRoute"],["loc",[null,[1,0],[1,173]]]],
-        ["block","ko-admin/forms/table",[],[],0,null,["loc",[null,[3,0],[76,25]]]],
-        ["inline","ko-admin/page-footer",[],["buttonText",["subexpr","format-message",[["subexpr","intl-get",["admin.casefields.buttons.add_new_casefield"],[],["loc",[null,[78,50],[78,105]]]]],[],["loc",[null,[78,34],[78,106]]]],"buttonAction","transitionToNewCaseFieldRoute"],["loc",[null,[78,0],[78,153]]]]
+        ["block","ko-admin/forms/table",[],[],0,null,["loc",[null,[3,0],[75,25]]]],
+        ["inline","ko-admin/page-footer",[],["buttonText",["subexpr","format-message",[["subexpr","intl-get",["admin.casefields.buttons.add_new_casefield"],[],["loc",[null,[77,50],[77,105]]]]],[],["loc",[null,[77,34],[77,106]]]],"buttonAction","transitionToNewCaseFieldRoute"],["loc",[null,[77,0],[77,153]]]]
       ],
       locals: [],
       templates: [child0]
@@ -49486,7 +49484,6 @@ define('frontend-cp/session/admin/manage/case-fields/new/controller', ['exports'
         var _this = this;
 
         var savePromiseArray = [];
-
         this.get('model').save().then(function () {
           var options = _this.get('model.options');
 
@@ -49856,7 +49853,32 @@ define('frontend-cp/session/admin/manage/case-forms/index/controller', ['exports
         });
       },
 
-      reorderViews: function reorderViews(orderedViews) {},
+      reorderForms: function reorderForms(orderedForms) {
+        var startingSortOrderNumber = 1;
+        var orderedIds = orderedForms.map(function (form) {
+          return form.id;
+        });
+
+        var sortOrder = startingSortOrderNumber;
+        orderedForms.forEach(function (form) {
+          form.set('sortOrder', sortOrder);
+          sortOrder++;
+        });
+
+        var payload = {
+          form_ids: orderedIds.toString() // eslint-disable-line camelcase
+        };
+
+        Ember['default'].$.ajax('/api/v1/cases/forms/reorder', {
+          method: 'PUT',
+          contentType: 'application/json',
+          data: JSON.stringify(payload),
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Session-ID': this.get('session.sessionId')
+          }
+        });
+      },
 
       toggleEnabledStatus: function toggleEnabledStatus(caseform) {
         caseform.toggleProperty('isEnabled');
@@ -50205,7 +50227,7 @@ define('frontend-cp/session/admin/manage/case-forms/index/template', ['exports']
           },
           statements: [
             ["inline","format-message",[["subexpr","intl-get",["generic.enabled"],[],["loc",[null,[10,21],[10,49]]]]],[],["loc",[null,[10,4],[10,51]]]],
-            ["block","ko-reorderable-list",[],["reorderedListAction",null,"items",["subexpr","@mut",[["get","enabledForms",["loc",[null,[12,56],[12,68]]]]],[],[]]],0,null,["loc",[null,[12,2],[30,26]]]]
+            ["block","ko-reorderable-list",[],["reorderedListAction","reorderForms","items",["subexpr","@mut",[["get","enabledForms",["loc",[null,[12,66],[12,78]]]]],[],[]]],0,null,["loc",[null,[12,2],[30,26]]]]
           ],
           locals: [],
           templates: [child0]
@@ -50748,22 +50770,29 @@ define('frontend-cp/session/admin/manage/views/index/controller', ['exports', 'e
 
   'use strict';
 
+  var INBOX_VIEW_ID = 1;
+
   exports['default'] = Ember['default'].Controller.extend({
     intl: Ember['default'].inject.service(),
+    sessionService: Ember['default'].inject.service('session'),
 
-    enabledViews: Ember['default'].computed('model.[].isEnabled', 'model.[].sortOrder', function () {
+    inboxView: Ember['default'].computed('model.[]', function () {
+      return this.get('model').find(function (caseView) {
+        return parseInt(caseView.get('id')) === INBOX_VIEW_ID;
+      });
+    }),
+
+    enabledViews: Ember['default'].computed('model.@each.isEnabled', 'model.@each.sortOrder', function () {
       return this.get('model').filter(function (view) {
-        return view.get('isEnabled');
+        return view.get('isEnabled') && parseInt(view.get('id')) !== INBOX_VIEW_ID;
       }).sortBy('sortOrder');
     }),
 
-    disabledViews: Ember['default'].computed('model.[].isEnabled', 'model.[].sortOrder', function () {
+    disabledViews: Ember['default'].computed('model.@each.isEnabled', 'model.@each.sortOrder', function () {
       return this.get('model').filter(function (view) {
         return !view.get('isEnabled');
       }).sortBy('sortOrder');
     }),
-
-    canDeleteOrDisableViews: Ember['default'].computed.gt('enabledViews.length', 1),
 
     actions: {
       transitionToNewViewRoute: function transitionToNewViewRoute() {
@@ -50771,6 +50800,32 @@ define('frontend-cp/session/admin/manage/views/index/controller', ['exports', 'e
       },
       editView: function editView(view) {
         this.transitionToRoute('session.admin.manage.views.edit', view);
+      },
+
+      reorderViews: function reorderViews(orderedViews) {
+        var startingSortOrderNumber = 2; // The inbox is always frst
+
+        var orderedIds = orderedViews.getEach('id');
+
+        var sortOrder = startingSortOrderNumber;
+        orderedViews.forEach(function (customView) {
+          customView.set('sortOrder', sortOrder);
+          sortOrder++;
+        });
+
+        var payload = {
+          view_ids: orderedIds.toString() // eslint-disable-line camelcase
+        };
+
+        Ember['default'].$.ajax('/api/v1/views/reorder', {
+          method: 'PUT',
+          contentType: 'application/json',
+          data: JSON.stringify(payload),
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Session-ID': this.get('sessionService.sessionId')
+          }
+        });
       },
 
       toggleEnabledStatus: function toggleEnabledStatus(view) {
@@ -50810,92 +50865,135 @@ define('frontend-cp/session/admin/manage/views/index/template', ['exports'], fun
     var child0 = (function() {
       var child0 = (function() {
         var child0 = (function() {
+          return {
+            meta: {
+              "revision": "Ember@1.13.7",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 9,
+                  "column": 2
+                },
+                "end": {
+                  "line": 27,
+                  "column": 2
+                }
+              },
+              "moduleName": "frontend-cp/session/admin/manage/views/index/template.hbs"
+            },
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode("      ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createElement("div");
+              dom.setAttribute(el1,"class","layout");
+              var el2 = dom.createTextNode("\n          ");
+              dom.appendChild(el1, el2);
+              var el2 = dom.createElement("div");
+              dom.setAttribute(el2,"class","layout__item u-1/3");
+              var el3 = dom.createTextNode("\n          ");
+              dom.appendChild(el2, el3);
+              var el3 = dom.createElement("span");
+              dom.setAttribute(el3,"class","t-bold");
+              var el4 = dom.createTextNode("\n            ");
+              dom.appendChild(el3, el4);
+              var el4 = dom.createComment("");
+              dom.appendChild(el3, el4);
+              var el4 = dom.createTextNode("\n          ");
+              dom.appendChild(el3, el4);
+              dom.appendChild(el2, el3);
+              var el3 = dom.createTextNode("\n          ");
+              dom.appendChild(el2, el3);
+              dom.appendChild(el1, el2);
+              var el2 = dom.createComment("\n    ");
+              dom.appendChild(el1, el2);
+              var el2 = dom.createElement("div");
+              dom.setAttribute(el2,"class","layout__item u-1/3 t-caption");
+              var el3 = dom.createTextNode("\n          ");
+              dom.appendChild(el2, el3);
+              var el3 = dom.createElement("span");
+              dom.setAttribute(el3,"class","t-caption");
+              var el4 = dom.createTextNode("\n            ");
+              dom.appendChild(el3, el4);
+              var el4 = dom.createComment("");
+              dom.appendChild(el3, el4);
+              var el4 = dom.createTextNode(" ");
+              dom.appendChild(el3, el4);
+              var el4 = dom.createComment("");
+              dom.appendChild(el3, el4);
+              var el4 = dom.createTextNode("\n          ");
+              dom.appendChild(el3, el4);
+              dom.appendChild(el2, el3);
+              var el3 = dom.createTextNode("\n      ");
+              dom.appendChild(el2, el3);
+              dom.appendChild(el1, el2);
+              var el2 = dom.createComment("\n     ");
+              dom.appendChild(el1, el2);
+              var el2 = dom.createElement("div");
+              dom.setAttribute(el2,"class","layout__item u-1/3");
+              var el3 = dom.createTextNode("\n          ");
+              dom.appendChild(el2, el3);
+              var el3 = dom.createElement("div");
+              dom.setAttribute(el3,"class","ko-simple-list__actions");
+              var el4 = dom.createTextNode("\n            ");
+              dom.appendChild(el3, el4);
+              var el4 = dom.createElement("a");
+              dom.setAttribute(el4,"href","#");
+              var el5 = dom.createComment("");
+              dom.appendChild(el4, el5);
+              dom.appendChild(el3, el4);
+              var el4 = dom.createTextNode("\n          ");
+              dom.appendChild(el3, el4);
+              dom.appendChild(el2, el3);
+              var el3 = dom.createTextNode("\n        ");
+              dom.appendChild(el2, el3);
+              dom.appendChild(el1, el2);
+              var el2 = dom.createTextNode("\n      ");
+              dom.appendChild(el1, el2);
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var element11 = dom.childAt(fragment, [1]);
+              var element12 = dom.childAt(element11, [3, 1]);
+              var element13 = dom.childAt(element11, [5, 1, 1]);
+              var morphs = new Array(5);
+              morphs[0] = dom.createMorphAt(dom.childAt(element11, [1, 1]),1,1);
+              morphs[1] = dom.createMorphAt(element12,1,1);
+              morphs[2] = dom.createMorphAt(element12,3,3);
+              morphs[3] = dom.createElementMorph(element13);
+              morphs[4] = dom.createMorphAt(element13,0,0);
+              return morphs;
+            },
+            statements: [
+              ["content","inboxView.title",["loc",[null,[13,12],[13,31]]]],
+              ["inline","format-message",[["subexpr","intl-get",["generic.shared_with"],[],["loc",[null,[18,29],[18,61]]]]],[],["loc",[null,[18,12],[18,63]]]],
+              ["content","enabledView.visibilityString",["loc",[null,[18,64],[18,96]]]],
+              ["element","action",["editView",["get","enabledView",["loc",[null,[23,44],[23,55]]]]],[],["loc",[null,[23,24],[23,57]]]],
+              ["inline","format-message",[["subexpr","intl-get",["generic.edit"],[],["loc",[null,[23,75],[23,100]]]]],[],["loc",[null,[23,58],[23,102]]]]
+            ],
+            locals: [],
+            templates: []
+          };
+        }());
+        var child1 = (function() {
           var child0 = (function() {
-            var child0 = (function() {
-              return {
-                meta: {
-                  "revision": "Ember@1.13.7",
-                  "loc": {
-                    "source": null,
-                    "start": {
-                      "line": 24,
-                      "column": 13
-                    },
-                    "end": {
-                      "line": 27,
-                      "column": 13
-                    }
-                  },
-                  "moduleName": "frontend-cp/session/admin/manage/views/index/template.hbs"
-                },
-                arity: 0,
-                cachedFragment: null,
-                hasRendered: false,
-                buildFragment: function buildFragment(dom) {
-                  var el0 = dom.createDocumentFragment();
-                  var el1 = dom.createTextNode("             ");
-                  dom.appendChild(el0, el1);
-                  var el1 = dom.createElement("span");
-                  dom.setAttribute(el1,"class","t-caption");
-                  var el2 = dom.createTextNode("|");
-                  dom.appendChild(el1, el2);
-                  dom.appendChild(el0, el1);
-                  var el1 = dom.createTextNode(" ");
-                  dom.appendChild(el0, el1);
-                  var el1 = dom.createElement("a");
-                  dom.setAttribute(el1,"href","#");
-                  var el2 = dom.createComment("");
-                  dom.appendChild(el1, el2);
-                  dom.appendChild(el0, el1);
-                  var el1 = dom.createTextNode("\n             ");
-                  dom.appendChild(el0, el1);
-                  var el1 = dom.createElement("span");
-                  dom.setAttribute(el1,"class","t-caption");
-                  var el2 = dom.createTextNode("|");
-                  dom.appendChild(el1, el2);
-                  dom.appendChild(el0, el1);
-                  var el1 = dom.createTextNode(" ");
-                  dom.appendChild(el0, el1);
-                  var el1 = dom.createElement("a");
-                  dom.setAttribute(el1,"href","#");
-                  var el2 = dom.createComment("");
-                  dom.appendChild(el1, el2);
-                  dom.appendChild(el0, el1);
-                  var el1 = dom.createTextNode("\n");
-                  dom.appendChild(el0, el1);
-                  return el0;
-                },
-                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-                  var element5 = dom.childAt(fragment, [3]);
-                  var element6 = dom.childAt(fragment, [7]);
-                  var morphs = new Array(4);
-                  morphs[0] = dom.createElementMorph(element5);
-                  morphs[1] = dom.createMorphAt(element5,0,0);
-                  morphs[2] = dom.createElementMorph(element6);
-                  morphs[3] = dom.createMorphAt(element6,0,0);
-                  return morphs;
-                },
-                statements: [
-                  ["element","action",["toggleEnabledStatus",["get","enabledView",["loc",[null,[25,89],[25,100]]]]],[],["loc",[null,[25,58],[25,102]]]],
-                  ["inline","format-message",[["subexpr","intl-get",["generic.disable"],[],["loc",[null,[25,120],[25,148]]]]],[],["loc",[null,[25,103],[25,150]]]],
-                  ["element","action",["showDeleteConfirmation",["get","enabledView",["loc",[null,[26,92],[26,103]]]]],[],["loc",[null,[26,58],[26,105]]]],
-                  ["inline","format-message",[["subexpr","intl-get",["generic.delete"],[],["loc",[null,[26,123],[26,150]]]]],[],["loc",[null,[26,106],[26,152]]]]
-                ],
-                locals: [],
-                templates: []
-              };
-            }());
             return {
               meta: {
                 "revision": "Ember@1.13.7",
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 9,
+                    "line": 30,
                     "column": 4
                   },
                   "end": {
-                    "line": 31,
+                    "line": 50,
                     "column": 4
                   }
                 },
@@ -50965,11 +51063,35 @@ define('frontend-cp/session/admin/manage/views/index/template', ['exports'], fun
                 var el5 = dom.createComment("");
                 dom.appendChild(el4, el5);
                 dom.appendChild(el3, el4);
-                var el4 = dom.createTextNode("\n");
+                var el4 = dom.createTextNode("\n             ");
                 dom.appendChild(el3, el4);
-                var el4 = dom.createComment("");
+                var el4 = dom.createElement("span");
+                dom.setAttribute(el4,"class","t-caption");
+                var el5 = dom.createTextNode("|");
+                dom.appendChild(el4, el5);
                 dom.appendChild(el3, el4);
-                var el4 = dom.createTextNode("           ");
+                var el4 = dom.createTextNode(" ");
+                dom.appendChild(el3, el4);
+                var el4 = dom.createElement("a");
+                dom.setAttribute(el4,"href","#");
+                var el5 = dom.createComment("");
+                dom.appendChild(el4, el5);
+                dom.appendChild(el3, el4);
+                var el4 = dom.createTextNode("\n             ");
+                dom.appendChild(el3, el4);
+                var el4 = dom.createElement("span");
+                dom.setAttribute(el4,"class","t-caption");
+                var el5 = dom.createTextNode("|");
+                dom.appendChild(el4, el5);
+                dom.appendChild(el3, el4);
+                var el4 = dom.createTextNode(" ");
+                dom.appendChild(el3, el4);
+                var el4 = dom.createElement("a");
+                dom.setAttribute(el4,"href","#");
+                var el5 = dom.createComment("");
+                dom.appendChild(el4, el5);
+                dom.appendChild(el3, el4);
+                var el4 = dom.createTextNode("\n           ");
                 dom.appendChild(el3, el4);
                 dom.appendChild(el2, el3);
                 var el3 = dom.createTextNode("\n        ");
@@ -50983,29 +51105,37 @@ define('frontend-cp/session/admin/manage/views/index/template', ['exports'], fun
                 return el0;
               },
               buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-                var element7 = dom.childAt(fragment, [1]);
-                var element8 = dom.childAt(element7, [3, 1]);
-                var element9 = dom.childAt(element7, [5, 1]);
-                var element10 = dom.childAt(element9, [1]);
-                var morphs = new Array(6);
-                morphs[0] = dom.createMorphAt(dom.childAt(element7, [1, 1]),1,1);
-                morphs[1] = dom.createMorphAt(element8,1,1);
-                morphs[2] = dom.createMorphAt(element8,3,3);
-                morphs[3] = dom.createElementMorph(element10);
-                morphs[4] = dom.createMorphAt(element10,0,0);
-                morphs[5] = dom.createMorphAt(element9,3,3);
+                var element5 = dom.childAt(fragment, [1]);
+                var element6 = dom.childAt(element5, [3, 1]);
+                var element7 = dom.childAt(element5, [5, 1]);
+                var element8 = dom.childAt(element7, [1]);
+                var element9 = dom.childAt(element7, [5]);
+                var element10 = dom.childAt(element7, [9]);
+                var morphs = new Array(9);
+                morphs[0] = dom.createMorphAt(dom.childAt(element5, [1, 1]),1,1);
+                morphs[1] = dom.createMorphAt(element6,1,1);
+                morphs[2] = dom.createMorphAt(element6,3,3);
+                morphs[3] = dom.createElementMorph(element8);
+                morphs[4] = dom.createMorphAt(element8,0,0);
+                morphs[5] = dom.createElementMorph(element9);
+                morphs[6] = dom.createMorphAt(element9,0,0);
+                morphs[7] = dom.createElementMorph(element10);
+                morphs[8] = dom.createMorphAt(element10,0,0);
                 return morphs;
               },
               statements: [
-                ["content","enabledView.title",["loc",[null,[13,12],[13,33]]]],
-                ["inline","format-message",[["subexpr","intl-get",["generic.shared_with"],[],["loc",[null,[18,29],[18,61]]]]],[],["loc",[null,[18,12],[18,63]]]],
-                ["content","enabledView.visibilityString",["loc",[null,[18,64],[18,96]]]],
-                ["element","action",["editView",["get","enabledView",["loc",[null,[23,45],[23,56]]]]],[],["loc",[null,[23,25],[23,58]]]],
-                ["inline","format-message",[["subexpr","intl-get",["generic.edit"],[],["loc",[null,[23,76],[23,101]]]]],[],["loc",[null,[23,59],[23,103]]]],
-                ["block","if",[["get","canDeleteOrDisableViews",["loc",[null,[24,19],[24,42]]]]],[],0,null,["loc",[null,[24,13],[27,20]]]]
+                ["content","enabledView.title",["loc",[null,[34,12],[34,33]]]],
+                ["inline","format-message",[["subexpr","intl-get",["generic.shared_with"],[],["loc",[null,[39,29],[39,61]]]]],[],["loc",[null,[39,12],[39,63]]]],
+                ["content","enabledView.visibilityString",["loc",[null,[39,64],[39,96]]]],
+                ["element","action",["editView",["get","enabledView",["loc",[null,[44,45],[44,56]]]]],[],["loc",[null,[44,25],[44,58]]]],
+                ["inline","format-message",[["subexpr","intl-get",["generic.edit"],[],["loc",[null,[44,76],[44,101]]]]],[],["loc",[null,[44,59],[44,103]]]],
+                ["element","action",["toggleEnabledStatus",["get","enabledView",["loc",[null,[45,89],[45,100]]]]],[],["loc",[null,[45,58],[45,102]]]],
+                ["inline","format-message",[["subexpr","intl-get",["generic.disable"],[],["loc",[null,[45,120],[45,148]]]]],[],["loc",[null,[45,103],[45,150]]]],
+                ["element","action",["showDeleteConfirmation",["get","enabledView",["loc",[null,[46,92],[46,103]]]]],[],["loc",[null,[46,58],[46,105]]]],
+                ["inline","format-message",[["subexpr","intl-get",["generic.delete"],[],["loc",[null,[46,123],[46,150]]]]],[],["loc",[null,[46,106],[46,152]]]]
               ],
               locals: [],
-              templates: [child0]
+              templates: []
             };
           }());
           return {
@@ -51014,11 +51144,11 @@ define('frontend-cp/session/admin/manage/views/index/template', ['exports'], fun
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 8,
+                  "line": 29,
                   "column": 2
                 },
                 "end": {
-                  "line": 32,
+                  "line": 51,
                   "column": 2
                 }
               },
@@ -51041,7 +51171,7 @@ define('frontend-cp/session/admin/manage/views/index/template', ['exports'], fun
               return morphs;
             },
             statements: [
-              ["block","ko-simple-list/row",[],[],0,null,["loc",[null,[9,4],[31,27]]]]
+              ["block","ko-simple-list/row",[],["action","editView","content",["subexpr","@mut",[["get","enabledView",["loc",[null,[30,52],[30,63]]]]],[],[]]],0,null,["loc",[null,[30,4],[50,27]]]]
             ],
             locals: ["enabledView"],
             templates: [child0]
@@ -51057,7 +51187,7 @@ define('frontend-cp/session/admin/manage/views/index/template', ['exports'], fun
                 "column": 0
               },
               "end": {
-                "line": 33,
+                "line": 52,
                 "column": 0
               }
             },
@@ -51079,6 +51209,10 @@ define('frontend-cp/session/admin/manage/views/index/template', ['exports'], fun
             var el2 = dom.createTextNode("\n  ");
             dom.appendChild(el1, el2);
             dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n\n");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
             var el1 = dom.createTextNode("\n");
             dom.appendChild(el0, el1);
             var el1 = dom.createComment("");
@@ -51086,18 +51220,20 @@ define('frontend-cp/session/admin/manage/views/index/template', ['exports'], fun
             return el0;
           },
           buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-            var morphs = new Array(2);
+            var morphs = new Array(3);
             morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]),1,1);
             morphs[1] = dom.createMorphAt(fragment,3,3,contextualElement);
+            morphs[2] = dom.createMorphAt(fragment,5,5,contextualElement);
             dom.insertBoundary(fragment, null);
             return morphs;
           },
           statements: [
             ["inline","format-message",[["subexpr","intl-get",["generic.enabled"],[],["loc",[null,[6,21],[6,49]]]]],[],["loc",[null,[6,4],[6,51]]]],
-            ["block","ko-reorderable-list",[],["reorderedListAction",null,"items",["subexpr","@mut",[["get","enabledViews",["loc",[null,[8,56],[8,68]]]]],[],[]]],0,null,["loc",[null,[8,2],[32,26]]]]
+            ["block","ko-simple-list/row",[],["action","editView","content",["subexpr","@mut",[["get","inboxView",["loc",[null,[9,50],[9,59]]]]],[],[]]],0,null,["loc",[null,[9,2],[27,25]]]],
+            ["block","ko-reorderable-list",[],["reorderedListAction","reorderViews","items",["subexpr","@mut",[["get","enabledViews",["loc",[null,[29,66],[29,78]]]]],[],[]]],1,null,["loc",[null,[29,2],[51,26]]]]
           ],
           locals: [],
-          templates: [child0]
+          templates: [child0, child1]
         };
       }());
       var child1 = (function() {
@@ -51110,11 +51246,11 @@ define('frontend-cp/session/admin/manage/views/index/template', ['exports'], fun
                   "loc": {
                     "source": null,
                     "start": {
-                      "line": 42,
+                      "line": 61,
                       "column": 6
                     },
                     "end": {
-                      "line": 57,
+                      "line": 76,
                       "column": 6
                     }
                   },
@@ -51220,13 +51356,13 @@ define('frontend-cp/session/admin/manage/views/index/template', ['exports'], fun
                   return morphs;
                 },
                 statements: [
-                  ["content","disabledView.title",["loc",[null,[45,43],[45,65]]]],
-                  ["inline","format-message",[["subexpr","intl-get",["generic.shared_with"],[],["loc",[null,[48,53],[48,85]]]]],[],["loc",[null,[48,36],[48,87]]]],
-                  ["content","disabledView.visibilityString",["loc",[null,[48,88],[48,121]]]],
-                  ["element","action",["toggleEnabledStatus",["get","disabledView",["loc",[null,[52,57],[52,69]]]]],[],["loc",[null,[52,26],[52,71]]]],
-                  ["inline","format-message",[["subexpr","intl-get",["generic.enable"],[],["loc",[null,[52,89],[52,116]]]]],[],["loc",[null,[52,72],[52,118]]]],
-                  ["element","action",["showDeleteConfirmation",["get","disabledView",["loc",[null,[53,93],[53,105]]]]],[],["loc",[null,[53,59],[53,107]]]],
-                  ["inline","format-message",[["subexpr","intl-get",["generic.delete"],[],["loc",[null,[53,125],[53,152]]]]],[],["loc",[null,[53,108],[53,154]]]]
+                  ["content","disabledView.title",["loc",[null,[64,43],[64,65]]]],
+                  ["inline","format-message",[["subexpr","intl-get",["generic.shared_with"],[],["loc",[null,[67,53],[67,85]]]]],[],["loc",[null,[67,36],[67,87]]]],
+                  ["content","disabledView.visibilityString",["loc",[null,[67,88],[67,121]]]],
+                  ["element","action",["toggleEnabledStatus",["get","disabledView",["loc",[null,[71,57],[71,69]]]]],[],["loc",[null,[71,26],[71,71]]]],
+                  ["inline","format-message",[["subexpr","intl-get",["generic.enable"],[],["loc",[null,[71,89],[71,116]]]]],[],["loc",[null,[71,72],[71,118]]]],
+                  ["element","action",["showDeleteConfirmation",["get","disabledView",["loc",[null,[72,93],[72,105]]]]],[],["loc",[null,[72,59],[72,107]]]],
+                  ["inline","format-message",[["subexpr","intl-get",["generic.delete"],[],["loc",[null,[72,125],[72,152]]]]],[],["loc",[null,[72,108],[72,154]]]]
                 ],
                 locals: [],
                 templates: []
@@ -51238,11 +51374,11 @@ define('frontend-cp/session/admin/manage/views/index/template', ['exports'], fun
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 41,
+                    "line": 60,
                     "column": 4
                   },
                   "end": {
-                    "line": 58,
+                    "line": 77,
                     "column": 4
                   }
                 },
@@ -51265,7 +51401,7 @@ define('frontend-cp/session/admin/manage/views/index/template', ['exports'], fun
                 return morphs;
               },
               statements: [
-                ["block","ko-simple-list/row",[],[],0,null,["loc",[null,[42,6],[57,29]]]]
+                ["block","ko-simple-list/row",[],[],0,null,["loc",[null,[61,6],[76,29]]]]
               ],
               locals: ["disabledView"],
               templates: [child0]
@@ -51277,11 +51413,11 @@ define('frontend-cp/session/admin/manage/views/index/template', ['exports'], fun
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 37,
+                  "line": 56,
                   "column": 2
                 },
                 "end": {
-                  "line": 59,
+                  "line": 78,
                   "column": 2
                 }
               },
@@ -51317,8 +51453,8 @@ define('frontend-cp/session/admin/manage/views/index/template', ['exports'], fun
               return morphs;
             },
             statements: [
-              ["inline","format-message",[["subexpr","intl-get",["generic.disabled"],[],["loc",[null,[39,23],[39,52]]]]],[],["loc",[null,[39,6],[39,54]]]],
-              ["block","ko-reorderable-list",[],["reorderedListAction",null,"items",["subexpr","@mut",[["get","disabledViews",["loc",[null,[41,58],[41,71]]]]],[],[]]],0,null,["loc",[null,[41,4],[58,28]]]]
+              ["inline","format-message",[["subexpr","intl-get",["generic.disabled"],[],["loc",[null,[58,23],[58,52]]]]],[],["loc",[null,[58,6],[58,54]]]],
+              ["block","ko-reorderable-list",[],["reorderedListAction",null,"items",["subexpr","@mut",[["get","disabledViews",["loc",[null,[60,58],[60,71]]]]],[],[]]],0,null,["loc",[null,[60,4],[77,28]]]]
             ],
             locals: [],
             templates: [child0]
@@ -51330,11 +51466,11 @@ define('frontend-cp/session/admin/manage/views/index/template', ['exports'], fun
             "loc": {
               "source": null,
               "start": {
-                "line": 36,
+                "line": 55,
                 "column": 0
               },
               "end": {
-                "line": 60,
+                "line": 79,
                 "column": 0
               }
             },
@@ -51357,7 +51493,7 @@ define('frontend-cp/session/admin/manage/views/index/template', ['exports'], fun
             return morphs;
           },
           statements: [
-            ["block","ko-simple-list",[],[],0,null,["loc",[null,[37,2],[59,21]]]]
+            ["block","ko-simple-list",[],[],0,null,["loc",[null,[56,2],[78,21]]]]
           ],
           locals: [],
           templates: [child0]
@@ -51373,7 +51509,7 @@ define('frontend-cp/session/admin/manage/views/index/template', ['exports'], fun
               "column": 0
             },
             "end": {
-              "line": 61,
+              "line": 80,
               "column": 0
             }
           },
@@ -51401,8 +51537,8 @@ define('frontend-cp/session/admin/manage/views/index/template', ['exports'], fun
           return morphs;
         },
         statements: [
-          ["block","ko-simple-list",[],[],0,null,["loc",[null,[4,0],[33,19]]]],
-          ["block","if",[["get","disabledViews.length",["loc",[null,[36,6],[36,26]]]]],[],1,null,["loc",[null,[36,0],[60,7]]]]
+          ["block","ko-simple-list",[],[],0,null,["loc",[null,[4,0],[52,19]]]],
+          ["block","if",[["get","disabledViews.length",["loc",[null,[55,6],[55,26]]]]],[],1,null,["loc",[null,[55,0],[79,7]]]]
         ],
         locals: [],
         templates: [child0, child1]
@@ -51418,7 +51554,7 @@ define('frontend-cp/session/admin/manage/views/index/template', ['exports'], fun
             "column": 0
           },
           "end": {
-            "line": 62,
+            "line": 87,
             "column": 0
           }
         },
@@ -51435,19 +51571,26 @@ define('frontend-cp/session/admin/manage/views/index/template', ['exports'], fun
         dom.appendChild(el0, el1);
         var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var morphs = new Array(2);
+        var morphs = new Array(3);
         morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
         morphs[1] = dom.createMorphAt(fragment,2,2,contextualElement);
+        morphs[2] = dom.createMorphAt(fragment,4,4,contextualElement);
         dom.insertBoundary(fragment, 0);
-        dom.insertBoundary(fragment, null);
         return morphs;
       },
       statements: [
         ["inline","ko-admin/page-header",[],["title",["subexpr","format-message",[["subexpr","intl-get",["admin.views"],[],["loc",[null,[1,45],[1,69]]]]],[],["loc",[null,[1,29],[1,70]]]],"buttonText",["subexpr","format-message",[["subexpr","intl-get",["admin.views.buttons.add_new"],[],["loc",[null,[1,98],[1,138]]]]],[],["loc",[null,[1,82],[1,139]]]],"buttonAction","transitionToNewViewRoute"],["loc",[null,[1,0],[1,181]]]],
-        ["block","ko-admin/forms/table",[],[],0,null,["loc",[null,[3,0],[61,25]]]]
+        ["block","ko-admin/forms/table",[],[],0,null,["loc",[null,[3,0],[80,25]]]],
+        ["inline","ko-admin/page-footer",[],["buttonText",["subexpr","format-message",[["subexpr","intl-get",["admin.views.buttons.add_new"],[],["loc",[null,[84,27],[84,67]]]]],[],["loc",[null,[84,11],[84,68]]]],"buttonAction","transitionToNewViewRoute"],["loc",[null,[83,0],[86,2]]]]
       ],
       locals: [],
       templates: [child0]
@@ -51538,8 +51681,8 @@ define('frontend-cp/session/admin/manage/views/new/template', ['exports'], funct
             "column": 0
           },
           "end": {
-            "line": 8,
-            "column": 41
+            "line": 15,
+            "column": 0
           }
         },
         "moduleName": "frontend-cp/session/admin/manage/views/new/template.hbs"
@@ -51555,19 +51698,26 @@ define('frontend-cp/session/admin/manage/views/new/template', ['exports'], funct
         dom.appendChild(el0, el1);
         var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var morphs = new Array(2);
+        var morphs = new Array(3);
         morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
         morphs[1] = dom.createMorphAt(fragment,2,2,contextualElement);
+        morphs[2] = dom.createMorphAt(fragment,4,4,contextualElement);
         dom.insertBoundary(fragment, 0);
-        dom.insertBoundary(fragment, null);
         return morphs;
       },
       statements: [
         ["inline","ko-admin/page-header",[],["title",["subexpr","format-message",[["subexpr","intl-get",["admin.views.heading.new"],[],["loc",[null,[2,24],[2,60]]]]],[],["loc",[null,[2,8],[2,61]]]],"cancelAction","transitionToIndexRoute","buttonText",["subexpr","format-message",[["subexpr","intl-get",["generic.save"],[],["loc",[null,[4,29],[4,54]]]]],[],["loc",[null,[4,13],[4,55]]]],"buttonAction","saveView"],["loc",[null,[1,0],[6,2]]]],
-        ["inline","ko-admin/views/edit",[],["currentView",["subexpr","@mut",[["get","model",["loc",[null,[8,34],[8,39]]]]],[],[]]],["loc",[null,[8,0],[8,41]]]]
+        ["inline","ko-admin/views/edit",[],["currentView",["subexpr","@mut",[["get","model",["loc",[null,[8,34],[8,39]]]]],[],[]]],["loc",[null,[8,0],[8,41]]]],
+        ["inline","ko-admin/page-footer",[],["cancelAction","transitionToIndexRoute","buttonText",["subexpr","format-message",[["subexpr","intl-get",["generic.save"],[],["loc",[null,[12,29],[12,54]]]]],[],["loc",[null,[12,13],[12,55]]]],"buttonAction","saveView"],["loc",[null,[10,0],[14,2]]]]
       ],
       locals: [],
       templates: []
@@ -68346,7 +68496,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+27b3ff06"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+ff32ce6d"});
 }
 
 /* jshint ignore:end */
