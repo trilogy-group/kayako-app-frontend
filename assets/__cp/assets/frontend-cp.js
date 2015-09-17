@@ -564,6 +564,17 @@ define('frontend-cp/adapters/private', ['exports', 'frontend-cp/adapters/applica
     });
 
 });
+define('frontend-cp/adapters/rating', ['exports', 'frontend-cp/adapters/application'], function (exports, ApplicationAdapter) {
+
+  'use strict';
+
+  exports['default'] = ApplicationAdapter['default'].extend({
+    pathForType: function pathForType() {
+      return 'cases/ratings/recent';
+    }
+  });
+
+});
 define('frontend-cp/adapters/search-result-group', ['exports', 'frontend-cp/adapters/application'], function (exports, ApplicationAdapter) {
 
   'use strict';
@@ -21666,8 +21677,8 @@ define('frontend-cp/components/ko-feed/item/template', ['exports'], function (ex
             "column": 0
           },
           "end": {
-            "line": 19,
-            "column": 0
+            "line": 18,
+            "column": 75
           }
         },
         "moduleName": "frontend-cp/components/ko-feed/item/template.hbs"
@@ -21720,8 +21731,6 @@ define('frontend-cp/components/ko-feed/item/template', ['exports'], function (ex
         dom.appendChild(el0, el1);
         var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
-        dom.appendChild(el0, el1);
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
@@ -21733,6 +21742,7 @@ define('frontend-cp/components/ko-feed/item/template', ['exports'], function (ex
         morphs[3] = dom.createMorphAt(dom.childAt(fragment, [6]),1,1);
         morphs[4] = dom.createMorphAt(fragment,8,8,contextualElement);
         morphs[5] = dom.createMorphAt(fragment,9,9,contextualElement);
+        dom.insertBoundary(fragment, null);
         return morphs;
       },
       statements: [
@@ -21843,10 +21853,7 @@ define('frontend-cp/components/ko-feedback/component', ['exports', 'ember'], fun
 
   exports['default'] = Ember['default'].Component.extend({
     tagName: 'li',
-    classNames: ['info-bar-item', 'u-no-bottom-border'],
-    icon: function icon(feedback) {
-      return feedback === 1 ? 'i--feedback-positive' : 'i--feedback-negative';
-    }
+    classNames: ['info-bar-item', 'u-no-bottom-border']
   });
 
 });
@@ -21856,6 +21863,84 @@ define('frontend-cp/components/ko-feedback/template', ['exports'], function (exp
 
   exports['default'] = Ember.HTMLBars.template((function() {
     var child0 = (function() {
+      var child0 = (function() {
+        return {
+          meta: {
+            "revision": "Ember@1.13.7",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 5,
+                "column": 4
+              },
+              "end": {
+                "line": 7,
+                "column": 4
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-feedback/template.hbs"
+          },
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("      ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("span");
+            dom.setAttribute(el1,"class","i-happy-outline");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes() { return []; },
+          statements: [
+
+          ],
+          locals: [],
+          templates: []
+        };
+      }());
+      var child1 = (function() {
+        return {
+          meta: {
+            "revision": "Ember@1.13.7",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 7,
+                "column": 4
+              },
+              "end": {
+                "line": 9,
+                "column": 4
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-feedback/template.hbs"
+          },
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("      ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("span");
+            dom.setAttribute(el1,"class","i-sad-outline");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes() { return []; },
+          statements: [
+
+          ],
+          locals: [],
+          templates: []
+        };
+      }());
       return {
         meta: {
           "revision": "Ember@1.13.7",
@@ -21866,7 +21951,7 @@ define('frontend-cp/components/ko-feedback/template', ['exports'], function (exp
               "column": 0
             },
             "end": {
-              "line": 20,
+              "line": 13,
               "column": 0
             }
           },
@@ -21877,77 +21962,81 @@ define('frontend-cp/components/ko-feedback/template', ['exports'], function (exp
         hasRendered: false,
         buildFragment: function buildFragment(dom) {
           var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("\n  ");
+          var el1 = dom.createTextNode("  ");
           dom.appendChild(el0, el1);
           var el1 = dom.createElement("div");
           dom.setAttribute(el1,"class","u-inline-block ko-feedback__item");
-          var el2 = dom.createTextNode("\n    ");
+          var el2 = dom.createTextNode("\n");
           dom.appendChild(el1, el2);
-          var el2 = dom.createElement("i");
+          var el2 = dom.createComment("");
           dom.appendChild(el1, el2);
           var el2 = dom.createTextNode("\n    ");
           dom.appendChild(el1, el2);
           var el2 = dom.createElement("div");
-          var el3 = dom.createTextNode("TODO");
+          var el3 = dom.createComment("");
           dom.appendChild(el2, el3);
           dom.appendChild(el1, el2);
           var el2 = dom.createTextNode("\n  ");
           dom.appendChild(el1, el2);
           dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n\n  ");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createElement("div");
-          dom.setAttribute(el1,"class","u-inline-block ko-feedback__item");
-          var el2 = dom.createTextNode("\n    ");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createElement("i");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n    ");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createElement("div");
-          var el3 = dom.createTextNode("TODO");
-          dom.appendChild(el2, el3);
-          dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n  ");
-          dom.appendChild(el1, el2);
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n\n  ");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createElement("div");
-          dom.setAttribute(el1,"class","u-inline-block ko-feedback__item");
-          var el2 = dom.createTextNode("\n    ");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createElement("i");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n    ");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createElement("div");
-          var el3 = dom.createTextNode("TODO");
-          dom.appendChild(el2, el3);
-          dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n  ");
-          dom.appendChild(el1, el2);
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n\n");
+          var el1 = dom.createTextNode("\n");
           dom.appendChild(el0, el1);
           return el0;
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var element0 = dom.childAt(fragment, [1, 1]);
-          var element1 = dom.childAt(fragment, [3, 1]);
-          var element2 = dom.childAt(fragment, [5, 1]);
-          var morphs = new Array(3);
-          morphs[0] = dom.createAttrMorph(element0, 'class');
-          morphs[1] = dom.createAttrMorph(element1, 'class');
-          morphs[2] = dom.createAttrMorph(element2, 'class');
+          var element0 = dom.childAt(fragment, [1]);
+          var morphs = new Array(2);
+          morphs[0] = dom.createMorphAt(element0,1,1);
+          morphs[1] = dom.createMorphAt(dom.childAt(element0, [3]),0,0);
           return morphs;
         },
         statements: [
-          ["attribute","class",["concat",[["subexpr","ko-helper",[["get","icon",["loc",[null,[6,26],[6,30]]]],["get","feedbackItem.yesterday",["loc",[null,[6,31],[6,53]]]]],[],["loc",[null,[6,14],[6,55]]]]]]],
-          ["attribute","class",["concat",[["subexpr","ko-helper",[["get","icon",["loc",[null,[11,26],[11,30]]]],["get","feedbackItem.lastWeek",["loc",[null,[11,31],[11,52]]]]],[],["loc",[null,[11,14],[11,54]]]]]]],
-          ["attribute","class",["concat",[["subexpr","ko-helper",[["get","icon",["loc",[null,[16,26],[16,30]]]],["get","feedbackItem.lastYear",["loc",[null,[16,31],[16,52]]]]],[],["loc",[null,[16,14],[16,54]]]]]]]
+          ["block","if",[["subexpr","eq",[["get","feedbackItem.score",["loc",[null,[5,14],[5,32]]]],"GOOD"],[],["loc",[null,[5,10],[5,40]]]]],[],0,1,["loc",[null,[5,4],[9,11]]]],
+          ["inline","ago",[["get","feedbackItem.createdAt",["loc",[null,[11,15],[11,37]]]]],[],["loc",[null,[11,9],[11,39]]]]
         ],
         locals: ["feedbackItem"],
+        templates: [child0, child1]
+      };
+    }());
+    var child1 = (function() {
+      return {
+        meta: {
+          "revision": "Ember@1.13.7",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 15,
+              "column": 0
+            },
+            "end": {
+              "line": 17,
+              "column": 0
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-feedback/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+          return morphs;
+        },
+        statements: [
+          ["inline","format-message",[["subexpr","intl-get",["users.no_feedback_available"],[],["loc",[null,[16,19],[16,59]]]]],[],["loc",[null,[16,2],[16,61]]]]
+        ],
+        locals: [],
         templates: []
       };
     }());
@@ -21961,8 +22050,8 @@ define('frontend-cp/components/ko-feedback/template', ['exports'], function (exp
             "column": 0
           },
           "end": {
-            "line": 21,
-            "column": 0
+            "line": 17,
+            "column": 7
           }
         },
         "moduleName": "frontend-cp/components/ko-feedback/template.hbs"
@@ -21972,33 +22061,36 @@ define('frontend-cp/components/ko-feedback/template', ['exports'], function (exp
       hasRendered: false,
       buildFragment: function buildFragment(dom) {
         var el0 = dom.createDocumentFragment();
-        var el1 = dom.createElement("p");
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","info-bar__heading");
         var el2 = dom.createComment("");
         dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode(" ");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createElement("br");
-        dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
         var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var morphs = new Array(2);
+        var morphs = new Array(3);
         morphs[0] = dom.createMorphAt(dom.childAt(fragment, [0]),0,0);
-        morphs[1] = dom.createMorphAt(fragment,4,4,contextualElement);
+        morphs[1] = dom.createMorphAt(fragment,2,2,contextualElement);
+        morphs[2] = dom.createMorphAt(fragment,4,4,contextualElement);
         dom.insertBoundary(fragment, null);
         return morphs;
       },
       statements: [
-        ["content","title",["loc",[null,[1,3],[1,12]]]],
-        ["block","each",[["get","feedback",["loc",[null,[3,8],[3,16]]]]],[],0,null,["loc",[null,[3,0],[20,9]]]]
+        ["content","title",["loc",[null,[1,31],[1,40]]]],
+        ["block","each",[["get","feedback",["loc",[null,[3,8],[3,16]]]]],[],0,null,["loc",[null,[3,0],[13,9]]]],
+        ["block","if",[["subexpr","not",[["get","feedback.length",["loc",[null,[15,11],[15,26]]]]],[],["loc",[null,[15,6],[15,27]]]]],[],1,null,["loc",[null,[15,0],[17,7]]]]
       ],
       locals: [],
-      templates: [child0]
+      templates: [child0, child1]
     };
   }()));
 
@@ -35008,6 +35100,15 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
       })];
     }),
 
+    recentFeedback: [],
+    initRecentFeedback: Ember['default'].on('init', function () {
+      var _this4 = this;
+
+      this.get('store').query('rating', { user_id: this.get('model.id') }).then(function (ratings) {
+        return _this4.set('recentFeedback', ratings);
+      });
+    }),
+
     userDates: Ember['default'].computed('model.createdAt', 'model.updatedAt', 'model.activityAt', function () {
       return [{ title: this.get('intl').findTranslationByKey('users.metadata.created').translation,
         value: this.get('model.createdAt') }, { title: this.get('intl').findTranslationByKey('users.metadata.updated').translation,
@@ -35076,12 +35177,12 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
 
     actions: {
       toggleUserState: function toggleUserState() {
-        var _this4 = this;
+        var _this5 = this;
 
         this.set('isStateSaving', true);
         this.toggleProperty('model.isEnabled');
         this.get('model').save().then(function () {
-          return _this4.resetForm();
+          return _this5.resetForm();
         });
       },
 
@@ -35095,11 +35196,11 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
       },
 
       organizationSelect: function organizationSelect(org) {
-        var _this5 = this;
+        var _this6 = this;
 
         this.set('model.organization', org);
         this.get('model').hasDirtyBelongsToRelationship('organization').then(function (relationshipIsDirty) {
-          _this5.set('isOrganizationEdited', relationshipIsDirty);
+          _this6.set('isOrganizationEdited', relationshipIsDirty);
         });
       },
 
@@ -35130,7 +35231,7 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
       },
 
       suggestTeams: function suggestTeams(searchTerm, selectedTeams) {
-        var _this6 = this;
+        var _this7 = this;
 
         if (!searchTerm) {
           this.set('suggestedTeams', []);
@@ -35141,7 +35242,7 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
 
         suggestionService.suggestFilter(this.get('teamRecords'), searchTerm, 'title').then(function (data) {
           var suggestedTeams = suggestionService.exclude(data, selectedTeams, 'title');
-          _this6.set('suggestedTeams', suggestedTeams.map(function (tag) {
+          _this7.set('suggestedTeams', suggestedTeams.map(function (tag) {
             return tag.get('title');
           }));
         });
@@ -35164,7 +35265,7 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
       },
 
       suggestTags: function suggestTags(searchTerm, selectedTags) {
-        var _this7 = this;
+        var _this8 = this;
 
         if (!searchTerm) {
           this.set('suggestedTags', []);
@@ -35176,14 +35277,14 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
         suggestionService.suggest(searchTerm).then(function (data) {
           data = suggestionService.exclude(data, selectedTags);
 
-          _this7.set('suggestedTags', data.map(function (tag) {
+          _this8.set('suggestedTags', data.map(function (tag) {
             return tag.get('name');
           }));
         });
       },
 
       changeUserPassword: function changeUserPassword() {
-        var _this8 = this;
+        var _this9 = this;
 
         var PAYLOAD = { email: this.get('model.primaryEmailAddress') };
 
@@ -35195,23 +35296,23 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
             'Content-Type': 'application/json'
           }
         }).then(function () {
-          _this8.get('notificationService').add({
+          _this9.get('notificationService').add({
             type: 'success',
-            title: _this8.get('intl').findTranslationByKey('users.password_reset_email.success').translation,
+            title: _this9.get('intl').findTranslationByKey('users.password_reset_email.success').translation,
             autodismiss: true
           });
         }, function (response) {
-          _this8.get('errorHandlerService').handleServerError(response.responseJSON);
+          _this9.get('errorHandlerService').handleServerError(response.responseJSON);
         });
       },
 
       submit: function submit() {
-        var _this9 = this;
+        var _this10 = this;
 
         this.get('model').save().then(function () {
-          _this9.resetForm();
+          _this10.resetForm();
         }, function (e) {
-          _this9.set('errors', e.errors);
+          _this10.set('errors', e.errors);
         });
       }
     }
@@ -35400,7 +35501,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
               "column": 6
             },
             "end": {
-              "line": 132,
+              "line": 134,
               "column": 6
             }
           },
@@ -35457,13 +35558,17 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
           dom.appendChild(el0, el1);
           var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n\n        ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n");
           dom.appendChild(el0, el1);
           return el0;
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
           var element0 = dom.childAt(fragment, [1, 1]);
-          var morphs = new Array(10);
+          var morphs = new Array(11);
           morphs[0] = dom.createElementMorph(element0);
           morphs[1] = dom.createMorphAt(element0,0,0);
           morphs[2] = dom.createMorphAt(fragment,3,3,contextualElement);
@@ -35474,6 +35579,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
           morphs[7] = dom.createMorphAt(fragment,13,13,contextualElement);
           morphs[8] = dom.createMorphAt(fragment,15,15,contextualElement);
           morphs[9] = dom.createMorphAt(fragment,17,17,contextualElement);
+          morphs[10] = dom.createMorphAt(fragment,19,19,contextualElement);
           return morphs;
         },
         statements: [
@@ -35486,7 +35592,8 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
           ["block","each",[["get","customFields",["loc",[null,[96,16],[96,28]]]]],[],1,null,["loc",[null,[96,8],[108,17]]]],
           ["inline","ko-field/tags",[],["selectedTags",["subexpr","@mut",[["get","userTeams",["loc",[null,[110,37],[110,46]]]]],[],[]],"suggestedTags",["subexpr","@mut",[["get","suggestedTeams",["loc",[null,[111,38],[111,52]]]]],[],[]],"title",["subexpr","format-message",[["subexpr","intl-get",["users.teams"],[],["loc",[null,[112,46],[112,70]]]]],[],["loc",[null,[112,30],[112,71]]]],"newTagText",["subexpr","format-message",[["subexpr","intl-get",["users.newteam"],[],["loc",[null,[113,51],[113,77]]]]],[],["loc",[null,[113,35],[113,78]]]],"addTagText",["subexpr","format-message",[["subexpr","intl-get",["users.addteam"],[],["loc",[null,[114,51],[114,77]]]]],[],["loc",[null,[114,35],[114,78]]]],"onTagAddition","addTeam","onTagRemoval","removeTeam","onTagSuggestion","suggestTeams","isEdited",["subexpr","@mut",[["get","isTeamsFieldEdited",["loc",[null,[118,33],[118,51]]]]],[],[]]],["loc",[null,[110,8],[118,53]]]],
           ["inline","ko-field/tags",[],["selectedTags",["subexpr","@mut",[["get","userTags",["loc",[null,[120,37],[120,45]]]]],[],[]],"suggestedTags",["subexpr","@mut",[["get","suggestedTags",["loc",[null,[121,38],[121,51]]]]],[],[]],"title",["subexpr","format-message",[["subexpr","intl-get",["users.tags"],[],["loc",[null,[122,46],[122,69]]]]],[],["loc",[null,[122,30],[122,70]]]],"newTagText",["subexpr","format-message",[["subexpr","intl-get",["users.newtag"],[],["loc",[null,[123,51],[123,76]]]]],[],["loc",[null,[123,35],[123,77]]]],"addTagText",["subexpr","format-message",[["subexpr","intl-get",["users.addtag"],[],["loc",[null,[124,51],[124,76]]]]],[],["loc",[null,[124,35],[124,77]]]],"onTagAddition","addTag","onTagRemoval","removeTag","onTagSuggestion","suggestTags","isEdited",["subexpr","@mut",[["get","isTagsFieldEdited",["loc",[null,[128,33],[128,50]]]]],[],[]]],["loc",[null,[120,8],[128,52]]]],
-          ["inline","ko-info-bar/metadata",[],["rows",["subexpr","@mut",[["get","userDates",["loc",[null,[131,36],[131,45]]]]],[],[]]],["loc",[null,[131,8],[131,47]]]]
+          ["inline","ko-info-bar/metadata",[],["rows",["subexpr","@mut",[["get","userDates",["loc",[null,[131,36],[131,45]]]]],[],[]]],["loc",[null,[131,8],[131,47]]]],
+          ["inline","ko-feedback",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.recent_feedback"],[],["loc",[null,[133,44],[133,78]]]]],[],["loc",[null,[133,28],[133,79]]]],"feedback",["subexpr","@mut",[["get","recentFeedback",["loc",[null,[133,89],[133,103]]]]],[],[]]],["loc",[null,[133,8],[133,105]]]]
         ],
         locals: [],
         templates: [child0, child1]
@@ -35499,11 +35606,11 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 137,
+              "line": 139,
               "column": 0
             },
             "end": {
-              "line": 141,
+              "line": 143,
               "column": 0
             }
           },
@@ -35528,7 +35635,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["inline","textarea",[],["value",["subexpr","@mut",[["get","model.signature",["loc",[null,[140,19],[140,34]]]]],[],[]],"class","text-area--clean"],["loc",[null,[140,2],[140,61]]]]
+          ["inline","textarea",[],["value",["subexpr","@mut",[["get","model.signature",["loc",[null,[142,19],[142,34]]]]],[],[]],"class","text-area--clean"],["loc",[null,[142,2],[142,61]]]]
         ],
         locals: [],
         templates: []
@@ -35544,7 +35651,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
             "column": 0
           },
           "end": {
-            "line": 142,
+            "line": 144,
             "column": 0
           }
         },
@@ -35726,8 +35833,8 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
         ["inline","ko-stateful-button",[],["activeText","User Enabled","activeHoverText","Disable User","inactiveText","User Disabled","inactiveHoverText","Enable User","isActive",["subexpr","@mut",[["get","model.isEnabled",["loc",[null,[34,20],[34,35]]]]],[],[]],"isEnabled",["subexpr","@mut",[["get","canModifyUserState",["loc",[null,[35,21],[35,39]]]]],[],[]],"isLoading",["subexpr","@mut",[["get","isStateSaving",["loc",[null,[36,21],[36,34]]]]],[],[]],"onClick","toggleUserState"],["loc",[null,[29,9],[37,38]]]],
         ["inline","ko-user-action-menu",[],["permissions",["subexpr","@mut",[["get","sessionService.permissions",["loc",[null,[41,24],[41,50]]]]],[],[]],"userRoleType",["subexpr","@mut",[["get","model.role.roleType",["loc",[null,[42,25],[42,44]]]]],[],[]],"userModel",["subexpr","@mut",[["get","model",["loc",[null,[43,22],[43,27]]]]],[],[]]],["loc",[null,[40,8],[44,10]]]],
         ["block","ko-text-editor",[],["viewName","postEditor"],0,null,["loc",[null,[53,8],[55,27]]]],
-        ["block","ko-info-bar",[],[],1,null,["loc",[null,[60,6],[132,22]]]],
-        ["block","ko-editor-modal",[],["onSave","submit","viewName","signatureModal","title",["subexpr","format-message",[["subexpr","intl-get",["users.editsignature"],[],["loc",[null,[139,41],[139,73]]]]],[],["loc",[null,[139,25],[139,74]]]]],2,null,["loc",[null,[137,0],[141,20]]]]
+        ["block","ko-info-bar",[],[],1,null,["loc",[null,[60,6],[134,22]]]],
+        ["block","ko-editor-modal",[],["onSave","submit","viewName","signatureModal","title",["subexpr","format-message",[["subexpr","intl-get",["users.editsignature"],[],["loc",[null,[141,41],[141,73]]]]],[],["loc",[null,[141,25],[141,74]]]]],2,null,["loc",[null,[139,0],[143,20]]]]
       ],
       locals: [],
       templates: [child0, child1, child2]
@@ -39720,6 +39827,15 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
+    this.get('cases/ratings/recent', function (db) {
+      return {
+        status: 200,
+        data: [],
+        resource: 'macro',
+        total_count: 0
+      };
+    });
+
     this.get('/base/search_all', function (db, request) {
       if (!db['search-results-person']) {
         db.createCollection('search-results-person');
@@ -41651,6 +41767,14 @@ define('frontend-cp/mirage/fixtures/en-us-strings', ['exports'], function (expor
     }, {
       'id': 'frontend.api.cases.form-select',
       'value': 'Case form',
+      'resource_type': 'locale_string'
+    }, {
+      'id': 'frontend.api.users.recent_feedback',
+      'value': 'Recent feedback',
+      'resource_type': 'locale_string'
+    }, {
+      'id': 'frontend.api.users.no_feedback_available',
+      'value': 'No feedback available',
       'resource_type': 'locale_string'
     }],
     resource: 'locale_string'
@@ -45849,6 +45973,20 @@ define('frontend-cp/models/proposition', ['exports', 'ember-data'], function (ex
     field: DS['default'].attr('string'),
     operator: DS['default'].attr('string'),
     value: DS['default'].attr('string')
+  });
+
+});
+define('frontend-cp/models/rating', ['exports', 'ember-data'], function (exports, DS) {
+
+  'use strict';
+
+  exports['default'] = DS['default'].Model.extend({
+    score: DS['default'].attr('string'),
+    comment: DS['default'].attr('string'),
+    'case': DS['default'].belongsTo('case'),
+    creator: DS['default'].belongsTo('user'),
+    createdAt: DS['default'].attr('date')
+
   });
 
 });
@@ -62767,62 +62905,6 @@ define('frontend-cp/tests/integration/components/ko-dropdown/select/component-te
   });
 
 });
-define('frontend-cp/tests/integration/components/ko-feedback/component-test', ['ember-qunit'], function (ember_qunit) {
-
-  'use strict';
-
-  ember_qunit.moduleForComponent('ko-feedback', 'Integration | Component | ko feedback', {
-    integration: true
-  });
-
-  ember_qunit.test('it renders', function (assert) {
-    assert.expect(1);
-
-    // Set any properties with this.set('myProperty', 'value');
-    // Handle any actions with this.on('myAction', function(val) { ... });
-
-    this.render(Ember.HTMLBars.template((function () {
-      return {
-        meta: {
-          'revision': 'Ember@1.13.7',
-          'loc': {
-            'source': null,
-            'start': {
-              'line': 1,
-              'column': 0
-            },
-            'end': {
-              'line': 1,
-              'column': 15
-            }
-          }
-        },
-        arity: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createComment('');
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-          dom.insertBoundary(fragment, 0);
-          dom.insertBoundary(fragment, null);
-          return morphs;
-        },
-        statements: [['content', 'ko-feedback', ['loc', [null, [1, 0], [1, 15]]]]],
-        locals: [],
-        templates: []
-      };
-    })()));
-
-    assert.equal(this.$().text().trim(), '');
-  });
-
-});
 define('frontend-cp/tests/integration/components/ko-field/text/component-test', ['frontend-cp/tests/helpers/qunit', 'frontend-cp/lib/keycodes'], function (qunit, KeyCodes) {
 
   'use strict';
@@ -68234,7 +68316,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+ee739056"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+6066dc8c"});
 }
 
 /* jshint ignore:end */
