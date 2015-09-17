@@ -22,6 +22,7 @@
   "infobar.accesslevel.self": "Own cases only",
   "infobar.accesslevel.organization": "All organization's cases",
   "add_a_note": "Add a note",
-
-  "password_reset_email.success": "Password reset email has been sent"
+  "password_reset_email.success": "Password reset email has been sent",
+  "recent_feedback": "Recent feedback",
+  "no_feedback_available": "No feedback is available from this user"
 }
