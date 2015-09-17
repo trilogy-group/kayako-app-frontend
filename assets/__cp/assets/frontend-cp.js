@@ -410,6 +410,13 @@ define('frontend-cp/adapters/case-priority', ['exports', 'frontend-cp/adapters/a
   });
 
 });
+define('frontend-cp/adapters/case-reply-options', ['exports', 'frontend-cp/adapters/application'], function (exports, ApplicationAdapter) {
+
+	'use strict';
+
+	exports['default'] = ApplicationAdapter['default'].extend({});
+
+});
 define('frontend-cp/adapters/case-reply', ['exports', 'frontend-cp/adapters/application'], function (exports, ApplicationAdapter) {
 
   'use strict';
@@ -483,6 +490,17 @@ define('frontend-cp/adapters/facebook-account', ['exports', 'frontend-cp/adapter
   exports['default'] = ApplicationAdapter['default'].extend({
     pathForType: function pathForType() {
       return 'facebook/accounts';
+    }
+  });
+
+});
+define('frontend-cp/adapters/identity-autocomplete-email', ['exports', 'frontend-cp/adapters/application'], function (exports, ApplicationAdapter) {
+
+  'use strict';
+
+  exports['default'] = ApplicationAdapter['default'].extend({
+    pathForType: function pathForType() {
+      return 'autocomplete/emails';
     }
   });
 
@@ -907,799 +925,6 @@ define('frontend-cp/components/ember-wormhole', ['exports', 'ember-wormhole/comp
 	'use strict';
 
 	exports['default'] = Component['default'];
-
-});
-define('frontend-cp/components/ko-add-participants-context-menu/component', ['exports', 'ember', 'frontend-cp/components/mixins/context-menu-set'], function (exports, Ember, ContextMenuSetComponentMixin) {
-
-	'use strict';
-
-	exports['default'] = Ember['default'].Component.extend(ContextMenuSetComponentMixin['default'], {});
-
-});
-define('frontend-cp/components/ko-add-participants-context-menu/template', ['exports'], function (exports) {
-
-  'use strict';
-
-  exports['default'] = Ember.HTMLBars.template((function() {
-    var child0 = (function() {
-      return {
-        meta: {
-          "revision": "Ember@1.13.7",
-          "loc": {
-            "source": null,
-            "start": {
-              "line": 1,
-              "column": 0
-            },
-            "end": {
-              "line": 9,
-              "column": 0
-            }
-          },
-          "moduleName": "frontend-cp/components/ko-add-participants-context-menu/template.hbs"
-        },
-        arity: 1,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("\n  ");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createComment("");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n\n  ");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createElement("div");
-          dom.setAttribute(el1,"class","box");
-          var el2 = dom.createTextNode("\n    ");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createElement("a");
-          dom.setAttribute(el2,"href","#");
-          var el3 = dom.createComment("");
-          dom.appendChild(el2, el3);
-          dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n  ");
-          dom.appendChild(el1, el2);
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n\n");
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var element1 = dom.childAt(fragment, [3, 1]);
-          var morphs = new Array(3);
-          morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
-          morphs[1] = dom.createElementMorph(element1);
-          morphs[2] = dom.createMorphAt(element1,0,0);
-          return morphs;
-        },
-        statements: [
-          ["inline","ko-add-participants-popover",[],["results",["subexpr","@mut",[["get","copyInParticipants",["loc",[null,[3,40],[3,58]]]]],[],[]],"isShowing",["subexpr","@mut",[["get","isShowing",["loc",[null,[3,69],[3,78]]]]],[],[]]],["loc",[null,[3,2],[3,80]]]],
-          ["element","action",["next"],[],["loc",[null,[6,16],[6,33]]]],
-          ["inline","format-message",[["subexpr","intl-get",["users.addnewuser"],[],["loc",[null,[6,51],[6,80]]]]],[],["loc",[null,[6,34],[6,82]]]]
-        ],
-        locals: ["isShowing"],
-        templates: []
-      };
-    }());
-    var child1 = (function() {
-      return {
-        meta: {
-          "revision": "Ember@1.13.7",
-          "loc": {
-            "source": null,
-            "start": {
-              "line": 11,
-              "column": 0
-            },
-            "end": {
-              "line": 16,
-              "column": 0
-            }
-          },
-          "moduleName": "frontend-cp/components/ko-add-participants-context-menu/template.hbs"
-        },
-        arity: 1,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("\n  ");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createComment("");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n\n  ");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createElement("button");
-          var el2 = dom.createComment("");
-          dom.appendChild(el1, el2);
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n");
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var element0 = dom.childAt(fragment, [3]);
-          var morphs = new Array(3);
-          morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
-          morphs[1] = dom.createElementMorph(element0);
-          morphs[2] = dom.createMorphAt(element0,0,0);
-          return morphs;
-        },
-        statements: [
-          ["inline","ko-add-user-popover",[],["isShowing",["subexpr","@mut",[["get","isShowing",["loc",[null,[13,34],[13,43]]]]],[],[]]],["loc",[null,[13,2],[13,45]]]],
-          ["element","action",["prev"],[],["loc",[null,[15,10],[15,27]]]],
-          ["inline","format-message",[["subexpr","intl-get",["generic.popover.previous"],[],["loc",[null,[15,45],[15,82]]]]],[],["loc",[null,[15,28],[15,84]]]]
-        ],
-        locals: ["isShowing"],
-        templates: []
-      };
-    }());
-    return {
-      meta: {
-        "revision": "Ember@1.13.7",
-        "loc": {
-          "source": null,
-          "start": {
-            "line": 1,
-            "column": 0
-          },
-          "end": {
-            "line": 16,
-            "column": 26
-          }
-        },
-        "moduleName": "frontend-cp/components/ko-add-participants-context-menu/template.hbs"
-      },
-      arity: 0,
-      cachedFragment: null,
-      hasRendered: false,
-      buildFragment: function buildFragment(dom) {
-        var el0 = dom.createDocumentFragment();
-        var el1 = dom.createComment("");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createComment("");
-        dom.appendChild(el0, el1);
-        return el0;
-      },
-      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var morphs = new Array(2);
-        morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
-        morphs[1] = dom.createMorphAt(fragment,2,2,contextualElement);
-        dom.insertBoundary(fragment, 0);
-        dom.insertBoundary(fragment, null);
-        return morphs;
-      },
-      statements: [
-        ["block","ko-context-modal-item",[],["index","0","title",["subexpr","format-message",[["subexpr","intl-get",["cases.addparticipant"],[],["loc",[null,[1,57],[1,90]]]]],[],["loc",[null,[1,41],[1,91]]]],"contextModalId",["subexpr","@mut",[["get","contextModalId",["loc",[null,[1,107],[1,121]]]]],[],[]]],0,null,["loc",[null,[1,0],[9,26]]]],
-        ["block","ko-context-modal-item",[],["index","1","title",["subexpr","format-message",[["subexpr","intl-get",["users.addnewuser"],[],["loc",[null,[11,57],[11,86]]]]],[],["loc",[null,[11,41],[11,87]]]],"contextModalId",["subexpr","@mut",[["get","contextModalId",["loc",[null,[11,103],[11,117]]]]],[],[]]],1,null,["loc",[null,[11,0],[16,26]]]]
-      ],
-      locals: [],
-      templates: [child0, child1]
-    };
-  }()));
-
-});
-define('frontend-cp/components/ko-add-participants-popover/component', ['exports', 'ember', 'npm:lodash', 'frontend-cp/lib/keycodes'], function (exports, Ember, _, KeyCodes) {
-
-  'use strict';
-
-  exports['default'] = Ember['default'].Component.extend({
-
-    classNames: ['ko-add-participants-popover'],
-    showResults: false,
-    results: null,
-    searchTerm: null,
-    name: null,
-    email: null,
-    filteredParticipants: null,
-    selectedParticipants: null,
-
-    willRender: function willRender() {
-      if (this.get('isShowing')) {
-        this.$().find('.input-text').focus();
-      }
-    },
-
-    didReceiveAttrs: function didReceiveAttrs() {
-      this.set('selectedParticipants', new Ember['default'].A([]));
-      this.set('filteredParticipants', this.get('results'));
-    },
-    // TODO: when RFC implemented and its possible to invoke same actions via multiple events
-    keyDown: function keyDown(e) {
-      if (e.keyCode === KeyCodes.down) {
-        return false;
-      }
-      if (e.keyCode === KeyCodes.up) {
-        return false;
-      }
-      if (e.keyCode === KeyCodes.enter) {
-        return false;
-      }
-    },
-    // TODO: when RFC implemented and its possible to invoke same actions via multiple events
-    keyUp: function keyUp(e) {
-      if (e.keyCode === KeyCodes.down) {
-        return false;
-      }
-      if (e.keyCode === KeyCodes.up) {
-        return false;
-      }
-      if (e.keyCode === KeyCodes.enter) {
-        return false;
-      }
-      return false;
-    },
-
-    actions: {
-
-      query: function query() {
-        var _this = this;
-
-        var filteredResults = _['default'].filter(this.results, function (result) {
-          return _['default'].some([result.name, result.company, result.email], function (result) {
-            return result.indexOf(_this.searchTerm) !== -1;
-          });
-        });
-
-        this.set('filteredParticipants', filteredResults);
-        this.set('searchTerm', '');
-      },
-
-      removeParticipant: function removeParticipant(participant) {
-        this.selectedParticipants.removeObject(participant);
-      },
-
-      participantSelected: function participantSelected(participant) {
-        this.selectedParticipants.pushObject(participant);
-        this.set('showResults', false);
-        this.set('searchTerm', '');
-      },
-
-      whenKeyIsPressed: function whenKeyIsPressed() {
-        this.set('showResults', true);
-      }
-    }
-
-  });
-
-});
-define('frontend-cp/components/ko-add-participants-popover/template', ['exports'], function (exports) {
-
-  'use strict';
-
-  exports['default'] = Ember.HTMLBars.template((function() {
-    var child0 = (function() {
-      var child0 = (function() {
-        return {
-          meta: {
-            "revision": "Ember@1.13.7",
-            "loc": {
-              "source": null,
-              "start": {
-                "line": 9,
-                "column": 4
-              },
-              "end": {
-                "line": 24,
-                "column": 4
-              }
-            },
-            "moduleName": "frontend-cp/components/ko-add-participants-popover/template.hbs"
-          },
-          arity: 1,
-          cachedFragment: null,
-          hasRendered: false,
-          buildFragment: function buildFragment(dom) {
-            var el0 = dom.createDocumentFragment();
-            var el1 = dom.createTextNode("      ");
-            dom.appendChild(el0, el1);
-            var el1 = dom.createElement("ul");
-            dom.setAttribute(el1,"class","ko-add-participants-popover__selected-list");
-            dom.setAttribute(el1,"role","menu");
-            var el2 = dom.createTextNode("\n        ");
-            dom.appendChild(el1, el2);
-            var el2 = dom.createElement("li");
-            dom.setAttribute(el2,"class","ko-add-participants-popover__selected-list-item");
-            var el3 = dom.createTextNode("\n          ");
-            dom.appendChild(el2, el3);
-            var el3 = dom.createElement("div");
-            dom.setAttribute(el3,"class","u-inline-block");
-            var el4 = dom.createTextNode("\n            ");
-            dom.appendChild(el3, el4);
-            var el4 = dom.createComment("");
-            dom.appendChild(el3, el4);
-            var el4 = dom.createTextNode("\n          ");
-            dom.appendChild(el3, el4);
-            dom.appendChild(el2, el3);
-            var el3 = dom.createTextNode("\n          ");
-            dom.appendChild(el2, el3);
-            var el3 = dom.createElement("i");
-            dom.setAttribute(el3,"class","i--close");
-            dom.appendChild(el2, el3);
-            var el3 = dom.createTextNode("\n        ");
-            dom.appendChild(el2, el3);
-            dom.appendChild(el1, el2);
-            var el2 = dom.createTextNode("\n      ");
-            dom.appendChild(el1, el2);
-            dom.appendChild(el0, el1);
-            var el1 = dom.createTextNode("\n");
-            dom.appendChild(el0, el1);
-            return el0;
-          },
-          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-            var element5 = dom.childAt(fragment, [1, 1]);
-            var element6 = dom.childAt(element5, [3]);
-            var morphs = new Array(2);
-            morphs[0] = dom.createMorphAt(dom.childAt(element5, [1]),1,1);
-            morphs[1] = dom.createElementMorph(element6);
-            return morphs;
-          },
-          statements: [
-            ["inline","ko-checkbox",[],["label",["subexpr","@mut",[["get","participant.name",["loc",[null,[14,20],[14,36]]]]],[],[]],"large",false,"disabled",false,"tabindex",0,"checked",true],["loc",[null,[13,12],[19,14]]]],
-            ["element","action",["removeParticipant",["get","participant",["loc",[null,[21,59],[21,70]]]]],[],["loc",[null,[21,30],[21,72]]]]
-          ],
-          locals: ["participant"],
-          templates: []
-        };
-      }());
-      return {
-        meta: {
-          "revision": "Ember@1.13.7",
-          "loc": {
-            "source": null,
-            "start": {
-              "line": 7,
-              "column": 0
-            },
-            "end": {
-              "line": 26,
-              "column": 0
-            }
-          },
-          "moduleName": "frontend-cp/components/ko-add-participants-popover/template.hbs"
-        },
-        arity: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("  ");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createElement("div");
-          dom.setAttribute(el1,"class","box ko-add-participants-popover__selected-list-container");
-          var el2 = dom.createTextNode("\n");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createComment("");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("  ");
-          dom.appendChild(el1, el2);
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n");
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]),1,1);
-          return morphs;
-        },
-        statements: [
-          ["block","each",[["get","selectedParticipants",["loc",[null,[9,12],[9,32]]]]],[],0,null,["loc",[null,[9,4],[24,13]]]]
-        ],
-        locals: [],
-        templates: [child0]
-      };
-    }());
-    var child1 = (function() {
-      var child0 = (function() {
-        return {
-          meta: {
-            "revision": "Ember@1.13.7",
-            "loc": {
-              "source": null,
-              "start": {
-                "line": 35,
-                "column": 6
-              },
-              "end": {
-                "line": 50,
-                "column": 6
-              }
-            },
-            "moduleName": "frontend-cp/components/ko-add-participants-popover/template.hbs"
-          },
-          arity: 1,
-          cachedFragment: null,
-          hasRendered: false,
-          buildFragment: function buildFragment(dom) {
-            var el0 = dom.createDocumentFragment();
-            var el1 = dom.createTextNode("        ");
-            dom.appendChild(el0, el1);
-            var el1 = dom.createElement("li");
-            dom.setAttribute(el1,"class","ko-add-participants-popover__filtered-list-item");
-            var el2 = dom.createTextNode("\n          ");
-            dom.appendChild(el1, el2);
-            var el2 = dom.createElement("div");
-            dom.setAttribute(el2,"class","flag--small flag--auto");
-            var el3 = dom.createTextNode("\n            ");
-            dom.appendChild(el2, el3);
-            var el3 = dom.createElement("div");
-            dom.setAttribute(el3,"class","flag__img");
-            var el4 = dom.createTextNode("\n              ");
-            dom.appendChild(el3, el4);
-            var el4 = dom.createElement("img");
-            dom.setAttribute(el4,"class","ko-add-participants-popover__image");
-            dom.setAttribute(el4,"alt","");
-            dom.appendChild(el3, el4);
-            var el4 = dom.createTextNode("\n            ");
-            dom.appendChild(el3, el4);
-            dom.appendChild(el2, el3);
-            var el3 = dom.createTextNode("\n            ");
-            dom.appendChild(el2, el3);
-            var el3 = dom.createElement("div");
-            dom.setAttribute(el3,"class","flag__body");
-            var el4 = dom.createTextNode("\n              ");
-            dom.appendChild(el3, el4);
-            var el4 = dom.createElement("strong");
-            var el5 = dom.createComment("");
-            dom.appendChild(el4, el5);
-            dom.appendChild(el3, el4);
-            var el4 = dom.createTextNode(",\n              ");
-            dom.appendChild(el3, el4);
-            var el4 = dom.createElement("span");
-            dom.setAttribute(el4,"class","caption");
-            var el5 = dom.createTextNode("\n                ");
-            dom.appendChild(el4, el5);
-            var el5 = dom.createComment("");
-            dom.appendChild(el4, el5);
-            var el5 = dom.createTextNode("\n                ");
-            dom.appendChild(el4, el5);
-            var el5 = dom.createComment("");
-            dom.appendChild(el4, el5);
-            var el5 = dom.createTextNode("\n              ");
-            dom.appendChild(el4, el5);
-            dom.appendChild(el3, el4);
-            var el4 = dom.createTextNode("\n            ");
-            dom.appendChild(el3, el4);
-            dom.appendChild(el2, el3);
-            var el3 = dom.createTextNode("\n          ");
-            dom.appendChild(el2, el3);
-            dom.appendChild(el1, el2);
-            var el2 = dom.createTextNode("\n        ");
-            dom.appendChild(el1, el2);
-            dom.appendChild(el0, el1);
-            var el1 = dom.createTextNode("\n");
-            dom.appendChild(el0, el1);
-            return el0;
-          },
-          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-            var element0 = dom.childAt(fragment, [1]);
-            var element1 = dom.childAt(element0, [1]);
-            var element2 = dom.childAt(element1, [1, 1]);
-            var element3 = dom.childAt(element1, [3]);
-            var element4 = dom.childAt(element3, [3]);
-            var morphs = new Array(5);
-            morphs[0] = dom.createElementMorph(element0);
-            morphs[1] = dom.createAttrMorph(element2, 'src');
-            morphs[2] = dom.createMorphAt(dom.childAt(element3, [1]),0,0);
-            morphs[3] = dom.createMorphAt(element4,1,1);
-            morphs[4] = dom.createMorphAt(element4,3,3);
-            return morphs;
-          },
-          statements: [
-            ["element","action",["participantSelected",["get","participant",["loc",[null,[36,99],[36,110]]]]],[],["loc",[null,[36,68],[36,112]]]],
-            ["attribute","src",["concat",[["get","participant.image",["loc",[null,[39,69],[39,86]]]]]]],
-            ["content","participant.name",["loc",[null,[42,22],[42,42]]]],
-            ["content","participant.company",["loc",[null,[44,16],[44,39]]]],
-            ["content","participant.email",["loc",[null,[45,16],[45,37]]]]
-          ],
-          locals: ["participant"],
-          templates: []
-        };
-      }());
-      return {
-        meta: {
-          "revision": "Ember@1.13.7",
-          "loc": {
-            "source": null,
-            "start": {
-              "line": 28,
-              "column": 0
-            },
-            "end": {
-              "line": 53,
-              "column": 0
-            }
-          },
-          "moduleName": "frontend-cp/components/ko-add-participants-popover/template.hbs"
-        },
-        arity: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("  ");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createElement("div");
-          dom.setAttribute(el1,"class","box");
-          var el2 = dom.createTextNode("\n    Showing 10 of 27 users\n  ");
-          dom.appendChild(el1, el2);
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n\n  ");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createElement("div");
-          dom.setAttribute(el1,"class","ko-add-participants-popover__filtered-list-container");
-          var el2 = dom.createTextNode("\n    ");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createElement("ul");
-          dom.setAttribute(el2,"class","ko-add-participants-popover__filtered-list");
-          dom.setAttribute(el2,"role","menu");
-          var el3 = dom.createTextNode("\n");
-          dom.appendChild(el2, el3);
-          var el3 = dom.createComment("");
-          dom.appendChild(el2, el3);
-          var el3 = dom.createTextNode("    ");
-          dom.appendChild(el2, el3);
-          dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n  ");
-          dom.appendChild(el1, el2);
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n");
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(dom.childAt(fragment, [3, 1]),1,1);
-          return morphs;
-        },
-        statements: [
-          ["block","each",[["get","filteredParticipants",["loc",[null,[35,14],[35,34]]]]],[],0,null,["loc",[null,[35,6],[50,15]]]]
-        ],
-        locals: [],
-        templates: [child0]
-      };
-    }());
-    var child2 = (function() {
-      return {
-        meta: {
-          "revision": "Ember@1.13.7",
-          "loc": {
-            "source": null,
-            "start": {
-              "line": 55,
-              "column": 0
-            },
-            "end": {
-              "line": 59,
-              "column": 0
-            }
-          },
-          "moduleName": "frontend-cp/components/ko-add-participants-popover/template.hbs"
-        },
-        arity: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("  ");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createElement("div");
-          dom.setAttribute(el1,"class","box header__subtitle");
-          var el2 = dom.createTextNode("\n    These people will be copied in on your reply. They cannot see the entire conversation. ");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createElement("a");
-          dom.setAttribute(el2,"href","#");
-          var el3 = dom.createTextNode("Find out more about CC recipients.");
-          dom.appendChild(el2, el3);
-          dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n  ");
-          dom.appendChild(el1, el2);
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n");
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes() { return []; },
-        statements: [
-
-        ],
-        locals: [],
-        templates: []
-      };
-    }());
-    return {
-      meta: {
-        "revision": "Ember@1.13.7",
-        "loc": {
-          "source": null,
-          "start": {
-            "line": 1,
-            "column": 0
-          },
-          "end": {
-            "line": 60,
-            "column": 0
-          }
-        },
-        "moduleName": "frontend-cp/components/ko-add-participants-popover/template.hbs"
-      },
-      arity: 0,
-      cachedFragment: null,
-      hasRendered: false,
-      buildFragment: function buildFragment(dom) {
-        var el0 = dom.createDocumentFragment();
-        var el1 = dom.createElement("div");
-        dom.setAttribute(el1,"class","box");
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","input");
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createComment("");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n  ");
-        dom.appendChild(el2, el3);
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n");
-        dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n\n");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createComment("");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createComment("");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createComment("");
-        dom.appendChild(el0, el1);
-        return el0;
-      },
-      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var morphs = new Array(4);
-        morphs[0] = dom.createMorphAt(dom.childAt(fragment, [0, 1]),1,1);
-        morphs[1] = dom.createMorphAt(fragment,2,2,contextualElement);
-        morphs[2] = dom.createMorphAt(fragment,4,4,contextualElement);
-        morphs[3] = dom.createMorphAt(fragment,6,6,contextualElement);
-        dom.insertBoundary(fragment, null);
-        return morphs;
-      },
-      statements: [
-        ["inline","input",[],["class","input-text u-1/1 has-icon","type","text","placeholder","Type to search participants","value",["subexpr","@mut",[["get","searchTerm",["loc",[null,[3,106],[3,116]]]]],[],[]],"enter","query","key-press","whenKeyIsPressed"],["loc",[null,[3,4],[3,161]]]],
-        ["block","unless",[["get","showResults",["loc",[null,[7,10],[7,21]]]]],[],0,null,["loc",[null,[7,0],[26,11]]]],
-        ["block","if",[["get","showResults",["loc",[null,[28,6],[28,17]]]]],[],1,null,["loc",[null,[28,0],[53,7]]]],
-        ["block","unless",[["get","showResults",["loc",[null,[55,10],[55,21]]]]],[],2,null,["loc",[null,[55,0],[59,11]]]]
-      ],
-      locals: [],
-      templates: [child0, child1, child2]
-    };
-  }()));
-
-});
-define('frontend-cp/components/ko-add-user-popover/component', ['exports', 'ember'], function (exports, Ember) {
-
-	'use strict';
-
-	exports['default'] = Ember['default'].Component.extend({});
-
-});
-define('frontend-cp/components/ko-add-user-popover/template', ['exports'], function (exports) {
-
-  'use strict';
-
-  exports['default'] = Ember.HTMLBars.template((function() {
-    return {
-      meta: {
-        "revision": "Ember@1.13.7",
-        "loc": {
-          "source": null,
-          "start": {
-            "line": 1,
-            "column": 0
-          },
-          "end": {
-            "line": 13,
-            "column": 0
-          }
-        },
-        "moduleName": "frontend-cp/components/ko-add-user-popover/template.hbs"
-      },
-      arity: 0,
-      cachedFragment: null,
-      hasRendered: false,
-      buildFragment: function buildFragment(dom) {
-        var el0 = dom.createDocumentFragment();
-        var el1 = dom.createElement("form");
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","box");
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("label");
-        var el4 = dom.createElement("strong");
-        var el5 = dom.createTextNode("Name");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode(" ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("br");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createComment("");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode(" ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("br");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("label");
-        var el4 = dom.createElement("strong");
-        var el5 = dom.createTextNode("Email Address");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode(" ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("br");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createComment("");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode(" ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("br");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n  ");
-        dom.appendChild(el2, el3);
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","box");
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createComment("");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n  ");
-        dom.appendChild(el2, el3);
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n");
-        dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
-        dom.appendChild(el0, el1);
-        return el0;
-      },
-      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var element0 = dom.childAt(fragment, [0]);
-        var element1 = dom.childAt(element0, [1]);
-        var morphs = new Array(3);
-        morphs[0] = dom.createMorphAt(element1,5,5);
-        morphs[1] = dom.createMorphAt(element1,13,13);
-        morphs[2] = dom.createMorphAt(dom.childAt(element0, [3]),1,1);
-        return morphs;
-      },
-      statements: [
-        ["inline","input",[],["value",["subexpr","@mut",[["get","name",["loc",[null,[4,18],[4,22]]]]],[],[]],"class","input-text u-1/1","type","text"],["loc",[null,[4,4],[4,61]]]],
-        ["inline","input",[],["value",["subexpr","@mut",[["get","email",["loc",[null,[7,18],[7,23]]]]],[],[]],"class","input-text u-1/1","type","email"],["loc",[null,[7,4],[7,63]]]],
-        ["inline","input",[],["class","button button--primary","value","Add User","type","submit","disabled",true],["loc",[null,[10,4],[10,89]]]]
-      ],
-      locals: [],
-      templates: []
-    };
-  }()));
 
 });
 define('frontend-cp/components/ko-address/component', ['exports', 'ember'], function (exports, Ember) {
@@ -12755,7 +11980,9 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
     intl: Ember['default'].inject.service(),
     timelineCacheService: Ember['default'].inject.service('case-timeline-cache'),
     notificationService: Ember['default'].inject.service('notification'),
-    tagSuggestionService: Ember['default'].inject.service('tag-suggestion'),
+    tagSuggestionService: Ember['default'].inject.service('suggestion/tag'),
+    peopleSuggestionService: Ember['default'].inject.service('suggestion/people'),
+    contextModalService: Ember['default'].inject.service('context-modal'),
 
     // Case-specific properties
     channel: null,
@@ -12779,11 +12006,24 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
     caseEditorHeight: 0,
     headerSticky: false,
     editedCaseFields: new Ember['default'].Object(),
-    replyType: 'MESSAGE',
+    replyType: 'REPLY',
     scroller: null,
     updateTabNameAction: 'updateTabName',
 
+    suggestedPeople: null,
+    selectedPeople: [],
+    suggestedPeopleTotal: 0,
+    suggestedPeopleLoading: false,
+
     sortOptions: [{ label: 'Newest first', content: 'newest' }, { label: 'Oldest first', content: 'oldest' }],
+
+    isPeopleAutoCompleteAvailable: Ember['default'].computed('replyType', 'channel.isChannelTypeMailbox', function () {
+      return this.get('replyType') === 'REPLY' && this.get('channel.isChannelTypeMailbox');
+    }),
+
+    onSelectedPeopleChange: Ember['default'].observer('selectedPeople.[]', function () {
+      this.get('contextModalService').set('repositionRequired', true);
+    }),
 
     initCase: Ember['default'].on('didReceiveAttrs', function (_ref) {
       var _this = this;
@@ -13242,7 +12482,12 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
               _this11.set('errors', e.errors);
             });
           } else {
-            this.get('case').saveWithPost(post, channel, attachmentIds).then(function (caseReply) {
+            var options = {
+              cc: this.get('selectedPeople').map(function (person) {
+                return person.get('email');
+              }).join(',')
+            };
+            this.get('case').saveWithPost(post, channel, attachmentIds, options).then(function (caseReply) {
               caseReply.get('posts').forEach(function (post) {
                 return _this11.addPostFromReply(post);
               });
@@ -13321,6 +12566,57 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
             }
           });
         }
+      },
+
+      addParticipant: function addParticipant() {
+        this.get('contextModalService').open('addParticipants', {
+          target: this.$().find('.ko-text-editor-header-group__item.i-users').get(0)
+        });
+      },
+
+      onPeopleSuggestion: function onPeopleSuggestion(searchTerm, selectedPeople) {
+        var _this13 = this;
+
+        var contextModalService = this.get('contextModalService');
+
+        this.set('suggestedPeopleLoading', true);
+        contextModalService.set('repositionRequired', true);
+
+        if (!searchTerm) {
+          this.set('suggestedPeople', null);
+
+          contextModalService.set('repositionRequired', true);
+          this.set('suggestedPeopleLoading', false);
+          return;
+        }
+
+        var peopleSuggestionService = this.get('peopleSuggestionService');
+        var promise = peopleSuggestionService.suggest(searchTerm, selectedPeople.map(function (person) {
+          return person.get('email');
+        }));
+
+        promise.then(function (data) {
+          if (peopleSuggestionService.isPromiseDiscarded(searchTerm)) {
+            return;
+          }
+
+          var identities = [];
+
+          data.forEach(function (item) {
+            identities.push(item.get('identity'));
+          });
+
+          identities = peopleSuggestionService.exclude(identities, selectedPeople, 'email');
+
+          _this13.set('suggestedPeople', identities);
+          _this13.set('suggestedPeopleTotal', data.get('meta.total'));
+
+          contextModalService.set('repositionRequired', true);
+
+          peopleSuggestionService.flushQueue();
+
+          _this13.set('suggestedPeopleLoading', false);
+        });
       },
 
       changeTopPost: function changeTopPost(id) {
@@ -13659,11 +12955,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 57,
+                  "line": 69,
                   "column": 14
                 },
                 "end": {
-                  "line": 59,
+                  "line": 71,
                   "column": 14
                 }
               },
@@ -13688,7 +12984,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
               return morphs;
             },
             statements: [
-              ["inline","ko-loader",[],["large",true],["loc",[null,[58,16],[58,40]]]]
+              ["inline","ko-loader",[],["large",true],["loc",[null,[70,16],[70,40]]]]
             ],
             locals: [],
             templates: []
@@ -13700,11 +12996,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 56,
+                "line": 68,
                 "column": 12
               },
               "end": {
-                "line": 60,
+                "line": 72,
                 "column": 12
               }
             },
@@ -13727,7 +13023,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             return morphs;
           },
           statements: [
-            ["block","ko-center",[],[],0,null,["loc",[null,[57,14],[59,28]]]]
+            ["block","ko-center",[],[],0,null,["loc",[null,[69,14],[71,28]]]]
           ],
           locals: [],
           templates: [child0]
@@ -13739,11 +13035,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 54,
+              "line": 66,
               "column": 8
             },
             "end": {
-              "line": 62,
+              "line": 74,
               "column": 8
             }
           },
@@ -13775,7 +13071,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["block","if",[["get","loadingTop",["loc",[null,[56,18],[56,28]]]]],[],0,null,["loc",[null,[56,12],[60,19]]]]
+          ["block","if",[["get","loadingTop",["loc",[null,[68,18],[68,28]]]]],[],0,null,["loc",[null,[68,12],[72,19]]]]
         ],
         locals: [],
         templates: [child0]
@@ -13788,11 +13084,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 64,
+              "line": 76,
               "column": 10
             },
             "end": {
-              "line": 66,
+              "line": 78,
               "column": 10
             }
           },
@@ -13817,7 +13113,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["inline","ko-feed",[],["events",["subexpr","@mut",[["get","newPosts",["loc",[null,[65,29],[65,37]]]]],[],[]]],["loc",[null,[65,12],[65,39]]]]
+          ["inline","ko-feed",[],["events",["subexpr","@mut",[["get","newPosts",["loc",[null,[77,29],[77,37]]]]],[],[]]],["loc",[null,[77,12],[77,39]]]]
         ],
         locals: [],
         templates: []
@@ -13831,11 +13127,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 71,
+                "line": 83,
                 "column": 12
               },
               "end": {
-                "line": 73,
+                "line": 85,
                 "column": 12
               }
             },
@@ -13860,7 +13156,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             return morphs;
           },
           statements: [
-            ["inline","ko-loader",[],["large",true],["loc",[null,[72,14],[72,38]]]]
+            ["inline","ko-loader",[],["large",true],["loc",[null,[84,14],[84,38]]]]
           ],
           locals: [],
           templates: []
@@ -13872,11 +13168,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 70,
+              "line": 82,
               "column": 10
             },
             "end": {
-              "line": 74,
+              "line": 86,
               "column": 10
             }
           },
@@ -13899,7 +13195,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["block","ko-center",[],[],0,null,["loc",[null,[71,12],[73,26]]]]
+          ["block","ko-center",[],[],0,null,["loc",[null,[83,12],[85,26]]]]
         ],
         locals: [],
         templates: [child0]
@@ -13912,11 +13208,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 85,
+              "line": 97,
               "column": 8
             },
             "end": {
-              "line": 93,
+              "line": 105,
               "column": 8
             }
           },
@@ -13941,7 +13237,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["inline","ko-case-field/tags",[],["tags",["subexpr","@mut",[["get","tags",["loc",[null,[88,17],[88,21]]]]],[],[]],"suggestedTags",["subexpr","@mut",[["get","suggestedTags",["loc",[null,[89,26],[89,39]]]]],[],[]],"onTagAddition","addTag","onTagRemoval","removeTag","onTagSuggestion","suggestTags"],["loc",[null,[87,10],[92,43]]]]
+          ["inline","ko-case-field/tags",[],["tags",["subexpr","@mut",[["get","tags",["loc",[null,[100,17],[100,21]]]]],[],[]],"suggestedTags",["subexpr","@mut",[["get","suggestedTags",["loc",[null,[101,26],[101,39]]]]],[],[]],"onTagAddition","addTag","onTagRemoval","removeTag","onTagSuggestion","suggestTags"],["loc",[null,[99,10],[104,43]]]]
         ],
         locals: [],
         templates: []
@@ -13955,11 +13251,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 102,
+                "line": 114,
                 "column": 10
               },
               "end": {
-                "line": 110,
+                "line": 122,
                 "column": 10
               }
             },
@@ -13984,7 +13280,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             return morphs;
           },
           statements: [
-            ["inline","component",[["subexpr","ko-helper",[["get","componentFor",["loc",[null,[103,35],[103,47]]]],["get","field.fieldType",["loc",[null,[103,48],[103,63]]]]],[],["loc",[null,[103,24],[103,64]]]]],["case",["subexpr","@mut",[["get","case",["loc",[null,[104,19],[104,23]]]]],[],[]],"field",["subexpr","@mut",[["get","field",["loc",[null,[105,20],[105,25]]]]],[],[]],"errors",["subexpr","@mut",[["get","errors",["loc",[null,[106,21],[106,27]]]]],[],[]],"options",["subexpr","ko-contextual-helper",[["get","optionsForField",["loc",[null,[107,44],[107,59]]]],["get","this",["loc",[null,[107,60],[107,64]]]],["get","field",["loc",[null,[107,65],[107,70]]]]],[],["loc",[null,[107,22],[107,71]]]],"editedCaseFields",["subexpr","@mut",[["get","editedCaseFields",["loc",[null,[108,31],[108,47]]]]],[],[]]],["loc",[null,[103,12],[109,14]]]]
+            ["inline","component",[["subexpr","ko-helper",[["get","componentFor",["loc",[null,[115,35],[115,47]]]],["get","field.fieldType",["loc",[null,[115,48],[115,63]]]]],[],["loc",[null,[115,24],[115,64]]]]],["case",["subexpr","@mut",[["get","case",["loc",[null,[116,19],[116,23]]]]],[],[]],"field",["subexpr","@mut",[["get","field",["loc",[null,[117,20],[117,25]]]]],[],[]],"errors",["subexpr","@mut",[["get","errors",["loc",[null,[118,21],[118,27]]]]],[],[]],"options",["subexpr","ko-contextual-helper",[["get","optionsForField",["loc",[null,[119,44],[119,59]]]],["get","this",["loc",[null,[119,60],[119,64]]]],["get","field",["loc",[null,[119,65],[119,70]]]]],[],["loc",[null,[119,22],[119,71]]]],"editedCaseFields",["subexpr","@mut",[["get","editedCaseFields",["loc",[null,[120,31],[120,47]]]]],[],[]]],["loc",[null,[115,12],[121,14]]]]
           ],
           locals: [],
           templates: []
@@ -13996,11 +13292,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 101,
+              "line": 113,
               "column": 8
             },
             "end": {
-              "line": 111,
+              "line": 123,
               "column": 8
             }
           },
@@ -14023,7 +13319,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["block","if",[["subexpr","ko-helper",[["get","componentFor",["loc",[null,[102,27],[102,39]]]],["get","field.fieldType",["loc",[null,[102,40],[102,55]]]]],[],["loc",[null,[102,16],[102,56]]]]],[],0,null,["loc",[null,[102,10],[110,17]]]]
+          ["block","if",[["subexpr","ko-helper",[["get","componentFor",["loc",[null,[114,27],[114,39]]]],["get","field.fieldType",["loc",[null,[114,40],[114,55]]]]],[],["loc",[null,[114,16],[114,56]]]]],[],0,null,["loc",[null,[114,10],[122,17]]]]
         ],
         locals: ["field"],
         templates: [child0]
@@ -14039,7 +13335,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             "column": 0
           },
           "end": {
-            "line": 118,
+            "line": 130,
             "column": 0
           }
         },
@@ -14355,21 +13651,21 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
         ["inline","ko-case/macro-selector",[],["macros",["subexpr","@mut",[["get","macros",["loc",[null,[38,46],[38,52]]]]],[],[]],"onMacroSelected","applyMacro"],["loc",[null,[38,14],[38,83]]]],
         ["attribute","style",["concat",["height: ",["get","caseEditorHeight",["loc",[null,[48,72],[48,88]]]],"px"]]],
         ["attribute","class",["concat",["ko-case-content__editor ",["subexpr","if",[["get","headerSticky",["loc",[null,[49,51],[49,63]]]],"ko-case-content__editor--sticky"],[],["loc",[null,[49,46],[49,99]]]]]]],
-        ["inline","ko-case-field/post",[],["viewName","casePostEditor","channels",["subexpr","@mut",[["get","case.replyChannels",["loc",[null,[50,68],[50,86]]]]],[],[]],"channel",["subexpr","@mut",[["get","channel",["loc",[null,[50,95],[50,102]]]]],[],[]],"onChannelChange","setChannel","replyType",["subexpr","@mut",[["get","replyType",["loc",[null,[50,142],[50,151]]]]],[],[]]],["loc",[null,[50,12],[50,153]]]],
-        ["inline","ko-case-content/dropdown",[],["label","Sort","value",["subexpr","@mut",[["get","sortOrder",["loc",[null,[53,98],[53,107]]]]],[],[]],"options",["subexpr","@mut",[["get","sortOptions",["loc",[null,[53,116],[53,127]]]]],[],[]],"action",["subexpr","action",["sort"],[],["loc",[null,[53,135],[53,150]]]]],["loc",[null,[53,52],[53,152]]]],
-        ["block","if",[["get","topPostsAvailable",["loc",[null,[54,14],[54,31]]]]],[],0,null,["loc",[null,[54,8],[62,15]]]],
-        ["block","if",[["get","newPosts",["loc",[null,[64,16],[64,24]]]]],[],1,null,["loc",[null,[64,10],[66,17]]]],
-        ["inline","ko-feed",[],["events",["subexpr","@mut",[["get","posts",["loc",[null,[68,25],[68,30]]]]],[],[]],"onReplyWithQuote","replyWithQuote","top",["subexpr","@mut",[["get","timelineVisibleTop",["loc",[null,[68,69],[68,87]]]]],[],[]],"left",["subexpr","@mut",[["get","timelineVisibleLeft",["loc",[null,[68,93],[68,112]]]]],[],[]],"onTopPostChange",["subexpr","action",["changeTopPost"],[],["loc",[null,[68,129],[68,153]]]]],["loc",[null,[68,8],[68,155]]]],
-        ["block","if",[["get","loadingBottom",["loc",[null,[70,16],[70,29]]]]],[],2,null,["loc",[null,[70,10],[74,17]]]],
-        ["attribute","class",["concat",["list-bare ko-case-content__info-bar ",["subexpr","if",[["get","headerSticky",["loc",[null,[79,58],[79,70]]]],"ko-case-content__info-bar--sticky"],[],["loc",[null,[79,53],[79,108]]]]]]],
-        ["element","action",["submit"],[],["loc",[null,[81,55],[81,74]]]],
-        ["inline","format-message",[["subexpr","intl-get",["cases.submit"],[],["loc",[null,[81,92],[81,117]]]]],[],["loc",[null,[81,75],[81,119]]]],
-        ["inline","ko-case-field/requester",[],["requester",["subexpr","@mut",[["get","case.requester",["loc",[null,[83,44],[83,58]]]]],[],[]]],["loc",[null,[83,8],[83,60]]]],
-        ["block","ko-info-bar/field",[],["title",["subexpr","format-message",[["subexpr","intl-get",["cases.tags"],[],["loc",[null,[85,51],[85,74]]]]],[],["loc",[null,[85,35],[85,75]]]],"isEdited",["subexpr","@mut",[["get","isTagsFieldEdited",["loc",[null,[86,19],[86,36]]]]],[],[]]],3,null,["loc",[null,[85,8],[93,30]]]],
-        ["inline","ko-case-field/forms",[],["selectedForm",["subexpr","@mut",[["get","case.form",["loc",[null,[96,23],[96,32]]]]],[],[]],"forms",["subexpr","@mut",[["get","caseForms",["loc",[null,[97,16],[97,25]]]]],[],[]],"onFormSelected","setForm","isEdited",["subexpr","@mut",[["get","editedCaseFields.form",["loc",[null,[98,19],[98,40]]]]],[],[]]],["loc",[null,[95,8],[99,10]]]],
-        ["block","each",[["get","caseOrFormFields",["loc",[null,[101,16],[101,32]]]]],[],4,null,["loc",[null,[101,8],[111,17]]]],
-        ["inline","ko-case/sla-sidebar",[],["sla",["subexpr","@mut",[["get","case.sla",["loc",[null,[112,34],[112,42]]]]],[],[]],"slaMetrics",["subexpr","@mut",[["get","case.slaMetrics",["loc",[null,[112,54],[112,69]]]]],[],[]]],["loc",[null,[112,8],[112,71]]]],
-        ["inline","ko-info-bar/metadata",[],["rows",["subexpr","@mut",[["get","caseDates",["loc",[null,[113,36],[113,45]]]]],[],[]]],["loc",[null,[113,8],[113,47]]]]
+        ["inline","ko-case-field/post",[],["viewName","casePostEditor","channels",["subexpr","@mut",[["get","case.replyChannels",["loc",[null,[52,25],[52,43]]]]],[],[]],"channel",["subexpr","@mut",[["get","channel",["loc",[null,[53,24],[53,31]]]]],[],[]],"onChannelChange","setChannel","replyType",["subexpr","@mut",[["get","replyType",["loc",[null,[55,26],[55,35]]]]],[],[]],"suggestedPeople",["subexpr","@mut",[["get","suggestedPeople",["loc",[null,[56,32],[56,47]]]]],[],[]],"selectedPeople",["subexpr","@mut",[["get","selectedPeople",["loc",[null,[57,31],[57,45]]]]],[],[]],"suggestedPeopleTotal",["subexpr","@mut",[["get","suggestedPeopleTotal",["loc",[null,[58,37],[58,57]]]]],[],[]],"suggestedPeopleLoading",["subexpr","@mut",[["get","suggestedPeopleLoading",["loc",[null,[59,39],[59,61]]]]],[],[]],"isPeopleAutoCompleteAvailable",["subexpr","@mut",[["get","isPeopleAutoCompleteAvailable",["loc",[null,[60,46],[60,75]]]]],[],[]],"addParticipant","addParticipant","onPeopleSuggestion","onPeopleSuggestion"],["loc",[null,[50,12],[62,57]]]],
+        ["inline","ko-case-content/dropdown",[],["label","Sort","value",["subexpr","@mut",[["get","sortOrder",["loc",[null,[65,98],[65,107]]]]],[],[]],"options",["subexpr","@mut",[["get","sortOptions",["loc",[null,[65,116],[65,127]]]]],[],[]],"action",["subexpr","action",["sort"],[],["loc",[null,[65,135],[65,150]]]]],["loc",[null,[65,52],[65,152]]]],
+        ["block","if",[["get","topPostsAvailable",["loc",[null,[66,14],[66,31]]]]],[],0,null,["loc",[null,[66,8],[74,15]]]],
+        ["block","if",[["get","newPosts",["loc",[null,[76,16],[76,24]]]]],[],1,null,["loc",[null,[76,10],[78,17]]]],
+        ["inline","ko-feed",[],["events",["subexpr","@mut",[["get","posts",["loc",[null,[80,25],[80,30]]]]],[],[]],"onReplyWithQuote","replyWithQuote","top",["subexpr","@mut",[["get","timelineVisibleTop",["loc",[null,[80,69],[80,87]]]]],[],[]],"left",["subexpr","@mut",[["get","timelineVisibleLeft",["loc",[null,[80,93],[80,112]]]]],[],[]],"onTopPostChange",["subexpr","action",["changeTopPost"],[],["loc",[null,[80,129],[80,153]]]]],["loc",[null,[80,8],[80,155]]]],
+        ["block","if",[["get","loadingBottom",["loc",[null,[82,16],[82,29]]]]],[],2,null,["loc",[null,[82,10],[86,17]]]],
+        ["attribute","class",["concat",["list-bare ko-case-content__info-bar ",["subexpr","if",[["get","headerSticky",["loc",[null,[91,58],[91,70]]]],"ko-case-content__info-bar--sticky"],[],["loc",[null,[91,53],[91,108]]]]]]],
+        ["element","action",["submit"],[],["loc",[null,[93,55],[93,74]]]],
+        ["inline","format-message",[["subexpr","intl-get",["cases.submit"],[],["loc",[null,[93,92],[93,117]]]]],[],["loc",[null,[93,75],[93,119]]]],
+        ["inline","ko-case-field/requester",[],["requester",["subexpr","@mut",[["get","case.requester",["loc",[null,[95,44],[95,58]]]]],[],[]]],["loc",[null,[95,8],[95,60]]]],
+        ["block","ko-info-bar/field",[],["title",["subexpr","format-message",[["subexpr","intl-get",["cases.tags"],[],["loc",[null,[97,51],[97,74]]]]],[],["loc",[null,[97,35],[97,75]]]],"isEdited",["subexpr","@mut",[["get","isTagsFieldEdited",["loc",[null,[98,19],[98,36]]]]],[],[]]],3,null,["loc",[null,[97,8],[105,30]]]],
+        ["inline","ko-case-field/forms",[],["selectedForm",["subexpr","@mut",[["get","case.form",["loc",[null,[108,23],[108,32]]]]],[],[]],"forms",["subexpr","@mut",[["get","caseForms",["loc",[null,[109,16],[109,25]]]]],[],[]],"onFormSelected","setForm","isEdited",["subexpr","@mut",[["get","editedCaseFields.form",["loc",[null,[110,19],[110,40]]]]],[],[]]],["loc",[null,[107,8],[111,10]]]],
+        ["block","each",[["get","caseOrFormFields",["loc",[null,[113,16],[113,32]]]]],[],4,null,["loc",[null,[113,8],[123,17]]]],
+        ["inline","ko-case/sla-sidebar",[],["sla",["subexpr","@mut",[["get","case.sla",["loc",[null,[124,34],[124,42]]]]],[],[]],"slaMetrics",["subexpr","@mut",[["get","case.slaMetrics",["loc",[null,[124,54],[124,69]]]]],[],[]]],["loc",[null,[124,8],[124,71]]]],
+        ["inline","ko-info-bar/metadata",[],["rows",["subexpr","@mut",[["get","caseDates",["loc",[null,[125,36],[125,45]]]]],[],[]]],["loc",[null,[125,8],[125,47]]]]
       ],
       locals: [],
       templates: [child0, child1, child2, child3, child4]
@@ -14822,6 +14118,12 @@ define('frontend-cp/components/ko-case-field/post/component', ['exports', 'ember
 
       setReply: function setReply() {
         this.set('replyType', 'REPLY');
+      },
+      addParticipant: function addParticipant(event) {
+        this.sendAction('addParticipant', event);
+      },
+      onPeopleSuggestion: function onPeopleSuggestion(searchTerm, selectedPeople) {
+        this.sendAction('onPeopleSuggestion', searchTerm, selectedPeople);
       }
     }
   });
@@ -14842,11 +14144,11 @@ define('frontend-cp/components/ko-case-field/post/template', ['exports'], functi
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 5,
+                    "line": 23,
                     "column": 8
                   },
                   "end": {
-                    "line": 9,
+                    "line": 27,
                     "column": 8
                   }
                 },
@@ -14880,8 +14182,8 @@ define('frontend-cp/components/ko-case-field/post/template', ['exports'], functi
                 return morphs;
               },
               statements: [
-                ["attribute","onclick",["subexpr","action",["changeChannel",["get","channel",["loc",[null,[6,78],[6,85]]]]],[],["loc",[null,[6,53],[6,87]]]]],
-                ["content","channel.message",["loc",[null,[7,12],[7,31]]]]
+                ["attribute","onclick",["subexpr","action",["changeChannel",["get","channel",["loc",[null,[24,78],[24,85]]]]],[],["loc",[null,[24,53],[24,87]]]]],
+                ["content","channel.message",["loc",[null,[25,12],[25,31]]]]
               ],
               locals: ["channel"],
               templates: []
@@ -14893,11 +14195,11 @@ define('frontend-cp/components/ko-case-field/post/template', ['exports'], functi
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 4,
+                  "line": 22,
                   "column": 6
                 },
                 "end": {
-                  "line": 10,
+                  "line": 28,
                   "column": 6
                 }
               },
@@ -14920,7 +14222,7 @@ define('frontend-cp/components/ko-case-field/post/template', ['exports'], functi
               return morphs;
             },
             statements: [
-              ["block","each",[["get","channels",["loc",[null,[5,16],[5,24]]]]],[],0,null,["loc",[null,[5,8],[9,17]]]]
+              ["block","each",[["get","channels",["loc",[null,[23,16],[23,24]]]]],[],0,null,["loc",[null,[23,8],[27,17]]]]
             ],
             locals: [],
             templates: [child0]
@@ -14932,11 +14234,11 @@ define('frontend-cp/components/ko-case-field/post/template', ['exports'], functi
             "loc": {
               "source": null,
               "start": {
-                "line": 3,
+                "line": 21,
                 "column": 4
               },
               "end": {
-                "line": 11,
+                "line": 29,
                 "column": 4
               }
             },
@@ -14959,7 +14261,7 @@ define('frontend-cp/components/ko-case-field/post/template', ['exports'], functi
             return morphs;
           },
           statements: [
-            ["block","ko-channel-select",[],["label",["subexpr","@mut",[["get","channel.label",["loc",[null,[4,33],[4,46]]]]],[],[]],"iconClass",["subexpr","@mut",[["get","channel.iconClass",["loc",[null,[4,57],[4,74]]]]],[],[]],"hideOnClick",true],0,null,["loc",[null,[4,6],[10,28]]]]
+            ["block","ko-channel-select",[],["label",["subexpr","@mut",[["get","channel.label",["loc",[null,[22,33],[22,46]]]]],[],[]],"iconClass",["subexpr","@mut",[["get","channel.iconClass",["loc",[null,[22,57],[22,74]]]]],[],[]],"hideOnClick",true],0,null,["loc",[null,[22,6],[28,28]]]]
           ],
           locals: [],
           templates: [child0]
@@ -14972,11 +14274,11 @@ define('frontend-cp/components/ko-case-field/post/template', ['exports'], functi
             "loc": {
               "source": null,
               "start": {
-                "line": 14,
+                "line": 32,
                 "column": 4
               },
               "end": {
-                "line": 16,
+                "line": 34,
                 "column": 4
               }
             },
@@ -15001,7 +14303,7 @@ define('frontend-cp/components/ko-case-field/post/template', ['exports'], functi
             return morphs;
           },
           statements: [
-            ["inline","format-message",[["subexpr","intl-get",["cases.notes"],[],["loc",[null,[15,25],[15,49]]]]],[],["loc",[null,[15,8],[15,51]]]]
+            ["inline","format-message",[["subexpr","intl-get",["cases.notes"],[],["loc",[null,[33,25],[33,49]]]]],[],["loc",[null,[33,8],[33,51]]]]
           ],
           locals: [],
           templates: []
@@ -15017,7 +14319,7 @@ define('frontend-cp/components/ko-case-field/post/template', ['exports'], functi
               "column": 0
             },
             "end": {
-              "line": 18,
+              "line": 36,
               "column": 0
             }
           },
@@ -15061,8 +14363,8 @@ define('frontend-cp/components/ko-case-field/post/template', ['exports'], functi
           return morphs;
         },
         statements: [
-          ["block","ko-text-editor/toggle-button",[],["action","setReply","isActive",["subexpr","eq",["REPLY",["get","replyType",["loc",[null,[3,75],[3,84]]]]],[],["loc",[null,[3,63],[3,85]]]]],0,null,["loc",[null,[3,4],[11,37]]]],
-          ["block","ko-text-editor/toggle-button",[],["action","setNote","isActive",["subexpr","eq",["NOTE",["get","replyType",["loc",[null,[14,73],[14,82]]]]],[],["loc",[null,[14,62],[14,83]]]]],1,null,["loc",[null,[14,4],[16,37]]]]
+          ["block","ko-text-editor/toggle-button",[],["action","setReply","isActive",["subexpr","eq",["REPLY",["get","replyType",["loc",[null,[21,75],[21,84]]]]],[],["loc",[null,[21,63],[21,85]]]]],0,null,["loc",[null,[21,4],[29,37]]]],
+          ["block","ko-text-editor/toggle-button",[],["action","setNote","isActive",["subexpr","eq",["NOTE",["get","replyType",["loc",[null,[32,73],[32,82]]]]],[],["loc",[null,[32,62],[32,83]]]]],1,null,["loc",[null,[32,4],[34,37]]]]
         ],
         locals: [],
         templates: [child0, child1]
@@ -15078,7 +14380,7 @@ define('frontend-cp/components/ko-case-field/post/template', ['exports'], functi
             "column": 0
           },
           "end": {
-            "line": 18,
+            "line": 36,
             "column": 19
           }
         },
@@ -15101,7 +14403,7 @@ define('frontend-cp/components/ko-case-field/post/template', ['exports'], functi
         return morphs;
       },
       statements: [
-        ["block","ko-text-editor",[],["viewName","postEditor","channels",["subexpr","@mut",[["get","channels",["loc",[null,[1,49],[1,57]]]]],[],[]],"channel",["subexpr","@mut",[["get","channel",["loc",[null,[1,66],[1,73]]]]],[],[]],"onChannelChange","setChannel","infoMessage",["subexpr","@mut",[["get","infoMessage",["loc",[null,[1,115],[1,126]]]]],[],[]]],0,null,["loc",[null,[1,0],[18,19]]]]
+        ["block","ko-text-editor",[],["viewName","postEditor","suggestedPeople",["subexpr","@mut",[["get","suggestedPeople",["loc",[null,[3,20],[3,35]]]]],[],[]],"selectedPeople",["subexpr","@mut",[["get","selectedPeople",["loc",[null,[4,19],[4,33]]]]],[],[]],"suggestedPeopleTotal",["subexpr","@mut",[["get","suggestedPeopleTotal",["loc",[null,[5,25],[5,45]]]]],[],[]],"suggestedPeopleLoading",["subexpr","@mut",[["get","suggestedPeopleLoading",["loc",[null,[6,27],[6,49]]]]],[],[]],"isPeopleIconAvailable",["subexpr","@mut",[["get","isPeopleAutoCompleteAvailable",["loc",[null,[7,26],[7,55]]]]],[],[]],"onPeopleSuggestion","onPeopleSuggestion","channels",["subexpr","@mut",[["get","channels",["loc",[null,[9,13],[9,21]]]]],[],[]],"channel",["subexpr","@mut",[["get","channel",["loc",[null,[10,12],[10,19]]]]],[],[]],"onChannelChange","setChannel","addParticipant","addParticipant","infoMessage",["subexpr","@mut",[["get","infoMessage",["loc",[null,[13,16],[13,27]]]]],[],[]],"peopleTitleText",["subexpr","format-message",[["subexpr","intl-get",["cases.copy-someone-in.title"],[],["loc",[null,[14,36],[14,76]]]]],[],["loc",[null,[14,20],[14,77]]]],"peopleInputPlaceholderText",["subexpr","format-message",[["subexpr","intl-get",["cases.copy-someone-in.input-placeholder"],[],["loc",[null,[15,47],[15,99]]]]],[],["loc",[null,[15,31],[15,100]]]],"peopleFilterNotFoundText",["subexpr","format-message",[["subexpr","intl-get",["cases.copy-someone-in.not-found"],[],["loc",[null,[16,45],[16,89]]]]],[],["loc",[null,[16,29],[16,90]]]],"peopleHelpText",["subexpr","format-message",[["subexpr","intl-get",["cases.copy-someone-in.help-text"],[],["loc",[null,[17,35],[17,79]]]]],[],["loc",[null,[17,19],[17,80]]]],"peopleEmailErrorText",["subexpr","format-message",[["subexpr","intl-get",["cases.copy-someone-in.email-error"],[],["loc",[null,[18,41],[18,87]]]]],[],["loc",[null,[18,25],[18,88]]]]],0,null,["loc",[null,[1,0],[36,19]]]]
       ],
       locals: [],
       templates: [child0]
@@ -18702,6 +18004,20 @@ define('frontend-cp/components/ko-context-modal/component', ['exports', 'ember',
     scrollableModalContents: Ember['default'].computed.not('inline'),
     preventBodyScroll: Ember['default'].computed.not('inline'),
 
+    // Property which will help to issue reposition of modal window.
+    // Useful in auto completes, when you need to use full vertical
+    // space between different queries and data responses.
+    repositionRequired: false,
+    onRepositionRequired: Ember['default'].observer('contextModalService.repositionRequired', function () {
+      if (!this.get('contextModalService.repositionRequired')) {
+        return;
+      }
+
+      Ember['default'].run.scheduleOnce('afterRender', this, this.updatePositionInputs);
+
+      this.set('contextModalService.repositionRequired', false);
+    }),
+
     willInsertElement: function willInsertElement() {
       var _this = this;
 
@@ -18760,7 +18076,7 @@ define('frontend-cp/components/ko-context-modal/component', ['exports', 'ember',
         _this2.set('eventInlineY', eventPosition.inlineY);
         _this2.set('headerHeight', _this2.$().find('.ko-context-modal__header-container').outerHeight());
         _this2.set('buttonHeight', $['default'](event.target).outerHeight());
-        _this2.set('buttonWidth', $['default'](event.target).outerWidth(true));
+        _this2.set('buttonWidth', $['default'](event.target).width());
         _this2.set('windowWidth', $['default'](window).width());
         _this2.set('windowHeight', $['default'](window).height());
         _this2.set('documentWidth', $['default'](document).width());
@@ -18902,7 +18218,7 @@ define('frontend-cp/components/ko-context-modal/component', ['exports', 'ember',
     }),
 
     containerStyle: Ember['default'].computed('positionY', 'positionX', 'modalVisible', function () {
-      var visibility = undefined;
+      var visibility = '';
       if (!this.get('modalVisible')) {
         visibility = 'visibility: hidden;';
       }
@@ -19001,7 +18317,7 @@ define('frontend-cp/components/ko-context-modal/template', ['exports'], function
           dom.setAttribute(el1,"class","box box--secondary ko-context-modal__header-container");
           var el2 = dom.createTextNode("\n        ");
           dom.appendChild(el1, el2);
-          var el2 = dom.createElement("h6");
+          var el2 = dom.createElement("h5");
           dom.setAttribute(el2,"class","ko-context-modal__header");
           var el3 = dom.createComment("");
           dom.appendChild(el2, el3);
@@ -19264,7 +18580,13 @@ define('frontend-cp/components/ko-context-modal-item/component', ['exports', 'em
       if (this.get('isHidden')) {
         return 'display: none;'.htmlSafe();
       }
-    })
+    }),
+
+    actions: {
+      onPeopleSuggestion: function onPeopleSuggestion(searchTerm, selectedPeople) {
+        this.sendAction('onPeopleSuggestion', searchTerm, selectedPeople);
+      }
+    }
   });
 
 });
@@ -21755,7 +21077,7 @@ define('frontend-cp/components/ko-feed/item/component', ['exports', 'ember'], fu
 
     actions: {
       onReplyWithQuote: function onReplyWithQuote() {
-        var quote = this.$('.feed__content').text().trim();
+        var quote = this.$('.ko-feed_item__content').text().trim();
 
         this.sendAction('onReplyWithQuote', quote);
       }
@@ -28660,7 +27982,167 @@ define('frontend-cp/components/ko-pagination/template', ['exports'], function (e
   }()));
 
 });
-define('frontend-cp/components/ko-participants/component', ['exports', 'ember'], function (exports, Ember) {
+define('frontend-cp/components/ko-people/component', ['exports', 'ember', 'frontend-cp/components/mixins/context-menu-set'], function (exports, Ember, ContextMenuSetComponentMixin) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Component.extend(ContextMenuSetComponentMixin['default'], {
+    title: null,
+    inputPlaceholderText: null,
+    filterNotFoundText: null,
+    helpText: null,
+
+    actions: {
+      onPeopleSuggestion: function onPeopleSuggestion(searchTerm, selectedPeople) {
+        this.sendAction('onPeopleSuggestion', searchTerm, selectedPeople);
+      }
+    }
+  });
+
+});
+define('frontend-cp/components/ko-people/template', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports['default'] = Ember.HTMLBars.template((function() {
+    var child0 = (function() {
+      return {
+        meta: {
+          "revision": "Ember@1.13.7",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 1,
+              "column": 0
+            },
+            "end": {
+              "line": 18,
+              "column": 0
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-people/template.hbs"
+        },
+        arity: 1,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("\n  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+          return morphs;
+        },
+        statements: [
+          ["inline","ko-people-popover",[],["suggestedPeople",["subexpr","@mut",[["get","suggestedPeople",["loc",[null,[7,18],[7,33]]]]],[],[]],"selectedPeople",["subexpr","@mut",[["get","selectedPeople",["loc",[null,[8,17],[8,31]]]]],[],[]],"suggestedPeopleTotal",["subexpr","@mut",[["get","suggestedPeopleTotal",["loc",[null,[9,23],[9,43]]]]],[],[]],"isLoading",["subexpr","@mut",[["get","suggestedPeopleLoading",["loc",[null,[10,12],[10,34]]]]],[],[]],"filterNotFoundText",["subexpr","@mut",[["get","filterNotFoundText",["loc",[null,[11,21],[11,39]]]]],[],[]],"helpText",["subexpr","@mut",[["get","helpText",["loc",[null,[12,11],[12,19]]]]],[],[]],"inputPlaceholderText",["subexpr","@mut",[["get","inputPlaceholderText",["loc",[null,[13,23],[13,43]]]]],[],[]],"emailErrorText",["subexpr","@mut",[["get","emailErrorText",["loc",[null,[14,17],[14,31]]]]],[],[]],"isShowing",["subexpr","@mut",[["get","isShowing",["loc",[null,[15,12],[15,21]]]]],[],[]],"suggestPeople","onPeopleSuggestion"],["loc",[null,[6,2],[16,38]]]]
+        ],
+        locals: ["isShowing"],
+        templates: []
+      };
+    }());
+    return {
+      meta: {
+        "revision": "Ember@1.13.7",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 18,
+            "column": 26
+          }
+        },
+        "moduleName": "frontend-cp/components/ko-people/template.hbs"
+      },
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var morphs = new Array(1);
+        morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+        dom.insertBoundary(fragment, 0);
+        dom.insertBoundary(fragment, null);
+        return morphs;
+      },
+      statements: [
+        ["block","ko-context-modal-item",[],["onPeopleAutocomplete","onPeopleAutocomplete","index","0","title",["subexpr","@mut",[["get","title",["loc",[null,[4,8],[4,13]]]]],[],[]],"contextModalId",["subexpr","@mut",[["get","contextModalId",["loc",[null,[4,29],[4,43]]]]],[],[]]],0,null,["loc",[null,[1,0],[18,26]]]]
+      ],
+      locals: [],
+      templates: [child0]
+    };
+  }()));
+
+});
+define('frontend-cp/components/ko-people-add/component', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Component.extend({
+    click: function click(event) {
+      this.sendAction('addParticipant', event);
+    }
+  });
+
+});
+define('frontend-cp/components/ko-people-add/template', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      meta: {
+        "revision": "Ember@1.13.7",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 0
+          }
+        },
+        "moduleName": "frontend-cp/components/ko-people-add/template.hbs"
+      },
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("span");
+        dom.setAttribute(el1,"class","i-plus");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes() { return []; },
+      statements: [
+
+      ],
+      locals: [],
+      templates: []
+    };
+  }()));
+
+});
+define('frontend-cp/components/ko-people-list/component', ['exports', 'ember'], function (exports, Ember) {
 
   'use strict';
 
@@ -28673,7 +28155,7 @@ define('frontend-cp/components/ko-participants/component', ['exports', 'ember'],
   });
 
 });
-define('frontend-cp/components/ko-participants/template', ['exports'], function (exports) {
+define('frontend-cp/components/ko-people-list/template', ['exports'], function (exports) {
 
   'use strict';
 
@@ -28693,7 +28175,7 @@ define('frontend-cp/components/ko-participants/template', ['exports'], function 
               "column": 0
             }
           },
-          "moduleName": "frontend-cp/components/ko-participants/template.hbs"
+          "moduleName": "frontend-cp/components/ko-people-list/template.hbs"
         },
         arity: 1,
         cachedFragment: null,
@@ -28703,7 +28185,7 @@ define('frontend-cp/components/ko-participants/template', ['exports'], function 
           var el1 = dom.createTextNode("    ");
           dom.appendChild(el0, el1);
           var el1 = dom.createElement("img");
-          dom.setAttribute(el1,"class","ko-participants__item");
+          dom.setAttribute(el1,"class","ko-people-list__item");
           dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n");
           dom.appendChild(el0, el1);
@@ -28717,8 +28199,8 @@ define('frontend-cp/components/ko-participants/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["attribute","src",["concat",[["get","participant.image",["loc",[null,[2,46],[2,63]]]]]]],
-          ["attribute","alt",["concat",[["get","participant.alt",["loc",[null,[2,74],[2,89]]]]]]]
+          ["attribute","src",["concat",[["get","participant.image",["loc",[null,[2,45],[2,62]]]]]]],
+          ["attribute","alt",["concat",[["get","participant.alt",["loc",[null,[2,73],[2,88]]]]]]]
         ],
         locals: ["participant"],
         templates: []
@@ -28738,7 +28220,7 @@ define('frontend-cp/components/ko-participants/template', ['exports'], function 
             "column": 0
           }
         },
-        "moduleName": "frontend-cp/components/ko-participants/template.hbs"
+        "moduleName": "frontend-cp/components/ko-people-list/template.hbs"
       },
       arity: 0,
       cachedFragment: null,
@@ -28762,7 +28244,7 @@ define('frontend-cp/components/ko-participants/template', ['exports'], function 
       },
       statements: [
         ["block","each",[["get","participants",["loc",[null,[1,8],[1,20]]]]],[],0,null,["loc",[null,[1,0],[3,9]]]],
-        ["inline","ko-participants-add",[],["addParticipant","addParticipant"],["loc",[null,[4,0],[4,55]]]]
+        ["inline","ko-people-add",[],["addParticipant","addParticipant"],["loc",[null,[4,0],[4,49]]]]
       ],
       locals: [],
       templates: [child0]
@@ -28770,22 +28252,760 @@ define('frontend-cp/components/ko-participants/template', ['exports'], function 
   }()));
 
 });
-define('frontend-cp/components/ko-participants-add/component', ['exports', 'ember'], function (exports, Ember) {
+define('frontend-cp/components/ko-people-popover/component', ['exports', 'ember', 'frontend-cp/lib/keycodes', 'frontend-cp/components/mixins/drop-down-keyboard-nav'], function (exports, Ember, KeyCodes, DropDownKeyboardNav) {
 
   'use strict';
 
-  exports['default'] = Ember['default'].Component.extend({
-    click: function click(event) {
-      this.sendAction('addParticipant', event);
+  exports['default'] = Ember['default'].Component.extend(DropDownKeyboardNav['default'], {
+    intl: Ember['default'].inject.service(),
+    validator: Ember['default'].inject.service('validator'),
+    classNames: ['ko-people-popover'],
+
+    isLoading: true,
+    suggestedPeople: null,
+    suggestedPeopleTotal: 0,
+    selectedPeople: [],
+    keyboardIndexPosition: 0,
+    searchTerm: null,
+    searchTermEmailNotValid: false,
+    debounceQueryTimeout: 150,
+    helpText: null,
+
+    helpTextSafe: Ember['default'].computed('helpText', function () {
+      return Ember['default'].String.htmlSafe(this.get('helpText'));
+    }),
+
+    filterNotFoundTextSafe: Ember['default'].computed('filterNotFoundText', function () {
+      return Ember['default'].String.htmlSafe(this.get('filterNotFoundText'));
+    }),
+
+    searchAttempt: Ember['default'].computed('searchTerm', 'suggestedPeople', function () {
+      return Boolean(this.get('searchTerm') && this.get('suggestedPeople') !== null);
+    }),
+
+    didShowingChange: Ember['default'].on('init', Ember['default'].observer('isShowing', function () {
+      if (this.get('isShowing')) {
+        this.$('.input-text').focus();
+      }
+    })),
+
+    onSearchTerm: Ember['default'].observer('searchTerm', function () {
+      this.searchTermDebounce(this, this.searchTermDebounceCallback);
+    }),
+
+    searchTermDebounce: function searchTermDebounce(scope, callback) {
+      Ember['default'].run.debounce(scope, callback, this.get('debounceQueryTimeout'));
+    },
+
+    searchTermDebounceCallback: function searchTermDebounceCallback() {
+      this.send('suggestPeople', this.get('searchTerm'), this.get('selectedPeople'));
+    },
+
+    setupComponent: (function () {
+      this.set('suggestedPeople', null);
+      this.set('suggestedPeopleTotal', 0);
+    }).on('didInsertElement'),
+
+    keyDown: function keyDown(e) {
+      var searchTerm = this.get('searchTerm');
+
+      var keyboardIndexPosition = this.get('keyboardIndexPosition');
+      var suggestedPeople = this.get('suggestedPeople');
+      var suggestedPeopleLength = suggestedPeople ? suggestedPeople.length : 0;
+      var suggestionsListSelector = '.ko-people-popover__filtered-list';
+
+      this.set('searchTermEmailNotValid', false);
+
+      switch (e.keyCode) {
+        case KeyCodes.up:
+          this.moveSelectedItem(suggestedPeopleLength, suggestionsListSelector, 'up', 'keyboardIndexPosition');
+
+          if (keyboardIndexPosition - 1 === 0) {
+            this.set('keyboardIndexPosition', 0);
+            this.$('input').focus();
+          }
+
+          return false;
+
+        case KeyCodes.down:
+          this.moveSelectedItem(suggestedPeopleLength, suggestionsListSelector, 'down', 'keyboardIndexPosition');
+          return false;
+
+        case KeyCodes.enter:
+          if (keyboardIndexPosition === 0) {
+            this.send('addPerson', searchTerm);
+          } else {
+            this.send('addPersonFromSuggestion', suggestedPeople.objectAt(keyboardIndexPosition - 1));
+            this.set('keyboardIndexPosition', 0);
+            this.$('input').focus();
+          }
+
+          break;
+      }
+    },
+
+    resetSearchQuery: function resetSearchQuery() {
+      this.set('suggestedPeople', null);
+      this.set('searchTerm', null);
+      this.$('input').focus();
+    },
+
+    actions: {
+      suggestPeople: function suggestPeople(searchTerm, selectedPeople) {
+        this.sendAction('suggestPeople', searchTerm, selectedPeople);
+      },
+
+      addPerson: function addPerson(email) {
+        email = email.replace(/\s+/, '');
+
+        if (!email || !this.get('validator').isEmailValid(email)) {
+          this.set('searchTermEmailNotValid', true);
+          return;
+        }
+        this.set('searchTermEmailNotValid', false);
+
+        if (this.get('selectedPeople').findBy('email', email)) {
+          return this.resetSearchQuery();
+        }
+
+        this.get('selectedPeople').pushObject(Ember['default'].Object.create({ email: email }));
+
+        this.resetSearchQuery();
+      },
+
+      addPersonFromSuggestion: function addPersonFromSuggestion(person) {
+        this.get('selectedPeople').pushObject(person);
+
+        this.resetSearchQuery();
+      },
+
+      removePerson: function removePerson(person) {
+        this.get('selectedPeople').removeObject(person);
+      }
     }
+
   });
 
 });
-define('frontend-cp/components/ko-participants-add/template', ['exports'], function (exports) {
+define('frontend-cp/components/ko-people-popover/template', ['exports'], function (exports) {
 
   'use strict';
 
   exports['default'] = Ember.HTMLBars.template((function() {
+    var child0 = (function() {
+      return {
+        meta: {
+          "revision": "Ember@1.13.7",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 16,
+              "column": 2
+            },
+            "end": {
+              "line": 18,
+              "column": 2
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-people-popover/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("    ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1,"class","ko-people-popover__input-error");
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]),0,0);
+          return morphs;
+        },
+        statements: [
+          ["content","emailErrorText",["loc",[null,[17,48],[17,66]]]]
+        ],
+        locals: [],
+        templates: []
+      };
+    }());
+    var child1 = (function() {
+      var child0 = (function() {
+        return {
+          meta: {
+            "revision": "Ember@1.13.7",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 23,
+                "column": 4
+              },
+              "end": {
+                "line": 32,
+                "column": 4
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-people-popover/template.hbs"
+          },
+          arity: 1,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("      ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("ul");
+            dom.setAttribute(el1,"class","ko-people-popover__selected-list");
+            dom.setAttribute(el1,"role","menu");
+            var el2 = dom.createTextNode("\n        ");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createElement("li");
+            dom.setAttribute(el2,"class","ko-people-popover__selected-list-item");
+            var el3 = dom.createTextNode("\n          ");
+            dom.appendChild(el2, el3);
+            var el3 = dom.createElement("div");
+            dom.setAttribute(el3,"class","u-inline-block ko-people-popover__selected-item-name");
+            var el4 = dom.createTextNode("\n            ");
+            dom.appendChild(el3, el4);
+            var el4 = dom.createComment("");
+            dom.appendChild(el3, el4);
+            var el4 = dom.createTextNode("\n          ");
+            dom.appendChild(el3, el4);
+            dom.appendChild(el2, el3);
+            var el3 = dom.createTextNode("\n          ");
+            dom.appendChild(el2, el3);
+            var el3 = dom.createElement("i");
+            dom.setAttribute(el3,"class","ko-people-popover__cross i-cross-bold i-color-grey--light");
+            dom.appendChild(el2, el3);
+            var el3 = dom.createTextNode("\n        ");
+            dom.appendChild(el2, el3);
+            dom.appendChild(el1, el2);
+            var el2 = dom.createTextNode("\n      ");
+            dom.appendChild(el1, el2);
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var element4 = dom.childAt(fragment, [1, 1]);
+            var element5 = dom.childAt(element4, [3]);
+            var morphs = new Array(2);
+            morphs[0] = dom.createMorphAt(dom.childAt(element4, [1]),1,1);
+            morphs[1] = dom.createElementMorph(element5);
+            return morphs;
+          },
+          statements: [
+            ["content","person.email",["loc",[null,[27,12],[27,28]]]],
+            ["element","action",["removePerson",["get","person",["loc",[null,[29,103],[29,109]]]]],[],["loc",[null,[29,79],[29,111]]]]
+          ],
+          locals: ["person"],
+          templates: []
+        };
+      }());
+      return {
+        meta: {
+          "revision": "Ember@1.13.7",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 21,
+              "column": 0
+            },
+            "end": {
+              "line": 34,
+              "column": 0
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-people-popover/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1,"class","box ko-people-popover__selected-list-container");
+          var el2 = dom.createTextNode("\n");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("  ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]),1,1);
+          return morphs;
+        },
+        statements: [
+          ["block","each",[["get","selectedPeople",["loc",[null,[23,12],[23,26]]]]],[],0,null,["loc",[null,[23,4],[32,13]]]]
+        ],
+        locals: [],
+        templates: [child0]
+      };
+    }());
+    var child2 = (function() {
+      return {
+        meta: {
+          "revision": "Ember@1.13.7",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 36,
+              "column": 0
+            },
+            "end": {
+              "line": 40,
+              "column": 0
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-people-popover/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1,"class","box ko-people-popover__loader-block");
+          var el2 = dom.createTextNode("\n    ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n  ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]),1,1);
+          return morphs;
+        },
+        statements: [
+          ["inline","ko-loader",[],["class","ko-people-popover__loader"],["loc",[null,[38,4],[38,51]]]]
+        ],
+        locals: [],
+        templates: []
+      };
+    }());
+    var child3 = (function() {
+      var child0 = (function() {
+        var child0 = (function() {
+          var child0 = (function() {
+            return {
+              meta: {
+                "revision": "Ember@1.13.7",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 56,
+                    "column": 20
+                  },
+                  "end": {
+                    "line": 58,
+                    "column": 20
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-people-popover/template.hbs"
+              },
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createTextNode("                      , ");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var morphs = new Array(1);
+                morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+                return morphs;
+              },
+              statements: [
+                ["content","person.parent.organization.name",["loc",[null,[57,24],[57,59]]]]
+              ],
+              locals: [],
+              templates: []
+            };
+          }());
+          return {
+            meta: {
+              "revision": "Ember@1.13.7",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 44,
+                  "column": 8
+                },
+                "end": {
+                  "line": 65,
+                  "column": 8
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-people-popover/template.hbs"
+            },
+            arity: 2,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode("          ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createElement("li");
+              dom.setAttribute(el1,"class","ko-people-popover__filtered-list-item");
+              var el2 = dom.createTextNode("\n            ");
+              dom.appendChild(el1, el2);
+              var el2 = dom.createElement("div");
+              dom.setAttribute(el2,"class","ko-people-popover__flag flag--small flag--auto");
+              var el3 = dom.createTextNode("\n              ");
+              dom.appendChild(el2, el3);
+              var el3 = dom.createElement("div");
+              dom.setAttribute(el3,"class","flag__img");
+              var el4 = dom.createTextNode("\n                ");
+              dom.appendChild(el3, el4);
+              var el4 = dom.createComment("");
+              dom.appendChild(el3, el4);
+              var el4 = dom.createTextNode("\n              ");
+              dom.appendChild(el3, el4);
+              dom.appendChild(el2, el3);
+              var el3 = dom.createTextNode("\n              ");
+              dom.appendChild(el2, el3);
+              var el3 = dom.createElement("div");
+              dom.setAttribute(el3,"class","ko-people-popover__flag-body u-1/1 flag__body");
+              var el4 = dom.createTextNode("\n                ");
+              dom.appendChild(el3, el4);
+              var el4 = dom.createElement("strong");
+              var el5 = dom.createComment("");
+              dom.appendChild(el4, el5);
+              dom.appendChild(el3, el4);
+              var el4 = dom.createTextNode("\n                ");
+              dom.appendChild(el3, el4);
+              var el4 = dom.createElement("span");
+              dom.setAttribute(el4,"class","ko-people-popover__caption");
+              var el5 = dom.createTextNode("\n                  ");
+              dom.appendChild(el4, el5);
+              var el5 = dom.createElement("span");
+              dom.setAttribute(el5,"class","ko-people-popover__org-caption");
+              var el6 = dom.createTextNode("\n");
+              dom.appendChild(el5, el6);
+              var el6 = dom.createComment("");
+              dom.appendChild(el5, el6);
+              var el6 = dom.createTextNode("                  ");
+              dom.appendChild(el5, el6);
+              dom.appendChild(el4, el5);
+              var el5 = dom.createTextNode("\n                  ");
+              dom.appendChild(el4, el5);
+              var el5 = dom.createElement("span");
+              dom.setAttribute(el5,"class","ko-people-popover__email-caption");
+              var el6 = dom.createComment("");
+              dom.appendChild(el5, el6);
+              dom.appendChild(el4, el5);
+              var el5 = dom.createTextNode("\n                ");
+              dom.appendChild(el4, el5);
+              dom.appendChild(el3, el4);
+              var el4 = dom.createTextNode("\n              ");
+              dom.appendChild(el3, el4);
+              dom.appendChild(el2, el3);
+              var el3 = dom.createTextNode("\n            ");
+              dom.appendChild(el2, el3);
+              dom.appendChild(el1, el2);
+              var el2 = dom.createTextNode("\n          ");
+              dom.appendChild(el1, el2);
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var element0 = dom.childAt(fragment, [1]);
+              var element1 = dom.childAt(element0, [1]);
+              var element2 = dom.childAt(element1, [3]);
+              var element3 = dom.childAt(element2, [3]);
+              var morphs = new Array(6);
+              morphs[0] = dom.createAttrMorph(element0, 'tabindex');
+              morphs[1] = dom.createElementMorph(element0);
+              morphs[2] = dom.createMorphAt(dom.childAt(element1, [1]),1,1);
+              morphs[3] = dom.createMorphAt(dom.childAt(element2, [1]),0,0);
+              morphs[4] = dom.createMorphAt(dom.childAt(element3, [1]),1,1);
+              morphs[5] = dom.createMorphAt(dom.childAt(element3, [3]),0,0);
+              return morphs;
+            },
+            statements: [
+              ["attribute","tabindex",["concat",[["get","index",["loc",[null,[46,26],[46,31]]]]]]],
+              ["element","action",["addPersonFromSuggestion",["get","person",["loc",[null,[45,49],[45,55]]]]],[],["loc",[null,[45,14],[45,57]]]],
+              ["inline","ko-avatar",[],["size","large","class","ko-people-popover__image","avatar",["subexpr","@mut",[["get","person.parent.avatar",["loc",[null,[50,81],[50,101]]]]],[],[]]],["loc",[null,[50,16],[50,103]]]],
+              ["content","person.parent.fullName",["loc",[null,[53,24],[53,50]]]],
+              ["block","if",[["get","person.parent.organization.name",["loc",[null,[56,26],[56,57]]]]],[],0,null,["loc",[null,[56,20],[58,27]]]],
+              ["content","person.email",["loc",[null,[60,65],[60,81]]]]
+            ],
+            locals: ["person","index"],
+            templates: [child0]
+          };
+        }());
+        return {
+          meta: {
+            "revision": "Ember@1.13.7",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 41,
+                "column": 2
+              },
+              "end": {
+                "line": 68,
+                "column": 2
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-people-popover/template.hbs"
+          },
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("    ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("div");
+            dom.setAttribute(el1,"class","ko-people-popover__filtered-list-container");
+            var el2 = dom.createTextNode("\n      ");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createElement("ul");
+            dom.setAttribute(el2,"class","ko-people-popover__filtered-list");
+            dom.setAttribute(el2,"role","menu");
+            var el3 = dom.createTextNode("\n");
+            dom.appendChild(el2, el3);
+            var el3 = dom.createComment("");
+            dom.appendChild(el2, el3);
+            var el3 = dom.createTextNode("      ");
+            dom.appendChild(el2, el3);
+            dom.appendChild(el1, el2);
+            var el2 = dom.createTextNode("\n    ");
+            dom.appendChild(el1, el2);
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1, 1]),1,1);
+            return morphs;
+          },
+          statements: [
+            ["block","each",[["get","suggestedPeople",["loc",[null,[44,16],[44,31]]]]],[],0,null,["loc",[null,[44,8],[65,17]]]]
+          ],
+          locals: [],
+          templates: [child0]
+        };
+      }());
+      var child1 = (function() {
+        var child0 = (function() {
+          return {
+            meta: {
+              "revision": "Ember@1.13.7",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 71,
+                  "column": 4
+                },
+                "end": {
+                  "line": 75,
+                  "column": 4
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-people-popover/template.hbs"
+            },
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode("      ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createElement("div");
+              dom.setAttribute(el1,"class","box header__subtitle ko-people-popover__not-found");
+              var el2 = dom.createTextNode("\n        ");
+              dom.appendChild(el1, el2);
+              var el2 = dom.createComment("");
+              dom.appendChild(el1, el2);
+              var el2 = dom.createTextNode("\n      ");
+              dom.appendChild(el1, el2);
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(1);
+              morphs[0] = dom.createUnsafeMorphAt(dom.childAt(fragment, [1]),1,1);
+              return morphs;
+            },
+            statements: [
+              ["content","filterNotFoundTextSafe",["loc",[null,[73,8],[73,36]]]]
+            ],
+            locals: [],
+            templates: []
+          };
+        }());
+        return {
+          meta: {
+            "revision": "Ember@1.13.7",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 70,
+                "column": 2
+              },
+              "end": {
+                "line": 76,
+                "column": 2
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-people-popover/template.hbs"
+          },
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+            dom.insertBoundary(fragment, 0);
+            dom.insertBoundary(fragment, null);
+            return morphs;
+          },
+          statements: [
+            ["block","unless",[["get","suggestedPeople",["loc",[null,[71,14],[71,29]]]]],[],0,null,["loc",[null,[71,4],[75,15]]]]
+          ],
+          locals: [],
+          templates: [child0]
+        };
+      }());
+      var child2 = (function() {
+        return {
+          meta: {
+            "revision": "Ember@1.13.7",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 76,
+                "column": 2
+              },
+              "end": {
+                "line": 80,
+                "column": 2
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-people-popover/template.hbs"
+          },
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("    ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("div");
+            dom.setAttribute(el1,"class","box header__subtitle ko-people-popover__subtitle");
+            var el2 = dom.createTextNode("\n      ");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createComment("");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createTextNode("\n    ");
+            dom.appendChild(el1, el2);
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createUnsafeMorphAt(dom.childAt(fragment, [1]),1,1);
+            return morphs;
+          },
+          statements: [
+            ["content","helpTextSafe",["loc",[null,[78,6],[78,24]]]]
+          ],
+          locals: [],
+          templates: []
+        };
+      }());
+      return {
+        meta: {
+          "revision": "Ember@1.13.7",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 40,
+              "column": 0
+            },
+            "end": {
+              "line": 81,
+              "column": 0
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-people-popover/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(2);
+          morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+          morphs[1] = dom.createMorphAt(fragment,2,2,contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [
+          ["block","if",[["get","searchAttempt",["loc",[null,[41,8],[41,21]]]]],[],0,null,["loc",[null,[41,2],[68,9]]]],
+          ["block","if",[["get","searchAttempt",["loc",[null,[70,8],[70,21]]]]],[],1,2,["loc",[null,[70,2],[80,9]]]]
+        ],
+        locals: [],
+        templates: [child0, child1, child2]
+      };
+    }());
     return {
       meta: {
         "revision": "Ember@1.13.7",
@@ -28796,30 +29016,83 @@ define('frontend-cp/components/ko-participants-add/template', ['exports'], funct
             "column": 0
           },
           "end": {
-            "line": 2,
-            "column": 0
+            "line": 81,
+            "column": 7
           }
         },
-        "moduleName": "frontend-cp/components/ko-participants-add/template.hbs"
+        "moduleName": "frontend-cp/components/ko-people-popover/template.hbs"
       },
       arity: 0,
       cachedFragment: null,
       hasRendered: false,
       buildFragment: function buildFragment(dom) {
         var el0 = dom.createDocumentFragment();
-        var el1 = dom.createElement("span");
-        dom.setAttribute(el1,"class","i-plus");
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","box");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","input i--search-small");
+        var el3 = dom.createTextNode("\n      ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createComment("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","ko-people-popover__button-space");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("button");
+        dom.setAttribute(el4,"class","button button--default ko-people-popover__button");
+        var el5 = dom.createTextNode("Add\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
         return el0;
       },
-      buildRenderNodes: function buildRenderNodes() { return []; },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var element6 = dom.childAt(fragment, [0]);
+        var element7 = dom.childAt(element6, [1]);
+        var element8 = dom.childAt(element7, [4, 1]);
+        var morphs = new Array(5);
+        morphs[0] = dom.createMorphAt(element7,1,1);
+        morphs[1] = dom.createElementMorph(element8);
+        morphs[2] = dom.createMorphAt(element6,3,3);
+        morphs[3] = dom.createMorphAt(fragment,2,2,contextualElement);
+        morphs[4] = dom.createMorphAt(fragment,4,4,contextualElement);
+        dom.insertBoundary(fragment, null);
+        return morphs;
+      },
       statements: [
-
+        ["inline","input",[],["class","ko-people-popover__input input-text u-1/1","type","text","placeholder",["subexpr","@mut",[["get","inputPlaceholderText",["loc",[null,[5,18],[5,38]]]]],[],[]],"value",["subexpr","@mut",[["get","searchTerm",["loc",[null,[6,12],[6,22]]]]],[],[]]],["loc",[null,[3,6],[7,8]]]],
+        ["element","action",["addPerson",["get","searchTerm",["loc",[null,[10,35],[10,45]]]]],[],["loc",[null,[10,14],[10,47]]]],
+        ["block","if",[["get","searchTermEmailNotValid",["loc",[null,[16,8],[16,31]]]]],[],0,null,["loc",[null,[16,2],[18,9]]]],
+        ["block","if",[["get","selectedPeople",["loc",[null,[21,6],[21,20]]]]],[],1,null,["loc",[null,[21,0],[34,7]]]],
+        ["block","if",[["get","isLoading",["loc",[null,[36,6],[36,15]]]]],[],2,3,["loc",[null,[36,0],[81,7]]]]
       ],
       locals: [],
-      templates: []
+      templates: [child0, child1, child2, child3]
     };
   }()));
 
@@ -33438,6 +33711,8 @@ define('frontend-cp/components/ko-text-editor/component', ['exports', 'ember', '
     maxFileSize: 5 * 1024 * 1024, // 5 MB
     maxTotalSize: 20 * 1024 * 1024, // 20 MB,
 
+    isPeopleIconAvailable: true,
+
     /**************
      * Public API
      **************/
@@ -33790,6 +34065,14 @@ define('frontend-cp/components/ko-text-editor/component', ['exports', 'ember', '
       },
       handleAttachmentFiles: function handleAttachmentFiles(files) {
         this.get('attachedUploads').send('uploadFiles', Array.slice(files));
+      },
+      addParticipant: function addParticipant() {
+        this.sendAction('addParticipant', {
+          target: this.$().find('.ko-text-editor-header-group__item.i-users')
+        });
+      },
+      onPeopleSuggestion: function onPeopleSuggestion(searchTerm, selectedPeople) {
+        this.sendAction('onPeopleSuggestion', searchTerm, selectedPeople);
       }
     }
   });
@@ -33801,17 +34084,137 @@ define('frontend-cp/components/ko-text-editor/template', ['exports'], function (
 
   exports['default'] = Ember.HTMLBars.template((function() {
     var child0 = (function() {
+      var child0 = (function() {
+        return {
+          meta: {
+            "revision": "Ember@1.13.7",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 61,
+                "column": 12
+              },
+              "end": {
+                "line": 67,
+                "column": 12
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-text-editor/template.hbs"
+          },
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("              ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("div");
+            dom.setAttribute(el1,"class","ko-text-editor-header-group__item ko-text-editor-header-group__users-item");
+            var el2 = dom.createTextNode("\n                ");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createElement("span");
+            dom.setAttribute(el2,"class","ko-text-editor-header-group__item-text");
+            var el3 = dom.createTextNode("\n                  ");
+            dom.appendChild(el2, el3);
+            var el3 = dom.createComment("");
+            dom.appendChild(el2, el3);
+            var el3 = dom.createTextNode("\n                ");
+            dom.appendChild(el2, el3);
+            dom.appendChild(el1, el2);
+            var el2 = dom.createTextNode("\n              ");
+            dom.appendChild(el1, el2);
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var element0 = dom.childAt(fragment, [1]);
+            var morphs = new Array(2);
+            morphs[0] = dom.createElementMorph(element0);
+            morphs[1] = dom.createMorphAt(dom.childAt(element0, [1]),1,1);
+            return morphs;
+          },
+          statements: [
+            ["element","action",["addParticipant"],[],["loc",[null,[62,19],[62,46]]]],
+            ["content","selectedPeople.length",["loc",[null,[64,18],[64,43]]]]
+          ],
+          locals: [],
+          templates: []
+        };
+      }());
       return {
         meta: {
           "revision": "Ember@1.13.7",
           "loc": {
             "source": null,
             "start": {
-              "line": 54,
+              "line": 43,
+              "column": 10
+            },
+            "end": {
+              "line": 69,
+              "column": 10
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-text-editor/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("            ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          var el2 = dom.createTextNode("\n              ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n            ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n\n");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var element1 = dom.childAt(fragment, [1]);
+          var morphs = new Array(5);
+          morphs[0] = dom.createAttrMorph(element1, 'class');
+          morphs[1] = dom.createAttrMorph(element1, 'title');
+          morphs[2] = dom.createElementMorph(element1);
+          morphs[3] = dom.createMorphAt(element1,1,1);
+          morphs[4] = dom.createMorphAt(fragment,3,3,contextualElement);
+          return morphs;
+        },
+        statements: [
+          ["attribute","class",["concat",["ko-text-editor-header-group__item i-users ",["subexpr","if",[["get","selectedPeople.length",["loc",[null,[45,70],[45,91]]]],"ko-text-editor-header-group__users-item--active"],[],["loc",[null,[45,65],[45,143]]]]]]],
+          ["attribute","title",["subexpr","format-message",[["subexpr","intl-get",["generic.texteditor.billing"],[],["loc",[null,[46,39],[46,78]]]]],[],["loc",[null,[46,22],[46,80]]]]],
+          ["element","action",["addParticipant"],[],["loc",[null,[44,17],[44,44]]]],
+          ["inline","ko-people",[],["suggestedPeople",["subexpr","@mut",[["get","suggestedPeople",["loc",[null,[48,30],[48,45]]]]],[],[]],"selectedPeople",["subexpr","@mut",[["get","selectedPeople",["loc",[null,[49,29],[49,43]]]]],[],[]],"suggestedPeopleTotal",["subexpr","@mut",[["get","suggestedPeopleTotal",["loc",[null,[50,35],[50,55]]]]],[],[]],"suggestedPeopleLoading",["subexpr","@mut",[["get","suggestedPeopleLoading",["loc",[null,[51,37],[51,59]]]]],[],[]],"title",["subexpr","@mut",[["get","peopleTitleText",["loc",[null,[52,20],[52,35]]]]],[],[]],"inputPlaceholderText",["subexpr","@mut",[["get","peopleInputPlaceholderText",["loc",[null,[53,35],[53,61]]]]],[],[]],"filterNotFoundText",["subexpr","@mut",[["get","peopleFilterNotFoundText",["loc",[null,[54,33],[54,57]]]]],[],[]],"helpText",["subexpr","@mut",[["get","peopleHelpText",["loc",[null,[55,23],[55,37]]]]],[],[]],"emailErrorText",["subexpr","@mut",[["get","peopleEmailErrorText",["loc",[null,[56,29],[56,49]]]]],[],[]],"contextModalId","addParticipants","onPeopleSuggestion","onPeopleSuggestion"],["loc",[null,[47,14],[58,55]]]],
+          ["block","if",[["get","selectedPeople.length",["loc",[null,[61,18],[61,39]]]]],[],0,null,["loc",[null,[61,12],[67,19]]]]
+        ],
+        locals: [],
+        templates: [child0]
+      };
+    }());
+    var child1 = (function() {
+      return {
+        meta: {
+          "revision": "Ember@1.13.7",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 80,
               "column": 2
             },
             "end": {
-              "line": 56,
+              "line": 82,
               "column": 2
             }
           },
@@ -33839,18 +34242,18 @@ define('frontend-cp/components/ko-text-editor/template', ['exports'], function (
         templates: []
       };
     }());
-    var child1 = (function() {
+    var child2 = (function() {
       return {
         meta: {
           "revision": "Ember@1.13.7",
           "loc": {
             "source": null,
             "start": {
-              "line": 58,
+              "line": 84,
               "column": 2
             },
             "end": {
-              "line": 62,
+              "line": 88,
               "column": 2
             }
           },
@@ -33882,7 +34285,7 @@ define('frontend-cp/components/ko-text-editor/template', ['exports'], function (
           return morphs;
         },
         statements: [
-          ["content","infoMessage",["loc",[null,[60,6],[60,21]]]]
+          ["content","infoMessage",["loc",[null,[86,6],[86,21]]]]
         ],
         locals: [],
         templates: []
@@ -33898,7 +34301,7 @@ define('frontend-cp/components/ko-text-editor/template', ['exports'], function (
             "column": 0
           },
           "end": {
-            "line": 65,
+            "line": 91,
             "column": 0
           }
         },
@@ -33922,7 +34325,7 @@ define('frontend-cp/components/ko-text-editor/template', ['exports'], function (
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
         var el4 = dom.createElement("div");
-        dom.setAttribute(el4,"class","layout__item u-1/2");
+        dom.setAttribute(el4,"class","layout__item u-1/3");
         var el5 = dom.createTextNode("\n        ");
         dom.appendChild(el4, el5);
         var el5 = dom.createElement("div");
@@ -33942,7 +34345,7 @@ define('frontend-cp/components/ko-text-editor/template', ['exports'], function (
         var el4 = dom.createComment("\n  ");
         dom.appendChild(el3, el4);
         var el4 = dom.createElement("div");
-        dom.setAttribute(el4,"class","layout__item u-1/2 t-right");
+        dom.setAttribute(el4,"class","layout__item u-2/3 t-right");
         var el5 = dom.createTextNode("\n        ");
         dom.appendChild(el4, el5);
         var el5 = dom.createElement("div");
@@ -34040,12 +34443,11 @@ define('frontend-cp/components/ko-text-editor/template', ['exports'], function (
         var el7 = dom.createTextNode("\n          ");
         dom.appendChild(el6, el7);
         dom.appendChild(el5, el6);
-        var el6 = dom.createTextNode("\n\n          ");
+        var el6 = dom.createTextNode("\n\n");
         dom.appendChild(el5, el6);
-        var el6 = dom.createElement("div");
-        dom.setAttribute(el6,"class","ko-text-editor-header-group__item i-users");
+        var el6 = dom.createComment("");
         dom.appendChild(el5, el6);
-        var el6 = dom.createTextNode("\n          ");
+        var el6 = dom.createTextNode("          ");
         dom.appendChild(el5, el6);
         var el6 = dom.createElement("div");
         dom.setAttribute(el6,"class","ko-text-editor-header-group__item i-stopwatch");
@@ -34091,43 +34493,42 @@ define('frontend-cp/components/ko-text-editor/template', ['exports'], function (
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var element0 = dom.childAt(fragment, [0, 1, 1]);
-        var element1 = dom.childAt(element0, [3]);
-        var element2 = dom.childAt(element1, [1]);
-        var element3 = dom.childAt(element2, [1]);
-        var element4 = dom.childAt(element2, [3]);
-        var element5 = dom.childAt(element2, [5]);
-        var element6 = dom.childAt(element2, [7]);
-        var element7 = dom.childAt(element2, [9]);
-        var element8 = dom.childAt(element7, [1]);
-        var element9 = dom.childAt(element8, [1]);
-        var element10 = dom.childAt(element2, [11]);
-        var element11 = dom.childAt(element2, [13]);
-        var element12 = dom.childAt(element1, [5]);
-        var element13 = dom.childAt(element12, [1]);
-        var element14 = dom.childAt(element13, [1]);
+        var element2 = dom.childAt(fragment, [0, 1, 1]);
+        var element3 = dom.childAt(element2, [3]);
+        var element4 = dom.childAt(element3, [1]);
+        var element5 = dom.childAt(element4, [1]);
+        var element6 = dom.childAt(element4, [3]);
+        var element7 = dom.childAt(element4, [5]);
+        var element8 = dom.childAt(element4, [7]);
+        var element9 = dom.childAt(element4, [9]);
+        var element10 = dom.childAt(element9, [1]);
+        var element11 = dom.childAt(element10, [1]);
+        var element12 = dom.childAt(element4, [11]);
+        var element13 = dom.childAt(element4, [13]);
+        var element14 = dom.childAt(element3, [5]);
         var element15 = dom.childAt(element14, [1]);
-        var element16 = dom.childAt(element12, [3]);
-        var element17 = dom.childAt(element12, [5]);
-        var element18 = dom.childAt(fragment, [4]);
+        var element16 = dom.childAt(element15, [1]);
+        var element17 = dom.childAt(element16, [1]);
+        var element18 = dom.childAt(element14, [5]);
+        var element19 = dom.childAt(fragment, [4]);
         var morphs = new Array(18);
-        morphs[0] = dom.createMorphAt(dom.childAt(element0, [1, 1]),2,2);
-        morphs[1] = dom.createAttrMorph(element3, 'title');
-        morphs[2] = dom.createAttrMorph(element4, 'title');
-        morphs[3] = dom.createAttrMorph(element5, 'title');
-        morphs[4] = dom.createAttrMorph(element6, 'title');
-        morphs[5] = dom.createAttrMorph(element8, 'for');
-        morphs[6] = dom.createAttrMorph(element9, 'title');
-        morphs[7] = dom.createMorphAt(element7,3,3);
-        morphs[8] = dom.createAttrMorph(element10, 'title');
-        morphs[9] = dom.createAttrMorph(element11, 'title');
-        morphs[10] = dom.createAttrMorph(element14, 'for');
-        morphs[11] = dom.createAttrMorph(element15, 'title');
-        morphs[12] = dom.createMorphAt(element13,3,3);
-        morphs[13] = dom.createAttrMorph(element16, 'title');
-        morphs[14] = dom.createAttrMorph(element17, 'title');
-        morphs[15] = dom.createMorphAt(element18,1,1);
-        morphs[16] = dom.createMorphAt(element18,3,3);
+        morphs[0] = dom.createMorphAt(dom.childAt(element2, [1, 1]),2,2);
+        morphs[1] = dom.createAttrMorph(element5, 'title');
+        morphs[2] = dom.createAttrMorph(element6, 'title');
+        morphs[3] = dom.createAttrMorph(element7, 'title');
+        morphs[4] = dom.createAttrMorph(element8, 'title');
+        morphs[5] = dom.createAttrMorph(element10, 'for');
+        morphs[6] = dom.createAttrMorph(element11, 'title');
+        morphs[7] = dom.createMorphAt(element9,3,3);
+        morphs[8] = dom.createAttrMorph(element12, 'title');
+        morphs[9] = dom.createAttrMorph(element13, 'title');
+        morphs[10] = dom.createAttrMorph(element16, 'for');
+        morphs[11] = dom.createAttrMorph(element17, 'title');
+        morphs[12] = dom.createMorphAt(element15,3,3);
+        morphs[13] = dom.createMorphAt(element14,3,3);
+        morphs[14] = dom.createAttrMorph(element18, 'title');
+        morphs[15] = dom.createMorphAt(element19,1,1);
+        morphs[16] = dom.createMorphAt(element19,3,3);
         morphs[17] = dom.createMorphAt(fragment,6,6,contextualElement);
         return morphs;
       },
@@ -34145,14 +34546,14 @@ define('frontend-cp/components/ko-text-editor/template', ['exports'], function (
         ["attribute","for",["get","attachFile.elementId",["loc",[null,[34,25],[34,45]]]]],
         ["attribute","title",["subexpr","format-message",[["subexpr","intl-get",["generic.texteditor.image"],[],["loc",[null,[35,67],[35,104]]]]],[],["loc",[null,[35,50],[35,106]]]]],
         ["inline","ko-file-field",[],["viewName","attachFile","on-change","handleAttachmentFiles"],["loc",[null,[37,12],[40,14]]]],
-        ["attribute","title",["subexpr","format-message",[["subexpr","intl-get",["generic.texteditor.billing"],[],["loc",[null,[43,88],[43,127]]]]],[],["loc",[null,[43,71],[43,129]]]]],
-        ["attribute","title",["subexpr","format-message",[["subexpr","intl-get",["generic.texteditor.billing"],[],["loc",[null,[44,92],[44,131]]]]],[],["loc",[null,[44,75],[44,133]]]]],
-        ["block","ko-draggable-dropzone",[],["dropped","imageDropped"],0,null,["loc",[null,[54,2],[56,28]]]],
-        ["block","if",[["get","infoMessage",["loc",[null,[58,8],[58,19]]]]],[],1,null,["loc",[null,[58,2],[62,9]]]],
-        ["inline","ko-file-upload",[],["viewName","attachedUploads","files",["subexpr","@mut",[["get","attachedFiles",["loc",[null,[64,50],[64,63]]]]],[],[]]],["loc",[null,[64,0],[64,65]]]]
+        ["block","if",[["get","isPeopleIconAvailable",["loc",[null,[43,16],[43,37]]]]],[],0,null,["loc",[null,[43,10],[69,17]]]],
+        ["attribute","title",["subexpr","format-message",[["subexpr","intl-get",["generic.texteditor.billing"],[],["loc",[null,[70,92],[70,131]]]]],[],["loc",[null,[70,75],[70,133]]]]],
+        ["block","ko-draggable-dropzone",[],["dropped","imageDropped"],1,null,["loc",[null,[80,2],[82,28]]]],
+        ["block","if",[["get","infoMessage",["loc",[null,[84,8],[84,19]]]]],[],2,null,["loc",[null,[84,2],[88,9]]]],
+        ["inline","ko-file-upload",[],["viewName","attachedUploads","files",["subexpr","@mut",[["get","attachedFiles",["loc",[null,[90,50],[90,63]]]]],[],[]]],["loc",[null,[90,0],[90,65]]]]
       ],
       locals: [],
-      templates: [child0, child1]
+      templates: [child0, child1, child2]
     };
   }()));
 
@@ -36153,7 +36554,7 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
 
     errors: [],
 
-    tagSuggestionService: Ember['default'].inject.service('tag-suggestion'),
+    tagSuggestionService: Ember['default'].inject.service('suggestion/tag'),
 
     teamRecords: [],
     suggestedTeams: [],
@@ -37033,7 +37434,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
         ["inline","ko-stateful-button",[],["activeText","Following","activeHoverText","Stop Following","inactiveText","Not Following","inactiveHoverText","Follow","isActive",false,"isLoading",["subexpr","@mut",[["get","isFollowingSaving",["loc",[null,[25,21],[25,38]]]]],[],[]],"isEnabled",["subexpr","@mut",[["get","canFollowUser",["loc",[null,[26,21],[26,34]]]]],[],[]]],["loc",[null,[19,9],[26,36]]]],
         ["inline","ko-stateful-button",[],["activeText","User Enabled","activeHoverText","Disable User","inactiveText","User Disabled","inactiveHoverText","Enable User","isActive",["subexpr","@mut",[["get","model.isEnabled",["loc",[null,[34,20],[34,35]]]]],[],[]],"isEnabled",["subexpr","@mut",[["get","canModifyUserState",["loc",[null,[35,21],[35,39]]]]],[],[]],"isLoading",["subexpr","@mut",[["get","isStateSaving",["loc",[null,[36,21],[36,34]]]]],[],[]],"onClick","toggleUserState"],["loc",[null,[29,9],[37,38]]]],
         ["inline","ko-user-action-menu",[],["permissions",["subexpr","@mut",[["get","sessionService.permissions",["loc",[null,[41,24],[41,50]]]]],[],[]],"userRoleType",["subexpr","@mut",[["get","model.role.roleType",["loc",[null,[42,25],[42,44]]]]],[],[]],"userModel",["subexpr","@mut",[["get","model",["loc",[null,[43,22],[43,27]]]]],[],[]]],["loc",[null,[40,8],[44,10]]]],
-        ["block","ko-text-editor",[],["viewName","postEditor"],0,null,["loc",[null,[53,8],[55,27]]]],
+        ["block","ko-text-editor",[],["viewName","postEditor","onPeopleSuggestion","suggestPeople"],0,null,["loc",[null,[53,8],[55,27]]]],
         ["block","ko-info-bar",[],[],1,null,["loc",[null,[60,6],[135,22]]]],
         ["block","ko-editor-modal",[],["onSave","submit","viewName","signatureModal","title",["subexpr","format-message",[["subexpr","intl-get",["users.editsignature"],[],["loc",[null,[142,41],[142,73]]]]],[],["loc",[null,[142,25],[142,74]]]]],2,null,["loc",[null,[140,0],[144,20]]]]
       ],
@@ -40959,6 +41360,25 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
+    this.get('/autocomplete/emails', function (db, request) {
+      return {
+        'status': 200,
+        'data': db['identity-autocomplete-emails'],
+        'resource': 'identity',
+        'resources': {
+          identity_email: arrayToObjectWithNumberedKeys(db['identity-emails']),
+          identity_domain: arrayToObjectWithNumberedKeys(db['identity-domains']),
+          field_option: arrayToObjectWithNumberedKeys(db['field-options']),
+          role: arrayToObjectWithNumberedKeys(db.roles),
+          team: arrayToObjectWithNumberedKeys(db.teams),
+          user: arrayToObjectWithNumberedKeys(db.users),
+          user_field: arrayToObjectWithNumberedKeys(db['user-fields']),
+          organization: arrayToObjectWithNumberedKeys(db.organizations)
+        },
+        'total_count': 10
+      };
+    });
+
     //let users = null;
     //this.get('/users', (db) => {
     //  users = users || getRandomUsers(db.usersdata, 10);
@@ -41421,6 +41841,28 @@ define('frontend-cp/mirage/factories/field-option', ['exports', 'ember-cli-mirag
     created_at: '2015-07-23T12:09:20Z',
     updated_at: '2015-07-23T12:09:20Z',
     resource_type: 'field_option'
+  });
+
+});
+define('frontend-cp/mirage/factories/identity-autocomplete-email', ['exports', 'ember-cli-mirage'], function (exports, Mirage) {
+
+  'use strict';
+
+  /*eslint-disable camelcase*/
+
+  exports['default'] = Mirage['default'].Factory.extend({
+    'identity': {
+      'id': function id(i) {
+        return i + 1;
+      },
+      'resource_type': 'identity_email'
+    },
+    'parent': {
+      'id': function id(i) {
+        return i + 1;
+      },
+      'resource_type': 'user'
+    }
   });
 
 });
@@ -42961,6 +43403,38 @@ define('frontend-cp/mirage/fixtures/en-us-strings', ['exports'], function (expor
     }, {
       'id': 'frontend.api.users.changepassword',
       'value': 'Change password',
+      'resource_type': 'locale_string'
+    }, {
+      'id': 'frontend.api.cases.copy-someone-in.title',
+      'value': 'Copy someone in',
+      'resource_type': 'locale_string'
+    }, {
+      'id': 'frontend.api.cases.copy-someone-in.description',
+      'value': 'These people will be copied in on your reply.',
+      'resource_type': 'locale_string'
+    }, {
+      'id': 'frontend.api.cases.copy-someone-in.input-placeholder',
+      'value': 'Find user or type email address',
+      'resource_type': 'locale_string'
+    }, {
+      'id': 'frontend.api.cases.copy-someone-in.fing-out-more',
+      'value': 'Find out more about CC recipients.',
+      'resource_type': 'locale_string'
+    }, {
+      'id': 'frontend.api.cases.copy-someone-in.showing',
+      'value': 'Showing {filtered} of {total} users',
+      'resource_type': 'locale_string'
+    }, {
+      'id': 'frontend.api.cases.copy-someone-in.not-found',
+      'value': 'No users found.<br/>You could try typing an email address to add it.',
+      'resource_type': 'locale_string'
+    }, {
+      'id': 'frontend.api.cases.copy-someone-in.help-text',
+      'value': 'These people will be copied in on your reply. <a href=\"#\">Find out more about CC recipients.</a>',
+      'resource_type': 'locale_string'
+    }, {
+      'id': 'frontend.api.cases.copy-someone-in.email-error',
+      'value': 'Please enter a valid email address',
       'resource_type': 'locale_string'
     }, {
       'id': 'frontend.api.cases.null_form_selected',
@@ -45547,6 +46021,33 @@ define('frontend-cp/mirage/scenarios/default', ['exports'], function (exports) {
     server.create('message-recipient', {
       identity: identityEmail
     });
+
+    var userModels = server.createList('user', 10, {
+      role: role,
+      teams: teams,
+      emails: emails,
+      custom_fields: userFieldValues,
+      metadata: metadata
+    });
+
+    var identityEmailModels = server.createList('identity-email', 10, {
+      email: function email(i) {
+        return 'random-email-' + i + '@kayako-unreal.com';
+      }
+    });
+
+    for (var i = 0; i < 10; i++) {
+      server.create('identity-autocomplete-email', {
+        'identity': {
+          'id': identityEmailModels[i].id,
+          'resource_type': 'identity_email'
+        },
+        'parent': {
+          'id': userModels[i].id,
+          'resource_type': 'user'
+        }
+      });
+    }
   }
 
 });
@@ -46230,6 +46731,15 @@ define('frontend-cp/models/case-priority', ['exports', 'ember-data'], function (
   });
 
 });
+define('frontend-cp/models/case-reply-options', ['exports', 'ember-data'], function (exports, DS) {
+
+  'use strict';
+
+  exports['default'] = DS['default'].ModelFragment.extend({
+    cc: DS['default'].attr('string')
+  });
+
+});
 define('frontend-cp/models/case-reply', ['exports', 'ember-data'], function (exports, DS) {
 
   'use strict';
@@ -46239,7 +46749,7 @@ define('frontend-cp/models/case-reply', ['exports', 'ember-data'], function (exp
     channelType: DS['default'].attr('string'),
     channel: DS['default'].belongsTo('account', { async: false }),
     inReplyToUuid: DS['default'].attr('string'),
-    // options[cc]
+    options: DS['default'].hasOneFragment('case-reply-options'),
     // options[bcc]
     // options[markdown]
     // options[send_link]
@@ -46333,6 +46843,7 @@ define('frontend-cp/models/case', ['exports', 'ember-data', 'frontend-cp/mixins/
     channels: DS['default'].hasMany('channel', { async: true, child: true, url: 'channels', noCache: true }),
     replyChannels: DS['default'].hasMany('channel', { async: true, child: true, url: 'reply/channels', noCache: true }),
     reply: DS['default'].hasMany('case-reply', { async: true, child: true, noCache: true }),
+    //participants: DS.hasMany('user', { async: true, child: true, url: 'participants', noCache: true }),
 
     // Parent field
     view: DS['default'].belongsTo('view', { async: true, parent: true }),
@@ -46346,7 +46857,7 @@ define('frontend-cp/models/case', ['exports', 'ember-data', 'frontend-cp/mixins/
       return note.save();
     },
 
-    saveWithPost: function saveWithPost(contents, channel, attachmentIds) {
+    saveWithPost: function saveWithPost(contents, channel, attachmentIds, options) {
       var _this = this;
 
       var account = channel.get('account');
@@ -46356,6 +46867,7 @@ define('frontend-cp/models/case', ['exports', 'ember-data', 'frontend-cp/mixins/
         channel: account,
         channelType: channelType,
         contents: contents,
+        options: this.get('store').createFragment('case-reply-options', options),
         status: this.get('status'),
         caseType: this.get('caseType'),
         priority: this.get('priority'),
@@ -46415,6 +46927,10 @@ define('frontend-cp/models/channel', ['exports', 'ember-data', 'ember'], functio
     channelType: DS['default'].attr('string'),
     charaterLimit: DS['default'].attr('number'),
     account: DS['default'].belongsTo('account', { polymorphic: true, async: false }),
+
+    isChannelTypeMailbox: Ember['default'].computed('channelType', function () {
+      return this.get('channelType') === 'MAILBOX';
+    }),
 
     iconClass: Ember['default'].computed('channelType', {
       get: function get() {
@@ -46735,6 +47251,17 @@ define('frontend-cp/models/holiday', ['exports', 'ember-data'], function (export
   });
 
 });
+define('frontend-cp/models/identity-autocomplete-email', ['exports', 'ember-data'], function (exports, DS) {
+
+  'use strict';
+
+  exports['default'] = DS['default'].Model.extend({
+    identity: DS['default'].belongsTo('identity-email'),
+
+    parent: DS['default'].belongsTo('has-email-identities', { async: true, polymorphic: true })
+  });
+
+});
 define('frontend-cp/models/identity-domain', ['exports', 'ember-data', 'frontend-cp/models/identity'], function (exports, DS, Identity) {
 
   'use strict';
@@ -46754,6 +47281,7 @@ define('frontend-cp/models/identity-email', ['exports', 'ember-data', 'frontend-
     email: DS['default'].attr('string'),
     isNotificationEnabled: DS['default'].attr('string'),
 
+    // user or organization
     parent: DS['default'].belongsTo('has-email-identities', { async: true, polymorphic: true, parent: true })
   });
 
@@ -48137,6 +48665,52 @@ define('frontend-cp/serializers/facebook-account', ['exports', 'frontend-cp/seri
   });
 
 });
+define('frontend-cp/serializers/identity-autocomplete-email', ['exports', 'frontend-cp/serializers/application'], function (exports, ApplicationSerializer) {
+
+  'use strict';
+
+  /*eslint-disable camelcase */
+
+  exports['default'] = ApplicationSerializer['default'].extend({
+    normalizePayload: function normalizePayload(payload) {
+      if (!payload.data) {
+        return this._super(payload);
+      }
+
+      // set parent model for identity record
+      payload.data.forEach(function (record) {
+        var type = record.identity.resource_type;
+        var id = record.identity.id;
+
+        var item = payload.resources[type][id];
+
+        item.parent = {
+          id: record.parent.id,
+          resource_type: record.parent.resource_type
+        };
+      });
+
+      return this._super(payload);
+    },
+
+    extractArrayData: function extractArrayData(data, payload) {
+      var _this = this;
+
+      var resourceType = 'identity_autocomplete_email';
+
+      data.forEach(function (item) {
+        item.id = item.identity.id;
+        item.resource_type = resourceType;
+      });
+
+      data.forEach(function (item) {
+        return _this.extractItem(item, resourceType);
+      });
+      payload[resourceType] = data;
+    }
+  });
+
+});
 define('frontend-cp/serializers/locale', ['exports', 'frontend-cp/serializers/application'], function (exports, ApplicationSerializer) {
 
   'use strict';
@@ -48710,6 +49284,7 @@ define('frontend-cp/services/context-modal', ['exports', 'ember'], function (exp
     activeContextModalId: null,
     index: null,
     inline: false,
+    repositionRequired: false,
 
     urlService: Ember['default'].inject.service('url'),
 
@@ -49540,16 +50115,160 @@ define('frontend-cp/services/store-cache', ['exports', 'ember', 'npm:lodash'], f
         return key + ':' + value;
       }).sort().join(':');
 
-      if (!reload && this.get('allCache.' + serializedQuery)) {
+      if (!reload && this.get('allCache')[serializedQuery]) {
         return new Ember['default'].RSVP.Promise(function (resolve) {
-          resolve(_this2.get('allCache.' + serializedQuery));
+          resolve(_this2.get('allCache')[serializedQuery]);
         });
       } else {
         return this.get('store').query(type, _query).then(function (data) {
-          _this2.set('allCache.' + serializedQuery, data);
+          _this2.get('allCache')[serializedQuery] = data;
           return data;
         });
       }
+    }
+  });
+
+});
+define('frontend-cp/services/suggestion/exclusion', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Service.extend({
+    exclude: function exclude(data, exclusions) {
+      var key = arguments.length <= 2 || arguments[2] === undefined ? 'name' : arguments[2];
+
+      var excluded = [];
+
+      exclusions || (exclusions = []);
+      data || (data = []);
+
+      data.forEach(function (element) {
+        if (exclusions.indexOf(element.get(key)) === -1) {
+          excluded.push(element);
+        }
+      });
+
+      return excluded;
+    }
+  });
+
+});
+define('frontend-cp/services/suggestion/people', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  var PROMISE_NAME = 'autocomplete-name';
+
+  /**
+   * Work with people suggestions via cached service.
+   */
+  exports['default'] = Ember['default'].Service.extend({
+    store: Ember['default'].inject.service('store'),
+    exclusion: Ember['default'].inject.service('suggestion/exclusion'),
+    promiseQueue: Ember['default'].inject.service('suggestion/promise-queue'),
+
+    queue: [],
+
+    suggest: function suggest(searchTerm, exclude) {
+      var promise = this.get('store').query('identity-autocomplete-email', {
+        address: searchTerm,
+        exclude: exclude || []
+      });
+
+      this.get('promiseQueue').push(PROMISE_NAME, searchTerm, promise);
+
+      return promise;
+    },
+
+    isPromiseDiscarded: function isPromiseDiscarded(searchTerm) {
+      return this.get('promiseQueue').isDiscarded(PROMISE_NAME, searchTerm);
+    },
+
+    flushQueue: function flushQueue() {
+      this.get('promiseQueue').flush(PROMISE_NAME);
+    },
+
+    exclude: function exclude(data, exclusions) {
+      var key = arguments.length <= 2 || arguments[2] === undefined ? 'name' : arguments[2];
+
+      return this.get('exclusion').exclude(data, exclusions.map(function (record) {
+        return record.get('email');
+      }), key);
+    }
+  });
+
+});
+define('frontend-cp/services/suggestion/promise-queue', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Service.extend({
+    queue: {},
+
+    //Queue is required, to prevent several promises to be
+    //resolved in random order. For example, someone writes
+    //"d" and after de-bounce (150ms), writes "demo".
+    //"d" will return results, but "demo" won't. But as
+    //server responds faster to the empty result, on "demo"
+    //string we will get wrong result.
+    push: function push(name, term, promise) {
+      var queue = this.get('queue');
+
+      if (!queue[name]) {
+        queue[name] = [];
+      }
+
+      queue[name].push({
+        term: term,
+        promise: promise
+      });
+    },
+
+    isDiscarded: function isDiscarded(name, term) {
+      var queue = this.get('queue')[name] || [];
+      var lastPromiseLength = queue.get('length');
+      var queuedPromise = queue[lastPromiseLength - 1];
+
+      return (queuedPromise || {}).term !== term;
+    },
+
+    flush: function flush(name) {
+      if (this.get('queue')[name] && this.get('queue')[name].length) {
+        this.get('queue')[name].clear();
+        delete this.get('queue')[name];
+      }
+    }
+  });
+
+});
+define('frontend-cp/services/suggestion/tag', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Service.extend({
+    storeCache: Ember['default'].inject.service('store-cache'),
+    exclusion: Ember['default'].inject.service('suggestion/exclusion'),
+
+    suggest: function suggest(searchTerm) {
+      return this.get('storeCache').query('tag', {
+        name: searchTerm
+      });
+    },
+
+    suggestFilter: function suggestFilter(records, searchTerm, key) {
+      var regexp = new RegExp(searchTerm, 'i');
+
+      return new Ember['default'].RSVP.Promise(function (resolve) {
+        resolve(records.filter(function (team) {
+          return regexp.test(team.get(key));
+        }));
+      });
+    },
+
+    exclude: function exclude(data, exclusions) {
+      var key = arguments.length <= 2 || arguments[2] === undefined ? 'name' : arguments[2];
+
+      return this.get('exclusion').exclude(data, exclusions, key);
     }
   });
 
@@ -49631,48 +50350,6 @@ define('frontend-cp/services/tabs', ['exports', 'ember', 'frontend-cp/models/tab
   });
 
 });
-define('frontend-cp/services/tag-suggestion', ['exports', 'ember'], function (exports, Ember) {
-
-  'use strict';
-
-  exports['default'] = Ember['default'].Service.extend({
-    storeCache: Ember['default'].inject.service('store-cache'),
-
-    suggest: function suggest(searchTerm) {
-      return this.get('storeCache').query('tag', {
-        name: searchTerm
-      });
-    },
-
-    suggestFilter: function suggestFilter(records, searchTerm, key) {
-      var regexp = new RegExp(searchTerm, 'i');
-
-      return new Ember['default'].RSVP.Promise(function (resolve) {
-        resolve(records.filter(function (team) {
-          return regexp.test(team.get(key));
-        }));
-      });
-    },
-
-    exclude: function exclude(data, exclusions) {
-      var key = arguments.length <= 2 || arguments[2] === undefined ? 'name' : arguments[2];
-
-      var excluded = [];
-
-      exclusions || (exclusions = []);
-      data || (data = []);
-
-      data.forEach(function (element) {
-        if (exclusions.indexOf(element.get(key)) === -1) {
-          excluded.push(element);
-        }
-      });
-
-      return excluded;
-    }
-  });
-
-});
 define('frontend-cp/services/url', ['exports', 'ember'], function (exports, Ember) {
 
   'use strict';
@@ -49691,6 +50368,18 @@ define('frontend-cp/services/validations', ['exports', 'ember'], function (expor
   exports['default'] = Ember['default'].Object.extend({
     init: function init() {
       set(this, 'cache', {});
+    }
+  });
+
+});
+define('frontend-cp/services/validator', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Service.extend({
+    isEmailValid: function isEmailValid(email) {
+      return (/.*@.*\..*/.test(email)
+      );
     }
   });
 
@@ -57316,8 +58005,6 @@ define('frontend-cp/session/showcase/controller', ['exports', 'ember', 'ember-va
 
     macros: [{ id: 1, value: 'Navigate A1,Navigate B1,Item B1' }, { id: 2, value: 'Navigate A1,Navigate B2,Item B2' }, { id: 3, value: 'Navigate A1,Item B3' }, { id: 4, value: 'Navigate A1,Item B4' }, { id: 5, value: 'Navigate A2,Item A2' }, { id: 6, value: 'Navigate A3,Item A3' }, { id: 7, value: 'Item A4' }, { id: 8, value: 'Item A5' }],
 
-    copyInParticipants: [{ image: 'http://lorempixel.com/48/48/people/', name: 'Jessica Myers', company: 'Cisco Systems Inc.', email: 'jessica@cisco.com' }, { image: 'http://lorempixel.com/48/48/people/', name: 'Nina Jessicon', company: 'Stelco Steel Inc.', email: 'nina@stelco.com' }, { image: 'http://lorempixel.com/48/48/people/', name: 'Rebecca Sesam', company: 'Cisco Systems Inc.', email: 'jessica@cisco.com' }, { image: 'http://lorempixel.com/48/48/people/', name: 'Jessica Myers', company: 'Cisco Systems Inc.', email: 'jessica@cisco.com' }, { image: 'http://lorempixel.com/48/48/people/', name: 'John Doe', company: 'Cisco Systems Inc.', email: 'johndoe@cisco.com' }, { image: 'http://lorempixel.com/48/48/people/', name: 'Janine Smith', company: 'Cisco Systems Inc.', email: 'jessica@cisco.com' }, { image: 'http://lorempixel.com/48/48/people/', name: 'John Smith', company: 'Cisco Systems Inc.', email: 'jessica@cisco.com' }, { image: 'http://lorempixel.com/48/48/people/', name: 'Kebab Soup', company: 'Cisco Systems Inc.', email: 'jessica@cisco.com' }, { image: 'http://lorempixel.com/48/48/people/', name: 'Peter Myers', company: 'Cisco Systems Inc.', email: 'jessica@cisco.com' }],
-
     participants: [{ image: 'http://cdn2.thegloss.com/wp-content/uploads/2013/06/Nigella-Lawson.jpg', alt: 'Lord' }, { image: 'http://images.tvnz.co.nz/tvnzImages/entertainmentNews/2014/03/nigellaLawsonMaster.jpg', alt: 'Have Mercy' }, { image: 'http://regmedia.co.uk/2013/03/18/nigellaLawsonPhotoHugoBurnand.jpg', alt: 'On My' }, { image: 'http://i.dailymail.co.uk/i/pix/2012/11/18/article-2234773-0B6AFF92000005DC-297634x722.jpg', alt: 'Deadlifts' }],
 
     viewers: [{
@@ -58303,9 +58990,9 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
         var el2 = dom.createElement("code");
         var el3 = dom.createTextNode("\n    ");
         dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("{{ko-participants\n      participants=participants\n      addParticipant=\"addParticipant\"}}\n\n    ");
+        var el3 = dom.createTextNode("{{ko-people-list\n      participants=participants\n      addParticipant=\"addParticipant\"}}\n\n    ");
         dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("{{ko-add-participants-context-menu\n      copyInParticipants=copyInParticipants\n      contextModalId=\"addParticipants\"}}\n  ");
+        var el3 = dom.createTextNode("{{ko-people\n      title=(format-message (intl-get \"cases.addparticipant\"))\n      contextModalId=\"addParticipants\"}}\n  ");
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n  ");
@@ -58332,9 +59019,9 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
         var el2 = dom.createElement("code");
         var el3 = dom.createTextNode("\n    ");
         dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("{{ko-participants\n      participants=participants\n      addParticipant=\"addParticipantInline\"}}\n\n    ");
+        var el3 = dom.createTextNode("{{ko-people-list\n      participants=participants\n      addParticipant=\"addParticipantInline\"}}\n\n    ");
         dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("{{ko-add-participants-context-menu\n      copyInParticipants=copyInParticipants\n      contextModalId=\"addParticipantsInline\"}}\n  ");
+        var el3 = dom.createTextNode("{{ko-people\n      title=(format-message (intl-get \"cases.addparticipant\"))\n      contextModalId=\"addParticipantsInline\"}}\n  ");
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n  ");
@@ -60780,10 +61467,10 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
         ["element","action",["onSpawnNotificationClicked","warning"],[],["loc",[null,[9,43],[9,92]]]],
         ["element","action",["onSpawnNotificationClicked","error"],[],["loc",[null,[10,43],[10,90]]]],
         ["element","action",["onSpawnNotificationClicked","success"],[],["loc",[null,[11,43],[11,92]]]],
-        ["inline","ko-participants",[],["participants",["subexpr","@mut",[["get","participants",["loc",[null,[18,17],[18,29]]]]],[],[]],"addParticipant","addParticipant"],["loc",[null,[17,4],[19,37]]]],
-        ["inline","ko-add-participants-context-menu",[],["copyInParticipants",["subexpr","@mut",[["get","copyInParticipants",["loc",[null,[22,23],[22,41]]]]],[],[]],"contextModalId","addParticipants"],["loc",[null,[21,4],[23,38]]]],
-        ["inline","ko-participants",[],["participants",["subexpr","@mut",[["get","participants",["loc",[null,[39,17],[39,29]]]]],[],[]],"addParticipant","addParticipantInline"],["loc",[null,[38,2],[40,43]]]],
-        ["inline","ko-add-participants-context-menu",[],["copyInParticipants",["subexpr","@mut",[["get","copyInParticipants",["loc",[null,[43,23],[43,41]]]]],[],[]],"contextModalId","addParticipantsInline"],["loc",[null,[42,2],[44,44]]]],
+        ["inline","ko-people-list",[],["participants",["subexpr","@mut",[["get","participants",["loc",[null,[18,17],[18,29]]]]],[],[]],"addParticipant","addParticipant"],["loc",[null,[17,4],[19,37]]]],
+        ["inline","ko-people",[],["title",["subexpr","format-message",[["subexpr","intl-get",["cases.addparticipant"],[],["loc",[null,[22,26],[22,59]]]]],[],["loc",[null,[22,10],[22,60]]]],"contextModalId","addParticipants"],["loc",[null,[21,4],[23,38]]]],
+        ["inline","ko-people-list",[],["participants",["subexpr","@mut",[["get","participants",["loc",[null,[39,17],[39,29]]]]],[],[]],"addParticipant","addParticipantInline"],["loc",[null,[38,2],[40,43]]]],
+        ["inline","ko-people",[],["title",["subexpr","format-message",[["subexpr","intl-get",["cases.addparticipant"],[],["loc",[null,[43,26],[43,59]]]]],[],["loc",[null,[43,10],[43,60]]]],"contextModalId","addParticipantsInline"],["loc",[null,[42,2],[44,44]]]],
         ["block","ko-toggle-context-modal",[],["toggleModal","drillDownInline"],0,null,["loc",[null,[59,2],[61,30]]]],
         ["inline","ko-drill-down-context-menu",[],["title",["subexpr","format-message",[["subexpr","intl-get",["cases.applymacro"],[],["loc",[null,[64,26],[64,55]]]]],[],["loc",[null,[64,10],[64,56]]]],"placeholder",["subexpr","format-message",[["subexpr","intl-get",["cases.applymacroplaceholder"],[],["loc",[null,[65,32],[65,72]]]]],[],["loc",[null,[65,16],[65,73]]]],"options",["subexpr","@mut",[["get","macros",["loc",[null,[66,12],[66,18]]]]],[],[]],"contextModalId","drillDownInline","onSelect","drillDownSelected"],["loc",[null,[63,2],[68,34]]]],
         ["inline","ko-agent-dropdown/create-case",[],["submit","onCreateCaseSubmitted","create","onCreateCaseCompleted","error","onCreateCaseFailed","cancel","onCreateCaseCancelled"],["loc",[null,[86,2],[91,4]]]],
@@ -62967,63 +63654,6 @@ define('frontend-cp/tests/helpers/start-app', ['exports', 'ember', 'frontend-cp/
 
     return application;
   }
-
-});
-define('frontend-cp/tests/integration/components/ko-add-user-popover/component-test', ['ember-qunit'], function (ember_qunit) {
-
-  'use strict';
-
-  ember_qunit.moduleForComponent('ko-add-user-popover', 'Integration | Component | ko add user popover', {
-    integration: true
-  });
-
-  ember_qunit.test('it renders', function (assert) {
-    assert.expect(2);
-
-    // Set any properties with this.set('myProperty', 'value');
-    // Handle any actions with this.on('myAction', function(val) { ... });
-
-    this.render(Ember.HTMLBars.template((function () {
-      return {
-        meta: {
-          'revision': 'Ember@1.13.7',
-          'loc': {
-            'source': null,
-            'start': {
-              'line': 1,
-              'column': 0
-            },
-            'end': {
-              'line': 1,
-              'column': 23
-            }
-          }
-        },
-        arity: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createComment('');
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-          dom.insertBoundary(fragment, 0);
-          dom.insertBoundary(fragment, null);
-          return morphs;
-        },
-        statements: [['content', 'ko-add-user-popover', ['loc', [null, [1, 0], [1, 23]]]]],
-        locals: [],
-        templates: []
-      };
-    })()));
-
-    assert.equal(this.$('strong:first').text().trim(), 'Name');
-    assert.equal(this.$('strong:last').text().trim(), 'Email Address');
-  });
 
 });
 define('frontend-cp/tests/integration/components/ko-address/component-test', ['ember-qunit'], function (ember_qunit) {
@@ -66421,198 +67051,6 @@ define('frontend-cp/tests/unit/adapters/private-test', ['frontend-cp/tests/helpe
   });
 
 });
-define('frontend-cp/tests/unit/components/ko-add-participants-context-menu/component-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
-
-  'use strict';
-
-  qunit.moduleForComponent('ko-add-participants-context-menu', {
-    // Specify the other units that are required for this test
-    // needs: ['component:foo', 'helper:bar']
-    needs: ['component:ko-context-modal-item', 'component:ko-add-participants-popover', 'component:ko-add-user-popover']
-  });
-
-  qunit.test('it renders', function (assert) {
-    assert.expect(2);
-
-    // Creates the component instance
-    var component = this.subject();
-    assert.equal(component._state, 'preRender');
-
-    // Renders the component to the page
-    this.render();
-    assert.equal(component._state, 'inDOM');
-  });
-
-});
-define('frontend-cp/tests/unit/components/ko-add-participants-popover/component-test', ['ember', 'frontend-cp/tests/helpers/qunit'], function (Ember, qunit) {
-
-  'use strict';
-
-  var component = undefined;
-  var firstListItem = 'li:first';
-  var x = 'i.i--close';
-
-  var copyInParticipants = [{ image: 'http://lorempixel.com/48/48/people/', name: 'Jessica Myers', company: 'Cisco Systems Inc.', email: 'jessica@cisco.com' }, { image: 'http://lorempixel.com/48/48/people/', name: 'Nina Jessicon', company: 'Stelco Steel Inc.', email: 'nina@stelco.com' }, { image: 'http://lorempixel.com/48/48/people/', name: 'Rebecca Sesam', company: 'Cisco Systems Inc.', email: 'jessica@cisco.com' }, { image: 'http://lorempixel.com/48/48/people/', name: 'Jessica Myers', company: 'Cisco Systems Inc.', email: 'jessica@cisco.com' }, { image: 'http://lorempixel.com/48/48/people/', name: 'John Doe', company: 'Cisco Systems Inc.', email: 'johndoe@cisco.com' }, { image: 'http://lorempixel.com/48/48/people/', name: 'Janine Smith', company: 'Cisco Systems Inc.', email: 'jessica@cisco.com' }, { image: 'http://lorempixel.com/48/48/people/', name: 'John Smith', company: 'Cisco Systems Inc.', email: 'jessica@cisco.com' }, { image: 'http://lorempixel.com/48/48/people/', name: 'Kebab Soup', company: 'Cisco Systems Inc.', email: 'jessica@cisco.com' }, { image: 'http://lorempixel.com/48/48/people/', name: 'Peter Myers', company: 'Cisco Systems Inc.', email: 'jessica@cisco.com' }];
-
-  qunit.moduleForComponent('ko-add-participants-popover', {
-    needs: ['component:ko-checkbox'],
-    setup: function setup() {
-      component = this.subject();
-      component.set('results', copyInParticipants);
-      component.set('contextModalId', 'addParticipants');
-    },
-    teardown: function teardown() {}
-  });
-
-  qunit.test('it renders', function (assert) {
-    assert.expect(2);
-
-    assert.equal(component._state, 'preRender');
-
-    this.render();
-
-    assert.equal(component._state, 'inDOM');
-  });
-
-  qunit.test('it does not show results when initialized', function (assert) {
-    assert.expect(1);
-
-    this.render();
-
-    assert.equal(component.showResults, false, 'it doesnt show any results at initialization');
-  });
-
-  qunit.test('upon keypress/typing results start to show', function (assert) {
-    assert.expect(1);
-
-    this.render();
-
-    Ember['default'].run(function () {
-      component.send('whenKeyIsPressed');
-    });
-
-    assert.equal(component.showResults, true, 'it shows results');
-  });
-
-  qunit.test('searching by name works', function (assert) {
-    assert.expect(1);
-
-    this.render();
-
-    Ember['default'].run(function () {
-      component.set('showResults', true);
-    });
-
-    Ember['default'].run(function () {
-      component.set('searchTerm', 'Peter');
-    });
-
-    Ember['default'].run(function () {
-      component.send('query');
-    });
-
-    assert.equal(component.filteredParticipants[0].name, 'Peter Myers', 'only contains filtered participants');
-  });
-
-  qunit.test('searching by company works', function (assert) {
-    assert.expect(1);
-
-    this.render();
-
-    Ember['default'].run(function () {
-      component.set('showResults', true);
-    });
-
-    Ember['default'].run(function () {
-      component.set('searchTerm', 'Stelco');
-    });
-
-    Ember['default'].run(function () {
-      component.send('query');
-    });
-
-    assert.equal(component.filteredParticipants[0].company, 'Stelco Steel Inc.', 'only contains filtered participants');
-  });
-
-  qunit.test('searching by email works', function (assert) {
-    assert.expect(1);
-
-    this.render();
-
-    Ember['default'].run(function () {
-      component.set('showResults', true);
-    });
-
-    Ember['default'].run(function () {
-      component.set('searchTerm', 'nina@stelco.com');
-    });
-
-    Ember['default'].run(function () {
-      component.send('query');
-    });
-
-    assert.equal(component.filteredParticipants[0].email, 'nina@stelco.com', 'only contains filtered participants');
-  });
-
-  qunit.test('clicking on search result adds it to selected participants list', function (assert) {
-    var _this = this;
-
-    assert.expect(1);
-
-    this.render();
-
-    Ember['default'].run(function () {
-      component.set('showResults', true);
-    });
-
-    Ember['default'].run(function () {
-      component.set('searchTerm', 'nina@stelco.com');
-    });
-
-    Ember['default'].run(function () {
-      component.send('query');
-    });
-
-    Ember['default'].run(function () {
-      _this.$(firstListItem).click();
-    });
-
-    assert.equal(component.selectedParticipants[0].name, 'Nina Jessicon', 'participant has been selected');
-  });
-
-  qunit.test('clicking on x removes participant from selected list', function (assert) {
-    var _this2 = this;
-
-    assert.expect(2);
-
-    this.render();
-
-    Ember['default'].run(function () {
-      component.set('showResults', true);
-    });
-
-    Ember['default'].run(function () {
-      component.set('searchTerm', 'nina@stelco.com');
-    });
-
-    Ember['default'].run(function () {
-      component.send('query');
-    });
-
-    Ember['default'].run(function () {
-      _this2.$(firstListItem).click();
-    });
-
-    assert.equal(component.selectedParticipants[0].name, 'Nina Jessicon', 'participant has been selected');
-
-    Ember['default'].run(function () {
-      _this2.$(x).click();
-    });
-
-    assert.equal(component.selectedParticipants.length, 0, 'participant has been removed from selected list');
-  });
-
-});
 define('frontend-cp/tests/unit/components/ko-admin-card-team/component-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
@@ -68276,6 +68714,180 @@ define('frontend-cp/tests/unit/components/ko-option-list-drill-down/component-te
   });
 
 });
+define('frontend-cp/tests/unit/components/ko-people/component-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
+
+  'use strict';
+
+  qunit.moduleForComponent('ko-people', {
+    // Specify the other units that are required for this test
+    // needs: ['component:foo', 'helper:bar']
+    needs: ['component:ko-context-modal-item', 'component:ko-people-popover']
+  });
+
+  qunit.test('it renders', function (assert) {
+    assert.expect(2);
+
+    // Creates the component instance
+    var component = this.subject();
+    assert.equal(component._state, 'preRender');
+
+    // Renders the component to the page
+    this.render();
+    assert.equal(component._state, 'inDOM');
+  });
+
+});
+define('frontend-cp/tests/unit/components/ko-people-popover/component-test', ['ember', 'frontend-cp/tests/helpers/qunit'], function (Ember, qunit) {
+
+  'use strict';
+
+  var component = undefined;
+  var firstListItem = '.ko-people-popover__filtered-list-item:first';
+  var x = '.ko-people-popover__cross';
+
+  qunit.moduleForComponent('ko-people-popover', {
+    needs: ['component:ko-checkbox', 'component:ko-avatar', 'component:ko-loader'],
+    setup: function setup() {
+      component = this.subject();
+
+      component.reopen({
+        // Mock for Ember.run.debounce, as it is failing tests randomly
+        // because debounce callback is executed after component *might*
+        // be destroyed.
+        searchTermDebounce: function searchTermDebounce(scope, callback) {
+          callback.call(scope);
+        }
+      });
+
+      component.set('contextModalId', 'addParticipants');
+    },
+    teardown: function teardown() {}
+  });
+
+  qunit.test('it renders', function (assert) {
+    assert.expect(2);
+
+    assert.equal(component._state, 'preRender');
+
+    this.render();
+
+    assert.equal(component._state, 'inDOM');
+  });
+
+  qunit.test('it does not show results when initialized', function (assert) {
+    assert.expect(1);
+
+    this.render();
+
+    assert.equal(component.get('searchAttempt'), false, 'it does not show any results at initialization');
+  });
+
+  qunit.test('changing searchTerm fires action', function (assert) {
+    assert.expect(2);
+
+    this.render();
+
+    var targetObject = {
+      externalPeopleSuggestionAction: function externalPeopleSuggestionAction(term, selected) {
+        assert.equal('R', term);
+        assert.deepEqual([], selected);
+      }
+    };
+
+    Ember['default'].run(function () {
+      component.set('selectedPeople', []);
+      component.set('suggestedPeople', null);
+    });
+
+    component.set('suggestPeople', 'externalPeopleSuggestionAction');
+    component.set('targetObject', targetObject);
+
+    Ember['default'].run(function () {
+      component.set('searchTerm', 'R');
+    });
+  });
+
+  qunit.test('clicking on search result adds it to selected people list', function (assert) {
+    assert.expect(2);
+
+    this.render();
+
+    Ember['default'].run(function () {
+      component.set('selectedPeople', []);
+      component.set('suggestedPeople', null);
+    });
+
+    Ember['default'].run(function () {
+      assert.equal(0, component.get('selectedPeople.length'), 'No people are selected on component init');
+    });
+
+    Ember['default'].run(function () {
+      component.set('searchTerm', 'K');
+      component.set('isLoading', false);
+      component.set('suggestedPeople', [{
+        parent: {
+          avatar: '',
+          fullName: 'Demo User',
+          organization: {
+            name: 'Kayako'
+          }
+        },
+        email: 'kayako-demo-1@kayako-testing.com'
+      }]);
+    });
+
+    Ember['default'].run(function () {
+      component.$(firstListItem).click();
+    });
+
+    Ember['default'].run(function () {
+      assert.equal(1, component.get('selectedPeople.length'), 'One person is added to selected people list');
+    });
+  });
+
+  qunit.test('clicking on x removes participant from selected list', function (assert) {
+    assert.expect(2);
+
+    this.render();
+
+    Ember['default'].run(function () {
+      component.set('selectedPeople', []);
+      component.set('suggestedPeople', null);
+    });
+
+    Ember['default'].run(function () {
+      component.set('searchTerm', 'K');
+      component.set('isLoading', false);
+      component.set('suggestedPeople', [{
+        parent: {
+          avatar: '',
+          fullName: 'Demo User',
+          organization: {
+            name: 'Kayako'
+          }
+        },
+        email: 'kayako-demo-1@kayako-testing.com'
+      }]);
+    });
+
+    Ember['default'].run(function () {
+      component.$(firstListItem).click();
+    });
+
+    Ember['default'].run(function () {
+      assert.equal(1, component.get('selectedPeople.length'), 'One person is added to selected people list');
+    });
+
+    Ember['default'].run(function () {
+      component.$(x).click();
+    });
+
+    Ember['default'].run(function () {
+      assert.equal(0, component.get('selectedPeople.length'), 'No people are selected after the last person is removed');
+    });
+  });
+
+});
 define('frontend-cp/tests/unit/components/ko-radio/component-test', ['ember', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/lib/keycodes'], function (Ember, qunit, KeyCodes) {
 
   'use strict';
@@ -68811,9 +69423,7 @@ define('frontend-cp/tests/unit/components/ko-text-editor/component-test', ['fron
   'use strict';
 
   qunit.moduleForComponent('ko-text-editor', {
-    // Specify the other units that are required for this test
-    // needs: ['component:foo', 'helper:bar']
-    needs: ['component:ko-file-field', 'component:ko-draggable-dropzone', 'component:ko-channel-select', 'component:ko-text-editor/toggle-button', 'component:ko-file-upload']
+    needs: ['component:ko-file-field', 'component:ko-draggable-dropzone', 'component:ko-channel-select', 'component:ko-text-editor/toggle-button', 'component:ko-file-upload', 'component:ko-people']
   });
 
   qunit.test('it renders', function (assert) {
@@ -69371,6 +69981,145 @@ define('frontend-cp/tests/unit/services/route-state-test', ['frontend-cp/tests/h
   }
 
 });
+define('frontend-cp/tests/unit/services/suggestion/exclusion-test', ['ember', 'ember-qunit'], function (Ember, ember_qunit) {
+
+  'use strict';
+
+  ember_qunit.moduleFor('service:suggestion/exclusion', 'Unit | Service | suggestion/exclusion');
+
+  ember_qunit.test('it excludes same records when they are strings', function (assert) {
+    assert.expect(1);
+
+    var service = this.subject();
+
+    var data = [Ember['default'].Object.create({ name: 'maintenance' }), Ember['default'].Object.create({ name: 'rejected' }), Ember['default'].Object.create({ name: 'approved' }), Ember['default'].Object.create({ name: 'hello-kitty' })];
+    var exclusions = ['hello-kitty'];
+
+    var excluded = service.exclude(data, exclusions);
+
+    excluded = excluded.map(function (record) {
+      return record.get('name');
+    });
+
+    assert.deepEqual(excluded, ['maintenance', 'rejected', 'approved']);
+  });
+
+  ember_qunit.test('it excludes same records when they are emails', function (assert) {
+    assert.expect(1);
+
+    var service = this.subject();
+
+    var data = [Ember['default'].Object.create({ name: 'demo@demo.com' }), Ember['default'].Object.create({ name: 'demo.demo@demo.com' }), Ember['default'].Object.create({ name: 'any.random.email+demo@demo.com' })];
+    var exclusions = ['any.random.email+demo@demo.com'];
+
+    var excluded = service.exclude(data, exclusions);
+
+    excluded = excluded.map(function (record) {
+      return record.get('name');
+    });
+
+    assert.deepEqual(excluded, ['demo@demo.com', 'demo.demo@demo.com']);
+  });
+
+  ember_qunit.test('it do not fail if data or exclusions are null or empty', function (assert) {
+    assert.expect(3);
+
+    var service = this.subject();
+
+    var data = [Ember['default'].Object.create({ name: 'maintenance' }), Ember['default'].Object.create({ name: 'rejected' }), Ember['default'].Object.create({ name: 'approved' })];
+
+    assert.deepEqual(service.exclude(data, null).map(function (record) {
+      return record.get('name');
+    }), ['maintenance', 'rejected', 'approved']);
+
+    assert.deepEqual(service.exclude(null, null).map(function (record) {
+      return record.get('name');
+    }), []);
+    assert.deepEqual(service.exclude(null, ['approved']).map(function (record) {
+      return record.get('name');
+    }), []);
+  });
+
+});
+define('frontend-cp/tests/unit/services/suggestion/promise-queue-test', ['ember', 'ember-qunit'], function (Ember, ember_qunit) {
+
+  'use strict';
+
+  ember_qunit.moduleFor('service:suggestion/promise-queue', 'Unit | Service | suggestion/promise queue');
+
+  ember_qunit.test('it stores promises by name and term', function (assert) {
+    var service = this.subject();
+    service.queue = {};
+
+    var promise = new Ember['default'].RSVP.Promise(function (resolve, reject) {
+      resolve();
+    });
+
+    var nameOne = 'testName';
+    var nameTwo = 'anotherName';
+
+    service.push(nameOne, 'a', promise);
+    service.push(nameOne, 'ab', promise);
+    service.push(nameOne, 'abc', promise);
+
+    service.push(nameTwo, 'a', promise);
+    service.push(nameTwo, 'ab', promise);
+
+    assert.equal(3, service.queue[nameOne].length);
+    assert.equal(2, service.queue[nameTwo].length);
+  });
+
+  ember_qunit.test('it validates if promise is discarded (not the last one)', function (assert) {
+    var service = this.subject();
+    service.queue = {};
+
+    var promise = new Ember['default'].RSVP.Promise(function (resolve, reject) {
+      resolve();
+    });
+
+    service.push('testName', 'a', promise);
+    service.push('testName', 'ab', promise);
+    service.push('testName', 'abc', promise);
+
+    assert.equal(true, service.isDiscarded('testName', 'a'));
+    assert.equal(true, service.isDiscarded('testName', 'ab'));
+    assert.equal(false, service.isDiscarded('testName', 'abc'));
+  });
+
+  ember_qunit.test('it flushes all promise queue by name', function (assert) {
+    var service = this.subject();
+    service.queue = {};
+
+    var promise = new Ember['default'].RSVP.Promise(function (resolve, reject) {
+      resolve();
+    });
+
+    var nameOne = 'testName';
+    var nameTwo = 'anotherName';
+
+    service.push(nameOne, 'a', promise);
+    service.push(nameOne, 'ab', promise);
+    service.push(nameOne, 'abc', promise);
+
+    service.push(nameTwo, 'a', promise);
+    service.push(nameTwo, 'ab', promise);
+
+    assert.equal(3, service.queue[nameOne].length);
+    assert.equal(2, service.queue[nameTwo].length);
+
+    service.flush(nameOne);
+
+    assert.equal(undefined, service.queue[nameOne]);
+    assert.equal(2, service.queue[nameTwo].length);
+
+    service.flush(nameTwo);
+    assert.equal(undefined, service.queue[nameOne]);
+    assert.equal(undefined, service.queue[nameTwo]);
+
+    assert.deepEqual({}, service.queue);
+  });
+
+});
 define('frontend-cp/tests/unit/services/tabs-test', ['frontend-cp/tests/helpers/qunit', 'frontend-cp/tests/fixtures/services/mock-local-store'], function (qunit, MockLocalStoreService) {
 
   'use strict';
@@ -69511,50 +70260,6 @@ define('frontend-cp/tests/unit/services/tabs-test', ['frontend-cp/tests/helpers/
   });
 
 });
-define('frontend-cp/tests/unit/services/tag-suggestion-test', ['ember-qunit', 'ember'], function (ember_qunit, Ember) {
-
-  'use strict';
-
-  ember_qunit.moduleFor('service:tag-suggestion', 'Unit | Service | tag suggestion', {});
-
-  // Replace this with your real tests.
-  ember_qunit.test('it excludes same tags', function (assert) {
-    assert.expect(1);
-
-    var service = this.subject();
-
-    var data = [Ember['default'].Object.create({ name: 'maintenance' }), Ember['default'].Object.create({ name: 'rejected' }), Ember['default'].Object.create({ name: 'approved' }), Ember['default'].Object.create({ name: 'hello-kitty' })];
-    var exclusions = ['hello-kitty'];
-
-    var excluded = service.exclude(data, exclusions);
-
-    excluded = excluded.map(function (tag) {
-      return tag.get('name');
-    });
-
-    assert.deepEqual(excluded, ['maintenance', 'rejected', 'approved']);
-  });
-
-  ember_qunit.test('it do not fail if data or exclusions are null or empty', function (assert) {
-    assert.expect(3);
-
-    var service = this.subject();
-
-    var data = [Ember['default'].Object.create({ name: 'maintenance' }), Ember['default'].Object.create({ name: 'rejected' }), Ember['default'].Object.create({ name: 'approved' })];
-
-    assert.deepEqual(service.exclude(data, null).map(function (tag) {
-      return tag.get('name');
-    }), ['maintenance', 'rejected', 'approved']);
-
-    assert.deepEqual(service.exclude(null, null).map(function (tag) {
-      return tag.get('name');
-    }), []);
-    assert.deepEqual(service.exclude(null, ['approved']).map(function (tag) {
-      return tag.get('name');
-    }), []);
-  });
-
-});
 define('frontend-cp/tests/unit/services/url-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
@@ -69628,7 +70333,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+22361522"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+2cef808b"});
 }
 
 /* jshint ignore:end */
