@@ -4731,7 +4731,7 @@ define('frontend-cp/components/ko-admin/case-fields/select-type/template', ['exp
               "column": 0
             },
             "end": {
-              "line": 9,
+              "line": 16,
               "column": 0
             }
           },
@@ -4746,28 +4746,55 @@ define('frontend-cp/components/ko-admin/case-fields/select-type/template', ['exp
           dom.appendChild(el0, el1);
           var el1 = dom.createElement("div");
           dom.setAttribute(el1,"class","ko-admin_case-fields_select-type");
-          var el2 = dom.createTextNode("\n      ");
+          var el2 = dom.createTextNode("\n    ");
           dom.appendChild(el1, el2);
           var el2 = dom.createElement("div");
-          dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__icon");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n      ");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createElement("div");
-          dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__text");
-          var el3 = dom.createTextNode("\n          ");
+          dom.setAttribute(el2,"class","flag flag--small");
+          var el3 = dom.createTextNode("\n      ");
           dom.appendChild(el2, el3);
           var el3 = dom.createElement("div");
-          var el4 = dom.createComment("");
+          dom.setAttribute(el3,"class","flag__img");
+          var el4 = dom.createTextNode("\n        ");
           dom.appendChild(el3, el4);
-          dom.appendChild(el2, el3);
-          var el3 = dom.createTextNode("\n          ");
-          dom.appendChild(el2, el3);
-          var el3 = dom.createElement("div");
-          var el4 = dom.createComment("");
+          var el4 = dom.createElement("div");
+          dom.appendChild(el3, el4);
+          var el4 = dom.createTextNode("\n      ");
           dom.appendChild(el3, el4);
           dom.appendChild(el2, el3);
           var el3 = dom.createTextNode("\n      ");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createElement("div");
+          dom.setAttribute(el3,"class","flag__body");
+          var el4 = dom.createTextNode("\n        ");
+          dom.appendChild(el3, el4);
+          var el4 = dom.createElement("p");
+          dom.setAttribute(el4,"class","t-bold u-mb--");
+          var el5 = dom.createComment("");
+          dom.appendChild(el4, el5);
+          dom.appendChild(el3, el4);
+          var el4 = dom.createTextNode("\n        ");
+          dom.appendChild(el3, el4);
+          var el4 = dom.createElement("p");
+          dom.setAttribute(el4,"class","t-caption");
+          var el5 = dom.createComment("");
+          dom.appendChild(el4, el5);
+          dom.appendChild(el3, el4);
+          var el4 = dom.createTextNode("\n      ");
+          dom.appendChild(el3, el4);
+          dom.appendChild(el2, el3);
+          var el3 = dom.createTextNode("\n    ");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n    ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("div");
+          dom.setAttribute(el2,"class","ko-admin_case-fields_select-type__action");
+          var el3 = dom.createTextNode("\n      ");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createElement("span");
+          dom.setAttribute(el3,"class","i-chevron-large-right i-color-grey");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createTextNode("\n    ");
           dom.appendChild(el2, el3);
           dom.appendChild(el1, el2);
           var el2 = dom.createTextNode("\n  ");
@@ -4779,17 +4806,21 @@ define('frontend-cp/components/ko-admin/case-fields/select-type/template', ['exp
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
           var element0 = dom.childAt(fragment, [1]);
-          var element1 = dom.childAt(element0, [3]);
-          var morphs = new Array(3);
+          var element1 = dom.childAt(element0, [1]);
+          var element2 = dom.childAt(element1, [1, 1]);
+          var element3 = dom.childAt(element1, [3]);
+          var morphs = new Array(4);
           morphs[0] = dom.createElementMorph(element0);
-          morphs[1] = dom.createMorphAt(dom.childAt(element1, [1]),0,0);
-          morphs[2] = dom.createMorphAt(dom.childAt(element1, [3]),0,0);
+          morphs[1] = dom.createAttrMorph(element2, 'class');
+          morphs[2] = dom.createMorphAt(dom.childAt(element3, [1]),0,0);
+          morphs[3] = dom.createMorphAt(dom.childAt(element3, [3]),0,0);
           return morphs;
         },
         statements: [
           ["element","action",["setCaseFieldType",["get","availableType.name",["loc",[null,[2,76],[2,94]]]]],[],["loc",[null,[2,48],[2,96]]]],
-          ["inline","format-message",[["subexpr","intl-get",[["get","availableType.nameIntlKey",["loc",[null,[5,42],[5,67]]]]],[],["loc",[null,[5,32],[5,68]]]]],[],["loc",[null,[5,15],[5,70]]]],
-          ["inline","format-message",[["subexpr","intl-get",[["get","availableType.descriptionIntlKey",["loc",[null,[6,42],[6,74]]]]],[],["loc",[null,[6,32],[6,75]]]]],[],["loc",[null,[6,15],[6,77]]]]
+          ["attribute","class",["concat",["ko-admin_case-fields_select-type__icon i-png-",["get","availableType.name",["loc",[null,[5,67],[5,85]]]]]]],
+          ["inline","format-message",[["subexpr","intl-get",[["get","availableType.nameIntlKey",["loc",[null,[8,60],[8,85]]]]],[],["loc",[null,[8,50],[8,86]]]]],[],["loc",[null,[8,33],[8,88]]]],
+          ["inline","format-message",[["subexpr","intl-get",[["get","availableType.descriptionIntlKey",["loc",[null,[9,56],[9,88]]]]],[],["loc",[null,[9,46],[9,89]]]]],[],["loc",[null,[9,29],[9,91]]]]
         ],
         locals: ["availableType"],
         templates: []
@@ -4805,7 +4836,7 @@ define('frontend-cp/components/ko-admin/case-fields/select-type/template', ['exp
             "column": 0
           },
           "end": {
-            "line": 10,
+            "line": 17,
             "column": 0
           }
         },
@@ -4828,7 +4859,7 @@ define('frontend-cp/components/ko-admin/case-fields/select-type/template', ['exp
         return morphs;
       },
       statements: [
-        ["block","each",[["get","availableTypes",["loc",[null,[1,8],[1,22]]]]],[],0,null,["loc",[null,[1,0],[9,9]]]]
+        ["block","each",[["get","availableTypes",["loc",[null,[1,8],[1,22]]]]],[],0,null,["loc",[null,[1,0],[16,9]]]]
       ],
       locals: [],
       templates: [child0]
@@ -49568,7 +49599,7 @@ define('frontend-cp/session/admin/manage/case-fields/new/template', ['exports'],
             "column": 0
           },
           "end": {
-            "line": 16,
+            "line": 15,
             "column": 0
           }
         },
@@ -49579,33 +49610,32 @@ define('frontend-cp/session/admin/manage/case-fields/new/template', ['exports'],
       hasRendered: false,
       buildFragment: function buildFragment(dom) {
         var el0 = dom.createDocumentFragment();
-        var el1 = dom.createTextNode("  ");
-        dom.appendChild(el0, el1);
         var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n\n  ");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createComment("");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n\n  ");
+        var el1 = dom.createTextNode("\n\n");
         dom.appendChild(el0, el1);
         var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n\n");
         dom.appendChild(el0, el1);
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
         var morphs = new Array(3);
-        morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
-        morphs[1] = dom.createMorphAt(fragment,3,3,contextualElement);
-        morphs[2] = dom.createMorphAt(fragment,5,5,contextualElement);
+        morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+        morphs[1] = dom.createMorphAt(fragment,2,2,contextualElement);
+        morphs[2] = dom.createMorphAt(fragment,4,4,contextualElement);
+        dom.insertBoundary(fragment, 0);
         return morphs;
       },
       statements: [
-        ["inline","ko-admin/page-header",[],["title",["subexpr","format-message",[["subexpr","intl-get",["admin.casefields.new.heading"],[],["loc",[null,[2,28],[2,69]]]]],[],["loc",[null,[2,12],[2,70]]]],"cancelAction","transitionToIndexRoute","buttonText",["subexpr","format-message",[["subexpr","intl-get",["generic.save"],[],["loc",[null,[4,33],[4,58]]]]],[],["loc",[null,[4,17],[4,59]]]],"buttonAction","saveCaseField"],["loc",[null,[1,2],[6,4]]]],
-        ["inline","ko-admin/case-fields/edit",[],["caseField",["subexpr","@mut",[["get","model",["loc",[null,[8,40],[8,45]]]]],[],[]],"onOptionAddition","addNewOption","onOptionRemoval","removeOption"],["loc",[null,[8,2],[8,110]]]],
-        ["inline","ko-admin/page-footer",[],["cancelAction","transitionToIndexRoute","buttonText",["subexpr","format-message",[["subexpr","intl-get",["generic.save"],[],["loc",[null,[12,33],[12,58]]]]],[],["loc",[null,[12,17],[12,59]]]],"buttonAction","saveCaseField"],["loc",[null,[10,2],[14,4]]]]
+        ["inline","ko-admin/page-header",[],["title",["subexpr","format-message",[["subexpr","intl-get",["admin.casefields.new.heading"],[],["loc",[null,[2,26],[2,67]]]]],[],["loc",[null,[2,10],[2,68]]]],"cancelAction","transitionToIndexRoute","buttonText",["subexpr","format-message",[["subexpr","intl-get",["generic.save"],[],["loc",[null,[4,31],[4,56]]]]],[],["loc",[null,[4,15],[4,57]]]],"buttonAction","saveCaseField"],["loc",[null,[1,0],[6,2]]]],
+        ["inline","ko-admin/case-fields/edit",[],["caseField",["subexpr","@mut",[["get","model",["loc",[null,[8,38],[8,43]]]]],[],[]],"onOptionAddition","addNewOption","onOptionRemoval","removeOption"],["loc",[null,[8,0],[8,108]]]],
+        ["inline","ko-admin/page-footer",[],["cancelAction","transitionToIndexRoute","buttonText",["subexpr","format-message",[["subexpr","intl-get",["generic.save"],[],["loc",[null,[12,31],[12,56]]]]],[],["loc",[null,[12,15],[12,57]]]],"buttonAction","saveCaseField"],["loc",[null,[10,0],[14,2]]]]
       ],
       locals: [],
       templates: []
@@ -68316,7 +68346,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+6066dc8c"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+27b3ff06"});
 }
 
 /* jshint ignore:end */
