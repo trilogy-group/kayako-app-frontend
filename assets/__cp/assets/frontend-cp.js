@@ -46390,6 +46390,7 @@ define('frontend-cp/serializers/application', ['exports', 'ember', 'ember-data',
 
   var get = Ember['default'].get;
   var merge = Ember['default'].merge;
+  var pluralize = Ember['default'].String.pluralize;
 
   exports['default'] = DS['default'].RESTSerializer.extend({
     primaryRecordKey: 'data',
@@ -46416,8 +46417,9 @@ define('frontend-cp/serializers/application', ['exports', 'ember', 'ember-data',
 
       var sideloaded = payload[this.sideloadedRecordsKey];
       if (sideloaded) {
-        this.extractSideloaded(sideloaded);
+        var relationships = this.extractSideloaded(sideloaded);
         delete payload[this.sideloadedRecordsKey];
+        merge(payload, relationships);
       }
 
       delete payload.resource;
@@ -46493,23 +46495,23 @@ define('frontend-cp/serializers/application', ['exports', 'ember', 'ember-data',
      * Extract top-level "included" containing associated objects
      *
      * @param {Object} sideloaded - sideloaded
+     * @return {Object} An object with the normalized sideloaded records with pluralized keys
      */
     extractSideloaded: function extractSideloaded(sideloaded) {
       var _this2 = this;
 
-      var store = get(this, 'store');
       var models = {};
 
       _['default'].each(sideloaded, function (resources, type) {
-        models[type] = [];
+        var collectionName = pluralize(type);
+        models[collectionName] = [];
         _['default'].each(resources, function (resource) {
           // TODO remove || type — this is a temporary fix
           type = resource.resource_type || type;
-          models[type].push(_this2.extractItem(resource, type));
+          models[collectionName].push(_this2.extractItem(resource, type));
         });
       });
-
-      this.pushPayload(store, models);
+      return models;
     },
 
     extractMeta: function extractMeta(store, typeClass, payload) {
@@ -68232,7 +68234,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+63f5bd46"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+ee739056"});
 }
 
 /* jshint ignore:end */
