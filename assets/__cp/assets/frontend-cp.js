@@ -38700,7 +38700,7 @@ define('frontend-cp/components/ko-user-field/custom/component', ['exports', 'emb
       return !!valueObject && valueObject.get('isDirty');
     }),
 
-    onErrors: Ember['default'].observer('errors.@each', function () {
+    onErrors: Ember['default'].observer('errors.[]', function () {
       var _this = this;
 
       if (this.get('errors')) {
@@ -72531,7 +72531,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+09c05dd8"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+dc960cd3"});
 }
 
 /* jshint ignore:end */
