@@ -9719,7 +9719,7 @@ define('frontend-cp/components/ko-agent-dropdown/create-case/template', ['export
           return morphs;
         },
         statements: [
-          ["block","ko-suggest",[],["hideOnClick",false,"selectedItem",["subexpr","@mut",[["get","fields.requester.fullName",["loc",[null,[10,23],[10,48]]]]],[],[]],"searchTerm",["subexpr","@mut",[["get","userFilterString",["loc",[null,[11,21],[11,37]]]]],[],[]],"disabled",["subexpr","@mut",[["get","isFormDisabled",["loc",[null,[12,19],[12,33]]]]],[],[]],"focus-out","onNameBlurred","shouldAutoFocus",true,"displayIcon",false],0,null,["loc",[null,[8,8],[47,23]]]]
+          ["block","ko-suggest",[],["hideOnClick",false,"selectedItem",["subexpr","@mut",[["get","fields.requester.fullName",["loc",[null,[10,23],[10,48]]]]],[],[]],"searchTerm",["subexpr","@mut",[["get","userFilterString",["loc",[null,[11,21],[11,37]]]]],[],[]],"disabled",["subexpr","@mut",[["get","isFormDisabled",["loc",[null,[12,19],[12,33]]]]],[],[]],"focus-out","onNameBlurred","shouldAutoFocus",false,"displayIcon",false],0,null,["loc",[null,[8,8],[47,23]]]]
         ],
         locals: [],
         templates: [child0]
@@ -70420,7 +70420,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+343a77f4"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+14870f88"});
 }
 
 /* jshint ignore:end */
