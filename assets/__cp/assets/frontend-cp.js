@@ -1169,7 +1169,7 @@ define('frontend-cp/components/ko-admin/case-fields/edit/options/component', ['e
     //Params
     options: [],
 
-    orderedOptionList: Ember['default'].computed('options', 'options.[].sortOrder', function () {
+    orderedOptionList: Ember['default'].computed('options', 'options.@each.sortOrder', function () {
       return this.get('options').sortBy('sortOrder');
     }),
 
@@ -4372,13 +4372,13 @@ define('frontend-cp/components/ko-admin/case-forms/edit/fields/component', ['exp
       });
     }),
 
-    systemCaseFields: Ember['default'].computed('caseFields', 'caseFields.[].isSystem', function () {
+    systemCaseFields: Ember['default'].computed('caseFields', 'caseFields.@each.isSystem', function () {
       return this.get('caseFields').filter(function (caseField) {
         return caseField.get('isSystem');
       });
     }),
 
-    customCaseFields: Ember['default'].computed('caseFields', 'caseFields.[].isSystem', function () {
+    customCaseFields: Ember['default'].computed('caseFields', 'caseFields.@each.isSystem', function () {
       return this.get('caseFields').filter(function (caseField) {
         return !caseField.get('isSystem');
       });
@@ -12055,7 +12055,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
 
     suggestedTags: [],
 
-    tags: Ember['default'].computed('case.tags.[].name', function () {
+    tags: Ember['default'].computed('case.tags.@each.name', function () {
       return this.get('case.tags').map(function (tag) {
         return tag.get('name');
       });
@@ -13936,7 +13936,7 @@ define('frontend-cp/components/ko-case-field/custom/component', ['exports', 'emb
 
     allValues: Ember['default'].computed.oneWay('case.customFields'),
 
-    valueObject: Ember['default'].computed('allValues.[].field', 'field', function () {
+    valueObject: Ember['default'].computed('allValues.@each.field', 'field', function () {
       return findCustomFieldValue(this.get('allValues'), this.get('field'));
     }),
 
@@ -29155,7 +29155,7 @@ define('frontend-cp/components/ko-predicate-builder/rule/component', ['exports',
       return this.get('selectedDefinition.values');
     }),
 
-    filteredProperties: Ember['default'].computed('searchTerm', 'availableProperties.[].string', function () {
+    filteredProperties: Ember['default'].computed('searchTerm', 'availableProperties.@each.string', function () {
       var searchTerm = this.get('searchTerm');
 
       var possibleProperties = this.get('availableProperties');
@@ -36612,13 +36612,13 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
       });
     }),
 
-    userTeams: Ember['default'].computed('model.teams.[].title', function () {
+    userTeams: Ember['default'].computed('model.teams.@each.title', function () {
       return this.get('model.teams').map(function (tag) {
         return tag.get('title');
       });
     }),
 
-    userTags: Ember['default'].computed('model.tags.[].name', function () {
+    userTags: Ember['default'].computed('model.tags.@each.name', function () {
       return this.get('model.tags').map(function (tag) {
         return tag.get('name');
       });
@@ -51763,7 +51763,7 @@ define('frontend-cp/session/admin/manage/case-forms/index/controller', ['exports
 
     session: Ember['default'].inject.service(),
 
-    enabledForms: Ember['default'].computed('model.[].isEnabled', 'model.[].sortOrder', function () {
+    enabledForms: Ember['default'].computed('model.@each.isEnabled', 'model.@each.sortOrder', function () {
       return this.get('model').filter(function (form) {
         return form.get('isEnabled');
       }).sortBy('sortOrder');
@@ -70420,7 +70420,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+f98bfca9"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+343a77f4"});
 }
 
 /* jshint ignore:end */
