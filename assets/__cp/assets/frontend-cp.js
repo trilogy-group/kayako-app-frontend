@@ -13476,7 +13476,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
         var el3 = dom.createTextNode("\n    ");
         dom.appendChild(el2, el3);
         var el3 = dom.createElement("div");
-        dom.setAttribute(el3,"class","layout__item u-2/3");
+        dom.setAttribute(el3,"class","layout__item u-3/4");
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
         var el4 = dom.createElement("div");
@@ -13544,9 +13544,9 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
         var el3 = dom.createComment("\n ");
         dom.appendChild(el2, el3);
         var el3 = dom.createElement("div");
-        dom.setAttribute(el3,"class","layout__item u-1/3");
+        dom.setAttribute(el3,"class","layout__item u-1/4");
         dom.setAttribute(el3,"style","position: relative");
-        var el4 = dom.createTextNode("\n      ");
+        var el4 = dom.createTextNode("\n     ");
         dom.appendChild(el3, el4);
         var el4 = dom.createElement("ul");
         var el5 = dom.createTextNode("\n        ");
@@ -13587,7 +13587,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
         dom.appendChild(el4, el5);
         var el5 = dom.createComment("");
         dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
+        var el5 = dom.createTextNode("\n     ");
         dom.appendChild(el4, el5);
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n    ");
@@ -13657,7 +13657,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
         ["block","if",[["get","newPosts",["loc",[null,[76,16],[76,24]]]]],[],1,null,["loc",[null,[76,10],[78,17]]]],
         ["inline","ko-feed",[],["events",["subexpr","@mut",[["get","posts",["loc",[null,[80,25],[80,30]]]]],[],[]],"onReplyWithQuote","replyWithQuote","top",["subexpr","@mut",[["get","timelineVisibleTop",["loc",[null,[80,69],[80,87]]]]],[],[]],"left",["subexpr","@mut",[["get","timelineVisibleLeft",["loc",[null,[80,93],[80,112]]]]],[],[]],"onTopPostChange",["subexpr","action",["changeTopPost"],[],["loc",[null,[80,129],[80,153]]]]],["loc",[null,[80,8],[80,155]]]],
         ["block","if",[["get","loadingBottom",["loc",[null,[82,16],[82,29]]]]],[],2,null,["loc",[null,[82,10],[86,17]]]],
-        ["attribute","class",["concat",["list-bare ko-case-content__info-bar ",["subexpr","if",[["get","headerSticky",["loc",[null,[91,58],[91,70]]]],"ko-case-content__info-bar--sticky"],[],["loc",[null,[91,53],[91,108]]]]]]],
+        ["attribute","class",["concat",["list-bare ko-case-content__info-bar ",["subexpr","if",[["get","headerSticky",["loc",[null,[91,57],[91,69]]]],"ko-case-content__info-bar--sticky"],[],["loc",[null,[91,52],[91,107]]]]]]],
         ["element","action",["submit"],[],["loc",[null,[93,55],[93,74]]]],
         ["inline","format-message",[["subexpr","intl-get",["cases.submit"],[],["loc",[null,[93,92],[93,117]]]]],[],["loc",[null,[93,75],[93,119]]]],
         ["inline","ko-case-field/requester",[],["requester",["subexpr","@mut",[["get","case.requester",["loc",[null,[95,44],[95,58]]]]],[],[]]],["loc",[null,[95,8],[95,60]]]],
@@ -70543,7 +70543,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+11dbafa3"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+3d988049"});
 }
 
 /* jshint ignore:end */
