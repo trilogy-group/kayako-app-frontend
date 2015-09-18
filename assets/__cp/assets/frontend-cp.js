@@ -10266,6 +10266,8 @@ define('frontend-cp/components/ko-agent-dropdown/create-case/component', ['expor
     totalRequesterResults: 0,
     hasCompletedSearchRequest: false,
 
+    debouncedRequest: null,
+
     init: function init() {
       this._super();
       this.set('fields', Ember['default'].Object.create({
@@ -10287,7 +10289,16 @@ define('frontend-cp/components/ko-agent-dropdown/create-case/component', ['expor
 
     filterUpdated: Ember['default'].on('init', Ember['default'].observer('userFilterString', function () {
       var debounceDuration = SUGGESTION_DEBOUNCE_DURATION;
-      Ember['default'].run.debounce(this, 'updateFilteredUsers', debounceDuration);
+      var filterString = this.get('userFilterString') || '';
+
+      if (filterString.trim()) {
+        this.set('debouncedRequest', Ember['default'].run.debounce(this, 'updateFilteredUsers', debounceDuration));
+      } else {
+        Ember['default'].run.cancel(this.get('debouncedRequest'));
+        this.set('filteredUsers', null);
+        this.set('hasCompletedSearchRequest', false);
+        this.set('pendingRequests', 0);
+      }
     })),
 
     updateFilteredUsers: function updateFilteredUsers() {
@@ -10295,10 +10306,6 @@ define('frontend-cp/components/ko-agent-dropdown/create-case/component', ['expor
 
       var store = this.get('store');
       var filterString = this.get('userFilterString') || '';
-      if (!filterString) {
-        this.set('filteredUsers', null);
-        return;
-      }
       this.set('pendingRequests', this.get('pendingRequests') + 1);
       var filterRequest = this.searchUsers(store, filterString).then(function (userModels) {
         var isMostRecentRequest = filterRequest === _this.get('activeFilterRequest');
@@ -10307,12 +10314,18 @@ define('frontend-cp/components/ko-agent-dropdown/create-case/component', ['expor
         }
         _this.set('filteredUsers', userModels);
       })['catch'](function (error) {
-        throw error;
+        _this.set('filteredUsers', []);
       })['finally'](function () {
         _this.set('pendingRequests', _this.get('pendingRequests') - 1);
         var isMostRecentRequest = filterRequest === _this.get('activeFilterRequest');
         if (isMostRecentRequest) {
           _this.set('activeFilterRequest', null);
+        }
+        // If ths user has deleted everything before request gets sorted
+        if (!_this.get('userFilterString').trim()) {
+          _this.set('filteredUsers', null);
+          _this.set('hasCompletedSearchRequest', false);
+          return;
         }
       });
       this.set('activeFilterRequest', filterRequest);
@@ -10634,7 +10647,7 @@ define('frontend-cp/components/ko-agent-dropdown/create-case/template', ['export
               var el1 = dom.createTextNode("            ");
               dom.appendChild(el0, el1);
               var el1 = dom.createElement("li");
-              dom.setAttribute(el1,"class","ko-dropdown_list__item");
+              dom.setAttribute(el1,"class","u-pv-- u-ph-");
               var el2 = dom.createTextNode("\n              ");
               dom.appendChild(el1, el2);
               var el2 = dom.createComment("");
@@ -10675,7 +10688,7 @@ define('frontend-cp/components/ko-agent-dropdown/create-case/template', ['export
                     "column": 12
                   },
                   "end": {
-                    "line": 45,
+                    "line": 47,
                     "column": 12
                   }
                 },
@@ -10688,7 +10701,14 @@ define('frontend-cp/components/ko-agent-dropdown/create-case/template', ['export
                 var el0 = dom.createDocumentFragment();
                 var el1 = dom.createTextNode("              ");
                 dom.appendChild(el0, el1);
-                var el1 = dom.createComment("");
+                var el1 = dom.createElement("li");
+                dom.setAttribute(el1,"class","u-pv-- u-ph-");
+                var el2 = dom.createTextNode("\n                ");
+                dom.appendChild(el1, el2);
+                var el2 = dom.createComment("");
+                dom.appendChild(el1, el2);
+                var el2 = dom.createTextNode("\n              ");
+                dom.appendChild(el1, el2);
                 dom.appendChild(el0, el1);
                 var el1 = dom.createTextNode("\n");
                 dom.appendChild(el0, el1);
@@ -10696,11 +10716,11 @@ define('frontend-cp/components/ko-agent-dropdown/create-case/template', ['export
               },
               buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
                 var morphs = new Array(1);
-                morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+                morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]),1,1);
                 return morphs;
               },
               statements: [
-                ["inline","format-message",[["subexpr","intl-get",["generic.search.no_results"],[],["loc",[null,[44,31],[44,69]]]]],[],["loc",[null,[44,14],[44,71]]]]
+                ["inline","format-message",[["subexpr","intl-get",["generic.search.no_results"],[],["loc",[null,[45,33],[45,71]]]]],[],["loc",[null,[45,16],[45,73]]]]
               ],
               locals: [],
               templates: []
@@ -10716,7 +10736,7 @@ define('frontend-cp/components/ko-agent-dropdown/create-case/template', ['export
                   "column": 8
                 },
                 "end": {
-                  "line": 46,
+                  "line": 48,
                   "column": 10
                 }
               },
@@ -10739,7 +10759,7 @@ define('frontend-cp/components/ko-agent-dropdown/create-case/template', ['export
               return morphs;
             },
             statements: [
-              ["block","if",[["subexpr","and",[["get","hasCompletedSearchRequest",["loc",[null,[43,23],[43,48]]]],["subexpr","not",[["get","isLoading",["loc",[null,[43,54],[43,63]]]]],[],["loc",[null,[43,49],[43,64]]]]],[],["loc",[null,[43,18],[43,65]]]]],[],0,null,["loc",[null,[43,12],[45,19]]]]
+              ["block","if",[["subexpr","and",[["get","hasCompletedSearchRequest",["loc",[null,[43,23],[43,48]]]],["subexpr","not",[["get","isLoading",["loc",[null,[43,54],[43,63]]]]],[],["loc",[null,[43,49],[43,64]]]]],[],["loc",[null,[43,18],[43,65]]]]],[],0,null,["loc",[null,[43,12],[47,19]]]]
             ],
             locals: [],
             templates: [child0]
@@ -10755,7 +10775,7 @@ define('frontend-cp/components/ko-agent-dropdown/create-case/template', ['export
                 "column": 8
               },
               "end": {
-                "line": 47,
+                "line": 49,
                 "column": 8
               }
             },
@@ -10778,7 +10798,7 @@ define('frontend-cp/components/ko-agent-dropdown/create-case/template', ['export
             return morphs;
           },
           statements: [
-            ["block","if",[["get","filteredUsers",["loc",[null,[17,16],[17,29]]]]],[],0,1,["loc",[null,[17,10],[46,17]]]]
+            ["block","if",[["get","filteredUsers",["loc",[null,[17,16],[17,29]]]]],[],0,1,["loc",[null,[17,10],[48,17]]]]
           ],
           locals: [],
           templates: [child0, child1]
@@ -10794,7 +10814,7 @@ define('frontend-cp/components/ko-agent-dropdown/create-case/template', ['export
               "column": 6
             },
             "end": {
-              "line": 48,
+              "line": 50,
               "column": 6
             }
           },
@@ -10817,7 +10837,7 @@ define('frontend-cp/components/ko-agent-dropdown/create-case/template', ['export
           return morphs;
         },
         statements: [
-          ["block","ko-suggest",[],["hideOnClick",false,"selectedItem",["subexpr","@mut",[["get","fields.requester.fullName",["loc",[null,[10,23],[10,48]]]]],[],[]],"searchTerm",["subexpr","@mut",[["get","userFilterString",["loc",[null,[11,21],[11,37]]]]],[],[]],"disabled",["subexpr","@mut",[["get","isFormDisabled",["loc",[null,[12,19],[12,33]]]]],[],[]],"focus-out","onNameBlurred","shouldAutoFocus",false,"displayIcon",false],0,null,["loc",[null,[8,8],[47,23]]]]
+          ["block","ko-suggest",[],["hideOnClick",false,"selectedItem",["subexpr","@mut",[["get","fields.requester.fullName",["loc",[null,[10,23],[10,48]]]]],[],[]],"searchTerm",["subexpr","@mut",[["get","userFilterString",["loc",[null,[11,21],[11,37]]]]],[],[]],"disabled",["subexpr","@mut",[["get","isFormDisabled",["loc",[null,[12,19],[12,33]]]]],[],[]],"focus-out","onNameBlurred","shouldAutoFocus",false,"displayIcon",false],0,null,["loc",[null,[8,8],[49,23]]]]
         ],
         locals: [],
         templates: [child0]
@@ -10830,11 +10850,11 @@ define('frontend-cp/components/ko-agent-dropdown/create-case/template', ['export
           "loc": {
             "source": null,
             "start": {
-              "line": 49,
+              "line": 51,
               "column": 6
             },
             "end": {
-              "line": 49,
+              "line": 51,
               "column": 92
             }
           },
@@ -10857,7 +10877,7 @@ define('frontend-cp/components/ko-agent-dropdown/create-case/template', ['export
           return morphs;
         },
         statements: [
-          ["inline","ko-loader",[],["class","ko-agent-dropdown-create-case__requester-loader"],["loc",[null,[49,23],[49,92]]]]
+          ["inline","ko-loader",[],["class","ko-agent-dropdown-create-case__requester-loader"],["loc",[null,[51,23],[51,92]]]]
         ],
         locals: [],
         templates: []
@@ -10870,11 +10890,11 @@ define('frontend-cp/components/ko-agent-dropdown/create-case/template', ['export
           "loc": {
             "source": null,
             "start": {
-              "line": 55,
+              "line": 57,
               "column": 2
             },
             "end": {
-              "line": 57,
+              "line": 59,
               "column": 2
             }
           },
@@ -10899,7 +10919,7 @@ define('frontend-cp/components/ko-agent-dropdown/create-case/template', ['export
           return morphs;
         },
         statements: [
-          ["inline","ko-loader",[],["class","ko-agent-dropdown-create-case__loader"],["loc",[null,[56,4],[56,63]]]]
+          ["inline","ko-loader",[],["class","ko-agent-dropdown-create-case__loader"],["loc",[null,[58,4],[58,63]]]]
         ],
         locals: [],
         templates: []
@@ -10912,11 +10932,11 @@ define('frontend-cp/components/ko-agent-dropdown/create-case/template', ['export
           "loc": {
             "source": null,
             "start": {
-              "line": 57,
+              "line": 59,
               "column": 2
             },
             "end": {
-              "line": 59,
+              "line": 61,
               "column": 2
             }
           },
@@ -10948,8 +10968,8 @@ define('frontend-cp/components/ko-agent-dropdown/create-case/template', ['export
           return morphs;
         },
         statements: [
-          ["element","action",["onCancelClicked"],[],["loc",[null,[58,103],[58,131]]]],
-          ["inline","format-message",[["subexpr","intl-get",["generic.create_case_panel.cancel"],[],["loc",[null,[58,149],[58,194]]]]],[],["loc",[null,[58,132],[58,196]]]]
+          ["element","action",["onCancelClicked"],[],["loc",[null,[60,103],[60,131]]]],
+          ["inline","format-message",[["subexpr","intl-get",["generic.create_case_panel.cancel"],[],["loc",[null,[60,149],[60,194]]]]],[],["loc",[null,[60,132],[60,196]]]]
         ],
         locals: [],
         templates: []
@@ -10965,8 +10985,8 @@ define('frontend-cp/components/ko-agent-dropdown/create-case/template', ['export
             "column": 0
           },
           "end": {
-            "line": 60,
-            "column": 7
+            "line": 63,
+            "column": 0
           }
         },
         "moduleName": "frontend-cp/components/ko-agent-dropdown/create-case/template.hbs"
@@ -11020,6 +11040,8 @@ define('frontend-cp/components/ko-agent-dropdown/create-case/template', ['export
         var el2 = dom.createComment("");
         dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
@@ -11042,12 +11064,12 @@ define('frontend-cp/components/ko-agent-dropdown/create-case/template', ['export
         ["inline","format-message",[["subexpr","intl-get",["generic.create_case_panel.title"],[],["loc",[null,[1,72],[1,116]]]]],[],["loc",[null,[1,55],[1,118]]]],
         ["attribute","class",["concat",["ko-agent-dropdown-create-case__form ",["subexpr","if",[["get","isLoading",["loc",[null,[2,54],[2,63]]]]," is-loading"],[],["loc",[null,[2,49],[2,79]]]],["subexpr","if",[["get","isFormValid",["loc",[null,[2,84],[2,95]]]]," is-valid"],[],["loc",[null,[2,79],[2,109]]]],["subexpr","if",[["get","isSubmitting",["loc",[null,[2,114],[2,126]]]]," is-submitting"],[],["loc",[null,[2,109],[2,145]]]]]]],
         ["element","action",["onFormSubmitted"],["on","submit"],["loc",[null,[3,2],[3,42]]]],
-        ["block","ko-form-field",[],["label",["subexpr","format-message",[["subexpr","intl-get",["generic.create_case_panel.requester_label"],[],["loc",[null,[7,45],[7,99]]]]],[],["loc",[null,[7,29],[7,100]]]],"errors",["subexpr","if",[["get","validation.requester.showErrors",["loc",[null,[7,112],[7,143]]]],["get","validation.requester.errors",["loc",[null,[7,144],[7,171]]]]],[],["loc",[null,[7,108],[7,172]]]]],0,null,["loc",[null,[7,6],[48,24]]]],
-        ["block","if",[["get","isLoading",["loc",[null,[49,12],[49,21]]]]],[],1,null,["loc",[null,[49,6],[49,99]]]],
-        ["inline","format-message",[["subexpr","intl-get",["generic.create_case_panel.info"],[],["loc",[null,[52,93],[52,136]]]]],[],["loc",[null,[52,76],[52,138]]]],
-        ["attribute","disabled",["get","isSubmitDisabled",["loc",[null,[54,120],[54,136]]]]],
-        ["inline","format-message",[["subexpr","intl-get",["generic.create_case_panel.submit"],[],["loc",[null,[54,156],[54,201]]]]],[],["loc",[null,[54,139],[54,203]]]],
-        ["block","if",[["get","isSubmitting",["loc",[null,[55,8],[55,20]]]]],[],2,3,["loc",[null,[55,2],[59,9]]]]
+        ["block","ko-form-field",[],["label",["subexpr","format-message",[["subexpr","intl-get",["generic.create_case_panel.requester_label"],[],["loc",[null,[7,45],[7,99]]]]],[],["loc",[null,[7,29],[7,100]]]],"errors",["subexpr","if",[["get","validation.requester.showErrors",["loc",[null,[7,112],[7,143]]]],["get","validation.requester.errors",["loc",[null,[7,144],[7,171]]]]],[],["loc",[null,[7,108],[7,172]]]]],0,null,["loc",[null,[7,6],[50,24]]]],
+        ["block","if",[["get","isLoading",["loc",[null,[51,12],[51,21]]]]],[],1,null,["loc",[null,[51,6],[51,99]]]],
+        ["inline","format-message",[["subexpr","intl-get",["generic.create_case_panel.info"],[],["loc",[null,[54,93],[54,136]]]]],[],["loc",[null,[54,76],[54,138]]]],
+        ["attribute","disabled",["get","isSubmitDisabled",["loc",[null,[56,120],[56,136]]]]],
+        ["inline","format-message",[["subexpr","intl-get",["generic.create_case_panel.submit"],[],["loc",[null,[56,156],[56,201]]]]],[],["loc",[null,[56,139],[56,203]]]],
+        ["block","if",[["get","isSubmitting",["loc",[null,[57,8],[57,20]]]]],[],2,3,["loc",[null,[57,2],[61,9]]]]
       ],
       locals: [],
       templates: [child0, child1, child2, child3]
@@ -72509,7 +72531,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+ccfbb446"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+09c05dd8"});
 }
 
 /* jshint ignore:end */
