@@ -57200,7 +57200,7 @@ define('frontend-cp/session/controller', ['exports', 'ember'], function (exports
     /**
      * Update local storage whenever the tabs array changes
      */
-    tabsUpdated: Ember['default'].observer('mainTab', 'mainTab.url', 'tabs.[]', 'tabs.[].url', 'tabs.[].label', function () {
+    tabsUpdated: Ember['default'].observer('mainTab', 'mainTab.url', 'tabs.[]', 'tabs.@each.url', 'tabs.@each.label', function () {
       var tabsService = this.get('tabsService');
       var mainTab = this.get('mainTab');
       var tabs = this.get('tabs');
@@ -70420,7 +70420,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+b9108dda"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+f98bfca9"});
 }
 
 /* jshint ignore:end */
