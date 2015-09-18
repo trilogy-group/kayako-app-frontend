@@ -20785,6 +20785,11 @@ define('frontend-cp/components/ko-editor-modal/component', ['exports', 'ember'],
   'use strict';
 
   exports['default'] = Ember['default'].Component.extend({
+    //Params:
+    title: null,
+    onSave: null,
+    saveButtonText: null,
+
     classNameBindings: ['hidden:u-hidden'],
 
     initModal: Ember['default'].on('init', function () {
@@ -20836,7 +20841,7 @@ define('frontend-cp/components/ko-editor-modal/template', ['exports'], function 
         var el0 = dom.createDocumentFragment();
         var el1 = dom.createElement("div");
         dom.setAttribute(el1,"class","ko-editor-modal__overlay");
-        var el2 = dom.createTextNode(" \n");
+        var el2 = dom.createTextNode("\n");
         dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
@@ -20869,7 +20874,7 @@ define('frontend-cp/components/ko-editor-modal/template', ['exports'], function 
         dom.appendChild(el2, el3);
         var el3 = dom.createElement("a");
         dom.setAttribute(el3,"class","ko-editor-modal__cancel t-bad");
-        var el4 = dom.createTextNode("Cancel");
+        var el4 = dom.createComment("");
         dom.appendChild(el3, el4);
         dom.appendChild(el2, el3);
         var el3 = dom.createTextNode("\n    ");
@@ -20895,13 +20900,14 @@ define('frontend-cp/components/ko-editor-modal/template', ['exports'], function 
         var element2 = dom.childAt(element1, [5]);
         var element3 = dom.childAt(element2, [1]);
         var element4 = dom.childAt(element2, [3]);
-        var morphs = new Array(6);
+        var morphs = new Array(7);
         morphs[0] = dom.createElementMorph(element0);
         morphs[1] = dom.createMorphAt(dom.childAt(element1, [1, 1]),0,0);
         morphs[2] = dom.createMorphAt(element1,3,3);
         morphs[3] = dom.createElementMorph(element3);
-        morphs[4] = dom.createElementMorph(element4);
-        morphs[5] = dom.createMorphAt(element4,0,0);
+        morphs[4] = dom.createMorphAt(element3,0,0);
+        morphs[5] = dom.createElementMorph(element4);
+        morphs[6] = dom.createMorphAt(element4,0,0);
         return morphs;
       },
       statements: [
@@ -20909,8 +20915,9 @@ define('frontend-cp/components/ko-editor-modal/template', ['exports'], function 
         ["content","title",["loc",[null,[5,39],[5,48]]]],
         ["content","yield",["loc",[null,[7,2],[7,11]]]],
         ["element","action",["close"],[],["loc",[null,[9,7],[9,25]]]],
+        ["inline","format-message",[["subexpr","intl-get",["generic.cancel"],[],["loc",[null,[9,81],[9,108]]]]],[],["loc",[null,[9,64],[9,110]]]],
         ["element","action",["save"],[],["loc",[null,[10,43],[10,60]]]],
-        ["inline","format-message",[["subexpr","intl-get",["generic.save"],[],["loc",[null,[10,78],[10,103]]]]],[],["loc",[null,[10,61],[10,105]]]]
+        ["content","saveButtonText",["loc",[null,[10,61],[10,79]]]]
       ],
       locals: [],
       templates: []
@@ -36175,6 +36182,7 @@ define('frontend-cp/components/ko-user-action-menu/component', ['exports', 'embe
     userModel: null,
 
     permissionService: Ember['default'].inject.service('permissions'),
+    sessionService: Ember['default'].inject.service('session'),
 
     editSignature: 'editSignature',
     changeUserPassword: 'changeUserPassword',
@@ -36182,13 +36190,16 @@ define('frontend-cp/components/ko-user-action-menu/component', ['exports', 'embe
     classNameBindings: ['menuActive', 'noItems:u-hidden'],
     menuActive: false,
 
-    noItems: Ember['default'].computed(function () {
-      var permService = this.get('permissionService');
-      var roleType = [this.get('userRoleType')];
-      var passItem = permService.has('app.user.password.change', this.get('permissions'), roleType) && this.get('userModel.emails').toArray().length;
-      var signatureItem = permService.has('app.user.signature.edit', this.get('permissions'), roleType);
+    noItems: Ember['default'].computed('hasChangePasswordEmailPermission', 'hasChangeSignaturePermission', function () {
+      return !this.get('hasChangePasswordEmailPermission') && !this.get('hasChangeSignaturePermission');
+    }),
 
-      return !passItem && !signatureItem;
+    hasChangeSignaturePermission: Ember['default'].computed('sessionService.permissions', 'userModel.role.roleType', function () {
+      return this.get('permissionService').has('app.user.signature.edit', this.get('sessionService.permissions'), this.get('userModel'));
+    }),
+
+    hasChangePasswordEmailPermission: Ember['default'].computed('sessionService.permissions', 'userModel.role.roleType', function () {
+      return this.get('permissionService').has('app.user.password.change', this.get('sessionService.permissions'), this.get('userModel'));
     }),
 
     actions: {
@@ -36404,8 +36415,8 @@ define('frontend-cp/components/ko-user-action-menu/template', ['exports'], funct
               return morphs;
             },
             statements: [
-              ["block","if",[["subexpr","ko-has-permission",["app.user.signature.edit",["get","permissions",["loc",[null,[15,57],[15,68]]]],["get","userRoleType",["loc",[null,[15,69],[15,81]]]]],[],["loc",[null,[15,12],[15,82]]]]],[],0,null,["loc",[null,[15,6],[19,13]]]],
-              ["block","if",[["subexpr","and",[["subexpr","ko-has-permission",["app.user.password.change",["get","permissions",["loc",[null,[21,63],[21,74]]]],["get","userRoleType",["loc",[null,[21,75],[21,87]]]]],[],["loc",[null,[21,17],[21,88]]]],["get","userModel.emails.length",["loc",[null,[21,89],[21,112]]]]],[],["loc",[null,[21,12],[21,113]]]]],[],1,null,["loc",[null,[21,6],[25,13]]]]
+              ["block","if",[["get","hasChangeSignaturePermission",["loc",[null,[15,12],[15,40]]]]],[],0,null,["loc",[null,[15,6],[19,13]]]],
+              ["block","if",[["get","hasChangePasswordEmailPermission",["loc",[null,[21,12],[21,44]]]]],[],1,null,["loc",[null,[21,6],[25,13]]]]
             ],
             locals: [],
             templates: [child0, child1]
@@ -36560,9 +36571,15 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
     suggestedTeams: [],
     suggestedTags: [],
     editedCustomFields: null,
+    editingSignature: null,
 
     initCustomFields: Ember['default'].on('init', function () {
       this.set('editedCustomFields', new Ember['default'].Object());
+    }),
+
+    initEditingSignature: Ember['default'].on('init', function () {
+      // the default editing signature should be the users current one
+      this.set('editingSignature', this.get('model.signature'));
     }),
 
     roles: [],
@@ -36652,11 +36669,11 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
     },
 
     canModifyUserState: Ember['default'].computed(function () {
-      return this.get('permissionService').has('app.user.disable', this.get('sessionService').permissions, this.get('model.role.roleType'));
+      return this.get('permissionService').has('app.user.disable', this.get('sessionService').permissions, this.get('model'));
     }),
 
     canFollowUser: Ember['default'].computed(function () {
-      return this.get('permissionService').has('app.user.follow', this.get('sessionService').permissions, this.get('model.role.roleType'));
+      return this.get('permissionService').has('app.user.follow', this.get('sessionService').permissions, this.get('model'));
     }),
 
     isEnabled: Ember['default'].computed.bool('model.isEnabled'),
@@ -36705,6 +36722,10 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
 
       editSignature: function editSignature() {
         this.get('signatureModal').show();
+      },
+
+      updateSignature: function updateSignature() {
+        this.set('model.signature', this.get('editingSignature'));
       },
 
       roleSelect: function roleSelect(role) {
@@ -37211,7 +37232,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
               "column": 0
             },
             "end": {
-              "line": 144,
+              "line": 145,
               "column": 0
             }
           },
@@ -37236,7 +37257,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["inline","textarea",[],["value",["subexpr","@mut",[["get","model.signature",["loc",[null,[143,19],[143,34]]]]],[],[]],"class","text-area--clean"],["loc",[null,[143,2],[143,61]]]]
+          ["inline","textarea",[],["value",["subexpr","@mut",[["get","editingSignature",["loc",[null,[144,19],[144,35]]]]],[],[]],"class","text-area--clean"],["loc",[null,[144,2],[144,62]]]]
         ],
         locals: [],
         templates: []
@@ -37252,7 +37273,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
             "column": 0
           },
           "end": {
-            "line": 145,
+            "line": 146,
             "column": 0
           }
         },
@@ -37436,7 +37457,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
         ["inline","ko-user-action-menu",[],["permissions",["subexpr","@mut",[["get","sessionService.permissions",["loc",[null,[41,24],[41,50]]]]],[],[]],"userRoleType",["subexpr","@mut",[["get","model.role.roleType",["loc",[null,[42,25],[42,44]]]]],[],[]],"userModel",["subexpr","@mut",[["get","model",["loc",[null,[43,22],[43,27]]]]],[],[]]],["loc",[null,[40,8],[44,10]]]],
         ["block","ko-text-editor",[],["viewName","postEditor","onPeopleSuggestion","suggestPeople"],0,null,["loc",[null,[53,8],[55,27]]]],
         ["block","ko-info-bar",[],[],1,null,["loc",[null,[60,6],[135,22]]]],
-        ["block","ko-editor-modal",[],["onSave","submit","viewName","signatureModal","title",["subexpr","format-message",[["subexpr","intl-get",["users.editsignature"],[],["loc",[null,[142,41],[142,73]]]]],[],["loc",[null,[142,25],[142,74]]]]],2,null,["loc",[null,[140,0],[144,20]]]]
+        ["block","ko-editor-modal",[],["onSave","updateSignature","saveButtonText",["subexpr","format-message",[["subexpr","intl-get",["users.update_signature"],[],["loc",[null,[141,50],[141,85]]]]],[],["loc",[null,[141,34],[141,86]]]],"viewName","signatureModal","title",["subexpr","format-message",[["subexpr","intl-get",["users.editsignature"],[],["loc",[null,[143,41],[143,73]]]]],[],["loc",[null,[143,25],[143,74]]]]],2,null,["loc",[null,[140,0],[145,20]]]]
       ],
       locals: [],
       templates: [child0, child1, child2]
@@ -38682,20 +38703,6 @@ define('frontend-cp/helpers/ko-embolden', ['exports', 'ember'], function (export
 
     var regExp = new RegExp(emboldenString, 'gi');
     return Ember['default'].String.htmlSafe(fullString.replace(regExp, '<b>$&</b>'));
-  });
-
-});
-define('frontend-cp/helpers/ko-has-permission', ['exports', 'ember'], function (exports, Ember) {
-
-  'use strict';
-
-  exports['default'] = Ember['default'].Helper.extend({
-    permissionService: Ember['default'].inject.service('permissions'),
-    compute: function compute(params, hash) {
-      var action = params[0];
-      var permissions = params[1];
-      return this.get('permissionService').has(action, permissions, params.splice(2));
-    }
   });
 
 });
@@ -43491,6 +43498,10 @@ define('frontend-cp/mirage/fixtures/en-us-strings', ['exports'], function (expor
       'id': 'frontend.api.cases.tags',
       'value': 'Tags',
       'resource_type': 'locale_string'
+    }, {
+      'id': 'frontend.api.users.update_signature',
+      'value': 'Update signature',
+      'resource_type': 'locale_string'
     }],
     resource: 'locale_string'
   }];
@@ -48066,7 +48077,7 @@ define('frontend-cp/models/user', ['exports', 'ember-data', 'ember', 'frontend-c
     designation: DS['default'].attr('string'),
     alias: DS['default'].attr('string'),
     isEnabled: DS['default'].attr('boolean'),
-    role: DS['default'].belongsTo('role', { async: true }),
+    role: DS['default'].belongsTo('role', { async: false }),
     avatar: DS['default'].attr('string'),
     organization: DS['default'].belongsTo('organization', { async: true }),
     teams: DS['default'].hasMany('team', { async: false }),
@@ -49770,24 +49781,40 @@ define('frontend-cp/services/permissions', ['exports', 'ember'], function (expor
    * delete.
    */
   var applicationActions = {
-    'app.user.signature.edit': function appUserSignatureEdit(roleType, args) {
-      var userRoleType = roleTypes[args[0]];
+    'app.user.signature.edit': function appUserSignatureEdit(myRoleType, me, target) {
+      var targetRoleType = roleTypes[target.get('role').get('roleType')];
+
+      // I can change my own signature
+      if (me && target && me === target) {
+        return true;
+      }
+
       // If I'm a higher rank and they are not a CUSTOMER
-      return roleType.rank > userRoleType.rank && userRoleType.rank !== roleTypes.CUSTOMER.rank;
+      return myRoleType.rank > targetRoleType.rank && targetRoleType.rank !== roleTypes.CUSTOMER.rank;
     },
     // ADMIN can disable all, AGENT only CUSTOMER
-    'app.user.disable': function appUserDisable(roleType, args) {
-      var userRoleType = roleTypes[args[0]];
+    'app.user.disable': function appUserDisable(subjectRoleType, subject, user) {
+      var userRoleType = user.get('role.roleType');
 
-      if (roleType.rank === roleTypes.AGENT.rank) {
+      // I cannot disable myself!
+      if (subject && user && subject === user) {
+        return false;
+      }
+
+      if (subjectRoleType.rank === roleTypes.AGENT.rank) {
         return userRoleType.rank === roleTypes.CUSTOMER.rank;
       }
 
-      return roleType.rank === roleTypes.ADMIN.rank;
+      return subjectRoleType.rank === roleTypes.ADMIN.rank;
     },
-    'app.user.password.change': function appUserPasswordChange(roleType, args) {
-      var targetRollType = roleTypes[args[0]];
-      return adminOrAgentToCustomer(roleType, targetRollType);
+    'app.user.password.change': function appUserPasswordChange(roleType, user, target) {
+      // I can change my own password:
+      if (user && target && user === target) {
+        return true;
+      }
+
+      var userRoleType = user.get('role.roleType');
+      return adminOrAgentToCustomer(roleType, userRoleType) && target.get('emails').toArray().length;
     }
   };
 
@@ -49802,14 +49829,14 @@ define('frontend-cp/services/permissions', ['exports', 'ember'], function (expor
 
   exports['default'] = Ember['default'].Service.extend({
     sessionService: Ember['default'].inject.service('session'),
-    has: function has(action, permissions, params) {
+    has: function has(action, permissions, target) {
       var role = this.get('sessionService.user.role');
-      var roleType = roleTypes[role.get('roleType')];
+      var subjectRoleType = roleTypes[role.get('roleType')];
 
       // First check the permission exists
-      if (roleType && roleType.permissions.indexOf(action) > -1) {
+      if (subjectRoleType && subjectRoleType.permissions.indexOf(action) > -1) {
         // Then allow the permission function to run
-        return applicationActions[action](roleType, params);
+        return applicationActions[action](subjectRoleType, this.get('sessionService.user'), target);
       }
 
       // Check role permissions
@@ -70393,7 +70420,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+46e82230"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+b9108dda"});
 }
 
 /* jshint ignore:end */
