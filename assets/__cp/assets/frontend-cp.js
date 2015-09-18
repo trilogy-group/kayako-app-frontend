@@ -167,11 +167,13 @@ define('frontend-cp/adapters/application', ['exports', 'ember', 'ember-data', 'n
     },
 
     queryRecord: function queryRecord(store, type, query) {
-      var _this8 = this;
+      var url = this.buildURL(type.modelName, null, null, 'queryRecord', query);
 
-      return this._super(store, type, query)['catch'](function (error) {
-        _this8.get('errorService').handleServerError(error);
-      });
+      if (this.sortQueryParams) {
+        query = this.sortQueryParams(query);
+      }
+
+      return this.ajax(url, 'GET', { data: query });
     },
 
     buildURL: function buildURL() {
@@ -275,16 +277,16 @@ define('frontend-cp/adapters/application', ['exports', 'ember', 'ember-data', 'n
     // Ideally it's a job of a serializer, but this is the only place where we can
     // get access the relationship object.
     findHasMany: function findHasMany(store, snapshot, url, relationship) {
-      var _this9 = this;
+      var _this8 = this;
 
       return this._super.apply(this, arguments).then(function (payload) {
         var inverse = snapshot.type.inverseFor(relationship.key, store);
-        if (inverse && payload[_this9.primaryRecordKey]) {
+        if (inverse && payload[_this8.primaryRecordKey]) {
           // required for when collection payload is a hash and not an array - looking at you, locale strings
-          if (!_['default'].isArray(payload[_this9.primaryRecordKey])) {
+          if (!_['default'].isArray(payload[_this8.primaryRecordKey])) {
             return payload;
           }
-          payload[_this9.primaryRecordKey].forEach(function (entry) {
+          payload[_this8.primaryRecordKey].forEach(function (entry) {
             if (!entry[inverse]) {
               entry[inverse] = {
                 id: snapshot.id,
@@ -295,7 +297,7 @@ define('frontend-cp/adapters/application', ['exports', 'ember', 'ember-data', 'n
         }
         return payload;
       })['catch'](function (error) {
-        _this9.get('errorService').handleServerError(error);
+        _this8.get('errorService').handleServerError(error);
       });
     },
 
@@ -305,7 +307,7 @@ define('frontend-cp/adapters/application', ['exports', 'ember', 'ember-data', 'n
     },
 
     query: function query(store, type, _query) {
-      var _this10 = this;
+      var _this9 = this;
 
       var url = this.buildURL(type.modelName, null, null, 'query', _query);
 
@@ -314,7 +316,7 @@ define('frontend-cp/adapters/application', ['exports', 'ember', 'ember-data', 'n
       }
 
       return this.ajax(url, 'GET', { data: _query })['catch'](function (error) {
-        _this10.get('errorService').handleServerError(error);
+        _this9.get('errorService').handleServerError(error);
       });
     },
 
@@ -573,6 +575,17 @@ define('frontend-cp/adapters/metric', ['exports', 'frontend-cp/adapters/applicat
   });
 
 });
+define('frontend-cp/adapters/oauth-link', ['exports', 'frontend-cp/adapters/application'], function (exports, ApplicationAdapter) {
+
+  'use strict';
+
+  exports['default'] = ApplicationAdapter['default'].extend({
+    buildURLFragment: function buildURLFragment() {
+      return 'twitter/account/link.json';
+    }
+  });
+
+});
 define('frontend-cp/adapters/private', ['exports', 'frontend-cp/adapters/application'], function (exports, ApplicationAdapter) {
 
     'use strict';
@@ -684,6 +697,17 @@ define('frontend-cp/adapters/tag', ['exports', 'frontend-cp/adapters/application
   exports['default'] = ApplicationAdapter['default'].extend({
     pathForType: function pathForType() {
       return 'autocomplete/tags';
+    }
+  });
+
+});
+define('frontend-cp/adapters/twitter-account-callback', ['exports', 'frontend-cp/adapters/application'], function (exports, ApplicationAdapter) {
+
+  'use strict';
+
+  exports['default'] = ApplicationAdapter['default'].extend({
+    pathForType: function pathForType() {
+      return 'twitter/account/callback';
     }
   });
 
@@ -6730,11 +6754,11 @@ define('frontend-cp/components/ko-admin/sidebar/template', ['exports'], function
           "loc": {
             "source": null,
             "start": {
-              "line": 5,
+              "line": 6,
               "column": 2
             },
             "end": {
-              "line": 7,
+              "line": 8,
               "column": 2
             }
           },
@@ -6759,7 +6783,7 @@ define('frontend-cp/components/ko-admin/sidebar/template', ['exports'], function
           return morphs;
         },
         statements: [
-          ["inline","format-message",[["subexpr","intl-get",["admin.views"],[],["loc",[null,[6,21],[6,45]]]]],[],["loc",[null,[6,4],[6,47]]]]
+          ["inline","format-message",[["subexpr","intl-get",["admin.twitter"],[],["loc",[null,[7,21],[7,47]]]]],[],["loc",[null,[7,4],[7,49]]]]
         ],
         locals: [],
         templates: []
@@ -6772,11 +6796,11 @@ define('frontend-cp/components/ko-admin/sidebar/template', ['exports'], function
           "loc": {
             "source": null,
             "start": {
-              "line": 9,
+              "line": 15,
               "column": 2
             },
             "end": {
-              "line": 11,
+              "line": 17,
               "column": 2
             }
           },
@@ -6801,7 +6825,7 @@ define('frontend-cp/components/ko-admin/sidebar/template', ['exports'], function
           return morphs;
         },
         statements: [
-          ["inline","format-message",[["subexpr","intl-get",["admin.casefields"],[],["loc",[null,[10,21],[10,50]]]]],[],["loc",[null,[10,4],[10,52]]]]
+          ["inline","format-message",[["subexpr","intl-get",["admin.views"],[],["loc",[null,[16,21],[16,45]]]]],[],["loc",[null,[16,4],[16,47]]]]
         ],
         locals: [],
         templates: []
@@ -6814,11 +6838,11 @@ define('frontend-cp/components/ko-admin/sidebar/template', ['exports'], function
           "loc": {
             "source": null,
             "start": {
-              "line": 13,
+              "line": 19,
               "column": 2
             },
             "end": {
-              "line": 15,
+              "line": 21,
               "column": 2
             }
           },
@@ -6843,7 +6867,7 @@ define('frontend-cp/components/ko-admin/sidebar/template', ['exports'], function
           return morphs;
         },
         statements: [
-          ["inline","format-message",[["subexpr","intl-get",["admin.caseforms"],[],["loc",[null,[14,21],[14,49]]]]],[],["loc",[null,[14,4],[14,51]]]]
+          ["inline","format-message",[["subexpr","intl-get",["admin.casefields"],[],["loc",[null,[20,21],[20,50]]]]],[],["loc",[null,[20,4],[20,52]]]]
         ],
         locals: [],
         templates: []
@@ -6885,7 +6909,49 @@ define('frontend-cp/components/ko-admin/sidebar/template', ['exports'], function
           return morphs;
         },
         statements: [
-          ["inline","format-message",[["subexpr","intl-get",["admin.teams"],[],["loc",[null,[24,21],[24,45]]]]],[],["loc",[null,[24,4],[24,47]]]]
+          ["inline","format-message",[["subexpr","intl-get",["admin.caseforms"],[],["loc",[null,[24,21],[24,49]]]]],[],["loc",[null,[24,4],[24,51]]]]
+        ],
+        locals: [],
+        templates: []
+      };
+    }());
+    var child4 = (function() {
+      return {
+        meta: {
+          "revision": "Ember@1.13.7",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 33,
+              "column": 2
+            },
+            "end": {
+              "line": 35,
+              "column": 2
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-admin/sidebar/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("    ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+          return morphs;
+        },
+        statements: [
+          ["inline","format-message",[["subexpr","intl-get",["admin.teams"],[],["loc",[null,[34,21],[34,45]]]]],[],["loc",[null,[34,4],[34,47]]]]
         ],
         locals: [],
         templates: []
@@ -6901,7 +6967,7 @@ define('frontend-cp/components/ko-admin/sidebar/template', ['exports'], function
             "column": 0
           },
           "end": {
-            "line": 27,
+            "line": 37,
             "column": 0
           }
         },
@@ -6912,6 +6978,26 @@ define('frontend-cp/components/ko-admin/sidebar/template', ['exports'], function
       hasRendered: false,
       buildFragment: function buildFragment(dom) {
         var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","ko-admin_sidebar__group");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("p");
+        dom.setAttribute(el2,"class","ko-admin_sidebar__header");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
         var el1 = dom.createElement("div");
         dom.setAttribute(el1,"class","ko-admin_sidebar__group");
         var el2 = dom.createTextNode("\n  ");
@@ -6965,25 +7051,30 @@ define('frontend-cp/components/ko-admin/sidebar/template', ['exports'], function
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
         var element0 = dom.childAt(fragment, [0]);
         var element1 = dom.childAt(fragment, [2]);
-        var morphs = new Array(6);
+        var element2 = dom.childAt(fragment, [4]);
+        var morphs = new Array(8);
         morphs[0] = dom.createMorphAt(dom.childAt(element0, [1]),1,1);
         morphs[1] = dom.createMorphAt(element0,3,3);
-        morphs[2] = dom.createMorphAt(element0,5,5);
-        morphs[3] = dom.createMorphAt(element0,7,7);
-        morphs[4] = dom.createMorphAt(dom.childAt(element1, [1]),1,1);
-        morphs[5] = dom.createMorphAt(element1,3,3);
+        morphs[2] = dom.createMorphAt(dom.childAt(element1, [1]),1,1);
+        morphs[3] = dom.createMorphAt(element1,3,3);
+        morphs[4] = dom.createMorphAt(element1,5,5);
+        morphs[5] = dom.createMorphAt(element1,7,7);
+        morphs[6] = dom.createMorphAt(dom.childAt(element2, [1]),1,1);
+        morphs[7] = dom.createMorphAt(element2,3,3);
         return morphs;
       },
       statements: [
-        ["inline","format-message",[["subexpr","intl-get",["admin.navigation.manage"],[],["loc",[null,[3,21],[3,57]]]]],[],["loc",[null,[3,4],[3,59]]]],
-        ["block","link-to",["session.admin.manage.views"],["class","t-naked-link ko-admin_sidebar__item"],0,null,["loc",[null,[5,2],[7,14]]]],
-        ["block","link-to",["session.admin.manage.case-fields"],["class","t-naked-link ko-admin_sidebar__item"],1,null,["loc",[null,[9,2],[11,14]]]],
-        ["block","link-to",["session.admin.manage.case-forms"],["class","t-naked-link ko-admin_sidebar__item"],2,null,["loc",[null,[13,2],[15,14]]]],
-        ["inline","format-message",[["subexpr","intl-get",["admin.navigation.people"],[],["loc",[null,[21,21],[21,57]]]]],[],["loc",[null,[21,4],[21,59]]]],
-        ["block","link-to",["session.admin.people.teams"],["class","t-naked-link ko-admin_sidebar__item"],3,null,["loc",[null,[23,2],[25,14]]]]
+        ["inline","format-message",[["subexpr","intl-get",["admin.navigation.channels"],[],["loc",[null,[3,21],[3,59]]]]],[],["loc",[null,[3,4],[3,61]]]],
+        ["block","link-to",["session.admin.channels.twitter"],["class","t-naked-link ko-admin_sidebar__item"],0,null,["loc",[null,[6,2],[8,14]]]],
+        ["inline","format-message",[["subexpr","intl-get",["admin.navigation.manage"],[],["loc",[null,[13,21],[13,57]]]]],[],["loc",[null,[13,4],[13,59]]]],
+        ["block","link-to",["session.admin.manage.views"],["class","t-naked-link ko-admin_sidebar__item"],1,null,["loc",[null,[15,2],[17,14]]]],
+        ["block","link-to",["session.admin.manage.case-fields"],["class","t-naked-link ko-admin_sidebar__item"],2,null,["loc",[null,[19,2],[21,14]]]],
+        ["block","link-to",["session.admin.manage.case-forms"],["class","t-naked-link ko-admin_sidebar__item"],3,null,["loc",[null,[23,2],[25,14]]]],
+        ["inline","format-message",[["subexpr","intl-get",["admin.navigation.people"],[],["loc",[null,[31,21],[31,57]]]]],[],["loc",[null,[31,4],[31,59]]]],
+        ["block","link-to",["session.admin.people.teams"],["class","t-naked-link ko-admin_sidebar__item"],4,null,["loc",[null,[33,2],[35,14]]]]
       ],
       locals: [],
-      templates: [child0, child1, child2, child3]
+      templates: [child0, child1, child2, child3, child4]
     };
   }()));
 
@@ -7207,6 +7298,1013 @@ define('frontend-cp/components/ko-admin/tags/template', ['exports'], function (e
       ],
       locals: [],
       templates: [child0]
+    };
+  }()));
+
+});
+define('frontend-cp/components/ko-admin/twitter/edit/component', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Component.extend({
+    //Params:
+    account: null,
+
+    store: Ember['default'].inject.service(),
+
+    brands: [],
+    initBrands: Ember['default'].on('init', function () {
+      var _this = this;
+
+      this.get('store').findAll('brand').then(function (brands) {
+        _this.set('brands', brands);
+      });
+    }),
+
+    actions: {
+      setBrand: function setBrand(brand) {
+        this.set('account.brand', brand);
+      }
+    }
+
+  });
+
+});
+define('frontend-cp/components/ko-admin/twitter/edit/template', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports['default'] = Ember.HTMLBars.template((function() {
+    var child0 = (function() {
+      var child0 = (function() {
+        var child0 = (function() {
+          var child0 = (function() {
+            var child0 = (function() {
+              var child0 = (function() {
+                return {
+                  meta: {
+                    "revision": "Ember@1.13.7",
+                    "loc": {
+                      "source": null,
+                      "start": {
+                        "line": 9,
+                        "column": 10
+                      },
+                      "end": {
+                        "line": 14,
+                        "column": 10
+                      }
+                    },
+                    "moduleName": "frontend-cp/components/ko-admin/twitter/edit/template.hbs"
+                  },
+                  arity: 1,
+                  cachedFragment: null,
+                  hasRendered: false,
+                  buildFragment: function buildFragment(dom) {
+                    var el0 = dom.createDocumentFragment();
+                    var el1 = dom.createTextNode("              ");
+                    dom.appendChild(el0, el1);
+                    var el1 = dom.createElement("li");
+                    dom.setAttribute(el1,"class","ko-dropdown_list__item");
+                    var el2 = dom.createTextNode("\n                ");
+                    dom.appendChild(el1, el2);
+                    var el2 = dom.createComment("");
+                    dom.appendChild(el1, el2);
+                    var el2 = dom.createTextNode("\n              ");
+                    dom.appendChild(el1, el2);
+                    dom.appendChild(el0, el1);
+                    var el1 = dom.createTextNode("\n");
+                    dom.appendChild(el0, el1);
+                    return el0;
+                  },
+                  buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                    var element0 = dom.childAt(fragment, [1]);
+                    var morphs = new Array(2);
+                    morphs[0] = dom.createAttrMorph(element0, 'onclick');
+                    morphs[1] = dom.createMorphAt(element0,1,1);
+                    return morphs;
+                  },
+                  statements: [
+                    ["attribute","onclick",["subexpr","action",["setBrand",["get","brand",["loc",[null,[11,77],[11,82]]]]],[],["loc",[null,[11,57],[11,84]]]]],
+                    ["content","brand.name",["loc",[null,[12,16],[12,30]]]]
+                  ],
+                  locals: ["brand"],
+                  templates: []
+                };
+              }());
+              return {
+                meta: {
+                  "revision": "Ember@1.13.7",
+                  "loc": {
+                    "source": null,
+                    "start": {
+                      "line": 8,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 15,
+                      "column": 8
+                    }
+                  },
+                  "moduleName": "frontend-cp/components/ko-admin/twitter/edit/template.hbs"
+                },
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                  var el0 = dom.createDocumentFragment();
+                  var el1 = dom.createComment("");
+                  dom.appendChild(el0, el1);
+                  return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                  var morphs = new Array(1);
+                  morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+                  dom.insertBoundary(fragment, 0);
+                  dom.insertBoundary(fragment, null);
+                  return morphs;
+                },
+                statements: [
+                  ["block","each",[["get","brands",["loc",[null,[9,18],[9,24]]]]],[],0,null,["loc",[null,[9,10],[14,19]]]]
+                ],
+                locals: [],
+                templates: [child0]
+              };
+            }());
+            return {
+              meta: {
+                "revision": "Ember@1.13.7",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 4,
+                    "column": 6
+                  },
+                  "end": {
+                    "line": 16,
+                    "column": 6
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-admin/twitter/edit/template.hbs"
+              },
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var morphs = new Array(1);
+                morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+                dom.insertBoundary(fragment, 0);
+                dom.insertBoundary(fragment, null);
+                return morphs;
+              },
+              statements: [
+                ["block","ko-dropdown/select",[],["label",["subexpr","@mut",[["get","account.brand.name",["loc",[null,[8,36],[8,54]]]]],[],[]]],0,null,["loc",[null,[8,8],[15,31]]]]
+              ],
+              locals: [],
+              templates: [child0]
+            };
+          }());
+          return {
+            meta: {
+              "revision": "Ember@1.13.7",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 3,
+                  "column": 4
+                },
+                "end": {
+                  "line": 17,
+                  "column": 4
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-admin/twitter/edit/template.hbs"
+            },
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(1);
+              morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+              dom.insertBoundary(fragment, 0);
+              dom.insertBoundary(fragment, null);
+              return morphs;
+            },
+            statements: [
+              ["block","ko-form-field",[],["label",["subexpr","format-message",[["subexpr","intl-get",["admin.twitter.label.brand"],[],["loc",[null,[5,28],[5,66]]]]],[],["loc",[null,[5,12],[5,67]]]],"help",["subexpr","format-message",[["subexpr","intl-get",["admin.twitter.help.brand"],[],["loc",[null,[6,27],[6,64]]]]],[],["loc",[null,[6,11],[6,65]]]]],0,null,["loc",[null,[4,6],[16,24]]]]
+            ],
+            locals: [],
+            templates: [child0]
+          };
+        }());
+        return {
+          meta: {
+            "revision": "Ember@1.13.7",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 2,
+                "column": 2
+              },
+              "end": {
+                "line": 18,
+                "column": 2
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-admin/twitter/edit/template.hbs"
+          },
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+            dom.insertBoundary(fragment, 0);
+            dom.insertBoundary(fragment, null);
+            return morphs;
+          },
+          statements: [
+            ["block","ko-admin/forms/label",[],[],0,null,["loc",[null,[3,4],[17,29]]]]
+          ],
+          locals: [],
+          templates: [child0]
+        };
+      }());
+      return {
+        meta: {
+          "revision": "Ember@1.13.7",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 1,
+              "column": 0
+            },
+            "end": {
+              "line": 19,
+              "column": 0
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-admin/twitter/edit/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [
+          ["block","ko-admin/forms/item",[],[],0,null,["loc",[null,[2,2],[18,26]]]]
+        ],
+        locals: [],
+        templates: [child0]
+      };
+    }());
+    var child1 = (function() {
+      var child0 = (function() {
+        var child0 = (function() {
+          return {
+            meta: {
+              "revision": "Ember@1.13.7",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 23,
+                  "column": 4
+                },
+                "end": {
+                  "line": 25,
+                  "column": 4
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-admin/twitter/edit/template.hbs"
+            },
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode("      ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(1);
+              morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+              return morphs;
+            },
+            statements: [
+              ["inline","format-message",[["subexpr","intl-get",["admin.twitter.help.capture"],[],["loc",[null,[24,23],[24,62]]]]],[],["loc",[null,[24,6],[24,64]]]]
+            ],
+            locals: [],
+            templates: []
+          };
+        }());
+        return {
+          meta: {
+            "revision": "Ember@1.13.7",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 22,
+                "column": 2
+              },
+              "end": {
+                "line": 26,
+                "column": 2
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-admin/twitter/edit/template.hbs"
+          },
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+            dom.insertBoundary(fragment, 0);
+            dom.insertBoundary(fragment, null);
+            return morphs;
+          },
+          statements: [
+            ["block","ko-admin/forms/legend",[],[],0,null,["loc",[null,[23,4],[25,30]]]]
+          ],
+          locals: [],
+          templates: [child0]
+        };
+      }());
+      var child1 = (function() {
+        var child0 = (function() {
+          var child0 = (function() {
+            return {
+              meta: {
+                "revision": "Ember@1.13.7",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 30,
+                    "column": 6
+                  },
+                  "end": {
+                    "line": 34,
+                    "column": 6
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-admin/twitter/edit/template.hbs"
+              },
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createTextNode("        ");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var morphs = new Array(1);
+                morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+                return morphs;
+              },
+              statements: [
+                ["inline","ko-toggle",[],["activated",["subexpr","@mut",[["get","account.routeMentions",["loc",[null,[33,30],[33,51]]]]],[],[]]],["loc",[null,[33,8],[33,53]]]]
+              ],
+              locals: [],
+              templates: []
+            };
+          }());
+          return {
+            meta: {
+              "revision": "Ember@1.13.7",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 29,
+                  "column": 4
+                },
+                "end": {
+                  "line": 35,
+                  "column": 4
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-admin/twitter/edit/template.hbs"
+            },
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(1);
+              morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+              dom.insertBoundary(fragment, 0);
+              dom.insertBoundary(fragment, null);
+              return morphs;
+            },
+            statements: [
+              ["block","ko-form-field",[],["label",["subexpr","format-message",[["subexpr","intl-get",["admin.twitter.label.mentions"],[],["loc",[null,[31,28],[31,69]]]]],[],["loc",[null,[31,12],[31,70]]]]],0,null,["loc",[null,[30,6],[34,24]]]]
+            ],
+            locals: [],
+            templates: [child0]
+          };
+        }());
+        return {
+          meta: {
+            "revision": "Ember@1.13.7",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 28,
+                "column": 2
+              },
+              "end": {
+                "line": 36,
+                "column": 2
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-admin/twitter/edit/template.hbs"
+          },
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+            dom.insertBoundary(fragment, 0);
+            dom.insertBoundary(fragment, null);
+            return morphs;
+          },
+          statements: [
+            ["block","ko-admin/forms/label",[],[],0,null,["loc",[null,[29,4],[35,29]]]]
+          ],
+          locals: [],
+          templates: [child0]
+        };
+      }());
+      var child2 = (function() {
+        var child0 = (function() {
+          var child0 = (function() {
+            return {
+              meta: {
+                "revision": "Ember@1.13.7",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 40,
+                    "column": 6
+                  },
+                  "end": {
+                    "line": 44,
+                    "column": 6
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-admin/twitter/edit/template.hbs"
+              },
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createTextNode("        ");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var morphs = new Array(1);
+                morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+                return morphs;
+              },
+              statements: [
+                ["inline","ko-toggle",[],["activated",["subexpr","@mut",[["get","account.routeMessages",["loc",[null,[43,30],[43,51]]]]],[],[]]],["loc",[null,[43,8],[43,53]]]]
+              ],
+              locals: [],
+              templates: []
+            };
+          }());
+          return {
+            meta: {
+              "revision": "Ember@1.13.7",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 39,
+                  "column": 4
+                },
+                "end": {
+                  "line": 45,
+                  "column": 4
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-admin/twitter/edit/template.hbs"
+            },
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(1);
+              morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+              dom.insertBoundary(fragment, 0);
+              dom.insertBoundary(fragment, null);
+              return morphs;
+            },
+            statements: [
+              ["block","ko-form-field",[],["label",["subexpr","format-message",[["subexpr","intl-get",["admin.twitter.label.direct_messages"],[],["loc",[null,[41,28],[41,76]]]]],[],["loc",[null,[41,12],[41,77]]]]],0,null,["loc",[null,[40,6],[44,24]]]]
+            ],
+            locals: [],
+            templates: [child0]
+          };
+        }());
+        return {
+          meta: {
+            "revision": "Ember@1.13.7",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 38,
+                "column": 2
+              },
+              "end": {
+                "line": 46,
+                "column": 2
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-admin/twitter/edit/template.hbs"
+          },
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+            dom.insertBoundary(fragment, 0);
+            dom.insertBoundary(fragment, null);
+            return morphs;
+          },
+          statements: [
+            ["block","ko-admin/forms/label",[],[],0,null,["loc",[null,[39,4],[45,29]]]]
+          ],
+          locals: [],
+          templates: [child0]
+        };
+      }());
+      var child3 = (function() {
+        var child0 = (function() {
+          var child0 = (function() {
+            return {
+              meta: {
+                "revision": "Ember@1.13.7",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 50,
+                    "column": 6
+                  },
+                  "end": {
+                    "line": 54,
+                    "column": 6
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-admin/twitter/edit/template.hbs"
+              },
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createTextNode("        ");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var morphs = new Array(1);
+                morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+                return morphs;
+              },
+              statements: [
+                ["inline","ko-toggle",[],["activated",["subexpr","@mut",[["get","account.routeFavorites",["loc",[null,[53,30],[53,52]]]]],[],[]]],["loc",[null,[53,8],[53,54]]]]
+              ],
+              locals: [],
+              templates: []
+            };
+          }());
+          return {
+            meta: {
+              "revision": "Ember@1.13.7",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 49,
+                  "column": 4
+                },
+                "end": {
+                  "line": 55,
+                  "column": 4
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-admin/twitter/edit/template.hbs"
+            },
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(1);
+              morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+              dom.insertBoundary(fragment, 0);
+              dom.insertBoundary(fragment, null);
+              return morphs;
+            },
+            statements: [
+              ["block","ko-form-field",[],["label",["subexpr","format-message",[["subexpr","intl-get",["admin.twitter.label.favourited_tweets"],[],["loc",[null,[51,28],[51,78]]]]],[],["loc",[null,[51,12],[51,79]]]]],0,null,["loc",[null,[50,6],[54,24]]]]
+            ],
+            locals: [],
+            templates: [child0]
+          };
+        }());
+        return {
+          meta: {
+            "revision": "Ember@1.13.7",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 48,
+                "column": 2
+              },
+              "end": {
+                "line": 56,
+                "column": 2
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-admin/twitter/edit/template.hbs"
+          },
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+            dom.insertBoundary(fragment, 0);
+            dom.insertBoundary(fragment, null);
+            return morphs;
+          },
+          statements: [
+            ["block","ko-admin/forms/label",[],[],0,null,["loc",[null,[49,4],[55,29]]]]
+          ],
+          locals: [],
+          templates: [child0]
+        };
+      }());
+      return {
+        meta: {
+          "revision": "Ember@1.13.7",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 21,
+              "column": 0
+            },
+            "end": {
+              "line": 57,
+              "column": 0
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-admin/twitter/edit/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(4);
+          morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+          morphs[1] = dom.createMorphAt(fragment,2,2,contextualElement);
+          morphs[2] = dom.createMorphAt(fragment,4,4,contextualElement);
+          morphs[3] = dom.createMorphAt(fragment,6,6,contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [
+          ["block","ko-admin/forms/item",[],[],0,null,["loc",[null,[22,2],[26,26]]]],
+          ["block","ko-admin/forms/item",[],[],1,null,["loc",[null,[28,2],[36,26]]]],
+          ["block","ko-admin/forms/item",[],[],2,null,["loc",[null,[38,2],[46,26]]]],
+          ["block","ko-admin/forms/item",[],[],3,null,["loc",[null,[48,2],[56,26]]]]
+        ],
+        locals: [],
+        templates: [child0, child1, child2, child3]
+      };
+    }());
+    var child2 = (function() {
+      var child0 = (function() {
+        var child0 = (function() {
+          var child0 = (function() {
+            return {
+              meta: {
+                "revision": "Ember@1.13.7",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 62,
+                    "column": 6
+                  },
+                  "end": {
+                    "line": 67,
+                    "column": 6
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-admin/twitter/edit/template.hbs"
+              },
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createTextNode("        ");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var morphs = new Array(1);
+                morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+                return morphs;
+              },
+              statements: [
+                ["inline","ko-toggle",[],["activated",["subexpr","@mut",[["get","account.isPublic",["loc",[null,[66,30],[66,46]]]]],[],[]]],["loc",[null,[66,8],[66,48]]]]
+              ],
+              locals: [],
+              templates: []
+            };
+          }());
+          return {
+            meta: {
+              "revision": "Ember@1.13.7",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 61,
+                  "column": 4
+                },
+                "end": {
+                  "line": 68,
+                  "column": 4
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-admin/twitter/edit/template.hbs"
+            },
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(1);
+              morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+              dom.insertBoundary(fragment, 0);
+              dom.insertBoundary(fragment, null);
+              return morphs;
+            },
+            statements: [
+              ["block","ko-form-field",[],["label",["subexpr","format-message",[["subexpr","intl-get",["admin.twitter.label.display_public_tweets"],[],["loc",[null,[63,30],[63,84]]]]],[],["loc",[null,[63,14],[63,85]]]],"help",["subexpr","format-message",[["subexpr","intl-get",["admin.twitter.help.display_public_tweets"],[],["loc",[null,[64,29],[64,82]]]]],[],["loc",[null,[64,13],[64,83]]]]],0,null,["loc",[null,[62,6],[67,24]]]]
+            ],
+            locals: [],
+            templates: [child0]
+          };
+        }());
+        return {
+          meta: {
+            "revision": "Ember@1.13.7",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 60,
+                "column": 2
+              },
+              "end": {
+                "line": 69,
+                "column": 2
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-admin/twitter/edit/template.hbs"
+          },
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+            dom.insertBoundary(fragment, 0);
+            dom.insertBoundary(fragment, null);
+            return morphs;
+          },
+          statements: [
+            ["block","ko-admin/forms/label",[],[],0,null,["loc",[null,[61,4],[68,29]]]]
+          ],
+          locals: [],
+          templates: [child0]
+        };
+      }());
+      return {
+        meta: {
+          "revision": "Ember@1.13.7",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 59,
+              "column": 0
+            },
+            "end": {
+              "line": 71,
+              "column": 0
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-admin/twitter/edit/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+          dom.insertBoundary(fragment, 0);
+          return morphs;
+        },
+        statements: [
+          ["block","ko-admin/forms/item",[],[],0,null,["loc",[null,[60,2],[69,26]]]]
+        ],
+        locals: [],
+        templates: [child0]
+      };
+    }());
+    return {
+      meta: {
+        "revision": "Ember@1.13.7",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 71,
+            "column": 25
+          }
+        },
+        "moduleName": "frontend-cp/components/ko-admin/twitter/edit/template.hbs"
+      },
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var morphs = new Array(3);
+        morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+        morphs[1] = dom.createMorphAt(fragment,2,2,contextualElement);
+        morphs[2] = dom.createMorphAt(fragment,4,4,contextualElement);
+        dom.insertBoundary(fragment, 0);
+        dom.insertBoundary(fragment, null);
+        return morphs;
+      },
+      statements: [
+        ["block","ko-admin/forms/group",[],["legend",["subexpr","format-message",[["subexpr","intl-get",["admin.twitter.heading.account_settings"],[],["loc",[null,[1,47],[1,98]]]]],[],["loc",[null,[1,31],[1,99]]]]],0,null,["loc",[null,[1,0],[19,25]]]],
+        ["block","ko-admin/forms/group",[],["legend",["subexpr","format-message",[["subexpr","intl-get",["admin.twitter.heading.capture_settings"],[],["loc",[null,[21,47],[21,98]]]]],[],["loc",[null,[21,31],[21,99]]]]],1,null,["loc",[null,[21,0],[57,25]]]],
+        ["block","ko-admin/forms/group",[],["legend",["subexpr","format-message",[["subexpr","intl-get",["admin.twitter.heading.help_settings"],[],["loc",[null,[59,47],[59,95]]]]],[],["loc",[null,[59,31],[59,96]]]]],2,null,["loc",[null,[59,0],[71,25]]]]
+      ],
+      locals: [],
+      templates: [child0, child1, child2]
     };
   }()));
 
@@ -46596,8 +47694,7 @@ define('frontend-cp/models/brand', ['exports', 'ember-data'], function (exports,
   'use strict';
 
   exports['default'] = DS['default'].Model.extend({
-    title: DS['default'].attr('string'),
-    companyName: DS['default'].attr('string'),
+    name: DS['default'].attr('string'),
     url: DS['default'].attr('string'),
     language: DS['default'].belongsTo('language', { async: false }),
     isEnabled: DS['default'].attr('boolean')
@@ -47622,6 +48719,13 @@ define('frontend-cp/models/note', ['exports', 'ember-data', 'frontend-cp/models/
   });
 
 });
+define('frontend-cp/models/oauth-link', ['exports', 'ember-data'], function (exports, DS) {
+
+	'use strict';
+
+	exports['default'] = DS['default'].Model.extend({});
+
+});
 define('frontend-cp/models/object', ['exports', 'ember-data'], function (exports, DS) {
 
   'use strict';
@@ -47977,22 +49081,34 @@ define('frontend-cp/models/thumbnail', ['exports', 'ember-data'], function (expo
   });
 
 });
+define('frontend-cp/models/twitter-account-callback', ['exports', 'ember-data'], function (exports, DS) {
+
+  'use strict';
+
+  exports['default'] = DS['default'].Model.extend({
+    oauthToken: DS['default'].attr('string'),
+    oauthVerifier: DS['default'].attr('string'),
+
+    account: DS['default'].belongsTo('twitter-account')
+  });
+
+});
 define('frontend-cp/models/twitter-account', ['exports', 'ember-data', 'frontend-cp/models/account'], function (exports, DS, Account) {
 
-    'use strict';
+  'use strict';
 
-    exports['default'] = Account['default'].extend({
-        twitterId: DS['default'].attr('string'),
-        screenName: DS['default'].attr('string'),
-        brand: DS['default'].belongsTo('brand', { async: false }),
-        routeMentions: DS['default'].attr('boolean'),
-        routeMessages: DS['default'].attr('boolean'),
-        routeFavorites: DS['default'].attr('boolean'),
-        isPublic: DS['default'].attr('boolean'),
-        isEnabled: DS['default'].attr('boolean'),
-        createdAt: DS['default'].attr('date'),
-        updatedAt: DS['default'].attr('date')
-    });
+  exports['default'] = Account['default'].extend({
+    twitterId: DS['default'].attr('string'),
+    screenName: DS['default'].attr('string'),
+    brand: DS['default'].belongsTo('brand', { async: false }),
+    routeMentions: DS['default'].attr('boolean'),
+    routeMessages: DS['default'].attr('boolean'),
+    routeFavorites: DS['default'].attr('boolean'),
+    isPublic: DS['default'].attr('boolean'),
+    isEnabled: DS['default'].attr('boolean'),
+    createdAt: DS['default'].attr('date'),
+    updatedAt: DS['default'].attr('date')
+  });
 
 });
 define('frontend-cp/models/twitter-message', ['exports', 'ember-data', 'frontend-cp/models/postable'], function (exports, DS, Postable) {
@@ -48267,6 +49383,13 @@ define('frontend-cp/router', ['exports', 'ember', 'frontend-cp/config/environmen
           this.route('teams', function () {
             this.route('new');
             this.route('edit', { path: '/:team_id' });
+          });
+        });
+
+        this.route('channels', function () {
+          this.route('twitter', function () {
+            this.route('edit', { path: '/:account_id' });
+            this.route('link');
           });
         });
       });
@@ -48808,6 +49931,26 @@ define('frontend-cp/serializers/note', ['exports', 'frontend-cp/serializers/appl
   });
 
 });
+define('frontend-cp/serializers/oauth-link', ['exports', 'frontend-cp/serializers/application'], function (exports, ApplicationSerializer) {
+
+  'use strict';
+
+  exports['default'] = ApplicationSerializer['default'].extend({
+    primaryKey: 'link',
+
+    /*
+     * This isn't a model in a traditional sense, the the model doesn't come with
+     * resource_type
+     *
+     * pull it from the payload instead
+     */
+    extractSingleData: function extractSingleData(data, payload) {
+      payload[payload.resource] = data;
+      this.extractItem(data, payload.resource);
+    }
+  });
+
+});
 define('frontend-cp/serializers/organization-field-type', ['exports', 'ember-data'], function (exports, DS) {
 
 	'use strict';
@@ -48952,6 +50095,28 @@ define('frontend-cp/serializers/thumbnail', ['exports', 'frontend-cp/serializers
   exports['default'] = ApplicationSerializer['default'].extend({
     attrs: {
       thumbnailType: { key: 'type' }
+    }
+  });
+
+});
+define('frontend-cp/serializers/twitter-account-callback', ['exports', 'frontend-cp/serializers/application'], function (exports, ApplicationSerializer) {
+
+  'use strict';
+
+  exports['default'] = ApplicationSerializer['default'].extend({
+    attrs: {
+      account: { serialize: false }
+    },
+
+    /*
+     * This isn't a model in a traditional sense, the the model doesn't come with
+     * resource_type
+     *
+     * pull it from the payload instead
+     */
+    extractSingleData: function extractSingleData(data, payload) {
+      payload[payload.resource] = data;
+      this.extractItem(data, payload.resource);
     }
   });
 
@@ -50446,6 +51611,819 @@ define('frontend-cp/services/validator', ['exports', 'ember'], function (exports
   });
 
 });
+define('frontend-cp/session/admin/channels/twitter/edit/controller', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Controller.extend({
+
+    actions: {
+      transitionToIndexRoute: function transitionToIndexRoute() {
+        this.transitionToRoute('session.admin.channels.twitter.index');
+      },
+
+      saveTwitterAccount: function saveTwitterAccount() {
+        var _this = this;
+
+        this.get('model').save().then(function () {
+          _this.transitionToRoute('session.admin.channels.twitter.index');
+        });
+      }
+    }
+
+  });
+
+});
+define('frontend-cp/session/admin/channels/twitter/edit/route', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  /*eslint no-alert:0*/
+  exports['default'] = Ember['default'].Route.extend({
+
+    intlService: Ember['default'].inject.service('intl'),
+    model: function model(params) {
+      return this.store.find('twitter-account', params.account_id);
+    },
+
+    actions: {
+      willTransition: function willTransition(transition) {
+        if (this.controller.userHasChangedModel()) {
+
+          var translatedConfirmationMessage = this.get('intlService').findTranslationByKey('generic.confirm.lose_changes');
+          var shouldRollBackModel = confirm(translatedConfirmationMessage.translation);
+
+          if (shouldRollBackModel) {
+            this.controller.send('rollBackModel');
+            return true;
+          } else {
+            transition.abort();
+          }
+        }
+      }
+    }
+  });
+
+});
+define('frontend-cp/session/admin/channels/twitter/edit/template', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      meta: {
+        "revision": "Ember@1.13.7",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 5,
+            "column": 150
+          }
+        },
+        "moduleName": "frontend-cp/session/admin/channels/twitter/edit/template.hbs"
+      },
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var morphs = new Array(3);
+        morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+        morphs[1] = dom.createMorphAt(fragment,2,2,contextualElement);
+        morphs[2] = dom.createMorphAt(fragment,4,4,contextualElement);
+        dom.insertBoundary(fragment, 0);
+        dom.insertBoundary(fragment, null);
+        return morphs;
+      },
+      statements: [
+        ["inline","ko-admin/page-header",[],["title",["subexpr","format-message",[["subexpr","intl-get",["admin.casefields.edit.heading"],[],["loc",[null,[1,45],[1,87]]]]],[],["loc",[null,[1,29],[1,88]]]],"cancelAction","transitionToIndexRoute","buttonText",["subexpr","format-message",[["subexpr","intl-get",["generic.save"],[],["loc",[null,[1,154],[1,179]]]]],[],["loc",[null,[1,138],[1,180]]]],"buttonAction","saveTwitterAccount"],["loc",[null,[1,0],[1,216]]]],
+        ["inline","ko-admin/twitter/edit",[],["account",["subexpr","@mut",[["get","model",["loc",[null,[3,32],[3,37]]]]],[],[]]],["loc",[null,[3,0],[3,39]]]],
+        ["inline","ko-admin/page-footer",[],["cancelAction","transitionToIndexRoute","buttonText",["subexpr","format-message",[["subexpr","intl-get",["generic.save"],[],["loc",[null,[5,88],[5,113]]]]],[],["loc",[null,[5,72],[5,114]]]],"buttonAction","saveTwitterAccount"],["loc",[null,[5,0],[5,150]]]]
+      ],
+      locals: [],
+      templates: []
+    };
+  }()));
+
+});
+define('frontend-cp/session/admin/channels/twitter/index/controller', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  /*eslint no-alert:0*/
+  exports['default'] = Ember['default'].Controller.extend({
+    intlService: Ember['default'].inject.service('intl'),
+
+    enabledAccounts: Ember['default'].computed('model.@each.isEnabled', function () {
+      return this.get('model').filter(function (account) {
+        return account.get('isEnabled') === true;
+      });
+    }),
+    disabledAccounts: Ember['default'].computed('model.@each.isEnabled', function () {
+      return this.get('model').filter(function (account) {
+        return account.get('isEnabled') !== true;
+      });
+    }),
+
+    actions: {
+      toggleEnabledProperty: function toggleEnabledProperty(account) {
+        account.toggleProperty('isEnabled');
+        account.save();
+      },
+      showDeleteConfirmation: function showDeleteConfirmation(account) {
+        if (confirm(this.get('intlService').findTranslationByKey('generic.confirm.delete').translation)) {
+          account.destroyRecord();
+        }
+      },
+      redirectToTwitterAuthenticationEndpoint: function redirectToTwitterAuthenticationEndpoint() {
+        this.store.queryRecord('oauth-link', { callback: '/admin/channels/twitter/link' }).then(function (link) {
+          window.location.href = link.get('id');
+        });
+      }
+
+    }
+
+  });
+
+});
+define('frontend-cp/session/admin/channels/twitter/index/route', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Route.extend({
+
+    model: function model() {
+      return this.store.find('twitter-account');
+    }
+
+  });
+
+});
+define('frontend-cp/session/admin/channels/twitter/index/template', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports['default'] = Ember.HTMLBars.template((function() {
+    var child0 = (function() {
+      var child0 = (function() {
+        var child0 = (function() {
+          var child0 = (function() {
+            var child0 = (function() {
+              return {
+                meta: {
+                  "revision": "Ember@1.13.7",
+                  "loc": {
+                    "source": null,
+                    "start": {
+                      "line": 22,
+                      "column": 14
+                    },
+                    "end": {
+                      "line": 22,
+                      "column": 116
+                    }
+                  },
+                  "moduleName": "frontend-cp/session/admin/channels/twitter/index/template.hbs"
+                },
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                  var el0 = dom.createDocumentFragment();
+                  var el1 = dom.createComment("");
+                  dom.appendChild(el0, el1);
+                  return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                  var morphs = new Array(1);
+                  morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+                  dom.insertBoundary(fragment, 0);
+                  dom.insertBoundary(fragment, null);
+                  return morphs;
+                },
+                statements: [
+                  ["inline","format-message",[["subexpr","intl-get",["generic.edit"],[],["loc",[null,[22,89],[22,114]]]]],[],["loc",[null,[22,72],[22,116]]]]
+                ],
+                locals: [],
+                templates: []
+              };
+            }());
+            return {
+              meta: {
+                "revision": "Ember@1.13.7",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 15,
+                    "column": 6
+                  },
+                  "end": {
+                    "line": 28,
+                    "column": 6
+                  }
+                },
+                "moduleName": "frontend-cp/session/admin/channels/twitter/index/template.hbs"
+              },
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createTextNode("        ");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createElement("div");
+                dom.setAttribute(el1,"class","layout");
+                var el2 = dom.createTextNode("\n          ");
+                dom.appendChild(el1, el2);
+                var el2 = dom.createElement("div");
+                dom.setAttribute(el2,"class","layout__item u-2/3");
+                var el3 = dom.createTextNode("\n            ");
+                dom.appendChild(el2, el3);
+                var el3 = dom.createElement("span");
+                dom.setAttribute(el3,"class","t-bold");
+                var el4 = dom.createTextNode("@");
+                dom.appendChild(el3, el4);
+                var el4 = dom.createComment("");
+                dom.appendChild(el3, el4);
+                dom.appendChild(el2, el3);
+                var el3 = dom.createTextNode(" ");
+                dom.appendChild(el2, el3);
+                var el3 = dom.createElement("span");
+                dom.setAttribute(el3,"class","t-caption");
+                var el4 = dom.createComment("");
+                dom.appendChild(el3, el4);
+                dom.appendChild(el2, el3);
+                var el3 = dom.createTextNode("\n          ");
+                dom.appendChild(el2, el3);
+                dom.appendChild(el1, el2);
+                var el2 = dom.createComment("\n       ");
+                dom.appendChild(el1, el2);
+                var el2 = dom.createElement("div");
+                dom.setAttribute(el2,"class","layout__item u-1/3");
+                var el3 = dom.createTextNode("\n            ");
+                dom.appendChild(el2, el3);
+                var el3 = dom.createElement("div");
+                dom.setAttribute(el3,"class","ko-simple-list__actions");
+                var el4 = dom.createTextNode("\n              ");
+                dom.appendChild(el3, el4);
+                var el4 = dom.createComment("");
+                dom.appendChild(el3, el4);
+                var el4 = dom.createTextNode(" |\n              ");
+                dom.appendChild(el3, el4);
+                var el4 = dom.createElement("a");
+                dom.setAttribute(el4,"href","#");
+                var el5 = dom.createComment("");
+                dom.appendChild(el4, el5);
+                dom.appendChild(el3, el4);
+                var el4 = dom.createTextNode(" |\n              ");
+                dom.appendChild(el3, el4);
+                var el4 = dom.createElement("a");
+                dom.setAttribute(el4,"href","#");
+                var el5 = dom.createComment("");
+                dom.appendChild(el4, el5);
+                dom.appendChild(el3, el4);
+                var el4 = dom.createTextNode("\n            ");
+                dom.appendChild(el3, el4);
+                dom.appendChild(el2, el3);
+                var el3 = dom.createTextNode("\n          ");
+                dom.appendChild(el2, el3);
+                dom.appendChild(el1, el2);
+                var el2 = dom.createTextNode("\n        ");
+                dom.appendChild(el1, el2);
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var element5 = dom.childAt(fragment, [1]);
+                var element6 = dom.childAt(element5, [1]);
+                var element7 = dom.childAt(element5, [3, 1]);
+                var element8 = dom.childAt(element7, [3]);
+                var element9 = dom.childAt(element7, [5]);
+                var morphs = new Array(7);
+                morphs[0] = dom.createMorphAt(dom.childAt(element6, [1]),1,1);
+                morphs[1] = dom.createMorphAt(dom.childAt(element6, [3]),0,0);
+                morphs[2] = dom.createMorphAt(element7,1,1);
+                morphs[3] = dom.createElementMorph(element8);
+                morphs[4] = dom.createMorphAt(element8,0,0);
+                morphs[5] = dom.createElementMorph(element9);
+                morphs[6] = dom.createMorphAt(element9,0,0);
+                return morphs;
+              },
+              statements: [
+                ["content","account.screenName",["loc",[null,[18,34],[18,56]]]],
+                ["content","account.brand.title",["loc",[null,[18,88],[18,111]]]],
+                ["block","link-to",["session.admin.channels.twitter.edit",["get","account",["loc",[null,[22,63],[22,70]]]]],[],0,null,["loc",[null,[22,14],[22,128]]]],
+                ["element","action",["toggleEnabledProperty",["get","account",["loc",[null,[23,59],[23,66]]]]],[],["loc",[null,[23,26],[23,68]]]],
+                ["inline","format-message",[["subexpr","intl-get",["generic.disable"],[],["loc",[null,[23,86],[23,114]]]]],[],["loc",[null,[23,69],[23,116]]]],
+                ["element","action",["showDeleteConfirmation",["get","account",["loc",[null,[24,60],[24,67]]]]],[],["loc",[null,[24,26],[24,69]]]],
+                ["inline","format-message",[["subexpr","intl-get",["generic.delete"],[],["loc",[null,[24,87],[24,114]]]]],[],["loc",[null,[24,70],[24,116]]]]
+              ],
+              locals: [],
+              templates: [child0]
+            };
+          }());
+          return {
+            meta: {
+              "revision": "Ember@1.13.7",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 14,
+                  "column": 4
+                },
+                "end": {
+                  "line": 30,
+                  "column": 4
+                }
+              },
+              "moduleName": "frontend-cp/session/admin/channels/twitter/index/template.hbs"
+            },
+            arity: 1,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(1);
+              morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+              dom.insertBoundary(fragment, 0);
+              return morphs;
+            },
+            statements: [
+              ["block","ko-simple-list/row",[],[],0,null,["loc",[null,[15,6],[28,29]]]]
+            ],
+            locals: ["account"],
+            templates: [child0]
+          };
+        }());
+        return {
+          meta: {
+            "revision": "Ember@1.13.7",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 8,
+                "column": 2
+              },
+              "end": {
+                "line": 31,
+                "column": 2
+              }
+            },
+            "moduleName": "frontend-cp/session/admin/channels/twitter/index/template.hbs"
+          },
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("    ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("div");
+            dom.setAttribute(el1,"class","ko-simple-list__header");
+            var el2 = dom.createTextNode("\n      ");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createComment("");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createTextNode("\n    ");
+            dom.appendChild(el1, el2);
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n\n\n");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(2);
+            morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]),1,1);
+            morphs[1] = dom.createMorphAt(fragment,3,3,contextualElement);
+            dom.insertBoundary(fragment, null);
+            return morphs;
+          },
+          statements: [
+            ["inline","format-message",[["subexpr","intl-get",["generic.enabled"],[],["loc",[null,[10,23],[10,51]]]]],[],["loc",[null,[10,6],[10,53]]]],
+            ["block","each",[["get","enabledAccounts",["loc",[null,[14,12],[14,27]]]]],[],0,null,["loc",[null,[14,4],[30,13]]]]
+          ],
+          locals: [],
+          templates: [child0]
+        };
+      }());
+      var child1 = (function() {
+        var child0 = (function() {
+          var child0 = (function() {
+            var child0 = (function() {
+              return {
+                meta: {
+                  "revision": "Ember@1.13.7",
+                  "loc": {
+                    "source": null,
+                    "start": {
+                      "line": 40,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 52,
+                      "column": 8
+                    }
+                  },
+                  "moduleName": "frontend-cp/session/admin/channels/twitter/index/template.hbs"
+                },
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                  var el0 = dom.createDocumentFragment();
+                  var el1 = dom.createTextNode("          ");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createElement("div");
+                  dom.setAttribute(el1,"class","layout");
+                  var el2 = dom.createTextNode("\n            ");
+                  dom.appendChild(el1, el2);
+                  var el2 = dom.createElement("div");
+                  dom.setAttribute(el2,"class","layout__item u-2/3");
+                  var el3 = dom.createTextNode("\n              ");
+                  dom.appendChild(el2, el3);
+                  var el3 = dom.createElement("span");
+                  dom.setAttribute(el3,"class","t-bold");
+                  var el4 = dom.createTextNode("@");
+                  dom.appendChild(el3, el4);
+                  var el4 = dom.createComment("");
+                  dom.appendChild(el3, el4);
+                  dom.appendChild(el2, el3);
+                  var el3 = dom.createTextNode(" ");
+                  dom.appendChild(el2, el3);
+                  var el3 = dom.createElement("span");
+                  dom.setAttribute(el3,"class","t-caption");
+                  var el4 = dom.createComment("");
+                  dom.appendChild(el3, el4);
+                  dom.appendChild(el2, el3);
+                  var el3 = dom.createTextNode("\n            ");
+                  dom.appendChild(el2, el3);
+                  dom.appendChild(el1, el2);
+                  var el2 = dom.createComment("\n         ");
+                  dom.appendChild(el1, el2);
+                  var el2 = dom.createElement("div");
+                  dom.setAttribute(el2,"class","layout__item u-1/3");
+                  var el3 = dom.createTextNode("\n              ");
+                  dom.appendChild(el2, el3);
+                  var el3 = dom.createElement("div");
+                  dom.setAttribute(el3,"class","ko-simple-list__actions");
+                  var el4 = dom.createTextNode("\n                ");
+                  dom.appendChild(el3, el4);
+                  var el4 = dom.createElement("a");
+                  dom.setAttribute(el4,"href","#");
+                  var el5 = dom.createComment("");
+                  dom.appendChild(el4, el5);
+                  dom.appendChild(el3, el4);
+                  var el4 = dom.createTextNode(" |\n                ");
+                  dom.appendChild(el3, el4);
+                  var el4 = dom.createElement("a");
+                  dom.setAttribute(el4,"href","#");
+                  var el5 = dom.createComment("");
+                  dom.appendChild(el4, el5);
+                  dom.appendChild(el3, el4);
+                  var el4 = dom.createTextNode("\n              ");
+                  dom.appendChild(el3, el4);
+                  dom.appendChild(el2, el3);
+                  var el3 = dom.createTextNode("\n            ");
+                  dom.appendChild(el2, el3);
+                  dom.appendChild(el1, el2);
+                  var el2 = dom.createTextNode("\n          ");
+                  dom.appendChild(el1, el2);
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createTextNode("\n");
+                  dom.appendChild(el0, el1);
+                  return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                  var element0 = dom.childAt(fragment, [1]);
+                  var element1 = dom.childAt(element0, [1]);
+                  var element2 = dom.childAt(element0, [3, 1]);
+                  var element3 = dom.childAt(element2, [1]);
+                  var element4 = dom.childAt(element2, [3]);
+                  var morphs = new Array(6);
+                  morphs[0] = dom.createMorphAt(dom.childAt(element1, [1]),1,1);
+                  morphs[1] = dom.createMorphAt(dom.childAt(element1, [3]),0,0);
+                  morphs[2] = dom.createElementMorph(element3);
+                  morphs[3] = dom.createMorphAt(element3,0,0);
+                  morphs[4] = dom.createElementMorph(element4);
+                  morphs[5] = dom.createMorphAt(element4,0,0);
+                  return morphs;
+                },
+                statements: [
+                  ["content","account.screenName",["loc",[null,[43,36],[43,58]]]],
+                  ["content","account.brand.title",["loc",[null,[43,90],[43,113]]]],
+                  ["element","action",["toggleEnabledProperty",["get","account",["loc",[null,[47,61],[47,68]]]]],[],["loc",[null,[47,28],[47,70]]]],
+                  ["inline","format-message",[["subexpr","intl-get",["generic.enable"],[],["loc",[null,[47,88],[47,115]]]]],[],["loc",[null,[47,71],[47,117]]]],
+                  ["element","action",["showDeleteConfirmation",["get","account",["loc",[null,[48,62],[48,69]]]]],[],["loc",[null,[48,28],[48,71]]]],
+                  ["inline","format-message",[["subexpr","intl-get",["generic.delete"],[],["loc",[null,[48,89],[48,116]]]]],[],["loc",[null,[48,72],[48,118]]]]
+                ],
+                locals: [],
+                templates: []
+              };
+            }());
+            return {
+              meta: {
+                "revision": "Ember@1.13.7",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 39,
+                    "column": 6
+                  },
+                  "end": {
+                    "line": 53,
+                    "column": 6
+                  }
+                },
+                "moduleName": "frontend-cp/session/admin/channels/twitter/index/template.hbs"
+              },
+              arity: 1,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var morphs = new Array(1);
+                morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+                dom.insertBoundary(fragment, 0);
+                dom.insertBoundary(fragment, null);
+                return morphs;
+              },
+              statements: [
+                ["block","ko-simple-list/row",[],[],0,null,["loc",[null,[40,8],[52,31]]]]
+              ],
+              locals: ["account"],
+              templates: [child0]
+            };
+          }());
+          return {
+            meta: {
+              "revision": "Ember@1.13.7",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 34,
+                  "column": 4
+                },
+                "end": {
+                  "line": 54,
+                  "column": 4
+                }
+              },
+              "moduleName": "frontend-cp/session/admin/channels/twitter/index/template.hbs"
+            },
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode("      ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createElement("div");
+              dom.setAttribute(el1,"class","ko-simple-list__header");
+              var el2 = dom.createTextNode("\n        ");
+              dom.appendChild(el1, el2);
+              var el2 = dom.createComment("");
+              dom.appendChild(el1, el2);
+              var el2 = dom.createTextNode("\n      ");
+              dom.appendChild(el1, el2);
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n\n");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(2);
+              morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]),1,1);
+              morphs[1] = dom.createMorphAt(fragment,3,3,contextualElement);
+              dom.insertBoundary(fragment, null);
+              return morphs;
+            },
+            statements: [
+              ["inline","format-message",[["subexpr","intl-get",["generic.disabled"],[],["loc",[null,[36,25],[36,54]]]]],[],["loc",[null,[36,8],[36,56]]]],
+              ["block","each",[["get","disabledAccounts",["loc",[null,[39,14],[39,30]]]]],[],0,null,["loc",[null,[39,6],[53,15]]]]
+            ],
+            locals: [],
+            templates: [child0]
+          };
+        }());
+        return {
+          meta: {
+            "revision": "Ember@1.13.7",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 33,
+                "column": 2
+              },
+              "end": {
+                "line": 55,
+                "column": 2
+              }
+            },
+            "moduleName": "frontend-cp/session/admin/channels/twitter/index/template.hbs"
+          },
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+            dom.insertBoundary(fragment, 0);
+            dom.insertBoundary(fragment, null);
+            return morphs;
+          },
+          statements: [
+            ["block","ko-simple-list",[],[],0,null,["loc",[null,[34,4],[54,23]]]]
+          ],
+          locals: [],
+          templates: [child0]
+        };
+      }());
+      return {
+        meta: {
+          "revision": "Ember@1.13.7",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 7,
+              "column": 0
+            },
+            "end": {
+              "line": 58,
+              "column": 0
+            }
+          },
+          "moduleName": "frontend-cp/session/admin/channels/twitter/index/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(2);
+          morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+          morphs[1] = dom.createMorphAt(fragment,2,2,contextualElement);
+          dom.insertBoundary(fragment, 0);
+          return morphs;
+        },
+        statements: [
+          ["block","ko-simple-list",[],[],0,null,["loc",[null,[8,2],[31,21]]]],
+          ["block","if",[["get","disabledAccounts.length",["loc",[null,[33,8],[33,31]]]]],[],1,null,["loc",[null,[33,2],[55,9]]]]
+        ],
+        locals: [],
+        templates: [child0, child1]
+      };
+    }());
+    return {
+      meta: {
+        "revision": "Ember@1.13.7",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 64,
+            "column": 2
+          }
+        },
+        "moduleName": "frontend-cp/session/admin/channels/twitter/index/template.hbs"
+      },
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var morphs = new Array(3);
+        morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+        morphs[1] = dom.createMorphAt(fragment,2,2,contextualElement);
+        morphs[2] = dom.createMorphAt(fragment,4,4,contextualElement);
+        dom.insertBoundary(fragment, 0);
+        dom.insertBoundary(fragment, null);
+        return morphs;
+      },
+      statements: [
+        ["inline","ko-admin/page-header",[],["title",["subexpr","format-message",[["subexpr","intl-get",["admin.twitter.headings.index"],[],["loc",[null,[2,22],[2,63]]]]],[],["loc",[null,[2,6],[2,64]]]],"buttonText",["subexpr","format-message",[["subexpr","intl-get",["admin.twitter.buttons.create_account"],[],["loc",[null,[3,27],[3,76]]]]],[],["loc",[null,[3,11],[3,77]]]],"buttonAction","redirectToTwitterAuthenticationEndpoint"],["loc",[null,[1,0],[5,2]]]],
+        ["block","ko-admin/forms/table",[],[],0,null,["loc",[null,[7,0],[58,25]]]],
+        ["inline","ko-admin/page-footer",[],["title",["subexpr","format-message",[["subexpr","intl-get",["admin.twitter.headings.index"],[],["loc",[null,[61,22],[61,63]]]]],[],["loc",[null,[61,6],[61,64]]]],"buttonText",["subexpr","format-message",[["subexpr","intl-get",["admin.twitter.buttons.create_account"],[],["loc",[null,[62,27],[62,76]]]]],[],["loc",[null,[62,11],[62,77]]]],"buttonAction","redirectToTwitterAuthenticationEndpoint"],["loc",[null,[60,0],[64,2]]]]
+      ],
+      locals: [],
+      templates: [child0]
+    };
+  }()));
+
+});
+define('frontend-cp/session/admin/channels/twitter/link/controller', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Controller.extend({
+    queryParams: ['oauth_token', 'oauth_verifier'],
+
+    oauth_token: null,
+    oauth_verifier: null,
+
+    updateBackendWithTwitterInfo: function updateBackendWithTwitterInfo() {
+      var _this = this;
+
+      if (this.get('oauth_token') && this.get('oauth_verifier')) {
+        this.store.createRecord('twitter-account-callback', {
+          oauthToken: this.get('oauth_token'),
+          oauthVerifier: this.get('oauth_verifier')
+        }).save().then(function () {
+          _this.transitionTo('session.admin.channels.twitter.index');
+        })['catch'](function () {
+          _this.transitionTo('session.admin.channels.twitter.index');
+        });
+      }
+    }
+
+  });
+
+});
+define('frontend-cp/session/admin/channels/twitter/link/route', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Route.extend({
+
+    setupController: function setupController() {
+      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+
+      this._super(args);
+      this.controller.updateBackendWithTwitterInfo();
+    }
+
+  });
+
+});
 define('frontend-cp/session/admin/manage/case-fields/edit/route', ['exports', 'ember'], function (exports, Ember) {
 
   'use strict';
@@ -51676,7 +53654,7 @@ define('frontend-cp/session/admin/manage/case-fields/new/template', ['exports'],
         var el0 = dom.createDocumentFragment();
         var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n\n");
+        var el1 = dom.createTextNode("\n\n  ");
         dom.appendChild(el0, el1);
         var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
@@ -51698,7 +53676,7 @@ define('frontend-cp/session/admin/manage/case-fields/new/template', ['exports'],
       },
       statements: [
         ["inline","ko-admin/page-header",[],["title",["subexpr","format-message",[["subexpr","intl-get",["admin.casefields.new.heading"],[],["loc",[null,[2,26],[2,67]]]]],[],["loc",[null,[2,10],[2,68]]]],"cancelAction","transitionToIndexRoute","buttonText",["subexpr","format-message",[["subexpr","intl-get",["generic.save"],[],["loc",[null,[4,31],[4,56]]]]],[],["loc",[null,[4,15],[4,57]]]],"buttonAction","saveCaseField"],["loc",[null,[1,0],[6,2]]]],
-        ["inline","ko-admin/case-fields/edit",[],["caseField",["subexpr","@mut",[["get","model",["loc",[null,[8,38],[8,43]]]]],[],[]],"onOptionAddition","addNewOption","onOptionRemoval","removeOption"],["loc",[null,[8,0],[8,108]]]],
+        ["inline","ko-admin/case-fields/edit",[],["caseField",["subexpr","@mut",[["get","model",["loc",[null,[8,40],[8,45]]]]],[],[]],"onOptionAddition","addNewOption","onOptionRemoval","removeOption"],["loc",[null,[8,2],[8,110]]]],
         ["inline","ko-admin/page-footer",[],["cancelAction","transitionToIndexRoute","buttonText",["subexpr","format-message",[["subexpr","intl-get",["generic.save"],[],["loc",[null,[12,31],[12,56]]]]],[],["loc",[null,[12,15],[12,57]]]],"buttonAction","saveCaseField"],["loc",[null,[10,0],[14,2]]]]
       ],
       locals: [],
@@ -70543,7 +72521,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+3d988049"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+eaac743c"});
 }
 
 /* jshint ignore:end */
