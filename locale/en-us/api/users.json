@@ -24,5 +24,6 @@
   "add_a_note": "Add a note",
   "password_reset_email.success": "Password reset email has been sent",
   "recent_feedback": "Recent feedback",
-  "no_feedback_available": "No feedback is available from this user"
+  "no_feedback_available": "No feedback is available from this user",
+  "update_signature": "Update signature"
 }
