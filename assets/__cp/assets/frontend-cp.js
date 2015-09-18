@@ -37772,6 +37772,10 @@ define('frontend-cp/components/ko-user-menu/component', ['exports', 'ember'], fu
     actions: {
       logout: function logout() {
         this.get('sessionService').logout();
+      },
+      profile: function profile() {
+        this.set('hidden', true);
+        this.container.lookup('router:main').transitionTo('session.agent.users.user', this.get('sessionService.user.id'));
       }
     }
   });
@@ -37839,10 +37843,10 @@ define('frontend-cp/components/ko-user-menu/template', ['exports'], function (ex
             return el0;
           },
           buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-            var element1 = dom.childAt(fragment, [1]);
+            var element2 = dom.childAt(fragment, [1]);
             var morphs = new Array(2);
-            morphs[0] = dom.createMorphAt(dom.childAt(element1, [1]),1,1);
-            morphs[1] = dom.createMorphAt(dom.childAt(element1, [3]),1,1);
+            morphs[0] = dom.createMorphAt(dom.childAt(element2, [1]),1,1);
+            morphs[1] = dom.createMorphAt(dom.childAt(element2, [3]),1,1);
             return morphs;
           },
           statements: [
@@ -37933,7 +37937,7 @@ define('frontend-cp/components/ko-user-menu/template', ['exports'], function (ex
                   "column": 4
                 },
                 "end": {
-                  "line": 24,
+                  "line": 27,
                   "column": 4
                 }
               },
@@ -37974,6 +37978,13 @@ define('frontend-cp/components/ko-user-menu/template', ['exports'], function (ex
               dom.appendChild(el0, el1);
               var el1 = dom.createElement("li");
               dom.setAttribute(el1,"class","ko-dropdown_list__item");
+              var el2 = dom.createTextNode("\n        View your profile\n      ");
+              dom.appendChild(el1, el2);
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n      ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createElement("li");
+              dom.setAttribute(el1,"class","ko-dropdown_list__item");
               var el2 = dom.createTextNode("\n        Logout\n      ");
               dom.appendChild(el1, el2);
               dom.appendChild(el0, el1);
@@ -37983,18 +37994,21 @@ define('frontend-cp/components/ko-user-menu/template', ['exports'], function (ex
             },
             buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
               var element0 = dom.childAt(fragment, [7]);
-              var morphs = new Array(4);
+              var element1 = dom.childAt(fragment, [9]);
+              var morphs = new Array(5);
               morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]),1,1);
               morphs[1] = dom.createMorphAt(dom.childAt(fragment, [3]),1,1);
               morphs[2] = dom.createMorphAt(fragment,5,5,contextualElement);
               morphs[3] = dom.createAttrMorph(element0, 'onclick');
+              morphs[4] = dom.createAttrMorph(element1, 'onclick');
               return morphs;
             },
             statements: [
               ["block","link-to",["session.styleguide"],[],0,null,["loc",[null,[15,8],[15,63]]]],
               ["block","link-to",["session.showcase"],[],1,null,["loc",[null,[18,8],[18,59]]]],
               ["content","ko-dropdown/list/hr",["loc",[null,[20,6],[20,29]]]],
-              ["attribute","onclick",["subexpr","action",["logout"],[],["loc",[null,[21,49],[21,68]]]]]
+              ["attribute","onclick",["subexpr","action",["profile"],[],["loc",[null,[21,49],[21,69]]]]],
+              ["attribute","onclick",["subexpr","action",["logout"],[],["loc",[null,[24,49],[24,68]]]]]
             ],
             locals: [],
             templates: [child0, child1]
@@ -38010,7 +38024,7 @@ define('frontend-cp/components/ko-user-menu/template', ['exports'], function (ex
                 "column": 2
               },
               "end": {
-                "line": 25,
+                "line": 28,
                 "column": 2
               }
             },
@@ -38033,7 +38047,7 @@ define('frontend-cp/components/ko-user-menu/template', ['exports'], function (ex
             return morphs;
           },
           statements: [
-            ["block","ko-dropdown/list",[],["class","ko-user-menu__content"],0,null,["loc",[null,[13,4],[24,25]]]]
+            ["block","ko-dropdown/list",[],["class","ko-user-menu__content"],0,null,["loc",[null,[13,4],[27,25]]]]
           ],
           locals: [],
           templates: [child0]
@@ -38049,7 +38063,7 @@ define('frontend-cp/components/ko-user-menu/template', ['exports'], function (ex
               "column": 0
             },
             "end": {
-              "line": 26,
+              "line": 29,
               "column": 0
             }
           },
@@ -38076,7 +38090,7 @@ define('frontend-cp/components/ko-user-menu/template', ['exports'], function (ex
         },
         statements: [
           ["block","if",[["subexpr","eq",[["get","name",["loc",[null,[2,12],[2,16]]]],"button"],[],["loc",[null,[2,8],[2,26]]]]],[],0,null,["loc",[null,[2,2],[11,9]]]],
-          ["block","if",[["subexpr","eq",[["get","name",["loc",[null,[12,12],[12,16]]]],"content"],[],["loc",[null,[12,8],[12,27]]]]],[],1,null,["loc",[null,[12,2],[25,9]]]]
+          ["block","if",[["subexpr","eq",[["get","name",["loc",[null,[12,12],[12,16]]]],"content"],[],["loc",[null,[12,8],[12,27]]]]],[],1,null,["loc",[null,[12,2],[28,9]]]]
         ],
         locals: ["name","dropdownContext"],
         templates: [child0, child1]
@@ -38092,7 +38106,7 @@ define('frontend-cp/components/ko-user-menu/template', ['exports'], function (ex
             "column": 0
           },
           "end": {
-            "line": 27,
+            "line": 30,
             "column": 0
           }
         },
@@ -38115,7 +38129,7 @@ define('frontend-cp/components/ko-user-menu/template', ['exports'], function (ex
         return morphs;
       },
       statements: [
-        ["block","ko-dropdown/container",[],["hideOnChildFocus",true],0,null,["loc",[null,[1,0],[26,26]]]]
+        ["block","ko-dropdown/container",[],["hideOnChildFocus",true,"hideDropdown",["subexpr","@mut",[["get","hidden",["loc",[null,[1,60],[1,66]]]]],[],[]]],0,null,["loc",[null,[1,0],[29,26]]]]
       ],
       locals: [],
       templates: [child0]
@@ -41084,6 +41098,27 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       return {
         status: 200,
         data: db.users,
+        resource: 'user',
+        limit: 10,
+        offset: 0,
+        resources: {
+          business_hour: arrayToObjectWithNumberedKeys(db['business-hours']),
+          field_option: arrayToObjectWithNumberedKeys(db['field-options']),
+          identity_email: arrayToObjectWithNumberedKeys(db['identity-emails']),
+          role: arrayToObjectWithNumberedKeys(db.roles),
+          team: arrayToObjectWithNumberedKeys(db.teams),
+          user_field: arrayToObjectWithNumberedKeys(db['user-fields'])
+        },
+        total_count: db.users.length
+      };
+    });
+
+    this.get('/users/:id', function (db, request) {
+      var id = request.params.id;
+
+      return {
+        status: 200,
+        data: db.users.find(id),
         resource: 'user',
         limit: 10,
         offset: 0,
@@ -63111,6 +63146,31 @@ define('frontend-cp/tests/acceptance/tabs/tabs-test', ['frontend-cp/tests/helper
   }
 
 });
+define('frontend-cp/tests/acceptance/user/user-menu-test', ['ember', 'frontend-cp/tests/helpers/qunit'], function (Ember, qunit) {
+
+  'use strict';
+
+  qunit.app('Acceptance | User-menu');
+
+  qunit.test('visiting /user-menu', function (assert) {
+    assert.expect(1);
+    login();
+    visit('/agent/cases');
+
+    andThen(function () {
+      Ember['default'].$("div[class*='ko-user-menu-'] div[class*='ko-dropdown--container']").focus();
+    });
+
+    andThen(function () {
+      click("div[class*='ko-user-menu-'] div[class*='ko-dropdown--container'] li:nth-of-type(3)");
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/agent/users/1');
+    });
+  });
+
+});
 define('frontend-cp/tests/assertions/properties-equal', ['exports', 'ember', 'qunit'], function (exports, Ember, QUnit) {
 
   'use strict';
@@ -70333,7 +70393,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+2cef808b"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+46e82230"});
 }
 
 /* jshint ignore:end */
