@@ -50562,6 +50562,65 @@ define('frontend-cp/session/admin/manage/case-fields/index/controller', ['export
       });
     }),
 
+    baseTypeKeyForFieldType: function baseTypeKeyForFieldType(fieldType) {
+      switch (fieldType) {
+        case 'SUBJECT':
+        case 'TEXT':
+          return 'admin.casefields.type.text.name';
+
+        case 'MESSAGE':
+        case 'TEXTAREA':
+          return 'admin.casefields.type.textarea.name';
+
+        case 'PRIORITY':
+        case 'STATUS':
+        case 'TYPE':
+        case 'ASSIGNEE':
+        case 'TEAM':
+        case 'SELECT':
+        case 'DROPDOWN':
+          return 'admin.casefields.type.dropdown.name';
+
+        case 'RADIO':
+          return 'admin.casefields.type.radio.name';
+        case 'CHECKBOX':
+          return 'admin.casefields.type.checkbox.name';
+        case 'NUMERIC':
+          return 'admin.casefields.type.numeric.name';
+        case 'DECIMAL':
+          return 'admin.casefields.type.decimal.name';
+        case 'FILE':
+          return 'admin.casefields.type.file.name';
+        case 'YESNO':
+          return 'admin.casefields.type.yesno.name';
+        case 'CASCADINGSELECT':
+          return 'admin.casefields.type.cascadingselect.name';
+        case 'DATE':
+          return 'admin.casefields.type.date.name';
+        case 'REGEX':
+          return 'admin.casefields.type.regex.name';
+      }
+    },
+
+    baseKeyForFieldType: function baseKeyForFieldType(fieldType) {
+      switch (fieldType) {
+        case 'SUBJECT':
+          return 'TEXT';
+
+        case 'MESSAGE':
+          return 'TEXTAREA';
+
+        case 'PRIORITY':
+        case 'STATUS':
+        case 'TYPE':
+        case 'ASSIGNEE':
+        case 'TEAM':
+          return 'DROPDOWN';
+        default:
+          return fieldType;
+      }
+    },
+
     getIntlKeyForFieldType: function getIntlKeyForFieldType(fieldType) {
       return 'admin.casefields.type.' + fieldType.toLowerCase() + '.name';
     },
@@ -50651,7 +50710,7 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
                     "column": 6
                   },
                   "end": {
-                    "line": 23,
+                    "line": 30,
                     "column": 6
                   }
                 },
@@ -50693,7 +50752,35 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
                 dom.setAttribute(el2,"class","layout__item u-1/3");
                 var el3 = dom.createTextNode("\n            ");
                 dom.appendChild(el2, el3);
-                var el3 = dom.createComment("");
+                var el3 = dom.createElement("div");
+                dom.setAttribute(el3,"class","flag flag--small");
+                var el4 = dom.createTextNode("\n                ");
+                dom.appendChild(el3, el4);
+                var el4 = dom.createElement("div");
+                dom.setAttribute(el4,"class","flag__img");
+                var el5 = dom.createTextNode("\n                    ");
+                dom.appendChild(el4, el5);
+                var el5 = dom.createElement("div");
+                dom.appendChild(el4, el5);
+                var el5 = dom.createTextNode("\n                ");
+                dom.appendChild(el4, el5);
+                dom.appendChild(el3, el4);
+                var el4 = dom.createTextNode("\n                ");
+                dom.appendChild(el3, el4);
+                var el4 = dom.createElement("div");
+                dom.setAttribute(el4,"class","flag__body");
+                var el5 = dom.createTextNode("\n                    ");
+                dom.appendChild(el4, el5);
+                var el5 = dom.createElement("p");
+                dom.setAttribute(el5,"class","t-bold u-mb--");
+                var el6 = dom.createComment("");
+                dom.appendChild(el5, el6);
+                dom.appendChild(el4, el5);
+                var el5 = dom.createTextNode("\n                ");
+                dom.appendChild(el4, el5);
+                dom.appendChild(el3, el4);
+                var el4 = dom.createTextNode("\n            ");
+                dom.appendChild(el3, el4);
                 dom.appendChild(el2, el3);
                 var el3 = dom.createTextNode("\n          ");
                 dom.appendChild(el2, el3);
@@ -50727,20 +50814,24 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
                 return el0;
               },
               buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-                var element10 = dom.childAt(fragment, [1]);
-                var element11 = dom.childAt(element10, [5, 1, 1]);
-                var morphs = new Array(4);
-                morphs[0] = dom.createMorphAt(dom.childAt(element10, [1, 1]),0,0);
-                morphs[1] = dom.createMorphAt(dom.childAt(element10, [3]),1,1);
-                morphs[2] = dom.createElementMorph(element11);
-                morphs[3] = dom.createMorphAt(element11,0,0);
+                var element12 = dom.childAt(fragment, [1]);
+                var element13 = dom.childAt(element12, [3, 1]);
+                var element14 = dom.childAt(element13, [1, 1]);
+                var element15 = dom.childAt(element12, [5, 1, 1]);
+                var morphs = new Array(5);
+                morphs[0] = dom.createMorphAt(dom.childAt(element12, [1, 1]),0,0);
+                morphs[1] = dom.createAttrMorph(element14, 'class');
+                morphs[2] = dom.createMorphAt(dom.childAt(element13, [3, 1]),0,0);
+                morphs[3] = dom.createElementMorph(element15);
+                morphs[4] = dom.createMorphAt(element15,0,0);
                 return morphs;
               },
               statements: [
                 ["content","systemfield.title",["loc",[null,[12,33],[12,54]]]],
-                ["inline","format-message",[["subexpr","intl-get",[["subexpr","ko-intl-key-for-field-type",[["get","systemfield.fieldType",["loc",[null,[15,67],[15,88]]]]],[],["loc",[null,[15,39],[15,89]]]]],[],["loc",[null,[15,29],[15,90]]]]],[],["loc",[null,[15,12],[15,92]]]],
-                ["element","action",["editField",["get","systemfield",["loc",[null,[19,47],[19,58]]]]],[],["loc",[null,[19,26],[19,60]]]],
-                ["inline","format-message",[["subexpr","intl-get",["generic.edit"],[],["loc",[null,[19,78],[19,103]]]]],[],["loc",[null,[19,61],[19,105]]]]
+                ["attribute","class",["concat",["ko-admin_case-fields_select-type__icon i-png-",["subexpr","ko-helper",[["get","baseKeyForFieldType",["loc",[null,[17,89],[17,108]]]],["get","systemfield.fieldType",["loc",[null,[17,109],[17,130]]]]],[],["loc",[null,[17,77],[17,132]]]]]]],
+                ["inline","format-message",[["subexpr","intl-get",[["subexpr","ko-helper",[["get","baseTypeKeyForFieldType",["loc",[null,[20,83],[20,106]]]],["get","systemfield.fieldType",["loc",[null,[20,107],[20,128]]]]],[],["loc",[null,[20,72],[20,129]]]]],[],["loc",[null,[20,62],[20,130]]]]],[],["loc",[null,[20,45],[20,132]]]],
+                ["element","action",["editField",["get","systemfield",["loc",[null,[26,47],[26,58]]]]],[],["loc",[null,[26,26],[26,60]]]],
+                ["inline","format-message",[["subexpr","intl-get",["generic.edit"],[],["loc",[null,[26,78],[26,103]]]]],[],["loc",[null,[26,61],[26,105]]]]
               ],
               locals: [],
               templates: []
@@ -50756,7 +50847,7 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
                   "column": 4
                 },
                 "end": {
-                  "line": 24,
+                  "line": 31,
                   "column": 4
                 }
               },
@@ -50779,7 +50870,7 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
               return morphs;
             },
             statements: [
-              ["block","ko-simple-list/row",[],["action","editField","content",["subexpr","@mut",[["get","systemfield",["loc",[null,[9,55],[9,66]]]]],[],[]]],0,null,["loc",[null,[9,6],[23,29]]]]
+              ["block","ko-simple-list/row",[],["action","editField","content",["subexpr","@mut",[["get","systemfield",["loc",[null,[9,55],[9,66]]]]],[],[]]],0,null,["loc",[null,[9,6],[30,29]]]]
             ],
             locals: ["systemfield"],
             templates: [child0]
@@ -50793,11 +50884,11 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 27,
+                    "line": 34,
                     "column": 6
                   },
                   "end": {
-                    "line": 43,
+                    "line": 57,
                     "column": 6
                   }
                 },
@@ -50832,7 +50923,35 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
                 dom.setAttribute(el2,"class","layout__item u-1/3");
                 var el3 = dom.createTextNode("\n            ");
                 dom.appendChild(el2, el3);
-                var el3 = dom.createComment("");
+                var el3 = dom.createElement("div");
+                dom.setAttribute(el3,"class","flag flag--small");
+                var el4 = dom.createTextNode("\n                ");
+                dom.appendChild(el3, el4);
+                var el4 = dom.createElement("div");
+                dom.setAttribute(el4,"class","flag__img");
+                var el5 = dom.createTextNode("\n                    ");
+                dom.appendChild(el4, el5);
+                var el5 = dom.createElement("div");
+                dom.appendChild(el4, el5);
+                var el5 = dom.createTextNode("\n                ");
+                dom.appendChild(el4, el5);
+                dom.appendChild(el3, el4);
+                var el4 = dom.createTextNode("\n                ");
+                dom.appendChild(el3, el4);
+                var el4 = dom.createElement("div");
+                dom.setAttribute(el4,"class","flag__body");
+                var el5 = dom.createTextNode("\n                    ");
+                dom.appendChild(el4, el5);
+                var el5 = dom.createElement("p");
+                dom.setAttribute(el5,"class","t-bold u-mb--");
+                var el6 = dom.createComment("");
+                dom.appendChild(el5, el6);
+                dom.appendChild(el4, el5);
+                var el5 = dom.createTextNode("\n                ");
+                dom.appendChild(el4, el5);
+                dom.appendChild(el3, el4);
+                var el4 = dom.createTextNode("\n            ");
+                dom.appendChild(el3, el4);
                 dom.appendChild(el2, el3);
                 var el3 = dom.createTextNode("\n          ");
                 dom.appendChild(el2, el3);
@@ -50881,30 +51000,34 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
               },
               buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
                 var element5 = dom.childAt(fragment, [1]);
-                var element6 = dom.childAt(element5, [5, 1]);
-                var element7 = dom.childAt(element6, [1]);
-                var element8 = dom.childAt(element6, [3]);
-                var element9 = dom.childAt(element6, [5]);
-                var morphs = new Array(8);
+                var element6 = dom.childAt(element5, [3, 1]);
+                var element7 = dom.childAt(element6, [1, 1]);
+                var element8 = dom.childAt(element5, [5, 1]);
+                var element9 = dom.childAt(element8, [1]);
+                var element10 = dom.childAt(element8, [3]);
+                var element11 = dom.childAt(element8, [5]);
+                var morphs = new Array(9);
                 morphs[0] = dom.createMorphAt(dom.childAt(element5, [1, 1]),0,0);
-                morphs[1] = dom.createMorphAt(dom.childAt(element5, [3]),1,1);
-                morphs[2] = dom.createElementMorph(element7);
-                morphs[3] = dom.createMorphAt(element7,0,0);
-                morphs[4] = dom.createElementMorph(element8);
-                morphs[5] = dom.createMorphAt(element8,0,0);
-                morphs[6] = dom.createElementMorph(element9);
-                morphs[7] = dom.createMorphAt(element9,0,0);
+                morphs[1] = dom.createAttrMorph(element7, 'class');
+                morphs[2] = dom.createMorphAt(dom.childAt(element6, [3, 1]),0,0);
+                morphs[3] = dom.createElementMorph(element9);
+                morphs[4] = dom.createMorphAt(element9,0,0);
+                morphs[5] = dom.createElementMorph(element10);
+                morphs[6] = dom.createMorphAt(element10,0,0);
+                morphs[7] = dom.createElementMorph(element11);
+                morphs[8] = dom.createMorphAt(element11,0,0);
                 return morphs;
               },
               statements: [
-                ["content","customfield.title",["loc",[null,[30,33],[30,54]]]],
-                ["inline","format-message",[["subexpr","intl-get",[["subexpr","ko-intl-key-for-field-type",[["get","customfield.fieldType",["loc",[null,[33,67],[33,88]]]]],[],["loc",[null,[33,39],[33,89]]]]],[],["loc",[null,[33,29],[33,90]]]]],[],["loc",[null,[33,12],[33,92]]]],
-                ["element","action",["editField",["get","customfield",["loc",[null,[37,47],[37,58]]]]],[],["loc",[null,[37,26],[37,60]]]],
-                ["inline","format-message",[["subexpr","intl-get",["generic.edit"],[],["loc",[null,[37,78],[37,103]]]]],[],["loc",[null,[37,61],[37,105]]]],
-                ["element","action",["toggleEnabledStatus",["get","customfield",["loc",[null,[38,57],[38,68]]]]],[],["loc",[null,[38,26],[38,70]]]],
-                ["inline","format-message",[["subexpr","intl-get",["generic.disable"],[],["loc",[null,[38,88],[38,116]]]]],[],["loc",[null,[38,71],[38,118]]]],
-                ["element","action",["showDeleteConfirmation",["get","customfield",["loc",[null,[39,60],[39,71]]]]],[],["loc",[null,[39,26],[39,73]]]],
-                ["inline","format-message",[["subexpr","intl-get",["generic.delete"],[],["loc",[null,[39,91],[39,118]]]]],[],["loc",[null,[39,74],[39,120]]]]
+                ["content","customfield.title",["loc",[null,[37,33],[37,54]]]],
+                ["attribute","class",["concat",["ko-admin_case-fields_select-type__icon i-png-",["subexpr","ko-helper",[["get","baseKeyForFieldType",["loc",[null,[42,89],[42,108]]]],["get","customfield.fieldType",["loc",[null,[42,109],[42,130]]]]],[],["loc",[null,[42,77],[42,132]]]]]]],
+                ["inline","format-message",[["subexpr","intl-get",[["subexpr","ko-helper",[["get","baseTypeKeyForFieldType",["loc",[null,[45,83],[45,106]]]],["get","customfield.fieldType",["loc",[null,[45,107],[45,128]]]]],[],["loc",[null,[45,72],[45,129]]]]],[],["loc",[null,[45,62],[45,130]]]]],[],["loc",[null,[45,45],[45,132]]]],
+                ["element","action",["editField",["get","customfield",["loc",[null,[51,47],[51,58]]]]],[],["loc",[null,[51,26],[51,60]]]],
+                ["inline","format-message",[["subexpr","intl-get",["generic.edit"],[],["loc",[null,[51,78],[51,103]]]]],[],["loc",[null,[51,61],[51,105]]]],
+                ["element","action",["toggleEnabledStatus",["get","customfield",["loc",[null,[52,57],[52,68]]]]],[],["loc",[null,[52,26],[52,70]]]],
+                ["inline","format-message",[["subexpr","intl-get",["generic.disable"],[],["loc",[null,[52,88],[52,116]]]]],[],["loc",[null,[52,71],[52,118]]]],
+                ["element","action",["showDeleteConfirmation",["get","customfield",["loc",[null,[53,60],[53,71]]]]],[],["loc",[null,[53,26],[53,73]]]],
+                ["inline","format-message",[["subexpr","intl-get",["generic.delete"],[],["loc",[null,[53,91],[53,118]]]]],[],["loc",[null,[53,74],[53,120]]]]
               ],
               locals: [],
               templates: []
@@ -50916,11 +51039,11 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 26,
+                  "line": 33,
                   "column": 4
                 },
                 "end": {
-                  "line": 44,
+                  "line": 58,
                   "column": 4
                 }
               },
@@ -50943,7 +51066,7 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
               return morphs;
             },
             statements: [
-              ["block","ko-simple-list/row",[],["action","editField","content",["subexpr","@mut",[["get","customField",["loc",[null,[27,55],[27,66]]]]],[],[]]],0,null,["loc",[null,[27,6],[43,29]]]]
+              ["block","ko-simple-list/row",[],["action","editField","content",["subexpr","@mut",[["get","customField",["loc",[null,[34,55],[34,66]]]]],[],[]]],0,null,["loc",[null,[34,6],[57,29]]]]
             ],
             locals: ["customfield"],
             templates: [child0]
@@ -50959,7 +51082,7 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
                 "column": 2
               },
               "end": {
-                "line": 45,
+                "line": 59,
                 "column": 2
               }
             },
@@ -51001,8 +51124,8 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
           },
           statements: [
             ["inline","format-message",[["subexpr","intl-get",["generic.enabled"],[],["loc",[null,[6,23],[6,51]]]]],[],["loc",[null,[6,6],[6,53]]]],
-            ["block","each",[["get","systemfields",["loc",[null,[8,12],[8,24]]]]],[],0,null,["loc",[null,[8,4],[24,13]]]],
-            ["block","ko-reorderable-list",[],["reorderedListAction","reorderCustomFields","items",["subexpr","@mut",[["get","customfields",["loc",[null,[26,75],[26,87]]]]],[],[]]],1,null,["loc",[null,[26,4],[44,28]]]]
+            ["block","each",[["get","systemfields",["loc",[null,[8,12],[8,24]]]]],[],0,null,["loc",[null,[8,4],[31,13]]]],
+            ["block","ko-reorderable-list",[],["reorderedListAction","reorderCustomFields","items",["subexpr","@mut",[["get","customfields",["loc",[null,[33,75],[33,87]]]]],[],[]]],1,null,["loc",[null,[33,4],[58,28]]]]
           ],
           locals: [],
           templates: [child0, child1]
@@ -51018,11 +51141,11 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
                   "loc": {
                     "source": null,
                     "start": {
-                      "line": 53,
+                      "line": 67,
                       "column": 6
                     },
                     "end": {
-                      "line": 71,
+                      "line": 85,
                       "column": 6
                     }
                   },
@@ -51129,14 +51252,14 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
                   return morphs;
                 },
                 statements: [
-                  ["content","disabledfield.title",["loc",[null,[56,43],[56,66]]]],
-                  ["inline","format-message",[["subexpr","intl-get",[["subexpr","ko-intl-key-for-field-type",[["get","disabledfield.fieldType",["loc",[null,[60,70],[60,93]]]]],[],["loc",[null,[60,42],[60,94]]]]],[],["loc",[null,[60,32],[60,95]]]]],[],["loc",[null,[60,15],[60,97]]]],
-                  ["element","action",["editField",["get","disabledfield",["loc",[null,[65,47],[65,60]]]]],[],["loc",[null,[65,26],[65,62]]]],
-                  ["inline","format-message",[["subexpr","intl-get",["generic.edit"],[],["loc",[null,[65,80],[65,105]]]]],[],["loc",[null,[65,63],[65,107]]]],
-                  ["element","action",["toggleEnabledStatus",["get","disabledfield",["loc",[null,[66,57],[66,70]]]]],[],["loc",[null,[66,26],[66,72]]]],
-                  ["inline","format-message",[["subexpr","intl-get",["generic.enable"],[],["loc",[null,[66,90],[66,117]]]]],[],["loc",[null,[66,73],[66,119]]]],
-                  ["element","action",["showDeleteConfirmation",["get","disabledfield",["loc",[null,[67,60],[67,73]]]]],[],["loc",[null,[67,26],[67,75]]]],
-                  ["inline","format-message",[["subexpr","intl-get",["generic.delete"],[],["loc",[null,[67,93],[67,120]]]]],[],["loc",[null,[67,76],[67,122]]]]
+                  ["content","disabledfield.title",["loc",[null,[70,43],[70,66]]]],
+                  ["inline","format-message",[["subexpr","intl-get",[["subexpr","ko-intl-key-for-field-type",[["get","disabledfield.fieldType",["loc",[null,[74,70],[74,93]]]]],[],["loc",[null,[74,42],[74,94]]]]],[],["loc",[null,[74,32],[74,95]]]]],[],["loc",[null,[74,15],[74,97]]]],
+                  ["element","action",["editField",["get","disabledfield",["loc",[null,[79,47],[79,60]]]]],[],["loc",[null,[79,26],[79,62]]]],
+                  ["inline","format-message",[["subexpr","intl-get",["generic.edit"],[],["loc",[null,[79,80],[79,105]]]]],[],["loc",[null,[79,63],[79,107]]]],
+                  ["element","action",["toggleEnabledStatus",["get","disabledfield",["loc",[null,[80,57],[80,70]]]]],[],["loc",[null,[80,26],[80,72]]]],
+                  ["inline","format-message",[["subexpr","intl-get",["generic.enable"],[],["loc",[null,[80,90],[80,117]]]]],[],["loc",[null,[80,73],[80,119]]]],
+                  ["element","action",["showDeleteConfirmation",["get","disabledfield",["loc",[null,[81,60],[81,73]]]]],[],["loc",[null,[81,26],[81,75]]]],
+                  ["inline","format-message",[["subexpr","intl-get",["generic.delete"],[],["loc",[null,[81,93],[81,120]]]]],[],["loc",[null,[81,76],[81,122]]]]
                 ],
                 locals: [],
                 templates: []
@@ -51148,11 +51271,11 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 52,
+                    "line": 66,
                     "column": 4
                   },
                   "end": {
-                    "line": 72,
+                    "line": 86,
                     "column": 4
                   }
                 },
@@ -51175,7 +51298,7 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
                 return morphs;
               },
               statements: [
-                ["block","ko-simple-list/row",[],[],0,null,["loc",[null,[53,6],[71,29]]]]
+                ["block","ko-simple-list/row",[],[],0,null,["loc",[null,[67,6],[85,29]]]]
               ],
               locals: ["disabledfield"],
               templates: [child0]
@@ -51187,11 +51310,11 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 48,
+                  "line": 62,
                   "column": 2
                 },
                 "end": {
-                  "line": 73,
+                  "line": 87,
                   "column": 2
                 }
               },
@@ -51227,8 +51350,8 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
               return morphs;
             },
             statements: [
-              ["inline","format-message",[["subexpr","intl-get",["generic.disabled"],[],["loc",[null,[50,23],[50,52]]]]],[],["loc",[null,[50,6],[50,54]]]],
-              ["block","each",[["get","disabledfields",["loc",[null,[52,12],[52,26]]]]],[],0,null,["loc",[null,[52,4],[72,13]]]]
+              ["inline","format-message",[["subexpr","intl-get",["generic.disabled"],[],["loc",[null,[64,23],[64,52]]]]],[],["loc",[null,[64,6],[64,54]]]],
+              ["block","each",[["get","disabledfields",["loc",[null,[66,12],[66,26]]]]],[],0,null,["loc",[null,[66,4],[86,13]]]]
             ],
             locals: [],
             templates: [child0]
@@ -51240,11 +51363,11 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
             "loc": {
               "source": null,
               "start": {
-                "line": 47,
+                "line": 61,
                 "column": 0
               },
               "end": {
-                "line": 74,
+                "line": 88,
                 "column": 0
               }
             },
@@ -51267,7 +51390,7 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
             return morphs;
           },
           statements: [
-            ["block","ko-simple-list",[],[],0,null,["loc",[null,[48,2],[73,21]]]]
+            ["block","ko-simple-list",[],[],0,null,["loc",[null,[62,2],[87,21]]]]
           ],
           locals: [],
           templates: [child0]
@@ -51283,7 +51406,7 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
               "column": 0
             },
             "end": {
-              "line": 75,
+              "line": 89,
               "column": 0
             }
           },
@@ -51311,8 +51434,8 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
           return morphs;
         },
         statements: [
-          ["block","ko-simple-list",[],[],0,null,["loc",[null,[4,2],[45,21]]]],
-          ["block","if",[["get","disabledfields.length",["loc",[null,[47,6],[47,27]]]]],[],1,null,["loc",[null,[47,0],[74,7]]]]
+          ["block","ko-simple-list",[],[],0,null,["loc",[null,[4,2],[59,21]]]],
+          ["block","if",[["get","disabledfields.length",["loc",[null,[61,6],[61,27]]]]],[],1,null,["loc",[null,[61,0],[88,7]]]]
         ],
         locals: [],
         templates: [child0, child1]
@@ -51328,7 +51451,7 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
             "column": 0
           },
           "end": {
-            "line": 78,
+            "line": 92,
             "column": 0
           }
         },
@@ -51363,8 +51486,8 @@ define('frontend-cp/session/admin/manage/case-fields/index/template', ['exports'
       },
       statements: [
         ["inline","ko-admin/page-header",[],["title","Case Fields","buttonText",["subexpr","format-message",[["subexpr","intl-get",["admin.casefields.buttons.add_new_casefield"],[],["loc",[null,[1,70],[1,125]]]]],[],["loc",[null,[1,54],[1,126]]]],"buttonAction","transitionToNewCaseFieldRoute"],["loc",[null,[1,0],[1,173]]]],
-        ["block","ko-admin/forms/table",[],[],0,null,["loc",[null,[3,0],[75,25]]]],
-        ["inline","ko-admin/page-footer",[],["buttonText",["subexpr","format-message",[["subexpr","intl-get",["admin.casefields.buttons.add_new_casefield"],[],["loc",[null,[77,50],[77,105]]]]],[],["loc",[null,[77,34],[77,106]]]],"buttonAction","transitionToNewCaseFieldRoute"],["loc",[null,[77,0],[77,153]]]]
+        ["block","ko-admin/forms/table",[],[],0,null,["loc",[null,[3,0],[89,25]]]],
+        ["inline","ko-admin/page-footer",[],["buttonText",["subexpr","format-message",[["subexpr","intl-get",["admin.casefields.buttons.add_new_casefield"],[],["loc",[null,[91,50],[91,105]]]]],[],["loc",[null,[91,34],[91,106]]]],"buttonAction","transitionToNewCaseFieldRoute"],["loc",[null,[91,0],[91,153]]]]
       ],
       locals: [],
       templates: [child0]
@@ -70420,7 +70543,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+14870f88"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+11dbafa3"});
 }
 
 /* jshint ignore:end */
