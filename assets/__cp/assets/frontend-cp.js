@@ -35321,7 +35321,7 @@ define('frontend-cp/components/ko-text-editor/template', ['exports'], function (
         },
         statements: [
           ["attribute","class",["concat",["ko-text-editor-header-group__item i-users ",["subexpr","if",[["get","selectedPeople.length",["loc",[null,[45,70],[45,91]]]],"ko-text-editor-header-group__users-item--active"],[],["loc",[null,[45,65],[45,143]]]]]]],
-          ["attribute","title",["subexpr","format-message",[["subexpr","intl-get",["generic.texteditor.billing"],[],["loc",[null,[46,39],[46,78]]]]],[],["loc",[null,[46,22],[46,80]]]]],
+          ["attribute","title",["subexpr","format-message",[["subexpr","intl-get",["generic.texteditor.cc"],[],["loc",[null,[46,39],[46,73]]]]],[],["loc",[null,[46,22],[46,75]]]]],
           ["element","action",["addParticipant"],[],["loc",[null,[44,17],[44,44]]]],
           ["inline","ko-people",[],["suggestedPeople",["subexpr","@mut",[["get","suggestedPeople",["loc",[null,[48,30],[48,45]]]]],[],[]],"selectedPeople",["subexpr","@mut",[["get","selectedPeople",["loc",[null,[49,29],[49,43]]]]],[],[]],"suggestedPeopleTotal",["subexpr","@mut",[["get","suggestedPeopleTotal",["loc",[null,[50,35],[50,55]]]]],[],[]],"suggestedPeopleLoading",["subexpr","@mut",[["get","suggestedPeopleLoading",["loc",[null,[51,37],[51,59]]]]],[],[]],"title",["subexpr","@mut",[["get","peopleTitleText",["loc",[null,[52,20],[52,35]]]]],[],[]],"inputPlaceholderText",["subexpr","@mut",[["get","peopleInputPlaceholderText",["loc",[null,[53,35],[53,61]]]]],[],[]],"filterNotFoundText",["subexpr","@mut",[["get","peopleFilterNotFoundText",["loc",[null,[54,33],[54,57]]]]],[],[]],"helpText",["subexpr","@mut",[["get","peopleHelpText",["loc",[null,[55,23],[55,37]]]]],[],[]],"emailErrorText",["subexpr","@mut",[["get","peopleEmailErrorText",["loc",[null,[56,29],[56,49]]]]],[],[]],"contextModalId","addParticipants","onPeopleSuggestion","onPeopleSuggestion"],["loc",[null,[47,14],[58,55]]]],
           ["block","if",[["get","selectedPeople.length",["loc",[null,[61,18],[61,39]]]]],[],0,null,["loc",[null,[61,12],[67,19]]]]
@@ -72531,7 +72531,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+dc960cd3"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+222d97a0"});
 }
 
 /* jshint ignore:end */
