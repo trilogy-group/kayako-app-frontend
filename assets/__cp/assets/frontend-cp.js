@@ -6633,7 +6633,7 @@ define('frontend-cp/components/ko-admin/page-header/template', ['exports'], func
             "column": 0
           },
           "end": {
-            "line": 27,
+            "line": 31,
             "column": 0
           }
         },
@@ -6695,24 +6695,37 @@ define('frontend-cp/components/ko-admin/page-header/template', ['exports'], func
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n\n");
         dom.appendChild(el0, el1);
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","ko-admin-header__content");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
         var element2 = dom.childAt(fragment, [0, 1]);
         var element3 = dom.childAt(element2, [1, 1]);
         var element4 = dom.childAt(element2, [3]);
-        var morphs = new Array(4);
+        var morphs = new Array(5);
         morphs[0] = dom.createMorphAt(element3,1,1);
         morphs[1] = dom.createMorphAt(element3,3,3);
         morphs[2] = dom.createMorphAt(element4,1,1);
         morphs[3] = dom.createMorphAt(element4,3,3);
+        morphs[4] = dom.createMorphAt(dom.childAt(fragment, [2]),1,1);
         return morphs;
       },
       statements: [
         ["block","if",[["get","titleTrail",["loc",[null,[5,14],[5,24]]]]],[],0,null,["loc",[null,[5,8],[7,15]]]],
         ["content","pageTitle",["loc",[null,[8,8],[8,21]]]],
         ["block","if",[["get","cancelAction",["loc",[null,[12,12],[12,24]]]]],[],1,null,["loc",[null,[12,6],[16,13]]]],
-        ["block","if",[["get","buttonText",["loc",[null,[18,12],[18,22]]]]],[],2,null,["loc",[null,[18,6],[22,13]]]]
+        ["block","if",[["get","buttonText",["loc",[null,[18,12],[18,22]]]]],[],2,null,["loc",[null,[18,6],[22,13]]]],
+        ["content","pageCopy",["loc",[null,[28,2],[28,14]]]]
       ],
       locals: [],
       templates: [child0, child1, child2]
@@ -51760,7 +51773,7 @@ define('frontend-cp/session/admin/channels/twitter/edit/template', ['exports'], 
             "column": 0
           },
           "end": {
-            "line": 5,
+            "line": 11,
             "column": 150
           }
         },
@@ -51793,9 +51806,9 @@ define('frontend-cp/session/admin/channels/twitter/edit/template', ['exports'], 
         return morphs;
       },
       statements: [
-        ["inline","ko-admin/page-header",[],["title",["subexpr","format-message",[["subexpr","intl-get",["admin.casefields.edit.heading"],[],["loc",[null,[1,45],[1,87]]]]],[],["loc",[null,[1,29],[1,88]]]],"cancelAction","transitionToIndexRoute","buttonText",["subexpr","format-message",[["subexpr","intl-get",["generic.save"],[],["loc",[null,[1,154],[1,179]]]]],[],["loc",[null,[1,138],[1,180]]]],"buttonAction","saveTwitterAccount"],["loc",[null,[1,0],[1,216]]]],
-        ["inline","ko-admin/twitter/edit",[],["account",["subexpr","@mut",[["get","model",["loc",[null,[3,32],[3,37]]]]],[],[]]],["loc",[null,[3,0],[3,39]]]],
-        ["inline","ko-admin/page-footer",[],["cancelAction","transitionToIndexRoute","buttonText",["subexpr","format-message",[["subexpr","intl-get",["generic.save"],[],["loc",[null,[5,88],[5,113]]]]],[],["loc",[null,[5,72],[5,114]]]],"buttonAction","saveTwitterAccount"],["loc",[null,[5,0],[5,150]]]]
+        ["inline","ko-admin/page-header",[],["title",["subexpr","format-message",[["subexpr","intl-get",["admin.casefields.edit.heading"],[],["loc",[null,[2,24],[2,66]]]]],[],["loc",[null,[2,8],[2,67]]]],"cancelAction","transitionToIndexRoute","buttonText",["subexpr","format-message",[["subexpr","intl-get",["generic.save"],[],["loc",[null,[4,29],[4,54]]]]],[],["loc",[null,[4,13],[4,55]]]],"buttonAction","saveTwitterAccount","pageCopy",null],["loc",[null,[1,0],[7,2]]]],
+        ["inline","ko-admin/twitter/edit",[],["account",["subexpr","@mut",[["get","model",["loc",[null,[9,32],[9,37]]]]],[],[]]],["loc",[null,[9,0],[9,39]]]],
+        ["inline","ko-admin/page-footer",[],["cancelAction","transitionToIndexRoute","buttonText",["subexpr","format-message",[["subexpr","intl-get",["generic.save"],[],["loc",[null,[11,88],[11,113]]]]],[],["loc",[null,[11,72],[11,114]]]],"buttonAction","saveTwitterAccount"],["loc",[null,[11,0],[11,150]]]]
       ],
       locals: [],
       templates: []
@@ -72590,7 +72603,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+a5097f07"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+35a859ca"});
 }
 
 /* jshint ignore:end */
