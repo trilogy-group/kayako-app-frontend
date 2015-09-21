@@ -10779,14 +10779,28 @@ define('frontend-cp/components/ko-agent-dropdown/create-case/component', ['expor
         var userModel = fields.requester;
         var userId = userModel.get('id');
 
-        return findUserPrimaryChannel(userId).then(function (channelModel) {
-          return findDefaultStatus().then(function (statusModel) {
-            return createCase(userModel, channelModel, statusModel);
-          });
+        var primaryChannelPromise = findUserPrimaryChannel(userId);
+        var defaultCaseFormPromise = findDefaultCaseForm();
+        var defaultStatusPromise = findDefaultStatus();
+
+        return Ember['default'].RSVP.hash({
+          channel: primaryChannelPromise,
+          caseForm: defaultCaseFormPromise,
+          status: defaultStatusPromise
+        }).then(function (caseSettingsHash) {
+          return createCase(userModel, caseSettingsHash.channel, caseSettingsHash.status, caseSettingsHash.caseForm);
         });
 
         function findDefaultStatus() {
           return store.findRecord('case-status', NEW_STATUS_ID);
+        }
+
+        function findDefaultCaseForm() {
+          return store.findAll('case-form').then(function (caseForms) {
+            return caseForms.find(function (caseForm) {
+              return caseForm.get('isDefault') === true;
+            });
+          });
         }
 
         function findUserPrimaryChannel(userId) {
@@ -10797,11 +10811,12 @@ define('frontend-cp/components/ko-agent-dropdown/create-case/component', ['expor
           });
         }
 
-        function createCase(userModel, channelModel, statusModel) {
+        function createCase(userModel, channelModel, statusModel, formModel) {
           return store.createRecord('case', {
             'requester': userModel,
             'sourceChannel': channelModel,
-            'status': statusModel
+            'status': statusModel,
+            'form': formModel
           });
         }
       }
@@ -54776,6 +54791,7 @@ define('frontend-cp/session/admin/manage/case-forms/index/controller', ['exports
   exports['default'] = Ember['default'].Controller.extend({
 
     session: Ember['default'].inject.service(),
+    intlService: Ember['default'].inject.service('intl'),
 
     enabledForms: Ember['default'].computed('model.@each.isEnabled', 'model.@each.sortOrder', function () {
       return this.get('model').filter(function (form) {
@@ -54809,6 +54825,8 @@ define('frontend-cp/session/admin/manage/case-forms/index/controller', ['exports
             'X-Session-ID': this.get('session.sessionId')
           }
         });
+
+        return false;
       },
 
       reorderForms: function reorderForms(orderedForms) {
@@ -54851,8 +54869,7 @@ define('frontend-cp/session/admin/manage/case-forms/index/controller', ['exports
       },
 
       showDeleteConfirmation: function showDeleteConfirmation(form) {
-        var locales = this.get('intl.current');
-        var deleteConfirmationMessage = this.get('intl.adapter').findTranslation(locales, 'generic.confirm.delete');
+        var deleteConfirmationMessage = this.get('intlService').findTranslationByKey('generic.confirm.delete');
 
         if (confirm(deleteConfirmationMessage.translation)) {
           this.send('deleteField', form);
@@ -54971,8 +54988,8 @@ define('frontend-cp/session/admin/manage/case-forms/index/template', ['exports']
                   return morphs;
                 },
                 statements: [
-                  ["element","action",["makeDefault",["get","form",["loc",[null,[23,49],[23,53]]]]],[],["loc",[null,[23,26],[23,55]]]],
-                  ["inline","format-message",[["subexpr","intl-get",["generic.make_default"],[],["loc",[null,[23,73],[23,106]]]]],[],["loc",[null,[23,56],[23,108]]]]
+                  ["element","action",["makeDefault",["get","form",["loc",[null,[23,49],[23,53]]]]],["bubbles",false],["loc",[null,[23,26],[23,69]]]],
+                  ["inline","format-message",[["subexpr","intl-get",["generic.make_default"],[],["loc",[null,[23,87],[23,120]]]]],[],["loc",[null,[23,70],[23,122]]]]
                 ],
                 locals: [],
                 templates: []
@@ -74386,7 +74403,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+410b3360"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+5df1e0cb"});
 }
 
 /* jshint ignore:end */
