@@ -11574,7 +11574,7 @@ define('frontend-cp/components/ko-agent-dropdown/create-organisation/component',
           this.get('fields.domains').removeObject(domain);
         }
 
-        this.$('.pill-input').focus();
+        this.$('.tag-input').focus();
         return false;
       },
 
@@ -24293,6 +24293,13 @@ define('frontend-cp/components/ko-field/tags/component', ['exports', 'ember', 'f
             this.set('showDropdown', false);
             break;
           }
+        case KeyCodes.space:
+          {
+            if (dropdownKeyboardPosition === 0) {
+              this.send('addTag', searchTerm);
+            }
+            return false;
+          }
         case KeyCodes.enter:
           {
             if (dropdownKeyboardPosition === 0) {
@@ -24349,6 +24356,7 @@ define('frontend-cp/components/ko-field/tags/component', ['exports', 'ember', 'f
     actions: {
       removeTag: function removeTag(tag) {
         this.sendAction('onTagRemoval', tag);
+        return false;
       },
 
       suggestTags: function suggestTags(searchTerm, selectedTags) {
@@ -24356,10 +24364,11 @@ define('frontend-cp/components/ko-field/tags/component', ['exports', 'ember', 'f
       },
 
       addTag: function addTag(tagTitle) {
+        var tag = tagTitle.toLowerCase();
         this.set('searchTerm', '');
         this.set('showDropdown', false);
-        if (!this.get('selectedTags').includes(tagTitle)) {
-          this.sendAction('onTagAddition', tagTitle);
+        if (!this.get('selectedTags').includes(tag)) {
+          this.sendAction('onTagAddition', tag);
           this.updateSuggestions();
         }
         this.resetSuggestedTagKeyboardPosition();
@@ -72350,6 +72359,50 @@ define('frontend-cp/tests/unit/components/ko-field/tags/component-test', ['ember
     });
   });
 
+  qunit.test('tags are coerced to lower case on addition', function (assert) {
+    assert.expect(1);
+
+    this.render();
+
+    var targetObject = {
+      externalTagAdditionAction: function externalTagAdditionAction(tags) {
+        assert.deepEqual(tags, 'qwerty', 'external tag addition action was called');
+      }
+    };
+
+    component.set('onTagAddition', 'externalTagAdditionAction');
+    component.set('targetObject', targetObject);
+
+    Ember['default'].run(function () {
+      component.set('tags', '');
+      component.set('searchTerm', 'QWERTY');
+      component.keyUp({ keyCode: KeyCodes.y });
+      component.keyDown({ keyCode: KeyCodes.enter });
+    });
+  });
+
+  qunit.test('spacebar creates a new tag with search term', function (assert) {
+    assert.expect(1);
+
+    this.render();
+
+    var targetObject = {
+      externalTagAdditionAction: function externalTagAdditionAction(tags) {
+        assert.deepEqual(tags, 'qwerty', 'external tag addition action was called');
+      }
+    };
+
+    component.set('onTagAddition', 'externalTagAdditionAction');
+    component.set('targetObject', targetObject);
+
+    Ember['default'].run(function () {
+      component.set('tags', '');
+      component.set('searchTerm', 'qwerty');
+      component.keyUp({ keyCode: KeyCodes.y });
+      component.keyDown({ keyCode: KeyCodes.space });
+    });
+  });
+
 });
 define('frontend-cp/tests/unit/components/ko-file-size/component-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
@@ -74461,7 +74514,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+b995fd45"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+17a875eb"});
 }
 
 /* jshint ignore:end */
