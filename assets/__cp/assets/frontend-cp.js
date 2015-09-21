@@ -52291,15 +52291,20 @@ define('frontend-cp/services/session', ['exports', 'ember'], function (exports, 
      * @type {Array}
      */
     session: null,
-    sessionId: null,
     user: null,
     localStoreService: Ember['default'].inject.service('localStore'),
     store: Ember['default'].inject.service(),
 
-    init: function init() {
-      this._super.apply(this, arguments);
-      this.getSession()['catch'](function () {});
-    },
+    // CPs
+    sessionId: Ember['default'].computed({
+      get: function get() {
+        return this.get('localStoreService').getItem('sessionId', { persist: true });
+      },
+      set: function set(_, v) {
+        return v;
+      }
+    }),
+    // Methods
 
     getSession: function getSession() {
       var _this = this;
@@ -52311,10 +52316,8 @@ define('frontend-cp/services/session', ['exports', 'ember'], function (exports, 
           resolve(session);
         }
 
-        var sessionId = _this.get('localStoreService').getItem('sessionId', { persist: true });
         // sessionId saved in local storage
-        if (sessionId) {
-          _this.set('sessionId', sessionId);
+        if (_this.get('sessionId')) {
           _this._getSession().then(resolve)['catch'](function (e) {
             _this.get('localStoreService').removeItem('sessionId', { persist: true });
             _this.set('sessionId', null);
@@ -52341,13 +52344,7 @@ define('frontend-cp/services/session', ['exports', 'ember'], function (exports, 
     _getSession: function _getSession() {
       var _this3 = this;
 
-      return this.get('store').find('session', 'current').then(function (session) {
-        // We have to explicitly delete a record with id=current.
-        // Thank you, Ember Data, for this mess.
-        var record = _this3.get('store').peekAll('session').find(function (record) {
-          return record.id === 'current';
-        });
-        record.unloadRecord();
+      return this.get('store').queryRecord('session', {}).then(function (session) {
         _this3.set('session', session);
         _this3.set('user', session.get('user'));
         _this3.getPermissions();
@@ -52374,10 +52371,8 @@ define('frontend-cp/services/session', ['exports', 'ember'], function (exports, 
 
       var session = this.get('session');
       return session.destroyRecord().then(function () {
-        _this4.set('session', null);
-      }, function () {
-        // catch the error - we don't care it it's already deleted etc.
-      });
+        return _this4.set('session', null);
+      })['catch'](function () {}); // catch the error - we don't care it it's already deleted etc.
     },
 
     /**
@@ -66710,6 +66705,7 @@ define('frontend-cp/tests/acceptance/case/create-note-test', ['frontend-cp/tests
   qunit.test('create note', function (assert) {
     assert.expect(3);
 
+    useDefaultScenario();
     login();
     visit('/agent/cases/1');
 
@@ -66738,6 +66734,7 @@ define('frontend-cp/tests/acceptance/case/create-test', ['frontend-cp/tests/help
 
   qunit.app('Acceptance | Case | Create case', {
     beforeEach: function beforeEach() {
+      useDefaultScenario();
       login();
     },
 
@@ -66763,6 +66760,7 @@ define('frontend-cp/tests/acceptance/case/list-test', ['frontend-cp/tests/helper
 
   qunit.app('Acceptance | Case | List', {
     beforeEach: function beforeEach() {
+      useDefaultScenario();
       login();
     },
 
@@ -66773,7 +66771,7 @@ define('frontend-cp/tests/acceptance/case/list-test', ['frontend-cp/tests/helper
 
   qunit.test('number of cases listed', function (assert) {
     assert.expect(2);
-
+    visit('/agent');
     visit('/agent/cases');
 
     andThen(function () {
@@ -66789,6 +66787,7 @@ define('frontend-cp/tests/acceptance/case/reply-with-quote-test', ['frontend-cp/
 
   qunit.app('Acceptance | Case | Reply with quote', {
     beforeEach: function beforeEach() {
+      useDefaultScenario();
       login();
     },
 
@@ -66848,6 +66847,7 @@ define('frontend-cp/tests/acceptance/showcase/render-test', ['frontend-cp/tests/
 
   qunit.app('Acceptance | Showcase| Render', {
     beforeEach: function beforeEach() {
+      useDefaultScenario();
       login();
     },
 
@@ -66880,6 +66880,7 @@ define('frontend-cp/tests/acceptance/tabs/tabs-test', ['frontend-cp/tests/helper
   qunit.test('cases open in their own tabs', function (assert) {
     assert.expect(30);
 
+    useDefaultScenario();
     login();
 
     visit('/agent');
@@ -67011,6 +67012,7 @@ define('frontend-cp/tests/acceptance/tabs/tabs-test', ['frontend-cp/tests/helper
   qunit.test('tab label is set to case name', function (assert) {
     assert.expect(2);
 
+    useDefaultScenario();
     login();
 
     visit('/agent/cases/1');
@@ -67045,6 +67047,7 @@ define('frontend-cp/tests/acceptance/tabs/tabs-test', ['frontend-cp/tests/helper
       label: 'Case 2'
     }]));
 
+    useDefaultScenario();
     login();
 
     visit('/');
@@ -67063,6 +67066,7 @@ define('frontend-cp/tests/acceptance/tabs/tabs-test', ['frontend-cp/tests/helper
   qunit.test('tabs can be closed', function (assert) {
     assert.expect(9);
 
+    useDefaultScenario();
     login();
 
     visit('/');
@@ -67113,6 +67117,7 @@ define('frontend-cp/tests/acceptance/tabs/tabs-test', ['frontend-cp/tests/helper
   qunit.test('tabs remember scroll position', function (assert) {
     assert.expect(5);
 
+    useDefaultScenario();
     login();
 
     visit('/styleguide');
@@ -67231,7 +67236,10 @@ define('frontend-cp/tests/acceptance/user/user-menu-test', ['ember', 'frontend-c
 
   qunit.test('visiting /user-menu', function (assert) {
     assert.expect(1);
+    useDefaultScenario();
     login();
+
+    visit('/agent');
     visit('/agent/cases');
 
     andThen(function () {
@@ -67628,23 +67636,15 @@ define('frontend-cp/tests/helpers/intl-get', ['exports', 'ember'], function (exp
   });
 
 });
-define('frontend-cp/tests/helpers/login', ['exports', 'ember', 'frontend-cp/mirage/scenarios/default'], function (exports, Ember, defaultScenario) {
+define('frontend-cp/tests/helpers/login', ['exports', 'ember'], function (exports, Ember) {
 
   'use strict';
 
-  exports['default'] = Ember['default'].Test.registerAsyncHelper('login', function () {
-
-    defaultScenario['default'](server); //eslint-disable-line no-undef
+  exports['default'] = Ember['default'].Test.registerAsyncHelper('login', function (app) {
+    var sessionId = arguments.length <= 1 || arguments[1] === undefined ? '1' : arguments[1];
 
     localStorage.removeItem('sessionId');
-
-    visit('/agent/login');
-
-    andThen(function () {
-      fillIn('input[name=email]', 'test@kayako.com');
-      fillIn('input[name=password]', 'setup');
-      click('button:last');
-    });
+    localStorage.setItem('sessionId', JSON.stringify(String(sessionId)));
   });
 
 });
@@ -67770,7 +67770,7 @@ define('frontend-cp/tests/helpers/setup-mirage-for-integration', ['exports', 'fr
   ;
 
 });
-define('frontend-cp/tests/helpers/start-app', ['exports', 'ember', 'frontend-cp/app', 'frontend-cp/config/environment', 'frontend-cp/tests/helpers/login', 'frontend-cp/tests/helpers/logout'], function (exports, Ember, Application, config, login, logout) {
+define('frontend-cp/tests/helpers/start-app', ['exports', 'ember', 'frontend-cp/app', 'frontend-cp/config/environment', 'frontend-cp/tests/helpers/login', 'frontend-cp/tests/helpers/use-default-scenario', 'frontend-cp/tests/helpers/logout'], function (exports, Ember, Application, config, login, useDefaultScenario, logout) {
 
   'use strict';
 
@@ -67791,6 +67791,15 @@ define('frontend-cp/tests/helpers/start-app', ['exports', 'ember', 'frontend-cp/
 
     return application;
   }
+
+});
+define('frontend-cp/tests/helpers/use-default-scenario', ['exports', 'ember', 'frontend-cp/mirage/scenarios/default'], function (exports, Ember, defaultScenario) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Test.registerAsyncHelper('useDefaultScenario', function () {
+    defaultScenario['default'](server); //eslint-disable-line no-undef
+  });
 
 });
 define('frontend-cp/tests/integration/components/ko-address/component-test', ['ember-qunit'], function (ember_qunit) {
@@ -70084,7 +70093,7 @@ define('frontend-cp/tests/integration/components/ko-session-widgets/component-te
     integration: true,
     setup: function setup() {
       /*eslint-disable no-undef, camelcase */
-      mirage['default'](this.containter);
+      mirage['default'](this.container);
       var role = server.create('role');
       var defaultUser = server.create('user', {
         id: 1,
@@ -70098,6 +70107,7 @@ define('frontend-cp/tests/integration/components/ko-session-widgets/component-te
 
       /*eslint-enable no-undef, camelcase */
       localStorage.setItem('sessionId', '"pPW6tnOyJG6TmWCVea175d1bfc5dbf073a89ffeb6a2a198c61aae941Aqc7ahmzw8a"');
+      this.container.lookup('service:session').getSession();
     },
     teardown: function teardown() {
       localStorage.removeItem('sessionId');
@@ -74514,7 +74524,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+17a875eb"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+6fba0efb"});
 }
 
 /* jshint ignore:end */
