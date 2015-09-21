@@ -6633,7 +6633,7 @@ define('frontend-cp/components/ko-admin/page-header/template', ['exports'], func
             "column": 0
           },
           "end": {
-            "line": 31,
+            "line": 27,
             "column": 0
           }
         },
@@ -6695,37 +6695,24 @@ define('frontend-cp/components/ko-admin/page-header/template', ['exports'], func
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n\n");
         dom.appendChild(el0, el1);
-        var el1 = dom.createElement("div");
-        dom.setAttribute(el1,"class","ko-admin-header__content");
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createComment("");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n");
-        dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n\n");
-        dom.appendChild(el0, el1);
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
         var element2 = dom.childAt(fragment, [0, 1]);
         var element3 = dom.childAt(element2, [1, 1]);
         var element4 = dom.childAt(element2, [3]);
-        var morphs = new Array(5);
+        var morphs = new Array(4);
         morphs[0] = dom.createMorphAt(element3,1,1);
         morphs[1] = dom.createMorphAt(element3,3,3);
         morphs[2] = dom.createMorphAt(element4,1,1);
         morphs[3] = dom.createMorphAt(element4,3,3);
-        morphs[4] = dom.createMorphAt(dom.childAt(fragment, [2]),1,1);
         return morphs;
       },
       statements: [
         ["block","if",[["get","titleTrail",["loc",[null,[5,14],[5,24]]]]],[],0,null,["loc",[null,[5,8],[7,15]]]],
         ["content","pageTitle",["loc",[null,[8,8],[8,21]]]],
         ["block","if",[["get","cancelAction",["loc",[null,[12,12],[12,24]]]]],[],1,null,["loc",[null,[12,6],[16,13]]]],
-        ["block","if",[["get","buttonText",["loc",[null,[18,12],[18,22]]]]],[],2,null,["loc",[null,[18,6],[22,13]]]],
-        ["inline","format-message",[["subexpr","intl-get",["admin.casefields.description"],[],["loc",[null,[28,19],[28,60]]]]],[],["loc",[null,[28,2],[28,62]]]]
+        ["block","if",[["get","buttonText",["loc",[null,[18,12],[18,22]]]]],[],2,null,["loc",[null,[18,6],[22,13]]]]
       ],
       locals: [],
       templates: [child0, child1, child2]
@@ -72603,7 +72590,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+1e17fbfc"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+a5097f07"});
 }
 
 /* jshint ignore:end */
