@@ -13103,6 +13103,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
     tagSuggestionService: Ember['default'].inject.service('suggestion/tag'),
     peopleSuggestionService: Ember['default'].inject.service('suggestion/people'),
     contextModalService: Ember['default'].inject.service('context-modal'),
+    routeStateService: Ember['default'].inject.service('routeState'),
 
     // Case-specific properties
     channel: null,
@@ -13136,6 +13137,14 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
     suggestedPeopleLoading: false,
 
     sortOptions: [{ label: 'Newest first', content: 'newest' }, { label: 'Oldest first', content: 'oldest' }],
+
+    errorMap: Ember['default'].computed('errors', function () {
+      var errorMap = {};
+      this.get('errors').forEach(function (error) {
+        errorMap[error.parameter] = true;
+      });
+      return errorMap;
+    }),
 
     isPeopleAutoCompleteAvailable: Ember['default'].computed('replyType', 'channel.isChannelTypeMailbox', function () {
       return this.get('replyType') === 'REPLY' && this.get('channel.isChannelTypeMailbox');
@@ -13586,7 +13595,16 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
           return;
         }
 
-        if (!post && !attachmentIds.length) {
+        if (!this.get('case.id')) {
+          this.set('case.contents', post);
+          this.set('case.channel', channel.get('channelType'));
+          this.set('case.channelId', channel.get('account.id'));
+          this.get('case').save().then(function (newCase) {
+            _this11.resetCaseFormState();
+          }, function (e) {
+            _this11.set('errors', e.errors);
+          });
+        } else if (!post && !attachmentIds.length) {
           // we are just updating the case -- don't create a case-reply
           this.get('case').save().then(function () {
             _this11.resetCaseFormState();
@@ -14075,11 +14093,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 69,
+                  "line": 70,
                   "column": 14
                 },
                 "end": {
-                  "line": 71,
+                  "line": 72,
                   "column": 14
                 }
               },
@@ -14104,7 +14122,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
               return morphs;
             },
             statements: [
-              ["inline","ko-loader",[],["large",true],["loc",[null,[70,16],[70,40]]]]
+              ["inline","ko-loader",[],["large",true],["loc",[null,[71,16],[71,40]]]]
             ],
             locals: [],
             templates: []
@@ -14116,11 +14134,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 68,
+                "line": 69,
                 "column": 12
               },
               "end": {
-                "line": 72,
+                "line": 73,
                 "column": 12
               }
             },
@@ -14143,7 +14161,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             return morphs;
           },
           statements: [
-            ["block","ko-center",[],[],0,null,["loc",[null,[69,14],[71,28]]]]
+            ["block","ko-center",[],[],0,null,["loc",[null,[70,14],[72,28]]]]
           ],
           locals: [],
           templates: [child0]
@@ -14155,11 +14173,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 66,
+              "line": 67,
               "column": 8
             },
             "end": {
-              "line": 74,
+              "line": 75,
               "column": 8
             }
           },
@@ -14191,7 +14209,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["block","if",[["get","loadingTop",["loc",[null,[68,18],[68,28]]]]],[],0,null,["loc",[null,[68,12],[72,19]]]]
+          ["block","if",[["get","loadingTop",["loc",[null,[69,18],[69,28]]]]],[],0,null,["loc",[null,[69,12],[73,19]]]]
         ],
         locals: [],
         templates: [child0]
@@ -14204,11 +14222,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 76,
+              "line": 77,
               "column": 10
             },
             "end": {
-              "line": 78,
+              "line": 79,
               "column": 10
             }
           },
@@ -14233,7 +14251,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["inline","ko-feed",[],["events",["subexpr","@mut",[["get","newPosts",["loc",[null,[77,29],[77,37]]]]],[],[]]],["loc",[null,[77,12],[77,39]]]]
+          ["inline","ko-feed",[],["events",["subexpr","@mut",[["get","newPosts",["loc",[null,[78,29],[78,37]]]]],[],[]]],["loc",[null,[78,12],[78,39]]]]
         ],
         locals: [],
         templates: []
@@ -14247,11 +14265,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 83,
+                "line": 84,
                 "column": 12
               },
               "end": {
-                "line": 85,
+                "line": 86,
                 "column": 12
               }
             },
@@ -14276,7 +14294,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             return morphs;
           },
           statements: [
-            ["inline","ko-loader",[],["large",true],["loc",[null,[84,14],[84,38]]]]
+            ["inline","ko-loader",[],["large",true],["loc",[null,[85,14],[85,38]]]]
           ],
           locals: [],
           templates: []
@@ -14288,11 +14306,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 82,
+              "line": 83,
               "column": 10
             },
             "end": {
-              "line": 86,
+              "line": 87,
               "column": 10
             }
           },
@@ -14315,7 +14333,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["block","ko-center",[],[],0,null,["loc",[null,[83,12],[85,26]]]]
+          ["block","ko-center",[],[],0,null,["loc",[null,[84,12],[86,26]]]]
         ],
         locals: [],
         templates: [child0]
@@ -14328,11 +14346,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 97,
+              "line": 98,
               "column": 8
             },
             "end": {
-              "line": 105,
+              "line": 106,
               "column": 8
             }
           },
@@ -14357,7 +14375,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["inline","ko-case-field/tags",[],["tags",["subexpr","@mut",[["get","tags",["loc",[null,[100,17],[100,21]]]]],[],[]],"suggestedTags",["subexpr","@mut",[["get","suggestedTags",["loc",[null,[101,26],[101,39]]]]],[],[]],"onTagAddition","addTag","onTagRemoval","removeTag","onTagSuggestion","suggestTags"],["loc",[null,[99,10],[104,43]]]]
+          ["inline","ko-case-field/tags",[],["tags",["subexpr","@mut",[["get","tags",["loc",[null,[101,17],[101,21]]]]],[],[]],"suggestedTags",["subexpr","@mut",[["get","suggestedTags",["loc",[null,[102,26],[102,39]]]]],[],[]],"onTagAddition","addTag","onTagRemoval","removeTag","onTagSuggestion","suggestTags"],["loc",[null,[100,10],[105,43]]]]
         ],
         locals: [],
         templates: []
@@ -14371,11 +14389,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 114,
+                "line": 115,
                 "column": 10
               },
               "end": {
-                "line": 122,
+                "line": 123,
                 "column": 10
               }
             },
@@ -14400,7 +14418,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             return morphs;
           },
           statements: [
-            ["inline","component",[["subexpr","ko-helper",[["get","componentFor",["loc",[null,[115,35],[115,47]]]],["get","field.fieldType",["loc",[null,[115,48],[115,63]]]]],[],["loc",[null,[115,24],[115,64]]]]],["case",["subexpr","@mut",[["get","case",["loc",[null,[116,19],[116,23]]]]],[],[]],"field",["subexpr","@mut",[["get","field",["loc",[null,[117,20],[117,25]]]]],[],[]],"errors",["subexpr","@mut",[["get","errors",["loc",[null,[118,21],[118,27]]]]],[],[]],"options",["subexpr","ko-contextual-helper",[["get","optionsForField",["loc",[null,[119,44],[119,59]]]],["get","this",["loc",[null,[119,60],[119,64]]]],["get","field",["loc",[null,[119,65],[119,70]]]]],[],["loc",[null,[119,22],[119,71]]]],"editedCaseFields",["subexpr","@mut",[["get","editedCaseFields",["loc",[null,[120,31],[120,47]]]]],[],[]]],["loc",[null,[115,12],[121,14]]]]
+            ["inline","component",[["subexpr","ko-helper",[["get","componentFor",["loc",[null,[116,35],[116,47]]]],["get","field.fieldType",["loc",[null,[116,48],[116,63]]]]],[],["loc",[null,[116,24],[116,64]]]]],["case",["subexpr","@mut",[["get","case",["loc",[null,[117,19],[117,23]]]]],[],[]],"field",["subexpr","@mut",[["get","field",["loc",[null,[118,20],[118,25]]]]],[],[]],"errors",["subexpr","@mut",[["get","errors",["loc",[null,[119,21],[119,27]]]]],[],[]],"options",["subexpr","ko-contextual-helper",[["get","optionsForField",["loc",[null,[120,44],[120,59]]]],["get","this",["loc",[null,[120,60],[120,64]]]],["get","field",["loc",[null,[120,65],[120,70]]]]],[],["loc",[null,[120,22],[120,71]]]],"editedCaseFields",["subexpr","@mut",[["get","editedCaseFields",["loc",[null,[121,31],[121,47]]]]],[],[]]],["loc",[null,[116,12],[122,14]]]]
           ],
           locals: [],
           templates: []
@@ -14412,11 +14430,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 113,
+              "line": 114,
               "column": 8
             },
             "end": {
-              "line": 123,
+              "line": 124,
               "column": 8
             }
           },
@@ -14439,10 +14457,52 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["block","if",[["subexpr","ko-helper",[["get","componentFor",["loc",[null,[114,27],[114,39]]]],["get","field.fieldType",["loc",[null,[114,40],[114,55]]]]],[],["loc",[null,[114,16],[114,56]]]]],[],0,null,["loc",[null,[114,10],[122,17]]]]
+          ["block","if",[["subexpr","ko-helper",[["get","componentFor",["loc",[null,[115,27],[115,39]]]],["get","field.fieldType",["loc",[null,[115,40],[115,55]]]]],[],["loc",[null,[115,16],[115,56]]]]],[],0,null,["loc",[null,[115,10],[123,17]]]]
         ],
         locals: ["field"],
         templates: [child0]
+      };
+    }());
+    var child5 = (function() {
+      return {
+        meta: {
+          "revision": "Ember@1.13.7",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 126,
+              "column": 8
+            },
+            "end": {
+              "line": 128,
+              "column": 8
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-case-content/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("        ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+          return morphs;
+        },
+        statements: [
+          ["inline","ko-case/sla-sidebar",[],["sla",["subexpr","@mut",[["get","case.sla",["loc",[null,[127,34],[127,42]]]]],[],[]],"slaMetrics",["subexpr","@mut",[["get","case.slaMetrics",["loc",[null,[127,54],[127,69]]]]],[],[]]],["loc",[null,[127,8],[127,71]]]]
+        ],
+        locals: [],
+        templates: []
       };
     }());
     return {
@@ -14455,7 +14515,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             "column": 0
           },
           "end": {
-            "line": 130,
+            "line": 134,
             "column": 0
           }
         },
@@ -14699,11 +14759,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
         dom.appendChild(el4, el5);
         var el5 = dom.createComment("");
         dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("        ");
+        var el5 = dom.createTextNode("\n");
         dom.appendChild(el4, el5);
         var el5 = dom.createComment("");
         dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n        ");
+        var el5 = dom.createTextNode("        ");
         dom.appendChild(el4, el5);
         var el5 = dom.createComment("");
         dom.appendChild(el4, el5);
@@ -14764,31 +14824,31 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
       },
       statements: [
         ["attribute","src",["concat",[["get","case.requester.avatar",["loc",[null,[6,22],[6,43]]]]]]],
-        ["inline","ko-editable-text",[],["value",["subexpr","@mut",[["get","case.subject",["loc",[null,[11,22],[11,34]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isCaseSubjectEdited",["loc",[null,[12,25],[12,44]]]]],[],[]],"onValueChange","setSubject","placeholder",["subexpr","format-message",[["subexpr","intl-get",["cases.new_case_subject_placeholder"],[],["loc",[null,[14,44],[14,91]]]]],[],["loc",[null,[14,28],[14,92]]]]],["loc",[null,[10,12],[15,14]]]],
-        ["inline","format-message",[["subexpr","intl-get",["cases.subheader"],[],["loc",[null,[18,29],[18,57]]]]],["time",["subexpr","@mut",[["get","case.createdAt",["loc",[null,[19,17],[19,31]]]]],[],[]],"channel",["subexpr","format-message",[["subexpr","intl-get",[["subexpr","concat",["cases.channelType.",["get","case.sourceChannel.channelType",["loc",[null,[20,75],[20,105]]]]],[],["loc",[null,[20,46],[20,106]]]]],[],["loc",[null,[20,36],[20,107]]]]],[],["loc",[null,[20,20],[20,108]]]],"hasBrand",["subexpr","@mut",[["get","hasBrand",["loc",[null,[21,21],[21,29]]]]],[],[]],"brand",["subexpr","@mut",[["get","case.brand.companyName",["loc",[null,[22,18],[22,40]]]]],[],[]]],["loc",[null,[18,12],[22,42]]]],
-        ["inline","ko-case/macro-selector",[],["macros",["subexpr","@mut",[["get","macros",["loc",[null,[32,46],[32,52]]]]],[],[]],"onMacroSelected","applyMacro"],["loc",[null,[32,14],[32,83]]]],
-        ["inline","ko-case/macro-selector",[],["macros",["subexpr","@mut",[["get","macros",["loc",[null,[35,46],[35,52]]]]],[],[]],"onMacroSelected","applyMacro"],["loc",[null,[35,14],[35,83]]]],
-        ["inline","ko-case/macro-selector",[],["macros",["subexpr","@mut",[["get","macros",["loc",[null,[38,46],[38,52]]]]],[],[]],"onMacroSelected","applyMacro"],["loc",[null,[38,14],[38,83]]]],
-        ["attribute","style",["concat",["height: ",["get","caseEditorHeight",["loc",[null,[48,72],[48,88]]]],"px"]]],
-        ["attribute","class",["concat",["ko-case-content__editor ",["subexpr","if",[["get","headerSticky",["loc",[null,[49,51],[49,63]]]],"ko-case-content__editor--sticky"],[],["loc",[null,[49,46],[49,99]]]]]]],
-        ["inline","ko-case-field/post",[],["viewName","casePostEditor","channels",["subexpr","@mut",[["get","case.replyChannels",["loc",[null,[52,25],[52,43]]]]],[],[]],"channel",["subexpr","@mut",[["get","channel",["loc",[null,[53,24],[53,31]]]]],[],[]],"onChannelChange","setChannel","replyType",["subexpr","@mut",[["get","replyType",["loc",[null,[55,26],[55,35]]]]],[],[]],"suggestedPeople",["subexpr","@mut",[["get","suggestedPeople",["loc",[null,[56,32],[56,47]]]]],[],[]],"selectedPeople",["subexpr","@mut",[["get","selectedPeople",["loc",[null,[57,31],[57,45]]]]],[],[]],"suggestedPeopleTotal",["subexpr","@mut",[["get","suggestedPeopleTotal",["loc",[null,[58,37],[58,57]]]]],[],[]],"suggestedPeopleLoading",["subexpr","@mut",[["get","suggestedPeopleLoading",["loc",[null,[59,39],[59,61]]]]],[],[]],"isPeopleAutoCompleteAvailable",["subexpr","@mut",[["get","isPeopleAutoCompleteAvailable",["loc",[null,[60,46],[60,75]]]]],[],[]],"addParticipant","addParticipant","onPeopleSuggestion","onPeopleSuggestion"],["loc",[null,[50,12],[62,57]]]],
-        ["inline","ko-case-content/dropdown",[],["label","Sort","value",["subexpr","@mut",[["get","sortOrder",["loc",[null,[65,98],[65,107]]]]],[],[]],"options",["subexpr","@mut",[["get","sortOptions",["loc",[null,[65,116],[65,127]]]]],[],[]],"action",["subexpr","action",["sort"],[],["loc",[null,[65,135],[65,150]]]]],["loc",[null,[65,52],[65,152]]]],
-        ["block","if",[["get","topPostsAvailable",["loc",[null,[66,14],[66,31]]]]],[],0,null,["loc",[null,[66,8],[74,15]]]],
-        ["block","if",[["get","newPosts",["loc",[null,[76,16],[76,24]]]]],[],1,null,["loc",[null,[76,10],[78,17]]]],
-        ["inline","ko-feed",[],["events",["subexpr","@mut",[["get","posts",["loc",[null,[80,25],[80,30]]]]],[],[]],"onReplyWithQuote","replyWithQuote","top",["subexpr","@mut",[["get","timelineVisibleTop",["loc",[null,[80,69],[80,87]]]]],[],[]],"left",["subexpr","@mut",[["get","timelineVisibleLeft",["loc",[null,[80,93],[80,112]]]]],[],[]],"onTopPostChange",["subexpr","action",["changeTopPost"],[],["loc",[null,[80,129],[80,153]]]]],["loc",[null,[80,8],[80,155]]]],
-        ["block","if",[["get","loadingBottom",["loc",[null,[82,16],[82,29]]]]],[],2,null,["loc",[null,[82,10],[86,17]]]],
-        ["attribute","class",["concat",["list-bare ko-case-content__info-bar ",["subexpr","if",[["get","headerSticky",["loc",[null,[91,57],[91,69]]]],"ko-case-content__info-bar--sticky"],[],["loc",[null,[91,52],[91,107]]]]]]],
-        ["element","action",["submit"],[],["loc",[null,[93,55],[93,74]]]],
-        ["inline","format-message",[["subexpr","intl-get",["cases.submit"],[],["loc",[null,[93,92],[93,117]]]]],[],["loc",[null,[93,75],[93,119]]]],
-        ["inline","ko-case-field/requester",[],["requester",["subexpr","@mut",[["get","case.requester",["loc",[null,[95,44],[95,58]]]]],[],[]]],["loc",[null,[95,8],[95,60]]]],
-        ["block","ko-info-bar/field",[],["title",["subexpr","format-message",[["subexpr","intl-get",["cases.tags"],[],["loc",[null,[97,51],[97,74]]]]],[],["loc",[null,[97,35],[97,75]]]],"isEdited",["subexpr","@mut",[["get","isTagsFieldEdited",["loc",[null,[98,19],[98,36]]]]],[],[]]],3,null,["loc",[null,[97,8],[105,30]]]],
-        ["inline","ko-case-field/forms",[],["selectedForm",["subexpr","@mut",[["get","case.form",["loc",[null,[108,23],[108,32]]]]],[],[]],"forms",["subexpr","@mut",[["get","caseForms",["loc",[null,[109,16],[109,25]]]]],[],[]],"onFormSelected","setForm","isEdited",["subexpr","@mut",[["get","editedCaseFields.form",["loc",[null,[110,19],[110,40]]]]],[],[]]],["loc",[null,[107,8],[111,10]]]],
-        ["block","each",[["get","caseOrFormFields",["loc",[null,[113,16],[113,32]]]]],[],4,null,["loc",[null,[113,8],[123,17]]]],
-        ["inline","ko-case/sla-sidebar",[],["sla",["subexpr","@mut",[["get","case.sla",["loc",[null,[124,34],[124,42]]]]],[],[]],"slaMetrics",["subexpr","@mut",[["get","case.slaMetrics",["loc",[null,[124,54],[124,69]]]]],[],[]]],["loc",[null,[124,8],[124,71]]]],
-        ["inline","ko-info-bar/metadata",[],["rows",["subexpr","@mut",[["get","caseDates",["loc",[null,[125,36],[125,45]]]]],[],[]]],["loc",[null,[125,8],[125,47]]]]
+        ["inline","ko-editable-text",[],["value",["subexpr","@mut",[["get","case.subject",["loc",[null,[11,22],[11,34]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isCaseSubjectEdited",["loc",[null,[12,25],[12,44]]]]],[],[]],"onValueChange","setSubject","isErrored",["subexpr","@mut",[["get","errorMap.subject",["loc",[null,[14,26],[14,42]]]]],[],[]],"placeholder",["subexpr","format-message",[["subexpr","intl-get",["cases.new_case_subject_placeholder"],[],["loc",[null,[15,44],[15,91]]]]],[],["loc",[null,[15,28],[15,92]]]]],["loc",[null,[10,12],[16,14]]]],
+        ["inline","format-message",[["subexpr","intl-get",["cases.subheader"],[],["loc",[null,[19,29],[19,57]]]]],["time",["subexpr","@mut",[["get","case.createdAt",["loc",[null,[20,17],[20,31]]]]],[],[]],"channel",["subexpr","format-message",[["subexpr","intl-get",[["subexpr","concat",["cases.channelType.",["get","case.sourceChannel.channelType",["loc",[null,[21,75],[21,105]]]]],[],["loc",[null,[21,46],[21,106]]]]],[],["loc",[null,[21,36],[21,107]]]]],[],["loc",[null,[21,20],[21,108]]]],"hasBrand",["subexpr","@mut",[["get","hasBrand",["loc",[null,[22,21],[22,29]]]]],[],[]],"brand",["subexpr","@mut",[["get","case.brand.companyName",["loc",[null,[23,18],[23,40]]]]],[],[]]],["loc",[null,[19,12],[23,42]]]],
+        ["inline","ko-case/macro-selector",[],["macros",["subexpr","@mut",[["get","macros",["loc",[null,[33,46],[33,52]]]]],[],[]],"onMacroSelected","applyMacro"],["loc",[null,[33,14],[33,83]]]],
+        ["inline","ko-case/macro-selector",[],["macros",["subexpr","@mut",[["get","macros",["loc",[null,[36,46],[36,52]]]]],[],[]],"onMacroSelected","applyMacro"],["loc",[null,[36,14],[36,83]]]],
+        ["inline","ko-case/macro-selector",[],["macros",["subexpr","@mut",[["get","macros",["loc",[null,[39,46],[39,52]]]]],[],[]],"onMacroSelected","applyMacro"],["loc",[null,[39,14],[39,83]]]],
+        ["attribute","style",["concat",["height: ",["get","caseEditorHeight",["loc",[null,[49,72],[49,88]]]],"px"]]],
+        ["attribute","class",["concat",["ko-case-content__editor ",["subexpr","if",[["get","headerSticky",["loc",[null,[50,51],[50,63]]]],"ko-case-content__editor--sticky"],[],["loc",[null,[50,46],[50,99]]]]]]],
+        ["inline","ko-case-field/post",[],["viewName","casePostEditor","channels",["subexpr","@mut",[["get","case.replyChannels",["loc",[null,[53,25],[53,43]]]]],[],[]],"channel",["subexpr","@mut",[["get","channel",["loc",[null,[54,24],[54,31]]]]],[],[]],"onChannelChange","setChannel","replyType",["subexpr","@mut",[["get","replyType",["loc",[null,[56,26],[56,35]]]]],[],[]],"suggestedPeople",["subexpr","@mut",[["get","suggestedPeople",["loc",[null,[57,32],[57,47]]]]],[],[]],"selectedPeople",["subexpr","@mut",[["get","selectedPeople",["loc",[null,[58,31],[58,45]]]]],[],[]],"suggestedPeopleTotal",["subexpr","@mut",[["get","suggestedPeopleTotal",["loc",[null,[59,37],[59,57]]]]],[],[]],"suggestedPeopleLoading",["subexpr","@mut",[["get","suggestedPeopleLoading",["loc",[null,[60,39],[60,61]]]]],[],[]],"isPeopleAutoCompleteAvailable",["subexpr","@mut",[["get","isPeopleAutoCompleteAvailable",["loc",[null,[61,46],[61,75]]]]],[],[]],"addParticipant","addParticipant","onPeopleSuggestion","onPeopleSuggestion"],["loc",[null,[51,12],[63,57]]]],
+        ["inline","ko-case-content/dropdown",[],["label","Sort","value",["subexpr","@mut",[["get","sortOrder",["loc",[null,[66,98],[66,107]]]]],[],[]],"options",["subexpr","@mut",[["get","sortOptions",["loc",[null,[66,116],[66,127]]]]],[],[]],"action",["subexpr","action",["sort"],[],["loc",[null,[66,135],[66,150]]]]],["loc",[null,[66,52],[66,152]]]],
+        ["block","if",[["get","topPostsAvailable",["loc",[null,[67,14],[67,31]]]]],[],0,null,["loc",[null,[67,8],[75,15]]]],
+        ["block","if",[["get","newPosts",["loc",[null,[77,16],[77,24]]]]],[],1,null,["loc",[null,[77,10],[79,17]]]],
+        ["inline","ko-feed",[],["events",["subexpr","@mut",[["get","posts",["loc",[null,[81,25],[81,30]]]]],[],[]],"onReplyWithQuote","replyWithQuote","top",["subexpr","@mut",[["get","timelineVisibleTop",["loc",[null,[81,69],[81,87]]]]],[],[]],"left",["subexpr","@mut",[["get","timelineVisibleLeft",["loc",[null,[81,93],[81,112]]]]],[],[]],"onTopPostChange",["subexpr","action",["changeTopPost"],[],["loc",[null,[81,129],[81,153]]]]],["loc",[null,[81,8],[81,155]]]],
+        ["block","if",[["get","loadingBottom",["loc",[null,[83,16],[83,29]]]]],[],2,null,["loc",[null,[83,10],[87,17]]]],
+        ["attribute","class",["concat",["list-bare ko-case-content__info-bar ",["subexpr","if",[["get","headerSticky",["loc",[null,[92,57],[92,69]]]],"ko-case-content__info-bar--sticky"],[],["loc",[null,[92,52],[92,107]]]]]]],
+        ["element","action",["submit"],[],["loc",[null,[94,55],[94,74]]]],
+        ["inline","format-message",[["subexpr","intl-get",["cases.submit"],[],["loc",[null,[94,92],[94,117]]]]],[],["loc",[null,[94,75],[94,119]]]],
+        ["inline","ko-case-field/requester",[],["requester",["subexpr","@mut",[["get","case.requester",["loc",[null,[96,44],[96,58]]]]],[],[]]],["loc",[null,[96,8],[96,60]]]],
+        ["block","ko-info-bar/field",[],["title",["subexpr","format-message",[["subexpr","intl-get",["cases.tags"],[],["loc",[null,[98,51],[98,74]]]]],[],["loc",[null,[98,35],[98,75]]]],"isEdited",["subexpr","@mut",[["get","isTagsFieldEdited",["loc",[null,[99,19],[99,36]]]]],[],[]]],3,null,["loc",[null,[98,8],[106,30]]]],
+        ["inline","ko-case-field/forms",[],["selectedForm",["subexpr","@mut",[["get","case.form",["loc",[null,[109,23],[109,32]]]]],[],[]],"forms",["subexpr","@mut",[["get","caseForms",["loc",[null,[110,16],[110,25]]]]],[],[]],"onFormSelected","setForm","isEdited",["subexpr","@mut",[["get","editedCaseFields.form",["loc",[null,[111,19],[111,40]]]]],[],[]]],["loc",[null,[108,8],[112,10]]]],
+        ["block","each",[["get","caseOrFormFields",["loc",[null,[114,16],[114,32]]]]],[],4,null,["loc",[null,[114,8],[124,17]]]],
+        ["block","if",[["get","case.id",["loc",[null,[126,14],[126,21]]]]],[],5,null,["loc",[null,[126,8],[128,15]]]],
+        ["inline","ko-info-bar/metadata",[],["rows",["subexpr","@mut",[["get","caseDates",["loc",[null,[129,36],[129,45]]]]],[],[]]],["loc",[null,[129,8],[129,47]]]]
       ],
       locals: [],
-      templates: [child0, child1, child2, child3, child4]
+      templates: [child0, child1, child2, child3, child4, child5]
     };
   }()));
 
@@ -21779,6 +21839,9 @@ define('frontend-cp/components/ko-editable-text/component', ['exports', 'ember']
     onValueChange: null,
     placeholder: null,
     value: null,
+    isErrored: false,
+
+    classNameBindings: ['isErrored:error'],
 
     isEditing: false,
     isEdited: false,
@@ -47982,7 +48045,7 @@ define('frontend-cp/models/case', ['exports', 'ember-data', 'frontend-cp/mixins/
     caseType: DS['default'].belongsTo('case-type', { async: false }),
     tags: DS['default'].hasMany('tag', { async: false }),
     form: DS['default'].belongsTo('case-form', { async: false }),
-    customFields: DS['default'].hasManyFragments('case-field-value'),
+    customFields: DS['default'].hasManyFragments('case-field-value', { defaultValue: [] }),
     // metadata // TODO nested json
     lastReplier: DS['default'].belongsTo('user', { async: false }),
     lastReplierIdentity: DS['default'].belongsTo('identity', { async: false }),
@@ -48012,6 +48075,11 @@ define('frontend-cp/models/case', ['exports', 'ember-data', 'frontend-cp/mixins/
 
     // Parent field
     view: DS['default'].belongsTo('view', { async: true, parent: true }),
+
+    // Creation Fields
+    contents: DS['default'].attr('string'),
+    channel: DS['default'].attr('string'),
+    channelId: DS['default'].attr('number'),
 
     saveWithNote: function saveWithNote(contents) {
       var note = this.get('store').createRecord('case-note', {
@@ -51594,7 +51662,10 @@ define('frontend-cp/services/tabs', ['exports', 'ember', 'frontend-cp/models/tab
         });
       });
 
-      return tabModels;
+      var invalidUrls = ['/agent/cases/new'];
+      return tabModels.filter(function (tab) {
+        return invalidUrls.indexOf(tab.url) === -1;
+      });
     }
   });
 
@@ -57957,7 +58028,8 @@ define('frontend-cp/session/agent/cases/case/route', ['exports', 'frontend-cp/ro
         this.get('tab').set('url', url);
       },
       updateTabName: function updateTabName(label) {
-        this.get('tab').set('label', label);
+        var tabName = label ? label : this.get('intlService').findTranslationByKey('cases.new_case_tab_placeholder').translation;
+        this.get('tab').set('label', tabName);
       }
     }
   });
@@ -72531,7 +72603,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+222d97a0"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+1e17fbfc"});
 }
 
 /* jshint ignore:end */
