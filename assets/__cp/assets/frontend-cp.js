@@ -11574,7 +11574,7 @@ define('frontend-cp/components/ko-agent-dropdown/create-organisation/component',
           this.get('fields.domains').removeObject(domain);
         }
 
-        this.$('.tag-input').focus();
+        this.$('.js-tag-input').focus();
         return false;
       },
 
@@ -24660,7 +24660,7 @@ define('frontend-cp/components/ko-field/tags/template', ['exports'], function (e
       },
       statements: [
         ["block","each",[["get","statusTags",["loc",[null,[2,8],[2,18]]]]],[],0,null,["loc",[null,[2,0],[7,9]]]],
-        ["inline","input",[],["class","ko-field_tags__input","placeholder",["subexpr","@mut",[["get","addTagText",["loc",[null,[8,51],[8,61]]]]],[],[]],"value",["subexpr","@mut",[["get","searchTerm",["loc",[null,[8,68],[8,78]]]]],[],[]],"tabindex",0,"role","textbox"],["loc",[null,[8,2],[8,106]]]],
+        ["inline","input",[],["class","ko-field_tags__input js-tag-input","placeholder",["subexpr","@mut",[["get","addTagText",["loc",[null,[8,64],[8,74]]]]],[],[]],"value",["subexpr","@mut",[["get","searchTerm",["loc",[null,[8,81],[8,91]]]]],[],[]],"tabindex",0,"role","textbox"],["loc",[null,[8,2],[8,119]]]],
         ["block","if",[["get","onTagSuggestion",["loc",[null,[11,6],[11,21]]]]],[],1,null,["loc",[null,[11,0],[20,7]]]]
       ],
       locals: [],
@@ -74524,7 +74524,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+6fba0efb"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+6cae8e60"});
 }
 
 /* jshint ignore:end */
