@@ -43,6 +43,10 @@
   "fields.type.field_options.missing_options": "Please provide at least one option",
   "fields.new.heading": "New",
   "fields.edit.heading": "Edit",
+  "fields.add_new_field": "Add New Field",
+
+  "organizationfields": "Organization Fields",
+  "organizationfields.new.heading": "Organization Fields / New",
 
   "userfields": "User Fields",
   "userfields.buttons.add_new_userfield": "Add New Field",
