@@ -52511,6 +52511,13 @@ define('frontend-cp/services/session', ['exports', 'ember'], function (exports, 
       var _this4 = this;
 
       var session = this.get('session');
+
+      if (!session) {
+        // if we have no session, reset session id
+        // so ember knows that we want to show login again
+        return this.set('sessionId', null);
+      }
+
       return session.destroyRecord().then(function () {
         return _this4.set('session', null);
       })['catch'](function () {}); // catch the error - we don't care it it's already deleted etc.
@@ -76564,7 +76571,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+bb66141a"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+6b1d9a3c"});
 }
 
 /* jshint ignore:end */
