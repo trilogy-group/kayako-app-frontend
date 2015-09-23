@@ -49551,7 +49551,7 @@ define('frontend-cp/models/field-option', ['exports', 'ember-data', 'frontend-cp
     createdAt: DS['default'].attr('date'),
     updatedAt: DS['default'].attr('date'),
 
-    parent: DS['default'].belongsTo('field', { polymorphic: true, async: true, parent: true }),
+    parent: DS['default'].belongsTo('field', { polymorphic: true, async: true, parent: true, noCache: true }),
 
     markedForDeletion: DS['default'].attr('boolean', { defaultValue: false })
   });
@@ -56336,6 +56336,7 @@ define('frontend-cp/session/admin/manage/case-forms/new/controller', ['exports',
         var _this = this;
 
         this.get('model').save().then(function () {
+          _this.get('model').cacheRelationships();
           _this.send('transitionToIndexRoute');
         });
       }
@@ -77207,7 +77208,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+0afc685d"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+607e74b1"});
 }
 
 /* jshint ignore:end */
