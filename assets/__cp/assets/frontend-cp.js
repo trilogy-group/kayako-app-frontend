@@ -44557,15 +44557,15 @@ define('frontend-cp/mirage/fixtures/en-us-strings', ['exports'], function (expor
       'resource_type': 'locale_string'
     }, {
       id: 'frontend.api.admin.predicate_builder.operators.collection_contains_insensitive',
-      value: 'contains (case insensitive)',
+      value: 'String contains (case insensitive)',
       'resource_type': 'locale_string'
     }, {
       id: 'frontend.api.admin.predicate_builder.operators.collection_does_not_contain_insensitive',
-      value: 'does not contain (case insensitive)',
+      value: 'String does not contain (case insensitive)',
       'resource_type': 'locale_string'
     }, {
       id: 'frontend.api.admin.predicate_builder.operators.collection_contains_any_insensitive',
-      value: 'contains any (case insensitive)',
+      value: 'String contains any (case insensitive)',
       'resource_type': 'locale_string'
     }, {
       id: 'frontend.api.cases.activity',
@@ -51530,7 +51530,7 @@ define('frontend-cp/services/custom-fields', ['exports', 'ember'], function (exp
       if (!onlyFieldTypeChanged) {
         if (controller.userHasChangedModel()) {
           if (confirm(this._getTranslation('generic.confirm.lose_changes'))) {
-            this.controller.send('rollBackModel');
+            controller.send('rollBackModel');
             return true;
           } else {
             transition.abort();
@@ -61254,9 +61254,15 @@ define('frontend-cp/session/agent/cases/index/controller', ['exports', 'ember'],
     },
 
     enabledViews: Ember['default'].computed('views', function () {
-      return this.get('views').filter(function (view) {
+      var enabledViews = this.get('views').filter(function (view) {
         return view.get('isEnabled') === true;
       });
+
+      enabledViews = enabledViews.sort(function (a, b) {
+        return a.get('sortOrder') > b.get('sortOrder');
+      });
+
+      return enabledViews;
     }),
 
     // Indicates whether route is loading (to show loading spinner instead
@@ -76571,7 +76577,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+6b1d9a3c"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+eff1ba44"});
 }
 
 /* jshint ignore:end */
