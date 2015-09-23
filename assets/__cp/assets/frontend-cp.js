@@ -7993,229 +7993,6 @@ define('frontend-cp/components/ko-admin/sidebar/template', ['exports'], function
   }()));
 
 });
-define('frontend-cp/components/ko-admin/tags/component', ['exports', 'ember'], function (exports, Ember) {
-
-  'use strict';
-
-  exports['default'] = Ember['default'].Component.extend({
-    //Params:
-    searchTerm: null,
-    isFocussed: false,
-    addTag: null,
-    removeTag: null,
-
-    shouldFocusOut: false,
-
-    filterResults: Ember['default'].observer('searchTerm', function () {
-      this.sendAction('onSearchTermUpdated', this.get('searchTerm'));
-    }),
-
-    actions: {
-      onFocusChanged: function onFocusChanged(focusState) {
-        // can get into a loop when there are no tags to display, so the focus state cycles
-        if (this.get('isFocussed') === focusState) {
-          return;
-        }
-        this.set('isFocussed', focusState);
-
-        /*
-         * Run.next() because we need to wait until the input button
-         * is rendered on the screen before we select it
-         */
-        if (focusState) {
-          Ember['default'].run.next(this, function () {
-            this.$('input').focus();
-          });
-        }
-      },
-
-      addTag: function addTag() {
-        var tagToAdd = this.get('searchTerm');
-        if (tagToAdd) {
-          this.sendAction('addTag', tagToAdd);
-        }
-        this.set('searchTerm', '');
-        this.set('isFocussed', false);
-        this.set('shouldFocusOut', true);
-      },
-      removeTag: function removeTag(tag) {
-        this.sendAction('removeTag', tag);
-      }
-    }
-  });
-
-});
-define('frontend-cp/components/ko-admin/tags/tag/component', ['exports', 'ember'], function (exports, Ember) {
-
-  'use strict';
-
-  exports['default'] = Ember['default'].Component.extend({
-
-    tagName: 'span',
-
-    actions: {
-      removeTag: function removeTag(tag) {
-        this.sendAction('removeTag', tag);
-      }
-    },
-
-    // Prevent the dropdown container thinking we want to focus
-    // on it and open the search menu
-    mouseDown: function mouseDown(event) {
-      event.preventDefault();
-    }
-  });
-
-});
-define('frontend-cp/components/ko-admin/tags/tag/template', ['exports'], function (exports) {
-
-  'use strict';
-
-  exports['default'] = Ember.HTMLBars.template((function() {
-    return {
-      meta: {
-        "revision": "Ember@1.13.7",
-        "loc": {
-          "source": null,
-          "start": {
-            "line": 1,
-            "column": 0
-          },
-          "end": {
-            "line": 2,
-            "column": 0
-          }
-        },
-        "moduleName": "frontend-cp/components/ko-admin/tags/tag/template.hbs"
-      },
-      arity: 0,
-      cachedFragment: null,
-      hasRendered: false,
-      buildFragment: function buildFragment(dom) {
-        var el0 = dom.createDocumentFragment();
-        var el1 = dom.createElement("span");
-        var el2 = dom.createComment("");
-        dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode(" ");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createElement("span");
-        dom.setAttribute(el1,"class","ko-admin-tags_tag__action i-cross");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
-        dom.appendChild(el0, el1);
-        return el0;
-      },
-      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var element0 = dom.childAt(fragment, [2]);
-        var morphs = new Array(2);
-        morphs[0] = dom.createMorphAt(dom.childAt(fragment, [0]),0,0);
-        morphs[1] = dom.createElementMorph(element0);
-        return morphs;
-      },
-      statements: [
-        ["content","tag",["loc",[null,[1,6],[1,13]]]],
-        ["element","action",["removeTag",["get","tag",["loc",[null,[1,48],[1,51]]]]],[],["loc",[null,[1,27],[1,53]]]]
-      ],
-      locals: [],
-      templates: []
-    };
-  }()));
-
-});
-define('frontend-cp/components/ko-admin/tags/template', ['exports'], function (exports) {
-
-  'use strict';
-
-  exports['default'] = Ember.HTMLBars.template((function() {
-    var child0 = (function() {
-      return {
-        meta: {
-          "revision": "Ember@1.13.7",
-          "loc": {
-            "source": null,
-            "start": {
-              "line": 1,
-              "column": 0
-            },
-            "end": {
-              "line": 3,
-              "column": 0
-            }
-          },
-          "moduleName": "frontend-cp/components/ko-admin/tags/template.hbs"
-        },
-        arity: 1,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("  ");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createComment("");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n");
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
-          return morphs;
-        },
-        statements: [
-          ["inline","ko-admin/tags/tag",[],["tag",["subexpr","@mut",[["get","tag",["loc",[null,[2,26],[2,29]]]]],[],[]],"removeTag","removeTag"],["loc",[null,[2,2],[2,53]]]]
-        ],
-        locals: ["tag"],
-        templates: []
-      };
-    }());
-    return {
-      meta: {
-        "revision": "Ember@1.13.7",
-        "loc": {
-          "source": null,
-          "start": {
-            "line": 1,
-            "column": 0
-          },
-          "end": {
-            "line": 5,
-            "column": 0
-          }
-        },
-        "moduleName": "frontend-cp/components/ko-admin/tags/template.hbs"
-      },
-      arity: 0,
-      cachedFragment: null,
-      hasRendered: false,
-      buildFragment: function buildFragment(dom) {
-        var el0 = dom.createDocumentFragment();
-        var el1 = dom.createComment("");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createComment("");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
-        dom.appendChild(el0, el1);
-        return el0;
-      },
-      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var morphs = new Array(2);
-        morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
-        morphs[1] = dom.createMorphAt(fragment,1,1,contextualElement);
-        dom.insertBoundary(fragment, 0);
-        return morphs;
-      },
-      statements: [
-        ["block","each",[["get","selectedTags",["loc",[null,[1,8],[1,20]]]]],[],0,null,["loc",[null,[1,0],[3,9]]]],
-        ["inline","input",[],["type","text","value",["subexpr","@mut",[["get","searchTerm",["loc",[null,[4,26],[4,36]]]]],[],[]],"class","ko-admin-tags__input","enter","addTag"],["loc",[null,[4,0],[4,82]]]]
-      ],
-      locals: [],
-      templates: [child0]
-    };
-  }()));
-
-});
 define('frontend-cp/components/ko-admin/twitter/edit/component', ['exports', 'ember'], function (exports, Ember) {
 
   'use strict';
@@ -31366,7 +31143,7 @@ define('frontend-cp/components/ko-predicate-builder/rule/template', ['exports'],
                 "column": 4
               },
               "end": {
-                "line": 35,
+                "line": 40,
                 "column": 4
               }
             },
@@ -31379,7 +31156,14 @@ define('frontend-cp/components/ko-predicate-builder/rule/template', ['exports'],
             var el0 = dom.createDocumentFragment();
             var el1 = dom.createTextNode("      ");
             dom.appendChild(el0, el1);
-            var el1 = dom.createComment("");
+            var el1 = dom.createElement("div");
+            dom.setAttribute(el1,"class","ko-predicate-builder__tags-input");
+            var el2 = dom.createTextNode("\n      ");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createComment("");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createTextNode("\n      ");
+            dom.appendChild(el1, el2);
             dom.appendChild(el0, el1);
             var el1 = dom.createTextNode("\n");
             dom.appendChild(el0, el1);
@@ -31387,11 +31171,11 @@ define('frontend-cp/components/ko-predicate-builder/rule/template', ['exports'],
           },
           buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
             var morphs = new Array(1);
-            morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+            morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]),1,1);
             return morphs;
           },
           statements: [
-            ["inline","ko-admin/tags",[],["selectedTags",["subexpr","@mut",[["get","rule.value",["loc",[null,[34,35],[34,45]]]]],[],[]],"addTag","addItemToCollection","removeTag","removeItemFromCollection"],["loc",[null,[34,6],[34,113]]]]
+            ["inline","ko-field/tags",[],["selectedTags",["subexpr","@mut",[["get","rule.value",["loc",[null,[36,21],[36,31]]]]],[],[]],"onTagAddition","addItemToCollection","onTagRemoval","removeItemFromCollection"],["loc",[null,[35,6],[38,49]]]]
           ],
           locals: [],
           templates: []
@@ -31404,11 +31188,11 @@ define('frontend-cp/components/ko-predicate-builder/rule/template', ['exports'],
             "loc": {
               "source": null,
               "start": {
-                "line": 35,
+                "line": 40,
                 "column": 4
               },
               "end": {
-                "line": 37,
+                "line": 42,
                 "column": 4
               }
             },
@@ -31433,7 +31217,7 @@ define('frontend-cp/components/ko-predicate-builder/rule/template', ['exports'],
             return morphs;
           },
           statements: [
-            ["inline","input",[],["type","text","class","ko-predicate-builder_rule__input input-text","value",["subexpr","@mut",[["get","rule.value",["loc",[null,[36,84],[36,94]]]]],[],[]]],["loc",[null,[36,6],[36,96]]]]
+            ["inline","input",[],["type","text","class","ko-predicate-builder_rule__input input-text","value",["subexpr","@mut",[["get","rule.value",["loc",[null,[41,84],[41,94]]]]],[],[]]],["loc",[null,[41,6],[41,96]]]]
           ],
           locals: [],
           templates: []
@@ -31449,7 +31233,7 @@ define('frontend-cp/components/ko-predicate-builder/rule/template', ['exports'],
               "column": 4
             },
             "end": {
-              "line": 37,
+              "line": 42,
               "column": 4
             }
           },
@@ -31472,7 +31256,7 @@ define('frontend-cp/components/ko-predicate-builder/rule/template', ['exports'],
           return morphs;
         },
         statements: [
-          ["block","if",[["subexpr","eq",[["get","selectedDefinition.definitionType",["loc",[null,[33,18],[33,51]]]],"collection"],[],["loc",[null,[33,14],[33,65]]]]],[],0,1,["loc",[null,[33,4],[37,4]]]]
+          ["block","if",[["subexpr","eq",[["get","selectedDefinition.definitionType",["loc",[null,[33,18],[33,51]]]],"collection"],[],["loc",[null,[33,14],[33,65]]]]],[],0,1,["loc",[null,[33,4],[42,4]]]]
         ],
         locals: [],
         templates: [child0, child1]
@@ -31485,11 +31269,11 @@ define('frontend-cp/components/ko-predicate-builder/rule/template', ['exports'],
           "loc": {
             "source": null,
             "start": {
-              "line": 40,
+              "line": 45,
               "column": 4
             },
             "end": {
-              "line": 44,
+              "line": 49,
               "column": 4
             }
           },
@@ -31523,7 +31307,7 @@ define('frontend-cp/components/ko-predicate-builder/rule/template', ['exports'],
           return morphs;
         },
         statements: [
-          ["element","action",["deleteRule",["get","rule",["loc",[null,[42,79],[42,83]]]]],[],["loc",[null,[42,57],[42,85]]]]
+          ["element","action",["deleteRule",["get","rule",["loc",[null,[47,79],[47,83]]]]],[],["loc",[null,[47,57],[47,85]]]]
         ],
         locals: [],
         templates: []
@@ -31539,7 +31323,7 @@ define('frontend-cp/components/ko-predicate-builder/rule/template', ['exports'],
             "column": 0
           },
           "end": {
-            "line": 47,
+            "line": 52,
             "column": 0
           }
         },
@@ -31628,8 +31412,8 @@ define('frontend-cp/components/ko-predicate-builder/rule/template', ['exports'],
         ["inline","format-message",[["subexpr","intl-get",["generic.or"],[],["loc",[null,[2,19],[2,42]]]]],[],["loc",[null,[2,2],[2,44]]]],
         ["block","ko-dropdown/select",[],["label",["subexpr","@mut",[["get","selectedDefinitionLabel",["loc",[null,[7,30],[7,53]]]]],[],[]],"hideOnClick",true,"class","ko-predicate-builder_rule__input"],0,null,["loc",[null,[7,2],[13,25]]]],
         ["block","ko-dropdown/select",[],["label",["subexpr","format-message",[["subexpr","intl-get",[["subexpr","concat",["admin.predicate_builder.operators.",["subexpr","or",[["get","rule.operator",["loc",[null,[16,105],[16,118]]]],"none"],[],["loc",[null,[16,101],[16,126]]]]],[],["loc",[null,[16,56],[16,127]]]]],[],["loc",[null,[16,46],[16,128]]]]],[],["loc",[null,[16,30],[16,129]]]],"hideOnClick",true,"class","ko-predicate-builder_rule__input"],1,null,["loc",[null,[16,2],[22,25]]]],
-        ["block","if",[["get","availableProperties.length",["loc",[null,[25,10],[25,36]]]]],[],2,3,["loc",[null,[25,4],[37,11]]]],
-        ["block","if",[["get","canDeleteRule",["loc",[null,[40,10],[40,23]]]]],[],4,null,["loc",[null,[40,4],[44,11]]]]
+        ["block","if",[["get","availableProperties.length",["loc",[null,[25,10],[25,36]]]]],[],2,3,["loc",[null,[25,4],[42,11]]]],
+        ["block","if",[["get","canDeleteRule",["loc",[null,[45,10],[45,23]]]]],[],4,null,["loc",[null,[45,4],[49,11]]]]
       ],
       locals: [],
       templates: [child0, child1, child2, child3, child4]
@@ -44557,15 +44341,15 @@ define('frontend-cp/mirage/fixtures/en-us-strings', ['exports'], function (expor
       'resource_type': 'locale_string'
     }, {
       id: 'frontend.api.admin.predicate_builder.operators.collection_contains_insensitive',
-      value: 'contains (case insensitive)',
+      value: 'String contains (case insensitive)',
       'resource_type': 'locale_string'
     }, {
       id: 'frontend.api.admin.predicate_builder.operators.collection_does_not_contain_insensitive',
-      value: 'does not contain (case insensitive)',
+      value: 'String does not contain (case insensitive)',
       'resource_type': 'locale_string'
     }, {
       id: 'frontend.api.admin.predicate_builder.operators.collection_contains_any_insensitive',
-      value: 'contains any (case insensitive)',
+      value: 'String contains any (case insensitive)',
       'resource_type': 'locale_string'
     }, {
       id: 'frontend.api.cases.activity',
@@ -76577,7 +76361,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+51cbb2b6"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+2e94e052"});
 }
 
 /* jshint ignore:end */
