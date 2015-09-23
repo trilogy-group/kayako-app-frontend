@@ -204,6 +204,11 @@
   "predicate_builder.cases.assigneeteamid": "Cases: Assigned Agent Team",
   "predicate_builder.cases.assigneeagentid": "Cases: Assigned Agent",
   "predicate_builder.cases.requesterid": "Cases: Requester",
+  "predicate_builder.cases.lastcompletedat": "Cases: Last Completed",
+  "predicate_builder.cases.updatedat": "Cases: Updated At",
+  "predicate_builder.caseslametrics.isbreached": "SLA Breached",
+  "predicate_builder.tags.name": "Tags",
+  "predicate_builder.followers.userid": "User Id",
   "predicate_builder.taglinks.tagid": "Tag",
   "predicate_builder.users.organizationid": "Users: Organisation",
   "predicate_builder.cases.postcount": "Cases: Number of posts",
@@ -214,9 +219,14 @@
   "predicate_builder.operators.comparison_not_equalto": "is not equal to",
   "predicate_builder.operators.comparison_lessthan": "is less than",
   "predicate_builder.operators.comparison_greaterthan": "is greater than",
-  "predicate_builder.operators.collection_contains_insensitive": "contains (case insensitive)",
-  "predicate_builder.operators.collection_does_not_contain_insensitive": "does not contain (case insensitive)",
-  "predicate_builder.operators.collection_contains_any_insensitive": "contains any (case insensitive)"
+  "predicate_builder.operators.collection_contains_insensitive": "String contains (case insensitive)",
+  "predicate_builder.operators.collection_does_not_contain_insensitive": "String does not contain (case insensitive)",
+  "predicate_builder.operators.collection_contains_any_insensitive": "String contains any (case insensitive)",
+  "predicate_builder.operators.date_after": "Date after",
+  "predicate_builder.operators.date_after_or_on": "Date after or on",
+  "predicate_builder.operators.date_before": "Date before",
+  "predicate_builder.operators.date_before_or_on": "Date before or on",
+  "predicate_builder.operators.date_is": "Date is"
 }
 
 
