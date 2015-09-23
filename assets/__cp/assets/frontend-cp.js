@@ -23,56 +23,6 @@ define('frontend-cp/adapters/access-log', ['exports', 'frontend-cp/adapters/appl
   });
 
 });
-define('frontend-cp/adapters/activity', function () {
-
-	'use strict';
-
-	// import ApplicationAdapter from './application';
-	//
-	// export default ApplicationAdapter.extend({
-	//   // replaceQueryParams: {
-	//   //   userId: 'user'
-	//   // }
-	//
-	//   buildURLFragment(type, id, snapshot, requestType, query) {
-	//     let url = [];
-	//     let hasParentURL = false;
-	//
-	//     if (snapshot) {
-	//       snapshot.type.eachRelationship((name, relationship) => {
-	//         if (relationship.options.parent) {
-	//           hasParentURL = true;
-	//           let parent = snapshot.belongsTo(name);
-	//           let adapter = get(this, 'store').adapterFor(parent.modelName);
-	//           url.push(adapter.buildURLFragment(parent.modelName, parent.id, parent, requestType, query));
-	//           let reverseRelationship = snapshot.type.inverseFor(name);
-	//           let relationshipMeta = parent.type.metaForProperty(reverseRelationship.name);
-	//           url.push(relationshipMeta.options.url || reverseRelationship.name);
-	//         }
-	//       });
-	//     // } else if (this.replaceQueryParams) {
-	//     //   _.each(this.replaceQueryParams, (modelName, queryParam) => {
-	//     //     let adapter = get(this, 'store').adapterFor(modelName);
-	//     //     let value = query[queryParam];
-	//     //     delete query[queryParam];
-	//     //     url.push(adapter.buildURLFragment(modelName, value, null, requestType, query));
-	//     //   });
-	//     }
-	//
-	//     if (!hasParentURL && type) {
-	//       let path = this.pathForType(type);
-	//       if (path) { url.push(path); }
-	//     }
-	//
-	//     if (id) {
-	//       url.push(encodeURIComponent(id));
-	//     }
-	//
-	//     return url.join('/');
-	//   }
-	// });
-
-});
 define('frontend-cp/adapters/application', ['exports', 'ember', 'ember-data', 'npm:lodash'], function (exports, Ember, DS, _) {
 
   'use strict';
@@ -12967,9 +12917,12 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
     peopleSuggestionService: Ember['default'].inject.service('suggestion/people'),
     contextModalService: Ember['default'].inject.service('context-modal'),
     routeStateService: Ember['default'].inject.service('routeState'),
+    intlService: Ember['default'].inject.service('intl'),
 
     // Case-specific properties
     channel: null,
+    topPost: null,
+    bottomPost: null,
     topPostsAvailable: false,
     bottomPostsAvailable: true,
     loadingTop: false,
@@ -12977,6 +12930,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
     posts: null,
     newPosts: null,
     sortOrder: '',
+    filter: '',
 
     errors: [],
     macros: [],
@@ -12999,7 +12953,16 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
     suggestedPeopleTotal: 0,
     suggestedPeopleLoading: false,
 
-    sortOptions: [{ label: 'Newest first', content: 'newest' }, { label: 'Oldest first', content: 'oldest' }],
+    sortOptions: [],
+    filterOptions: [],
+
+    initIntl: Ember['default'].on('init', function () {
+      var intlService = this.get('intlService');
+
+      this.set('sortOptions', [{ label: intlService.findTranslationByKey('cases.sort_options.newest_first').translation, content: 'newest' }, { label: intlService.findTranslationByKey('cases.sort_options.oldest_first').translation, content: 'oldest' }]);
+
+      this.set('filterOptions', [{ label: intlService.findTranslationByKey('cases.filter_options.posts').translation, content: 'posts' }, { label: intlService.findTranslationByKey('cases.filter_options.all').translation, content: 'all' }, { label: intlService.findTranslationByKey('cases.filter_options.posts_activities').translation, content: 'posts,activities' }, { label: intlService.findTranslationByKey('cases.filter_options.posts_events').translation, content: 'posts,events' }]);
+    }),
 
     errorMap: Ember['default'].computed('errors', function () {
       var errorMap = {};
@@ -13026,6 +12989,8 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       if (!oldAttrs || newAttrs['case'].value !== oldAttrs['case'].value) {
         this.set('channel', this.get('case.sourceChannel'));
         this.set('posts', []);
+        this.set('topPost', null);
+        this.set('bottomPost', null);
         this.set('newPosts', []);
         this.set('loadingTop', false);
         this.set('loadingBottom', false);
@@ -13038,10 +13003,12 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
         } else {
           this.set('topPostsAvailable', false);
         }
-      } else if (newAttrs.sortOrder.value !== oldAttrs.sortOrder.value) {
+      } else if (newAttrs.sortOrder.value !== oldAttrs.sortOrder.value || newAttrs.filter.value !== oldAttrs.filter.value) {
         this.set('posts', []);
         this.set('topPostsAvailable', false);
         this.set('bottomPostsAvailable', true);
+        this.set('topPost', null);
+        this.set('bottomPost', null);
       }
     }),
 
@@ -13100,9 +13067,8 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       this.set('loadPostsRafID', window.requestAnimationFrame(function () {
         if (_this4.get('case.id')) {
           // we don't want to load posts for new cases
-
           if (!_this4.get('loadingTop') && _this4.get('topPostsAvailable') && _this4.get('scroller').scrollTop() < totalHeaderHeight + dimensions.filterHeight + dimensions.topLoaderHeight) {
-            _this4.loadTopPosts(_this4.get('posts.firstObject.id') || _this4.get('postId'));
+            _this4.loadTopPosts(_this4.get('topPost.id') || _this4.get('postId'));
           }
 
           var _$$get$getBoundingClientRect = _this4.$('.ko-case-content__loaderBottom').get(0).getBoundingClientRect();
@@ -13113,8 +13079,8 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
           var bottomPosition = bottomTop + bottomHeight;
 
           if (!_this4.get('loadingBottom') && _this4.get('bottomPostsAvailable') && bottomPosition - scrollBufferDistance <= $['default'](window).height()) {
-            _this4.loadBottomPosts(_this4.get('posts.lastObject.id') || _this4.get('postId'), {
-              including: !_this4.get('posts.lastObject.id')
+            _this4.loadBottomPosts(_this4.get('bottomPost.id') || _this4.get('postId'), {
+              including: !_this4.get('bottomPost.id')
             });
           }
         }
@@ -13128,21 +13094,27 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       Ember['default'].run(function () {
         _this5.set('loadingTop', true);
         _this5.get('timelineCacheService').getPosts(_this5.get('case'), id, {
-          order: _this5.get('sortOrder'),
-          direction: _this5.get('sortOrder') === 'newest' ? 'newer' : 'older'
+          direction: _this5.get('sortOrder') === 'newest' ? 'newer' : 'older',
+          includeActivities: _this5.get('includeActivities'),
+          includeEvents: _this5.get('includeEvents')
         }).then(function (posts) {
           Ember['default'].run(function () {
             _this5.set('newPosts', posts);
             window.requestAnimationFrame(function () {
               var height = _this5.$('.ko-case-content__fakeFeed').height();
+              var topPost = undefined;
               _this5.set('newPosts', []);
-              posts.reverse().forEach(function (post) {
-                return _this5.get('posts').unshiftObject(post);
+              posts.forEach(function (post) {
+                _this5.get('posts').unshiftObject(post);
+                if (post.constructor.typeKey === 'post') {
+                  topPost = post;
+                }
               });
               var scrollTop = _this5.get('scroller').scrollTop();
               var newScrollPosition = scrollTop + height;
               _this5.set('loadingTop', false);
-              if (posts.get('length') === 0) {
+              _this5.set('topPost', topPost);
+              if (!topPost) {
                 newScrollPosition -= dimensions.topLoaderHeight;
                 _this5.set('topPostsAvailable', false);
               }
@@ -13163,16 +13135,23 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       Ember['default'].run(function () {
         _this6.set('loadingBottom', true);
         _this6.get('timelineCacheService').getPosts(_this6.get('case'), id, {
-          order: _this6.get('sortOrder'),
           direction: _this6.get('sortOrder') === 'newest' ? 'older' : 'newer',
-          including: including
+          including: including,
+          includeActivities: _this6.get('includeActivities'),
+          includeEvents: _this6.get('includeEvents')
         }).then(function (posts) {
           Ember['default'].run(function () {
+            var bottomPost = undefined;
             posts.forEach(function (post) {
-              return _this6.get('posts').pushObject(post);
+              _this6.get('posts').pushObject(post);
+              if (post.constructor.typeKey === 'post') {
+                bottomPost = post;
+              }
             });
             _this6.set('loadingBottom', false);
-            if (posts.get('length') === 0 || posts.get('lastObject.sequence') === 1) {
+            _this6.set('bottomPost', bottomPost);
+            var lastSequence = _this6.get('sortOrder') === 'newest' ? 1 : _this6.get('timelineCacheService').getCaseCache(_this6.get('case')).total;
+            if (!bottomPost || bottomPost.get('sequence') === lastSequence) {
               _this6.set('bottomPostsAvailable', false);
             }
           });
@@ -13243,6 +13222,14 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
 
     hasBrand: Ember['default'].computed('case.brand.companyName', function () {
       return !!this.get('case.brand.companyName');
+    }),
+
+    includeActivities: Ember['default'].computed('filter', function () {
+      return this.get('filter') === 'all' || this.get('filter') === 'posts,activities';
+    }),
+
+    includeEvents: Ember['default'].computed('filter', function () {
+      return this.get('filter') === 'all' || this.get('filter') === 'posts,events';
     }),
 
     componentFor: function componentFor(fieldType) {
@@ -13626,6 +13613,10 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
         }
       },
 
+      filter: function filter(_filter) {
+        this.attrs.onFilter(_filter);
+      },
+
       sort: function sort(sortOrder) {
         this.attrs.onSort(sortOrder);
       }
@@ -13640,7 +13631,7 @@ define('frontend-cp/components/ko-case-content/dropdown/component', ['exports', 
   exports['default'] = Ember['default'].Component.extend({
     //Params
     label: '',
-    action: null,
+    onChange: null,
     options: null,
     value: null,
 
@@ -13773,7 +13764,7 @@ define('frontend-cp/components/ko-case-content/dropdown/template', ['exports'], 
                 return morphs;
               },
               statements: [
-                ["attribute","onclick",["subexpr","action",["action",["get","option.content",["loc",[null,[8,69],[8,83]]]]],[],["loc",[null,[8,51],[8,85]]]]],
+                ["attribute","onclick",["subexpr","action",[["get","attrs.onChange",["loc",[null,[8,60],[8,74]]]],["get","option.content",["loc",[null,[8,75],[8,89]]]]],[],["loc",[null,[8,51],[8,91]]]]],
                 ["content","option.label",["loc",[null,[9,10],[9,26]]]]
               ],
               locals: ["option"],
@@ -13852,7 +13843,7 @@ define('frontend-cp/components/ko-case-content/dropdown/template', ['exports'], 
             return morphs;
           },
           statements: [
-            ["block","ko-dropdown/list",[],["style",["subexpr","@mut",[["get","contentStyle",["loc",[null,[6,30],[6,42]]]]],[],[]]],0,null,["loc",[null,[6,4],[12,25]]]]
+            ["block","ko-dropdown/list",[],[],0,null,["loc",[null,[6,4],[12,25]]]]
           ],
           locals: [],
           templates: [child0]
@@ -13956,11 +13947,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 70,
+                  "line": 73,
                   "column": 14
                 },
                 "end": {
-                  "line": 72,
+                  "line": 75,
                   "column": 14
                 }
               },
@@ -13985,7 +13976,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
               return morphs;
             },
             statements: [
-              ["inline","ko-loader",[],["large",true],["loc",[null,[71,16],[71,40]]]]
+              ["inline","ko-loader",[],["large",true],["loc",[null,[74,16],[74,40]]]]
             ],
             locals: [],
             templates: []
@@ -13997,11 +13988,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 69,
+                "line": 72,
                 "column": 12
               },
               "end": {
-                "line": 73,
+                "line": 76,
                 "column": 12
               }
             },
@@ -14024,7 +14015,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             return morphs;
           },
           statements: [
-            ["block","ko-center",[],[],0,null,["loc",[null,[70,14],[72,28]]]]
+            ["block","ko-center",[],[],0,null,["loc",[null,[73,14],[75,28]]]]
           ],
           locals: [],
           templates: [child0]
@@ -14036,11 +14027,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 67,
+              "line": 70,
               "column": 8
             },
             "end": {
-              "line": 75,
+              "line": 78,
               "column": 8
             }
           },
@@ -14072,7 +14063,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["block","if",[["get","loadingTop",["loc",[null,[69,18],[69,28]]]]],[],0,null,["loc",[null,[69,12],[73,19]]]]
+          ["block","if",[["get","loadingTop",["loc",[null,[72,18],[72,28]]]]],[],0,null,["loc",[null,[72,12],[76,19]]]]
         ],
         locals: [],
         templates: [child0]
@@ -14085,11 +14076,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 77,
+              "line": 80,
               "column": 10
             },
             "end": {
-              "line": 79,
+              "line": 82,
               "column": 10
             }
           },
@@ -14114,7 +14105,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["inline","ko-feed",[],["events",["subexpr","@mut",[["get","newPosts",["loc",[null,[78,29],[78,37]]]]],[],[]]],["loc",[null,[78,12],[78,39]]]]
+          ["inline","ko-feed",[],["events",["subexpr","@mut",[["get","newPosts",["loc",[null,[81,29],[81,37]]]]],[],[]]],["loc",[null,[81,12],[81,39]]]]
         ],
         locals: [],
         templates: []
@@ -14128,11 +14119,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 84,
+                "line": 87,
                 "column": 12
               },
               "end": {
-                "line": 86,
+                "line": 89,
                 "column": 12
               }
             },
@@ -14157,7 +14148,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             return morphs;
           },
           statements: [
-            ["inline","ko-loader",[],["large",true],["loc",[null,[85,14],[85,38]]]]
+            ["inline","ko-loader",[],["large",true],["loc",[null,[88,14],[88,38]]]]
           ],
           locals: [],
           templates: []
@@ -14169,11 +14160,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 83,
+              "line": 86,
               "column": 10
             },
             "end": {
-              "line": 87,
+              "line": 90,
               "column": 10
             }
           },
@@ -14196,7 +14187,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["block","ko-center",[],[],0,null,["loc",[null,[84,12],[86,26]]]]
+          ["block","ko-center",[],[],0,null,["loc",[null,[87,12],[89,26]]]]
         ],
         locals: [],
         templates: [child0]
@@ -14209,11 +14200,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 98,
+              "line": 101,
               "column": 8
             },
             "end": {
-              "line": 106,
+              "line": 109,
               "column": 8
             }
           },
@@ -14238,7 +14229,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["inline","ko-case-field/tags",[],["tags",["subexpr","@mut",[["get","tags",["loc",[null,[101,17],[101,21]]]]],[],[]],"suggestedTags",["subexpr","@mut",[["get","suggestedTags",["loc",[null,[102,26],[102,39]]]]],[],[]],"onTagAddition","addTag","onTagRemoval","removeTag","onTagSuggestion","suggestTags"],["loc",[null,[100,10],[105,43]]]]
+          ["inline","ko-case-field/tags",[],["tags",["subexpr","@mut",[["get","tags",["loc",[null,[104,17],[104,21]]]]],[],[]],"suggestedTags",["subexpr","@mut",[["get","suggestedTags",["loc",[null,[105,26],[105,39]]]]],[],[]],"onTagAddition","addTag","onTagRemoval","removeTag","onTagSuggestion","suggestTags"],["loc",[null,[103,10],[108,43]]]]
         ],
         locals: [],
         templates: []
@@ -14252,11 +14243,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 115,
+                "line": 118,
                 "column": 10
               },
               "end": {
-                "line": 123,
+                "line": 126,
                 "column": 10
               }
             },
@@ -14281,7 +14272,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             return morphs;
           },
           statements: [
-            ["inline","component",[["subexpr","ko-helper",[["get","componentFor",["loc",[null,[116,35],[116,47]]]],["get","field.fieldType",["loc",[null,[116,48],[116,63]]]]],[],["loc",[null,[116,24],[116,64]]]]],["case",["subexpr","@mut",[["get","case",["loc",[null,[117,19],[117,23]]]]],[],[]],"field",["subexpr","@mut",[["get","field",["loc",[null,[118,20],[118,25]]]]],[],[]],"errors",["subexpr","@mut",[["get","errors",["loc",[null,[119,21],[119,27]]]]],[],[]],"options",["subexpr","ko-contextual-helper",[["get","optionsForField",["loc",[null,[120,44],[120,59]]]],["get","this",["loc",[null,[120,60],[120,64]]]],["get","field",["loc",[null,[120,65],[120,70]]]]],[],["loc",[null,[120,22],[120,71]]]],"editedCaseFields",["subexpr","@mut",[["get","editedCaseFields",["loc",[null,[121,31],[121,47]]]]],[],[]]],["loc",[null,[116,12],[122,14]]]]
+            ["inline","component",[["subexpr","ko-helper",[["get","componentFor",["loc",[null,[119,35],[119,47]]]],["get","field.fieldType",["loc",[null,[119,48],[119,63]]]]],[],["loc",[null,[119,24],[119,64]]]]],["case",["subexpr","@mut",[["get","case",["loc",[null,[120,19],[120,23]]]]],[],[]],"field",["subexpr","@mut",[["get","field",["loc",[null,[121,20],[121,25]]]]],[],[]],"errors",["subexpr","@mut",[["get","errors",["loc",[null,[122,21],[122,27]]]]],[],[]],"options",["subexpr","ko-contextual-helper",[["get","optionsForField",["loc",[null,[123,44],[123,59]]]],["get","this",["loc",[null,[123,60],[123,64]]]],["get","field",["loc",[null,[123,65],[123,70]]]]],[],["loc",[null,[123,22],[123,71]]]],"editedCaseFields",["subexpr","@mut",[["get","editedCaseFields",["loc",[null,[124,31],[124,47]]]]],[],[]]],["loc",[null,[119,12],[125,14]]]]
           ],
           locals: [],
           templates: []
@@ -14293,11 +14284,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 114,
+              "line": 117,
               "column": 8
             },
             "end": {
-              "line": 124,
+              "line": 127,
               "column": 8
             }
           },
@@ -14320,7 +14311,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["block","if",[["subexpr","ko-helper",[["get","componentFor",["loc",[null,[115,27],[115,39]]]],["get","field.fieldType",["loc",[null,[115,40],[115,55]]]]],[],["loc",[null,[115,16],[115,56]]]]],[],0,null,["loc",[null,[115,10],[123,17]]]]
+          ["block","if",[["subexpr","ko-helper",[["get","componentFor",["loc",[null,[118,27],[118,39]]]],["get","field.fieldType",["loc",[null,[118,40],[118,55]]]]],[],["loc",[null,[118,16],[118,56]]]]],[],0,null,["loc",[null,[118,10],[126,17]]]]
         ],
         locals: ["field"],
         templates: [child0]
@@ -14333,11 +14324,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 126,
+              "line": 129,
               "column": 8
             },
             "end": {
-              "line": 128,
+              "line": 131,
               "column": 8
             }
           },
@@ -14362,7 +14353,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["inline","ko-case/sla-sidebar",[],["sla",["subexpr","@mut",[["get","case.sla",["loc",[null,[127,34],[127,42]]]]],[],[]],"slaMetrics",["subexpr","@mut",[["get","case.slaMetrics",["loc",[null,[127,54],[127,69]]]]],[],[]]],["loc",[null,[127,8],[127,71]]]]
+          ["inline","ko-case/sla-sidebar",[],["sla",["subexpr","@mut",[["get","case.sla",["loc",[null,[130,34],[130,42]]]]],[],[]],"slaMetrics",["subexpr","@mut",[["get","case.slaMetrics",["loc",[null,[130,54],[130,69]]]]],[],[]]],["loc",[null,[130,8],[130,71]]]]
         ],
         locals: [],
         templates: []
@@ -14378,7 +14369,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             "column": 0
           },
           "end": {
-            "line": 134,
+            "line": 137,
             "column": 0
           }
         },
@@ -14544,8 +14535,22 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
         var el5 = dom.createTextNode("\n        ");
         dom.appendChild(el4, el5);
         var el5 = dom.createElement("div");
-        dom.setAttribute(el5,"class","ko-case-content__sort-dropdown");
-        var el6 = dom.createComment("");
+        dom.setAttribute(el5,"class","ko-case-content__dropdowns");
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("div");
+        dom.setAttribute(el6,"class","ko-case-content__sort-dropdown");
+        var el7 = dom.createComment("");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("div");
+        dom.setAttribute(el6,"class","ko-case-content__filter-dropdown");
+        var el7 = dom.createComment("");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n        ");
         dom.appendChild(el5, el6);
         dom.appendChild(el4, el5);
         var el5 = dom.createTextNode("\n");
@@ -14657,9 +14662,10 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
         var element7 = dom.childAt(element6, [1, 1]);
         var element8 = dom.childAt(element7, [1]);
         var element9 = dom.childAt(element8, [1]);
-        var element10 = dom.childAt(element6, [3, 1]);
-        var element11 = dom.childAt(element10, [1, 1]);
-        var morphs = new Array(23);
+        var element10 = dom.childAt(element7, [3]);
+        var element11 = dom.childAt(element6, [3, 1]);
+        var element12 = dom.childAt(element11, [1, 1]);
+        var morphs = new Array(24);
         morphs[0] = dom.createAttrMorph(element3, 'src');
         morphs[1] = dom.createMorphAt(dom.childAt(element4, [1]),1,1);
         morphs[2] = dom.createMorphAt(dom.childAt(element4, [3]),1,1);
@@ -14669,20 +14675,21 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
         morphs[6] = dom.createAttrMorph(element8, 'style');
         morphs[7] = dom.createAttrMorph(element9, 'class');
         morphs[8] = dom.createMorphAt(element9,1,1);
-        morphs[9] = dom.createMorphAt(dom.childAt(element7, [3]),0,0);
-        morphs[10] = dom.createMorphAt(element7,5,5);
-        morphs[11] = dom.createMorphAt(dom.childAt(element7, [7]),1,1);
-        morphs[12] = dom.createMorphAt(element7,9,9);
-        morphs[13] = dom.createMorphAt(dom.childAt(element7, [11]),1,1);
-        morphs[14] = dom.createAttrMorph(element10, 'class');
-        morphs[15] = dom.createElementMorph(element11);
-        morphs[16] = dom.createMorphAt(element11,0,0);
-        morphs[17] = dom.createMorphAt(element10,3,3);
-        morphs[18] = dom.createMorphAt(element10,5,5);
-        morphs[19] = dom.createMorphAt(element10,7,7);
-        morphs[20] = dom.createMorphAt(element10,9,9);
-        morphs[21] = dom.createMorphAt(element10,11,11);
-        morphs[22] = dom.createMorphAt(element10,13,13);
+        morphs[9] = dom.createMorphAt(dom.childAt(element10, [1]),0,0);
+        morphs[10] = dom.createMorphAt(dom.childAt(element10, [3]),0,0);
+        morphs[11] = dom.createMorphAt(element7,5,5);
+        morphs[12] = dom.createMorphAt(dom.childAt(element7, [7]),1,1);
+        morphs[13] = dom.createMorphAt(element7,9,9);
+        morphs[14] = dom.createMorphAt(dom.childAt(element7, [11]),1,1);
+        morphs[15] = dom.createAttrMorph(element11, 'class');
+        morphs[16] = dom.createElementMorph(element12);
+        morphs[17] = dom.createMorphAt(element12,0,0);
+        morphs[18] = dom.createMorphAt(element11,3,3);
+        morphs[19] = dom.createMorphAt(element11,5,5);
+        morphs[20] = dom.createMorphAt(element11,7,7);
+        morphs[21] = dom.createMorphAt(element11,9,9);
+        morphs[22] = dom.createMorphAt(element11,11,11);
+        morphs[23] = dom.createMorphAt(element11,13,13);
         return morphs;
       },
       statements: [
@@ -14695,20 +14702,21 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
         ["attribute","style",["concat",["height: ",["get","caseEditorHeight",["loc",[null,[49,72],[49,88]]]],"px"]]],
         ["attribute","class",["concat",["ko-case-content__editor ",["subexpr","if",[["get","headerSticky",["loc",[null,[50,51],[50,63]]]],"ko-case-content__editor--sticky"],[],["loc",[null,[50,46],[50,99]]]]]]],
         ["inline","ko-case-field/post",[],["viewName","casePostEditor","channels",["subexpr","@mut",[["get","case.replyChannels",["loc",[null,[53,25],[53,43]]]]],[],[]],"channel",["subexpr","@mut",[["get","channel",["loc",[null,[54,24],[54,31]]]]],[],[]],"onChannelChange","setChannel","replyType",["subexpr","@mut",[["get","replyType",["loc",[null,[56,26],[56,35]]]]],[],[]],"suggestedPeople",["subexpr","@mut",[["get","suggestedPeople",["loc",[null,[57,32],[57,47]]]]],[],[]],"selectedPeople",["subexpr","@mut",[["get","selectedPeople",["loc",[null,[58,31],[58,45]]]]],[],[]],"suggestedPeopleTotal",["subexpr","@mut",[["get","suggestedPeopleTotal",["loc",[null,[59,37],[59,57]]]]],[],[]],"suggestedPeopleLoading",["subexpr","@mut",[["get","suggestedPeopleLoading",["loc",[null,[60,39],[60,61]]]]],[],[]],"isPeopleAutoCompleteAvailable",["subexpr","@mut",[["get","isPeopleAutoCompleteAvailable",["loc",[null,[61,46],[61,75]]]]],[],[]],"addParticipant","addParticipant","onPeopleSuggestion","onPeopleSuggestion"],["loc",[null,[51,12],[63,57]]]],
-        ["inline","ko-case-content/dropdown",[],["label","Sort","value",["subexpr","@mut",[["get","sortOrder",["loc",[null,[66,98],[66,107]]]]],[],[]],"options",["subexpr","@mut",[["get","sortOptions",["loc",[null,[66,116],[66,127]]]]],[],[]],"action",["subexpr","action",["sort"],[],["loc",[null,[66,135],[66,150]]]]],["loc",[null,[66,52],[66,152]]]],
-        ["block","if",[["get","topPostsAvailable",["loc",[null,[67,14],[67,31]]]]],[],0,null,["loc",[null,[67,8],[75,15]]]],
-        ["block","if",[["get","newPosts",["loc",[null,[77,16],[77,24]]]]],[],1,null,["loc",[null,[77,10],[79,17]]]],
-        ["inline","ko-feed",[],["events",["subexpr","@mut",[["get","posts",["loc",[null,[81,25],[81,30]]]]],[],[]],"onReplyWithQuote","replyWithQuote","top",["subexpr","@mut",[["get","timelineVisibleTop",["loc",[null,[81,69],[81,87]]]]],[],[]],"left",["subexpr","@mut",[["get","timelineVisibleLeft",["loc",[null,[81,93],[81,112]]]]],[],[]],"onTopPostChange",["subexpr","action",["changeTopPost"],[],["loc",[null,[81,129],[81,153]]]]],["loc",[null,[81,8],[81,155]]]],
-        ["block","if",[["get","loadingBottom",["loc",[null,[83,16],[83,29]]]]],[],2,null,["loc",[null,[83,10],[87,17]]]],
-        ["attribute","class",["concat",["list-bare ko-case-content__info-bar ",["subexpr","if",[["get","headerSticky",["loc",[null,[92,57],[92,69]]]],"ko-case-content__info-bar--sticky"],[],["loc",[null,[92,52],[92,107]]]]]]],
-        ["element","action",["submit"],[],["loc",[null,[94,55],[94,74]]]],
-        ["inline","format-message",[["subexpr","intl-get",["cases.submit"],[],["loc",[null,[94,92],[94,117]]]]],[],["loc",[null,[94,75],[94,119]]]],
-        ["inline","ko-case-field/requester",[],["requester",["subexpr","@mut",[["get","case.requester",["loc",[null,[96,44],[96,58]]]]],[],[]]],["loc",[null,[96,8],[96,60]]]],
-        ["block","ko-info-bar/field",[],["title",["subexpr","format-message",[["subexpr","intl-get",["cases.tags"],[],["loc",[null,[98,51],[98,74]]]]],[],["loc",[null,[98,35],[98,75]]]],"isEdited",["subexpr","@mut",[["get","isTagsFieldEdited",["loc",[null,[99,19],[99,36]]]]],[],[]]],3,null,["loc",[null,[98,8],[106,30]]]],
-        ["inline","ko-case-field/forms",[],["selectedForm",["subexpr","@mut",[["get","case.form",["loc",[null,[109,23],[109,32]]]]],[],[]],"forms",["subexpr","@mut",[["get","caseForms",["loc",[null,[110,16],[110,25]]]]],[],[]],"onFormSelected","setForm","isEdited",["subexpr","@mut",[["get","editedCaseFields.form",["loc",[null,[111,19],[111,40]]]]],[],[]]],["loc",[null,[108,8],[112,10]]]],
-        ["block","each",[["get","caseOrFormFields",["loc",[null,[114,16],[114,32]]]]],[],4,null,["loc",[null,[114,8],[124,17]]]],
-        ["block","if",[["get","case.id",["loc",[null,[126,14],[126,21]]]]],[],5,null,["loc",[null,[126,8],[128,15]]]],
-        ["inline","ko-info-bar/metadata",[],["rows",["subexpr","@mut",[["get","caseDates",["loc",[null,[129,36],[129,45]]]]],[],[]]],["loc",[null,[129,8],[129,47]]]]
+        ["inline","ko-case-content/dropdown",[],["label",["subexpr","format-message",[["subexpr","intl-get",["cases.sort"],[],["loc",[null,[67,103],[67,126]]]]],[],["loc",[null,[67,87],[67,127]]]],"value",["subexpr","@mut",[["get","sortOrder",["loc",[null,[67,134],[67,143]]]]],[],[]],"options",["subexpr","@mut",[["get","sortOptions",["loc",[null,[67,152],[67,163]]]]],[],[]],"onChange",["subexpr","action",["sort"],[],["loc",[null,[67,173],[67,188]]]]],["loc",[null,[67,54],[67,190]]]],
+        ["inline","ko-case-content/dropdown",[],["label",["subexpr","format-message",[["subexpr","intl-get",["cases.filter"],[],["loc",[null,[68,105],[68,130]]]]],[],["loc",[null,[68,89],[68,131]]]],"value",["subexpr","@mut",[["get","filter",["loc",[null,[68,138],[68,144]]]]],[],[]],"options",["subexpr","@mut",[["get","filterOptions",["loc",[null,[68,153],[68,166]]]]],[],[]],"onChange",["subexpr","action",["filter"],[],["loc",[null,[68,176],[68,193]]]]],["loc",[null,[68,56],[68,195]]]],
+        ["block","if",[["get","topPostsAvailable",["loc",[null,[70,14],[70,31]]]]],[],0,null,["loc",[null,[70,8],[78,15]]]],
+        ["block","if",[["get","newPosts",["loc",[null,[80,16],[80,24]]]]],[],1,null,["loc",[null,[80,10],[82,17]]]],
+        ["inline","ko-feed",[],["events",["subexpr","@mut",[["get","posts",["loc",[null,[84,25],[84,30]]]]],[],[]],"onReplyWithQuote","replyWithQuote","top",["subexpr","@mut",[["get","timelineVisibleTop",["loc",[null,[84,69],[84,87]]]]],[],[]],"left",["subexpr","@mut",[["get","timelineVisibleLeft",["loc",[null,[84,93],[84,112]]]]],[],[]],"onTopPostChange",["subexpr","action",["changeTopPost"],[],["loc",[null,[84,129],[84,153]]]]],["loc",[null,[84,8],[84,155]]]],
+        ["block","if",[["get","loadingBottom",["loc",[null,[86,16],[86,29]]]]],[],2,null,["loc",[null,[86,10],[90,17]]]],
+        ["attribute","class",["concat",["list-bare ko-case-content__info-bar ",["subexpr","if",[["get","headerSticky",["loc",[null,[95,57],[95,69]]]],"ko-case-content__info-bar--sticky"],[],["loc",[null,[95,52],[95,107]]]]]]],
+        ["element","action",["submit"],[],["loc",[null,[97,55],[97,74]]]],
+        ["inline","format-message",[["subexpr","intl-get",["cases.submit"],[],["loc",[null,[97,92],[97,117]]]]],[],["loc",[null,[97,75],[97,119]]]],
+        ["inline","ko-case-field/requester",[],["requester",["subexpr","@mut",[["get","case.requester",["loc",[null,[99,44],[99,58]]]]],[],[]]],["loc",[null,[99,8],[99,60]]]],
+        ["block","ko-info-bar/field",[],["title",["subexpr","format-message",[["subexpr","intl-get",["cases.tags"],[],["loc",[null,[101,51],[101,74]]]]],[],["loc",[null,[101,35],[101,75]]]],"isEdited",["subexpr","@mut",[["get","isTagsFieldEdited",["loc",[null,[102,19],[102,36]]]]],[],[]]],3,null,["loc",[null,[101,8],[109,30]]]],
+        ["inline","ko-case-field/forms",[],["selectedForm",["subexpr","@mut",[["get","case.form",["loc",[null,[112,23],[112,32]]]]],[],[]],"forms",["subexpr","@mut",[["get","caseForms",["loc",[null,[113,16],[113,25]]]]],[],[]],"onFormSelected","setForm","isEdited",["subexpr","@mut",[["get","editedCaseFields.form",["loc",[null,[114,19],[114,40]]]]],[],[]]],["loc",[null,[111,8],[115,10]]]],
+        ["block","each",[["get","caseOrFormFields",["loc",[null,[117,16],[117,32]]]]],[],4,null,["loc",[null,[117,8],[127,17]]]],
+        ["block","if",[["get","case.id",["loc",[null,[129,14],[129,21]]]]],[],5,null,["loc",[null,[129,8],[131,15]]]],
+        ["inline","ko-info-bar/metadata",[],["rows",["subexpr","@mut",[["get","caseDates",["loc",[null,[132,36],[132,45]]]]],[],[]]],["loc",[null,[132,8],[132,47]]]]
       ],
       locals: [],
       templates: [child0, child1, child2, child3, child4, child5]
@@ -22495,6 +22503,103 @@ define('frontend-cp/components/ko-event-button/template', ['exports'], function 
   }()));
 
 });
+define('frontend-cp/components/ko-feed/activity/component', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Component.extend({
+    //params
+    activity: null,
+
+    classNames: ['ko-feed_activity'],
+
+    // body comes from events, plainTextSummary comes from activities
+    summary: Ember['default'].computed('activity.body', 'activity.plainTextSummary', function () {
+      return this.get('activity.body') || this.get('activity.plainTextSummary');
+    }),
+
+    register: Ember['default'].on('didInsertElement', function () {
+      this.attrs.onRegister(this);
+    }),
+
+    teardown: Ember['default'].on('willDestroyElement', function () {
+      this.attrs.onTeardown(this);
+    })
+  });
+
+});
+define('frontend-cp/components/ko-feed/activity/template', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      meta: {
+        "revision": "Ember@1.13.7",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 5,
+            "column": 7
+          }
+        },
+        "moduleName": "frontend-cp/components/ko-feed/activity/template.hbs"
+      },
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","ko-feed_activity__border");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("span");
+        dom.setAttribute(el1,"class","ko-feed_activity__contents");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("span");
+        dom.setAttribute(el2,"class","ko-feed_activity__summary");
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode(" at ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var element0 = dom.childAt(fragment, [2]);
+        var morphs = new Array(3);
+        morphs[0] = dom.createMorphAt(dom.childAt(element0, [1]),0,0);
+        morphs[1] = dom.createMorphAt(element0,3,3);
+        morphs[2] = dom.createMorphAt(element0,5,5);
+        return morphs;
+      },
+      statements: [
+        ["content","summary",["loc",[null,[3,42],[3,53]]]],
+        ["inline","format-relative",[["get","activity.createdAt",["loc",[null,[4,20],[4,38]]]]],[],["loc",[null,[4,2],[4,40]]]],
+        ["inline","format-time",[["get","activity.createdAt",["loc",[null,[4,58],[4,76]]]]],["format","time"],["loc",[null,[4,44],[4,92]]]]
+      ],
+      locals: [],
+      templates: []
+    };
+  }()));
+
+});
 define('frontend-cp/components/ko-feed/component', ['exports', 'ember'], function (exports, Ember) {
 
   'use strict';
@@ -22888,6 +22993,90 @@ define('frontend-cp/components/ko-feed/template', ['exports'], function (exports
 
   exports['default'] = Ember.HTMLBars.template((function() {
     var child0 = (function() {
+      var child0 = (function() {
+        return {
+          meta: {
+            "revision": "Ember@1.13.7",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 2,
+                "column": 2
+              },
+              "end": {
+                "line": 8,
+                "column": 2
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-feed/template.hbs"
+          },
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("    ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+            return morphs;
+          },
+          statements: [
+            ["inline","ko-feed/item",[],["event",["subexpr","@mut",[["get","event",["loc",[null,[4,12],[4,17]]]]],[],[]],"onReplyWithQuote","onReplyWithQuote","onRegister",["subexpr","action",["register"],[],["loc",[null,[6,17],[6,36]]]],"onTeardown",["subexpr","action",["teardown"],[],["loc",[null,[7,17],[7,36]]]]],["loc",[null,[3,4],[7,38]]]]
+          ],
+          locals: [],
+          templates: []
+        };
+      }());
+      var child1 = (function() {
+        return {
+          meta: {
+            "revision": "Ember@1.13.7",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 9,
+                "column": 2
+              },
+              "end": {
+                "line": 14,
+                "column": 2
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-feed/template.hbs"
+          },
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("    ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+            return morphs;
+          },
+          statements: [
+            ["inline","ko-feed/activity",[],["activity",["subexpr","@mut",[["get","event",["loc",[null,[11,15],[11,20]]]]],[],[]],"onRegister",["subexpr","action",["register"],[],["loc",[null,[12,17],[12,36]]]],"onTeardown",["subexpr","action",["teardown"],[],["loc",[null,[13,17],[13,36]]]]],["loc",[null,[10,4],[13,38]]]]
+          ],
+          locals: [],
+          templates: []
+        };
+      }());
       return {
         meta: {
           "revision": "Ember@1.13.7",
@@ -22898,7 +23087,7 @@ define('frontend-cp/components/ko-feed/template', ['exports'], function (exports
               "column": 0
             },
             "end": {
-              "line": 7,
+              "line": 15,
               "column": 0
             }
           },
@@ -22909,24 +23098,26 @@ define('frontend-cp/components/ko-feed/template', ['exports'], function (exports
         hasRendered: false,
         buildFragment: function buildFragment(dom) {
           var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("  ");
-          dom.appendChild(el0, el1);
           var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n");
+          var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
           return el0;
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+          var morphs = new Array(2);
+          morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+          morphs[1] = dom.createMorphAt(fragment,1,1,contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
           return morphs;
         },
         statements: [
-          ["inline","ko-feed/item",[],["event",["subexpr","@mut",[["get","event",["loc",[null,[3,10],[3,15]]]]],[],[]],"onReplyWithQuote","onReplyWithQuote","onRegister",["subexpr","action",["register"],[],["loc",[null,[5,15],[5,34]]]],"onTeardown",["subexpr","action",["teardown"],[],["loc",[null,[6,15],[6,34]]]]],["loc",[null,[2,2],[6,36]]]]
+          ["block","if",[["subexpr","eq",[["get","event.constructor.typeKey",["loc",[null,[2,12],[2,37]]]],"post"],[],["loc",[null,[2,8],[2,45]]]]],[],0,null,["loc",[null,[2,2],[8,9]]]],
+          ["block","if",[["subexpr","or",[["subexpr","eq",[["get","event.constructor.typeKey",["loc",[null,[9,16],[9,41]]]],"activity"],[],["loc",[null,[9,12],[9,53]]]],["subexpr","eq",[["get","event.constructor.typeKey",["loc",[null,[9,58],[9,83]]]],"event"],[],["loc",[null,[9,54],[9,92]]]]],[],["loc",[null,[9,8],[9,93]]]]],[],1,null,["loc",[null,[9,2],[14,9]]]]
         ],
         locals: ["event"],
-        templates: []
+        templates: [child0, child1]
       };
     }());
     return {
@@ -22939,7 +23130,7 @@ define('frontend-cp/components/ko-feed/template', ['exports'], function (exports
             "column": 0
           },
           "end": {
-            "line": 7,
+            "line": 15,
             "column": 9
           }
         },
@@ -22962,7 +23153,7 @@ define('frontend-cp/components/ko-feed/template', ['exports'], function (exports
         return morphs;
       },
       statements: [
-        ["block","each",[["get","events",["loc",[null,[1,8],[1,14]]]]],[],0,null,["loc",[null,[1,0],[7,9]]]]
+        ["block","each",[["get","events",["loc",[null,[1,8],[1,14]]]]],[],0,null,["loc",[null,[1,0],[15,9]]]]
       ],
       locals: [],
       templates: [child0]
@@ -40013,7 +40204,12 @@ define('frontend-cp/formats', ['exports'], function (exports) {
         maximumFractionDigits: 2
       }
     },
-    time: {}
+    time: {
+      time: {
+        hour: 'numeric',
+        minute: 'numeric'
+      }
+    }
   };
 
 });
@@ -42436,7 +42632,7 @@ define('frontend-cp/login/template', ['exports'], function (exports) {
   }()));
 
 });
-define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp/mirage/fixtures/en-us-strings', 'frontend-cp/mirage/fixtures/search-results-person', 'frontend-cp/mirage/fixtures/search-results-case', 'frontend-cp/mirage/fixtures/search-results-case-person'], function (exports, Mirage, EnUsStrings, SearchResultsPerson, SearchResultsCase, SearchResultsCasePerson) {
+define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp/mirage/fixtures/en-us-strings', 'frontend-cp/mirage/fixtures/search-results-person', 'frontend-cp/mirage/fixtures/search-results-case', 'frontend-cp/mirage/fixtures/search-results-case-person', 'moment'], function (exports, Mirage, EnUsStrings, SearchResultsPerson, SearchResultsCase, SearchResultsCasePerson, moment) {
 
   'use strict';
 
@@ -42501,6 +42697,28 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
         data: [],
         resource: 'identity_slack',
         total_count: 0
+      };
+    });
+
+    this.get('/users/:id/events', function (db, request) {
+      var since = request.queryParams.since;
+      var until = request.queryParams.until;
+
+      var events = db.events;
+      if (since) {
+        events = events.filter(function (event) {
+          return moment['default'](event.created_at).isAfter(moment['default'].unix(since));
+        });
+      } else if (until) {
+        events = events.filter(function (event) {
+          return moment['default'](event.created_at).isBefore(moment['default'].unix(until));
+        });
+      }
+      return {
+        data: events,
+        resource: 'event',
+        status: 200,
+        total_count: db.events.length
       };
     });
 
@@ -42820,6 +43038,28 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
+    this.get('/cases/:id/activities', function (db, request) {
+      var since = request.queryParams.since;
+      var until = request.queryParams.until;
+
+      var activities = db.activities;
+      if (since) {
+        activities = activities.filter(function (activity) {
+          return moment['default'](activity.created_at).isAfter(moment['default'].unix(since));
+        });
+      } else if (until) {
+        activities = activities.filter(function (activity) {
+          return moment['default'](activity.created_at).isBefore(moment['default'].unix(until));
+        });
+      }
+      return {
+        data: activities,
+        resource: 'activity',
+        status: 200,
+        total_count: db.activities.length
+      };
+    });
+
     this.get('/cases/:id/reply/channels', function (db) {
       return {
         data: db.channels,
@@ -43050,6 +43290,33 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       }
     });
   }
+
+});
+define('frontend-cp/mirage/factories/activity', ['exports', 'ember-cli-mirage'], function (exports, ember_cli_mirage) {
+
+  'use strict';
+
+  /*eslint-disable camelcase*/
+
+  exports['default'] = ember_cli_mirage['default'].Factory.extend({
+    actor: null,
+    verb: 'create',
+    summary: '<@https://brewfictus.kayako.com/user/1|Phoebe Todd> created <https://brewfictus.kayako.com/case/view/1|Atmosphere Coffee, Inc annual maintenance>',
+    actions: [],
+    object: null,
+    object_actor: null,
+    location: null,
+    place: null,
+    target: null,
+    result: null,
+    in_reply_to: null,
+    participant: null,
+    portal: 'API',
+    weight: 0.8,
+    ip_address: null,
+    created_at: ember_cli_mirage.faker.date.recent,
+    resource_type: 'activity'
+  });
 
 });
 define('frontend-cp/mirage/factories/assignee', ['exports', 'ember-cli-mirage'], function (exports, Mirage) {
@@ -43353,6 +43620,32 @@ define('frontend-cp/mirage/factories/contact-website', ['exports', 'ember-cli-mi
     resource_url: 'http://novo/api/v1/users/5/contacts/websites/5',
     updated_at: '2015-08-27T11:02:47Z',
     url: 'www.brewfictus.com'
+  });
+
+});
+define('frontend-cp/mirage/factories/event', ['exports', 'ember-cli-mirage'], function (exports, ember_cli_mirage) {
+
+  'use strict';
+
+  /*eslint-disable camelcase*/
+
+  exports['default'] = ember_cli_mirage['default'].Factory.extend({
+    uuid: function uuid(i) {
+      return 'event-' + (i + 1);
+    },
+    subject: ember_cli_mirage.faker.lorem.sentence,
+    body: ember_cli_mirage.faker.lorem.sentence,
+    channel: 'event',
+    participants: [],
+    avatar_url: '',
+    creator: { id: 5, resource_type: 'user' },
+    properties: {},
+    attachments: [],
+    download_all: null,
+    triggered_at: '2015-08-27T11:02:47Z',
+    resource_type: 'event',
+    contents: ember_cli_mirage.faker.lorem.sentence,
+    created_at: ember_cli_mirage.faker.date.recent
   });
 
 });
@@ -43925,420 +44218,423 @@ define('frontend-cp/mirage/fixtures/en-us-strings', ['exports'], function (expor
 
   'use strict';
 
+  /*eslint quotes: 0*/
+  /*eslint quote-props: 0*/
+
   exports['default'] = [{
-    status: 200,
-    data: [{
-      id: 'frontend.api.admin.navigation.apps',
-      value: 'Apps',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.navigation.manage',
-      value: 'Manage',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.navigation.people',
-      value: 'People',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.administration',
-      value: 'Administration',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.apps',
-      value: 'Apps',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.endpoints',
-      value: 'Endpoints',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.caseforms',
-      value: 'Case Forms',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.caseforms.buttons.add_new_caseform',
-      value: 'Add new form',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.caseforms.headings.enabled_fields',
-      value: 'Enabled Fields',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.caseforms.headings.disabled_fields',
-      value: 'Disabled Fields',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.caseforms.heading.customer_settings',
-      value: 'Customers',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.caseforms.heading.configure_form',
-      value: 'Configure Form',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.caseforms.new.heading',
-      value: 'Case Forms / New',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.caseforms.edit.heading',
-      value: 'Case Forms / Edit',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.caseforms.heading.agent_settings',
-      value: 'Agents',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.caseforms.label.field_title',
-      value: 'Form title for agents',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.caseforms.label.is_visible_to_customers',
-      value: 'Customers can see and select this form',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.caseforms.help.is_visible_to_customers',
-      value: 'When customers can see and select case forms, they will be able to select a case form when submitting a new request in the Help Center. This means that case forms can be used to direct customers to create different types of request and to provide specific pieces of information for that request type.',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.caseforms.label.customer_form_title',
-      value: 'Form title for customers',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.caseforms.label.customer_form_description',
-      value: 'Form description for customers',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.caseforms.help.api_key',
-      value: 'The field key is unique to this form and is used to reference fields using the Kayako API and in search.',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.caseforms.help.configure_fields',
-      value: 'System fields are included in each case form by default. Add and arrange custom case fields to the case form below. You can manage case fields in the [Case fields] section.',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.caseforms.label.add_new_field',
-      value: 'Add new field',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.caseforms.remove_from_form',
-      value: 'Remove from form',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields',
-      value: 'Case Fields',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.headings.enabled_fields',
-      value: 'Enabled Fields',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.headings.disabled_fields',
-      value: 'Disabled Fields',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.edit.heading.priorities',
-      value: 'Priorities',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.type.text.name',
-      value: 'Text',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.type.text.description',
-      value: 'This is a text field',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.type.multiline.name',
-      value: 'Multiline Text',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.type.multiline.description',
-      value: 'Multiline - a text field on two lines!',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.type.regex.name',
-      value: 'Regular expression',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.type.regex.description',
-      value: 'Choose a regular expression to validate this fied type',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.type.radio.name',
-      value: 'Radio box',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.type.radio.description',
-      value: 'Single select radio box',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.type.dropdown.name',
-      value: 'Dropdown box',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.type.dropdown.description',
-      value: 'Single select drop down box',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.type.numeric.name',
-      value: 'Numeric field',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.type.numeric.description',
-      value: 'Enforce a numeric value',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.type.decimal.name',
-      value: 'Decimal field',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.type.decimal.description',
-      value: 'Enforce a decimal value',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.type.file.name',
-      value: 'File',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.type.file.description',
-      value: 'Allow a file upload',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.type.yesno.name',
-      value: 'Yes/No',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.type.yesno.description',
-      value: 'Allow a yes or no choice',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.type.date.name',
-      value: 'Date field',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.type.date.description',
-      value: 'Allow a user to select a date using a date picker',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.type.checkbox.name',
-      value: 'Checkbox',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.type.checkbox.description',
-      value: 'Checkbox! Check yourself',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.type.priority.name',
-      value: 'Priority',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.type.team.name',
-      value: 'Team',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.type.assignee.name',
-      value: 'Assignee',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.type.type.name',
-      value: 'Type',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.type.status.name',
-      value: 'Status',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.type.subject.name',
-      value: 'Subject',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.type.message.name',
-      value: 'Message',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.type.select.name',
-      value: 'Select',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.type.select.description',
-      value: 'Selecta',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.buttons.add_new_casefield',
-      value: 'Add New Field',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.description',
-      value: 'Lorem ipsum dolor sit amet, diam appetere facilisis at pri, his vocibus iudicabit te. Te decore feugiat necessitatibus nec, id eos fugit dicunt. Vis ei ubique blandit, in vidit maiestatis disputationi vix, essent perpetua interesset ei mea. Et mea ubique feugait, ne nam unum clita, no his indoctum conclusionemque. Ad pri aperiri definitionem, nec ei dictas blandit.',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.new.heading',
-      value: 'Case Fields / New',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.edit.heading',
-      value: 'Case Fields / Edit',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.edit.heading.agent_settings',
-      value: 'Agent Settings',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.edit.heading.customer_settings',
-      value: 'Customer Settings',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.edit.heading.field_options',
-      value: 'Field Options',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.edit.heading.field_settings',
-      value: 'Field Settings',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.edit.heading.regex',
-      value: 'Regular Expression',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.edit.label.is_required_for_agents_when_updating_case',
-      value: 'Creating, replying to or updating a case',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.edit.label.is_required_for_agents_when_resolving_case',
-      value: 'Resolving a case',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.edit.label.field_title',
-      value: 'Field title',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.edit.help.field_title',
-      value: 'This is the title that is displayed to your agents',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.edit.label.is_visible_to_customers',
-      value: 'Customers can see this field',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.edit.label.is_required_for_agents',
-      value: 'For agents, this field is required when',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.edit.label.customer_field_title',
-      value: 'Field title for customers',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.edit.label.customer_field_description',
-      value: 'Field description for customers',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.edit.help.customer_field_description',
-      value: 'Enter an optional description into this field that will be show to customers in the help center',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.edit.label.is_editable_by_customers',
-      value: 'Customers can edit this field',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.edit.help.is_editable_by_customers',
-      value: 'Enable this setting to allow your customers to change the value of this field from the Help Center or through the API.',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.edit.label.is_required_for_customers',
-      value: 'This field is required for customers',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.edit.help.is_required_for_customers',
-      value: 'Enable this setting to require your customers to complete thi field when creating or updating a case from the Help Center or through the API.',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.edit.label.api_key',
-      value: 'API field key',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.edit.help.api_key',
-      value: 'The field key is unique to this field and is used to reference fields using the Kayako API and in search.',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.edit.help.is_enabled',
-      value: 'Disabled case fields will not be available on cases or case forms, but any existing data will still be searchable and can be referenced in reporting.',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.edit.label.priorities',
-      value: 'The order of priorities matter: your priorities should go from highest to lowest. If you remove a priority, all cases using that priority will be set to no priority.',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.help.regex',
-      value: 'Enter a regular expression that will be evaluated against your users input. If the regular expression evaluates to false, the input will be deemed invalid.',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.predicate_builder.cases.subject',
-      value: 'Cases: Subject',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.predicate_builder.cases.casestatusid',
-      value: 'Cases: Status',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.predicate_builder.cases.casetypeid',
-      value: 'Cases: Type',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.predicate_builder.cases.casepriorityid',
-      value: 'Cases: Priority ID',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.predicate_builder.cases.brandid',
-      value: 'Cases: Brand',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.predicate_builder.cases.assigneeteamid',
-      value: 'Cases: Assigned Agent Team',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.predicate_builder.cases.assigneeagentid',
-      value: 'Cases: Assigned Agent',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.predicate_builder.cases.requesterid',
-      value: 'Cases: Requester',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.predicate_builder.taglinks.tagid',
-      value: 'Tag',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.predicate_builder.users.organizationid',
-      value: 'Users: Organisation',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.predicate_builder.cases.postcount',
-      value: 'Cases: Number of posts',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.predicate_builder.operators.string_contains',
-      value: 'String contains',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.predicate_builder.operators.string_does_not_contain',
-      value: 'String does not contain',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.predicate_builder.operators.comparison_equalto',
-      value: 'is equal to',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.predicate_builder.operators.comparison_not_equalto',
-      value: 'is not equal to',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.predicate_builder.operators.comparison_lessthan',
-      value: 'is less than',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.predicate_builder.operators.comparison_greaterthan',
-      value: 'is greater than',
-      'resource_type': 'locale_string'
+    "status": 200,
+    "data": [{
+      "id": "frontend.api.admin.navigation.apps",
+      "value": "Apps",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.navigation.manage",
+      "value": "Manage",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.navigation.people",
+      "value": "People",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.navigation.channels",
+      "value": "Channels",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.administration",
+      "value": "Administration",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.apps",
+      "value": "Apps",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.endpoints",
+      "value": "Endpoints",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.views",
+      "value": "Views",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.views.buttons.add_new",
+      "value": "Add new",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.views.description",
+      "value": "Ipsum locum dorum somethinum",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.views.heading.edit",
+      "value": "Case Views / Edit",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.views.heading.new",
+      "value": "Case Views / New",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.views.heading.view_details",
+      "value": "View details",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.views.label.view_title",
+      "value": "View title",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.views.heading.sharing",
+      "value": "Sharing",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.views.label.sharing",
+      "value": "Make this view available to",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.views.heading.predicate_builder",
+      "value": "Include cases that match the following in this view",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.views.heading.configure_layout",
+      "value": "Configure Layout",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.views.label.configure_layout",
+      "value": "Customize what information is shown in this view by adding, removing and reordering fields below. You can add up to 10 columns in your view",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.views.heading.sorting",
+      "value": "Sorting",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.views.label.sorting",
+      "value": "In this view, default to sorting cases by",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.views.edit.help.is_enabled",
+      "value": "View is enabled",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.teams",
+      "value": "Teams",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.teams.agent",
+      "value": "{numAgents, plural, =1 {agent} other {agents}}",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.teams.headings.index",
+      "value": "Teams",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.teams.headings.edit",
+      "value": "Teams / {title}",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.teams.headings.new",
+      "value": "Teams / New",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.teams.buttons.add",
+      "value": "Add New",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.teams.labels.filter_teams",
+      "value": "Filter teams",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.teams.labels.filter_agents",
+      "value": "Filter agents",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.teams.labels.delete_team",
+      "value": "Delete team",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.teams.labels.delete_team_confirmation",
+      "value": "Are you sure you wish to delete this team?",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.teams.labels.edit.name",
+      "value": "Team name",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.teams.legend.edit.details",
+      "value": "Team details",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.teams.info.title",
+      "value": "Team members",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.teams.info.content",
+      "value": "Click on agents from the list below to add or remove from the team",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.fields.type.field_options.add_option",
+      "value": "Add an option",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.fields.type.field_options.missing_options",
+      "value": "Please provide at least one option",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.fields.new.heading",
+      "value": "New",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.fields.edit.heading",
+      "value": "Edit",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.userfields",
+      "value": "User Fields",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.userfields.buttons.add_new_userfield",
+      "value": "Add New Field",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.userfields.type.text.name",
+      "value": "Text",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.userfields.type.text.description",
+      "value": "Capture a small amount of text using a single line text field.",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.userfields.type.textarea.name",
+      "value": "Multi-line Text",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.userfields.type.textarea.description",
+      "value": "Capture a larger amount of text using a larger text box.",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.userfields.type.regex.name",
+      "value": "Regular expression",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.userfields.type.regex.description",
+      "value": "Capture text that has to match a specific format, validated by a regular expression pattern.",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.userfields.type.radio.name",
+      "value": "Radio box (single choice)",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.userfields.type.radio.description",
+      "value": "Users can select one option from the options you define.",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.userfields.type.dropdown.name",
+      "value": "Dropdown box (single choice)",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.userfields.type.dropdown.description",
+      "value": "Users can select one option from the options you define.",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.userfields.type.numeric.name",
+      "value": "Numeric",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.userfields.type.numeric.description",
+      "value": "Capture an integer from users using this special text field.",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.userfields.type.decimal.name",
+      "value": "Decimal",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.userfields.type.decimal.description",
+      "value": "Capture an decimal number from users using this special text field.",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.userfields.type.file.name",
+      "value": "File",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.userfields.type.file.description",
+      "value": "Allow users to upload files to this field.",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.userfields.type.yesno.name",
+      "value": "Yes or no toggle",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.userfields.type.yesno.description",
+      "value": "Users can select yes or no using a toggle.",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.userfields.type.date.name",
+      "value": "Date",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.userfields.type.date.description",
+      "value": "Capture a date value in this special date field. Users will be presented with a calendar widget to select a date.",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.userfields.type.checkbox.name",
+      "value": "Checkbox (multi choice)",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.userfields.type.checkbox.description",
+      "value": "Users can select multiple options from the options you define.",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.userfields.type.priority.name",
+      "value": "Priority",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.userfields.type.team.name",
+      "value": "Team",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.userfields.type.assignee.name",
+      "value": "Assignee",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.userfields.type.type.name",
+      "value": "Type",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.userfields.type.status.name",
+      "value": "Status",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.userfields.type.subject.name",
+      "value": "Subject",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.userfields.type.message.name",
+      "value": "Message",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.userfields.type.select.name",
+      "value": "Select",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.userfields.type.select.description",
+      "value": "Selecta",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.userfields.new.heading",
+      "value": "User Fields / New",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.userfields.edit.heading",
+      "value": "User Fields / Edit",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.caseforms",
+      "value": "Case Forms",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.caseforms.buttons.add_new_caseform",
+      "value": "Add new form",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.caseforms.headings.enabled_fields",
+      "value": "Enabled Fields",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.caseforms.headings.disabled_fields",
+      "value": "Disabled Fields",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.caseforms.heading.customer_settings",
+      "value": "Customers",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.caseforms.heading.configure_form",
+      "value": "Configure Form",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.caseforms.new.heading",
+      "value": "Case Forms / New",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.caseforms.edit.heading",
+      "value": "Case Forms / Edit",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.caseforms.heading.agent_settings",
+      "value": "Agents",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.caseforms.label.field_title",
+      "value": "Form title for agents",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.caseforms.label.is_visible_to_customers",
+      "value": "Customers can see and select this form",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.caseforms.help.is_visible_to_customers",
+      "value": "When customers can see and select case forms, they will be able to select a case form when submitting a new request in the Help Center. This means that case forms can be used to direct customers to create different types of request and to provide specific pieces of information for that request type.",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.caseforms.label.customer_form_title",
+      "value": "Form title for customers",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.caseforms.label.customer_form_description",
+      "value": "Form description for customers",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.caseforms.help.api_key",
+      "value": "The field key is unique to this form and is used to reference fields using the Kayako API and in search.",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.caseforms.help.configure_fields",
+      "value": "System fields are included in each case form by default. Add and arrange custom case fields to the case form below. You can manage case fields in the [Case fields] section.",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.caseforms.label.add_new_field",
+      "value": "Add new field",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.caseforms.remove_from_form",
+      "value": "Remove from form",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.caseforms.edit.help.is_enabled",
+      "value": "Form is enabled",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields",
+      "value": "Case Fields",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.headings.enabled_fields",
+      "value": "Enabled Fields",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.headings.disabled_fields",
+      "value": "Disabled Fields",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.edit.heading.priorities",
+      "value": "Priorities",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.type.text.name",
+      "value": "Text",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.type.text.description",
+      "value": "Capture a small amount of text using a single line text field.",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.type.textarea.name",
+      "value": "Multi-line Text",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.type.textarea.description",
+      "value": "Capture a larger amount of text using a larger text box.",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.type.regex.name",
+      "value": "Regular expression",
+      "resource_type": "locale_string"
     }, {
       id: 'frontend.api.admin.predicate_builder.operators.collection_contains_insensitive',
       value: 'String contains (case insensitive)',
@@ -44352,870 +44648,1111 @@ define('frontend-cp/mirage/fixtures/en-us-strings', ['exports'], function (expor
       value: 'String contains any (case insensitive)',
       'resource_type': 'locale_string'
     }, {
-      id: 'frontend.api.cases.activity',
-      value: 'Activity',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.cases.addparticipant',
-      value: 'Add a participant',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.cases.linkedCasesInline',
-      value: 'Link a case',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.cases.assignee',
-      value: 'Assignee',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.cases.cases',
-      value: 'Cases',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.cases.due',
-      value: 'Due',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.cases.lastreplier',
-      value: 'Last replier',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.cases.lastupdated',
-      value: 'Last updated {time}',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.cases.metric.total',
-      value: '{number, number} Total',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.cases.metric.unresolved',
-      value: 'Unresolved',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.cases.newtag',
-      value: 'New Tag',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.cases.note',
-      value: 'Note',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.cases.priority',
-      value: 'Priority',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.cases.requester',
-      value: 'Requester',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.cases.status',
-      value: 'Status',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.cases.subheader',
-      value: '{time, date, medium} – {time, time, short} created via {channel}{hasBrand, select,\n    true {, {brand}}\n    false {}\n  }',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.cases.subject',
-      value: 'Subject',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.cases.submit',
-      value: 'Submit',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.cases.ticketid',
-      value: 'Ticket ID',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.cases.type',
-      value: 'Type',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.cases.applymacro',
-      value: 'Apply Macro',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.cases.applymacroplaceholder',
-      value: 'Type to search macros',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.cases.channelType.MAILBOX',
-      value: 'email',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.cases.channelType.TWITTER',
-      value: 'Twitter',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.cases.channelType.FACEBOOK',
-      value: 'Facebook',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.cases.field_title.requester',
-      value: 'Requester',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.cases.addtag',
-      value: 'Add tag...',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.feed.replied',
-      value: 'replied {ago}',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.generic.validation_errors',
-      value: 'Please fill in all required fields',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.generic.next',
-      value: 'Next',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.generic.close',
-      value: 'close',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.generic.datepicker.clear',
-      value: 'Clear',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.generic.datepicker.close',
-      value: 'Close',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.generic.datepicker.today',
-      value: 'Today',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.generic.filesize',
-      value: '{size, number, filesize} {unit, select,\n    mb {MB}\n    kb {KB}\n  }',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.generic.logout',
-      value: 'logout',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.generic.paginatorof',
-      value: 'of {number, number}',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.generic.popover.next',
-      value: 'next',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.generic.popover.previous',
-      value: 'previous',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.generic.search',
-      value: 'Search helpdesk...',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.generic.texteditor.attachment',
-      value: 'Attachment',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.generic.texteditor.authorship',
-      value: 'Authorship',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.generic.texteditor.cc',
-      value: 'CC',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.generic.texteditor.billing',
-      value: 'Billing',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.generic.texteditor.bold',
-      value: 'Bold',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.generic.texteditor.bullet',
-      value: 'Bullet',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.generic.texteditor.image',
-      value: 'Image',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.generic.texteditor.italic',
-      value: 'Italic',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.generic.texteditor.link',
-      value: 'Link',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.generic.texteditor.list',
-      value: 'List',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.generic.texteditor.notes_reminder',
-      value: 'This private note will only be seen by agents',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.generic.users',
-      value: 'Users',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.generic.enable',
-      value: 'Enable',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.generic.enabled',
-      value: 'Enabled',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.generic.disable',
-      value: 'Disable',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.generic.disabled',
-      value: 'Disabled',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.generic.delete',
-      value: 'Delete',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.generic.edit',
-      value: 'Edit',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.generic.default',
-      value: 'Default',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.generic.profile.position',
-      value: '{position}',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.generic.profile.place',
-      value: '{place}',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.generic.profile.openCases',
-      value: '{number} Open Cases',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.generic.profile.time',
-      value: 'Currently, {time}',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.generic.profile.follow',
-      value: 'Follow',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.generic.profile.unfollow',
-      value: 'Unfollow',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.generic.profile.viewProfile',
-      value: 'View Profile',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.generic.make_default',
-      value: 'Make default',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.generic.save',
-      value: 'Save',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.generic.cancel',
-      value: 'Cancel',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.generic.and',
-      value: 'And',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.generic.or',
-      value: 'Or',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.generic.day_abbreviation',
-      value: 'd',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.generic.hour_abbreviation',
-      value: 'h',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.generic.minute_abbreviation',
-      value: 'm',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.generic.SLA',
-      value: 'SLA',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.generic.confirm.delete',
-      value: 'Are you sure you want to delete this',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.generic.confirm.lose_changes',
-      value: 'You have unsaved changes on this page Are you sure you want to discard these changes?',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.login.back',
-      value: '« Back',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.login.email',
-      value: 'Email',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.login.forgot',
-      value: 'Forgot password?',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.login.login',
-      value: 'Login',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.login.newpassword',
-      value: 'New Password',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.login.password',
-      value: 'Password',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.login.repeatpassword',
-      value: 'Password (repeat)',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.login.updatepassword',
-      value: 'Change password',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.login.resetpassword',
-      value: 'Reset your password',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.login.welcome',
-      value: 'Welcome to Kayako',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.search.no-results',
-      value: 'No results found',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.search.placeholder',
-      value: 'Search...',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.users.addnewuser',
-      value: 'Add New User',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.users.infobar.organization',
-      value: 'Organization',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.users.infobar.role',
-      value: 'Role',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.users.infobar.timezone',
-      value: 'Timezone',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.users.newteam',
-      value: 'New Team',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.users.addteam',
-      value: 'Add Team',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.users.teams',
-      value: 'Teams',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.users.editsignature',
-      value: 'Edit Signature',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.users.newtag',
-      value: 'New Tag',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.users.addtag',
-      value: 'Add Tag',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.users.tags',
-      value: 'Tags',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.users.metadata.created',
-      value: 'Created',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.users.metadata.updated',
-      value: 'Updated',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.users.metadata.lastseen',
-      value: 'Last seen',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.users.infobar.accesslevel',
-      value: 'Organization access',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.users.infobar.accesslevel.self',
-      value: 'Own cases only',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.users.infobar.accesslevel.organization',
-      value: 'All organization cases',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.generic.search_result_select_instruction',
-      value: 'Press enter',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.type.textarea.name',
-      value: 'Multiline Text',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.type.textarea.description',
-      value: 'Multiline - a text field on two lines!',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.type.priority.description',
-      value: 'Priority description!!',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.type.team.description',
-      value: 'Team description',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.type.assignee.description',
-      value: 'Assignee description',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.type.type.description',
-      value: 'Type description',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.type.status.description',
-      value: 'Status Description',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.type.subject.description',
-      value: 'Subject description',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.casefields.type.message.description',
-      value: 'Message description'
-    }, {
-      id: 'frontend.api.admin.views',
-      value: 'Views',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.views.buttons.add_new',
-      value: 'Add New',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.views.description',
-      value: 'Ipsum locum dorum somethinum',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.views.heading.edit',
-      value: 'Case Views / Edit',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.views.new',
-      value: 'Case Views / New',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.views.heading.view_details',
-      value: 'View details',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.views.label.view_title',
-      value: 'View title',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.views.heading.sharing',
-      value: 'Sharing',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.views.label.sharing',
-      value: 'Make this view available to',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.views.heading.predicate_builder',
-      value: 'Include cases that match the following in this view',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.views.heading.configure_layout',
-      value: 'Configure Layout',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.views.label.configure_layout',
-      value: 'Customize what information is shown in this view by adding, removing and reordering fields below. You can add up to 10 columns in your view',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.views.heading.sorting',
-      value: 'Sorting',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.admin.views.label.sorting',
-      value: 'In this view, default to sorting cases by',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.generic.select_placeholder',
-      value: 'Select...',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.generic.sort.ASC',
-      value: 'Ascending',
-      'resource_type': 'locale_string'
-    }, {
-      id: 'frontend.api.generic.sort.DESC',
-      value: 'Descending',
-      'resource_type': 'locale_string'
-    }, {
-      'id': 'frontend.api.generic.create_user_panel.title',
-      'value': 'Create a new user',
-      'resource_type': 'locale_string'
-    }, {
-      'id': 'frontend.api.generic.create_user_panel.name_label',
-      'value': 'First and last name',
-      'resource_type': 'locale_string'
-    }, {
-      'id': 'frontend.api.generic.create_user_panel.email_label',
-      'value': 'Email address',
-      'resource_type': 'locale_string'
-    }, {
-      'id': 'frontend.api.generic.create_user_panel.name_required',
-      'value': 'Name is required',
-      'resource_type': 'locale_string'
-    }, {
-      'id': 'frontend.api.generic.create_user_panel.email_required',
-      'value': 'Email address is required',
-      'resource_type': 'locale_string'
-    }, {
-      'id': 'frontend.api.generic.create_user_panel.email_invalid',
-      'value': 'Invalid email address',
-      'resource_type': 'locale_string'
-    }, {
-      'id': 'frontend.api.generic.create_user_panel.submit',
-      'value': 'Add user',
-      'resource_type': 'locale_string'
-    }, {
-      'id': 'frontend.api.generic.create_user_panel.info',
-      'value': 'Other identities can be added once the user has been created.',
-      'resource_type': 'locale_string'
-    }, {
-      'id': 'frontend.api.generic.create_user_panel.cancel',
-      'value': 'cancel',
-      'resource_type': 'locale_string'
-    }, {
-      'id': 'frontend.api.generic.create_case_panel.title',
-      'value': 'Create a new case',
-      'resource_type': 'locale_string'
-    }, {
-      'id': 'frontend.api.generic.create_case_panel.requester_label',
-      'value': 'Requester/Recipient',
-      'resource_type': 'locale_string'
-    }, {
-      'id': 'frontend.api.generic.create_case_panel.loading_label',
-      'value': 'Loading users…',
-      'resource_type': 'locale_string'
-    }, {
-      'id': 'frontend.api.generic.create_case_panel.filter_label',
-      'value': 'Showing {numFilteredUsers, number} of {numUsers, number}',
-      'resource_type': 'locale_string'
-    }, {
-      'id': 'frontend.api.generic.create_case_panel.info',
-      'value': 'Other details can be added after continuing.',
-      'resource_type': 'locale_string'
-    }, {
-      'id': 'frontend.api.generic.create_case_panel.submit',
-      'value': 'Continue',
-      'resource_type': 'locale_string'
-    }, {
-      'id': 'frontend.api.generic.create_case_panel.cancel',
-      'value': 'cancel',
-      'resource_type': 'locale_string'
-    }, {
-      'id': 'frontend.api.users.add_a_note',
-      'value': 'Add a note',
-      'resource_type': 'locale_string'
-    }, {
-      'id': 'frontend.api.cases.notes',
-      'value': 'Notes',
-      'resource_type': 'locale_string'
-    }, {
-      'id': 'frontend.api.admin.casefields.edit.label.field_options',
-      'value': 'The drop-down field will contain the options specified below.',
-      'resource_type': 'locale_string'
-    }, {
-      'id': 'frontend.api.cases.new_case_subject_placeholder',
-      'value': 'Click to add a subject',
-      'resource_type': 'locale_string'
-    }, {
-      'id': 'frontend.api.cases.new_case_tab_placeholder',
-      'value': 'New Case',
-      'resource_type': 'locale_string'
-    }, {
-      'id': 'frontend.api.cases.new_case',
-      'value': 'New case',
-      'resource_type': 'locale_string'
-    }, {
-      'id': 'frontend.api.users.changepassword',
-      'value': 'Change password',
-      'resource_type': 'locale_string'
-    }, {
-      'id': 'frontend.api.cases.copy-someone-in.title',
-      'value': 'Copy someone in',
-      'resource_type': 'locale_string'
-    }, {
-      'id': 'frontend.api.cases.copy-someone-in.description',
-      'value': 'These people will be copied in on your reply.',
-      'resource_type': 'locale_string'
-    }, {
-      'id': 'frontend.api.cases.copy-someone-in.input-placeholder',
-      'value': 'Find user or type email address',
-      'resource_type': 'locale_string'
-    }, {
-      'id': 'frontend.api.cases.copy-someone-in.fing-out-more',
-      'value': 'Find out more about CC recipients.',
-      'resource_type': 'locale_string'
-    }, {
-      'id': 'frontend.api.cases.copy-someone-in.showing',
-      'value': 'Showing {filtered} of {total} users',
-      'resource_type': 'locale_string'
-    }, {
-      'id': 'frontend.api.cases.copy-someone-in.not-found',
-      'value': 'No users found.<br/>You could try typing an email address to add it.',
-      'resource_type': 'locale_string'
-    }, {
-      'id': 'frontend.api.cases.copy-someone-in.help-text',
-      'value': 'These people will be copied in on your reply. <a href=\"#\">Find out more about CC recipients.</a>',
-      'resource_type': 'locale_string'
-    }, {
-      'id': 'frontend.api.cases.copy-someone-in.email-error',
-      'value': 'Please enter a valid email address',
-      'resource_type': 'locale_string'
-    }, {
-      'id': 'frontend.api.cases.null_form_selected',
-      'value': 'No form selected',
-      'resource_type': 'locale_string'
-    }, {
-      'id': 'frontend.api.cases.form-select',
-      'value': 'Case form',
-      'resource_type': 'locale_string'
-    }, {
-      'id': 'frontend.api.admin.teams',
-      'value': 'Teams',
-      'resource_type': 'locale_string'
-    }, {
-      'id': 'frontend.api.admin.teams',
-      'resource_type': 'locale_string',
-      'value': 'Teams'
-    }, {
-      'id': 'frontend.api.admin.teams.agent',
-      'resource_type': 'locale_string',
-      'value': '{numAgents, plural, =1 {agent} other {agents}}'
-    }, {
-      'id': 'frontend.api.admin.teams.headings.index',
-      'resource_type': 'locale_string',
-      'value': 'Teams'
-    }, {
-      'id': 'frontend.api.admin.teams.headings.edit',
-      'resource_type': 'locale_string',
-      'value': 'Teams / {title}'
-    }, {
-      'id': 'frontend.api.admin.teams.headings.new',
-      'resource_type': 'locale_string',
-      'value': 'Teams / New'
-    }, {
-      'id': 'frontend.api.admin.teams.buttons.add',
-      'resource_type': 'locale_string',
-      'value': 'Add New'
-    }, {
-      'id': 'frontend.api.admin.teams.labels.filterTeams',
-      'resource_type': 'locale_string',
-      'value': 'Filter teams'
-    }, {
-      'id': 'frontend.api.admin.teams.labels.filterAgents',
-      'resource_type': 'locale_string',
-      'value': 'Filter agents'
-    }, {
-      'id': 'frontend.api.admin.teams.labels.deleteTeam',
-      'resource_type': 'locale_string',
-      'value': 'Delete team'
-    }, {
-      'id': 'frontend.api.admin.teams.labels.deleteTeamConfirmation',
-      'resource_type': 'locale_string',
-      'value': 'Are you sure you wish to delete this team?'
-    }, {
-      'id': 'frontend.api.admin.userfields',
-      'resource_type': 'locale_string',
-      'value': 'User Fields'
-    }, {
-      'id': 'frontend.api.admin.userfields.buttons.add_new_userfield',
-      'resource_type': 'locale_string',
-      'value': 'Add New Field'
-    }, {
-      'id': 'frontend.api.admin.userfields.type.text.name',
-      'resource_type': 'locale_string',
-      'value': 'Text'
-    }, {
-      'id': 'frontend.api.admin.userfields.type.text.description',
-      'resource_type': 'locale_string',
-      'value': 'Capture a small amount of text using a single line text field.'
-    }, {
-      'id': 'frontend.api.admin.userfields.type.textarea.name',
-      'resource_type': 'locale_string',
-      'value': 'Multi-line Text'
-    }, {
-      'id': 'frontend.api.admin.userfields.type.textarea.description',
-      'resource_type': 'locale_string',
-      'value': 'Capture a larger amount of text using a larger text box.'
-    }, {
-      'id': 'frontend.api.admin.userfields.type.regex.name',
-      'resource_type': 'locale_string',
-      'value': 'Regular expression'
-    }, {
-      'id': 'frontend.api.admin.userfields.type.regex.description',
-      'resource_type': 'locale_string',
-      'value': 'Capture text that has to match a specific format, validated by a regular expression pattern.'
-    }, {
-      'id': 'frontend.api.admin.userfields.type.radio.name',
-      'resource_type': 'locale_string',
-      'value': 'Radio box (single choice)'
-    }, {
-      'id': 'frontend.api.admin.userfields.type.radio.description',
-      'resource_type': 'locale_string',
-      'value': 'Users can select one option from the options you define.'
-    }, {
-      'id': 'frontend.api.admin.userfields.type.dropdown.name',
-      'resource_type': 'locale_string',
-      'value': 'Dropdown box (single choice)'
-    }, {
-      'id': 'frontend.api.admin.userfields.type.dropdown.description',
-      'resource_type': 'locale_string',
-      'value': 'Users can select one option from the options you define.'
-    }, {
-      'id': 'frontend.api.admin.userfields.type.numeric.name',
-      'resource_type': 'locale_string',
-      'value': 'Numeric'
-    }, {
-      'id': 'frontend.api.admin.userfields.type.numeric.description',
-      'resource_type': 'locale_string',
-      'value': 'Capture an integer from users using this special text field.'
-    }, {
-      'id': 'frontend.api.admin.userfields.type.decimal.name',
-      'resource_type': 'locale_string',
-      'value': 'Decimal'
-    }, {
-      'id': 'frontend.api.admin.userfields.type.decimal.description',
-      'resource_type': 'locale_string',
-      'value': 'Capture an decimal number from users using this special text field.'
-    }, {
-      'id': 'frontend.api.admin.userfields.type.file.name',
-      'resource_type': 'locale_string',
-      'value': 'File'
-    }, {
-      'id': 'frontend.api.admin.userfields.type.file.description',
-      'resource_type': 'locale_string',
-      'value': 'Allow users to upload files to this field.'
-    }, {
-      'id': 'frontend.api.admin.userfields.type.yesno.name',
-      'resource_type': 'locale_string',
-      'value': 'Yes or no toggle'
-    }, {
-      'id': 'frontend.api.admin.userfields.type.yesno.description',
-      'resource_type': 'locale_string',
-      'value': 'Users can select yes or no using a toggle.'
-    }, {
-      'id': 'frontend.api.admin.userfields.type.date.name',
-      'resource_type': 'locale_string',
-      'value': 'Date'
-    }, {
-      'id': 'frontend.api.admin.userfields.type.date.description',
-      'resource_type': 'locale_string',
-      'value': 'Capture a date value in this special date field. Users will be presented with a calendar widget to select a date.'
-    }, {
-      'id': 'frontend.api.admin.userfields.type.checkbox.name',
-      'resource_type': 'locale_string',
-      'value': 'Checkbox (multi choice)'
-    }, {
-      'id': 'frontend.api.admin.userfields.type.checkbox.description',
-      'resource_type': 'locale_string',
-      'value': 'Users can select multiple options from the options you define.'
-    }, {
-      'id': 'frontend.api.admin.userfields.type.priority.name',
-      'resource_type': 'locale_string',
-      'value': 'Priority'
-    }, {
-      'id': 'frontend.api.admin.userfields.type.team.name',
-      'resource_type': 'locale_string',
-      'value': 'Team'
-    }, {
-      'id': 'frontend.api.admin.userfields.type.assignee.name',
-      'resource_type': 'locale_string',
-      'value': 'Assignee'
-    }, {
-      'id': 'frontend.api.admin.userfields.type.type.name',
-      'resource_type': 'locale_string',
-      'value': 'Type'
-    }, {
-      'id': 'frontend.api.admin.userfields.type.status.name',
-      'resource_type': 'locale_string',
-      'value': 'Status'
-    }, {
-      'id': 'frontend.api.admin.userfields.type.subject.name',
-      'resource_type': 'locale_string',
-      'value': 'Subject'
-    }, {
-      'id': 'frontend.api.admin.userfields.type.message.name',
-      'resource_type': 'locale_string',
-      'value': 'Message'
-    }, {
-      'id': 'frontend.api.admin.userfields.type.select.name',
-      'resource_type': 'locale_string',
-      'value': 'Select'
-    }, {
-      'id': 'frontend.api.admin.userfields.type.select.description',
-      'resource_type': 'locale_string',
-      'value': 'Selecta'
-    }, {
-      'id': 'frontend.api.admin.userfields.new.heading',
-      'resource_type': 'locale_string',
-      'value': 'User Fields / New'
-    }, {
-      'id': 'frontend.api.admin.userfields.edit.heading',
-      'resource_type': 'locale_string',
-      'value': 'User Fields / Edit'
-    }, {
-      'id': 'frontend.api.users.recent_feedback',
-      'value': 'Recent feedback',
-      'resource_type': 'locale_string'
-    }, {
-      'id': 'frontend.api.users.no_feedback_available',
-      'value': 'No feedback available',
-      'resource_type': 'locale_string'
-    }, {
-      'id': 'frontend.api.cases.tags',
-      'value': 'Tags',
-      'resource_type': 'locale_string'
-    }, {
-      'id': 'frontend.api.users.update_signature',
-      'value': 'Update signature',
-      'resource_type': 'locale_string'
+      "id": "frontend.api.admin.casefields.type.regex.description",
+      "value": "Capture text that has to match a specific format, validated by a regular expression pattern.",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.type.radio.name",
+      "value": "Radio box (single choice)",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.type.radio.description",
+      "value": "Users can select one option from the options you define.",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.type.dropdown.name",
+      "value": "Dropdown box (single choice)",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.type.dropdown.description",
+      "value": "Users can select one option from the options you define.",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.type.numeric.name",
+      "value": "Numeric",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.type.numeric.description",
+      "value": "Capture an integer from users using this special text field.",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.type.decimal.name",
+      "value": "Decimal",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.type.decimal.description",
+      "value": "Capture an decimal number from users using this special text field.",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.type.file.name",
+      "value": "File",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.type.file.description",
+      "value": "Allow users to upload files to this field.",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.type.yesno.name",
+      "value": "Yes or no toggle",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.type.yesno.description",
+      "value": "Users can select yes or no using a toggle.",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.type.date.name",
+      "value": "Date",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.type.date.description",
+      "value": "Capture a date value in this special date field. Users will be presented with a calendar widget to select a date.",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.type.checkbox.name",
+      "value": "Checkbox (multi choice)",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.type.checkbox.description",
+      "value": "Users can select multiple options from the options you define.",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.type.checkbox.field_options.title",
+      "value": "Option title",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.type.checkbox.field_options.tag",
+      "value": "Option tag",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.type.priority.name",
+      "value": "Priority",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.type.team.name",
+      "value": "Team",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.type.assignee.name",
+      "value": "Assignee",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.type.type.name",
+      "value": "Type",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.type.status.name",
+      "value": "Status",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.type.subject.name",
+      "value": "Subject",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.type.message.name",
+      "value": "Message",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.type.select.name",
+      "value": "Select",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.type.select.description",
+      "value": "Selecta",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.buttons.add_new_casefield",
+      "value": "Add New Field",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.description",
+      "value": "Lorem ipsum dolor sit amet, diam appetere facilisis at pri, his vocibus iudicabit te. Te decore feugiat necessitatibus nec, id eos fugit dicunt. Vis ei ubique blandit, in vidit maiestatis disputationi vix, essent perpetua interesset ei mea. Et mea ubique feugait, ne nam unum clita, no his indoctum conclusionemque. Ad pri aperiri definitionem, nec ei dictas blandit.",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.new.heading",
+      "value": "Case Fields / New",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.edit.heading",
+      "value": "Case Fields / Edit",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.type.cascadingselect.name",
+      "value": "Cascading select",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.type.cascadingselect.description",
+      "value": "Allow users to drill down through categories to organize a lot of select options.",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.edit.label.field_options",
+      "value": "The drop-down field will contain the options specified below.",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.edit.help.types",
+      "value": "Case types blah. Case types blah blah. Case types blah. Case types blah blah. Case types blah. Case types blah blah. Case types blah.",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.edit.heading.types",
+      "value": "Types",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.edit.add_new_type",
+      "value": "Add a new type",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.edit.heading.agent_settings",
+      "value": "Agent Settings",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.edit.heading.customer_settings",
+      "value": "Customer Settings",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.edit.heading.field_options",
+      "value": "Field Options",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.edit.heading.field_settings",
+      "value": "Field Settings",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.edit.heading.regex",
+      "value": "Regular Expression",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.edit.label.is_required_for_agents_when_updating_case",
+      "value": "Creating, replying to or updating a case",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.edit.label.is_required_for_agents_when_resolving_case",
+      "value": "Resolving a case",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.edit.label.field_title",
+      "value": "Field title",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.edit.help.field_title",
+      "value": "This is the title that is displayed to your agents",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.edit.label.is_visible_to_customers",
+      "value": "Customers can see this field",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.edit.label.is_required_for_agents",
+      "value": "For agents, this field is required when",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.edit.label.customer_field_title",
+      "value": "Field title for customers",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.edit.label.customer_field_description",
+      "value": "Field description for customers",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.edit.help.customer_field_description",
+      "value": "Enter an optional description into this field that will be show to customers in the help center",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.edit.label.is_editable_by_customers",
+      "value": "Customers can edit this field",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.edit.help.is_editable_by_customers",
+      "value": "Enable this setting to allow your customers to change the value of this field from the Help Center or through the API.",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.edit.label.is_required_for_customers",
+      "value": "This field is required for customers",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.edit.help.is_required_for_customers",
+      "value": "Enable this setting to require your customers to complete this field when creating or updating a case from the Help Center or through the API.",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.edit.label.api_key",
+      "value": "API field key",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.edit.help.api_key",
+      "value": "The field key is unique to this field and is used to reference fields using the Kayako API and in search.",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.edit.help.is_enabled",
+      "value": "Disabled case fields will not be available on cases or case forms, but any existing data will still be searchable and can be referenced in reporting.",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.edit.label.priorities",
+      "value": "The order of priorities matter: your priorities should go from highest to lowest. If you remove a priority, all cases using that priority will be set to no priority.",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.help.regex",
+      "value": "Enter a regular expression that will be evaluated against your users' input. If the regular expression evaluates to false, the input will be deemed invalid.",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.edit.add_new_status",
+      "value": "Add a new custom status",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.edit.heading.statuses",
+      "value": "Statuses",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.edit.help.statuses.1",
+      "value": "Case statuses typically map to your workflow and how you handle customer requests and conversations. Throughout its life, a case will move through various statuses. There are some default system statuses and you can also create statuses to customize the workflow.",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.casefields.edit.help.statuses.2",
+      "value": "If SLAs are enabled in Kayako, you can determine whether or not SLA timers will pause on particular statuses. For example, you may not want the time a case spends while set to Pending (while you are waiting for a customer to get back to you) to count towards your SLA targets.",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.twitter",
+      "value": "Twitter",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.twitter.headings.index",
+      "value": "Twitter",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.twitter.buttons.create_account",
+      "value": "Connect new account",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.twitter.heading.account_settings",
+      "value": "Account settings",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.twitter.heading.capture_settings",
+      "value": "What to capture",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.twitter.heading.help_settings",
+      "value": "Help Center",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.twitter.label.brand",
+      "value": "Brand",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.twitter.help.brand",
+      "value": "Your channel accounts are linked to specific Brands. When you have multiple Brands set up, Kayako will link any cases created as a result of events over this channel account to this Brand.",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.twitter.help.capture",
+      "value": "Kayako can capture various events (such as messages) through this channel account into cases. Select which kind of events you want Kayako to capture.",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.twitter.label.mentions",
+      "value": "Mentions",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.twitter.label.favourited_tweets",
+      "value": "Favorited Tweets",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.twitter.label.direct_messages",
+      "value": "Direct Messages",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.twitter.label.display_public_tweets",
+      "value": "Show latest Tweets from this account in the Help Center",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.twitter.help.display_public_tweets",
+      "value": "Kayako can display the latest non-@mention Tweets sent from this account in your Help Center. This is useful if you use this account to keep your customers up to date with news and events.",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.predicate_builder.cases.subject",
+      "value": "Cases: Subject",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.predicate_builder.cases.casestatusid",
+      "value": "Cases: Status",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.predicate_builder.cases.casetypeid",
+      "value": "Cases: Type",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.predicate_builder.cases.casepriorityid",
+      "value": "Cases: Priority ID",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.predicate_builder.cases.brandid",
+      "value": "Cases: Brand",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.predicate_builder.cases.assigneeteamid",
+      "value": "Cases: Assigned Agent Team",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.predicate_builder.cases.assigneeagentid",
+      "value": "Cases: Assigned Agent",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.predicate_builder.cases.requesterid",
+      "value": "Cases: Requester",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.predicate_builder.taglinks.tagid",
+      "value": "Tag",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.predicate_builder.users.organizationid",
+      "value": "Users: Organisation",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.predicate_builder.cases.postcount",
+      "value": "Cases: Number of posts",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.predicate_builder.operators.none",
+      "value": "String contains",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.predicate_builder.operators.string_contains",
+      "value": "String contains",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.predicate_builder.operators.string_does_not_contain",
+      "value": "String does not contain",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.predicate_builder.operators.comparison_equalto",
+      "value": "is equal to",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.predicate_builder.operators.comparison_not_equalto",
+      "value": "is not equal to",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.predicate_builder.operators.comparison_lessthan",
+      "value": "is less than",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.predicate_builder.operators.comparison_greaterthan",
+      "value": "is greater than",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.predicate_builder.operators.collection_contains_insensitive",
+      "value": "contains (case insensitive)",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.predicate_builder.operators.collection_does_not_contain_insensitive",
+      "value": "does not contain (case insensitive)",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.admin.predicate_builder.operators.collection_contains_any_insensitive",
+      "value": "contains any (case insensitive)",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.cases.activity",
+      "value": "Activity",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.cases.addparticipant",
+      "value": "Add participant",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.cases.copy-someone-in.title",
+      "value": "Copy someone in",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.cases.copy-someone-in.description",
+      "value": "These people will be copied in on your reply.",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.cases.copy-someone-in.input-placeholder",
+      "value": "Find user or type email address",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.cases.copy-someone-in.fing-out-more",
+      "value": "Find out more about CC recipients.",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.cases.copy-someone-in.showing",
+      "value": "Showing {filtered} of {total} users",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.cases.copy-someone-in.not-found",
+      "value": "No users found.<br/>You could try typing an email address to add it.",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.cases.copy-someone-in.help-text",
+      "value": "These people will be copied in on your reply. <a href=\"#\">Find out more about CC recipients.</a>",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.cases.copy-someone-in.email-error",
+      "value": "Please enter a valid email address",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.cases.linkedCasesInline",
+      "value": "Link a case",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.cases.assignee",
+      "value": "Assignee",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.cases.cases",
+      "value": "Cases",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.cases.due",
+      "value": "Due",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.cases.lastreplier",
+      "value": "Last replier",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.cases.lastupdated",
+      "value": "Last updated {time}",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.cases.metric.total",
+      "value": "{number, number} Total",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.cases.metric.unresolved",
+      "value": "Unresolved",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.cases.newtag",
+      "value": "New Tag",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.cases.addtag",
+      "value": "Add a tag...",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.cases.tags",
+      "value": "Tags",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.cases.note",
+      "value": "Note",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.cases.priority",
+      "value": "Priority",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.cases.requester",
+      "value": "Requester",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.cases.status",
+      "value": "Status",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.cases.subheader",
+      "value": "{time, date, medium} – {time, time, short} created via {channel}{hasBrand, select,\n    true {, {brand}}\n    false {}\n  }",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.cases.subject",
+      "value": "Subject",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.cases.submit",
+      "value": "Submit",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.cases.ticketid",
+      "value": "Ticket ID",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.cases.type",
+      "value": "Type",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.cases.applymacro",
+      "value": "Apply Macro",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.cases.applymacroplaceholder",
+      "value": "Type to search macros",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.cases.channelType.MAILBOX",
+      "value": "email",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.cases.channelType.TWITTER",
+      "value": "Twitter",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.cases.channelType.TWITTER_DM",
+      "value": "Twitter",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.cases.channelType.CHAT",
+      "value": "Chat",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.cases.channelType.FACEBOOK",
+      "value": "Facebook",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.cases.new_case",
+      "value": "New case",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.cases.new_case_subject_placeholder",
+      "value": "Click to add a subject",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.cases.new_case_tab_placeholder",
+      "value": "New Case",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.cases.search.request.result_meta",
+      "value": "Showing {numDisplayResults} of {totalResults} users",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.cases.field_title.requester",
+      "value": "Requester",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.cases.notes",
+      "value": "Notes",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.cases.form-select",
+      "value": "Case form",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.cases.null_form_selected",
+      "value": "No form selected",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.cases.sort",
+      "value": "Sort",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.cases.filter",
+      "value": "Filter",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.cases.sort_options.newest_first",
+      "value": "Newest first",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.cases.sort_options.oldest_first",
+      "value": "Oldest first",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.cases.filter_options.all",
+      "value": "All",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.cases.filter_options.posts",
+      "value": "Posts",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.cases.filter_options.posts_activities",
+      "value": "Posts and activities",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.cases.filter_options.posts_events",
+      "value": "Posts and events",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.feed.replied",
+      "value": "replied {ago}",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.validation_errors",
+      "value": "Please fill in all required fields",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.next",
+      "value": "Next",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.close",
+      "value": "close",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.datepicker.clear",
+      "value": "Clear",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.datepicker.close",
+      "value": "Close",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.datepicker.today",
+      "value": "Today",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.filesize",
+      "value": "{size, number, filesize} {unit, select,\n    mb {MB}\n    kb {KB}\n  }",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.logout",
+      "value": "logout",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.paginatorof",
+      "value": "of {number, number}",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.popover.next",
+      "value": "next",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.popover.previous",
+      "value": "previous",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.search",
+      "value": "Search helpdesk...",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.texteditor.attachment",
+      "value": "Attachment",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.texteditor.authorship",
+      "value": "Authorship",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.texteditor.cc",
+      "value": "CC",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.texteditor.billing",
+      "value": "Billing",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.texteditor.bold",
+      "value": "Bold",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.texteditor.bullet",
+      "value": "Bullet",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.texteditor.image",
+      "value": "Image",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.texteditor.italic",
+      "value": "Italic",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.texteditor.link",
+      "value": "Link",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.texteditor.list",
+      "value": "List",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.texteditor.notes_reminder",
+      "value": "This private note will only be seen by agents",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.users",
+      "value": "Users",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.enable",
+      "value": "Enable",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.enabled",
+      "value": "Enabled",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.disable",
+      "value": "Disable",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.disabled",
+      "value": "Disabled",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.delete",
+      "value": "Delete",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.edit",
+      "value": "Edit",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.default",
+      "value": "Default",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.profile.position",
+      "value": "{position}",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.profile.place",
+      "value": "{place}",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.profile.openCases",
+      "value": "{number} Open Cases",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.profile.time",
+      "value": "Currently, {time}",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.profile.follow",
+      "value": "Follow",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.profile.unfollow",
+      "value": "Unfollow",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.profile.viewProfile",
+      "value": "View Profile",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.make_default",
+      "value": "Make default",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.save",
+      "value": "Save",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.cancel",
+      "value": "Cancel",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.and",
+      "value": "And",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.or",
+      "value": "Or",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.day_abbreviation",
+      "value": "d",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.hour_abbreviation",
+      "value": "h",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.minute_abbreviation",
+      "value": "m",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.SLA",
+      "value": "SLA",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.select_placeholder",
+      "value": "Select...",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.search_result_select_instruction",
+      "value": "Press enter",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.search.no_results",
+      "value": "No results found",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.shared_with",
+      "value": "Shared with",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.sort.ASC",
+      "value": "Ascending",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.sort.DESC",
+      "value": "Descending",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.uploads.toolarge",
+      "value": "is too large.",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.uploads.unknown",
+      "value": "upload failed. Please contact support",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.uploads.wrongtype",
+      "value": "is not allowed. Allowed file types: ",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.confirm.delete",
+      "value": "Are you sure you want to delete this",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.confirm.lose_changes",
+      "value": "You have unsaved changes on this page. Are you sure you want to discard these changes?",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.create_user_panel.title",
+      "value": "Create a new user",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.create_user_panel.name_label",
+      "value": "First and last name",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.create_user_panel.email_label",
+      "value": "Email address",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.create_user_panel.name_required",
+      "value": "Name is required",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.create_user_panel.email_required",
+      "value": "Email address is required",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.create_user_panel.email_invalid",
+      "value": "Invalid email address",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.create_user_panel.submit",
+      "value": "Add user",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.create_user_panel.info",
+      "value": "Other identities can be added once the user has been created.",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.create_user_panel.cancel",
+      "value": "cancel",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.create_organisation_panel.title",
+      "value": "Create a new organization",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.create_organisation_panel.name_label",
+      "value": "Organization Name",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.create_organisation_panel.domain_label",
+      "value": "Domain(s):",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.create_organisation_panel.name_required",
+      "value": "Name is required",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.create_organisation_panel.domain_required",
+      "value": "Email address is required",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.create_organisation_panel.domain_invalid",
+      "value": "Invalid email address",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.create_organisation_panel.submit",
+      "value": "Add Organization",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.create_organisation_panel.info",
+      "value": "Other details can be added once the organization has been created.",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.user_logged_out",
+      "value": "You have been logged out",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.session_expired",
+      "value": "Your session has expired",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.create_case_panel.title",
+      "value": "Create a new case",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.create_case_panel.requester_label",
+      "value": "Requester/Recipient",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.create_case_panel.requester_required",
+      "value": "Required",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.create_case_panel.loading_label",
+      "value": "Loading users…",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.create_case_panel.filter_label",
+      "value": "Showing {numFilteredUsers, number} of {numUsers, number}",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.create_case_panel.info",
+      "value": "Other details can be added after continuing.",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.create_case_panel.submit",
+      "value": "Continue",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.generic.create_case_panel.cancel",
+      "value": "cancel",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.login.back",
+      "value": "« Back",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.login.email",
+      "value": "Email",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.login.forgot",
+      "value": "Forgot password?",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.login.login",
+      "value": "Login",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.login.newpassword",
+      "value": "New Password",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.login.password",
+      "value": "Password",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.login.repeatpassword",
+      "value": "Password (repeat)",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.login.resetpassword",
+      "value": "Reset your password",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.login.updatepassword",
+      "value": "Change password",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.login.welcome",
+      "value": "Welcome to Kayako",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.organisation.domains",
+      "value": "Email domains",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.organisation.new_organisation_placeholder",
+      "value": "Click to add a name",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.search.no-results",
+      "value": "No results found",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.search.placeholder",
+      "value": "Search...",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.users.addnewuser",
+      "value": "Add New User",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.users.infobar.organization",
+      "value": "Organization",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.users.infobar.role",
+      "value": "Role",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.users.infobar.timezone",
+      "value": "Timezone",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.users.newteam",
+      "value": "New Team",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.users.addteam",
+      "value": "Add a team...",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.users.teams",
+      "value": "Teams",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.users.newtag",
+      "value": "New Tag",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.users.addtag",
+      "value": "Add a tag...",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.users.tags",
+      "value": "Tags",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.users.editsignature",
+      "value": "Edit Signature",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.users.changepassword",
+      "value": "Change password",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.users.metadata.created",
+      "value": "Created",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.users.metadata.updated",
+      "value": "Updated",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.users.metadata.lastseen",
+      "value": "Last seen",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.users.infobar.accesslevel",
+      "value": "Organization access",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.users.infobar.accesslevel.self",
+      "value": "Own cases only",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.users.infobar.accesslevel.organization",
+      "value": "All organization's cases",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.users.add_a_note",
+      "value": "Add a note",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.users.password_reset_email.success",
+      "value": "Password reset email has been sent",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.users.recent_feedback",
+      "value": "Recent feedback",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.users.no_feedback_available",
+      "value": "No feedback is available from this user",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.users.update_signature",
+      "value": "Update signature",
+      "resource_type": "locale_string"
     }],
-    resource: 'locale_string'
+    "resource": "locale_string"
   }];
 
 });
@@ -47772,6 +48309,9 @@ define('frontend-cp/mirage/scenarios/default', ['exports'], function (exports) {
       original: caseMessage
     });
 
+    server.createList('event', 5);
+    server.createList('activity', 5);
+
     server.create('contact-address');
     server.create('contact-website');
     server.create('identity-phone');
@@ -48262,6 +48802,94 @@ define('frontend-cp/models/account', ['exports', 'ember-data'], function (export
 	exports['default'] = DS['default'].Model.extend({});
 
 });
+define('frontend-cp/models/action', ['exports', 'ember-data'], function (exports, DS) {
+
+  'use strict';
+
+  exports['default'] = DS['default'].Model.extend({
+    action: DS['default'].attr('string'),
+    field: DS['default'].attr('string'),
+    oldValue: DS['default'].attr('string'),
+    newValue: DS['default'].attr('string'),
+    oldObject: DS['default'].attr(),
+    newObject: DS['default'].attr()
+  });
+
+});
+define('frontend-cp/models/activity-location', ['exports', 'ember-data'], function (exports, DS) {
+
+  'use strict';
+
+  exports['default'] = DS['default'].ModelFragment.extend({
+    city: DS['default'].attr('string'),
+    region: DS['default'].attr('string'),
+    regionCode: DS['default'].attr('string'),
+    areaCode: DS['default'].attr('string'),
+    timeZone: DS['default'].attr('string'),
+    organization: DS['default'].attr('string'),
+    netSpeed: DS['default'].attr('string'),
+    country: DS['default'].attr('string'),
+    countryCode: DS['default'].attr('string'),
+    postalCode: DS['default'].attr('string'),
+    latitude: DS['default'].attr('string'),
+    longitude: DS['default'].attr('string'),
+    metroCode: DS['default'].attr('string'),
+    isp: DS['default'].attr('string')
+  });
+
+});
+define('frontend-cp/models/activity-object', ['exports', 'ember', 'ember-data'], function (exports, Ember, DS) {
+
+  'use strict';
+
+  exports['default'] = DS['default'].ModelFragment.extend({
+    name: DS['default'].attr('string'),
+    title: DS['default'].attr('string'),
+    prefix: DS['default'].attr('string'),
+    url: DS['default'].attr('string'),
+    fullTitle: DS['default'].attr('string'),
+    image: DS['default'].attr('string'),
+    preposition: DS['default'].attr('string'),
+
+    // TODO fix when relationship support lands to ember-data.model-fragments
+    // original: DS.belongsTo('any', { async: true }),
+    originalFragment: DS['default'].hasOneFragment('relationship-fragment'),
+    original: Ember['default'].computed('originalFragment.relationshipId', function () {
+      return this.store.peekRecord(this.get('originalFragment.relationshipType'), this.get('originalFragment.relationshipId'));
+    })
+  });
+
+});
+define('frontend-cp/models/activity', ['exports', 'ember', 'ember-data'], function (exports, Ember, DS) {
+
+  'use strict';
+
+  exports['default'] = DS['default'].Model.extend({
+    actor: DS['default'].hasOneFragment('activity-object'),
+    verb: DS['default'].attr('string'),
+    summary: DS['default'].attr('string'),
+    actions: DS['default'].hasMany('action'),
+    object: DS['default'].hasOneFragment('activity-object'),
+    objectActor: DS['default'].hasOneFragment('activity-object'),
+    location: DS['default'].hasOneFragment('activity-location'),
+    place: DS['default'].hasOneFragment('activity-object'),
+    target: DS['default'].hasOneFragment('activity-object'),
+    result: DS['default'].hasOneFragment('activity-object'),
+    inReplyTo: DS['default'].hasOneFragment('activity-object'),
+    participant: DS['default'].hasOneFragment('activity-object'),
+    portal: DS['default'].attr('string'),
+    weight: DS['default'].attr('number'),
+    ipAddress: DS['default'].attr('string'),
+    createdAt: DS['default'].attr('date'),
+
+    'case': DS['default'].belongsTo('case', { async: true, parent: true }),
+
+    plainTextSummary: Ember['default'].computed('summary', function () {
+      return this.get('summary').replace(/<.*?\|(.*?)>/g, '$1');
+    })
+  });
+
+});
 define('frontend-cp/models/app', ['exports', 'ember-data'], function (exports, DS) {
 
   'use strict';
@@ -48576,6 +49204,7 @@ define('frontend-cp/models/case', ['exports', 'ember-data', 'frontend-cp/mixins/
     messages: DS['default'].hasMany('case-message', { async: true, child: true, noCache: true }),
     posts: DS['default'].hasMany('post', { async: true, child: true, noCache: true }),
     channels: DS['default'].hasMany('channel', { async: true, child: true, url: 'channels', noCache: true }),
+    activities: DS['default'].hasMany('activity', { async: true, child: true, url: 'activities', noCache: true }),
     replyChannels: DS['default'].hasMany('channel', { async: true, child: true, url: 'reply/channels', noCache: true }),
     reply: DS['default'].hasMany('case-reply', { async: true, child: true, noCache: true }),
     //participants: DS.hasMany('user', { async: true, child: true, url: 'participants', noCache: true }),
@@ -48836,6 +49465,25 @@ define('frontend-cp/models/definition', ['exports', 'ember-data'], function (exp
     subType: DS['default'].attr('string'),
     operators: DS['default'].attr('array'),
     values: DS['default'].hasManyFragments('definition-value-fragment') //can be an empty string or an object with keys as value and properties as text
+  });
+
+});
+define('frontend-cp/models/event', ['exports', 'ember-data'], function (exports, DS) {
+
+  'use strict';
+
+  exports['default'] = DS['default'].Model.extend({
+    subject: DS['default'].attr('string'),
+    body: DS['default'].attr('string'),
+    channel: DS['default'].attr('string'),
+    participants: DS['default'].hasMany('users'),
+    avatarUrl: DS['default'].attr('string'),
+    creator: DS['default'].belongsTo('user', { parent: true }),
+    // properties: [],
+    attachments: DS['default'].hasMany('attachment'),
+    downloadAll: DS['default'].attr('string'),
+    triggeredAt: DS['default'].attr('date'),
+    createdAt: DS['default'].attr('date')
   });
 
 });
@@ -49820,6 +50468,7 @@ define('frontend-cp/models/user', ['exports', 'ember-data', 'ember', 'frontend-c
     // Shadow children fields
     accesslogs: DS['default'].hasMany('access-log', { async: true, child: true, noCache: true }),
     slack: DS['default'].hasMany('identity-slack', { async: true, child: true, url: 'identities/slack', noCache: true }),
+    events: DS['default'].hasMany('event', { async: true, child: true, inverse: 'creator', noCache: true }),
 
     save: function save() {
       var _this = this;
@@ -50428,6 +51077,15 @@ define('frontend-cp/serializers/definition', ['exports', 'frontend-cp/serializer
   });
 
 });
+define('frontend-cp/serializers/event', ['exports', 'frontend-cp/serializers/application'], function (exports, ApplicationSerializer) {
+
+  'use strict';
+
+  exports['default'] = ApplicationSerializer['default'].extend({
+    primaryKey: 'uuid'
+  });
+
+});
 define('frontend-cp/serializers/facebook-account', ['exports', 'frontend-cp/serializers/application'], function (exports, ApplicationSerializer) {
 
   'use strict';
@@ -50872,9 +51530,11 @@ define('frontend-cp/serializers/view', ['exports', 'ember-data', 'frontend-cp/se
   });
 
 });
-define('frontend-cp/services/case-timeline-cache', ['exports', 'ember'], function (exports, Ember) {
+define('frontend-cp/services/case-timeline-cache', ['exports', 'ember', 'npm:lodash'], function (exports, Ember, _) {
 
   'use strict';
+
+  var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
 
   function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -50903,7 +51563,10 @@ define('frontend-cp/services/case-timeline-cache', ['exports', 'ember'], functio
           posts: {},
           newestPost: null,
           oldestPost: null,
-          total: null
+          total: null,
+          activities: [],
+          firstActivityTimestamp: null,
+          lastActivityTimestamp: null
         };
       }
       return caseCache;
@@ -50913,17 +51576,18 @@ define('frontend-cp/services/case-timeline-cache', ['exports', 'ember'], functio
      * Return the most recent post, or null if no posts. Result is wrapped
      * in a Promise.
      *
+     * @private
      * @param {DS.Model} caseModel case
      * @return {Promise} post
      */
-    getNewestPost: function getNewestPost(caseModel) {
+    _getNewestPost: function _getNewestPost(caseModel) {
       var caseCache = this.getCaseCache(caseModel);
       if (caseCache.newestPost) {
         return Promise.resolve(caseCache.newestPost);
       } else if (caseCache.total === 0) {
         return Promise.resolve(null);
       } else {
-        return this.fetchPosts(caseModel).then(function () {
+        return this._fetchPosts(caseModel).then(function () {
           return caseCache.newestPost;
         });
       }
@@ -50938,6 +51602,7 @@ define('frontend-cp/services/case-timeline-cache', ['exports', 'ember'], functio
     addPost: function addPost(caseModel, post) {
       var caseCache = this.getCaseCache(caseModel);
       caseCache.posts[post.get('sequence')] = post;
+      caseCache.total += 1;
       var previousPost = caseCache.newestPost;
       if (!previousPost || previousPost.get('sequence') < post.get('sequence')) {
         caseCache.newestPost = post;
@@ -50948,17 +51613,18 @@ define('frontend-cp/services/case-timeline-cache', ['exports', 'ember'], functio
      * Return the oldest post, or null if no posts. Result is wrapped
      * in a Promise.
      *
+     * @private
      * @param {DS.Model} caseModel case
      * @return {Promise<DS.Model>} post
      */
-    getOldestPost: function getOldestPost(caseModel) {
+    _getOldestPost: function _getOldestPost(caseModel) {
       var caseCache = this.getCaseCache(caseModel);
       if (caseCache.oldestPost) {
         return Promise.resolve(caseCache.oldestPost);
       } else if (caseCache.total === 0) {
         return Promise.resolve(null);
       } else {
-        return this.fetchPosts(caseModel).then(function () {
+        return this._fetchPosts(caseModel, { afterId: 0 }).then(function () {
           return caseCache.oldestPost;
         });
       }
@@ -50967,11 +51633,12 @@ define('frontend-cp/services/case-timeline-cache', ['exports', 'ember'], functio
     /**
      * Get a single post.
      *
+     * @private
      * @param {DS.Model} caseModel case
      * @param {DS.Model} postId post id
      * @return {Promise<DS.Model>} post
      */
-    getSinglePost: function getSinglePost(caseModel, postId) {
+    _getSinglePost: function _getSinglePost(caseModel, postId) {
       var post = this.get('store').peekRecord('post', postId);
       if (post) {
         if (post.get('isReloading')) {
@@ -50992,7 +51659,6 @@ define('frontend-cp/services/case-timeline-cache', ['exports', 'ember'], functio
      *
      * @param {DS.Model} caseModel case
      * @param {Number} postId reference post id
-     * @param {[String]} options.order sorting order: 'newest' or 'oldest'
      * @param {[String]} options.direction whether to request 'older' or 'newer' posts
      * @param {[Number]} options.count post count
      * @param {[Number]} options.including whether to include the post with specified id
@@ -51003,37 +51669,189 @@ define('frontend-cp/services/case-timeline-cache', ['exports', 'ember'], functio
 
       var _ref = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
 
-      var _ref$order = _ref.order;
-      var order = _ref$order === undefined ? 'newest' : _ref$order;
       var _ref$direction = _ref.direction;
       var direction = _ref$direction === undefined ? 'older' : _ref$direction;
       var _ref$count = _ref.count;
       var count = _ref$count === undefined ? defaultPostCount : _ref$count;
+      var _ref$includeActivities = _ref.includeActivities;
+      var includeActivities = _ref$includeActivities === undefined ? true : _ref$includeActivities;
+      var _ref$includeEvents = _ref.includeEvents;
+      var includeEvents = _ref$includeEvents === undefined ? true : _ref$includeEvents;
       var _ref$including = _ref.including;
       var including = _ref$including === undefined ? false : _ref$including;
 
-      return (postId ? this.getSinglePost(caseModel, postId) : order === 'newest' ? this.getNewestPost(caseModel) : this.getOldestPost(caseModel)).then(function (post) {
-        return !post ? [] : _this.getPostsRecursive(caseModel, post, direction, including ? count - 1 : count).then(function (posts) {
-          return including ? [post].concat(posts) : posts;
-        }).then(function (posts) {
-          return posts.sortBy('sequence');
-        }).then(function (posts) {
-          return order === 'newest' ? posts.reverse() : posts;
+      return (postId ? this._getSinglePost(caseModel, postId) : direction === 'older' ? this._getNewestPost(caseModel) : this._getOldestPost(caseModel)).then(function (post) {
+        return !post ? [] : _this._getPostsRecursive(caseModel, post, direction, including ? count - 1 : count).then(function (posts) {
+          return [post].concat(posts);
+        })
+
+        // Load activities
+        .then(function (posts) {
+          return Promise.all([includeActivities ? _this._getActivitiesForPosts(caseModel, posts, direction, 'activity') : [], includeEvents ? _this._getActivitiesForPosts(caseModel, posts, direction, 'event') : [], posts]);
+        })
+
+        // Merge events, activities and posts
+        .then(function (_ref2) {
+          var _ref22 = _slicedToArray(_ref2, 3);
+
+          var activities = _ref22[0];
+          var events = _ref22[1];
+          var posts = _ref22[2];
+          return _this._mergeTwoTimelines(_this._mergeTwoTimelines(activities, events, direction), posts, direction);
+        })
+
+        // Finally, remove initial post if it's not required
+        .then(function (posts) {
+          return including ? posts : posts.filter(function (p) {
+            return p !== post;
+          });
         });
       });
     },
 
     /**
+     * Perform merge by timestamp.
+     * When same-date conflicts occur, the first timeline objects will be
+     * considered to be newer.
+     *
+     * @private
+     * @param {Array<DS.Model>} activities 1st timeline
+     * @param {Array<DS.Model>} posts 2nd timeline
+     * @param {String} direction older or newer
+     * @return {Array<DS.Model>} merged timeline
+     */
+    _mergeTwoTimelines: function _mergeTwoTimelines(activities, posts, direction) {
+      var postsWithActivities = [];
+      while (posts.length !== 0 || activities.length !== 0) {
+        var topPost = posts[0];
+        var topActivity = activities[0];
+
+        if (!topPost) {
+          postsWithActivities.push(topActivity);
+          activities.splice(0, 1);
+          continue;
+        }
+
+        if (!topActivity) {
+          postsWithActivities.push(topPost);
+          posts.splice(0, 1);
+          continue;
+        }
+
+        var postDate = topPost.get('createdAt');
+        var activityDate = topActivity.get('createdAt');
+
+        if (direction === 'newer') {
+          if (activityDate.getTime() < postDate.getTime()) {
+            postsWithActivities.push(topActivity);
+            activities.splice(0, 1);
+          } else {
+            postsWithActivities.push(topPost);
+            posts.splice(0, 1);
+          }
+        } else if (direction === 'older') {
+          if (postDate.getTime() > activityDate.getTime()) {
+            postsWithActivities.push(topPost);
+            posts.splice(0, 1);
+          } else {
+            postsWithActivities.push(topActivity);
+            activities.splice(0, 1);
+          }
+        }
+      }
+      return postsWithActivities;
+    },
+
+    /**
+     * Get all activites for a range of posts.
+     *
+     * @private
+     * @param {DS.Model} caseModel case
+     * @param {Array<DS.Model>} posts posts
+     * @param {String} direction older or newer
+     * @param {String} type activity or event
+     * @return {Promise<Array<DS.Model>>} activities
+     */
+    _getActivitiesForPosts: function _getActivitiesForPosts(caseModel, posts, direction, type) {
+      var _this2 = this;
+
+      var cache = this.getCaseCache(caseModel);
+
+      // Fetch all activities or events between two points in time (inclusive).
+      var fetchActivities = function fetchActivities(start, end, direction) {
+        return _this2.get('store').query(type, {
+          parent: type === 'activity' ? caseModel : caseModel.get('requester'),
+          // since and until are exclusive
+          since: direction === 'newer' ? Math.floor((start.getTime() - 1000) / 1000) : undefined,
+          until: direction === 'older' ? Math.floor((start.getTime() + 1000) / 1000) : undefined,
+          sort_order: direction === 'newer' ? 'ASC' : 'DESC'
+        }).then(function (result) {
+          var isActivityNotCreatedBeforeLastRecord = function isActivityNotCreatedBeforeLastRecord(activity) {
+            return activity.get('createdAt').getTime() >= end.getTime();
+          };
+          var isActivityNotCreatedAfterLastRecord = function isActivityNotCreatedAfterLastRecord(activity) {
+            return activity.get('createdAt').getTime() <= end.getTime();
+          };
+          var partitionFn = undefined;
+          if (!end) {
+            partitionFn = function () {
+              return true;
+            };
+          } else if (direction === 'older') {
+            partitionFn = isActivityNotCreatedBeforeLastRecord;
+          } else {
+            partitionFn = isActivityNotCreatedAfterLastRecord;
+          }
+
+          var _$partition = _['default'].partition(result.toArray(), partitionFn);
+
+          var _$partition2 = _slicedToArray(_$partition, 2);
+
+          var activities = _$partition2[0];
+          var rest = _$partition2[1];
+
+          if (activities.length === 0 || rest.length > 0) {
+            return activities;
+          } else {
+            var last = activities.get('lastObject');
+            if (direction === 'newer') {
+              start = new Date(last.get('createdAt').getTime() + 1000);
+            } else {
+              start = new Date(last.get('createdAt').getTime() - 1000);
+            }
+            return fetchActivities(start, end, direction).then(function (moreActivities) {
+              return activities.concat(moreActivities);
+            });
+          }
+        });
+      };
+
+      var getActivitiesBetweenCases = function getActivitiesBetweenCases(from, to, direction) {
+        var newer = direction === 'newer';
+        var isBounded = !to || (newer ? to.get('sequence') === cache.total : to.get('sequence') === 1);
+        var start = new Date(from.get('createdAt').getTime() - (newer ? 0 : 1000));
+        var end = !isBounded ? new Date(to.get('createdAt').getTime() - (newer ? 1000 : 0)) : undefined;
+        return fetchActivities(start, end, direction);
+      };
+
+      var from = posts[0];
+      var to = posts.length === 1 ? undefined : posts[posts.length - 1];
+
+      return getActivitiesBetweenCases(from, to, direction);
+    },
+
+    /**
      * Recursive function used by getPosts
      *
+     * @private
      * @param {DS.Model} caseModel case
      * @param {DS.Model} post post
      * @param {DS.Model} direction 'older' or 'newer'
      * @param {[Number]} count count
      * @return {Promise} posts
      */
-    getPostsRecursive: function getPostsRecursive(caseModel, post, direction) {
-      var _this2 = this;
+    _getPostsRecursive: function _getPostsRecursive(caseModel, post, direction) {
+      var _this3 = this;
 
       var count = arguments.length <= 3 || arguments[3] === undefined ? defaultPostCount : arguments[3];
 
@@ -51051,13 +51869,13 @@ define('frontend-cp/services/case-timeline-cache', ['exports', 'ember'], functio
       var nextPost = caseCache.posts[nextSequence];
       var queryParamName = direction === 'older' ? 'beforeId' : 'afterId';
 
-      return (nextPost ? Promise.resolve(nextPost) : this.fetchPosts(caseModel, _defineProperty({}, queryParamName, post.get('id'))).then(function () {
+      return (nextPost ? Promise.resolve(nextPost) : this._fetchPosts(caseModel, _defineProperty({}, queryParamName, post.get('id'))).then(function () {
         return caseCache.posts[nextSequence];
       })).then(function (post) {
         if (!post) {
           return [];
         } else {
-          return _this2.getPostsRecursive(caseModel, post, direction, count - 1).then(function (posts) {
+          return _this3._getPostsRecursive(caseModel, post, direction, count - 1).then(function (posts) {
             return [post].concat(posts);
           });
         }
@@ -51067,20 +51885,22 @@ define('frontend-cp/services/case-timeline-cache', ['exports', 'ember'], functio
     /**
      * Retrieves posts from the server. Returns a promise which resolves when
      * fetch is successful
+     *
+     * @private
      * @param {DS.Model} caseModel case
      * @param {[Number]} options.afterId id of the post
      * @param {[Number]} options.beforeId id of the post
      * @return {Promise} promise
      */
-    fetchPosts: function fetchPosts(caseModel) {
-      var _this3 = this;
+    _fetchPosts: function _fetchPosts(caseModel) {
+      var _this4 = this;
 
-      var _ref2 = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+      var _ref3 = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
-      var _ref2$afterId = _ref2.afterId;
-      var afterId = _ref2$afterId === undefined ? undefined : _ref2$afterId;
-      var _ref2$beforeId = _ref2.beforeId;
-      var beforeId = _ref2$beforeId === undefined ? undefined : _ref2$beforeId;
+      var _ref3$afterId = _ref3.afterId;
+      var afterId = _ref3$afterId === undefined ? undefined : _ref3$afterId;
+      var _ref3$beforeId = _ref3.beforeId;
+      var beforeId = _ref3$beforeId === undefined ? undefined : _ref3$beforeId;
 
       var caseCache = this.getCaseCache(caseModel);
       return this.get('store').query('post', {
@@ -51088,7 +51908,7 @@ define('frontend-cp/services/case-timeline-cache', ['exports', 'ember'], functio
         after_id: afterId, // eslint-disable-line camelcase
         before_id: beforeId // eslint-disable-line camelcase
       }).then(function (newPosts) {
-        caseCache.total = _this3.get('store').metadataFor('post').total;
+        caseCache.total = _this4.get('store').metadataFor('post').total;
         newPosts.forEach(function (post) {
           caseCache.posts[post.get('sequence')] = post;
           if (post.get('sequence') === caseCache.total) {
@@ -60537,6 +61357,11 @@ define('frontend-cp/session/agent/cases/case/index/controller', ['exports', 'emb
         refreshModel: false
       },
 
+      filterParam: {
+        refreshModel: false,
+        as: 'filter'
+      },
+
       sort: {
         refreshModel: false
       }
@@ -60547,9 +61372,18 @@ define('frontend-cp/session/agent/cases/case/index/controller', ['exports', 'emb
       return sort ? sort : 'newest';
     }),
 
+    filter: Ember['default'].computed('filterParam', function () {
+      var filter = this.get('filterParam');
+      return filter ? filter : 'posts';
+    }),
+
     actions: {
       changeTopPost: function changeTopPost(postId) {
         this.get('target').send('changeTopPost', postId);
+      },
+
+      filter: function filter(_filter) {
+        this.get('target').send('filter', _filter);
       },
 
       sort: function sort(sortOrder) {
@@ -60571,6 +61405,12 @@ define('frontend-cp/session/agent/cases/case/index/route', ['exports', 'ember'],
       postId: {
         refreshModel: false,
         replace: true
+      },
+
+      filterParam: {
+        refreshModel: false,
+        replace: true,
+        as: 'filter'
       },
 
       sort: {
@@ -60622,12 +61462,14 @@ define('frontend-cp/session/agent/cases/case/index/route', ['exports', 'ember'],
       var path = location.pathname;
       var baseURL = locationService.get('baseURL').replace(/\/$/, '');
       var postId = params.postId !== undefined ? params.postId : this.get('controller').get('postId');
+      var filter = params.filter !== undefined ? params.filter : this.get('controller').get('filter');
       var sort = params.sort !== undefined ? params.sort : this.get('controller').get('sort');
 
       var postParam = postId ? 'postId=' + postId : '';
+      var filterParam = filter ? 'filter=' + filter : '';
       var sortParam = sort ? 'sort=' + sort : '';
 
-      var search = [postParam, sortParam].filter(function (x) {
+      var search = [postParam, filterParam, sortParam].filter(function (x) {
         return x;
       }).join('&');
       var url = path.replace(baseURL, '').replace(rootURL, '') + (search ? '?' + search : '');
@@ -60640,6 +61482,10 @@ define('frontend-cp/session/agent/cases/case/index/route', ['exports', 'ember'],
     actions: {
       changeTopPost: function changeTopPost(postId) {
         this.updateUrl({ postId: postId });
+      },
+
+      filter: function filter(_filter) {
+        this.updateUrl({ filter: _filter });
       },
 
       sort: function sort(sortOrder) {
@@ -60664,7 +61510,7 @@ define('frontend-cp/session/agent/cases/case/index/template', ['exports'], funct
             "column": 0
           },
           "end": {
-            "line": 10,
+            "line": 12,
             "column": 0
           }
         },
@@ -60688,7 +61534,7 @@ define('frontend-cp/session/agent/cases/case/index/template', ['exports'], funct
         return morphs;
       },
       statements: [
-        ["inline","ko-case-content",[],["case",["subexpr","@mut",[["get","case",["loc",[null,[2,7],[2,11]]]]],[],[]],"postId",["subexpr","@mut",[["get","postId",["loc",[null,[3,9],[3,15]]]]],[],[]],"sortOrder",["subexpr","@mut",[["get","sortOrder",["loc",[null,[4,12],[4,21]]]]],[],[]],"caseFields",["subexpr","@mut",[["get","caseFields",["loc",[null,[5,13],[5,23]]]]],[],[]],"onTopPostChange",["subexpr","action",["changeTopPost"],[],["loc",[null,[6,18],[6,42]]]],"onSort",["subexpr","action",["sort"],[],["loc",[null,[7,9],[7,24]]]]],["loc",[null,[1,0],[8,2]]]]
+        ["inline","ko-case-content",[],["case",["subexpr","@mut",[["get","case",["loc",[null,[2,7],[2,11]]]]],[],[]],"postId",["subexpr","@mut",[["get","postId",["loc",[null,[3,9],[3,15]]]]],[],[]],"sortOrder",["subexpr","@mut",[["get","sortOrder",["loc",[null,[4,12],[4,21]]]]],[],[]],"filter",["subexpr","@mut",[["get","filter",["loc",[null,[5,9],[5,15]]]]],[],[]],"caseFields",["subexpr","@mut",[["get","caseFields",["loc",[null,[6,13],[6,23]]]]],[],[]],"onTopPostChange",["subexpr","action",["changeTopPost"],[],["loc",[null,[7,18],[7,42]]]],"onSort",["subexpr","action",["sort"],[],["loc",[null,[8,9],[8,24]]]],"onFilter",["subexpr","action",["filter"],[],["loc",[null,[9,11],[9,28]]]]],["loc",[null,[1,0],[10,2]]]]
       ],
       locals: [],
       templates: []
@@ -76361,7 +77207,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+2e94e052"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+f5b44f7c"});
 }
 
 /* jshint ignore:end */
