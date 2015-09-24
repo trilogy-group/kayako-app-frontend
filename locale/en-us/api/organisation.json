@@ -1,4 +1,5 @@
 {
   "domains": "Email domains",
-  "new_organisation_placeholder": "Click to add a name"
+  "new_organisation_placeholder": "Click to add a name",
+  "delete_organisation": "Delete organisation"
 }
