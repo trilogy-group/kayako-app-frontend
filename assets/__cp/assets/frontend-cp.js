@@ -13092,6 +13092,10 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       return errorMap;
     }),
 
+    caseEditorStyle: Ember['default'].computed('caseEditorHeight', function () {
+      return Ember['default'].String.htmlSafe('height: ' + this.get('caseEditorHeight') + 'px');
+    }),
+
     isPeopleAutoCompleteAvailable: Ember['default'].computed('replyType', 'channel.isChannelTypeMailbox', function () {
       return this.get('replyType') === 'REPLY' && this.get('channel.isChannelTypeMailbox');
     }),
@@ -14823,7 +14827,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
         ["inline","ko-case/macro-selector",[],["macros",["subexpr","@mut",[["get","macros",["loc",[null,[34,46],[34,52]]]]],[],[]],"onMacroSelected","applyMacro"],["loc",[null,[34,14],[34,83]]]],
         ["inline","ko-case/macro-selector",[],["macros",["subexpr","@mut",[["get","macros",["loc",[null,[37,46],[37,52]]]]],[],[]],"onMacroSelected","applyMacro"],["loc",[null,[37,14],[37,83]]]],
         ["inline","ko-case/macro-selector",[],["macros",["subexpr","@mut",[["get","macros",["loc",[null,[40,46],[40,52]]]]],[],[]],"onMacroSelected","applyMacro"],["loc",[null,[40,14],[40,83]]]],
-        ["attribute","style",["concat",["height: ",["get","caseEditorHeight",["loc",[null,[50,72],[50,88]]]],"px"]]],
+        ["attribute","style",["get","caseEditorStyle",["loc",[null,[50,63],[50,78]]]]],
         ["attribute","class",["concat",["ko-case-content__editor ",["subexpr","if",[["get","headerSticky",["loc",[null,[51,51],[51,63]]]],"ko-case-content__editor--sticky"],[],["loc",[null,[51,46],[51,99]]]]]]],
         ["inline","ko-case-field/post",[],["viewName","casePostEditor","channels",["subexpr","@mut",[["get","case.replyChannels",["loc",[null,[54,25],[54,43]]]]],[],[]],"channel",["subexpr","@mut",[["get","channel",["loc",[null,[55,24],[55,31]]]]],[],[]],"onChannelChange","setChannel","replyType",["subexpr","@mut",[["get","replyType",["loc",[null,[57,26],[57,35]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","errorMap.contents",["loc",[null,[58,26],[58,43]]]]],[],[]],"suggestedPeople",["subexpr","@mut",[["get","suggestedPeople",["loc",[null,[59,32],[59,47]]]]],[],[]],"selectedPeople",["subexpr","@mut",[["get","selectedPeople",["loc",[null,[60,31],[60,45]]]]],[],[]],"suggestedPeopleTotal",["subexpr","@mut",[["get","suggestedPeopleTotal",["loc",[null,[61,37],[61,57]]]]],[],[]],"suggestedPeopleLoading",["subexpr","@mut",[["get","suggestedPeopleLoading",["loc",[null,[62,39],[62,61]]]]],[],[]],"isPeopleAutoCompleteAvailable",["subexpr","@mut",[["get","isPeopleAutoCompleteAvailable",["loc",[null,[63,46],[63,75]]]]],[],[]],"addParticipant","addParticipant","onPeopleSuggestion","onPeopleSuggestion"],["loc",[null,[52,12],[65,57]]]],
         ["inline","ko-case-content/dropdown",[],["label",["subexpr","format-message",[["subexpr","intl-get",["cases.sort"],[],["loc",[null,[69,103],[69,126]]]]],[],["loc",[null,[69,87],[69,127]]]],"value",["subexpr","@mut",[["get","sortOrder",["loc",[null,[69,134],[69,143]]]]],[],[]],"options",["subexpr","@mut",[["get","sortOptions",["loc",[null,[69,152],[69,163]]]]],[],[]],"onChange",["subexpr","action",["sort"],[],["loc",[null,[69,173],[69,188]]]]],["loc",[null,[69,54],[69,190]]]],
@@ -19658,8 +19662,9 @@ define('frontend-cp/components/ko-context-modal-item/component', ['exports', 'em
 
   'use strict';
 
-  exports['default'] = Ember['default'].Component.extend({
+  var htmlSafe = Ember['default'].String.htmlSafe;
 
+  exports['default'] = Ember['default'].Component.extend({
     contextModalService: Ember['default'].inject.service('context-modal'),
     activeContextModalId: Ember['default'].computed.alias('contextModalService.activeContextModalId'),
     activeIndex: Ember['default'].computed.alias('contextModalService.index'),
@@ -19703,9 +19708,7 @@ define('frontend-cp/components/ko-context-modal-item/component', ['exports', 'em
      */
 
     modalItemStyle: Ember['default'].computed('isHidden', function () {
-      if (this.get('isHidden')) {
-        return 'display: none;'.htmlSafe();
-      }
+      return htmlSafe(this.get('isHidden') ? 'display: none;' : '');
     }),
 
     actions: {
@@ -19982,6 +19985,8 @@ define('frontend-cp/components/ko-context-modal/component', ['exports', 'ember',
 
   'use strict';
 
+  var htmlSafe = Ember['default'].String.htmlSafe;
+
   var POSITION_MARGIN = 18,
       // Padding around window bounds to apply if modal's natural position is outside the bounds and it gets moved inside.
   ARROW_OFFSET = 9,
@@ -20145,7 +20150,7 @@ define('frontend-cp/components/ko-context-modal/component', ['exports', 'ember',
     }),
 
     modalContentHeightStyle: Ember['default'].computed('modalContentHeight', function () {
-      return 'height:' + this.get('modalContentHeight') + 'px';
+      return htmlSafe('height: ' + this.get('modalContentHeight') + 'px');
     }),
 
     isConstrained: Ember['default'].computed('naturalModalHeight', 'constrainedModalHeight', 'isResetting', function () {
@@ -20223,13 +20228,11 @@ define('frontend-cp/components/ko-context-modal/component', ['exports', 'ember',
      */
 
     floatingModalStyle: Ember['default'].computed('isHiddenFloatingModal', function () {
-      if (this.get('isHiddenFloatingModal')) {
-        return 'display: none;'.htmlSafe();
-      }
+      return htmlSafe(this.get('isHiddenFloatingModal') ? 'display: none;' : '');
     }),
 
     overlayStyle: Ember['default'].computed('documentWidth', 'documentHeight', function () {
-      return ('width:' + this.get('documentWidth') + 'px;' + 'height:' + this.get('documentHeight') + 'px;').htmlSafe();
+      return htmlSafe('width:' + this.get('documentWidth') + 'px;' + 'height:' + this.get('documentHeight') + 'px;');
     }),
 
     containerStyle: Ember['default'].computed('positionY', 'positionX', 'modalVisible', function () {
@@ -20237,17 +20240,15 @@ define('frontend-cp/components/ko-context-modal/component', ['exports', 'ember',
       if (!this.get('modalVisible')) {
         visibility = 'visibility: hidden;';
       }
-      return ('top:' + this.get('positionY') + 'px;' + 'left:' + this.get('positionX') + 'px;' + visibility).htmlSafe();
+      return htmlSafe('top: ' + this.get('positionY') + 'px; left: ' + this.get('positionX') + 'px; ' + visibility);
     }),
 
     contentStyle: Ember['default'].computed('isConstrained', 'modalContentHeightStyle', function () {
-      if (this.get('isConstrained')) {
-        return this.get('modalContentHeightStyle').htmlSafe();
-      }
+      return htmlSafe(this.get('isConstrained') ? this.get('modalContentHeightStyle') : '');
     }),
 
     arrowStyle: Ember['default'].computed('arrowX', function () {
-      return ('left:' + this.get('arrowX') + 'px;').htmlSafe();
+      return htmlSafe('left: ' + this.get('arrowX') + 'px;');
     })
 
   });
@@ -34730,6 +34731,8 @@ define('frontend-cp/components/ko-table/column/component', ['exports', 'ember'],
 
   'use strict';
 
+  var htmlSafe = Ember['default'].String.htmlSafe;
+
   exports['default'] = Ember['default'].Component.extend({
     tagName: 'th',
 
@@ -34737,6 +34740,13 @@ define('frontend-cp/components/ko-table/column/component', ['exports', 'ember'],
     classNameBindings: ['sortable:ko-table_column--sortable'],
     attributeBindings: 'style',
 
+    // CPs
+    style: Ember['default'].computed('width', function () {
+      var width = this.get('width');
+      return htmlSafe(width ? 'width: ' + width : '');
+    }),
+
+    // Events
     mouseDown: function mouseDown(e) {
       if (this.get('sortable')) {
         e.preventDefault();
@@ -41613,8 +41623,9 @@ define('frontend-cp/login/controller', ['exports', 'ember', 'frontend-cp/config/
 
   'use strict';
 
-  exports['default'] = Ember['default'].Controller.extend(SimpleStateMixin['default'], {
+  var htmlSafe = Ember['default'].String.htmlSafe;
 
+  exports['default'] = Ember['default'].Controller.extend(SimpleStateMixin['default'], {
     sessionService: Ember['default'].inject.service('session'),
     notificationService: Ember['default'].inject.service('notification'),
     intlService: Ember['default'].inject.service('intl'),
@@ -42029,14 +42040,14 @@ define('frontend-cp/login/controller', ['exports', 'ember', 'frontend-cp/config/
      */
 
     loginFrontImageStyle: Ember['default'].computed(function () {
-      return ('background-image: url(' + config['default'].assetRoot + '\'/images/user/avatar.png\');').htmlSafe();
+      return htmlSafe('background-image: url(' + config['default'].assetRoot + '\'/images/user/avatar.png\');');
     }),
 
     loginBackImageStyle: Ember['default'].computed('avatarBackground', function () {
       if (this.get('avatarBackground')) {
-        return ('background-image: url(' + config['default'].assetRoot + '\'" + this.get(\'avatarBackground\') + "\');').htmlSafe();
+        return htmlSafe('background-image: url("' + config['default'].assetRoot + '/' + this.get('avatarBackground') + '");');
       } else {
-        return '';
+        return htmlSafe('');
       }
     }),
 
@@ -60871,6 +60882,8 @@ define('frontend-cp/session/admin/showcase/controller', ['exports', 'ember', 'fr
 
   'use strict';
 
+  var htmlSafe = Ember['default'].String.htmlSafe;
+
   exports['default'] = Ember['default'].Controller.extend(PusherBinding['default'], {
     currentView: null,
 
@@ -60914,7 +60927,7 @@ define('frontend-cp/session/admin/showcase/controller', ['exports', 'ember', 'fr
     },
 
     listStyle: function listStyle() {
-      return 'background-color: #00ccff; padding: 10px;'.htmlSafe();
+      return htmlSafe('background-color: #00ccff; padding: 10px;');
     },
 
     people: new Ember['default'].A([{
@@ -63628,22 +63641,8 @@ define('frontend-cp/session/showcase/controller', ['exports', 'ember', 'ember-va
   'use strict';
 
   exports['default'] = Ember['default'].Controller.extend(EmberValidations['default'], {
-
     assetRoot: config['default'].assetRoot,
-
     contextModalService: Ember['default'].inject.service('context-modal'),
-
-    /**
-     * Need to SafeString all bound style attributes
-     */
-
-    boxContainerStyle: function boxContainerStyle() {
-      return 'width: auto; display: inline-block;'.htmlSafe();
-    },
-
-    infoBarStyle: function infoBarStyle() {
-      return 'width: 275px; min-height: 0 !important;'.htmlSafe();
-    },
 
     actions: {
       sayyeah: function sayyeah() {
@@ -64707,7 +64706,7 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
                 },
                 "end": {
                   "line": 958,
-                  "column": 69
+                  "column": 62
                 }
               },
               "moduleName": "frontend-cp/session/showcase/template.hbs"
@@ -64741,7 +64740,7 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
                 },
                 "end": {
                   "line": 959,
-                  "column": 73
+                  "column": 66
                 }
               },
               "moduleName": "frontend-cp/session/showcase/template.hbs"
@@ -64803,8 +64802,8 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
             return morphs;
           },
           statements: [
-            ["block","ko-table/column",[],["style","width: 150px","sortable","name"],0,null,["loc",[null,[958,8],[958,89]]]],
-            ["block","ko-table/column",[],["style","width: 100px","sortable","status"],1,null,["loc",[null,[959,8],[959,93]]]]
+            ["block","ko-table/column",[],["width","150px","sortable","name"],0,null,["loc",[null,[958,8],[958,82]]]],
+            ["block","ko-table/column",[],["width","100px","sortable","status"],1,null,["loc",[null,[959,8],[959,86]]]]
           ],
           locals: [],
           templates: [child0, child1]
@@ -67572,13 +67571,11 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
         var element7 = dom.childAt(element2, [9]);
         var element8 = dom.childAt(element1, [311]);
         var element9 = dom.childAt(element1, [313]);
-        var element10 = dom.childAt(element1, [317]);
-        var element11 = dom.childAt(element1, [337]);
-        var element12 = dom.childAt(element11, [1, 1]);
-        var element13 = dom.childAt(element12, [1, 1]);
-        var element14 = dom.childAt(element12, [3, 1]);
-        var element15 = dom.childAt(element12, [5, 1]);
-        var morphs = new Array(69);
+        var element10 = dom.childAt(element1, [337, 1, 1]);
+        var element11 = dom.childAt(element10, [1, 1]);
+        var element12 = dom.childAt(element10, [3, 1]);
+        var element13 = dom.childAt(element10, [5, 1]);
+        var morphs = new Array(67);
         morphs[0] = dom.createElementMorph(element3);
         morphs[1] = dom.createElementMorph(element4);
         morphs[2] = dom.createElementMorph(element5);
@@ -67639,15 +67636,13 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
         morphs[57] = dom.createMorphAt(dom.childAt(element1, [305, 3, 1]),1,1);
         morphs[58] = dom.createElementMorph(element8);
         morphs[59] = dom.createElementMorph(element9);
-        morphs[60] = dom.createAttrMorph(element10, 'style');
-        morphs[61] = dom.createMorphAt(element10,1,1);
-        morphs[62] = dom.createMorphAt(dom.childAt(element1, [323]),1,1);
-        morphs[63] = dom.createMorphAt(dom.childAt(element1, [329]),1,1);
-        morphs[64] = dom.createMorphAt(dom.childAt(element1, [331]),0,0);
-        morphs[65] = dom.createAttrMorph(element11, 'style');
+        morphs[60] = dom.createMorphAt(dom.childAt(element1, [317]),1,1);
+        morphs[61] = dom.createMorphAt(dom.childAt(element1, [323]),1,1);
+        morphs[62] = dom.createMorphAt(dom.childAt(element1, [329]),1,1);
+        morphs[63] = dom.createMorphAt(dom.childAt(element1, [331]),0,0);
+        morphs[64] = dom.createAttrMorph(element11, 'src');
+        morphs[65] = dom.createAttrMorph(element12, 'src');
         morphs[66] = dom.createAttrMorph(element13, 'src');
-        morphs[67] = dom.createAttrMorph(element14, 'src');
-        morphs[68] = dom.createAttrMorph(element15, 'src');
         return morphs;
       },
       statements: [
@@ -67711,12 +67706,10 @@ define('frontend-cp/session/showcase/template', ['exports'], function (exports) 
         ["inline","ko-editable-text",[],["value",["subexpr","@mut",[["get","editableTextVal",["loc",[null,[883,33],[883,48]]]]],[],[]]],["loc",[null,[883,8],[883,50]]]],
         ["element","action",["toggleCaseFieldError"],[],["loc",[null,[895,10],[895,43]]]],
         ["element","action",["clearChanges"],[],["loc",[null,[896,10],[896,35]]]],
-        ["attribute","style",["get","infoBarStyle",["loc",[null,[900,15],[900,27]]]]],
         ["block","ko-info-bar",[],[],5,null,["loc",[null,[901,4],[949,20]]]],
         ["block","ko-table",[],["selectable",true],6,null,["loc",[null,[956,4],[969,17]]]],
         ["inline","ko-datepicker",[],["date",["subexpr","@mut",[["get","date",["loc",[null,[976,25],[976,29]]]]],[],[]],"on-date-change","dateChange"],["loc",[null,[976,4],[976,59]]]],
         ["inline","escape-html",["{{ko-datepicker date=date on-date-change=\"dateChange\"}}"],[],["loc",[null,[978,8],[978,81]]]],
-        ["attribute","style",["get","boxContainerStyle",["loc",[null,[984,37],[984,54]]]]],
         ["attribute","src",["concat",[["get","assetRoot",["loc",[null,[988,22],[988,31]]]],"/images/icons/case.svg"]]],
         ["attribute","src",["concat",[["get","assetRoot",["loc",[null,[994,22],[994,31]]]],"/images/icons/user.svg"]]],
         ["attribute","src",["concat",[["get","assetRoot",["loc",[null,[1000,22],[1000,31]]]],"/images/icons/organization.svg"]]]
@@ -77425,7 +77418,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+a5a24d8e"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+14279861"});
 }
 
 /* jshint ignore:end */
