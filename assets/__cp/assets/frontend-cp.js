@@ -42863,11 +42863,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
 
     // Endpoints
     this.get('/locales/en-us/strings', function (db) {
-      if (!db['en-us-strings']) {
-        db.createCollection('en-us-strings');
-        db['en-us-strings'].insert(EnUsStrings['default']);
-      }
-      return db['en-us-strings'][0];
+      return EnUsStrings['default'][0];
     });
 
     this.get('/locales/en-us', function () {
@@ -43022,7 +43018,6 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       }
 
       return {
-        id: 1,
         status: 200,
         data: db.sessions[0],
         resource: 'session',
@@ -43156,9 +43151,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
         },
         offset: 0,
         limit: 5,
-        total_count: db.cases.length,
-        next_url: 'http://novo/api/index.php?/v1/cases/base&_flat=true&limit=5&offset=5',
-        last_url: 'http://novo/api/index.php?/v1/cases/base&_flat=true&limit=5&offset=15'
+        total_count: db.cases.length
       };
     });
 
@@ -43219,9 +43212,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
         },
         offset: 0,
         limit: 5,
-        total_count: db.cases.length,
-        next_url: 'http://novo/api/index.php?/v1/cases/base&_flat=true&limit=5&offset=5',
-        last_url: 'http://novo/api/index.php?/v1/cases/base&_flat=true&limit=5&offset=15'
+        total_count: db.cases.length
       };
     });
 
@@ -77418,7 +77409,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+14279861"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+f8a52cb7"});
 }
 
 /* jshint ignore:end */
