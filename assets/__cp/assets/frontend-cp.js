@@ -44406,6 +44406,10 @@ define('frontend-cp/mirage/fixtures/en-us-strings', ['exports'], function (expor
       "value": "Views",
       "resource_type": "locale_string"
     }, {
+      "id": "frontend.api.admin.organizationfields",
+      "value": "Organization Fields",
+      "resource_type": "locale_string"
+    }, {
       "id": "frontend.api.admin.views.buttons.add_new",
       "value": "Add new",
       "resource_type": "locale_string"
@@ -77353,7 +77357,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+b255be98"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+9125280d"});
 }
 
 /* jshint ignore:end */
