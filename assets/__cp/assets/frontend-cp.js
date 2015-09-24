@@ -48647,7 +48647,11 @@ define('frontend-cp/mixins/change-aware-model', ['exports', 'ember', 'npm:lodash
 
       var currentRelationship = this.get(relationshipKey);
 
-      if (initialRelationship.length !== currentRelationship.length) {
+      if (!initialRelationship && currentRelationship) {
+        return true;
+      }
+
+      if (initialRelationship.length !== currentRelationship.get('length')) {
         return true;
       }
 
@@ -77349,7 +77353,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+7964ae8e"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+b255be98"});
 }
 
 /* jshint ignore:end */
