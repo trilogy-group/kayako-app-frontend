@@ -59740,7 +59740,7 @@ define('frontend-cp/session/admin/people/teams/index/template', ['exports'], fun
       },
       statements: [
         ["inline","ko-admin/page-header",[],["title",["subexpr","format-message",[["subexpr","intl-get",["admin.teams.headings.index"],[],["loc",[null,[2,24],[2,63]]]]],[],["loc",[null,[2,8],[2,64]]]],"buttonText",["subexpr","format-message",[["subexpr","intl-get",["admin.teams.buttons.add"],[],["loc",[null,[3,29],[3,65]]]]],[],["loc",[null,[3,13],[3,66]]]],"buttonAction","transitionToAddNewTeam"],["loc",[null,[1,0],[5,2]]]],
-        ["inline","input",[],["class","input-text input-text--search","type","text","value",["subexpr","@mut",[["get","filter",["loc",[null,[10,70],[10,76]]]]],[],[]],"placeholder",["subexpr","format-message",[["subexpr","intl-get",["admin.teams.labels.filter_agents"],[],["loc",[null,[10,105],[10,150]]]]],[],["loc",[null,[10,89],[10,151]]]]],["loc",[null,[10,6],[10,153]]]],
+        ["inline","input",[],["class","input-text input-text--search","type","text","value",["subexpr","@mut",[["get","filter",["loc",[null,[10,70],[10,76]]]]],[],[]],"placeholder",["subexpr","format-message",[["subexpr","intl-get",["admin.teams.labels.filter_teams"],[],["loc",[null,[10,105],[10,149]]]]],[],["loc",[null,[10,89],[10,150]]]]],["loc",[null,[10,6],[10,152]]]],
         ["block","each",[["get","filteredResults",["loc",[null,[18,10],[18,25]]]]],[],0,null,["loc",[null,[18,2],[18,116]]]]
       ],
       locals: [],
@@ -59756,9 +59756,12 @@ define('frontend-cp/session/admin/people/teams/new/controller', ['exports', 'emb
   var Controller = Ember['default'].Controller;
   var computed = Ember['default'].computed;
   var inject = Ember['default'].inject;
+  var RSVP = Ember['default'].RSVP;
 
   exports['default'] = Controller.extend({
     intl: inject.service(),
+    session: inject.service(),
+    errorHandler: inject.service(),
     agents: [],
     membersToAdd: [],
     membersToRemove: [],
@@ -59801,6 +59804,35 @@ define('frontend-cp/session/admin/people/teams/new/controller', ['exports', 'emb
         return _this2.matchesFilter(member.get('fullName'));
       });
     },
+    addMembers: function addMembers() {
+      var teamId = this.get('model.id');
+      var ids = this.get('membersToAdd').map(function (member) {
+        return member.get('id');
+      }).join(',');
+      return Ember['default'].$.ajax('/api/v1/teams/' + teamId + '/members', {
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ agent_ids: ids }),
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Session-ID': this.get('session.sessionId')
+        }
+      });
+    },
+    removeMembers: function removeMembers() {
+      var teamId = this.get('model.id');
+      var ids = this.get('membersToRemove').map(function (member) {
+        return member.get('id');
+      }).join(',');
+      return Ember['default'].$.ajax('/api/v1/teams/' + teamId + '/members?agent_ids=' + ids, {
+        method: 'DELETE',
+        contentType: 'application/json',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Session-ID': this.get('session.sessionId')
+        }
+      });
+    },
     actions: {
       transitionToIndexRoute: function transitionToIndexRoute() {
         this.transitionToRoute('session.admin.people.teams.index');
@@ -59813,12 +59845,26 @@ define('frontend-cp/session/admin/people/teams/new/controller', ['exports', 'emb
       saveTeam: function saveTeam() {
         var _this3 = this;
 
+        var eh = this.get('errorHandler');
+        // Update the model straight away, and then perform
+        // the API requests in the background.
         this.get('model.members').pushObjects(this.get('membersToAdd'));
         this.get('model.members').removeObjects(this.get('membersToRemove'));
         this.get('model').save().then(function () {
-          _this3.set('membersToAdd', []);
-          _this3.set('membersToRemove', []);
-          _this3.send('transitionToIndexRoute');
+          var promises = [];
+          if (_this3.get('membersToAdd.length') > 0) {
+            promises.push(_this3.addMembers());
+          }
+          if (_this3.get('membersToRemove.length') > 0) {
+            promises.push(_this3.removeMembers());
+          }
+          RSVP.all(promises).then(function () {
+            _this3.set('membersToAdd', []);
+            _this3.set('membersToRemove', []);
+            _this3.send('transitionToIndexRoute');
+          })['catch'](function (e) {
+            return eh.handleServerError(e.responseJSON);
+          });
         });
       },
       showDeleteConfirmation: function showDeleteConfirmation(team) {
@@ -77823,7 +77869,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+f15d02ab"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+470a0f95"});
 }
 
 /* jshint ignore:end */
