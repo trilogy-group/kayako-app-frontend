@@ -13341,7 +13341,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
     caseOrFormFields: Ember['default'].computed('caseFields', 'case.form', function () {
       var caseFields = this.get('caseFields');
       var form = this.get('case.form');
-      return form ? form.get('fields') : caseFields;
+      return form ? form.get('fields') : caseFields.sortBy('sortOrder');
     }),
 
     hasBrand: Ember['default'].computed('case.brand.companyName', function () {
@@ -14452,11 +14452,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 131,
+              "line": 132,
               "column": 8
             },
             "end": {
-              "line": 133,
+              "line": 134,
               "column": 8
             }
           },
@@ -14481,7 +14481,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["inline","ko-case/sla-sidebar",[],["sla",["subexpr","@mut",[["get","case.sla",["loc",[null,[132,34],[132,42]]]]],[],[]],"slaMetrics",["subexpr","@mut",[["get","case.slaMetrics",["loc",[null,[132,54],[132,69]]]]],[],[]]],["loc",[null,[132,8],[132,71]]]]
+          ["inline","ko-case/sla-sidebar",[],["sla",["subexpr","@mut",[["get","case.sla",["loc",[null,[133,34],[133,42]]]]],[],[]],"slaMetrics",["subexpr","@mut",[["get","case.slaMetrics",["loc",[null,[133,54],[133,69]]]]],[],[]]],["loc",[null,[133,8],[133,71]]]]
         ],
         locals: [],
         templates: []
@@ -14497,7 +14497,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             "column": 0
           },
           "end": {
-            "line": 139,
+            "line": 140,
             "column": 0
           }
         },
@@ -14755,7 +14755,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
         dom.appendChild(el4, el5);
         var el5 = dom.createComment("");
         dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n");
+        var el5 = dom.createTextNode("\n\n");
         dom.appendChild(el4, el5);
         var el5 = dom.createComment("");
         dom.appendChild(el4, el5);
@@ -14843,8 +14843,8 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
         ["block","ko-info-bar/field",[],["title",["subexpr","format-message",[["subexpr","intl-get",["cases.tags"],[],["loc",[null,[103,51],[103,74]]]]],[],["loc",[null,[103,35],[103,75]]]],"isEdited",["subexpr","@mut",[["get","isTagsFieldEdited",["loc",[null,[104,19],[104,36]]]]],[],[]]],3,null,["loc",[null,[103,8],[111,30]]]],
         ["inline","ko-case-field/forms",[],["selectedForm",["subexpr","@mut",[["get","case.form",["loc",[null,[114,23],[114,32]]]]],[],[]],"forms",["subexpr","@mut",[["get","caseForms",["loc",[null,[115,16],[115,25]]]]],[],[]],"onFormSelected","setForm","isEdited",["subexpr","@mut",[["get","editedCaseFields.form",["loc",[null,[116,19],[116,40]]]]],[],[]]],["loc",[null,[113,8],[117,10]]]],
         ["block","each",[["get","caseOrFormFields",["loc",[null,[119,16],[119,32]]]]],[],4,null,["loc",[null,[119,8],[129,17]]]],
-        ["block","if",[["get","case.id",["loc",[null,[131,14],[131,21]]]]],[],5,null,["loc",[null,[131,8],[133,15]]]],
-        ["inline","ko-info-bar/metadata",[],["rows",["subexpr","@mut",[["get","caseDates",["loc",[null,[134,36],[134,45]]]]],[],[]]],["loc",[null,[134,8],[134,47]]]]
+        ["block","if",[["get","case.id",["loc",[null,[132,14],[132,21]]]]],[],5,null,["loc",[null,[132,8],[134,15]]]],
+        ["inline","ko-info-bar/metadata",[],["rows",["subexpr","@mut",[["get","caseDates",["loc",[null,[135,36],[135,45]]]]],[],[]]],["loc",[null,[135,8],[135,47]]]]
       ],
       locals: [],
       templates: [child0, child1, child2, child3, child4, child5]
@@ -52091,6 +52091,10 @@ define('frontend-cp/serializers/user', ['exports', 'frontend-cp/serializers/appl
       json.email = getPrimaryEmailAddress(snapshot);
       json.field_values = this.serializeCustomFields(snapshot.attr('customFields')); //eslint-disable-line camelcase
 
+      if (Object.keys(json.field_values).length === 0) {
+        delete json.field_values;
+      }
+
       return json;
 
       function getPrimaryEmailAddress(snapshot) {
@@ -77801,7 +77805,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+f3a8ffa1"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+5d2987a2"});
 }
 
 /* jshint ignore:end */
