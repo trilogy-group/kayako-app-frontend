@@ -69925,6 +69925,31 @@ define('frontend-cp/tests/assertions/properties-equal', ['exports', 'ember', 'qu
   }
 
 });
+define('frontend-cp/tests/blanket-options', function () {
+
+  'use strict';
+
+  /* globals blanket, module */
+  /*eslint-disable */
+  var options = {
+    modulePrefix: 'frontend-cp',
+    filter: '//.*frontend-cp/.*/',
+    antifilter: '//.*(tests|template).*/',
+    loaderExclusions: [],
+    enableCoverage: true,
+    cliOptions: {
+      reporters: ['json'],
+      autostart: true
+    }
+  };
+  if (typeof exports === 'undefined') {
+    blanket.options(options);
+  } else {
+    module.exports = options;
+  }
+  /*eslint-enable */
+
+});
 define('frontend-cp/tests/fixtures/browser/mock-browser', ['exports'], function (exports) {
 
   'use strict';
@@ -77887,7 +77912,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+44dfec11"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+d50aac64"});
 }
 
 /* jshint ignore:end */
