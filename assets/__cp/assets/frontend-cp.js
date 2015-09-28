@@ -35816,6 +35816,8 @@ define('frontend-cp/components/ko-tabs/component', ['exports', 'ember'], functio
   'use strict';
 
   exports['default'] = Ember['default'].Component.extend({
+    tabsService: Ember['default'].inject.service('tabs'),
+
     init: function init() {
       this._super();
       this.set('tabs', this.get('tabs') || []);
@@ -35838,25 +35840,12 @@ define('frontend-cp/components/ko-tabs/component', ['exports', 'ember'], functio
      * @param {Tab} tab The tab object to remove
      */
     closeTab: function closeTab(tab) {
-      var tabs = this.get('tabs');
-
-      // If we're about to close the selected tab, take a note of its index
-      var previouslySelectedIndex = tab === this.get('selectedTab') ? this.tabs.indexOf(tab) : -1;
-
-      tabs.removeObject(tab);
-
-      if (previouslySelectedIndex !== -1) {
-        // If the selected tab was closed, select the one that was to the right of it
-        var maxSelectedIndex = tabs.length - 1;
-        var newSelectedIndex = Math.min(previouslySelectedIndex, maxSelectedIndex);
-        var selectedTab = tabs.objectAt(newSelectedIndex);
-        this.set('selectedTab', selectedTab);
-      }
+      this.get('tabsService').remove(tab);
     },
 
     actions: {
       select: function select(tab) {
-        this.set('selectedTab', tab);
+        this.sendAction('onTabSelected', tab);
       },
       close: function close(tab) {
         this.closeTab(tab);
@@ -38487,12 +38476,18 @@ define('frontend-cp/components/ko-user-action-menu/component', ['exports', 'embe
 
     editSignature: 'editSignature',
     changeUserPassword: 'changeUserPassword',
+    deleteUser: 'deleteUser',
 
     classNameBindings: ['menuActive', 'noItems:u-hidden'],
     menuActive: false,
 
-    noItems: Ember['default'].computed('hasChangePasswordEmailPermission', 'hasChangeSignaturePermission', function () {
-      return !this.get('hasChangePasswordEmailPermission') && !this.get('hasChangeSignaturePermission');
+    noItems: Ember['default'].computed('hasChangePasswordEmailPermission', 'hasChangeSignaturePermission', 'hasDeletePermission', function () {
+      var _this = this;
+
+      var permissionItems = ['hasChangePasswordEmailPermission', 'hasChangeSignaturePermission', 'hasDeletePermission'];
+      return permissionItems.filter(function (item) {
+        return _this.get(item);
+      }).length === 0;
     }),
 
     hasChangeSignaturePermission: Ember['default'].computed('sessionService.permissions', 'userModel.role.roleType', function () {
@@ -38503,9 +38498,16 @@ define('frontend-cp/components/ko-user-action-menu/component', ['exports', 'embe
       return this.get('permissionService').has('app.user.password.change', this.get('sessionService.permissions'), this.get('userModel'));
     }),
 
+    hasDeletePermission: Ember['default'].computed('sessionService.permissions', 'userModel.role.roleType', function () {
+      return this.get('permissionService').has('app.user.delete', this.get('sessionService.permissions'), this.get('userModel'));
+    }),
+
     actions: {
       editSignature: function editSignature() {
         this.sendAction('editSignature');
+      },
+      deleteUser: function deleteUser() {
+        this.sendAction('deleteUser');
       },
       changeUserPassword: function changeUserPassword() {
         this.sendAction('changeUserPassword');
@@ -38612,10 +38614,10 @@ define('frontend-cp/components/ko-user-action-menu/template', ['exports'], funct
                 return el0;
               },
               buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-                var element1 = dom.childAt(fragment, [1]);
+                var element2 = dom.childAt(fragment, [1]);
                 var morphs = new Array(2);
-                morphs[0] = dom.createAttrMorph(element1, 'onclick');
-                morphs[1] = dom.createMorphAt(element1,1,1);
+                morphs[0] = dom.createAttrMorph(element2, 'onclick');
+                morphs[1] = dom.createMorphAt(element2,1,1);
                 return morphs;
               },
               statements: [
@@ -38664,6 +38666,58 @@ define('frontend-cp/components/ko-user-action-menu/template', ['exports'], funct
                 return el0;
               },
               buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var element1 = dom.childAt(fragment, [1]);
+                var morphs = new Array(2);
+                morphs[0] = dom.createAttrMorph(element1, 'onclick');
+                morphs[1] = dom.createMorphAt(element1,1,1);
+                return morphs;
+              },
+              statements: [
+                ["attribute","onclick",["subexpr","action",["changeUserPassword"],[],["loc",[null,[22,51],[22,82]]]]],
+                ["inline","format-message",[["subexpr","intl-get",["users.changepassword"],[],["loc",[null,[23,27],[23,60]]]]],[],["loc",[null,[23,10],[23,62]]]]
+              ],
+              locals: [],
+              templates: []
+            };
+          }());
+          var child2 = (function() {
+            return {
+              meta: {
+                "revision": "Ember@1.13.7",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 27,
+                    "column": 6
+                  },
+                  "end": {
+                    "line": 31,
+                    "column": 6
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-user-action-menu/template.hbs"
+              },
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createTextNode("        ");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createElement("li");
+                dom.setAttribute(el1,"class","ko-dropdown_list__item");
+                var el2 = dom.createTextNode("\n          ");
+                dom.appendChild(el1, el2);
+                var el2 = dom.createComment("");
+                dom.appendChild(el1, el2);
+                var el2 = dom.createTextNode("\n        ");
+                dom.appendChild(el1, el2);
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
                 var element0 = dom.childAt(fragment, [1]);
                 var morphs = new Array(2);
                 morphs[0] = dom.createAttrMorph(element0, 'onclick');
@@ -38671,8 +38725,8 @@ define('frontend-cp/components/ko-user-action-menu/template', ['exports'], funct
                 return morphs;
               },
               statements: [
-                ["attribute","onclick",["subexpr","action",["changeUserPassword"],[],["loc",[null,[22,51],[22,82]]]]],
-                ["inline","format-message",[["subexpr","intl-get",["users.changepassword"],[],["loc",[null,[23,27],[23,60]]]]],[],["loc",[null,[23,10],[23,62]]]]
+                ["attribute","onclick",["subexpr","action",["deleteUser"],[],["loc",[null,[28,51],[28,74]]]]],
+                ["inline","format-message",[["subexpr","intl-get",["users.deleteuser"],[],["loc",[null,[29,27],[29,56]]]]],[],["loc",[null,[29,10],[29,58]]]]
               ],
               locals: [],
               templates: []
@@ -38688,7 +38742,7 @@ define('frontend-cp/components/ko-user-action-menu/template', ['exports'], funct
                   "column": 4
                 },
                 "end": {
-                  "line": 26,
+                  "line": 32,
                   "column": 4
                 }
               },
@@ -38705,22 +38759,28 @@ define('frontend-cp/components/ko-user-action-menu/template', ['exports'], funct
               dom.appendChild(el0, el1);
               var el1 = dom.createComment("");
               dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
               return el0;
             },
             buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-              var morphs = new Array(2);
+              var morphs = new Array(3);
               morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
               morphs[1] = dom.createMorphAt(fragment,2,2,contextualElement);
+              morphs[2] = dom.createMorphAt(fragment,4,4,contextualElement);
               dom.insertBoundary(fragment, 0);
               dom.insertBoundary(fragment, null);
               return morphs;
             },
             statements: [
               ["block","if",[["get","hasChangeSignaturePermission",["loc",[null,[15,12],[15,40]]]]],[],0,null,["loc",[null,[15,6],[19,13]]]],
-              ["block","if",[["get","hasChangePasswordEmailPermission",["loc",[null,[21,12],[21,44]]]]],[],1,null,["loc",[null,[21,6],[25,13]]]]
+              ["block","if",[["get","hasChangePasswordEmailPermission",["loc",[null,[21,12],[21,44]]]]],[],1,null,["loc",[null,[21,6],[25,13]]]],
+              ["block","if",[["get","hasDeletePermission",["loc",[null,[27,12],[27,31]]]]],[],2,null,["loc",[null,[27,6],[31,13]]]]
             ],
             locals: [],
-            templates: [child0, child1]
+            templates: [child0, child1, child2]
           };
         }());
         return {
@@ -38733,7 +38793,7 @@ define('frontend-cp/components/ko-user-action-menu/template', ['exports'], funct
                 "column": 2
               },
               "end": {
-                "line": 27,
+                "line": 33,
                 "column": 2
               }
             },
@@ -38756,7 +38816,7 @@ define('frontend-cp/components/ko-user-action-menu/template', ['exports'], funct
             return morphs;
           },
           statements: [
-            ["block","ko-dropdown/list",[],["class","ko-dropdown-select__content","style",["subexpr","@mut",[["get","contentStyle",["loc",[null,[14,66],[14,78]]]]],[],[]]],0,null,["loc",[null,[14,4],[26,25]]]]
+            ["block","ko-dropdown/list",[],["class","ko-dropdown-select__content","style",["subexpr","@mut",[["get","contentStyle",["loc",[null,[14,66],[14,78]]]]],[],[]]],0,null,["loc",[null,[14,4],[32,25]]]]
           ],
           locals: [],
           templates: [child0]
@@ -38772,7 +38832,7 @@ define('frontend-cp/components/ko-user-action-menu/template', ['exports'], funct
               "column": 0
             },
             "end": {
-              "line": 28,
+              "line": 34,
               "column": 0
             }
           },
@@ -38800,7 +38860,7 @@ define('frontend-cp/components/ko-user-action-menu/template', ['exports'], funct
         },
         statements: [
           ["block","if",[["subexpr","eq",[["get","name",["loc",[null,[8,12],[8,16]]]],"button"],[],["loc",[null,[8,8],[8,26]]]]],[],0,null,["loc",[null,[8,2],[12,9]]]],
-          ["block","if",[["subexpr","eq",[["get","name",["loc",[null,[13,12],[13,16]]]],"content"],[],["loc",[null,[13,8],[13,27]]]]],[],1,null,["loc",[null,[13,2],[27,9]]]]
+          ["block","if",[["subexpr","eq",[["get","name",["loc",[null,[13,12],[13,16]]]],"content"],[],["loc",[null,[13,8],[13,27]]]]],[],1,null,["loc",[null,[13,2],[33,9]]]]
         ],
         locals: ["name","dropdownContext"],
         templates: [child0, child1]
@@ -38816,7 +38876,7 @@ define('frontend-cp/components/ko-user-action-menu/template', ['exports'], funct
             "column": 0
           },
           "end": {
-            "line": 29,
+            "line": 35,
             "column": 0
           }
         },
@@ -38839,7 +38899,7 @@ define('frontend-cp/components/ko-user-action-menu/template', ['exports'], funct
         return morphs;
       },
       statements: [
-        ["block","ko-dropdown/container",[],["alignRight",true,"onFocusOut","hideMenu","onFocusIn","showMenu","hideOnChildFocus",true,"hideOnClick",true],0,null,["loc",[null,[1,0],[28,26]]]]
+        ["block","ko-dropdown/container",[],["alignRight",true,"onFocusOut","hideMenu","onFocusIn","showMenu","hideOnChildFocus",true,"hideOnClick",true],0,null,["loc",[null,[1,0],[34,26]]]]
       ],
       locals: [],
       templates: [child0]
@@ -38861,6 +38921,7 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
     permissionService: Ember['default'].inject.service('permissions'),
     notificationService: Ember['default'].inject.service('notification'),
     errorHandlerService: Ember['default'].inject.service('errorHandler'),
+    tabsService: Ember['default'].inject.service('tabs'),
 
     intl: Ember['default'].inject.service(),
 
@@ -39023,6 +39084,16 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
 
       editSignature: function editSignature() {
         this.get('signatureModal').show();
+      },
+
+      deleteUser: function deleteUser() {
+        var deleteMsg = this.get('intl').findTranslationByKey('users.confirmdelete').translation;
+
+        if (confirm(deleteMsg)) {
+          this.get('model').deleteRecord();
+          this.get('model').save();
+          this.get('tabsService').remove(this.get('tabsService.selectedTab'));
+        }
       },
 
       updateSignature: function updateSignature() {
@@ -41470,7 +41541,7 @@ define('frontend-cp/initializers/tabs', ['exports', 'ember'], function (exports,
         var tabsService = this.container.lookup('service:tabs');
         var sessionController = this.controllerFor('session');
         var tab = getTabForRoute(route, transition, tabsService, sessionController);
-        sessionController.set('selectedTab', tab);
+        tabsService.select(tab);
 
         // Store the tab model on the route to allow setting tab label etc.
         if (route.get('isTabbedRoute')) {
@@ -41515,8 +41586,7 @@ define('frontend-cp/initializers/tabs', ['exports', 'ember'], function (exports,
       var targetUrl = getTransitionTargetUrl(transition);
       var baseUrl = getRouteUrl(route, transition);
       var isTabbedRoute = route.get('isTabbedRoute');
-      var tab = sessionController.getTabForUrl(isTabbedRoute, targetUrl, baseUrl);
-      return tab;
+      return tabsService.getOrCreateTab(targetUrl, baseUrl, isTabbedRoute);
 
       /**
        * Retrieve the URL for a route that includes dynamic segments
@@ -51277,6 +51347,7 @@ define('frontend-cp/routes/abstract/tabbed-route', ['exports', 'ember'], functio
   'use strict';
 
   exports['default'] = Ember['default'].Route.extend({
+    tabsService: Ember['default'].inject.service('tabs'),
     /**
      * Whether the route should open in its own tab
      * @type {boolean}
@@ -51295,11 +51366,16 @@ define('frontend-cp/routes/abstract/tabbed-route', ['exports', 'ember'], functio
       return null;
     },
 
+    setTabLabel: function setTabLabel(label) {
+      this.get('tabsService').updateTab(this.get('tab'), 'label', label);
+    },
+
+    setTabUrl: function setTabUrl(url) {
+      this.get('tabsService').updateTab(this.get('tab'), 'url', url);
+    },
+
     setupController: function setupController(controller, model) {
       this._super(controller, model);
-      var tabModel = this.get('tab');
-      var tabLabel = this.getTabLabel(model);
-      tabModel.set('label', tabLabel);
     }
   });
 
@@ -53467,12 +53543,19 @@ define('frontend-cp/services/permissions', ['exports', 'ember'], function (expor
       var userRoleType = user.get('role.roleType');
       return adminOrAgentToCustomer(roleType, userRoleType) && target.get('emails').toArray().length;
     },
-
     'app.organisation.delete': function appOrganisationDelete(roleType, user, organisation) {
       if (roleType.rank >= roleTypes.AGENT.rank) {
         return true;
       }
       return false;
+    },
+    'app.user.delete': function appUserDelete(roleType, user, target) {
+      // I can't delete myself
+      if (user && target && user === target) {
+        return false;
+      }
+      var targetRoleType = roleTypes[target.get('role').get('roleType')];
+      return roleType.rank === roleTypes.ADMIN.rank && (targetRoleType.rank === roleTypes.AGENT.rank || targetRoleType.rank === roleTypes.COLLABORATOR.rank);
     }
 
   };
@@ -53484,7 +53567,7 @@ define('frontend-cp/services/permissions', ['exports', 'ember'], function (expor
   roleTypes.CUSTOMER.permissions = [];
   roleTypes.COLLABORATOR.permissions = roleTypes.CUSTOMER.permissions.concat([]);
   roleTypes.AGENT.permissions = roleTypes.COLLABORATOR.permissions.concat(['app.user.disable', 'app.user.signature.edit', 'app.user.password.change', 'app.organisation.delete']);
-  roleTypes.ADMIN.permissions = roleTypes.AGENT.permissions.concat(['app.admin.stuff']);
+  roleTypes.ADMIN.permissions = roleTypes.AGENT.permissions.concat(['app.user.delete']);
 
   exports['default'] = Ember['default'].Service.extend({
     sessionService: Ember['default'].inject.service('session'),
@@ -54003,6 +54086,31 @@ define('frontend-cp/services/tabs', ['exports', 'ember', 'frontend-cp/models/tab
   exports['default'] = Ember['default'].Service.extend({
     localStoreService: Ember['default'].inject.service('localStore'),
 
+    tabModels: null,
+
+    selectedTabModel: null,
+
+    init: function init() {
+      this._super();
+      this.set('tabModels', this.get('tabModels') || []);
+    },
+
+    selectedTab: Ember['default'].computed('selectedTabModel', function () {
+      var selectedTab = this.get('selectedTabModel');
+      if (!selectedTab) {
+        return this.getMainTab();
+      }
+      return selectedTab;
+    }),
+
+    tabs: Ember['default'].computed('tabModels.[]', 'tabModels', function () {
+      return this.get('tabModels').slice(1);
+    }),
+
+    tabObserver: Ember['default'].observer('tabModels.[]', 'tabModels', function () {
+      this.saveTabsToStorage();
+    }),
+
     /**
      * Create a new tab and add it to the store
      * @param {string} options.baseUrl URL path for the tab's main root
@@ -54020,22 +54128,26 @@ define('frontend-cp/services/tabs', ['exports', 'ember', 'frontend-cp/models/tab
       var _ref$label = _ref.label;
       var label = _ref$label === undefined ? null : _ref$label;
 
-      return Tab['default'].create({
+      var tab = Tab['default'].create({
         url: url,
         baseUrl: baseUrl || url,
         label: label,
         selected: false,
         state: null
       });
+
+      this.get('tabModels').pushObject(tab);
+      this.saveTabsToStorage();
+      return tab;
     },
 
     /**
      * Save a set of tabs to local storage
      * @param {Tab[]} tabModels Tab models to save
      */
-    saveTabsToStorage: function saveTabsToStorage(tabModels) {
+    saveTabsToStorage: function saveTabsToStorage() {
       // Convert tab models into an array of simplified tab objects
-      var tabInfos = tabModels.map(function (tabModel) {
+      var tabInfos = this.get('tabModels').map(function (tabModel) {
         var tabInfo = _['default'].pick(tabModel, ['baseUrl', 'url', 'label']);
         return tabInfo;
       }).toArray();
@@ -54044,6 +54156,66 @@ define('frontend-cp/services/tabs', ['exports', 'ember', 'frontend-cp/models/tab
       this.get('localStoreService').setItem('tabs', tabInfos, {
         persist: false
       });
+    },
+
+    getMainTab: function getMainTab() {
+      // The first item is the "main" tab, all others are tabbed pages
+      return this.get('tabModels').objectAt(0) || this.createTab();
+    },
+
+    /*
+     * Removes the tab from the collection and attempts to work out the
+     * selected tab if required.
+     * Saves tabs to localStorage
+     */
+    remove: function remove(tab) {
+      if (tab === this.get('selectedTab')) {
+        var index = this.get('tabModels').indexOf(tab);
+        if (index < this.get('tabModels.length') - 1) {
+          this.set('selectedTabModel', this.get('tabModels').objectAt(index + 1));
+        } else {
+          this.set('selectedTabModel', this.get('tabModels').objectAt(index - 1));
+        }
+      }
+      this.get('tabModels').removeObject(tab);
+      this.saveTabsToStorage();
+    },
+
+    select: function select(tab) {
+      this.set('selectedTabModel', tab);
+    },
+
+    updateTab: function updateTab(tab, field, value) {
+      tab.set(field, value);
+      this.saveTabsToStorage();
+    },
+
+    /*
+     * Attemps to find an existing tab by URL.
+     * Creates a tab if it does not already exist
+     * @return {Tab} tab
+     */
+    getOrCreateTab: function getOrCreateTab(url, baseUrl, isTabbedPage) {
+      var tabs = this.get('tabModels');
+
+      var existingTab = tabs.find(function (tab) {
+        return url.startsWith(tab.get('baseUrl'));
+      });
+      if (!existingTab && !isTabbedPage) {
+        existingTab = this.getMainTab();
+      }
+      if (existingTab) {
+        if (existingTab.get('url') !== url) {
+          existingTab.set('url', url);
+          existingTab.set('state', {});
+        }
+        return existingTab;
+      } else {
+        return this.createTab({
+          url: url,
+          baseUrl: baseUrl
+        });
+      }
     },
 
     /**
@@ -54069,9 +54241,9 @@ define('frontend-cp/services/tabs', ['exports', 'ember', 'frontend-cp/models/tab
       });
 
       var invalidUrls = ['/agent/cases/new'];
-      return tabModels.filter(function (tab) {
+      this.set('tabModels', tabModels.filter(function (tab) {
         return invalidUrls.indexOf(tab.url) === -1;
-      });
+      }));
     }
   });
 
@@ -62336,7 +62508,7 @@ define('frontend-cp/session/agent/cases/case/organisation/route', ['exports', 'f
 
     setupController: function setupController(controller, model) {
       this._super(controller, model);
-      this.get('tab').set('label', model.get('name'));
+      this.setTabLabel(model.get('name'));
     },
 
     activate: function activate() {
@@ -62416,7 +62588,7 @@ define('frontend-cp/session/agent/cases/case/route', ['exports', 'frontend-cp/ro
 
       var tabName = model.get('subject') ? model.get('subject') : this.get('intlService').findTranslationByKey('cases.new_case_tab_placeholder').translation;
 
-      this.get('tab').set('label', tabName);
+      this.setTabLabel(tabName);
     },
 
     serialize: function serialize(model) {
@@ -62427,11 +62599,11 @@ define('frontend-cp/session/agent/cases/case/route', ['exports', 'frontend-cp/ro
 
     actions: {
       updateTabUrl: function updateTabUrl(url) {
-        this.get('tab').set('url', url);
+        this.setTabUrl(url);
       },
       updateTabName: function updateTabName(label) {
         var tabName = label ? label : this.get('intlService').findTranslationByKey('cases.new_case_tab_placeholder').translation;
-        this.get('tab').set('label', tabName);
+        this.setTabLabel(tabName);
       }
     }
   });
@@ -63224,7 +63396,7 @@ define('frontend-cp/session/agent/organisations/organisation/route', ['exports',
 
     setupController: function setupController(controller, model) {
       this._super(controller, model);
-      this.get('tab').set('label', model.get('name'));
+      this.setTabLabel(model.get('name'));
     }
   });
 
@@ -63675,7 +63847,7 @@ define('frontend-cp/session/agent/users/user/route', ['exports', 'frontend-cp/ro
 
     setupController: function setupController(controller, model) {
       this._super(controller, model);
-      this.get('tab').set('label', model.get('fullName'));
+      this.setTabLabel(model.get('fullName'));
     }
   });
 
@@ -63766,48 +63938,20 @@ define('frontend-cp/session/controller', ['exports', 'ember'], function (exports
     scroll: 0,
 
     /**
-     * Main invisible "tab" that holds all non-tabbed pages
-     * @type {Tab}
-     */
-    mainTab: null,
-
-    /**
      * Currently active tabs, containing all tabbed pages
      * @type {Tab[]}
      */
     tabs: null,
 
-    /**
-     * Currently selected tab
-     * @type {Tab}
-     */
-    selectedTab: null,
-
     init: function init() {
       this._super();
-      this.set('tabs', this.get('tabs') || []);
     },
-
-    /**
-     * Update local storage whenever the tabs array changes
-     */
-    tabsUpdated: Ember['default'].observer('mainTab', 'mainTab.url', 'tabs.[]', 'tabs.@each.url', 'tabs.@each.label', function () {
-      var tabsService = this.get('tabsService');
-      var mainTab = this.get('mainTab');
-      var tabs = this.get('tabs');
-      var savedTabs = [mainTab].concat(tabs);
-      tabsService.saveTabsToStorage(savedTabs);
-    }),
 
     /**
      * Transition to the tab's active page when a tab is selected
      */
-    tabSelected: Ember['default'].observer('selectedTab', function () {
-      var selectedTab = this.get('selectedTab');
-      if (!selectedTab) {
-        this.set('selectedTab', this.get('mainTab'));
-        return;
-      }
+    tabSelected: Ember['default'].observer('tabsService.selectedTab', function () {
+      var selectedTab = this.get('tabsService.selectedTab');
       var targetUrl = selectedTab.get('url') || '/';
       var targetState = selectedTab.get('state') || null;
       var routeStateService = this.get('routeStateService');
@@ -63896,7 +64040,7 @@ define('frontend-cp/session/controller', ['exports', 'ember'], function (exports
      */
     updateTabState: function updateTabState(updates) {
       var routeStateService = this.get('routeStateService');
-      var selectedTab = this.get('selectedTab');
+      var selectedTab = this.get('tabsService.selectedTab');
       if (!selectedTab) {
         return;
       }
@@ -63905,42 +64049,13 @@ define('frontend-cp/session/controller', ['exports', 'ember'], function (exports
       selectedTab.set('state', updatedState);
     },
 
-    /**
-     * Returns a tab that matches the specified URL path (or one of its ancestors)
-     * @param {boolean} isTabbedPage Whether the page should be opened in its own tab
-     * @param {string} url URL to match against
-     * @param {string} baseUrl Tab base URL to use if creating a new tab
-     * @return {Tab} Tab that corresponds to the URL, or `null` if no match was found
-     */
-    getTabForUrl: function getTabForUrl(isTabbedPage, url, baseUrl) {
-      var tabs = this.get('tabs');
-
-      var existingTab = tabs.find(function (tab) {
-        return url.startsWith(tab.get('baseUrl'));
-      });
-      if (!existingTab && !isTabbedPage) {
-        existingTab = this.get('mainTab');
-      }
-      if (existingTab) {
-        if (existingTab.get('url') !== url) {
-          existingTab.set('url', url);
-          existingTab.set('state', {});
-        }
-        return existingTab;
-      }
-
-      var tabsService = this.get('tabsService');
-      var tab = tabsService.createTab({
-        url: url,
-        baseUrl: baseUrl
-      });
-      this.get('tabs').pushObject(tab);
-      return tab;
-    },
-
     actions: {
       onSearchingChanged: function onSearchingChanged(isSearching) {
         this.set('hideSessionWidgets', isSearching);
+      },
+
+      onTabSelected: function onTabSelected(tab) {
+        this.get('tabsService').select(tab);
       },
 
       loadSearchRoute: function loadSearchRoute(baseURL, targetObjectId) {
@@ -64074,15 +64189,8 @@ define('frontend-cp/session/route', ['exports', 'ember'], function (exports, Emb
     setupController: function setupController(controller, model) {
       // Retrieve tabs from storage if available
       var tabsService = this.get('tabsService');
-      var savedTabs = tabsService.loadTabsFromStorage();
-
-      // The first item is the "main" tab, all others are tabbed pages
-      var mainTab = savedTabs.objectAt(0) || tabsService.createTab();
-      var tabs = savedTabs.slice(1);
-
+      tabsService.loadTabsFromStorage();
       controller.set('model', model);
-      controller.set('mainTab', mainTab);
-      controller.set('tabs', tabs);
     }
   });
 
@@ -68821,11 +68929,11 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
           "loc": {
             "source": null,
             "start": {
-              "line": 28,
+              "line": 30,
               "column": 8
             },
             "end": {
-              "line": 30,
+              "line": 32,
               "column": 8
             }
           },
@@ -68850,7 +68958,7 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
           return morphs;
         },
         statements: [
-          ["content","ko-session-widgets",["loc",[null,[29,10],[29,32]]]]
+          ["content","ko-session-widgets",["loc",[null,[31,10],[31,32]]]]
         ],
         locals: [],
         templates: []
@@ -68863,11 +68971,11 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
           "loc": {
             "source": null,
             "start": {
-              "line": 37,
+              "line": 39,
               "column": 0
             },
             "end": {
-              "line": 37,
+              "line": 39,
               "column": 62
             }
           },
@@ -68897,11 +69005,11 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
           "loc": {
             "source": null,
             "start": {
-              "line": 38,
+              "line": 40,
               "column": 0
             },
             "end": {
-              "line": 38,
+              "line": 40,
               "column": 67
             }
           },
@@ -68931,11 +69039,11 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
           "loc": {
             "source": null,
             "start": {
-              "line": 41,
+              "line": 43,
               "column": 2
             },
             "end": {
-              "line": 43,
+              "line": 45,
               "column": 2
             }
           },
@@ -68960,7 +69068,7 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
           return morphs;
         },
         statements: [
-          ["content","outlet",["loc",[null,[42,4],[42,14]]]]
+          ["content","outlet",["loc",[null,[44,4],[44,14]]]]
         ],
         locals: [],
         templates: []
@@ -68976,7 +69084,7 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
             "column": 0
           },
           "end": {
-            "line": 45,
+            "line": 47,
             "column": 0
           }
         },
@@ -69154,13 +69262,13 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
         ["block","link-to",["session.agent.cases"],["class","nav-main__item i-person"],2,null,["loc",[null,[9,10],[9,88]]]],
         ["block","link-to",["session.agent.cases"],["class","nav-main__item i-help"],3,null,["loc",[null,[10,10],[10,86]]]],
         ["block","link-to",["session.agent.cases"],["class","nav-main__item i-insights"],4,null,["loc",[null,[11,10],[11,90]]]],
-        ["inline","ko-tabs",[],["tabs",["subexpr","@mut",[["get","tabs",["loc",[null,[16,25],[16,29]]]]],[],[]],"selectedTab",["subexpr","@mut",[["get","selectedTab",["loc",[null,[16,42],[16,53]]]]],[],[]]],["loc",[null,[16,10],[16,55]]]],
-        ["content","ko-agent-dropdown",["loc",[null,[19,9],[19,30]]]],
-        ["inline","ko-universal-search",[],["searchResults",["subexpr","@mut",[["get","searchResults",["loc",[null,[24,44],[24,57]]]]],[],[]],"searchingChanged","onSearchingChanged"],["loc",[null,[24,8],[24,97]]]],
-        ["block","unless",[["get","hideSessionWidgets",["loc",[null,[28,18],[28,36]]]]],[],5,null,["loc",[null,[28,8],[30,19]]]],
-        ["block","link-to",["session.showcase"],["class","nav-main__item"],6,null,["loc",[null,[37,0],[37,74]]]],
-        ["block","link-to",["session.styleguide"],["class","nav-main__item"],7,null,["loc",[null,[38,0],[38,79]]]],
-        ["block","ko-scroller",[],["scrollTop",["subexpr","@mut",[["get","scroll",["loc",[null,[41,27],[41,33]]]]],[],[]]],8,null,["loc",[null,[41,2],[43,18]]]]
+        ["inline","ko-tabs",[],["tabs",["subexpr","@mut",[["get","tabsService.tabs",["loc",[null,[16,25],[16,41]]]]],[],[]],"selectedTab",["subexpr","@mut",[["get","tabsService.selectedTab",["loc",[null,[17,24],[17,47]]]]],[],[]],"onTabSelected","onTabSelected"],["loc",[null,[16,10],[18,43]]]],
+        ["content","ko-agent-dropdown",["loc",[null,[21,9],[21,30]]]],
+        ["inline","ko-universal-search",[],["searchResults",["subexpr","@mut",[["get","searchResults",["loc",[null,[26,44],[26,57]]]]],[],[]],"searchingChanged","onSearchingChanged"],["loc",[null,[26,8],[26,97]]]],
+        ["block","unless",[["get","hideSessionWidgets",["loc",[null,[30,18],[30,36]]]]],[],5,null,["loc",[null,[30,8],[32,19]]]],
+        ["block","link-to",["session.showcase"],["class","nav-main__item"],6,null,["loc",[null,[39,0],[39,74]]]],
+        ["block","link-to",["session.styleguide"],["class","nav-main__item"],7,null,["loc",[null,[40,0],[40,79]]]],
+        ["block","ko-scroller",[],["scrollTop",["subexpr","@mut",[["get","scroll",["loc",[null,[43,27],[43,33]]]]],[],[]]],8,null,["loc",[null,[43,2],[45,18]]]]
       ],
       locals: [],
       templates: [child0, child1, child2, child3, child4, child5, child6, child7, child8]
@@ -72990,97 +73098,6 @@ define('frontend-cp/tests/integration/components/ko-tabs/component-test', ['embe
     assert.ok(!$firstItem.hasClass('is-active'));
     assert.ok(!$secondItem.hasClass('is-active'));
   });
-
-  ember_qunit.test('tabs can be closed', function (assert) {
-    assert.expect(8);
-
-    var firstTab = {
-      url: '/case/1',
-      label: 'Case 1'
-    };
-    var secondTab = {
-      url: '/case/2',
-      label: 'Case 2'
-    };
-    var thirdTab = {
-      url: '/case/3',
-      label: 'Case 3'
-    };
-    var fourthTab = {
-      url: '/case/3',
-      label: 'Case 4'
-    };
-    var tabs = [firstTab, secondTab, thirdTab, fourthTab];
-    this.set('tabs', tabs);
-    this.set('selectedTab', secondTab);
-
-    this.render(Ember['default'].HTMLBars.template((function () {
-      return {
-        meta: {
-          'revision': 'Ember@1.13.7',
-          'loc': {
-            'source': null,
-            'start': {
-              'line': 1,
-              'column': 0
-            },
-            'end': {
-              'line': 1,
-              'column': 45
-            }
-          }
-        },
-        arity: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createComment('');
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-          dom.insertBoundary(fragment, 0);
-          dom.insertBoundary(fragment, null);
-          return morphs;
-        },
-        statements: [['inline', 'ko-tabs', [], ['tabs', ['subexpr', '@mut', [['get', 'tabs', ['loc', [null, [1, 15], [1, 19]]]]], [], []], 'selectedTab', ['subexpr', '@mut', [['get', 'selectedTab', ['loc', [null, [1, 32], [1, 43]]]]], [], []]], ['loc', [null, [1, 0], [1, 45]]]]],
-        locals: [],
-        templates: []
-      };
-    })()));
-
-    var $tabElements = this.$('.nav-tabs__item');
-    var $firstItem = $tabElements.eq(0);
-    var $secondItem = $tabElements.eq(1);
-    var $thirdItem = $tabElements.eq(2);
-    var $fourthItem = $tabElements.eq(3);
-
-    getTabCloseButton($fourthItem).click();
-
-    assert.deepEqual(this.get('tabs'), [firstTab, secondTab, thirdTab]);
-    assert.equal(this.get('selectedTab'), secondTab);
-
-    getTabCloseButton($secondItem).click();
-
-    assert.deepEqual(this.get('tabs'), [firstTab, thirdTab]);
-    assert.equal(this.get('selectedTab'), thirdTab);
-
-    getTabCloseButton($thirdItem).click();
-
-    assert.deepEqual(this.get('tabs'), [firstTab]);
-    assert.equal(this.get('selectedTab'), firstTab);
-
-    getTabCloseButton($firstItem).click();
-    assert.deepEqual(this.get('tabs'), []);
-    assert.equal(this.get('selectedTab'), null);
-  });
-
-  function getTabCloseButton(tabElement) {
-    return $(tabElement).find('.nav-tabs__close');
-  }
 
 });
 define('frontend-cp/tests/integration/components/ko-toggle-context-modal/component-test', ['ember-qunit'], function (ember_qunit) {
@@ -77712,8 +77729,8 @@ define('frontend-cp/tests/unit/services/tabs-test', ['frontend-cp/tests/helpers/
 
     var service = this.subject();
 
-    var emptyTabs = service.loadTabsFromStorage();
-    assert.deepEqual(emptyTabs, []);
+    service.loadTabsFromStorage();
+    assert.deepEqual(service.get('tabModels'), []);
 
     localStoreService.setItem('tabs', [{
       baseUrl: '/cases/1',
@@ -77729,7 +77746,8 @@ define('frontend-cp/tests/unit/services/tabs-test', ['frontend-cp/tests/helpers/
       label: 'Case 3'
     }]);
 
-    var tabs = service.loadTabsFromStorage();
+    service.loadTabsFromStorage();
+    var tabs = service.get('tabModels');
     var expectedTabs = [{
       baseUrl: '/cases/1',
       url: '/cases/1/user',
@@ -77869,7 +77887,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+470a0f95"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+44dfec11"});
 }
 
 /* jshint ignore:end */
