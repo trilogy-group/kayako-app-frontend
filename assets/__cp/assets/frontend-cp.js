@@ -46501,6 +46501,14 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
+    this.get('/users/:id/notes', function (db, request) {
+      return {
+        status: 200,
+        data: [],
+        resource: 'note'
+      };
+    });
+
     this['delete']('/session', function () {
       return {
         status: 200
@@ -54168,20 +54176,6 @@ define('frontend-cp/models/user-field', ['exports', 'ember-data', 'frontend-cp/m
   });
 
 });
-define('frontend-cp/models/user-note', ['exports', 'ember-data'], function (exports, DS) {
-
-  'use strict';
-
-  exports['default'] = DS['default'].Model.extend({
-    contents: DS['default'].attr('string'),
-    color: DS['default'].attr('string'), // TODO option
-    user: DS['default'].belongsTo('user', { async: true, parent: true }),
-    attachments: DS['default'].hasMany('attachment', { async: false }),
-    createdAt: DS['default'].attr('date'),
-    updatedAt: DS['default'].attr('date')
-  });
-
-});
 define('frontend-cp/models/user', ['exports', 'ember-data', 'ember', 'frontend-cp/mixins/change-aware-model', 'frontend-cp/mixins/has-basic-identities'], function (exports, DS, Ember, ChangeAwareModel, HasBasicIdentities) {
 
   'use strict';
@@ -54200,7 +54194,7 @@ define('frontend-cp/models/user', ['exports', 'ember-data', 'ember', 'frontend-c
     customFields: DS['default'].hasManyFragments('user-field-value', { defaultValue: [] }),
     fieldValues: DS['default'].hasManyFragments('user-field-value', { defaultValue: [] }), // write only
     tags: DS['default'].hasMany('tag', { async: false }),
-    notes: DS['default'].hasMany('user-note', { child: true, url: 'notes', async: false }),
+    notes: DS['default'].hasMany('note', { child: true, url: 'notes', async: true }),
     accessLevel: DS['default'].attr('string', { defaultValue: 'SELF' }),
     locale: DS['default'].attr('string'),
     timeZone: DS['default'].attr('string'),
@@ -55194,18 +55188,6 @@ define('frontend-cp/serializers/user-field', ['exports', 'frontend-cp/serializer
   exports['default'] = ApplicationSerializer['default'].extend({
     attrs: {
       fieldType: { key: 'type' }
-    }
-  });
-
-});
-define('frontend-cp/serializers/user-note', ['exports', 'frontend-cp/serializers/application'], function (exports, ApplicationSerializer) {
-
-  'use strict';
-
-  exports['default'] = ApplicationSerializer['default'].extend({
-    attrs: {
-      createdAt: { serialize: false },
-      updatedAt: { serialize: false }
     }
   });
 
@@ -81257,7 +81239,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+d0c5dfc9"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+2ba512a6"});
 }
 
 /* jshint ignore:end */
