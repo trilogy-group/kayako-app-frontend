@@ -26745,9 +26745,9 @@ define('frontend-cp/components/ko-identities/form/component', ['exports', 'ember
   var isBlank = Ember['default'].isBlank;
 
   var placeholders = {
-    'identity-email': 'identities.placeholders.email',
-    'identity-twitter': 'identities.placeholders.twitter',
-    'identity-phone': 'identities.placeholders.phone'
+    'identity-email': 'generic.identities.placeholders.email',
+    'identity-twitter': 'generic.identities.placeholders.twitter',
+    'identity-phone': 'generic.identities.placeholders.phone'
   };
   var inputTypes = {
     'identity-email': 'email',
@@ -26794,7 +26794,7 @@ define('frontend-cp/components/ko-identities/form/component', ['exports', 'ember
         identity.set('email', email);
         this.attrs.save(identity);
       } else {
-        this.set('errorMessage', 'identities.errors.invalid_email_format');
+        this.set('errorMessage', 'generic.identities.errors.invalid_email_format');
       }
     },
 
@@ -27044,7 +27044,7 @@ define('frontend-cp/components/ko-identities/template', ['exports'], function (e
               },
               statements: [
                 ["content","emailIdentity.email",["loc",[null,[14,22],[14,45]]]],
-                ["inline","if",[["get","emailIdentity.isPrimary",["loc",[null,[14,51],[14,74]]]],["subexpr","format-message",[["subexpr","intl-get",["identities.primary_comment"],[],["loc",[null,[14,91],[14,130]]]]],[],["loc",[null,[14,75],[14,131]]]]],[],["loc",[null,[14,46],[14,133]]]],
+                ["inline","if",[["get","emailIdentity.isPrimary",["loc",[null,[14,51],[14,74]]]],["subexpr","format-message",[["subexpr","intl-get",["generic.identities.primary_comment"],[],["loc",[null,[14,91],[14,138]]]]],[],["loc",[null,[14,75],[14,139]]]]],[],["loc",[null,[14,46],[14,141]]]],
                 ["block","unless",[["get","emailIdentity.isValidated",["loc",[null,[15,32],[15,57]]]]],[],0,null,["loc",[null,[15,22],[15,95]]]]
               ],
               locals: [],
@@ -27099,7 +27099,7 @@ define('frontend-cp/components/ko-identities/template', ['exports'], function (e
                   },
                   statements: [
                     ["attribute","onclick",["subexpr","action",["removeIdentity",["get","emailIdentity",["loc",[null,[20,95],[20,108]]]]],[],["loc",[null,[20,69],[20,110]]]]],
-                    ["inline","format-message",[["subexpr","intl-get",["identities.remove_identity"],[],["loc",[null,[21,45],[21,84]]]]],[],["loc",[null,[21,28],[21,86]]]]
+                    ["inline","format-message",[["subexpr","intl-get",["generic.identities.remove_identity"],[],["loc",[null,[21,45],[21,92]]]]],[],["loc",[null,[21,28],[21,94]]]]
                   ],
                   locals: [],
                   templates: []
@@ -27151,7 +27151,7 @@ define('frontend-cp/components/ko-identities/template', ['exports'], function (e
                   },
                   statements: [
                     ["attribute","onclick",["subexpr","action",["makePrimaryIdentity",["get","emailIdentity",["loc",[null,[25,100],[25,113]]]]],[],["loc",[null,[25,69],[25,115]]]]],
-                    ["inline","format-message",[["subexpr","intl-get",["identities.make_primary"],[],["loc",[null,[26,45],[26,81]]]]],[],["loc",[null,[26,28],[26,83]]]]
+                    ["inline","format-message",[["subexpr","intl-get",["generic.identities.make_primary"],[],["loc",[null,[26,45],[26,89]]]]],[],["loc",[null,[26,28],[26,91]]]]
                   ],
                   locals: [],
                   templates: []
@@ -27203,7 +27203,7 @@ define('frontend-cp/components/ko-identities/template', ['exports'], function (e
                   },
                   statements: [
                     ["attribute","onclick",["subexpr","action",["verifyIdentity",["get","emailIdentity",["loc",[null,[30,95],[30,108]]]]],[],["loc",[null,[30,69],[30,110]]]]],
-                    ["inline","format-message",[["subexpr","intl-get",["identities.verify_identity"],[],["loc",[null,[31,45],[31,84]]]]],[],["loc",[null,[31,28],[31,86]]]]
+                    ["inline","format-message",[["subexpr","intl-get",["generic.identities.verify_identity"],[],["loc",[null,[31,45],[31,92]]]]],[],["loc",[null,[31,28],[31,94]]]]
                   ],
                   locals: [],
                   templates: []
@@ -27419,7 +27419,7 @@ define('frontend-cp/components/ko-identities/template', ['exports'], function (e
           },
           statements: [
             ["content","emailIdentity.email",["loc",[null,[43,18],[43,41]]]],
-            ["inline","format-message",[["subexpr","intl-get",["identities.primary_comment"],[],["loc",[null,[43,59],[43,98]]]]],[],["loc",[null,[43,42],[43,100]]]]
+            ["inline","format-message",[["subexpr","intl-get",["generic.identities.primary_comment"],[],["loc",[null,[43,59],[43,106]]]]],[],["loc",[null,[43,42],[43,108]]]]
           ],
           locals: [],
           templates: []
@@ -27517,7 +27517,7 @@ define('frontend-cp/components/ko-identities/template', ['exports'], function (e
             },
             statements: [
               ["content","twitterIdentity.screenName",["loc",[null,[58,21],[58,51]]]],
-              ["inline","if",[["get","twitterIdentity.isPrimary",["loc",[null,[58,57],[58,82]]]],["subexpr","format-message",[["subexpr","intl-get",["identities.primary_comment"],[],["loc",[null,[58,99],[58,138]]]]],[],["loc",[null,[58,83],[58,139]]]]],[],["loc",[null,[58,52],[58,141]]]]
+              ["inline","if",[["get","twitterIdentity.isPrimary",["loc",[null,[58,57],[58,82]]]],["subexpr","format-message",[["subexpr","intl-get",["generic.identities.primary_comment"],[],["loc",[null,[58,99],[58,146]]]]],[],["loc",[null,[58,83],[58,147]]]]],[],["loc",[null,[58,52],[58,149]]]]
             ],
             locals: [],
             templates: []
@@ -27567,7 +27567,7 @@ define('frontend-cp/components/ko-identities/template', ['exports'], function (e
                 },
                 statements: [
                   ["attribute","onclick",["subexpr","action",["removeIdentity",["get","twitterIdentity",["loc",[null,[63,93],[63,108]]]]],[],["loc",[null,[63,67],[63,110]]]]],
-                  ["inline","format-message",[["subexpr","intl-get",["identities.remove_identity"],[],["loc",[null,[63,128],[63,167]]]]],[],["loc",[null,[63,111],[63,169]]]]
+                  ["inline","format-message",[["subexpr","intl-get",["generic.identities.remove_identity"],[],["loc",[null,[63,128],[63,175]]]]],[],["loc",[null,[63,111],[63,177]]]]
                 ],
                 locals: [],
                 templates: []
@@ -27615,7 +27615,7 @@ define('frontend-cp/components/ko-identities/template', ['exports'], function (e
                 },
                 statements: [
                   ["attribute","onclick",["subexpr","action",["makePrimaryIdentity",["get","twitterIdentity",["loc",[null,[66,98],[66,113]]]]],[],["loc",[null,[66,67],[66,115]]]]],
-                  ["inline","format-message",[["subexpr","intl-get",["identities.make_primary"],[],["loc",[null,[66,133],[66,169]]]]],[],["loc",[null,[66,116],[66,171]]]]
+                  ["inline","format-message",[["subexpr","intl-get",["generic.identities.make_primary"],[],["loc",[null,[66,133],[66,177]]]]],[],["loc",[null,[66,116],[66,179]]]]
                 ],
                 locals: [],
                 templates: []
@@ -27857,7 +27857,7 @@ define('frontend-cp/components/ko-identities/template', ['exports'], function (e
               },
               statements: [
                 ["content","phoneIdentity.number",["loc",[null,[88,22],[88,46]]]],
-                ["inline","if",[["get","phoneIdentity.isPrimary",["loc",[null,[88,52],[88,75]]]],["subexpr","format-message",[["subexpr","intl-get",["identities.primary_comment"],[],["loc",[null,[88,92],[88,131]]]]],[],["loc",[null,[88,76],[88,132]]]]],[],["loc",[null,[88,47],[88,134]]]]
+                ["inline","if",[["get","phoneIdentity.isPrimary",["loc",[null,[88,52],[88,75]]]],["subexpr","format-message",[["subexpr","intl-get",["generic.identities.primary_comment"],[],["loc",[null,[88,92],[88,139]]]]],[],["loc",[null,[88,76],[88,140]]]]],[],["loc",[null,[88,47],[88,142]]]]
               ],
               locals: [],
               templates: []
@@ -27907,7 +27907,7 @@ define('frontend-cp/components/ko-identities/template', ['exports'], function (e
                   },
                   statements: [
                     ["attribute","onclick",["subexpr","action",["removeIdentity",["get","phoneIdentity",["loc",[null,[93,95],[93,108]]]]],[],["loc",[null,[93,69],[93,110]]]]],
-                    ["inline","format-message",[["subexpr","intl-get",["identities.remove_identity"],[],["loc",[null,[93,128],[93,167]]]]],[],["loc",[null,[93,111],[93,169]]]]
+                    ["inline","format-message",[["subexpr","intl-get",["generic.identities.remove_identity"],[],["loc",[null,[93,128],[93,175]]]]],[],["loc",[null,[93,111],[93,177]]]]
                   ],
                   locals: [],
                   templates: []
@@ -27955,7 +27955,7 @@ define('frontend-cp/components/ko-identities/template', ['exports'], function (e
                   },
                   statements: [
                     ["attribute","onclick",["subexpr","action",["makePrimaryIdentity",["get","phoneIdentity",["loc",[null,[96,100],[96,113]]]]],[],["loc",[null,[96,69],[96,115]]]]],
-                    ["inline","format-message",[["subexpr","intl-get",["identities.make_primary"],[],["loc",[null,[96,133],[96,169]]]]],[],["loc",[null,[96,116],[96,171]]]]
+                    ["inline","format-message",[["subexpr","intl-get",["generic.identities.make_primary"],[],["loc",[null,[96,133],[96,177]]]]],[],["loc",[null,[96,116],[96,179]]]]
                   ],
                   locals: [],
                   templates: []
@@ -28167,7 +28167,7 @@ define('frontend-cp/components/ko-identities/template', ['exports'], function (e
           },
           statements: [
             ["content","phoneIdentity.number",["loc",[null,[102,18],[102,42]]]],
-            ["inline","format-message",[["subexpr","intl-get",["identities.primary_comment"],[],["loc",[null,[102,60],[102,99]]]]],[],["loc",[null,[102,43],[102,101]]]]
+            ["inline","format-message",[["subexpr","intl-get",["generic.identities.primary_comment"],[],["loc",[null,[102,60],[102,107]]]]],[],["loc",[null,[102,43],[102,109]]]]
           ],
           locals: [],
           templates: []
@@ -28266,7 +28266,7 @@ define('frontend-cp/components/ko-identities/template', ['exports'], function (e
               },
               statements: [
                 ["content","facebookIdentity.userName",["loc",[null,[118,22],[118,51]]]],
-                ["inline","if",[["get","facebookIdentity.isPrimary",["loc",[null,[118,57],[118,83]]]],["subexpr","format-message",[["subexpr","intl-get",["identities.primary_comment"],[],["loc",[null,[118,100],[118,139]]]]],[],["loc",[null,[118,84],[118,140]]]]],[],["loc",[null,[118,52],[118,142]]]]
+                ["inline","if",[["get","facebookIdentity.isPrimary",["loc",[null,[118,57],[118,83]]]],["subexpr","format-message",[["subexpr","intl-get",["generic.identities.primary_comment"],[],["loc",[null,[118,100],[118,147]]]]],[],["loc",[null,[118,84],[118,148]]]]],[],["loc",[null,[118,52],[118,150]]]]
               ],
               locals: [],
               templates: []
@@ -28316,7 +28316,7 @@ define('frontend-cp/components/ko-identities/template', ['exports'], function (e
                   },
                   statements: [
                     ["attribute","onclick",["subexpr","action",["removeIdentity",["get","facebookIdentity",["loc",[null,[123,95],[123,111]]]]],[],["loc",[null,[123,69],[123,113]]]]],
-                    ["inline","format-message",[["subexpr","intl-get",["identities.remove_identity"],[],["loc",[null,[123,131],[123,170]]]]],[],["loc",[null,[123,114],[123,172]]]]
+                    ["inline","format-message",[["subexpr","intl-get",["generic.identities.remove_identity"],[],["loc",[null,[123,131],[123,178]]]]],[],["loc",[null,[123,114],[123,180]]]]
                   ],
                   locals: [],
                   templates: []
@@ -28364,7 +28364,7 @@ define('frontend-cp/components/ko-identities/template', ['exports'], function (e
                   },
                   statements: [
                     ["attribute","onclick",["subexpr","action",["makePrimaryIdentity",["get","facebookIdentity",["loc",[null,[126,100],[126,116]]]]],[],["loc",[null,[126,69],[126,118]]]]],
-                    ["inline","format-message",[["subexpr","intl-get",["identities.make_primary"],[],["loc",[null,[126,136],[126,172]]]]],[],["loc",[null,[126,119],[126,174]]]]
+                    ["inline","format-message",[["subexpr","intl-get",["generic.identities.make_primary"],[],["loc",[null,[126,136],[126,180]]]]],[],["loc",[null,[126,119],[126,182]]]]
                   ],
                   locals: [],
                   templates: []
@@ -28576,7 +28576,7 @@ define('frontend-cp/components/ko-identities/template', ['exports'], function (e
           },
           statements: [
             ["content","facebookIdentity.userName",["loc",[null,[132,18],[132,47]]]],
-            ["inline","format-message",[["subexpr","intl-get",["identities.primary_comment"],[],["loc",[null,[132,65],[132,104]]]]],[],["loc",[null,[132,48],[132,106]]]]
+            ["inline","format-message",[["subexpr","intl-get",["generic.identities.primary_comment"],[],["loc",[null,[132,65],[132,112]]]]],[],["loc",[null,[132,48],[132,114]]]]
           ],
           locals: [],
           templates: []
@@ -28710,7 +28710,7 @@ define('frontend-cp/components/ko-identities/template', ['exports'], function (e
               return morphs;
             },
             statements: [
-              ["inline","format-message",[["subexpr","intl-get",["identities.add_new"],[],["loc",[null,[146,25],[146,56]]]]],[],["loc",[null,[146,8],[146,58]]]]
+              ["inline","format-message",[["subexpr","intl-get",["generic.identities.add_new"],[],["loc",[null,[146,25],[146,64]]]]],[],["loc",[null,[146,8],[146,66]]]]
             ],
             locals: [],
             templates: []
@@ -28779,11 +28779,11 @@ define('frontend-cp/components/ko-identities/template', ['exports'], function (e
               },
               statements: [
                 ["attribute","onclick",["subexpr","action",["addEmail"],[],["loc",[null,[150,53],[150,74]]]]],
-                ["inline","format-message",[["subexpr","intl-get",["identities.add_email_identity"],[],["loc",[null,[150,92],[150,134]]]]],[],["loc",[null,[150,75],[150,136]]]],
+                ["inline","format-message",[["subexpr","intl-get",["generic.identities.add_email_identity"],[],["loc",[null,[150,92],[150,142]]]]],[],["loc",[null,[150,75],[150,144]]]],
                 ["attribute","onclick",["subexpr","action",["addPhone"],[],["loc",[null,[151,53],[151,74]]]]],
-                ["inline","format-message",[["subexpr","intl-get",["identities.add_phone_identity"],[],["loc",[null,[151,92],[151,134]]]]],[],["loc",[null,[151,75],[151,136]]]],
+                ["inline","format-message",[["subexpr","intl-get",["generic.identities.add_phone_identity"],[],["loc",[null,[151,92],[151,142]]]]],[],["loc",[null,[151,75],[151,144]]]],
                 ["attribute","onclick",["subexpr","action",["addTwitter"],[],["loc",[null,[152,53],[152,76]]]]],
-                ["inline","format-message",[["subexpr","intl-get",["identities.add_twitter_identity"],[],["loc",[null,[152,94],[152,138]]]]],[],["loc",[null,[152,77],[152,140]]]]
+                ["inline","format-message",[["subexpr","intl-get",["generic.identities.add_twitter_identity"],[],["loc",[null,[152,94],[152,146]]]]],[],["loc",[null,[152,77],[152,148]]]]
               ],
               locals: [],
               templates: []
@@ -29111,14 +29111,14 @@ define('frontend-cp/components/ko-identities/template', ['exports'], function (e
         return morphs;
       },
       statements: [
-        ["inline","format-message",[["subexpr","intl-get",["identities.component_title"],[],["loc",[null,[2,23],[2,62]]]]],[],["loc",[null,[2,6],[2,64]]]],
-        ["inline","format-message",[["subexpr","intl-get",["identities.email_identities_title"],[],["loc",[null,[6,37],[6,83]]]]],[],["loc",[null,[6,20],[6,85]]]],
+        ["inline","format-message",[["subexpr","intl-get",["generic.identities.component_title"],[],["loc",[null,[2,23],[2,70]]]]],[],["loc",[null,[2,6],[2,72]]]],
+        ["inline","format-message",[["subexpr","intl-get",["generic.identities.email_identities_title"],[],["loc",[null,[6,37],[6,91]]]]],[],["loc",[null,[6,20],[6,93]]]],
         ["block","each",[["get","parent.emails",["loc",[null,[9,20],[9,33]]]]],[],0,null,["loc",[null,[9,12],[46,21]]]],
-        ["inline","format-message",[["subexpr","intl-get",["identities.twitter_identities_title"],[],["loc",[null,[51,37],[51,85]]]]],[],["loc",[null,[51,20],[51,87]]]],
+        ["inline","format-message",[["subexpr","intl-get",["generic.identities.twitter_identities_title"],[],["loc",[null,[51,37],[51,93]]]]],[],["loc",[null,[51,20],[51,95]]]],
         ["block","each",[["get","parent.twitters",["loc",[null,[54,20],[54,35]]]]],[],1,null,["loc",[null,[54,12],[75,21]]]],
-        ["inline","format-message",[["subexpr","intl-get",["identities.phones_identities_title"],[],["loc",[null,[80,37],[80,84]]]]],[],["loc",[null,[80,20],[80,86]]]],
+        ["inline","format-message",[["subexpr","intl-get",["generic.identities.phones_identities_title"],[],["loc",[null,[80,37],[80,92]]]]],[],["loc",[null,[80,20],[80,94]]]],
         ["block","each",[["get","parent.phones",["loc",[null,[83,20],[83,33]]]]],[],2,null,["loc",[null,[83,12],[105,21]]]],
-        ["inline","format-message",[["subexpr","intl-get",["identities.facebook_identities_title"],[],["loc",[null,[110,37],[110,86]]]]],[],["loc",[null,[110,20],[110,88]]]],
+        ["inline","format-message",[["subexpr","intl-get",["generic.identities.facebook_identities_title"],[],["loc",[null,[110,37],[110,94]]]]],[],["loc",[null,[110,20],[110,96]]]],
         ["block","each",[["get","parent.facebooks",["loc",[null,[113,20],[113,36]]]]],[],3,null,["loc",[null,[113,12],[135,21]]]],
         ["block","if",[["get","newIdentity",["loc",[null,[141,8],[141,19]]]]],[],4,5,["loc",[null,[141,2],[156,9]]]]
       ],
@@ -49396,71 +49396,71 @@ define('frontend-cp/mirage/fixtures/en-us-strings', ['exports'], function (expor
       "value": "No recent cases",
       "resource_type": "locale_string"
     }, {
-      "id": "frontend.api.identities.component_title",
+      "id": "frontend.api.generic.identities.component_title",
       "value": "IDENTITIES",
       "resource_type": "locale_string"
     }, {
-      "id": "frontend.api.identities.email_identities_title",
+      "id": "frontend.api.generic.identities.email_identities_title",
       "value": "Email",
       "resource_type": "locale_string"
     }, {
-      "id": "frontend.api.identities.twitter_identities_title",
+      "id": "frontend.api.generic.identities.twitter_identities_title",
       "value": "Twitter",
       "resource_type": "locale_string"
     }, {
-      "id": "frontend.api.identities.phones_identities_title",
+      "id": "frontend.api.generic.identities.phones_identities_title",
       "value": "Phone",
       "resource_type": "locale_string"
     }, {
-      "id": "frontend.api.identities.facebook_identities_title",
+      "id": "frontend.api.generic.identities.facebook_identities_title",
       "value": "Facebook",
       "resource_type": "locale_string"
     }, {
-      "id": "frontend.api.identities.add_new",
+      "id": "frontend.api.generic.identities.add_new",
       "value": "Add new",
       "resource_type": "locale_string"
     }, {
-      "id": "frontend.api.identities.add_email_identity",
+      "id": "frontend.api.generic.identities.add_email_identity",
       "value": "Email",
       "resource_type": "locale_string"
     }, {
-      "id": "frontend.api.identities.add_phone_identity",
+      "id": "frontend.api.generic.identities.add_phone_identity",
       "value": "Phone",
       "resource_type": "locale_string"
     }, {
-      "id": "frontend.api.identities.add_twitter_identity",
+      "id": "frontend.api.generic.identities.add_twitter_identity",
       "value": "Twitter",
       "resource_type": "locale_string"
     }, {
-      "id": "frontend.api.identities.primary_comment",
+      "id": "frontend.api.generic.identities.primary_comment",
       "value": "(primary)",
       "resource_type": "locale_string"
     }, {
-      "id": "frontend.api.identities.remove_identity",
+      "id": "frontend.api.generic.identities.remove_identity",
       "value": "Remove identity",
       "resource_type": "locale_string"
     }, {
-      "id": "frontend.api.identities.verify_identity",
+      "id": "frontend.api.generic.identities.verify_identity",
       "value": "Verify identity",
       "resource_type": "locale_string"
     }, {
-      "id": "frontend.api.identities.make_primary",
+      "id": "frontend.api.generic.identities.make_primary",
       "value": "Make primary",
       "resource_type": "locale_string"
     }, {
-      id: "frontend.api.identities.placeholders.email",
+      id: "frontend.api.generic.identities.placeholders.email",
       value: "Add email address",
       resource_type: "locale_string"
     }, {
-      id: "frontend.api.identities.placeholders.twitter",
+      id: "frontend.api.generic.identities.placeholders.twitter",
       value: "Add twitter handler",
       resource_type: "locale_string"
     }, {
-      id: "frontend.api.identities.placeholders.phone",
+      id: "frontend.api.generic.identities.placeholders.phone",
       value: "Add phone number",
       resource_type: "locale_string"
     }, {
-      id: "frontend.api.identities.errors.invalid_email_format",
+      id: "frontend.api.generic.identities.errors.invalid_email_format",
       value: "Email format invalid",
       resource_type: "locale_string"
     }],
@@ -81257,7 +81257,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+113f858f"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+d0c5dfc9"});
 }
 
 /* jshint ignore:end */
