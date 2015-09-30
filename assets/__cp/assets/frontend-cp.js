@@ -62636,7 +62636,7 @@ define('frontend-cp/session/admin/people/teams/edit/template', ['exports'], func
             },
             "end": {
               "line": 35,
-              "column": 161
+              "column": 213
             }
           },
           "moduleName": "frontend-cp/session/admin/people/teams/edit/template.hbs"
@@ -62659,7 +62659,7 @@ define('frontend-cp/session/admin/people/teams/edit/template', ['exports'], func
           return morphs;
         },
         statements: [
-          ["inline","ko-admin-card-user",[],["user",["subexpr","@mut",[["get","agent",["loc",[null,[35,96],[35,101]]]]],[],[]],"isSelected",true,"userSelectedAction","onUserSelected"],["loc",[null,[35,70],[35,155]]]]
+          ["inline","ko-admin-card-user",[],["user",["subexpr","@mut",[["get","agent",["loc",[null,[35,96],[35,101]]]]],[],[]],"isSelected",["subexpr","ko-contextual-helper",[["get","getMemberSelectedValue",["loc",[null,[35,135],[35,157]]]],["get","this",["loc",[null,[35,158],[35,162]]]],["get","agent",["loc",[null,[35,163],[35,168]]]]],[],["loc",[null,[35,113],[35,169]]]],"userSelectedAction","onUserSelected"],["loc",[null,[35,70],[35,207]]]]
         ],
         locals: ["agent"],
         templates: []
@@ -62673,11 +62673,11 @@ define('frontend-cp/session/admin/people/teams/edit/template', ['exports'], func
             "source": null,
             "start": {
               "line": 35,
-              "column": 170
+              "column": 222
             },
             "end": {
               "line": 35,
-              "column": 316
+              "column": 439
             }
           },
           "moduleName": "frontend-cp/session/admin/people/teams/edit/template.hbs"
@@ -62700,7 +62700,7 @@ define('frontend-cp/session/admin/people/teams/edit/template', ['exports'], func
           return morphs;
         },
         statements: [
-          ["inline","ko-admin-card-user",[],["user",["subexpr","@mut",[["get","agent",["loc",[null,[35,267],[35,272]]]]],[],[]],"userSelectedAction","onUserSelected"],["loc",[null,[35,241],[35,310]]]]
+          ["inline","ko-admin-card-user",[],["user",["subexpr","@mut",[["get","agent",["loc",[null,[35,319],[35,324]]]]],[],[]],"isSelected",["subexpr","ko-contextual-helper",[["get","getNonMemberSelectedValue",["loc",[null,[35,358],[35,383]]]],["get","this",["loc",[null,[35,384],[35,388]]]],["get","agent",["loc",[null,[35,389],[35,394]]]]],[],["loc",[null,[35,336],[35,395]]]],"userSelectedAction","onUserSelected"],["loc",[null,[35,293],[35,433]]]]
         ],
         locals: ["agent"],
         templates: []
@@ -62833,8 +62833,8 @@ define('frontend-cp/session/admin/people/teams/edit/template', ['exports'], func
         ["inline","format-message",[["subexpr","intl-get",["admin.teams.info.title"],[],["loc",[null,[21,23],[21,58]]]]],[],["loc",[null,[21,6],[21,60]]]],
         ["inline","format-message",[["subexpr","intl-get",["admin.teams.info.content"],[],["loc",[null,[22,22],[22,59]]]]],[],["loc",[null,[22,5],[22,61]]]],
         ["inline","input",[],["class","input-text input-text--search","type","text","value",["subexpr","@mut",[["get","filter",["loc",[null,[28,70],[28,76]]]]],[],[]],"placeholder",["subexpr","format-message",[["subexpr","intl-get",["admin.teams.labels.filter_agents"],[],["loc",[null,[28,105],[28,150]]]]],[],["loc",[null,[28,89],[28,151]]]]],["loc",[null,[28,6],[28,153]]]],
-        ["block","each",[["get","filteredMembers",["loc",[null,[35,10],[35,25]]]]],[],1,null,["loc",[null,[35,2],[35,170]]]],
-        ["block","each",[["get","filteredNonMembers",["loc",[null,[35,178],[35,196]]]]],[],2,null,["loc",[null,[35,170],[35,325]]]],
+        ["block","each",[["get","filteredMembers",["loc",[null,[35,10],[35,25]]]]],[],1,null,["loc",[null,[35,2],[35,222]]]],
+        ["block","each",[["get","filteredNonMembers",["loc",[null,[35,230],[35,248]]]]],[],2,null,["loc",[null,[35,222],[35,448]]]],
         ["element","action",["showDeleteConfirmation",["get","model",["loc",[null,[38,71],[38,76]]]]],[],["loc",[null,[38,37],[38,78]]]],
         ["inline","format-message",[["subexpr","intl-get",["admin.teams.labels.delete_team"],[],["loc",[null,[39,19],[39,62]]]]],[],["loc",[null,[39,2],[39,64]]]]
       ],
@@ -63061,10 +63061,14 @@ define('frontend-cp/session/admin/people/teams/new/controller', ['exports', 'emb
     }),
     userHasChangedModel: function userHasChangedModel() {
       var bufferedChanges = this.get('membersToAdd').length > 0 || this.get('membersToRemove').length > 0;
-      return this.get('model.hasDirtyAttributes') || bufferedChanges;
+      if (this.get('model.isDeleted')) {
+        return false;
+      } else {
+        return this.get('model.hasDirtyAttributes') || bufferedChanges;
+      }
     },
     matchesFilter: function matchesFilter(text) {
-      var regEx = new RegExp(this.get('filter'), 'i');
+      var regEx = new RegExp(this.get('filter').trim(), 'i');
       return regEx.test(text);
     },
     filterByFullName: function filterByFullName(members) {
@@ -63102,6 +63106,12 @@ define('frontend-cp/session/admin/people/teams/new/controller', ['exports', 'emb
           'X-Session-ID': this.get('session.sessionId')
         }
       });
+    },
+    getNonMemberSelectedValue: function getNonMemberSelectedValue(agent) {
+      return this.get('membersToAdd').contains(agent);
+    },
+    getMemberSelectedValue: function getMemberSelectedValue(agent) {
+      return !this.get('membersToRemove').contains(agent);
     },
     actions: {
       transitionToIndexRoute: function transitionToIndexRoute() {
@@ -63145,7 +63155,11 @@ define('frontend-cp/session/admin/people/teams/new/controller', ['exports', 'emb
         }
       },
       deleteTeam: function deleteTeam(team) {
-        team.destroyRecord();
+        var _this4 = this;
+
+        team.destroyRecord().then(function () {
+          return _this4.send('transitionToIndexRoute');
+        });
       },
       onUserSelected: function onUserSelected(user, isSelected) {
         var membersToAdd = this.get('membersToAdd');
@@ -63383,7 +63397,7 @@ define('frontend-cp/session/admin/people/teams/new/template', ['exports'], funct
             },
             "end": {
               "line": 35,
-              "column": 148
+              "column": 219
             }
           },
           "moduleName": "frontend-cp/session/admin/people/teams/new/template.hbs"
@@ -63406,7 +63420,7 @@ define('frontend-cp/session/admin/people/teams/new/template', ['exports'], funct
           return morphs;
         },
         statements: [
-          ["inline","ko-admin-card-user",[],["user",["subexpr","@mut",[["get","agent",["loc",[null,[35,99],[35,104]]]]],[],[]],"userSelectedAction","onUserSelected"],["loc",[null,[35,73],[35,142]]]]
+          ["inline","ko-admin-card-user",[],["user",["subexpr","@mut",[["get","agent",["loc",[null,[35,99],[35,104]]]]],[],[]],"isSelected",["subexpr","ko-contextual-helper",[["get","getNonMemberSelectedValue",["loc",[null,[35,138],[35,163]]]],["get","this",["loc",[null,[35,164],[35,168]]]],["get","agent",["loc",[null,[35,169],[35,174]]]]],[],["loc",[null,[35,116],[35,175]]]],"userSelectedAction","onUserSelected"],["loc",[null,[35,73],[35,213]]]]
         ],
         locals: ["agent"],
         templates: []
@@ -63526,7 +63540,7 @@ define('frontend-cp/session/admin/people/teams/new/template', ['exports'], funct
         ["inline","format-message",[["subexpr","intl-get",["admin.teams.info.title"],[],["loc",[null,[21,23],[21,58]]]]],[],["loc",[null,[21,6],[21,60]]]],
         ["inline","format-message",[["subexpr","intl-get",["admin.teams.info.content"],[],["loc",[null,[22,22],[22,59]]]]],[],["loc",[null,[22,5],[22,61]]]],
         ["inline","input",[],["class","input-text input-text--search","type","text","value",["subexpr","@mut",[["get","filter",["loc",[null,[28,70],[28,76]]]]],[],[]],"placeholder",["subexpr","format-message",[["subexpr","intl-get",["admin.teams.labels.filter_agents"],[],["loc",[null,[28,105],[28,150]]]]],[],["loc",[null,[28,89],[28,151]]]]],["loc",[null,[28,6],[28,153]]]],
-        ["block","each",[["get","filteredNonMembers",["loc",[null,[35,10],[35,28]]]]],[],1,null,["loc",[null,[35,2],[35,157]]]],
+        ["block","each",[["get","filteredNonMembers",["loc",[null,[35,10],[35,28]]]]],[],1,null,["loc",[null,[35,2],[35,228]]]],
         ["inline","ko-admin/page-footer",[],["cancelAction","transitionToIndexRoute","buttonText",["subexpr","format-message",[["subexpr","intl-get",["generic.save"],[],["loc",[null,[40,29],[40,54]]]]],[],["loc",[null,[40,13],[40,55]]]],"buttonAction","saveTeam"],["loc",[null,[38,0],[42,2]]]]
       ],
       locals: [],
@@ -81239,7 +81253,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+2ba512a6"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+3d69f0c2"});
 }
 
 /* jshint ignore:end */
