@@ -1820,13 +1820,13 @@ define('frontend-cp/components/ko-admin/case-fields/edit/priorities/component', 
     store: Ember['default'].inject.service(),
 
     priorities: [],
-    initPriorities: (function () {
+    initPriorities: Ember['default'].on('init', function () {
       var _this = this;
 
       this.get('store').findAll('case-priority').then(function (priorities) {
         _this.set('priorities', priorities);
       });
-    }).on('init'),
+    }),
 
     orderedOptionList: Ember['default'].computed('priorities.[]', 'priorities.@each.level', function () {
       return this.get('priorities').sortBy('level');
@@ -2299,13 +2299,13 @@ define('frontend-cp/components/ko-admin/case-fields/edit/statuses/component', ['
     store: Ember['default'].inject.service(),
 
     statuses: [],
-    initStatuses: (function () {
+    initStatuses: Ember['default'].on('init', function () {
       var _this = this;
 
       this.get('store').findAll('case-status').then(function (statuses) {
         _this.set('statuses', statuses);
       });
-    }).on('init'),
+    }),
 
     openStatuses: Ember['default'].computed('statuses.[]', function () {
       return this.get('statuses').filter(function (status) {
@@ -4625,13 +4625,13 @@ define('frontend-cp/components/ko-admin/case-fields/edit/types/component', ['exp
     store: Ember['default'].inject.service(),
 
     types: [],
-    initTypes: (function () {
+    initTypes: Ember['default'].on('init', function () {
       var _this = this;
 
       this.get('store').findAll('case-type').then(function (types) {
         _this.set('types', types);
       });
-    }).on('init'),
+    }),
 
     systemTypes: Ember['default'].computed('types.@each.id', function () {
       return this.get('types').filter(function (type) {
@@ -33308,10 +33308,10 @@ define('frontend-cp/components/ko-people-popover/component', ['exports', 'ember'
       this.send('suggestPeople', this.get('searchTerm'), this.get('selectedPeople'));
     },
 
-    setupComponent: (function () {
+    setupComponent: Ember['default'].on('didInsertElement', function () {
       this.set('suggestedPeople', null);
       this.set('suggestedPeopleTotal', 0);
-    }).on('didInsertElement'),
+    }),
 
     keyDown: function keyDown(e) {
       var searchTerm = this.get('searchTerm');
@@ -81253,7 +81253,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+3d69f0c2"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+25479740"});
 }
 
 /* jshint ignore:end */
