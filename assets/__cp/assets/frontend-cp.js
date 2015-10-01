@@ -23744,30 +23744,7 @@ define('frontend-cp/components/ko-editor-modal/component', ['exports', 'ember'],
 
   exports['default'] = Ember['default'].Component.extend({
     //Params:
-    title: null,
-    onSave: null,
-    saveButtonText: null,
-
-    classNameBindings: ['hidden:u-hidden'],
-
-    initModal: Ember['default'].on('init', function () {
-      this.set('hidden', true);
-    }),
-
-    show: function show() {
-      this.set('hidden', false);
-    },
-
-    actions: {
-      close: function close() {
-        this.set('hidden', true);
-        return this.sendAction();
-      },
-      save: function save() {
-        this.set('hidden', true);
-        return this.sendAction('onSave');
-      }
-    }
+    title: null
   });
 
 });
@@ -23786,7 +23763,7 @@ define('frontend-cp/components/ko-editor-modal/template', ['exports'], function 
             "column": 0
           },
           "end": {
-            "line": 13,
+            "line": 9,
             "column": 0
           }
         },
@@ -23824,27 +23801,6 @@ define('frontend-cp/components/ko-editor-modal/template', ['exports'], function 
         dom.appendChild(el1, el2);
         var el2 = dom.createComment("");
         dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","box t-right");
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("a");
-        dom.setAttribute(el3,"class","ko-editor-modal__cancel t-bad");
-        var el4 = dom.createComment("");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("button");
-        dom.setAttribute(el3,"class","button button--primary");
-        var el4 = dom.createComment("");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n  ");
-        dom.appendChild(el2, el3);
-        dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n");
         dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
@@ -23853,29 +23809,15 @@ define('frontend-cp/components/ko-editor-modal/template', ['exports'], function 
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var element0 = dom.childAt(fragment, [0]);
-        var element1 = dom.childAt(fragment, [2]);
-        var element2 = dom.childAt(element1, [5]);
-        var element3 = dom.childAt(element2, [1]);
-        var element4 = dom.childAt(element2, [3]);
-        var morphs = new Array(7);
-        morphs[0] = dom.createElementMorph(element0);
-        morphs[1] = dom.createMorphAt(dom.childAt(element1, [1, 1]),0,0);
-        morphs[2] = dom.createMorphAt(element1,3,3);
-        morphs[3] = dom.createElementMorph(element3);
-        morphs[4] = dom.createMorphAt(element3,0,0);
-        morphs[5] = dom.createElementMorph(element4);
-        morphs[6] = dom.createMorphAt(element4,0,0);
+        var element0 = dom.childAt(fragment, [2]);
+        var morphs = new Array(2);
+        morphs[0] = dom.createMorphAt(dom.childAt(element0, [1, 1]),0,0);
+        morphs[1] = dom.createMorphAt(element0,3,3);
         return morphs;
       },
       statements: [
-        ["element","action",["close"],[],["loc",[null,[1,38],[1,56]]]],
         ["content","title",["loc",[null,[5,39],[5,48]]]],
-        ["content","yield",["loc",[null,[7,2],[7,11]]]],
-        ["element","action",["close"],[],["loc",[null,[9,7],[9,25]]]],
-        ["inline","format-message",[["subexpr","intl-get",["generic.cancel"],[],["loc",[null,[9,81],[9,108]]]]],[],["loc",[null,[9,64],[9,110]]]],
-        ["element","action",["save"],[],["loc",[null,[10,43],[10,60]]]],
-        ["content","saveButtonText",["loc",[null,[10,61],[10,79]]]]
+        ["content","yield",["loc",[null,[7,2],[7,11]]]]
       ],
       locals: [],
       templates: []
@@ -43129,6 +43071,8 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
     editedCustomFields: null,
     editingSignature: null,
 
+    signatureModal: false,
+
     initCustomFields: Ember['default'].on('init', function () {
       this.set('editedCustomFields', new Ember['default'].Object());
     }),
@@ -43277,7 +43221,11 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
       },
 
       editSignature: function editSignature() {
-        this.get('signatureModal').show();
+        this.set('signatureModal', true);
+      },
+
+      closeSignatureModal: function closeSignatureModal() {
+        this.set('signatureModal', false);
       },
 
       deleteUser: function deleteUser() {
@@ -43292,6 +43240,7 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
 
       updateSignature: function updateSignature() {
         this.set('model.signature', this.get('editingSignature'));
+        this.set('signatureModal', false);
       },
 
       roleSelect: function roleSelect(role) {
@@ -43803,10 +43752,10 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
           return el0;
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var element0 = dom.childAt(fragment, [1, 1]);
+          var element4 = dom.childAt(fragment, [1, 1]);
           var morphs = new Array(13);
-          morphs[0] = dom.createElementMorph(element0);
-          morphs[1] = dom.createMorphAt(element0,0,0);
+          morphs[0] = dom.createElementMorph(element4);
+          morphs[1] = dom.createMorphAt(element4,0,0);
           morphs[2] = dom.createMorphAt(fragment,3,3,contextualElement);
           morphs[3] = dom.createMorphAt(fragment,5,5,contextualElement);
           morphs[4] = dom.createMorphAt(fragment,7,7,contextualElement);
@@ -43840,6 +43789,109 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
       };
     }());
     var child2 = (function() {
+      var child0 = (function() {
+        return {
+          meta: {
+            "revision": "Ember@1.13.7",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 153,
+                "column": 2
+              },
+              "end": {
+                "line": 168,
+                "column": 2
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-user-content/template.hbs"
+          },
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("    ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n    ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("div");
+            dom.setAttribute(el1,"class","box layout layout--flush");
+            var el2 = dom.createTextNode("\n      ");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createElement("div");
+            dom.setAttribute(el2,"class","ko-editor-modal__submit-message layout__item u-2/3");
+            var el3 = dom.createTextNode("\n        ");
+            dom.appendChild(el2, el3);
+            var el3 = dom.createComment("");
+            dom.appendChild(el2, el3);
+            var el3 = dom.createTextNode("\n      ");
+            dom.appendChild(el2, el3);
+            dom.appendChild(el1, el2);
+            var el2 = dom.createComment("\n   ");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createElement("div");
+            dom.setAttribute(el2,"class","layout__item t-right u-1/3");
+            var el3 = dom.createTextNode("\n        ");
+            dom.appendChild(el2, el3);
+            var el3 = dom.createElement("a");
+            dom.setAttribute(el3,"class","ko-editor-modal__cancel t-bad");
+            var el4 = dom.createTextNode("\n          ");
+            dom.appendChild(el3, el4);
+            var el4 = dom.createComment("");
+            dom.appendChild(el3, el4);
+            var el4 = dom.createTextNode("\n        ");
+            dom.appendChild(el3, el4);
+            dom.appendChild(el2, el3);
+            var el3 = dom.createTextNode("\n        ");
+            dom.appendChild(el2, el3);
+            var el3 = dom.createElement("button");
+            dom.setAttribute(el3,"class","button button--primary");
+            var el4 = dom.createTextNode("\n          ");
+            dom.appendChild(el3, el4);
+            var el4 = dom.createComment("");
+            dom.appendChild(el3, el4);
+            var el4 = dom.createTextNode("\n        ");
+            dom.appendChild(el3, el4);
+            dom.appendChild(el2, el3);
+            var el3 = dom.createTextNode("\n      ");
+            dom.appendChild(el2, el3);
+            dom.appendChild(el1, el2);
+            var el2 = dom.createTextNode("\n    ");
+            dom.appendChild(el1, el2);
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var element0 = dom.childAt(fragment, [3]);
+            var element1 = dom.childAt(element0, [3]);
+            var element2 = dom.childAt(element1, [1]);
+            var element3 = dom.childAt(element1, [3]);
+            var morphs = new Array(6);
+            morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+            morphs[1] = dom.createMorphAt(dom.childAt(element0, [1]),1,1);
+            morphs[2] = dom.createElementMorph(element2);
+            morphs[3] = dom.createMorphAt(element2,1,1);
+            morphs[4] = dom.createElementMorph(element3);
+            morphs[5] = dom.createMorphAt(element3,1,1);
+            return morphs;
+          },
+          statements: [
+            ["inline","textarea",[],["value",["subexpr","@mut",[["get","editingSignature",["loc",[null,[154,21],[154,37]]]]],[],[]],"class","text-area--clean"],["loc",[null,[154,4],[154,64]]]],
+            ["inline","format-message",[["subexpr","intl-get",["users.signaturemessage"],[],["loc",[null,[157,25],[157,60]]]]],[],["loc",[null,[157,8],[157,62]]]],
+            ["element","action",["closeSignatureModal"],[],["loc",[null,[160,11],[160,43]]]],
+            ["inline","format-message",[["subexpr","intl-get",["generic.cancel"],[],["loc",[null,[161,27],[161,54]]]]],[],["loc",[null,[161,10],[161,56]]]],
+            ["element","action",["updateSignature"],[],["loc",[null,[163,47],[163,75]]]],
+            ["inline","format-message",[["subexpr","intl-get",["users.update_signature"],[],["loc",[null,[164,27],[164,62]]]]],[],["loc",[null,[164,10],[164,64]]]]
+          ],
+          locals: [],
+          templates: []
+        };
+      }());
       return {
         meta: {
           "revision": "Ember@1.13.7",
@@ -43850,7 +43902,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
               "column": 0
             },
             "end": {
-              "line": 157,
+              "line": 169,
               "column": 0
             }
           },
@@ -43861,24 +43913,22 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
         hasRendered: false,
         buildFragment: function buildFragment(dom) {
           var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("  ");
-          dom.appendChild(el0, el1);
           var el1 = dom.createComment("");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n");
           dom.appendChild(el0, el1);
           return el0;
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
           var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+          morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
           return morphs;
         },
         statements: [
-          ["inline","textarea",[],["value",["subexpr","@mut",[["get","editingSignature",["loc",[null,[156,19],[156,35]]]]],[],[]],"class","text-area--clean"],["loc",[null,[156,2],[156,62]]]]
+          ["block","ko-editor-modal",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.editsignature"],[],["loc",[null,[153,43],[153,75]]]]],[],["loc",[null,[153,27],[153,76]]]]],0,null,["loc",[null,[153,2],[168,22]]]]
         ],
         locals: [],
-        templates: []
+        templates: [child0]
       };
     }());
     return {
@@ -43891,7 +43941,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
             "column": 0
           },
           "end": {
-            "line": 158,
+            "line": 170,
             "column": 0
           }
         },
@@ -44049,20 +44099,20 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var element1 = dom.childAt(fragment, [0]);
-        var element2 = dom.childAt(element1, [1]);
-        var element3 = dom.childAt(element2, [1, 1]);
-        var element4 = dom.childAt(element3, [1, 1]);
-        var element5 = dom.childAt(element2, [3, 1]);
-        var element6 = dom.childAt(element1, [3]);
+        var element5 = dom.childAt(fragment, [0]);
+        var element6 = dom.childAt(element5, [1]);
+        var element7 = dom.childAt(element6, [1, 1]);
+        var element8 = dom.childAt(element7, [1, 1]);
+        var element9 = dom.childAt(element6, [3, 1]);
+        var element10 = dom.childAt(element5, [3]);
         var morphs = new Array(8);
-        morphs[0] = dom.createAttrMorph(element4, 'src');
-        morphs[1] = dom.createMorphAt(dom.childAt(element3, [3, 1]),1,1);
-        morphs[2] = dom.createMorphAt(dom.childAt(element5, [1]),1,1);
-        morphs[3] = dom.createMorphAt(dom.childAt(element5, [3]),1,1);
-        morphs[4] = dom.createMorphAt(dom.childAt(element5, [5]),1,1);
-        morphs[5] = dom.createMorphAt(dom.childAt(element6, [1, 1]),1,1);
-        morphs[6] = dom.createMorphAt(dom.childAt(element6, [3]),1,1);
+        morphs[0] = dom.createAttrMorph(element8, 'src');
+        morphs[1] = dom.createMorphAt(dom.childAt(element7, [3, 1]),1,1);
+        morphs[2] = dom.createMorphAt(dom.childAt(element9, [1]),1,1);
+        morphs[3] = dom.createMorphAt(dom.childAt(element9, [3]),1,1);
+        morphs[4] = dom.createMorphAt(dom.childAt(element9, [5]),1,1);
+        morphs[5] = dom.createMorphAt(dom.childAt(element10, [1, 1]),1,1);
+        morphs[6] = dom.createMorphAt(dom.childAt(element10, [3]),1,1);
         morphs[7] = dom.createMorphAt(fragment,2,2,contextualElement);
         dom.insertBoundary(fragment, null);
         return morphs;
@@ -44075,7 +44125,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
         ["inline","ko-user-action-menu",[],["permissions",["subexpr","@mut",[["get","sessionService.permissions",["loc",[null,[41,24],[41,50]]]]],[],[]],"userRoleType",["subexpr","@mut",[["get","model.role.roleType",["loc",[null,[42,25],[42,44]]]]],[],[]],"userModel",["subexpr","@mut",[["get","model",["loc",[null,[43,22],[43,27]]]]],[],[]]],["loc",[null,[40,8],[44,10]]]],
         ["block","ko-text-editor",[],["class","ko-user-content__text-editor","viewName","postEditor","onPeopleSuggestion","suggestPeople"],0,null,["loc",[null,[53,8],[55,27]]]],
         ["block","ko-info-bar",[],[],1,null,["loc",[null,[60,6],[147,22]]]],
-        ["block","ko-editor-modal",[],["onSave","updateSignature","saveButtonText",["subexpr","format-message",[["subexpr","intl-get",["users.update_signature"],[],["loc",[null,[153,50],[153,85]]]]],[],["loc",[null,[153,34],[153,86]]]],"viewName","signatureModal","title",["subexpr","format-message",[["subexpr","intl-get",["users.editsignature"],[],["loc",[null,[155,41],[155,73]]]]],[],["loc",[null,[155,25],[155,74]]]]],2,null,["loc",[null,[152,0],[157,20]]]]
+        ["block","if",[["get","signatureModal",["loc",[null,[152,6],[152,20]]]]],[],2,null,["loc",[null,[152,0],[169,7]]]]
       ],
       locals: [],
       templates: [child0, child1, child2]
@@ -50526,6 +50576,10 @@ define('frontend-cp/mirage/fixtures/en-us-strings', ['exports'], function (expor
     }, {
       "id": "frontend.api.users.editsignature",
       "value": "Edit Signature",
+      "resource_type": "locale_string"
+    }, {
+      "id": "frontend.api.users.signaturemessage",
+      "value": "Please press submit on the next page",
       "resource_type": "locale_string"
     }, {
       "id": "frontend.api.users.changepassword",
@@ -82561,7 +82615,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+a7e3115f"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+9b7419cc"});
 }
 
 /* jshint ignore:end */
