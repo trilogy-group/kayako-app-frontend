@@ -32983,6 +32983,7 @@ define('frontend-cp/components/ko-organisation-content/component', ['exports', '
 
     suggestedTags: [],
     erroredDomains: [],
+    errors: [],
 
     isDomainEdited: false,
     editedCustomFields: null,
@@ -33001,6 +33002,14 @@ define('frontend-cp/components/ko-organisation-content/component', ['exports', '
       return this.get('model.domains').map(function (domain) {
         return domain.get('domain');
       }).uniq();
+    }),
+
+    errorMap: Ember['default'].computed('errors', function () {
+      var errorMap = {};
+      this.get('errors').forEach(function (error) {
+        errorMap[error.parameter] = true;
+      });
+      return errorMap;
     }),
 
     resetForm: function resetForm() {
@@ -33098,7 +33107,6 @@ define('frontend-cp/components/ko-organisation-content/component', ['exports', '
         }, function (e) {
           _this2.set('errors', e.errors);
           _this2.set('erroredDomains', _this2.extractDomainsFromErrors(e.notifications));
-          _this2.set('isDomainErrored', true);
         });
       }
     }
@@ -33164,7 +33172,7 @@ define('frontend-cp/components/ko-organisation-content/template', ['exports'], f
                 "column": 8
               },
               "end": {
-                "line": 59,
+                "line": 60,
                 "column": 8
               }
             },
@@ -33189,7 +33197,7 @@ define('frontend-cp/components/ko-organisation-content/template', ['exports'], f
             return morphs;
           },
           statements: [
-            ["inline","ko-field/tags",[],["selectedTags",["subexpr","@mut",[["get","tags",["loc",[null,[51,39],[51,43]]]]],[],[]],"suggestedTags",["subexpr","@mut",[["get","suggestedTags",["loc",[null,[52,26],[52,39]]]]],[],[]],"title",["subexpr","format-message",[["subexpr","intl-get",["users.tags"],[],["loc",[null,[53,34],[53,57]]]]],[],["loc",[null,[53,18],[53,58]]]],"newTagText",["subexpr","format-message",[["subexpr","intl-get",["users.newtag"],[],["loc",[null,[54,39],[54,64]]]]],[],["loc",[null,[54,23],[54,65]]]],"addTagText",["subexpr","format-message",[["subexpr","intl-get",["users.addtag"],[],["loc",[null,[55,39],[55,64]]]]],[],["loc",[null,[55,23],[55,65]]]],"onTagAddition","addTag","onTagRemoval","removeTag","onTagSuggestion","suggestTags"],["loc",[null,[51,10],[58,43]]]]
+            ["inline","ko-field/tags",[],["selectedTags",["subexpr","@mut",[["get","tags",["loc",[null,[52,39],[52,43]]]]],[],[]],"suggestedTags",["subexpr","@mut",[["get","suggestedTags",["loc",[null,[53,26],[53,39]]]]],[],[]],"title",["subexpr","format-message",[["subexpr","intl-get",["users.tags"],[],["loc",[null,[54,34],[54,57]]]]],[],["loc",[null,[54,18],[54,58]]]],"newTagText",["subexpr","format-message",[["subexpr","intl-get",["users.newtag"],[],["loc",[null,[55,39],[55,64]]]]],[],["loc",[null,[55,23],[55,65]]]],"addTagText",["subexpr","format-message",[["subexpr","intl-get",["users.addtag"],[],["loc",[null,[56,39],[56,64]]]]],[],["loc",[null,[56,23],[56,65]]]],"onTagAddition","addTag","onTagRemoval","removeTag","onTagSuggestion","suggestTags"],["loc",[null,[52,10],[59,43]]]]
           ],
           locals: [],
           templates: []
@@ -33202,11 +33210,11 @@ define('frontend-cp/components/ko-organisation-content/template', ['exports'], f
             "loc": {
               "source": null,
               "start": {
-                "line": 61,
+                "line": 62,
                 "column": 8
               },
               "end": {
-                "line": 69,
+                "line": 70,
                 "column": 8
               }
             },
@@ -33231,7 +33239,7 @@ define('frontend-cp/components/ko-organisation-content/template', ['exports'], f
             return morphs;
           },
           statements: [
-            ["inline","ko-field/tags",[],["errorTags",["subexpr","@mut",[["get","erroredDomains",["loc",[null,[65,22],[65,36]]]]],[],[]],"selectedTags",["subexpr","@mut",[["get","domains",["loc",[null,[66,25],[66,32]]]]],[],[]],"onTagAddition","addDomain","onTagRemoval","removeDomain"],["loc",[null,[64,10],[68,41]]]]
+            ["inline","ko-field/tags",[],["errorTags",["subexpr","@mut",[["get","erroredDomains",["loc",[null,[66,22],[66,36]]]]],[],[]],"selectedTags",["subexpr","@mut",[["get","domains",["loc",[null,[67,25],[67,32]]]]],[],[]],"onTagAddition","addDomain","onTagRemoval","removeDomain"],["loc",[null,[65,10],[69,41]]]]
           ],
           locals: [],
           templates: []
@@ -33246,11 +33254,11 @@ define('frontend-cp/components/ko-organisation-content/template', ['exports'], f
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 73,
+                    "line": 74,
                     "column": 12
                   },
                   "end": {
-                    "line": 82,
+                    "line": 83,
                     "column": 12
                   }
                 },
@@ -33275,7 +33283,7 @@ define('frontend-cp/components/ko-organisation-content/template', ['exports'], f
                 return morphs;
               },
               statements: [
-                ["inline","component",[["subexpr","ko-helper",[["get","customFieldsList.componentFor",["loc",[null,[74,37],[74,66]]]],["get","field.fieldType",["loc",[null,[74,67],[74,82]]]]],[],["loc",[null,[74,26],[74,83]]]]],["customFieldsModel",["subexpr","@mut",[["get","model.customFields",["loc",[null,[75,34],[75,52]]]]],[],[]],"field",["subexpr","@mut",[["get","field",["loc",[null,[76,22],[76,27]]]]],[],[]],"fieldValue",["subexpr","ko-helper",[["get","customFieldsList.findCustomFieldValue",["loc",[null,[77,38],[77,75]]]],["get","model.customFields",["loc",[null,[77,76],[77,94]]]],["get","field",["loc",[null,[77,95],[77,100]]]]],[],["loc",[null,[77,27],[77,101]]]],"title",["subexpr","@mut",[["get","field.title",["loc",[null,[78,22],[78,33]]]]],[],[]],"errors",["subexpr","@mut",[["get","errors",["loc",[null,[79,23],[79,29]]]]],[],[]],"editedCustomFields",["subexpr","@mut",[["get","editedCustomFields",["loc",[null,[80,35],[80,53]]]]],[],[]]],["loc",[null,[74,14],[81,16]]]]
+                ["inline","component",[["subexpr","ko-helper",[["get","customFieldsList.componentFor",["loc",[null,[75,37],[75,66]]]],["get","field.fieldType",["loc",[null,[75,67],[75,82]]]]],[],["loc",[null,[75,26],[75,83]]]]],["customFieldsModel",["subexpr","@mut",[["get","model.customFields",["loc",[null,[76,34],[76,52]]]]],[],[]],"field",["subexpr","@mut",[["get","field",["loc",[null,[77,22],[77,27]]]]],[],[]],"fieldValue",["subexpr","ko-helper",[["get","customFieldsList.findCustomFieldValue",["loc",[null,[78,38],[78,75]]]],["get","model.customFields",["loc",[null,[78,76],[78,94]]]],["get","field",["loc",[null,[78,95],[78,100]]]]],[],["loc",[null,[78,27],[78,101]]]],"title",["subexpr","@mut",[["get","field.title",["loc",[null,[79,22],[79,33]]]]],[],[]],"errors",["subexpr","@mut",[["get","errors",["loc",[null,[80,23],[80,29]]]]],[],[]],"editedCustomFields",["subexpr","@mut",[["get","editedCustomFields",["loc",[null,[81,35],[81,53]]]]],[],[]]],["loc",[null,[75,14],[82,16]]]]
               ],
               locals: [],
               templates: []
@@ -33287,11 +33295,11 @@ define('frontend-cp/components/ko-organisation-content/template', ['exports'], f
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 72,
+                  "line": 73,
                   "column": 10
                 },
                 "end": {
-                  "line": 83,
+                  "line": 84,
                   "column": 10
                 }
               },
@@ -33314,7 +33322,7 @@ define('frontend-cp/components/ko-organisation-content/template', ['exports'], f
               return morphs;
             },
             statements: [
-              ["block","if",[["get","field.isEnabled",["loc",[null,[73,18],[73,33]]]]],[],0,null,["loc",[null,[73,12],[82,19]]]]
+              ["block","if",[["get","field.isEnabled",["loc",[null,[74,18],[74,33]]]]],[],0,null,["loc",[null,[74,12],[83,19]]]]
             ],
             locals: [],
             templates: [child0]
@@ -33326,11 +33334,11 @@ define('frontend-cp/components/ko-organisation-content/template', ['exports'], f
             "loc": {
               "source": null,
               "start": {
-                "line": 71,
+                "line": 72,
                 "column": 8
               },
               "end": {
-                "line": 84,
+                "line": 85,
                 "column": 8
               }
             },
@@ -33353,7 +33361,7 @@ define('frontend-cp/components/ko-organisation-content/template', ['exports'], f
             return morphs;
           },
           statements: [
-            ["block","if",[["subexpr","ko-helper",[["get","customFieldsList.componentFor",["loc",[null,[72,27],[72,56]]]],["get","field.fieldType",["loc",[null,[72,57],[72,72]]]]],[],["loc",[null,[72,16],[72,73]]]]],[],0,null,["loc",[null,[72,10],[83,17]]]]
+            ["block","if",[["subexpr","ko-helper",[["get","customFieldsList.componentFor",["loc",[null,[73,27],[73,56]]]],["get","field.fieldType",["loc",[null,[73,57],[73,72]]]]],[],["loc",[null,[73,16],[73,73]]]]],[],0,null,["loc",[null,[73,10],[84,17]]]]
           ],
           locals: ["field"],
           templates: [child0]
@@ -33369,7 +33377,7 @@ define('frontend-cp/components/ko-organisation-content/template', ['exports'], f
               "column": 6
             },
             "end": {
-              "line": 87,
+              "line": 88,
               "column": 6
             }
           },
@@ -33428,10 +33436,10 @@ define('frontend-cp/components/ko-organisation-content/template', ['exports'], f
         statements: [
           ["element","action",["submit"],[],["loc",[null,[46,55],[46,74]]]],
           ["inline","format-message",[["subexpr","intl-get",["cases.submit"],[],["loc",[null,[46,92],[46,117]]]]],[],["loc",[null,[46,75],[46,119]]]],
-          ["block","ko-info-bar/field",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.tags"],[],["loc",[null,[49,51],[49,74]]]]],[],["loc",[null,[49,35],[49,75]]]],"isEdited",["subexpr","@mut",[["get","isTagsFieldEdited",["loc",[null,[50,19],[50,36]]]]],[],[]]],0,null,["loc",[null,[49,8],[59,30]]]],
-          ["block","ko-info-bar/field",[],["title",["subexpr","format-message",[["subexpr","intl-get",["organisation.domains"],[],["loc",[null,[61,51],[61,84]]]]],[],["loc",[null,[61,35],[61,85]]]],"isEdited",["subexpr","@mut",[["get","isDomainEdited",["loc",[null,[62,19],[62,33]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","isDomainErrored",["loc",[null,[63,20],[63,35]]]]],[],[]]],1,null,["loc",[null,[61,8],[69,30]]]],
-          ["block","each",[["get","customFields",["loc",[null,[71,16],[71,28]]]]],[],2,null,["loc",[null,[71,8],[84,17]]]],
-          ["inline","ko-info-bar/metadata",[],["rows",["subexpr","@mut",[["get","organisationDates",["loc",[null,[86,36],[86,53]]]]],[],[]]],["loc",[null,[86,8],[86,55]]]]
+          ["block","ko-info-bar/field",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.tags"],[],["loc",[null,[49,51],[49,74]]]]],[],["loc",[null,[49,35],[49,75]]]],"isEdited",["subexpr","@mut",[["get","isTagsFieldEdited",["loc",[null,[50,19],[50,36]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","errorMap.tags",["loc",[null,[51,20],[51,33]]]]],[],[]]],0,null,["loc",[null,[49,8],[60,30]]]],
+          ["block","ko-info-bar/field",[],["title",["subexpr","format-message",[["subexpr","intl-get",["organisation.domains"],[],["loc",[null,[62,51],[62,84]]]]],[],["loc",[null,[62,35],[62,85]]]],"isEdited",["subexpr","@mut",[["get","isDomainEdited",["loc",[null,[63,19],[63,33]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","errorMap.domains",["loc",[null,[64,20],[64,36]]]]],[],[]]],1,null,["loc",[null,[62,8],[70,30]]]],
+          ["block","each",[["get","customFields",["loc",[null,[72,16],[72,28]]]]],[],2,null,["loc",[null,[72,8],[85,17]]]],
+          ["inline","ko-info-bar/metadata",[],["rows",["subexpr","@mut",[["get","organisationDates",["loc",[null,[87,36],[87,53]]]]],[],[]]],["loc",[null,[87,8],[87,55]]]]
         ],
         locals: [],
         templates: [child0, child1, child2]
@@ -33447,7 +33455,7 @@ define('frontend-cp/components/ko-organisation-content/template', ['exports'], f
             "column": 0
           },
           "end": {
-            "line": 91,
+            "line": 92,
             "column": 0
           }
         },
@@ -33605,7 +33613,7 @@ define('frontend-cp/components/ko-organisation-content/template', ['exports'], f
         ["inline","ko-editable-text",[],["value",["subexpr","@mut",[["get","model.name",["loc",[null,[11,22],[11,32]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isNameEdited",["loc",[null,[12,25],[12,37]]]]],[],[]],"onValueChange","setName","placeholder",["subexpr","format-message",[["subexpr","intl-get",["organisation.new_organisation_placeholder"],[],["loc",[null,[14,44],[14,98]]]]],[],["loc",[null,[14,28],[14,99]]]]],["loc",[null,[10,12],[15,14]]]],
         ["inline","ko-organisation-action-menu",[],["permissions",["subexpr","@mut",[["get","sessionService.permissions",["loc",[null,[27,23],[27,49]]]]],[],[]],"organisation",["subexpr","@mut",[["get","model",["loc",[null,[28,24],[28,29]]]]],[],[]]],["loc",[null,[26,9],[29,11]]]],
         ["block","ko-text-editor",[],["class","ko-organisation-content__text-editor","viewName","postEditor"],0,null,["loc",[null,[38,8],[40,27]]]],
-        ["block","ko-info-bar",[],[],1,null,["loc",[null,[44,6],[87,22]]]]
+        ["block","ko-info-bar",[],[],1,null,["loc",[null,[44,6],[88,22]]]]
       ],
       locals: [],
       templates: [child0, child1]
@@ -55309,10 +55317,8 @@ define('frontend-cp/serializers/organization', ['exports', 'frontend-cp/serializ
         return domain.get('domain');
       }).uniq().toString();
 
-      json.tags = snapshot.hasMany('tags').getEach('name');
+      json.tags = snapshot.hasMany('tags').getEach('name').toString();
       json.field_values = this.serializeCustomFields(snapshot.attr('customFields')); //eslint-disable-line camelcase
-
-      json.tags = snapshot.hasMany('tags').getEach('name');
 
       return json;
     }
@@ -67205,14 +67211,14 @@ define('frontend-cp/session/agent/users/user/index/template', ['exports'], funct
   }()));
 
 });
-define('frontend-cp/session/agent/users/user/organisation/route', ['exports', 'frontend-cp/routes/abstract/organisation-route'], function (exports, OrganisationRoute) {
+define('frontend-cp/session/agent/users/user/organisation/route', ['exports', 'frontend-cp/routes/abstract/tabbed-route'], function (exports, TabbedRoute) {
 
   'use strict';
 
-  exports['default'] = OrganisationRoute['default'].extend({
+  exports['default'] = TabbedRoute['default'].extend({
 
     model: function model() {
-      var parentModel = this.modelFor('user');
+      var parentModel = this.modelFor('session.agent.users.user');
       return parentModel ? parentModel.get('organization') : {};
     },
 
@@ -81698,7 +81704,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+872950f6"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+46ad4955"});
 }
 
 /* jshint ignore:end */
