@@ -183,6 +183,7 @@
 
   "twitter": "Twitter",
   "twitter.headings.index": "Twitter",
+  "twitter.edit.heading": "Twitter / @{screenName}",
   "twitter.buttons.create_account": "Connect new account",
   "twitter.heading.account_settings": "Account settings",
   "twitter.heading.capture_settings": "What to capture",

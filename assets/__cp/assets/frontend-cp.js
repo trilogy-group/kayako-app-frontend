@@ -46309,6 +46309,7 @@ define('frontend-cp/locales/en-us/admin', ['exports'], function (exports) {
 
     "twitter": "Twitter",
     "twitter.headings.index": "Twitter",
+    "twitter.edit.heading": "Twitter / @{screenName}",
     "twitter.buttons.create_account": "Connect new account",
     "twitter.heading.account_settings": "Account settings",
     "twitter.heading.capture_settings": "What to capture",
@@ -57725,7 +57726,7 @@ define('frontend-cp/session/admin/channels/twitter/edit/template', ['exports'], 
         return morphs;
       },
       statements: [
-        ["inline","ko-admin/page-header",[],["title",["subexpr","format-message",[["subexpr","intl-get",["admin.casefields.edit.heading"],[],["loc",[null,[2,24],[2,66]]]]],[],["loc",[null,[2,8],[2,67]]]],"onCancel",["subexpr","action",["transitionToIndexRoute"],[],["loc",[null,[3,11],[3,44]]]],"buttonText",["subexpr","format-message",[["subexpr","intl-get",["generic.save"],[],["loc",[null,[4,29],[4,54]]]]],[],["loc",[null,[4,13],[4,55]]]],"onSave",["subexpr","action",["saveTwitterAccount"],[],["loc",[null,[5,9],[5,38]]]],"pageCopy",null],["loc",[null,[1,0],[7,2]]]],
+        ["inline","ko-admin/page-header",[],["title",["subexpr","format-message",[["subexpr","intl-get",["admin.twitter.edit.heading"],[],["loc",[null,[2,24],[2,63]]]]],["screenName",["get","model.screenName",["loc",[null,[2,75],[2,91]]]]],["loc",[null,[2,8],[2,92]]]],"onCancel",["subexpr","action",["transitionToIndexRoute"],[],["loc",[null,[3,11],[3,44]]]],"buttonText",["subexpr","format-message",[["subexpr","intl-get",["generic.save"],[],["loc",[null,[4,29],[4,54]]]]],[],["loc",[null,[4,13],[4,55]]]],"onSave",["subexpr","action",["saveTwitterAccount"],[],["loc",[null,[5,9],[5,38]]]],"pageCopy",null],["loc",[null,[1,0],[7,2]]]],
         ["inline","ko-admin/twitter/edit",[],["account",["subexpr","@mut",[["get","model",["loc",[null,[9,32],[9,37]]]]],[],[]]],["loc",[null,[9,0],[9,39]]]],
         ["inline","ko-admin/page-footer",[],["onCancel",["subexpr","action",["transitionToIndexRoute"],[],["loc",[null,[11,32],[11,65]]]],"buttonText",["subexpr","format-message",[["subexpr","intl-get",["generic.save"],[],["loc",[null,[11,93],[11,118]]]]],[],["loc",[null,[11,77],[11,119]]]],"onSave",["subexpr","action",["saveTwitterAccount"],[],["loc",[null,[11,127],[11,156]]]]],["loc",[null,[11,0],[11,158]]]]
       ],
@@ -57798,6 +57799,53 @@ define('frontend-cp/session/admin/channels/twitter/index/template', ['exports'],
         var child0 = (function() {
           var child0 = (function() {
             var child0 = (function() {
+              return {
+                meta: {
+                  "revision": "Ember@1.13.7",
+                  "loc": {
+                    "source": null,
+                    "start": {
+                      "line": 18,
+                      "column": 64
+                    },
+                    "end": {
+                      "line": 18,
+                      "column": 148
+                    }
+                  },
+                  "moduleName": "frontend-cp/session/admin/channels/twitter/index/template.hbs"
+                },
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                  var el0 = dom.createDocumentFragment();
+                  var el1 = dom.createTextNode(" ");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createElement("span");
+                  dom.setAttribute(el1,"class","t-caption");
+                  var el2 = dom.createTextNode(" (");
+                  dom.appendChild(el1, el2);
+                  var el2 = dom.createComment("");
+                  dom.appendChild(el1, el2);
+                  var el2 = dom.createTextNode(") ");
+                  dom.appendChild(el1, el2);
+                  dom.appendChild(el0, el1);
+                  return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                  var morphs = new Array(1);
+                  morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]),1,1);
+                  return morphs;
+                },
+                statements: [
+                  ["content","account.brand.name",["loc",[null,[18,117],[18,139]]]]
+                ],
+                locals: [],
+                templates: []
+              };
+            }());
+            var child1 = (function() {
               return {
                 meta: {
                   "revision": "Ember@1.13.7",
@@ -57877,10 +57925,7 @@ define('frontend-cp/session/admin/channels/twitter/index/template', ['exports'],
                 dom.appendChild(el2, el3);
                 var el3 = dom.createTextNode(" ");
                 dom.appendChild(el2, el3);
-                var el3 = dom.createElement("span");
-                dom.setAttribute(el3,"class","t-caption");
-                var el4 = dom.createComment("");
-                dom.appendChild(el3, el4);
+                var el3 = dom.createComment("");
                 dom.appendChild(el2, el3);
                 var el3 = dom.createTextNode("\n          ");
                 dom.appendChild(el2, el3);
@@ -57932,7 +57977,7 @@ define('frontend-cp/session/admin/channels/twitter/index/template', ['exports'],
                 var element9 = dom.childAt(element7, [5]);
                 var morphs = new Array(7);
                 morphs[0] = dom.createMorphAt(dom.childAt(element6, [1]),1,1);
-                morphs[1] = dom.createMorphAt(dom.childAt(element6, [3]),0,0);
+                morphs[1] = dom.createMorphAt(element6,3,3);
                 morphs[2] = dom.createMorphAt(element7,1,1);
                 morphs[3] = dom.createElementMorph(element8);
                 morphs[4] = dom.createMorphAt(element8,0,0);
@@ -57942,15 +57987,15 @@ define('frontend-cp/session/admin/channels/twitter/index/template', ['exports'],
               },
               statements: [
                 ["content","account.screenName",["loc",[null,[18,34],[18,56]]]],
-                ["content","account.brand.title",["loc",[null,[18,88],[18,111]]]],
-                ["block","link-to",["session.admin.channels.twitter.edit",["get","account",["loc",[null,[22,63],[22,70]]]]],[],0,null,["loc",[null,[22,14],[22,128]]]],
+                ["block","if",[["get","account.brand.name",["loc",[null,[18,70],[18,88]]]]],[],0,null,["loc",[null,[18,64],[18,155]]]],
+                ["block","link-to",["session.admin.channels.twitter.edit",["get","account",["loc",[null,[22,63],[22,70]]]]],[],1,null,["loc",[null,[22,14],[22,128]]]],
                 ["element","action",["toggleEnabledProperty",["get","account",["loc",[null,[23,59],[23,66]]]]],[],["loc",[null,[23,26],[23,68]]]],
                 ["inline","format-message",[["subexpr","intl-get",["generic.disable"],[],["loc",[null,[23,86],[23,114]]]]],[],["loc",[null,[23,69],[23,116]]]],
                 ["element","action",["showDeleteConfirmation",["get","account",["loc",[null,[24,60],[24,67]]]]],[],["loc",[null,[24,26],[24,69]]]],
                 ["inline","format-message",[["subexpr","intl-get",["generic.delete"],[],["loc",[null,[24,87],[24,114]]]]],[],["loc",[null,[24,70],[24,116]]]]
               ],
               locals: [],
-              templates: [child0]
+              templates: [child0, child1]
             };
           }());
           return {
@@ -81629,7 +81674,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+7d828cca"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+73d40f12"});
 }
 
 /* jshint ignore:end */
