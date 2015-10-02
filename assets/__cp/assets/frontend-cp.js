@@ -11612,19 +11612,19 @@ define('frontend-cp/components/ko-agent-dropdown/create-case/component', ['expor
           var userModel = fields.requester.value;
           var userId = userModel.get('id');
 
-          var primaryChannelPromise = findUserPrimaryChannel(userId);
+          var userChannels = findUserChannels(userId);
           var defaultCaseFormPromise = findDefaultCaseForm();
           var defaultStatusPromise = findDefaultStatus();
 
           return Ember['default'].RSVP.hash({
-            channel: primaryChannelPromise,
+            channels: userChannels,
             caseForm: defaultCaseFormPromise,
             status: defaultStatusPromise
           }).then(function (_ref) {
-            var channel = _ref.channel;
+            var channels = _ref.channels;
             var status = _ref.status;
             var caseForm = _ref.caseForm;
-            return createCase(userModel, channel, status, caseForm);
+            return createCase(userModel, channels, status, caseForm);
           });
 
           function findDefaultStatus() {
@@ -11639,18 +11639,17 @@ define('frontend-cp/components/ko-agent-dropdown/create-case/component', ['expor
             });
           }
 
-          function findUserPrimaryChannel(userId) {
+          function findUserChannels(userId) {
             return store.query('channel', {
               'user_id': userId
-            }).then(function (channelModels) {
-              return channelModels.objectAt(0);
             });
           }
 
-          function createCase(userModel, channelModel, statusModel, formModel) {
+          function createCase(userModel, channels, statusModel, formModel) {
             return store.createRecord('case', {
               'requester': userModel,
-              'sourceChannel': channelModel,
+              'channels': channels,
+              'sourceChannel': channels.objectAt(0),
               'status': statusModel,
               'form': formModel
             });
@@ -14332,6 +14331,10 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
         this.set('topPost', null);
         this.set('bottomPost', null);
       }
+
+      if (!this.get('case.channels.length') && !this.get('case.replyChannels.length')) {
+        this.set('replyType', 'NOTE');
+      }
     }),
 
     suggestedTags: [],
@@ -14340,6 +14343,14 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       return this.get('case.tags').map(function (tag) {
         return tag.get('name');
       });
+    }),
+
+    availableChannels: Ember['default'].computed('case.id', 'case.replyChannels', 'case.channels', function () {
+      if (!this.get('case.id')) {
+        return this.get('case.channels');
+      } else {
+        return this.get('case.replyChannels');
+      }
     }),
 
     resizeSidebarAndContent: Ember['default'].on('willInsertElement', function () {
@@ -16129,7 +16140,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
         ["inline","ko-case/macro-selector",[],["macros",["subexpr","@mut",[["get","macros",["loc",[null,[42,46],[42,52]]]]],[],[]],"onMacroSelected","applyMacro"],["loc",[null,[42,14],[42,83]]]],
         ["attribute","style",["get","caseEditorStyle",["loc",[null,[52,63],[52,78]]]]],
         ["attribute","class",["concat",["ko-case-content__editor ",["subexpr","if",[["get","headerSticky",["loc",[null,[53,51],[53,63]]]],"ko-case-content__editor--sticky"],[],["loc",[null,[53,46],[53,99]]]]]]],
-        ["inline","ko-case-field/post",[],["viewName","casePostEditor","channels",["subexpr","@mut",[["get","case.replyChannels",["loc",[null,[56,25],[56,43]]]]],[],[]],"channel",["subexpr","@mut",[["get","channel",["loc",[null,[57,24],[57,31]]]]],[],[]],"onChannelChange","setChannel","replyType",["subexpr","@mut",[["get","replyType",["loc",[null,[59,26],[59,35]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","errorMap.contents",["loc",[null,[60,26],[60,43]]]]],[],[]],"suggestedPeople",["subexpr","@mut",[["get","suggestedPeople",["loc",[null,[61,32],[61,47]]]]],[],[]],"selectedPeople",["subexpr","@mut",[["get","selectedPeople",["loc",[null,[62,31],[62,45]]]]],[],[]],"suggestedPeopleTotal",["subexpr","@mut",[["get","suggestedPeopleTotal",["loc",[null,[63,37],[63,57]]]]],[],[]],"suggestedPeopleLoading",["subexpr","@mut",[["get","suggestedPeopleLoading",["loc",[null,[64,39],[64,61]]]]],[],[]],"isPeopleAutoCompleteAvailable",["subexpr","@mut",[["get","isPeopleAutoCompleteAvailable",["loc",[null,[65,46],[65,75]]]]],[],[]],"addParticipant","addParticipant","onPeopleSuggestion","onPeopleSuggestion"],["loc",[null,[54,12],[67,57]]]],
+        ["inline","ko-case-field/post",[],["viewName","casePostEditor","channels",["subexpr","@mut",[["get","availableChannels",["loc",[null,[56,25],[56,42]]]]],[],[]],"channel",["subexpr","@mut",[["get","channel",["loc",[null,[57,24],[57,31]]]]],[],[]],"onChannelChange","setChannel","replyType",["subexpr","@mut",[["get","replyType",["loc",[null,[59,26],[59,35]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","errorMap.contents",["loc",[null,[60,26],[60,43]]]]],[],[]],"suggestedPeople",["subexpr","@mut",[["get","suggestedPeople",["loc",[null,[61,32],[61,47]]]]],[],[]],"selectedPeople",["subexpr","@mut",[["get","selectedPeople",["loc",[null,[62,31],[62,45]]]]],[],[]],"suggestedPeopleTotal",["subexpr","@mut",[["get","suggestedPeopleTotal",["loc",[null,[63,37],[63,57]]]]],[],[]],"suggestedPeopleLoading",["subexpr","@mut",[["get","suggestedPeopleLoading",["loc",[null,[64,39],[64,61]]]]],[],[]],"isPeopleAutoCompleteAvailable",["subexpr","@mut",[["get","isPeopleAutoCompleteAvailable",["loc",[null,[65,46],[65,75]]]]],[],[]],"addParticipant","addParticipant","onPeopleSuggestion","onPeopleSuggestion"],["loc",[null,[54,12],[67,57]]]],
         ["block","if",[["get","case.id",["loc",[null,[70,14],[70,21]]]]],[],1,null,["loc",[null,[70,8],[75,15]]]],
         ["block","if",[["get","topPostsAvailable",["loc",[null,[76,14],[76,31]]]]],[],2,null,["loc",[null,[76,8],[84,15]]]],
         ["block","if",[["get","newPosts",["loc",[null,[86,16],[86,24]]]]],[],3,null,["loc",[null,[86,10],[88,17]]]],
@@ -48626,6 +48637,14 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
 
     this.get('/cases/reply/channels', function (db) {
       return db.casesreplychannels[0];
+    });
+
+    this.get('/cases/:id/channels', function (db) {
+      return {
+        data: [],
+        resource: 'channel',
+        status: 200
+      };
     });
 
     this.get('/cases/fields/:id/options', function (db) {
@@ -81679,7 +81698,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+c2a94a8a"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+872950f6"});
 }
 
 /* jshint ignore:end */
