@@ -621,11 +621,11 @@ define('frontend-cp/adapters/session', ['exports', 'ember', 'frontend-cp/adapter
     normalizeErrorResponse: function normalizeErrorResponse(status, headers, payload) {
       // Sneaks the auth token into each error response if it's
       // not already there
-      var authToken = payload.auth_token;
-      return payload.errors.map(function (error) {
-        error.auth_token = authToken;
-        return error;
-      });
+      return {
+        errors: payload.errors,
+        authToken: payload.auth_token,
+        notifications: payload.notifications
+      };
     },
 
     headers: Ember['default'].computed('sessionService.{email,password,sessionId}', function () {
@@ -46680,6 +46680,7 @@ define('frontend-cp/login/controller', ['exports', 'ember', 'frontend-cp/config/
   exports['default'] = Ember['default'].Controller.extend(SimpleStateMixin['default'], {
     sessionService: Ember['default'].inject.service('session'),
     notificationService: Ember['default'].inject.service('notification'),
+    errorService: Ember['default'].inject.service('errorHandler'),
     intlService: Ember['default'].inject.service('intl'),
     newPassword1: '',
     newPassword2: '',
@@ -47009,17 +47010,20 @@ define('frontend-cp/login/controller', ['exports', 'ember', 'frontend-cp/config/
         }
       }, function (response) {
         var errorCodes = [];
+        var data = response.errors;
 
-        if (response.errors) {
-          errorCodes = response.errors.map(function (error) {
+        if (data.errors) {
+          errorCodes = data.errors.map(function (error) {
             return error.code;
           });
         }
 
-        var data = response.responseJSON || {};
-
-        if (errorCodes.indexOf('CREDENTIAL_EXPIRED') > -1) {
-          _this4.set('authToken', response.errors[0].auth_token);
+        if (errorCodes.indexOf('AUTHENTICATION_FAILED') > -1) {
+          _this4.setErrors(data.notifications);
+          _this4.get('errorService').sendErrorNotification(data.errors, {});
+          _this4.setState('login.password.input');
+        } else if (errorCodes.indexOf('CREDENTIAL_EXPIRED') > -1) {
+          _this4.set('authToken', data.authToken);
           _this4.setState('login.resetPassword.input');
         } else if (errorCodes.indexOf('OTP_EXPECTED') > -1) {
           // User needs to enter one time password for two factor authentication
@@ -81674,7 +81678,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+73d40f12"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+42615292"});
 }
 
 /* jshint ignore:end */
