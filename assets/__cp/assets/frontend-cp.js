@@ -24588,11 +24588,11 @@ define('frontend-cp/components/ko-feedback/template', ['exports'], function (exp
             "loc": {
               "source": null,
               "start": {
-                "line": 5,
+                "line": 6,
                 "column": 4
               },
               "end": {
-                "line": 7,
+                "line": 8,
                 "column": 4
               }
             },
@@ -24606,7 +24606,7 @@ define('frontend-cp/components/ko-feedback/template', ['exports'], function (exp
             var el1 = dom.createTextNode("      ");
             dom.appendChild(el0, el1);
             var el1 = dom.createElement("span");
-            dom.setAttribute(el1,"class","i-happy-outline");
+            dom.setAttribute(el1,"class","ko-feedback__metric ko-feedback__metric--happy i-happy-outline");
             dom.appendChild(el0, el1);
             var el1 = dom.createTextNode("\n");
             dom.appendChild(el0, el1);
@@ -24627,11 +24627,11 @@ define('frontend-cp/components/ko-feedback/template', ['exports'], function (exp
             "loc": {
               "source": null,
               "start": {
-                "line": 7,
+                "line": 8,
                 "column": 4
               },
               "end": {
-                "line": 9,
+                "line": 10,
                 "column": 4
               }
             },
@@ -24645,7 +24645,7 @@ define('frontend-cp/components/ko-feedback/template', ['exports'], function (exp
             var el1 = dom.createTextNode("      ");
             dom.appendChild(el0, el1);
             var el1 = dom.createElement("span");
-            dom.setAttribute(el1,"class","i-sad-outline");
+            dom.setAttribute(el1,"class","ko-feedback__metric ko-feedback__metric--sad i-sad-outline");
             dom.appendChild(el0, el1);
             var el1 = dom.createTextNode("\n");
             dom.appendChild(el0, el1);
@@ -24665,11 +24665,11 @@ define('frontend-cp/components/ko-feedback/template', ['exports'], function (exp
           "loc": {
             "source": null,
             "start": {
-              "line": 3,
+              "line": 4,
               "column": 0
             },
             "end": {
-              "line": 13,
+              "line": 14,
               "column": 0
             }
           },
@@ -24683,7 +24683,7 @@ define('frontend-cp/components/ko-feedback/template', ['exports'], function (exp
           var el1 = dom.createTextNode("  ");
           dom.appendChild(el0, el1);
           var el1 = dom.createElement("div");
-          dom.setAttribute(el1,"class","u-inline-block ko-feedback__item");
+          dom.setAttribute(el1,"class","ko-feedback__item u-1/3");
           var el2 = dom.createTextNode("\n");
           dom.appendChild(el1, el2);
           var el2 = dom.createComment("");
@@ -24691,6 +24691,7 @@ define('frontend-cp/components/ko-feedback/template', ['exports'], function (exp
           var el2 = dom.createTextNode("\n    ");
           dom.appendChild(el1, el2);
           var el2 = dom.createElement("div");
+          dom.setAttribute(el2,"class","ko-feedback__caption");
           var el3 = dom.createComment("");
           dom.appendChild(el2, el3);
           dom.appendChild(el1, el2);
@@ -24709,8 +24710,8 @@ define('frontend-cp/components/ko-feedback/template', ['exports'], function (exp
           return morphs;
         },
         statements: [
-          ["block","if",[["subexpr","eq",[["get","feedbackItem.score",["loc",[null,[5,14],[5,32]]]],"GOOD"],[],["loc",[null,[5,10],[5,40]]]]],[],0,1,["loc",[null,[5,4],[9,11]]]],
-          ["inline","ago",[["get","feedbackItem.createdAt",["loc",[null,[11,15],[11,37]]]]],[],["loc",[null,[11,9],[11,39]]]]
+          ["block","if",[["subexpr","eq",[["get","feedbackItem.score",["loc",[null,[6,14],[6,32]]]],"GOOD"],[],["loc",[null,[6,10],[6,40]]]]],[],0,1,["loc",[null,[6,4],[10,11]]]],
+          ["inline","ago",[["get","feedbackItem.createdAt",["loc",[null,[12,44],[12,66]]]]],[],["loc",[null,[12,38],[12,68]]]]
         ],
         locals: ["feedbackItem"],
         templates: [child0, child1]
@@ -24723,11 +24724,11 @@ define('frontend-cp/components/ko-feedback/template', ['exports'], function (exp
           "loc": {
             "source": null,
             "start": {
-              "line": 15,
+              "line": 16,
               "column": 0
             },
             "end": {
-              "line": 17,
+              "line": 18,
               "column": 0
             }
           },
@@ -24752,7 +24753,7 @@ define('frontend-cp/components/ko-feedback/template', ['exports'], function (exp
           return morphs;
         },
         statements: [
-          ["inline","format-message",[["subexpr","intl-get",["users.no_feedback_available"],[],["loc",[null,[16,19],[16,59]]]]],[],["loc",[null,[16,2],[16,61]]]]
+          ["inline","format-message",[["subexpr","intl-get",["users.no_feedback_available"],[],["loc",[null,[17,19],[17,59]]]]],[],["loc",[null,[17,2],[17,61]]]]
         ],
         locals: [],
         templates: []
@@ -24768,7 +24769,7 @@ define('frontend-cp/components/ko-feedback/template', ['exports'], function (exp
             "column": 0
           },
           "end": {
-            "line": 17,
+            "line": 18,
             "column": 7
           }
         },
@@ -24784,7 +24785,7 @@ define('frontend-cp/components/ko-feedback/template', ['exports'], function (exp
         var el2 = dom.createComment("");
         dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n\n");
+        var el1 = dom.createTextNode("\n\n\n");
         dom.appendChild(el0, el1);
         var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
@@ -24804,8 +24805,8 @@ define('frontend-cp/components/ko-feedback/template', ['exports'], function (exp
       },
       statements: [
         ["content","title",["loc",[null,[1,31],[1,40]]]],
-        ["block","each",[["get","feedback",["loc",[null,[3,8],[3,16]]]]],[],0,null,["loc",[null,[3,0],[13,9]]]],
-        ["block","if",[["subexpr","not",[["get","feedback.length",["loc",[null,[15,11],[15,26]]]]],[],["loc",[null,[15,6],[15,27]]]]],[],1,null,["loc",[null,[15,0],[17,7]]]]
+        ["block","each",[["get","feedback",["loc",[null,[4,8],[4,16]]]]],[],0,null,["loc",[null,[4,0],[14,9]]]],
+        ["block","if",[["subexpr","not",[["get","feedback.length",["loc",[null,[16,11],[16,26]]]]],[],["loc",[null,[16,6],[16,27]]]]],[],1,null,["loc",[null,[16,0],[18,7]]]]
       ],
       locals: [],
       templates: [child0, child1]
@@ -81678,7 +81679,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+42615292"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+c2a94a8a"});
 }
 
 /* jshint ignore:end */
