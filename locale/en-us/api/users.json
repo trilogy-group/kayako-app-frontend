@@ -17,6 +17,9 @@
   "deleteuser": "Delete user",
   "confirmdelete": "Are you sure you want to delete this user?",
 
+  "user.created": "User Created",
+  "user.updated": "User Updated",
+
   "metadata.created": "Created",
   "metadata.updated": "Updated",
   "metadata.lastseen": "Last seen",

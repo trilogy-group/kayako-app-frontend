@@ -21,6 +21,10 @@
   "brand": "Brand",
   "source": "Source",
   "created": "Created",
+
+  "case.created": "Case Created",
+  "case.updated": "Case Updated",
+
   "requester-language": "Requester Language",
   "organization": "Organization",
   "last-update": "Last update",

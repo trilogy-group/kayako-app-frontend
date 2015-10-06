@@ -1,5 +1,7 @@
 {
   "domains": "Email domains",
   "new_organisation_placeholder": "Click to add a name",
-  "delete_organisation": "Delete organisation"
+  "delete_organisation": "Delete organisation",
+  "organisation.created": "Organisation Created",
+  "organisation.updated": "Organisation Updated"
 }
