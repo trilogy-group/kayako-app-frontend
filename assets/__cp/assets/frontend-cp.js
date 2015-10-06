@@ -44907,11 +44907,17 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
 
     accessLevels: Ember['default'].computed(function () {
       return [Ember['default'].Object.create({
+        name: this.get('intl').findTranslationByKey('users.infobar.accesslevel.inherit').translation,
+        value: null
+      }), Ember['default'].Object.create({
         name: this.get('intl').findTranslationByKey('users.infobar.accesslevel.self').translation,
         value: 'SELF'
       }), Ember['default'].Object.create({
         name: this.get('intl').findTranslationByKey('users.infobar.accesslevel.organization').translation,
-        value: 'ORGANIZATION'
+        value: 'ASSIGNED_TO_TEAMS'
+      }), Ember['default'].Object.create({
+        name: this.get('intl').findTranslationByKey('users.infobar.accesslevel.all').translation,
+        value: 'ALL'
       })];
     }),
 
@@ -44955,6 +44961,10 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
 
     canFollowUser: Ember['default'].computed(function () {
       return this.get('permissionService').has('app.user.follow', this.get('sessionService').permissions, this.get('model'));
+    }),
+
+    canChangeAgentCaseAccessPermission: Ember['default'].computed(function () {
+      return this.get('permissionService').has('app.user.change_access_permission', this.get('sessionService').permissions, this.get('model'));
     }),
 
     isEnabled: Ember['default'].computed.bool('model.isEnabled'),
@@ -45214,11 +45224,11 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 82,
+                "line": 74,
                 "column": 8
               },
               "end": {
-                "line": 92,
+                "line": 84,
                 "column": 8
               }
             },
@@ -45229,7 +45239,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
           hasRendered: false,
           buildFragment: function buildFragment(dom) {
             var el0 = dom.createDocumentFragment();
-            var el1 = dom.createTextNode("           ");
+            var el1 = dom.createTextNode("          ");
             dom.appendChild(el0, el1);
             var el1 = dom.createComment("");
             dom.appendChild(el0, el1);
@@ -45243,7 +45253,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
             return morphs;
           },
           statements: [
-            ["inline","ko-field/select",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.infobar.accesslevel"],[],["loc",[null,[84,35],[84,73]]]]],[],["loc",[null,[84,19],[84,74]]]],"options",["subexpr","@mut",[["get","accessLevels",["loc",[null,[85,21],[85,33]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isAccessLevelEdited",["loc",[null,[86,22],[86,41]]]]],[],[]],"value",["subexpr","@mut",[["get","model.accessLevel",["loc",[null,[87,19],[87,36]]]]],[],[]],"onValueChange","accessLevelSelect","idPath","value","labelPath","name"],["loc",[null,[83,11],[91,13]]]]
+            ["inline","ko-field/select",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.infobar.accesslevel"],[],["loc",[null,[76,34],[76,72]]]]],[],["loc",[null,[76,18],[76,73]]]],"options",["subexpr","@mut",[["get","accessLevels",["loc",[null,[77,20],[77,32]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isAccessLevelEdited",["loc",[null,[78,21],[78,40]]]]],[],[]],"value",["subexpr","@mut",[["get","model.accessLevel",["loc",[null,[79,18],[79,35]]]]],[],[]],"onValueChange","accessLevelSelect","idPath","value","labelPath","name"],["loc",[null,[75,10],[83,12]]]]
           ],
           locals: [],
           templates: []
@@ -45494,15 +45504,15 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
           dom.appendChild(el0, el1);
           var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n\n        ");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createComment("");
-          dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n\n");
           dom.appendChild(el0, el1);
           var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n        ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n\n        ");
           dom.appendChild(el0, el1);
           var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
@@ -45560,8 +45570,8 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
           ["element","action",["submit"],[],["loc",[null,[62,55],[62,74]]]],
           ["inline","format-message",[["subexpr","intl-get",["cases.submit"],[],["loc",[null,[62,92],[62,117]]]]],[],["loc",[null,[62,75],[62,119]]]],
           ["inline","ko-case-field/suggest",[],["tagName","li","selectedItem",["subexpr","@mut",[["get","model.role.title",["loc",[null,[67,23],[67,39]]]]],[],[]],"items",["subexpr","@mut",[["get","roles",["loc",[null,[68,16],[68,21]]]]],[],[]],"searchKey","title","title",["subexpr","intl-get",["users.infobar.role"],[],["loc",[null,[70,16],[70,47]]]],"isEdited",["subexpr","@mut",[["get","isRoleEdited",["loc",[null,[71,19],[71,31]]]]],[],[]],"onItemSelect","roleSelect"],["loc",[null,[65,8],[72,37]]]],
-          ["inline","ko-case-field/suggest",[],["tagName","li","selectedItem",["subexpr","@mut",[["get","model.organization.name",["loc",[null,[76,23],[76,46]]]]],[],[]],"items",["subexpr","@mut",[["get","organizations",["loc",[null,[77,16],[77,29]]]]],[],[]],"title",["subexpr","intl-get",["users.infobar.organization"],[],["loc",[null,[78,16],[78,55]]]],"isEdited",["subexpr","@mut",[["get","isOrganizationEdited",["loc",[null,[79,19],[79,39]]]]],[],[]],"onItemSelect","organizationSelect"],["loc",[null,[74,8],[80,45]]]],
-          ["block","if",[["subexpr","eq",[["get","model.role.roleType",["loc",[null,[82,18],[82,37]]]],"CUSTOMER"],[],["loc",[null,[82,14],[82,49]]]]],[],0,null,["loc",[null,[82,8],[92,15]]]],
+          ["block","if",[["get","canChangeAgentCaseAccessPermission",["loc",[null,[74,14],[74,48]]]]],[],0,null,["loc",[null,[74,8],[84,15]]]],
+          ["inline","ko-case-field/suggest",[],["tagName","li","selectedItem",["subexpr","@mut",[["get","model.organization.name",["loc",[null,[88,23],[88,46]]]]],[],[]],"items",["subexpr","@mut",[["get","organizations",["loc",[null,[89,16],[89,29]]]]],[],[]],"title",["subexpr","intl-get",["users.infobar.organization"],[],["loc",[null,[90,16],[90,55]]]],"isEdited",["subexpr","@mut",[["get","isOrganizationEdited",["loc",[null,[91,19],[91,39]]]]],[],[]],"onItemSelect","organizationSelect"],["loc",[null,[86,8],[92,45]]]],
           ["inline","ko-timezone-select",[],["tagName","li","class","info-bar-item","timezone",["subexpr","@mut",[["get","model.timeZone",["loc",[null,[97,19],[97,33]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isTimezoneEdited",["loc",[null,[98,19],[98,35]]]]],[],[]],"onChangeTimezone","timezoneSelect"],["loc",[null,[94,8],[99,45]]]],
           ["block","each",[["get","customFields",["loc",[null,[101,16],[101,28]]]]],[],1,null,["loc",[null,[101,8],[114,17]]]],
           ["block","ko-info-bar/field",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.teams"],[],["loc",[null,[116,51],[116,75]]]]],[],["loc",[null,[116,35],[116,76]]]],"isEdited",["subexpr","@mut",[["get","isTeamsFieldEdited",["loc",[null,[117,19],[117,37]]]]],[],[]]],2,null,["loc",[null,[116,8],[127,30]]]],
@@ -48370,9 +48380,12 @@ define('frontend-cp/locales/en-us/users', ['exports'], function (exports) {
     "metadata.created": "Created",
     "metadata.updated": "Updated",
     "metadata.lastseen": "Last seen",
-    "infobar.accesslevel": "Organization access",
-    "infobar.accesslevel.self": "Own cases only",
-    "infobar.accesslevel.organization": "All organization's cases",
+    "infobar.accesslevel": "Case access",
+    "infobar.accesslevel.self": "Cases assigned to agent",
+    "infobar.accesslevel.organization": "All assigned to agent's teams",
+    "infobar.accesslevel.inherit": "(Inherit from agent's role)",
+    "infobar.accesslevel.all": "All cases",
+
     "add_a_note": "Add a note",
     "password_reset_email.success": "Password reset email has been sent",
     "recent_feedback": "Recent feedback",
@@ -56423,6 +56436,9 @@ define('frontend-cp/services/permissions', ['exports', 'ember'], function (expor
       }
       var targetRoleType = roleTypes[target.get('role').get('roleType')];
       return roleType.rank === roleTypes.ADMIN.rank && (targetRoleType.rank === roleTypes.AGENT.rank || targetRoleType.rank === roleTypes.COLLABORATOR.rank);
+    },
+    'app.user.change_access_permission': function appUserChange_access_permission(myRoleType, me, targetUser) {
+      return targetUser.get('role.roleType') !== 'CUSTOMER' && myRoleType.rank === roleTypes.ADMIN.rank;
     }
 
   };
@@ -56434,7 +56450,7 @@ define('frontend-cp/services/permissions', ['exports', 'ember'], function (expor
   roleTypes.CUSTOMER.permissions = [];
   roleTypes.COLLABORATOR.permissions = roleTypes.CUSTOMER.permissions.concat([]);
   roleTypes.AGENT.permissions = roleTypes.COLLABORATOR.permissions.concat(['app.user.disable', 'app.user.signature.edit', 'app.user.password.change', 'app.organisation.delete']);
-  roleTypes.ADMIN.permissions = roleTypes.AGENT.permissions.concat(['app.user.delete']);
+  roleTypes.ADMIN.permissions = roleTypes.AGENT.permissions.concat(['app.user.delete', 'app.user.change_access_permission']);
 
   exports['default'] = Ember['default'].Service.extend({
     sessionService: Ember['default'].inject.service('session'),
@@ -80378,7 +80394,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+c07ad4fd"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+aea5d694"});
 }
 
 /* jshint ignore:end */
