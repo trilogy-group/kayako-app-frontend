@@ -90,7 +90,7 @@
   "create_case_panel.loading_label": "Loading users…",
   "create_case_panel.filter_label": "Showing {numFilteredUsers, number} of {numUsers, number}",
   "create_case_panel.info": "Other details can be added after continuing.",
-  "create_case_panel.submit": "Continue",
+  "create_case_panel.submit": "Create case",
   "create_case_panel.cancel": "cancel",
 
   "identities.component_title": "IDENTITIES",
