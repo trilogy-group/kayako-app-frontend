@@ -20470,6 +20470,53 @@ define('frontend-cp/components/ko-cases-list/template', ['exports'], function (e
         templates: [child0, child1]
       };
     }());
+    var child1 = (function() {
+      return {
+        meta: {
+          "revision": "Ember@1.13.7",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 41,
+              "column": 0
+            },
+            "end": {
+              "line": 45,
+              "column": 0
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-cases-list/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1,"class","u-mt");
+          var el2 = dom.createTextNode("\n  ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(dom.childAt(fragment, [0]),1,1);
+          return morphs;
+        },
+        statements: [
+          ["inline","format-message",[["subexpr","intl-get",["cases.list.casesnotfound"],[],["loc",[null,[43,19],[43,56]]]]],[],["loc",[null,[43,2],[43,58]]]]
+        ],
+        locals: [],
+        templates: []
+      };
+    }());
     return {
       meta: {
         "revision": "Ember@1.13.7",
@@ -20480,8 +20527,8 @@ define('frontend-cp/components/ko-cases-list/template', ['exports'], function (e
             "column": 0
           },
           "end": {
-            "line": 40,
-            "column": 13
+            "line": 46,
+            "column": 0
           }
         },
         "moduleName": "frontend-cp/components/ko-cases-list/template.hbs"
@@ -20532,21 +20579,25 @@ define('frontend-cp/components/ko-cases-list/template', ['exports'], function (e
         dom.appendChild(el0, el1);
         var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var morphs = new Array(2);
+        var morphs = new Array(3);
         morphs[0] = dom.createMorphAt(dom.childAt(fragment, [0, 1, 1]),1,1);
         morphs[1] = dom.createMorphAt(fragment,2,2,contextualElement);
+        morphs[2] = dom.createMorphAt(fragment,3,3,contextualElement);
         dom.insertBoundary(fragment, null);
         return morphs;
       },
       statements: [
         ["content","title",["loc",[null,[4,6],[4,15]]]],
-        ["block","ko-table",[],["selectable",false],0,null,["loc",[null,[21,0],[40,13]]]]
+        ["block","ko-table",[],["selectable",false],0,null,["loc",[null,[21,0],[40,13]]]],
+        ["block","if",[["subexpr","not",[["get","cases",["loc",[null,[41,11],[41,16]]]]],[],["loc",[null,[41,6],[41,17]]]]],[],1,null,["loc",[null,[41,0],[45,7]]]]
       ],
       locals: [],
-      templates: [child0]
+      templates: [child0, child1]
     };
   }()));
 
@@ -48099,6 +48150,8 @@ define('frontend-cp/locales/en-us/cases', ['exports'], function (exports) {
     "new_case_tab_placeholder": "New Case",
 
     "search.request.result_meta": "Showing {numDisplayResults} of {totalResults} users",
+
+    "list.casesnotfound": "There are no cases here.",
 
     "field_title.requester": "Requester",
     "notes": "Notes",
@@ -80325,7 +80378,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+19538cbe"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+c07ad4fd"});
 }
 
 /* jshint ignore:end */
