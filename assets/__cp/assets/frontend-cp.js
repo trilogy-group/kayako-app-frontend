@@ -32753,7 +32753,7 @@ define('frontend-cp/components/ko-login-otp/template', ['exports'], function (ex
             "column": 0
           },
           "end": {
-            "line": 5,
+            "line": 7,
             "column": 0
           }
         },
@@ -32768,11 +32768,6 @@ define('frontend-cp/components/ko-login-otp/template', ['exports'], function (ex
         dom.setAttribute(el1,"class","otp-form login-form__wrapper js-otp-form");
         var el2 = dom.createTextNode("\n    ");
         dom.appendChild(el1, el2);
-        var el2 = dom.createElement("h6");
-        dom.setAttribute(el2,"class","t-center");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n    ");
-        dom.appendChild(el1, el2);
         var el2 = dom.createComment("");
         dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n");
@@ -32784,11 +32779,11 @@ define('frontend-cp/components/ko-login-otp/template', ['exports'], function (ex
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
         var morphs = new Array(1);
-        morphs[0] = dom.createMorphAt(dom.childAt(fragment, [0]),3,3);
+        morphs[0] = dom.createMorphAt(dom.childAt(fragment, [0]),1,1);
         return morphs;
       },
       statements: [
-        ["inline","input",[],["type","text","value",["subexpr","@mut",[["get","otp",["loc",[null,[3,30],[3,33]]]]],[],[]],"name","otp-code","class","login__input--alone u-intimate","placeholder","Verification code","disabled",["subexpr","@mut",[["get","isLoading",["loc",[null,[3,130],[3,139]]]]],[],[]]],["loc",[null,[3,4],[3,141]]]]
+        ["inline","input",[],["type","text","value",["subexpr","@mut",[["get","otp",["loc",[null,[2,30],[2,33]]]]],[],[]],"name","otp-code","class","login__input u-intimate","placeholder",["subexpr","format-message",[["subexpr","intl-get",["login.verificationcode"],[],["loc",[null,[4,34],[4,69]]]]],[],["loc",[null,[4,18],[4,70]]]],"disabled",["subexpr","@mut",[["get","isLoading",["loc",[null,[5,15],[5,24]]]]],[],[]]],["loc",[null,[2,4],[5,26]]]]
       ],
       locals: [],
       templates: []
@@ -48154,6 +48149,7 @@ define('frontend-cp/locales/en-us/login', ['exports'], function (exports) {
     "forgot": "Forgot password?",
     "login": "Login",
     "newpassword": "New Password",
+    "verificationcode": "Verification Code",
     "password": "Password",
     "repeatpassword": "Password (repeat)",
     "resetpassword": "Reset your password",
@@ -48274,6 +48270,7 @@ define('frontend-cp/login/controller', ['exports', 'ember', 'frontend-cp/config/
     errorService: Ember['default'].inject.service('errorHandler'),
     intlService: Ember['default'].inject.service('intl'),
     newPassword1: '',
+    otp: '',
     newPassword2: '',
     forgotPasswordMessage: '',
     stepToken: null,
@@ -48536,6 +48533,26 @@ define('frontend-cp/login/controller', ['exports', 'ember', 'frontend-cp/config/
       });
     },
 
+    otpRequest: function otpRequest(endpoint, otp) {
+      var _this3 = this;
+
+      return new Ember['default'].RSVP.Promise(function (resolve, reject) {
+        Ember['default'].$.ajax({
+          type: 'GET',
+          url: endpoint,
+          contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+          dataType: 'json',
+          headers: { 'X-Token': _this3.get('authToken'), 'X-OTP': otp },
+          success: function success(data) {
+            resolve(data);
+          },
+          error: function error(xhr) {
+            reject(xhr.responseText);
+          }
+        });
+      });
+    },
+
     authRequest: function authRequest(endpoint, params) {
       return new Ember['default'].RSVP.Promise(function (resolve, reject) {
         Ember['default'].$.ajax({
@@ -48555,7 +48572,7 @@ define('frontend-cp/login/controller', ['exports', 'ember', 'frontend-cp/config/
     },
 
     requestAvatar: function requestAvatar(email) {
-      var _this3 = this;
+      var _this4 = this;
 
       Ember['default'].$.ajax({
         type: 'POST',
@@ -48572,10 +48589,10 @@ define('frontend-cp/login/controller', ['exports', 'ember', 'frontend-cp/config/
 
           var valid = !!response.data.is_user;
 
-          _this3.set('validAvatar', valid);
+          _this4.set('validAvatar', valid);
 
           if (valid) {
-            _this3.set('avatarBackground', response.data.data);
+            _this4.set('avatarBackground', response.data.data);
           }
         },
         error: function error() {
@@ -48585,19 +48602,19 @@ define('frontend-cp/login/controller', ['exports', 'ember', 'frontend-cp/config/
     },
 
     login: function login() {
-      var _this4 = this;
+      var _this5 = this;
 
       this.setState('login.password.loading');
       this.get('sessionService').requestSession(this.get('model.email'), this.get('model.password')).then(function () {
         // No additional info required, log in.
-        _this4.setState('login.password.confirmed');
+        _this5.setState('login.password.confirmed');
 
-        var transitionOnLogin = _this4.get('transitionOnLogin');
+        var transitionOnLogin = _this5.get('transitionOnLogin');
         if (transitionOnLogin) {
-          _this4.set('transitionOnLogin', null);
+          _this5.set('transitionOnLogin', null);
           transitionOnLogin.retry();
         } else {
-          _this4.transitionToSession();
+          _this5.transitionToSession();
         }
       }, function (response) {
         var errorCodes = [];
@@ -48610,38 +48627,39 @@ define('frontend-cp/login/controller', ['exports', 'ember', 'frontend-cp/config/
         }
 
         if (errorCodes.indexOf('AUTHENTICATION_FAILED') > -1) {
-          _this4.setErrors(data.notifications);
-          _this4.get('errorService').sendErrorNotification(data.errors, {});
-          _this4.setState('login.password.input');
+          _this5.setErrors(data.notifications);
+          _this5.get('errorService').sendErrorNotification(data.errors, {});
+          _this5.setState('login.password.input');
         } else if (errorCodes.indexOf('CREDENTIAL_EXPIRED') > -1) {
-          _this4.set('authToken', data.authToken);
-          _this4.setState('login.resetPassword.input');
+          _this5.set('authToken', data.authToken);
+          _this5.setState('login.resetPassword.input');
         } else if (errorCodes.indexOf('OTP_EXPECTED') > -1) {
           // User needs to enter one time password for two factor authentication
-          _this4.set('stepToken', data.step_token);
-          _this4.setState('login.otp.input');
+          _this5.set('authToken', data.authToken);
+          _this5.set('stepToken', data.step_token);
+          _this5.setState('login.otp.input');
         } else if (response instanceof Ember['default'].Error) {
           // this should never happen in production, but it might happen
           // on development stage when we have problems with models
           // (or similar)
-          _this4.setState('login.password.error');
-          _this4.setErrors({ message: 'System error, please contact Customer Support' });
+          _this5.setState('login.password.error');
+          _this5.setErrors({ message: 'System error, please contact Customer Support' });
 
           if (console && console.error) {
             console.error(response.message);
           }
         } else {
-          _this4.setState('login.password.error');
+          _this5.setState('login.password.error');
 
           if (data.notifications) {
-            _this4.setErrors(data.notifications);
+            _this5.setErrors(data.notifications);
           }
         }
       });
     },
 
     resetPassword: function resetPassword() {
-      var _this5 = this;
+      var _this6 = this;
 
       this.setState('login.resetPassword.loading');
       this.setErrors([]);
@@ -48650,47 +48668,43 @@ define('frontend-cp/login/controller', ['exports', 'ember', 'frontend-cp/config/
         password: this.get('model.password'),
         new_password: this.get('newPassword1')
       }).then(function (response) {
-        _this5.get('notificationService').removeAll();
+        _this6.get('notificationService').removeAll();
         if (response.session_id) {
-          _this5.set('sessionService.sessionId', response.session_id);
-          _this5.transitionToSession();
+          _this6.set('sessionService.sessionId', response.session_id);
+          _this6.transitionToSession();
         } else {
-          _this5.setState('login.resetPassword.error');
-          _this5.setErrors({ message: 'Session missing' });
+          _this6.setState('login.resetPassword.error');
+          _this6.setErrors({ message: 'Session missing' });
         }
       }, function (response) {
-        _this5.setState('login.resetPassword.error');
-        _this5.setErrors(JSON.parse(response).errors);
+        _this6.setState('login.resetPassword.error');
+        var data = JSON.parse(response);
+        _this6.setErrors(data.notifications);
+        _this6.get('errorService').sendErrorNotification(data.errors, {});
       });
     },
 
     submitOtp: function submitOtp() {
-      var _this6 = this;
+      var _this7 = this;
 
       this.setState('login.otp.loading');
       this.setErrors([]);
-      this.authRequest('OTP', {
-        otp: this.get('otp'),
-        token: this.get('steptoken')
-      }).then(function (response) {
-        if (response.data.session) {
-          _this6.setState('login.otp.confirmed');
-          _this6.get('sessionService').setSessionId(response.data.session);
-          _this6.set('otp', null);
-          var transitionOnLogin = _this6.get('transitionOnLogin');
-          if (transitionOnLogin) {
-            _this6.set('transitionOnLogin', null);
-            transitionOnLogin.retry();
-          } else {
-            _this6.transitionToSession();
-          }
+
+      this.otpRequest('/api/v1/session', this.get('otp')).then(function (response) {
+        _this7.get('notificationService').removeAll();
+        if (response.session_id) {
+          _this7.setState('login.otp.confirmed');
+          _this7.set('sessionService.sessionId', response.session_id);
+          _this7.transitionToSession();
         } else {
-          _this6.setState('login.otp.error');
-          _this6.setErrors([{ message: 'Session missing' }]);
+          _this7.setState('login.otp.error');
+          _this7.setErrors([{ message: 'Session missing' }]);
         }
       }, function (response) {
-        _this6.setState('login.otp.error');
-        _this6.setErrors(JSON.parse(response).errors);
+        _this7.setState('login.otp.error');
+        var data = JSON.parse(response);
+        _this7.setErrors(data.notifications);
+        _this7.get('errorService').sendErrorNotification(data.errors, {});
       });
     },
 
@@ -48741,17 +48755,17 @@ define('frontend-cp/login/controller', ['exports', 'ember', 'frontend-cp/config/
       },
 
       sendForgotPasswordEmail: function sendForgotPasswordEmail() {
-        var _this7 = this;
+        var _this8 = this;
 
         this.setState('forgotPassword.loading');
         this.setErrors([]);
         this.authRequest('/api/v1/base/password/reset', { email: this.get('model.email') }).then(function () {
-          _this7.setState('forgotPassword.confirmed');
-          _this7.set('forgotPasswordMessage', 'An email with a reset link has been sent to your inbox');
+          _this8.setState('forgotPassword.confirmed');
+          _this8.set('forgotPasswordMessage', 'An email with a reset link has been sent to your inbox');
         }, function (response) {
           var data = JSON.parse(response);
-          _this7.setState('forgotPassword.error');
-          _this7.setErrors(data.errors);
+          _this8.setState('forgotPassword.error');
+          _this8.setErrors(data.errors);
         });
       },
 
@@ -49136,7 +49150,7 @@ define('frontend-cp/login/template', ['exports'], function (exports) {
           return morphs;
         },
         statements: [
-          ["inline","component",[["get","topFormSet",["loc",[null,[59,28],[59,38]]]]],["model",["subexpr","@mut",[["get","model",["loc",[null,[59,45],[59,50]]]]],[],[]],"isLoading",["subexpr","@mut",[["get","isLoading",["loc",[null,[59,61],[59,70]]]]],[],[]],"otp",["subexpr","@mut",[["get","top",["loc",[null,[59,75],[59,78]]]]],[],[]],"newPassword1",["subexpr","@mut",[["get","newPassword1",["loc",[null,[59,92],[59,104]]]]],[],[]],"newPassword2",["subexpr","@mut",[["get","newPassword2",["loc",[null,[59,118],[59,130]]]]],[],[]]],["loc",[null,[59,16],[59,132]]]]
+          ["inline","component",[["get","topFormSet",["loc",[null,[59,28],[59,38]]]]],["model",["subexpr","@mut",[["get","model",["loc",[null,[59,45],[59,50]]]]],[],[]],"isLoading",["subexpr","@mut",[["get","isLoading",["loc",[null,[59,61],[59,70]]]]],[],[]],"otp",["subexpr","@mut",[["get","otp",["loc",[null,[59,75],[59,78]]]]],[],[]],"newPassword1",["subexpr","@mut",[["get","newPassword1",["loc",[null,[59,92],[59,104]]]]],[],[]],"newPassword2",["subexpr","@mut",[["get","newPassword2",["loc",[null,[59,118],[59,130]]]]],[],[]]],["loc",[null,[59,16],[59,132]]]]
         ],
         locals: [],
         templates: []
@@ -49178,7 +49192,7 @@ define('frontend-cp/login/template', ['exports'], function (exports) {
           return morphs;
         },
         statements: [
-          ["inline","component",[["get","bottomFormSet",["loc",[null,[64,28],[64,41]]]]],["model",["subexpr","@mut",[["get","model",["loc",[null,[64,48],[64,53]]]]],[],[]],"isLoading",["subexpr","@mut",[["get","isLoading",["loc",[null,[64,64],[64,73]]]]],[],[]],"otp",["subexpr","@mut",[["get","top",["loc",[null,[64,78],[64,81]]]]],[],[]],"newPassword1",["subexpr","@mut",[["get","newPassword1",["loc",[null,[64,95],[64,107]]]]],[],[]],"newPassword2",["subexpr","@mut",[["get","newPassword2",["loc",[null,[64,121],[64,133]]]]],[],[]]],["loc",[null,[64,16],[64,135]]]]
+          ["inline","component",[["get","bottomFormSet",["loc",[null,[64,28],[64,41]]]]],["model",["subexpr","@mut",[["get","model",["loc",[null,[64,48],[64,53]]]]],[],[]],"isLoading",["subexpr","@mut",[["get","isLoading",["loc",[null,[64,64],[64,73]]]]],[],[]],"otp",["subexpr","@mut",[["get","otp",["loc",[null,[64,78],[64,81]]]]],[],[]],"newPassword1",["subexpr","@mut",[["get","newPassword1",["loc",[null,[64,95],[64,107]]]]],[],[]],"newPassword2",["subexpr","@mut",[["get","newPassword2",["loc",[null,[64,121],[64,133]]]]],[],[]]],["loc",[null,[64,16],[64,135]]]]
         ],
         locals: [],
         templates: []
@@ -49838,26 +49852,37 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.put('/base/profile/password', function (db) {
+    this.put('/base/profile/password', function (db, request) {
+      var split = request.requestBody.split('=');
+      var newPassword = split[2];
+      var oldPassword = split[1].split('&')[0];
+
+      if (oldPassword === newPassword) {
+        return new Mirage['default'].Response(400, {}, {
+          status: 400,
+          errors: [{
+            code: 'FIELD_INVALID',
+            parameter: 'new_password',
+            message: 'The value of the field is invalid',
+            more_info: 'http://wiki.kayako.com/display/DEV/REST+v1+-+FIELD_INVALID'
+          }],
+          notifications: [{
+            type: 'ERROR',
+            message: 'You cannot reuse an old password, please specify a new password',
+            sticky: false
+          }]
+        });
+      }
+
+      var session = db.sessions[0];
       return {
-        id: 1,
         status: 200,
-        data: { session: db.sessions[0] },
-        resource: 'session',
-        notifications: { success: ['test'] }, // TODO work out what notification should look like
-        resources: {
-          business_hour: arrayToObjectWithNumberedKeys(db['business-hours']),
-          field_option: arrayToObjectWithNumberedKeys(db['field-options']),
-          identity_email: arrayToObjectWithNumberedKeys(db['identity-emails']),
-          role: arrayToObjectWithNumberedKeys(db.roles),
-          team: arrayToObjectWithNumberedKeys(db.teams),
-          user: arrayToObjectWithNumberedKeys([db.users[0]]),
-          user_field: arrayToObjectWithNumberedKeys(db['user-fields'])
-        }
+        session_id: session.id
       };
     });
 
     this.get('/session', function (db, request) {
+      // otp@kayako.com : setup
       if (request.requestHeaders.Authorization === 'Basic b3RwQGtheWFrby5jb206c2V0dXA=') {
         var response = {
           data: {},
@@ -49865,25 +49890,46 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
           errors: [{
             code: 'OTP_EXPECTED',
             message: 'To complete logging in you need to provide the one-time password'
-          }]
+          }],
+          auth_token: 'PsAH0Jx27MrhLGiDelvlkGOo8olKL6AyEWdvwK665kjjxuUwMJun6ZyHZ9Z'
         };
         return new Mirage['default'].Response(403, {}, response);
       }
 
-      if (request.requestHeaders.Authorization === 'Basic cmVzZXRAa2F5YWtvLmNvbTpzZXR1cA==') {
+      // reset@kayako.com : longpass
+      if (request.requestHeaders.Authorization === 'Basic cmVzZXRAa2F5YWtvLmNvbTpsb25ncGFzcw==') {
         var response = {
           data: {},
           status: 403,
           errors: [{
             code: 'CREDENTIAL_EXPIRED',
             message: 'The credential (e.g. password) is valid but has expired'
-          }]
+          }],
+          auth_token: 'PsAH0Jx27MrhLGiDelvlkGOo8olKL6AyEWdvwK665kjjxuUwMJun6ZyHZ9Z'
         };
         return new Mirage['default'].Response(403, {}, response);
       }
 
       var session = db.sessions[0];
       var user = session.user;
+      if (request.requestHeaders['X-OTP']) {
+        if (request.requestHeaders['X-OTP'] === '666') {
+          return new Mirage['default'].Response(401, {}, {
+            status: 401,
+            errors: [{
+              code: 'AUTHENTICATION_FAILED',
+              message: 'Used authentication credentials are invalid or signature verification failed',
+              more_info: 'http://wiki.kayako.com/display/DEV/REST+v1+-+AUTHENTICATION_FAILED'
+            }]
+          });
+        }
+
+        return {
+          session_id: session.id,
+          status: 200
+        };
+      }
+
       return {
         status: 200,
         data: session,
@@ -80111,7 +80157,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+f9002a13"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+c1689abc"});
 }
 
 /* jshint ignore:end */
