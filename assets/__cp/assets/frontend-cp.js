@@ -11367,6 +11367,9 @@ define('frontend-cp/components/ko-agent-dropdown/component', ['exports', 'ember'
   'use strict';
 
   exports['default'] = Ember['default'].Component.extend({
+    notification: Ember['default'].inject.service('notification'),
+    intl: Ember['default'].inject.service('intl'),
+
     attributeBindings: ['data-region', 'tabindex'],
     dataRegion: 'navigation-new',
     navItems: [{ name: 'case', text: 'Case', path: null, icon: 'images/icons/case.svg' }, { name: 'user', text: 'User', path: null, icon: 'images/icons/user.svg' }, { name: 'organization', text: 'Organization', path: null, icon: 'images/icons/organization.svg' }],
@@ -11448,6 +11451,30 @@ define('frontend-cp/components/ko-agent-dropdown/component', ['exports', 'ember'
       }
     },
 
+    _createSuccessNotification: function _createSuccessNotification(route) {
+      var notificationMessage = null;
+
+      switch (route) {
+        case 'session.agent.users.user':
+          notificationMessage = this.get('intl').findTranslationByKey('users.user.created').translation;
+          break;
+        case 'session.agent.cases.case':
+          notificationMessage = this.get('intl').findTranslationByKey('cases.case.created').translation;
+          break;
+        case 'session.agent.organisations.organisation':
+          notificationMessage = this.get('intl').findTranslationByKey('organisation.organisation.created').translation;
+          break;
+      }
+
+      if (notificationMessage) {
+        this.get('notification').add({
+          type: 'success',
+          title: notificationMessage,
+          autodismiss: true
+        });
+      }
+    },
+
     actions: {
       toggleDropdown: function toggleDropdown() {
         this.set('isExpanded', true);
@@ -11469,6 +11496,9 @@ define('frontend-cp/components/ko-agent-dropdown/component', ['exports', 'ember'
 
       onTabCreateComplete: function onTabCreateComplete(route, model) {
         var router = this.container.lookup('router:main');
+
+        this._createSuccessNotification(route);
+
         router.router.transitionTo(route, model);
         this.set('isExpanded', false);
       },
@@ -14700,6 +14730,34 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       }
     },
 
+    _getCaseSaveNotification: function _getCaseSaveNotification(type) {
+      var notificationMessage = null;
+
+      // TODO: update messages later, for now all are the same.
+      switch (type) {
+        case 'create':
+          notificationMessage = this.get('intlService').findTranslationByKey('cases.case.updated').translation;
+          break;
+        case 'update':
+          notificationMessage = this.get('intlService').findTranslationByKey('cases.case.updated').translation;
+          break;
+        case 'with-note':
+          notificationMessage = this.get('intlService').findTranslationByKey('cases.case.updated').translation;
+          break;
+        case 'with-reply':
+          notificationMessage = this.get('intlService').findTranslationByKey('cases.case.updated').translation;
+          break;
+      }
+
+      if (notificationMessage) {
+        this.get('notificationService').add({
+          type: 'success',
+          title: notificationMessage,
+          autodismiss: true
+        });
+      }
+    },
+
     actions: {
       setChannel: function setChannel(channel) {
         this.set('channel', channel);
@@ -14806,6 +14864,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
           this.set('case.channel', channel.get('channelType'));
           this.set('case.channelId', channel.get('account.id'));
           this.get('case').save().then(function (newCase) {
+            _this11._getCaseSaveNotification('create');
             _this11.resetCaseFormState();
           }, function (e) {
             _this11.set('errors', e.errors);
@@ -14813,6 +14872,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
         } else if (!post && !attachmentIds.length) {
           // we are just updating the case -- don't create a case-reply
           this.get('case').save().then(function () {
+            _this11._getCaseSaveNotification('update');
             _this11.resetCaseFormState();
           }, function (e) {
             _this11.set('errors', e.errors);
@@ -14820,6 +14880,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
         } else {
           if (this.get('replyType') === 'NOTE') {
             this.get('case').saveWithNote(post).then(function (caseNote) {
+              _this11._getCaseSaveNotification('with-note');
               _this11.addPostFromReply(caseNote.get('post'));
               _this11.resetCaseFormState();
             }, function (e) {
@@ -14835,6 +14896,8 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
               caseReply.get('posts').forEach(function (post) {
                 return _this11.addPostFromReply(post);
               });
+
+              _this11._getCaseSaveNotification('with-reply');
               _this11.resetCaseFormState();
             }, function (e) {
               _this11.set('errors', e.errors);
@@ -34146,6 +34209,7 @@ define('frontend-cp/components/ko-organisation-content/component', ['exports', '
 
     store: Ember['default'].inject.service(),
     intl: Ember['default'].inject.service(),
+    notification: Ember['default'].inject.service('notification'),
     sessionService: Ember['default'].inject.service('session'),
     tagSuggestionService: Ember['default'].inject.service('suggestion/tag'),
     customFieldsList: Ember['default'].inject.service('custom-fields/list'),
@@ -34272,6 +34336,11 @@ define('frontend-cp/components/ko-organisation-content/component', ['exports', '
         var _this2 = this;
 
         this.get('model').save().then(function () {
+          _this2.get('notification').add({
+            type: 'success',
+            title: _this2.get('intl').findTranslationByKey('organisation.organisation.updated').translation,
+            autodismiss: true
+          });
           _this2.resetForm();
         }, function (e) {
           _this2.set('errors', e.errors);
@@ -45024,6 +45093,12 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
         var _this10 = this;
 
         this.get('model').save().then(function () {
+          _this10.get('notificationService').add({
+            type: 'success',
+            title: _this10.get('intl').findTranslationByKey('users.user.updated').translation,
+            autodismiss: true
+          });
+
           _this10.resetForm();
         }, function (e) {
           _this10.set('errors', e.errors);
@@ -47972,6 +48047,10 @@ define('frontend-cp/locales/en-us/cases', ['exports'], function (exports) {
     "brand": "Brand",
     "source": "Source",
     "created": "Created",
+
+    "case.created": "Case Created",
+    "case.updated": "Case Updated",
+
     "requester-language": "Requester Language",
     "organization": "Organization",
     "last-update": "Last update",
@@ -48114,6 +48193,7 @@ define('frontend-cp/locales/en-us/generic', ['exports'], function (exports) {
 
     "confirm.delete": "Are you sure you want to delete this",
     "confirm.lose_changes": "You have unsaved changes on this page. Are you sure you want to discard these changes?",
+    "changes_saved": "Changes saved",
 
     "create_user_panel.title": "Create a new user",
     "create_user_panel.name_label": "First and last name",
@@ -48192,7 +48272,9 @@ define('frontend-cp/locales/en-us/organisation', ['exports'], function (exports)
   exports['default'] = {
     "domains": "Email domains",
     "new_organisation_placeholder": "Click to add a name",
-    "delete_organisation": "Delete organisation"
+    "delete_organisation": "Delete organisation",
+    "organisation.created": "Organisation Created",
+    "organisation.updated": "Organisation Updated"
   };
 
 });
@@ -48228,6 +48310,9 @@ define('frontend-cp/locales/en-us/users', ['exports'], function (exports) {
     "changepassword": "Change password",
     "deleteuser": "Delete user",
     "confirmdelete": "Are you sure you want to delete this user?",
+
+    "user.created": "User Created",
+    "user.updated": "User Updated",
 
     "metadata.created": "Created",
     "metadata.updated": "Updated",
@@ -57003,6 +57088,9 @@ define('frontend-cp/session/admin/channels/twitter/edit/controller', ['exports',
   'use strict';
 
   exports['default'] = Ember['default'].Controller.extend({
+    notification: Ember['default'].inject.service('notification'),
+    intl: Ember['default'].inject.service('intl'),
+
     actions: {
       transitionToIndexRoute: function transitionToIndexRoute() {
         this.transitionToRoute('session.admin.channels.twitter.index');
@@ -57013,6 +57101,12 @@ define('frontend-cp/session/admin/channels/twitter/edit/controller', ['exports',
       },
 
       success: function success() {
+        this.get('notification').add({
+          type: 'success',
+          title: this.get('intl').findTranslationByKey('generic.changes_saved').translation,
+          autodismiss: true
+        });
+
         this.transitionToRoute('session.admin.channels.twitter.index');
       }
     }
@@ -57800,6 +57894,9 @@ define('frontend-cp/session/admin/channels/twitter/link/controller', ['exports',
   'use strict';
 
   exports['default'] = Ember['default'].Controller.extend({
+    notification: Ember['default'].inject.service('notification'),
+    intl: Ember['default'].inject.service('intl'),
+
     queryParams: ['oauth_token', 'oauth_verifier'],
 
     oauth_token: null,
@@ -57813,6 +57910,12 @@ define('frontend-cp/session/admin/channels/twitter/link/controller', ['exports',
           oauthToken: this.get('oauth_token'),
           oauthVerifier: this.get('oauth_verifier')
         }).save().then(function () {
+          _this.get('notification').add({
+            type: 'success',
+            title: _this.get('intl').findTranslationByKey('generic.changes_saved').translation,
+            autodismiss: true
+          });
+
           _this.transitionTo('session.admin.channels.twitter.index');
         })['catch'](function () {
           _this.transitionTo('session.admin.channels.twitter.index');
@@ -58809,6 +58912,8 @@ define('frontend-cp/session/admin/manage/case-fields/new/controller', ['exports'
   'use strict';
 
   exports['default'] = Ember['default'].Controller.extend({
+    notification: Ember['default'].inject.service('notification'),
+    intl: Ember['default'].inject.service('intl'),
     customFields: Ember['default'].inject.service('custom-fields'),
 
     queryParams: ['caseFieldType'],
@@ -58853,6 +58958,12 @@ define('frontend-cp/session/admin/manage/case-fields/new/controller', ['exports'
       },
 
       success: function success() {
+        this.get('notification').add({
+          type: 'success',
+          title: this.get('intl').findTranslationByKey('generic.changes_saved').translation,
+          autodismiss: true
+        });
+
         this.send('transitionToIndexRoute');
       }
     }
@@ -59087,7 +59198,7 @@ define('frontend-cp/session/admin/manage/case-forms/edit/template', ['exports'],
         return morphs;
       },
       statements: [
-        ["inline","ko-admin/case-forms/edit",[],["title",["subexpr","format-message",[["subexpr","intl-get",["admin.caseforms.edit.heading"],[],["loc",[null,[2,24],[2,65]]]]],[],["loc",[null,[2,8],[2,66]]]],"caseForm",["subexpr","@mut",[["get","model",["loc",[null,[3,11],[3,16]]]]],[],[]],"onCancel",["subexpr","action",["transitionToIndexRoute"],[],["loc",[null,[4,11],[4,44]]]],"onSuccess",["subexpr","action",["transitionToIndexRoute"],[],["loc",[null,[5,12],[5,45]]]]],["loc",[null,[1,0],[6,2]]]]
+        ["inline","ko-admin/case-forms/edit",[],["title",["subexpr","format-message",[["subexpr","intl-get",["admin.caseforms.edit.heading"],[],["loc",[null,[2,24],[2,65]]]]],[],["loc",[null,[2,8],[2,66]]]],"caseForm",["subexpr","@mut",[["get","model",["loc",[null,[3,11],[3,16]]]]],[],[]],"onCancel",["subexpr","action",["transitionToIndexRoute"],[],["loc",[null,[4,11],[4,44]]]],"onSuccess",["subexpr","action",["successTransitionToIndexRoute"],[],["loc",[null,[5,12],[5,52]]]]],["loc",[null,[1,0],[6,2]]]]
       ],
       locals: [],
       templates: []
@@ -59844,8 +59955,21 @@ define('frontend-cp/session/admin/manage/case-forms/new/controller', ['exports',
   'use strict';
 
   exports['default'] = Ember['default'].Controller.extend({
+    notification: Ember['default'].inject.service('notification'),
+    intl: Ember['default'].inject.service('intl'),
+
     actions: {
       transitionToIndexRoute: function transitionToIndexRoute() {
+        this.transitionToRoute('session.admin.manage.case-forms.index');
+      },
+
+      successTransitionToIndexRoute: function successTransitionToIndexRoute() {
+        this.get('notification').add({
+          type: 'success',
+          title: this.get('intl').findTranslationByKey('generic.changes_saved').translation,
+          autodismiss: true
+        });
+
         this.transitionToRoute('session.admin.manage.case-forms.index');
       },
 
@@ -59939,7 +60063,7 @@ define('frontend-cp/session/admin/manage/case-forms/new/template', ['exports'], 
         return morphs;
       },
       statements: [
-        ["inline","ko-admin/case-forms/edit",[],["title",["subexpr","format-message",[["subexpr","intl-get",["admin.caseforms.new.heading"],[],["loc",[null,[2,24],[2,64]]]]],[],["loc",[null,[2,8],[2,65]]]],"caseForm",["subexpr","@mut",[["get","model",["loc",[null,[3,11],[3,16]]]]],[],[]],"onCancel",["subexpr","action",["transitionToIndexRoute"],[],["loc",[null,[4,11],[4,44]]]],"onSuccess",["subexpr","action",["transitionToIndexRoute"],[],["loc",[null,[5,12],[5,45]]]]],["loc",[null,[1,0],[6,2]]]]
+        ["inline","ko-admin/case-forms/edit",[],["title",["subexpr","format-message",[["subexpr","intl-get",["admin.caseforms.new.heading"],[],["loc",[null,[2,24],[2,64]]]]],[],["loc",[null,[2,8],[2,65]]]],"caseForm",["subexpr","@mut",[["get","model",["loc",[null,[3,11],[3,16]]]]],[],[]],"onCancel",["subexpr","action",["transitionToIndexRoute"],[],["loc",[null,[4,11],[4,44]]]],"onSuccess",["subexpr","action",["successTransitionToIndexRoute"],[],["loc",[null,[5,12],[5,52]]]]],["loc",[null,[1,0],[6,2]]]]
       ],
       locals: [],
       templates: []
@@ -60872,6 +60996,9 @@ define('frontend-cp/session/admin/manage/views/new/controller', ['exports', 'emb
   'use strict';
 
   exports['default'] = Ember['default'].Controller.extend({
+    notification: Ember['default'].inject.service('notification'),
+    intl: Ember['default'].inject.service('intl'),
+
     actions: {
       transitionToIndexRoute: function transitionToIndexRoute() {
         this.transitionToRoute('session.admin.manage.views.index');
@@ -60884,6 +61011,13 @@ define('frontend-cp/session/admin/manage/views/new/controller', ['exports', 'emb
 
         this.get('model').save().then(function (view) {
           view.cacheRelationships(); //TODO: this should be done when didUpdate event is fired on the model. But it's not. Work out why
+
+          _this.get('notification').add({
+            type: 'success',
+            title: _this.get('intl').findTranslationByKey('generic.changes_saved').translation,
+            autodismiss: true
+          });
+
           _this.transitionToRoute('session.admin.manage.views.index');
         });
       }
@@ -61774,6 +61908,8 @@ define('frontend-cp/session/admin/people/organization-fields/new/controller', ['
   'use strict';
 
   exports['default'] = Ember['default'].Controller.extend({
+    notification: Ember['default'].inject.service('notification'),
+    intl: Ember['default'].inject.service('intl'),
     customFields: Ember['default'].inject.service('custom-fields'),
 
     queryParams: ['organizationFieldType'],
@@ -61818,6 +61954,12 @@ define('frontend-cp/session/admin/people/organization-fields/new/controller', ['
       },
 
       success: function success() {
+        this.get('notification').add({
+          type: 'success',
+          title: this.get('intl').findTranslationByKey('generic.changes_saved').translation,
+          autodismiss: true
+        });
+
         this.send('transitionToIndexRoute');
       }
     }
@@ -61982,23 +62124,6 @@ define('frontend-cp/session/admin/people/organization-fields/select-type/templat
   }()));
 
 });
-define('frontend-cp/session/admin/people/teams/edit/controller', ['exports', 'ember'], function (exports, Ember) {
-
-  'use strict';
-
-  var Controller = Ember['default'].Controller;
-
-  exports['default'] = Controller.extend({
-    agents: [],
-
-    actions: {
-      transitionToIndexRoute: function transitionToIndexRoute() {
-        this.transitionToRoute('session.admin.people.teams.index');
-      }
-    }
-  });
-
-});
 define('frontend-cp/session/admin/people/teams/edit/route', ['exports', 'ember'], function (exports, Ember) {
 
   'use strict';
@@ -62008,6 +62133,7 @@ define('frontend-cp/session/admin/people/teams/edit/route', ['exports', 'ember']
 
   exports['default'] = Route.extend({
     intl: inject.service(),
+    controllerName: 'session.admin.people.teams.new',
 
     model: function model(params) {
       return this.store.findRecord('team', params.team_id);
@@ -62076,7 +62202,7 @@ define('frontend-cp/session/admin/people/teams/edit/template', ['exports'], func
         return morphs;
       },
       statements: [
-        ["inline","ko-admin/team",[],["title",["subexpr","format-message",[["subexpr","intl-get",["admin.teams.headings.edit"],[],["loc",[null,[2,24],[2,62]]]]],["title",["get","model.title",["loc",[null,[2,69],[2,80]]]]],["loc",[null,[2,8],[2,81]]]],"team",["subexpr","@mut",[["get","model",["loc",[null,[3,7],[3,12]]]]],[],[]],"agents",["subexpr","@mut",[["get","agents",["loc",[null,[4,9],[4,15]]]]],[],[]],"onCancel",["subexpr","action",["transitionToIndexRoute"],[],["loc",[null,[5,11],[5,44]]]],"onSuccess",["subexpr","action",["transitionToIndexRoute"],[],["loc",[null,[6,12],[6,45]]]]],["loc",[null,[1,0],[7,2]]]]
+        ["inline","ko-admin/team",[],["title",["subexpr","format-message",[["subexpr","intl-get",["admin.teams.headings.edit"],[],["loc",[null,[2,24],[2,62]]]]],["title",["get","model.title",["loc",[null,[2,69],[2,80]]]]],["loc",[null,[2,8],[2,81]]]],"team",["subexpr","@mut",[["get","model",["loc",[null,[3,7],[3,12]]]]],[],[]],"agents",["subexpr","@mut",[["get","agents",["loc",[null,[4,9],[4,15]]]]],[],[]],"onCancel",["subexpr","action",["transitionToIndexRoute"],[],["loc",[null,[5,11],[5,44]]]],"onSuccess",["subexpr","action",["successTransitionToIndexRoute"],[],["loc",[null,[6,12],[6,52]]]]],["loc",[null,[1,0],[7,2]]]]
       ],
       locals: [],
       templates: []
@@ -62266,10 +62392,21 @@ define('frontend-cp/session/admin/people/teams/new/controller', ['exports', 'emb
   var Controller = Ember['default'].Controller;
 
   exports['default'] = Controller.extend({
+    notification: Ember['default'].inject.service('notification'),
+    intl: Ember['default'].inject.service('intl'),
     agents: [],
 
     actions: {
       transitionToIndexRoute: function transitionToIndexRoute() {
+        this.transitionToRoute('session.admin.people.teams.index');
+      },
+      successTransitionToIndexRoute: function successTransitionToIndexRoute() {
+        this.get('notification').add({
+          type: 'success',
+          title: this.get('intl').findTranslationByKey('generic.changes_saved').translation,
+          autodismiss: true
+        });
+
         this.transitionToRoute('session.admin.people.teams.index');
       }
     }
@@ -62352,7 +62489,7 @@ define('frontend-cp/session/admin/people/teams/new/template', ['exports'], funct
         return morphs;
       },
       statements: [
-        ["inline","ko-admin/team",[],["title",["subexpr","format-message",[["subexpr","intl-get",["admin.teams.headings.new"],[],["loc",[null,[2,24],[2,61]]]]],[],["loc",[null,[2,8],[2,62]]]],"team",["subexpr","@mut",[["get","model",["loc",[null,[3,7],[3,12]]]]],[],[]],"agents",["subexpr","@mut",[["get","agents",["loc",[null,[4,9],[4,15]]]]],[],[]],"onCancel",["subexpr","action",["transitionToIndexRoute"],[],["loc",[null,[5,11],[5,44]]]],"onSuccess",["subexpr","action",["transitionToIndexRoute"],[],["loc",[null,[6,12],[6,45]]]]],["loc",[null,[1,0],[7,2]]]]
+        ["inline","ko-admin/team",[],["title",["subexpr","format-message",[["subexpr","intl-get",["admin.teams.headings.new"],[],["loc",[null,[2,24],[2,61]]]]],[],["loc",[null,[2,8],[2,62]]]],"team",["subexpr","@mut",[["get","model",["loc",[null,[3,7],[3,12]]]]],[],[]],"agents",["subexpr","@mut",[["get","agents",["loc",[null,[4,9],[4,15]]]]],[],[]],"onCancel",["subexpr","action",["transitionToIndexRoute"],[],["loc",[null,[5,11],[5,44]]]],"onSuccess",["subexpr","action",["successTransitionToIndexRoute"],[],["loc",[null,[6,12],[6,52]]]]],["loc",[null,[1,0],[7,2]]]]
       ],
       locals: [],
       templates: []
@@ -63138,6 +63275,8 @@ define('frontend-cp/session/admin/people/user-fields/new/controller', ['exports'
   'use strict';
 
   exports['default'] = Ember['default'].Controller.extend({
+    notification: Ember['default'].inject.service('notification'),
+    intl: Ember['default'].inject.service('intl'),
     customFields: Ember['default'].inject.service('custom-fields'),
 
     queryParams: ['userFieldType'],
@@ -63182,6 +63321,12 @@ define('frontend-cp/session/admin/people/user-fields/new/controller', ['exports'
       },
 
       success: function success() {
+        this.get('notification').add({
+          type: 'success',
+          title: this.get('intl').findTranslationByKey('generic.changes_saved').translation,
+          autodismiss: true
+        });
+
         this.send('transitionToIndexRoute');
       }
     }
@@ -80180,7 +80325,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+eeb3c883"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+19538cbe"});
 }
 
 /* jshint ignore:end */
