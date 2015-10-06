@@ -12254,7 +12254,7 @@ define('frontend-cp/components/ko-agent-dropdown/create-case/template', ['export
           ["block","ko-form/field",[],["field",["subexpr","@mut",[["get","fields.requester",["loc",[null,[13,14],[13,30]]]]],[],[]]],0,null,["loc",[null,[12,6],[57,24]]]],
           ["block","if",[["get","isLoading",["loc",[null,[58,12],[58,21]]]]],[],1,null,["loc",[null,[58,6],[58,89]]]],
           ["inline","format-message",[["subexpr","intl-get",["generic.create_case_panel.info"],[],["loc",[null,[61,58],[61,101]]]]],[],["loc",[null,[61,41],[61,103]]]],
-          ["inline","ko-form/buttons",[],["onCancel",["subexpr","@mut",[["get","onCancel",["loc",[null,[63,15],[63,23]]]]],[],[]],"submitLabel",["subexpr","format-message",[["subexpr","intl-get",["generic.create_user_panel.submit"],[],["loc",[null,[64,34],[64,79]]]]],[],["loc",[null,[64,18],[64,80]]]],"cancelLabel",["subexpr","format-message",[["subexpr","intl-get",["generic.cancel"],[],["loc",[null,[65,34],[65,61]]]]],[],["loc",[null,[65,18],[65,62]]]]],["loc",[null,[62,4],[66,6]]]]
+          ["inline","ko-form/buttons",[],["onCancel",["subexpr","@mut",[["get","onCancel",["loc",[null,[63,15],[63,23]]]]],[],[]],"submitLabel",["subexpr","format-message",[["subexpr","intl-get",["generic.create_case_panel.submit"],[],["loc",[null,[64,34],[64,79]]]]],[],["loc",[null,[64,18],[64,80]]]],"cancelLabel",["subexpr","format-message",[["subexpr","intl-get",["generic.cancel"],[],["loc",[null,[65,34],[65,61]]]]],[],["loc",[null,[65,18],[65,62]]]]],["loc",[null,[62,4],[66,6]]]]
         ],
         locals: ["_","isSubmitting"],
         templates: [child0, child1]
@@ -12650,7 +12650,7 @@ define('frontend-cp/components/ko-agent-dropdown/create-organisation/template', 
           ["block","ko-form/field",[],["field",["subexpr","@mut",[["get","fields.name",["loc",[null,[12,27],[12,38]]]]],[],[]]],0,null,["loc",[null,[12,4],[15,22]]]],
           ["block","ko-form/field",[],["field",["subexpr","@mut",[["get","fields.domains",["loc",[null,[17,27],[17,41]]]]],[],[]]],1,null,["loc",[null,[17,4],[28,22]]]],
           ["inline","format-message",[["subexpr","intl-get",["generic.create_organisation_panel.info"],[],["loc",[null,[30,58],[30,109]]]]],[],["loc",[null,[30,41],[30,111]]]],
-          ["inline","ko-form/buttons",[],["onCancel",["subexpr","@mut",[["get","onCancel",["loc",[null,[32,15],[32,23]]]]],[],[]],"submitLabel",["subexpr","format-message",[["subexpr","intl-get",["generic.create_user_panel.submit"],[],["loc",[null,[33,34],[33,79]]]]],[],["loc",[null,[33,18],[33,80]]]],"cancelLabel",["subexpr","format-message",[["subexpr","intl-get",["generic.cancel"],[],["loc",[null,[34,34],[34,61]]]]],[],["loc",[null,[34,18],[34,62]]]]],["loc",[null,[31,4],[35,6]]]]
+          ["inline","ko-form/buttons",[],["onCancel",["subexpr","@mut",[["get","onCancel",["loc",[null,[32,15],[32,23]]]]],[],[]],"submitLabel",["subexpr","format-message",[["subexpr","intl-get",["generic.create_organisation_panel.submit"],[],["loc",[null,[33,34],[33,87]]]]],[],["loc",[null,[33,18],[33,88]]]],"cancelLabel",["subexpr","format-message",[["subexpr","intl-get",["generic.cancel"],[],["loc",[null,[34,34],[34,61]]]]],[],["loc",[null,[34,18],[34,62]]]]],["loc",[null,[31,4],[35,6]]]]
         ],
         locals: ["_","isSubmitting"],
         templates: [child0, child1]
@@ -13351,7 +13351,7 @@ define('frontend-cp/components/ko-agent-dropdown/template', ['exports'], functio
               "column": 2
             },
             "end": {
-              "line": 60,
+              "line": 62,
               "column": 2
             }
           },
@@ -13382,136 +13382,19 @@ define('frontend-cp/components/ko-agent-dropdown/template', ['exports'], functio
           dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n  ");
           dom.appendChild(el0, el1);
-          var el1 = dom.createElement("div");
-          dom.setAttribute(el1,"class","box box--secondary");
-          var el2 = dom.createTextNode("\n    ");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createElement("p");
-          dom.setAttribute(el2,"class","t-caption t-small u-mb-");
-          var el3 = dom.createTextNode("\n    Recently viewed:\n    ");
-          dom.appendChild(el2, el3);
-          dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n    ");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createElement("div");
-          dom.setAttribute(el2,"class","flag flag--auto flag--small u-mb-");
-          dom.setAttribute(el2,"tabindex","0");
-          dom.setAttribute(el2,"disabled","");
-          var el3 = dom.createTextNode("\n      ");
-          dom.appendChild(el2, el3);
-          var el3 = dom.createElement("div");
-          dom.setAttribute(el3,"class","flag__img");
-          var el4 = dom.createTextNode("\n        ");
-          dom.appendChild(el3, el4);
-          var el4 = dom.createComment("");
-          dom.appendChild(el3, el4);
-          var el4 = dom.createTextNode("\n      ");
-          dom.appendChild(el3, el4);
-          dom.appendChild(el2, el3);
-          var el3 = dom.createTextNode("\n      ");
-          dom.appendChild(el2, el3);
-          var el3 = dom.createElement("div");
-          dom.setAttribute(el3,"class","flag__body");
-          var el4 = dom.createTextNode("\n        I can't open the internet.\n        ");
-          dom.appendChild(el3, el4);
-          var el4 = dom.createElement("p");
-          dom.setAttribute(el4,"class","t-small t-caption");
-          var el5 = dom.createTextNode("Samantha Jones");
-          dom.appendChild(el4, el5);
-          dom.appendChild(el3, el4);
-          var el4 = dom.createTextNode("\n      ");
-          dom.appendChild(el3, el4);
-          dom.appendChild(el2, el3);
-          var el3 = dom.createTextNode("\n    ");
-          dom.appendChild(el2, el3);
-          dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n    ");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createElement("div");
-          dom.setAttribute(el2,"class","flag flag--auto flag--small u-mb-");
-          dom.setAttribute(el2,"tabindex","0");
-          var el3 = dom.createTextNode("\n      ");
-          dom.appendChild(el2, el3);
-          var el3 = dom.createElement("div");
-          dom.setAttribute(el3,"class","flag__img");
-          var el4 = dom.createTextNode("\n        ");
-          dom.appendChild(el3, el4);
-          var el4 = dom.createComment("");
-          dom.appendChild(el3, el4);
-          var el4 = dom.createTextNode("\n      ");
-          dom.appendChild(el3, el4);
-          dom.appendChild(el2, el3);
-          var el3 = dom.createTextNode("\n      ");
-          dom.appendChild(el2, el3);
-          var el3 = dom.createElement("div");
-          dom.setAttribute(el3,"class","flag__body");
-          var el4 = dom.createTextNode("\n        I can't open the internet.\n        ");
-          dom.appendChild(el3, el4);
-          var el4 = dom.createElement("p");
-          dom.setAttribute(el4,"class","t-small t-caption");
-          var el5 = dom.createTextNode("Samantha Jones");
-          dom.appendChild(el4, el5);
-          dom.appendChild(el3, el4);
-          var el4 = dom.createTextNode("\n      ");
-          dom.appendChild(el3, el4);
-          dom.appendChild(el2, el3);
-          var el3 = dom.createTextNode("\n    ");
-          dom.appendChild(el2, el3);
-          dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n    ");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createElement("div");
-          dom.setAttribute(el2,"class","flag flag--auto flag--small");
-          dom.setAttribute(el2,"tabindex","0");
-          var el3 = dom.createTextNode("\n      ");
-          dom.appendChild(el2, el3);
-          var el3 = dom.createElement("div");
-          dom.setAttribute(el3,"class","flag__img");
-          var el4 = dom.createTextNode("\n        ");
-          dom.appendChild(el3, el4);
-          var el4 = dom.createComment("");
-          dom.appendChild(el3, el4);
-          var el4 = dom.createTextNode("\n      ");
-          dom.appendChild(el3, el4);
-          dom.appendChild(el2, el3);
-          var el3 = dom.createTextNode("\n      ");
-          dom.appendChild(el2, el3);
-          var el3 = dom.createElement("div");
-          dom.setAttribute(el3,"class","flag__body");
-          var el4 = dom.createTextNode("\n        I can't open the internet.\n        ");
-          dom.appendChild(el3, el4);
-          var el4 = dom.createElement("p");
-          dom.setAttribute(el4,"class","t-small t-caption");
-          var el5 = dom.createTextNode("Samantha Jones");
-          dom.appendChild(el4, el5);
-          dom.appendChild(el3, el4);
-          var el4 = dom.createTextNode("\n      ");
-          dom.appendChild(el3, el4);
-          dom.appendChild(el2, el3);
-          var el3 = dom.createTextNode("\n    ");
-          dom.appendChild(el2, el3);
-          dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n  ");
-          dom.appendChild(el1, el2);
+          var el1 = dom.createComment("\n    TODO(SG): Generate recently viewed cases dynamically. Commented out as part of NOVO-327.\n    <div class=\"box box--secondary\">\n    <p class=\"t-caption t-small u-mb-\">\n    Recently viewed:\n    </p>\n    <div class=\"flag flag--auto flag--small u-mb-\" tabindex=\"0\" disabled>\n      <div class=\"flag__img\">\n        {{ko-avatar avatar=member.avatar}}\n      </div>\n      <div class=\"flag__body\">\n        I can't open the internet.\n        <p class=\"t-small t-caption\">Samantha Jones</p>\n      </div>\n    </div>\n    <div class=\"flag flag--auto flag--small u-mb-\" tabindex=\"0\">\n      <div class=\"flag__img\">\n        {{ko-avatar avatar=member.avatar}}\n      </div>\n      <div class=\"flag__body\">\n        I can't open the internet.\n        <p class=\"t-small t-caption\">Samantha Jones</p>\n      </div>\n    </div>\n    <div class=\"flag flag--auto flag--small\" tabindex=\"0\">\n      <div class=\"flag__img\">\n        {{ko-avatar avatar=member.avatar}}\n      </div>\n      <div class=\"flag__body\">\n        I can't open the internet.\n        <p class=\"t-small t-caption\">Samantha Jones</p>\n      </div>\n    </div>\n    </div>");
           dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n");
           dom.appendChild(el0, el1);
           return el0;
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var element2 = dom.childAt(fragment, [3]);
-          var morphs = new Array(4);
+          var morphs = new Array(1);
           morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1, 1]),1,1);
-          morphs[1] = dom.createMorphAt(dom.childAt(element2, [3, 1]),1,1);
-          morphs[2] = dom.createMorphAt(dom.childAt(element2, [5, 1]),1,1);
-          morphs[3] = dom.createMorphAt(dom.childAt(element2, [7, 1]),1,1);
           return morphs;
         },
         statements: [
-          ["block","each",[["get","navItems",["loc",[null,[25,14],[25,22]]]]],[],0,null,["loc",[null,[25,6],[25,276]]]],
-          ["inline","ko-avatar",[],["avatar",["subexpr","@mut",[["get","member.avatar",["loc",[null,[34,27],[34,40]]]]],[],[]]],["loc",[null,[34,8],[34,42]]]],
-          ["inline","ko-avatar",[],["avatar",["subexpr","@mut",[["get","member.avatar",["loc",[null,[43,27],[43,40]]]]],[],[]]],["loc",[null,[43,8],[43,42]]]],
-          ["inline","ko-avatar",[],["avatar",["subexpr","@mut",[["get","member.avatar",["loc",[null,[52,27],[52,40]]]]],[],[]]],["loc",[null,[52,8],[52,42]]]]
+          ["block","each",[["get","navItems",["loc",[null,[25,14],[25,22]]]]],[],0,null,["loc",[null,[25,6],[25,276]]]]
         ],
         locals: [],
         templates: [child0]
@@ -13527,7 +13410,7 @@ define('frontend-cp/components/ko-agent-dropdown/template', ['exports'], functio
             "column": 0
           },
           "end": {
-            "line": 62,
+            "line": 64,
             "column": 0
           }
         },
@@ -13557,20 +13440,20 @@ define('frontend-cp/components/ko-agent-dropdown/template', ['exports'], functio
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var element3 = dom.childAt(fragment, [0]);
-        var element4 = dom.childAt(fragment, [2]);
+        var element2 = dom.childAt(fragment, [0]);
+        var element3 = dom.childAt(fragment, [2]);
         var morphs = new Array(4);
-        morphs[0] = dom.createAttrMorph(element3, 'class');
-        morphs[1] = dom.createElementMorph(element3);
-        morphs[2] = dom.createAttrMorph(element4, 'class');
-        morphs[3] = dom.createMorphAt(element4,1,1);
+        morphs[0] = dom.createAttrMorph(element2, 'class');
+        morphs[1] = dom.createElementMorph(element2);
+        morphs[2] = dom.createAttrMorph(element3, 'class');
+        morphs[3] = dom.createMorphAt(element3,1,1);
         return morphs;
       },
       statements: [
         ["attribute","class",["concat",["ko-agent-dropdown__nav-new button i-plus i-size-base",["subexpr","if",[["get","isExpanded",["loc",[null,[1,99],[1,109]]]]," is-active"],[],["loc",[null,[1,94],[1,124]]]]]]],
         ["element","action",["toggleDropdown"],[],["loc",[null,[1,126],[1,153]]]],
         ["attribute","class",["concat",["ko-agent-dropdown__drop box-container ",["subexpr","unless",[["get","isExpanded",["loc",[null,[2,59],[2,69]]]],"u-hidden"],[],["loc",[null,[2,50],[2,82]]]]]]],
-        ["block","if",[["get","selectedTab",["loc",[null,[3,8],[3,19]]]]],[],0,1,["loc",[null,[3,2],[60,9]]]]
+        ["block","if",[["get","selectedTab",["loc",[null,[3,8],[3,19]]]]],[],0,1,["loc",[null,[3,2],[62,9]]]]
       ],
       locals: [],
       templates: [child0, child1]
@@ -15413,11 +15296,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 70,
+              "line": 64,
               "column": 8
             },
             "end": {
-              "line": 75,
+              "line": 69,
               "column": 8
             }
           },
@@ -15461,8 +15344,8 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["inline","ko-case-content/dropdown",[],["label",["subexpr","format-message",[["subexpr","intl-get",["cases.sort"],[],["loc",[null,[72,103],[72,126]]]]],[],["loc",[null,[72,87],[72,127]]]],"value",["subexpr","@mut",[["get","sortOrder",["loc",[null,[72,134],[72,143]]]]],[],[]],"options",["subexpr","@mut",[["get","sortOptions",["loc",[null,[72,152],[72,163]]]]],[],[]],"onChange",["subexpr","action",["sort"],[],["loc",[null,[72,173],[72,188]]]]],["loc",[null,[72,54],[72,190]]]],
-          ["inline","ko-case-content/dropdown",[],["label",["subexpr","format-message",[["subexpr","intl-get",["cases.filter"],[],["loc",[null,[73,105],[73,130]]]]],[],["loc",[null,[73,89],[73,131]]]],"value",["subexpr","@mut",[["get","filter",["loc",[null,[73,138],[73,144]]]]],[],[]],"options",["subexpr","@mut",[["get","filterOptions",["loc",[null,[73,153],[73,166]]]]],[],[]],"onChange",["subexpr","action",["filter"],[],["loc",[null,[73,176],[73,193]]]]],["loc",[null,[73,56],[73,195]]]]
+          ["inline","ko-case-content/dropdown",[],["label",["subexpr","format-message",[["subexpr","intl-get",["cases.sort"],[],["loc",[null,[66,103],[66,126]]]]],[],["loc",[null,[66,87],[66,127]]]],"value",["subexpr","@mut",[["get","sortOrder",["loc",[null,[66,134],[66,143]]]]],[],[]],"options",["subexpr","@mut",[["get","sortOptions",["loc",[null,[66,152],[66,163]]]]],[],[]],"onChange",["subexpr","action",["sort"],[],["loc",[null,[66,173],[66,188]]]]],["loc",[null,[66,54],[66,190]]]],
+          ["inline","ko-case-content/dropdown",[],["label",["subexpr","format-message",[["subexpr","intl-get",["cases.filter"],[],["loc",[null,[67,105],[67,130]]]]],[],["loc",[null,[67,89],[67,131]]]],"value",["subexpr","@mut",[["get","filter",["loc",[null,[67,138],[67,144]]]]],[],[]],"options",["subexpr","@mut",[["get","filterOptions",["loc",[null,[67,153],[67,166]]]]],[],[]],"onChange",["subexpr","action",["filter"],[],["loc",[null,[67,176],[67,193]]]]],["loc",[null,[67,56],[67,195]]]]
         ],
         locals: [],
         templates: []
@@ -15477,11 +15360,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 79,
+                  "line": 73,
                   "column": 14
                 },
                 "end": {
-                  "line": 81,
+                  "line": 75,
                   "column": 14
                 }
               },
@@ -15506,7 +15389,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
               return morphs;
             },
             statements: [
-              ["inline","ko-loader",[],["large",true],["loc",[null,[80,16],[80,40]]]]
+              ["inline","ko-loader",[],["large",true],["loc",[null,[74,16],[74,40]]]]
             ],
             locals: [],
             templates: []
@@ -15518,11 +15401,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 78,
+                "line": 72,
                 "column": 12
               },
               "end": {
-                "line": 82,
+                "line": 76,
                 "column": 12
               }
             },
@@ -15545,7 +15428,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             return morphs;
           },
           statements: [
-            ["block","ko-center",[],[],0,null,["loc",[null,[79,14],[81,28]]]]
+            ["block","ko-center",[],[],0,null,["loc",[null,[73,14],[75,28]]]]
           ],
           locals: [],
           templates: [child0]
@@ -15557,11 +15440,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 76,
+              "line": 70,
               "column": 8
             },
             "end": {
-              "line": 84,
+              "line": 78,
               "column": 8
             }
           },
@@ -15593,7 +15476,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["block","if",[["get","loadingTop",["loc",[null,[78,18],[78,28]]]]],[],0,null,["loc",[null,[78,12],[82,19]]]]
+          ["block","if",[["get","loadingTop",["loc",[null,[72,18],[72,28]]]]],[],0,null,["loc",[null,[72,12],[76,19]]]]
         ],
         locals: [],
         templates: [child0]
@@ -15606,11 +15489,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 86,
+              "line": 80,
               "column": 10
             },
             "end": {
-              "line": 88,
+              "line": 82,
               "column": 10
             }
           },
@@ -15635,7 +15518,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["inline","ko-feed",[],["events",["subexpr","@mut",[["get","newPosts",["loc",[null,[87,29],[87,37]]]]],[],[]]],["loc",[null,[87,12],[87,39]]]]
+          ["inline","ko-feed",[],["events",["subexpr","@mut",[["get","newPosts",["loc",[null,[81,29],[81,37]]]]],[],[]]],["loc",[null,[81,12],[81,39]]]]
         ],
         locals: [],
         templates: []
@@ -15649,11 +15532,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 93,
+                "line": 87,
                 "column": 12
               },
               "end": {
-                "line": 95,
+                "line": 89,
                 "column": 12
               }
             },
@@ -15678,7 +15561,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             return morphs;
           },
           statements: [
-            ["inline","ko-loader",[],["large",true],["loc",[null,[94,14],[94,38]]]]
+            ["inline","ko-loader",[],["large",true],["loc",[null,[88,14],[88,38]]]]
           ],
           locals: [],
           templates: []
@@ -15690,11 +15573,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 92,
+              "line": 86,
               "column": 10
             },
             "end": {
-              "line": 96,
+              "line": 90,
               "column": 10
             }
           },
@@ -15717,7 +15600,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["block","ko-center",[],[],0,null,["loc",[null,[93,12],[95,26]]]]
+          ["block","ko-center",[],[],0,null,["loc",[null,[87,12],[89,26]]]]
         ],
         locals: [],
         templates: [child0]
@@ -15730,11 +15613,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 107,
+              "line": 101,
               "column": 8
             },
             "end": {
-              "line": 115,
+              "line": 109,
               "column": 8
             }
           },
@@ -15759,7 +15642,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["inline","ko-case-field/tags",[],["tags",["subexpr","@mut",[["get","tags",["loc",[null,[110,17],[110,21]]]]],[],[]],"suggestedTags",["subexpr","@mut",[["get","suggestedTags",["loc",[null,[111,26],[111,39]]]]],[],[]],"onTagAddition","addTag","onTagRemoval","removeTag","onTagSuggestion","suggestTags"],["loc",[null,[109,10],[114,43]]]]
+          ["inline","ko-case-field/tags",[],["tags",["subexpr","@mut",[["get","tags",["loc",[null,[104,17],[104,21]]]]],[],[]],"suggestedTags",["subexpr","@mut",[["get","suggestedTags",["loc",[null,[105,26],[105,39]]]]],[],[]],"onTagAddition","addTag","onTagRemoval","removeTag","onTagSuggestion","suggestTags"],["loc",[null,[103,10],[108,43]]]]
         ],
         locals: [],
         templates: []
@@ -15774,11 +15657,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 126,
+                  "line": 120,
                   "column": 12
                 },
                 "end": {
-                  "line": 137,
+                  "line": 131,
                   "column": 12
                 }
               },
@@ -15803,7 +15686,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
               return morphs;
             },
             statements: [
-              ["inline","component",[["subexpr","ko-helper",[["get","customFieldsList.componentFor",["loc",[null,[127,37],[127,66]]]],["get","field.fieldType",["loc",[null,[127,67],[127,82]]]]],[],["loc",[null,[127,26],[127,83]]]]],["case",["subexpr","@mut",[["get","case",["loc",[null,[128,19],[128,23]]]]],[],[]],"options",["subexpr","ko-contextual-helper",[["get","optionsForField",["loc",[null,[129,44],[129,59]]]],["get","this",["loc",[null,[129,60],[129,64]]]],["get","field",["loc",[null,[129,65],[129,70]]]]],[],["loc",[null,[129,22],[129,71]]]],"customFieldsModel",["subexpr","@mut",[["get","case.customFields",["loc",[null,[130,32],[130,49]]]]],[],[]],"field",["subexpr","@mut",[["get","field",["loc",[null,[131,20],[131,25]]]]],[],[]],"fieldValue",["subexpr","ko-helper",[["get","customFieldsList.findCustomFieldValue",["loc",[null,[132,36],[132,73]]]],["get","case.customFields",["loc",[null,[132,74],[132,91]]]],["get","field",["loc",[null,[132,92],[132,97]]]]],[],["loc",[null,[132,25],[132,98]]]],"title",["subexpr","@mut",[["get","field.title",["loc",[null,[133,20],[133,31]]]]],[],[]],"errors",["subexpr","@mut",[["get","errors",["loc",[null,[134,21],[134,27]]]]],[],[]],"editedCustomFields",["subexpr","@mut",[["get","editedCaseFields",["loc",[null,[135,33],[135,49]]]]],[],[]]],["loc",[null,[127,14],[136,16]]]]
+              ["inline","component",[["subexpr","ko-helper",[["get","customFieldsList.componentFor",["loc",[null,[121,37],[121,66]]]],["get","field.fieldType",["loc",[null,[121,67],[121,82]]]]],[],["loc",[null,[121,26],[121,83]]]]],["case",["subexpr","@mut",[["get","case",["loc",[null,[122,19],[122,23]]]]],[],[]],"options",["subexpr","ko-contextual-helper",[["get","optionsForField",["loc",[null,[123,44],[123,59]]]],["get","this",["loc",[null,[123,60],[123,64]]]],["get","field",["loc",[null,[123,65],[123,70]]]]],[],["loc",[null,[123,22],[123,71]]]],"customFieldsModel",["subexpr","@mut",[["get","case.customFields",["loc",[null,[124,32],[124,49]]]]],[],[]],"field",["subexpr","@mut",[["get","field",["loc",[null,[125,20],[125,25]]]]],[],[]],"fieldValue",["subexpr","ko-helper",[["get","customFieldsList.findCustomFieldValue",["loc",[null,[126,36],[126,73]]]],["get","case.customFields",["loc",[null,[126,74],[126,91]]]],["get","field",["loc",[null,[126,92],[126,97]]]]],[],["loc",[null,[126,25],[126,98]]]],"title",["subexpr","@mut",[["get","field.title",["loc",[null,[127,20],[127,31]]]]],[],[]],"errors",["subexpr","@mut",[["get","errors",["loc",[null,[128,21],[128,27]]]]],[],[]],"editedCustomFields",["subexpr","@mut",[["get","editedCaseFields",["loc",[null,[129,33],[129,49]]]]],[],[]]],["loc",[null,[121,14],[130,16]]]]
             ],
             locals: [],
             templates: []
@@ -15815,11 +15698,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 125,
+                "line": 119,
                 "column": 10
               },
               "end": {
-                "line": 138,
+                "line": 132,
                 "column": 10
               }
             },
@@ -15842,7 +15725,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             return morphs;
           },
           statements: [
-            ["block","if",[["get","field.isEnabled",["loc",[null,[126,18],[126,33]]]]],[],0,null,["loc",[null,[126,12],[137,19]]]]
+            ["block","if",[["get","field.isEnabled",["loc",[null,[120,18],[120,33]]]]],[],0,null,["loc",[null,[120,12],[131,19]]]]
           ],
           locals: [],
           templates: [child0]
@@ -15854,11 +15737,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 124,
+              "line": 118,
               "column": 8
             },
             "end": {
-              "line": 139,
+              "line": 133,
               "column": 8
             }
           },
@@ -15881,7 +15764,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["block","if",[["subexpr","ko-helper",[["get","customFieldsList.componentFor",["loc",[null,[125,27],[125,56]]]],["get","field.fieldType",["loc",[null,[125,57],[125,72]]]]],[],["loc",[null,[125,16],[125,73]]]]],[],0,null,["loc",[null,[125,10],[138,17]]]]
+          ["block","if",[["subexpr","ko-helper",[["get","customFieldsList.componentFor",["loc",[null,[119,27],[119,56]]]],["get","field.fieldType",["loc",[null,[119,57],[119,72]]]]],[],["loc",[null,[119,16],[119,73]]]]],[],0,null,["loc",[null,[119,10],[132,17]]]]
         ],
         locals: ["field"],
         templates: [child0]
@@ -15894,11 +15777,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 142,
+              "line": 136,
               "column": 8
             },
             "end": {
-              "line": 144,
+              "line": 138,
               "column": 8
             }
           },
@@ -15923,7 +15806,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["inline","ko-case/sla-sidebar",[],["sla",["subexpr","@mut",[["get","case.sla",["loc",[null,[143,36],[143,44]]]]],[],[]],"slaMetrics",["subexpr","@mut",[["get","case.slaMetrics",["loc",[null,[143,56],[143,71]]]]],[],[]]],["loc",[null,[143,10],[143,73]]]]
+          ["inline","ko-case/sla-sidebar",[],["sla",["subexpr","@mut",[["get","case.sla",["loc",[null,[137,36],[137,44]]]]],[],[]],"slaMetrics",["subexpr","@mut",[["get","case.slaMetrics",["loc",[null,[137,56],[137,71]]]]],[],[]]],["loc",[null,[137,10],[137,73]]]]
         ],
         locals: [],
         templates: []
@@ -15939,7 +15822,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             "column": 0
           },
           "end": {
-            "line": 151,
+            "line": 145,
             "column": 0
           }
         },
@@ -16021,26 +15904,6 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
         dom.appendChild(el5, el6);
         var el6 = dom.createElement("ul");
         dom.setAttribute(el6,"class","ko-case-content__macros-list list-inline t-right");
-        var el7 = dom.createTextNode("\n            ");
-        dom.appendChild(el6, el7);
-        var el7 = dom.createElement("li");
-        var el8 = dom.createTextNode("\n              ");
-        dom.appendChild(el7, el8);
-        var el8 = dom.createComment("");
-        dom.appendChild(el7, el8);
-        var el8 = dom.createTextNode("\n            ");
-        dom.appendChild(el7, el8);
-        dom.appendChild(el6, el7);
-        var el7 = dom.createTextNode("\n            ");
-        dom.appendChild(el6, el7);
-        var el7 = dom.createElement("li");
-        var el8 = dom.createTextNode("\n              ");
-        dom.appendChild(el7, el8);
-        var el8 = dom.createComment("");
-        dom.appendChild(el7, el8);
-        var el8 = dom.createTextNode("\n            ");
-        dom.appendChild(el7, el8);
-        dom.appendChild(el6, el7);
         var el7 = dom.createTextNode("\n            ");
         dom.appendChild(el6, el7);
         var el7 = dom.createElement("li");
@@ -16201,37 +16064,34 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
         var element3 = dom.childAt(element2, [1, 1]);
         var element4 = dom.childAt(element3, [1, 1]);
         var element5 = dom.childAt(element3, [3]);
-        var element6 = dom.childAt(element2, [3, 1, 1, 1]);
-        var element7 = dom.childAt(element1, [3]);
-        var element8 = dom.childAt(element7, [1, 1]);
+        var element6 = dom.childAt(element1, [3]);
+        var element7 = dom.childAt(element6, [1, 1]);
+        var element8 = dom.childAt(element7, [1]);
         var element9 = dom.childAt(element8, [1]);
-        var element10 = dom.childAt(element9, [1]);
-        var element11 = dom.childAt(element7, [3, 1]);
-        var element12 = dom.childAt(element11, [1, 1]);
-        var morphs = new Array(23);
+        var element10 = dom.childAt(element6, [3, 1]);
+        var element11 = dom.childAt(element10, [1, 1]);
+        var morphs = new Array(21);
         morphs[0] = dom.createAttrMorph(element4, 'src');
         morphs[1] = dom.createMorphAt(dom.childAt(element5, [1]),1,1);
         morphs[2] = dom.createMorphAt(element5,3,3);
-        morphs[3] = dom.createMorphAt(dom.childAt(element6, [1]),1,1);
-        morphs[4] = dom.createMorphAt(dom.childAt(element6, [3]),1,1);
-        morphs[5] = dom.createMorphAt(dom.childAt(element6, [5]),1,1);
-        morphs[6] = dom.createAttrMorph(element9, 'style');
-        morphs[7] = dom.createAttrMorph(element10, 'class');
-        morphs[8] = dom.createMorphAt(element10,1,1);
-        morphs[9] = dom.createMorphAt(element8,3,3);
-        morphs[10] = dom.createMorphAt(element8,4,4);
-        morphs[11] = dom.createMorphAt(dom.childAt(element8, [6]),1,1);
-        morphs[12] = dom.createMorphAt(element8,8,8);
-        morphs[13] = dom.createMorphAt(dom.childAt(element8, [10]),1,1);
-        morphs[14] = dom.createAttrMorph(element11, 'class');
-        morphs[15] = dom.createElementMorph(element12);
-        morphs[16] = dom.createMorphAt(element12,0,0);
-        morphs[17] = dom.createMorphAt(element11,3,3);
-        morphs[18] = dom.createMorphAt(element11,5,5);
-        morphs[19] = dom.createMorphAt(element11,7,7);
-        morphs[20] = dom.createMorphAt(element11,9,9);
-        morphs[21] = dom.createMorphAt(element11,11,11);
-        morphs[22] = dom.createMorphAt(element11,13,13);
+        morphs[3] = dom.createMorphAt(dom.childAt(element2, [3, 1, 1, 1, 1]),1,1);
+        morphs[4] = dom.createAttrMorph(element8, 'style');
+        morphs[5] = dom.createAttrMorph(element9, 'class');
+        morphs[6] = dom.createMorphAt(element9,1,1);
+        morphs[7] = dom.createMorphAt(element7,3,3);
+        morphs[8] = dom.createMorphAt(element7,4,4);
+        morphs[9] = dom.createMorphAt(dom.childAt(element7, [6]),1,1);
+        morphs[10] = dom.createMorphAt(element7,8,8);
+        morphs[11] = dom.createMorphAt(dom.childAt(element7, [10]),1,1);
+        morphs[12] = dom.createAttrMorph(element10, 'class');
+        morphs[13] = dom.createElementMorph(element11);
+        morphs[14] = dom.createMorphAt(element11,0,0);
+        morphs[15] = dom.createMorphAt(element10,3,3);
+        morphs[16] = dom.createMorphAt(element10,5,5);
+        morphs[17] = dom.createMorphAt(element10,7,7);
+        morphs[18] = dom.createMorphAt(element10,9,9);
+        morphs[19] = dom.createMorphAt(element10,11,11);
+        morphs[20] = dom.createMorphAt(element10,13,13);
         return morphs;
       },
       statements: [
@@ -16239,25 +16099,23 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
         ["inline","ko-editable-text",[],["value",["subexpr","@mut",[["get","case.subject",["loc",[null,[11,22],[11,34]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isCaseSubjectEdited",["loc",[null,[12,25],[12,44]]]]],[],[]],"onValueChange","setSubject","isErrored",["subexpr","@mut",[["get","errorMap.subject",["loc",[null,[14,26],[14,42]]]]],[],[]],"placeholder",["subexpr","format-message",[["subexpr","intl-get",["cases.new_case_subject_placeholder"],[],["loc",[null,[15,44],[15,91]]]]],[],["loc",[null,[15,28],[15,92]]]]],["loc",[null,[10,12],[16,14]]]],
         ["block","if",[["get","case.id",["loc",[null,[18,16],[18,23]]]]],[],0,null,["loc",[null,[18,10],[27,17]]]],
         ["inline","ko-case/macro-selector",[],["macros",["subexpr","@mut",[["get","macros",["loc",[null,[36,46],[36,52]]]]],[],[]],"onMacroSelected","applyMacro"],["loc",[null,[36,14],[36,83]]]],
-        ["inline","ko-case/macro-selector",[],["macros",["subexpr","@mut",[["get","macros",["loc",[null,[39,46],[39,52]]]]],[],[]],"onMacroSelected","applyMacro"],["loc",[null,[39,14],[39,83]]]],
-        ["inline","ko-case/macro-selector",[],["macros",["subexpr","@mut",[["get","macros",["loc",[null,[42,46],[42,52]]]]],[],[]],"onMacroSelected","applyMacro"],["loc",[null,[42,14],[42,83]]]],
-        ["attribute","style",["get","caseEditorStyle",["loc",[null,[52,63],[52,78]]]]],
-        ["attribute","class",["concat",["ko-case-content__editor ",["subexpr","if",[["get","headerSticky",["loc",[null,[53,51],[53,63]]]],"ko-case-content__editor--sticky"],[],["loc",[null,[53,46],[53,99]]]]]]],
-        ["inline","ko-case-field/post",[],["viewName","casePostEditor","channels",["subexpr","@mut",[["get","availableChannels",["loc",[null,[56,25],[56,42]]]]],[],[]],"channel",["subexpr","@mut",[["get","channel",["loc",[null,[57,24],[57,31]]]]],[],[]],"onChannelChange","setChannel","replyType",["subexpr","@mut",[["get","replyType",["loc",[null,[59,26],[59,35]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","errorMap.contents",["loc",[null,[60,26],[60,43]]]]],[],[]],"suggestedPeople",["subexpr","@mut",[["get","suggestedPeople",["loc",[null,[61,32],[61,47]]]]],[],[]],"selectedPeople",["subexpr","@mut",[["get","selectedPeople",["loc",[null,[62,31],[62,45]]]]],[],[]],"suggestedPeopleTotal",["subexpr","@mut",[["get","suggestedPeopleTotal",["loc",[null,[63,37],[63,57]]]]],[],[]],"suggestedPeopleLoading",["subexpr","@mut",[["get","suggestedPeopleLoading",["loc",[null,[64,39],[64,61]]]]],[],[]],"isPeopleAutoCompleteAvailable",["subexpr","@mut",[["get","isPeopleAutoCompleteAvailable",["loc",[null,[65,46],[65,75]]]]],[],[]],"addParticipant","addParticipant","onPeopleSuggestion","onPeopleSuggestion"],["loc",[null,[54,12],[67,57]]]],
-        ["block","if",[["get","case.id",["loc",[null,[70,14],[70,21]]]]],[],1,null,["loc",[null,[70,8],[75,15]]]],
-        ["block","if",[["get","topPostsAvailable",["loc",[null,[76,14],[76,31]]]]],[],2,null,["loc",[null,[76,8],[84,15]]]],
-        ["block","if",[["get","newPosts",["loc",[null,[86,16],[86,24]]]]],[],3,null,["loc",[null,[86,10],[88,17]]]],
-        ["inline","ko-feed",[],["events",["subexpr","@mut",[["get","posts",["loc",[null,[90,25],[90,30]]]]],[],[]],"onReplyWithQuote","replyWithQuote","top",["subexpr","@mut",[["get","timelineVisibleTop",["loc",[null,[90,69],[90,87]]]]],[],[]],"left",["subexpr","@mut",[["get","timelineVisibleLeft",["loc",[null,[90,93],[90,112]]]]],[],[]],"onTopPostChange",["subexpr","action",["changeTopPost"],[],["loc",[null,[90,129],[90,153]]]]],["loc",[null,[90,8],[90,155]]]],
-        ["block","if",[["get","loadingBottom",["loc",[null,[92,16],[92,29]]]]],[],4,null,["loc",[null,[92,10],[96,17]]]],
-        ["attribute","class",["concat",["list-bare ko-case-content__info-bar ",["subexpr","if",[["get","headerSticky",["loc",[null,[101,57],[101,69]]]],"ko-case-content__info-bar--sticky"],[],["loc",[null,[101,52],[101,107]]]]]]],
-        ["element","action",["submit"],[],["loc",[null,[103,55],[103,74]]]],
-        ["inline","format-message",[["subexpr","intl-get",["cases.submit"],[],["loc",[null,[103,92],[103,117]]]]],[],["loc",[null,[103,75],[103,119]]]],
-        ["inline","ko-case-field/requester",[],["requester",["subexpr","@mut",[["get","case.requester",["loc",[null,[105,44],[105,58]]]]],[],[]]],["loc",[null,[105,8],[105,60]]]],
-        ["block","ko-info-bar/field",[],["title",["subexpr","format-message",[["subexpr","intl-get",["cases.tags"],[],["loc",[null,[107,51],[107,74]]]]],[],["loc",[null,[107,35],[107,75]]]],"isEdited",["subexpr","@mut",[["get","isTagsFieldEdited",["loc",[null,[108,19],[108,36]]]]],[],[]]],5,null,["loc",[null,[107,8],[115,30]]]],
-        ["inline","ko-case-field/forms",[],["selectedForm",["subexpr","@mut",[["get","case.form",["loc",[null,[118,23],[118,32]]]]],[],[]],"forms",["subexpr","@mut",[["get","caseForms",["loc",[null,[119,16],[119,25]]]]],[],[]],"onFormSelected","setForm","isEdited",["subexpr","@mut",[["get","editedCaseFields.form",["loc",[null,[121,19],[121,40]]]]],[],[]]],["loc",[null,[117,8],[122,10]]]],
-        ["block","each",[["get","caseOrFormFields",["loc",[null,[124,16],[124,32]]]]],[],6,null,["loc",[null,[124,8],[139,17]]]],
-        ["block","if",[["get","case.id",["loc",[null,[142,14],[142,21]]]]],[],7,null,["loc",[null,[142,8],[144,15]]]],
-        ["inline","ko-info-bar/metadata",[],["rows",["subexpr","@mut",[["get","caseDates",["loc",[null,[146,36],[146,45]]]]],[],[]]],["loc",[null,[146,8],[146,47]]]]
+        ["attribute","style",["get","caseEditorStyle",["loc",[null,[46,63],[46,78]]]]],
+        ["attribute","class",["concat",["ko-case-content__editor ",["subexpr","if",[["get","headerSticky",["loc",[null,[47,51],[47,63]]]],"ko-case-content__editor--sticky"],[],["loc",[null,[47,46],[47,99]]]]]]],
+        ["inline","ko-case-field/post",[],["viewName","casePostEditor","channels",["subexpr","@mut",[["get","availableChannels",["loc",[null,[50,25],[50,42]]]]],[],[]],"channel",["subexpr","@mut",[["get","channel",["loc",[null,[51,24],[51,31]]]]],[],[]],"onChannelChange","setChannel","replyType",["subexpr","@mut",[["get","replyType",["loc",[null,[53,26],[53,35]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","errorMap.contents",["loc",[null,[54,26],[54,43]]]]],[],[]],"suggestedPeople",["subexpr","@mut",[["get","suggestedPeople",["loc",[null,[55,32],[55,47]]]]],[],[]],"selectedPeople",["subexpr","@mut",[["get","selectedPeople",["loc",[null,[56,31],[56,45]]]]],[],[]],"suggestedPeopleTotal",["subexpr","@mut",[["get","suggestedPeopleTotal",["loc",[null,[57,37],[57,57]]]]],[],[]],"suggestedPeopleLoading",["subexpr","@mut",[["get","suggestedPeopleLoading",["loc",[null,[58,39],[58,61]]]]],[],[]],"isPeopleAutoCompleteAvailable",["subexpr","@mut",[["get","isPeopleAutoCompleteAvailable",["loc",[null,[59,46],[59,75]]]]],[],[]],"addParticipant","addParticipant","onPeopleSuggestion","onPeopleSuggestion"],["loc",[null,[48,12],[61,57]]]],
+        ["block","if",[["get","case.id",["loc",[null,[64,14],[64,21]]]]],[],1,null,["loc",[null,[64,8],[69,15]]]],
+        ["block","if",[["get","topPostsAvailable",["loc",[null,[70,14],[70,31]]]]],[],2,null,["loc",[null,[70,8],[78,15]]]],
+        ["block","if",[["get","newPosts",["loc",[null,[80,16],[80,24]]]]],[],3,null,["loc",[null,[80,10],[82,17]]]],
+        ["inline","ko-feed",[],["events",["subexpr","@mut",[["get","posts",["loc",[null,[84,25],[84,30]]]]],[],[]],"onReplyWithQuote","replyWithQuote","top",["subexpr","@mut",[["get","timelineVisibleTop",["loc",[null,[84,69],[84,87]]]]],[],[]],"left",["subexpr","@mut",[["get","timelineVisibleLeft",["loc",[null,[84,93],[84,112]]]]],[],[]],"onTopPostChange",["subexpr","action",["changeTopPost"],[],["loc",[null,[84,129],[84,153]]]]],["loc",[null,[84,8],[84,155]]]],
+        ["block","if",[["get","loadingBottom",["loc",[null,[86,16],[86,29]]]]],[],4,null,["loc",[null,[86,10],[90,17]]]],
+        ["attribute","class",["concat",["list-bare ko-case-content__info-bar ",["subexpr","if",[["get","headerSticky",["loc",[null,[95,57],[95,69]]]],"ko-case-content__info-bar--sticky"],[],["loc",[null,[95,52],[95,107]]]]]]],
+        ["element","action",["submit"],[],["loc",[null,[97,55],[97,74]]]],
+        ["inline","format-message",[["subexpr","intl-get",["cases.submit"],[],["loc",[null,[97,92],[97,117]]]]],[],["loc",[null,[97,75],[97,119]]]],
+        ["inline","ko-case-field/requester",[],["requester",["subexpr","@mut",[["get","case.requester",["loc",[null,[99,44],[99,58]]]]],[],[]]],["loc",[null,[99,8],[99,60]]]],
+        ["block","ko-info-bar/field",[],["title",["subexpr","format-message",[["subexpr","intl-get",["cases.tags"],[],["loc",[null,[101,51],[101,74]]]]],[],["loc",[null,[101,35],[101,75]]]],"isEdited",["subexpr","@mut",[["get","isTagsFieldEdited",["loc",[null,[102,19],[102,36]]]]],[],[]]],5,null,["loc",[null,[101,8],[109,30]]]],
+        ["inline","ko-case-field/forms",[],["selectedForm",["subexpr","@mut",[["get","case.form",["loc",[null,[112,23],[112,32]]]]],[],[]],"forms",["subexpr","@mut",[["get","caseForms",["loc",[null,[113,16],[113,25]]]]],[],[]],"onFormSelected","setForm","isEdited",["subexpr","@mut",[["get","editedCaseFields.form",["loc",[null,[115,19],[115,40]]]]],[],[]]],["loc",[null,[111,8],[116,10]]]],
+        ["block","each",[["get","caseOrFormFields",["loc",[null,[118,16],[118,32]]]]],[],6,null,["loc",[null,[118,8],[133,17]]]],
+        ["block","if",[["get","case.id",["loc",[null,[136,14],[136,21]]]]],[],7,null,["loc",[null,[136,8],[138,15]]]],
+        ["inline","ko-info-bar/metadata",[],["rows",["subexpr","@mut",[["get","caseDates",["loc",[null,[140,36],[140,45]]]]],[],[]]],["loc",[null,[140,8],[140,47]]]]
       ],
       locals: [],
       templates: [child0, child1, child2, child3, child4, child5, child6, child7]
@@ -48286,7 +48144,7 @@ define('frontend-cp/locales/en-us/generic', ['exports'], function (exports) {
     "create_case_panel.loading_label": "Loading users…",
     "create_case_panel.filter_label": "Showing {numFilteredUsers, number} of {numUsers, number}",
     "create_case_panel.info": "Other details can be added after continuing.",
-    "create_case_panel.submit": "Continue",
+    "create_case_panel.submit": "Create case",
     "create_case_panel.cancel": "cancel",
 
     "identities.component_title": "IDENTITIES",
@@ -48972,15 +48830,10 @@ define('frontend-cp/login/route', ['exports', 'ember'], function (exports, Ember
 
   exports['default'] = Ember['default'].Route.extend({
     model: function model() {
-      // FIXME temp
       return Ember['default'].Object.create({
-        email: 'test@kayako.com',
-        password: 'setup'
+        email: '',
+        password: ''
       });
-    },
-
-    setupController: function setupController(controller, model) {
-      controller.set('model', model);
     }
   });
 
@@ -49701,9 +49554,6 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
   /*eslint-disable camelcase*/
 
   exports['default'] = function () {
-    // Config
-    this.namespace = '/api/v1';
-
     // Helper functios
     function arrayToObjectWithNumberedKeys(source) {
       var pos = 1;
@@ -49718,11 +49568,11 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
     };
 
     // Endpoints
-    this.get('/locales/en-us/strings', function (db) {
+    this.get('/api/v1/locales/en-us/strings', function (db) {
       return EnUsStrings['default'][0];
     });
 
-    this.get('/locales/en-us', function () {
+    this.get('/api/v1/locales/en-us', function () {
       return {
         status: 200,
         data: {
@@ -49743,7 +49593,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('/users/:id/identities/slack', function (db) {
+    this.get('/api/v1/users/:id/identities/slack', function (db) {
       return {
         status: 200,
         data: [],
@@ -49752,7 +49602,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('/users/:id/events', function (db, request) {
+    this.get('/api/v1/users/:id/events', function (db, request) {
       var since = request.queryParams.since;
       var until = request.queryParams.until;
 
@@ -49774,7 +49624,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.post('/users/:user_id/identities/emails', function (db, req) {
+    this.post('/api/v1/users/:user_id/identities/emails', function (db, req) {
       var data = JSON.parse(req.requestBody);
       delete data.parent_id;
       delete data.parentType;
@@ -49788,7 +49638,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
         resource: identity.resource_type
       };
     });
-    this.post('/users/:user_id/identities/twitters', function (db, req) {
+    this.post('/api/v1/users/:user_id/identities/twitters', function (db, req) {
       var data = JSON.parse(req.requestBody);
       delete data.parent_id;
       delete data.parentType;
@@ -49802,7 +49652,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
         resource: identity.resource_type
       };
     });
-    this.post('/users/:user_id/identities/phones', function (db, req) {
+    this.post('/api/v1/users/:user_id/identities/phones', function (db, req) {
       var data = JSON.parse(req.requestBody);
       delete data.parent_id;
       delete data.parentType;
@@ -49817,7 +49667,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.put('/identities/emails/:id/primary', function (db, req) {
+    this.put('/api/v1/identities/emails/:id/primary', function (db, req) {
       var identity = db['identity-emails'].find(req.params.id);
       var user = db.users.toArray().find(function (u) {
         return u.emails.some(function (e) {
@@ -49834,7 +49684,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.put('/identities/emails/:id/validate', function (db, req) {
+    this.put('/api/v1/identities/emails/:id/validate', function (db, req) {
       return {
         'status': 200,
         'data': db['identity-emails'].update(req.params.id, { is_validated: true }),
@@ -49842,11 +49692,11 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.post('/identities/emails/:id/send_validation_email', function (db, req) {
+    this.post('/api/v1/identities/emails/:id/send_validation_email', function (db, req) {
       return { 'status': 200 };
     });
 
-    this.put('/identities/twitter/:id/primary', function (db, req) {
+    this.put('/api/v1/identities/twitter/:id/primary', function (db, req) {
       var identity = db['identity-twitters'].find(req.params.id);
       var user = db.users.toArray().find(function (u) {
         return u.twitters.some(function (e) {
@@ -49863,7 +49713,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.put('/identities/phone/:id/primary', function (db, req) {
+    this.put('/api/v1/identities/phone/:id/primary', function (db, req) {
       var identity = db['identity-phones'].find(req.params.id);
       var user = db.users.toArray().find(function (u) {
         return u.phones.some(function (e) {
@@ -49880,7 +49730,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.put('/identities/facebook/:id/primary', function (db, req) {
+    this.put('/api/v1/identities/facebook/:id/primary', function (db, req) {
       var identity = db['identity-facebooks'].find(req.params.id);
       var user = db.users.toArray().find(function (u) {
         return u.facebooks.some(function (e) {
@@ -49898,7 +49748,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
     });
 
     // This routes are duplicated. Need to fix.
-    this['delete']('/users/:user_id/identities/emails/:id', function (db, req) {
+    this['delete']('/api/v1/users/:user_id/identities/emails/:id', function (db, req) {
       var user = db.users.find(req.params.user_id);
       db.users.update(user.id, { emails: user.emails.filter(function (e) {
           return String(e.id) !== req.params.id;
@@ -49907,12 +49757,12 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       return { status: 200 };
     });
 
-    this['delete']('/identities/email/:id', function (db, req) {
+    this['delete']('/api/v1/identities/email/:id', function (db, req) {
       db['identity-emails'].remove(req.params.id);
       return { status: 200 };
     });
 
-    this['delete']('/users/:user_id/identities/twitters/:id', function (db, req) {
+    this['delete']('/api/v1/users/:user_id/identities/twitters/:id', function (db, req) {
       var user = db.users.find(req.params.user_id);
       db.users.update(user.id, { emails: user.emails.filter(function (e) {
           return String(e.id) !== req.params.id;
@@ -49921,12 +49771,12 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       return { status: 200 };
     });
 
-    this['delete']('/identities/twitter/:id', function (db, req) {
+    this['delete']('/api/v1/identities/twitter/:id', function (db, req) {
       db['identity-twitters'].remove(req.params.id);
       return { status: 200 };
     });
 
-    this['delete']('/users/:user_id/identities/phones/:id', function (db, req) {
+    this['delete']('/api/v1/users/:user_id/identities/phones/:id', function (db, req) {
       var user = db.users.find(req.params.user_id);
       db.users.update(user.id, { emails: user.emails.filter(function (e) {
           return String(e.id) !== req.params.id;
@@ -49935,12 +49785,12 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       return { status: 200 };
     });
 
-    this['delete']('/identities/phone/:id', function (db, req) {
+    this['delete']('/api/v1/identities/phone/:id', function (db, req) {
       db['identity-phones'].remove(req.params.id);
       return { status: 200 };
     });
 
-    this['delete']('/users/:user_id/identities/facebooks/:id', function (db, req) {
+    this['delete']('/api/v1/users/:user_id/identities/facebooks/:id', function (db, req) {
       var user = db.users.find(req.params.user_id);
       db.users.update(user.id, { emails: user.emails.filter(function (e) {
           return String(e.id) !== req.params.id;
@@ -49949,12 +49799,12 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       return { status: 200 };
     });
 
-    this['delete']('/identities/facebook/:id', function (db, req) {
+    this['delete']('/api/v1/identities/facebook/:id', function (db, req) {
       db['identity-facebooks'].remove(req.params.id);
       return { status: 200 };
     });
 
-    this.get('/roles', function (db) {
+    this.get('/api/v1/roles', function (db) {
       return {
         status: 200,
         data: db.roles,
@@ -49965,7 +49815,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('/roles/:id/permissions', function (db) {
+    this.get('/api/v1/roles/:id/permissions', function (db) {
       return {
         status: 200,
         data: [],
@@ -49976,7 +49826,16 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('/organizations', function (db) {
+    this.post('/admin/index.php', function (db) {
+      return {
+        status: 200,
+        data: {
+          is_user: false
+        }
+      };
+    });
+
+    this.get('/api/v1/organizations', function (db) {
       return {
         status: 200,
         data: db.organizations,
@@ -49985,7 +49844,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('/views', function (db) {
+    this.get('/api/v1/views', function (db) {
       return {
         data: db.views.map(function (v) {
           return Object.assign({}, v, { columns: v.columns.map(function (c) {
@@ -50003,7 +49862,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('/views/definition', function (db) {
+    this.get('/api/v1/views/definition', function (db) {
       return {
         data: db.definitions,
         resource: 'definition',
@@ -50012,7 +49871,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('/views/columns', function (db) {
+    this.get('/api/v1/views/columns', function (db) {
       return {
         data: db.columns,
         status: 200,
@@ -50021,7 +49880,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('/views/counts', function (db) {
+    this.get('/api/v1/views/counts', function (db) {
       return {
         data: [],
         status: 200,
@@ -50030,7 +49889,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.put('/base/profile/password', function (db, request) {
+    this.put('/api/v1/base/profile/password', function (db, request) {
       var split = request.requestBody.split('=');
       var newPassword = split[2];
       var oldPassword = split[1].split('&')[0];
@@ -50059,7 +49918,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('/session', function (db, request) {
+    this.get('/api/v1/session', function (db, request) {
       // otp@kayako.com : setup
       if (request.requestHeaders.Authorization === 'Basic b3RwQGtheWFrby5jb206c2V0dXA=') {
         var response = {
@@ -50127,7 +49986,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('/teams', function (db) {
+    this.get('/api/v1/teams', function (db) {
       return {
         status: 200,
         data: db.teams,
@@ -50138,7 +49997,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('/users', function (db, req) {
+    this.get('/api/v1/users', function (db, req) {
       var offset = parseInt(req.queryParams.offset, 10);
       var limit = parseInt(req.queryParams.limit, 10);
       var users = db.users.slice(offset, offset + limit);
@@ -50175,7 +50034,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('/users/:id', function (db, request) {
+    this.get('/api/v1/users/:id', function (db, request) {
       var id = request.params.id;
 
       return {
@@ -50196,7 +50055,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('/users/:id/cases', function (db, request) {
+    this.get('/api/v1/users/:id/cases', function (db, request) {
       return {
         status: 200,
         data: [],
@@ -50208,7 +50067,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('/users/:id/notes', function (db, request) {
+    this.get('/api/v1/users/:id/notes', function (db, request) {
       return {
         status: 200,
         data: [],
@@ -50216,20 +50075,20 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this['delete']('/session', function () {
+    this['delete']('/api/v1/session', function () {
       return {
         status: 200
       };
     });
 
-    this.post('/base/password/reset', function () {
+    this.post('/api/v1/base/password/reset', function () {
       return {
         status: 200,
         auth_token: 'yh5wFffnVzOi5IyYr1aMwojpcRJw0FGid3S9r5iDumvLsPI0fRWBl4VfTEpPkodWwUvLlQXr3zJkfTxC'
       };
     });
 
-    this.get('/cases/forms/:id', function (db, request) {
+    this.get('/api/v1/cases/forms/:id', function (db, request) {
       var id = request.params.id;
 
       return {
@@ -50240,7 +50099,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('/cases/forms', function (db) {
+    this.get('/api/v1/cases/forms', function (db) {
       return {
         data: db['case-forms'],
         resource: 'case_form',
@@ -50255,7 +50114,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('/cases/channels', function (db, request) {
+    this.get('/api/v1/cases/channels', function (db, request) {
       return {
         status: 200,
         data: db.channels,
@@ -50266,7 +50125,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('/views/:viewId/cases', function (db) {
+    this.get('/api/v1/views/:viewId/cases', function (db) {
       return {
         status: 200,
         data: db.cases,
@@ -50298,7 +50157,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('/cases/:id/posts', function (db) {
+    this.get('/api/v1/cases/:id/posts', function (db) {
       return {
         data: db.posts,
         limit: 10,
@@ -50323,7 +50182,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.post('/cases', function (db, request) {
+    this.post('/api/v1/cases', function (db, request) {
       // let { channel_id, channel, requester_id, priority_id, form_id } = JSON.parse(request.requestBody);
       // let unifiedCase = server.create('case', {
       //   channel_id,
@@ -50361,7 +50220,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       });
     });
 
-    this.get('/cases/:id', function (db, request) {
+    this.get('/api/v1/cases/:id', function (db, request) {
       if (isNaN(request.params.id)) {
         throw 'Caught by a wild card!';
       }
@@ -50397,15 +50256,15 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('/cases/:id/notes', function (db) {
+    this.get('/api/v1/cases/:id/notes', function (db) {
       return db.casesnotes[0];
     });
 
-    this.post('/cases/:id/notes', function (db) {
+    this.post('/api/v1/cases/:id/notes', function (db) {
       return new Mirage['default'].Response(200, {}, '');
     });
 
-    this.get('/cases/:id/messages', function (db) {
+    this.get('/api/v1/cases/:id/messages', function (db) {
       return {
         data: [],
         limit: 10,
@@ -50416,7 +50275,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('/cases/:id/activities', function (db, request) {
+    this.get('/api/v1/cases/:id/activities', function (db, request) {
       var since = request.queryParams.since;
       var until = request.queryParams.until;
 
@@ -50438,7 +50297,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('/cases/:id/reply/channels', function (db) {
+    this.get('/api/v1/cases/:id/reply/channels', function (db) {
       return {
         data: db.channels,
         resource: 'channel',
@@ -50455,11 +50314,11 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.post('/cases/:id/reply', function (db) {
+    this.post('/api/v1/cases/:id/reply', function (db) {
       return new Mirage['default'].Response(200, {}, '');
     });
 
-    this.get('/cases/priorities', function (db) {
+    this.get('/api/v1/cases/priorities', function (db) {
       return {
         data: db['case-priorities'],
         resource: 'case_priority',
@@ -50468,7 +50327,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('/cases/types', function (db) {
+    this.get('/api/v1/cases/types', function (db) {
       return {
         data: db['case-types'],
         resource: 'case_type',
@@ -50477,7 +50336,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('/cases/statuses', function (db) {
+    this.get('/api/v1/cases/statuses', function (db) {
       return {
         data: db['case-statuses'],
         resource: 'case_status',
@@ -50486,7 +50345,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('/cases/statuses/:id', function (db, request) {
+    this.get('/api/v1/cases/statuses/:id', function (db, request) {
       return {
         data: db['case-statuses'].find(request.params.id),
         resource: 'case_status',
@@ -50494,7 +50353,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('/cases/fields', function (db) {
+    this.get('/api/v1/cases/fields', function (db) {
       return {
         data: db['case-fields'],
         resource: 'case_field',
@@ -50506,7 +50365,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('/cases/fields/:id', function (db, request) {
+    this.get('/api/v1/cases/fields/:id', function (db, request) {
       return {
         status: 200,
         data: db.casesfields.find(request.params.id),
@@ -50514,11 +50373,11 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('/cases/reply/channels', function (db) {
+    this.get('/api/v1/cases/reply/channels', function (db) {
       return db.casesreplychannels[0];
     });
 
-    this.get('/cases/:id/channels', function (db) {
+    this.get('/api/v1/cases/:id/channels', function (db) {
       return {
         data: [],
         resource: 'channel',
@@ -50526,7 +50385,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('/cases/fields/:id/options', function (db) {
+    this.get('/api/v1/cases/fields/:id/options', function (db) {
       return {
         'status': 200,
         'data': db.fieldsoptions,
@@ -50535,7 +50394,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('/teams', function (db) {
+    this.get('/api/v1/teams', function (db) {
       return {
         'status': 200,
         'data': db.teamsdata,
@@ -50546,7 +50405,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('/autocomplete/emails', function (db, request) {
+    this.get('/api/v1/autocomplete/emails', function (db, request) {
       return {
         'status': 200,
         'data': db['identity-autocomplete-emails'],
@@ -50565,7 +50424,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.post('/users', function () {
+    this.post('/api/v1/users', function () {
       return {
         status: 200,
         data: [],
@@ -50574,14 +50433,14 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('/roles/:id', function (db, request) {
+    this.get('/api/v1/roles/:id', function (db, request) {
       return {
         'status': 200,
         'data': db.rolesdata[request.params.id]
       };
     });
 
-    this.get('/cases/macros', function (db) {
+    this.get('/api/v1/cases/macros', function (db) {
       return {
         status: 200,
         data: [],
@@ -50590,7 +50449,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('cases/ratings/recent', function (db) {
+    this.get('/api/v1/cases/ratings/recent', function (db) {
       return {
         status: 200,
         data: [],
@@ -50599,7 +50458,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('/base/search_all', function (db, request) {
+    this.get('/api/v1/base/search_all', function (db, request) {
       if (request.queryParams['in'] === 'users') {
         var users = db.users.filter(function (u) {
           return u.full_name.indexOf(request.queryParams.query) > -1;
@@ -70873,38 +70732,6 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
           "loc": {
             "source": null,
             "start": {
-              "line": 7,
-              "column": 10
-            },
-            "end": {
-              "line": 7,
-              "column": 80
-            }
-          },
-          "moduleName": "frontend-cp/session/template.hbs"
-        },
-        arity: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes() { return []; },
-        statements: [
-
-        ],
-        locals: [],
-        templates: []
-      };
-    }());
-    var child1 = (function() {
-      return {
-        meta: {
-          "revision": "Ember@1.13.7",
-          "loc": {
-            "source": null,
-            "start": {
               "line": 8,
               "column": 10
             },
@@ -70930,103 +70757,7 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
         templates: []
       };
     }());
-    var child2 = (function() {
-      return {
-        meta: {
-          "revision": "Ember@1.13.7",
-          "loc": {
-            "source": null,
-            "start": {
-              "line": 9,
-              "column": 10
-            },
-            "end": {
-              "line": 9,
-              "column": 76
-            }
-          },
-          "moduleName": "frontend-cp/session/template.hbs"
-        },
-        arity: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes() { return []; },
-        statements: [
-
-        ],
-        locals: [],
-        templates: []
-      };
-    }());
-    var child3 = (function() {
-      return {
-        meta: {
-          "revision": "Ember@1.13.7",
-          "loc": {
-            "source": null,
-            "start": {
-              "line": 10,
-              "column": 10
-            },
-            "end": {
-              "line": 10,
-              "column": 80
-            }
-          },
-          "moduleName": "frontend-cp/session/template.hbs"
-        },
-        arity: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes() { return []; },
-        statements: [
-
-        ],
-        locals: [],
-        templates: []
-      };
-    }());
-    var child4 = (function() {
-      return {
-        meta: {
-          "revision": "Ember@1.13.7",
-          "loc": {
-            "source": null,
-            "start": {
-              "line": 11,
-              "column": 10
-            },
-            "end": {
-              "line": 11,
-              "column": 86
-            }
-          },
-          "moduleName": "frontend-cp/session/template.hbs"
-        },
-        arity: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes() { return []; },
-        statements: [
-
-        ],
-        locals: [],
-        templates: []
-      };
-    }());
-    var child5 = (function() {
+    var child1 = (function() {
       return {
         meta: {
           "revision": "Ember@1.13.7",
@@ -71068,7 +70799,7 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
         templates: []
       };
     }());
-    var child6 = (function() {
+    var child2 = (function() {
       return {
         meta: {
           "revision": "Ember@1.13.7",
@@ -71102,7 +70833,7 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
         templates: []
       };
     }());
-    var child7 = (function() {
+    var child3 = (function() {
       return {
         meta: {
           "revision": "Ember@1.13.7",
@@ -71136,7 +70867,7 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
         templates: []
       };
     }());
-    var child8 = (function() {
+    var child4 = (function() {
       return {
         meta: {
           "revision": "Ember@1.13.7",
@@ -71222,27 +70953,15 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
         dom.appendChild(el4, el5);
         var el5 = dom.createElement("nav");
         dom.setAttribute(el5,"class","nav-main");
-        var el6 = dom.createTextNode("\n          ");
+        var el6 = dom.createTextNode("\n");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("          ");
         dom.appendChild(el5, el6);
         var el6 = dom.createComment("");
         dom.appendChild(el5, el6);
-        var el6 = dom.createTextNode("\n          ");
+        var el6 = dom.createTextNode("\n");
         dom.appendChild(el5, el6);
-        var el6 = dom.createComment("");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createTextNode("\n          ");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createComment("");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createTextNode("\n          ");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createComment("");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createTextNode("\n          ");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createComment("");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createTextNode("\n        ");
+        var el6 = dom.createTextNode("        ");
         dom.appendChild(el5, el6);
         dom.appendChild(el4, el5);
         var el5 = dom.createTextNode("\n      ");
@@ -71339,39 +71058,30 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
         var element0 = dom.childAt(fragment, [0, 1]);
         var element1 = dom.childAt(element0, [1]);
-        var element2 = dom.childAt(element1, [3, 1]);
-        var element3 = dom.childAt(element0, [3, 1]);
-        var morphs = new Array(12);
-        morphs[0] = dom.createMorphAt(element2,1,1);
-        morphs[1] = dom.createMorphAt(element2,3,3);
-        morphs[2] = dom.createMorphAt(element2,5,5);
-        morphs[3] = dom.createMorphAt(element2,7,7);
-        morphs[4] = dom.createMorphAt(element2,9,9);
-        morphs[5] = dom.createMorphAt(dom.childAt(element1, [5, 1]),1,1);
-        morphs[6] = dom.createMorphAt(element1,7,7);
-        morphs[7] = dom.createMorphAt(dom.childAt(element3, [1]),1,1);
-        morphs[8] = dom.createMorphAt(dom.childAt(element3, [3]),1,1);
-        morphs[9] = dom.createMorphAt(fragment,2,2,contextualElement);
-        morphs[10] = dom.createMorphAt(fragment,4,4,contextualElement);
-        morphs[11] = dom.createMorphAt(dom.childAt(fragment, [6]),1,1);
+        var element2 = dom.childAt(element0, [3, 1]);
+        var morphs = new Array(8);
+        morphs[0] = dom.createMorphAt(dom.childAt(element1, [3, 1]),2,2);
+        morphs[1] = dom.createMorphAt(dom.childAt(element1, [5, 1]),1,1);
+        morphs[2] = dom.createMorphAt(element1,7,7);
+        morphs[3] = dom.createMorphAt(dom.childAt(element2, [1]),1,1);
+        morphs[4] = dom.createMorphAt(dom.childAt(element2, [3]),1,1);
+        morphs[5] = dom.createMorphAt(fragment,2,2,contextualElement);
+        morphs[6] = dom.createMorphAt(fragment,4,4,contextualElement);
+        morphs[7] = dom.createMorphAt(dom.childAt(fragment, [6]),1,1);
         return morphs;
       },
       statements: [
-        ["block","link-to",["session.agent.cases.index"],["class","nav-main__item i-home"],0,null,["loc",[null,[7,10],[7,92]]]],
-        ["block","link-to",["session.agent.cases.index"],["class","nav-main__item i-inbox"],1,null,["loc",[null,[8,10],[8,93]]]],
-        ["block","link-to",["session.agent.users"],["class","nav-main__item i-person"],2,null,["loc",[null,[9,10],[9,88]]]],
-        ["block","link-to",["session.agent.cases.index"],["class","nav-main__item i-help"],3,null,["loc",[null,[10,10],[10,92]]]],
-        ["block","link-to",["session.agent.organisations"],["class","nav-main__item i-insights"],4,null,["loc",[null,[11,10],[11,98]]]],
+        ["block","link-to",["session.agent.cases.index"],["class","nav-main__item i-inbox"],0,null,["loc",[null,[8,10],[8,93]]]],
         ["inline","ko-tabs",[],["tabs",["subexpr","@mut",[["get","tabsService.tabs",["loc",[null,[16,25],[16,41]]]]],[],[]],"selectedTab",["subexpr","@mut",[["get","tabsService.selectedTab",["loc",[null,[17,24],[17,47]]]]],[],[]],"onTabSelected","onTabSelected"],["loc",[null,[16,10],[18,43]]]],
         ["content","ko-agent-dropdown",["loc",[null,[21,6],[21,27]]]],
         ["inline","ko-universal-search",[],["searchResults",["subexpr","@mut",[["get","searchResults",["loc",[null,[26,46],[26,59]]]]],[],[]],"searchingChanged","onSearchingChanged"],["loc",[null,[26,10],[26,99]]]],
-        ["block","unless",[["get","hideSessionWidgets",["loc",[null,[29,20],[29,38]]]]],[],5,null,["loc",[null,[29,10],[31,21]]]],
-        ["block","link-to",["session.showcase"],["class","nav-main__item"],6,null,["loc",[null,[38,0],[38,74]]]],
-        ["block","link-to",["session.styleguide"],["class","nav-main__item"],7,null,["loc",[null,[39,0],[39,79]]]],
-        ["block","ko-scroller",[],["scrollTop",["subexpr","@mut",[["get","scroll",["loc",[null,[42,27],[42,33]]]]],[],[]]],8,null,["loc",[null,[42,2],[44,18]]]]
+        ["block","unless",[["get","hideSessionWidgets",["loc",[null,[29,20],[29,38]]]]],[],1,null,["loc",[null,[29,10],[31,21]]]],
+        ["block","link-to",["session.showcase"],["class","nav-main__item"],2,null,["loc",[null,[38,0],[38,74]]]],
+        ["block","link-to",["session.styleguide"],["class","nav-main__item"],3,null,["loc",[null,[39,0],[39,79]]]],
+        ["block","ko-scroller",[],["scrollTop",["subexpr","@mut",[["get","scroll",["loc",[null,[42,27],[42,33]]]]],[],[]]],4,null,["loc",[null,[42,2],[44,18]]]]
       ],
       locals: [],
-      templates: [child0, child1, child2, child3, child4, child5, child6, child7, child8]
+      templates: [child0, child1, child2, child3, child4]
     };
   }()));
 
@@ -72235,13 +71945,23 @@ define('frontend-cp/tests/acceptance/tabs/tabs-test', ['frontend-cp/tests/helper
   }
 
 });
-define('frontend-cp/tests/acceptance/user/user-menu-test', ['ember', 'frontend-cp/tests/helpers/qunit'], function (Ember, qunit) {
+define('frontend-cp/tests/acceptance/user/user-menu-test', function () {
 
   'use strict';
 
-  qunit.app('Acceptance | User-menu');
+  /*
+  TODO(SG): Once the user page is implemented and we bring back the menu,
+  we'll need to bring that back. Uncommented for now. NOVO-327.
 
-  qunit.test('visiting /user-menu', function (assert) {
+  import Ember from 'ember';
+  import {
+    app,
+    test
+  } from 'frontend-cp/tests/helpers/qunit';
+
+  app('Acceptance | User-menu');
+
+  test('visiting /user-menu', function(assert) {
     assert.expect(1);
     useDefaultScenario();
     login();
@@ -72249,18 +71969,18 @@ define('frontend-cp/tests/acceptance/user/user-menu-test', ['ember', 'frontend-c
     visit('/agent');
     visit('/agent/cases');
 
-    andThen(function () {
-      Ember['default'].$("div[class*='ko-user-menu-'] div[class*='ko-dropdown--container']").focus();
+    andThen(function() {
+      Ember.$("div[class*='ko-user-menu-'] div[class*='ko-dropdown--container']").focus();
     });
 
-    andThen(function () {
+    andThen(function() {
       click("div[class*='ko-user-menu-'] div[class*='ko-dropdown--container'] li:nth-of-type(3)");
     });
 
-    andThen(function () {
+    andThen(function() {
       assert.equal(currentURL(), '/agent/users/1');
     });
-  });
+  });*/
 
 });
 define('frontend-cp/tests/assertions/properties-equal', ['exports', 'ember', 'qunit'], function (exports, Ember, QUnit) {
@@ -80394,7 +80114,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+aea5d694"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+f533fe33"});
 }
 
 /* jshint ignore:end */
