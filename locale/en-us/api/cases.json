@@ -74,6 +74,8 @@
 
   "search.request.result_meta": "Showing {numDisplayResults} of {totalResults} users",
 
+  "list.casesnotfound": "There are no cases here.",
+
   "field_title.requester": "Requester",
   "notes": "Notes",
   "form-select": "Case form",
