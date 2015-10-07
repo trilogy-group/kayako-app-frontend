@@ -22615,8 +22615,12 @@ define('frontend-cp/components/ko-custom-field/date/component', ['exports', 'fro
 
   exports['default'] = Custom['default'].extend({
     setValue: function setValue(fieldValue, value) {
-      // special format required for API
-      fieldValue.set('value', moment['default'](value).format('YYYY-MM-DDTHH:mm:ss') + 'Z');
+      if (value) {
+        // special format required for API
+        fieldValue.set('value', moment['default'](value).format('YYYY-MM-DDTHH:mm:ss') + 'Z');
+      } else {
+        fieldValue.set('value', null);
+      }
     }
   });
 
@@ -23219,7 +23223,7 @@ define('frontend-cp/components/ko-datepicker/component', ['exports', 'ember', 'n
     },
 
     setDate: function setDate(date) {
-      this.sendAction('on-date-change', date.toDate());
+      this.sendAction('on-date-change', date ? date.toDate() : null);
     },
 
     actions: {
@@ -23244,7 +23248,7 @@ define('frontend-cp/components/ko-datepicker/component', ['exports', 'ember', 'n
       },
 
       clear: function clear() {
-        this.setDate(moment['default'](''));
+        this.setDate(null);
       },
 
       close: function close() {
@@ -23414,12 +23418,12 @@ define('frontend-cp/components/ko-datepicker/template', ['exports'], function (e
         var el2 = dom.createTextNode("\n  ");
         dom.appendChild(el1, el2);
         var el2 = dom.createElement("span");
-        dom.setAttribute(el2,"class","ko-datepicker__previous");
+        dom.setAttribute(el2,"class","ko-datepicker__previous i-chevron-large-left");
         dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n  ");
         dom.appendChild(el1, el2);
         var el2 = dom.createElement("span");
-        dom.setAttribute(el2,"class","ko-datepicker__next");
+        dom.setAttribute(el2,"class","ko-datepicker__next i-chevron-large-right");
         dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n");
         dom.appendChild(el1, el2);
@@ -23539,8 +23543,8 @@ define('frontend-cp/components/ko-datepicker/template', ['exports'], function (e
       statements: [
         ["inline","format-date",[["get","shownDate",["loc",[null,[2,51],[2,60]]]]],["format","month"],["loc",[null,[2,37],[2,77]]]],
         ["inline","format-date",[["get","shownDate",["loc",[null,[3,50],[3,59]]]]],["format","year"],["loc",[null,[3,36],[3,75]]]],
-        ["element","action",["previousMonth"],[],["loc",[null,[4,40],[4,66]]]],
-        ["element","action",["nextMonth"],[],["loc",[null,[5,36],[5,58]]]],
+        ["element","action",["previousMonth"],[],["loc",[null,[4,61],[4,87]]]],
+        ["element","action",["nextMonth"],[],["loc",[null,[5,58],[5,80]]]],
         ["block","each",[["get","weekdays",["loc",[null,[9,10],[9,18]]]]],[],0,null,["loc",[null,[9,2],[11,11]]]],
         ["block","each",[["get","days",["loc",[null,[12,10],[12,14]]]]],["key","@index"],1,null,["loc",[null,[12,2],[16,11]]]],
         ["element","action",["today"],[],["loc",[null,[21,10],[21,28]]]],
@@ -26345,9 +26349,12 @@ define('frontend-cp/components/ko-field/date/component', ['exports', 'ember'], f
 
     actions: {
 
+      hide: function hide() {
+        this.set('isShowingCalendar', false);
+      },
+
       dateChange: function dateChange(date) {
         this.sendAction('onValueChange', date);
-        this.set('isShowingCalendar', false);
       }
     }
   });
@@ -26461,7 +26468,7 @@ define('frontend-cp/components/ko-field/date/template', ['exports'], function (e
         ["content","title",["loc",[null,[1,36],[1,45]]]],
         ["block","if",[["get","value",["loc",[null,[3,8],[3,13]]]]],[],0,null,["loc",[null,[3,2],[5,9]]]],
         ["attribute","class",["concat",["dropdown-menu ",["subexpr","if",[["get","isShowingCalendar",["loc",[null,[7,31],[7,48]]]],"","u-hidden"],[],["loc",[null,[7,26],[7,64]]]]]]],
-        ["inline","ko-datepicker",[],["date",["subexpr","@mut",[["get","value",["loc",[null,[8,23],[8,28]]]]],[],[]],"on-date-change","dateChange"],["loc",[null,[8,2],[8,58]]]]
+        ["inline","ko-datepicker",[],["date",["subexpr","@mut",[["get","value",["loc",[null,[8,23],[8,28]]]]],[],[]],"on-date-change","dateChange","close","hide"],["loc",[null,[8,2],[8,71]]]]
       ],
       locals: [],
       templates: [child0]
@@ -80378,7 +80385,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"1bd23e0e510c74f07906","authEndpoint":"http://novo/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+44400c06"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"1bd23e0e510c74f07906","authEndpoint":"http://novo/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+a5478479"});
 }
 
 /* jshint ignore:end */
