@@ -398,6 +398,20 @@ define('frontend-cp/adapters/case-type', ['exports', 'frontend-cp/adapters/appli
   });
 
 });
+define('frontend-cp/adapters/case', ['exports', 'frontend-cp/adapters/application'], function (exports, ApplicationAdapter) {
+
+  'use strict';
+
+  exports['default'] = ApplicationAdapter['default'].extend({
+    /*
+     * Pusher will keep this record up to date
+     */
+    shouldBackgroundReloadRecord: function shouldBackgroundReloadRecord(store, snapshot) {
+      return false;
+    }
+  });
+
+});
 define('frontend-cp/adapters/channel', ['exports', 'frontend-cp/adapters/application'], function (exports, ApplicationAdapter) {
 
   'use strict';
@@ -14189,6 +14203,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
     routeStateService: Ember['default'].inject.service('routeState'),
     intlService: Ember['default'].inject.service('intl'),
     customFieldsList: Ember['default'].inject.service('custom-fields/list'),
+    pusherService: Ember['default'].inject.service('pusher'),
 
     // Case-specific properties
     channel: null,
@@ -14214,7 +14229,9 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
     loadPostsRafID: null,
     caseEditorHeight: 0,
     headerSticky: false,
-    editedCaseFields: new Ember['default'].Object(),
+    editedCaseFields: null,
+    propertiesChangeViaPusher: null,
+    shouldIgnoreNextPusherUpdate: false,
     replyType: 'REPLY',
     scroller: null,
     updateTabNameAction: 'updateTabName',
@@ -14255,6 +14272,17 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       this.get('contextModalService').set('repositionRequired', true);
     }),
 
+    updateDirtyCaseFieldsIfModelHasChanged: Ember['default'].on('willUpdate', function () {
+      /*
+       *  If we change model (by changing tabs) we need to update the dirtyFieldsHash
+       *  but not if we just scroll the page
+       */
+      if (this.get('recalculateDirtyFieldHash')) {
+        this.updateDirtyCaseFieldHash();
+        this.set('recalculateDirtyFieldHash', false);
+      }
+    }),
+
     initCase: Ember['default'].on('didReceiveAttrs', function (_ref) {
       var _this = this;
 
@@ -14278,6 +14306,10 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
         } else {
           this.set('topPostsAvailable', false);
         }
+
+        this.get('pusherService').subscribeTo(this.get('case.realtimeChannel'), 'CHANGE', this, this.get('pusherService').updateCaseFromPusher, this.get('case.id'));
+
+        this.set('recalculateDirtyFieldHash', true);
       } else if (newAttrs.sortOrder.value !== oldAttrs.sortOrder.value || newAttrs.filter.value !== oldAttrs.filter.value) {
         this.set('posts', []);
         this.set('topPostsAvailable', false);
@@ -14479,9 +14511,8 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
     }),
 
     initDirtyCaseFieldHash: Ember['default'].on('init', function () {
+      this.set('editedCaseFields', new Ember['default'].Object());
       this.updateDirtyCaseFieldHash();
-      this.set('isCaseSubjectEdited', this.get('case').hasDirtyAttribute('subject'));
-      this.set('isTagsFieldEdited', this.get('case').hasDirtyHasManyRelationship('tags'));
     }),
 
     initMacros: Ember['default'].on('init', function () {
@@ -14551,19 +14582,66 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
         if (relationshipKey === 'assignee') {
           if (_this9.get('case.assignee')) {
             editedCaseFields.set(field.get('id'), _this9.get('case.assignee').hasDirtyChanges());
+            return;
           }
-        } else {
+        }
+
+        /* subject is a attribute */
+        if (relationshipKey === 'subject') {
+          editedCaseFields.set(field.get('id'), !!_this9.get('case').changedAttributes().subject);
+          editedCaseFields.set(relationshipKey, !!_this9.get('case').changedAttributes().subject);
+          return;
+        }
+
+        if (field.get('isSystem')) {
           editedCaseFields.set(field.get('id'), _this9.get('case').hasDirtyBelongsToRelationship(relationshipKey));
+          editedCaseFields.set(relationshipKey, _this9.get('case').hasDirtyBelongsToRelationship(relationshipKey));
+        } else {
+          var _ret = (function () {
+            var customCaseField = _this9.get('case.customFields').find(function (customField) {
+              return field.get('id') == customField.get('field.id');
+            });
+
+            // customFields have values, which are a string. The value can be an array, disguised as a string by comma
+            // separating them: "7,8". This is, unfortunately, the same as "8,7" but changedAttributes() will show this up as
+            // changed (obviously). So, if we have changed attributes, split the string and test to see if all is good
+
+            if (!customCaseField.changedAttributes().value) {
+              // definitely unchanged!
+              editedCaseFields.set(field.get('id'), false);
+              return {
+                v: undefined
+              };
+            }
+
+            var originalValues = customCaseField.changedAttributes().value[0].split(',');
+            var modifiedValues = customCaseField.changedAttributes().value[1].split(',');
+
+            if (originalValues.length !== modifiedValues.length) {
+              editedCaseFields.set(field.get('id'), true);
+              return {
+                v: undefined
+              };
+            }
+
+            editedCaseFields.set(field.get('id'), originalValues.any(function (value) {
+              return modifiedValues.indexOf(value) === -1;
+            }));
+          })();
+
+          if (typeof _ret === 'object') return _ret.v;
         }
       });
-      this.set('editedCaseFields.form', this.get('case').hasDirtyBelongsToRelationship('form'));
+      editedCaseFields.set('form', this.get('case').hasDirtyBelongsToRelationship('form'));
+      this.set('isTagsFieldEdited', this.get('case').hasDirtyHasManyRelationship('tags'));
     },
 
     resetCaseFormState: function resetCaseFormState() {
       this.set('errors', []);
       this.get('casePostEditor.postEditor').clear();
+      this.set('shouldIgnoreNextPusherUpdate', false);
+
       this.updateDirtyCaseFieldHash();
-      this.set('isCaseSubjectEdited', this.get('case').hasDirtyAttribute('subject'));
 
       // New tags should be rolled back as they are left
       // in the store after we save a case. New tags have id = null,
@@ -14642,6 +14720,9 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
     },
 
     actions: {
+      updateDirtyFieldHash: function updateDirtyFieldHash() {
+        this.updateDirtyCaseFieldHash();
+      },
       setChannel: function setChannel(channel) {
         this.set('channel', channel);
       },
@@ -14659,7 +14740,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       },
       setSubject: function setSubject(subject) {
         this.set('case.subject', subject);
-        this.set('isCaseSubjectEdited', this.get('case').hasDirtyAttribute('subject'));
+        this.updateDirtyCaseFieldHash();
       },
       setAssignee: function setAssignee(team, agent) {
         if (!this.get('case.assignee.teamFragment')) {
@@ -14742,6 +14823,9 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
           });
           return;
         }
+
+        this.set('shouldIgnoreNextPusherUpdate', true);
+
         if (!this.get('case.id')) {
           this.set('case.contents', post);
           this.set('case.channel', channel.get('channelType'));
@@ -14751,6 +14835,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
             _this11.resetCaseFormState();
           }, function (e) {
             _this11.set('errors', e.errors);
+            _this11.set('shouldIgnoreNextPusherUpdate', false);
           });
         } else if (!post && !attachmentIds.length) {
           // we are just updating the case -- don't create a case-reply
@@ -14759,6 +14844,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
             _this11.resetCaseFormState();
           }, function (e) {
             _this11.set('errors', e.errors);
+            _this11.set('shouldIgnoreNextPusherUpdate', false);
           });
         } else {
           if (this.get('replyType') === 'NOTE') {
@@ -14768,6 +14854,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
               _this11.resetCaseFormState();
             }, function (e) {
               _this11.set('errors', e.errors);
+              _this11.set('shouldIgnoreNextPusherUpdate', false);
             });
           } else {
             var options = {
@@ -14784,6 +14871,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
               _this11.resetCaseFormState();
             }, function (e) {
               _this11.set('errors', e.errors);
+              _this11.set('shouldIgnoreNextPusherUpdate', false);
             });
           }
         }
@@ -15247,11 +15335,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 18,
+              "line": 19,
               "column": 10
             },
             "end": {
-              "line": 27,
+              "line": 28,
               "column": 10
             }
           },
@@ -15283,7 +15371,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["inline","format-message",[["subexpr","intl-get",["cases.subheader"],[],["loc",[null,[20,29],[20,57]]]]],["time",["subexpr","@mut",[["get","case.createdAt",["loc",[null,[21,17],[21,31]]]]],[],[]],"channel",["subexpr","format-message",[["subexpr","intl-get",[["subexpr","concat",["cases.channelType.",["subexpr","or",[["get","case.sourceChannel.channelType",["loc",[null,[22,79],[22,109]]]],"none"],[],["loc",[null,[22,75],[22,117]]]]],[],["loc",[null,[22,46],[22,118]]]]],[],["loc",[null,[22,36],[22,119]]]]],[],["loc",[null,[22,20],[22,120]]]],"hasChannel",["subexpr","@mut",[["get","hasChannel",["loc",[null,[23,23],[23,33]]]]],[],[]],"hasBrand",["subexpr","@mut",[["get","hasBrand",["loc",[null,[24,21],[24,29]]]]],[],[]],"brand",["subexpr","@mut",[["get","case.brand.companyName",["loc",[null,[25,18],[25,40]]]]],[],[]]],["loc",[null,[20,12],[25,42]]]]
+          ["inline","format-message",[["subexpr","intl-get",["cases.subheader"],[],["loc",[null,[21,29],[21,57]]]]],["time",["subexpr","@mut",[["get","case.createdAt",["loc",[null,[22,17],[22,31]]]]],[],[]],"channel",["subexpr","format-message",[["subexpr","intl-get",[["subexpr","concat",["cases.channelType.",["subexpr","or",[["get","case.sourceChannel.channelType",["loc",[null,[23,79],[23,109]]]],"none"],[],["loc",[null,[23,75],[23,117]]]]],[],["loc",[null,[23,46],[23,118]]]]],[],["loc",[null,[23,36],[23,119]]]]],[],["loc",[null,[23,20],[23,120]]]],"hasChannel",["subexpr","@mut",[["get","hasChannel",["loc",[null,[24,23],[24,33]]]]],[],[]],"hasBrand",["subexpr","@mut",[["get","hasBrand",["loc",[null,[25,21],[25,29]]]]],[],[]],"brand",["subexpr","@mut",[["get","case.brand.companyName",["loc",[null,[26,18],[26,40]]]]],[],[]]],["loc",[null,[21,12],[26,42]]]]
         ],
         locals: [],
         templates: []
@@ -15296,11 +15384,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 64,
+              "line": 65,
               "column": 8
             },
             "end": {
-              "line": 69,
+              "line": 70,
               "column": 8
             }
           },
@@ -15344,8 +15432,8 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["inline","ko-case-content/dropdown",[],["label",["subexpr","format-message",[["subexpr","intl-get",["cases.sort"],[],["loc",[null,[66,103],[66,126]]]]],[],["loc",[null,[66,87],[66,127]]]],"value",["subexpr","@mut",[["get","sortOrder",["loc",[null,[66,134],[66,143]]]]],[],[]],"options",["subexpr","@mut",[["get","sortOptions",["loc",[null,[66,152],[66,163]]]]],[],[]],"onChange",["subexpr","action",["sort"],[],["loc",[null,[66,173],[66,188]]]]],["loc",[null,[66,54],[66,190]]]],
-          ["inline","ko-case-content/dropdown",[],["label",["subexpr","format-message",[["subexpr","intl-get",["cases.filter"],[],["loc",[null,[67,105],[67,130]]]]],[],["loc",[null,[67,89],[67,131]]]],"value",["subexpr","@mut",[["get","filter",["loc",[null,[67,138],[67,144]]]]],[],[]],"options",["subexpr","@mut",[["get","filterOptions",["loc",[null,[67,153],[67,166]]]]],[],[]],"onChange",["subexpr","action",["filter"],[],["loc",[null,[67,176],[67,193]]]]],["loc",[null,[67,56],[67,195]]]]
+          ["inline","ko-case-content/dropdown",[],["label",["subexpr","format-message",[["subexpr","intl-get",["cases.sort"],[],["loc",[null,[67,103],[67,126]]]]],[],["loc",[null,[67,87],[67,127]]]],"value",["subexpr","@mut",[["get","sortOrder",["loc",[null,[67,134],[67,143]]]]],[],[]],"options",["subexpr","@mut",[["get","sortOptions",["loc",[null,[67,152],[67,163]]]]],[],[]],"onChange",["subexpr","action",["sort"],[],["loc",[null,[67,173],[67,188]]]]],["loc",[null,[67,54],[67,190]]]],
+          ["inline","ko-case-content/dropdown",[],["label",["subexpr","format-message",[["subexpr","intl-get",["cases.filter"],[],["loc",[null,[68,105],[68,130]]]]],[],["loc",[null,[68,89],[68,131]]]],"value",["subexpr","@mut",[["get","filter",["loc",[null,[68,138],[68,144]]]]],[],[]],"options",["subexpr","@mut",[["get","filterOptions",["loc",[null,[68,153],[68,166]]]]],[],[]],"onChange",["subexpr","action",["filter"],[],["loc",[null,[68,176],[68,193]]]]],["loc",[null,[68,56],[68,195]]]]
         ],
         locals: [],
         templates: []
@@ -15360,11 +15448,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 73,
+                  "line": 74,
                   "column": 14
                 },
                 "end": {
-                  "line": 75,
+                  "line": 76,
                   "column": 14
                 }
               },
@@ -15389,7 +15477,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
               return morphs;
             },
             statements: [
-              ["inline","ko-loader",[],["large",true],["loc",[null,[74,16],[74,40]]]]
+              ["inline","ko-loader",[],["large",true],["loc",[null,[75,16],[75,40]]]]
             ],
             locals: [],
             templates: []
@@ -15401,11 +15489,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 72,
+                "line": 73,
                 "column": 12
               },
               "end": {
-                "line": 76,
+                "line": 77,
                 "column": 12
               }
             },
@@ -15428,7 +15516,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             return morphs;
           },
           statements: [
-            ["block","ko-center",[],[],0,null,["loc",[null,[73,14],[75,28]]]]
+            ["block","ko-center",[],[],0,null,["loc",[null,[74,14],[76,28]]]]
           ],
           locals: [],
           templates: [child0]
@@ -15440,11 +15528,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 70,
+              "line": 71,
               "column": 8
             },
             "end": {
-              "line": 78,
+              "line": 79,
               "column": 8
             }
           },
@@ -15476,7 +15564,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["block","if",[["get","loadingTop",["loc",[null,[72,18],[72,28]]]]],[],0,null,["loc",[null,[72,12],[76,19]]]]
+          ["block","if",[["get","loadingTop",["loc",[null,[73,18],[73,28]]]]],[],0,null,["loc",[null,[73,12],[77,19]]]]
         ],
         locals: [],
         templates: [child0]
@@ -15489,11 +15577,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 80,
+              "line": 81,
               "column": 10
             },
             "end": {
-              "line": 82,
+              "line": 83,
               "column": 10
             }
           },
@@ -15518,7 +15606,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["inline","ko-feed",[],["events",["subexpr","@mut",[["get","newPosts",["loc",[null,[81,29],[81,37]]]]],[],[]]],["loc",[null,[81,12],[81,39]]]]
+          ["inline","ko-feed",[],["events",["subexpr","@mut",[["get","newPosts",["loc",[null,[82,29],[82,37]]]]],[],[]]],["loc",[null,[82,12],[82,39]]]]
         ],
         locals: [],
         templates: []
@@ -15532,11 +15620,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 87,
+                "line": 88,
                 "column": 12
               },
               "end": {
-                "line": 89,
+                "line": 90,
                 "column": 12
               }
             },
@@ -15561,7 +15649,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             return morphs;
           },
           statements: [
-            ["inline","ko-loader",[],["large",true],["loc",[null,[88,14],[88,38]]]]
+            ["inline","ko-loader",[],["large",true],["loc",[null,[89,14],[89,38]]]]
           ],
           locals: [],
           templates: []
@@ -15573,11 +15661,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 86,
+              "line": 87,
               "column": 10
             },
             "end": {
-              "line": 90,
+              "line": 91,
               "column": 10
             }
           },
@@ -15600,7 +15688,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["block","ko-center",[],[],0,null,["loc",[null,[87,12],[89,26]]]]
+          ["block","ko-center",[],[],0,null,["loc",[null,[88,12],[90,26]]]]
         ],
         locals: [],
         templates: [child0]
@@ -15613,11 +15701,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 101,
+              "line": 102,
               "column": 8
             },
             "end": {
-              "line": 109,
+              "line": 110,
               "column": 8
             }
           },
@@ -15642,7 +15730,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["inline","ko-case-field/tags",[],["tags",["subexpr","@mut",[["get","tags",["loc",[null,[104,17],[104,21]]]]],[],[]],"suggestedTags",["subexpr","@mut",[["get","suggestedTags",["loc",[null,[105,26],[105,39]]]]],[],[]],"onTagAddition","addTag","onTagRemoval","removeTag","onTagSuggestion","suggestTags"],["loc",[null,[103,10],[108,43]]]]
+          ["inline","ko-case-field/tags",[],["tags",["subexpr","@mut",[["get","tags",["loc",[null,[105,17],[105,21]]]]],[],[]],"suggestedTags",["subexpr","@mut",[["get","suggestedTags",["loc",[null,[106,26],[106,39]]]]],[],[]],"onTagAddition","addTag","onTagRemoval","removeTag","onTagSuggestion","suggestTags"],["loc",[null,[104,10],[109,43]]]]
         ],
         locals: [],
         templates: []
@@ -15657,11 +15745,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 120,
+                  "line": 121,
                   "column": 12
                 },
                 "end": {
-                  "line": 131,
+                  "line": 134,
                   "column": 12
                 }
               },
@@ -15686,7 +15774,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
               return morphs;
             },
             statements: [
-              ["inline","component",[["subexpr","ko-helper",[["get","customFieldsList.componentFor",["loc",[null,[121,37],[121,66]]]],["get","field.fieldType",["loc",[null,[121,67],[121,82]]]]],[],["loc",[null,[121,26],[121,83]]]]],["case",["subexpr","@mut",[["get","case",["loc",[null,[122,19],[122,23]]]]],[],[]],"options",["subexpr","ko-contextual-helper",[["get","optionsForField",["loc",[null,[123,44],[123,59]]]],["get","this",["loc",[null,[123,60],[123,64]]]],["get","field",["loc",[null,[123,65],[123,70]]]]],[],["loc",[null,[123,22],[123,71]]]],"customFieldsModel",["subexpr","@mut",[["get","case.customFields",["loc",[null,[124,32],[124,49]]]]],[],[]],"field",["subexpr","@mut",[["get","field",["loc",[null,[125,20],[125,25]]]]],[],[]],"fieldValue",["subexpr","ko-helper",[["get","customFieldsList.findCustomFieldValue",["loc",[null,[126,36],[126,73]]]],["get","case.customFields",["loc",[null,[126,74],[126,91]]]],["get","field",["loc",[null,[126,92],[126,97]]]]],[],["loc",[null,[126,25],[126,98]]]],"title",["subexpr","@mut",[["get","field.title",["loc",[null,[127,20],[127,31]]]]],[],[]],"errors",["subexpr","@mut",[["get","errors",["loc",[null,[128,21],[128,27]]]]],[],[]],"editedCustomFields",["subexpr","@mut",[["get","editedCaseFields",["loc",[null,[129,33],[129,49]]]]],[],[]]],["loc",[null,[121,14],[130,16]]]]
+              ["inline","component",[["subexpr","ko-helper",[["get","customFieldsList.componentFor",["loc",[null,[122,37],[122,66]]]],["get","field.fieldType",["loc",[null,[122,67],[122,82]]]]],[],["loc",[null,[122,26],[122,83]]]]],["case",["subexpr","@mut",[["get","case",["loc",[null,[123,19],[123,23]]]]],[],[]],"options",["subexpr","ko-contextual-helper",[["get","optionsForField",["loc",[null,[124,44],[124,59]]]],["get","this",["loc",[null,[124,60],[124,64]]]],["get","field",["loc",[null,[124,65],[124,70]]]]],[],["loc",[null,[124,22],[124,71]]]],"customFieldsModel",["subexpr","@mut",[["get","case.customFields",["loc",[null,[125,32],[125,49]]]]],[],[]],"field",["subexpr","@mut",[["get","field",["loc",[null,[126,20],[126,25]]]]],[],[]],"fieldValue",["subexpr","ko-helper",[["get","customFieldsList.findCustomFieldValue",["loc",[null,[127,36],[127,73]]]],["get","case.customFields",["loc",[null,[127,74],[127,91]]]],["get","field",["loc",[null,[127,92],[127,97]]]]],[],["loc",[null,[127,25],[127,98]]]],"title",["subexpr","@mut",[["get","field.title",["loc",[null,[128,20],[128,31]]]]],[],[]],"errors",["subexpr","@mut",[["get","errors",["loc",[null,[129,21],[129,27]]]]],[],[]],"editedCustomFields",["subexpr","@mut",[["get","editedCaseFields",["loc",[null,[130,33],[130,49]]]]],[],[]],"fieldsEditedByPusher",["subexpr","@mut",[["get","case.propertiesChangeViaPusher",["loc",[null,[131,35],[131,65]]]]],[],[]],"onFieldUpdated","updateDirtyFieldHash"],["loc",[null,[122,14],[133,16]]]]
             ],
             locals: [],
             templates: []
@@ -15698,11 +15786,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 119,
+                "line": 120,
                 "column": 10
               },
               "end": {
-                "line": 132,
+                "line": 135,
                 "column": 10
               }
             },
@@ -15725,7 +15813,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             return morphs;
           },
           statements: [
-            ["block","if",[["get","field.isEnabled",["loc",[null,[120,18],[120,33]]]]],[],0,null,["loc",[null,[120,12],[131,19]]]]
+            ["block","if",[["get","field.isEnabled",["loc",[null,[121,18],[121,33]]]]],[],0,null,["loc",[null,[121,12],[134,19]]]]
           ],
           locals: [],
           templates: [child0]
@@ -15737,11 +15825,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 118,
+              "line": 119,
               "column": 8
             },
             "end": {
-              "line": 133,
+              "line": 136,
               "column": 8
             }
           },
@@ -15764,7 +15852,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["block","if",[["subexpr","ko-helper",[["get","customFieldsList.componentFor",["loc",[null,[119,27],[119,56]]]],["get","field.fieldType",["loc",[null,[119,57],[119,72]]]]],[],["loc",[null,[119,16],[119,73]]]]],[],0,null,["loc",[null,[119,10],[132,17]]]]
+          ["block","if",[["subexpr","ko-helper",[["get","customFieldsList.componentFor",["loc",[null,[120,27],[120,56]]]],["get","field.fieldType",["loc",[null,[120,57],[120,72]]]]],[],["loc",[null,[120,16],[120,73]]]]],[],0,null,["loc",[null,[120,10],[135,17]]]]
         ],
         locals: ["field"],
         templates: [child0]
@@ -15777,11 +15865,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 136,
+              "line": 139,
               "column": 8
             },
             "end": {
-              "line": 138,
+              "line": 141,
               "column": 8
             }
           },
@@ -15806,7 +15894,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["inline","ko-case/sla-sidebar",[],["sla",["subexpr","@mut",[["get","case.sla",["loc",[null,[137,36],[137,44]]]]],[],[]],"slaMetrics",["subexpr","@mut",[["get","case.slaMetrics",["loc",[null,[137,56],[137,71]]]]],[],[]]],["loc",[null,[137,10],[137,73]]]]
+          ["inline","ko-case/sla-sidebar",[],["sla",["subexpr","@mut",[["get","case.sla",["loc",[null,[140,36],[140,44]]]]],[],[]],"slaMetrics",["subexpr","@mut",[["get","case.slaMetrics",["loc",[null,[140,56],[140,71]]]]],[],[]]],["loc",[null,[140,10],[140,73]]]]
         ],
         locals: [],
         templates: []
@@ -15822,7 +15910,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             "column": 0
           },
           "end": {
-            "line": 145,
+            "line": 148,
             "column": 0
           }
         },
@@ -16096,26 +16184,26 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
       },
       statements: [
         ["attribute","src",["concat",[["get","case.requester.avatar",["loc",[null,[6,22],[6,43]]]]]]],
-        ["inline","ko-editable-text",[],["value",["subexpr","@mut",[["get","case.subject",["loc",[null,[11,22],[11,34]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isCaseSubjectEdited",["loc",[null,[12,25],[12,44]]]]],[],[]],"onValueChange","setSubject","isErrored",["subexpr","@mut",[["get","errorMap.subject",["loc",[null,[14,26],[14,42]]]]],[],[]],"placeholder",["subexpr","format-message",[["subexpr","intl-get",["cases.new_case_subject_placeholder"],[],["loc",[null,[15,44],[15,91]]]]],[],["loc",[null,[15,28],[15,92]]]]],["loc",[null,[10,12],[16,14]]]],
-        ["block","if",[["get","case.id",["loc",[null,[18,16],[18,23]]]]],[],0,null,["loc",[null,[18,10],[27,17]]]],
-        ["inline","ko-case/macro-selector",[],["macros",["subexpr","@mut",[["get","macros",["loc",[null,[36,46],[36,52]]]]],[],[]],"onMacroSelected","applyMacro"],["loc",[null,[36,14],[36,83]]]],
-        ["attribute","style",["get","caseEditorStyle",["loc",[null,[46,63],[46,78]]]]],
-        ["attribute","class",["concat",["ko-case-content__editor ",["subexpr","if",[["get","headerSticky",["loc",[null,[47,51],[47,63]]]],"ko-case-content__editor--sticky"],[],["loc",[null,[47,46],[47,99]]]]]]],
-        ["inline","ko-case-field/post",[],["viewName","casePostEditor","channels",["subexpr","@mut",[["get","availableChannels",["loc",[null,[50,25],[50,42]]]]],[],[]],"channel",["subexpr","@mut",[["get","channel",["loc",[null,[51,24],[51,31]]]]],[],[]],"onChannelChange","setChannel","replyType",["subexpr","@mut",[["get","replyType",["loc",[null,[53,26],[53,35]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","errorMap.contents",["loc",[null,[54,26],[54,43]]]]],[],[]],"suggestedPeople",["subexpr","@mut",[["get","suggestedPeople",["loc",[null,[55,32],[55,47]]]]],[],[]],"selectedPeople",["subexpr","@mut",[["get","selectedPeople",["loc",[null,[56,31],[56,45]]]]],[],[]],"suggestedPeopleTotal",["subexpr","@mut",[["get","suggestedPeopleTotal",["loc",[null,[57,37],[57,57]]]]],[],[]],"suggestedPeopleLoading",["subexpr","@mut",[["get","suggestedPeopleLoading",["loc",[null,[58,39],[58,61]]]]],[],[]],"isPeopleAutoCompleteAvailable",["subexpr","@mut",[["get","isPeopleAutoCompleteAvailable",["loc",[null,[59,46],[59,75]]]]],[],[]],"addParticipant","addParticipant","onPeopleSuggestion","onPeopleSuggestion"],["loc",[null,[48,12],[61,57]]]],
-        ["block","if",[["get","case.id",["loc",[null,[64,14],[64,21]]]]],[],1,null,["loc",[null,[64,8],[69,15]]]],
-        ["block","if",[["get","topPostsAvailable",["loc",[null,[70,14],[70,31]]]]],[],2,null,["loc",[null,[70,8],[78,15]]]],
-        ["block","if",[["get","newPosts",["loc",[null,[80,16],[80,24]]]]],[],3,null,["loc",[null,[80,10],[82,17]]]],
-        ["inline","ko-feed",[],["events",["subexpr","@mut",[["get","posts",["loc",[null,[84,25],[84,30]]]]],[],[]],"onReplyWithQuote","replyWithQuote","top",["subexpr","@mut",[["get","timelineVisibleTop",["loc",[null,[84,69],[84,87]]]]],[],[]],"left",["subexpr","@mut",[["get","timelineVisibleLeft",["loc",[null,[84,93],[84,112]]]]],[],[]],"onTopPostChange",["subexpr","action",["changeTopPost"],[],["loc",[null,[84,129],[84,153]]]]],["loc",[null,[84,8],[84,155]]]],
-        ["block","if",[["get","loadingBottom",["loc",[null,[86,16],[86,29]]]]],[],4,null,["loc",[null,[86,10],[90,17]]]],
-        ["attribute","class",["concat",["list-bare ko-case-content__info-bar ",["subexpr","if",[["get","headerSticky",["loc",[null,[95,57],[95,69]]]],"ko-case-content__info-bar--sticky"],[],["loc",[null,[95,52],[95,107]]]]]]],
-        ["element","action",["submit"],[],["loc",[null,[97,55],[97,74]]]],
-        ["inline","format-message",[["subexpr","intl-get",["cases.submit"],[],["loc",[null,[97,92],[97,117]]]]],[],["loc",[null,[97,75],[97,119]]]],
-        ["inline","ko-case-field/requester",[],["requester",["subexpr","@mut",[["get","case.requester",["loc",[null,[99,44],[99,58]]]]],[],[]]],["loc",[null,[99,8],[99,60]]]],
-        ["block","ko-info-bar/field",[],["title",["subexpr","format-message",[["subexpr","intl-get",["cases.tags"],[],["loc",[null,[101,51],[101,74]]]]],[],["loc",[null,[101,35],[101,75]]]],"isEdited",["subexpr","@mut",[["get","isTagsFieldEdited",["loc",[null,[102,19],[102,36]]]]],[],[]]],5,null,["loc",[null,[101,8],[109,30]]]],
-        ["inline","ko-case-field/forms",[],["selectedForm",["subexpr","@mut",[["get","case.form",["loc",[null,[112,23],[112,32]]]]],[],[]],"forms",["subexpr","@mut",[["get","caseForms",["loc",[null,[113,16],[113,25]]]]],[],[]],"onFormSelected","setForm","isEdited",["subexpr","@mut",[["get","editedCaseFields.form",["loc",[null,[115,19],[115,40]]]]],[],[]]],["loc",[null,[111,8],[116,10]]]],
-        ["block","each",[["get","caseOrFormFields",["loc",[null,[118,16],[118,32]]]]],[],6,null,["loc",[null,[118,8],[133,17]]]],
-        ["block","if",[["get","case.id",["loc",[null,[136,14],[136,21]]]]],[],7,null,["loc",[null,[136,8],[138,15]]]],
-        ["inline","ko-info-bar/metadata",[],["rows",["subexpr","@mut",[["get","caseDates",["loc",[null,[140,36],[140,45]]]]],[],[]]],["loc",[null,[140,8],[140,47]]]]
+        ["inline","ko-editable-text",[],["value",["subexpr","@mut",[["get","case.subject",["loc",[null,[11,22],[11,34]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","editedCaseFields.subject",["loc",[null,[12,25],[12,49]]]]],[],[]],"isPusherEdited",["subexpr","@mut",[["get","case.propertiesChangeViaPusher.subject",["loc",[null,[13,31],[13,69]]]]],[],[]],"onValueChange","setSubject","isErrored",["subexpr","@mut",[["get","errorMap.subject",["loc",[null,[15,26],[15,42]]]]],[],[]],"placeholder",["subexpr","format-message",[["subexpr","intl-get",["cases.new_case_subject_placeholder"],[],["loc",[null,[16,44],[16,91]]]]],[],["loc",[null,[16,28],[16,92]]]]],["loc",[null,[10,12],[17,14]]]],
+        ["block","if",[["get","case.id",["loc",[null,[19,16],[19,23]]]]],[],0,null,["loc",[null,[19,10],[28,17]]]],
+        ["inline","ko-case/macro-selector",[],["macros",["subexpr","@mut",[["get","macros",["loc",[null,[37,46],[37,52]]]]],[],[]],"onMacroSelected","applyMacro"],["loc",[null,[37,14],[37,83]]]],
+        ["attribute","style",["get","caseEditorStyle",["loc",[null,[47,63],[47,78]]]]],
+        ["attribute","class",["concat",["ko-case-content__editor ",["subexpr","if",[["get","headerSticky",["loc",[null,[48,51],[48,63]]]],"ko-case-content__editor--sticky"],[],["loc",[null,[48,46],[48,99]]]]]]],
+        ["inline","ko-case-field/post",[],["viewName","casePostEditor","channels",["subexpr","@mut",[["get","availableChannels",["loc",[null,[51,25],[51,42]]]]],[],[]],"channel",["subexpr","@mut",[["get","channel",["loc",[null,[52,24],[52,31]]]]],[],[]],"onChannelChange","setChannel","replyType",["subexpr","@mut",[["get","replyType",["loc",[null,[54,26],[54,35]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","errorMap.contents",["loc",[null,[55,26],[55,43]]]]],[],[]],"suggestedPeople",["subexpr","@mut",[["get","suggestedPeople",["loc",[null,[56,32],[56,47]]]]],[],[]],"selectedPeople",["subexpr","@mut",[["get","selectedPeople",["loc",[null,[57,31],[57,45]]]]],[],[]],"suggestedPeopleTotal",["subexpr","@mut",[["get","suggestedPeopleTotal",["loc",[null,[58,37],[58,57]]]]],[],[]],"suggestedPeopleLoading",["subexpr","@mut",[["get","suggestedPeopleLoading",["loc",[null,[59,39],[59,61]]]]],[],[]],"isPeopleAutoCompleteAvailable",["subexpr","@mut",[["get","isPeopleAutoCompleteAvailable",["loc",[null,[60,46],[60,75]]]]],[],[]],"addParticipant","addParticipant","onPeopleSuggestion","onPeopleSuggestion"],["loc",[null,[49,12],[62,57]]]],
+        ["block","if",[["get","case.id",["loc",[null,[65,14],[65,21]]]]],[],1,null,["loc",[null,[65,8],[70,15]]]],
+        ["block","if",[["get","topPostsAvailable",["loc",[null,[71,14],[71,31]]]]],[],2,null,["loc",[null,[71,8],[79,15]]]],
+        ["block","if",[["get","newPosts",["loc",[null,[81,16],[81,24]]]]],[],3,null,["loc",[null,[81,10],[83,17]]]],
+        ["inline","ko-feed",[],["events",["subexpr","@mut",[["get","posts",["loc",[null,[85,25],[85,30]]]]],[],[]],"onReplyWithQuote","replyWithQuote","top",["subexpr","@mut",[["get","timelineVisibleTop",["loc",[null,[85,69],[85,87]]]]],[],[]],"left",["subexpr","@mut",[["get","timelineVisibleLeft",["loc",[null,[85,93],[85,112]]]]],[],[]],"onTopPostChange",["subexpr","action",["changeTopPost"],[],["loc",[null,[85,129],[85,153]]]]],["loc",[null,[85,8],[85,155]]]],
+        ["block","if",[["get","loadingBottom",["loc",[null,[87,16],[87,29]]]]],[],4,null,["loc",[null,[87,10],[91,17]]]],
+        ["attribute","class",["concat",["list-bare ko-case-content__info-bar ",["subexpr","if",[["get","headerSticky",["loc",[null,[96,57],[96,69]]]],"ko-case-content__info-bar--sticky"],[],["loc",[null,[96,52],[96,107]]]]]]],
+        ["element","action",["submit"],[],["loc",[null,[98,55],[98,74]]]],
+        ["inline","format-message",[["subexpr","intl-get",["cases.submit"],[],["loc",[null,[98,92],[98,117]]]]],[],["loc",[null,[98,75],[98,119]]]],
+        ["inline","ko-case-field/requester",[],["requester",["subexpr","@mut",[["get","case.requester",["loc",[null,[100,44],[100,58]]]]],[],[]]],["loc",[null,[100,8],[100,60]]]],
+        ["block","ko-info-bar/field",[],["title",["subexpr","format-message",[["subexpr","intl-get",["cases.tags"],[],["loc",[null,[102,51],[102,74]]]]],[],["loc",[null,[102,35],[102,75]]]],"isEdited",["subexpr","@mut",[["get","isTagsFieldEdited",["loc",[null,[103,19],[103,36]]]]],[],[]]],5,null,["loc",[null,[102,8],[110,30]]]],
+        ["inline","ko-case-field/forms",[],["selectedForm",["subexpr","@mut",[["get","case.form",["loc",[null,[113,23],[113,32]]]]],[],[]],"forms",["subexpr","@mut",[["get","caseForms",["loc",[null,[114,16],[114,25]]]]],[],[]],"onFormSelected","setForm","isEdited",["subexpr","@mut",[["get","editedCaseFields.form",["loc",[null,[116,19],[116,40]]]]],[],[]]],["loc",[null,[112,8],[117,10]]]],
+        ["block","each",[["get","caseOrFormFields",["loc",[null,[119,16],[119,32]]]]],[],6,null,["loc",[null,[119,8],[136,17]]]],
+        ["block","if",[["get","case.id",["loc",[null,[139,14],[139,21]]]]],[],7,null,["loc",[null,[139,8],[141,15]]]],
+        ["inline","ko-info-bar/metadata",[],["rows",["subexpr","@mut",[["get","caseDates",["loc",[null,[143,36],[143,45]]]]],[],[]]],["loc",[null,[143,8],[143,47]]]]
       ],
       locals: [],
       templates: [child0, child1, child2, child3, child4, child5, child6, child7]
@@ -16221,7 +16309,7 @@ define('frontend-cp/components/ko-case-field/assignee/template', ['exports'], fu
             "column": 0
           },
           "end": {
-            "line": 8,
+            "line": 9,
             "column": 2
           }
         },
@@ -16244,7 +16332,7 @@ define('frontend-cp/components/ko-case-field/assignee/template', ['exports'], fu
         return morphs;
       },
       statements: [
-        ["inline","ko-field/drill-down",[],["title","Assignee","options",["subexpr","@mut",[["get","assigneeValues",["loc",[null,[3,10],[3,24]]]]],[],[]],"value",["subexpr","@mut",[["get","currentlySelectedValue",["loc",[null,[4,8],[4,30]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isEdited",["loc",[null,[5,11],[5,19]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","caseFieldError",["loc",[null,[6,12],[6,26]]]]],[],[]],"onValueChange","onAssigneeSelected"],["loc",[null,[1,0],[8,2]]]]
+        ["inline","ko-field/drill-down",[],["title","Assignee","options",["subexpr","@mut",[["get","assigneeValues",["loc",[null,[3,10],[3,24]]]]],[],[]],"value",["subexpr","@mut",[["get","currentlySelectedValue",["loc",[null,[4,8],[4,30]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isEdited",["loc",[null,[5,11],[5,19]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","caseFieldError",["loc",[null,[6,12],[6,26]]]]],[],[]],"isPusherEdited",["subexpr","@mut",[["get","isPusherEdited",["loc",[null,[7,17],[7,31]]]]],[],[]],"onValueChange","onAssigneeSelected"],["loc",[null,[1,0],[9,2]]]]
       ],
       locals: [],
       templates: []
@@ -16258,8 +16346,11 @@ define('frontend-cp/components/ko-case-field/base/component', ['exports', 'ember
 
   exports['default'] = Ember['default'].Component.extend({
     editedCustomFields: null,
+    fieldsEditedByPusher: null,
     tagName: '',
     isEdited: false,
+    isPusherEdited: false,
+
     updateIsEditedFromHash: Ember['default'].on('init', Ember['default'].observer('field.id', function () {
       var _this = this;
 
@@ -16272,6 +16363,24 @@ define('frontend-cp/components/ko-case-field/base/component', ['exports', 'ember
        */
       this.set('isEdited', Ember['default'].computed('editedCustomFields.' + this.get('field.id'), function () {
         return _this.get('editedCustomFields').get(_this.get('field.id'));
+      }));
+    })),
+
+    updateIsPusherEditedFromHash: Ember['default'].on('init', Ember['default'].observer('field.id', function () {
+      var _this2 = this;
+
+      /*
+       * We take an object holding the edited status of all case fields with the format:
+       * { id: isEdited, ... }
+       *
+       * we need to observe isEditedObject[field.id] which we can't do as a normal CP because field.id is dynamic
+       * So this is just a computed property wrapped in an observer (so we have the context)
+       */
+      this.set('isPusherEdited', Ember['default'].computed('fieldsEditedByPusher.' + this.get('field.id'), function () {
+        if (_this2.get('fieldsEditedByPusher')) {
+          return _this2.get('fieldsEditedByPusher')[_this2.get('field.id')];
+        }
+        return false;
       }));
     })),
 
@@ -16323,7 +16432,7 @@ define('frontend-cp/components/ko-case-field/forms/template', ['exports'], funct
               "column": 0
             },
             "end": {
-              "line": 11,
+              "line": 12,
               "column": 0
             }
           },
@@ -16348,7 +16457,7 @@ define('frontend-cp/components/ko-case-field/forms/template', ['exports'], funct
           return morphs;
         },
         statements: [
-          ["inline","ko-field/select",[],["title",["subexpr","format-message",[["subexpr","intl-get",["cases.form-select"],[],["loc",[null,[3,26],[3,56]]]]],[],["loc",[null,[3,10],[3,57]]]],"value",["subexpr","@mut",[["get","selectedForm",["loc",[null,[4,10],[4,22]]]]],[],[]],"options",["subexpr","@mut",[["get","forms",["loc",[null,[5,12],[5,17]]]]],[],[]],"nullOptionLabel",["subexpr","format-message",[["subexpr","intl-get",["cases.null_form_selected"],[],["loc",[null,[6,36],[6,73]]]]],[],["loc",[null,[6,20],[6,74]]]],"onValueChange","onFormSelected","labelPath","title","isEdited",["subexpr","@mut",[["get","isEdited",["loc",[null,[9,13],[9,21]]]]],[],[]]],["loc",[null,[2,2],[10,4]]]]
+          ["inline","ko-field/select",[],["title",["subexpr","format-message",[["subexpr","intl-get",["cases.form-select"],[],["loc",[null,[3,26],[3,56]]]]],[],["loc",[null,[3,10],[3,57]]]],"value",["subexpr","@mut",[["get","selectedForm",["loc",[null,[4,10],[4,22]]]]],[],[]],"options",["subexpr","@mut",[["get","forms",["loc",[null,[5,12],[5,17]]]]],[],[]],"nullOptionLabel",["subexpr","format-message",[["subexpr","intl-get",["cases.null_form_selected"],[],["loc",[null,[6,36],[6,73]]]]],[],["loc",[null,[6,20],[6,74]]]],"onValueChange","onFormSelected","labelPath","title","isEdited",["subexpr","@mut",[["get","isEdited",["loc",[null,[9,13],[9,21]]]]],[],[]],"isPusherEdited",["subexpr","@mut",[["get","isPusherEdited",["loc",[null,[10,19],[10,33]]]]],[],[]]],["loc",[null,[2,2],[11,4]]]]
         ],
         locals: [],
         templates: []
@@ -16364,7 +16473,7 @@ define('frontend-cp/components/ko-case-field/forms/template', ['exports'], funct
             "column": 0
           },
           "end": {
-            "line": 11,
+            "line": 12,
             "column": 7
           }
         },
@@ -16387,7 +16496,7 @@ define('frontend-cp/components/ko-case-field/forms/template', ['exports'], funct
         return morphs;
       },
       statements: [
-        ["block","if",[["get","forms.length",["loc",[null,[1,6],[1,18]]]]],[],0,null,["loc",[null,[1,0],[11,7]]]]
+        ["block","if",[["get","forms.length",["loc",[null,[1,6],[1,18]]]]],[],0,null,["loc",[null,[1,0],[12,7]]]]
       ],
       locals: [],
       templates: [child0]
@@ -16817,7 +16926,7 @@ define('frontend-cp/components/ko-case-field/priority/template', ['exports'], fu
             "column": 0
           },
           "end": {
-            "line": 9,
+            "line": 10,
             "column": 2
           }
         },
@@ -16840,7 +16949,7 @@ define('frontend-cp/components/ko-case-field/priority/template', ['exports'], fu
         return morphs;
       },
       statements: [
-        ["inline","ko-field/select",[],["title",["subexpr","@mut",[["get","field.title",["loc",[null,[2,8],[2,19]]]]],[],[]],"options",["subexpr","@mut",[["get","options",["loc",[null,[3,10],[3,17]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isEdited",["loc",[null,[4,11],[4,19]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","isErrored",["loc",[null,[5,12],[5,21]]]]],[],[]],"value",["subexpr","@mut",[["get","value",["loc",[null,[6,8],[6,13]]]]],[],[]],"onValueChange","valueChanged","labelPath","label"],["loc",[null,[1,0],[9,2]]]]
+        ["inline","ko-field/select",[],["title",["subexpr","@mut",[["get","field.title",["loc",[null,[2,8],[2,19]]]]],[],[]],"options",["subexpr","@mut",[["get","options",["loc",[null,[3,10],[3,17]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isEdited",["loc",[null,[4,11],[4,19]]]]],[],[]],"isPusherEdited",["subexpr","@mut",[["get","isPusherEdited",["loc",[null,[5,17],[5,31]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","isErrored",["loc",[null,[6,12],[6,21]]]]],[],[]],"value",["subexpr","@mut",[["get","value",["loc",[null,[7,8],[7,13]]]]],[],[]],"onValueChange","valueChanged","labelPath","label"],["loc",[null,[1,0],[10,2]]]]
       ],
       locals: [],
       templates: []
@@ -16872,7 +16981,7 @@ define('frontend-cp/components/ko-case-field/requester/template', ['exports'], f
             "column": 0
           },
           "end": {
-            "line": 5,
+            "line": 6,
             "column": 2
           }
         },
@@ -16895,7 +17004,7 @@ define('frontend-cp/components/ko-case-field/requester/template', ['exports'], f
         return morphs;
       },
       statements: [
-        ["inline","ko-field/text",[],["title",["subexpr","format-message",[["subexpr","intl-get",["cases.field_title.requester"],[],["loc",[null,[2,24],[2,64]]]]],[],["loc",[null,[2,8],[2,65]]]],"value",["subexpr","@mut",[["get","requester.fullName",["loc",[null,[3,8],[3,26]]]]],[],[]],"editable",false],["loc",[null,[1,0],[5,2]]]]
+        ["inline","ko-field/text",[],["title",["subexpr","format-message",[["subexpr","intl-get",["cases.field_title.requester"],[],["loc",[null,[2,24],[2,64]]]]],[],["loc",[null,[2,8],[2,65]]]],"value",["subexpr","@mut",[["get","requester.fullName",["loc",[null,[3,8],[3,26]]]]],[],[]],"isPusherEdited",["subexpr","@mut",[["get","isPusherEdited",["loc",[null,[4,17],[4,31]]]]],[],[]],"editable",false],["loc",[null,[1,0],[6,2]]]]
       ],
       locals: [],
       templates: []
@@ -16912,11 +17021,12 @@ define('frontend-cp/components/ko-case-field/status/component', ['exports', 'emb
     'case': null,
     field: null,
     errors: [],
+    isPusherEdited: false,
+    isErrored: false,
+    isEdited: false,
 
     tagName: '',
     store: Ember['default'].inject.service(),
-    isErrored: false,
-    isEdited: false,
     onValueChanged: 'setStatus',
 
     value: Ember['default'].computed.readOnly('case.status'),
@@ -16960,7 +17070,7 @@ define('frontend-cp/components/ko-case-field/status/template', ['exports'], func
             "column": 0
           },
           "end": {
-            "line": 9,
+            "line": 10,
             "column": 2
           }
         },
@@ -16983,7 +17093,7 @@ define('frontend-cp/components/ko-case-field/status/template', ['exports'], func
         return morphs;
       },
       statements: [
-        ["inline","ko-field/select",[],["title",["subexpr","@mut",[["get","field.title",["loc",[null,[2,8],[2,19]]]]],[],[]],"options",["subexpr","@mut",[["get","statuses",["loc",[null,[3,10],[3,18]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isEdited",["loc",[null,[4,11],[4,19]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","isErrored",["loc",[null,[5,12],[5,21]]]]],[],[]],"value",["subexpr","@mut",[["get","value",["loc",[null,[6,8],[6,13]]]]],[],[]],"onValueChange","valueChanged","labelPath","label"],["loc",[null,[1,0],[9,2]]]]
+        ["inline","ko-field/select",[],["title",["subexpr","@mut",[["get","field.title",["loc",[null,[2,8],[2,19]]]]],[],[]],"options",["subexpr","@mut",[["get","statuses",["loc",[null,[3,10],[3,18]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isEdited",["loc",[null,[4,11],[4,19]]]]],[],[]],"isPusherEdited",["subexpr","@mut",[["get","isPusherEdited",["loc",[null,[5,17],[5,31]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","isErrored",["loc",[null,[6,12],[6,21]]]]],[],[]],"value",["subexpr","@mut",[["get","value",["loc",[null,[7,8],[7,13]]]]],[],[]],"onValueChange","valueChanged","labelPath","label"],["loc",[null,[1,0],[10,2]]]]
       ],
       locals: [],
       templates: []
@@ -17283,7 +17393,7 @@ define('frontend-cp/components/ko-case-field/type/template', ['exports'], functi
             "column": 0
           },
           "end": {
-            "line": 9,
+            "line": 10,
             "column": 2
           }
         },
@@ -17306,7 +17416,7 @@ define('frontend-cp/components/ko-case-field/type/template', ['exports'], functi
         return morphs;
       },
       statements: [
-        ["inline","ko-field/select",[],["title",["subexpr","@mut",[["get","field.title",["loc",[null,[2,8],[2,19]]]]],[],[]],"options",["subexpr","@mut",[["get","options",["loc",[null,[3,10],[3,17]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isEdited",["loc",[null,[4,11],[4,19]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","isErrored",["loc",[null,[5,12],[5,21]]]]],[],[]],"value",["subexpr","@mut",[["get","value",["loc",[null,[6,8],[6,13]]]]],[],[]],"onValueChange","valueChanged","labelPath","label"],["loc",[null,[1,0],[9,2]]]]
+        ["inline","ko-field/select",[],["title",["subexpr","@mut",[["get","field.title",["loc",[null,[2,8],[2,19]]]]],[],[]],"options",["subexpr","@mut",[["get","options",["loc",[null,[3,10],[3,17]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isEdited",["loc",[null,[4,11],[4,19]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","isErrored",["loc",[null,[5,12],[5,21]]]]],[],[]],"isPusherEdited",["subexpr","@mut",[["get","isPusherEdited",["loc",[null,[6,17],[6,31]]]]],[],[]],"value",["subexpr","@mut",[["get","value",["loc",[null,[7,8],[7,13]]]]],[],[]],"onValueChange","valueChanged","labelPath","label"],["loc",[null,[1,0],[10,2]]]]
       ],
       locals: [],
       templates: []
@@ -22346,17 +22456,20 @@ define('frontend-cp/components/ko-custom-field/checkbox/component', ['exports', 
       return valueToArray(this.get('fieldValue.value'));
     }),
 
-    isEdited: Ember['default'].computed('fieldValue.value', function () {
-      var valueObject = this.get('fieldValue');
-      var originalValue = this.get('fieldValue._data.value');
-      if (originalValue === undefined && valueObject) {
-        // Special treatment when the value didn't exist before and is set
-        // to an empty array
-        return !!valueObject.get('value.length');
-      } else {
-        return !!valueObject && !!valueObject.changedAttributes().value;
-      }
-    }),
+    updateIsEditedFromHash: Ember['default'].on('init', Ember['default'].observer('field.id', function () {
+      var _this = this;
+
+      /*
+       * We take an object holding the edited status of all case fields with the format:
+       * { id: isEdited, ... }
+       *
+       * we need to observe isEditedObject[field.id] which we can't do as a normal CP because field.id is dynamic
+       * So this is just a computed property wrapped in an observer (so we have the context)
+       */
+      this.set('isEdited', Ember['default'].computed('editedCustomFields.' + this.get('field.id'), function () {
+        return _this.get('editedCustomFields').get(_this.get('field.id'));
+      }));
+    })),
 
     actions: {
       selectionChanged: function selectionChanged(value) {
@@ -22381,7 +22494,7 @@ define('frontend-cp/components/ko-custom-field/checkbox/template', ['exports'], 
             "column": 0
           },
           "end": {
-            "line": 9,
+            "line": 10,
             "column": 0
           }
         },
@@ -22405,7 +22518,7 @@ define('frontend-cp/components/ko-custom-field/checkbox/template', ['exports'], 
         return morphs;
       },
       statements: [
-        ["inline","ko-field/checkbox",[],["title",["subexpr","@mut",[["get","field.title",["loc",[null,[2,8],[2,19]]]]],[],[]],"options",["subexpr","@mut",[["get","field.options",["loc",[null,[3,10],[3,23]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isEdited",["loc",[null,[4,11],[4,19]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","isErrored",["loc",[null,[5,12],[5,21]]]]],[],[]],"value",["subexpr","@mut",[["get","value",["loc",[null,[6,8],[6,13]]]]],[],[]],"onValueChange","selectionChanged"],["loc",[null,[1,0],[8,2]]]]
+        ["inline","ko-field/checkbox",[],["title",["subexpr","@mut",[["get","field.title",["loc",[null,[2,8],[2,19]]]]],[],[]],"options",["subexpr","@mut",[["get","field.options",["loc",[null,[3,10],[3,23]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isEdited",["loc",[null,[4,11],[4,19]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","isErrored",["loc",[null,[5,12],[5,21]]]]],[],[]],"isPusherEdited",["subexpr","@mut",[["get","isPusherEdited",["loc",[null,[6,17],[6,31]]]]],[],[]],"value",["subexpr","@mut",[["get","value",["loc",[null,[7,8],[7,13]]]]],[],[]],"onValueChange","selectionChanged"],["loc",[null,[1,0],[9,2]]]]
       ],
       locals: [],
       templates: []
@@ -22418,6 +22531,9 @@ define('frontend-cp/components/ko-custom-field/custom/component', ['exports', 'e
   'use strict';
 
   exports['default'] = Ember['default'].Component.extend({
+    //Params
+    onFieldUpdated: null,
+
     store: Ember['default'].inject.service(),
     customFieldsList: Ember['default'].inject.service('custom-fields/list'),
 
@@ -22447,6 +22563,24 @@ define('frontend-cp/components/ko-custom-field/custom/component', ['exports', 'e
       }
     }),
 
+    updateIsPusherEditedFromHash: Ember['default'].on('init', Ember['default'].observer('field.id', function () {
+      var _this2 = this;
+
+      /*
+       * We take an object holding the edited status of all case fields with the format:
+       * { id: isEdited, ... }
+       *
+       * we need to observe isEditedObject[field.id] which we can't do as a normal CP because field.id is dynamic
+       * So this is just a computed property wrapped in an observer (so we have the context)
+       */
+      this.set('isPusherEdited', Ember['default'].computed('fieldsEditedByPusher.' + this.get('field.id'), function () {
+        if (_this2.get('fieldsEditedByPusher')) {
+          return _this2.get('fieldsEditedByPusher')[_this2.get('field.id')];
+        }
+        return false;
+      }));
+    })),
+
     setValue: function setValue(fieldValue, value) {
       fieldValue.set('value', value);
     },
@@ -22469,6 +22603,7 @@ define('frontend-cp/components/ko-custom-field/custom/component', ['exports', 'e
         }
 
         this.setValue(fieldValue, value);
+        this.sendAction('onFieldUpdated');
       }
     }
   });
@@ -22501,7 +22636,7 @@ define('frontend-cp/components/ko-custom-field/date/template', ['exports'], func
             "column": 0
           },
           "end": {
-            "line": 7,
+            "line": 8,
             "column": 2
           }
         },
@@ -22524,7 +22659,7 @@ define('frontend-cp/components/ko-custom-field/date/template', ['exports'], func
         return morphs;
       },
       statements: [
-        ["inline","ko-field/date",[],["title",["subexpr","@mut",[["get","field.title",["loc",[null,[2,6],[2,17]]]]],[],[]],"value",["subexpr","@mut",[["get","fieldValue.value",["loc",[null,[3,6],[3,22]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isEdited",["loc",[null,[4,9],[4,17]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","isErrored",["loc",[null,[5,10],[5,19]]]]],[],[]],"onValueChange","valueChanged"],["loc",[null,[1,0],[7,2]]]]
+        ["inline","ko-field/date",[],["title",["subexpr","@mut",[["get","field.title",["loc",[null,[2,6],[2,17]]]]],[],[]],"value",["subexpr","@mut",[["get","fieldValue.value",["loc",[null,[3,6],[3,22]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isEdited",["loc",[null,[4,9],[4,17]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","isErrored",["loc",[null,[5,10],[5,19]]]]],[],[]],"isPusherEdited",["subexpr","@mut",[["get","isPusherEdited",["loc",[null,[6,15],[6,29]]]]],[],[]],"onValueChange","valueChanged"],["loc",[null,[1,0],[8,2]]]]
       ],
       locals: [],
       templates: []
@@ -22554,7 +22689,7 @@ define('frontend-cp/components/ko-custom-field/decimal/template', ['exports'], f
             "column": 0
           },
           "end": {
-            "line": 7,
+            "line": 8,
             "column": 2
           }
         },
@@ -22577,7 +22712,7 @@ define('frontend-cp/components/ko-custom-field/decimal/template', ['exports'], f
         return morphs;
       },
       statements: [
-        ["inline","ko-field/text",[],["title",["subexpr","@mut",[["get","field.title",["loc",[null,[2,8],[2,19]]]]],[],[]],"value",["subexpr","@mut",[["get","fieldValue.value",["loc",[null,[3,8],[3,24]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isEdited",["loc",[null,[4,11],[4,19]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","isErrored",["loc",[null,[5,12],[5,21]]]]],[],[]],"onValueChange","valueChanged"],["loc",[null,[1,0],[7,2]]]]
+        ["inline","ko-field/text",[],["title",["subexpr","@mut",[["get","field.title",["loc",[null,[2,8],[2,19]]]]],[],[]],"value",["subexpr","@mut",[["get","fieldValue.value",["loc",[null,[3,8],[3,24]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isEdited",["loc",[null,[4,11],[4,19]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","isErrored",["loc",[null,[5,12],[5,21]]]]],[],[]],"isPusherEdited",["subexpr","@mut",[["get","isPusherEdited",["loc",[null,[6,17],[6,31]]]]],[],[]],"onValueChange","valueChanged"],["loc",[null,[1,0],[8,2]]]]
       ],
       locals: [],
       templates: []
@@ -22660,7 +22795,7 @@ define('frontend-cp/components/ko-custom-field/numeric/template', ['exports'], f
             "column": 0
           },
           "end": {
-            "line": 7,
+            "line": 8,
             "column": 2
           }
         },
@@ -22683,7 +22818,7 @@ define('frontend-cp/components/ko-custom-field/numeric/template', ['exports'], f
         return morphs;
       },
       statements: [
-        ["inline","ko-field/text",[],["title",["subexpr","@mut",[["get","field.title",["loc",[null,[2,8],[2,19]]]]],[],[]],"value",["subexpr","@mut",[["get","fieldValue.value",["loc",[null,[3,8],[3,24]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isEdited",["loc",[null,[4,11],[4,19]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","isErrored",["loc",[null,[5,12],[5,21]]]]],[],[]],"onValueChange","valueChanged"],["loc",[null,[1,0],[7,2]]]]
+        ["inline","ko-field/text",[],["title",["subexpr","@mut",[["get","field.title",["loc",[null,[2,8],[2,19]]]]],[],[]],"value",["subexpr","@mut",[["get","fieldValue.value",["loc",[null,[3,8],[3,24]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isEdited",["loc",[null,[4,11],[4,19]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","isErrored",["loc",[null,[5,12],[5,21]]]]],[],[]],"isPusherEdited",["subexpr","@mut",[["get","isPusherEdited",["loc",[null,[6,17],[6,31]]]]],[],[]],"onValueChange","valueChanged"],["loc",[null,[1,0],[8,2]]]]
       ],
       locals: [],
       templates: []
@@ -22766,7 +22901,7 @@ define('frontend-cp/components/ko-custom-field/regex/template', ['exports'], fun
             "column": 0
           },
           "end": {
-            "line": 7,
+            "line": 8,
             "column": 2
           }
         },
@@ -22789,7 +22924,7 @@ define('frontend-cp/components/ko-custom-field/regex/template', ['exports'], fun
         return morphs;
       },
       statements: [
-        ["inline","ko-field/text",[],["title",["subexpr","@mut",[["get","field.title",["loc",[null,[2,8],[2,19]]]]],[],[]],"value",["subexpr","@mut",[["get","fieldValue.value",["loc",[null,[3,8],[3,24]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isEdited",["loc",[null,[4,11],[4,19]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","isErrored",["loc",[null,[5,12],[5,21]]]]],[],[]],"onValueChange","valueChanged"],["loc",[null,[1,0],[7,2]]]]
+        ["inline","ko-field/text",[],["title",["subexpr","@mut",[["get","field.title",["loc",[null,[2,8],[2,19]]]]],[],[]],"value",["subexpr","@mut",[["get","fieldValue.value",["loc",[null,[3,8],[3,24]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isEdited",["loc",[null,[4,11],[4,19]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","isErrored",["loc",[null,[5,12],[5,21]]]]],[],[]],"isPusherEdited",["subexpr","@mut",[["get","isPusherEdited",["loc",[null,[6,17],[6,31]]]]],[],[]],"onValueChange","valueChanged"],["loc",[null,[1,0],[8,2]]]]
       ],
       locals: [],
       templates: []
@@ -22819,7 +22954,7 @@ define('frontend-cp/components/ko-custom-field/select/template', ['exports'], fu
             "column": 0
           },
           "end": {
-            "line": 10,
+            "line": 11,
             "column": 2
           }
         },
@@ -22842,7 +22977,7 @@ define('frontend-cp/components/ko-custom-field/select/template', ['exports'], fu
         return morphs;
       },
       statements: [
-        ["inline","ko-field/select",[],["title",["subexpr","@mut",[["get","field.title",["loc",[null,[2,8],[2,19]]]]],[],[]],"options",["subexpr","@mut",[["get","field.options",["loc",[null,[3,10],[3,23]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isEdited",["loc",[null,[4,11],[4,19]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","isErrored",["loc",[null,[5,12],[5,21]]]]],[],[]],"value",["subexpr","@mut",[["get","fieldValue.value",["loc",[null,[6,8],[6,24]]]]],[],[]],"onValueChange","valueChanged","idPath","id","labelPath","value"],["loc",[null,[1,0],[10,2]]]]
+        ["inline","ko-field/select",[],["title",["subexpr","@mut",[["get","field.title",["loc",[null,[2,8],[2,19]]]]],[],[]],"options",["subexpr","@mut",[["get","field.options",["loc",[null,[3,10],[3,23]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isEdited",["loc",[null,[4,11],[4,19]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","isErrored",["loc",[null,[5,12],[5,21]]]]],[],[]],"isPusherEdited",["subexpr","@mut",[["get","isPusherEdited",["loc",[null,[6,17],[6,31]]]]],[],[]],"value",["subexpr","@mut",[["get","fieldValue.value",["loc",[null,[7,8],[7,24]]]]],[],[]],"onValueChange","valueChanged","idPath","id","labelPath","value"],["loc",[null,[1,0],[11,2]]]]
       ],
       locals: [],
       templates: []
@@ -22872,7 +23007,7 @@ define('frontend-cp/components/ko-custom-field/text/template', ['exports'], func
             "column": 0
           },
           "end": {
-            "line": 7,
+            "line": 8,
             "column": 2
           }
         },
@@ -22895,7 +23030,7 @@ define('frontend-cp/components/ko-custom-field/text/template', ['exports'], func
         return morphs;
       },
       statements: [
-        ["inline","ko-field/text",[],["title",["subexpr","@mut",[["get","field.title",["loc",[null,[2,8],[2,19]]]]],[],[]],"value",["subexpr","@mut",[["get","fieldValue.value",["loc",[null,[3,8],[3,24]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isEdited",["loc",[null,[4,11],[4,19]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","isErrored",["loc",[null,[5,12],[5,21]]]]],[],[]],"onValueChange","valueChanged"],["loc",[null,[1,0],[7,2]]]]
+        ["inline","ko-field/text",[],["title",["subexpr","@mut",[["get","field.title",["loc",[null,[2,8],[2,19]]]]],[],[]],"value",["subexpr","@mut",[["get","fieldValue.value",["loc",[null,[3,8],[3,24]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isEdited",["loc",[null,[4,11],[4,19]]]]],[],[]],"isPusherEdited",["subexpr","@mut",[["get","isPusherEdited",["loc",[null,[5,17],[5,31]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","isErrored",["loc",[null,[6,12],[6,21]]]]],[],[]],"onValueChange","valueChanged"],["loc",[null,[1,0],[8,2]]]]
       ],
       locals: [],
       templates: []
@@ -22925,7 +23060,7 @@ define('frontend-cp/components/ko-custom-field/textarea/template', ['exports'], 
             "column": 0
           },
           "end": {
-            "line": 7,
+            "line": 8,
             "column": 2
           }
         },
@@ -22948,7 +23083,7 @@ define('frontend-cp/components/ko-custom-field/textarea/template', ['exports'], 
         return morphs;
       },
       statements: [
-        ["inline","ko-field/text",[],["title",["subexpr","@mut",[["get","field.title",["loc",[null,[2,8],[2,19]]]]],[],[]],"value",["subexpr","@mut",[["get","fieldValue.value",["loc",[null,[3,8],[3,24]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isEdited",["loc",[null,[4,11],[4,19]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","isErrored",["loc",[null,[5,12],[5,21]]]]],[],[]],"onValueChange","valueChanged"],["loc",[null,[1,0],[7,2]]]]
+        ["inline","ko-field/text",[],["title",["subexpr","@mut",[["get","field.title",["loc",[null,[2,8],[2,19]]]]],[],[]],"value",["subexpr","@mut",[["get","fieldValue.value",["loc",[null,[3,8],[3,24]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isEdited",["loc",[null,[4,11],[4,19]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","isErrored",["loc",[null,[5,12],[5,21]]]]],[],[]],"isPusherEdited",["subexpr","@mut",[["get","isPusherEdited",["loc",[null,[6,17],[6,31]]]]],[],[]],"onValueChange","valueChanged"],["loc",[null,[1,0],[8,2]]]]
       ],
       locals: [],
       templates: []
@@ -22980,7 +23115,7 @@ define('frontend-cp/components/ko-custom-field/yesno/template', ['exports'], fun
             "column": 0
           },
           "end": {
-            "line": 10,
+            "line": 11,
             "column": 2
           }
         },
@@ -23003,7 +23138,7 @@ define('frontend-cp/components/ko-custom-field/yesno/template', ['exports'], fun
         return morphs;
       },
       statements: [
-        ["inline","ko-field/select",[],["title",["subexpr","@mut",[["get","field.title",["loc",[null,[2,8],[2,19]]]]],[],[]],"options",["subexpr","@mut",[["get","optionsList",["loc",[null,[3,10],[3,21]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isEdited",["loc",[null,[4,11],[4,19]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","isErrored",["loc",[null,[5,12],[5,21]]]]],[],[]],"value",["subexpr","@mut",[["get","fieldValue.value",["loc",[null,[6,8],[6,24]]]]],[],[]],"onValueChange","valueChanged","idPath","id","labelPath","value"],["loc",[null,[1,0],[10,2]]]]
+        ["inline","ko-field/select",[],["title",["subexpr","@mut",[["get","field.title",["loc",[null,[2,8],[2,19]]]]],[],[]],"options",["subexpr","@mut",[["get","optionsList",["loc",[null,[3,10],[3,21]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isEdited",["loc",[null,[4,11],[4,19]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","isErrored",["loc",[null,[5,12],[5,21]]]]],[],[]],"isPusherEdited",["subexpr","@mut",[["get","isPusherEdited",["loc",[null,[6,17],[6,31]]]]],[],[]],"value",["subexpr","@mut",[["get","fieldValue.value",["loc",[null,[7,8],[7,24]]]]],[],[]],"onValueChange","valueChanged","idPath","id","labelPath","value"],["loc",[null,[1,0],[11,2]]]]
       ],
       locals: [],
       templates: []
@@ -24841,6 +24976,7 @@ define('frontend-cp/components/ko-editable-text/component', ['exports', 'ember']
     placeholder: null,
     value: null,
     isErrored: false,
+    isPusherEdited: false,
 
     classNameBindings: ['isErrored:error'],
 
@@ -24859,6 +24995,16 @@ define('frontend-cp/components/ko-editable-text/component', ['exports', 'ember']
       return this.get('value') ? this.get('value') : this.get('placeholder');
     }),
 
+    stopEditing: function stopEditing() {
+      this.set('isEditing', false);
+
+      if (this.get('onValueChange')) {
+        this.sendAction('onValueChange', this.get('valueToSave'));
+      } else {
+        this.set('value', this.get('valueToSave'));
+      }
+    },
+
     actions: {
       edit: function edit() {
         this.startEditing();
@@ -24868,11 +25014,6 @@ define('frontend-cp/components/ko-editable-text/component', ['exports', 'ember']
         if (e.keyCode === 13) {
           // ENTER
           this.stopEditing();
-          if (this.get('onValueChange')) {
-            this.sendAction('onValueChange', this.get('valueToSave'));
-          } else {
-            this.set('value', this.get('valueToSave'));
-          }
         }
       }
     },
@@ -24889,10 +25030,6 @@ define('frontend-cp/components/ko-editable-text/component', ['exports', 'ember']
       Ember['default'].run.scheduleOnce('afterRender', this, function () {
         _this.$().find('.editable-text__input').focus();
       });
-    },
-
-    stopEditing: function stopEditing() {
-      this.set('isEditing', false);
     }
   });
 
@@ -24963,9 +25100,9 @@ define('frontend-cp/components/ko-editable-text/template', ['exports'], function
         return morphs;
       },
       statements: [
-        ["attribute","class",["concat",["editable-text__text ",["subexpr","if",[["get","isEditing",["loc",[null,[1,55],[1,64]]]],"u-hidden"],[],["loc",[null,[1,50],[1,77]]]]," ",["subexpr","if",[["get","isEdited",["loc",[null,[1,84],[1,92]]]],"editable-text__text--edited"],[],["loc",[null,[1,78],[1,125]]]]]]],
+        ["attribute","class",["concat",["editable-text__text ",["subexpr","if",[["get","isEditing",["loc",[null,[1,55],[1,64]]]],"u-hidden"],[],["loc",[null,[1,50],[1,77]]]]," ",["subexpr","if",[["get","isPusherEdited",["loc",[null,[1,83],[1,97]]]],"editable-text__text--pusher-edited"],[],["loc",[null,[1,78],[1,136]]]]," ",["subexpr","if",[["get","isEdited",["loc",[null,[1,143],[1,151]]]],"editable-text__text--edited"],[],["loc",[null,[1,137],[1,184]]]]]]],
         ["element","action",["edit"],[],["loc",[null,[1,5],[1,22]]]],
-        ["content","displayText",["loc",[null,[1,127],[1,142]]]],
+        ["content","displayText",["loc",[null,[1,186],[1,201]]]],
         ["attribute","class",["concat",[["subexpr","unless",[["get","isEditing",["loc",[null,[4,21],[4,30]]]],"u-hidden"],[],["loc",[null,[4,12],[4,43]]]]]]],
         ["attribute","value",["get","valueToSave",["loc",[null,[5,29],[5,40]]]]],
         ["attribute","oninput",["subexpr","action",[["subexpr","mut",[["get","valueToSave",["loc",[null,[5,65],[5,76]]]]],[],["loc",[null,[5,60],[5,77]]]]],["value","target.value"],["loc",[null,[5,51],[5,100]]]]],
@@ -25986,7 +26123,7 @@ define('frontend-cp/components/ko-field/checkbox/component', ['exports', 'ember'
 
     tagName: 'li',
     classNames: ['info-bar-item'],
-    classNameBindings: ['isEdited:info-bar-item--edited', 'isErrored:info-bar-item--error'],
+    classNameBindings: ['isEdited:info-bar-item--edited', 'isPusherEdited:info-bar-item--pusher-edited', 'isErrored:info-bar-item--error'],
 
     isChecked: function isChecked(value, id) {
       return _['default'].contains(value, id.toString());
@@ -26500,6 +26637,7 @@ define('frontend-cp/components/ko-field/select/component', ['exports', 'ember', 
     options: [],
     isErrored: false,
     isEdited: false,
+    isPusherEdited: false,
     value: null,
     onValueChange: null,
     idPath: null,
@@ -26508,7 +26646,7 @@ define('frontend-cp/components/ko-field/select/component', ['exports', 'ember', 
     tagName: 'li',
     attributeBindings: ['tabindex', 'role'],
     classNames: ['info-bar-item'],
-    classNameBindings: ['isEdited:info-bar-item--edited', 'isErrored:info-bar-item--error'],
+    classNameBindings: ['isEdited:info-bar-item--edited', 'isPusherEdited:info-bar-item--pusher-edited', 'isErrored:info-bar-item--error'],
     tabindex: 0,
     showDropdown: false,
     isMouseAccess: false,
@@ -27400,13 +27538,14 @@ define('frontend-cp/components/ko-field/text/component', ['exports', 'ember', 'f
     title: '',
     isErrored: false,
     isEdited: false,
+    isPusherEdited: false,
     value: '',
     onValueChange: null,
     editable: true,
 
     tagName: 'li',
     classNames: ['info-bar-item'],
-    classNameBindings: ['isEdited:info-bar-item--edited', 'isErrored:info-bar-item--error'],
+    classNameBindings: ['isEdited:info-bar-item--edited', 'isPusherEdited:info-bar-item--pusher-edited', 'isErrored:info-bar-item--error'],
 
     keyPress: function keyPress(e) {
       switch (e.keyCode) {
@@ -27445,8 +27584,8 @@ define('frontend-cp/components/ko-field/text/template', ['exports'], function (e
             "column": 0
           },
           "end": {
-            "line": 5,
-            "column": 0
+            "line": 4,
+            "column": 6
           }
         },
         "moduleName": "frontend-cp/components/ko-field/text/template.hbs"
@@ -27470,8 +27609,6 @@ define('frontend-cp/components/ko-field/text/template', ['exports'], function (e
         dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n");
         dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
         return el0;
       },
@@ -47119,11 +47256,8 @@ define('frontend-cp/initializers/pusher', ['exports'], function (exports) {
   exports.initialize = initialize;
 
   function initialize(container) {
-    // Pusher has maxed out it's connections. Uncomment when we
-    // are ready to move to the Kayako Service
-
-    // let pusher = container.lookup('service:pusher');
-    // pusher.initialize();
+    var pusher = container.lookup('service:pusher');
+    pusher.initialize();
   }
 
 });
@@ -51797,48 +51931,67 @@ define('frontend-cp/mixins/change-aware-model', ['exports', 'ember', 'npm:lodash
 
     // build an array of all relationships whenever the model is loaded
     // so we can check against them to see if any have been added or removed
-    cacheRelationships: function cacheRelationships() {
+    getRelationships: function getRelationships() {
       var _this = this;
 
-      var initialRelationships = {};
+      var relationships = {};
       this.eachRelationship(function (name, meta) {
         if (meta.options.noCache) {
           return;
         }
         var relationship = _this.get(name);
-        initialRelationships[name] = null;
+        relationships[name] = null;
 
         if (relationship) {
           if (typeof relationship.forEach === 'function') {
-            initialRelationships[name] = [];
+            relationships[name] = [];
             relationship.forEach(function (relatedObject) {
-              initialRelationships[name].pushObject(relatedObject);
+              relationships[name].pushObject(relatedObject);
             });
           } else {
-            initialRelationships[name] = relationship;
+            relationships[name] = relationship;
           }
         }
       });
-      this.set('initialRelationships', initialRelationships);
+      return relationships;
+    },
+
+    cacheRelationships: function cacheRelationships() {
+      this.set('initialRelationships', this.getRelationships());
+    },
+
+    getAttrs: function getAttrs() {
+      var _this2 = this;
+
+      var attrs = {};
+      this.eachAttribute(function (name, meta) {
+        attrs[name] = _this2.get(name);
+      });
+      return attrs;
+    },
+
+    cacheAttrs: function cacheAttrs() {
+      this.set('initialAttrs', this.getAttrs());
     },
 
     initialize: Ember['default'].on('ready', function () {
-      var _this2 = this;
+      var _this3 = this;
 
       Ember['default'].run.next(function () {
         //TODO: Try to discover why this must be in a run loop
         // Without the run.next, the async promise resolves to null
         // With run.next, everything resolves perfectly.
         // there's some private API stuff `_updatingRecordArraysLater: true` which might be something?
-        _this2.cacheRelationships();
+        _this3.cacheRelationships();
+        _this3.cacheAttrs();
       });
     }),
 
     reInitialize: Ember['default'].on('didUpdate', function () {
-      var _this3 = this;
+      var _this4 = this;
 
       Ember['default'].run(function () {
-        _this3.cacheRelationships();
+        _this4.cacheRelationships();
       });
     }),
 
@@ -51900,7 +52053,7 @@ define('frontend-cp/mixins/change-aware-model', ['exports', 'ember', 'npm:lodash
     },
 
     hasChangesToSelf: function hasChangesToSelf() {
-      var _this4 = this;
+      var _this5 = this;
 
       var changes = this.changedAttributes();
 
@@ -51911,12 +52064,12 @@ define('frontend-cp/mixins/change-aware-model', ['exports', 'ember', 'npm:lodash
       }
 
       Object.keys(changes).forEach(function (changedAttributeName) {
-        var changedAttribute = _this4.get(changedAttributeName);
+        var changedAttribute = _this5.get(changedAttributeName);
         var diff = changes[changedAttributeName];
 
         // Fragment Arrays are not "relationships" so we have to check for equality here
         if (changedAttribute instanceof DS['default'].FragmentArray) {
-          if (_this4.get(changedAttributeName) === _this4.get('_internalModel._data.' + changedAttributeName)) {
+          if (_this5.get(changedAttributeName) === _this5.get('_internalModel._data.' + changedAttributeName)) {
             delete changes[changedAttributeName];
             return;
           }
@@ -51933,7 +52086,7 @@ define('frontend-cp/mixins/change-aware-model', ['exports', 'ember', 'npm:lodash
     },
 
     hasNewOrDirtyRelations: function hasNewOrDirtyRelations() {
-      var _this5 = this;
+      var _this6 = this;
 
       var initialRelationships = this.get('initialRelationships');
       var hasChanges = false;
@@ -51942,7 +52095,7 @@ define('frontend-cp/mixins/change-aware-model', ['exports', 'ember', 'npm:lodash
         if (descriptor.options.noCache) {
           return;
         }
-        var relationshipObject = _this5.get(descriptor.key);
+        var relationshipObject = _this6.get(descriptor.key);
 
         if (descriptor.kind === 'hasMany') {
           relationshipObject.forEach(function (relationshipObj) {
@@ -51957,7 +52110,7 @@ define('frontend-cp/mixins/change-aware-model', ['exports', 'ember', 'npm:lodash
             }
           });
         } else if (descriptor.kind === 'belongsTo') {
-          var _relationshipObject = _this5.get(descriptor.key);
+          var _relationshipObject = _this6.get(descriptor.key);
 
           // only check if the relationship model has the change-aware mixin
           if (_relationshipObject && typeof _relationshipObject.hasDirtyChanges === 'function') {
@@ -51972,7 +52125,7 @@ define('frontend-cp/mixins/change-aware-model', ['exports', 'ember', 'npm:lodash
     },
 
     hasDeletedRelationships: function hasDeletedRelationships() {
-      var _this6 = this;
+      var _this7 = this;
 
       var hasChanges = false;
       var initialRelationships = this.get('initialRelationships');
@@ -51983,7 +52136,7 @@ define('frontend-cp/mixins/change-aware-model', ['exports', 'ember', 'npm:lodash
           return;
         }
 
-        var currentRelatedObjects = _this6.get(relationshipName);
+        var currentRelatedObjects = _this7.get(relationshipName);
 
         if (currentRelatedObjects && typeof currentRelatedObjects.forEach === 'function') {
           // hasMany relationship
@@ -52602,6 +52755,7 @@ define('frontend-cp/models/case', ['exports', 'ember-data', 'frontend-cp/mixins/
     lastAgentActivityAt: DS['default'].attr('date'),
     lastCustomerActivityAt: DS['default'].attr('date'),
     lastCompletedAt: DS['default'].attr('date'),
+    realtimeChannel: DS['default'].attr('string'),
 
     // Children fields
     notes: DS['default'].hasMany('case-note', { async: true, child: true, noCache: true }),
@@ -52664,6 +52818,21 @@ define('frontend-cp/models/case', ['exports', 'ember-data', 'frontend-cp/mixins/
         _this.cacheRelationships();
         return caseReply;
       });
+    },
+
+    cacheRelationships: function cacheRelationships() {
+      this._super();
+
+      /*
+       * customFields are fragments so we need to cache these
+       * separately
+       */
+      var initialCustomFields = {};
+      this.get('customFields').forEach(function (caseField) {
+        initialCustomFields[caseField.get('field.id')] = caseField.get('value');
+      });
+
+      this.set('initialCustomFields', initialCustomFields);
     },
 
     hasDirtyHasManyRelationship: function hasDirtyHasManyRelationship(relationshipKey) {
@@ -54410,6 +54579,7 @@ define('frontend-cp/serializers/case', ['exports', 'frontend-cp/serializers/appl
       var assignee = snapshot.attr('assignee');
       json.assignee_agent_id = assignee.get('agentFragment.relationshipId'); // eslint-disable-line camelcase
       json.assignee_team_id = assignee.get('teamFragment.relationshipId'); // eslint-disable-line camelcase
+      json.type_id = json.type; // eslint-disable-line camelcase
 
       // api wait for type_id field
       json.type_id = parseInt(json.type);
@@ -55707,6 +55877,7 @@ define('frontend-cp/services/custom-fields', ['exports', 'ember'], function (exp
       if (!onlyFieldTypeChanged) {
         if (controller.userHasChangedModel()) {
           if (confirm(this._getTranslation('generic.confirm.lose_changes'))) {
+            // eslint-disable-line
             controller.send('rollBackModel');
             return true;
           } else {
@@ -56341,21 +56512,45 @@ define('frontend-cp/services/pusher', ['exports', 'ember', 'frontend-cp/config/e
     channelBindings: Ember['default'].Object.create({}),
     options: ENV['default'].APP.PUSHER_OPTIONS,
 
+    sessionService: Ember['default'].inject.service('session'),
+
     initialize: function initialize() {
       if (this.options.logEvents) {
         Pusher.log = function (message) {
           if (window.console && window.console.log) {
+            // eslint-disable-line
             window.console.log(message); // eslint-disable-line
           }
         };
       }
-      this.set('pusher', new Pusher(this.options.key));
+      this.authorize();
     },
 
-    subscribeTo: function subscribeTo(channelName, event, context, func) {
+    authorize: Ember['default'].observer('sessionService.sessionId', function () {
+      if (!this.get('sessionService.sessionId')) {
+        return;
+      }
+
+      this.set('pusher', new Pusher(this.options.key, {
+        encrypted: this.options.encrypted,
+        authEndpoint: this.options.authEndpoint,
+        wsHost: this.options.wsHost,
+        httpHost: this.options.httpHost,
+        auth: {
+          headers: {
+            'X-Session-ID': this.get('sessionService.sessionId')
+          }
+        }
+      }));
+    }),
+
+    subscribeTo: function subscribeTo(channelName, event, context, func, localData) {
+      if (!channelName) {
+        return;
+      }
       var channel = this.subscribeToChannel(channelName);
       var handler = function handler(data) {
-        func.apply(context, [data]);
+        func.apply(context, [data, localData]);
       };
 
       this.get('channelBindings')[channelName][func] = handler;
@@ -56382,6 +56577,79 @@ define('frontend-cp/services/pusher', ['exports', 'ember', 'frontend-cp/config/e
       }
 
       return channelInfo.channel;
+    },
+
+    store: Ember['default'].inject.service(),
+
+    /*
+     * Handle updating of a case
+     */
+    updateCaseFromPusher: function updateCaseFromPusher(serverData, caseId) {
+      var _this = this;
+
+      var caseToUpdate = this.get('store').peekRecord('case', caseId);
+
+      var initialRelationships = caseToUpdate.get('initialRelationships');
+      var currentRelationships = caseToUpdate.getRelationships();
+      var originalCustomFields = caseToUpdate.get('initialCustomFields');
+
+      // cache current id => values
+      var currentCustomFieldValueHash = {};
+      caseToUpdate.get('customFields').forEach(function (caseField) {
+        currentCustomFieldValueHash[caseField.get('field.id')] = caseField.get('value');
+      });
+      var currentTags = caseToUpdate.get('tags').toArray().slice(0);
+
+      var propertiesChangeViaPusher = caseToUpdate.get('propertiesChangeViaPusher') || new Ember['default'].Object();
+
+      caseToUpdate.reload().then(function (newCase) {
+        // update everything our initial values -- it's clean back from the server
+        newCase.cacheRelationships();
+
+        _this.get('store').peekAll('case-field').forEach(function (caseField) {
+          var relationshipName = caseField.get('key');
+          if (relationshipName === 'type') {
+            relationshipName = 'caseType';
+          }
+
+          if (caseField.get('isSystem')) {
+            if (newCase.get(relationshipName) === initialRelationships[relationshipName]) {
+              newCase.set(relationshipName, currentRelationships[relationshipName]);
+            } else {
+              propertiesChangeViaPusher.set(caseField.get('id'), true);
+              propertiesChangeViaPusher.set(relationshipName, true); // we can refer to these either by ID (when looping) or by key (eg for subject)
+            }
+          } else {
+              var updatedCustomField = newCase.get('customFields').find(function (field) {
+                return field.get('field.id') === caseField.get('id');
+              });
+              var userModifiedCustomFieldValue = currentCustomFieldValueHash[caseField.get('id')];
+
+              if (updatedCustomField.get('value') === originalCustomFields[caseField.get('id')]) {
+                updatedCustomField.set('value', userModifiedCustomFieldValue);
+              } else {
+                propertiesChangeViaPusher.set(caseField.get('id'), true);
+              }
+            }
+        });
+
+        //tags is a special case (it's not a case field)!
+        var serverTags = newCase.get('tags');
+        var modifiedTags = currentTags;
+        var originalTags = initialRelationships.tags;
+        var allTags = Array.concat(serverTags, modifiedTags, originalTags).uniq();
+
+        allTags.forEach(function (tag) {
+          if (originalTags.indexOf(tag) === -1 && modifiedTags.indexOf(tag) > -1) {
+            newCase.get('tags').pushObject(tag);
+          } else if (originalTags.indexOf(tag) > -1 && modifiedTags.indexOf(tag) === -1) {
+            newCase.get('tags').removeObject(tag);
+          }
+        });
+
+        newCase.set('propertiesChangeViaPusher', propertiesChangeViaPusher);
+        _this.updateDirtyCaseFieldHash();
+      });
     }
 
   });
@@ -56510,7 +56778,13 @@ define('frontend-cp/services/session', ['exports', 'ember'], function (exports, 
       get: function get() {
         return this.get('localStoreService').getItem('sessionId', { persist: true });
       },
-      set: function set(_, v) {
+      set: function set(key, v) {
+        if (!v) {
+          this.get('localStoreService').removeItem('sessionId', { persist: true });
+        } else {
+          this.get('localStoreService').setItem('sessionId', v, { persist: true });
+        }
+
         return v;
       }
     }),
@@ -56528,7 +56802,6 @@ define('frontend-cp/services/session', ['exports', 'ember'], function (exports, 
         // sessionId saved in local storage
         if (_this.get('sessionId')) {
           _this._getSession().then(resolve)['catch'](function (e) {
-            _this.get('localStoreService').removeItem('sessionId', { persist: true });
             _this.set('sessionId', null);
             _this.set('session', null);
             _this.set('user', null);
@@ -56555,21 +56828,22 @@ define('frontend-cp/services/session', ['exports', 'ember'], function (exports, 
 
       return this.get('store').queryRecord('session', {}).then(function (session) {
         _this3.set('session', session);
+        _this3.set('sessionId', session.get('id'));
         _this3.set('user', session.get('user'));
         _this3.getPermissions();
       });
     },
 
-    updateStorage: Ember['default'].observer('session.id', function () {
-      var sessionId = this.get('session.id');
-      if (sessionId) {
-        this.set('sessionId', sessionId);
-        this.get('localStoreService').setItem('sessionId', sessionId, { persist: true });
-      } else {
-        this.set('sessionId', null);
-        this.get('localStoreService').removeItem('sessionId', { persist: true });
-      }
-    }),
+    //updateStorage: Ember.observer('session.id', function () {
+    //  let sessionId = this.get('session.id');
+    //  if (sessionId) {
+    //    this.set('sessionId', sessionId);
+    //    this.get('localStoreService').setItem('sessionId', sessionId, { persist: true });
+    //  } else {
+    //    this.set('sessionId', null);
+    //    this.get('localStoreService').removeItem('sessionId', { persist: true });
+    //  }
+    //}),
 
     /**
      * Removes sessionId from store and from local variable.
@@ -71595,7 +71869,7 @@ define('frontend-cp/tests/acceptance/tabs/tabs-test', ['frontend-cp/tests/helper
   });
 
   qunit.test('cases open in their own tabs', function (assert) {
-    assert.expect(30);
+    assert.expect(27);
 
     useDefaultScenario();
     login();
@@ -71694,17 +71968,6 @@ define('frontend-cp/tests/acceptance/tabs/tabs-test', ['frontend-cp/tests/helper
       var $secondTabElement = getTabElements().eq(1);
       assert.ok(!getIsActiveTabElement($firstTabElement));
       assert.ok(getIsActiveTabElement($secondTabElement));
-    });
-
-    visit('/agent/cases/1/user');
-
-    andThen(function () {
-      var $tabElements = getTabElements();
-      assert.equal($tabElements.length, 2);
-      var $firstTabElement = getTabElements().eq(0);
-      var $secondTabElement = getTabElements().eq(1);
-      assert.ok(getIsActiveTabElement($firstTabElement));
-      assert.ok(!getIsActiveTabElement($secondTabElement));
     });
 
     visit('/agent/cases/2/user');
@@ -72395,8 +72658,9 @@ define('frontend-cp/tests/helpers/login', ['exports', 'ember'], function (export
   exports['default'] = Ember['default'].Test.registerAsyncHelper('login', function (app) {
     var sessionId = arguments.length <= 1 || arguments[1] === undefined ? '1' : arguments[1];
 
-    localStorage.removeItem('sessionId');
-    localStorage.setItem('sessionId', JSON.stringify(String(sessionId)));
+    var sessionService = app.__container__.lookup('service:session');
+    sessionService.set('sessionId', null);
+    sessionService.set('sessionId', JSON.stringify(String(sessionId)));
   });
 
 });
@@ -80114,7 +80378,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"key":"a092caf2ca262a318f02"},"name":"frontend-cp","version":"0.0.0+f533fe33"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"1bd23e0e510c74f07906","authEndpoint":"http://novo/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+44400c06"});
 }
 
 /* jshint ignore:end */
