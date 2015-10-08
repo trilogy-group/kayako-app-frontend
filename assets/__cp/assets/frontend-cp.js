@@ -15544,39 +15544,41 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
           editedCaseFields.set(field.get('id'), _this10.get('case').hasDirtyBelongsToRelationship(relationshipKey));
           editedCaseFields.set(relationshipKey, _this10.get('case').hasDirtyBelongsToRelationship(relationshipKey));
         } else {
-          var _ret = (function () {
-            var customCaseField = _this10.get('case.customFields').find(function (customField) {
-              return field.get('id') == customField.get('field.id');
-            });
+          var customCaseField = _this10.get('case.customFields').find(function (customField) {
+            return field.get('id') == customField.get('field.id');
+          });
 
-            // customFields have values, which are a string. The value can be an array, disguised as a string by comma
-            // separating them: "7,8". This is, unfortunately, the same as "8,7" but changedAttributes() will show this up as
-            // changed (obviously). So, if we have changed attributes, split the string and test to see if all is good
+          if (customCaseField) {
+            var _ret = (function () {
+              // customFields have values, which are a string. The value can be an array, disguised as a string by comma
+              // separating them: "7,8". This is, unfortunately, the same as "8,7" but changedAttributes() will show this up as
+              // changed (obviously). So, if we have changed attributes, split the string and test to see if all is good
 
-            if (!customCaseField.changedAttributes().value) {
-              // definitely unchanged!
-              editedCaseFields.set(field.get('id'), false);
-              return {
-                v: undefined
-              };
-            }
+              if (!customCaseField.changedAttributes().value) {
+                // definitely unchanged!
+                editedCaseFields.set(field.get('id'), false);
+                return {
+                  v: undefined
+                };
+              }
 
-            var originalValues = customCaseField.changedAttributes().value[0].split(',');
-            var modifiedValues = customCaseField.changedAttributes().value[1].split(',');
+              var originalValues = customCaseField.changedAttributes().value[0].split(',');
+              var modifiedValues = customCaseField.changedAttributes().value[1].split(',');
 
-            if (originalValues.length !== modifiedValues.length) {
-              editedCaseFields.set(field.get('id'), true);
-              return {
-                v: undefined
-              };
-            }
+              if (originalValues.length !== modifiedValues.length) {
+                editedCaseFields.set(field.get('id'), true);
+                return {
+                  v: undefined
+                };
+              }
 
-            editedCaseFields.set(field.get('id'), originalValues.any(function (value) {
-              return modifiedValues.indexOf(value) === -1;
-            }));
-          })();
+              editedCaseFields.set(field.get('id'), originalValues.any(function (value) {
+                return modifiedValues.indexOf(value) === -1;
+              }));
+            })();
 
-          if (typeof _ret === 'object') return _ret.v;
+            if (typeof _ret === 'object') return _ret.v;
+          }
         }
       });
       editedCaseFields.set('form', this.get('case').hasDirtyBelongsToRelationship('form'));
@@ -80789,7 +80791,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"1bd23e0e510c74f07906","authEndpoint":"http://novo/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+185d3a20"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"1bd23e0e510c74f07906","authEndpoint":"http://novo/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+b3bb813c"});
 }
 
 /* jshint ignore:end */
