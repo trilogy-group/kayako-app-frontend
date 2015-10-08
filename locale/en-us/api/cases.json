@@ -90,5 +90,9 @@
   "filter_options.all": "All",
   "filter_options.posts": "Posts",
   "filter_options.posts_activities": "Posts and activities",
-  "filter_options.posts_events": "Posts and events"
+  "filter_options.posts_events": "Posts and events",
+
+  "deselect_type": "No type",
+  "deselect_priority": "No priority",
+  "deselect_generic": "None"
 }
