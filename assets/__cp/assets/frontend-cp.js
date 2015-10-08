@@ -11475,7 +11475,7 @@ define('frontend-cp/components/ko-agent-dropdown/component', ['exports', 'ember'
           notificationMessage = this.get('intl').findTranslationByKey('users.user.created').translation;
           break;
         case 'session.agent.cases.case':
-          notificationMessage = this.get('intl').findTranslationByKey('cases.case.created').translation;
+          // intentionally left blank, because at this step we do not create a Case
           break;
         case 'session.agent.organisations.organisation':
           notificationMessage = this.get('intl').findTranslationByKey('organisation.organisation.created').translation;
@@ -14187,6 +14187,10 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
 
   var totalHeaderHeight = dimensions.breadcrumbsMarginTop + dimensions.breadcrumbsHeight + dimensions.titleMarginTop + dimensions.headerHeight + dimensions.contentsMarginTop;
 
+  // TODO: this component, ko-user-content, ko-organisation-content
+  // needs serious refactoring. Its growing too fast with really
+  // confusing logic in different places.
+
   exports['default'] = Ember['default'].Component.extend({
     classNames: ['ko-case-content'],
     // Params
@@ -14325,6 +14329,17 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       }
     }),
 
+    onCaseOrFormFieldsChange: Ember['default'].observer('caseOrFormFields.[]', function () {
+      var _this2 = this;
+
+      // we need to re-validate dirty state when we have case or form fields
+      // so we mark Status fields with the right state.
+
+      this.validateCaseStatus(this.get('case')).then(function () {
+        _this2.updateDirtyCaseFieldHash();
+      });
+    }),
+
     suggestedTags: [],
 
     tags: Ember['default'].computed('case.tags.@each.name', function () {
@@ -14342,28 +14357,28 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
     }),
 
     resizeSidebarAndContent: Ember['default'].on('willInsertElement', function () {
-      var _this2 = this;
+      var _this3 = this;
 
       this.set('resizeStickyEditorRequestID', window.requestAnimationFrame(function () {
-        var $editor = _this2.$('.ko-case-content__editor');
+        var $editor = _this3.$('.ko-case-content__editor');
         var height = $editor.outerHeight();
         var boundingRect = $editor.get(0).getBoundingClientRect();
         Ember['default'].run(function () {
-          _this2.set('caseEditorHeight', height);
-          _this2.set('timelineVisibleTop', boundingRect.top + boundingRect.height);
-          _this2.set('timelineVisibleLeft', boundingRect.left);
+          _this3.set('caseEditorHeight', height);
+          _this3.set('timelineVisibleTop', boundingRect.top + boundingRect.height);
+          _this3.set('timelineVisibleLeft', boundingRect.left);
         });
-        _this2.resizeSidebarAndContent();
+        _this3.resizeSidebarAndContent();
       }));
 
       this.set('scroller', $['default']('.ko-scroller'));
     }),
 
     repositionStickyEditor: Ember['default'].on('willInsertElement', 'didReceiveAttrs', function () {
-      var _this3 = this;
+      var _this4 = this;
 
       this.set('repositionStickyEditorRequestID', window.requestAnimationFrame(function () {
-        var $el = _this3.$('.ko-case-content__editor-container');
+        var $el = _this4.$('.ko-case-content__editor-container');
         if (!$el) {
           return;
         }
@@ -14373,74 +14388,74 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
         var containerTop = _$el$get$getBoundingClientRect.top;
 
         Ember['default'].run(function () {
-          _this3.set('headerSticky', containerTop <= dimensions.pageHeaderHeight);
+          _this4.set('headerSticky', containerTop <= dimensions.pageHeaderHeight);
           var newTop = containerTop <= dimensions.pageHeaderHeight ? dimensions.pageHeaderHeight - containerTop : 0;
-          _this3.$('.ko-case-content__editor').css('transform', 'translateY(' + newTop + 'px) translateZ(0)');
-          _this3.$('.ko-case-content__info-bar').css('transform', 'translateY(' + newTop + 'px) translateZ(0)');
-          _this3.$('.ko-case-content__info-bar').css('height', $['default'](window).height() - Math.max(containerTop, dimensions.pageHeaderHeight) + 'px');
+          _this4.$('.ko-case-content__editor').css('transform', 'translateY(' + newTop + 'px) translateZ(0)');
+          _this4.$('.ko-case-content__info-bar').css('transform', 'translateY(' + newTop + 'px) translateZ(0)');
+          _this4.$('.ko-case-content__info-bar').css('height', $['default'](window).height() - Math.max(containerTop, dimensions.pageHeaderHeight) + 'px');
         });
       }));
     }),
 
     loadPostsIfRequired: Ember['default'].on('willInsertElement', function () {
-      var _this4 = this;
+      var _this5 = this;
 
       this.set('loadPostsRafID', window.requestAnimationFrame(function () {
-        if (_this4.get('case.id')) {
+        if (_this5.get('case.id')) {
           // we don't want to load posts for new cases
-          if (!_this4.get('loadingTop') && _this4.get('topPostsAvailable') && _this4.get('scroller').scrollTop() < totalHeaderHeight + dimensions.filterHeight + dimensions.topLoaderHeight) {
-            _this4.loadTopPosts(_this4.get('topPost.id') || _this4.get('postId'));
+          if (!_this5.get('loadingTop') && _this5.get('topPostsAvailable') && _this5.get('scroller').scrollTop() < totalHeaderHeight + dimensions.filterHeight + dimensions.topLoaderHeight) {
+            _this5.loadTopPosts(_this5.get('topPost.id') || _this5.get('postId'));
           }
 
-          var _$$get$getBoundingClientRect = _this4.$('.ko-case-content__loaderBottom').get(0).getBoundingClientRect();
+          var _$$get$getBoundingClientRect = _this5.$('.ko-case-content__loaderBottom').get(0).getBoundingClientRect();
 
           var bottomTop = _$$get$getBoundingClientRect.top;
           var bottomHeight = _$$get$getBoundingClientRect.height;
 
           var bottomPosition = bottomTop + bottomHeight;
 
-          if (!_this4.get('loadingBottom') && _this4.get('bottomPostsAvailable') && bottomPosition - scrollBufferDistance <= $['default'](window).height()) {
-            _this4.loadBottomPosts(_this4.get('bottomPost.id') || _this4.get('postId'), {
-              including: !_this4.get('bottomPost.id')
+          if (!_this5.get('loadingBottom') && _this5.get('bottomPostsAvailable') && bottomPosition - scrollBufferDistance <= $['default'](window).height()) {
+            _this5.loadBottomPosts(_this5.get('bottomPost.id') || _this5.get('postId'), {
+              including: !_this5.get('bottomPost.id')
             });
           }
         }
-        _this4.loadPostsIfRequired();
+        _this5.loadPostsIfRequired();
       }));
     }),
 
     loadTopPosts: function loadTopPosts(id) {
-      var _this5 = this;
+      var _this6 = this;
 
       Ember['default'].run(function () {
-        _this5.set('loadingTop', true);
-        _this5.get('timelineCacheService').getPosts(_this5.get('case'), id, {
-          direction: _this5.get('sortOrder') === 'newest' ? 'newer' : 'older',
-          includeActivities: _this5.get('includeActivities'),
-          includeEvents: _this5.get('includeEvents')
+        _this6.set('loadingTop', true);
+        _this6.get('timelineCacheService').getPosts(_this6.get('case'), id, {
+          direction: _this6.get('sortOrder') === 'newest' ? 'newer' : 'older',
+          includeActivities: _this6.get('includeActivities'),
+          includeEvents: _this6.get('includeEvents')
         }).then(function (posts) {
           Ember['default'].run(function () {
-            _this5.set('newPosts', posts);
+            _this6.set('newPosts', posts);
             window.requestAnimationFrame(function () {
-              var height = _this5.$('.ko-case-content__fakeFeed').height();
+              var height = _this6.$('.ko-case-content__fakeFeed').height();
               var topPost = undefined;
-              _this5.set('newPosts', []);
+              _this6.set('newPosts', []);
               posts.forEach(function (post) {
-                _this5.get('posts').unshiftObject(post);
+                _this6.get('posts').unshiftObject(post);
                 if (post.constructor.typeKey === 'post') {
                   topPost = post;
                 }
               });
-              var scrollTop = _this5.get('scroller').scrollTop();
+              var scrollTop = _this6.get('scroller').scrollTop();
               var newScrollPosition = scrollTop + height;
-              _this5.set('loadingTop', false);
-              _this5.set('topPost', topPost);
+              _this6.set('loadingTop', false);
+              _this6.set('topPost', topPost);
               if (!topPost) {
                 newScrollPosition -= dimensions.topLoaderHeight;
-                _this5.set('topPostsAvailable', false);
+                _this6.set('topPostsAvailable', false);
               }
               Ember['default'].run.scheduleOnce('afterRender', function () {
-                _this5.get('scroller').scrollTop(newScrollPosition);
+                _this6.get('scroller').scrollTop(newScrollPosition);
               });
             });
           });
@@ -14449,31 +14464,31 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
     },
 
     loadBottomPosts: function loadBottomPosts(id, _ref2) {
-      var _this6 = this;
+      var _this7 = this;
 
       var including = _ref2.including;
 
       Ember['default'].run(function () {
-        _this6.set('loadingBottom', true);
-        _this6.get('timelineCacheService').getPosts(_this6.get('case'), id, {
-          direction: _this6.get('sortOrder') === 'newest' ? 'older' : 'newer',
+        _this7.set('loadingBottom', true);
+        _this7.get('timelineCacheService').getPosts(_this7.get('case'), id, {
+          direction: _this7.get('sortOrder') === 'newest' ? 'older' : 'newer',
           including: including,
-          includeActivities: _this6.get('includeActivities'),
-          includeEvents: _this6.get('includeEvents')
+          includeActivities: _this7.get('includeActivities'),
+          includeEvents: _this7.get('includeEvents')
         }).then(function (posts) {
           Ember['default'].run(function () {
             var bottomPost = undefined;
             posts.forEach(function (post) {
-              _this6.get('posts').pushObject(post);
+              _this7.get('posts').pushObject(post);
               if (post.constructor.typeKey === 'post') {
                 bottomPost = post;
               }
             });
-            _this6.set('loadingBottom', false);
-            _this6.set('bottomPost', bottomPost);
-            var lastSequence = _this6.get('sortOrder') === 'newest' ? 1 : _this6.get('timelineCacheService').getCaseCache(_this6.get('case')).total;
+            _this7.set('loadingBottom', false);
+            _this7.set('bottomPost', bottomPost);
+            var lastSequence = _this7.get('sortOrder') === 'newest' ? 1 : _this7.get('timelineCacheService').getCaseCache(_this7.get('case')).total;
             if (!bottomPost || bottomPost.get('sequence') === lastSequence) {
-              _this6.set('bottomPostsAvailable', false);
+              _this7.set('bottomPostsAvailable', false);
             }
           });
         });
@@ -14518,19 +14533,19 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
     }),
 
     initMacros: Ember['default'].on('init', function () {
-      var _this7 = this;
+      var _this8 = this;
 
       this.get('store').find('macro').then(function (macros) {
-        _this7.set('macros', macros);
+        _this8.set('macros', macros);
       });
     }),
 
     caseForms: [],
     initCaseForms: Ember['default'].on('init', function () {
-      var _this8 = this;
+      var _this9 = this;
 
       this.get('store').findAll('case-form').then(function (caseForms) {
-        _this8.set('caseForms', caseForms);
+        _this9.set('caseForms', caseForms);
       });
     }),
 
@@ -14569,7 +14584,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
     },
 
     updateDirtyCaseFieldHash: function updateDirtyCaseFieldHash() {
-      var _this9 = this;
+      var _this10 = this;
 
       var editedCaseFields = this.get('editedCaseFields');
       this.get('caseOrFormFields').forEach(function (field) {
@@ -14582,25 +14597,25 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
 
         /* Hack for assignee - it is made up from two properties (case.assginee.team and case.assignee.agent) */
         if (relationshipKey === 'assignee') {
-          if (_this9.get('case.assignee')) {
-            editedCaseFields.set(field.get('id'), _this9.get('case.assignee').hasDirtyChanges());
+          if (_this10.get('case.assignee')) {
+            editedCaseFields.set(field.get('id'), _this10.get('case.assignee').hasDirtyChanges());
             return;
           }
         }
 
         /* subject is a attribute */
         if (relationshipKey === 'subject') {
-          editedCaseFields.set(field.get('id'), !!_this9.get('case').changedAttributes().subject);
-          editedCaseFields.set(relationshipKey, !!_this9.get('case').changedAttributes().subject);
+          editedCaseFields.set(field.get('id'), !!_this10.get('case').changedAttributes().subject);
+          editedCaseFields.set(relationshipKey, !!_this10.get('case').changedAttributes().subject);
           return;
         }
 
         if (field.get('isSystem')) {
-          editedCaseFields.set(field.get('id'), _this9.get('case').hasDirtyBelongsToRelationship(relationshipKey));
-          editedCaseFields.set(relationshipKey, _this9.get('case').hasDirtyBelongsToRelationship(relationshipKey));
+          editedCaseFields.set(field.get('id'), _this10.get('case').hasDirtyBelongsToRelationship(relationshipKey));
+          editedCaseFields.set(relationshipKey, _this10.get('case').hasDirtyBelongsToRelationship(relationshipKey));
         } else {
           var _ret = (function () {
-            var customCaseField = _this9.get('case.customFields').find(function (customField) {
+            var customCaseField = _this10.get('case.customFields').find(function (customField) {
               return field.get('id') == customField.get('field.id');
             });
 
@@ -14699,7 +14714,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       // TODO: update messages later, for now all are the same.
       switch (type) {
         case 'create':
-          notificationMessage = this.get('intlService').findTranslationByKey('cases.case.updated').translation;
+          notificationMessage = this.get('intlService').findTranslationByKey('cases.case.created').translation;
           break;
         case 'update':
           notificationMessage = this.get('intlService').findTranslationByKey('cases.case.updated').translation;
@@ -14719,6 +14734,24 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
           autodismiss: true
         });
       }
+    },
+
+    validateCaseStatus: function validateCaseStatus(editingCase) {
+      // TODO: not a best way to have this validation logic in here
+      // and in the case/index/route.js, but seems like its the
+      // best choice for now, without breaking a lot of code.
+      // Later this whole class needs decent refactoring.
+
+      var caseStatus = editingCase.get('status');
+
+      if (editingCase.get('id') && caseStatus.get('statusType') === 'NEW') {
+        // assuming that status ID 3 will always be pending
+        return this.get('store').find('case-status', 3).then(function (pendingStatus) {
+          editingCase.set('status', pendingStatus);
+        });
+      }
+
+      return Ember['default'].RSVP.Promise.resolve();
     },
 
     actions: {
@@ -14781,7 +14814,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       },
 
       suggestTags: function suggestTags(searchTerm, selectedTags) {
-        var _this10 = this;
+        var _this11 = this;
 
         if (!searchTerm) {
           this.set('suggestedTags', []);
@@ -14793,14 +14826,14 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
         suggestionService.suggest(searchTerm).then(function (data) {
           data = suggestionService.exclude(data, selectedTags);
 
-          _this10.set('suggestedTags', data.map(function (tag) {
+          _this11.set('suggestedTags', data.map(function (tag) {
             return tag.get('name');
           }));
         });
       },
 
       submit: function submit() {
-        var _this11 = this;
+        var _this12 = this;
 
         var channel = this.get('channel');
         var editor = this.get('casePostEditor.postEditor');
@@ -14833,30 +14866,34 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
           this.set('case.channel', channel.get('channelType'));
           this.set('case.channelId', channel.get('account.id'));
           this.get('case').save().then(function (newCase) {
-            _this11._getCaseSaveNotification('create');
-            _this11.resetCaseFormState();
+            _this12._getCaseSaveNotification('create');
+            _this12.resetCaseFormState();
+            // TODO: need to transition to the right case id
+            _this12.validateCaseStatus(newCase).then(function () {
+              _this12.updateDirtyCaseFieldHash();
+            });
           }, function (e) {
-            _this11.set('errors', e.errors);
-            _this11.set('shouldIgnoreNextPusherUpdate', false);
+            _this12.set('errors', e.errors);
+            _this12.set('shouldIgnoreNextPusherUpdate', false);
           });
         } else if (!post && !attachmentIds.length) {
           // we are just updating the case -- don't create a case-reply
           this.get('case').save().then(function () {
-            _this11._getCaseSaveNotification('update');
-            _this11.resetCaseFormState();
+            _this12._getCaseSaveNotification('update');
+            _this12.resetCaseFormState();
           }, function (e) {
-            _this11.set('errors', e.errors);
-            _this11.set('shouldIgnoreNextPusherUpdate', false);
+            _this12.set('errors', e.errors);
+            _this12.set('shouldIgnoreNextPusherUpdate', false);
           });
         } else {
           if (this.get('replyType') === 'NOTE') {
             this.get('case').saveWithNote(post).then(function (caseNote) {
-              _this11._getCaseSaveNotification('with-note');
-              _this11.addPostFromReply(caseNote.get('post'));
-              _this11.resetCaseFormState();
+              _this12._getCaseSaveNotification('with-note');
+              _this12.addPostFromReply(caseNote.get('post'));
+              _this12.resetCaseFormState();
             }, function (e) {
-              _this11.set('errors', e.errors);
-              _this11.set('shouldIgnoreNextPusherUpdate', false);
+              _this12.set('errors', e.errors);
+              _this12.set('shouldIgnoreNextPusherUpdate', false);
             });
           } else {
             var options = {
@@ -14866,14 +14903,14 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
             };
             this.get('case').saveWithPost(post, channel, attachmentIds, options).then(function (caseReply) {
               caseReply.get('posts').forEach(function (post) {
-                return _this11.addPostFromReply(post);
+                return _this12.addPostFromReply(post);
               });
 
-              _this11._getCaseSaveNotification('with-reply');
-              _this11.resetCaseFormState();
+              _this12._getCaseSaveNotification('with-reply');
+              _this12.resetCaseFormState();
             }, function (e) {
-              _this11.set('errors', e.errors);
-              _this11.set('shouldIgnoreNextPusherUpdate', false);
+              _this12.set('errors', e.errors);
+              _this12.set('shouldIgnoreNextPusherUpdate', false);
             });
           }
         }
@@ -14885,7 +14922,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       },
 
       applyMacro: function applyMacro(macro) {
-        var _this12 = this;
+        var _this13 = this;
 
         var currentCase = this.get('case');
         var contentsToAdd = macro.get('replyContents');
@@ -14922,7 +14959,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
               }
             }
 
-            var newPriority = _this12.get('store').peekAll('case-priority').filter(function (priority) {
+            var newPriority = _this13.get('store').peekAll('case-priority').filter(function (priority) {
               return priority.get('level') === newPriorityLevel;
             }).get('firstObject');
 
@@ -14940,9 +14977,9 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
         if (tags.get('length')) {
           tags.forEach(function (tag) {
             if (tag.get('type') === 'ADD') {
-              _this12.send('addTag', tag.get('name'));
+              _this13.send('addTag', tag.get('name'));
             } else {
-              _this12.send('removeTag', tag.get('name'));
+              _this13.send('removeTag', tag.get('name'));
             }
           });
         }
@@ -14955,7 +14992,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       },
 
       onPeopleSuggestion: function onPeopleSuggestion(searchTerm, selectedPeople) {
-        var _this13 = this;
+        var _this14 = this;
 
         var contextModalService = this.get('contextModalService');
 
@@ -14988,14 +15025,14 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
 
           identities = peopleSuggestionService.exclude(identities, selectedPeople, 'email');
 
-          _this13.set('suggestedPeople', identities);
-          _this13.set('suggestedPeopleTotal', data.get('meta.total'));
+          _this14.set('suggestedPeople', identities);
+          _this14.set('suggestedPeopleTotal', data.get('meta.total'));
 
           contextModalService.set('repositionRequired', true);
 
           peopleSuggestionService.flushQueue();
 
-          _this13.set('suggestedPeopleLoading', false);
+          _this14.set('suggestedPeopleLoading', false);
         });
       },
 
@@ -80705,7 +80742,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"1bd23e0e510c74f07906","authEndpoint":"http://novo/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+2acca09d"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"1bd23e0e510c74f07906","authEndpoint":"http://novo/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+9968a731"});
 }
 
 /* jshint ignore:end */
