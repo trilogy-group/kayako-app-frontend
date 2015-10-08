@@ -21117,7 +21117,7 @@ define('frontend-cp/components/ko-cases-list/template', ['exports'], function (e
               return morphs;
             },
             statements: [
-              ["block","ko-table/column",[],["column",["subexpr","@mut",[["get","column",["loc",[null,[24,32],[24,38]]]]],[],[]],"sortable",true,"class",["subexpr","ko-helper",[["get","classForHeader",["loc",[null,[24,70],[24,84]]]],["get","column",["loc",[null,[24,85],[24,91]]]]],[],["loc",[null,[24,59],[24,92]]]]],0,null,["loc",[null,[24,6],[26,26]]]]
+              ["block","ko-table/column",[],["column",["subexpr","@mut",[["get","column",["loc",[null,[24,32],[24,38]]]]],[],[]],"sortable",false,"class",["subexpr","ko-helper",[["get","classForHeader",["loc",[null,[24,71],[24,85]]]],["get","column",["loc",[null,[24,86],[24,92]]]]],[],["loc",[null,[24,60],[24,93]]]]],0,null,["loc",[null,[24,6],[26,26]]]]
             ],
             locals: ["column"],
             templates: [child0]
@@ -80789,7 +80789,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"1bd23e0e510c74f07906","authEndpoint":"http://novo/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+d9fab51d"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"1bd23e0e510c74f07906","authEndpoint":"http://novo/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+185d3a20"});
 }
 
 /* jshint ignore:end */
