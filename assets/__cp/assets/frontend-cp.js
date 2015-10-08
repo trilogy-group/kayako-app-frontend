@@ -17895,7 +17895,7 @@ define('frontend-cp/components/ko-case-field/priority/template', ['exports'], fu
             "column": 0
           },
           "end": {
-            "line": 10,
+            "line": 11,
             "column": 2
           }
         },
@@ -17918,7 +17918,7 @@ define('frontend-cp/components/ko-case-field/priority/template', ['exports'], fu
         return morphs;
       },
       statements: [
-        ["inline","ko-field/select",[],["title",["subexpr","@mut",[["get","field.title",["loc",[null,[2,8],[2,19]]]]],[],[]],"options",["subexpr","@mut",[["get","options",["loc",[null,[3,10],[3,17]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isEdited",["loc",[null,[4,11],[4,19]]]]],[],[]],"isPusherEdited",["subexpr","@mut",[["get","isPusherEdited",["loc",[null,[5,17],[5,31]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","isErrored",["loc",[null,[6,12],[6,21]]]]],[],[]],"value",["subexpr","@mut",[["get","value",["loc",[null,[7,8],[7,13]]]]],[],[]],"onValueChange","valueChanged","labelPath","label"],["loc",[null,[1,0],[10,2]]]]
+        ["inline","ko-field/select",[],["title",["subexpr","@mut",[["get","field.title",["loc",[null,[2,8],[2,19]]]]],[],[]],"options",["subexpr","@mut",[["get","options",["loc",[null,[3,10],[3,17]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isEdited",["loc",[null,[4,11],[4,19]]]]],[],[]],"isPusherEdited",["subexpr","@mut",[["get","isPusherEdited",["loc",[null,[5,17],[5,31]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","isErrored",["loc",[null,[6,12],[6,21]]]]],[],[]],"value",["subexpr","@mut",[["get","value",["loc",[null,[7,8],[7,13]]]]],[],[]],"onValueChange","valueChanged","labelPath","label","nullOptionLabel",["subexpr","format-message",[["subexpr","intl-get",["cases.deselect_priority"],[],["loc",[null,[10,34],[10,70]]]]],[],["loc",[null,[10,18],[10,71]]]]],["loc",[null,[1,0],[11,2]]]]
       ],
       locals: [],
       templates: []
@@ -18362,7 +18362,7 @@ define('frontend-cp/components/ko-case-field/type/template', ['exports'], functi
             "column": 0
           },
           "end": {
-            "line": 10,
+            "line": 11,
             "column": 2
           }
         },
@@ -18385,7 +18385,7 @@ define('frontend-cp/components/ko-case-field/type/template', ['exports'], functi
         return morphs;
       },
       statements: [
-        ["inline","ko-field/select",[],["title",["subexpr","@mut",[["get","field.title",["loc",[null,[2,8],[2,19]]]]],[],[]],"options",["subexpr","@mut",[["get","options",["loc",[null,[3,10],[3,17]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isEdited",["loc",[null,[4,11],[4,19]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","isErrored",["loc",[null,[5,12],[5,21]]]]],[],[]],"isPusherEdited",["subexpr","@mut",[["get","isPusherEdited",["loc",[null,[6,17],[6,31]]]]],[],[]],"value",["subexpr","@mut",[["get","value",["loc",[null,[7,8],[7,13]]]]],[],[]],"onValueChange","valueChanged","labelPath","label"],["loc",[null,[1,0],[10,2]]]]
+        ["inline","ko-field/select",[],["title",["subexpr","@mut",[["get","field.title",["loc",[null,[2,8],[2,19]]]]],[],[]],"options",["subexpr","@mut",[["get","options",["loc",[null,[3,10],[3,17]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isEdited",["loc",[null,[4,11],[4,19]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","isErrored",["loc",[null,[5,12],[5,21]]]]],[],[]],"isPusherEdited",["subexpr","@mut",[["get","isPusherEdited",["loc",[null,[6,17],[6,31]]]]],[],[]],"value",["subexpr","@mut",[["get","value",["loc",[null,[7,8],[7,13]]]]],[],[]],"onValueChange","valueChanged","labelPath","label","nullOptionLabel",["subexpr","format-message",[["subexpr","intl-get",["cases.deselect_type"],[],["loc",[null,[10,34],[10,66]]]]],[],["loc",[null,[10,18],[10,67]]]]],["loc",[null,[1,0],[11,2]]]]
       ],
       locals: [],
       templates: []
@@ -23379,7 +23379,7 @@ define('frontend-cp/components/ko-custom-field/cascadingselect/template', ['expo
             "column": 0
           },
           "end": {
-            "line": 10,
+            "line": 11,
             "column": 2
           }
         },
@@ -23402,7 +23402,7 @@ define('frontend-cp/components/ko-custom-field/cascadingselect/template', ['expo
         return morphs;
       },
       statements: [
-        ["inline","ko-field/select",[],["title",["subexpr","@mut",[["get","field.title",["loc",[null,[2,8],[2,19]]]]],[],[]],"options",["subexpr","@mut",[["get","field.options",["loc",[null,[3,10],[3,23]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isEdited",["loc",[null,[4,11],[4,19]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","isErrored",["loc",[null,[5,12],[5,21]]]]],[],[]],"value",["subexpr","@mut",[["get","fieldValue.value",["loc",[null,[6,8],[6,24]]]]],[],[]],"onValueChange","valueChanged","idPath","id","labelPath","value"],["loc",[null,[1,0],[10,2]]]]
+        ["inline","ko-field/select",[],["title",["subexpr","@mut",[["get","field.title",["loc",[null,[2,8],[2,19]]]]],[],[]],"options",["subexpr","@mut",[["get","field.options",["loc",[null,[3,10],[3,23]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isEdited",["loc",[null,[4,11],[4,19]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","isErrored",["loc",[null,[5,12],[5,21]]]]],[],[]],"value",["subexpr","@mut",[["get","fieldValue.value",["loc",[null,[6,8],[6,24]]]]],[],[]],"onValueChange","valueChanged","idPath","id","labelPath","value","nullOptionLabel",["subexpr","format-message",[["subexpr","intl-get",["cases.deselect_generic"],[],["loc",[null,[10,34],[10,69]]]]],[],["loc",[null,[10,18],[10,70]]]]],["loc",[null,[1,0],[11,2]]]]
       ],
       locals: [],
       templates: []
@@ -23821,7 +23821,7 @@ define('frontend-cp/components/ko-custom-field/radio/template', ['exports'], fun
             "column": 0
           },
           "end": {
-            "line": 10,
+            "line": 11,
             "column": 2
           }
         },
@@ -23844,7 +23844,7 @@ define('frontend-cp/components/ko-custom-field/radio/template', ['exports'], fun
         return morphs;
       },
       statements: [
-        ["inline","ko-field/select",[],["title",["subexpr","@mut",[["get","field.title",["loc",[null,[2,8],[2,19]]]]],[],[]],"options",["subexpr","@mut",[["get","field.options",["loc",[null,[3,10],[3,23]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isEdited",["loc",[null,[4,11],[4,19]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","isErrored",["loc",[null,[5,12],[5,21]]]]],[],[]],"value",["subexpr","@mut",[["get","fieldValue.value",["loc",[null,[6,8],[6,24]]]]],[],[]],"onValueChange","valueChanged","idPath","id","labelPath","value"],["loc",[null,[1,0],[10,2]]]]
+        ["inline","ko-field/select",[],["title",["subexpr","@mut",[["get","field.title",["loc",[null,[2,8],[2,19]]]]],[],[]],"options",["subexpr","@mut",[["get","field.options",["loc",[null,[3,10],[3,23]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isEdited",["loc",[null,[4,11],[4,19]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","isErrored",["loc",[null,[5,12],[5,21]]]]],[],[]],"value",["subexpr","@mut",[["get","fieldValue.value",["loc",[null,[6,8],[6,24]]]]],[],[]],"onValueChange","valueChanged","idPath","id","labelPath","value","nullOptionLabel",["subexpr","format-message",[["subexpr","intl-get",["cases.deselect_generic"],[],["loc",[null,[10,34],[10,69]]]]],[],["loc",[null,[10,18],[10,70]]]]],["loc",[null,[1,0],[11,2]]]]
       ],
       locals: [],
       templates: []
@@ -23927,7 +23927,7 @@ define('frontend-cp/components/ko-custom-field/select/template', ['exports'], fu
             "column": 0
           },
           "end": {
-            "line": 11,
+            "line": 12,
             "column": 2
           }
         },
@@ -23950,7 +23950,7 @@ define('frontend-cp/components/ko-custom-field/select/template', ['exports'], fu
         return morphs;
       },
       statements: [
-        ["inline","ko-field/select",[],["title",["subexpr","@mut",[["get","field.title",["loc",[null,[2,8],[2,19]]]]],[],[]],"options",["subexpr","@mut",[["get","field.options",["loc",[null,[3,10],[3,23]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isEdited",["loc",[null,[4,11],[4,19]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","isErrored",["loc",[null,[5,12],[5,21]]]]],[],[]],"isPusherEdited",["subexpr","@mut",[["get","isPusherEdited",["loc",[null,[6,17],[6,31]]]]],[],[]],"value",["subexpr","@mut",[["get","fieldValue.value",["loc",[null,[7,8],[7,24]]]]],[],[]],"onValueChange","valueChanged","idPath","id","labelPath","value"],["loc",[null,[1,0],[11,2]]]]
+        ["inline","ko-field/select",[],["title",["subexpr","@mut",[["get","field.title",["loc",[null,[2,8],[2,19]]]]],[],[]],"options",["subexpr","@mut",[["get","field.options",["loc",[null,[3,10],[3,23]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isEdited",["loc",[null,[4,11],[4,19]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","isErrored",["loc",[null,[5,12],[5,21]]]]],[],[]],"isPusherEdited",["subexpr","@mut",[["get","isPusherEdited",["loc",[null,[6,17],[6,31]]]]],[],[]],"value",["subexpr","@mut",[["get","fieldValue.value",["loc",[null,[7,8],[7,24]]]]],[],[]],"onValueChange","valueChanged","idPath","id","labelPath","value","nullOptionLabel",["subexpr","format-message",[["subexpr","intl-get",["cases.deselect_generic"],[],["loc",[null,[11,34],[11,69]]]]],[],["loc",[null,[11,18],[11,70]]]]],["loc",[null,[1,0],[12,2]]]]
       ],
       locals: [],
       templates: []
@@ -27737,95 +27737,11 @@ define('frontend-cp/components/ko-field/select/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 3,
-              "column": 4
-            },
-            "end": {
-              "line": 5,
-              "column": 4
-            }
-          },
-          "moduleName": "frontend-cp/components/ko-field/select/template.hbs"
-        },
-        arity: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("      ");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createComment("");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n");
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
-          return morphs;
-        },
-        statements: [
-          ["content","nullOptionLabel",["loc",[null,[4,6],[4,25]]]]
-        ],
-        locals: [],
-        templates: []
-      };
-    }());
-    var child1 = (function() {
-      return {
-        meta: {
-          "revision": "Ember@1.13.7",
-          "loc": {
-            "source": null,
-            "start": {
-              "line": 5,
-              "column": 4
-            },
-            "end": {
-              "line": 7,
-              "column": 4
-            }
-          },
-          "moduleName": "frontend-cp/components/ko-field/select/template.hbs"
-        },
-        arity: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("      ");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createComment("");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n");
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
-          return morphs;
-        },
-        statements: [
-          ["inline","if",[["get","labelPath",["loc",[null,[6,11],[6,20]]]],["subexpr","get",[["get","selectedItem",["loc",[null,[6,26],[6,38]]]],["get","labelPath",["loc",[null,[6,39],[6,48]]]]],[],["loc",[null,[6,21],[6,49]]]],["get","selectedItem",["loc",[null,[6,50],[6,62]]]]],[],["loc",[null,[6,6],[6,64]]]]
-        ],
-        locals: [],
-        templates: []
-      };
-    }());
-    var child2 = (function() {
-      return {
-        meta: {
-          "revision": "Ember@1.13.7",
-          "loc": {
-            "source": null,
-            "start": {
-              "line": 10,
+              "line": 6,
               "column": 2
             },
             "end": {
-              "line": 14,
+              "line": 10,
               "column": 2
             }
           },
@@ -27839,7 +27755,6 @@ define('frontend-cp/components/ko-field/select/template', ['exports'], function 
           var el1 = dom.createTextNode("    ");
           dom.appendChild(el0, el1);
           var el1 = dom.createElement("li");
-          dom.setAttribute(el1,"class","dropdown-menu__item");
           dom.setAttribute(el1,"tabindex","-1");
           dom.setAttribute(el1,"role","menuitemradio");
           var el2 = dom.createTextNode("\n      ");
@@ -27855,31 +27770,33 @@ define('frontend-cp/components/ko-field/select/template', ['exports'], function 
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
           var element1 = dom.childAt(fragment, [1]);
-          var morphs = new Array(2);
-          morphs[0] = dom.createElementMorph(element1);
-          morphs[1] = dom.createMorphAt(element1,1,1);
+          var morphs = new Array(3);
+          morphs[0] = dom.createAttrMorph(element1, 'class');
+          morphs[1] = dom.createElementMorph(element1);
+          morphs[2] = dom.createMorphAt(element1,1,1);
           return morphs;
         },
         statements: [
-          ["element","action",["selectItem",null],[],["loc",[null,[11,36],[11,64]]]],
-          ["content","nullOptionLabel",["loc",[null,[12,6],[12,25]]]]
+          ["attribute","class",["concat",["dropdown-menu__item ",["subexpr","if",[["subexpr","not",[["get","selectedItem",["loc",[null,[7,45],[7,57]]]]],[],["loc",[null,[7,40],[7,58]]]],"u-hidden"],[],["loc",[null,[7,35],[7,71]]]]]]],
+          ["element","action",["selectItem",null],[],["loc",[null,[7,73],[7,101]]]],
+          ["content","nullOptionLabel",["loc",[null,[8,6],[8,25]]]]
         ],
         locals: [],
         templates: []
       };
     }());
-    var child3 = (function() {
+    var child1 = (function() {
       return {
         meta: {
           "revision": "Ember@1.13.7",
           "loc": {
             "source": null,
             "start": {
-              "line": 17,
+              "line": 13,
               "column": 0
             },
             "end": {
-              "line": 21,
+              "line": 17,
               "column": 0
             }
           },
@@ -27915,8 +27832,8 @@ define('frontend-cp/components/ko-field/select/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["element","action",["selectItem",["subexpr","if",[["get","idPath",["loc",[null,[18,60],[18,66]]]],["subexpr","get",[["get","item",["loc",[null,[18,72],[18,76]]]],["get","idPath",["loc",[null,[18,77],[18,83]]]]],[],["loc",[null,[18,67],[18,84]]]],["get","item",["loc",[null,[18,85],[18,89]]]]],[],["loc",[null,[18,56],[18,90]]]]],[],["loc",[null,[18,34],[18,92]]]],
-          ["inline","if",[["get","labelPath",["loc",[null,[19,9],[19,18]]]],["subexpr","get",[["get","item",["loc",[null,[19,24],[19,28]]]],["get","labelPath",["loc",[null,[19,29],[19,38]]]]],[],["loc",[null,[19,19],[19,39]]]],["get","item",["loc",[null,[19,40],[19,44]]]]],[],["loc",[null,[19,4],[19,46]]]]
+          ["element","action",["selectItem",["subexpr","if",[["get","idPath",["loc",[null,[14,60],[14,66]]]],["subexpr","get",[["get","item",["loc",[null,[14,72],[14,76]]]],["get","idPath",["loc",[null,[14,77],[14,83]]]]],[],["loc",[null,[14,67],[14,84]]]],["get","item",["loc",[null,[14,85],[14,89]]]]],[],["loc",[null,[14,56],[14,90]]]]],[],["loc",[null,[14,34],[14,92]]]],
+          ["inline","if",[["get","labelPath",["loc",[null,[15,9],[15,18]]]],["subexpr","get",[["get","item",["loc",[null,[15,24],[15,28]]]],["get","labelPath",["loc",[null,[15,29],[15,38]]]]],[],["loc",[null,[15,19],[15,39]]]],["get","item",["loc",[null,[15,40],[15,44]]]]],[],["loc",[null,[15,4],[15,46]]]]
         ],
         locals: ["item"],
         templates: []
@@ -27932,7 +27849,7 @@ define('frontend-cp/components/ko-field/select/template', ['exports'], function 
             "column": 0
           },
           "end": {
-            "line": 22,
+            "line": 18,
             "column": 5
           }
         },
@@ -27952,9 +27869,11 @@ define('frontend-cp/components/ko-field/select/template', ['exports'], function 
         dom.appendChild(el0, el1);
         var el1 = dom.createElement("a");
         dom.setAttribute(el1,"class","dropdown i-select");
-        var el2 = dom.createTextNode("\n");
+        var el2 = dom.createTextNode("\n  ");
         dom.appendChild(el1, el2);
         var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
         dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
@@ -27984,13 +27903,13 @@ define('frontend-cp/components/ko-field/select/template', ['exports'], function 
       },
       statements: [
         ["content","title",["loc",[null,[1,36],[1,45]]]],
-        ["block","if",[["subexpr","not",[["get","selectedItem",["loc",[null,[3,15],[3,27]]]]],[],["loc",[null,[3,10],[3,28]]]]],[],0,1,["loc",[null,[3,4],[7,11]]]],
-        ["attribute","class",["concat",["dropdown-menu ",["subexpr","if",[["get","showDropdown",["loc",[null,[9,30],[9,42]]]],"","u-hidden"],[],["loc",[null,[9,25],[9,58]]]]]]],
-        ["block","if",[["get","nullOptionLabel",["loc",[null,[10,8],[10,23]]]]],[],2,null,["loc",[null,[10,2],[14,9]]]],
-        ["block","each",[["get","options",["loc",[null,[17,8],[17,15]]]]],[],3,null,["loc",[null,[17,0],[21,9]]]]
+        ["inline","if",[["get","labelPath",["loc",[null,[3,7],[3,16]]]],["subexpr","get",[["get","selectedItem",["loc",[null,[3,22],[3,34]]]],["get","labelPath",["loc",[null,[3,35],[3,44]]]]],[],["loc",[null,[3,17],[3,45]]]],["get","selectedItem",["loc",[null,[3,46],[3,58]]]]],[],["loc",[null,[3,2],[3,60]]]],
+        ["attribute","class",["concat",["dropdown-menu ",["subexpr","if",[["get","showDropdown",["loc",[null,[5,30],[5,42]]]],"","u-hidden"],[],["loc",[null,[5,25],[5,58]]]]]]],
+        ["block","if",[["get","nullOptionLabel",["loc",[null,[6,8],[6,23]]]]],[],0,null,["loc",[null,[6,2],[10,9]]]],
+        ["block","each",[["get","options",["loc",[null,[13,8],[13,15]]]]],[],1,null,["loc",[null,[13,0],[17,9]]]]
       ],
       locals: [],
-      templates: [child0, child1, child2, child3]
+      templates: [child0, child1]
     };
   }()));
 
@@ -49439,7 +49358,11 @@ define('frontend-cp/locales/en-us/cases', ['exports'], function (exports) {
     "filter_options.all": "All",
     "filter_options.posts": "Posts",
     "filter_options.posts_activities": "Posts and activities",
-    "filter_options.posts_events": "Posts and events"
+    "filter_options.posts_events": "Posts and events",
+
+    "deselect_type": "No type",
+    "deselect_priority": "No priority",
+    "deselect_generic": "None"
   };
 
 });
@@ -77378,7 +77301,7 @@ define('frontend-cp/tests/unit/components/ko-field/select/component-test', ['emb
   'use strict';
 
   qunit.moduleForComponent('ko-field/select', {
-    needs: ['helper:not']
+    needs: ['helper:not', 'helper:and']
   });
 
   var dummyContent = ['Open', 'Pending', 'Closed'];
@@ -80866,7 +80789,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"1bd23e0e510c74f07906","authEndpoint":"http://novo/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+77b633f5"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"1bd23e0e510c74f07906","authEndpoint":"http://novo/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+d9fab51d"});
 }
 
 /* jshint ignore:end */
