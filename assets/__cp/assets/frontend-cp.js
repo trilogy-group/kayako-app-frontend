@@ -7775,11 +7775,13 @@ define('frontend-cp/components/ko-admin/team/component', ['exports', 'ember'], f
     errorHandler: inject.service(),
 
     filter: '',
-    membersToAdd: [],
-    membersToRemove: [],
+    membersToAdd: null,
+    membersToRemove: null,
     fields: null,
 
     initFields: Ember['default'].on('init', function () {
+      this.set('membersToRemove', []);
+      this.set('membersToAdd', []);
       this.set('fields', Ember['default'].Object.create({
         title: {}
       }));
@@ -80386,7 +80388,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"1bd23e0e510c74f07906","authEndpoint":"http://novo/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+f6ceb933"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"1bd23e0e510c74f07906","authEndpoint":"http://novo/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+b04af570"});
 }
 
 /* jshint ignore:end */
