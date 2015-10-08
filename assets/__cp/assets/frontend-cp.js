@@ -40548,7 +40548,7 @@ define('frontend-cp/components/ko-search/component', ['exports', 'ember'], funct
     onSearchTermChange: null,
 
     tagName: 'div',
-    classNames: ['u-pos-rel'],
+    classNames: ['ko-search', 'u-pos-rel'],
     classNameBindings: ['hidden:u-hidden'],
 
     actions: {
@@ -80791,7 +80791,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"1bd23e0e510c74f07906","authEndpoint":"http://novo/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+b3bb813c"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"1bd23e0e510c74f07906","authEndpoint":"http://novo/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+20b25072"});
 }
 
 /* jshint ignore:end */
