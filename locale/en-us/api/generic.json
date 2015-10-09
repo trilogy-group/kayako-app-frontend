@@ -110,5 +110,6 @@
   "identities.placeholders.twitter": "Add twitter handler",
   "identities.placeholders.phone": "Add phone number",
   "identities.errors.invalid_email_format": "Email format invalid",
+  "identities.errors.invalid_twitter_handle_format": "Twitter handle format invalid",
   "identities.confirm_remove": "Are you sure you want to remove this identity?"
 }

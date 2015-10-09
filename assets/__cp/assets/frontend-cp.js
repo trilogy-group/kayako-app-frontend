@@ -30106,6 +30106,8 @@ define('frontend-cp/components/ko-identities/component', ['exports', 'ember'], f
         identity.set('parent', this.get('parent'));
         identity.save().then(function () {
           return _this3.set('newIdentity', null);
+        })['catch'](function () {
+          return identity.set('parent', null);
         });
       },
 
@@ -30205,8 +30207,12 @@ define('frontend-cp/components/ko-identities/form/component', ['exports', 'ember
 
     saveTwitter: function saveTwitter(screenName) {
       var identity = this.get('identity');
-      identity.set('screenName', screenName); // Add @ sign if necessary
-      this.attrs.save(identity);
+      if (format_validations.validateTwitterHandleFormat(screenName)) {
+        identity.set('screenName', screenName); // Add @ sign if necessary
+        this.attrs.save(identity);
+      } else {
+        this.set('errorMessage', 'generic.identities.errors.invalid_twitter_handle_format');
+      }
     },
 
     savePhone: function savePhone(number) {
@@ -49493,6 +49499,7 @@ define('frontend-cp/locales/en-us/generic', ['exports'], function (exports) {
     "identities.placeholders.twitter": "Add twitter handler",
     "identities.placeholders.phone": "Add phone number",
     "identities.errors.invalid_email_format": "Email format invalid",
+    "identities.errors.invalid_twitter_handle_format": "Twitter handle format invalid",
     "identities.confirm_remove": "Are you sure you want to remove this identity?"
   };
 
@@ -54409,7 +54416,7 @@ define('frontend-cp/models/identity-autocomplete-email', ['exports', 'ember-data
   exports['default'] = DS['default'].Model.extend({
     identity: DS['default'].belongsTo('identity-email'),
 
-    parent: DS['default'].belongsTo('has-email-identities', { async: true, polymorphic: true })
+    parent: DS['default'].belongsTo('has-basic-identities', { async: true, polymorphic: true })
   });
 
 });
@@ -80755,11 +80762,17 @@ define('frontend-cp/utils/format-validations', ['exports'], function (exports) {
   'use strict';
 
   exports.validateEmailFormat = validateEmailFormat;
+  exports.validateTwitterHandleFormat = validateTwitterHandleFormat;
 
   var EMAIL_REGEX = /^[^@]+@([^@\.]+\.)+[^@\.]{2,}$/;
+  var TWITTER_REGEX = /(^|[^@\w])@(\w{1,15})\b/g;
 
   function validateEmailFormat(email) {
     return EMAIL_REGEX.test(email);
+  }
+
+  function validateTwitterHandleFormat(email) {
+    return TWITTER_REGEX.test(email);
   }
 
 });
@@ -80791,7 +80804,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"1bd23e0e510c74f07906","authEndpoint":"http://novo/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+20b25072"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"1bd23e0e510c74f07906","authEndpoint":"http://novo/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+3097d7c2"});
 }
 
 /* jshint ignore:end */
