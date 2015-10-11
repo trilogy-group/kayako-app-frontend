@@ -14566,7 +14566,7 @@ define('frontend-cp/components/ko-breadcrumbs/template', ['exports'], function (
             "column": 0
           },
           "end": {
-            "line": 12,
+            "line": 8,
             "column": 0
           }
         },
@@ -14587,23 +14587,7 @@ define('frontend-cp/components/ko-breadcrumbs/template', ['exports'], function (
         dom.appendChild(el2, el3);
         var el3 = dom.createComment("");
         dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("li");
-        dom.setAttribute(el3,"class","breadcrumbs__item breadcrumbs__action");
-        var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createComment("");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("span");
-        dom.setAttribute(el4,"class","i-chevron-large-right i-color-grey--dark");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n    ");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n  ");
+        var el3 = dom.createTextNode("  ");
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n");
@@ -14614,15 +14598,12 @@ define('frontend-cp/components/ko-breadcrumbs/template', ['exports'], function (
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var element1 = dom.childAt(fragment, [0, 1]);
-        var morphs = new Array(2);
-        morphs[0] = dom.createMorphAt(element1,1,1);
-        morphs[1] = dom.createMorphAt(dom.childAt(element1, [3]),1,1);
+        var morphs = new Array(1);
+        morphs[0] = dom.createMorphAt(dom.childAt(fragment, [0, 1]),1,1);
         return morphs;
       },
       statements: [
-        ["block","each",[["get","breadcrumbs",["loc",[null,[3,12],[3,23]]]]],[],0,null,["loc",[null,[3,4],[5,13]]]],
-        ["inline","format-message",[["subexpr","intl-get",["generic.next"],[],["loc",[null,[7,23],[7,48]]]]],[],["loc",[null,[7,6],[7,50]]]]
+        ["block","each",[["get","breadcrumbs",["loc",[null,[3,12],[3,23]]]]],[],0,null,["loc",[null,[3,4],[5,13]]]]
       ],
       locals: [],
       templates: [child0]
@@ -80804,7 +80785,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"1bd23e0e510c74f07906","authEndpoint":"http://novo/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+3097d7c2"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"1bd23e0e510c74f07906","authEndpoint":"http://novo/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+743bad1b"});
 }
 
 /* jshint ignore:end */
