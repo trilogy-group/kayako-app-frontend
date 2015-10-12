@@ -34962,7 +34962,7 @@ define('frontend-cp/components/ko-organisation-action-menu/component', ['exports
     intlService: Ember['default'].inject.service('intl'),
 
     hasDeleteOrganisationPermission: Ember['default'].computed('sessionService.permissions', 'organisation', function () {
-      return this.get('permissionService').has('app.organisation.delete', this.get('sessionService.permissions'), this.get('organisation'));
+      return this.get('permissionService').has('app.organisation.delete', this.get('organisation'));
     }),
 
     actions: {
@@ -45370,15 +45370,15 @@ define('frontend-cp/components/ko-user-action-menu/component', ['exports', 'embe
     }),
 
     hasChangeSignaturePermission: Ember['default'].computed('sessionService.permissions', 'userModel.role.roleType', function () {
-      return this.get('permissionService').has('app.user.signature.edit', this.get('sessionService.permissions'), this.get('userModel'));
+      return this.get('permissionService').has('app.user.signature.edit', this.get('userModel'));
     }),
 
     hasChangePasswordEmailPermission: Ember['default'].computed('sessionService.permissions', 'userModel.role.roleType', function () {
-      return this.get('permissionService').has('app.user.password.change', this.get('sessionService.permissions'), this.get('userModel'));
+      return this.get('permissionService').has('app.user.password.change', this.get('userModel'));
     }),
 
     hasDeletePermission: Ember['default'].computed('sessionService.permissions', 'userModel.role.roleType', function () {
-      return this.get('permissionService').has('app.user.delete', this.get('sessionService.permissions'), this.get('userModel'));
+      return this.get('permissionService').has('app.user.delete', this.get('userModel'));
     }),
 
     actions: {
@@ -45921,11 +45921,11 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
     },
 
     canModifyUserState: Ember['default'].computed(function () {
-      return this.get('permissionService').has('app.user.disable', this.get('sessionService').permissions, this.get('model'));
+      return this.get('permissionService').has('app.user.disable', this.get('model'));
     }),
 
     canFollowUser: Ember['default'].computed(function () {
-      return this.get('permissionService').has('app.user.follow', this.get('sessionService').permissions, this.get('model'));
+      return this.get('permissionService').has('app.user.follow', this.get('model'));
     }),
 
     canChangeAgentCaseAccessPermission: Ember['default'].computed(function () {
@@ -49251,6 +49251,8 @@ define('frontend-cp/locales/en-us/generic', ['exports'], function (exports) {
 
     "user_logged_out": "You have been logged out",
     "session_expired": "Your session has expired",
+    "permissions_denied": "Sorry, you don't have access to view that. Please ask for permissions from an admin.",
+    "user_credential_expired": "The credential (e.g. password) is valid but has expired",
 
     "create_case_panel.title": "Create a new case",
     "create_case_panel.requester_label": "Requester/Recipient",
@@ -57062,10 +57064,15 @@ define('frontend-cp/services/error-handler', ['exports', 'ember', 'npm:lodash'],
     handleServerError: function handleServerError(error) {
       if (error && error.errors && error.errors.errors) {
         this.handleSessionErrors(error.errors.errors);
+        this.handlePermissionErrors(error.errors.errors);
+        this.handleCredentialErrors(error.errors.errors);
       }
-
       throw error;
     },
+
+    /*
+     * TODO this needs moved to serializer?
+     */
 
     handleServerNotifications: function handleServerNotifications(data) {
       if (data && data.notifications) {
@@ -57083,6 +57090,46 @@ define('frontend-cp/services/error-handler', ['exports', 'ember', 'npm:lodash'],
           dismissable: true
         });
       });
+    },
+
+    handlePermissionErrors: function handlePermissionErrors(responseErrors) {
+      var isPermissionError = function isPermissionError(responseError) {
+        return responseError.code === 'PERMISSIONS_DENIED';
+      };
+      var hasPermissionErrors = _['default'].some(responseErrors, isPermissionError);
+
+      if (hasPermissionErrors) {
+        // Redirect back to the base of the current path
+        var path = '/agent';
+        var pathname = location.pathname;
+        // If we are at a deeplink inside admin, redirect back to admin
+        // If we have errored at '/admin' leave path='/agent'
+        if (pathname.startsWith('/admin') && pathname !== '/admin') {
+          path = '/admin';
+        }
+
+        if (pathname !== path) {
+          this.container.lookup('router:main').router.transitionTo(path);
+        }
+      }
+    },
+
+    handleCredentialErrors: function handleCredentialErrors(responseErrors) {
+      var intlService = this.get('intlService');
+
+      var isError = function isError(responseError) {
+        return responseError.code === 'CREDENTIAL_EXPIRED';
+      };
+      var hasErrors = _['default'].some(responseErrors, isError);
+
+      if (hasErrors) {
+        this.get('notificationService').add({
+          type: 'error',
+          title: intlService.findTranslationByKey('generic.user_credential_expired').translation,
+          autodismiss: false,
+          dismissable: true
+        });
+      }
     },
 
     handleSessionErrors: function handleSessionErrors(responseErrors) {
@@ -57444,9 +57491,22 @@ define('frontend-cp/services/permissions', ['exports', 'ember'], function (expor
 
   exports['default'] = Ember['default'].Service.extend({
     sessionService: Ember['default'].inject.service('session'),
-    has: function has(action, permissions, target) {
+    notificationService: Ember['default'].inject.service('notification'),
+    intlService: Ember['default'].inject.service('intl'),
+
+    showError: function showError() {
+      this.get('notificationService').add({
+        type: 'error',
+        title: this.get('intlService').findTranslationByKey('generic.permissions_denied').translation,
+        autodismiss: false,
+        dismissable: true
+      });
+    },
+
+    has: function has(action, target) {
       var role = this.get('sessionService.user.role');
       var subjectRoleType = roleTypes[role.get('roleType')];
+      var permissions = this.get('sessionService.permissions');
 
       // First check the permission exists
       if (subjectRoleType && subjectRoleType.permissions.indexOf(action) > -1) {
@@ -57780,8 +57840,9 @@ define('frontend-cp/services/session', ['exports', 'ember'], function (exports, 
     getPermissions: function getPermissions() {
       var _this2 = this;
 
-      this.get('user.role.permissions').then(function (perms) {
+      return this.get('user.role.permissions').then(function (perms) {
         _this2.set('permissions', perms);
+        return perms;
       });
     },
 
@@ -57792,7 +57853,7 @@ define('frontend-cp/services/session', ['exports', 'ember'], function (exports, 
         _this3.set('session', session);
         _this3.set('sessionId', session.get('id'));
         _this3.set('user', session.get('user'));
-        _this3.getPermissions();
+        return _this3.getPermissions();
       });
     },
 
@@ -62572,6 +62633,16 @@ define('frontend-cp/session/admin/people/teams/index/route', ['exports', 'ember'
   var Route = Ember['default'].Route;
 
   exports['default'] = Route.extend({
+    permissionService: Ember['default'].inject.service('permissions'),
+    permissionName: 'admin.team.view',
+
+    beforeModel: function beforeModel() {
+      if (!this.get('permissionService').has(this.get('permissionName'))) {
+        this.get('permissionService').showError();
+        this.transitionTo('session.admin');
+      }
+    },
+
     model: function model() {
       return this.store.findAll('team');
     }
@@ -62943,6 +63014,15 @@ define('frontend-cp/session/admin/people/user-fields/index/route', ['exports', '
   'use strict';
 
   exports['default'] = Ember['default'].Route.extend({
+    permissionService: Ember['default'].inject.service('permissions'),
+    permissionName: 'admin.team.userfields.view',
+
+    beforeModel: function beforeModel() {
+      if (!this.get('permissionService').has(this.get('permissionName'))) {
+        this.get('permissionService').showError();
+        this.transitionTo('session.admin');
+      }
+    },
 
     model: function model() {
       return this.store.find('user-field');
@@ -80433,7 +80513,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"e5ba08ab0174c8e64c81","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+c6e4e151"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"e5ba08ab0174c8e64c81","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+7df16145"});
 }
 
 /* jshint ignore:end */
