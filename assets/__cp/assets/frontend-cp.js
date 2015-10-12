@@ -30006,6 +30006,7 @@ define('frontend-cp/components/ko-identities/component', ['exports', 'ember'], f
 
   'use strict';
 
+  var computed = Ember['default'].computed;
   var service = Ember['default'].inject.service;
   var _Ember$String = Ember['default'].String;
   var underscore = _Ember$String.underscore;
@@ -30014,6 +30015,12 @@ define('frontend-cp/components/ko-identities/component', ['exports', 'ember'], f
   exports['default'] = Ember['default'].Component.extend({
     store: service(),
     intl: service(),
+
+    // CPs
+    emailIdentities: computed.filterBy('parent.emails', 'isNew', false),
+    twitterIdentities: computed.filterBy('parent.twitters', 'isNew', false),
+    phoneIdentities: computed.filterBy('parent.phones', 'isNew', false),
+    facebookIdentities: computed.filterBy('parent.facebooks', 'isNew', false),
 
     // Actions
     actions: {
@@ -30188,8 +30195,11 @@ define('frontend-cp/components/ko-identities/form/component', ['exports', 'ember
 
     saveTwitter: function saveTwitter(screenName) {
       var identity = this.get('identity');
+      if (screenName.indexOf('@') !== 0) {
+        screenName = '@' + screenName; // Add @sign for validation
+      }
       if (format_validations.validateTwitterHandleFormat(screenName)) {
-        identity.set('screenName', screenName); // Add @ sign if necessary
+        identity.set('screenName', screenName.slice(1)); // Remove @ before save
         this.attrs.save(identity);
       } else {
         this.set('errorMessage', 'generic.identities.errors.invalid_twitter_handle_format');
@@ -30264,7 +30274,7 @@ define('frontend-cp/components/ko-identities/form/template', ['exports'], functi
             "column": 0
           },
           "end": {
-            "line": 11,
+            "line": 15,
             "column": 0
           }
         },
@@ -30293,7 +30303,11 @@ define('frontend-cp/components/ko-identities/form/template', ['exports'], functi
         var el3 = dom.createElement("button");
         dom.setAttribute(el3,"type","submit");
         dom.setAttribute(el3,"class","button button--default");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
         var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
         dom.appendChild(el2, el3);
         var el3 = dom.createTextNode("\n    ");
@@ -30304,7 +30318,11 @@ define('frontend-cp/components/ko-identities/form/template', ['exports'], functi
         dom.appendChild(el2, el3);
         var el3 = dom.createElement("button");
         dom.setAttribute(el3,"class","button-naked t-bad");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
         var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
         dom.appendChild(el2, el3);
         var el3 = dom.createTextNode("\n  ");
@@ -30320,25 +30338,30 @@ define('frontend-cp/components/ko-identities/form/template', ['exports'], functi
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
         var element0 = dom.childAt(fragment, [0]);
         var element1 = dom.childAt(element0, [5]);
-        var element2 = dom.childAt(element1, [5]);
-        var morphs = new Array(7);
+        var element2 = dom.childAt(element1, [1]);
+        var element3 = dom.childAt(element1, [5]);
+        var morphs = new Array(9);
         morphs[0] = dom.createAttrMorph(element0, 'onsubmit');
         morphs[1] = dom.createMorphAt(element0,1,1);
         morphs[2] = dom.createMorphAt(element0,3,3);
-        morphs[3] = dom.createMorphAt(dom.childAt(element1, [1]),0,0);
-        morphs[4] = dom.createMorphAt(element1,3,3);
-        morphs[5] = dom.createAttrMorph(element2, 'onclick');
-        morphs[6] = dom.createMorphAt(element2,0,0);
+        morphs[3] = dom.createAttrMorph(element2, 'disabled');
+        morphs[4] = dom.createMorphAt(element2,1,1);
+        morphs[5] = dom.createMorphAt(element1,3,3);
+        morphs[6] = dom.createAttrMorph(element3, 'onclick');
+        morphs[7] = dom.createAttrMorph(element3, 'disabled');
+        morphs[8] = dom.createMorphAt(element3,1,1);
         return morphs;
       },
       statements: [
         ["attribute","onsubmit",["subexpr","action",["save"],[],["loc",[null,[1,15],[1,32]]]]],
-        ["inline","input",[],["type",["subexpr","@mut",[["get","inputType",["loc",[null,[2,15],[2,24]]]]],[],[]],"value",["subexpr","@mut",[["get","mainField",["loc",[null,[2,31],[2,40]]]]],[],[]],"placeholder",["subexpr","format-message",[["subexpr","intl-get",[["get","placeholder",["loc",[null,[2,79],[2,90]]]]],[],["loc",[null,[2,69],[2,91]]]]],[],["loc",[null,[2,53],[2,92]]]],"class","input-text--full"],["loc",[null,[2,2],[2,119]]]],
+        ["inline","input",[],["type",["subexpr","@mut",[["get","inputType",["loc",[null,[2,15],[2,24]]]]],[],[]],"value",["subexpr","@mut",[["get","mainField",["loc",[null,[2,31],[2,40]]]]],[],[]],"placeholder",["subexpr","format-message",[["subexpr","intl-get",[["get","placeholder",["loc",[null,[2,79],[2,90]]]]],[],["loc",[null,[2,69],[2,91]]]]],[],["loc",[null,[2,53],[2,92]]]],"disabled",["subexpr","@mut",[["get","identity.isSaving",["loc",[null,[2,102],[2,119]]]]],[],[]],"class","input-text--full"],["loc",[null,[2,2],[2,146]]]],
         ["block","if",[["get","errorMessage",["loc",[null,[3,8],[3,20]]]]],[],0,null,["loc",[null,[3,2],[3,100]]]],
-        ["inline","format-message",[["subexpr","intl-get",["generic.save"],[],["loc",[null,[5,74],[5,99]]]]],[],["loc",[null,[5,57],[5,101]]]],
-        ["inline","format-message",[["subexpr","intl-get",["generic.or"],[],["loc",[null,[6,21],[6,44]]]]],[],["loc",[null,[6,4],[6,46]]]],
-        ["attribute","onclick",["subexpr","action",["cancel"],[],["loc",[null,[7,20],[7,39]]]]],
-        ["inline","format-message",[["subexpr","intl-get",["generic.cancel"],[],["loc",[null,[7,84],[7,111]]]]],[],["loc",[null,[7,67],[7,113]]]]
+        ["attribute","disabled",["get","identity.isSaving",["loc",[null,[5,68],[5,85]]]]],
+        ["inline","format-message",[["subexpr","intl-get",["generic.save"],[],["loc",[null,[6,23],[6,48]]]]],[],["loc",[null,[6,6],[6,50]]]],
+        ["inline","format-message",[["subexpr","intl-get",["generic.or"],[],["loc",[null,[8,21],[8,44]]]]],[],["loc",[null,[8,4],[8,46]]]],
+        ["attribute","onclick",["subexpr","action",["cancel"],[],["loc",[null,[9,20],[9,39]]]]],
+        ["attribute","disabled",["get","identity.isSaving",["loc",[null,[9,78],[9,95]]]]],
+        ["inline","format-message",[["subexpr","intl-get",["generic.cancel"],[],["loc",[null,[10,23],[10,50]]]]],[],["loc",[null,[10,6],[10,52]]]]
       ],
       locals: [],
       templates: [child0]
@@ -30956,7 +30979,7 @@ define('frontend-cp/components/ko-identities/template', ['exports'], function (e
         },
         statements: [
           ["inline","format-message",[["subexpr","intl-get",["generic.identities.email_identities_title"],[],["loc",[null,[9,39],[9,93]]]]],[],["loc",[null,[9,22],[9,95]]]],
-          ["block","each",[["get","parent.emails",["loc",[null,[12,22],[12,35]]]]],[],0,null,["loc",[null,[12,14],[54,23]]]]
+          ["block","each",[["get","emailIdentities",["loc",[null,[12,22],[12,37]]]]],[],0,null,["loc",[null,[12,14],[54,23]]]]
         ],
         locals: [],
         templates: [child0]
@@ -31391,7 +31414,7 @@ define('frontend-cp/components/ko-identities/template', ['exports'], function (e
         },
         statements: [
           ["inline","format-message",[["subexpr","intl-get",["generic.identities.twitter_identities_title"],[],["loc",[null,[61,39],[61,95]]]]],[],["loc",[null,[61,22],[61,97]]]],
-          ["block","each",[["get","parent.twitters",["loc",[null,[64,22],[64,37]]]]],[],0,null,["loc",[null,[64,14],[90,23]]]]
+          ["block","each",[["get","twitterIdentities",["loc",[null,[64,22],[64,39]]]]],[],0,null,["loc",[null,[64,14],[90,23]]]]
         ],
         locals: [],
         templates: [child0]
@@ -31896,7 +31919,7 @@ define('frontend-cp/components/ko-identities/template', ['exports'], function (e
         },
         statements: [
           ["inline","format-message",[["subexpr","intl-get",["generic.identities.phones_identities_title"],[],["loc",[null,[97,39],[97,94]]]]],[],["loc",[null,[97,22],[97,96]]]],
-          ["block","each",[["get","parent.phones",["loc",[null,[100,22],[100,35]]]]],[],0,null,["loc",[null,[100,14],[127,23]]]]
+          ["block","each",[["get","phoneIdentities",["loc",[null,[100,22],[100,37]]]]],[],0,null,["loc",[null,[100,14],[127,23]]]]
         ],
         locals: [],
         templates: [child0]
@@ -32401,7 +32424,7 @@ define('frontend-cp/components/ko-identities/template', ['exports'], function (e
         },
         statements: [
           ["inline","format-message",[["subexpr","intl-get",["generic.identities.facebook_identities_title"],[],["loc",[null,[134,39],[134,96]]]]],[],["loc",[null,[134,22],[134,98]]]],
-          ["block","each",[["get","parent.facebooks",["loc",[null,[137,22],[137,38]]]]],[],0,null,["loc",[null,[137,14],[164,23]]]]
+          ["block","each",[["get","facebookIdentities",["loc",[null,[137,22],[137,40]]]]],[],0,null,["loc",[null,[137,14],[164,23]]]]
         ],
         locals: [],
         templates: [child0]
@@ -32796,12 +32819,12 @@ define('frontend-cp/components/ko-identities/template', ['exports'], function (e
       },
       statements: [
         ["inline","format-message",[["subexpr","intl-get",["generic.identities.component_title"],[],["loc",[null,[3,21],[3,68]]]]],[],["loc",[null,[3,4],[3,70]]]],
-        ["block","if",[["get","parent.emails.length",["loc",[null,[7,12],[7,32]]]]],[],0,null,["loc",[null,[7,6],[58,13]]]],
-        ["block","if",[["get","parent.twitters.length",["loc",[null,[59,12],[59,34]]]]],[],1,null,["loc",[null,[59,6],[94,13]]]],
-        ["block","if",[["get","parent.phones.length",["loc",[null,[95,12],[95,32]]]]],[],2,null,["loc",[null,[95,6],[131,13]]]],
-        ["block","if",[["get","parent.facebooks.length",["loc",[null,[132,12],[132,35]]]]],[],3,null,["loc",[null,[132,6],[168,13]]]],
+        ["block","if",[["get","emailIdentities.length",["loc",[null,[7,12],[7,34]]]]],[],0,null,["loc",[null,[7,6],[58,13]]]],
+        ["block","if",[["get","twitterIdentities.length",["loc",[null,[59,12],[59,36]]]]],[],1,null,["loc",[null,[59,6],[94,13]]]],
+        ["block","if",[["get","phoneIdentities.length",["loc",[null,[95,12],[95,34]]]]],[],2,null,["loc",[null,[95,6],[131,13]]]],
+        ["block","if",[["get","facebookIdentities.length",["loc",[null,[132,12],[132,37]]]]],[],3,null,["loc",[null,[132,6],[168,13]]]],
         ["block","unless",[["get","newIdentity",["loc",[null,[169,16],[169,27]]]]],[],4,null,["loc",[null,[169,6],[188,17]]]],
-        ["block","if",[["subexpr","and",[["get","newIdentity",["loc",[null,[192,13],[192,24]]]],["subexpr","not",[["get","newIdentity.isSaving",["loc",[null,[192,30],[192,50]]]]],[],["loc",[null,[192,25],[192,51]]]]],[],["loc",[null,[192,8],[192,52]]]]],[],5,null,["loc",[null,[192,2],[194,9]]]]
+        ["block","if",[["get","newIdentity",["loc",[null,[192,8],[192,19]]]]],[],5,null,["loc",[null,[192,2],[194,9]]]]
       ],
       locals: [],
       templates: [child0, child1, child2, child3, child4, child5]
@@ -49477,7 +49500,7 @@ define('frontend-cp/locales/en-us/generic', ['exports'], function (exports) {
     "identities.verify_identity": "Verify identity",
     "identities.make_primary": "Make primary",
     "identities.placeholders.email": "Add email address",
-    "identities.placeholders.twitter": "Add twitter handler",
+    "identities.placeholders.twitter": "Add twitter handle",
     "identities.placeholders.phone": "Add phone number",
     "identities.errors.invalid_email_format": "Email format invalid",
     "identities.errors.invalid_twitter_handle_format": "Twitter handle format invalid",
@@ -80785,7 +80808,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"1bd23e0e510c74f07906","authEndpoint":"http://novo/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+743bad1b"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"1bd23e0e510c74f07906","authEndpoint":"http://novo/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+1806bceb"});
 }
 
 /* jshint ignore:end */
