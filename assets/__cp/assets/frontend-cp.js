@@ -80131,7 +80131,7 @@ define('frontend-cp/utils/format-validations', ['exports'], function (exports) {
   exports.validateTwitterHandleFormat = validateTwitterHandleFormat;
 
   var EMAIL_REGEX = /^[^@]+@([^@\.]+\.)+[^@\.]{2,}$/;
-  var TWITTER_REGEX = /(^|[^@\w])@(\w{1,15})\b/g;
+  var TWITTER_REGEX = /(^|[^@\w])@(\w{1,15})\b/;
 
   function validateEmailFormat(email) {
     return EMAIL_REGEX.test(email);
@@ -80170,7 +80170,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"1bd23e0e510c74f07906","authEndpoint":"http://novo/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+6681c5b6"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"1bd23e0e510c74f07906","authEndpoint":"http://novo/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+4cc594ce"});
 }
 
 /* jshint ignore:end */
