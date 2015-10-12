@@ -13833,8 +13833,8 @@ define('frontend-cp/components/ko-agent-dropdown/template', ['exports'], functio
         return morphs;
       },
       statements: [
-        ["attribute","class",["concat",["ko-agent-dropdown__nav-new button i-plus i-size-base",["subexpr","if",[["get","isExpanded",["loc",[null,[1,99],[1,109]]]]," is-active"],[],["loc",[null,[1,94],[1,124]]]]]]],
-        ["element","action",["toggleDropdown"],[],["loc",[null,[1,126],[1,153]]]],
+        ["attribute","class",["concat",["ko-agent-dropdown__nav-new button i-plus i-size-18",["subexpr","if",[["get","isExpanded",["loc",[null,[1,97],[1,107]]]]," is-active"],[],["loc",[null,[1,92],[1,122]]]]]]],
+        ["element","action",["toggleDropdown"],[],["loc",[null,[1,124],[1,151]]]],
         ["attribute","class",["concat",["ko-agent-dropdown__drop box-container ",["subexpr","unless",[["get","isExpanded",["loc",[null,[2,59],[2,69]]]],"u-hidden"],[],["loc",[null,[2,50],[2,82]]]]]]],
         ["block","if",[["get","selectedTab",["loc",[null,[3,8],[3,19]]]]],[],0,1,["loc",[null,[3,2],[62,9]]]]
       ],
@@ -14397,7 +14397,7 @@ define('frontend-cp/components/ko-case/sla-sidebar/metric/template', ['exports']
         ["block","if",[["get","metric.numberOfWholeHoursRemaining",["loc",[null,[16,8],[16,42]]]]],[],2,null,["loc",[null,[16,2],[18,9]]]],
         ["content","metric.numberOfWholeMinutesRemaining",["loc",[null,[20,2],[20,42]]]],
         ["inline","format-message",[["subexpr","intl-get",["generic.minute_abbreviation"],[],["loc",[null,[20,59],[20,99]]]]],[],["loc",[null,[20,42],[20,101]]]],
-        ["attribute","class",["concat",[["get","iconClass",["loc",[null,[22,14],[22,23]]]]," i-size-base i-after"]]]
+        ["attribute","class",["concat",[["get","iconClass",["loc",[null,[22,14],[22,23]]]]," i-size-18 i-after"]]]
       ],
       locals: [],
       templates: [child0, child1, child2]
@@ -36658,9 +36658,9 @@ define('frontend-cp/components/ko-pagination/template', ['exports'], function (e
         ["inline","format-message",[["subexpr","intl-get",["generic.paginatorof"],[],["loc",[null,[3,58],[3,90]]]]],["number",["subexpr","@mut",[["get","pageCount",["loc",[null,[3,98],[3,107]]]]],[],[]]],["loc",[null,[3,41],[3,109]]]],
         ["attribute","class",["concat",["ko-pagination__first i-chevron-double-up i-center ",["subexpr","if",[["get","hasPreviousPage",["loc",[null,[4,69],[4,84]]]],"ko-pagination__first--available",""],[],["loc",[null,[4,64],[4,123]]]]]]],
         ["block","if",[["subexpr","eq",[["get","loadingPage",["loc",[null,[5,14],[5,25]]]],1],[],["loc",[null,[5,10],[5,28]]]]],[],0,1,["loc",[null,[5,4],[9,11]]]],
-        ["attribute","class",["concat",["ko-pagination__previous i-chevron-large-up i-center i-size-base ",["subexpr","if",[["get","hasPreviousPage",["loc",[null,[11,83],[11,98]]]],"ko-pagination__previous--available",""],[],["loc",[null,[11,78],[11,140]]]]]]],
+        ["attribute","class",["concat",["ko-pagination__previous i-chevron-large-up i-center i-size-18 ",["subexpr","if",[["get","hasPreviousPage",["loc",[null,[11,81],[11,96]]]],"ko-pagination__previous--available",""],[],["loc",[null,[11,76],[11,138]]]]]]],
         ["block","if",[["subexpr","eq",[["get","loadingPage",["loc",[null,[12,14],[12,25]]]],["get","previousPage",["loc",[null,[12,26],[12,38]]]]],[],["loc",[null,[12,10],[12,39]]]]],[],2,3,["loc",[null,[12,4],[16,11]]]],
-        ["attribute","class",["concat",["ko-pagination__next i-chevron-large-down i-center i-size-base ",["subexpr","if",[["get","hasNextPage",["loc",[null,[18,81],[18,92]]]],"ko-pagination__next--available",""],[],["loc",[null,[18,76],[18,130]]]]]]],
+        ["attribute","class",["concat",["ko-pagination__next i-chevron-large-down i-center i-size-18 ",["subexpr","if",[["get","hasNextPage",["loc",[null,[18,79],[18,90]]]],"ko-pagination__next--available",""],[],["loc",[null,[18,74],[18,128]]]]]]],
         ["block","if",[["subexpr","eq",[["get","loadingPage",["loc",[null,[19,14],[19,25]]]],["get","nextPage",["loc",[null,[19,26],[19,34]]]]],[],["loc",[null,[19,10],[19,35]]]]],[],4,5,["loc",[null,[19,4],[23,11]]]],
         ["attribute","class",["concat",["ko-pagination__last i-chevron-double-down i-center ",["subexpr","if",[["get","hasNextPage",["loc",[null,[25,70],[25,81]]]],"ko-pagination__last--available",""],[],["loc",[null,[25,65],[25,119]]]]]]],
         ["block","if",[["subexpr","eq",[["get","loadingPage",["loc",[null,[26,14],[26,25]]]],["get","pageCount",["loc",[null,[26,26],[26,35]]]]],[],["loc",[null,[26,10],[26,36]]]]],[],6,7,["loc",[null,[26,4],[30,11]]]]
@@ -45300,7 +45300,7 @@ define('frontend-cp/components/ko-universal-search/template', ['exports'], funct
         var el3 = dom.createTextNode("\n    ");
         dom.appendChild(el2, el3);
         var el3 = dom.createElement("span");
-        dom.setAttribute(el3,"class","i-search i-size-base i-color-grey--dark u-inherit-lh");
+        dom.setAttribute(el3,"class","i-search i-size-18 i-color-grey--dark u-inherit-lh");
         dom.appendChild(el2, el3);
         var el3 = dom.createTextNode("\n  ");
         dom.appendChild(el2, el3);
@@ -80513,7 +80513,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"e5ba08ab0174c8e64c81","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+7df16145"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"e5ba08ab0174c8e64c81","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+cec72c13"});
 }
 
 /* jshint ignore:end */
