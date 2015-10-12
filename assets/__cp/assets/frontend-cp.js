@@ -64614,11 +64614,11 @@ define('frontend-cp/session/agent/cases/case/organisation/route', ['exports', 'f
     },
 
     activate: function activate() {
-      this.modelFor(this.routeName).on('didDelete', this.navigateToCaseBreadcrumb);
+      this.modelFor(this.routeName).on('didDelete', this, this.navigateToCaseBreadcrumb);
     },
 
     deactivate: function deactivate() {
-      this.modelFor(this.routeName).off('didDelete', this.navigateToCaseBreadcrumb);
+      this.modelFor(this.routeName).off('didDelete', this, this.navigateToCaseBreadcrumb);
     }
   });
 
@@ -80170,7 +80170,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"1bd23e0e510c74f07906","authEndpoint":"http://novo/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+3cbe7a41"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"1bd23e0e510c74f07906","authEndpoint":"http://novo/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+3d3a8047"});
 }
 
 /* jshint ignore:end */
