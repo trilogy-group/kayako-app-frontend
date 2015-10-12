@@ -11743,7 +11743,7 @@ define('frontend-cp/components/ko-admin-selectable-card/template', ['exports'], 
   }()));
 
 });
-define('frontend-cp/components/ko-agent-dropdown/component', ['exports', 'ember', 'frontend-cp/lib/keycodes'], function (exports, Ember, KeyCodes) {
+define('frontend-cp/components/ko-agent-dropdown/component', ['exports', 'ember', 'frontend-cp/lib/keycodes', 'frontend-cp/config/environment'], function (exports, Ember, KeyCodes, config) {
 
   'use strict';
 
@@ -11753,7 +11753,7 @@ define('frontend-cp/components/ko-agent-dropdown/component', ['exports', 'ember'
 
     attributeBindings: ['data-region', 'tabindex'],
     dataRegion: 'navigation-new',
-    navItems: [{ name: 'case', text: 'Case', path: null, icon: 'images/icons/case.svg' }, { name: 'user', text: 'User', path: null, icon: 'images/icons/user.svg' }, { name: 'organization', text: 'Organization', path: null, icon: 'images/icons/organization.svg' }],
+    navItems: [{ name: 'case', text: 'Case', path: null, icon: config['default'].assetRoot + '/images/icons/case.svg' }, { name: 'user', text: 'User', path: null, icon: config['default'].assetRoot + '/images/icons/user.svg' }, { name: 'organization', text: 'Organization', path: null, icon: config['default'].assetRoot + '/images/icons/organization.svg' }],
     isExpanded: false,
     selectedTab: null,
 
@@ -30314,7 +30314,7 @@ define('frontend-cp/components/ko-identities/template', ['exports'], function (e
                   var el2 = dom.createTextNode("\n                          ");
                   dom.appendChild(el1, el2);
                   var el2 = dom.createElement("div");
-                  dom.setAttribute(el2,"class","i-chevron-large-down");
+                  dom.setAttribute(el2,"class","ko-dropdown__item-chevron i-chevron-large-down");
                   dom.appendChild(el1, el2);
                   var el2 = dom.createTextNode("\n                        ");
                   dom.appendChild(el1, el2);
@@ -30885,7 +30885,7 @@ define('frontend-cp/components/ko-identities/template', ['exports'], function (e
                 var el2 = dom.createTextNode("\n                        ");
                 dom.appendChild(el1, el2);
                 var el2 = dom.createElement("div");
-                dom.setAttribute(el2,"class","i-chevron-large-down");
+                dom.setAttribute(el2,"class","ko-dropdown__item-chevron i-chevron-large-down");
                 dom.appendChild(el1, el2);
                 var el2 = dom.createTextNode("\n                      ");
                 dom.appendChild(el1, el2);
@@ -31321,7 +31321,7 @@ define('frontend-cp/components/ko-identities/template', ['exports'], function (e
                   var el2 = dom.createTextNode("\n                          ");
                   dom.appendChild(el1, el2);
                   var el2 = dom.createElement("div");
-                  dom.setAttribute(el2,"class","i-chevron-large-down");
+                  dom.setAttribute(el2,"class","ko-dropdown__item-chevron i-chevron-large-down");
                   dom.appendChild(el1, el2);
                   var el2 = dom.createTextNode("\n                        ");
                   dom.appendChild(el1, el2);
@@ -31826,7 +31826,7 @@ define('frontend-cp/components/ko-identities/template', ['exports'], function (e
                   var el2 = dom.createTextNode("\n                          ");
                   dom.appendChild(el1, el2);
                   var el2 = dom.createElement("div");
-                  dom.setAttribute(el2,"class","i-chevron-large-down");
+                  dom.setAttribute(el2,"class","ko-dropdown__item-chevron i-chevron-large-down");
                   dom.appendChild(el1, el2);
                   var el2 = dom.createTextNode("\n                        ");
                   dom.appendChild(el1, el2);
@@ -32314,7 +32314,7 @@ define('frontend-cp/components/ko-identities/template', ['exports'], function (e
               var el1 = dom.createTextNode("\n                ");
               dom.appendChild(el0, el1);
               var el1 = dom.createElement("div");
-              dom.setAttribute(el1,"class","i-chevron-large-down");
+              dom.setAttribute(el1,"class","ko-dropdown__item-chevron i-chevron-large-down");
               dom.appendChild(el0, el1);
               var el1 = dom.createTextNode("\n");
               dom.appendChild(el0, el1);
@@ -34193,6 +34193,15 @@ define('frontend-cp/components/ko-option-list-drill-down/component', ['exports',
     showValue: true,
     showExpandedByDefault: false,
 
+    formattedValue: Ember['default'].computed('value', function () {
+      var result = this.get('value');
+      if (result && result.indexOf('/') !== -1) {
+        // Add spaces around slashes for readability.
+        result = result.split('/').join(' / ');
+      }
+      return result;
+    }),
+
     showHierarchyDropdown: function showHierarchyDropdown() {
       this.set('isSuggestionDropdown', false);
       this.set('isHierarchyDropdown', true);
@@ -34560,8 +34569,8 @@ define('frontend-cp/components/ko-option-list-drill-down/template', ['exports'],
         },
         statements: [
           ["content","title",["loc",[null,[2,38],[2,47]]]],
-          ["attribute","class",["concat",[["subexpr","unless",[["get","showValue",["loc",[null,[3,23],[3,32]]]],"u-hidden"],[],["loc",[null,[3,14],[3,45]]]]]]],
-          ["content","value",["loc",[null,[3,47],[3,56]]]]
+          ["attribute","class",["concat",["ko-option-list-drill-down__value ",["subexpr","unless",[["get","showValue",["loc",[null,[3,56],[3,65]]]],"u-hidden"],[],["loc",[null,[3,47],[3,78]]]]]]],
+          ["content","formattedValue",["loc",[null,[3,80],[3,98]]]]
         ],
         locals: [],
         templates: []
@@ -49738,7 +49747,6 @@ define('frontend-cp/login/controller', ['exports', 'ember', 'frontend-cp/config/
           var valid = !!response.data.is_user;
 
           _this4.set('validAvatar', valid);
-
           if (valid) {
             _this4.set('avatarBackground', response.data.data);
           }
@@ -49870,7 +49878,7 @@ define('frontend-cp/login/controller', ['exports', 'ember', 'frontend-cp/config/
 
     loginBackImageStyle: Ember['default'].computed('avatarBackground', function () {
       if (this.get('avatarBackground')) {
-        return htmlSafe('background-image: url("' + config['default'].assetRoot + '/' + this.get('avatarBackground') + '");');
+        return htmlSafe('background-image: url("' + this.get('avatarBackground') + '");');
       } else {
         return htmlSafe('');
       }
@@ -77737,7 +77745,7 @@ define('frontend-cp/tests/unit/components/ko-option-list-drill-down/component-te
         });
 
         assert.deepEqual(value, 2, 'external action was called');
-        component.set('value', selectedObject[0].value.split(',').join(' / '));
+        component.set('value', selectedObject[0].value.split(',').join('/'));
       }
     };
 
@@ -80425,7 +80433,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"1bd23e0e510c74f07906","authEndpoint":"http://novo/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+cea88e02"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"e5ba08ab0174c8e64c81","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+c6e4e151"});
 }
 
 /* jshint ignore:end */
