@@ -40,6 +40,8 @@
   "next-reply-time": "Next reply time",
   "last-replier": "Last replier",
   "reply-due-at": "Reply due at",
+  "reply-twitter-message": "Send reply as link to the Help Center.",
+  "reply-twitter-tooltip": "Kayako will send a public Tweet to the requester containing a link to this conversation on the Help Center.",
   "resolution-at": "Resolution at",
   "cases": "Cases",
   "due": "Due",
