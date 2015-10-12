@@ -111,5 +111,10 @@
   "identities.placeholders.phone": "Add phone number",
   "identities.errors.invalid_email_format": "Email format invalid",
   "identities.errors.invalid_twitter_handle_format": "Twitter handle format invalid",
-  "identities.confirm_remove": "Are you sure you want to remove this identity?"
+  "identities.confirm_remove": "Are you sure you want to remove this identity?",
+
+  "error.field_required": "This action requires the field to be specified",
+  "error.field_duplicate": "The value of the field is already used for another resource",
+  "error.field_empty": "The value of the field cannot be empty",
+  "error.field_invalid": "The value of the field is invalid"
 }
