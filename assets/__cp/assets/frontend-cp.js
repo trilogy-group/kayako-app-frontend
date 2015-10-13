@@ -64020,13 +64020,14 @@ define('frontend-cp/session/agent/cases/case/index/controller', ['exports', 'emb
   });
 
 });
-define('frontend-cp/session/agent/cases/case/index/route', ['exports', 'ember'], function (exports, Ember) {
+define('frontend-cp/session/agent/cases/case/index/route', ['exports', 'frontend-cp/routes/abstract/tabbed-route', 'ember'], function (exports, TabbedRoute, Ember) {
 
   'use strict';
 
-  exports['default'] = Ember['default'].Route.extend({
+  exports['default'] = TabbedRoute['default'].extend({
     storeCache: Ember['default'].inject.service('store-cache'),
     routeStateService: Ember['default'].inject.service('route-state'),
+    intlService: Ember['default'].inject.service('intl'),
 
     queryParams: {
       postId: {
@@ -64067,6 +64068,9 @@ define('frontend-cp/session/agent/cases/case/index/route', ['exports', 'ember'],
       controller.set('types', model.types);
       controller.set('statuses', model.statuses);
       controller.set('caseFields', model.caseFields);
+
+      var tabName = model['case'].get('subject') ? model['case'].get('subject') : this.get('intlService').findTranslationByKey('cases.new_case_tab_placeholder').translation;
+      this.setTabLabel(tabName);
 
       //ignore anything we've added/changed during setup
       //model.case.cacheRelationships();
@@ -64262,7 +64266,8 @@ define('frontend-cp/session/agent/cases/case/organisation/route', ['exports', 'f
   exports['default'] = TabbedRoute['default'].extend({
     breadcrumbChange: 'breadcrumbChange',
 
-    navigateToCaseBreadcrumb: function navigateToCaseBreadcrumb() {
+    cleanUpDeletedOrganizationFromUI: function cleanUpDeletedOrganizationFromUI() {
+      this.modelFor('session.agent.cases.case').set('requester.organization', null);
       var caseController = this.controllerFor('session.agent.cases.case');
       caseController.send('breadcrumbChange', 'case');
     },
@@ -64274,15 +64279,17 @@ define('frontend-cp/session/agent/cases/case/organisation/route', ['exports', 'f
 
     setupController: function setupController(controller, model) {
       this._super(controller, model);
+
+      // case is the main parent for this route
       this.setTabLabel(model.get('name'));
     },
 
     activate: function activate() {
-      this.modelFor(this.routeName).on('didDelete', this, this.navigateToCaseBreadcrumb);
+      this.modelFor(this.routeName).on('didDelete', this, this.cleanUpDeletedOrganizationFromUI);
     },
 
     deactivate: function deactivate() {
-      this.modelFor(this.routeName).off('didDelete', this, this.navigateToCaseBreadcrumb);
+      this.modelFor(this.routeName).off('didDelete', this, this.cleanUpDeletedOrganizationFromUI);
     }
   });
 
@@ -75700,7 +75707,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"e5ba08ab0174c8e64c81","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+dfb171ed"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"e5ba08ab0174c8e64c81","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+b3f8baa6"});
 }
 
 /* jshint ignore:end */
