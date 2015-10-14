@@ -106,7 +106,7 @@
   "identities.add_twitter_identity": "Twitter",
   "identities.primary_comment": "(primary)",
   "identities.remove_identity": "Remove identity",
-  "identities.verify_identity": "Verify identity",
+  "identities.validate_identity": "Validate identity",
   "identities.make_primary": "Make primary",
   "identities.placeholders.email": "Add email address",
   "identities.placeholders.twitter": "Add twitter handle",
