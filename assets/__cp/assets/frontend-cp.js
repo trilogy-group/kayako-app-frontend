@@ -14544,7 +14544,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
     // Params
     'case': null,
     caseFields: null,
-    onTopPostChange: function onTopPostChange() {},
+    onPostIdChange: function onPostIdChange() {},
     postId: null,
 
     store: Ember['default'].inject.service(),
@@ -14831,7 +14831,10 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
           Ember['default'].run(function () {
             var bottomPost = undefined;
             posts.forEach(function (post) {
-              _this7.get('posts').pushObject(post);
+              if (_this7.get('posts')) {
+                _this7.get('posts').pushObject(post);
+              }
+
               if (post.constructor.typeKey === 'post') {
                 bottomPost = post;
               }
@@ -15043,7 +15046,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
      */
     sendTopPost: Ember['default'].observer('headerSticky', function () {
       if (!this.get('headerSticky')) {
-        this.attrs.onTopPostChange(null);
+        this.attrs.onPostIdChange(null);
       }
     }),
 
@@ -15390,10 +15393,8 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
         });
       },
 
-      changeTopPost: function changeTopPost(id) {
-        if (this.get('headerSticky')) {
-          this.attrs.onTopPostChange(id);
-        }
+      postIdChange: function postIdChange(postId) {
+        this.attrs.onPostIdChange(postId);
       },
 
       filter: function filter(_filter) {
@@ -16013,11 +16014,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 88,
+                "line": 95,
                 "column": 12
               },
               "end": {
-                "line": 90,
+                "line": 97,
                 "column": 12
               }
             },
@@ -16042,7 +16043,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             return morphs;
           },
           statements: [
-            ["inline","ko-loader",[],["large",true],["loc",[null,[89,14],[89,38]]]]
+            ["inline","ko-loader",[],["large",true],["loc",[null,[96,14],[96,38]]]]
           ],
           locals: [],
           templates: []
@@ -16054,11 +16055,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 87,
+              "line": 94,
               "column": 10
             },
             "end": {
-              "line": 91,
+              "line": 98,
               "column": 10
             }
           },
@@ -16081,7 +16082,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["block","ko-center",[],[],0,null,["loc",[null,[88,12],[90,26]]]]
+          ["block","ko-center",[],[],0,null,["loc",[null,[95,12],[97,26]]]]
         ],
         locals: [],
         templates: [child0]
@@ -16094,11 +16095,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 102,
+              "line": 109,
               "column": 8
             },
             "end": {
-              "line": 110,
+              "line": 117,
               "column": 8
             }
           },
@@ -16123,7 +16124,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["inline","ko-case-field/tags",[],["tags",["subexpr","@mut",[["get","tags",["loc",[null,[105,17],[105,21]]]]],[],[]],"suggestedTags",["subexpr","@mut",[["get","suggestedTags",["loc",[null,[106,26],[106,39]]]]],[],[]],"onTagAddition","addTag","onTagRemoval","removeTag","onTagSuggestion","suggestTags"],["loc",[null,[104,10],[109,43]]]]
+          ["inline","ko-case-field/tags",[],["tags",["subexpr","@mut",[["get","tags",["loc",[null,[112,17],[112,21]]]]],[],[]],"suggestedTags",["subexpr","@mut",[["get","suggestedTags",["loc",[null,[113,26],[113,39]]]]],[],[]],"onTagAddition","addTag","onTagRemoval","removeTag","onTagSuggestion","suggestTags"],["loc",[null,[111,10],[116,43]]]]
         ],
         locals: [],
         templates: []
@@ -16138,11 +16139,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 121,
+                  "line": 128,
                   "column": 12
                 },
                 "end": {
-                  "line": 134,
+                  "line": 141,
                   "column": 12
                 }
               },
@@ -16167,7 +16168,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
               return morphs;
             },
             statements: [
-              ["inline","component",[["subexpr","ko-helper",[["get","customFieldsList.componentFor",["loc",[null,[122,37],[122,66]]]],["get","field.fieldType",["loc",[null,[122,67],[122,82]]]]],[],["loc",[null,[122,26],[122,83]]]]],["case",["subexpr","@mut",[["get","case",["loc",[null,[123,19],[123,23]]]]],[],[]],"options",["subexpr","ko-contextual-helper",[["get","optionsForField",["loc",[null,[124,44],[124,59]]]],["get","this",["loc",[null,[124,60],[124,64]]]],["get","field",["loc",[null,[124,65],[124,70]]]]],[],["loc",[null,[124,22],[124,71]]]],"customFieldsModel",["subexpr","@mut",[["get","case.customFields",["loc",[null,[125,32],[125,49]]]]],[],[]],"field",["subexpr","@mut",[["get","field",["loc",[null,[126,20],[126,25]]]]],[],[]],"fieldValue",["subexpr","ko-helper",[["get","customFieldsList.findCustomFieldValue",["loc",[null,[127,36],[127,73]]]],["get","case.customFields",["loc",[null,[127,74],[127,91]]]],["get","field",["loc",[null,[127,92],[127,97]]]]],[],["loc",[null,[127,25],[127,98]]]],"title",["subexpr","@mut",[["get","field.title",["loc",[null,[128,20],[128,31]]]]],[],[]],"errors",["subexpr","@mut",[["get","errors",["loc",[null,[129,21],[129,27]]]]],[],[]],"editedCustomFields",["subexpr","@mut",[["get","editedCaseFields",["loc",[null,[130,33],[130,49]]]]],[],[]],"fieldsEditedByPusher",["subexpr","@mut",[["get","case.propertiesChangeViaPusher",["loc",[null,[131,35],[131,65]]]]],[],[]],"onFieldUpdated","updateDirtyFieldHash"],["loc",[null,[122,14],[133,16]]]]
+              ["inline","component",[["subexpr","ko-helper",[["get","customFieldsList.componentFor",["loc",[null,[129,37],[129,66]]]],["get","field.fieldType",["loc",[null,[129,67],[129,82]]]]],[],["loc",[null,[129,26],[129,83]]]]],["case",["subexpr","@mut",[["get","case",["loc",[null,[130,19],[130,23]]]]],[],[]],"options",["subexpr","ko-contextual-helper",[["get","optionsForField",["loc",[null,[131,44],[131,59]]]],["get","this",["loc",[null,[131,60],[131,64]]]],["get","field",["loc",[null,[131,65],[131,70]]]]],[],["loc",[null,[131,22],[131,71]]]],"customFieldsModel",["subexpr","@mut",[["get","case.customFields",["loc",[null,[132,32],[132,49]]]]],[],[]],"field",["subexpr","@mut",[["get","field",["loc",[null,[133,20],[133,25]]]]],[],[]],"fieldValue",["subexpr","ko-helper",[["get","customFieldsList.findCustomFieldValue",["loc",[null,[134,36],[134,73]]]],["get","case.customFields",["loc",[null,[134,74],[134,91]]]],["get","field",["loc",[null,[134,92],[134,97]]]]],[],["loc",[null,[134,25],[134,98]]]],"title",["subexpr","@mut",[["get","field.title",["loc",[null,[135,20],[135,31]]]]],[],[]],"errors",["subexpr","@mut",[["get","errors",["loc",[null,[136,21],[136,27]]]]],[],[]],"editedCustomFields",["subexpr","@mut",[["get","editedCaseFields",["loc",[null,[137,33],[137,49]]]]],[],[]],"fieldsEditedByPusher",["subexpr","@mut",[["get","case.propertiesChangeViaPusher",["loc",[null,[138,35],[138,65]]]]],[],[]],"onFieldUpdated","updateDirtyFieldHash"],["loc",[null,[129,14],[140,16]]]]
             ],
             locals: [],
             templates: []
@@ -16179,11 +16180,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 120,
+                "line": 127,
                 "column": 10
               },
               "end": {
-                "line": 135,
+                "line": 142,
                 "column": 10
               }
             },
@@ -16206,7 +16207,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             return morphs;
           },
           statements: [
-            ["block","if",[["get","field.isEnabled",["loc",[null,[121,18],[121,33]]]]],[],0,null,["loc",[null,[121,12],[134,19]]]]
+            ["block","if",[["get","field.isEnabled",["loc",[null,[128,18],[128,33]]]]],[],0,null,["loc",[null,[128,12],[141,19]]]]
           ],
           locals: [],
           templates: [child0]
@@ -16218,11 +16219,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 119,
+              "line": 126,
               "column": 8
             },
             "end": {
-              "line": 136,
+              "line": 143,
               "column": 8
             }
           },
@@ -16245,7 +16246,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["block","if",[["subexpr","ko-helper",[["get","customFieldsList.componentFor",["loc",[null,[120,27],[120,56]]]],["get","field.fieldType",["loc",[null,[120,57],[120,72]]]]],[],["loc",[null,[120,16],[120,73]]]]],[],0,null,["loc",[null,[120,10],[135,17]]]]
+          ["block","if",[["subexpr","ko-helper",[["get","customFieldsList.componentFor",["loc",[null,[127,27],[127,56]]]],["get","field.fieldType",["loc",[null,[127,57],[127,72]]]]],[],["loc",[null,[127,16],[127,73]]]]],[],0,null,["loc",[null,[127,10],[142,17]]]]
         ],
         locals: ["field"],
         templates: [child0]
@@ -16258,11 +16259,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 139,
+              "line": 146,
               "column": 8
             },
             "end": {
-              "line": 141,
+              "line": 148,
               "column": 8
             }
           },
@@ -16287,7 +16288,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["inline","ko-case/sla-sidebar",[],["sla",["subexpr","@mut",[["get","case.sla",["loc",[null,[140,36],[140,44]]]]],[],[]],"slaMetrics",["subexpr","@mut",[["get","case.slaMetrics",["loc",[null,[140,56],[140,71]]]]],[],[]]],["loc",[null,[140,10],[140,73]]]]
+          ["inline","ko-case/sla-sidebar",[],["sla",["subexpr","@mut",[["get","case.sla",["loc",[null,[147,36],[147,44]]]]],[],[]],"slaMetrics",["subexpr","@mut",[["get","case.slaMetrics",["loc",[null,[147,56],[147,71]]]]],[],[]]],["loc",[null,[147,10],[147,73]]]]
         ],
         locals: [],
         templates: []
@@ -16303,7 +16304,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             "column": 0
           },
           "end": {
-            "line": 148,
+            "line": 155,
             "column": 0
           }
         },
@@ -16460,7 +16461,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
         dom.appendChild(el4, el5);
         var el5 = dom.createComment("");
         dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n        ");
+        var el5 = dom.createTextNode("\n\n        ");
         dom.appendChild(el4, el5);
         var el5 = dom.createElement("div");
         dom.setAttribute(el5,"class","ko-case-content__loaderBottom");
@@ -16586,17 +16587,17 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
         ["block","if",[["get","case.id",["loc",[null,[65,14],[65,21]]]]],[],1,null,["loc",[null,[65,8],[70,15]]]],
         ["block","if",[["get","topPostsAvailable",["loc",[null,[71,14],[71,31]]]]],[],2,null,["loc",[null,[71,8],[79,15]]]],
         ["block","if",[["get","newPosts",["loc",[null,[81,16],[81,24]]]]],[],3,null,["loc",[null,[81,10],[83,17]]]],
-        ["inline","ko-feed",[],["events",["subexpr","@mut",[["get","posts",["loc",[null,[85,25],[85,30]]]]],[],[]],"onReplyWithQuote","replyWithQuote","top",["subexpr","@mut",[["get","timelineVisibleTop",["loc",[null,[85,69],[85,87]]]]],[],[]],"left",["subexpr","@mut",[["get","timelineVisibleLeft",["loc",[null,[85,93],[85,112]]]]],[],[]],"onTopPostChange",["subexpr","action",["changeTopPost"],[],["loc",[null,[85,129],[85,153]]]]],["loc",[null,[85,8],[85,155]]]],
-        ["block","if",[["get","loadingBottom",["loc",[null,[87,16],[87,29]]]]],[],4,null,["loc",[null,[87,10],[91,17]]]],
-        ["attribute","class",["concat",["list-bare ko-case-content__info-bar ",["subexpr","if",[["get","headerSticky",["loc",[null,[96,57],[96,69]]]],"ko-case-content__info-bar--sticky"],[],["loc",[null,[96,52],[96,107]]]]]]],
-        ["element","action",["submit"],[],["loc",[null,[98,55],[98,74]]]],
-        ["inline","format-message",[["subexpr","intl-get",["cases.submit"],[],["loc",[null,[98,92],[98,117]]]]],[],["loc",[null,[98,75],[98,119]]]],
-        ["inline","ko-case-field/requester",[],["requester",["subexpr","@mut",[["get","case.requester",["loc",[null,[100,44],[100,58]]]]],[],[]]],["loc",[null,[100,8],[100,60]]]],
-        ["block","ko-info-bar/field",[],["title",["subexpr","format-message",[["subexpr","intl-get",["cases.tags"],[],["loc",[null,[102,51],[102,74]]]]],[],["loc",[null,[102,35],[102,75]]]],"isEdited",["subexpr","@mut",[["get","isTagsFieldEdited",["loc",[null,[103,19],[103,36]]]]],[],[]]],5,null,["loc",[null,[102,8],[110,30]]]],
-        ["inline","ko-case-field/forms",[],["selectedForm",["subexpr","@mut",[["get","case.form",["loc",[null,[113,23],[113,32]]]]],[],[]],"forms",["subexpr","@mut",[["get","caseForms",["loc",[null,[114,16],[114,25]]]]],[],[]],"onFormSelected","setForm","isEdited",["subexpr","@mut",[["get","editedCaseFields.form",["loc",[null,[116,19],[116,40]]]]],[],[]]],["loc",[null,[112,8],[117,10]]]],
-        ["block","each",[["get","caseOrFormFields",["loc",[null,[119,16],[119,32]]]]],[],6,null,["loc",[null,[119,8],[136,17]]]],
-        ["block","if",[["get","case.id",["loc",[null,[139,14],[139,21]]]]],[],7,null,["loc",[null,[139,8],[141,15]]]],
-        ["inline","ko-info-bar/metadata",[],["rows",["subexpr","@mut",[["get","caseDates",["loc",[null,[143,36],[143,45]]]]],[],[]]],["loc",[null,[143,8],[143,47]]]]
+        ["inline","ko-feed",[],["events",["subexpr","@mut",[["get","posts",["loc",[null,[86,17],[86,22]]]]],[],[]],"onReplyWithQuote","replyWithQuote","top",["subexpr","@mut",[["get","timelineVisibleTop",["loc",[null,[88,14],[88,32]]]]],[],[]],"left",["subexpr","@mut",[["get","timelineVisibleLeft",["loc",[null,[89,15],[89,34]]]]],[],[]],"onPostIdChange",["subexpr","@mut",[["get","onPostIdChange",["loc",[null,[90,25],[90,39]]]]],[],[]]],["loc",[null,[85,8],[91,10]]]],
+        ["block","if",[["get","loadingBottom",["loc",[null,[94,16],[94,29]]]]],[],4,null,["loc",[null,[94,10],[98,17]]]],
+        ["attribute","class",["concat",["list-bare ko-case-content__info-bar ",["subexpr","if",[["get","headerSticky",["loc",[null,[103,57],[103,69]]]],"ko-case-content__info-bar--sticky"],[],["loc",[null,[103,52],[103,107]]]]]]],
+        ["element","action",["submit"],[],["loc",[null,[105,55],[105,74]]]],
+        ["inline","format-message",[["subexpr","intl-get",["cases.submit"],[],["loc",[null,[105,92],[105,117]]]]],[],["loc",[null,[105,75],[105,119]]]],
+        ["inline","ko-case-field/requester",[],["requester",["subexpr","@mut",[["get","case.requester",["loc",[null,[107,44],[107,58]]]]],[],[]]],["loc",[null,[107,8],[107,60]]]],
+        ["block","ko-info-bar/field",[],["title",["subexpr","format-message",[["subexpr","intl-get",["cases.tags"],[],["loc",[null,[109,51],[109,74]]]]],[],["loc",[null,[109,35],[109,75]]]],"isEdited",["subexpr","@mut",[["get","isTagsFieldEdited",["loc",[null,[110,19],[110,36]]]]],[],[]]],5,null,["loc",[null,[109,8],[117,30]]]],
+        ["inline","ko-case-field/forms",[],["selectedForm",["subexpr","@mut",[["get","case.form",["loc",[null,[120,23],[120,32]]]]],[],[]],"forms",["subexpr","@mut",[["get","caseForms",["loc",[null,[121,16],[121,25]]]]],[],[]],"onFormSelected","setForm","isEdited",["subexpr","@mut",[["get","editedCaseFields.form",["loc",[null,[123,19],[123,40]]]]],[],[]]],["loc",[null,[119,8],[124,10]]]],
+        ["block","each",[["get","caseOrFormFields",["loc",[null,[126,16],[126,32]]]]],[],6,null,["loc",[null,[126,8],[143,17]]]],
+        ["block","if",[["get","case.id",["loc",[null,[146,14],[146,21]]]]],[],7,null,["loc",[null,[146,8],[148,15]]]],
+        ["inline","ko-info-bar/metadata",[],["rows",["subexpr","@mut",[["get","caseDates",["loc",[null,[150,36],[150,45]]]]],[],[]]],["loc",[null,[150,8],[150,47]]]]
       ],
       locals: [],
       templates: [child0, child1, child2, child3, child4, child5, child6, child7]
@@ -25911,14 +25912,6 @@ define('frontend-cp/components/ko-feed/activity/component', ['exports', 'ember']
     // body comes from events, plainTextSummary comes from activities
     summary: Ember['default'].computed('activity.body', 'activity.plainTextSummary', function () {
       return this.get('activity.body') || this.get('activity.plainTextSummary');
-    }),
-
-    register: Ember['default'].on('didInsertElement', function () {
-      this.attrs.onRegister(this);
-    }),
-
-    teardown: Ember['default'].on('willDestroyElement', function () {
-      this.attrs.onTeardown(this);
     })
   });
 
@@ -26000,60 +25993,57 @@ define('frontend-cp/components/ko-feed/component', ['exports', 'ember'], functio
   'use strict';
 
   exports['default'] = Ember['default'].Component.extend({
-    // Params
+    pageScroll: Ember['default'].inject.service('page-scroll'),
+
+    onPostIdChange: function onPostIdChange() {},
+
     events: null,
     top: 0,
     left: 0,
-    onTopPostChange: function onTopPostChange() {},
 
-    // State
-    timeoutId: null,
-    childItemsById: null,
-    currentTopPostId: null,
-
-    setupTopElementListener: Ember['default'].on('willInsertElement', function () {
-      var _this = this;
-
-      this.set('timeoutId', setTimeout(function () {
-        Ember['default'].run(function () {
-          var el = document.elementFromPoint(_this.get('left') + 40, _this.get('top'));
-          var $item = $(el).closest('.ko-feed_item');
-          if ($item.length > 0) {
-            var id = $item.get(0).id;
-            var item = _this.get('childItemsById')[id];
-            var post = item.get('event');
-            if (_this.get('currentTopPostId') !== post.get('id')) {
-              _this.attrs.onTopPostChange(post.get('id'));
-              _this.set('currentTopPostId', post.get('id'));
-            }
-          }
-          _this.setupTopElementListener();
-        });
-      }, 300));
+    scrollChanged: Ember['default'].observer('pageScroll.scroll', function () {
+      Ember['default'].run.debounce(this, this.onScrollChange, 200);
     }),
 
-    teardownTopElementListener: Ember['default'].on('willDestroyElement', function () {
-      clearTimeout(this.get('timeoutId'));
-    }),
+    onScrollChange: function onScrollChange() {
+      if (this.get('isDestroyed') || this.get('isDestroying')) {
+        return;
+      }
+
+      if (this.get('events') === null || !this.get('events.length')) {
+        return;
+      }
+
+      this.attrs.onPostIdChange(this._getClosestPost());
+    },
+
+    _getClosestPost: function _getClosestPost() {
+      var el = document.elementFromPoint(this.get('left') + 40, this.get('top'));
+
+      var $item = Ember['default'].$(el).closest('.ko-feed_item');
+
+      if ($item.length <= 0) {
+        // if we where unable to find ko-feed_item its possible, that we are on the absolute border
+        if (Ember['default'].$(el).hasClass('ko-feed_activity__border')) {
+          $item = $(el).parents('.ko-feed_activity').prevAll('.ko-feed_item:first');
+        }
+      }
+
+      if ($item.length <= 0) {
+        return null;
+      }
+
+      return $item.data('id');
+    },
 
     setupChildItems: Ember['default'].on('init', function () {
-      this.set('childItemsById', {});
+      // need to call service at least once, so it is really injected.
+      this.get('pageScroll.scroll');
     }),
 
     actions: {
       onReplyWithQuote: function onReplyWithQuote(quote) {
         this.sendAction('onReplyWithQuote', quote);
-      },
-
-      register: function register(item) {
-        this.get('childItemsById')[item.get('elementId')] = item;
-      },
-
-      teardown: function teardown(item) {
-        delete this.get('childItemsById')[item.get('event.id')];
-        if (this.get('currentTopPostId') === item.get('event.id')) {
-          this.set('currentTopPostId', null);
-        }
       }
     }
   });
@@ -26070,17 +26060,10 @@ define('frontend-cp/components/ko-feed/item/component', ['exports', 'ember'], fu
 
     classNames: ['ko-feed_item'],
     classNameBindings: ['isNote:ko-feed_item--note:ko-feed_item--post'],
+    attributeBindings: ['event.id:data-id'],
     isNote: Ember['default'].computed.equal('event.original.postType', 'note'),
 
     showMenu: false,
-
-    register: Ember['default'].on('willInsertElement', function () {
-      this.attrs.onRegister(this);
-    }),
-
-    teardown: Ember['default'].on('willDestroyElement', function () {
-      this.attrs.onTeardown(this);
-    }),
 
     mouseEnter: function mouseEnter() {
       this.set('showMenu', true);
@@ -26399,7 +26382,7 @@ define('frontend-cp/components/ko-feed/template', ['exports'], function (exports
                 "column": 2
               },
               "end": {
-                "line": 8,
+                "line": 4,
                 "column": 2
               }
             },
@@ -26424,7 +26407,7 @@ define('frontend-cp/components/ko-feed/template', ['exports'], function (exports
             return morphs;
           },
           statements: [
-            ["inline","ko-feed/item",[],["event",["subexpr","@mut",[["get","event",["loc",[null,[4,12],[4,17]]]]],[],[]],"onReplyWithQuote","onReplyWithQuote","onRegister",["subexpr","action",["register"],[],["loc",[null,[6,17],[6,36]]]],"onTeardown",["subexpr","action",["teardown"],[],["loc",[null,[7,17],[7,36]]]]],["loc",[null,[3,4],[7,38]]]]
+            ["inline","ko-feed/item",[],["event",["subexpr","@mut",[["get","event",["loc",[null,[3,25],[3,30]]]]],[],[]],"onReplyWithQuote","onReplyWithQuote"],["loc",[null,[3,4],[3,68]]]]
           ],
           locals: [],
           templates: []
@@ -26437,11 +26420,11 @@ define('frontend-cp/components/ko-feed/template', ['exports'], function (exports
             "loc": {
               "source": null,
               "start": {
-                "line": 9,
+                "line": 5,
                 "column": 2
               },
               "end": {
-                "line": 14,
+                "line": 7,
                 "column": 2
               }
             },
@@ -26466,7 +26449,7 @@ define('frontend-cp/components/ko-feed/template', ['exports'], function (exports
             return morphs;
           },
           statements: [
-            ["inline","ko-feed/activity",[],["activity",["subexpr","@mut",[["get","event",["loc",[null,[11,15],[11,20]]]]],[],[]],"onRegister",["subexpr","action",["register"],[],["loc",[null,[12,17],[12,36]]]],"onTeardown",["subexpr","action",["teardown"],[],["loc",[null,[13,17],[13,36]]]]],["loc",[null,[10,4],[13,38]]]]
+            ["inline","ko-feed/activity",[],["activity",["subexpr","@mut",[["get","event",["loc",[null,[6,32],[6,37]]]]],[],[]]],["loc",[null,[6,4],[6,39]]]]
           ],
           locals: [],
           templates: []
@@ -26482,7 +26465,7 @@ define('frontend-cp/components/ko-feed/template', ['exports'], function (exports
               "column": 0
             },
             "end": {
-              "line": 15,
+              "line": 8,
               "column": 0
             }
           },
@@ -26508,8 +26491,8 @@ define('frontend-cp/components/ko-feed/template', ['exports'], function (exports
           return morphs;
         },
         statements: [
-          ["block","if",[["subexpr","eq",[["get","event.constructor.typeKey",["loc",[null,[2,12],[2,37]]]],"post"],[],["loc",[null,[2,8],[2,45]]]]],[],0,null,["loc",[null,[2,2],[8,9]]]],
-          ["block","if",[["subexpr","or",[["subexpr","eq",[["get","event.constructor.typeKey",["loc",[null,[9,16],[9,41]]]],"activity"],[],["loc",[null,[9,12],[9,53]]]],["subexpr","eq",[["get","event.constructor.typeKey",["loc",[null,[9,58],[9,83]]]],"event"],[],["loc",[null,[9,54],[9,92]]]]],[],["loc",[null,[9,8],[9,93]]]]],[],1,null,["loc",[null,[9,2],[14,9]]]]
+          ["block","if",[["subexpr","eq",[["get","event.constructor.typeKey",["loc",[null,[2,12],[2,37]]]],"post"],[],["loc",[null,[2,8],[2,45]]]]],[],0,null,["loc",[null,[2,2],[4,9]]]],
+          ["block","if",[["subexpr","or",[["subexpr","eq",[["get","event.constructor.typeKey",["loc",[null,[5,16],[5,41]]]],"activity"],[],["loc",[null,[5,12],[5,53]]]],["subexpr","eq",[["get","event.constructor.typeKey",["loc",[null,[5,58],[5,83]]]],"event"],[],["loc",[null,[5,54],[5,92]]]]],[],["loc",[null,[5,8],[5,93]]]]],[],1,null,["loc",[null,[5,2],[7,9]]]]
         ],
         locals: ["event"],
         templates: [child0, child1]
@@ -26525,7 +26508,7 @@ define('frontend-cp/components/ko-feed/template', ['exports'], function (exports
             "column": 0
           },
           "end": {
-            "line": 15,
+            "line": 8,
             "column": 9
           }
         },
@@ -26548,7 +26531,7 @@ define('frontend-cp/components/ko-feed/template', ['exports'], function (exports
         return morphs;
       },
       statements: [
-        ["block","each",[["get","events",["loc",[null,[1,8],[1,14]]]]],[],0,null,["loc",[null,[1,0],[15,9]]]]
+        ["block","each",[["get","events",["loc",[null,[1,8],[1,14]]]]],[],0,null,["loc",[null,[1,0],[8,9]]]]
       ],
       locals: [],
       templates: [child0]
@@ -48367,6 +48350,10 @@ define('frontend-cp/initializers/tabs', ['exports', 'ember'], function (exports,
       function getTransitionTargetUrl(transition) {
         var _transition$router2;
 
+        if (!transition) {
+          return '';
+        }
+
         // If the transition was initiated by navigating to the URL, we already
         // have the target URL so we can just return that
         if (transition.intent.url) {
@@ -57322,6 +57309,73 @@ define('frontend-cp/services/notification', ['exports', 'ember'], function (expo
   });
 
 });
+define('frontend-cp/services/page-scroll/case', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Service.extend({
+    url: Ember['default'].inject.service('url'),
+    pageScroll: Ember['default'].inject.service('page-scroll'),
+    routeState: Ember['default'].inject.service('routeState'),
+
+    update: function update(params, router) {
+      var routeState = this.get('routeState');
+
+      var rootURL = router.get('location.rootURL').replace(/\/$/, '');
+      var baseURL = router.get('location.baseURL').replace(/\/$/, '');
+      var location = router.get('location.location');
+      var path = location.pathname.replace(baseURL, '').replace(rootURL, '');
+
+      var postParam = params.postId ? 'postId=' + params.postId : '';
+      var filterParam = params.filter ? 'filter=' + params.filter : '';
+      var sortParam = params.sort ? 'sort=' + params.sort : '';
+
+      var search = [filterParam, postParam, sortParam].filter(function (x) {
+        return x;
+      }).join('&');
+      var searchParam = search ? '?' + search : '';
+
+      var url = path + searchParam;
+
+      var currentPath = this.get('url.currentPath') || '';
+
+      if (currentPath.split('.').pop() !== 'loading') {
+        this.get('pageScroll').updateTabState({ 'scroll': this.get('pageScroll.scroll') });
+        this.get('pageScroll').updateTabUrl(url);
+      }
+
+      routeState.transitionToState(url, routeState.getState());
+    }
+  });
+
+});
+define('frontend-cp/services/page-scroll', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Service.extend({
+    tabs: Ember['default'].inject.service('tabs'),
+    routeState: Ember['default'].inject.service('routeState'),
+
+    scroll: 0,
+
+    updateTabState: function updateTabState(updates) {
+      var routeState = this.get('routeState');
+      var selectedTab = this.get('tabs.selectedTab');
+      if (!selectedTab) {
+        return;
+      }
+      routeState.updateState(updates);
+      var updatedState = Object.assign({}, selectedTab.get('state'), updates);
+      selectedTab.set('state', updatedState);
+    },
+
+    updateTabUrl: function updateTabUrl(url) {
+      this.get('tabs').updateTab(this.get('tabs.selectedTab'), 'url', url);
+    }
+  });
+
+});
 define('frontend-cp/services/permissions', ['exports', 'ember'], function (exports, Ember) {
 
   'use strict';
@@ -57654,17 +57708,6 @@ define('frontend-cp/services/route-state', ['exports', 'ember'], function (expor
     },
 
     /**
-     * Update the current URL including the hash
-     * @param {[string]} url URL value to update, including hash if available
-     */
-    updateUrlWithHash: function updateUrlWithHash(url) {
-      var location = this.container.lookup('router:main').get('location');
-      if (location.replaceURL) {
-        location.replaceURL(url);
-      }
-    },
-
-    /**
      * Transition to a path with a corresponding history state object
      * @param {string} url URL path for the target route
      * @param {object} state History state properties to be added after transition with `history.replaceState(state)`
@@ -57697,20 +57740,17 @@ define('frontend-cp/services/route-state', ['exports', 'ember'], function (expor
       var didReceiveTransitionEvent = false;
       var onTransitionSucceeded = function onTransitionSucceeded() {
         didReceiveTransitionEvent = true;
-        _this.updateUrlWithHash(url);
         _this.updateState(stateWithoutPath);
       };
 
       router.on('didTransition', onTransitionSucceeded);
 
       // Let Ember's router take care of the transition
-      var pageUrl = url.split('#')[0];
-      return router.transitionTo(pageUrl).then(function () {
+      return router.transitionTo(url).then(function () {
         // If the user we were already on this page, there will not
         // have been a `didTransition` event, so we still need to
         // update the state for this
         if (!didReceiveTransitionEvent) {
-          _this.updateUrlWithHash(url);
           _this.updateState(stateWithoutPath);
         }
       })['finally'](function () {
@@ -64005,16 +64045,32 @@ define('frontend-cp/session/agent/cases/case/index/controller', ['exports', 'emb
     }),
 
     actions: {
-      changeTopPost: function changeTopPost(postId) {
-        this.get('target').send('changeTopPost', postId);
+      postIdChange: function postIdChange(postId) {
+        if (this.get('target.currentRouteName') !== 'session.agent.cases.case.index') {
+          return;
+        }
+
+        this.send('updateUrlParams', {
+          postId: postId,
+          filter: this.get('filter'),
+          sort: this.get('sortOrder')
+        });
       },
 
       filter: function filter(_filter) {
-        this.get('target').send('filter', _filter);
+        this.send('updateUrlParams', {
+          postId: this.get('postId'),
+          filter: _filter,
+          sort: this.get('sortOrder')
+        });
       },
 
       sort: function sort(sortOrder) {
-        this.get('target').send('sort', sortOrder);
+        this.send('updateUrlParams', {
+          sort: sortOrder,
+          postId: null,
+          filter: this.get('filter')
+        });
       }
     }
   });
@@ -64028,6 +64084,7 @@ define('frontend-cp/session/agent/cases/case/index/route', ['exports', 'frontend
     storeCache: Ember['default'].inject.service('store-cache'),
     routeStateService: Ember['default'].inject.service('route-state'),
     intlService: Ember['default'].inject.service('intl'),
+    pageScrollCase: Ember['default'].inject.service('page-scroll/case'),
 
     queryParams: {
       postId: {
@@ -64086,41 +64143,9 @@ define('frontend-cp/session/agent/cases/case/index/route', ['exports', 'frontend
       }
     },
 
-    updateUrl: function updateUrl(params) {
-      var locationService = this.container.lookup('router:main').get('location');
-      var rootURL = locationService.get('rootURL').replace(/\/$/, '');
-      var location = locationService.get('location');
-      var path = location.pathname;
-      var baseURL = locationService.get('baseURL').replace(/\/$/, '');
-      var postId = params.postId !== undefined ? params.postId : this.get('controller').get('postId');
-      var filter = params.filter !== undefined ? params.filter : this.get('controller').get('filter');
-      var sort = params.sort !== undefined ? params.sort : this.get('controller').get('sort');
-
-      var postParam = postId ? 'postId=' + postId : '';
-      var filterParam = filter ? 'filter=' + filter : '';
-      var sortParam = sort ? 'sort=' + sort : '';
-
-      var search = [postParam, filterParam, sortParam].filter(function (x) {
-        return x;
-      }).join('&');
-      var url = path.replace(baseURL, '').replace(rootURL, '') + (search ? '?' + search : '');
-
-      var currentState = this.get('routeStateService').getState();
-      this.get('routeStateService').transitionToState(url, currentState);
-      this.send('updateTabUrl', url);
-    },
-
     actions: {
-      changeTopPost: function changeTopPost(postId) {
-        this.updateUrl({ postId: postId });
-      },
-
-      filter: function filter(_filter) {
-        this.updateUrl({ filter: _filter });
-      },
-
-      sort: function sort(sortOrder) {
-        this.updateUrl({ sort: sortOrder, postId: null });
+      updateUrlParams: function updateUrlParams(params) {
+        this.get('pageScrollCase').update(params, this.router);
       }
     }
   });
@@ -64165,7 +64190,7 @@ define('frontend-cp/session/agent/cases/case/index/template', ['exports'], funct
         return morphs;
       },
       statements: [
-        ["inline","ko-case-content",[],["case",["subexpr","@mut",[["get","case",["loc",[null,[2,7],[2,11]]]]],[],[]],"postId",["subexpr","@mut",[["get","postId",["loc",[null,[3,9],[3,15]]]]],[],[]],"sortOrder",["subexpr","@mut",[["get","sortOrder",["loc",[null,[4,12],[4,21]]]]],[],[]],"filter",["subexpr","@mut",[["get","filter",["loc",[null,[5,9],[5,15]]]]],[],[]],"caseFields",["subexpr","@mut",[["get","caseFields",["loc",[null,[6,13],[6,23]]]]],[],[]],"onTopPostChange",["subexpr","action",["changeTopPost"],[],["loc",[null,[7,18],[7,42]]]],"onSort",["subexpr","action",["sort"],[],["loc",[null,[8,9],[8,24]]]],"onFilter",["subexpr","action",["filter"],[],["loc",[null,[9,11],[9,28]]]]],["loc",[null,[1,0],[10,2]]]]
+        ["inline","ko-case-content",[],["case",["subexpr","@mut",[["get","case",["loc",[null,[2,7],[2,11]]]]],[],[]],"postId",["subexpr","@mut",[["get","postId",["loc",[null,[3,9],[3,15]]]]],[],[]],"sortOrder",["subexpr","@mut",[["get","sortOrder",["loc",[null,[4,12],[4,21]]]]],[],[]],"filter",["subexpr","@mut",[["get","filter",["loc",[null,[5,9],[5,15]]]]],[],[]],"caseFields",["subexpr","@mut",[["get","caseFields",["loc",[null,[6,13],[6,23]]]]],[],[]],"onPostIdChange",["subexpr","action",["postIdChange"],[],["loc",[null,[7,17],[7,40]]]],"onSort",["subexpr","action",["sort"],[],["loc",[null,[8,9],[8,24]]]],"onFilter",["subexpr","action",["filter"],[],["loc",[null,[9,11],[9,28]]]]],["loc",[null,[1,0],[10,2]]]]
       ],
       locals: [],
       templates: []
@@ -64371,9 +64396,6 @@ define('frontend-cp/session/agent/cases/case/route', ['exports', 'frontend-cp/ro
     },
 
     actions: {
-      updateTabUrl: function updateTabUrl(url) {
-        this.setTabUrl(url);
-      },
       updateTabName: function updateTabName(label) {
         var tabName = label ? label : this.get('intlService').findTranslationByKey('cases.new_case_tab_placeholder').translation;
         this.setTabLabel(tabName);
@@ -65712,6 +65734,7 @@ define('frontend-cp/session/controller', ['exports', 'ember'], function (exports
     urlService: Ember['default'].inject.service('url'),
     tabsService: Ember['default'].inject.service('tabs'),
     routeStateService: Ember['default'].inject.service('routeState'),
+    pageScroll: Ember['default'].inject.service('page-scroll'),
     searchResults: null,
     isSearching: false,
     hideSessionWidgets: false,
@@ -65747,16 +65770,25 @@ define('frontend-cp/session/controller', ['exports', 'ember'], function (exports
      * Save the scroll position to the history state whenever the user scrolls
      */
     scrollChanged: Ember['default'].observer('scroll', function () {
-      var scrollPosition = this.get('scroll');
-      var currentPath = this.get('urlService.currentPath');
-      var isInLoadingState = currentPath.split('.').pop() === 'loading';
-      if (isInLoadingState) {
+      this.set('pageScroll.scroll', this.get('scroll'));
+
+      Ember['default'].run.debounce(this, this.onScrollChange, 200);
+    }),
+
+    onScrollChange: function onScrollChange() {
+      // need to persist current scroll inside tab, when switching between tabs
+      if (this.get('isDestroyed') || this.get('isDestroying')) {
         return;
       }
-      this.updateTabState({
-        'scroll': scrollPosition
-      });
-    }),
+
+      var currentPath = this.get('urlService.currentPath') || '';
+
+      if (currentPath.split('.').pop() === 'loading') {
+        return;
+      }
+
+      this.get('pageScroll').updateTabState({ 'scroll': this.get('pageScroll.scroll') });
+    },
 
     /**
      * Update the scroll position whenever the router transitions to a new page
@@ -65817,21 +65849,6 @@ define('frontend-cp/session/controller', ['exports', 'ember'], function (exports
 
         subject.off(event, handler);
       });
-    },
-
-    /**
-     * Save UI state changes for the currently selected tab
-     * @param {Object} updates Key/value object containing state values
-     */
-    updateTabState: function updateTabState(updates) {
-      var routeStateService = this.get('routeStateService');
-      var selectedTab = this.get('tabsService.selectedTab');
-      if (!selectedTab) {
-        return;
-      }
-      routeStateService.updateState(updates);
-      var updatedState = Object.assign({}, selectedTab.get('state'), updates);
-      selectedTab.set('state', updatedState);
     },
 
     actions: {
@@ -75220,6 +75237,175 @@ define('frontend-cp/tests/unit/services/custom-fields-test', ['ember', 'ember-qu
   });
 
 });
+define('frontend-cp/tests/unit/services/page-scroll/case-test', ['ember-qunit', 'frontend-cp/tests/fixtures/services/mock-local-store', 'frontend-cp/tests/fixtures/router/mock-router', 'frontend-cp/tests/fixtures/location/mock-location'], function (ember_qunit, MockLocalStoreService, MockRouter, MockLocation) {
+
+  'use strict';
+
+  function createMockLocation() {
+    var _ref = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+    var _ref$rootUrl = _ref.rootUrl;
+    var rootUrl = _ref$rootUrl === undefined ? '/' : _ref$rootUrl;
+    var _ref$path = _ref.path;
+    var path = _ref$path === undefined ? '/' : _ref$path;
+    var _ref$state = _ref.state;
+    var state = _ref$state === undefined ? null : _ref$state;
+
+    var location = MockLocation['default'].create({
+      rootURL: rootUrl
+    });
+
+    location.replaceState(location.formatURL(path));
+
+    if (state) {
+      var _history = location.get('history');
+      var currentState = location.getState();
+      var updatedState = Object.assign({}, currentState, state);
+      _history.replaceState(updatedState, null, currentState.path);
+    }
+
+    return location;
+  }
+
+  ember_qunit.moduleFor('service:page-scroll/case', 'Unit | Service | page scroll case', {
+    needs: ['service:url', 'service:page-scroll', 'service:route-state', 'service:tabs'],
+    beforeEach: function beforeEach() {
+      this.container.register('router:main', MockRouter['default'].create(), { instantiate: false });
+      this.container.register('service:localStore', MockLocalStoreService['default']);
+    }
+  });
+
+  ember_qunit.test('it can update route state and url from params', function (assert) {
+    assert.expect(7);
+
+    var service = this.subject();
+
+    var router = this.container.lookup('router:main');
+
+    var location = createMockLocation({
+      rootUrl: '/root/',
+      path: '/initial',
+      state: {
+        initial: true
+      }
+    });
+    router.set('location', location);
+
+    var sequence = 0;
+
+    var PageScroll = {
+      updateTabState: function updateTabState() {
+        assert.equal(0, sequence++);
+      },
+
+      updateTabUrl: function updateTabUrl() {
+        assert.equal(1, sequence++);
+      }
+    };
+
+    var RouteState = {
+      transitionToState: function transitionToState(url) {
+        assert.equal(url, '/?filter=posts&postId=1&sort=date');
+      },
+      getState: function getState() {
+        return null;
+      }
+    };
+
+    service.set('pageScroll', PageScroll);
+    service.set('routeState', RouteState);
+
+    service.update({
+      postId: 1,
+      filter: 'posts',
+      sort: 'date'
+    }, router);
+
+    assert.equal(sequence, 2);
+    assert.equal(sequence, 2);
+
+    service.get('url').set('currentPath', 'anything.that.ends.on.loading');
+
+    RouteState.transitionToState = function (url) {
+      assert.equal(url, '/?filter=all&postId=10&sort=id');
+    };
+
+    service.update({
+      postId: 10,
+      filter: 'all',
+      sort: 'id'
+    }, router);
+
+    assert.equal(sequence, 2);
+  });
+
+});
+define('frontend-cp/tests/unit/services/page-scroll-test', ['ember-qunit', 'frontend-cp/tests/fixtures/services/mock-local-store', 'frontend-cp/tests/fixtures/location/mock-location'], function (ember_qunit, MockLocalStoreService, MockLocation) {
+
+  'use strict';
+
+  function createMockLocation() {
+    var _ref = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+    var _ref$rootUrl = _ref.rootUrl;
+    var rootUrl = _ref$rootUrl === undefined ? '/' : _ref$rootUrl;
+    var _ref$path = _ref.path;
+    var path = _ref$path === undefined ? '/' : _ref$path;
+    var _ref$state = _ref.state;
+    var state = _ref$state === undefined ? null : _ref$state;
+
+    var location = MockLocation['default'].create({
+      rootURL: rootUrl
+    });
+
+    location.replaceState(location.formatURL(path));
+
+    if (state) {
+      var _history = location.get('history');
+      var currentState = location.getState();
+      var updatedState = Object.assign({}, currentState, state);
+      _history.replaceState(updatedState, null, currentState.path);
+    }
+
+    return location;
+  }
+
+  ember_qunit.moduleFor('service:page-scroll', 'Unit | Service | page scroll', {
+    needs: ['service:tabs', 'service:route-state'],
+    beforeEach: function beforeEach() {
+      this.container.register('service:localStore', MockLocalStoreService['default']);
+    }
+  });
+
+  ember_qunit.test('it updates state when tab is selected', function (assert) {
+    var service = this.subject();
+
+    var location = createMockLocation({
+      rootUrl: '/root/',
+      path: '/initial',
+      state: {
+        initial: true
+      }
+    });
+    this.container.lookup('router:main').set('location', location);
+
+    var tab = service.get('tabs').createTab();
+    var tab2 = service.get('tabs').createTab();
+    var tabState = undefined;
+
+    service.updateTabState({ scroll: 1 });
+    tabState = tab.get('state');
+    assert.equal(tabState.scroll, 1);
+
+    service.get('tabs').select(tab2);
+    service.updateTabState({ scroll: 5 });
+    service.get('tabs').select(tab);
+
+    tabState = tab.get('state') || {};
+    assert.equal(tabState.scroll, 1);
+  });
+
+});
 define('frontend-cp/tests/unit/services/route-state-test', ['frontend-cp/tests/helpers/qunit', 'frontend-cp/tests/fixtures/router/mock-router', 'frontend-cp/tests/fixtures/location/mock-location'], function (qunit, MockRouter, MockLocation) {
 
   'use strict';
@@ -75707,7 +75893,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"e5ba08ab0174c8e64c81","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+67de8016"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"e5ba08ab0174c8e64c81","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+72f7ea73"});
 }
 
 /* jshint ignore:end */
