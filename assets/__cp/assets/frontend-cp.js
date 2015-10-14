@@ -29888,7 +29888,7 @@ define('frontend-cp/components/ko-identities/component', ['exports', 'ember'], f
         });
       },
 
-      verifyIdentity: function verifyIdentity(identity) {
+      validateIdentity: function validateIdentity(identity) {
         var _this2 = this;
 
         if (identity.constructor.modelName === 'identity-email') {
@@ -29903,7 +29903,7 @@ define('frontend-cp/components/ko-identities/component', ['exports', 'ember'], f
         }
       },
 
-      // sendVerificationEmail(identity) {
+      // sendValidationEmail(identity) {
       //   const adapter = this.container.lookup('adapter:application');
       //   adapter.ajax(`${adapter.namespace}/identities/emails/${identity.get('id')}/send_validation_email`, 'POST');
       // },
@@ -30480,8 +30480,8 @@ define('frontend-cp/components/ko-identities/template', ['exports'], function (e
                       return morphs;
                     },
                     statements: [
-                      ["attribute","onclick",["subexpr","action",["verifyIdentity",["get","emailIdentity",["loc",[null,[38,97],[38,110]]]]],[],["loc",[null,[38,71],[38,112]]]]],
-                      ["inline","format-message",[["subexpr","intl-get",["generic.identities.verify_identity"],[],["loc",[null,[39,47],[39,94]]]]],[],["loc",[null,[39,30],[39,96]]]]
+                      ["attribute","onclick",["subexpr","action",["validateIdentity",["get","emailIdentity",["loc",[null,[38,99],[38,112]]]]],[],["loc",[null,[38,71],[38,114]]]]],
+                      ["inline","format-message",[["subexpr","intl-get",["generic.identities.validate_identity"],[],["loc",[null,[39,47],[39,96]]]]],[],["loc",[null,[39,30],[39,98]]]]
                     ],
                     locals: [],
                     templates: []
@@ -30528,7 +30528,7 @@ define('frontend-cp/components/ko-identities/template', ['exports'], function (e
                   statements: [
                     ["block","if",[["get","emailIdentity.canBeRemoved",["loc",[null,[27,32],[27,58]]]]],[],0,null,["loc",[null,[27,26],[31,33]]]],
                     ["block","if",[["get","emailIdentity.canBePrimarized",["loc",[null,[32,32],[32,61]]]]],[],1,null,["loc",[null,[32,26],[36,33]]]],
-                    ["block","if",[["get","emailIdentity.canBeVerified",["loc",[null,[37,32],[37,59]]]]],[],2,null,["loc",[null,[37,26],[46,33]]]]
+                    ["block","if",[["get","emailIdentity.canBeValidated",["loc",[null,[37,32],[37,60]]]]],[],2,null,["loc",[null,[37,26],[46,33]]]]
                   ],
                   locals: [],
                   templates: [child0, child1, child2]
@@ -49206,7 +49206,7 @@ define('frontend-cp/locales/en-us/generic', ['exports'], function (exports) {
     "identities.add_twitter_identity": "Twitter",
     "identities.primary_comment": "(primary)",
     "identities.remove_identity": "Remove identity",
-    "identities.verify_identity": "Verify identity",
+    "identities.validate_identity": "Validate identity",
     "identities.make_primary": "Make primary",
     "identities.placeholders.email": "Add email address",
     "identities.placeholders.twitter": "Add twitter handle",
@@ -52071,6 +52071,7 @@ define('frontend-cp/mirage/factories/identity-facebook', ['exports', 'ember-cli-
     facebook_id: ember_cli_mirage.faker.random.number,
     user_name: ember_cli_mirage.faker.internet.userName,
     full_name: ember_cli_mirage.faker.name.findName,
+    is_validated: true,
     email: function email(i) {
       return 'email' + i + '@example.com';
     },
@@ -52081,8 +52082,7 @@ define('frontend-cp/mirage/factories/identity-facebook', ['exports', 'ember-cli-
       return 'http://facebook.com/user' + i;
     },
     locale: 'en',
-    resource_type: 'identity_facebook',
-    is_validated: true
+    resource_type: 'identity_facebook'
   });
 
 });
@@ -54185,31 +54185,25 @@ define('frontend-cp/models/identity-facebook', ['exports', 'ember-data', 'fronte
     website: DS['default'].attr('string'),
     profileUrl: DS['default'].attr('string'),
     locale: DS['default'].attr('string'),
-    verified: DS['default'].attr('boolean'),
+
     // Relations
     parent: DS['default'].belongsTo('has-basic-identities', { async: true, polymorphic: true, parent: true }),
 
     // CPs
-    canBeVerified: false
+    canBeValidated: false
   });
 
 });
-define('frontend-cp/models/identity-phone', ['exports', 'ember', 'ember-data', 'frontend-cp/models/identity'], function (exports, Ember, DS, Identity) {
+define('frontend-cp/models/identity-phone', ['exports', 'ember-data', 'frontend-cp/models/identity'], function (exports, DS, Identity) {
 
   'use strict';
-
-  var computed = Ember['default'].computed;
 
   exports['default'] = Identity['default'].extend({
     number: DS['default'].attr('string'),
     type: DS['default'].attr('string'),
 
     // Relations
-    parent: DS['default'].belongsTo('has-basic-identities', { async: true, polymorphic: true, parent: true }),
-
-    // CPs
-    canBeVerified: false,
-    canBePrimarized: computed.not('isPrimary')
+    parent: DS['default'].belongsTo('has-basic-identities', { async: true, polymorphic: true, parent: true })
   });
 
 });
@@ -54239,13 +54233,12 @@ define('frontend-cp/models/identity-twitter', ['exports', 'ember-data', 'fronten
     location: DS['default'].attr('string'),
     profileImageUrl: DS['default'].attr('string'),
     locale: DS['default'].attr('string'),
-    verified: DS['default'].attr('boolean'),
 
     // Relations
     parent: DS['default'].belongsTo('has-basic-identities', { async: true, polymorphic: true, parent: true }),
 
     // CPs
-    canBeVerified: false
+    canBeValidated: false
   });
 
 });
@@ -54261,8 +54254,8 @@ define('frontend-cp/models/identity', ['exports', 'ember', 'ember-data'], functi
 
     // CPs
     canBeRemoved: computed.not('isPrimary'),
-    canBeVerified: computed.not('isValidated'),
-    canBeModified: computed.or('canBeVerified', 'canBeRemoved', 'canBePrimarized'),
+    canBeValidated: computed.not('isValidated'),
+    canBeModified: computed.or('canBeValidated', 'canBeRemoved', 'canBePrimarized'),
     canBePrimarized: computed('isPrimary', 'isValidated', function () {
       return !this.get('isPrimary') && this.get('isValidated');
     })
@@ -67038,12 +67031,12 @@ define('frontend-cp/tests/acceptance/manage-user-identities-test', ['ember', 'qu
     }
   });
 
-  qunit.test('Verify an email identity of a user', function (assert) {
+  qunit.test('Validate an email identity of a user', function (assert) {
     triggerEvent('[class*=ko-dropdown--container--button]:contains("third@example.com")', 'focusin');
 
     andThen(function () {
       assert.equal(find('.ko-identities__list--emails .ko-dropdown_list__item:eq(0)').text().trim(), 'Remove identity', 'The identity can be removed');
-      assert.equal(find('.ko-identities__list--emails .ko-dropdown_list__item:eq(1)').text().trim(), 'Verify identity', 'The identity is not verified');
+      assert.equal(find('.ko-identities__list--emails .ko-dropdown_list__item:eq(1)').text().trim(), 'Validate identity', 'The identity is not validate');
       click('.ko-identities__list--emails .ko-dropdown_list__item:eq(1)');
     });
 
@@ -67058,7 +67051,7 @@ define('frontend-cp/tests/acceptance/manage-user-identities-test', ['ember', 'qu
     });
   });
 
-  qunit.test('Mark a verified email as primary', function (assert) {
+  qunit.test('Mark a validate email as primary', function (assert) {
     triggerEvent('[class*=ko-dropdown--container--button]:contains("second@example.com")', 'focusin');
 
     andThen(function () {
@@ -67101,7 +67094,7 @@ define('frontend-cp/tests/acceptance/manage-user-identities-test', ['ember', 'qu
 
     andThen(function () {
       assert.equal(find('.ko-identities__list--emails li:contains("newemail@example.com")').length, 1, 'The new email is in the list');
-      assert.equal(find('.ko-identities__list--emails li:contains("newemail@example.com") .i-caution').length, 1, 'This new email is marked as not verified');
+      assert.equal(find('.ko-identities__list--emails li:contains("newemail@example.com") .i-caution').length, 1, 'This new email is marked as not validate');
     });
   });
 
@@ -67119,7 +67112,7 @@ define('frontend-cp/tests/acceptance/manage-user-identities-test', ['ember', 'qu
     });
   });
 
-  // test('Send verification email', function(assert) {
+  // test('Send validation email', function(assert) {
   //   throw new Error('not implemented');
   // });
 
@@ -67139,7 +67132,7 @@ define('frontend-cp/tests/acceptance/manage-user-identities-test', ['ember', 'qu
     }
   });
 
-  qunit.test('Mark a verified twitter as primary', function (assert) {
+  qunit.test('Mark a validate twitter as primary', function (assert) {
     triggerEvent('[class*=ko-dropdown--container--button]:contains("@second")', 'focusin');
 
     andThen(function () {
@@ -67201,7 +67194,7 @@ define('frontend-cp/tests/acceptance/manage-user-identities-test', ['ember', 'qu
     }
   });
 
-  qunit.test('Mark a verified facebook as primary', function (assert) {
+  qunit.test('Mark a validate facebook as primary', function (assert) {
     triggerEvent('[class*=ko-dropdown--container--button]:contains("Mary")', 'focusin');
 
     andThen(function () {
@@ -67249,7 +67242,7 @@ define('frontend-cp/tests/acceptance/manage-user-identities-test', ['ember', 'qu
     }
   });
 
-  qunit.test('Mark a verified phone as primary', function (assert) {
+  qunit.test('Mark a validate phone as primary', function (assert) {
     triggerEvent('[class*=ko-dropdown--container--button]:contains("+44 2222 222222")', 'focusin');
 
     andThen(function () {
@@ -75893,7 +75886,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"e5ba08ab0174c8e64c81","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+72f7ea73"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"e5ba08ab0174c8e64c81","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+62e9bc1b"});
 }
 
 /* jshint ignore:end */
