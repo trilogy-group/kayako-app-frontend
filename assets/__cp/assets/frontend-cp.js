@@ -46001,6 +46001,14 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
       });
     }),
 
+    errorMap: Ember['default'].computed('errors', function () {
+      var errorMap = {};
+      this.get('errors').forEach(function (error) {
+        errorMap[error.parameter] = true;
+      });
+      return errorMap;
+    }),
+
     userTeams: Ember['default'].computed('model.teams.@each.title', function () {
       return this.get('model.teams').map(function (tag) {
         return tag.get('title');
@@ -46500,7 +46508,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
                 "column": 8
               },
               "end": {
-                "line": 127,
+                "line": 128,
                 "column": 8
               }
             },
@@ -46525,7 +46533,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
             return morphs;
           },
           statements: [
-            ["inline","ko-field/tags",[],["selectedTags",["subexpr","@mut",[["get","userTeams",["loc",[null,[118,39],[118,48]]]]],[],[]],"suggestedTags",["subexpr","@mut",[["get","suggestedTeams",["loc",[null,[119,26],[119,40]]]]],[],[]],"newTagText",["subexpr","format-message",[["subexpr","intl-get",["users.newteam"],[],["loc",[null,[120,39],[120,65]]]]],[],["loc",[null,[120,23],[120,66]]]],"addTagText",["subexpr","format-message",[["subexpr","intl-get",["users.addteam"],[],["loc",[null,[121,39],[121,65]]]]],[],["loc",[null,[121,23],[121,66]]]],"forceLowerCase",false,"isNewTagAllowed",false,"onTagAddition","addTeam","onTagRemoval","removeTeam","onTagSuggestion","suggestTeams"],["loc",[null,[118,10],[126,44]]]]
+            ["inline","ko-field/tags",[],["selectedTags",["subexpr","@mut",[["get","userTeams",["loc",[null,[119,39],[119,48]]]]],[],[]],"suggestedTags",["subexpr","@mut",[["get","suggestedTeams",["loc",[null,[120,26],[120,40]]]]],[],[]],"newTagText",["subexpr","format-message",[["subexpr","intl-get",["users.newteam"],[],["loc",[null,[121,39],[121,65]]]]],[],["loc",[null,[121,23],[121,66]]]],"addTagText",["subexpr","format-message",[["subexpr","intl-get",["users.addteam"],[],["loc",[null,[122,39],[122,65]]]]],[],["loc",[null,[122,23],[122,66]]]],"forceLowerCase",false,"isNewTagAllowed",false,"onTagAddition","addTeam","onTagRemoval","removeTeam","onTagSuggestion","suggestTeams"],["loc",[null,[119,10],[127,44]]]]
           ],
           locals: [],
           templates: []
@@ -46538,11 +46546,11 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 129,
+                "line": 130,
                 "column": 8
               },
               "end": {
-                "line": 138,
+                "line": 139,
                 "column": 8
               }
             },
@@ -46567,7 +46575,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
             return morphs;
           },
           statements: [
-            ["inline","ko-field/tags",[],["selectedTags",["subexpr","@mut",[["get","userTags",["loc",[null,[131,39],[131,47]]]]],[],[]],"suggestedTags",["subexpr","@mut",[["get","suggestedTags",["loc",[null,[132,26],[132,39]]]]],[],[]],"newTagText",["subexpr","format-message",[["subexpr","intl-get",["users.newtag"],[],["loc",[null,[133,39],[133,64]]]]],[],["loc",[null,[133,23],[133,65]]]],"addTagText",["subexpr","format-message",[["subexpr","intl-get",["users.addtag"],[],["loc",[null,[134,39],[134,64]]]]],[],["loc",[null,[134,23],[134,65]]]],"onTagAddition","addTag","onTagRemoval","removeTag","onTagSuggestion","suggestTags"],["loc",[null,[131,10],[137,43]]]]
+            ["inline","ko-field/tags",[],["selectedTags",["subexpr","@mut",[["get","userTags",["loc",[null,[132,39],[132,47]]]]],[],[]],"suggestedTags",["subexpr","@mut",[["get","suggestedTags",["loc",[null,[133,26],[133,39]]]]],[],[]],"newTagText",["subexpr","format-message",[["subexpr","intl-get",["users.newtag"],[],["loc",[null,[134,39],[134,64]]]]],[],["loc",[null,[134,23],[134,65]]]],"addTagText",["subexpr","format-message",[["subexpr","intl-get",["users.addtag"],[],["loc",[null,[135,39],[135,64]]]]],[],["loc",[null,[135,23],[135,65]]]],"onTagAddition","addTag","onTagRemoval","removeTag","onTagSuggestion","suggestTags"],["loc",[null,[132,10],[138,43]]]]
           ],
           locals: [],
           templates: []
@@ -46583,7 +46591,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
               "column": 6
             },
             "end": {
-              "line": 147,
+              "line": 148,
               "column": 6
             }
           },
@@ -46682,12 +46690,12 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
           ["inline","ko-case-field/suggest",[],["tagName","li","selectedItem",["subexpr","@mut",[["get","model.organization.name",["loc",[null,[88,23],[88,46]]]]],[],[]],"items",["subexpr","@mut",[["get","organizations",["loc",[null,[89,16],[89,29]]]]],[],[]],"title",["subexpr","intl-get",["users.infobar.organization"],[],["loc",[null,[90,16],[90,55]]]],"isEdited",["subexpr","@mut",[["get","isOrganizationEdited",["loc",[null,[91,19],[91,39]]]]],[],[]],"onItemSelect","organizationSelect"],["loc",[null,[86,8],[92,45]]]],
           ["inline","ko-timezone-select",[],["tagName","li","class","info-bar-item","timezone",["subexpr","@mut",[["get","model.timeZone",["loc",[null,[97,19],[97,33]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isTimezoneEdited",["loc",[null,[98,19],[98,35]]]]],[],[]],"onChangeTimezone","timezoneSelect"],["loc",[null,[94,8],[99,45]]]],
           ["block","each",[["get","customFields",["loc",[null,[101,16],[101,28]]]]],[],1,null,["loc",[null,[101,8],[114,17]]]],
-          ["block","ko-info-bar/field",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.teams"],[],["loc",[null,[116,51],[116,75]]]]],[],["loc",[null,[116,35],[116,76]]]],"isEdited",["subexpr","@mut",[["get","isTeamsFieldEdited",["loc",[null,[117,19],[117,37]]]]],[],[]]],2,null,["loc",[null,[116,8],[127,30]]]],
-          ["block","ko-info-bar/field",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.tags"],[],["loc",[null,[129,51],[129,74]]]]],[],["loc",[null,[129,35],[129,75]]]],"isEdited",["subexpr","@mut",[["get","isTagsFieldEdited",["loc",[null,[130,19],[130,36]]]]],[],[]]],3,null,["loc",[null,[129,8],[138,30]]]],
-          ["inline","ko-identities",[],["parent",["subexpr","@mut",[["get","model",["loc",[null,[140,31],[140,36]]]]],[],[]]],["loc",[null,[140,8],[140,38]]]],
-          ["inline","ko-info-bar/metadata",[],["rows",["subexpr","@mut",[["get","userDates",["loc",[null,[142,36],[142,45]]]]],[],[]]],["loc",[null,[142,8],[142,47]]]],
-          ["inline","ko-recent-cases",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.recent_cases"],[],["loc",[null,[144,48],[144,79]]]]],[],["loc",[null,[144,32],[144,80]]]],"cases",["subexpr","@mut",[["get","model.recentCases",["loc",[null,[144,87],[144,104]]]]],[],[]]],["loc",[null,[144,8],[144,106]]]],
-          ["inline","ko-feedback",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.recent_feedback"],[],["loc",[null,[146,44],[146,78]]]]],[],["loc",[null,[146,28],[146,79]]]],"feedback",["subexpr","@mut",[["get","recentFeedback",["loc",[null,[146,89],[146,103]]]]],[],[]]],["loc",[null,[146,8],[146,105]]]]
+          ["block","ko-info-bar/field",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.teams"],[],["loc",[null,[116,51],[116,75]]]]],[],["loc",[null,[116,35],[116,76]]]],"isEdited",["subexpr","@mut",[["get","isTeamsFieldEdited",["loc",[null,[117,19],[117,37]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","errorMap.team_ids",["loc",[null,[118,20],[118,37]]]]],[],[]]],2,null,["loc",[null,[116,8],[128,30]]]],
+          ["block","ko-info-bar/field",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.tags"],[],["loc",[null,[130,51],[130,74]]]]],[],["loc",[null,[130,35],[130,75]]]],"isEdited",["subexpr","@mut",[["get","isTagsFieldEdited",["loc",[null,[131,19],[131,36]]]]],[],[]]],3,null,["loc",[null,[130,8],[139,30]]]],
+          ["inline","ko-identities",[],["parent",["subexpr","@mut",[["get","model",["loc",[null,[141,31],[141,36]]]]],[],[]]],["loc",[null,[141,8],[141,38]]]],
+          ["inline","ko-info-bar/metadata",[],["rows",["subexpr","@mut",[["get","userDates",["loc",[null,[143,36],[143,45]]]]],[],[]]],["loc",[null,[143,8],[143,47]]]],
+          ["inline","ko-recent-cases",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.recent_cases"],[],["loc",[null,[145,48],[145,79]]]]],[],["loc",[null,[145,32],[145,80]]]],"cases",["subexpr","@mut",[["get","model.recentCases",["loc",[null,[145,87],[145,104]]]]],[],[]]],["loc",[null,[145,8],[145,106]]]],
+          ["inline","ko-feedback",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.recent_feedback"],[],["loc",[null,[147,44],[147,78]]]]],[],["loc",[null,[147,28],[147,79]]]],"feedback",["subexpr","@mut",[["get","recentFeedback",["loc",[null,[147,89],[147,103]]]]],[],[]]],["loc",[null,[147,8],[147,105]]]]
         ],
         locals: [],
         templates: [child0, child1, child2, child3]
@@ -46701,11 +46709,11 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 153,
+                "line": 154,
                 "column": 2
               },
               "end": {
-                "line": 168,
+                "line": 169,
                 "column": 2
               }
             },
@@ -46786,12 +46794,12 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
             return morphs;
           },
           statements: [
-            ["inline","textarea",[],["value",["subexpr","@mut",[["get","editingSignature",["loc",[null,[154,21],[154,37]]]]],[],[]],"class","text-area--clean"],["loc",[null,[154,4],[154,64]]]],
-            ["inline","format-message",[["subexpr","intl-get",["users.signaturemessage"],[],["loc",[null,[157,25],[157,60]]]]],[],["loc",[null,[157,8],[157,62]]]],
-            ["element","action",["closeSignatureModal"],[],["loc",[null,[160,11],[160,43]]]],
-            ["inline","format-message",[["subexpr","intl-get",["generic.cancel"],[],["loc",[null,[161,27],[161,54]]]]],[],["loc",[null,[161,10],[161,56]]]],
-            ["element","action",["updateSignature"],[],["loc",[null,[163,47],[163,75]]]],
-            ["inline","format-message",[["subexpr","intl-get",["users.update_signature"],[],["loc",[null,[164,27],[164,62]]]]],[],["loc",[null,[164,10],[164,64]]]]
+            ["inline","textarea",[],["value",["subexpr","@mut",[["get","editingSignature",["loc",[null,[155,21],[155,37]]]]],[],[]],"class","text-area--clean"],["loc",[null,[155,4],[155,64]]]],
+            ["inline","format-message",[["subexpr","intl-get",["users.signaturemessage"],[],["loc",[null,[158,25],[158,60]]]]],[],["loc",[null,[158,8],[158,62]]]],
+            ["element","action",["closeSignatureModal"],[],["loc",[null,[161,11],[161,43]]]],
+            ["inline","format-message",[["subexpr","intl-get",["generic.cancel"],[],["loc",[null,[162,27],[162,54]]]]],[],["loc",[null,[162,10],[162,56]]]],
+            ["element","action",["updateSignature"],[],["loc",[null,[164,47],[164,75]]]],
+            ["inline","format-message",[["subexpr","intl-get",["users.update_signature"],[],["loc",[null,[165,27],[165,62]]]]],[],["loc",[null,[165,10],[165,64]]]]
           ],
           locals: [],
           templates: []
@@ -46803,11 +46811,11 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 152,
+              "line": 153,
               "column": 0
             },
             "end": {
-              "line": 169,
+              "line": 170,
               "column": 0
             }
           },
@@ -46830,7 +46838,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["block","ko-editor-modal",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.editsignature"],[],["loc",[null,[153,43],[153,75]]]]],[],["loc",[null,[153,27],[153,76]]]]],0,null,["loc",[null,[153,2],[168,22]]]]
+          ["block","ko-editor-modal",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.editsignature"],[],["loc",[null,[154,43],[154,75]]]]],[],["loc",[null,[154,27],[154,76]]]]],0,null,["loc",[null,[154,2],[169,22]]]]
         ],
         locals: [],
         templates: [child0]
@@ -46846,7 +46854,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
             "column": 0
           },
           "end": {
-            "line": 170,
+            "line": 171,
             "column": 0
           }
         },
@@ -47029,8 +47037,8 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
         ["inline","ko-stateful-button",[],["activeText","User Enabled","activeHoverText","Disable User","inactiveText","User Disabled","inactiveHoverText","Enable User","isActive",["subexpr","@mut",[["get","model.isEnabled",["loc",[null,[34,20],[34,35]]]]],[],[]],"isEnabled",["subexpr","@mut",[["get","canModifyUserState",["loc",[null,[35,21],[35,39]]]]],[],[]],"isLoading",["subexpr","@mut",[["get","isStateSaving",["loc",[null,[36,21],[36,34]]]]],[],[]],"onClick","toggleUserState"],["loc",[null,[29,9],[37,38]]]],
         ["inline","ko-user-action-menu",[],["permissions",["subexpr","@mut",[["get","sessionService.permissions",["loc",[null,[41,24],[41,50]]]]],[],[]],"userRoleType",["subexpr","@mut",[["get","model.role.roleType",["loc",[null,[42,25],[42,44]]]]],[],[]],"userModel",["subexpr","@mut",[["get","model",["loc",[null,[43,22],[43,27]]]]],[],[]]],["loc",[null,[40,8],[44,10]]]],
         ["block","ko-text-editor",[],["class","ko-user-content__text-editor","viewName","postEditor","onPeopleSuggestion","suggestPeople"],0,null,["loc",[null,[53,8],[55,27]]]],
-        ["block","ko-info-bar",[],[],1,null,["loc",[null,[60,6],[147,22]]]],
-        ["block","if",[["get","signatureModal",["loc",[null,[152,6],[152,20]]]]],[],2,null,["loc",[null,[152,0],[169,7]]]]
+        ["block","ko-info-bar",[],[],1,null,["loc",[null,[60,6],[148,22]]]],
+        ["block","if",[["get","signatureModal",["loc",[null,[153,6],[153,20]]]]],[],2,null,["loc",[null,[153,0],[170,7]]]]
       ],
       locals: [],
       templates: [child0, child1, child2]
@@ -76053,7 +76061,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"e5ba08ab0174c8e64c81","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+d9c7b812"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"e5ba08ab0174c8e64c81","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+afec554d"});
 }
 
 /* jshint ignore:end */
