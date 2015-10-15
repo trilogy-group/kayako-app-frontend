@@ -14980,7 +14980,10 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       this.set('shouldIgnoreNextPusherUpdate', false);
 
       this.updateDirtyCaseFieldHash();
+      this.cleanupTags();
+    },
 
+    cleanupTags: function cleanupTags() {
       // New tags should be rolled back as they are left
       // in the store after we save a case. New tags have id = null,
       // and the same tag with numeric id is also returned from the server.
@@ -15188,11 +15191,8 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
           this.set('case.channelId', channel.get('account.id'));
           this.get('case').save().then(function (newCase) {
             _this12._getCaseSaveNotification('create');
-            _this12.resetCaseFormState();
-            // TODO: need to transition to the right case id
-            _this12.validateCaseStatus(newCase).then(function () {
-              _this12.updateDirtyCaseFieldHash();
-            });
+            _this12.cleanupTags();
+            _this12.sendAction('onCaseCreated', newCase);
           }, function (e) {
             _this12.set('errors', e.errors);
             _this12.set('shouldIgnoreNextPusherUpdate', false);
@@ -63958,6 +63958,8 @@ define('frontend-cp/session/agent/cases/case/index/controller', ['exports', 'emb
   'use strict';
 
   exports['default'] = Ember['default'].Controller.extend({
+    tabService: Ember['default'].inject.service('tabs'),
+
     queryParams: {
       postId: {
         refreshModel: false
@@ -64010,6 +64012,12 @@ define('frontend-cp/session/agent/cases/case/index/controller', ['exports', 'emb
           postId: null,
           filter: this.get('filter')
         });
+      },
+
+      transitionToNewlyCreatedCase: function transitionToNewlyCreatedCase(newCase) {
+        var tabService = this.get('tabService');
+        tabService.remove(tabService.get('selectedTab'));
+        this.transitionTo('session.agent.cases.case.index', newCase.get('id'));
       }
     }
   });
@@ -64105,7 +64113,7 @@ define('frontend-cp/session/agent/cases/case/index/template', ['exports'], funct
             "column": 0
           },
           "end": {
-            "line": 12,
+            "line": 13,
             "column": 0
           }
         },
@@ -64129,7 +64137,7 @@ define('frontend-cp/session/agent/cases/case/index/template', ['exports'], funct
         return morphs;
       },
       statements: [
-        ["inline","ko-case-content",[],["case",["subexpr","@mut",[["get","case",["loc",[null,[2,7],[2,11]]]]],[],[]],"postId",["subexpr","@mut",[["get","postId",["loc",[null,[3,9],[3,15]]]]],[],[]],"sortOrder",["subexpr","@mut",[["get","sortOrder",["loc",[null,[4,12],[4,21]]]]],[],[]],"filter",["subexpr","@mut",[["get","filter",["loc",[null,[5,9],[5,15]]]]],[],[]],"caseFields",["subexpr","@mut",[["get","caseFields",["loc",[null,[6,13],[6,23]]]]],[],[]],"onPostIdChange",["subexpr","action",["postIdChange"],[],["loc",[null,[7,17],[7,40]]]],"onSort",["subexpr","action",["sort"],[],["loc",[null,[8,9],[8,24]]]],"onFilter",["subexpr","action",["filter"],[],["loc",[null,[9,11],[9,28]]]]],["loc",[null,[1,0],[10,2]]]]
+        ["inline","ko-case-content",[],["case",["subexpr","@mut",[["get","case",["loc",[null,[2,7],[2,11]]]]],[],[]],"postId",["subexpr","@mut",[["get","postId",["loc",[null,[3,9],[3,15]]]]],[],[]],"sortOrder",["subexpr","@mut",[["get","sortOrder",["loc",[null,[4,12],[4,21]]]]],[],[]],"filter",["subexpr","@mut",[["get","filter",["loc",[null,[5,9],[5,15]]]]],[],[]],"caseFields",["subexpr","@mut",[["get","caseFields",["loc",[null,[6,13],[6,23]]]]],[],[]],"onPostIdChange",["subexpr","action",["postIdChange"],[],["loc",[null,[7,17],[7,40]]]],"onSort",["subexpr","action",["sort"],[],["loc",[null,[8,9],[8,24]]]],"onFilter",["subexpr","action",["filter"],[],["loc",[null,[9,11],[9,28]]]],"onCaseCreated","transitionToNewlyCreatedCase"],["loc",[null,[1,0],[11,2]]]]
       ],
       locals: [],
       templates: []
@@ -75832,7 +75840,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"e5ba08ab0174c8e64c81","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+b28751ff"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"e5ba08ab0174c8e64c81","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+104df5f3"});
 }
 
 /* jshint ignore:end */
