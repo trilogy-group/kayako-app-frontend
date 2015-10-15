@@ -46071,16 +46071,20 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
       this.set('isStateSaving', false);
     },
 
-    canModifyUserState: Ember['default'].computed(function () {
+    canModifyUserState: Ember['default'].computed('model.role', function () {
       return this.get('permissionService').has('app.user.disable', this.get('model'));
     }),
 
-    canFollowUser: Ember['default'].computed(function () {
+    canFollowUser: Ember['default'].computed('model.role', function () {
       return this.get('permissionService').has('app.user.follow', this.get('model'));
     }),
 
-    canChangeAgentCaseAccessPermission: Ember['default'].computed(function () {
-      return this.get('permissionService').has('app.user.change_access_permission', this.get('sessionService').permissions, this.get('model'));
+    canChangeAgentCaseAccessPermission: Ember['default'].computed('model.role', function () {
+      return this.get('permissionService').has('app.user.change_access_permission', this.get('model'));
+    }),
+
+    canChangeUserTeamPermission: Ember['default'].computed('model.role', function () {
+      return this.get('permissionService').has('app.user.change_team_permission', this.get('model'));
     }),
 
     isEnabled: Ember['default'].computed.bool('model.isEnabled'),
@@ -46278,7 +46282,8 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
 
           _this10.resetForm();
         }, function (e) {
-          _this10.set('errors', e.errors);
+          e.errors || (e.errors = {});
+          _this10.set('errors', e.errors.errors);
         });
       }
     }
@@ -46498,6 +46503,48 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
         };
       }());
       var child2 = (function() {
+        var child0 = (function() {
+          return {
+            meta: {
+              "revision": "Ember@1.13.10",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 117,
+                  "column": 10
+                },
+                "end": {
+                  "line": 130,
+                  "column": 10
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-user-content/template.hbs"
+            },
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode("\n            ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(1);
+              morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+              return morphs;
+            },
+            statements: [
+              ["inline","ko-field/tags",[],["selectedTags",["subexpr","@mut",[["get","userTeams",["loc",[null,[121,41],[121,50]]]]],[],[]],"suggestedTags",["subexpr","@mut",[["get","suggestedTeams",["loc",[null,[122,28],[122,42]]]]],[],[]],"newTagText",["subexpr","format-message",[["subexpr","intl-get",["users.newteam"],[],["loc",[null,[123,41],[123,67]]]]],[],["loc",[null,[123,25],[123,68]]]],"addTagText",["subexpr","format-message",[["subexpr","intl-get",["users.addteam"],[],["loc",[null,[124,41],[124,67]]]]],[],["loc",[null,[124,25],[124,68]]]],"forceLowerCase",false,"isNewTagAllowed",false,"onTagAddition","addTeam","onTagRemoval","removeTeam","onTagSuggestion","suggestTeams"],["loc",[null,[121,12],[129,46]]]]
+            ],
+            locals: [],
+            templates: []
+          };
+        }());
         return {
           meta: {
             "revision": "Ember@1.13.10",
@@ -46508,7 +46555,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
                 "column": 8
               },
               "end": {
-                "line": 128,
+                "line": 131,
                 "column": 8
               }
             },
@@ -46519,24 +46566,22 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
           hasRendered: false,
           buildFragment: function buildFragment(dom) {
             var el0 = dom.createDocumentFragment();
-            var el1 = dom.createTextNode("          ");
-            dom.appendChild(el0, el1);
             var el1 = dom.createComment("");
-            dom.appendChild(el0, el1);
-            var el1 = dom.createTextNode("\n");
             dom.appendChild(el0, el1);
             return el0;
           },
           buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
             var morphs = new Array(1);
-            morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+            morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+            dom.insertBoundary(fragment, 0);
+            dom.insertBoundary(fragment, null);
             return morphs;
           },
           statements: [
-            ["inline","ko-field/tags",[],["selectedTags",["subexpr","@mut",[["get","userTeams",["loc",[null,[119,39],[119,48]]]]],[],[]],"suggestedTags",["subexpr","@mut",[["get","suggestedTeams",["loc",[null,[120,26],[120,40]]]]],[],[]],"newTagText",["subexpr","format-message",[["subexpr","intl-get",["users.newteam"],[],["loc",[null,[121,39],[121,65]]]]],[],["loc",[null,[121,23],[121,66]]]],"addTagText",["subexpr","format-message",[["subexpr","intl-get",["users.addteam"],[],["loc",[null,[122,39],[122,65]]]]],[],["loc",[null,[122,23],[122,66]]]],"forceLowerCase",false,"isNewTagAllowed",false,"onTagAddition","addTeam","onTagRemoval","removeTeam","onTagSuggestion","suggestTeams"],["loc",[null,[119,10],[127,44]]]]
+            ["block","ko-info-bar/field",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.teams"],[],["loc",[null,[117,53],[117,77]]]]],[],["loc",[null,[117,37],[117,78]]]],"isEdited",["subexpr","@mut",[["get","isTeamsFieldEdited",["loc",[null,[118,21],[118,39]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","errorMap.team_ids",["loc",[null,[119,22],[119,39]]]]],[],[]]],0,null,["loc",[null,[117,10],[130,32]]]]
           ],
           locals: [],
-          templates: []
+          templates: [child0]
         };
       }());
       var child3 = (function() {
@@ -46546,11 +46591,11 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 130,
+                "line": 133,
                 "column": 8
               },
               "end": {
-                "line": 139,
+                "line": 142,
                 "column": 8
               }
             },
@@ -46575,7 +46620,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
             return morphs;
           },
           statements: [
-            ["inline","ko-field/tags",[],["selectedTags",["subexpr","@mut",[["get","userTags",["loc",[null,[132,39],[132,47]]]]],[],[]],"suggestedTags",["subexpr","@mut",[["get","suggestedTags",["loc",[null,[133,26],[133,39]]]]],[],[]],"newTagText",["subexpr","format-message",[["subexpr","intl-get",["users.newtag"],[],["loc",[null,[134,39],[134,64]]]]],[],["loc",[null,[134,23],[134,65]]]],"addTagText",["subexpr","format-message",[["subexpr","intl-get",["users.addtag"],[],["loc",[null,[135,39],[135,64]]]]],[],["loc",[null,[135,23],[135,65]]]],"onTagAddition","addTag","onTagRemoval","removeTag","onTagSuggestion","suggestTags"],["loc",[null,[132,10],[138,43]]]]
+            ["inline","ko-field/tags",[],["selectedTags",["subexpr","@mut",[["get","userTags",["loc",[null,[135,39],[135,47]]]]],[],[]],"suggestedTags",["subexpr","@mut",[["get","suggestedTags",["loc",[null,[136,26],[136,39]]]]],[],[]],"newTagText",["subexpr","format-message",[["subexpr","intl-get",["users.newtag"],[],["loc",[null,[137,39],[137,64]]]]],[],["loc",[null,[137,23],[137,65]]]],"addTagText",["subexpr","format-message",[["subexpr","intl-get",["users.addtag"],[],["loc",[null,[138,39],[138,64]]]]],[],["loc",[null,[138,23],[138,65]]]],"onTagAddition","addTag","onTagRemoval","removeTag","onTagSuggestion","suggestTags"],["loc",[null,[135,10],[141,43]]]]
           ],
           locals: [],
           templates: []
@@ -46591,7 +46636,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
               "column": 6
             },
             "end": {
-              "line": 148,
+              "line": 151,
               "column": 6
             }
           },
@@ -46690,12 +46735,12 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
           ["inline","ko-case-field/suggest",[],["tagName","li","selectedItem",["subexpr","@mut",[["get","model.organization.name",["loc",[null,[88,23],[88,46]]]]],[],[]],"items",["subexpr","@mut",[["get","organizations",["loc",[null,[89,16],[89,29]]]]],[],[]],"title",["subexpr","intl-get",["users.infobar.organization"],[],["loc",[null,[90,16],[90,55]]]],"isEdited",["subexpr","@mut",[["get","isOrganizationEdited",["loc",[null,[91,19],[91,39]]]]],[],[]],"onItemSelect","organizationSelect"],["loc",[null,[86,8],[92,45]]]],
           ["inline","ko-timezone-select",[],["tagName","li","class","info-bar-item","timezone",["subexpr","@mut",[["get","model.timeZone",["loc",[null,[97,19],[97,33]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isTimezoneEdited",["loc",[null,[98,19],[98,35]]]]],[],[]],"onChangeTimezone","timezoneSelect"],["loc",[null,[94,8],[99,45]]]],
           ["block","each",[["get","customFields",["loc",[null,[101,16],[101,28]]]]],[],1,null,["loc",[null,[101,8],[114,17]]]],
-          ["block","ko-info-bar/field",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.teams"],[],["loc",[null,[116,51],[116,75]]]]],[],["loc",[null,[116,35],[116,76]]]],"isEdited",["subexpr","@mut",[["get","isTeamsFieldEdited",["loc",[null,[117,19],[117,37]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","errorMap.team_ids",["loc",[null,[118,20],[118,37]]]]],[],[]]],2,null,["loc",[null,[116,8],[128,30]]]],
-          ["block","ko-info-bar/field",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.tags"],[],["loc",[null,[130,51],[130,74]]]]],[],["loc",[null,[130,35],[130,75]]]],"isEdited",["subexpr","@mut",[["get","isTagsFieldEdited",["loc",[null,[131,19],[131,36]]]]],[],[]]],3,null,["loc",[null,[130,8],[139,30]]]],
-          ["inline","ko-identities",[],["parent",["subexpr","@mut",[["get","model",["loc",[null,[141,31],[141,36]]]]],[],[]]],["loc",[null,[141,8],[141,38]]]],
-          ["inline","ko-info-bar/metadata",[],["rows",["subexpr","@mut",[["get","userDates",["loc",[null,[143,36],[143,45]]]]],[],[]]],["loc",[null,[143,8],[143,47]]]],
-          ["inline","ko-recent-cases",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.recent_cases"],[],["loc",[null,[145,48],[145,79]]]]],[],["loc",[null,[145,32],[145,80]]]],"cases",["subexpr","@mut",[["get","model.recentCases",["loc",[null,[145,87],[145,104]]]]],[],[]]],["loc",[null,[145,8],[145,106]]]],
-          ["inline","ko-feedback",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.recent_feedback"],[],["loc",[null,[147,44],[147,78]]]]],[],["loc",[null,[147,28],[147,79]]]],"feedback",["subexpr","@mut",[["get","recentFeedback",["loc",[null,[147,89],[147,103]]]]],[],[]]],["loc",[null,[147,8],[147,105]]]]
+          ["block","if",[["get","canChangeUserTeamPermission",["loc",[null,[116,14],[116,41]]]]],[],2,null,["loc",[null,[116,8],[131,15]]]],
+          ["block","ko-info-bar/field",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.tags"],[],["loc",[null,[133,51],[133,74]]]]],[],["loc",[null,[133,35],[133,75]]]],"isEdited",["subexpr","@mut",[["get","isTagsFieldEdited",["loc",[null,[134,19],[134,36]]]]],[],[]]],3,null,["loc",[null,[133,8],[142,30]]]],
+          ["inline","ko-identities",[],["parent",["subexpr","@mut",[["get","model",["loc",[null,[144,31],[144,36]]]]],[],[]]],["loc",[null,[144,8],[144,38]]]],
+          ["inline","ko-info-bar/metadata",[],["rows",["subexpr","@mut",[["get","userDates",["loc",[null,[146,36],[146,45]]]]],[],[]]],["loc",[null,[146,8],[146,47]]]],
+          ["inline","ko-recent-cases",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.recent_cases"],[],["loc",[null,[148,48],[148,79]]]]],[],["loc",[null,[148,32],[148,80]]]],"cases",["subexpr","@mut",[["get","model.recentCases",["loc",[null,[148,87],[148,104]]]]],[],[]]],["loc",[null,[148,8],[148,106]]]],
+          ["inline","ko-feedback",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.recent_feedback"],[],["loc",[null,[150,44],[150,78]]]]],[],["loc",[null,[150,28],[150,79]]]],"feedback",["subexpr","@mut",[["get","recentFeedback",["loc",[null,[150,89],[150,103]]]]],[],[]]],["loc",[null,[150,8],[150,105]]]]
         ],
         locals: [],
         templates: [child0, child1, child2, child3]
@@ -46709,11 +46754,11 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 154,
+                "line": 157,
                 "column": 2
               },
               "end": {
-                "line": 169,
+                "line": 172,
                 "column": 2
               }
             },
@@ -46794,12 +46839,12 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
             return morphs;
           },
           statements: [
-            ["inline","textarea",[],["value",["subexpr","@mut",[["get","editingSignature",["loc",[null,[155,21],[155,37]]]]],[],[]],"class","text-area--clean"],["loc",[null,[155,4],[155,64]]]],
-            ["inline","format-message",[["subexpr","intl-get",["users.signaturemessage"],[],["loc",[null,[158,25],[158,60]]]]],[],["loc",[null,[158,8],[158,62]]]],
-            ["element","action",["closeSignatureModal"],[],["loc",[null,[161,11],[161,43]]]],
-            ["inline","format-message",[["subexpr","intl-get",["generic.cancel"],[],["loc",[null,[162,27],[162,54]]]]],[],["loc",[null,[162,10],[162,56]]]],
-            ["element","action",["updateSignature"],[],["loc",[null,[164,47],[164,75]]]],
-            ["inline","format-message",[["subexpr","intl-get",["users.update_signature"],[],["loc",[null,[165,27],[165,62]]]]],[],["loc",[null,[165,10],[165,64]]]]
+            ["inline","textarea",[],["value",["subexpr","@mut",[["get","editingSignature",["loc",[null,[158,21],[158,37]]]]],[],[]],"class","text-area--clean"],["loc",[null,[158,4],[158,64]]]],
+            ["inline","format-message",[["subexpr","intl-get",["users.signaturemessage"],[],["loc",[null,[161,25],[161,60]]]]],[],["loc",[null,[161,8],[161,62]]]],
+            ["element","action",["closeSignatureModal"],[],["loc",[null,[164,11],[164,43]]]],
+            ["inline","format-message",[["subexpr","intl-get",["generic.cancel"],[],["loc",[null,[165,27],[165,54]]]]],[],["loc",[null,[165,10],[165,56]]]],
+            ["element","action",["updateSignature"],[],["loc",[null,[167,47],[167,75]]]],
+            ["inline","format-message",[["subexpr","intl-get",["users.update_signature"],[],["loc",[null,[168,27],[168,62]]]]],[],["loc",[null,[168,10],[168,64]]]]
           ],
           locals: [],
           templates: []
@@ -46811,11 +46856,11 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 153,
+              "line": 156,
               "column": 0
             },
             "end": {
-              "line": 170,
+              "line": 173,
               "column": 0
             }
           },
@@ -46838,7 +46883,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["block","ko-editor-modal",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.editsignature"],[],["loc",[null,[154,43],[154,75]]]]],[],["loc",[null,[154,27],[154,76]]]]],0,null,["loc",[null,[154,2],[169,22]]]]
+          ["block","ko-editor-modal",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.editsignature"],[],["loc",[null,[157,43],[157,75]]]]],[],["loc",[null,[157,27],[157,76]]]]],0,null,["loc",[null,[157,2],[172,22]]]]
         ],
         locals: [],
         templates: [child0]
@@ -46854,7 +46899,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
             "column": 0
           },
           "end": {
-            "line": 171,
+            "line": 174,
             "column": 0
           }
         },
@@ -47037,8 +47082,8 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
         ["inline","ko-stateful-button",[],["activeText","User Enabled","activeHoverText","Disable User","inactiveText","User Disabled","inactiveHoverText","Enable User","isActive",["subexpr","@mut",[["get","model.isEnabled",["loc",[null,[34,20],[34,35]]]]],[],[]],"isEnabled",["subexpr","@mut",[["get","canModifyUserState",["loc",[null,[35,21],[35,39]]]]],[],[]],"isLoading",["subexpr","@mut",[["get","isStateSaving",["loc",[null,[36,21],[36,34]]]]],[],[]],"onClick","toggleUserState"],["loc",[null,[29,9],[37,38]]]],
         ["inline","ko-user-action-menu",[],["permissions",["subexpr","@mut",[["get","sessionService.permissions",["loc",[null,[41,24],[41,50]]]]],[],[]],"userRoleType",["subexpr","@mut",[["get","model.role.roleType",["loc",[null,[42,25],[42,44]]]]],[],[]],"userModel",["subexpr","@mut",[["get","model",["loc",[null,[43,22],[43,27]]]]],[],[]]],["loc",[null,[40,8],[44,10]]]],
         ["block","ko-text-editor",[],["class","ko-user-content__text-editor","viewName","postEditor","onPeopleSuggestion","suggestPeople"],0,null,["loc",[null,[53,8],[55,27]]]],
-        ["block","ko-info-bar",[],[],1,null,["loc",[null,[60,6],[148,22]]]],
-        ["block","if",[["get","signatureModal",["loc",[null,[153,6],[153,20]]]]],[],2,null,["loc",[null,[153,0],[170,7]]]]
+        ["block","ko-info-bar",[],[],1,null,["loc",[null,[60,6],[151,22]]]],
+        ["block","if",[["get","signatureModal",["loc",[null,[156,6],[156,20]]]]],[],2,null,["loc",[null,[156,0],[173,7]]]]
       ],
       locals: [],
       templates: [child0, child1, child2]
@@ -57559,6 +57604,18 @@ define('frontend-cp/services/permissions', ['exports', 'ember'], function (expor
     }
   };
 
+  /**
+   * Assign the appropriate actions to each users `permissions` list.
+   * permissions Cascade so an AGENT = CUSTOMER + COLLABORATOR + AGENT
+   */
+  roleTypes.CUSTOMER.permissions = [];
+
+  roleTypes.COLLABORATOR.permissions = roleTypes.CUSTOMER.permissions.concat([]);
+
+  roleTypes.AGENT.permissions = roleTypes.COLLABORATOR.permissions.concat(['app.user.disable', 'app.user.signature.edit', 'app.user.password.change', 'app.organisation.delete']);
+
+  roleTypes.ADMIN.permissions = roleTypes.AGENT.permissions.concat(['app.user.delete', 'app.user.change_access_permission', 'app.user.change_team_permission']);
+
   var adminOrAgentToCustomer = function adminOrAgentToCustomer(roleType, targetRoleType) {
     if (roleType.rank === roleTypes.AGENT.rank) {
       return roleTypes.CUSTOMER.rank === targetRoleType.rank;
@@ -57618,10 +57675,7 @@ define('frontend-cp/services/permissions', ['exports', 'ember'], function (expor
       return adminOrAgentToCustomer(roleType, userRoleType) && target.get('emails').toArray().length;
     },
     'app.organisation.delete': function appOrganisationDelete(roleType, user, organisation) {
-      if (roleType.rank >= roleTypes.AGENT.rank) {
-        return true;
-      }
-      return false;
+      return roleType.rank >= roleTypes.AGENT.rank;
     },
     'app.user.delete': function appUserDelete(roleType, user, target) {
       // I can't delete myself
@@ -57633,18 +57687,11 @@ define('frontend-cp/services/permissions', ['exports', 'ember'], function (expor
     },
     'app.user.change_access_permission': function appUserChange_access_permission(myRoleType, me, targetUser) {
       return targetUser.get('role.roleType') !== 'CUSTOMER' && myRoleType.rank === roleTypes.ADMIN.rank;
+    },
+    'app.user.change_team_permission': function appUserChange_team_permission(myRoleType, me, targetUser) {
+      return targetUser.get('role.roleType') !== 'CUSTOMER' && myRoleType.rank === roleTypes.ADMIN.rank;
     }
-
   };
-
-  /**
-   * Assign the appropriate actions to each users `permissions` list.
-   * permissions Cascade so an AGENT = CUSTOMER + COLLABORATOR + AGENT
-   */
-  roleTypes.CUSTOMER.permissions = [];
-  roleTypes.COLLABORATOR.permissions = roleTypes.CUSTOMER.permissions.concat([]);
-  roleTypes.AGENT.permissions = roleTypes.COLLABORATOR.permissions.concat(['app.user.disable', 'app.user.signature.edit', 'app.user.password.change', 'app.organisation.delete']);
-  roleTypes.ADMIN.permissions = roleTypes.AGENT.permissions.concat(['app.user.delete', 'app.user.change_access_permission']);
 
   exports['default'] = Ember['default'].Service.extend({
     sessionService: Ember['default'].inject.service('session'),
@@ -76061,7 +76108,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"e5ba08ab0174c8e64c81","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+ecff9c3c"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"e5ba08ab0174c8e64c81","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+0b67d23a"});
 }
 
 /* jshint ignore:end */
