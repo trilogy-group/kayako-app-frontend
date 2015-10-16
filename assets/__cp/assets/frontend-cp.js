@@ -60,24 +60,48 @@ define('frontend-cp/adapters/application', ['exports', 'ember', 'ember-data', 'n
       return headers;
     }),
 
+    handleResponse: function handleResponse(status, headers, payload) {
+      if (this.isSuccess(status, headers, payload)) {
+        return payload;
+      } else {
+        var errors = this.normalizeErrorResponse(status, headers, payload);
+        if (this.isInvalid(status, headers, payload)) {
+          return new DS['default'].InvalidError(errors);
+        } else {
+          return new DS['default'].AdapterError(errors);
+        }
+      }
+    },
+
     normalizeErrorResponse: function normalizeErrorResponse(status, headers, payload) {
-      // Sneaks the auth token into each error response if it's
-      // not already there
-      return {
-        errors: payload.errors,
-        authToken: payload.auth_token,
-        notifications: payload.notifications
-      };
+      var errors = payload.errors || [];
+
+      // Sneaks the auth token into auth-related errors
+      if (payload.auth_token) {
+        errors.filter(function (e) {
+          return ['CREDENTIAL_EXPIRED', 'OTP_EXPECTED'].inclues(e.code);
+        }).forEach(function (error) {
+          return error.authToken = payload.auth_token;
+        });
+      }
+
+      // Since we can only return array, we have to merge notifications
+      // into errors and assign NOTIFICATION code to tell them apart
+      var notifications = payload.notifications || [];
+      notifications.forEach(function (n) {
+        n.code = 'NOTIFICATION';
+      });
+
+      return errors.concat(notifications);
     },
 
     handleErrors: function handleErrors(promise) {
       var _this = this;
 
       return promise.then(function (data) {
-        _this.get('errorService').handleServerNotifications(data);
+        _this.get('errorService').sendNotifications(data.notifications);
         return data;
       })['catch'](function (e) {
-        _this.get('errorService').handleServerNotifications(e.errors);
         return _this.get('errorService').handleServerError(e);
       });
     },
@@ -11982,7 +12006,7 @@ define('frontend-cp/components/ko-agent-dropdown/create-case/component', ['expor
         'in': 'users',
         query: filterString
       })['catch'](function (error) {
-        var noResultsFound = error.errors && error.errors.errors && error.errors.errors[0].code === 'RESOURCE_NOT_FOUND';
+        var noResultsFound = error.errors && error.errors[0].code === 'RESOURCE_NOT_FOUND';
         if (noResultsFound) {
           return null;
         }
@@ -12700,11 +12724,6 @@ define('frontend-cp/components/ko-agent-dropdown/create-organisation/component',
       });
     },
 
-    extractDomainsFromErrors: function extractDomainsFromErrors(notifications) {
-      // TODO Stub until API works
-      return ['gmail.com', 'yahoo.com'];
-    },
-
     actions: {
       addDomain: function addDomain(domain) {
         if (domain) {
@@ -12740,9 +12759,7 @@ define('frontend-cp/components/ko-agent-dropdown/create-organisation/component',
         return organization.save();
       },
 
-      error: function error(e) {
-        this.set('erroredDomains', this.extractDomainsFromErrors(e.notifications));
-      }
+      error: function error(e) {}
     }
   });
 
@@ -26742,6 +26759,84 @@ define('frontend-cp/components/ko-feedback/template', ['exports'], function (exp
   exports['default'] = Ember.HTMLBars.template((function() {
     var child0 = (function() {
       var child0 = (function() {
+        var child0 = (function() {
+          return {
+            meta: {
+              "revision": "Ember@1.13.10",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 6,
+                  "column": 6
+                },
+                "end": {
+                  "line": 8,
+                  "column": 6
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-feedback/template.hbs"
+            },
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode("        ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createElement("span");
+              dom.setAttribute(el1,"class","ko-feedback__metric t-good i-happy-outline");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes() { return []; },
+            statements: [
+
+            ],
+            locals: [],
+            templates: []
+          };
+        }());
+        var child1 = (function() {
+          return {
+            meta: {
+              "revision": "Ember@1.13.10",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 8,
+                  "column": 6
+                },
+                "end": {
+                  "line": 10,
+                  "column": 6
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-feedback/template.hbs"
+            },
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode("        ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createElement("span");
+              dom.setAttribute(el1,"class","ko-feedback__metric t-bad i-sad-outline");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes() { return []; },
+            statements: [
+
+            ],
+            locals: [],
+            templates: []
+          };
+        }());
         return {
           meta: {
             "revision": "Ember@1.13.10",
@@ -26749,11 +26844,11 @@ define('frontend-cp/components/ko-feedback/template', ['exports'], function (exp
               "source": null,
               "start": {
                 "line": 5,
-                "column": 2
+                "column": 4
               },
               "end": {
-                "line": 7,
-                "column": 2
+                "line": 12,
+                "column": 4
               }
             },
             "moduleName": "frontend-cp/components/ko-feedback/template.hbs"
@@ -26763,60 +26858,32 @@ define('frontend-cp/components/ko-feedback/template', ['exports'], function (exp
           hasRendered: false,
           buildFragment: function buildFragment(dom) {
             var el0 = dom.createDocumentFragment();
-            var el1 = dom.createTextNode("    ");
+            var el1 = dom.createComment("");
             dom.appendChild(el0, el1);
-            var el1 = dom.createElement("span");
-            dom.setAttribute(el1,"class","ko-feedback__metric t-good i-happy-outline");
+            var el1 = dom.createTextNode("      ");
             dom.appendChild(el0, el1);
-            var el1 = dom.createTextNode("\n");
-            dom.appendChild(el0, el1);
-            return el0;
-          },
-          buildRenderNodes: function buildRenderNodes() { return []; },
-          statements: [
-
-          ],
-          locals: [],
-          templates: []
-        };
-      }());
-      var child1 = (function() {
-        return {
-          meta: {
-            "revision": "Ember@1.13.10",
-            "loc": {
-              "source": null,
-              "start": {
-                "line": 7,
-                "column": 2
-              },
-              "end": {
-                "line": 9,
-                "column": 2
-              }
-            },
-            "moduleName": "frontend-cp/components/ko-feedback/template.hbs"
-          },
-          arity: 0,
-          cachedFragment: null,
-          hasRendered: false,
-          buildFragment: function buildFragment(dom) {
-            var el0 = dom.createDocumentFragment();
-            var el1 = dom.createTextNode("    ");
-            dom.appendChild(el0, el1);
-            var el1 = dom.createElement("span");
-            dom.setAttribute(el1,"class","ko-feedback__metric t-bad i-sad-outline");
+            var el1 = dom.createElement("div");
+            dom.setAttribute(el1,"class","ko-feedback__caption");
+            var el2 = dom.createComment("");
+            dom.appendChild(el1, el2);
             dom.appendChild(el0, el1);
             var el1 = dom.createTextNode("\n");
             dom.appendChild(el0, el1);
             return el0;
           },
-          buildRenderNodes: function buildRenderNodes() { return []; },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(2);
+            morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+            morphs[1] = dom.createMorphAt(dom.childAt(fragment, [2]),0,0);
+            dom.insertBoundary(fragment, 0);
+            return morphs;
+          },
           statements: [
-
+            ["block","if",[["subexpr","eq",[["get","feedbackItem.score",["loc",[null,[6,16],[6,34]]]],"GOOD"],[],["loc",[null,[6,12],[6,42]]]]],[],0,1,["loc",[null,[6,6],[10,13]]]],
+            ["inline","ago",[["get","feedbackItem.createdAt",["loc",[null,[11,46],[11,68]]]]],[],["loc",[null,[11,40],[11,70]]]]
           ],
           locals: [],
-          templates: []
+          templates: [child0, child1]
         };
       }());
       return {
@@ -26826,10 +26893,10 @@ define('frontend-cp/components/ko-feedback/template', ['exports'], function (exp
             "source": null,
             "start": {
               "line": 4,
-              "column": 0
+              "column": 2
             },
             "end": {
-              "line": 11,
+              "line": 13,
               "column": 8
             }
           },
@@ -26848,29 +26915,19 @@ define('frontend-cp/components/ko-feedback/template', ['exports'], function (exp
           dom.appendChild(el1, el2);
           var el2 = dom.createTextNode("  ");
           dom.appendChild(el1, el2);
-          var el2 = dom.createElement("div");
-          dom.setAttribute(el2,"class","ko-feedback__caption");
-          var el3 = dom.createComment("");
-          dom.appendChild(el2, el3);
-          dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n  ");
-          dom.appendChild(el1, el2);
           dom.appendChild(el0, el1);
           return el0;
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var element0 = dom.childAt(fragment, [0]);
-          var morphs = new Array(2);
-          morphs[0] = dom.createMorphAt(element0,1,1);
-          morphs[1] = dom.createMorphAt(dom.childAt(element0, [3]),0,0);
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(dom.childAt(fragment, [0]),1,1);
           return morphs;
         },
         statements: [
-          ["block","if",[["subexpr","eq",[["get","feedbackItem.score",["loc",[null,[5,12],[5,30]]]],"GOOD"],[],["loc",[null,[5,8],[5,38]]]]],[],0,1,["loc",[null,[5,2],[9,9]]]],
-          ["inline","ago",[["get","feedbackItem.createdAt",["loc",[null,[10,42],[10,64]]]]],[],["loc",[null,[10,36],[10,66]]]]
+          ["block","link-to",["session.agent.cases.case",["get","feedbackItem.case",["loc",[null,[5,42],[5,59]]]]],[],0,null,["loc",[null,[5,4],[12,16]]]]
         ],
         locals: ["feedbackItem"],
-        templates: [child0, child1]
+        templates: [child0]
       };
     }());
     var child1 = (function() {
@@ -26880,11 +26937,11 @@ define('frontend-cp/components/ko-feedback/template', ['exports'], function (exp
           "loc": {
             "source": null,
             "start": {
-              "line": 14,
+              "line": 16,
               "column": 0
             },
             "end": {
-              "line": 16,
+              "line": 18,
               "column": 0
             }
           },
@@ -26909,7 +26966,7 @@ define('frontend-cp/components/ko-feedback/template', ['exports'], function (exp
           return morphs;
         },
         statements: [
-          ["inline","format-message",[["subexpr","intl-get",["users.no_feedback_available"],[],["loc",[null,[15,19],[15,59]]]]],[],["loc",[null,[15,2],[15,61]]]]
+          ["inline","format-message",[["subexpr","intl-get",["users.no_feedback_available"],[],["loc",[null,[17,19],[17,59]]]]],[],["loc",[null,[17,2],[17,61]]]]
         ],
         locals: [],
         templates: []
@@ -26925,7 +26982,7 @@ define('frontend-cp/components/ko-feedback/template', ['exports'], function (exp
             "column": 0
           },
           "end": {
-            "line": 17,
+            "line": 19,
             "column": 0
           }
         },
@@ -26945,7 +27002,7 @@ define('frontend-cp/components/ko-feedback/template', ['exports'], function (exp
         dom.appendChild(el0, el1);
         var el1 = dom.createElement("div");
         dom.setAttribute(el1,"class","layout");
-        var el2 = dom.createTextNode("\n");
+        var el2 = dom.createTextNode("\n  ");
         dom.appendChild(el1, el2);
         var el2 = dom.createComment("");
         dom.appendChild(el1, el2);
@@ -26968,8 +27025,8 @@ define('frontend-cp/components/ko-feedback/template', ['exports'], function (exp
       },
       statements: [
         ["content","title",["loc",[null,[1,31],[1,40]]]],
-        ["block","each",[["get","feedback",["loc",[null,[4,8],[4,16]]]]],[],0,null,["loc",[null,[4,0],[11,17]]]],
-        ["block","if",[["subexpr","not",[["get","feedback.length",["loc",[null,[14,11],[14,26]]]]],[],["loc",[null,[14,6],[14,27]]]]],[],1,null,["loc",[null,[14,0],[16,7]]]]
+        ["block","each",[["get","feedback",["loc",[null,[4,10],[4,18]]]]],[],0,null,["loc",[null,[4,2],[13,17]]]],
+        ["block","if",[["subexpr","not",[["get","feedback.length",["loc",[null,[16,11],[16,26]]]]],[],["loc",[null,[16,6],[16,27]]]]],[],1,null,["loc",[null,[16,0],[18,7]]]]
       ],
       locals: [],
       templates: [child0, child1]
@@ -35543,11 +35600,6 @@ define('frontend-cp/components/ko-organisation-content/component', ['exports', '
         value: this.get('model.visitedAt') }];
     }),
 
-    extractDomainsFromErrors: function extractDomainsFromErrors(notifications) {
-      // TODO Stub until API works
-      return ['gmail.com', 'yahoo.com'];
-    },
-
     customFields: Ember['default'].computed('model.customFields', function () {
       return this.get('model.customFields').map(function (field) {
         return field.get('field');
@@ -35627,7 +35679,6 @@ define('frontend-cp/components/ko-organisation-content/component', ['exports', '
           _this2.resetForm();
         }, function (e) {
           _this2.set('errors', e.errors);
-          _this2.set('erroredDomains', _this2.extractDomainsFromErrors(e.notifications));
         });
       }
     }
@@ -44795,7 +44846,7 @@ define('frontend-cp/components/ko-universal-search/component', ['exports', 'embe
       this.get('store').query('search-result-group', { query: query, fields: 'snippet,resource' }).then(function (results) {
         _this.set('searchResults', results);
       })['catch'](function (e) {
-        if (e.errors.errors[0].code !== 'RESOURCE_NOT_FOUND') {
+        if (e.errors[0].code !== 'RESOURCE_NOT_FOUND') {
           throw e;
         }
         _this.set('searchResults', []);
@@ -46266,7 +46317,7 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
             autodismiss: true
           });
         }, function (response) {
-          _this9.get('errorHandlerService').handleServerError({ errors: response.responseJSON });
+          _this9.get('errorHandlerService').handleServerError(response.responseJSON);
         });
       },
 
@@ -49585,7 +49636,6 @@ define('frontend-cp/login/controller', ['exports', 'ember', 'frontend-cp/config/
     otp: '',
     newPassword2: '',
     forgotPasswordMessage: '',
-    stepToken: null,
     fieldErrors: [],
     avatarBackground: null,
     validAvatar: false,
@@ -49927,28 +49977,24 @@ define('frontend-cp/login/controller', ['exports', 'ember', 'frontend-cp/config/
         } else {
           _this5.transitionToSession();
         }
-      }, function (response) {
-        var errorCodes = [];
-        var data = response.errors;
-
-        if (data.errors) {
-          errorCodes = data.errors.map(function (error) {
-            return error.code;
-          });
-        }
+      }, function (error) {
+        var errors = error.errors || [];
+        var errorCodes = errors.map(function (error) {
+          return error.code;
+        });
 
         if (errorCodes.indexOf('AUTHENTICATION_FAILED') > -1) {
-          _this5.setErrors(data.notifications);
           _this5.setState('login.password.input');
         } else if (errorCodes.indexOf('CREDENTIAL_EXPIRED') > -1) {
-          _this5.set('authToken', data.authToken);
+          var authToken = errors[errorCodes.indexOf('CREDENTIAL_EXPIRED')].authToken;
+          _this5.set('authToken', authToken);
           _this5.setState('login.resetPassword.input');
         } else if (errorCodes.indexOf('OTP_EXPECTED') > -1) {
           // User needs to enter one time password for two factor authentication
-          _this5.set('authToken', data.authToken);
-          _this5.set('stepToken', data.step_token);
+          var authToken = errors[errorCodes.indexOf('OTP_EXPECTED')].authToken;
+          _this5.set('authToken', authToken);
           _this5.setState('login.otp.input');
-        } else if (response instanceof Ember['default'].Error) {
+        } else if (error instanceof Ember['default'].Error) {
           // this should never happen in production, but it might happen
           // on development stage when we have problems with models
           // (or similar)
@@ -49956,14 +50002,10 @@ define('frontend-cp/login/controller', ['exports', 'ember', 'frontend-cp/config/
           _this5.setErrors({ message: 'System error, please contact Customer Support' });
 
           if (console && console.error) {
-            console.error(response.message);
+            console.error(error.message);
           }
         } else {
           _this5.setState('login.password.error');
-
-          if (data.notifications) {
-            _this5.setErrors(data.notifications);
-          }
         }
       });
     },
@@ -57197,25 +57239,21 @@ define('frontend-cp/services/error-handler', ['exports', 'ember', 'npm:lodash'],
     intlService: Ember['default'].inject.service('intl'),
 
     handleServerError: function handleServerError(error) {
-      if (error && error.errors && error.errors.errors) {
-        this.handleSessionErrors(error.errors.errors);
-        this.handlePermissionErrors(error.errors.errors);
-        this.handleCredentialErrors(error.errors.errors);
+      if (error && error.errors) {
+        var errors = error.errors;
+        this.sendNotifications(errors.filter(function (x) {
+          return x.code === 'NOTIFICATION';
+        }));
+        this.handleSessionErrors(errors);
+        this.handlePermissionErrors(errors);
+        this.handleCredentialErrors(errors);
       }
       throw error;
     },
 
-    /*
-     * TODO this needs moved to serializer?
-     */
+    sendNotifications: function sendNotifications() {
+      var notifications = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
 
-    handleServerNotifications: function handleServerNotifications(data) {
-      if (data && data.notifications) {
-        this.sendNotifications(data.notifications);
-      }
-    },
-
-    sendNotifications: function sendNotifications(notifications) {
       var notificationService = this.get('notificationService');
       notifications.forEach(function (notification) {
         notificationService.add({
@@ -58070,12 +58108,16 @@ define('frontend-cp/services/session', ['exports', 'ember'], function (exports, 
       if (!session) {
         // if we have no session, reset session id
         // so ember knows that we want to show login again
+        this.container.lookup('router:main').transitionTo('login.agent');
         return this.set('sessionId', null);
       }
 
       return session.destroyRecord().then(function () {
-        return _this4.set('session', null);
-      })['catch'](function () {}); // catch the error - we don't care it it's already deleted etc.
+        _this4.set('session', null);
+        _this4.container.lookup('router:main').transitionTo('login.agent');
+      })['catch'](function () {
+        _this4.container.lookup('router:main').transitionTo('login.agent');
+      }); // catch the error - we don't care it it's already deleted etc.
     },
 
     /**
@@ -76051,14 +76093,14 @@ define('frontend-cp/transforms/fragment-array', ['exports'], function (exports) 
 
 	'use strict';
 
-	exports['default'] = DS.FragmentArrayTransform;
+	exports['default'] = MF.FragmentArrayTransform;
 
 });
 define('frontend-cp/transforms/fragment', ['exports'], function (exports) {
 
 	'use strict';
 
-	exports['default'] = DS.FragmentTransform;
+	exports['default'] = MF.FragmentTransform;
 
 });
 define('frontend-cp/utils/format-validations', ['exports'], function (exports) {
@@ -76108,7 +76150,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"e5ba08ab0174c8e64c81","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+0b67d23a"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"e5ba08ab0174c8e64c81","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+b486d235"});
 }
 
 /* jshint ignore:end */
