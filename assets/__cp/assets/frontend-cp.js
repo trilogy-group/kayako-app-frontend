@@ -21530,8 +21530,7 @@ define('frontend-cp/components/ko-channel-select/button/component', ['exports', 
   exports['default'] = Ember['default'].Component.extend({
     //Params:
     label: '',
-    iconClass: '',
-    classNames: ['ko-channel-select__button']
+    iconClass: ''
   });
 
 });
@@ -21550,7 +21549,7 @@ define('frontend-cp/components/ko-channel-select/button/template', ['exports'], 
             "column": 0
           },
           "end": {
-            "line": 2,
+            "line": 6,
             "column": 0
           }
         },
@@ -21563,10 +21562,21 @@ define('frontend-cp/components/ko-channel-select/button/template', ['exports'], 
         var el0 = dom.createDocumentFragment();
         var el1 = dom.createElement("span");
         dom.appendChild(el0, el1);
-        var el1 = dom.createComment("");
+        var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
         var el1 = dom.createElement("span");
-        dom.setAttribute(el1,"class","ko-dropdown-select__icon i-select");
+        dom.setAttribute(el1,"class","ko-channel-select_button__content");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("span");
+        dom.setAttribute(el1,"class","ko-channel-select_button__icon i-select");
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
@@ -21576,12 +21586,12 @@ define('frontend-cp/components/ko-channel-select/button/template', ['exports'], 
         var element0 = dom.childAt(fragment, [0]);
         var morphs = new Array(2);
         morphs[0] = dom.createAttrMorph(element0, 'class');
-        morphs[1] = dom.createMorphAt(fragment,1,1,contextualElement);
+        morphs[1] = dom.createMorphAt(dom.childAt(fragment, [2]),1,1);
         return morphs;
       },
       statements: [
-        ["attribute","class",["concat",[["get","iconClass",["loc",[null,[1,15],[1,24]]]]]]],
-        ["content","label",["loc",[null,[1,35],[1,44]]]]
+        ["attribute","class",["concat",[["get","iconClass",["loc",[null,[1,15],[1,24]]]]," ko-channel-select_button__icon u-mr--"]]],
+        ["content","label",["loc",[null,[3,2],[3,11]]]]
       ],
       locals: [],
       templates: []
@@ -43690,7 +43700,7 @@ define('frontend-cp/components/ko-text-editor/template', ['exports'], function (
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
         var el4 = dom.createElement("div");
-        dom.setAttribute(el4,"class","layout__item u-1/3");
+        dom.setAttribute(el4,"class","layout__item u-1/2");
         var el5 = dom.createTextNode("\n        ");
         dom.appendChild(el4, el5);
         var el5 = dom.createElement("div");
@@ -43896,7 +43906,7 @@ define('frontend-cp/components/ko-text-editor/template', ['exports'], function (
       },
       statements: [
         ["inline","yield",[["get","header",["loc",[null,[7,18],[7,24]]]]],[],["loc",[null,[7,10],[7,26]]]],
-        ["attribute","class",["concat",["layout__item u-2/3 t-right ",["subexpr","unless",[["get","showControls",["loc",[null,[10,57],[10,69]]]],"u-hidden"],[],["loc",[null,[10,48],[10,82]]]]]]],
+        ["attribute","class",["concat",["layout__item u-1/2 t-right ",["subexpr","unless",[["get","showControls",["loc",[null,[10,57],[10,69]]]],"u-hidden"],[],["loc",[null,[10,48],[10,82]]]]]]],
         ["attribute","title",["subexpr","format-message",[["subexpr","intl-get",["generic.texteditor.bold"],[],["loc",[null,[12,87],[12,123]]]]],[],["loc",[null,[12,70],[12,125]]]]],
         ["attribute","title",["subexpr","format-message",[["subexpr","intl-get",["generic.texteditor.italic"],[],["loc",[null,[13,89],[13,127]]]]],[],["loc",[null,[13,72],[13,129]]]]],
         ["attribute","title",["subexpr","format-message",[["subexpr","intl-get",["generic.texteditor.bullet"],[],["loc",[null,[14,94],[14,132]]]]],[],["loc",[null,[14,77],[14,134]]]]],
@@ -79365,7 +79375,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"e5ba08ab0174c8e64c81","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+210403bf"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"e5ba08ab0174c8e64c81","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+1bc02e02"});
 }
 
 /* jshint ignore:end */
