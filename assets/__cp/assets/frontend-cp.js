@@ -48419,6 +48419,19 @@ define('frontend-cp/initializers/intl', ['exports', 'ember-intl/models/translati
   };
 
 });
+define('frontend-cp/initializers/print-git-info', ['exports', 'frontend-cp/config/environment'], function (exports, config) {
+
+  'use strict';
+
+  exports['default'] = {
+    name: 'print-git-info',
+
+    initialize: function initialize() {
+      console.log(config['default'].currentRevision);
+    }
+  };
+
+});
 define('frontend-cp/initializers/pusher', ['exports'], function (exports) {
 
   'use strict';
@@ -79352,7 +79365,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"e5ba08ab0174c8e64c81","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+521389d0"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"e5ba08ab0174c8e64c81","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+d94c154d"});
 }
 
 /* jshint ignore:end */
