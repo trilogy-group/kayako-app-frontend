@@ -43132,6 +43132,8 @@ define('frontend-cp/components/ko-text-editor/component', ['exports', 'ember', '
 
     classNameBindings: ['isErrored'],
 
+    currentText: '', //updated whenever text-change event from quill is fired
+
     /**************
      * Public API
      **************/
@@ -43167,21 +43169,13 @@ define('frontend-cp/components/ko-text-editor/component', ['exports', 'ember', '
       return this.get('quill').getText().trim();
     },
 
+    showHidePlaceholder: Ember['default'].computed('isFocused', 'currentText', function () {
+      return this.get('isFocused') || this.get('currentText');
+    }),
+
     /*
      * IMPLEMENTATION
      */
-    togglePlaceholder: Ember['default'].observer('isFocused', 'placeholder', function () {
-      var placeholder = this.get('placeholder');
-
-      if (!this.get('isFocused') && this.getText() === '' && placeholder) {
-        this.get('quill').setText(placeholder);
-        this.set('showPlaceholder', true);
-      }
-      if (this.get('isFocused') && this.getText() === placeholder) {
-        this.get('quill').setText('');
-      }
-    }),
-
     initFiles: Ember['default'].on('init', function () {
       this.set('inlineFiles', new Ember['default'].A([]));
     }),
@@ -43195,6 +43189,10 @@ define('frontend-cp/components/ko-text-editor/component', ['exports', 'ember', '
     },
 
     tagDictionary: null,
+
+    updateCurrentText: function updateCurrentText() {
+      this.set('currentText', this.getText());
+    },
 
     setupQuill: Ember['default'].on('didInsertElement', function () {
       var _this = this;
@@ -43336,6 +43334,11 @@ define('frontend-cp/components/ko-text-editor/component', ['exports', 'ember', '
         }
       });
 
+      //update text every time we type so we've got a proper ember variable to observe
+      this.quill.on('text-change', function () {
+        return _this.updateCurrentText();
+      });
+
       Ember['default'].$('.ql-editor').on('blur', function () {
         if (_this.quill.getSelection() === null) {
           _this.set('cursor', 0);
@@ -43348,8 +43351,14 @@ define('frontend-cp/components/ko-text-editor/component', ['exports', 'ember', '
       Ember['default'].$('.ql-editor').on('focus', function () {
         _this.set('isFocused', true);
       });
+    }),
 
-      this.togglePlaceholder();
+    cleanUpQuill: Ember['default'].on('willDestroyElement', function () {
+      var _this2 = this;
+
+      this.quill.off('text-change', function () {
+        return _this2.updateCurrentText();
+      });
     }),
 
     process: function process(elem, prefix, postfix) {
@@ -43481,15 +43490,15 @@ define('frontend-cp/components/ko-text-editor/component', ['exports', 'ember', '
         this.quill.insertEmbed(this.cursor, 'image', file);
       },
       handleInlineFiles: function handleInlineFiles(files) {
-        var _this2 = this;
+        var _this3 = this;
 
         for (var i = 0, f = undefined; f = files[i]; i++) {
           if (this.fileIsNotTooBig(f) && this.fileIsImage(f)) {
             (function () {
-              _this2.inlineFiles.pushObject(f);
+              _this3.inlineFiles.pushObject(f);
               var reader = new FileReader();
               reader.onload = function () {
-                _this2.quill.insertEmbed(_this2.cursor + 1, 'image', reader.result);
+                _this3.quill.insertEmbed(_this3.cursor + 1, 'image', reader.result);
               };
               reader.readAsDataURL(f);
             })();
@@ -43645,11 +43654,11 @@ define('frontend-cp/components/ko-text-editor/template', ['exports'], function (
           "loc": {
             "source": null,
             "start": {
-              "line": 79,
+              "line": 80,
               "column": 2
             },
             "end": {
-              "line": 81,
+              "line": 82,
               "column": 2
             }
           },
@@ -43687,7 +43696,7 @@ define('frontend-cp/components/ko-text-editor/template', ['exports'], function (
             "column": 0
           },
           "end": {
-            "line": 84,
+            "line": 85,
             "column": 0
           }
         },
@@ -43860,6 +43869,12 @@ define('frontend-cp/components/ko-text-editor/template', ['exports'], function (
         dom.appendChild(el0, el1);
         var el1 = dom.createElement("div");
         dom.setAttribute(el1,"class","ko-text-editor__dropzone-and-editor-container");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n");
         dom.appendChild(el1, el2);
         var el2 = dom.createComment("");
@@ -43894,7 +43909,8 @@ define('frontend-cp/components/ko-text-editor/template', ['exports'], function (
         var element17 = dom.childAt(element16, [1]);
         var element18 = dom.childAt(element14, [5]);
         var element19 = dom.childAt(fragment, [4]);
-        var morphs = new Array(18);
+        var element20 = dom.childAt(element19, [1]);
+        var morphs = new Array(20);
         morphs[0] = dom.createMorphAt(dom.childAt(element2, [1, 1]),2,2);
         morphs[1] = dom.createAttrMorph(element3, 'class');
         morphs[2] = dom.createAttrMorph(element5, 'title');
@@ -43911,8 +43927,10 @@ define('frontend-cp/components/ko-text-editor/template', ['exports'], function (
         morphs[13] = dom.createMorphAt(element15,3,3);
         morphs[14] = dom.createMorphAt(element14,3,3);
         morphs[15] = dom.createAttrMorph(element18, 'title');
-        morphs[16] = dom.createMorphAt(element19,1,1);
-        morphs[17] = dom.createMorphAt(element19,3,3);
+        morphs[16] = dom.createAttrMorph(element20, 'class');
+        morphs[17] = dom.createMorphAt(element20,0,0);
+        morphs[18] = dom.createMorphAt(element19,3,3);
+        morphs[19] = dom.createMorphAt(element19,5,5);
         return morphs;
       },
       statements: [
@@ -43932,8 +43950,10 @@ define('frontend-cp/components/ko-text-editor/template', ['exports'], function (
         ["inline","ko-file-field",[],["viewName","attachFile","on-change","handleAttachmentFiles"],["loc",[null,[37,12],[40,14]]]],
         ["block","if",[["get","isPeopleIconAvailable",["loc",[null,[43,16],[43,37]]]]],[],0,null,["loc",[null,[43,10],[69,17]]]],
         ["attribute","title",["subexpr","format-message",[["subexpr","intl-get",["generic.texteditor.billing"],[],["loc",[null,[70,92],[70,131]]]]],[],["loc",[null,[70,75],[70,133]]]]],
-        ["block","ko-draggable-dropzone",[],["dropped","imageDropped"],1,null,["loc",[null,[79,2],[81,28]]]],
-        ["inline","yield",[["get","infomessage",["loc",[null,[82,10],[82,21]]]]],[],["loc",[null,[82,2],[82,23]]]]
+        ["attribute","class",["concat",["ko-text-editor__placeholder ",["subexpr","if",[["get","showHidePlaceholder",["loc",[null,[79,47],[79,66]]]],"u-hidden"],[],["loc",[null,[79,42],[79,79]]]]]]],
+        ["content","placeholder",["loc",[null,[79,81],[79,96]]]],
+        ["block","ko-draggable-dropzone",[],["dropped","imageDropped"],1,null,["loc",[null,[80,2],[82,28]]]],
+        ["inline","yield",[["get","infomessage",["loc",[null,[83,10],[83,21]]]]],[],["loc",[null,[83,2],[83,23]]]]
       ],
       locals: [],
       templates: [child0, child1]
@@ -70590,39 +70610,6 @@ define('frontend-cp/tests/acceptance/case/list-test', ['frontend-cp/tests/helper
   });
 
 });
-define('frontend-cp/tests/acceptance/case/reply-with-quote-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
-
-  'use strict';
-
-  qunit.app('Acceptance | Case | Reply with quote', {
-    beforeEach: function beforeEach() {
-      useDefaultScenario();
-      login();
-    },
-
-    afterEach: function afterEach() {
-      logout();
-    }
-  });
-
-  qunit.test('reply with quote to an existing case', function (assert) {
-    assert.expect(2);
-
-    visit('/agent/cases/1');
-
-    andThen(function () {
-      assert.equal(currentURL(), '/agent/cases/1');
-      click('.ko-feed-item_menu__item:first.i-quote');
-    });
-
-    andThen(function () {
-      var lastFeedItemContent = find('.feed__item:first .feed__content').text().trim;
-      var editorContent = find('.ql-editor:first').text().trim;
-      assert.equal(lastFeedItemContent, editorContent);
-    });
-  });
-
-});
 define('frontend-cp/tests/acceptance/login/reset-password-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
@@ -79630,7 +79617,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"e5ba08ab0174c8e64c81","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+619861b5"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"e5ba08ab0174c8e64c81","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+34397724"});
 }
 
 /* jshint ignore:end */
