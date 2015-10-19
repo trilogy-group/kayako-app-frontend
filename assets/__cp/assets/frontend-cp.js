@@ -614,6 +614,17 @@ define('frontend-cp/adapters/organization-field', ['exports', 'frontend-cp/adapt
   });
 
 });
+define('frontend-cp/adapters/plan', ['exports', 'frontend-cp/adapters/application'], function (exports, ApplicationAdapter) {
+
+  'use strict';
+
+  exports['default'] = ApplicationAdapter['default'].extend({
+    pathForType: function pathForType() {
+      return 'plan';
+    }
+  });
+
+});
 define('frontend-cp/adapters/private', ['exports', 'frontend-cp/adapters/application'], function (exports, ApplicationAdapter) {
 
     'use strict';
@@ -51823,6 +51834,15 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
         throw new Error('This search is not implemented in mirage');
       }
     });
+
+    this.get('/api/v1/plan', function (db) {
+      return {
+        status: 200,
+        data: db.plans[0],
+        resource: 'plan',
+        resources: []
+      };
+    });
   }
 
 });
@@ -52273,6 +52293,19 @@ define('frontend-cp/mirage/factories/facebook-page', ['exports', 'ember-cli-mira
   });
 
 });
+define('frontend-cp/mirage/factories/feature', ['exports', 'ember-cli-mirage'], function (exports, ember_cli_mirage) {
+
+  'use strict';
+
+  /*eslint-disable camelcase*/
+
+  exports['default'] = ember_cli_mirage['default'].Factory.extend({
+    code: ember_cli_mirage.faker.random.number,
+    name: 'Collaborators',
+    description: 'People who may log in as a team member'
+  });
+
+});
 define('frontend-cp/mirage/factories/field-option', ['exports', 'ember-cli-mirage'], function (exports, ember_cli_mirage) {
 
   'use strict';
@@ -52438,6 +52471,18 @@ define('frontend-cp/mirage/factories/language', ['exports', 'ember-cli-mirage'],
   });
 
 });
+define('frontend-cp/mirage/factories/limit', ['exports', 'ember-cli-mirage'], function (exports, ember_cli_mirage) {
+
+  'use strict';
+
+  /*eslint-disable camelcase*/
+
+  exports['default'] = ember_cli_mirage['default'].Factory.extend({
+    name: 'Collaborators',
+    limit: ember_cli_mirage.faker.random.number
+  });
+
+});
 define('frontend-cp/mirage/factories/mailbox', ['exports', 'ember-cli-mirage'], function (exports, Mirage) {
 
   'use strict';
@@ -52515,6 +52560,21 @@ define('frontend-cp/mirage/factories/organization', ['exports', 'ember-cli-mirag
     updated_at: '2015-07-09T15:36:10Z',
     resource_type: 'organization',
     resource_url: 'http://novo/api/index.php?/v1/organizations/1'
+  });
+
+});
+define('frontend-cp/mirage/factories/plan', ['exports', 'ember-cli-mirage'], function (exports, ember_cli_mirage) {
+
+  'use strict';
+
+  /*eslint-disable camelcase*/
+
+  exports['default'] = ember_cli_mirage['default'].Factory.extend({
+    seat_count: 15,
+    expiry_at: ember_cli_mirage.faker.date.future,
+    limits: [],
+    features: [],
+    resource_type: 'plan'
   });
 
 });
@@ -53084,6 +53144,22 @@ define('frontend-cp/mirage/scenarios/default', ['exports'], function (exports) {
         }
       });
     }
+
+    var limit = server.create('limit', {
+      name: 'collaborators',
+      limit: 10
+    });
+
+    var feature = server.create('feature', {
+      code: 3232,
+      name: 'collaborators',
+      description: 'People who may log in as a team member'
+    });
+
+    server.create('plan', {
+      limits: [limit],
+      features: [feature]
+    });
   }
 
 });
@@ -54328,6 +54404,17 @@ define('frontend-cp/models/facebook-post', ['exports', 'ember-data', 'frontend-c
   });
 
 });
+define('frontend-cp/models/feature', ['exports', 'ember-data'], function (exports, DS) {
+
+  'use strict';
+
+  exports['default'] = DS['default'].ModelFragment.extend({
+    code: DS['default'].attr('string'),
+    name: DS['default'].attr('string'),
+    description: DS['default'].attr('string')
+  });
+
+});
 define('frontend-cp/models/field-option', ['exports', 'ember-data', 'frontend-cp/mixins/change-aware-model'], function (exports, DS, ChangeAwareModel) {
 
   'use strict';
@@ -54571,6 +54658,16 @@ define('frontend-cp/models/language', ['exports', 'ember-data'], function (expor
     statistics: DS['default'].hasOneFragment('language-statistics'),
     createdAt: DS['default'].attr('date'),
     updatedAt: DS['default'].attr('date')
+  });
+
+});
+define('frontend-cp/models/limit', ['exports', 'ember-data'], function (exports, DS) {
+
+  'use strict';
+
+  exports['default'] = DS['default'].ModelFragment.extend({
+    name: DS['default'].attr('string'),
+    limit: DS['default'].attr('string')
   });
 
 });
@@ -54836,6 +54933,16 @@ define('frontend-cp/models/permission', ['exports', 'ember-data'], function (exp
   exports['default'] = DS['default'].Model.extend({
     name: DS['default'].attr('string'),
     value: DS['default'].attr('boolean')
+  });
+
+});
+define('frontend-cp/models/plan', ['exports', 'ember-data'], function (exports, DS) {
+
+  'use strict';
+
+  exports['default'] = DS['default'].Model.extend({
+    features: DS['default'].hasManyFragments('feature', { async: false }),
+    limits: DS['default'].hasManyFragments('limit', { async: false })
   });
 
 });
@@ -57787,6 +57894,44 @@ define('frontend-cp/services/permissions', ['exports', 'ember'], function (expor
   });
 
 });
+define('frontend-cp/services/plan', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Service.extend({
+    store: Ember['default'].inject.service('store'),
+
+    features: new Ember['default'].A(),
+    limits: new Ember['default'].A(),
+
+    limitFor: function limitFor(name) {
+      var limits = this.get('limits');
+      var filteredLimits = limits.filterBy('name', name);
+      return filteredLimits.length < 1 ? 0 : filteredLimits.get('firstObject').get('limit');
+    },
+
+    has: function has(name) {
+      var features = this.get('features');
+      return features.isAny('name', name);
+    },
+
+    fetchPlan: function fetchPlan() {
+      var _this = this;
+
+      return new Ember['default'].RSVP.Promise(function (resolve, reject) {
+        var store = _this.get('store');
+
+        store.unloadAll('plan');
+        store.queryRecord('plan', {}).then(function (plan) {
+          _this.set('limits', plan.get('limits'));
+          _this.set('features', plan.get('features'));
+          resolve();
+        });
+      });
+    }
+  });
+
+});
 define('frontend-cp/services/pusher', ['exports', 'ember', 'frontend-cp/config/environment'], function (exports, Ember, ENV) {
 
   'use strict';
@@ -58044,6 +58189,7 @@ define('frontend-cp/services/session', ['exports', 'ember'], function (exports, 
 
     permissions: [],
 
+    planService: Ember['default'].inject.service('plan'),
     localStoreService: Ember['default'].inject.service('localStore'),
     store: Ember['default'].inject.service(),
 
@@ -58104,6 +58250,8 @@ define('frontend-cp/services/session', ['exports', 'ember'], function (exports, 
         _this3.set('session', session);
         _this3.set('sessionId', session.get('id'));
         _this3.set('user', session.get('user'));
+        _this3.getPermissions();
+        _this3.get('planService').fetchPlan();
         return _this3.getPermissions();
       });
     },
@@ -70361,6 +70509,11 @@ define('frontend-cp/tests/acceptance/case/create-test', ['frontend-cp/tests/help
       server.createList('case-status', 5);
       server.createList('case-priority', 4);
       login(session.id);
+
+      server.create('plan', {
+        limits: [],
+        features: []
+      });
     },
 
     afterEach: function afterEach() {
@@ -70508,6 +70661,7 @@ define('frontend-cp/tests/acceptance/manage-user-identities-test', ['ember', 'qu
       var emails = [server.create('identity-email', { email: 'first@example.com', is_primary: true, is_validated: true }), server.create('identity-email', { email: 'second@example.com', is_primary: false, is_validated: true }), server.create('identity-email', { email: 'third@example.com', is_primary: false, is_validated: false })];
       var user = server.create('user', { emails: emails, role: server.create('role') });
       var session = server.create('session', { user: user });
+      server.create('plan', { limits: [], features: [] });
       login(session.id);
 
       visit('/agent/users/' + user.id);
@@ -70611,6 +70765,7 @@ define('frontend-cp/tests/acceptance/manage-user-identities-test', ['ember', 'qu
       var twitters = [server.create('identity-twitter', { screen_name: '@first', is_primary: true, is_validated: true }), server.create('identity-twitter', { screen_name: '@second', is_primary: false, is_validated: true }), server.create('identity-twitter', { screen_name: '@third', is_primary: false, is_validated: false })];
       var user = server.create('user', { twitters: twitters, role: server.create('role') });
       var session = server.create('session', { user: user });
+      server.create('plan', { limits: [], features: [] });
       login(session.id);
 
       visit('/agent/users/' + user.id);
@@ -70673,6 +70828,7 @@ define('frontend-cp/tests/acceptance/manage-user-identities-test', ['ember', 'qu
       var facebooks = [server.create('identity-facebook', { user_name: 'Mike', is_primary: true, is_validated: true }), server.create('identity-facebook', { user_name: 'Mary', is_primary: false, is_validated: true }), server.create('identity-facebook', { user_name: 'John', is_primary: false, is_validated: false })];
       var user = server.create('user', { facebooks: facebooks, role: server.create('role') });
       var session = server.create('session', { user: user });
+      server.create('plan', { limits: [], features: [] });
       login(session.id);
 
       visit('/agent/users/' + user.id);
@@ -70721,6 +70877,7 @@ define('frontend-cp/tests/acceptance/manage-user-identities-test', ['ember', 'qu
       var phones = [server.create('identity-phone', { number: '+44 1111 111111', is_primary: true, is_validated: true }), server.create('identity-phone', { number: '+44 2222 222222', is_primary: false, is_validated: true }), server.create('identity-phone', { number: '+44 3333 333333', is_primary: false, is_validated: false })];
       var user = server.create('user', { phones: phones, role: server.create('role') });
       var session = server.create('session', { user: user });
+      server.create('plan', { limits: [], features: [] });
       login(session.id);
 
       visit('/agent/users/' + user.id);
@@ -74122,6 +74279,22 @@ define('frontend-cp/tests/integration/components/ko-session-widgets/component-te
 
       server.create('session', {
         user: defaultUser
+      });
+
+      var limit = server.create('limit', {
+        name: 'collaborators',
+        limit: 10
+      });
+
+      var feature = server.create('feature', {
+        code: 3232,
+        name: 'collaborators',
+        description: 'People who may log in as a team member'
+      });
+
+      server.create('plan', {
+        limits: [limit],
+        features: [feature]
       });
 
       /*eslint-enable no-undef, camelcase */
@@ -78888,6 +79061,88 @@ define('frontend-cp/tests/unit/services/page-scroll-test', ['ember-qunit', 'fron
   });
 
 });
+define('frontend-cp/tests/unit/services/plan-test', ['ember-qunit', 'frontend-cp/tests/helpers/setup-mirage-for-integration'], function (ember_qunit, mirage) {
+
+  'use strict';
+
+  ember_qunit.moduleFor('service:plan', 'Unit | Service | plan', {
+    integration: true,
+    setup: function setup() {
+      /*eslint-disable no-undef, camelcase */
+      mirage['default'](this.container);
+      var limit = server.create('limit', {
+        name: 'collaborators',
+        limit: 10
+      });
+
+      var feature = server.create('feature', {
+        code: 3232,
+        name: 'collaborators',
+        description: 'People who may log in as a team member'
+      });
+
+      server.create('plan', {
+        limits: [limit],
+        features: [feature]
+      });
+      /*eslint-enable no-undef, camelcase */
+    }
+  });
+
+  ember_qunit.test('it should return the limit for the name requested', function (assert) {
+    assert.expect(1);
+
+    var service = this.subject();
+    service.fetchPlan().then(function () {
+      assert.equal(service.limitFor('collaborators'), 10);
+    });
+  });
+
+  ember_qunit.test('it should return true if the name of the feature is present', function (assert) {
+    assert.expect(1);
+
+    var service = this.subject();
+    service.fetchPlan().then(function () {
+      assert.equal(service.has('collaborators'), true);
+    });
+  });
+
+  ember_qunit.test('it will fetch from the server and update', function (assert) {
+    assert.expect(5);
+
+    var service = this.subject();
+    service.fetchPlan().then(function () {
+      assert.equal(service.limitFor('collaborators'), 10);
+      assert.equal(service.has('collaborators'), true);
+      assert.equal(service.has('agents'), false);
+
+      /*eslint-disable no-undef, camelcase */
+      var limit = server.create('limit', {
+        name: 'agents',
+        limit: 2
+      });
+
+      var feature = server.create('feature', {
+        code: 3333,
+        name: 'agents',
+        description: 'People who may log in and talk to customers'
+      });
+
+      server.db.plans.remove(1);
+
+      server.create('plan', {
+        limits: [limit],
+        features: [feature]
+      });
+      /*eslint-enable no-undef, camelcase */
+      return service.fetchPlan();
+    }).then(function () {
+      assert.equal(service.limitFor('agents'), 2);
+      assert.equal(service.has('agents'), true);
+    });
+  });
+
+});
 define('frontend-cp/tests/unit/services/route-state-test', ['frontend-cp/tests/helpers/qunit', 'frontend-cp/tests/fixtures/router/mock-router', 'frontend-cp/tests/fixtures/location/mock-location'], function (qunit, MockRouter, MockLocation) {
 
   'use strict';
@@ -79375,7 +79630,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"e5ba08ab0174c8e64c81","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+1bc02e02"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"e5ba08ab0174c8e64c81","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+619861b5"});
 }
 
 /* jshint ignore:end */
