@@ -47064,7 +47064,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
         var el5 = dom.createTextNode("\n       ");
         dom.appendChild(el4, el5);
         var el5 = dom.createElement("li");
-        dom.setAttribute(el5,"class","u-v-align-top");
+        dom.setAttribute(el5,"class","u-v-align-top u-hidden");
         var el6 = dom.createTextNode("\n         ");
         dom.appendChild(el5, el6);
         var el6 = dom.createComment("");
@@ -57839,19 +57839,14 @@ define('frontend-cp/services/permissions', ['exports', 'ember'], function (expor
       return myRoleType.rank > targetRoleType.rank && targetRoleType.rank !== roleTypes.CUSTOMER.rank;
     },
     // ADMIN can disable all, AGENT only CUSTOMER
-    'app.user.disable': function appUserDisable(subjectRoleType, subject, user) {
+    'app.user.disable': function appUserDisable(roleType, subject, user) {
       var userRoleType = user.get('role.roleType');
 
       // I cannot disable myself!
       if (subject && user && subject === user) {
         return false;
       }
-
-      if (subjectRoleType.rank === roleTypes.AGENT.rank) {
-        return userRoleType.rank === roleTypes.CUSTOMER.rank;
-      }
-
-      return subjectRoleType.rank === roleTypes.ADMIN.rank;
+      return adminOrAgentToCustomer(roleType, roleTypes[userRoleType]);
     },
     'app.user.password.change': function appUserPasswordChange(roleType, user, target) {
       // I can change my own password:
@@ -79624,7 +79619,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"e5ba08ab0174c8e64c81","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+d9944e1e"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"e5ba08ab0174c8e64c81","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+f936a0bd"});
 }
 
 /* jshint ignore:end */
