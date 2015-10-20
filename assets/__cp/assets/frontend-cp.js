@@ -14686,12 +14686,6 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       });
     }),
 
-    tags: Ember['default'].computed('case.tags.@each.name', function () {
-      return this.get('case.tags').map(function (tag) {
-        return tag.get('name');
-      });
-    }),
-
     availableChannels: Ember['default'].computed('case.id', 'case.replyChannels', 'case.channels', function () {
       if (!this.get('case.id')) {
         return this.get('case.channels');
@@ -15170,15 +15164,9 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
         this.get('case.tags').pushObject(newTag);
         this.set('isTagsFieldEdited', this.get('case').hasDirtyHasManyRelationship('tags'));
       },
-      removeTag: function removeTag(tagName) {
-        var tags = this.get('case.tags');
-        var tag = tags.find(function (tag) {
-          return tag.get('name') === tagName;
-        });
-        if (tag) {
-          tags.removeObject(tag);
-          this.set('isTagsFieldEdited', this.get('case').hasDirtyHasManyRelationship('tags'));
-        }
+      removeTag: function removeTag(tag) {
+        this.get('case.tags').removeObject(tag);
+        this.set('isTagsFieldEdited', this.get('case').hasDirtyHasManyRelationship('tags'));
       },
 
       suggestTags: function suggestTags(searchTerm, selectedTags) {
@@ -16300,7 +16288,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["inline","ko-case-field/tags",[],["tags",["subexpr","@mut",[["get","tags",["loc",[null,[152,17],[152,21]]]]],[],[]],"suggestedTags",["subexpr","@mut",[["get","suggestedTags",["loc",[null,[153,26],[153,39]]]]],[],[]],"onTagAddition","addTag","onTagRemoval","removeTag","onTagSuggestion","suggestTags"],["loc",[null,[151,10],[157,12]]]]
+          ["inline","ko-case-field/tags",[],["tags",["subexpr","@mut",[["get","case.tags",["loc",[null,[152,17],[152,26]]]]],[],[]],"suggestedTags",["subexpr","@mut",[["get","suggestedTags",["loc",[null,[153,26],[153,39]]]]],[],[]],"onTagAddition","addTag","onTagRemoval","removeTag","onTagSuggestion","suggestTags"],["loc",[null,[151,10],[157,12]]]]
         ],
         locals: [],
         templates: []
@@ -16793,7 +16781,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
         ["block","if",[["get","statusField",["loc",[null,[119,14],[119,25]]]]],[],6,null,["loc",[null,[119,8],[127,15]]]],
         ["block","if",[["get","typeField",["loc",[null,[129,14],[129,23]]]]],[],7,null,["loc",[null,[129,8],[137,15]]]],
         ["block","if",[["get","priorityField",["loc",[null,[139,14],[139,27]]]]],[],8,null,["loc",[null,[139,8],[147,15]]]],
-        ["block","ko-info-bar/field",[],["title",["subexpr","format-message",[["subexpr","intl-get",["cases.tags"],[],["loc",[null,[149,51],[149,74]]]]],[],["loc",[null,[149,35],[149,75]]]],"isEdited",["subexpr","@mut",[["get","isTagsFieldEdited",["loc",[null,[150,19],[150,36]]]]],[],[]]],9,null,["loc",[null,[149,8],[158,30]]]],
+        ["block","ko-info-bar/field",[],["title",["subexpr","format-message",[["subexpr","intl-get",["cases.tags"],[],["loc",[null,[149,51],[149,74]]]]],[],["loc",[null,[149,35],[149,75]]]],"isEdited",["subexpr","@mut",[["get","isTagsFieldEdited",["loc",[null,[150,19],[150,36]]]]],[],[]],"isPusherEdited",["subexpr","@mut",[["get","case.propertiesChangeViaPusher.tags",["loc",[null,[150,52],[150,87]]]]],[],[]]],9,null,["loc",[null,[149,8],[158,30]]]],
         ["inline","ko-case-field/forms",[],["selectedForm",["subexpr","@mut",[["get","case.form",["loc",[null,[161,23],[161,32]]]]],[],[]],"forms",["subexpr","@mut",[["get","caseForms",["loc",[null,[162,16],[162,25]]]]],[],[]],"onFormSelected","setForm","isEdited",["subexpr","@mut",[["get","editedCaseFields.form",["loc",[null,[164,19],[164,40]]]]],[],[]]],["loc",[null,[160,8],[165,10]]]],
         ["block","each",[["get","caseOrFormFields",["loc",[null,[167,16],[167,32]]]]],[],10,null,["loc",[null,[167,8],[183,17]]]],
         ["block","if",[["get","case.id",["loc",[null,[186,14],[186,21]]]]],[],11,null,["loc",[null,[186,8],[188,15]]]],
@@ -18209,8 +18197,8 @@ define('frontend-cp/components/ko-case-field/tags/component', ['exports', 'ember
       onTagSuggestion: function onTagSuggestion(searchTerm, selectedTags) {
         this.sendAction('onTagSuggestion', searchTerm, selectedTags);
       },
-      onTagRemoval: function onTagRemoval(tagName) {
-        this.sendAction('onTagRemoval', tagName);
+      onTagRemoval: function onTagRemoval(tag) {
+        this.sendAction('onTagRemoval', tag);
       }
     }
   });
@@ -27932,14 +27920,10 @@ define('frontend-cp/components/ko-field/tags/component', ['exports', 'ember', 'f
       var tags = this.get('selectedTags') || [];
       var errors = this.get('errorTags') || [];
 
-      tags.forEach(function (title) {
-        if (errors.indexOf(title) > -1) {
-          statusTags.push({ title: title, isError: true });
-        } else {
-          statusTags.push({ title: title, isError: false });
-        }
+      tags.forEach(function (tag) {
+        tag.set('isError', errors.indexOf(tag.get('name')) > -1);
+        statusTags.push(tag);
       });
-
       return statusTags;
     }),
 
@@ -28097,7 +28081,8 @@ define('frontend-cp/components/ko-field/tags/component', ['exports', 'ember', 'f
         }
         this.set('searchTerm', '');
         this.set('showDropdown', false);
-        if (!this.get('selectedTags').includes(tag)) {
+
+        if (!this.get('selectedTags').contains(tag)) {
           this.sendAction('onTagAddition', tag);
           this.updateSuggestions();
         }
@@ -28167,9 +28152,9 @@ define('frontend-cp/components/ko-field/tags/template', ['exports'], function (e
           return morphs;
         },
         statements: [
-          ["attribute","class",["concat",["ko-field_tags__item ",["subexpr","if",[["get","tag.isError",["loc",[null,[3,38],[3,49]]]],"ko-field_tags__item--error"],[],["loc",[null,[3,33],[3,80]]]]]]],
-          ["content","tag.title",["loc",[null,[4,10],[4,23]]]],
-          ["element","action",["removeTag",["get","tag.title",["loc",[null,[5,31],[5,40]]]]],["bubbles",false],["loc",[null,[5,10],[5,56]]]]
+          ["attribute","class",["concat",["ko-field_tags__item ",["subexpr","if",[["get","tag.isPusherEdited",["loc",[null,[3,38],[3,56]]]],"ko-field_tags__item--pusher"],[],["loc",[null,[3,33],[3,88]]]]," ",["subexpr","if",[["get","tag.isNew",["loc",[null,[3,94],[3,103]]]],"ko-field_tags__item--new"],[],["loc",[null,[3,89],[3,132]]]]," ",["subexpr","if",[["get","tag.isError",["loc",[null,[3,138],[3,149]]]],"ko-field_tags__item--error"],[],["loc",[null,[3,133],[3,180]]]]]]],
+          ["content","tag.name",["loc",[null,[4,10],[4,22]]]],
+          ["element","action",["removeTag",["get","tag",["loc",[null,[5,31],[5,34]]]]],["bubbles",false],["loc",[null,[5,10],[5,50]]]]
         ],
         locals: ["tag"],
         templates: []
@@ -32955,10 +32940,11 @@ define('frontend-cp/components/ko-info-bar/field/component', ['exports', 'ember'
     // Params
     isEdited: false,
     isErrored: false,
+    isPusherEdited: false,
 
     tagName: 'li',
     classNames: 'info-bar-item',
-    classNameBindings: ['isEdited:info-bar-item--edited', 'isErrored:info-bar-item--error']
+    classNameBindings: ['isPusherEdited:info-bar-item--pusher-edited', 'isEdited:info-bar-item--edited', 'isErrored:info-bar-item--error']
   });
 
 });
@@ -35586,16 +35572,8 @@ define('frontend-cp/components/ko-organisation-content/component', ['exports', '
       this.set('editedCustomFields', new Ember['default'].Object());
     }),
 
-    tags: Ember['default'].computed('model.tags.[]', function () {
-      return this.get('model.tags').map(function (tag) {
-        return tag.get('name');
-      }).uniq();
-    }),
-
     domains: Ember['default'].computed('model.domains.[]', function () {
-      return this.get('model.domains').map(function (domain) {
-        return domain.get('domain');
-      }).uniq();
+      return this.get('model.domains'); //.map(domain => domain.get('domain')).uniq();
     }),
 
     errorMap: Ember['default'].computed('errors', function () {
@@ -35612,6 +35590,15 @@ define('frontend-cp/components/ko-organisation-content/component', ['exports', '
       this.set('isDomainEdited', false);
       this.set('isNameEdited', false);
       this.set('isDomainErrored', false);
+
+      // New tags should be rolled back as they are left
+      // in the store after we save a case. New tags have id = null,
+      // and the same tag with numeric id is also returned from the server.
+      this.get('store').peekAll('tag').forEach(function (record) {
+        if (record.get('hasDirtyAttributes')) {
+          record.rollbackAttributes();
+        }
+      });
     },
 
     organisationDates: Ember['default'].computed('model.createdAt', 'model.updatedAt', 'model.activityAt', function () {
@@ -35628,20 +35615,15 @@ define('frontend-cp/components/ko-organisation-content/component', ['exports', '
     }),
 
     actions: {
-      addTag: function addTag(tag) {
-        var newTag = this.get('store').createRecord('tag', { name: tag });
+      addTag: function addTag(tagName) {
+        var newTag = this.get('store').createRecord('tag', { name: tagName });
         this.get('model.tags').pushObject(newTag);
         this.set('isTagsFieldEdited', this.get('model').hasDirtyHasManyRelationship('tags'));
       },
 
-      removeTag: function removeTag(tagName) {
-        var tag = this.get('model.tags').find(function (tag) {
-          return tag.get('name') === tagName;
-        });
-        if (tag) {
-          this.get('model.tags').removeObject(tag);
-          this.set('isTagsFieldEdited', this.get('model').hasDirtyHasManyRelationship('tags'));
-        }
+      removeTag: function removeTag(tag) {
+        this.get('model.tags').removeObject(tag);
+        this.set('isTagsFieldEdited', this.get('model').hasDirtyHasManyRelationship('tags'));
       },
 
       suggestTags: function suggestTags(searchTerm, selectedTags) {
@@ -35656,9 +35638,7 @@ define('frontend-cp/components/ko-organisation-content/component', ['exports', '
 
         suggestionService.suggest(searchTerm).then(function (data) {
           data = suggestionService.exclude(data, selectedTags);
-          _this.set('suggestedTags', data.map(function (tag) {
-            return tag.get('name');
-          }));
+          _this.set('suggestedTags', data);
         });
       },
 
@@ -35672,15 +35652,9 @@ define('frontend-cp/components/ko-organisation-content/component', ['exports', '
         }
       },
 
-      removeDomain: function removeDomain(domainName) {
-        var domain = this.get('model.domains').find(function (domain) {
-          return domain.get('domain') === domainName;
-        });
-        if (domain) {
-          this.get('model.domains').removeObject(domain);
-          this.set('isDomainEdited', this.get('model').hasDirtyHasManyRelationship('domains'));
-        }
-        return false;
+      removeDomain: function removeDomain(domain) {
+        this.get('model.domains').removeObject(domain);
+        this.set('isDomainEdited', this.get('model').hasDirtyHasManyRelationship('domains'));
       },
 
       setName: function setName(name) {
@@ -35790,7 +35764,7 @@ define('frontend-cp/components/ko-organisation-content/template', ['exports'], f
             return morphs;
           },
           statements: [
-            ["inline","ko-field/tags",[],["selectedTags",["subexpr","@mut",[["get","tags",["loc",[null,[52,39],[52,43]]]]],[],[]],"suggestedTags",["subexpr","@mut",[["get","suggestedTags",["loc",[null,[53,26],[53,39]]]]],[],[]],"title",["subexpr","format-message",[["subexpr","intl-get",["users.tags"],[],["loc",[null,[54,34],[54,57]]]]],[],["loc",[null,[54,18],[54,58]]]],"newTagText",["subexpr","format-message",[["subexpr","intl-get",["users.newtag"],[],["loc",[null,[55,39],[55,64]]]]],[],["loc",[null,[55,23],[55,65]]]],"addTagText",["subexpr","format-message",[["subexpr","intl-get",["users.addtag"],[],["loc",[null,[56,39],[56,64]]]]],[],["loc",[null,[56,23],[56,65]]]],"onTagAddition","addTag","onTagRemoval","removeTag","onTagSuggestion","suggestTags"],["loc",[null,[52,10],[59,43]]]]
+            ["inline","ko-field/tags",[],["selectedTags",["subexpr","@mut",[["get","model.tags",["loc",[null,[52,39],[52,49]]]]],[],[]],"suggestedTags",["subexpr","@mut",[["get","suggestedTags",["loc",[null,[53,26],[53,39]]]]],[],[]],"title",["subexpr","format-message",[["subexpr","intl-get",["users.tags"],[],["loc",[null,[54,34],[54,57]]]]],[],["loc",[null,[54,18],[54,58]]]],"newTagText",["subexpr","format-message",[["subexpr","intl-get",["users.newtag"],[],["loc",[null,[55,39],[55,64]]]]],[],["loc",[null,[55,23],[55,65]]]],"addTagText",["subexpr","format-message",[["subexpr","intl-get",["users.addtag"],[],["loc",[null,[56,39],[56,64]]]]],[],["loc",[null,[56,23],[56,65]]]],"onTagAddition","addTag","onTagRemoval","removeTag","onTagSuggestion","suggestTags"],["loc",[null,[52,10],[59,43]]]]
           ],
           locals: [],
           templates: []
@@ -35832,7 +35806,7 @@ define('frontend-cp/components/ko-organisation-content/template', ['exports'], f
             return morphs;
           },
           statements: [
-            ["inline","ko-field/tags",[],["errorTags",["subexpr","@mut",[["get","erroredDomains",["loc",[null,[66,22],[66,36]]]]],[],[]],"selectedTags",["subexpr","@mut",[["get","domains",["loc",[null,[67,25],[67,32]]]]],[],[]],"onTagAddition","addDomain","onTagRemoval","removeDomain"],["loc",[null,[65,10],[69,41]]]]
+            ["inline","ko-field/tags",[],["errorTags",["subexpr","@mut",[["get","erroredDomains",["loc",[null,[66,22],[66,36]]]]],[],[]],"selectedTags",["subexpr","@mut",[["get","model.domains",["loc",[null,[67,25],[67,38]]]]],[],[]],"onTagAddition","addDomain","onTagRemoval","removeDomain"],["loc",[null,[65,10],[69,41]]]]
           ],
           locals: [],
           templates: []
@@ -46101,16 +46075,8 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
       return errorMap;
     }),
 
-    userTeams: Ember['default'].computed('model.teams.@each.title', function () {
-      return this.get('model.teams').map(function (tag) {
-        return tag.get('title');
-      });
-    }),
-
     userTags: Ember['default'].computed('model.tags.@each.name', function () {
-      return this.get('model.tags').map(function (tag) {
-        return tag.get('name');
-      }).uniq();
+      return this.get('model.tags').uniq();
     }),
 
     accessLevels: Ember['default'].computed(function () {
@@ -46161,6 +46127,15 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
       this.set('isAccessLevelEdited', false);
       this.set('isFollowingSaving', false);
       this.set('isStateSaving', false);
+
+      // New tags should be rolled back as they are left
+      // in the store after we save a case. New tags have id = null,
+      // and the same tag with numeric id is also returned from the server.
+      this.get('store').peekAll('tag').forEach(function (record) {
+        if (record.get('hasDirtyAttributes')) {
+          record.rollbackAttributes();
+        }
+      });
     },
 
     canModifyUserState: Ember['default'].computed('model.role', function () {
@@ -46273,17 +46248,15 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
       addTeam: function addTeam(teamName) {
         var team = this.get('teamRecords').findBy('title', teamName);
         if (team) {
+          team.set('isNew', true);
           this.get('model.teams').pushObject(team);
           this.set('isTeamsFieldEdited', this.get('model').hasDirtyHasManyRelationship('teams'));
         }
       },
 
-      removeTeam: function removeTeam(teamName) {
-        var team = this.get('teamRecords').findBy('title', teamName);
-        if (team) {
-          this.get('model.teams').removeObject(team);
-          this.set('isTeamsFieldEdited', this.get('model').hasDirtyHasManyRelationship('teams'));
-        }
+      removeTeam: function removeTeam(team) {
+        this.get('model.teams').removeObject(team);
+        this.set('isTeamsFieldEdited', this.get('model').hasDirtyHasManyRelationship('teams'));
       },
 
       suggestTeams: function suggestTeams(searchTerm, selectedTeams) {
@@ -46305,19 +46278,16 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
       },
 
       addTag: function addTag(tag) {
-        var newTag = this.get('store').createRecord('tag', { name: tag });
-        this.get('model.tags').pushObject(newTag);
-        this.set('isTagsFieldEdited', this.get('model').hasDirtyHasManyRelationship('tags'));
-      },
-
-      removeTag: function removeTag(tagName) {
-        var tag = this.get('model.tags').find(function (tag) {
-          return tag.get('name') === tagName;
-        });
-        if (tag) {
-          this.get('model.tags').removeObject(tag);
+        if (!this.get('model.tags').findBy('name', tag.trim())) {
+          var newTag = this.get('store').createRecord('tag', { name: tag });
+          this.get('model.tags').pushObject(newTag);
           this.set('isTagsFieldEdited', this.get('model').hasDirtyHasManyRelationship('tags'));
         }
+      },
+
+      removeTag: function removeTag(tag) {
+        this.get('model.tags').removeObject(tag);
+        this.set('isTagsFieldEdited', this.get('model').hasDirtyHasManyRelationship('tags'));
       },
 
       suggestTags: function suggestTags(searchTerm, selectedTags) {
@@ -46332,7 +46302,6 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
 
         suggestionService.suggest(searchTerm).then(function (data) {
           data = suggestionService.exclude(data, selectedTags);
-
           _this8.set('suggestedTags', data.map(function (tag) {
             return tag.get('name');
           }));
@@ -46606,7 +46575,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
                   "column": 10
                 },
                 "end": {
-                  "line": 130,
+                  "line": 129,
                   "column": 10
                 }
               },
@@ -46617,7 +46586,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
             hasRendered: false,
             buildFragment: function buildFragment(dom) {
               var el0 = dom.createDocumentFragment();
-              var el1 = dom.createTextNode("\n            ");
+              var el1 = dom.createTextNode("            ");
               dom.appendChild(el0, el1);
               var el1 = dom.createComment("");
               dom.appendChild(el0, el1);
@@ -46631,7 +46600,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
               return morphs;
             },
             statements: [
-              ["inline","ko-field/tags",[],["selectedTags",["subexpr","@mut",[["get","userTeams",["loc",[null,[121,41],[121,50]]]]],[],[]],"suggestedTags",["subexpr","@mut",[["get","suggestedTeams",["loc",[null,[122,28],[122,42]]]]],[],[]],"newTagText",["subexpr","format-message",[["subexpr","intl-get",["users.newteam"],[],["loc",[null,[123,41],[123,67]]]]],[],["loc",[null,[123,25],[123,68]]]],"addTagText",["subexpr","format-message",[["subexpr","intl-get",["users.addteam"],[],["loc",[null,[124,41],[124,67]]]]],[],["loc",[null,[124,25],[124,68]]]],"forceLowerCase",false,"isNewTagAllowed",false,"onTagAddition","addTeam","onTagRemoval","removeTeam","onTagSuggestion","suggestTeams"],["loc",[null,[121,12],[129,46]]]]
+              ["inline","ko-field/tags",[],["selectedTags",["subexpr","@mut",[["get","model.teams",["loc",[null,[120,41],[120,52]]]]],[],[]],"suggestedTags",["subexpr","@mut",[["get","suggestedTeams",["loc",[null,[121,28],[121,42]]]]],[],[]],"newTagText",["subexpr","format-message",[["subexpr","intl-get",["users.newteam"],[],["loc",[null,[122,41],[122,67]]]]],[],["loc",[null,[122,25],[122,68]]]],"addTagText",["subexpr","format-message",[["subexpr","intl-get",["users.addteam"],[],["loc",[null,[123,41],[123,67]]]]],[],["loc",[null,[123,25],[123,68]]]],"forceLowerCase",false,"isNewTagAllowed",false,"onTagAddition","addTeam","onTagRemoval","removeTeam","onTagSuggestion","suggestTeams"],["loc",[null,[120,12],[128,46]]]]
             ],
             locals: [],
             templates: []
@@ -46647,7 +46616,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
                 "column": 8
               },
               "end": {
-                "line": 131,
+                "line": 130,
                 "column": 8
               }
             },
@@ -46670,7 +46639,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
             return morphs;
           },
           statements: [
-            ["block","ko-info-bar/field",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.teams"],[],["loc",[null,[117,53],[117,77]]]]],[],["loc",[null,[117,37],[117,78]]]],"isEdited",["subexpr","@mut",[["get","isTeamsFieldEdited",["loc",[null,[118,21],[118,39]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","errorMap.team_ids",["loc",[null,[119,22],[119,39]]]]],[],[]]],0,null,["loc",[null,[117,10],[130,32]]]]
+            ["block","ko-info-bar/field",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.teams"],[],["loc",[null,[117,53],[117,77]]]]],[],["loc",[null,[117,37],[117,78]]]],"isEdited",["subexpr","@mut",[["get","isTeamsFieldEdited",["loc",[null,[118,21],[118,39]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","errorMap.team_ids",["loc",[null,[119,22],[119,39]]]]],[],[]]],0,null,["loc",[null,[117,10],[129,32]]]]
           ],
           locals: [],
           templates: [child0]
@@ -46683,11 +46652,11 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 133,
+                "line": 132,
                 "column": 8
               },
               "end": {
-                "line": 142,
+                "line": 141,
                 "column": 8
               }
             },
@@ -46712,7 +46681,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
             return morphs;
           },
           statements: [
-            ["inline","ko-field/tags",[],["selectedTags",["subexpr","@mut",[["get","userTags",["loc",[null,[135,39],[135,47]]]]],[],[]],"suggestedTags",["subexpr","@mut",[["get","suggestedTags",["loc",[null,[136,26],[136,39]]]]],[],[]],"newTagText",["subexpr","format-message",[["subexpr","intl-get",["users.newtag"],[],["loc",[null,[137,39],[137,64]]]]],[],["loc",[null,[137,23],[137,65]]]],"addTagText",["subexpr","format-message",[["subexpr","intl-get",["users.addtag"],[],["loc",[null,[138,39],[138,64]]]]],[],["loc",[null,[138,23],[138,65]]]],"onTagAddition","addTag","onTagRemoval","removeTag","onTagSuggestion","suggestTags"],["loc",[null,[135,10],[141,43]]]]
+            ["inline","ko-field/tags",[],["selectedTags",["subexpr","@mut",[["get","userTags",["loc",[null,[134,39],[134,47]]]]],[],[]],"suggestedTags",["subexpr","@mut",[["get","suggestedTags",["loc",[null,[135,26],[135,39]]]]],[],[]],"newTagText",["subexpr","format-message",[["subexpr","intl-get",["users.newtag"],[],["loc",[null,[136,39],[136,64]]]]],[],["loc",[null,[136,23],[136,65]]]],"addTagText",["subexpr","format-message",[["subexpr","intl-get",["users.addtag"],[],["loc",[null,[137,39],[137,64]]]]],[],["loc",[null,[137,23],[137,65]]]],"onTagAddition","addTag","onTagRemoval","removeTag","onTagSuggestion","suggestTags"],["loc",[null,[134,10],[140,43]]]]
           ],
           locals: [],
           templates: []
@@ -46728,7 +46697,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
               "column": 6
             },
             "end": {
-              "line": 151,
+              "line": 150,
               "column": 6
             }
           },
@@ -46827,12 +46796,12 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
           ["inline","ko-case-field/suggest",[],["tagName","li","selectedItem",["subexpr","@mut",[["get","model.organization.name",["loc",[null,[88,23],[88,46]]]]],[],[]],"items",["subexpr","@mut",[["get","organizations",["loc",[null,[89,16],[89,29]]]]],[],[]],"title",["subexpr","intl-get",["users.infobar.organization"],[],["loc",[null,[90,16],[90,55]]]],"isEdited",["subexpr","@mut",[["get","isOrganizationEdited",["loc",[null,[91,19],[91,39]]]]],[],[]],"onItemSelect","organizationSelect"],["loc",[null,[86,8],[92,45]]]],
           ["inline","ko-timezone-select",[],["tagName","li","class","info-bar-item","timezone",["subexpr","@mut",[["get","model.timeZone",["loc",[null,[97,19],[97,33]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isTimezoneEdited",["loc",[null,[98,19],[98,35]]]]],[],[]],"onChangeTimezone","timezoneSelect"],["loc",[null,[94,8],[99,45]]]],
           ["block","each",[["get","customFields",["loc",[null,[101,16],[101,28]]]]],[],1,null,["loc",[null,[101,8],[114,17]]]],
-          ["block","if",[["get","canChangeUserTeamPermission",["loc",[null,[116,14],[116,41]]]]],[],2,null,["loc",[null,[116,8],[131,15]]]],
-          ["block","ko-info-bar/field",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.tags"],[],["loc",[null,[133,51],[133,74]]]]],[],["loc",[null,[133,35],[133,75]]]],"isEdited",["subexpr","@mut",[["get","isTagsFieldEdited",["loc",[null,[134,19],[134,36]]]]],[],[]]],3,null,["loc",[null,[133,8],[142,30]]]],
-          ["inline","ko-identities",[],["parent",["subexpr","@mut",[["get","model",["loc",[null,[144,31],[144,36]]]]],[],[]]],["loc",[null,[144,8],[144,38]]]],
-          ["inline","ko-info-bar/metadata",[],["rows",["subexpr","@mut",[["get","userDates",["loc",[null,[146,36],[146,45]]]]],[],[]]],["loc",[null,[146,8],[146,47]]]],
-          ["inline","ko-recent-cases",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.recent_cases"],[],["loc",[null,[148,48],[148,79]]]]],[],["loc",[null,[148,32],[148,80]]]],"cases",["subexpr","@mut",[["get","model.recentCases",["loc",[null,[148,87],[148,104]]]]],[],[]]],["loc",[null,[148,8],[148,106]]]],
-          ["inline","ko-feedback",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.recent_feedback"],[],["loc",[null,[150,44],[150,78]]]]],[],["loc",[null,[150,28],[150,79]]]],"feedback",["subexpr","@mut",[["get","recentFeedback",["loc",[null,[150,89],[150,103]]]]],[],[]]],["loc",[null,[150,8],[150,105]]]]
+          ["block","if",[["get","canChangeUserTeamPermission",["loc",[null,[116,14],[116,41]]]]],[],2,null,["loc",[null,[116,8],[130,15]]]],
+          ["block","ko-info-bar/field",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.tags"],[],["loc",[null,[132,51],[132,74]]]]],[],["loc",[null,[132,35],[132,75]]]],"isEdited",["subexpr","@mut",[["get","isTagsFieldEdited",["loc",[null,[133,19],[133,36]]]]],[],[]]],3,null,["loc",[null,[132,8],[141,30]]]],
+          ["inline","ko-identities",[],["parent",["subexpr","@mut",[["get","model",["loc",[null,[143,31],[143,36]]]]],[],[]]],["loc",[null,[143,8],[143,38]]]],
+          ["inline","ko-info-bar/metadata",[],["rows",["subexpr","@mut",[["get","userDates",["loc",[null,[145,36],[145,45]]]]],[],[]]],["loc",[null,[145,8],[145,47]]]],
+          ["inline","ko-recent-cases",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.recent_cases"],[],["loc",[null,[147,48],[147,79]]]]],[],["loc",[null,[147,32],[147,80]]]],"cases",["subexpr","@mut",[["get","model.recentCases",["loc",[null,[147,87],[147,104]]]]],[],[]]],["loc",[null,[147,8],[147,106]]]],
+          ["inline","ko-feedback",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.recent_feedback"],[],["loc",[null,[149,44],[149,78]]]]],[],["loc",[null,[149,28],[149,79]]]],"feedback",["subexpr","@mut",[["get","recentFeedback",["loc",[null,[149,89],[149,103]]]]],[],[]]],["loc",[null,[149,8],[149,105]]]]
         ],
         locals: [],
         templates: [child0, child1, child2, child3]
@@ -46846,11 +46815,11 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 157,
+                "line": 156,
                 "column": 2
               },
               "end": {
-                "line": 172,
+                "line": 171,
                 "column": 2
               }
             },
@@ -46931,12 +46900,12 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
             return morphs;
           },
           statements: [
-            ["inline","textarea",[],["value",["subexpr","@mut",[["get","editingSignature",["loc",[null,[158,21],[158,37]]]]],[],[]],"class","text-area--clean"],["loc",[null,[158,4],[158,64]]]],
-            ["inline","format-message",[["subexpr","intl-get",["users.signaturemessage"],[],["loc",[null,[161,25],[161,60]]]]],[],["loc",[null,[161,8],[161,62]]]],
-            ["element","action",["closeSignatureModal"],[],["loc",[null,[164,11],[164,43]]]],
-            ["inline","format-message",[["subexpr","intl-get",["generic.cancel"],[],["loc",[null,[165,27],[165,54]]]]],[],["loc",[null,[165,10],[165,56]]]],
-            ["element","action",["updateSignature"],[],["loc",[null,[167,47],[167,75]]]],
-            ["inline","format-message",[["subexpr","intl-get",["users.update_signature"],[],["loc",[null,[168,27],[168,62]]]]],[],["loc",[null,[168,10],[168,64]]]]
+            ["inline","textarea",[],["value",["subexpr","@mut",[["get","editingSignature",["loc",[null,[157,21],[157,37]]]]],[],[]],"class","text-area--clean"],["loc",[null,[157,4],[157,64]]]],
+            ["inline","format-message",[["subexpr","intl-get",["users.signaturemessage"],[],["loc",[null,[160,25],[160,60]]]]],[],["loc",[null,[160,8],[160,62]]]],
+            ["element","action",["closeSignatureModal"],[],["loc",[null,[163,11],[163,43]]]],
+            ["inline","format-message",[["subexpr","intl-get",["generic.cancel"],[],["loc",[null,[164,27],[164,54]]]]],[],["loc",[null,[164,10],[164,56]]]],
+            ["element","action",["updateSignature"],[],["loc",[null,[166,47],[166,75]]]],
+            ["inline","format-message",[["subexpr","intl-get",["users.update_signature"],[],["loc",[null,[167,27],[167,62]]]]],[],["loc",[null,[167,10],[167,64]]]]
           ],
           locals: [],
           templates: []
@@ -46948,11 +46917,11 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 156,
+              "line": 155,
               "column": 0
             },
             "end": {
-              "line": 173,
+              "line": 172,
               "column": 0
             }
           },
@@ -46975,7 +46944,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["block","ko-editor-modal",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.editsignature"],[],["loc",[null,[157,43],[157,75]]]]],[],["loc",[null,[157,27],[157,76]]]]],0,null,["loc",[null,[157,2],[172,22]]]]
+          ["block","ko-editor-modal",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.editsignature"],[],["loc",[null,[156,43],[156,75]]]]],[],["loc",[null,[156,27],[156,76]]]]],0,null,["loc",[null,[156,2],[171,22]]]]
         ],
         locals: [],
         templates: [child0]
@@ -46991,7 +46960,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
             "column": 0
           },
           "end": {
-            "line": 174,
+            "line": 173,
             "column": 0
           }
         },
@@ -47174,8 +47143,8 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
         ["inline","ko-stateful-button",[],["activeText","User Enabled","activeHoverText","Disable User","inactiveText","User Disabled","inactiveHoverText","Enable User","isActive",["subexpr","@mut",[["get","model.isEnabled",["loc",[null,[34,20],[34,35]]]]],[],[]],"isEnabled",["subexpr","@mut",[["get","canModifyUserState",["loc",[null,[35,21],[35,39]]]]],[],[]],"isLoading",["subexpr","@mut",[["get","isStateSaving",["loc",[null,[36,21],[36,34]]]]],[],[]],"onClick","toggleUserState"],["loc",[null,[29,9],[37,38]]]],
         ["inline","ko-user-action-menu",[],["permissions",["subexpr","@mut",[["get","sessionService.permissions",["loc",[null,[41,24],[41,50]]]]],[],[]],"userRoleType",["subexpr","@mut",[["get","model.role.roleType",["loc",[null,[42,25],[42,44]]]]],[],[]],"userModel",["subexpr","@mut",[["get","model",["loc",[null,[43,22],[43,27]]]]],[],[]]],["loc",[null,[40,8],[44,10]]]],
         ["block","ko-text-editor",[],["class","ko-user-content__text-editor","viewName","postEditor","onPeopleSuggestion","suggestPeople"],0,null,["loc",[null,[53,8],[55,27]]]],
-        ["block","ko-info-bar",[],[],1,null,["loc",[null,[60,6],[151,22]]]],
-        ["block","if",[["get","signatureModal",["loc",[null,[156,6],[156,20]]]]],[],2,null,["loc",[null,[156,0],[173,7]]]]
+        ["block","ko-info-bar",[],[],1,null,["loc",[null,[60,6],[150,22]]]],
+        ["block","if",[["get","signatureModal",["loc",[null,[155,6],[155,20]]]]],[],2,null,["loc",[null,[155,0],[172,7]]]]
       ],
       locals: [],
       templates: [child0, child1, child2]
@@ -50125,7 +50094,7 @@ define('frontend-cp/login/controller', ['exports', 'ember', 'frontend-cp/config/
      */
 
     loginFrontImageStyle: Ember['default'].computed(function () {
-      return htmlSafe('background-image: url(' + config['default'].assetRoot + '\'/images/user/avatar.png\');');
+      return htmlSafe('background-image: url(\'' + config['default'].assetRoot + '/images/user/avatar.png\');');
     }),
 
     loginBackImageStyle: Ember['default'].computed('avatarBackground', function () {
@@ -54170,6 +54139,12 @@ define('frontend-cp/models/case', ['exports', 'ember-data', 'frontend-cp/mixins/
       return currentTags.any(function (tag, index) {
         return tag.get('name') !== initialTags[index].get('name');
       });
+    },
+
+    didUpdate: function didUpdate() {
+      this.get('tags').forEach(function (tag) {
+        return tag.set('isPusherEdited', false);
+      });
     }
   });
 
@@ -54541,12 +54516,14 @@ define('frontend-cp/models/identity-autocomplete-email', ['exports', 'ember-data
   });
 
 });
-define('frontend-cp/models/identity-domain', ['exports', 'ember-data', 'frontend-cp/models/identity'], function (exports, DS, Identity) {
+define('frontend-cp/models/identity-domain', ['exports', 'ember-data', 'ember', 'frontend-cp/models/identity'], function (exports, DS, Ember, Identity) {
 
   'use strict';
 
   exports['default'] = Identity['default'].extend({
     domain: DS['default'].attr('string'),
+
+    name: Ember['default'].computed.alias('domain'),
 
     parent: DS['default'].belongsTo('organization', { async: true, polymorphic: true, parent: true })
   });
@@ -55197,16 +55174,20 @@ define('frontend-cp/models/tab', ['exports', 'ember'], function (exports, Ember)
   });
 
 });
-define('frontend-cp/models/tag', ['exports', 'ember-data', 'frontend-cp/mixins/change-aware-model'], function (exports, DS, ChangeAwareModel) {
+define('frontend-cp/models/tag', ['exports', 'ember-data', 'ember', 'frontend-cp/mixins/change-aware-model'], function (exports, DS, Ember, ChangeAwareModel) {
 
   'use strict';
 
   exports['default'] = DS['default'].Model.extend(ChangeAwareModel['default'], {
-    name: DS['default'].attr('string')
+    name: DS['default'].attr('string'),
+
+    isNew: Ember['default'].computed('id', function () {
+      return !this.get('id');
+    })
   });
 
 });
-define('frontend-cp/models/team', ['exports', 'ember-data'], function (exports, DS) {
+define('frontend-cp/models/team', ['exports', 'ember-data', 'ember'], function (exports, DS, Ember) {
 
   'use strict';
 
@@ -55214,7 +55195,12 @@ define('frontend-cp/models/team', ['exports', 'ember-data'], function (exports, 
     title: DS['default'].attr('string'),
     businesshour: DS['default'].belongsTo('business-hour', { async: false }),
     followers: DS['default'].hasMany('user', { async: false }),
-    members: DS['default'].hasMany('user', { async: true, child: true, inverse: 'teams', url: 'members' })
+    members: DS['default'].hasMany('user', { async: true, child: true, inverse: 'teams', url: 'members' }),
+
+    isNew: false,
+
+    // team pills component looks for name on the model
+    name: Ember['default'].computed.alias('title')
   });
 
 });
@@ -55360,7 +55346,11 @@ define('frontend-cp/models/user', ['exports', 'ember-data', 'ember', 'frontend-c
         });
       });
 
-      return this._super();
+      return this._super().then(function () {
+        _this.get('teams').forEach(function (team) {
+          team.set('isNew', false);
+        });
+      });
     },
 
     primaryEmail: Ember['default'].computed('emails.@each.isPrimary', function () {
@@ -58065,8 +58055,8 @@ define('frontend-cp/services/pusher', ['exports', 'ember', 'frontend-cp/config/e
       var caseToUpdate = this.get('store').peekRecord('case', caseId);
 
       var initialRelationships = caseToUpdate.get('initialRelationships');
-      var currentRelationships = caseToUpdate.getRelationships();
       var originalCustomFields = caseToUpdate.get('initialCustomFields');
+      var currentRelationships = caseToUpdate.getRelationships();
 
       // cache current id => values
       var currentCustomFieldValueHash = {};
@@ -58074,10 +58064,17 @@ define('frontend-cp/services/pusher', ['exports', 'ember', 'frontend-cp/config/e
         currentCustomFieldValueHash[caseField.get('field.id')] = caseField.get('value');
       });
       var currentTags = caseToUpdate.get('tags').toArray().slice(0);
-
       var propertiesChangeViaPusher = caseToUpdate.get('propertiesChangeViaPusher') || new Ember['default'].Object();
 
       caseToUpdate.reload().then(function (newCase) {
+
+        // ember merges my changes and the old changes - we don't
+        // want this to happen, so get
+        newCase.get('tags').forEach(function (tag) {
+          if (tag.get('isNew')) {
+            newCase.get('tags').removeObject(tag);
+          }
+        });
         // update everything our initial values -- it's clean back from the server
         newCase.cacheRelationships();
 
@@ -58114,6 +58111,18 @@ define('frontend-cp/services/pusher', ['exports', 'ember', 'frontend-cp/config/e
         var originalTags = initialRelationships.tags;
         var allTags = Array.concat(serverTags, modifiedTags, originalTags).uniq();
 
+        var tagsWereModified = serverTags.length !== modifiedTags.length && serverTags.some(function (tag) {
+          return modifiedTags.indexOf(tag) !== -1;
+        });
+        propertiesChangeViaPusher.set('tags', tagsWereModified);
+
+        serverTags.forEach(function (tag) {
+          if (originalTags.indexOf(tag) === -1 && modifiedTags.indexOf(tag) === -1) {
+            // tag wasn't originally in the array (and we didn't add it), so must be a new pusher one
+            tag.set('isPusherEdited', true);
+          }
+        });
+
         allTags.forEach(function (tag) {
           if (originalTags.indexOf(tag) === -1 && modifiedTags.indexOf(tag) > -1) {
             newCase.get('tags').pushObject(tag);
@@ -58123,6 +58132,7 @@ define('frontend-cp/services/pusher', ['exports', 'ember', 'frontend-cp/config/e
         });
 
         newCase.set('propertiesChangeViaPusher', propertiesChangeViaPusher);
+        // `this` is passed in through the apply() so it will be the ko-case-component
         _this.updateDirtyCaseFieldHash();
       });
     }
@@ -76144,9 +76154,8 @@ define('frontend-cp/tests/unit/components/ko-field/tags/component-test', ['ember
 
   var component = undefined;
   var firstSelectedTag = 'ul:first li:first';
-  var secondSelectedTag = 'ul:first li:nth-child(2)';
-  var firstSelectedTagText = 'ul:first li:first span:first';
   var deleteTag = 'span:nth-child(2)';
+  var firstSelectedTagText = 'ul:first li:first span:first';
   var suggestionsList = 'ul:nth-child(2) li';
   var firstSuggestion = 'ul:nth-child(2) li:first';
   var searchField = 'ul:first li input';
@@ -76172,45 +76181,6 @@ define('frontend-cp/tests/unit/components/ko-field/tags/component-test', ['ember
     teardown: function teardown() {}
   });
 
-  qunit.test('prevent duplicates', function (assert) {
-    assert.expect(0);
-
-    this.render();
-
-    var targetObject = {
-      externalTagAdditionAction: function externalTagAdditionAction(tags) {
-        // If this runs, the test has failed
-        assert.equal(true, false);
-      },
-      externalTagSuggestAction: function externalTagSuggestAction(tags) {}
-    };
-
-    component.set('onTagAddition', 'externalTagAdditionAction');
-    component.set('targetObject', targetObject);
-
-    Ember['default'].run(function () {
-      component.set('onTagSuggestion', 'externalTagSuggestAction');
-      component.set('tags', []);
-      component.set('selectedTags', ['qwerty']);
-      component.set('searchTerm', 'qwerty');
-      component.keyUp({ keyCode: KeyCodes.y });
-      component.keyDown({ keyCode: KeyCodes.enter });
-    });
-  });
-
-  qunit.test('is suggested', function (assert) {
-    assert.expect(1);
-
-    Ember['default'].run(function () {
-      component.set('tags', []);
-      component.set('suggestedTags', ['dog']);
-      component.set('searchTerm', 'dog');
-      component.keyUp({ keyCode: KeyCodes.g });
-    });
-
-    assert.equal(component.get('isSuggested'), true);
-  });
-
   qunit.test('is not suggested when there are no tags', function (assert) {
     assert.expect(1);
 
@@ -76227,37 +76197,11 @@ define('frontend-cp/tests/unit/components/ko-field/tags/component-test', ['ember
     assert.expect(1);
 
     Ember['default'].run(function () {
-      component.set('tags', ['dog']);
+      component.set('tags', [new Ember['default'].Object({ name: 'dog' })]);
       component.set('searchTerm', '');
     });
 
     assert.equal(component.get('isSuggested'), false);
-  });
-
-  qunit.test('is selected', function (assert) {
-    assert.expect(1);
-
-    Ember['default'].run(function () {
-      component.set('selectedTags', ['dog']);
-      component.set('tags', ['dog']);
-      component.set('searchTerm', 'dog');
-      component.keyUp({ keyCode: KeyCodes.g });
-    });
-
-    assert.equal(component.get('isSelected'), true);
-  });
-
-  qunit.test('is not selected', function (assert) {
-    assert.expect(1);
-
-    Ember['default'].run(function () {
-      component.set('selectedTags', []);
-      component.set('tags', ['dog']);
-      component.set('searchTerm', 'dog');
-      component.keyUp({ keyCode: KeyCodes.g });
-    });
-
-    assert.equal(component.get('isSelected'), false);
   });
 
   qunit.test('it renders', function (assert) {
@@ -76289,7 +76233,6 @@ define('frontend-cp/tests/unit/components/ko-field/tags/component-test', ['ember
     assert.equal(this.$(firstSuggestion).text(), 'dog', 'suggestions list');
 
     this.$(firstSuggestion).click();
-
     assert.equal($.trim(component.$(searchField).val()), '', 'The search field has been cleared');
   });
 
@@ -76327,7 +76270,7 @@ define('frontend-cp/tests/unit/components/ko-field/tags/component-test', ['ember
 
     var targetObject = {
       externalAction: function externalAction(tagToRemove) {
-        assert.deepEqual(tagToRemove, 'dog', 'external action was called');
+        assert.deepEqual(tagToRemove.get('name'), 'dog', 'external action was called');
       },
       externalTagSuggestion: function externalTagSuggestion() {}
     };
@@ -76337,7 +76280,9 @@ define('frontend-cp/tests/unit/components/ko-field/tags/component-test', ['ember
 
     Ember['default'].run(function () {
       component.set('onTagSuggestion', 'externalTagSuggestion');
-      component.set('selectedTags', ['dog']);
+      var newTag = new Ember['default'].Object();
+      newTag.set('name', 'dog');
+      component.get('selectedTags').pushObject(newTag);
     });
 
     assert.equal($.trim(component.$(firstSelectedTagText).text()), 'dog', 'selected tags');
@@ -76389,31 +76334,6 @@ define('frontend-cp/tests/unit/components/ko-field/tags/component-test', ['ember
 
     Ember['default'].run(function () {
       component.keyDown({ keyCode: KeyCodes.enter });
-    });
-  });
-
-  qunit.test('selected tags should be able to be removed by keyboard', function (assert) {
-    assert.expect(1);
-
-    this.render();
-
-    var targetObject = {
-      externalTagRemovalAction: function externalTagRemovalAction(tagToRemove) {
-        assert.deepEqual(tagToRemove, 'cat', 'external tag selection change action was called');
-      }
-    };
-
-    component.set('onTagRemoval', 'externalTagRemovalAction');
-    component.set('targetObject', targetObject);
-
-    Ember['default'].run(function () {
-      component.set('onTagSuggestion', 'externalTagRemovalAction');
-      component.set('selectedTags', ['dog', 'cat', 'mouse']);
-    });
-
-    Ember['default'].run(function () {
-      component.focusIn({ target: component.$(secondSelectedTag) });
-      component.keyDown({ keyCode: KeyCodes.backspace });
     });
   });
 
@@ -79649,7 +79569,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"e5ba08ab0174c8e64c81","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+11c3b001"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"e5ba08ab0174c8e64c81","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+e853b14b"});
 }
 
 /* jshint ignore:end */
