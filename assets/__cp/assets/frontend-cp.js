@@ -49511,6 +49511,7 @@ define('frontend-cp/locales/en-us/generic', ['exports'], function (exports) {
     "session_expired": "Your session has expired",
     "permissions_denied": "Sorry, you don't have access to view that. Please ask for permissions from an admin.",
     "user_credential_expired": "The credential (e.g. password) is valid but has expired",
+    "resource_not_found": "Resource does not exist or has been removed",
 
     "create_case_panel.title": "Create a new case",
     "create_case_panel.requester_label": "Requester/Recipient",
@@ -57397,6 +57398,7 @@ define('frontend-cp/services/error-handler', ['exports', 'ember', 'npm:lodash'],
         this.handleSessionErrors(errors);
         this.handlePermissionErrors(errors);
         this.handleCredentialErrors(errors);
+        this.handleResourceNotFound(errors);
       }
       throw error;
     },
@@ -57415,6 +57417,17 @@ define('frontend-cp/services/error-handler', ['exports', 'ember', 'npm:lodash'],
       });
     },
 
+    getBasePath: function getBasePath() {
+      var path = '/agent';
+      var pathname = location.pathname;
+      // If we are at a deeplink inside admin, redirect back to admin
+      // If we have errored at '/admin' leave path='/agent'
+      if (pathname.startsWith('/admin') && pathname !== '/admin') {
+        path = '/admin';
+      }
+      return path;
+    },
+
     handlePermissionErrors: function handlePermissionErrors(responseErrors) {
       var isPermissionError = function isPermissionError(responseError) {
         return responseError.code === 'PERMISSIONS_DENIED';
@@ -57423,14 +57436,31 @@ define('frontend-cp/services/error-handler', ['exports', 'ember', 'npm:lodash'],
 
       if (hasPermissionErrors) {
         // Redirect back to the base of the current path
-        var path = '/agent';
+        var path = this.getBasePath();
         var pathname = location.pathname;
-        // If we are at a deeplink inside admin, redirect back to admin
-        // If we have errored at '/admin' leave path='/agent'
-        if (pathname.startsWith('/admin') && pathname !== '/admin') {
-          path = '/admin';
+        if (pathname !== path) {
+          this.container.lookup('router:main').router.transitionTo(path);
         }
+      }
+    },
 
+    handleResourceNotFound: function handleResourceNotFound(responseErrors) {
+      var intlService = this.get('intlService');
+
+      var isError = function isError(responseError) {
+        return responseError.code === 'RESOURCE_NOT_FOUND';
+      };
+      var hasErrors = _['default'].some(responseErrors, isError);
+
+      if (hasErrors) {
+        this.get('notificationService').add({
+          type: 'error',
+          title: intlService.findTranslationByKey('generic.resource_not_found').translation,
+          autodismiss: false,
+          dismissable: true
+        });
+        var path = this.getBasePath();
+        var pathname = location.pathname;
         if (pathname !== path) {
           this.container.lookup('router:main').router.transitionTo(path);
         }
@@ -79619,7 +79649,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"e5ba08ab0174c8e64c81","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+f936a0bd"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"e5ba08ab0174c8e64c81","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+11c3b001"});
 }
 
 /* jshint ignore:end */
