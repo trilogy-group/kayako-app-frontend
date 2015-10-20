@@ -79,7 +79,7 @@ define('frontend-cp/adapters/application', ['exports', 'ember', 'ember-data', 'n
       // Sneaks the auth token into auth-related errors
       if (payload.auth_token) {
         errors.filter(function (e) {
-          return ['CREDENTIAL_EXPIRED', 'OTP_EXPECTED'].inclues(e.code);
+          return ['CREDENTIAL_EXPIRED', 'OTP_EXPECTED'].includes(e.code);
         }).forEach(function (error) {
           return error.authToken = payload.auth_token;
         });
@@ -58212,6 +58212,7 @@ define('frontend-cp/services/session', ['exports', 'ember'], function (exports, 
     planService: Ember['default'].inject.service('plan'),
     localStoreService: Ember['default'].inject.service('localStore'),
     store: Ember['default'].inject.service(),
+    tabs: Ember['default'].inject.service(),
 
     // CPs
     sessionId: Ember['default'].computed({
@@ -58295,6 +58296,7 @@ define('frontend-cp/services/session', ['exports', 'ember'], function (exports, 
       var _this4 = this;
 
       var session = this.get('session');
+      this.get('tabs').clearAll();
 
       if (!session) {
         // if we have no session, reset session id
@@ -58638,6 +58640,11 @@ define('frontend-cp/services/tabs', ['exports', 'ember', 'frontend-cp/models/tab
       }
       this.get('tabModels').removeObject(tab);
       this.saveTabsToStorage();
+    },
+
+    clearAll: function clearAll() {
+      this.get('localStoreService').removeItem('tabs');
+      this.get('tabModels').clear();
     },
 
     select: function select(tab) {
@@ -79617,7 +79624,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"e5ba08ab0174c8e64c81","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+7fed7fc9"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"e5ba08ab0174c8e64c81","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+d9944e1e"});
 }
 
 /* jshint ignore:end */
