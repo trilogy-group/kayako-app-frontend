@@ -30358,10 +30358,11 @@ define('frontend-cp/components/ko-identities/component', ['exports', 'ember'], f
         var _this3 = this;
 
         identity.set('parent', this.get('parent'));
-        identity.save().then(function () {
+        return identity.save().then(function () {
           return _this3.set('newIdentity', null);
-        })['catch'](function () {
-          return identity.set('parent', null);
+        }, function (e) {
+          identity.set('parent', null);
+          throw e;
         });
       },
 
@@ -30404,6 +30405,7 @@ define('frontend-cp/components/ko-identities/form/component', ['exports', 'ember
 
   var computed = Ember['default'].computed;
   var isBlank = Ember['default'].isBlank;
+  var inject = Ember['default'].inject;
 
   var placeholders = {
     'identity-email': 'generic.identities.placeholders.email',
@@ -30418,6 +30420,7 @@ define('frontend-cp/components/ko-identities/form/component', ['exports', 'ember
 
   exports['default'] = Ember['default'].Component.extend({
     classNames: ['ko-identities_form'],
+    intl: inject.service(),
     // CPs
     placeholder: computed('identity', function () {
       return placeholders[this.get('identity.constructor.modelName')];
@@ -30430,15 +30433,14 @@ define('frontend-cp/components/ko-identities/form/component', ['exports', 'ember
     // Actions
     actions: {
       save: function save(e) {
-        e.preventDefault();
         var identity = this.get('identity');
-        this.set('errorMessage', null);
+        identity.get('errors').clear();
         if (identity.constructor.modelName === 'identity-email') {
-          this.saveEmail(this.get('mainField').trim());
+          return this.saveEmail(this.get('mainField').trim());
         } else if (identity.constructor.modelName === 'identity-twitter') {
-          this.saveTwitter(this.get('mainField').trim());
+          return this.saveTwitter(this.get('mainField').trim());
         } else if (identity.constructor.modelName === 'identity-phone') {
-          this.savePhone(this.get('mainField').trim());
+          return this.savePhone(this.get('mainField').trim());
         }
       },
 
@@ -30453,9 +30455,11 @@ define('frontend-cp/components/ko-identities/form/component', ['exports', 'ember
       var identity = this.get('identity');
       if (format_validations.validateEmailFormat(email)) {
         identity.set('email', email);
-        this.attrs.save(identity);
+        return this.attrs.save(identity);
       } else {
-        this.set('errorMessage', 'generic.identities.errors.invalid_email_format');
+        var message = this.get('intl').findTranslationByKey('generic.identities.errors.invalid_email_format').translation;
+        identity.get('errors').add('email', message);
+        return Ember['default'].RSVP.Promise.reject();
       }
     },
 
@@ -30466,20 +30470,22 @@ define('frontend-cp/components/ko-identities/form/component', ['exports', 'ember
       }
       if (format_validations.validateTwitterHandleFormat(screenName)) {
         identity.set('screenName', screenName.slice(1)); // Remove @ before save
-        this.attrs.save(identity);
+        return this.attrs.save(identity);
       } else {
-        this.set('errorMessage', 'generic.identities.errors.invalid_twitter_handle_format');
+        var message = this.get('intl').findTranslationByKey('generic.identities.errors.invalid_twitter_handle_format').translation;
+        identity.get('errors').add('screenName', message);
+        return Ember['default'].RSVP.Promise.reject();
       }
     },
 
     savePhone: function savePhone(number) {
       var sanitizedNumber = number.replace(/[^0-9+]/g, '');
       if (isBlank(sanitizedNumber)) {
-        return;
+        return Ember['default'].RSVP.Promise.reject();
       }
       var identity = this.get('identity');
       identity.set('number', sanitizedNumber);
-      this.attrs.save(identity);
+      return this.attrs.save(identity);
     }
   });
 
@@ -30496,37 +30502,93 @@ define('frontend-cp/components/ko-identities/form/template', ['exports'], functi
           "loc": {
             "source": null,
             "start": {
-              "line": 3,
-              "column": 2
+              "line": 1,
+              "column": 0
             },
             "end": {
-              "line": 3,
-              "column": 93
+              "line": 13,
+              "column": 0
             }
           },
           "moduleName": "frontend-cp/components/ko-identities/form/template.hbs"
         },
-        arity: 0,
+        arity: 2,
         cachedFragment: null,
         hasRendered: false,
         buildFragment: function buildFragment(dom) {
           var el0 = dom.createDocumentFragment();
-          var el1 = dom.createElement("label");
-          dom.setAttribute(el1,"class","t-bad");
+          var el1 = dom.createTextNode("  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("p");
+          dom.setAttribute(el1,"class","u-mt-");
+          var el2 = dom.createTextNode("\n    ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("button");
+          dom.setAttribute(el2,"type","submit");
+          dom.setAttribute(el2,"class","button button--default");
+          var el3 = dom.createTextNode("\n      ");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createComment("");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createTextNode("\n    ");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n    ");
+          dom.appendChild(el1, el2);
           var el2 = dom.createComment("");
           dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n    ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("button");
+          dom.setAttribute(el2,"class","button-naked t-bad");
+          var el3 = dom.createTextNode("\n      ");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createComment("");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createTextNode("\n    ");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n  ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
           dom.appendChild(el0, el1);
           return el0;
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(dom.childAt(fragment, [0]),0,0);
+          var element0 = dom.childAt(fragment, [5]);
+          var element1 = dom.childAt(element0, [1]);
+          var element2 = dom.childAt(element0, [5]);
+          var morphs = new Array(8);
+          morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+          morphs[1] = dom.createMorphAt(fragment,3,3,contextualElement);
+          morphs[2] = dom.createAttrMorph(element1, 'disabled');
+          morphs[3] = dom.createMorphAt(element1,1,1);
+          morphs[4] = dom.createMorphAt(element0,3,3);
+          morphs[5] = dom.createAttrMorph(element2, 'onclick');
+          morphs[6] = dom.createAttrMorph(element2, 'disabled');
+          morphs[7] = dom.createMorphAt(element2,1,1);
           return morphs;
         },
         statements: [
-          ["inline","format-message",[["subexpr","intl-get",[["get","errorMessage",["loc",[null,[3,70],[3,82]]]]],[],["loc",[null,[3,60],[3,83]]]]],[],["loc",[null,[3,43],[3,85]]]]
+          ["inline","input",[],["type",["subexpr","@mut",[["get","inputType",["loc",[null,[2,15],[2,24]]]]],[],[]],"value",["subexpr","@mut",[["get","mainField",["loc",[null,[2,31],[2,40]]]]],[],[]],"placeholder",["subexpr","format-message",[["subexpr","intl-get",[["get","placeholder",["loc",[null,[2,79],[2,90]]]]],[],["loc",[null,[2,69],[2,91]]]]],[],["loc",[null,[2,53],[2,92]]]],"disabled",["subexpr","@mut",[["get","identity.isSaving",["loc",[null,[2,102],[2,119]]]]],[],[]],"class","input-text--full"],["loc",[null,[2,2],[2,146]]]],
+          ["inline","ko-form/field/errors",[],["errors",["subexpr","@mut",[["get","identity.errors",["loc",[null,[3,32],[3,47]]]]],[],[]]],["loc",[null,[3,2],[3,49]]]],
+          ["attribute","disabled",["get","isDisabled",["loc",[null,[5,68],[5,78]]]]],
+          ["inline","format-message",[["subexpr","intl-get",["generic.save"],[],["loc",[null,[6,23],[6,48]]]]],[],["loc",[null,[6,6],[6,50]]]],
+          ["inline","format-message",[["subexpr","intl-get",["generic.or"],[],["loc",[null,[8,21],[8,44]]]]],[],["loc",[null,[8,4],[8,46]]]],
+          ["attribute","onclick",["subexpr","action",["cancel"],[],["loc",[null,[9,20],[9,39]]]]],
+          ["attribute","disabled",["get","isDisabled",["loc",[null,[9,78],[9,88]]]]],
+          ["inline","format-message",[["subexpr","intl-get",["generic.cancel"],[],["loc",[null,[10,23],[10,50]]]]],[],["loc",[null,[10,6],[10,52]]]]
         ],
-        locals: [],
+        locals: ["_","isDisabled"],
         templates: []
       };
     }());
@@ -30551,83 +30613,20 @@ define('frontend-cp/components/ko-identities/form/template', ['exports'], functi
       hasRendered: false,
       buildFragment: function buildFragment(dom) {
         var el0 = dom.createDocumentFragment();
-        var el1 = dom.createElement("form");
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createComment("");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createComment("");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("p");
-        dom.setAttribute(el2,"class","u-mt-");
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("button");
-        dom.setAttribute(el3,"type","submit");
-        dom.setAttribute(el3,"class","button button--default");
-        var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createComment("");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n    ");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createComment("");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("button");
-        dom.setAttribute(el3,"class","button-naked t-bad");
-        var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createComment("");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n    ");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n  ");
-        dom.appendChild(el2, el3);
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n");
-        dom.appendChild(el1, el2);
+        var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n\n");
+        var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var element0 = dom.childAt(fragment, [0]);
-        var element1 = dom.childAt(element0, [5]);
-        var element2 = dom.childAt(element1, [1]);
-        var element3 = dom.childAt(element1, [5]);
-        var morphs = new Array(9);
-        morphs[0] = dom.createAttrMorph(element0, 'onsubmit');
-        morphs[1] = dom.createMorphAt(element0,1,1);
-        morphs[2] = dom.createMorphAt(element0,3,3);
-        morphs[3] = dom.createAttrMorph(element2, 'disabled');
-        morphs[4] = dom.createMorphAt(element2,1,1);
-        morphs[5] = dom.createMorphAt(element1,3,3);
-        morphs[6] = dom.createAttrMorph(element3, 'onclick');
-        morphs[7] = dom.createAttrMorph(element3, 'disabled');
-        morphs[8] = dom.createMorphAt(element3,1,1);
+        var morphs = new Array(1);
+        morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+        dom.insertBoundary(fragment, 0);
         return morphs;
       },
       statements: [
-        ["attribute","onsubmit",["subexpr","action",["save"],[],["loc",[null,[1,15],[1,32]]]]],
-        ["inline","input",[],["type",["subexpr","@mut",[["get","inputType",["loc",[null,[2,15],[2,24]]]]],[],[]],"value",["subexpr","@mut",[["get","mainField",["loc",[null,[2,31],[2,40]]]]],[],[]],"placeholder",["subexpr","format-message",[["subexpr","intl-get",[["get","placeholder",["loc",[null,[2,79],[2,90]]]]],[],["loc",[null,[2,69],[2,91]]]]],[],["loc",[null,[2,53],[2,92]]]],"disabled",["subexpr","@mut",[["get","identity.isSaving",["loc",[null,[2,102],[2,119]]]]],[],[]],"class","input-text--full"],["loc",[null,[2,2],[2,146]]]],
-        ["block","if",[["get","errorMessage",["loc",[null,[3,8],[3,20]]]]],[],0,null,["loc",[null,[3,2],[3,100]]]],
-        ["attribute","disabled",["get","identity.isSaving",["loc",[null,[5,68],[5,85]]]]],
-        ["inline","format-message",[["subexpr","intl-get",["generic.save"],[],["loc",[null,[6,23],[6,48]]]]],[],["loc",[null,[6,6],[6,50]]]],
-        ["inline","format-message",[["subexpr","intl-get",["generic.or"],[],["loc",[null,[8,21],[8,44]]]]],[],["loc",[null,[8,4],[8,46]]]],
-        ["attribute","onclick",["subexpr","action",["cancel"],[],["loc",[null,[9,20],[9,39]]]]],
-        ["attribute","disabled",["get","identity.isSaving",["loc",[null,[9,78],[9,95]]]]],
-        ["inline","format-message",[["subexpr","intl-get",["generic.cancel"],[],["loc",[null,[10,23],[10,50]]]]],[],["loc",[null,[10,6],[10,52]]]]
+        ["block","ko-form",[],["onSubmit",["subexpr","action",["save"],[],["loc",[null,[1,20],[1,35]]]]],0,null,["loc",[null,[1,0],[13,12]]]]
       ],
       locals: [],
       templates: [child0]
@@ -70983,7 +70982,7 @@ define('frontend-cp/tests/acceptance/manage-user-identities-test', ['ember', 'qu
     });
 
     andThen(function () {
-      assert.equal(find('.ko-identities_form label.t-bad').text(), 'Email format invalid');
+      assert.equal(find('.ko-identities_form .ko-form_field_errors__error').text(), 'Email format invalid');
     });
   });
 
@@ -79723,7 +79722,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"e5ba08ab0174c8e64c81","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+e6fd6fa6"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"e5ba08ab0174c8e64c81","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+b84653b3"});
 }
 
 /* jshint ignore:end */
