@@ -13,6 +13,8 @@
   "notes.placeholder": "Type a note...",
   "linkedCasesInline": "Link a case",
   "assignee": "Assignee",
+  "assignee.agent": "Assigned agent",
+  "assignee.team": "Assigned team",
   "rating": "Rating",
   "assignment-due-at": "Assignment due at",
   "created-at": "Created at",
@@ -21,6 +23,8 @@
   "brand": "Brand",
   "source": "Source",
   "created": "Created",
+  "channeltype": "Channel type",
+  "last_completed_at": "Last completed at",
 
   "case.created": "Case Created",
   "case.updated": "Case Updated",
