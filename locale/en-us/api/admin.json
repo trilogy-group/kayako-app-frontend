@@ -203,6 +203,7 @@
   "casefields.edit.help.statuses.2": "If SLAs are enabled in Kayako, you can determine whether or not SLA timers will pause on particular statuses. For example, you may not want the time a case spends while set to Pending (while you are waiting for a customer to get back to you) to count towards your SLA targets.",
 
   "twitter": "Twitter",
+  "twitter.description": "Your Twitter accounts are blah. Organize agents into teams for blah. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Vestibulum id ligula porta felis euismod semper. Aenean lacinia bibendum nulla sed.",
   "twitter.headings.index": "Twitter",
   "twitter.edit.heading": "Twitter / @{screenName}",
   "twitter.buttons.create_account": "Connect new account",
@@ -225,6 +226,8 @@
   "twitter.description_on.display_public_tweets": "Showing latest Tweets",
   "twitter.description_off.display_public_tweets": "Not showing latest Tweets",
   "twitter.help.display_public_tweets": "Kayako can display the latest non-@mention Tweets sent from this account in your Help Center. This is useful if you use this account to keep your customers up to date with news and events.",
+  "twitter.connection_lost": "connection lost",
+  "twitter.reconnect": "Reconnect",
 
   "predicate_builder.cases.subject": "Cases: Subject",
   "predicate_builder.cases.casestatusid": "Cases: Status",
