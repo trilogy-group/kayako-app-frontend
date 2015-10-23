@@ -15758,6 +15758,10 @@ define('frontend-cp/components/ko-case-content/field/assignee/component', ['expo
       Ember['default'].RSVP.hash(assigneeValuePromises).then(function (hash) {
         var assigneeValues = [];
 
+        hash.teams.forEach(function (team) {
+          assigneeValues.pushObject({ id: team.get('id'), value: team.get('title') });
+        });
+
         hash.agents.forEach(function (agent) {
           var teams = agent.get('teams');
           teams.forEach(function (team) {
@@ -15765,10 +15769,6 @@ define('frontend-cp/components/ko-case-content/field/assignee/component', ['expo
             var teamAgentValue = _this.generateTeamAgentValue(team.get('title'), agent.get('fullName'));
             assigneeValues.pushObject({ id: teamAgentId, value: teamAgentValue });
           });
-        });
-
-        hash.teams.forEach(function (team) {
-          assigneeValues.pushObject({ id: team.get('id'), value: team.get('title') });
         });
 
         _this.set('assigneeValues', assigneeValues);
@@ -31546,7 +31546,7 @@ define('frontend-cp/components/ko-info-bar/field/drill-down/template', ['exports
             "column": 0
           },
           "end": {
-            "line": 9,
+            "line": 8,
             "column": 2
           }
         },
@@ -31557,27 +31557,19 @@ define('frontend-cp/components/ko-info-bar/field/drill-down/template', ['exports
       hasRendered: false,
       buildFragment: function buildFragment(dom) {
         var el0 = dom.createDocumentFragment();
-        var el1 = dom.createElement("span");
-        dom.setAttribute(el1,"class","info-bar-item__header");
-        var el2 = dom.createComment("");
-        dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
-        dom.appendChild(el0, el1);
         var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var morphs = new Array(2);
-        morphs[0] = dom.createMorphAt(dom.childAt(fragment, [0]),0,0);
-        morphs[1] = dom.createMorphAt(fragment,2,2,contextualElement);
+        var morphs = new Array(1);
+        morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+        dom.insertBoundary(fragment, 0);
         dom.insertBoundary(fragment, null);
         return morphs;
       },
       statements: [
-        ["content","title",["loc",[null,[1,36],[1,45]]]],
-        ["inline","ko-option-list-drill-down",[],["title",["subexpr","@mut",[["get","title",["loc",[null,[3,8],[3,13]]]]],[],[]],"options",["subexpr","@mut",[["get","options",["loc",[null,[4,10],[4,17]]]]],[],[]],"value",["subexpr","@mut",[["get","value",["loc",[null,[5,8],[5,13]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isEdited",["loc",[null,[6,11],[6,19]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","isErrored",["loc",[null,[7,12],[7,21]]]]],[],[]],"onValueChange","onComponentValueChange"],["loc",[null,[2,0],[9,2]]]]
+        ["inline","ko-option-list-drill-down",[],["title",["subexpr","@mut",[["get","title",["loc",[null,[2,8],[2,13]]]]],[],[]],"options",["subexpr","@mut",[["get","options",["loc",[null,[3,10],[3,17]]]]],[],[]],"value",["subexpr","@mut",[["get","value",["loc",[null,[4,8],[4,13]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isEdited",["loc",[null,[5,11],[5,19]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","isErrored",["loc",[null,[6,12],[6,21]]]]],[],[]],"onValueChange","onComponentValueChange"],["loc",[null,[1,0],[8,2]]]]
       ],
       locals: [],
       templates: []
@@ -53467,7 +53459,7 @@ define('frontend-cp/models/case-assignee', ['exports', 'ember', 'ember-data', 'f
     }),
 
     agentFragment: DS['default'].hasOneFragment('relationship-fragment'),
-    agent: Ember['default'].computed('agentFragment', function () {
+    agent: Ember['default'].computed('agentFragment', 'agentFragment.relationshipId', function () {
       return this.store.getById('user', this.get('agentFragment.relationshipId'));
     })
   });
@@ -55613,9 +55605,11 @@ define('frontend-cp/serializers/case', ['exports', 'frontend-cp/serializers/appl
       delete json.type;
 
       // create comma separated list of tag names
-      json.tags = snapshot.hasMany('tags').map(function (tag) {
-        return tag.get('name');
-      }).join(',');
+      if (snapshot.hasMany('tags')) {
+        json.tags = snapshot.hasMany('tags').map(function (tag) {
+          return tag.get('name');
+        }).join(',');
+      }
       return json;
     }
   });
@@ -79181,7 +79175,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"e5ba08ab0174c8e64c81","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+2564d627"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"e5ba08ab0174c8e64c81","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+e0facab3"});
 }
 
 /* jshint ignore:end */
