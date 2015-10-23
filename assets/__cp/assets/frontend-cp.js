@@ -42663,7 +42663,7 @@ define('frontend-cp/components/ko-tags/template', ['exports'], function (exports
           var el1 = dom.createElement("li");
           dom.setAttribute(el1,"tabindex","-1");
           dom.setAttribute(el1,"role","menuitem");
-          var el2 = dom.createTextNode("\n    ");
+          var el2 = dom.createTextNode("\n      ");
           dom.appendChild(el1, el2);
           var el2 = dom.createElement("span");
           var el3 = dom.createComment("");
@@ -42683,16 +42683,19 @@ define('frontend-cp/components/ko-tags/template', ['exports'], function (exports
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
           var element0 = dom.childAt(fragment, [1]);
-          var element1 = dom.childAt(element0, [3]);
-          var morphs = new Array(3);
+          var element1 = dom.childAt(element0, [1]);
+          var element2 = dom.childAt(element0, [3]);
+          var morphs = new Array(4);
           morphs[0] = dom.createAttrMorph(element0, 'class');
-          morphs[1] = dom.createMorphAt(dom.childAt(element0, [1]),0,0);
-          morphs[2] = dom.createElementMorph(element1);
+          morphs[1] = dom.createAttrMorph(element1, 'title');
+          morphs[2] = dom.createMorphAt(element1,0,0);
+          morphs[3] = dom.createElementMorph(element2);
           return morphs;
         },
         statements: [
           ["attribute","class",["concat",["ko-tags__item ",["subexpr","if",[["get","tag.isPusherEdited",["loc",[null,[3,32],[3,50]]]],"ko-tags__item--pusher"],[],["loc",[null,[3,27],[3,76]]]]," ",["subexpr","if",[["get","tag.isNew",["loc",[null,[3,82],[3,91]]]],"ko-tags__item--new"],[],["loc",[null,[3,77],[3,114]]]]," ",["subexpr","if",[["get","tag.isError",["loc",[null,[3,120],[3,131]]]],"ko-tags__item--error"],[],["loc",[null,[3,115],[3,156]]]]]]],
-          ["content","tag.name",["loc",[null,[4,10],[4,22]]]],
+          ["attribute","title",["concat",[["get","tag.name",["loc",[null,[4,21],[4,29]]]]]]],
+          ["content","tag.name",["loc",[null,[4,33],[4,45]]]],
           ["element","action",["removeTag",["get","tag",["loc",[null,[5,31],[5,34]]]]],["bubbles",false],["loc",[null,[5,10],[5,50]]]]
         ],
         locals: ["tag"],
@@ -42783,10 +42786,10 @@ define('frontend-cp/components/ko-tags/template', ['exports'], function (exports
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var element2 = dom.childAt(fragment, [0]);
+        var element3 = dom.childAt(fragment, [0]);
         var morphs = new Array(3);
-        morphs[0] = dom.createMorphAt(element2,1,1);
-        morphs[1] = dom.createMorphAt(element2,3,3);
+        morphs[0] = dom.createMorphAt(element3,1,1);
+        morphs[1] = dom.createMorphAt(element3,3,3);
         morphs[2] = dom.createMorphAt(fragment,2,2,contextualElement);
         dom.insertBoundary(fragment, null);
         return morphs;
@@ -79355,7 +79358,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"e5ba08ab0174c8e64c81","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+345a07b0"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"e5ba08ab0174c8e64c81","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+90d09c7d"});
 }
 
 /* jshint ignore:end */
