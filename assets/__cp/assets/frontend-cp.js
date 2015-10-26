@@ -719,13 +719,45 @@ define('frontend-cp/adapters/static-model', ['exports', 'ember-data', 'npm:lodas
   });
 
 });
-define('frontend-cp/adapters/tag', ['exports', 'frontend-cp/adapters/application'], function (exports, ApplicationAdapter) {
+define('frontend-cp/adapters/tag', ['exports', 'frontend-cp/adapters/application', 'ember'], function (exports, ApplicationAdapter, Ember) {
 
   'use strict';
 
+  var get = Ember['default'].get;
+
   exports['default'] = ApplicationAdapter['default'].extend({
-    pathForType: function pathForType() {
-      return 'autocomplete/tags';
+
+    buildURL: function buildURL(modelName, id, snapshot, requestType, query) {
+      var url = [];
+      var prefix = this.getURLPrefix();
+      if (prefix) {
+        url.push(prefix);
+      }
+
+      if (requestType === 'query') {
+        if (query.caseId) {
+          url.push('cases/' + query.caseId + '/tags');
+          delete query.caseId;
+        } else if (query.userId) {
+          url.push('users/' + query.userId + '/tags');
+          delete query.userId;
+        } else if (query.organizationId) {
+          url.push('organizations/' + query.organizationId + '/tags');
+          delete query.organizationId;
+        } else {
+          url.push('autocomplete/tags');
+        }
+      } else {
+        url.push(this.buildURLFragment.apply(this, arguments));
+      }
+      url = url.join('/');
+
+      var host = get(this, 'host');
+      if (!host && url && url.charAt(0) !== '/') {
+        url = '/' + url;
+      }
+
+      return url;
     }
   });
 
@@ -12753,38 +12785,30 @@ define('frontend-cp/components/ko-agent-dropdown/create-organisation/component',
     },
 
     actions: {
-      addDomain: function addDomain(domain) {
-        if (domain) {
-          this.get('fields.domains.value').pushObject(domain);
+      addDomain: function addDomain(domainName) {
+        if (!domainName) {
+          return;
         }
+
+        if (this.get('fields.domains.value').any(function (addedDomain) {
+          return addedDomain.get('domain') === domainName;
+        })) {
+          return;
+        }
+        var domain = this.get('store').createRecord('identity-domain', { domain: domainName });
+        this.get('fields.domains.value').pushObject(domain);
       },
 
-      removeDomain: function removeDomain(domainName) {
-        var domain = this.get('fields.domains.value').find(function (domain) {
-          return domain === domainName;
-        });
-        if (domain) {
-          this.get('fields.domains.value').removeObject(domain);
-        }
+      removeDomain: function removeDomain(domain) {
+        this.get('fields.domains.value').removeObject(domain);
 
         this.$('.js-tag-input').focus();
         return false;
       },
 
       submit: function submit() {
-        var _this2 = this;
-
-        var identityDomains = this.get('fields.domains.value').map(function (domain) {
-          return _this2.get('store').createRecord('identityDomain', {
-            domain: domain
-          });
-        });
-
-        var organization = this.get('organization');
-        organization.set('domains', identityDomains);
-
         this.attrs.onSubmit();
-        return organization.save();
+        return this.get('organization').save();
       },
 
       error: function error(e) {}
@@ -14598,6 +14622,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
     intlService: Ember['default'].inject.service('intl'),
     customFieldsList: Ember['default'].inject.service('custom-fields/list'),
     pusherService: Ember['default'].inject.service('pusher'),
+    tagService: Ember['default'].inject.service('tags'),
 
     // Case-specific properties
     channel: null,
@@ -14614,7 +14639,6 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
 
     errors: null,
     macros: [],
-    isTagsFieldEdited: false,
     isCaseSubjectEdited: false,
     resizeStickyEditorRequestID: null,
     repositionStickyEditorRequestID: null,
@@ -14935,6 +14959,12 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       this.get('store').findAll('case-form').then(function (caseForms) {
         _this9.set('caseForms', caseForms);
       });
+
+      this.get('case.tags').then(function (caseTags) {
+        _this9.set('cachedCaseTags', caseTags.map(function (tag) {
+          return tag.get('id');
+        }));
+      });
     }),
 
     caseOrFormFields: Ember['default'].computed('caseFields', 'case.form', function () {
@@ -15056,8 +15086,13 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
         }
       });
       editedCaseFields.set('form', this.get('case').hasDirtyBelongsToRelationship('form'));
-      this.set('isTagsFieldEdited', this.get('case').hasDirtyHasManyRelationship('tags'));
     },
+
+    isTagsFieldEdited: Ember['default'].computed('cachedCaseTags.[]', 'case.tags.@each.id', function () {
+      var cachedTagNames = this.get('cachedCaseTags');
+      var tags = this.get('case.tags');
+      return this.get('tagService').areTagNamesMatchingCache(cachedTagNames, tags);
+    }),
 
     resetCaseFormState: function resetCaseFormState() {
       this.set('errors', []);
@@ -15066,17 +15101,15 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       this.set('shouldIgnoreNextPusherUpdate', false);
 
       this.updateDirtyCaseFieldHash();
-      this.cleanupTags();
     },
 
-    cleanupTags: function cleanupTags() {
-      // New tags should be rolled back as they are left
-      // in the store after we save a case. New tags have id = null,
-      // and the same tag with numeric id is also returned from the server.
-      this.get('store').peekAll('tag').forEach(function (record) {
-        if (record.get('hasDirtyAttributes')) {
-          record.rollbackAttributes();
-        }
+    refreshTags: function refreshTags() {
+      var _this11 = this;
+
+      this.get('tagService').refreshTagsForCase(this.get('case')).then(function (caseTags) {
+        _this11.set('cachedCaseTags', caseTags.map(function (tag) {
+          return tag.get('id');
+        }));
       });
     },
 
@@ -15211,17 +15244,18 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
         if (this.caseHasTagWithName(tagName)) {
           return;
         }
-        var newTag = this.get('store').createRecord('tag', { name: tagName });
+        var newTag = this.get('tagService').getTagByName(tagName);
+        newTag.set('isNew', true);
         this.get('case.tags').pushObject(newTag);
-        this.set('isTagsFieldEdited', this.get('case').hasDirtyHasManyRelationship('tags'));
+        this.updateDirtyCaseFieldHash();
       },
       removeTag: function removeTag(tag) {
         this.get('case.tags').removeObject(tag);
-        this.set('isTagsFieldEdited', this.get('case').hasDirtyHasManyRelationship('tags'));
+        this.updateDirtyCaseFieldHash();
       },
 
       suggestTags: function suggestTags(searchTerm, selectedTags) {
-        var _this11 = this;
+        var _this12 = this;
 
         if (!searchTerm) {
           this.set('suggestedTags', []);
@@ -15233,14 +15267,14 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
         suggestionService.suggest(searchTerm).then(function (data) {
           data = suggestionService.exclude(data, selectedTags);
 
-          _this11.set('suggestedTags', data.map(function (tag) {
+          _this12.set('suggestedTags', data.map(function (tag) {
             return tag.get('name');
           }));
         });
       },
 
       submit: function submit() {
-        var _this12 = this;
+        var _this13 = this;
 
         var channel = this.get('channel');
         var editor = this.get('casePostEditor.postEditor');
@@ -15273,31 +15307,32 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
           this.set('case.channel', channel.get('channelType'));
           this.set('case.channelId', channel.get('account.id'));
           this.get('case').save().then(function (newCase) {
-            _this12._getCaseSaveNotification('create');
-            _this12.cleanupTags();
-            _this12.sendAction('onCaseCreated', newCase);
+            _this13._getCaseSaveNotification('create');
+            _this13.sendAction('onCaseCreated', newCase);
           }, function (e) {
-            _this12.set('errors', e.errors);
-            _this12.set('shouldIgnoreNextPusherUpdate', false);
+            _this13.set('errors', e.errors);
+            _this13.set('shouldIgnoreNextPusherUpdate', false);
           });
         } else if (!post && !attachmentIds.length) {
           // we are just updating the case -- don't create a case-reply
           this.get('case').save().then(function () {
-            _this12._getCaseSaveNotification('update');
-            _this12.resetCaseFormState();
+            _this13._getCaseSaveNotification('update');
+            _this13.resetCaseFormState();
+            _this13.refreshTags();
           }, function (e) {
-            _this12.set('errors', e.errors);
-            _this12.set('shouldIgnoreNextPusherUpdate', false);
+            _this13.set('errors', e.errors);
+            _this13.set('shouldIgnoreNextPusherUpdate', false);
           });
         } else {
           if (this.get('replyType') === 'NOTE') {
             this.get('case').saveWithNote(post).then(function (caseNote) {
-              _this12._getCaseSaveNotification('with-note');
-              _this12.addPostFromReply(caseNote.get('post'));
-              _this12.resetCaseFormState();
+              _this13._getCaseSaveNotification('with-note');
+              _this13.addPostFromReply(caseNote.get('post'));
+              _this13.resetCaseFormState();
+              _this13.refreshTags();
             }, function (e) {
-              _this12.set('errors', e.errors);
-              _this12.set('shouldIgnoreNextPusherUpdate', false);
+              _this13.set('errors', e.errors);
+              _this13.set('shouldIgnoreNextPusherUpdate', false);
             });
           } else {
             var options = {
@@ -15307,14 +15342,15 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
             };
             this.get('case').saveWithPost(post, channel, attachmentIds, options).then(function (caseReply) {
               caseReply.get('posts').forEach(function (post) {
-                return _this12.addPostFromReply(post);
+                return _this13.addPostFromReply(post);
               });
 
-              _this12._getCaseSaveNotification('with-reply');
-              _this12.resetCaseFormState();
+              _this13._getCaseSaveNotification('with-reply');
+              _this13.resetCaseFormState();
+              _this13.refreshTags();
             }, function (e) {
-              _this12.set('errors', e.errors);
-              _this12.set('shouldIgnoreNextPusherUpdate', false);
+              _this13.set('errors', e.errors);
+              _this13.set('shouldIgnoreNextPusherUpdate', false);
             });
           }
         }
@@ -15326,7 +15362,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       },
 
       applyMacro: function applyMacro(macro) {
-        var _this13 = this;
+        var _this14 = this;
 
         var currentCase = this.get('case');
         var contentsToAdd = macro.get('replyContents');
@@ -15363,7 +15399,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
               }
             }
 
-            var newPriority = _this13.get('store').peekAll('case-priority').filter(function (priority) {
+            var newPriority = _this14.get('store').peekAll('case-priority').filter(function (priority) {
               return priority.get('level') === newPriorityLevel;
             }).get('firstObject');
 
@@ -15381,9 +15417,9 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
         if (tags.get('length')) {
           tags.forEach(function (tag) {
             if (tag.get('type') === 'ADD') {
-              _this13.send('addTag', tag.get('name'));
+              _this14.send('addTag', tag.get('name'));
             } else {
-              _this13.send('removeTag', tag.get('name'));
+              _this14.send('removeTag', tag.get('name'));
             }
           });
         }
@@ -15396,7 +15432,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       },
 
       onPeopleSuggestion: function onPeopleSuggestion(searchTerm, selectedPeople) {
-        var _this14 = this;
+        var _this15 = this;
 
         var contextModalService = this.get('contextModalService');
 
@@ -15429,14 +15465,14 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
 
           identities = peopleSuggestionService.exclude(identities, selectedPeople, 'email');
 
-          _this14.set('suggestedPeople', identities);
-          _this14.set('suggestedPeopleTotal', data.get('meta.total'));
+          _this15.set('suggestedPeople', identities);
+          _this15.set('suggestedPeopleTotal', data.get('meta.total'));
 
           contextModalService.set('repositionRequired', true);
 
           peopleSuggestionService.flushQueue();
 
-          _this14.set('suggestedPeopleLoading', false);
+          _this15.set('suggestedPeopleLoading', false);
         });
       },
 
@@ -15809,7 +15845,6 @@ define('frontend-cp/components/ko-case-content/field/assignee/component', ['expo
             assigneeValues.pushObject({ id: teamAgentId, value: teamAgentValue });
           });
         });
-
         _this.set('assigneeValues', assigneeValues);
       });
     }),
@@ -34829,6 +34864,7 @@ define('frontend-cp/components/ko-organisation-content/component', ['exports', '
     sessionService: Ember['default'].inject.service('session'),
     tagSuggestionService: Ember['default'].inject.service('suggestion/tag'),
     customFieldsList: Ember['default'].inject.service('custom-fields/list'),
+    tagService: Ember['default'].inject.service('tags'),
 
     suggestedTags: [],
     erroredDomains: [],
@@ -34840,7 +34876,14 @@ define('frontend-cp/components/ko-organisation-content/component', ['exports', '
     organizationIconPath: config['default'].assetRoot + '/images/icons/organization.svg',
 
     initCustomFields: Ember['default'].on('init', function () {
+      var _this = this;
+
       this.set('editedCustomFields', new Ember['default'].Object());
+      this.get('model.tags').then(function (tags) {
+        _this.set('cachedTags', tags.map(function (tag) {
+          return tag.get('id');
+        }));
+      });
     }),
 
     domains: Ember['default'].computed('model.domains.[]', function () {
@@ -34855,20 +34898,26 @@ define('frontend-cp/components/ko-organisation-content/component', ['exports', '
       return errorMap;
     }),
 
+    isTagsFieldEdited: Ember['default'].computed('cachedTags.[]', 'model.tags.@each.id', function () {
+      var cachedTagNames = this.get('cachedTags');
+      var tags = this.get('model.tags');
+      this.get('tagService').areTagNamesMatchingCache(cachedTagNames, tags);
+    }),
+
     resetForm: function resetForm() {
       this.set('errors', []);
-      this.set('isTagsFieldEdited', false);
       this.set('isDomainEdited', false);
       this.set('isNameEdited', false);
       this.set('isDomainErrored', false);
+    },
 
-      // New tags should be rolled back as they are left
-      // in the store after we save a case. New tags have id = null,
-      // and the same tag with numeric id is also returned from the server.
-      this.get('store').peekAll('tag').forEach(function (record) {
-        if (record.get('hasDirtyAttributes')) {
-          record.rollbackAttributes();
-        }
+    refreshTags: function refreshTags() {
+      var _this2 = this;
+
+      this.get('tagService').refreshTagsForOrganization(this.get('model')).then(function (tags) {
+        _this2.set('cachedTags', tags.map(function (tag) {
+          return tag.get('id');
+        }));
       });
     },
 
@@ -34887,18 +34936,17 @@ define('frontend-cp/components/ko-organisation-content/component', ['exports', '
 
     actions: {
       addTag: function addTag(tagName) {
-        var newTag = this.get('store').createRecord('tag', { name: tagName });
+        var newTag = this.get('tagService').getTagByName(tagName);
+        newTag.set('isNew', true);
         this.get('model.tags').pushObject(newTag);
-        this.set('isTagsFieldEdited', this.get('model').hasDirtyHasManyRelationship('tags'));
       },
 
       removeTag: function removeTag(tag) {
         this.get('model.tags').removeObject(tag);
-        this.set('isTagsFieldEdited', this.get('model').hasDirtyHasManyRelationship('tags'));
       },
 
       suggestTags: function suggestTags(searchTerm, selectedTags) {
-        var _this = this;
+        var _this3 = this;
 
         if (!searchTerm) {
           this.set('suggestedTags', []);
@@ -34909,7 +34957,7 @@ define('frontend-cp/components/ko-organisation-content/component', ['exports', '
 
         suggestionService.suggest(searchTerm).then(function (data) {
           data = suggestionService.exclude(data, selectedTags);
-          _this.set('suggestedTags', data);
+          _this3.set('suggestedTags', data);
         });
       },
 
@@ -34934,17 +34982,18 @@ define('frontend-cp/components/ko-organisation-content/component', ['exports', '
       },
 
       submit: function submit() {
-        var _this2 = this;
+        var _this4 = this;
 
         this.get('model').save().then(function () {
-          _this2.get('notification').add({
+          _this4.get('notification').add({
             type: 'success',
-            title: _this2.get('intl').findTranslationByKey('organisation.organisation.updated').translation,
+            title: _this4.get('intl').findTranslationByKey('organisation.organisation.updated').translation,
             autodismiss: true
           });
-          _this2.resetForm();
+          _this4.resetForm();
+          _this4.refreshTags();
         }, function (e) {
-          _this2.set('errors', e.errors);
+          _this4.set('errors', e.errors);
         });
       },
 
@@ -45715,6 +45764,7 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
     errorHandlerService: Ember['default'].inject.service('errorHandler'),
     tabsService: Ember['default'].inject.service('tabs'),
     customFieldsList: Ember['default'].inject.service('custom-fields/list'),
+    tagService: Ember['default'].inject.service('tags'),
 
     intl: Ember['default'].inject.service(),
 
@@ -45731,7 +45781,14 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
     signatureModal: false,
 
     initCustomFields: Ember['default'].on('init', function () {
+      var _this = this;
+
       this.set('editedCustomFields', new Ember['default'].Object());
+      this.get('model.tags').then(function (newTags) {
+        _this.set('cachedTags', newTags.map(function (tag) {
+          return tag.get('id');
+        }));
+      });
     }),
 
     initEditingSignature: Ember['default'].on('init', function () {
@@ -45741,31 +45798,31 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
 
     roles: [],
     initRoles: Ember['default'].on('init', function () {
-      var _this = this;
+      var _this2 = this;
 
       this.get('store').findAll('role').then(function (roles) {
-        _this.set('roles', roles);
+        _this2.set('roles', roles);
       });
     }),
 
     initTeams: Ember['default'].on('init', function () {
-      var _this2 = this;
+      var _this3 = this;
 
       this.set('teams', []);
       this.get('store').findAll('team').then(function (teams) {
-        _this2.set('teams', teams.map(function (team) {
+        _this3.set('teams', teams.map(function (team) {
           return team.get('title');
         }));
-        _this2.set('teamRecords', teams);
+        _this3.set('teamRecords', teams);
       });
     }),
 
     organizations: [],
     initOrganizations: Ember['default'].on('init', function () {
-      var _this3 = this;
+      var _this4 = this;
 
       this.get('store').findAll('organization').then(function (organizations) {
-        _this3.set('organizations', organizations);
+        _this4.set('organizations', organizations);
       });
     }),
 
@@ -45799,10 +45856,10 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
 
     recentFeedback: [],
     initRecentFeedback: Ember['default'].on('init', function () {
-      var _this4 = this;
+      var _this5 = this;
 
       this.get('store').query('rating', { user_id: this.get('model.id') }).then(function (ratings) {
-        return _this4.set('recentFeedback', ratings);
+        return _this5.set('recentFeedback', ratings);
       });
     }),
 
@@ -45825,20 +45882,26 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
       this.set('isOrganizationEdited', false);
       this.set('isTimezoneEdited', false);
       this.set('isTeamsFieldEdited', false);
-      this.set('isTagsFieldEdited', false);
       this.set('isAccessLevelEdited', false);
       this.set('isFollowingSaving', false);
       this.set('isStateSaving', false);
+    },
 
-      // New tags should be rolled back as they are left
-      // in the store after we save a case. New tags have id = null,
-      // and the same tag with numeric id is also returned from the server.
-      this.get('store').peekAll('tag').forEach(function (record) {
-        if (record.get('hasDirtyAttributes')) {
-          record.rollbackAttributes();
-        }
+    refreshTags: function refreshTags() {
+      var _this6 = this;
+
+      this.get('tagService').refreshTagsForUser(this.get('model')).then(function (tags) {
+        _this6.set('cachedTags', tags.map(function (tag) {
+          return tag.get('id');
+        }));
       });
     },
+
+    isTagsFieldEdited: Ember['default'].computed('cachedTags.[]', 'model.tags.@each.id', function () {
+      var cachedTagNames = this.get('cachedTags');
+      var tags = this.get('model.tags');
+      return this.get('tagService').areTagNamesMatchingCache(cachedTagNames, tags);
+    }),
 
     canModifyUserState: Ember['default'].computed('model.role', function () {
       return this.get('permissionService').has('app.user.disable', this.get('model'));
@@ -45891,12 +45954,12 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
 
     actions: {
       toggleUserState: function toggleUserState() {
-        var _this5 = this;
+        var _this7 = this;
 
         this.set('isStateSaving', true);
         this.toggleProperty('model.isEnabled');
         this.get('model').save().then(function () {
-          return _this5.resetForm();
+          return _this7.resetForm();
         });
       },
 
@@ -45929,11 +45992,11 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
       },
 
       organizationSelect: function organizationSelect(org) {
-        var _this6 = this;
+        var _this8 = this;
 
         this.set('model.organization', org);
         this.get('model').hasDirtyBelongsToRelationship('organization').then(function (relationshipIsDirty) {
-          _this6.set('isOrganizationEdited', relationshipIsDirty);
+          _this8.set('isOrganizationEdited', relationshipIsDirty);
         });
       },
 
@@ -45962,7 +46025,7 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
       },
 
       suggestTeams: function suggestTeams(searchTerm, selectedTeams) {
-        var _this7 = this;
+        var _this9 = this;
 
         if (!searchTerm) {
           this.set('suggestedTeams', []);
@@ -45973,27 +46036,26 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
 
         suggestionService.suggestFilter(this.get('teamRecords'), searchTerm, 'title').then(function (data) {
           var suggestedTeams = suggestionService.exclude(data, selectedTeams, 'title');
-          _this7.set('suggestedTeams', suggestedTeams.map(function (tag) {
+          _this9.set('suggestedTeams', suggestedTeams.map(function (tag) {
             return tag.get('title');
           }));
         });
       },
 
-      addTag: function addTag(tag) {
-        if (!this.get('model.tags').findBy('name', tag.trim())) {
-          var newTag = this.get('store').createRecord('tag', { name: tag });
+      addTag: function addTag(tagName) {
+        if (!this.get('model.tags').findBy('name', tagName.trim())) {
+          var newTag = this.get('tagService').getTagByName(tagName);
+          newTag.set('isNew', true);
           this.get('model.tags').pushObject(newTag);
-          this.set('isTagsFieldEdited', this.get('model').hasDirtyHasManyRelationship('tags'));
         }
       },
 
       removeTag: function removeTag(tag) {
         this.get('model.tags').removeObject(tag);
-        this.set('isTagsFieldEdited', this.get('model').hasDirtyHasManyRelationship('tags'));
       },
 
       suggestTags: function suggestTags(searchTerm, selectedTags) {
-        var _this8 = this;
+        var _this10 = this;
 
         if (!searchTerm) {
           this.set('suggestedTags', []);
@@ -46004,14 +46066,14 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
 
         suggestionService.suggest(searchTerm).then(function (data) {
           data = suggestionService.exclude(data, selectedTags);
-          _this8.set('suggestedTags', data.map(function (tag) {
+          _this10.set('suggestedTags', data.map(function (tag) {
             return tag.get('name');
           }));
         });
       },
 
       changeUserPassword: function changeUserPassword() {
-        var _this9 = this;
+        var _this11 = this;
 
         var PAYLOAD = { email: this.get('model.primaryEmailAddress') };
 
@@ -46023,30 +46085,31 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
             'Content-Type': 'application/json'
           }
         }).then(function () {
-          _this9.get('notificationService').add({
+          _this11.get('notificationService').add({
             type: 'success',
-            title: _this9.get('intl').findTranslationByKey('users.password_reset_email.success').translation,
+            title: _this11.get('intl').findTranslationByKey('users.password_reset_email.success').translation,
             autodismiss: true
           });
         }, function (response) {
-          _this9.get('errorHandlerService').handleServerError(response.responseJSON);
+          _this11.get('errorHandlerService').handleServerError(response.responseJSON);
         });
       },
 
       submit: function submit() {
-        var _this10 = this;
+        var _this12 = this;
 
         this.get('model').save().then(function () {
-          _this10.get('notificationService').add({
+          _this12.get('notificationService').add({
             type: 'success',
-            title: _this10.get('intl').findTranslationByKey('users.user.updated').translation,
+            title: _this12.get('intl').findTranslationByKey('users.user.updated').translation,
             autodismiss: true
           });
 
-          _this10.resetForm();
+          _this12.resetForm();
+          _this12.refreshTags();
         }, function (e) {
           e.errors || (e.errors = {});
-          _this10.set('errors', e.errors.errors);
+          _this12.set('errors', e.errors.errors);
         });
       },
 
@@ -51566,6 +51629,23 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
         resources: []
       };
     });
+
+    this.get('/api/v1/cases/:caseid/tags', function (db) {
+      return {
+        status: 200,
+        data: db.tags,
+        resource: 'tag',
+        resources: []
+      };
+    });
+    this.get('/api/v1/users/:caseid/tags', function (db) {
+      return {
+        status: 200,
+        data: db.tags,
+        resource: 'tag',
+        resources: []
+      };
+    });
   }
 
 });
@@ -53749,7 +53829,6 @@ define('frontend-cp/models/case', ['exports', 'ember-data', 'frontend-cp/mixins/
     status: DS['default'].belongsTo('case-status', { async: false }),
     priority: DS['default'].belongsTo('case-priority', { async: false }),
     caseType: DS['default'].belongsTo('case-type', { async: false }),
-    tags: DS['default'].hasMany('tag', { async: false }),
     form: DS['default'].belongsTo('case-form', { async: false }),
     customFields: DS['default'].hasManyFragments('case-field-value', { defaultValue: [] }),
     // metadata // TODO nested json
@@ -53780,6 +53859,7 @@ define('frontend-cp/models/case', ['exports', 'ember-data', 'frontend-cp/mixins/
     activities: DS['default'].hasMany('activity', { async: true, child: true, url: 'activities', noCache: true }),
     replyChannels: DS['default'].hasMany('channel', { async: true, child: true, url: 'reply/channels', noCache: true }),
     reply: DS['default'].hasMany('case-reply', { async: true, child: true, noCache: true }),
+    tags: DS['default'].hasMany('tag', { async: true, child: true, noCache: true }),
     //participants: DS.hasMany('user', { async: true, child: true, url: 'participants', noCache: true }),
 
     // Parent field
@@ -54645,17 +54725,17 @@ define('frontend-cp/models/organization', ['exports', 'ember-data', 'ember', 'fr
     brand: DS['default'].belongsTo('brand', { async: true }),
     addresses: DS['default'].hasMany('contact-address', { async: true, url: 'contacts/addresses' }),
     websites: DS['default'].hasMany('contact-website', { async: true, url: 'contacts/websites' }),
-    notes: DS['default'].hasMany('note', { async: true }),
+    notes: DS['default'].hasMany('note', { async: true, noCache: true }),
     pinned: DS['default'].attr('number'),
-    tags: DS['default'].hasMany('tag', { async: false }),
     customFields: DS['default'].hasManyFragments('organization-field-value'),
     fieldValues: DS['default'].hasManyFragments('user-field-value', { defaultValue: [] }), // write only
-    followers: DS['default'].hasMany('user', { async: true, inverse: null }),
+    followers: DS['default'].hasMany('user', { async: true, inverse: null, noCache: true }),
     createdAt: DS['default'].attr('date'),
     updatedAt: DS['default'].attr('date'),
 
     // Shadow children fields
-    domains: DS['default'].hasMany('identity-domain', { async: false })
+    domains: DS['default'].hasMany('identity-domain', { async: false }),
+    tags: DS['default'].hasMany('tag', { async: true, child: true, noCache: true })
   });
 
 });
@@ -54914,11 +54994,9 @@ define('frontend-cp/models/tag', ['exports', 'ember-data', 'ember', 'frontend-cp
   'use strict';
 
   exports['default'] = DS['default'].Model.extend(ChangeAwareModel['default'], {
-    name: DS['default'].attr('string'),
+    name: Ember['default'].computed.alias('id'),
 
-    isNew: Ember['default'].computed('id', function () {
-      return !this.get('id');
-    })
+    isNew: false
   });
 
 });
@@ -55047,7 +55125,6 @@ define('frontend-cp/models/user', ['exports', 'ember-data', 'ember', 'frontend-c
     websites: DS['default'].hasMany('contact-website', { async: true, url: 'contacts/websites' }),
     customFields: DS['default'].hasManyFragments('user-field-value', { defaultValue: [] }),
     fieldValues: DS['default'].hasManyFragments('user-field-value', { defaultValue: [] }), // write only
-    tags: DS['default'].hasMany('tag', { async: false }),
     notes: DS['default'].hasMany('note', { child: true, url: 'notes', async: true, noCache: true }),
     accessLevel: DS['default'].attr('string', { defaultValue: 'SELF' }),
     locale: DS['default'].attr('string'),
@@ -55068,6 +55145,7 @@ define('frontend-cp/models/user', ['exports', 'ember-data', 'ember', 'frontend-c
     slack: DS['default'].hasMany('identity-slack', { async: true, child: true, url: 'identities/slack', noCache: true }),
     events: DS['default'].hasMany('event', { async: true, child: true, inverse: 'creator', noCache: true }),
     recentCases: DS['default'].hasMany('case', { async: true, child: true, inverse: 'requester', noCache: true }),
+    tags: DS['default'].hasMany('tag', { async: true, child: true, noCache: true }),
 
     save: function save() {
       var _this = this;
@@ -56030,7 +56108,7 @@ define('frontend-cp/serializers/tag', ['exports', 'frontend-cp/serializers/appli
 
   exports['default'] = ApplicationSerializer['default'].extend({
     attrs: {
-      name: { serialize: false }
+      id: { key: 'name' }
     }
   });
 
@@ -58490,6 +58568,59 @@ define('frontend-cp/services/tabs', ['exports', 'ember', 'frontend-cp/models/tab
         return invalidUrls.indexOf(tab.url) === -1;
       }));
     }
+  });
+
+});
+define('frontend-cp/services/tags', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Service.extend({
+    store: Ember['default'].inject.service('store'),
+
+    getTagByName: function getTagByName(tagName) {
+      var tag = this.get('store').peekRecord('tag', tagName);
+      return tag ? tag : this.get('store').createRecord('tag', { id: tagName });
+    },
+
+    refreshTagsForCase: function refreshTagsForCase(updatedCase) {
+      return this._refreshTags({ caseId: updatedCase.get('id') }, updatedCase);
+    },
+
+    refreshTagsForUser: function refreshTagsForUser(user) {
+      return this._refreshTags({ userId: user.get('id') }, user);
+    },
+
+    refreshTagsForOrganization: function refreshTagsForOrganization(organization) {
+      return this._refreshTags({ organizationId: organization.get('id') }, organization);
+    },
+
+    _refreshTags: function _refreshTags(queryParams, parentModel) {
+      return this.get('store').query('tag', queryParams).then(function (newTags) {
+        newTags.forEach(function (tag) {
+          return tag.set('isNew', false);
+        });
+        parentModel.get('tags').clear();
+        parentModel.get('tags').pushObjects(newTags);
+        return newTags;
+      });
+    },
+
+    areTagNamesMatchingCache: function areTagNamesMatchingCache(cachedTagNames, tags) {
+      if (!cachedTagNames) {
+        //we haven't got tags yet!
+        return false;
+      }
+
+      if (cachedTagNames.get('length') !== tags.get('length')) {
+        return true;
+      }
+
+      return tags.any(function (tag) {
+        return cachedTagNames.indexOf(tag.get('id')) === -1;
+      });
+    }
+
   });
 
 });
@@ -79392,7 +79523,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"88d34fd0054d469bcfa2","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+0f3b6ae6"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"88d34fd0054d469bcfa2","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+4db19088"});
 }
 
 /* jshint ignore:end */
