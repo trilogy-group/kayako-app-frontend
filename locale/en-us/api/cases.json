@@ -66,6 +66,7 @@
   "submit": "Submit",
   "ticketid": "Ticket ID",
   "type": "Type",
+  "macro": "Macro",
   "applymacro": "Apply Macro",
   "applymacroplaceholder": "Type to search macros",
   "channelType.MAILBOX": "email",

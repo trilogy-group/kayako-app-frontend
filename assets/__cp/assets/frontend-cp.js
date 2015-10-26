@@ -14057,6 +14057,7 @@ define('frontend-cp/components/ko-case/macro-selector/component', ['exports', 'e
     //Params:
     macros: [],
     onMacroSelected: null,
+    isFocussed: null,
 
     // build a value list for the option drilldown
     macroValueList: Ember['default'].computed('macros.[]', function () {
@@ -14064,6 +14065,36 @@ define('frontend-cp/components/ko-case/macro-selector/component', ['exports', 'e
         return { id: macro.get('id'), value: macro.get('title') };
       });
       return valueList;
+    }),
+
+    bodyClickHandler: function bodyClickHandler(event) {
+      var _this = this;
+
+      if (!this.get('context.element')) {
+        return;
+      }
+
+      var includesTarget = $.contains(this.get('context.element'), event.target);
+
+      if (!includesTarget && this.get('context.element') !== event.target) {
+        Ember['default'].run.next(function () {
+          if (!_this.get('isDestroyed') && _this.get('isFocussed')) {
+            _this.set('isFocussed', false);
+          }
+        });
+      }
+    },
+
+    trackBodyClick: Ember['default'].on('willInsertElement', function () {
+      var _this2 = this;
+
+      $('body').on('click.macro-selector', function (event) {
+        _this2.bodyClickHandler(event);
+      });
+    }),
+
+    cleanBodyClickTracker: Ember['default'].on('willDestroyElement', function () {
+      $('body').off('click.macro-selector');
     }),
 
     actions: {
@@ -14074,7 +14105,6 @@ define('frontend-cp/components/ko-case/macro-selector/component', ['exports', 'e
         this.sendAction('onMacroSelected', selectedMacro);
       }
     }
-
   });
 
 });
@@ -14093,7 +14123,7 @@ define('frontend-cp/components/ko-case/macro-selector/template', ['exports'], fu
             "column": 0
           },
           "end": {
-            "line": 8,
+            "line": 9,
             "column": 2
           }
         },
@@ -14116,7 +14146,7 @@ define('frontend-cp/components/ko-case/macro-selector/template', ['exports'], fu
         return morphs;
       },
       statements: [
-        ["inline","ko-dropdown/drill-down",[],["label","Macro","title",["subexpr","format-message",[["subexpr","intl-get",["cases.applymacro"],[],["loc",[null,[3,24],[3,53]]]]],[],["loc",[null,[3,8],[3,54]]]],"placeholder",["subexpr","format-message",[["subexpr","intl-get",["cases.applymacroplaceholder"],[],["loc",[null,[4,30],[4,70]]]]],[],["loc",[null,[4,14],[4,71]]]],"options",["subexpr","@mut",[["get","macroValueList",["loc",[null,[5,10],[5,24]]]]],[],[]],"contextModalId","macroDrillDownInline","onSelect","onMacroSelected"],["loc",[null,[1,0],[8,2]]]]
+        ["inline","ko-dropdown/drill-down",[],["label",["subexpr","format-message",[["subexpr","intl-get",["cases.macro"],[],["loc",[null,[2,24],[2,48]]]]],[],["loc",[null,[2,8],[2,49]]]],"title",["subexpr","format-message",[["subexpr","intl-get",["cases.applymacro"],[],["loc",[null,[3,24],[3,53]]]]],[],["loc",[null,[3,8],[3,54]]]],"placeholder",["subexpr","format-message",[["subexpr","intl-get",["cases.applymacroplaceholder"],[],["loc",[null,[4,30],[4,70]]]]],[],["loc",[null,[4,14],[4,71]]]],"options",["subexpr","@mut",[["get","macroValueList",["loc",[null,[5,10],[5,24]]]]],[],[]],"contextModalId","macroDrillDownInline","onSelect","onMacroSelected","isFocussed",["subexpr","@mut",[["get","isFocussed",["loc",[null,[8,13],[8,23]]]]],[],[]]],["loc",[null,[1,0],[9,2]]]]
       ],
       locals: [],
       templates: []
@@ -24394,7 +24424,7 @@ define('frontend-cp/components/ko-dropdown/drill-down/template', ['exports'], fu
         return morphs;
       },
       statements: [
-        ["block","ko-dropdown/container",[],["hideOnClick",["subexpr","@mut",[["get","hideOnClick",["loc",[null,[1,37],[1,48]]]]],[],[]],"hideOnChildFocus",true,"hideDropdown",["subexpr","@mut",[["get","hideDropdown",["loc",[null,[1,84],[1,96]]]]],[],[]]],0,null,["loc",[null,[1,0],[13,26]]]]
+        ["block","ko-dropdown/container",[],["isFocussed",["subexpr","@mut",[["get","isFocussed",["loc",[null,[1,36],[1,46]]]]],[],[]],"hideOnClick",["subexpr","@mut",[["get","hideOnClick",["loc",[null,[1,59],[1,70]]]]],[],[]],"hideOnChildFocus",true,"hideDropdown",["subexpr","@mut",[["get","hideDropdown",["loc",[null,[1,106],[1,118]]]]],[],[]]],0,null,["loc",[null,[1,0],[13,26]]]]
       ],
       locals: [],
       templates: [child0]
@@ -48994,6 +49024,7 @@ define('frontend-cp/locales/en-us/cases', ['exports'], function (exports) {
     "submit": "Submit",
     "ticketid": "Ticket ID",
     "type": "Type",
+    "macro": "Macro",
     "applymacro": "Apply Macro",
     "applymacroplaceholder": "Type to search macros",
     "channelType.MAILBOX": "email",
@@ -79358,7 +79389,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"e5ba08ab0174c8e64c81","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+c59f008c"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"e5ba08ab0174c8e64c81","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+1e269e82"});
 }
 
 /* jshint ignore:end */
