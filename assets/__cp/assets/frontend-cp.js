@@ -15027,8 +15027,8 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
                 };
               }
 
-              var originalValues = customCaseField.changedAttributes().value[0].split(',');
-              var modifiedValues = customCaseField.changedAttributes().value[1].split(',');
+              var originalValues = customCaseField.changedAttributes().value[0] ? customCaseField.changedAttributes().value[0].split(',') : [];
+              var modifiedValues = customCaseField.changedAttributes().value[1] ? customCaseField.changedAttributes().value[1].split(',') : [];
 
               if (originalValues.length !== modifiedValues.length) {
                 editedCaseFields.set(field.get('id'), true);
@@ -34807,7 +34807,7 @@ define('frontend-cp/components/ko-organisation-action-menu/template', ['exports'
   }()));
 
 });
-define('frontend-cp/components/ko-organisation-content/component', ['exports', 'ember'], function (exports, Ember) {
+define('frontend-cp/components/ko-organisation-content/component', ['exports', 'ember', 'frontend-cp/config/environment'], function (exports, Ember, config) {
 
   'use strict';
 
@@ -34827,6 +34827,8 @@ define('frontend-cp/components/ko-organisation-content/component', ['exports', '
 
     isDomainEdited: false,
     editedCustomFields: null,
+
+    organizationIconPath: config['default'].assetRoot + '/images/icons/organization.svg',
 
     initCustomFields: Ember['default'].on('init', function () {
       this.set('editedCustomFields', new Ember['default'].Object());
@@ -35232,7 +35234,6 @@ define('frontend-cp/components/ko-organisation-content/template', ['exports'], f
         var el6 = dom.createTextNode("\n          ");
         dom.appendChild(el5, el6);
         var el6 = dom.createElement("img");
-        dom.setAttribute(el6,"src","images/icons/organization.svg");
         dom.setAttribute(el6,"class","header__image");
         dom.appendChild(el5, el6);
         var el6 = dom.createTextNode("\n        ");
@@ -35346,15 +35347,19 @@ define('frontend-cp/components/ko-organisation-content/template', ['exports'], f
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
         var element1 = dom.childAt(fragment, [0]);
         var element2 = dom.childAt(element1, [1]);
-        var element3 = dom.childAt(element1, [3]);
-        var morphs = new Array(4);
-        morphs[0] = dom.createMorphAt(dom.childAt(element2, [1, 1, 3, 1]),1,1);
-        morphs[1] = dom.createMorphAt(dom.childAt(element2, [3, 1, 5]),1,1);
-        morphs[2] = dom.createMorphAt(dom.childAt(element3, [1, 1]),1,1);
-        morphs[3] = dom.createMorphAt(dom.childAt(element3, [3]),1,1);
+        var element3 = dom.childAt(element2, [1, 1]);
+        var element4 = dom.childAt(element3, [1, 1]);
+        var element5 = dom.childAt(element1, [3]);
+        var morphs = new Array(5);
+        morphs[0] = dom.createAttrMorph(element4, 'src');
+        morphs[1] = dom.createMorphAt(dom.childAt(element3, [3, 1]),1,1);
+        morphs[2] = dom.createMorphAt(dom.childAt(element2, [3, 1, 5]),1,1);
+        morphs[3] = dom.createMorphAt(dom.childAt(element5, [1, 1]),1,1);
+        morphs[4] = dom.createMorphAt(dom.childAt(element5, [3]),1,1);
         return morphs;
       },
       statements: [
+        ["attribute","src",["concat",[["get","organizationIconPath",["loc",[null,[6,22],[6,42]]]]]]],
         ["inline","ko-editable-text",[],["value",["subexpr","@mut",[["get","model.name",["loc",[null,[11,22],[11,32]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isNameEdited",["loc",[null,[12,25],[12,37]]]]],[],[]],"onValueChange","setName","placeholder",["subexpr","format-message",[["subexpr","intl-get",["organisation.new_organisation_placeholder"],[],["loc",[null,[14,44],[14,98]]]]],[],["loc",[null,[14,28],[14,99]]]]],["loc",[null,[10,12],[15,14]]]],
         ["inline","ko-organisation-action-menu",[],["permissions",["subexpr","@mut",[["get","sessionService.permissions",["loc",[null,[27,23],[27,49]]]]],[],[]],"organisation",["subexpr","@mut",[["get","model",["loc",[null,[28,24],[28,29]]]]],[],[]]],["loc",[null,[26,9],[29,11]]]],
         ["block","ko-text-editor",[],["class","ko-organisation-content__text-editor","viewName","postEditor"],0,null,["loc",[null,[38,8],[40,27]]]],
@@ -79389,7 +79394,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"e5ba08ab0174c8e64c81","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+1e269e82"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"88d34fd0054d469bcfa2","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+45218e2b"});
 }
 
 /* jshint ignore:end */
