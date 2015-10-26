@@ -1,5 +1,13 @@
 {
   "addnewuser": "Add New User",
+  "button.following.active.text": "Following",
+  "button.following.active.hovertext": "Stop Following",
+  "button.following.inactive.text": "Not Following",
+  "button.following.inactive.hovertext": "Following",
+  "button.user.enabled.text": "User Enabled",
+  "button.user.enabled.hovertext": "Disable User",
+  "button.user.disabled.text": "User Disabled",
+  "button.user.disabled.hovertext": "Enable User",
   "infobar.organization": "Organization",
   "infobar.role": "Role",
   "infobar.timezone": "Timezone",
