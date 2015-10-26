@@ -64666,13 +64666,6 @@ define('frontend-cp/session/agent/cases/case/organisation/route', ['exports', 'f
       return parentModel ? parentModel.get('organization') : {};
     },
 
-    setupController: function setupController(controller, model) {
-      this._super(controller, model);
-
-      // case is the main parent for this route
-      this.setTabLabel(model.get('name'));
-    },
-
     activate: function activate() {
       this.modelFor(this.routeName).on('didDelete', this, this.cleanUpDeletedOrganizationFromUI);
     },
@@ -79394,7 +79387,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"88d34fd0054d469bcfa2","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+8dc12c01"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"88d34fd0054d469bcfa2","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+79cf2768"});
 }
 
 /* jshint ignore:end */
