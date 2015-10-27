@@ -30677,22 +30677,33 @@ define('frontend-cp/components/ko-info-bar/custom-field/component', ['exports', 
       return this.get('customFieldsList').findCustomFieldValue(this.get('customFieldsModel'), this.get('field'));
     }),
 
-    isEdited: Ember['default'].computed('valueObject.value', function () {
-      return !!this.get('valueObject.isDirty');
-    }),
+    updateIsEditedFromHash: Ember['default'].on('init', Ember['default'].observer('field.id', function () {
+      var _this = this;
+
+      /*
+       * We take an object holding the edited status of all case fields with the format:
+       * { id: isEdited, ... }
+       *
+       * we need to observe isEditedObject[field.id] which we can't do as a normal CP because field.id is dynamic
+       * So this is just a computed property wrapped in an observer (so we have the context)
+       */
+      this.set('isEdited', Ember['default'].computed('editedCustomFields.' + this.get('field.id'), function () {
+        return _this.get('editedCustomFields').get(_this.get('field.id'));
+      }));
+    })),
 
     onErrors: Ember['default'].observer('errors.[]', function () {
-      var _this = this;
+      var _this2 = this;
 
       if (this.get('errors')) {
         this.set('isErrored', this.get('errors').reduce(function (acc, error) {
-          return acc || error.parameter === _this.get('field.key');
+          return acc || error.parameter === _this2.get('field.key');
         }, false));
       }
     }),
 
     updateIsPusherEditedFromHash: Ember['default'].on('init', Ember['default'].observer('field.id', function () {
-      var _this2 = this;
+      var _this3 = this;
 
       /*
        * We take an object holding the edited status of all case fields with the format:
@@ -30702,8 +30713,8 @@ define('frontend-cp/components/ko-info-bar/custom-field/component', ['exports', 
        * So this is just a computed property wrapped in an observer (so we have the context)
        */
       this.set('isPusherEdited', Ember['default'].computed('fieldsEditedByPusher.' + this.get('field.id'), function () {
-        if (_this2.get('fieldsEditedByPusher')) {
-          return _this2.get('fieldsEditedByPusher')[_this2.get('field.id')];
+        if (_this3.get('fieldsEditedByPusher')) {
+          return _this3.get('fieldsEditedByPusher')[_this3.get('field.id')];
         }
         return false;
       }));
@@ -79531,7 +79542,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"88d34fd0054d469bcfa2","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+125988da"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"88d34fd0054d469bcfa2","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+92670b1e"});
 }
 
 /* jshint ignore:end */
