@@ -57435,7 +57435,7 @@ define('frontend-cp/services/file-upload', ['exports', 'ember', 'jquery'], funct
       formData.append('content', file);
 
       $['default'].ajax({
-        url: 'http://localhost:4200/api/v1/core/file',
+        url: '/api/v1/core/file',
         type: 'POST',
         headers: this.get('headers'),
         //Ajax events
@@ -79616,7 +79616,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"88d34fd0054d469bcfa2","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+a9544ac6"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"88d34fd0054d469bcfa2","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+48ab2c46"});
 }
 
 /* jshint ignore:end */
