@@ -11963,7 +11963,6 @@ define('frontend-cp/components/ko-agent-dropdown/create-case/component', ['expor
 
   'use strict';
 
-  var NEW_STATUS_ID = 1;
   var SUGGESTION_DEBOUNCE_DURATION = 250;
 
   exports['default'] = Ember['default'].Component.extend(AutofocusMixin['default'], {
@@ -12102,22 +12101,19 @@ define('frontend-cp/components/ko-agent-dropdown/create-case/component', ['expor
 
           var userChannels = findUserChannels(userId);
           var defaultCaseFormPromise = findDefaultCaseForm();
-          var defaultStatusPromise = findDefaultStatus();
 
           return Ember['default'].RSVP.hash({
             channels: userChannels,
             caseForm: defaultCaseFormPromise,
-            status: defaultStatusPromise
+            statuses: store.findAll('case-status')
           }).then(function (_ref) {
             var channels = _ref.channels;
-            var status = _ref.status;
+            var statuses = _ref.statuses;
             var caseForm = _ref.caseForm;
+
+            var status = statuses.findBy('statusType', 'NEW');
             return createCase(userModel, channels, status, caseForm);
           });
-
-          function findDefaultStatus() {
-            return store.findRecord('case-status', NEW_STATUS_ID);
-          }
 
           function findDefaultCaseForm() {
             return store.findAll('case-form').then(function (caseForms) {
@@ -15188,8 +15184,8 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       var caseStatus = editingCase.get('status');
 
       if (editingCase.get('id') && caseStatus.get('statusType') === 'NEW') {
-        // assuming that status ID 3 will always be pending
-        return this.get('store').find('case-status', 3).then(function (pendingStatus) {
+        return this.get('store').findAll('case-status').then(function (statuses) {
+          var pendingStatus = statuses.findBy('statusType', 'PENDING');
           editingCase.set('status', pendingStatus);
         });
       }
@@ -15278,7 +15274,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
 
         var channel = this.get('channel');
         var editor = this.get('casePostEditor.postEditor');
-        var post = editor.getMarkdown().trim();
+        var post = editor.getText().trim();
         var uploads = this.get('casePostEditor').getAttachedUploads();
         var attachmentIds = uploads.map(function (upload) {
           return upload.get('attachmentId');
@@ -64695,8 +64691,8 @@ define('frontend-cp/session/agent/cases/case/index/route', ['exports', 'frontend
     validateCaseStatus: function validateCaseStatus(editingCase) {
       var caseStatus = editingCase.get('status');
       if (editingCase.get('id') && caseStatus.get('statusType') === 'NEW') {
-        this.store.find('case-status', 3).then(function (pendingStatus) {
-          //assuming that status ID 3 will always be pending
+        this.store.findAll('case-status').then(function (statuses) {
+          var pendingStatus = statuses.findBy('statusType', 'PENDING');
           editingCase.set('status', pendingStatus);
         });
       }
@@ -79542,7 +79538,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"88d34fd0054d469bcfa2","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+92670b1e"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"88d34fd0054d469bcfa2","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+af0060e5"});
 }
 
 /* jshint ignore:end */
