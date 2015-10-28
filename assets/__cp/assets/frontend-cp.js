@@ -55212,8 +55212,8 @@ define('frontend-cp/models/user', ['exports', 'ember-data', 'ember', 'frontend-c
     // Shadow children fields
     accesslogs: DS['default'].hasMany('access-log', { async: true, child: true, noCache: true }),
     slack: DS['default'].hasMany('identity-slack', { async: true, child: true, url: 'identities/slack', noCache: true }),
+    recentCases: DS['default'].hasMany('case', { async: true, child: true, inverse: null, noCache: true }),
     events: DS['default'].hasMany('event', { async: true, child: true, inverse: 'creator', noCache: true }),
-    recentCases: DS['default'].hasMany('case', { async: true, child: true, inverse: 'requester', noCache: true }),
     tags: DS['default'].hasMany('tag', { async: true, child: true, noCache: true }),
 
     save: function save() {
@@ -70724,6 +70724,30 @@ define('frontend-cp/tests/acceptance/case/list-test', ['frontend-cp/tests/helper
   });
 
 });
+define('frontend-cp/tests/acceptance/case/user-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
+
+  'use strict';
+
+  qunit.app('Acceptance | Case | User', {
+    beforeEach: function beforeEach() {
+      useDefaultScenario();
+      login();
+    },
+
+    afterEach: function afterEach() {
+      logout();
+    }
+  });
+
+  qunit.test("REGRESSION: Breadcrumb doesn't change when navigating to cases/:id/user", function (assert) {
+    visit('/agent/cases/1/user');
+
+    andThen(function () {
+      assert.equal(find('.breadcrumbs li').length, 2);
+    });
+  });
+
+});
 define('frontend-cp/tests/acceptance/login/reset-password-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
@@ -79592,7 +79616,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"88d34fd0054d469bcfa2","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+2fc9f34b"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"88d34fd0054d469bcfa2","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+a9544ac6"});
 }
 
 /* jshint ignore:end */
