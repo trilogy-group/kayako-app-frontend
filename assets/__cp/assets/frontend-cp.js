@@ -46977,15 +46977,24 @@ define('frontend-cp/components/ko-user-menu/component', ['exports', 'ember'], fu
   'use strict';
 
   exports['default'] = Ember['default'].Component.extend({
-    sessionService: Ember['default'].inject.service('session'),
+    session: Ember['default'].inject.service('session'),
+    permissions: Ember['default'].inject.service('permissions'),
+
+    isAdmin: Ember['default'].computed('session.permissions', function () {
+      return this.get('permissions').has('app.admin.access');
+    }),
 
     actions: {
       logout: function logout() {
-        this.get('sessionService').logout();
+        this.get('session').logout();
       },
       profile: function profile() {
         this.set('hidden', true);
-        this.container.lookup('router:main').transitionTo('session.agent.users.user', this.get('sessionService.user.id'));
+        this.container.lookup('router:main').transitionTo('session.agent.users.user', this.get('session.user.id'));
+      },
+      admin: function admin() {
+        this.set('hidden', true);
+        this.container.lookup('router:main').transitionTo('session.admin');
       }
     }
   });
@@ -47053,10 +47062,10 @@ define('frontend-cp/components/ko-user-menu/template', ['exports'], function (ex
             return el0;
           },
           buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-            var element2 = dom.childAt(fragment, [1]);
+            var element3 = dom.childAt(fragment, [1]);
             var morphs = new Array(2);
-            morphs[0] = dom.createMorphAt(dom.childAt(element2, [1]),1,1);
-            morphs[1] = dom.createMorphAt(dom.childAt(element2, [3]),1,1);
+            morphs[0] = dom.createMorphAt(dom.childAt(element3, [1]),1,1);
+            morphs[1] = dom.createMorphAt(dom.childAt(element3, [3]),1,1);
             return morphs;
           },
           statements: [
@@ -47076,12 +47085,12 @@ define('frontend-cp/components/ko-user-menu/template', ['exports'], function (ex
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 15,
-                    "column": 8
+                    "line": 18,
+                    "column": 6
                   },
                   "end": {
-                    "line": 15,
-                    "column": 51
+                    "line": 22,
+                    "column": 6
                   }
                 },
                 "moduleName": "frontend-cp/components/ko-user-menu/template.hbs"
@@ -47091,13 +47100,31 @@ define('frontend-cp/components/ko-user-menu/template', ['exports'], function (ex
               hasRendered: false,
               buildFragment: function buildFragment(dom) {
                 var el0 = dom.createDocumentFragment();
-                var el1 = dom.createTextNode("styleguide");
+                var el1 = dom.createTextNode("        ");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createElement("li");
+                dom.setAttribute(el1,"class","ko-dropdown_list__item");
+                var el2 = dom.createTextNode("\n          ");
+                dom.appendChild(el1, el2);
+                var el2 = dom.createComment("");
+                dom.appendChild(el1, el2);
+                var el2 = dom.createTextNode("\n        ");
+                dom.appendChild(el1, el2);
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n");
                 dom.appendChild(el0, el1);
                 return el0;
               },
-              buildRenderNodes: function buildRenderNodes() { return []; },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var element0 = dom.childAt(fragment, [1]);
+                var morphs = new Array(2);
+                morphs[0] = dom.createAttrMorph(element0, 'onclick');
+                morphs[1] = dom.createMorphAt(element0,1,1);
+                return morphs;
+              },
               statements: [
-
+                ["attribute","onclick",["subexpr","action",["admin"],[],["loc",[null,[19,51],[19,69]]]]],
+                ["inline","format-message",[["subexpr","intl-get",["admin.administration"],[],["loc",[null,[20,27],[20,60]]]]],[],["loc",[null,[20,10],[20,62]]]]
               ],
               locals: [],
               templates: []
@@ -47113,7 +47140,7 @@ define('frontend-cp/components/ko-user-menu/template', ['exports'], function (ex
                   "column": 4
                 },
                 "end": {
-                  "line": 24,
+                  "line": 27,
                   "column": 4
                 }
               },
@@ -47135,7 +47162,7 @@ define('frontend-cp/components/ko-user-menu/template', ['exports'], function (ex
               var el2 = dom.createTextNode("\n      ");
               dom.appendChild(el1, el2);
               dom.appendChild(el0, el1);
-              var el1 = dom.createTextNode("\n      ");
+              var el1 = dom.createTextNode("\n\n");
               dom.appendChild(el0, el1);
               var el1 = dom.createComment("");
               dom.appendChild(el0, el1);
@@ -47143,14 +47170,11 @@ define('frontend-cp/components/ko-user-menu/template', ['exports'], function (ex
               dom.appendChild(el0, el1);
               var el1 = dom.createElement("li");
               dom.setAttribute(el1,"class","ko-dropdown_list__item");
-              var el2 = dom.createTextNode("\n        View your profile\n      ");
+              var el2 = dom.createTextNode("\n        ");
               dom.appendChild(el1, el2);
-              dom.appendChild(el0, el1);
-              var el1 = dom.createTextNode("\n      ");
-              dom.appendChild(el0, el1);
-              var el1 = dom.createElement("li");
-              dom.setAttribute(el1,"class","ko-dropdown_list__item");
-              var el2 = dom.createTextNode("\n        Logout\n      ");
+              var el2 = dom.createComment("");
+              dom.appendChild(el1, el2);
+              var el2 = dom.createTextNode("\n      ");
               dom.appendChild(el1, el2);
               dom.appendChild(el0, el1);
               var el1 = dom.createTextNode("\n");
@@ -47158,20 +47182,22 @@ define('frontend-cp/components/ko-user-menu/template', ['exports'], function (ex
               return el0;
             },
             buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-              var element0 = dom.childAt(fragment, [5]);
-              var element1 = dom.childAt(fragment, [7]);
-              var morphs = new Array(4);
-              morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]),1,1);
-              morphs[1] = dom.createMorphAt(fragment,3,3,contextualElement);
-              morphs[2] = dom.createAttrMorph(element0, 'onclick');
-              morphs[3] = dom.createAttrMorph(element1, 'onclick');
+              var element1 = dom.childAt(fragment, [1]);
+              var element2 = dom.childAt(fragment, [5]);
+              var morphs = new Array(5);
+              morphs[0] = dom.createAttrMorph(element1, 'onclick');
+              morphs[1] = dom.createMorphAt(element1,1,1);
+              morphs[2] = dom.createMorphAt(fragment,3,3,contextualElement);
+              morphs[3] = dom.createAttrMorph(element2, 'onclick');
+              morphs[4] = dom.createMorphAt(element2,1,1);
               return morphs;
             },
             statements: [
-              ["block","link-to",["session.styleguide"],[],0,null,["loc",[null,[15,8],[15,63]]]],
-              ["content","ko-dropdown/list/hr",["loc",[null,[17,6],[17,29]]]],
-              ["attribute","onclick",["subexpr","action",["profile"],[],["loc",[null,[18,49],[18,69]]]]],
-              ["attribute","onclick",["subexpr","action",["logout"],[],["loc",[null,[21,49],[21,68]]]]]
+              ["attribute","onclick",["subexpr","action",["profile"],[],["loc",[null,[14,49],[14,69]]]]],
+              ["inline","format-message",[["subexpr","intl-get",["generic.view_your_profile"],[],["loc",[null,[15,25],[15,63]]]]],[],["loc",[null,[15,8],[15,65]]]],
+              ["block","if",[["get","isAdmin",["loc",[null,[18,12],[18,19]]]]],[],0,null,["loc",[null,[18,6],[22,13]]]],
+              ["attribute","onclick",["subexpr","action",["logout"],[],["loc",[null,[24,49],[24,68]]]]],
+              ["inline","format-message",[["subexpr","intl-get",["generic.logout"],[],["loc",[null,[25,25],[25,52]]]]],[],["loc",[null,[25,8],[25,54]]]]
             ],
             locals: [],
             templates: [child0]
@@ -47187,7 +47213,7 @@ define('frontend-cp/components/ko-user-menu/template', ['exports'], function (ex
                 "column": 2
               },
               "end": {
-                "line": 25,
+                "line": 28,
                 "column": 2
               }
             },
@@ -47210,7 +47236,7 @@ define('frontend-cp/components/ko-user-menu/template', ['exports'], function (ex
             return morphs;
           },
           statements: [
-            ["block","ko-dropdown/list",[],["class","ko-user-menu__content"],0,null,["loc",[null,[13,4],[24,25]]]]
+            ["block","ko-dropdown/list",[],["class","ko-user-menu__content"],0,null,["loc",[null,[13,4],[27,25]]]]
           ],
           locals: [],
           templates: [child0]
@@ -47226,7 +47252,7 @@ define('frontend-cp/components/ko-user-menu/template', ['exports'], function (ex
               "column": 0
             },
             "end": {
-              "line": 26,
+              "line": 29,
               "column": 0
             }
           },
@@ -47253,7 +47279,7 @@ define('frontend-cp/components/ko-user-menu/template', ['exports'], function (ex
         },
         statements: [
           ["block","if",[["subexpr","eq",[["get","name",["loc",[null,[2,12],[2,16]]]],"button"],[],["loc",[null,[2,8],[2,26]]]]],[],0,null,["loc",[null,[2,2],[11,9]]]],
-          ["block","if",[["subexpr","eq",[["get","name",["loc",[null,[12,12],[12,16]]]],"content"],[],["loc",[null,[12,8],[12,27]]]]],[],1,null,["loc",[null,[12,2],[25,9]]]]
+          ["block","if",[["subexpr","eq",[["get","name",["loc",[null,[12,12],[12,16]]]],"content"],[],["loc",[null,[12,8],[12,27]]]]],[],1,null,["loc",[null,[12,2],[28,9]]]]
         ],
         locals: ["name","dropdownContext"],
         templates: [child0, child1]
@@ -47269,7 +47295,7 @@ define('frontend-cp/components/ko-user-menu/template', ['exports'], function (ex
             "column": 0
           },
           "end": {
-            "line": 27,
+            "line": 30,
             "column": 0
           }
         },
@@ -47292,7 +47318,7 @@ define('frontend-cp/components/ko-user-menu/template', ['exports'], function (ex
         return morphs;
       },
       statements: [
-        ["block","ko-dropdown/container",[],["hideOnChildFocus",true,"hideDropdown",["subexpr","@mut",[["get","hidden",["loc",[null,[1,60],[1,66]]]]],[],[]]],0,null,["loc",[null,[1,0],[26,26]]]]
+        ["block","ko-dropdown/container",[],["hideOnChildFocus",true,"hideDropdown",["subexpr","@mut",[["get","hidden",["loc",[null,[1,60],[1,66]]]]],[],[]]],0,null,["loc",[null,[1,0],[29,26]]]]
       ],
       locals: [],
       templates: [child0]
@@ -49255,7 +49281,8 @@ define('frontend-cp/locales/en-us/generic', ['exports'], function (exports) {
     "datepicker.close": "Close",
     "datepicker.today": "Today",
     "filesize": "{size, number, filesize} {unit, select,\n    mb {MB}\n    kb {KB}\n  }",
-    "logout": "logout",
+    "logout": "Logout",
+    "view_your_profile": "View your profile",
     "paginatorof": "of {number, number}",
     "popover.next": "next",
     "popover.previous": "previous",
@@ -57713,7 +57740,7 @@ define('frontend-cp/services/permissions', ['exports', 'ember'], function (expor
 
   roleTypes.AGENT.permissions = roleTypes.COLLABORATOR.permissions.concat(['app.user.disable', 'app.user.signature.edit', 'app.user.password.change', 'app.organisation.delete']);
 
-  roleTypes.ADMIN.permissions = roleTypes.AGENT.permissions.concat(['app.user.delete', 'app.user.change_access_permission', 'app.user.change_team_permission']);
+  roleTypes.ADMIN.permissions = roleTypes.AGENT.permissions.concat(['app.user.delete', 'app.user.change_access_permission', 'app.user.change_team_permission', 'app.admin.access']);
 
   var adminOrAgentToCustomer = function adminOrAgentToCustomer(roleType, targetRoleType) {
     if (roleType.rank === roleTypes.AGENT.rank) {
@@ -57784,6 +57811,9 @@ define('frontend-cp/services/permissions', ['exports', 'ember'], function (expor
     },
     'app.user.change_team_permission': function appUserChange_team_permission(myRoleType, me, targetUser) {
       return targetUser.get('role.roleType') !== 'CUSTOMER' && myRoleType.rank === roleTypes.ADMIN.rank;
+    },
+    'app.admin.access': function appAdminAccess(myRoleType) {
+      return myRoleType.rank === roleTypes.ADMIN.rank;
     }
   };
 
@@ -79616,7 +79646,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"88d34fd0054d469bcfa2","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+3d87a81f"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"88d34fd0054d469bcfa2","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+0208ba4c"});
 }
 
 /* jshint ignore:end */
