@@ -16192,6 +16192,10 @@ define('frontend-cp/components/ko-case-content/field/post/component', ['exports'
       }
     }),
 
+    textAreaIsSmall: Ember['default'].computed('channel.channelType', 'infoMessage', function () {
+      return this.get('channel.channelType') === 'TWITTER' || this.get('infoMessage');
+    }),
+
     getAttachedUploads: function getAttachedUploads() {
       return this.get('attachedUploads.uploads');
     },
@@ -16244,11 +16248,11 @@ define('frontend-cp/components/ko-case-content/field/post/template', ['exports']
                     "loc": {
                       "source": null,
                       "start": {
-                        "line": 31,
+                        "line": 32,
                         "column": 10
                       },
                       "end": {
-                        "line": 35,
+                        "line": 36,
                         "column": 10
                       }
                     },
@@ -16282,8 +16286,8 @@ define('frontend-cp/components/ko-case-content/field/post/template', ['exports']
                     return morphs;
                   },
                   statements: [
-                    ["attribute","onclick",["subexpr","action",["changeChannel",["get","channel",["loc",[null,[32,80],[32,87]]]]],[],["loc",[null,[32,55],[32,89]]]]],
-                    ["content","channel.message",["loc",[null,[33,14],[33,33]]]]
+                    ["attribute","onclick",["subexpr","action",["changeChannel",["get","channel",["loc",[null,[33,80],[33,87]]]]],[],["loc",[null,[33,55],[33,89]]]]],
+                    ["content","channel.message",["loc",[null,[34,14],[34,33]]]]
                   ],
                   locals: ["channel"],
                   templates: []
@@ -16295,11 +16299,11 @@ define('frontend-cp/components/ko-case-content/field/post/template', ['exports']
                   "loc": {
                     "source": null,
                     "start": {
-                      "line": 30,
+                      "line": 31,
                       "column": 8
                     },
                     "end": {
-                      "line": 36,
+                      "line": 37,
                       "column": 8
                     }
                   },
@@ -16322,7 +16326,7 @@ define('frontend-cp/components/ko-case-content/field/post/template', ['exports']
                   return morphs;
                 },
                 statements: [
-                  ["block","each",[["get","channels",["loc",[null,[31,18],[31,26]]]]],[],0,null,["loc",[null,[31,10],[35,19]]]]
+                  ["block","each",[["get","channels",["loc",[null,[32,18],[32,26]]]]],[],0,null,["loc",[null,[32,10],[36,19]]]]
                 ],
                 locals: [],
                 templates: [child0]
@@ -16334,11 +16338,11 @@ define('frontend-cp/components/ko-case-content/field/post/template', ['exports']
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 29,
+                    "line": 30,
                     "column": 6
                   },
                   "end": {
-                    "line": 37,
+                    "line": 38,
                     "column": 6
                   }
                 },
@@ -16361,7 +16365,7 @@ define('frontend-cp/components/ko-case-content/field/post/template', ['exports']
                 return morphs;
               },
               statements: [
-                ["block","ko-channel-select",[],["label",["subexpr","@mut",[["get","channel.label",["loc",[null,[30,35],[30,48]]]]],[],[]],"iconClass",["subexpr","@mut",[["get","channel.iconClass",["loc",[null,[30,59],[30,76]]]]],[],[]],"hideOnClick",true],0,null,["loc",[null,[30,8],[36,30]]]]
+                ["block","ko-channel-select",[],["label",["subexpr","@mut",[["get","channel.label",["loc",[null,[31,35],[31,48]]]]],[],[]],"iconClass",["subexpr","@mut",[["get","channel.iconClass",["loc",[null,[31,59],[31,76]]]]],[],[]],"hideOnClick",true],0,null,["loc",[null,[31,8],[37,30]]]]
               ],
               locals: [],
               templates: [child0]
@@ -16373,11 +16377,11 @@ define('frontend-cp/components/ko-case-content/field/post/template', ['exports']
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 27,
+                  "line": 28,
                   "column": 2
                 },
                 "end": {
-                  "line": 39,
+                  "line": 40,
                   "column": 2
                 }
               },
@@ -16409,7 +16413,7 @@ define('frontend-cp/components/ko-case-content/field/post/template', ['exports']
               return morphs;
             },
             statements: [
-              ["block","ko-text-editor/toggle-button",[],["action","setReply","isActive",["subexpr","eq",["REPLY",["get","replyType",["loc",[null,[29,77],[29,86]]]]],[],["loc",[null,[29,65],[29,87]]]]],0,null,["loc",[null,[29,6],[37,39]]]]
+              ["block","ko-text-editor/toggle-button",[],["action","setReply","isActive",["subexpr","eq",["REPLY",["get","replyType",["loc",[null,[30,77],[30,86]]]]],[],["loc",[null,[30,65],[30,87]]]]],0,null,["loc",[null,[30,6],[38,39]]]]
             ],
             locals: [],
             templates: [child0]
@@ -16422,11 +16426,11 @@ define('frontend-cp/components/ko-case-content/field/post/template', ['exports']
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 41,
+                  "line": 42,
                   "column": 4
                 },
                 "end": {
-                  "line": 43,
+                  "line": 44,
                   "column": 4
                 }
               },
@@ -16451,7 +16455,7 @@ define('frontend-cp/components/ko-case-content/field/post/template', ['exports']
               return morphs;
             },
             statements: [
-              ["inline","format-message",[["subexpr","intl-get",["cases.notes"],[],["loc",[null,[42,25],[42,49]]]]],[],["loc",[null,[42,8],[42,51]]]]
+              ["inline","format-message",[["subexpr","intl-get",["cases.notes"],[],["loc",[null,[43,25],[43,49]]]]],[],["loc",[null,[43,8],[43,51]]]]
             ],
             locals: [],
             templates: []
@@ -16463,11 +16467,11 @@ define('frontend-cp/components/ko-case-content/field/post/template', ['exports']
             "loc": {
               "source": null,
               "start": {
-                "line": 26,
+                "line": 27,
                 "column": 0
               },
               "end": {
-                "line": 45,
+                "line": 46,
                 "column": 0
               }
             },
@@ -16503,8 +16507,8 @@ define('frontend-cp/components/ko-case-content/field/post/template', ['exports']
             return morphs;
           },
           statements: [
-            ["block","if",[["get","channels.length",["loc",[null,[27,8],[27,23]]]]],[],0,null,["loc",[null,[27,2],[39,9]]]],
-            ["block","ko-text-editor/toggle-button",[],["action","setNote","isActive",["subexpr","eq",["NOTE",["get","replyType",["loc",[null,[41,73],[41,82]]]]],[],["loc",[null,[41,62],[41,83]]]]],1,null,["loc",[null,[41,4],[43,37]]]]
+            ["block","if",[["get","channels.length",["loc",[null,[28,8],[28,23]]]]],[],0,null,["loc",[null,[28,2],[40,9]]]],
+            ["block","ko-text-editor/toggle-button",[],["action","setNote","isActive",["subexpr","eq",["NOTE",["get","replyType",["loc",[null,[42,73],[42,82]]]]],[],["loc",[null,[42,62],[42,83]]]]],1,null,["loc",[null,[42,4],[44,37]]]]
           ],
           locals: [],
           templates: [child0, child1]
@@ -16518,11 +16522,11 @@ define('frontend-cp/components/ko-case-content/field/post/template', ['exports']
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 48,
+                  "line": 49,
                   "column": 2
                 },
                 "end": {
-                  "line": 54,
+                  "line": 55,
                   "column": 2
                 }
               },
@@ -16561,7 +16565,7 @@ define('frontend-cp/components/ko-case-content/field/post/template', ['exports']
               return morphs;
             },
             statements: [
-              ["content","infoMessage",["loc",[null,[51,8],[51,23]]]]
+              ["content","infoMessage",["loc",[null,[52,8],[52,23]]]]
             ],
             locals: [],
             templates: []
@@ -16575,11 +16579,11 @@ define('frontend-cp/components/ko-case-content/field/post/template', ['exports']
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 55,
+                    "line": 56,
                     "column": 4
                   },
                   "end": {
-                    "line": 69,
+                    "line": 70,
                     "column": 4
                   }
                 },
@@ -16643,8 +16647,8 @@ define('frontend-cp/components/ko-case-content/field/post/template', ['exports']
                 return morphs;
               },
               statements: [
-                ["inline","ko-checkbox",[],["class","u-inline-block","checked",["subexpr","@mut",[["get","twitterSendReply",["loc",[null,[59,20],[59,36]]]]],[],[]],"label",["subexpr","format-message",[["subexpr","intl-get",["cases.reply-twitter-message"],[],["loc",[null,[60,34],[60,74]]]]],[],["loc",[null,[60,18],[60,75]]]]],["loc",[null,[58,10],[60,77]]]],
-                ["inline","format-message",[["subexpr","intl-get",["cases.reply-twitter-tooltip"],[],["loc",[null,[63,31],[63,71]]]]],[],["loc",[null,[63,14],[63,73]]]]
+                ["inline","ko-checkbox",[],["class","u-inline-block","checked",["subexpr","@mut",[["get","twitterSendReply",["loc",[null,[60,20],[60,36]]]]],[],[]],"label",["subexpr","format-message",[["subexpr","intl-get",["cases.reply-twitter-message"],[],["loc",[null,[61,34],[61,74]]]]],[],["loc",[null,[61,18],[61,75]]]]],["loc",[null,[59,10],[61,77]]]],
+                ["inline","format-message",[["subexpr","intl-get",["cases.reply-twitter-tooltip"],[],["loc",[null,[64,31],[64,71]]]]],[],["loc",[null,[64,14],[64,73]]]]
               ],
               locals: [],
               templates: []
@@ -16656,11 +16660,11 @@ define('frontend-cp/components/ko-case-content/field/post/template', ['exports']
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 54,
+                  "line": 55,
                   "column": 2
                 },
                 "end": {
-                  "line": 70,
+                  "line": 71,
                   "column": 2
                 }
               },
@@ -16683,7 +16687,7 @@ define('frontend-cp/components/ko-case-content/field/post/template', ['exports']
               return morphs;
             },
             statements: [
-              ["block","if",[["subexpr","eq",[["get","channel.channelType",["loc",[null,[55,14],[55,33]]]],"TWITTER"],[],["loc",[null,[55,10],[55,44]]]]],[],0,null,["loc",[null,[55,4],[69,11]]]]
+              ["block","if",[["subexpr","eq",[["get","channel.channelType",["loc",[null,[56,14],[56,33]]]],"TWITTER"],[],["loc",[null,[56,10],[56,44]]]]],[],0,null,["loc",[null,[56,4],[70,11]]]]
             ],
             locals: [],
             templates: [child0]
@@ -16695,11 +16699,11 @@ define('frontend-cp/components/ko-case-content/field/post/template', ['exports']
             "loc": {
               "source": null,
               "start": {
-                "line": 47,
+                "line": 48,
                 "column": 0
               },
               "end": {
-                "line": 71,
+                "line": 72,
                 "column": 0
               }
             },
@@ -16722,7 +16726,7 @@ define('frontend-cp/components/ko-case-content/field/post/template', ['exports']
             return morphs;
           },
           statements: [
-            ["block","if",[["get","infoMessage",["loc",[null,[48,8],[48,19]]]]],[],0,1,["loc",[null,[48,2],[70,9]]]]
+            ["block","if",[["get","infoMessage",["loc",[null,[49,8],[49,19]]]]],[],0,1,["loc",[null,[49,2],[71,9]]]]
           ],
           locals: [],
           templates: [child0, child1]
@@ -16738,7 +16742,7 @@ define('frontend-cp/components/ko-case-content/field/post/template', ['exports']
               "column": 0
             },
             "end": {
-              "line": 73,
+              "line": 74,
               "column": 0
             }
           },
@@ -16768,8 +16772,8 @@ define('frontend-cp/components/ko-case-content/field/post/template', ['exports']
           return morphs;
         },
         statements: [
-          ["block","if",[["get","editor.isHeader",["loc",[null,[26,6],[26,21]]]]],[],0,null,["loc",[null,[26,0],[45,7]]]],
-          ["block","if",[["get","editor.isInfoMessage",["loc",[null,[47,6],[47,26]]]]],[],1,null,["loc",[null,[47,0],[71,7]]]]
+          ["block","if",[["get","editor.isHeader",["loc",[null,[27,6],[27,21]]]]],[],0,null,["loc",[null,[27,0],[46,7]]]],
+          ["block","if",[["get","editor.isInfoMessage",["loc",[null,[48,6],[48,26]]]]],[],1,null,["loc",[null,[48,0],[72,7]]]]
         ],
         locals: ["editor"],
         templates: [child0, child1]
@@ -16785,7 +16789,7 @@ define('frontend-cp/components/ko-case-content/field/post/template', ['exports']
             "column": 0
           },
           "end": {
-            "line": 76,
+            "line": 77,
             "column": 65
           }
         },
@@ -16813,8 +16817,8 @@ define('frontend-cp/components/ko-case-content/field/post/template', ['exports']
         return morphs;
       },
       statements: [
-        ["block","ko-text-editor",[],["viewName","postEditor","suggestedPeople",["subexpr","@mut",[["get","suggestedPeople",["loc",[null,[3,20],[3,35]]]]],[],[]],"selectedPeople",["subexpr","@mut",[["get","selectedPeople",["loc",[null,[4,19],[4,33]]]]],[],[]],"suggestedPeopleTotal",["subexpr","@mut",[["get","suggestedPeopleTotal",["loc",[null,[5,25],[5,45]]]]],[],[]],"suggestedPeopleLoading",["subexpr","@mut",[["get","suggestedPeopleLoading",["loc",[null,[6,27],[6,49]]]]],[],[]],"isPeopleIconAvailable",["subexpr","@mut",[["get","isPeopleAutoCompleteAvailable",["loc",[null,[7,26],[7,55]]]]],[],[]],"isTimerIconAvailable",["subexpr","@mut",[["get","isTimerAvailable",["loc",[null,[8,25],[8,41]]]]],[],[]],"onPeopleSuggestion","onPeopleSuggestion","onAttachFiles","onAttachFiles","channels",["subexpr","@mut",[["get","channels",["loc",[null,[11,13],[11,21]]]]],[],[]],"channel",["subexpr","@mut",[["get","channel",["loc",[null,[12,12],[12,19]]]]],[],[]],"onChannelChange","setChannel","addParticipant","addParticipant","placeholder",["subexpr","@mut",[["get","placeholderMessage",["loc",[null,[15,16],[15,34]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","isErrored",["loc",[null,[16,14],[16,23]]]]],[],[]],"showControls",["subexpr","@mut",[["get","isShowingControls",["loc",[null,[17,17],[17,34]]]]],[],[]],"peopleTitleText",["subexpr","format-message",[["subexpr","intl-get",["cases.copy-someone-in.title"],[],["loc",[null,[18,36],[18,76]]]]],[],["loc",[null,[18,20],[18,77]]]],"peopleInputPlaceholderText",["subexpr","format-message",[["subexpr","intl-get",["cases.copy-someone-in.input-placeholder"],[],["loc",[null,[19,47],[19,99]]]]],[],["loc",[null,[19,31],[19,100]]]],"peopleFilterNotFoundText",["subexpr","format-message",[["subexpr","intl-get",["cases.copy-someone-in.not-found"],[],["loc",[null,[20,45],[20,89]]]]],[],["loc",[null,[20,29],[20,90]]]],"peopleHelpText",["subexpr","format-message",[["subexpr","intl-get",["cases.copy-someone-in.help-text"],[],["loc",[null,[21,35],[21,79]]]]],[],["loc",[null,[21,19],[21,80]]]],"peopleEmailErrorText",["subexpr","format-message",[["subexpr","intl-get",["cases.copy-someone-in.email-error"],[],["loc",[null,[22,41],[22,87]]]]],[],["loc",[null,[22,25],[22,88]]]]],0,null,["loc",[null,[1,0],[73,19]]]],
-        ["inline","ko-file-upload",[],["viewName","attachedUploads","files",["subexpr","@mut",[["get","attachedFiles",["loc",[null,[76,50],[76,63]]]]],[],[]]],["loc",[null,[76,0],[76,65]]]]
+        ["block","ko-text-editor",[],["viewName","postEditor","suggestedPeople",["subexpr","@mut",[["get","suggestedPeople",["loc",[null,[3,20],[3,35]]]]],[],[]],"selectedPeople",["subexpr","@mut",[["get","selectedPeople",["loc",[null,[4,19],[4,33]]]]],[],[]],"suggestedPeopleTotal",["subexpr","@mut",[["get","suggestedPeopleTotal",["loc",[null,[5,25],[5,45]]]]],[],[]],"suggestedPeopleLoading",["subexpr","@mut",[["get","suggestedPeopleLoading",["loc",[null,[6,27],[6,49]]]]],[],[]],"isPeopleIconAvailable",["subexpr","@mut",[["get","isPeopleAutoCompleteAvailable",["loc",[null,[7,26],[7,55]]]]],[],[]],"isTimerIconAvailable",["subexpr","@mut",[["get","isTimerAvailable",["loc",[null,[8,25],[8,41]]]]],[],[]],"onPeopleSuggestion","onPeopleSuggestion","onAttachFiles","onAttachFiles","channels",["subexpr","@mut",[["get","channels",["loc",[null,[11,13],[11,21]]]]],[],[]],"channel",["subexpr","@mut",[["get","channel",["loc",[null,[12,12],[12,19]]]]],[],[]],"onChannelChange","setChannel","addParticipant","addParticipant","placeholder",["subexpr","@mut",[["get","placeholderMessage",["loc",[null,[15,16],[15,34]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","isErrored",["loc",[null,[16,14],[16,23]]]]],[],[]],"showControls",["subexpr","@mut",[["get","isShowingControls",["loc",[null,[17,17],[17,34]]]]],[],[]],"peopleTitleText",["subexpr","format-message",[["subexpr","intl-get",["cases.copy-someone-in.title"],[],["loc",[null,[18,36],[18,76]]]]],[],["loc",[null,[18,20],[18,77]]]],"peopleInputPlaceholderText",["subexpr","format-message",[["subexpr","intl-get",["cases.copy-someone-in.input-placeholder"],[],["loc",[null,[19,47],[19,99]]]]],[],["loc",[null,[19,31],[19,100]]]],"peopleFilterNotFoundText",["subexpr","format-message",[["subexpr","intl-get",["cases.copy-someone-in.not-found"],[],["loc",[null,[20,45],[20,89]]]]],[],["loc",[null,[20,29],[20,90]]]],"peopleHelpText",["subexpr","format-message",[["subexpr","intl-get",["cases.copy-someone-in.help-text"],[],["loc",[null,[21,35],[21,79]]]]],[],["loc",[null,[21,19],[21,80]]]],"peopleEmailErrorText",["subexpr","format-message",[["subexpr","intl-get",["cases.copy-someone-in.email-error"],[],["loc",[null,[22,41],[22,87]]]]],[],["loc",[null,[22,25],[22,88]]]],"textAreaIsSmall",["subexpr","@mut",[["get","textAreaIsSmall",["loc",[null,[23,20],[23,35]]]]],[],[]]],0,null,["loc",[null,[1,0],[74,19]]]],
+        ["inline","ko-file-upload",[],["viewName","attachedUploads","files",["subexpr","@mut",[["get","attachedFiles",["loc",[null,[77,50],[77,63]]]]],[],[]]],["loc",[null,[77,0],[77,65]]]]
       ],
       locals: [],
       templates: [child0]
@@ -43437,10 +43441,10 @@ define('frontend-cp/components/ko-text-editor/template', ['exports'], function (
             return el0;
           },
           buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-            var element1 = dom.childAt(fragment, [1]);
+            var element2 = dom.childAt(fragment, [1]);
             var morphs = new Array(2);
-            morphs[0] = dom.createElementMorph(element1);
-            morphs[1] = dom.createMorphAt(dom.childAt(element1, [1]),1,1);
+            morphs[0] = dom.createElementMorph(element2);
+            morphs[1] = dom.createMorphAt(dom.childAt(element2, [1]),1,1);
             return morphs;
           },
           statements: [
@@ -43491,12 +43495,12 @@ define('frontend-cp/components/ko-text-editor/template', ['exports'], function (
           return el0;
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var element2 = dom.childAt(fragment, [1]);
+          var element3 = dom.childAt(fragment, [1]);
           var morphs = new Array(5);
-          morphs[0] = dom.createAttrMorph(element2, 'class');
-          morphs[1] = dom.createAttrMorph(element2, 'title');
-          morphs[2] = dom.createElementMorph(element2);
-          morphs[3] = dom.createMorphAt(element2,1,1);
+          morphs[0] = dom.createAttrMorph(element3, 'class');
+          morphs[1] = dom.createAttrMorph(element3, 'title');
+          morphs[2] = dom.createElementMorph(element3);
+          morphs[3] = dom.createMorphAt(element3,1,1);
           morphs[4] = dom.createMorphAt(fragment,3,3,contextualElement);
           return morphs;
         },
@@ -43543,9 +43547,9 @@ define('frontend-cp/components/ko-text-editor/template', ['exports'], function (
           return el0;
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var element0 = dom.childAt(fragment, [1]);
+          var element1 = dom.childAt(fragment, [1]);
           var morphs = new Array(1);
-          morphs[0] = dom.createAttrMorph(element0, 'title');
+          morphs[0] = dom.createAttrMorph(element1, 'title');
           return morphs;
         },
         statements: [
@@ -43580,15 +43584,19 @@ define('frontend-cp/components/ko-text-editor/template', ['exports'], function (
           var el1 = dom.createTextNode("  ");
           dom.appendChild(el0, el1);
           var el1 = dom.createElement("div");
-          dom.setAttribute(el1,"class","ko-text-editor__text-area text-area--clean js-editor");
           dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n");
           dom.appendChild(el0, el1);
           return el0;
         },
-        buildRenderNodes: function buildRenderNodes() { return []; },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var element0 = dom.childAt(fragment, [1]);
+          var morphs = new Array(1);
+          morphs[0] = dom.createAttrMorph(element0, 'class');
+          return morphs;
+        },
         statements: [
-
+          ["attribute","class",["concat",["ko-text-editor__text-area text-area--clean js-editor ",["subexpr","if",[["get","textAreaIsSmall",["loc",[null,[84,72],[84,87]]]],"text-editor--small"],[],["loc",[null,[84,67],[84,110]]]]]]]
         ],
         locals: [],
         templates: []
@@ -43798,45 +43806,45 @@ define('frontend-cp/components/ko-text-editor/template', ['exports'], function (
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var element3 = dom.childAt(fragment, [0, 1, 1]);
-        var element4 = dom.childAt(element3, [3]);
-        var element5 = dom.childAt(element4, [1]);
+        var element4 = dom.childAt(fragment, [0, 1, 1]);
+        var element5 = dom.childAt(element4, [3]);
         var element6 = dom.childAt(element5, [1]);
-        var element7 = dom.childAt(element5, [3]);
-        var element8 = dom.childAt(element5, [5]);
-        var element9 = dom.childAt(element5, [7]);
-        var element10 = dom.childAt(element5, [9]);
-        var element11 = dom.childAt(element10, [1]);
+        var element7 = dom.childAt(element6, [1]);
+        var element8 = dom.childAt(element6, [3]);
+        var element9 = dom.childAt(element6, [5]);
+        var element10 = dom.childAt(element6, [7]);
+        var element11 = dom.childAt(element6, [9]);
         var element12 = dom.childAt(element11, [1]);
-        var element13 = dom.childAt(element5, [11]);
-        var element14 = dom.childAt(element5, [13]);
-        var element15 = dom.childAt(element4, [5]);
-        var element16 = dom.childAt(element15, [1]);
+        var element13 = dom.childAt(element12, [1]);
+        var element14 = dom.childAt(element6, [11]);
+        var element15 = dom.childAt(element6, [13]);
+        var element16 = dom.childAt(element5, [5]);
         var element17 = dom.childAt(element16, [1]);
         var element18 = dom.childAt(element17, [1]);
-        var element19 = dom.childAt(fragment, [4]);
-        var element20 = dom.childAt(element19, [1]);
+        var element19 = dom.childAt(element18, [1]);
+        var element20 = dom.childAt(fragment, [4]);
+        var element21 = dom.childAt(element20, [1]);
         var morphs = new Array(20);
-        morphs[0] = dom.createMorphAt(dom.childAt(element3, [1, 1]),2,2);
-        morphs[1] = dom.createAttrMorph(element5, 'class');
-        morphs[2] = dom.createAttrMorph(element6, 'title');
-        morphs[3] = dom.createAttrMorph(element7, 'title');
-        morphs[4] = dom.createAttrMorph(element8, 'title');
-        morphs[5] = dom.createAttrMorph(element9, 'title');
-        morphs[6] = dom.createAttrMorph(element11, 'for');
-        morphs[7] = dom.createAttrMorph(element12, 'title');
-        morphs[8] = dom.createMorphAt(element10,3,3);
-        morphs[9] = dom.createAttrMorph(element13, 'title');
-        morphs[10] = dom.createAttrMorph(element14, 'title');
-        morphs[11] = dom.createAttrMorph(element17, 'for');
-        morphs[12] = dom.createAttrMorph(element18, 'title');
-        morphs[13] = dom.createMorphAt(element16,3,3);
-        morphs[14] = dom.createMorphAt(element15,3,3);
-        morphs[15] = dom.createMorphAt(element15,5,5);
-        morphs[16] = dom.createAttrMorph(element20, 'class');
-        morphs[17] = dom.createMorphAt(element20,0,0);
-        morphs[18] = dom.createMorphAt(element19,3,3);
-        morphs[19] = dom.createMorphAt(element19,5,5);
+        morphs[0] = dom.createMorphAt(dom.childAt(element4, [1, 1]),2,2);
+        morphs[1] = dom.createAttrMorph(element6, 'class');
+        morphs[2] = dom.createAttrMorph(element7, 'title');
+        morphs[3] = dom.createAttrMorph(element8, 'title');
+        morphs[4] = dom.createAttrMorph(element9, 'title');
+        morphs[5] = dom.createAttrMorph(element10, 'title');
+        morphs[6] = dom.createAttrMorph(element12, 'for');
+        morphs[7] = dom.createAttrMorph(element13, 'title');
+        morphs[8] = dom.createMorphAt(element11,3,3);
+        morphs[9] = dom.createAttrMorph(element14, 'title');
+        morphs[10] = dom.createAttrMorph(element15, 'title');
+        morphs[11] = dom.createAttrMorph(element18, 'for');
+        morphs[12] = dom.createAttrMorph(element19, 'title');
+        morphs[13] = dom.createMorphAt(element17,3,3);
+        morphs[14] = dom.createMorphAt(element16,3,3);
+        morphs[15] = dom.createMorphAt(element16,5,5);
+        morphs[16] = dom.createAttrMorph(element21, 'class');
+        morphs[17] = dom.createMorphAt(element21,0,0);
+        morphs[18] = dom.createMorphAt(element20,3,3);
+        morphs[19] = dom.createMorphAt(element20,5,5);
         return morphs;
       },
       statements: [
@@ -79689,7 +79697,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"88d34fd0054d469bcfa2","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+f51be814"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"88d34fd0054d469bcfa2","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+8be0addf"});
 }
 
 /* jshint ignore:end */
