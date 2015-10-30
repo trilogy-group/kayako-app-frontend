@@ -51668,7 +51668,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
     this.get('/api/v1/roles/:id', function (db, request) {
       return {
         'status': 200,
-        'data': db.rolesdata[request.params.id]
+        'data': db.roles.filterBy(request.params.id)[0]
       };
     });
 
@@ -52841,7 +52841,8 @@ define('frontend-cp/mirage/scenarios/default', ['exports'], function (exports) {
   exports['default'] = function (server) {
     var businesshour = server.create('business-hour', { title: 'Default Business Hours' });
     var teams = server.createList('team', 4, { businesshour: businesshour });
-    var role = server.create('role');
+    var roles = [server.create('role'), server.create('role', { title: 'Agent', type: 'AGENT', id: 2 }), server.create('role', { title: 'Collaborator', type: 'COLLABORATOR', id: 3 }), server.create('role', { title: 'Customer', type: 'CUSTOMER', id: 4 })];
+    var role = roles[0];
 
     var emails = [server.create('identity-email', { is_primary: true, is_validated: true }), server.create('identity-email', { email: 'altenative@gmail.com', is_validated: true }), server.create('identity-email', { email: 'newemail@example.com', is_validated: false })];
     var phones = [server.create('identity-phone', { is_primary: true }), server.create('identity-phone')];
@@ -55260,6 +55261,7 @@ define('frontend-cp/models/user', ['exports', 'ember-data', 'ember', 'frontend-c
         _this.get('teams').forEach(function (team) {
           team.set('isNew', false);
         });
+        return _this;
       });
     },
 
@@ -79646,7 +79648,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"88d34fd0054d469bcfa2","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+0208ba4c"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"88d34fd0054d469bcfa2","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+1439279d"});
 }
 
 /* jshint ignore:end */
