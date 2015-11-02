@@ -12837,8 +12837,15 @@ define('frontend-cp/components/ko-agent-dropdown/create-organisation/component',
       },
 
       submit: function submit() {
+        var organization = this.get('organization');
+        organization.set('domains', this.get('fields.domains.value'));
         this.attrs.onSubmit();
-        return this.get('organization').save();
+        return organization.save().then(function (organization) {
+          organization.set('domains', organization.get('domains').filter(function (domain) {
+            return domain.get('id');
+          }));
+          return organization;
+        });
       },
 
       error: function error(e) {}
@@ -35028,13 +35035,20 @@ define('frontend-cp/components/ko-organisation-content/component', ['exports', '
       },
 
       addDomain: function addDomain(domainName) {
-        if (domainName) {
-          var domain = this.get('store').createRecord('identityDomain', {
-            domain: domainName
-          });
-          this.get('model.domains').pushObject(domain);
-          this.set('isDomainEdited', this.get('model').hasDirtyHasManyRelationship('domains'));
+        if (!domainName) {
+          return;
         }
+        if (this.get('model.domains').any(function (domain) {
+          return domain.get('domain') === domainName;
+        })) {
+          // don't add duplicate domains
+          return;
+        }
+        var domain = this.get('store').createRecord('identityDomain', {
+          domain: domainName
+        });
+        this.get('model.domains').pushObject(domain);
+        this.set('isDomainEdited', this.get('model').hasDirtyHasManyRelationship('domains'));
       },
 
       removeDomain: function removeDomain(domain) {
@@ -35050,7 +35064,12 @@ define('frontend-cp/components/ko-organisation-content/component', ['exports', '
       submit: function submit() {
         var _this4 = this;
 
-        this.get('model').save().then(function () {
+        this.get('model').save().then(function (organization) {
+          // Get rid of unsaved domains hanging around
+          organization.set('domains', organization.get('domains').filter(function (domain) {
+            return domain.get('id');
+          }));
+
           _this4.get('notification').add({
             type: 'success',
             title: _this4.get('intl').findTranslationByKey('organisation.organisation.updated').translation,
@@ -79650,7 +79669,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"88d34fd0054d469bcfa2","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+d211a41d"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"88d34fd0054d469bcfa2","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+deaa9bf8"});
 }
 
 /* jshint ignore:end */
