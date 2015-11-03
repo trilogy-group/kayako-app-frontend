@@ -6717,7 +6717,7 @@ define('frontend-cp/components/ko-admin/case-forms/edit/template', ['exports'], 
           },
           statements: [
             ["block","ko-form/field",[],[],0,null,["loc",[null,[13,4],[17,22]]]],
-            ["block","unless",[["get","caseForm.isNew",["loc",[null,[19,14],[19,28]]]]],[],1,null,["loc",[null,[19,4],[27,15]]]]
+            ["block","if",[["get","caseForm.canBeDisabled",["loc",[null,[19,10],[19,32]]]]],[],1,null,["loc",[null,[19,4],[27,11]]]]
           ],
           locals: [],
           templates: [child0, child1]
@@ -54371,7 +54371,7 @@ define('frontend-cp/models/case-field', ['exports', 'ember-data', 'frontend-cp/m
   });
 
 });
-define('frontend-cp/models/case-form', ['exports', 'ember-data', 'frontend-cp/mixins/change-aware-model'], function (exports, DS, ChangeAwareModel) {
+define('frontend-cp/models/case-form', ['exports', 'ember-data', 'frontend-cp/mixins/change-aware-model', 'ember'], function (exports, DS, ChangeAwareModel, Ember) {
 
   'use strict';
 
@@ -54386,7 +54386,14 @@ define('frontend-cp/models/case-form', ['exports', 'ember-data', 'frontend-cp/mi
     fields: DS['default'].hasMany('case-field', { async: false }),
     brand: DS['default'].belongsTo('brand', { async: false }),
     createdAt: DS['default'].attr('date'),
-    updatedAt: DS['default'].attr('date')
+    updatedAt: DS['default'].attr('date'),
+
+    canBeDisabled: Ember['default'].computed('id', 'isDefault', function () {
+      return Ember['default'].isPresent(this.get('id')) && !this.get('isDefault');
+    }),
+
+    canBeMadeDefault: Ember['default'].computed.not('isDefault'),
+    canBeDeleted: Ember['default'].computed.not('isDefault')
   });
 
 });
@@ -60997,7 +61004,7 @@ define('frontend-cp/session/admin/manage/case-forms/index/template', ['exports']
                     },
                     "end": {
                       "line": 16,
-                      "column": 154
+                      "column": 155
                     }
                   },
                   "moduleName": "frontend-cp/session/admin/manage/case-forms/index/template.hbs"
@@ -61009,7 +61016,7 @@ define('frontend-cp/session/admin/manage/case-forms/index/template', ['exports']
                   var el0 = dom.createDocumentFragment();
                   var el1 = dom.createElement("span");
                   dom.setAttribute(el1,"class","t-caption");
-                  var el2 = dom.createTextNode("(");
+                  var el2 = dom.createTextNode(" (");
                   dom.appendChild(el1, el2);
                   var el2 = dom.createComment("");
                   dom.appendChild(el1, el2);
@@ -61024,7 +61031,7 @@ define('frontend-cp/session/admin/manage/case-forms/index/template', ['exports']
                   return morphs;
                 },
                 statements: [
-                  ["inline","format-message",[["subexpr","intl-get",["generic.default"],[],["loc",[null,[16,116],[16,144]]]]],[],["loc",[null,[16,99],[16,146]]]]
+                  ["inline","format-message",[["subexpr","intl-get",["generic.default"],[],["loc",[null,[16,117],[16,145]]]]],[],["loc",[null,[16,100],[16,147]]]]
                 ],
                 locals: [],
                 templates: []
@@ -61037,11 +61044,11 @@ define('frontend-cp/session/admin/manage/case-forms/index/template', ['exports']
                   "loc": {
                     "source": null,
                     "start": {
-                      "line": 22,
+                      "line": 21,
                       "column": 12
                     },
                     "end": {
-                      "line": 24,
+                      "line": 23,
                       "column": 12
                     }
                   },
@@ -61052,14 +61059,110 @@ define('frontend-cp/session/admin/manage/case-forms/index/template', ['exports']
                 hasRendered: false,
                 buildFragment: function buildFragment(dom) {
                   var el0 = dom.createDocumentFragment();
-                  var el1 = dom.createTextNode("              ");
+                  var el1 = dom.createTextNode("              | ");
                   dom.appendChild(el0, el1);
                   var el1 = dom.createElement("a");
                   dom.setAttribute(el1,"href","#");
                   var el2 = dom.createComment("");
                   dom.appendChild(el1, el2);
                   dom.appendChild(el0, el1);
-                  var el1 = dom.createTextNode(" |\n");
+                  var el1 = dom.createTextNode("\n");
+                  dom.appendChild(el0, el1);
+                  return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                  var element4 = dom.childAt(fragment, [1]);
+                  var morphs = new Array(2);
+                  morphs[0] = dom.createElementMorph(element4);
+                  morphs[1] = dom.createMorphAt(element4,0,0);
+                  return morphs;
+                },
+                statements: [
+                  ["element","action",["toggleEnabledStatus",["get","form",["loc",[null,[22,59],[22,63]]]]],[],["loc",[null,[22,28],[22,65]]]],
+                  ["inline","format-message",[["subexpr","intl-get",["generic.disable"],[],["loc",[null,[22,83],[22,111]]]]],[],["loc",[null,[22,66],[22,113]]]]
+                ],
+                locals: [],
+                templates: []
+              };
+            }());
+            var child2 = (function() {
+              return {
+                meta: {
+                  "revision": "Ember@1.13.10",
+                  "loc": {
+                    "source": null,
+                    "start": {
+                      "line": 24,
+                      "column": 12
+                    },
+                    "end": {
+                      "line": 26,
+                      "column": 12
+                    }
+                  },
+                  "moduleName": "frontend-cp/session/admin/manage/case-forms/index/template.hbs"
+                },
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                  var el0 = dom.createDocumentFragment();
+                  var el1 = dom.createTextNode("              | ");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createElement("a");
+                  dom.setAttribute(el1,"href","#");
+                  var el2 = dom.createComment("");
+                  dom.appendChild(el1, el2);
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createTextNode("\n");
+                  dom.appendChild(el0, el1);
+                  return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                  var element3 = dom.childAt(fragment, [1]);
+                  var morphs = new Array(2);
+                  morphs[0] = dom.createElementMorph(element3);
+                  morphs[1] = dom.createMorphAt(element3,0,0);
+                  return morphs;
+                },
+                statements: [
+                  ["element","action",["makeDefault",["get","form",["loc",[null,[25,51],[25,55]]]]],["bubbles",false],["loc",[null,[25,28],[25,71]]]],
+                  ["inline","format-message",[["subexpr","intl-get",["generic.make_default"],[],["loc",[null,[25,89],[25,122]]]]],[],["loc",[null,[25,72],[25,124]]]]
+                ],
+                locals: [],
+                templates: []
+              };
+            }());
+            var child3 = (function() {
+              return {
+                meta: {
+                  "revision": "Ember@1.13.10",
+                  "loc": {
+                    "source": null,
+                    "start": {
+                      "line": 27,
+                      "column": 12
+                    },
+                    "end": {
+                      "line": 29,
+                      "column": 12
+                    }
+                  },
+                  "moduleName": "frontend-cp/session/admin/manage/case-forms/index/template.hbs"
+                },
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                  var el0 = dom.createDocumentFragment();
+                  var el1 = dom.createTextNode("              | ");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createElement("a");
+                  dom.setAttribute(el1,"href","#");
+                  var el2 = dom.createComment("");
+                  dom.appendChild(el1, el2);
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createTextNode("\n");
                   dom.appendChild(el0, el1);
                   return el0;
                 },
@@ -61071,8 +61174,8 @@ define('frontend-cp/session/admin/manage/case-forms/index/template', ['exports']
                   return morphs;
                 },
                 statements: [
-                  ["element","action",["makeDefault",["get","form",["loc",[null,[23,49],[23,53]]]]],["bubbles",false],["loc",[null,[23,26],[23,69]]]],
-                  ["inline","format-message",[["subexpr","intl-get",["generic.make_default"],[],["loc",[null,[23,87],[23,120]]]]],[],["loc",[null,[23,70],[23,122]]]]
+                  ["element","action",["showDeleteConfirmation",["get","form",["loc",[null,[28,62],[28,66]]]]],[],["loc",[null,[28,28],[28,68]]]],
+                  ["inline","format-message",[["subexpr","intl-get",["generic.delete"],[],["loc",[null,[28,86],[28,113]]]]],[],["loc",[null,[28,69],[28,115]]]]
                 ],
                 locals: [],
                 templates: []
@@ -61088,7 +61191,7 @@ define('frontend-cp/session/admin/manage/case-forms/index/template', ['exports']
                     "column": 4
                   },
                   "end": {
-                    "line": 29,
+                    "line": 33,
                     "column": 4
                   }
                 },
@@ -61134,25 +61237,15 @@ define('frontend-cp/session/admin/manage/case-forms/index/template', ['exports']
                 var el5 = dom.createComment("");
                 dom.appendChild(el4, el5);
                 dom.appendChild(el3, el4);
-                var el4 = dom.createTextNode(" |\n            ");
-                dom.appendChild(el3, el4);
-                var el4 = dom.createElement("a");
-                dom.setAttribute(el4,"href","#");
-                var el5 = dom.createComment("");
-                dom.appendChild(el4, el5);
-                dom.appendChild(el3, el4);
-                var el4 = dom.createTextNode(" |\n");
+                var el4 = dom.createTextNode("\n");
                 dom.appendChild(el3, el4);
                 var el4 = dom.createComment("");
                 dom.appendChild(el3, el4);
-                var el4 = dom.createTextNode("            ");
+                var el4 = dom.createComment("");
                 dom.appendChild(el3, el4);
-                var el4 = dom.createElement("a");
-                dom.setAttribute(el4,"href","#");
-                var el5 = dom.createComment("");
-                dom.appendChild(el4, el5);
+                var el4 = dom.createComment("");
                 dom.appendChild(el3, el4);
-                var el4 = dom.createTextNode("\n          ");
+                var el4 = dom.createTextNode("          ");
                 dom.appendChild(el3, el4);
                 dom.appendChild(el2, el3);
                 var el3 = dom.createTextNode("\n        ");
@@ -61166,37 +61259,31 @@ define('frontend-cp/session/admin/manage/case-forms/index/template', ['exports']
                 return el0;
               },
               buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-                var element3 = dom.childAt(fragment, [1]);
-                var element4 = dom.childAt(element3, [1]);
-                var element5 = dom.childAt(element3, [3, 1]);
+                var element5 = dom.childAt(fragment, [1]);
                 var element6 = dom.childAt(element5, [1]);
-                var element7 = dom.childAt(element5, [3]);
-                var element8 = dom.childAt(element5, [7]);
-                var morphs = new Array(9);
-                morphs[0] = dom.createMorphAt(dom.childAt(element4, [1]),0,0);
-                morphs[1] = dom.createMorphAt(element4,2,2);
-                morphs[2] = dom.createElementMorph(element6);
-                morphs[3] = dom.createMorphAt(element6,0,0);
-                morphs[4] = dom.createElementMorph(element7);
-                morphs[5] = dom.createMorphAt(element7,0,0);
-                morphs[6] = dom.createMorphAt(element5,5,5);
-                morphs[7] = dom.createElementMorph(element8);
-                morphs[8] = dom.createMorphAt(element8,0,0);
+                var element7 = dom.childAt(element5, [3, 1]);
+                var element8 = dom.childAt(element7, [1]);
+                var morphs = new Array(7);
+                morphs[0] = dom.createMorphAt(dom.childAt(element6, [1]),0,0);
+                morphs[1] = dom.createMorphAt(element6,2,2);
+                morphs[2] = dom.createElementMorph(element8);
+                morphs[3] = dom.createMorphAt(element8,0,0);
+                morphs[4] = dom.createMorphAt(element7,3,3);
+                morphs[5] = dom.createMorphAt(element7,4,4);
+                morphs[6] = dom.createMorphAt(element7,5,5);
                 return morphs;
               },
               statements: [
                 ["content","form.title",["loc",[null,[16,31],[16,45]]]],
-                ["block","if",[["get","form.isDefault",["loc",[null,[16,58],[16,72]]]]],[],0,null,["loc",[null,[16,52],[16,161]]]],
+                ["block","if",[["get","form.isDefault",["loc",[null,[16,58],[16,72]]]]],[],0,null,["loc",[null,[16,52],[16,162]]]],
                 ["element","action",["editForm",["get","form",["loc",[null,[20,44],[20,48]]]]],[],["loc",[null,[20,24],[20,50]]]],
                 ["inline","format-message",[["subexpr","intl-get",["generic.edit"],[],["loc",[null,[20,68],[20,93]]]]],[],["loc",[null,[20,51],[20,95]]]],
-                ["element","action",["toggleEnabledStatus",["get","form",["loc",[null,[21,55],[21,59]]]]],[],["loc",[null,[21,24],[21,61]]]],
-                ["inline","format-message",[["subexpr","intl-get",["generic.disable"],[],["loc",[null,[21,79],[21,107]]]]],[],["loc",[null,[21,62],[21,109]]]],
-                ["block","if",[["subexpr","not",[["get","form.isDefault",["loc",[null,[22,23],[22,37]]]]],[],["loc",[null,[22,18],[22,38]]]]],[],1,null,["loc",[null,[22,12],[24,19]]]],
-                ["element","action",["showDeleteConfirmation",["get","form",["loc",[null,[25,58],[25,62]]]]],[],["loc",[null,[25,24],[25,64]]]],
-                ["inline","format-message",[["subexpr","intl-get",["generic.delete"],[],["loc",[null,[25,82],[25,109]]]]],[],["loc",[null,[25,65],[25,111]]]]
+                ["block","if",[["get","form.canBeDisabled",["loc",[null,[21,18],[21,36]]]]],[],1,null,["loc",[null,[21,12],[23,19]]]],
+                ["block","if",[["get","form.canBeMadeDefault",["loc",[null,[24,18],[24,39]]]]],[],2,null,["loc",[null,[24,12],[26,19]]]],
+                ["block","if",[["get","form.canBeDeleted",["loc",[null,[27,18],[27,35]]]]],[],3,null,["loc",[null,[27,12],[29,19]]]]
               ],
               locals: [],
-              templates: [child0, child1]
+              templates: [child0, child1, child2, child3]
             };
           }());
           return {
@@ -61209,7 +61296,7 @@ define('frontend-cp/session/admin/manage/case-forms/index/template', ['exports']
                   "column": 2
                 },
                 "end": {
-                  "line": 30,
+                  "line": 34,
                   "column": 2
                 }
               },
@@ -61232,7 +61319,7 @@ define('frontend-cp/session/admin/manage/case-forms/index/template', ['exports']
               return morphs;
             },
             statements: [
-              ["block","ko-simple-list/row",[],["action","editForm","content",["subexpr","@mut",[["get","form",["loc",[null,[13,52],[13,56]]]]],[],[]]],0,null,["loc",[null,[13,4],[29,27]]]]
+              ["block","ko-simple-list/row",[],["action","editForm","content",["subexpr","@mut",[["get","form",["loc",[null,[13,52],[13,56]]]]],[],[]]],0,null,["loc",[null,[13,4],[33,27]]]]
             ],
             locals: ["form"],
             templates: [child0]
@@ -61248,7 +61335,7 @@ define('frontend-cp/session/admin/manage/case-forms/index/template', ['exports']
                 "column": 0
               },
               "end": {
-                "line": 31,
+                "line": 35,
                 "column": 0
               }
             },
@@ -61285,7 +61372,7 @@ define('frontend-cp/session/admin/manage/case-forms/index/template', ['exports']
           },
           statements: [
             ["inline","format-message",[["subexpr","intl-get",["generic.enabled"],[],["loc",[null,[10,21],[10,49]]]]],[],["loc",[null,[10,4],[10,51]]]],
-            ["block","ko-reorderable-list",[],["reorderedListAction","reorderForms","items",["subexpr","@mut",[["get","enabledForms",["loc",[null,[12,66],[12,78]]]]],[],[]]],0,null,["loc",[null,[12,2],[30,26]]]]
+            ["block","ko-reorderable-list",[],["reorderedListAction","reorderForms","items",["subexpr","@mut",[["get","enabledForms",["loc",[null,[12,66],[12,78]]]]],[],[]]],0,null,["loc",[null,[12,2],[34,26]]]]
           ],
           locals: [],
           templates: [child0]
@@ -61301,11 +61388,11 @@ define('frontend-cp/session/admin/manage/case-forms/index/template', ['exports']
                   "loc": {
                     "source": null,
                     "start": {
-                      "line": 40,
+                      "line": 44,
                       "column": 4
                     },
                     "end": {
-                      "line": 51,
+                      "line": 55,
                       "column": 4
                     }
                   },
@@ -61372,9 +61459,9 @@ define('frontend-cp/session/admin/manage/case-forms/index/template', ['exports']
                   return morphs;
                 },
                 statements: [
-                  ["content","form.title",["loc",[null,[43,41],[43,55]]]],
-                  ["element","action",["toggleEnabledStatus",["get","form",["loc",[null,[47,57],[47,61]]]]],[],["loc",[null,[47,26],[47,63]]]],
-                  ["inline","format-message",[["subexpr","intl-get",["generic.enable"],[],["loc",[null,[47,81],[47,108]]]]],[],["loc",[null,[47,64],[47,110]]]]
+                  ["content","form.title",["loc",[null,[47,41],[47,55]]]],
+                  ["element","action",["toggleEnabledStatus",["get","form",["loc",[null,[51,57],[51,61]]]]],[],["loc",[null,[51,26],[51,63]]]],
+                  ["inline","format-message",[["subexpr","intl-get",["generic.enable"],[],["loc",[null,[51,81],[51,108]]]]],[],["loc",[null,[51,64],[51,110]]]]
                 ],
                 locals: [],
                 templates: []
@@ -61386,11 +61473,11 @@ define('frontend-cp/session/admin/manage/case-forms/index/template', ['exports']
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 39,
+                    "line": 43,
                     "column": 2
                   },
                   "end": {
-                    "line": 52,
+                    "line": 56,
                     "column": 2
                   }
                 },
@@ -61413,7 +61500,7 @@ define('frontend-cp/session/admin/manage/case-forms/index/template', ['exports']
                 return morphs;
               },
               statements: [
-                ["block","ko-simple-list/row",[],[],0,null,["loc",[null,[40,4],[51,27]]]]
+                ["block","ko-simple-list/row",[],[],0,null,["loc",[null,[44,4],[55,27]]]]
               ],
               locals: ["form"],
               templates: [child0]
@@ -61425,11 +61512,11 @@ define('frontend-cp/session/admin/manage/case-forms/index/template', ['exports']
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 35,
+                  "line": 39,
                   "column": 0
                 },
                 "end": {
-                  "line": 53,
+                  "line": 57,
                   "column": 0
                 }
               },
@@ -61465,8 +61552,8 @@ define('frontend-cp/session/admin/manage/case-forms/index/template', ['exports']
               return morphs;
             },
             statements: [
-              ["inline","format-message",[["subexpr","intl-get",["generic.disabled"],[],["loc",[null,[37,21],[37,50]]]]],[],["loc",[null,[37,4],[37,52]]]],
-              ["block","each",[["get","disabledForms",["loc",[null,[39,10],[39,23]]]]],[],0,null,["loc",[null,[39,2],[52,11]]]]
+              ["inline","format-message",[["subexpr","intl-get",["generic.disabled"],[],["loc",[null,[41,21],[41,50]]]]],[],["loc",[null,[41,4],[41,52]]]],
+              ["block","each",[["get","disabledForms",["loc",[null,[43,10],[43,23]]]]],[],0,null,["loc",[null,[43,2],[56,11]]]]
             ],
             locals: [],
             templates: [child0]
@@ -61478,11 +61565,11 @@ define('frontend-cp/session/admin/manage/case-forms/index/template', ['exports']
             "loc": {
               "source": null,
               "start": {
-                "line": 34,
+                "line": 38,
                 "column": 0
               },
               "end": {
-                "line": 54,
+                "line": 58,
                 "column": 0
               }
             },
@@ -61505,7 +61592,7 @@ define('frontend-cp/session/admin/manage/case-forms/index/template', ['exports']
             return morphs;
           },
           statements: [
-            ["block","ko-simple-list",[],[],0,null,["loc",[null,[35,0],[53,19]]]]
+            ["block","ko-simple-list",[],[],0,null,["loc",[null,[39,0],[57,19]]]]
           ],
           locals: [],
           templates: [child0]
@@ -61521,7 +61608,7 @@ define('frontend-cp/session/admin/manage/case-forms/index/template', ['exports']
               "column": 0
             },
             "end": {
-              "line": 55,
+              "line": 59,
               "column": 0
             }
           },
@@ -61549,8 +61636,8 @@ define('frontend-cp/session/admin/manage/case-forms/index/template', ['exports']
           return morphs;
         },
         statements: [
-          ["block","ko-simple-list",[],[],0,null,["loc",[null,[8,0],[31,19]]]],
-          ["block","if",[["get","disabledForms",["loc",[null,[34,6],[34,19]]]]],[],1,null,["loc",[null,[34,0],[54,7]]]]
+          ["block","ko-simple-list",[],[],0,null,["loc",[null,[8,0],[35,19]]]],
+          ["block","if",[["get","disabledForms",["loc",[null,[38,6],[38,19]]]]],[],1,null,["loc",[null,[38,0],[58,7]]]]
         ],
         locals: [],
         templates: [child0, child1]
@@ -61566,7 +61653,7 @@ define('frontend-cp/session/admin/manage/case-forms/index/template', ['exports']
             "column": 0
           },
           "end": {
-            "line": 56,
+            "line": 60,
             "column": 0
           }
         },
@@ -61595,7 +61682,7 @@ define('frontend-cp/session/admin/manage/case-forms/index/template', ['exports']
       },
       statements: [
         ["inline","ko-admin/page-header",[],["title",["subexpr","format-message",[["subexpr","intl-get",["admin.caseforms"],[],["loc",[null,[2,24],[2,52]]]]],[],["loc",[null,[2,8],[2,53]]]],"buttonText",["subexpr","format-message",[["subexpr","intl-get",["admin.caseforms.buttons.add_new_caseform"],[],["loc",[null,[3,29],[3,82]]]]],[],["loc",[null,[3,13],[3,83]]]],"onSave",["subexpr","action",["transitionToNewCaseFormRoute"],[],["loc",[null,[4,9],[4,48]]]]],["loc",[null,[1,0],[5,2]]]],
-        ["block","ko-admin/forms/table",[],[],0,null,["loc",[null,[7,0],[55,25]]]]
+        ["block","ko-admin/forms/table",[],[],0,null,["loc",[null,[7,0],[59,25]]]]
       ],
       locals: [],
       templates: [child0]
@@ -71240,6 +71327,84 @@ define('frontend-cp/session/test/entry/template', ['exports'], function (exports
   }()));
 
 });
+define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['ember', 'qunit', 'frontend-cp/tests/helpers/start-app', 'npm:lodash'], function (Ember, qunit, startApp, _) {
+
+  'use strict';
+
+  var originalConfirm = undefined,
+      brand = undefined,
+      language = undefined;
+  qunit.module('Acceptance | Admin | Manage | Case Forms', {
+    beforeEach: function beforeEach() {
+      this.application = startApp['default']();
+      var emails = [server.create('identity-email', { email: 'first@example.com', is_primary: true, is_validated: true }), server.create('identity-email', { email: 'second@example.com', is_primary: false, is_validated: true }), server.create('identity-email', { email: 'third@example.com', is_primary: false, is_validated: false })];
+      var user = server.create('user', { emails: emails, role: server.create('role') });
+      var session = server.create('session', { user: user });
+      server.create('plan', { limits: [], features: [] });
+      language = server.create('language');
+      brand = server.create('brand', { language: language });
+      login(session.id);
+      originalConfirm = window.confirm;
+    },
+
+    afterEach: function afterEach() {
+      window.confirm = originalConfirm;
+      Ember['default'].run(this.application, 'destroy');
+    }
+  });
+
+  qunit.test('Default case forms have a visual indication of their status', function (assert) {
+    server.create('case-form', {
+      is_default: true,
+      title: 'The Default Case Form',
+      brand: brand
+    });
+
+    visit('/admin/manage/case-forms');
+    andThen(function () {
+      assert.equal(find('.ko-reorderable-list .layout__item:eq(0)').text().trim(), 'The Default Case Form (Default)');
+    });
+  });
+
+  qunit.test('I can delete, disable and make default a non default case form', function (assert) {
+    server.create('case-form', {
+      is_default: false,
+      title: 'A Regular Case Form',
+      brand: brand
+    });
+
+    visit('/admin/manage/case-forms');
+    andThen(function () {
+      assert.deepEqual(_['default'].map(find('.ko-reorderable-list .layout__item:eq(1) a'), function (element) {
+        return $(element).text().trim();
+      }), ['Edit', 'Disable', 'Make default', 'Delete']);
+    });
+  });
+
+  qunit.test('I cannot delete, disable, and make default a default case form', function (assert) {
+    server.create('case-form', {
+      is_default: true,
+      title: 'The Default Case Form',
+      brand: brand
+    });
+
+    visit('/admin/manage/case-forms');
+    andThen(function () {
+      assert.deepEqual(_['default'].map(find('.ko-reorderable-list .layout__item:eq(1) a'), function (element) {
+        return $(element).text().trim();
+      }), ['Edit']);
+    });
+  });
+
+  qunit.test('I cannot disable a new case form', function (assert) {
+    visit('/admin/manage/case-forms/new');
+
+    andThen(function () {
+      assert.equal(Ember['default'].$('.ko-toggle__toggle')[0], undefined);
+    });
+  });
+
+});
 define('frontend-cp/tests/acceptance/agent/cases/create-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
@@ -80222,7 +80387,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"88d34fd0054d469bcfa2","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+d89c44b3"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"88d34fd0054d469bcfa2","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+5683ffd7"});
 }
 
 /* jshint ignore:end */
