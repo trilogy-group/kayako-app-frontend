@@ -6591,6 +6591,54 @@ define('frontend-cp/components/ko-admin/case-forms/edit/template', ['exports'], 
           };
         }());
         var child1 = (function() {
+          var child0 = (function() {
+            return {
+              meta: {
+                "revision": "Ember@1.13.10",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 20,
+                    "column": 6
+                  },
+                  "end": {
+                    "line": 26,
+                    "column": 6
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-admin/case-forms/edit/template.hbs"
+              },
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createTextNode("        ");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n        ");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var morphs = new Array(2);
+                morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+                morphs[1] = dom.createMorphAt(fragment,3,3,contextualElement);
+                return morphs;
+              },
+              statements: [
+                ["inline","ko-toggle",[],["activated",["subexpr","@mut",[["get","caseForm.isEnabled",["loc",[null,[22,20],[22,38]]]]],[],[]],"label",["subexpr","format-message",[["subexpr","intl-get",[["subexpr","if",[["get","caseForm.isEnabled",["loc",[null,[23,46],[23,64]]]],"admin.caseforms.edit.description_on.is_enabled","admin.caseforms.edit.description_off.is_enabled"],[],["loc",[null,[23,42],[23,164]]]]],[],["loc",[null,[23,32],[23,165]]]]],[],["loc",[null,[23,16],[23,166]]]]],["loc",[null,[21,8],[24,10]]]],
+                ["inline","ko-form/field/errors",[],["errors",["subexpr","@mut",[["get","caseForm.errors.isEnabled",["loc",[null,[25,38],[25,63]]]]],[],[]]],["loc",[null,[25,8],[25,65]]]]
+              ],
+              locals: [],
+              templates: []
+            };
+          }());
           return {
             meta: {
               "revision": "Ember@1.13.10",
@@ -6601,7 +6649,7 @@ define('frontend-cp/components/ko-admin/case-forms/edit/template', ['exports'], 
                   "column": 4
                 },
                 "end": {
-                  "line": 25,
+                  "line": 27,
                   "column": 4
                 }
               },
@@ -6612,30 +6660,22 @@ define('frontend-cp/components/ko-admin/case-forms/edit/template', ['exports'], 
             hasRendered: false,
             buildFragment: function buildFragment(dom) {
               var el0 = dom.createDocumentFragment();
-              var el1 = dom.createTextNode("      ");
-              dom.appendChild(el0, el1);
               var el1 = dom.createComment("");
-              dom.appendChild(el0, el1);
-              var el1 = dom.createTextNode("\n      ");
-              dom.appendChild(el0, el1);
-              var el1 = dom.createComment("");
-              dom.appendChild(el0, el1);
-              var el1 = dom.createTextNode("\n");
               dom.appendChild(el0, el1);
               return el0;
             },
             buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-              var morphs = new Array(2);
-              morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
-              morphs[1] = dom.createMorphAt(fragment,3,3,contextualElement);
+              var morphs = new Array(1);
+              morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+              dom.insertBoundary(fragment, 0);
+              dom.insertBoundary(fragment, null);
               return morphs;
             },
             statements: [
-              ["inline","ko-toggle",[],["activated",["subexpr","@mut",[["get","caseForm.isEnabled",["loc",[null,[21,18],[21,36]]]]],[],[]],"label",["subexpr","format-message",[["subexpr","intl-get",[["subexpr","if",[["get","caseForm.isEnabled",["loc",[null,[22,44],[22,62]]]],"admin.caseforms.edit.description_on.is_enabled","admin.caseforms.edit.description_off.is_enabled"],[],["loc",[null,[22,40],[22,162]]]]],[],["loc",[null,[22,30],[22,163]]]]],[],["loc",[null,[22,14],[22,164]]]]],["loc",[null,[20,6],[23,8]]]],
-              ["inline","ko-form/field/errors",[],["errors",["subexpr","@mut",[["get","caseForm.errors.isEnabled",["loc",[null,[24,36],[24,61]]]]],[],[]]],["loc",[null,[24,6],[24,63]]]]
+              ["block","ko-form/field",[],[],0,null,["loc",[null,[20,6],[26,24]]]]
             ],
             locals: [],
-            templates: []
+            templates: [child0]
           };
         }());
         return {
@@ -6648,7 +6688,7 @@ define('frontend-cp/components/ko-admin/case-forms/edit/template', ['exports'], 
                 "column": 2
               },
               "end": {
-                "line": 26,
+                "line": 28,
                 "column": 2
               }
             },
@@ -6677,7 +6717,7 @@ define('frontend-cp/components/ko-admin/case-forms/edit/template', ['exports'], 
           },
           statements: [
             ["block","ko-form/field",[],[],0,null,["loc",[null,[13,4],[17,22]]]],
-            ["block","ko-form/field",[],[],1,null,["loc",[null,[19,4],[25,22]]]]
+            ["block","unless",[["get","caseForm.isNew",["loc",[null,[19,14],[19,28]]]]],[],1,null,["loc",[null,[19,4],[27,15]]]]
           ],
           locals: [],
           templates: [child0, child1]
@@ -6692,11 +6732,11 @@ define('frontend-cp/components/ko-admin/case-forms/edit/template', ['exports'], 
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 33,
+                    "line": 35,
                     "column": 6
                   },
                   "end": {
-                    "line": 33,
+                    "line": 35,
                     "column": 105
                   }
                 },
@@ -6719,7 +6759,7 @@ define('frontend-cp/components/ko-admin/case-forms/edit/template', ['exports'], 
                 return morphs;
               },
               statements: [
-                ["inline","format-message",[["subexpr","intl-get",["admin.caseforms.help.is_visible_to_customers"],[],["loc",[null,[33,46],[33,103]]]]],[],["loc",[null,[33,29],[33,105]]]]
+                ["inline","format-message",[["subexpr","intl-get",["admin.caseforms.help.is_visible_to_customers"],[],["loc",[null,[35,46],[35,103]]]]],[],["loc",[null,[35,29],[35,105]]]]
               ],
               locals: [],
               templates: []
@@ -6731,11 +6771,11 @@ define('frontend-cp/components/ko-admin/case-forms/edit/template', ['exports'], 
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 30,
+                  "line": 32,
                   "column": 4
                 },
                 "end": {
-                  "line": 34,
+                  "line": 36,
                   "column": 4
                 }
               },
@@ -6770,9 +6810,9 @@ define('frontend-cp/components/ko-admin/case-forms/edit/template', ['exports'], 
               return morphs;
             },
             statements: [
-              ["inline","ko-checkbox",[],["label",["subexpr","format-message",[["subexpr","intl-get",["admin.caseforms.label.is_visible_to_customers"],[],["loc",[null,[31,42],[31,100]]]]],[],["loc",[null,[31,26],[31,101]]]],"checked",["subexpr","@mut",[["get","caseForm.isVisibleToCustomers",["loc",[null,[31,110],[31,139]]]]],[],[]],"disabled",["subexpr","@mut",[["get","isSubmitting",["loc",[null,[31,149],[31,161]]]]],[],[]]],["loc",[null,[31,6],[31,163]]]],
-              ["inline","ko-form/field/errors",[],["errors",["subexpr","@mut",[["get","caseForm.errors.isVisibleToCustomers",["loc",[null,[32,36],[32,72]]]]],[],[]]],["loc",[null,[32,6],[32,74]]]],
-              ["block","ko-form/field/help",[],[],0,null,["loc",[null,[33,6],[33,128]]]]
+              ["inline","ko-checkbox",[],["label",["subexpr","format-message",[["subexpr","intl-get",["admin.caseforms.label.is_visible_to_customers"],[],["loc",[null,[33,42],[33,100]]]]],[],["loc",[null,[33,26],[33,101]]]],"checked",["subexpr","@mut",[["get","caseForm.isVisibleToCustomers",["loc",[null,[33,110],[33,139]]]]],[],[]],"disabled",["subexpr","@mut",[["get","isSubmitting",["loc",[null,[33,149],[33,161]]]]],[],[]]],["loc",[null,[33,6],[33,163]]]],
+              ["inline","ko-form/field/errors",[],["errors",["subexpr","@mut",[["get","caseForm.errors.isVisibleToCustomers",["loc",[null,[34,36],[34,72]]]]],[],[]]],["loc",[null,[34,6],[34,74]]]],
+              ["block","ko-form/field/help",[],[],0,null,["loc",[null,[35,6],[35,128]]]]
             ],
             locals: [],
             templates: [child0]
@@ -6787,11 +6827,11 @@ define('frontend-cp/components/ko-admin/case-forms/edit/template', ['exports'], 
                   "loc": {
                     "source": null,
                     "start": {
-                      "line": 38,
+                      "line": 40,
                       "column": 8
                     },
                     "end": {
-                      "line": 38,
+                      "line": 40,
                       "column": 105
                     }
                   },
@@ -6814,7 +6854,7 @@ define('frontend-cp/components/ko-admin/case-forms/edit/template', ['exports'], 
                   return morphs;
                 },
                 statements: [
-                  ["inline","format-message",[["subexpr","intl-get",["admin.caseforms.label.customer_form_title"],[],["loc",[null,[38,49],[38,103]]]]],[],["loc",[null,[38,32],[38,105]]]]
+                  ["inline","format-message",[["subexpr","intl-get",["admin.caseforms.label.customer_form_title"],[],["loc",[null,[40,49],[40,103]]]]],[],["loc",[null,[40,32],[40,105]]]]
                 ],
                 locals: [],
                 templates: []
@@ -6826,11 +6866,11 @@ define('frontend-cp/components/ko-admin/case-forms/edit/template', ['exports'], 
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 37,
+                    "line": 39,
                     "column": 6
                   },
                   "end": {
-                    "line": 41,
+                    "line": 43,
                     "column": 6
                   }
                 },
@@ -6865,9 +6905,9 @@ define('frontend-cp/components/ko-admin/case-forms/edit/template', ['exports'], 
                 return morphs;
               },
               statements: [
-                ["block","ko-form/field/label",[],[],0,null,["loc",[null,[38,8],[38,129]]]],
-                ["inline","input",[],["class","input input-text","type","text","value",["subexpr","@mut",[["get","caseForm.customerTitle",["loc",[null,[39,59],[39,81]]]]],[],[]],"disabled",["subexpr","@mut",[["get","isSubmitting",["loc",[null,[39,91],[39,103]]]]],[],[]]],["loc",[null,[39,8],[39,105]]]],
-                ["inline","ko-form/field/errors",[],["errors",["subexpr","@mut",[["get","caseForm.errors.customerTitle",["loc",[null,[40,38],[40,67]]]]],[],[]]],["loc",[null,[40,8],[40,69]]]]
+                ["block","ko-form/field/label",[],[],0,null,["loc",[null,[40,8],[40,129]]]],
+                ["inline","input",[],["class","input input-text","type","text","value",["subexpr","@mut",[["get","caseForm.customerTitle",["loc",[null,[41,59],[41,81]]]]],[],[]],"disabled",["subexpr","@mut",[["get","isSubmitting",["loc",[null,[41,91],[41,103]]]]],[],[]]],["loc",[null,[41,8],[41,105]]]],
+                ["inline","ko-form/field/errors",[],["errors",["subexpr","@mut",[["get","caseForm.errors.customerTitle",["loc",[null,[42,38],[42,67]]]]],[],[]]],["loc",[null,[42,8],[42,69]]]]
               ],
               locals: [],
               templates: [child0]
@@ -6881,11 +6921,11 @@ define('frontend-cp/components/ko-admin/case-forms/edit/template', ['exports'], 
                   "loc": {
                     "source": null,
                     "start": {
-                      "line": 44,
+                      "line": 46,
                       "column": 8
                     },
                     "end": {
-                      "line": 44,
+                      "line": 46,
                       "column": 111
                     }
                   },
@@ -6908,7 +6948,7 @@ define('frontend-cp/components/ko-admin/case-forms/edit/template', ['exports'], 
                   return morphs;
                 },
                 statements: [
-                  ["inline","format-message",[["subexpr","intl-get",["admin.caseforms.label.customer_form_description"],[],["loc",[null,[44,49],[44,109]]]]],[],["loc",[null,[44,32],[44,111]]]]
+                  ["inline","format-message",[["subexpr","intl-get",["admin.caseforms.label.customer_form_description"],[],["loc",[null,[46,49],[46,109]]]]],[],["loc",[null,[46,32],[46,111]]]]
                 ],
                 locals: [],
                 templates: []
@@ -6920,11 +6960,11 @@ define('frontend-cp/components/ko-admin/case-forms/edit/template', ['exports'], 
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 43,
+                    "line": 45,
                     "column": 6
                   },
                   "end": {
-                    "line": 47,
+                    "line": 49,
                     "column": 6
                   }
                 },
@@ -6959,9 +6999,9 @@ define('frontend-cp/components/ko-admin/case-forms/edit/template', ['exports'], 
                 return morphs;
               },
               statements: [
-                ["block","ko-form/field/label",[],[],0,null,["loc",[null,[44,8],[44,135]]]],
-                ["inline","textarea",[],["class","input input-text","value",["subexpr","@mut",[["get","caseForm.description",["loc",[null,[45,50],[45,70]]]]],[],[]],"disabled",["subexpr","@mut",[["get","isSubmitting",["loc",[null,[45,80],[45,92]]]]],[],[]]],["loc",[null,[45,8],[45,94]]]],
-                ["inline","ko-form/field/errors",[],["errors",["subexpr","@mut",[["get","caseForm.errors.description",["loc",[null,[46,38],[46,65]]]]],[],[]]],["loc",[null,[46,8],[46,67]]]]
+                ["block","ko-form/field/label",[],[],0,null,["loc",[null,[46,8],[46,135]]]],
+                ["inline","textarea",[],["class","input input-text","value",["subexpr","@mut",[["get","caseForm.description",["loc",[null,[47,50],[47,70]]]]],[],[]],"disabled",["subexpr","@mut",[["get","isSubmitting",["loc",[null,[47,80],[47,92]]]]],[],[]]],["loc",[null,[47,8],[47,94]]]],
+                ["inline","ko-form/field/errors",[],["errors",["subexpr","@mut",[["get","caseForm.errors.description",["loc",[null,[48,38],[48,65]]]]],[],[]]],["loc",[null,[48,8],[48,67]]]]
               ],
               locals: [],
               templates: [child0]
@@ -6973,11 +7013,11 @@ define('frontend-cp/components/ko-admin/case-forms/edit/template', ['exports'], 
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 36,
+                  "line": 38,
                   "column": 4
                 },
                 "end": {
-                  "line": 48,
+                  "line": 50,
                   "column": 4
                 }
               },
@@ -7005,8 +7045,8 @@ define('frontend-cp/components/ko-admin/case-forms/edit/template', ['exports'], 
               return morphs;
             },
             statements: [
-              ["block","ko-form/field",[],[],0,null,["loc",[null,[37,6],[41,24]]]],
-              ["block","ko-form/field",[],[],1,null,["loc",[null,[43,6],[47,24]]]]
+              ["block","ko-form/field",[],[],0,null,["loc",[null,[39,6],[43,24]]]],
+              ["block","ko-form/field",[],[],1,null,["loc",[null,[45,6],[49,24]]]]
             ],
             locals: [],
             templates: [child0, child1]
@@ -7018,11 +7058,11 @@ define('frontend-cp/components/ko-admin/case-forms/edit/template', ['exports'], 
             "loc": {
               "source": null,
               "start": {
-                "line": 29,
+                "line": 31,
                 "column": 2
               },
               "end": {
-                "line": 49,
+                "line": 51,
                 "column": 2
               }
             },
@@ -7050,8 +7090,8 @@ define('frontend-cp/components/ko-admin/case-forms/edit/template', ['exports'], 
             return morphs;
           },
           statements: [
-            ["block","ko-form/field",[],[],0,null,["loc",[null,[30,4],[34,22]]]],
-            ["block","if",[["get","caseForm.isVisibleToCustomers",["loc",[null,[36,10],[36,39]]]]],[],1,null,["loc",[null,[36,4],[48,11]]]]
+            ["block","ko-form/field",[],[],0,null,["loc",[null,[32,4],[36,22]]]],
+            ["block","if",[["get","caseForm.isVisibleToCustomers",["loc",[null,[38,10],[38,39]]]]],[],1,null,["loc",[null,[38,4],[50,11]]]]
           ],
           locals: [],
           templates: [child0, child1]
@@ -7065,11 +7105,11 @@ define('frontend-cp/components/ko-admin/case-forms/edit/template', ['exports'], 
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 52,
+                  "line": 54,
                   "column": 4
                 },
                 "end": {
-                  "line": 58,
+                  "line": 60,
                   "column": 4
                 }
               },
@@ -7094,7 +7134,7 @@ define('frontend-cp/components/ko-admin/case-forms/edit/template', ['exports'], 
               return morphs;
             },
             statements: [
-              ["inline","ko-admin/case-forms/edit/fields",[],["caseFields",["subexpr","@mut",[["get","caseForm.fields",["loc",[null,[54,19],[54,34]]]]],[],[]],"onCaseFieldAddition",["subexpr","action",["addCaseFieldToForm"],[],["loc",[null,[55,28],[55,57]]]],"onCaseFieldRemoval",["subexpr","action",["removeCaseFieldFromForm"],[],["loc",[null,[56,27],[56,61]]]]],["loc",[null,[53,6],[57,8]]]]
+              ["inline","ko-admin/case-forms/edit/fields",[],["caseFields",["subexpr","@mut",[["get","caseForm.fields",["loc",[null,[56,19],[56,34]]]]],[],[]],"onCaseFieldAddition",["subexpr","action",["addCaseFieldToForm"],[],["loc",[null,[57,28],[57,57]]]],"onCaseFieldRemoval",["subexpr","action",["removeCaseFieldFromForm"],[],["loc",[null,[58,27],[58,61]]]]],["loc",[null,[55,6],[59,8]]]]
             ],
             locals: [],
             templates: []
@@ -7106,11 +7146,11 @@ define('frontend-cp/components/ko-admin/case-forms/edit/template', ['exports'], 
             "loc": {
               "source": null,
               "start": {
-                "line": 51,
+                "line": 53,
                 "column": 2
               },
               "end": {
-                "line": 59,
+                "line": 61,
                 "column": 2
               }
             },
@@ -7133,7 +7173,7 @@ define('frontend-cp/components/ko-admin/case-forms/edit/template', ['exports'], 
             return morphs;
           },
           statements: [
-            ["block","ko-form/field",[],["field",["subexpr","@mut",[["get","fields.case_field_ids",["loc",[null,[52,27],[52,48]]]]],[],[]]],0,null,["loc",[null,[52,4],[58,22]]]]
+            ["block","ko-form/field",[],["field",["subexpr","@mut",[["get","fields.case_field_ids",["loc",[null,[54,27],[54,48]]]]],[],[]]],0,null,["loc",[null,[54,4],[60,22]]]]
           ],
           locals: [],
           templates: [child0]
@@ -7149,7 +7189,7 @@ define('frontend-cp/components/ko-admin/case-forms/edit/template', ['exports'], 
               "column": 0
             },
             "end": {
-              "line": 65,
+              "line": 67,
               "column": 0
             }
           },
@@ -7195,10 +7235,10 @@ define('frontend-cp/components/ko-admin/case-forms/edit/template', ['exports'], 
         },
         statements: [
           ["inline","ko-admin/page-header",[],["title",["subexpr","@mut",[["get","title",["loc",[null,[7,10],[7,15]]]]],[],[]],"onCancel",["subexpr","@mut",[["get","onCancel",["loc",[null,[8,13],[8,21]]]]],[],[]],"buttonText",["subexpr","format-message",[["subexpr","intl-get",["generic.save"],[],["loc",[null,[9,31],[9,56]]]]],[],["loc",[null,[9,15],[9,57]]]]],["loc",[null,[6,2],[10,4]]]],
-          ["block","ko-admin/forms/group",[],["legend",["subexpr","format-message",[["subexpr","intl-get",["admin.caseforms.heading.agent_settings"],[],["loc",[null,[12,49],[12,100]]]]],[],["loc",[null,[12,33],[12,101]]]]],0,null,["loc",[null,[12,2],[26,27]]]],
-          ["block","ko-admin/forms/group",[],["legend",["subexpr","format-message",[["subexpr","intl-get",["admin.caseforms.heading.customer_settings"],[],["loc",[null,[29,49],[29,103]]]]],[],["loc",[null,[29,33],[29,104]]]]],1,null,["loc",[null,[29,2],[49,27]]]],
-          ["block","ko-admin/forms/group",[],["legend",["subexpr","format-message",[["subexpr","intl-get",["admin.caseforms.heading.configure_form"],[],["loc",[null,[51,49],[51,100]]]]],[],["loc",[null,[51,33],[51,101]]]]],2,null,["loc",[null,[51,2],[59,27]]]],
-          ["inline","ko-admin/page-footer",[],["onCancel",["subexpr","@mut",[["get","onCancel",["loc",[null,[62,13],[62,21]]]]],[],[]],"buttonText",["subexpr","format-message",[["subexpr","intl-get",["generic.save"],[],["loc",[null,[63,31],[63,56]]]]],[],["loc",[null,[63,15],[63,57]]]]],["loc",[null,[61,2],[64,4]]]]
+          ["block","ko-admin/forms/group",[],["legend",["subexpr","format-message",[["subexpr","intl-get",["admin.caseforms.heading.agent_settings"],[],["loc",[null,[12,49],[12,100]]]]],[],["loc",[null,[12,33],[12,101]]]]],0,null,["loc",[null,[12,2],[28,27]]]],
+          ["block","ko-admin/forms/group",[],["legend",["subexpr","format-message",[["subexpr","intl-get",["admin.caseforms.heading.customer_settings"],[],["loc",[null,[31,49],[31,103]]]]],[],["loc",[null,[31,33],[31,104]]]]],1,null,["loc",[null,[31,2],[51,27]]]],
+          ["block","ko-admin/forms/group",[],["legend",["subexpr","format-message",[["subexpr","intl-get",["admin.caseforms.heading.configure_form"],[],["loc",[null,[53,49],[53,100]]]]],[],["loc",[null,[53,33],[53,101]]]]],2,null,["loc",[null,[53,2],[61,27]]]],
+          ["inline","ko-admin/page-footer",[],["onCancel",["subexpr","@mut",[["get","onCancel",["loc",[null,[64,13],[64,21]]]]],[],[]],"buttonText",["subexpr","format-message",[["subexpr","intl-get",["generic.save"],[],["loc",[null,[65,31],[65,56]]]]],[],["loc",[null,[65,15],[65,57]]]]],["loc",[null,[63,2],[66,4]]]]
         ],
         locals: ["_","isSubmitting"],
         templates: [child0, child1, child2]
@@ -7214,8 +7254,8 @@ define('frontend-cp/components/ko-admin/case-forms/edit/template', ['exports'], 
             "column": 0
           },
           "end": {
-            "line": 65,
-            "column": 12
+            "line": 68,
+            "column": 0
           }
         },
         "moduleName": "frontend-cp/components/ko-admin/case-forms/edit/template.hbs"
@@ -7237,7 +7277,7 @@ define('frontend-cp/components/ko-admin/case-forms/edit/template', ['exports'], 
         return morphs;
       },
       statements: [
-        ["block","ko-form",[],["fields",["subexpr","@mut",[["get","fields",["loc",[null,[2,9],[2,15]]]]],[],[]],"onSubmit",["subexpr","action",["saveField"],[],["loc",[null,[3,11],[3,31]]]],"onSuccess",["subexpr","@mut",[["get","onSuccess",["loc",[null,[4,12],[4,21]]]]],[],[]]],0,null,["loc",[null,[1,0],[65,12]]]]
+        ["block","ko-form",[],["fields",["subexpr","@mut",[["get","fields",["loc",[null,[2,9],[2,15]]]]],[],[]],"onSubmit",["subexpr","action",["saveField"],[],["loc",[null,[3,11],[3,31]]]],"onSuccess",["subexpr","@mut",[["get","onSuccess",["loc",[null,[4,12],[4,21]]]]],[],[]]],0,null,["loc",[null,[1,0],[67,12]]]]
       ],
       locals: [],
       templates: [child0]
@@ -79787,7 +79827,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"88d34fd0054d469bcfa2","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+621e12c9"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"88d34fd0054d469bcfa2","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+4ca3b59d"});
 }
 
 /* jshint ignore:end */
