@@ -14990,7 +14990,9 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       var _this9 = this;
 
       this.get('store').findAll('case-form').then(function (caseForms) {
-        _this9.set('caseForms', caseForms);
+        _this9.set('caseForms', caseForms.filter(function (form) {
+          return form.get('isEnabled');
+        }));
       });
 
       this.get('case.tags').then(function (caseTags) {
@@ -15406,10 +15408,14 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
         var newAssignedAgent = macro.get('assignee') ? macro.get('assignee.agent') : null;
         var priorityAction = macro.get('properties.priorityAction');
         var tags = macro.get('tags');
+        var replyType = macro.get('replyType');
+
+        if (replyType) {
+          this.set('replyType', replyType);
+        }
 
         if (contentsToAdd) {
           this.get('casePostEditor.postEditor').insertOrAppendHTML(contentsToAdd);
-          this.set('replyType', macro.get('replyType'));
         }
         if (newStatus) {
           currentCase.set('status', newStatus);
@@ -51736,9 +51742,19 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
     this.get('/api/v1/cases/macros', function (db) {
       return {
         status: 200,
-        data: [],
+        data: db.macros,
         resource: 'macro',
-        total_count: 0
+        resources: {
+          case_status: arrayToObjectWithNumberedKeys(db['case-statuses']),
+          case_priority: arrayToObjectWithNumberedKeys(db['case-priorities']),
+          case_type: arrayToObjectWithNumberedKeys(db['case-types']),
+          identity_email: arrayToObjectWithNumberedKeys(db['identity-emails']),
+          role: arrayToObjectWithNumberedKeys(db.roles),
+          team: arrayToObjectWithNumberedKeys(db.teams),
+          user: arrayToObjectWithNumberedKeys(db.users),
+          user_field: arrayToObjectWithNumberedKeys(db['user-fields'])
+        },
+        total_count: db.macros.length
       };
     });
 
@@ -51795,6 +51811,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
         resources: []
       };
     });
+
     this.get('/api/v1/users/:caseid/tags', function (db) {
       return {
         status: 200,
@@ -52440,6 +52457,72 @@ define('frontend-cp/mirage/factories/limit', ['exports', 'ember-cli-mirage'], fu
   exports['default'] = ember_cli_mirage['default'].Factory.extend({
     name: 'Collaborators',
     limit: ember_cli_mirage.faker.random.number
+  });
+
+});
+define('frontend-cp/mirage/factories/macro-assignee', ['exports', 'ember-cli-mirage'], function (exports, Mirage) {
+
+  'use strict';
+
+  /*eslint-disable camelcase*/
+
+  exports['default'] = Mirage['default'].Factory.extend({
+    type: null,
+    team: null,
+    agent: null,
+    resource_type: 'macro_assignee'
+  });
+
+});
+define('frontend-cp/mirage/factories/macro-property', ['exports', 'ember-cli-mirage'], function (exports, Mirage) {
+
+  'use strict';
+
+  /*eslint-disable camelcase*/
+
+  exports['default'] = Mirage['default'].Factory.extend({
+    type: null,
+    status: null,
+    priority_action: null,
+    priority: null,
+    resource_type: 'macro_property'
+  });
+
+});
+define('frontend-cp/mirage/factories/macro-visibility', ['exports', 'ember-cli-mirage'], function (exports, Mirage) {
+
+  'use strict';
+
+  /*eslint-disable camelcase*/
+
+  exports['default'] = Mirage['default'].Factory.extend({
+    type: 'ALL',
+    team: null,
+    resource_type: 'macro_visibility'
+  });
+
+});
+define('frontend-cp/mirage/factories/macro', ['exports', 'ember-cli-mirage'], function (exports, Mirage) {
+
+  'use strict';
+
+  /*eslint-disable camelcase*/
+
+  exports['default'] = Mirage['default'].Factory.extend({
+    title: '00 Support \\ 00 Welcome',
+    reply_type: null,
+    reply_contents: 'Hello, thank you for contacting Kayako.',
+    agent: {},
+    assignee: {},
+    properties: {},
+    visibility: {},
+    tags: [],
+    usage_count: 0,
+    last_used_at: null,
+    created_at: null,
+    updated_at: null,
+    resource_type: 'macro',
+    resource_url: 'http://support.kayakodev.net/api/v1/cases/macros/499'
   });
 
 });
@@ -53120,6 +53203,17 @@ define('frontend-cp/mirage/scenarios/default', ['exports'], function (exports) {
     server.create('plan', {
       limits: [limit],
       features: [feature]
+    });
+
+    var macroAssignee = server.create('macro-assignee');
+    var macroProperty = server.create('macro-property');
+    var macroVisibility = server.create('macro-visibility');
+
+    server.create('macro', {
+      agent: defaultUser,
+      assignee: macroAssignee,
+      properties: macroProperty,
+      visibility: macroVisibility
     });
   }
 
@@ -70672,7 +70766,7 @@ define('frontend-cp/session/test/entry/template', ['exports'], function (exports
   }()));
 
 });
-define('frontend-cp/tests/acceptance/case/create-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
+define('frontend-cp/tests/acceptance/agent/cases/create-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
 
@@ -70750,7 +70844,7 @@ define('frontend-cp/tests/acceptance/case/create-test', ['frontend-cp/tests/help
   });
 
 });
-define('frontend-cp/tests/acceptance/case/list-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
+define('frontend-cp/tests/acceptance/agent/cases/list-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
 
@@ -70777,7 +70871,7 @@ define('frontend-cp/tests/acceptance/case/list-test', ['frontend-cp/tests/helper
   });
 
 });
-define('frontend-cp/tests/acceptance/case/user-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
+define('frontend-cp/tests/acceptance/agent/cases/user-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
 
@@ -70801,7 +70895,7 @@ define('frontend-cp/tests/acceptance/case/user-test', ['frontend-cp/tests/helper
   });
 
 });
-define('frontend-cp/tests/acceptance/login/reset-password-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
+define('frontend-cp/tests/acceptance/agent/login/reset-password-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
 
@@ -70828,7 +70922,7 @@ define('frontend-cp/tests/acceptance/login/reset-password-test', ['frontend-cp/t
   });
 
 });
-define('frontend-cp/tests/acceptance/manage-user-identities-test', ['ember', 'qunit', 'frontend-cp/tests/helpers/start-app'], function (Ember, qunit, startApp) {
+define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['ember', 'qunit', 'frontend-cp/tests/helpers/start-app'], function (Ember, qunit, startApp) {
 
   'use strict';
 
@@ -71113,7 +71207,7 @@ define('frontend-cp/tests/acceptance/manage-user-identities-test', ['ember', 'qu
   });
 
 });
-define('frontend-cp/tests/acceptance/tabs/tabs-test', ['frontend-cp/tests/helpers/qunit', 'frontend-cp/tests/fixtures/location/mock-location'], function (qunit, MockLocation) {
+define('frontend-cp/tests/acceptance/agent/tabs/tabs-test', ['frontend-cp/tests/helpers/qunit', 'frontend-cp/tests/fixtures/location/mock-location'], function (qunit, MockLocation) {
 
   'use strict';
 
@@ -71463,7 +71557,7 @@ define('frontend-cp/tests/acceptance/tabs/tabs-test', ['frontend-cp/tests/helper
   }
 
 });
-define('frontend-cp/tests/acceptance/user/user-menu-test', function () {
+define('frontend-cp/tests/acceptance/agent/user/user-menu-test', function () {
 
   'use strict';
 
@@ -79669,7 +79763,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"88d34fd0054d469bcfa2","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+deaa9bf8"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"88d34fd0054d469bcfa2","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+81e1058f"});
 }
 
 /* jshint ignore:end */
