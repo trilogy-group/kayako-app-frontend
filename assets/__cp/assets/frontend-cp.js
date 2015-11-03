@@ -1795,7 +1795,7 @@ define('frontend-cp/components/ko-admin/case-fields/edit/regex/template', ['expo
             return morphs;
           },
           statements: [
-            ["inline","input",[],["class","input input-text","type","text","value",["subexpr","@mut",[["get","caseField.regularExpression",["loc",[null,[3,55],[3,82]]]]],[],[]],"required",true],["loc",[null,[3,4],[3,98]]]],
+            ["inline","input",[],["class","input input-text","type","text","value",["subexpr","@mut",[["get","caseField.regularExpression",["loc",[null,[3,55],[3,82]]]]],[],[]]],["loc",[null,[3,4],[3,84]]]],
             ["block","ko-form/field/help",[],[],0,null,["loc",[null,[4,4],[4,109]]]]
           ],
           locals: [],
@@ -1851,8 +1851,8 @@ define('frontend-cp/components/ko-admin/case-fields/edit/regex/template', ['expo
             "column": 0
           },
           "end": {
-            "line": 6,
-            "column": 25
+            "line": 7,
+            "column": 0
           }
         },
         "moduleName": "frontend-cp/components/ko-admin/case-fields/edit/regex/template.hbs"
@@ -2602,7 +2602,7 @@ define('frontend-cp/components/ko-admin/case-fields/edit/template', ['exports'],
               },
               statements: [
                 ["block","ko-form/field/label",[],[],0,null,["loc",[null,[15,8],[15,127]]]],
-                ["inline","input",[],["type","text","class","input-text u-1/1","name","title","value",["subexpr","@mut",[["get","caseField.title",["loc",[null,[16,72],[16,87]]]]],[],[]],"required",true,"disabled",["subexpr","or",[["subexpr","ko-helper",[["get","disabledString",["loc",[null,[16,126],[16,140]]]],["get","isTitleEditable",["loc",[null,[16,141],[16,156]]]]],[],["loc",[null,[16,115],[16,157]]]],["get","isSubmitting",["loc",[null,[16,158],[16,170]]]]],[],["loc",[null,[16,111],[16,171]]]]],["loc",[null,[16,8],[16,173]]]],
+                ["inline","input",[],["type","text","class","input-text u-1/1","name","title","value",["subexpr","@mut",[["get","caseField.title",["loc",[null,[16,72],[16,87]]]]],[],[]],"disabled",["subexpr","or",[["subexpr","ko-helper",[["get","disabledString",["loc",[null,[16,112],[16,126]]]],["get","isTitleEditable",["loc",[null,[16,127],[16,142]]]]],[],["loc",[null,[16,101],[16,143]]]],["get","isSubmitting",["loc",[null,[16,144],[16,156]]]]],[],["loc",[null,[16,97],[16,157]]]]],["loc",[null,[16,8],[16,159]]]],
                 ["inline","ko-form/field/errors",[],["errors",["subexpr","@mut",[["get","caseField.errors.title",["loc",[null,[17,38],[17,60]]]]],[],[]]],["loc",[null,[17,8],[17,62]]]],
                 ["block","ko-form/field/help",[],[],1,null,["loc",[null,[18,8],[18,124]]]]
               ],
@@ -6583,7 +6583,7 @@ define('frontend-cp/components/ko-admin/case-forms/edit/template', ['exports'], 
             },
             statements: [
               ["block","ko-form/field/label",[],[],0,null,["loc",[null,[14,6],[14,119]]]],
-              ["inline","input",[],["class","input input-text","type","text","value",["subexpr","@mut",[["get","caseForm.title",["loc",[null,[15,57],[15,71]]]]],[],[]],"required",true,"disabled",["subexpr","@mut",[["get","isSubmitting",["loc",[null,[15,95],[15,107]]]]],[],[]]],["loc",[null,[15,6],[15,109]]]],
+              ["inline","input",[],["class","input input-text","type","text","value",["subexpr","@mut",[["get","caseForm.title",["loc",[null,[15,57],[15,71]]]]],[],[]],"disabled",["subexpr","@mut",[["get","isSubmitting",["loc",[null,[15,81],[15,93]]]]],[],[]]],["loc",[null,[15,6],[15,95]]]],
               ["inline","ko-form/field/errors",[],["errors",["subexpr","@mut",[["get","caseForm.errors.title",["loc",[null,[16,36],[16,57]]]]],[],[]]],["loc",[null,[16,6],[16,59]]]]
             ],
             locals: [],
@@ -8610,7 +8610,7 @@ define('frontend-cp/components/ko-admin/team/template', ['exports'], function (e
             },
             statements: [
               ["block","ko-form/field/label",[],[],0,null,["loc",[null,[13,6],[13,114]]]],
-              ["inline","input",[],["class","input-text","type","text","value",["subexpr","@mut",[["get","team.title",["loc",[null,[14,51],[14,61]]]]],[],[]],"required",true,"disabled",["subexpr","@mut",[["get","isSubmitting",["loc",[null,[14,85],[14,97]]]]],[],[]]],["loc",[null,[14,6],[14,99]]]]
+              ["inline","input",[],["class","input-text","type","text","value",["subexpr","@mut",[["get","team.title",["loc",[null,[14,51],[14,61]]]]],[],[]],"disabled",["subexpr","@mut",[["get","isSubmitting",["loc",[null,[14,71],[14,83]]]]],[],[]]],["loc",[null,[14,6],[14,85]]]]
             ],
             locals: [],
             templates: [child0]
@@ -10488,7 +10488,7 @@ define('frontend-cp/components/ko-admin/views/edit/template', ['exports'], funct
             },
             statements: [
               ["block","ko-form/field/label",[],[],0,null,["loc",[null,[14,6],[14,114]]]],
-              ["inline","input",[],["class","input input-text","type","text","value",["subexpr","@mut",[["get","currentView.title",["loc",[null,[15,57],[15,74]]]]],[],[]],"required",true,"disabled",["subexpr","@mut",[["get","isSubmitting",["loc",[null,[15,98],[15,110]]]]],[],[]]],["loc",[null,[15,6],[15,112]]]],
+              ["inline","input",[],["class","input input-text","type","text","value",["subexpr","@mut",[["get","currentView.title",["loc",[null,[15,57],[15,74]]]]],[],[]],"disabled",["subexpr","@mut",[["get","isSubmitting",["loc",[null,[15,84],[15,96]]]]],[],[]]],["loc",[null,[15,6],[15,98]]]],
               ["inline","ko-form/field/errors",[],["errors",["subexpr","@mut",[["get","currentView.errors.title",["loc",[null,[16,36],[16,60]]]]],[],[]]],["loc",[null,[16,6],[16,62]]]]
             ],
             locals: [],
@@ -12131,7 +12131,10 @@ define('frontend-cp/components/ko-agent-dropdown/create-case/component', ['expor
 
         function createCaseModel(fields, store) {
           var userModel = fields.requester.value;
-          var userId = userModel.get('id');
+          var userId = undefined;
+          if (userModel) {
+            userModel.get('id');
+          };
 
           var userChannels = findUserChannels(userId);
           var defaultCaseFormPromise = findDefaultCaseForm();
@@ -12946,7 +12949,7 @@ define('frontend-cp/components/ko-agent-dropdown/create-organisation/template', 
           },
           statements: [
             ["block","ko-form/field/label",[],[],0,null,["loc",[null,[13,6],[13,130]]]],
-            ["inline","input",[],["type","text","tabindex",1,"class","ko-agent-dropdown-create-organisation__name input-text u-1/1","name","name","value",["subexpr","@mut",[["get","organization.name",["loc",[null,[14,124],[14,141]]]]],[],[]],"required",true,"disabled",["subexpr","@mut",[["get","isSubmitting",["loc",[null,[14,165],[14,177]]]]],[],[]]],["loc",[null,[14,6],[14,179]]]],
+            ["inline","input",[],["type","text","tabindex",1,"class","ko-agent-dropdown-create-organisation__name input-text u-1/1","name","name","value",["subexpr","@mut",[["get","organization.name",["loc",[null,[14,124],[14,141]]]]],[],[]],"disabled",["subexpr","@mut",[["get","isSubmitting",["loc",[null,[14,151],[14,163]]]]],[],[]]],["loc",[null,[14,6],[14,165]]]],
             ["inline","ko-form/field/errors",[],["errors",["subexpr","@mut",[["get","organization.errors.name",["loc",[null,[15,36],[15,60]]]]],[],[]]],["loc",[null,[15,6],[15,62]]]]
           ],
           locals: [],
@@ -26880,8 +26883,7 @@ define('frontend-cp/components/ko-form/buttons/component', ['exports', 'ember', 
       return this.nearestOfType(KoForm['default']);
     }),
 
-    isSubmitting: Ember['default'].computed.oneWay('koForm.isSubmitting'),
-    isSubmitDisabled: Ember['default'].computed.oneWay('koForm.isSubmitDisabled')
+    isSubmitting: Ember['default'].computed.oneWay('koForm.isSubmitting')
   });
 
 });
@@ -27058,18 +27060,16 @@ define('frontend-cp/components/ko-form/buttons/template', ['exports'], function 
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
           var element0 = dom.childAt(fragment, [1]);
-          var morphs = new Array(4);
+          var morphs = new Array(3);
           morphs[0] = dom.createAttrMorph(element0, 'type');
           morphs[1] = dom.createAttrMorph(element0, 'onclick');
-          morphs[2] = dom.createAttrMorph(element0, 'disabled');
-          morphs[3] = dom.createMorphAt(element0,0,0);
+          morphs[2] = dom.createMorphAt(element0,0,0);
           return morphs;
         },
         statements: [
           ["attribute","type",["subexpr","if",[["get","onSubmit",["loc",[null,[11,24],[11,32]]]],"button","submit"],[],["loc",[null,[11,19],[11,52]]]]],
           ["attribute","onclick",["get","onSubmit",["loc",[null,[11,108],[11,116]]]]],
-          ["attribute","disabled",["get","isSubmitDisabled",["loc",[null,[11,130],[11,146]]]]],
-          ["content","submitLabel",["loc",[null,[11,149],[11,164]]]]
+          ["content","submitLabel",["loc",[null,[11,119],[11,134]]]]
         ],
         locals: [],
         templates: []
@@ -27085,8 +27085,8 @@ define('frontend-cp/components/ko-form/buttons/template', ['exports'], function 
             "column": 0
           },
           "end": {
-            "line": 14,
-            "column": 6
+            "line": 15,
+            "column": 0
           }
         },
         "moduleName": "frontend-cp/components/ko-form/buttons/template.hbs"
@@ -27113,6 +27113,8 @@ define('frontend-cp/components/ko-form/buttons/template', ['exports'], function 
         dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n");
         dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
         return el0;
       },
@@ -27192,7 +27194,7 @@ define('frontend-cp/components/ko-form/component', ['exports', 'ember'], functio
       }
 
       function isFieldValid(value, validator) {
-        if (!validator) {
+        if (!validator || !value) {
           return true;
         }
         var errors = validator(value);
@@ -27283,7 +27285,7 @@ define('frontend-cp/components/ko-form/field/component', ['exports', 'ember'], f
     validationErrors: Ember['default'].computed('field.value', 'field.validator', function () {
       var value = this.get('field.value');
       var validator = this.get('field.validator');
-      if (!validator) {
+      if (!validator || !value) {
         return null;
       }
       var errors = validator(value);
@@ -62229,8 +62231,8 @@ define('frontend-cp/session/admin/manage/views/new/template', ['exports'], funct
             "column": 0
           },
           "end": {
-            "line": 5,
-            "column": 2
+            "line": 7,
+            "column": 0
           }
         },
         "moduleName": "frontend-cp/session/admin/manage/views/new/template.hbs"
@@ -62242,17 +62244,18 @@ define('frontend-cp/session/admin/manage/views/new/template', ['exports'], funct
         var el0 = dom.createDocumentFragment();
         var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
         var morphs = new Array(1);
         morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
         dom.insertBoundary(fragment, 0);
-        dom.insertBoundary(fragment, null);
         return morphs;
       },
       statements: [
-        ["inline","ko-admin/views/edit",[],["currentView",["subexpr","@mut",[["get","model",["loc",[null,[2,14],[2,19]]]]],[],[]],"title",["subexpr","format-message",[["subexpr","intl-get",["admin.views.heading.new"],[],["loc",[null,[3,24],[3,60]]]]],[],["loc",[null,[3,8],[3,61]]]],"onSuccess",["subexpr","action",["saved"],[],["loc",[null,[4,12],[4,28]]]]],["loc",[null,[1,0],[5,2]]]]
+        ["inline","ko-admin/views/edit",[],["currentView",["subexpr","@mut",[["get","model",["loc",[null,[2,14],[2,19]]]]],[],[]],"title",["subexpr","format-message",[["subexpr","intl-get",["admin.views.heading.new"],[],["loc",[null,[3,24],[3,60]]]]],[],["loc",[null,[3,8],[3,61]]]],"onCancel",["subexpr","action",["transitionToIndexRoute"],[],["loc",[null,[4,11],[4,44]]]],"onSuccess",["subexpr","action",["saved"],[],["loc",[null,[5,12],[5,28]]]]],["loc",[null,[1,0],[6,2]]]]
       ],
       locals: [],
       templates: []
@@ -72466,7 +72469,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
   });
 
   qunit.test('it renders', function (assert) {
-    assert.expect(11);
+    assert.expect(10);
 
     this.render(Ember['default'].HTMLBars.template((function () {
       return {
@@ -72512,8 +72515,8 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
 
     var $nameInputElement = getFormControl($formElement, 'full_name');
     var $emailInputElement = getFormControl($formElement, 'email');
-    var $submitButtonElement = getFormControl($formElement, 'submit');
     var $cancelButtonElement = getFormControl($formElement, 'cancel');
+    var $submitButtonElement = getFormControl($formElement, 'submit');
 
     var $infoElement = this.$('.ko-agent-dropdown__footer');
 
@@ -72529,14 +72532,13 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
     assert.equal($nameInputElement.prop('placeholder'), '');
 
     assert.equal($submitButtonElement.text().trim(), 'MESSAGE %%generic.create_user_panel.submit%%');
-    assert.equal($submitButtonElement.prop('disabled'), true);
     assert.equal($cancelButtonElement.text().trim(), 'MESSAGE %%generic.cancel%%');
 
     assert.equal($infoElement.text().trim(), 'MESSAGE %%generic.create_user_panel.info%%');
   });
 
   qunit.test('it validates the form fields before allowing submit', function (assert) {
-    assert.expect(29);
+    assert.expect(19);
 
     this.render(Ember['default'].HTMLBars.template((function () {
       return {
@@ -72580,13 +72582,11 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
 
     var $nameInputElement = getFormControl($formElement, 'full_name');
     var $emailInputElement = getFormControl($formElement, 'email');
-    var $submitButtonElement = getFormControl($formElement, 'submit');
 
     var nameErrors = getFieldErrors($formElement, 'full_name');
     var emailErrors = getFieldErrors($formElement, 'email');
     assert.deepEqual(nameErrors, []);
     assert.deepEqual(emailErrors, []);
-    assert.ok($submitButtonElement.prop('disabled'));
 
     Ember['default'].run(function () {
       $nameInputElement.focusin();
@@ -72595,9 +72595,8 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
 
     nameErrors = getFieldErrors($formElement, 'full_name');
     emailErrors = getFieldErrors($formElement, 'email');
-    assert.deepEqual(nameErrors, ['generic.create_user_panel.name_required']);
+    assert.deepEqual(nameErrors, []);
     assert.deepEqual(emailErrors, []);
-    assert.ok($submitButtonElement.prop('disabled'));
 
     Ember['default'].run(function () {
       $emailInputElement.focusin();
@@ -72605,9 +72604,8 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
     });
     nameErrors = getFieldErrors($formElement, 'full_name');
     emailErrors = getFieldErrors($formElement, 'email');
-    assert.deepEqual(nameErrors, ['generic.create_user_panel.name_required']);
-    assert.deepEqual(emailErrors, ['generic.create_user_panel.email_required']);
-    assert.ok($submitButtonElement.prop('disabled'));
+    assert.deepEqual(nameErrors, []);
+    assert.deepEqual(emailErrors, []);
 
     Ember['default'].run(function () {
       fillIn($nameInputElement, 'Tim Kendrick');
@@ -72615,15 +72613,13 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
     nameErrors = getFieldErrors($formElement, 'full_name');
     emailErrors = getFieldErrors($formElement, 'email');
     assert.deepEqual(nameErrors, []);
-    assert.deepEqual(emailErrors, ['generic.create_user_panel.email_required']);
-    assert.ok($submitButtonElement.prop('disabled'));
+    assert.deepEqual(emailErrors, []);
 
     Ember['default'].run(function () {
       fillIn($emailInputElement, 'tim.kendrick@kayako');
     });
     emailErrors = getFieldErrors($formElement, 'email');
     assert.deepEqual(emailErrors, ['generic.create_user_panel.email_invalid']);
-    assert.ok($submitButtonElement.prop('disabled'));
 
     Ember['default'].run(function () {
       fillIn($nameInputElement, 'Tim Kendrick');
@@ -72633,16 +72629,14 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
     emailErrors = getFieldErrors($formElement, 'email');
     assert.deepEqual(nameErrors, []);
     assert.deepEqual(emailErrors, []);
-    assert.ok(!$submitButtonElement.prop('disabled'));
 
     Ember['default'].run(function () {
       fillIn($nameInputElement, '');
     });
     nameErrors = getFieldErrors($formElement, 'full_name');
     emailErrors = getFieldErrors($formElement, 'email');
-    assert.deepEqual(nameErrors, ['generic.create_user_panel.name_required']);
+    assert.deepEqual(nameErrors, []);
     assert.deepEqual(emailErrors, []);
-    assert.ok($submitButtonElement.prop('disabled'));
 
     Ember['default'].run(function () {
       fillIn($nameInputElement, 'Tim Kendrick');
@@ -72651,7 +72645,6 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
     emailErrors = getFieldErrors($formElement, 'email');
     assert.deepEqual(nameErrors, []);
     assert.deepEqual(emailErrors, []);
-    assert.ok(!$submitButtonElement.prop('disabled'));
 
     Ember['default'].run(function () {
       fillIn($emailInputElement, '');
@@ -72659,8 +72652,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
     nameErrors = getFieldErrors($formElement, 'full_name');
     emailErrors = getFieldErrors($formElement, 'email');
     assert.deepEqual(nameErrors, []);
-    assert.deepEqual(emailErrors, ['generic.create_user_panel.email_required']);
-    assert.ok($submitButtonElement.prop('disabled'));
+    assert.deepEqual(emailErrors, []);
 
     Ember['default'].run(function () {
       fillIn($emailInputElement, 'tim.kendrick@kayako.com');
@@ -72669,13 +72661,12 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
     emailErrors = getFieldErrors($formElement, 'email');
     assert.deepEqual(nameErrors, []);
     assert.deepEqual(emailErrors, []);
-    assert.ok(!$submitButtonElement.prop('disabled'));
   });
 
   qunit.test('it submits the form', function (assert) {
     var _this = this;
 
-    assert.expect(21);
+    assert.expect(19);
     var done = assert.async();
 
     var onSubmit = sinon['default'].spy();
@@ -72728,7 +72719,6 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
 
     var $nameInputElement = getFormControl($formElement, 'full_name');
     var $emailInputElement = getFormControl($formElement, 'email');
-    var $submitButtonElement = getFormControl($formElement, 'submit');
     var $cancelButtonElement = getFormControl($formElement, 'cancel');
     var $loaderElement = $formElement.find('.ko-form_buttons__loader');
 
@@ -72750,7 +72740,6 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
       var $loaderElement = $formElement.find('.ko-form_buttons__loader');
 
       assert.equal($formElement.hasClass('ko-form--is-submitting'), true);
-      assert.equal($submitButtonElement.prop('disabled'), true);
       assert.equal($cancelButtonElement.length, 0);
       assert.equal($loaderElement.length, 1);
 
@@ -72764,7 +72753,6 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
       var $loaderElement = $formElement.find('.ko-form_buttons__loader');
 
       assert.equal($formElement.hasClass('ko-form--is-submitting'), false);
-      assert.equal($submitButtonElement.prop('disabled'), false);
       assert.equal($cancelButtonElement.length, 1);
       assert.equal($loaderElement.length, 0);
 
@@ -79763,7 +79751,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"88d34fd0054d469bcfa2","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+81e1058f"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"88d34fd0054d469bcfa2","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+8fdfdf66"});
 }
 
 /* jshint ignore:end */
