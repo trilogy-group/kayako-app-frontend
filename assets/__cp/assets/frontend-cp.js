@@ -13200,6 +13200,7 @@ define('frontend-cp/components/ko-agent-dropdown/create-user/component', ['expor
     fields: null,
 
     intlService: Ember['default'].inject.service('intl'),
+    notificationService: Ember['default'].inject.service('notification'),
     store: Ember['default'].inject.service(),
 
     init: function init() {
@@ -13234,6 +13235,22 @@ define('frontend-cp/components/ko-agent-dropdown/create-user/component', ['expor
     },
 
     actions: {
+      onError: function onError(error) {
+        if (error.errors.findBy('code', 'FIELD_DUPLICATE')) {
+          var intlService = this.get('intlService');
+          this.get('notificationService').removeAll();
+          this.get('notificationService').add({
+            type: 'error',
+            title: intlService.findTranslationByKey('generic.create_user_panel.user_exists_toast').translation,
+            autodismiss: true,
+            dismissable: false
+          });
+          this.set('fields.email.errors', [{
+            message: intlService.findTranslationByKey('generic.create_user_panel.user_exists').translation
+          }]);
+        }
+      },
+
       submit: function submit() {
         var fields = this.get('fields');
         var store = this.get('store');
@@ -13270,11 +13287,11 @@ define('frontend-cp/components/ko-agent-dropdown/create-user/template', ['export
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 12,
+                  "line": 13,
                   "column": 6
                 },
                 "end": {
-                  "line": 12,
+                  "line": 13,
                   "column": 98
                 }
               },
@@ -13297,7 +13314,7 @@ define('frontend-cp/components/ko-agent-dropdown/create-user/template', ['export
               return morphs;
             },
             statements: [
-              ["inline","format-message",[["subexpr","intl-get",["generic.create_user_panel.name_label"],[],["loc",[null,[12,47],[12,96]]]]],[],["loc",[null,[12,30],[12,98]]]]
+              ["inline","format-message",[["subexpr","intl-get",["generic.create_user_panel.name_label"],[],["loc",[null,[13,47],[13,96]]]]],[],["loc",[null,[13,30],[13,98]]]]
             ],
             locals: [],
             templates: []
@@ -13309,11 +13326,11 @@ define('frontend-cp/components/ko-agent-dropdown/create-user/template', ['export
             "loc": {
               "source": null,
               "start": {
-                "line": 11,
+                "line": 12,
                 "column": 4
               },
               "end": {
-                "line": 14,
+                "line": 15,
                 "column": 4
               }
             },
@@ -13343,8 +13360,8 @@ define('frontend-cp/components/ko-agent-dropdown/create-user/template', ['export
             return morphs;
           },
           statements: [
-            ["block","ko-form/field/label",[],[],0,null,["loc",[null,[12,6],[12,122]]]],
-            ["inline","input",[],["type","text","tabindex",1,"class","ko-agent-dropdown-create-user__first-name input-text u-1/1","name","full_name","value",["subexpr","@mut",[["get","fields.full_name.value",["loc",[null,[13,127],[13,149]]]]],[],[]],"disabled",["subexpr","@mut",[["get","isSubmitting",["loc",[null,[13,159],[13,171]]]]],[],[]]],["loc",[null,[13,6],[13,173]]]]
+            ["block","ko-form/field/label",[],[],0,null,["loc",[null,[13,6],[13,122]]]],
+            ["inline","input",[],["type","text","tabindex",1,"class","ko-agent-dropdown-create-user__first-name input-text u-1/1","name","full_name","value",["subexpr","@mut",[["get","fields.full_name.value",["loc",[null,[14,127],[14,149]]]]],[],[]],"disabled",["subexpr","@mut",[["get","isSubmitting",["loc",[null,[14,159],[14,171]]]]],[],[]]],["loc",[null,[14,6],[14,173]]]]
           ],
           locals: [],
           templates: [child0]
@@ -13358,11 +13375,11 @@ define('frontend-cp/components/ko-agent-dropdown/create-user/template', ['export
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 17,
+                  "line": 18,
                   "column": 6
                 },
                 "end": {
-                  "line": 17,
+                  "line": 18,
                   "column": 99
                 }
               },
@@ -13385,7 +13402,7 @@ define('frontend-cp/components/ko-agent-dropdown/create-user/template', ['export
               return morphs;
             },
             statements: [
-              ["inline","format-message",[["subexpr","intl-get",["generic.create_user_panel.email_label"],[],["loc",[null,[17,47],[17,97]]]]],[],["loc",[null,[17,30],[17,99]]]]
+              ["inline","format-message",[["subexpr","intl-get",["generic.create_user_panel.email_label"],[],["loc",[null,[18,47],[18,97]]]]],[],["loc",[null,[18,30],[18,99]]]]
             ],
             locals: [],
             templates: []
@@ -13397,11 +13414,11 @@ define('frontend-cp/components/ko-agent-dropdown/create-user/template', ['export
             "loc": {
               "source": null,
               "start": {
-                "line": 16,
+                "line": 17,
                 "column": 4
               },
               "end": {
-                "line": 19,
+                "line": 20,
                 "column": 4
               }
             },
@@ -13431,8 +13448,8 @@ define('frontend-cp/components/ko-agent-dropdown/create-user/template', ['export
             return morphs;
           },
           statements: [
-            ["block","ko-form/field/label",[],[],0,null,["loc",[null,[17,6],[17,123]]]],
-            ["inline","input",[],["type","text","tabindex",2,"class","input-text u-1/1","name","email","value",["subexpr","@mut",[["get","fields.email.value",["loc",[null,[18,81],[18,99]]]]],[],[]],"disabled",["subexpr","@mut",[["get","isSubmitting",["loc",[null,[18,109],[18,121]]]]],[],[]]],["loc",[null,[18,6],[18,123]]]]
+            ["block","ko-form/field/label",[],[],0,null,["loc",[null,[18,6],[18,123]]]],
+            ["inline","input",[],["type","text","tabindex",2,"class","input-text u-1/1","name","email","value",["subexpr","@mut",[["get","fields.email.value",["loc",[null,[19,81],[19,99]]]]],[],[]],"disabled",["subexpr","@mut",[["get","isSubmitting",["loc",[null,[19,109],[19,121]]]]],[],[]]],["loc",[null,[19,6],[19,123]]]]
           ],
           locals: [],
           templates: [child0]
@@ -13448,7 +13465,7 @@ define('frontend-cp/components/ko-agent-dropdown/create-user/template', ['export
               "column": 2
             },
             "end": {
-              "line": 27,
+              "line": 28,
               "column": 2
             }
           },
@@ -13490,10 +13507,10 @@ define('frontend-cp/components/ko-agent-dropdown/create-user/template', ['export
           return morphs;
         },
         statements: [
-          ["block","ko-form/field",[],["field",["subexpr","@mut",[["get","fields.full_name",["loc",[null,[11,27],[11,43]]]]],[],[]]],0,null,["loc",[null,[11,4],[14,22]]]],
-          ["block","ko-form/field",[],["field",["subexpr","@mut",[["get","fields.email",["loc",[null,[16,27],[16,39]]]]],[],[]]],1,null,["loc",[null,[16,4],[19,22]]]],
-          ["inline","format-message",[["subexpr","intl-get",["generic.create_user_panel.info"],[],["loc",[null,[21,58],[21,101]]]]],[],["loc",[null,[21,41],[21,103]]]],
-          ["inline","ko-form/buttons",[],["onCancel",["subexpr","@mut",[["get","onCancel",["loc",[null,[23,15],[23,23]]]]],[],[]],"submitLabel",["subexpr","format-message",[["subexpr","intl-get",["generic.create_user_panel.submit"],[],["loc",[null,[24,34],[24,79]]]]],[],["loc",[null,[24,18],[24,80]]]],"cancelLabel",["subexpr","format-message",[["subexpr","intl-get",["generic.cancel"],[],["loc",[null,[25,34],[25,61]]]]],[],["loc",[null,[25,18],[25,62]]]]],["loc",[null,[22,4],[26,6]]]]
+          ["block","ko-form/field",[],["field",["subexpr","@mut",[["get","fields.full_name",["loc",[null,[12,27],[12,43]]]]],[],[]]],0,null,["loc",[null,[12,4],[15,22]]]],
+          ["block","ko-form/field",[],["field",["subexpr","@mut",[["get","fields.email",["loc",[null,[17,27],[17,39]]]]],[],[]]],1,null,["loc",[null,[17,4],[20,22]]]],
+          ["inline","format-message",[["subexpr","intl-get",["generic.create_user_panel.info"],[],["loc",[null,[22,58],[22,101]]]]],[],["loc",[null,[22,41],[22,103]]]],
+          ["inline","ko-form/buttons",[],["onCancel",["subexpr","@mut",[["get","onCancel",["loc",[null,[24,15],[24,23]]]]],[],[]],"submitLabel",["subexpr","format-message",[["subexpr","intl-get",["generic.create_user_panel.submit"],[],["loc",[null,[25,34],[25,79]]]]],[],["loc",[null,[25,18],[25,80]]]],"cancelLabel",["subexpr","format-message",[["subexpr","intl-get",["generic.cancel"],[],["loc",[null,[26,34],[26,61]]]]],[],["loc",[null,[26,18],[26,62]]]]],["loc",[null,[23,4],[27,6]]]]
         ],
         locals: ["_","isSubmitting"],
         templates: [child0, child1]
@@ -13509,7 +13526,7 @@ define('frontend-cp/components/ko-agent-dropdown/create-user/template', ['export
             "column": 0
           },
           "end": {
-            "line": 29,
+            "line": 30,
             "column": 0
           }
         },
@@ -13553,7 +13570,7 @@ define('frontend-cp/components/ko-agent-dropdown/create-user/template', ['export
       },
       statements: [
         ["inline","format-message",[["subexpr","intl-get",["generic.create_user_panel.title"],[],["loc",[null,[2,56],[2,100]]]]],[],["loc",[null,[2,39],[2,102]]]],
-        ["block","ko-form",[],["fields",["subexpr","@mut",[["get","fields",["loc",[null,[7,11],[7,17]]]]],[],[]],"onSubmit",["subexpr","action",["submit"],[],["loc",[null,[8,13],[8,30]]]],"onSuccess",["subexpr","@mut",[["get","onCreate",["loc",[null,[9,14],[9,22]]]]],[],[]]],0,null,["loc",[null,[6,2],[27,14]]]]
+        ["block","ko-form",[],["fields",["subexpr","@mut",[["get","fields",["loc",[null,[7,11],[7,17]]]]],[],[]],"onSubmit",["subexpr","action",["submit"],[],["loc",[null,[8,13],[8,30]]]],"onSuccess",["subexpr","@mut",[["get","onCreate",["loc",[null,[9,14],[9,22]]]]],[],[]],"onError",["subexpr","action",["onError"],[],["loc",[null,[10,12],[10,30]]]]],0,null,["loc",[null,[6,2],[28,14]]]]
       ],
       locals: [],
       templates: [child0]
@@ -49437,6 +49454,8 @@ define('frontend-cp/locales/en-us/generic', ['exports'], function (exports) {
     "create_user_panel.submit": "Add user",
     "create_user_panel.info": "Other identities can be added once the user has been created.",
     "create_user_panel.cancel": "cancel",
+    "create_user_panel.user_exists": "This email already in use.",
+    "create_user_panel.user_exists_toast": "This email already belongs to someone",
 
     "create_organisation_panel.title": "Create a new organization",
     "create_organisation_panel.name_label": "Organization Name",
@@ -79768,7 +79787,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"88d34fd0054d469bcfa2","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+97365650"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"88d34fd0054d469bcfa2","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+621e12c9"});
 }
 
 /* jshint ignore:end */
