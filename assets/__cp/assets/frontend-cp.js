@@ -14764,6 +14764,9 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
     replyType: 'REPLY',
     scroller: null,
     updateTabNameAction: 'updateTabName',
+    isSaving: false,
+    isCaseEdited: false,
+    isContentEdited: false,
 
     suggestedPeople: null,
     selectedPeople: [],
@@ -15195,6 +15198,9 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
         }
       });
       editedCaseFields.set('form', this.get('case').hasDirtyBelongsToRelationship('form'));
+      this.set('isCaseEdited', Object.values(editedCaseFields).reduce(function (accum, current) {
+        return accum || current;
+      }));
     },
 
     isTagsFieldEdited: Ember['default'].computed('cachedCaseTags.[]', 'case.tags.@each.id', function () {
@@ -15208,6 +15214,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       this.get('casePostEditor').clear();
       this.get('casePostEditor.postEditor').clear();
       this.set('shouldIgnoreNextPusherUpdate', false);
+      this.set('isSaving', false);
 
       this.updateDirtyCaseFieldHash();
     },
@@ -15243,6 +15250,18 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       if (!this.get('headerSticky')) {
         this.attrs.onPostIdChange(null);
       }
+    }),
+
+    postContentEdited: Ember['default'].observer('casePostEditor.postEditor.currentText', function () {
+      this.set('isContentEdited', this.get('casePostEditor.postEditor.currentText') !== '');
+    }),
+
+    isEdited: Ember['default'].computed('isContentEdited', 'isCaseEdited', function () {
+      return this.get('isContentEdited') || this.get('isCaseEdited');
+    }),
+
+    submitDisabled: Ember['default'].computed('isSaving', 'isEdited', function () {
+      return this.get('isSaving') || !this.get('isEdited');
     }),
 
     /**
@@ -15410,6 +15429,8 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
 
         this.sendAction('updateTabNameAction', this.get('case.subject'));
 
+        this.set('isSaving', true);
+
         // @TODO we need to do something better here, UI wise.
         if (uploads.filter(function (u) {
           return u.get('status') === 'PROGRESS';
@@ -15419,6 +15440,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
             title: 'Upload in progress',
             autodismiss: true
           });
+          this.set('isSaving', false);
           return;
         }
 
@@ -15434,6 +15456,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
           }, function (e) {
             _this13.set('errors', e.errors);
             _this13.set('shouldIgnoreNextPusherUpdate', false);
+            _this13.set('isSaving', false);
           });
         } else if (!post && !attachmentIds.length) {
           // we are just updating the case -- don't create a case-reply
@@ -15444,6 +15467,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
           }, function (e) {
             _this13.set('errors', e.errors);
             _this13.set('shouldIgnoreNextPusherUpdate', false);
+            _this13.set('isSaving', false);
           });
         } else {
           if (this.get('replyType') === 'NOTE') {
@@ -15455,6 +15479,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
             }, function (e) {
               _this13.set('errors', e.errors);
               _this13.set('shouldIgnoreNextPusherUpdate', false);
+              _this13.set('isSaving', false);
             });
           } else {
             var options = {
@@ -15473,6 +15498,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
             }, function (e) {
               _this13.set('errors', e.errors);
               _this13.set('shouldIgnoreNextPusherUpdate', false);
+              _this13.set('isSaving', false);
             });
           }
         }
@@ -17589,12 +17615,12 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 108,
-              "column": 8
+              "line": 105,
+              "column": 12
             },
             "end": {
-              "line": 117,
-              "column": 8
+              "line": 107,
+              "column": 12
             }
           },
           "moduleName": "frontend-cp/components/ko-case-content/template.hbs"
@@ -17604,7 +17630,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
         hasRendered: false,
         buildFragment: function buildFragment(dom) {
           var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("          ");
+          var el1 = dom.createTextNode("              ");
           dom.appendChild(el0, el1);
           var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
@@ -17618,7 +17644,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["inline","ko-case-content/field/assignee",[],["case",["subexpr","@mut",[["get","case",["loc",[null,[110,17],[110,21]]]]],[],[]],"field",["subexpr","@mut",[["get","assigneeField",["loc",[null,[111,18],[111,31]]]]],[],[]],"errors",["subexpr","@mut",[["get","errors",["loc",[null,[112,19],[112,25]]]]],[],[]],"editedCustomFields",["subexpr","@mut",[["get","editedCaseFields",["loc",[null,[113,31],[113,47]]]]],[],[]],"fieldsEditedByPusher",["subexpr","@mut",[["get","case.propertiesChangeViaPusher",["loc",[null,[114,33],[114,63]]]]],[],[]],"onAssigneeSelect",["subexpr","action",["setAssignee"],[],["loc",[null,[115,29],[115,51]]]]],["loc",[null,[109,10],[116,12]]]]
+          ["inline","ko-loader",[],["class","ko-case-content__button-loading"],["loc",[null,[106,14],[106,67]]]]
         ],
         locals: [],
         templates: []
@@ -17631,12 +17657,12 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 119,
-              "column": 8
+              "line": 107,
+              "column": 12
             },
             "end": {
-              "line": 128,
-              "column": 8
+              "line": 109,
+              "column": 12
             }
           },
           "moduleName": "frontend-cp/components/ko-case-content/template.hbs"
@@ -17646,7 +17672,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
         hasRendered: false,
         buildFragment: function buildFragment(dom) {
           var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("          ");
+          var el1 = dom.createTextNode("              ");
           dom.appendChild(el0, el1);
           var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
@@ -17660,7 +17686,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["inline","ko-case-content/field/status",[],["case",["subexpr","@mut",[["get","case",["loc",[null,[121,17],[121,21]]]]],[],[]],"field",["subexpr","@mut",[["get","statusField",["loc",[null,[122,18],[122,29]]]]],[],[]],"errors",["subexpr","@mut",[["get","errors",["loc",[null,[123,19],[123,25]]]]],[],[]],"editedCustomFields",["subexpr","@mut",[["get","editedCaseFields",["loc",[null,[124,31],[124,47]]]]],[],[]],"fieldsEditedByPusher",["subexpr","@mut",[["get","case.propertiesChangeViaPusher",["loc",[null,[125,33],[125,63]]]]],[],[]],"onValueChanged",["subexpr","action",["setStatus"],[],["loc",[null,[126,27],[126,47]]]]],["loc",[null,[120,10],[127,12]]]]
+          ["inline","format-message",[["subexpr","intl-get",["cases.submit"],[],["loc",[null,[108,31],[108,56]]]]],[],["loc",[null,[108,14],[108,58]]]]
         ],
         locals: [],
         templates: []
@@ -17673,11 +17699,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 130,
+              "line": 114,
               "column": 8
             },
             "end": {
-              "line": 139,
+              "line": 123,
               "column": 8
             }
           },
@@ -17702,7 +17728,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["inline","ko-case-content/field/type",[],["case",["subexpr","@mut",[["get","case",["loc",[null,[132,17],[132,21]]]]],[],[]],"field",["subexpr","@mut",[["get","typeField",["loc",[null,[133,18],[133,27]]]]],[],[]],"errors",["subexpr","@mut",[["get","errors",["loc",[null,[134,19],[134,25]]]]],[],[]],"editedCustomFields",["subexpr","@mut",[["get","editedCaseFields",["loc",[null,[135,31],[135,47]]]]],[],[]],"fieldsEditedByPusher",["subexpr","@mut",[["get","case.propertiesChangeViaPusher",["loc",[null,[136,33],[136,63]]]]],[],[]],"onValueChanged",["subexpr","action",["setType"],[],["loc",[null,[137,27],[137,45]]]]],["loc",[null,[131,10],[138,12]]]]
+          ["inline","ko-case-content/field/assignee",[],["case",["subexpr","@mut",[["get","case",["loc",[null,[116,17],[116,21]]]]],[],[]],"field",["subexpr","@mut",[["get","assigneeField",["loc",[null,[117,18],[117,31]]]]],[],[]],"errors",["subexpr","@mut",[["get","errors",["loc",[null,[118,19],[118,25]]]]],[],[]],"editedCustomFields",["subexpr","@mut",[["get","editedCaseFields",["loc",[null,[119,31],[119,47]]]]],[],[]],"fieldsEditedByPusher",["subexpr","@mut",[["get","case.propertiesChangeViaPusher",["loc",[null,[120,33],[120,63]]]]],[],[]],"onAssigneeSelect",["subexpr","action",["setAssignee"],[],["loc",[null,[121,29],[121,51]]]]],["loc",[null,[115,10],[122,12]]]]
         ],
         locals: [],
         templates: []
@@ -17715,11 +17741,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 141,
+              "line": 125,
               "column": 8
             },
             "end": {
-              "line": 150,
+              "line": 134,
               "column": 8
             }
           },
@@ -17744,13 +17770,97 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["inline","ko-case-content/field/priority",[],["case",["subexpr","@mut",[["get","case",["loc",[null,[143,17],[143,21]]]]],[],[]],"field",["subexpr","@mut",[["get","priorityField",["loc",[null,[144,18],[144,31]]]]],[],[]],"errors",["subexpr","@mut",[["get","errors",["loc",[null,[145,19],[145,25]]]]],[],[]],"editedCustomFields",["subexpr","@mut",[["get","editedCaseFields",["loc",[null,[146,31],[146,47]]]]],[],[]],"fieldsEditedByPusher",["subexpr","@mut",[["get","case.propertiesChangeViaPusher",["loc",[null,[147,33],[147,63]]]]],[],[]],"onValueChanged",["subexpr","action",["setPriority"],[],["loc",[null,[148,27],[148,49]]]]],["loc",[null,[142,10],[149,12]]]]
+          ["inline","ko-case-content/field/status",[],["case",["subexpr","@mut",[["get","case",["loc",[null,[127,17],[127,21]]]]],[],[]],"field",["subexpr","@mut",[["get","statusField",["loc",[null,[128,18],[128,29]]]]],[],[]],"errors",["subexpr","@mut",[["get","errors",["loc",[null,[129,19],[129,25]]]]],[],[]],"editedCustomFields",["subexpr","@mut",[["get","editedCaseFields",["loc",[null,[130,31],[130,47]]]]],[],[]],"fieldsEditedByPusher",["subexpr","@mut",[["get","case.propertiesChangeViaPusher",["loc",[null,[131,33],[131,63]]]]],[],[]],"onValueChanged",["subexpr","action",["setStatus"],[],["loc",[null,[132,27],[132,47]]]]],["loc",[null,[126,10],[133,12]]]]
         ],
         locals: [],
         templates: []
       };
     }());
     var child9 = (function() {
+      return {
+        meta: {
+          "revision": "Ember@1.13.10",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 136,
+              "column": 8
+            },
+            "end": {
+              "line": 145,
+              "column": 8
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-case-content/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("          ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+          return morphs;
+        },
+        statements: [
+          ["inline","ko-case-content/field/type",[],["case",["subexpr","@mut",[["get","case",["loc",[null,[138,17],[138,21]]]]],[],[]],"field",["subexpr","@mut",[["get","typeField",["loc",[null,[139,18],[139,27]]]]],[],[]],"errors",["subexpr","@mut",[["get","errors",["loc",[null,[140,19],[140,25]]]]],[],[]],"editedCustomFields",["subexpr","@mut",[["get","editedCaseFields",["loc",[null,[141,31],[141,47]]]]],[],[]],"fieldsEditedByPusher",["subexpr","@mut",[["get","case.propertiesChangeViaPusher",["loc",[null,[142,33],[142,63]]]]],[],[]],"onValueChanged",["subexpr","action",["setType"],[],["loc",[null,[143,27],[143,45]]]]],["loc",[null,[137,10],[144,12]]]]
+        ],
+        locals: [],
+        templates: []
+      };
+    }());
+    var child10 = (function() {
+      return {
+        meta: {
+          "revision": "Ember@1.13.10",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 147,
+              "column": 8
+            },
+            "end": {
+              "line": 156,
+              "column": 8
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-case-content/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("          ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+          return morphs;
+        },
+        statements: [
+          ["inline","ko-case-content/field/priority",[],["case",["subexpr","@mut",[["get","case",["loc",[null,[149,17],[149,21]]]]],[],[]],"field",["subexpr","@mut",[["get","priorityField",["loc",[null,[150,18],[150,31]]]]],[],[]],"errors",["subexpr","@mut",[["get","errors",["loc",[null,[151,19],[151,25]]]]],[],[]],"editedCustomFields",["subexpr","@mut",[["get","editedCaseFields",["loc",[null,[152,31],[152,47]]]]],[],[]],"fieldsEditedByPusher",["subexpr","@mut",[["get","case.propertiesChangeViaPusher",["loc",[null,[153,33],[153,63]]]]],[],[]],"onValueChanged",["subexpr","action",["setPriority"],[],["loc",[null,[154,27],[154,49]]]]],["loc",[null,[148,10],[155,12]]]]
+        ],
+        locals: [],
+        templates: []
+      };
+    }());
+    var child11 = (function() {
       var child0 = (function() {
         var child0 = (function() {
           return {
@@ -17759,11 +17869,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 174,
+                  "line": 180,
                   "column": 12
                 },
                 "end": {
-                  "line": 184,
+                  "line": 190,
                   "column": 12
                 }
               },
@@ -17788,7 +17898,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
               return morphs;
             },
             statements: [
-              ["inline","component",[["subexpr","ko-helper",[["get","customFieldsList.componentFor",["loc",[null,[175,37],[175,66]]]],["get","field.fieldType",["loc",[null,[175,67],[175,82]]]]],[],["loc",[null,[175,26],[175,83]]]]],["customFieldsModel",["subexpr","@mut",[["get","case.customFields",["loc",[null,[176,34],[176,51]]]]],[],[]],"field",["subexpr","@mut",[["get","field",["loc",[null,[177,22],[177,27]]]]],[],[]],"fieldValue",["subexpr","ko-helper",[["get","customFieldsList.findCustomFieldValue",["loc",[null,[178,38],[178,75]]]],["get","case.customFields",["loc",[null,[178,76],[178,93]]]],["get","field",["loc",[null,[178,94],[178,99]]]]],[],["loc",[null,[178,27],[178,100]]]],"errors",["subexpr","@mut",[["get","errors",["loc",[null,[179,23],[179,29]]]]],[],[]],"editedCustomFields",["subexpr","@mut",[["get","editedCaseFields",["loc",[null,[180,35],[180,51]]]]],[],[]],"fieldsEditedByPusher",["subexpr","@mut",[["get","case.propertiesChangeViaPusher",["loc",[null,[181,37],[181,67]]]]],[],[]],"onFieldUpdate",["subexpr","action",["updateDirtyFieldHash"],[],["loc",[null,[182,30],[182,61]]]]],["loc",[null,[175,14],[183,16]]]]
+              ["inline","component",[["subexpr","ko-helper",[["get","customFieldsList.componentFor",["loc",[null,[181,37],[181,66]]]],["get","field.fieldType",["loc",[null,[181,67],[181,82]]]]],[],["loc",[null,[181,26],[181,83]]]]],["customFieldsModel",["subexpr","@mut",[["get","case.customFields",["loc",[null,[182,34],[182,51]]]]],[],[]],"field",["subexpr","@mut",[["get","field",["loc",[null,[183,22],[183,27]]]]],[],[]],"fieldValue",["subexpr","ko-helper",[["get","customFieldsList.findCustomFieldValue",["loc",[null,[184,38],[184,75]]]],["get","case.customFields",["loc",[null,[184,76],[184,93]]]],["get","field",["loc",[null,[184,94],[184,99]]]]],[],["loc",[null,[184,27],[184,100]]]],"errors",["subexpr","@mut",[["get","errors",["loc",[null,[185,23],[185,29]]]]],[],[]],"editedCustomFields",["subexpr","@mut",[["get","editedCaseFields",["loc",[null,[186,35],[186,51]]]]],[],[]],"fieldsEditedByPusher",["subexpr","@mut",[["get","case.propertiesChangeViaPusher",["loc",[null,[187,37],[187,67]]]]],[],[]],"onFieldUpdate",["subexpr","action",["updateDirtyFieldHash"],[],["loc",[null,[188,30],[188,61]]]]],["loc",[null,[181,14],[189,16]]]]
             ],
             locals: [],
             templates: []
@@ -17800,11 +17910,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 173,
+                "line": 179,
                 "column": 10
               },
               "end": {
-                "line": 185,
+                "line": 191,
                 "column": 10
               }
             },
@@ -17827,7 +17937,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             return morphs;
           },
           statements: [
-            ["block","if",[["get","field.isEnabled",["loc",[null,[174,18],[174,33]]]]],[],0,null,["loc",[null,[174,12],[184,19]]]]
+            ["block","if",[["get","field.isEnabled",["loc",[null,[180,18],[180,33]]]]],[],0,null,["loc",[null,[180,12],[190,19]]]]
           ],
           locals: [],
           templates: [child0]
@@ -17839,11 +17949,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 172,
+              "line": 178,
               "column": 8
             },
             "end": {
-              "line": 186,
+              "line": 192,
               "column": 8
             }
           },
@@ -17866,24 +17976,24 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["block","if",[["subexpr","ko-helper",[["get","customFieldsList.componentFor",["loc",[null,[173,27],[173,56]]]],["get","field.fieldType",["loc",[null,[173,57],[173,72]]]]],[],["loc",[null,[173,16],[173,73]]]]],[],0,null,["loc",[null,[173,10],[185,17]]]]
+          ["block","if",[["subexpr","ko-helper",[["get","customFieldsList.componentFor",["loc",[null,[179,27],[179,56]]]],["get","field.fieldType",["loc",[null,[179,57],[179,72]]]]],[],["loc",[null,[179,16],[179,73]]]]],[],0,null,["loc",[null,[179,10],[191,17]]]]
         ],
         locals: ["field"],
         templates: [child0]
       };
     }());
-    var child10 = (function() {
+    var child12 = (function() {
       return {
         meta: {
           "revision": "Ember@1.13.10",
           "loc": {
             "source": null,
             "start": {
-              "line": 189,
+              "line": 195,
               "column": 8
             },
             "end": {
-              "line": 191,
+              "line": 197,
               "column": 8
             }
           },
@@ -17908,7 +18018,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["inline","ko-case/sla-sidebar",[],["sla",["subexpr","@mut",[["get","case.sla",["loc",[null,[190,36],[190,44]]]]],[],[]],"slaMetrics",["subexpr","@mut",[["get","case.slaMetrics",["loc",[null,[190,56],[190,71]]]]],[],[]]],["loc",[null,[190,10],[190,73]]]]
+          ["inline","ko-case/sla-sidebar",[],["sla",["subexpr","@mut",[["get","case.sla",["loc",[null,[196,36],[196,44]]]]],[],[]],"slaMetrics",["subexpr","@mut",[["get","case.slaMetrics",["loc",[null,[196,56],[196,71]]]]],[],[]]],["loc",[null,[196,10],[196,73]]]]
         ],
         locals: [],
         templates: []
@@ -17924,7 +18034,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             "column": 0
           },
           "end": {
-            "line": 198,
+            "line": 204,
             "column": 0
           }
         },
@@ -18113,8 +18223,11 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
         var el6 = dom.createTextNode("\n          ");
         dom.appendChild(el5, el6);
         var el6 = dom.createElement("button");
-        dom.setAttribute(el6,"class","button button--primary u-1/1");
+        var el7 = dom.createTextNode("\n");
+        dom.appendChild(el6, el7);
         var el7 = dom.createComment("");
+        dom.appendChild(el6, el7);
+        var el7 = dom.createTextNode("          ");
         dom.appendChild(el6, el7);
         dom.appendChild(el5, el6);
         var el6 = dom.createTextNode("\n        ");
@@ -18188,7 +18301,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
         var element9 = dom.childAt(element8, [1]);
         var element10 = dom.childAt(element6, [3, 1]);
         var element11 = dom.childAt(element10, [1, 1]);
-        var morphs = new Array(25);
+        var morphs = new Array(26);
         morphs[0] = dom.createAttrMorph(element4, 'src');
         morphs[1] = dom.createMorphAt(dom.childAt(element5, [1]),1,1);
         morphs[2] = dom.createMorphAt(element5,3,3);
@@ -18202,18 +18315,19 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
         morphs[10] = dom.createMorphAt(element7,8,8);
         morphs[11] = dom.createMorphAt(dom.childAt(element7, [10]),1,1);
         morphs[12] = dom.createAttrMorph(element10, 'class');
-        morphs[13] = dom.createElementMorph(element11);
-        morphs[14] = dom.createMorphAt(element11,0,0);
-        morphs[15] = dom.createMorphAt(element10,3,3);
-        morphs[16] = dom.createMorphAt(element10,5,5);
-        morphs[17] = dom.createMorphAt(element10,7,7);
-        morphs[18] = dom.createMorphAt(element10,9,9);
-        morphs[19] = dom.createMorphAt(element10,11,11);
-        morphs[20] = dom.createMorphAt(element10,13,13);
-        morphs[21] = dom.createMorphAt(element10,15,15);
-        morphs[22] = dom.createMorphAt(element10,17,17);
-        morphs[23] = dom.createMorphAt(element10,19,19);
-        morphs[24] = dom.createMorphAt(element10,21,21);
+        morphs[13] = dom.createAttrMorph(element11, 'class');
+        morphs[14] = dom.createElementMorph(element11);
+        morphs[15] = dom.createMorphAt(element11,1,1);
+        morphs[16] = dom.createMorphAt(element10,3,3);
+        morphs[17] = dom.createMorphAt(element10,5,5);
+        morphs[18] = dom.createMorphAt(element10,7,7);
+        morphs[19] = dom.createMorphAt(element10,9,9);
+        morphs[20] = dom.createMorphAt(element10,11,11);
+        morphs[21] = dom.createMorphAt(element10,13,13);
+        morphs[22] = dom.createMorphAt(element10,15,15);
+        morphs[23] = dom.createMorphAt(element10,17,17);
+        morphs[24] = dom.createMorphAt(element10,19,19);
+        morphs[25] = dom.createMorphAt(element10,21,21);
         return morphs;
       },
       statements: [
@@ -18230,21 +18344,22 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
         ["inline","ko-feed",[],["events",["subexpr","@mut",[["get","posts",["loc",[null,[85,17],[85,22]]]]],[],[]],"onReplyWithQuote","replyWithQuote","top",["subexpr","@mut",[["get","timelineVisibleTop",["loc",[null,[87,14],[87,32]]]]],[],[]],"left",["subexpr","@mut",[["get","timelineVisibleLeft",["loc",[null,[88,15],[88,34]]]]],[],[]],"onPostIdChange",["subexpr","@mut",[["get","onPostIdChange",["loc",[null,[89,25],[89,39]]]]],[],[]]],["loc",[null,[84,8],[90,10]]]],
         ["block","if",[["get","loadingBottom",["loc",[null,[93,16],[93,29]]]]],[],4,null,["loc",[null,[93,10],[97,17]]]],
         ["attribute","class",["concat",["list-bare ko-case-content__info-bar ",["subexpr","if",[["get","headerSticky",["loc",[null,[102,57],[102,69]]]],"ko-case-content__info-bar--sticky"],[],["loc",[null,[102,52],[102,107]]]]]]],
-        ["element","action",["submit"],[],["loc",[null,[104,55],[104,74]]]],
-        ["inline","format-message",[["subexpr","intl-get",["cases.submit"],[],["loc",[null,[104,92],[104,117]]]]],[],["loc",[null,[104,75],[104,119]]]],
-        ["inline","ko-case-content/field/requester",[],["requester",["subexpr","@mut",[["get","case.requester",["loc",[null,[106,52],[106,66]]]]],[],[]]],["loc",[null,[106,8],[106,68]]]],
-        ["block","if",[["get","assigneeField",["loc",[null,[108,14],[108,27]]]]],[],5,null,["loc",[null,[108,8],[117,15]]]],
-        ["block","if",[["get","statusField",["loc",[null,[119,14],[119,25]]]]],[],6,null,["loc",[null,[119,8],[128,15]]]],
-        ["block","if",[["get","typeField",["loc",[null,[130,14],[130,23]]]]],[],7,null,["loc",[null,[130,8],[139,15]]]],
-        ["block","if",[["get","priorityField",["loc",[null,[141,14],[141,27]]]]],[],8,null,["loc",[null,[141,8],[150,15]]]],
-        ["inline","ko-info-bar/field/tags",[],["title",["subexpr","format-message",[["subexpr","intl-get",["cases.tags"],[],["loc",[null,[153,32],[153,55]]]]],[],["loc",[null,[153,16],[153,56]]]],"isEdited",["subexpr","@mut",[["get","isTagsFieldEdited",["loc",[null,[154,19],[154,36]]]]],[],[]],"isPusherEdited",["subexpr","@mut",[["get","case.propertiesChangeViaPusher.tags",["loc",[null,[155,25],[155,60]]]]],[],[]],"selectedTags",["subexpr","@mut",[["get","case.tags",["loc",[null,[156,23],[156,32]]]]],[],[]],"suggestedTags",["subexpr","@mut",[["get","suggestedTags",["loc",[null,[157,24],[157,37]]]]],[],[]],"onTagAddition",["subexpr","action",["addTag"],[],["loc",[null,[158,24],[158,41]]]],"onTagRemoval",["subexpr","action",["removeTag"],[],["loc",[null,[159,23],[159,43]]]],"onTagSuggestion",["subexpr","action",["suggestTags"],[],["loc",[null,[160,26],[160,48]]]],"newTagText",["subexpr","format-message",[["subexpr","intl-get",["cases.newtag"],[],["loc",[null,[161,37],[161,62]]]]],[],["loc",[null,[161,21],[161,63]]]],"addTagText",["subexpr","format-message",[["subexpr","intl-get",["cases.addtag"],[],["loc",[null,[162,37],[162,62]]]]],[],["loc",[null,[162,21],[162,63]]]]],["loc",[null,[152,8],[163,10]]]],
-        ["inline","ko-case-content/field/forms",[],["selectedForm",["subexpr","@mut",[["get","case.form",["loc",[null,[166,23],[166,32]]]]],[],[]],"forms",["subexpr","@mut",[["get","caseForms",["loc",[null,[167,16],[167,25]]]]],[],[]],"onFormSelected","setForm","isEdited",["subexpr","@mut",[["get","editedCaseFields.form",["loc",[null,[169,19],[169,40]]]]],[],[]]],["loc",[null,[165,8],[170,10]]]],
-        ["block","each",[["get","caseOrFormFields",["loc",[null,[172,16],[172,32]]]]],[],9,null,["loc",[null,[172,8],[186,17]]]],
-        ["block","if",[["get","case.id",["loc",[null,[189,14],[189,21]]]]],[],10,null,["loc",[null,[189,8],[191,15]]]],
-        ["inline","ko-info-bar/metadata",[],["rows",["subexpr","@mut",[["get","caseDates",["loc",[null,[193,36],[193,45]]]]],[],[]]],["loc",[null,[193,8],[193,47]]]]
+        ["attribute","class",["concat",["button button--primary u-1/1 ",["subexpr","if",[["get","submitDisabled",["loc",[null,[104,59],[104,73]]]],"disabled"],[],["loc",[null,[104,54],[104,86]]]]]]],
+        ["element","action",["submit"],[],["loc",[null,[104,88],[104,107]]]],
+        ["block","if",[["get","isSaving",["loc",[null,[105,18],[105,26]]]]],[],5,6,["loc",[null,[105,12],[109,19]]]],
+        ["inline","ko-case-content/field/requester",[],["requester",["subexpr","@mut",[["get","case.requester",["loc",[null,[112,52],[112,66]]]]],[],[]]],["loc",[null,[112,8],[112,68]]]],
+        ["block","if",[["get","assigneeField",["loc",[null,[114,14],[114,27]]]]],[],7,null,["loc",[null,[114,8],[123,15]]]],
+        ["block","if",[["get","statusField",["loc",[null,[125,14],[125,25]]]]],[],8,null,["loc",[null,[125,8],[134,15]]]],
+        ["block","if",[["get","typeField",["loc",[null,[136,14],[136,23]]]]],[],9,null,["loc",[null,[136,8],[145,15]]]],
+        ["block","if",[["get","priorityField",["loc",[null,[147,14],[147,27]]]]],[],10,null,["loc",[null,[147,8],[156,15]]]],
+        ["inline","ko-info-bar/field/tags",[],["title",["subexpr","format-message",[["subexpr","intl-get",["cases.tags"],[],["loc",[null,[159,32],[159,55]]]]],[],["loc",[null,[159,16],[159,56]]]],"isEdited",["subexpr","@mut",[["get","isTagsFieldEdited",["loc",[null,[160,19],[160,36]]]]],[],[]],"isPusherEdited",["subexpr","@mut",[["get","case.propertiesChangeViaPusher.tags",["loc",[null,[161,25],[161,60]]]]],[],[]],"selectedTags",["subexpr","@mut",[["get","case.tags",["loc",[null,[162,23],[162,32]]]]],[],[]],"suggestedTags",["subexpr","@mut",[["get","suggestedTags",["loc",[null,[163,24],[163,37]]]]],[],[]],"onTagAddition",["subexpr","action",["addTag"],[],["loc",[null,[164,24],[164,41]]]],"onTagRemoval",["subexpr","action",["removeTag"],[],["loc",[null,[165,23],[165,43]]]],"onTagSuggestion",["subexpr","action",["suggestTags"],[],["loc",[null,[166,26],[166,48]]]],"newTagText",["subexpr","format-message",[["subexpr","intl-get",["cases.newtag"],[],["loc",[null,[167,37],[167,62]]]]],[],["loc",[null,[167,21],[167,63]]]],"addTagText",["subexpr","format-message",[["subexpr","intl-get",["cases.addtag"],[],["loc",[null,[168,37],[168,62]]]]],[],["loc",[null,[168,21],[168,63]]]]],["loc",[null,[158,8],[169,10]]]],
+        ["inline","ko-case-content/field/forms",[],["selectedForm",["subexpr","@mut",[["get","case.form",["loc",[null,[172,23],[172,32]]]]],[],[]],"forms",["subexpr","@mut",[["get","caseForms",["loc",[null,[173,16],[173,25]]]]],[],[]],"onFormSelected","setForm","isEdited",["subexpr","@mut",[["get","editedCaseFields.form",["loc",[null,[175,19],[175,40]]]]],[],[]]],["loc",[null,[171,8],[176,10]]]],
+        ["block","each",[["get","caseOrFormFields",["loc",[null,[178,16],[178,32]]]]],[],11,null,["loc",[null,[178,8],[192,17]]]],
+        ["block","if",[["get","case.id",["loc",[null,[195,14],[195,21]]]]],[],12,null,["loc",[null,[195,8],[197,15]]]],
+        ["inline","ko-info-bar/metadata",[],["rows",["subexpr","@mut",[["get","caseDates",["loc",[null,[199,36],[199,45]]]]],[],[]]],["loc",[null,[199,8],[199,47]]]]
       ],
       locals: [],
-      templates: [child0, child1, child2, child3, child4, child5, child6, child7, child8, child9, child10]
+      templates: [child0, child1, child2, child3, child4, child5, child6, child7, child8, child9, child10, child11, child12]
     };
   }()));
 
@@ -35034,6 +35149,7 @@ define('frontend-cp/components/ko-organisation-content/component', ['exports', '
     errors: [],
 
     isDomainEdited: false,
+    isSaving: false,
     editedCustomFields: null,
 
     organizationIconPath: config['default'].assetRoot + '/images/icons/organization.svg',
@@ -35066,7 +35182,20 @@ define('frontend-cp/components/ko-organisation-content/component', ['exports', '
     isTagsFieldEdited: Ember['default'].computed('cachedTags.[]', 'model.tags.@each.id', function () {
       var cachedTagNames = this.get('cachedTags');
       var tags = this.get('model.tags');
-      this.get('tagService').areTagNamesMatchingCache(cachedTagNames, tags);
+      return this.get('tagService').areTagNamesMatchingCache(cachedTagNames, tags);
+    }),
+
+    submitDisabled: Ember['default'].computed('isSaving', 'isEdited', function () {
+      return this.get('isSaving') || !this.get('isEdited');
+    }),
+
+    isEdited: Ember['default'].computed('isTagsFieldEdited', 'isDomainEdited', 'isNameEdited', function () {
+      var _this2 = this;
+
+      var fields = ['isDomainEdited', 'isTagsFieldEdited', 'isNameEdited'];
+      return fields.any(function (field) {
+        return _this2.get(field);
+      });
     }),
 
     resetForm: function resetForm() {
@@ -35074,13 +35203,14 @@ define('frontend-cp/components/ko-organisation-content/component', ['exports', '
       this.set('isDomainEdited', false);
       this.set('isNameEdited', false);
       this.set('isDomainErrored', false);
+      this.set('isSaving', false);
     },
 
     refreshTags: function refreshTags() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.get('tagService').refreshTagsForOrganization(this.get('model')).then(function (tags) {
-        _this2.set('cachedTags', tags.map(function (tag) {
+        _this3.set('cachedTags', tags.map(function (tag) {
           return tag.get('id');
         }));
       });
@@ -35125,7 +35255,7 @@ define('frontend-cp/components/ko-organisation-content/component', ['exports', '
       },
 
       _suggestTags: function _suggestTags(searchTerm, selectedTags) {
-        var _this3 = this;
+        var _this4 = this;
 
         var suggestionService = this.get('tagSuggestionService');
         suggestionService.suggest(searchTerm).then(function (data) {
@@ -35135,7 +35265,7 @@ define('frontend-cp/components/ko-organisation-content/component', ['exports', '
 
           data = suggestionService.exclude(data, selectedTags);
 
-          _this3.set('suggestedTags', data.map(function (tag) {
+          _this4.set('suggestedTags', data.map(function (tag) {
             return tag.get('name');
           }));
           suggestionService.flushQueue();
@@ -35170,23 +35300,25 @@ define('frontend-cp/components/ko-organisation-content/component', ['exports', '
       },
 
       submit: function submit() {
-        var _this4 = this;
+        var _this5 = this;
 
+        this.set('isSaving', true);
         this.get('model').save().then(function (organization) {
           // Get rid of unsaved domains hanging around
           organization.set('domains', organization.get('domains').filter(function (domain) {
             return domain.get('id');
           }));
 
-          _this4.get('notification').add({
+          _this5.get('notification').add({
             type: 'success',
-            title: _this4.get('intl').findTranslationByKey('organisation.organisation.updated').translation,
+            title: _this5.get('intl').findTranslationByKey('organisation.organisation.updated').translation,
             autodismiss: true
           });
-          _this4.resetForm();
-          _this4.refreshTags();
+          _this5.resetForm();
+          _this5.refreshTags();
         }, function (e) {
-          _this4.set('errors', e.errors);
+          _this5.set('errors', e.errors);
+          _this5.set('isSaving', false);
         });
       },
 
@@ -35244,6 +35376,90 @@ define('frontend-cp/components/ko-organisation-content/template', ['exports'], f
     }());
     var child1 = (function() {
       var child0 = (function() {
+        return {
+          meta: {
+            "revision": "Ember@1.13.10",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 48,
+                "column": 12
+              },
+              "end": {
+                "line": 50,
+                "column": 12
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-organisation-content/template.hbs"
+          },
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("              ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+            return morphs;
+          },
+          statements: [
+            ["inline","ko-loader",[],["class","ko-organisation-content__button-loading"],["loc",[null,[49,14],[49,75]]]]
+          ],
+          locals: [],
+          templates: []
+        };
+      }());
+      var child1 = (function() {
+        return {
+          meta: {
+            "revision": "Ember@1.13.10",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 50,
+                "column": 12
+              },
+              "end": {
+                "line": 52,
+                "column": 12
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-organisation-content/template.hbs"
+          },
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("              ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+            return morphs;
+          },
+          statements: [
+            ["inline","format-message",[["subexpr","intl-get",["cases.submit"],[],["loc",[null,[51,31],[51,56]]]]],[],["loc",[null,[51,14],[51,58]]]]
+          ],
+          locals: [],
+          templates: []
+        };
+      }());
+      var child2 = (function() {
         var child0 = (function() {
           var child0 = (function() {
             return {
@@ -35252,11 +35468,11 @@ define('frontend-cp/components/ko-organisation-content/template', ['exports'], f
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 75,
+                    "line": 81,
                     "column": 12
                   },
                   "end": {
-                    "line": 84,
+                    "line": 90,
                     "column": 12
                   }
                 },
@@ -35281,7 +35497,7 @@ define('frontend-cp/components/ko-organisation-content/template', ['exports'], f
                 return morphs;
               },
               statements: [
-                ["inline","component",[["subexpr","ko-helper",[["get","customFieldsList.componentFor",["loc",[null,[76,37],[76,66]]]],["get","field.fieldType",["loc",[null,[76,67],[76,82]]]]],[],["loc",[null,[76,26],[76,83]]]]],["customFieldsModel",["subexpr","@mut",[["get","model.customFields",["loc",[null,[77,34],[77,52]]]]],[],[]],"field",["subexpr","@mut",[["get","field",["loc",[null,[78,22],[78,27]]]]],[],[]],"fieldValue",["subexpr","ko-helper",[["get","customFieldsList.findCustomFieldValue",["loc",[null,[79,38],[79,75]]]],["get","model.customFields",["loc",[null,[79,76],[79,94]]]],["get","field",["loc",[null,[79,95],[79,100]]]]],[],["loc",[null,[79,27],[79,101]]]],"errors",["subexpr","@mut",[["get","errors",["loc",[null,[80,23],[80,29]]]]],[],[]],"editedCustomFields",["subexpr","@mut",[["get","editedCustomFields",["loc",[null,[81,35],[81,53]]]]],[],[]],"onFieldUpdate",["subexpr","action",["fieldUpdated"],[],["loc",[null,[82,30],[82,53]]]]],["loc",[null,[76,14],[83,16]]]]
+                ["inline","component",[["subexpr","ko-helper",[["get","customFieldsList.componentFor",["loc",[null,[82,37],[82,66]]]],["get","field.fieldType",["loc",[null,[82,67],[82,82]]]]],[],["loc",[null,[82,26],[82,83]]]]],["customFieldsModel",["subexpr","@mut",[["get","model.customFields",["loc",[null,[83,34],[83,52]]]]],[],[]],"field",["subexpr","@mut",[["get","field",["loc",[null,[84,22],[84,27]]]]],[],[]],"fieldValue",["subexpr","ko-helper",[["get","customFieldsList.findCustomFieldValue",["loc",[null,[85,38],[85,75]]]],["get","model.customFields",["loc",[null,[85,76],[85,94]]]],["get","field",["loc",[null,[85,95],[85,100]]]]],[],["loc",[null,[85,27],[85,101]]]],"errors",["subexpr","@mut",[["get","errors",["loc",[null,[86,23],[86,29]]]]],[],[]],"editedCustomFields",["subexpr","@mut",[["get","editedCustomFields",["loc",[null,[87,35],[87,53]]]]],[],[]],"onFieldUpdate",["subexpr","action",["fieldUpdated"],[],["loc",[null,[88,30],[88,53]]]]],["loc",[null,[82,14],[89,16]]]]
               ],
               locals: [],
               templates: []
@@ -35293,11 +35509,11 @@ define('frontend-cp/components/ko-organisation-content/template', ['exports'], f
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 74,
+                  "line": 80,
                   "column": 10
                 },
                 "end": {
-                  "line": 85,
+                  "line": 91,
                   "column": 10
                 }
               },
@@ -35320,7 +35536,7 @@ define('frontend-cp/components/ko-organisation-content/template', ['exports'], f
               return morphs;
             },
             statements: [
-              ["block","if",[["get","field.isEnabled",["loc",[null,[75,18],[75,33]]]]],[],0,null,["loc",[null,[75,12],[84,19]]]]
+              ["block","if",[["get","field.isEnabled",["loc",[null,[81,18],[81,33]]]]],[],0,null,["loc",[null,[81,12],[90,19]]]]
             ],
             locals: [],
             templates: [child0]
@@ -35332,11 +35548,11 @@ define('frontend-cp/components/ko-organisation-content/template', ['exports'], f
             "loc": {
               "source": null,
               "start": {
-                "line": 73,
+                "line": 79,
                 "column": 8
               },
               "end": {
-                "line": 86,
+                "line": 92,
                 "column": 8
               }
             },
@@ -35359,7 +35575,7 @@ define('frontend-cp/components/ko-organisation-content/template', ['exports'], f
             return morphs;
           },
           statements: [
-            ["block","if",[["subexpr","ko-helper",[["get","customFieldsList.componentFor",["loc",[null,[74,27],[74,56]]]],["get","field.fieldType",["loc",[null,[74,57],[74,72]]]]],[],["loc",[null,[74,16],[74,73]]]]],[],0,null,["loc",[null,[74,10],[85,17]]]]
+            ["block","if",[["subexpr","ko-helper",[["get","customFieldsList.componentFor",["loc",[null,[80,27],[80,56]]]],["get","field.fieldType",["loc",[null,[80,57],[80,72]]]]],[],["loc",[null,[80,16],[80,73]]]]],[],0,null,["loc",[null,[80,10],[91,17]]]]
           ],
           locals: ["field"],
           templates: [child0]
@@ -35375,7 +35591,7 @@ define('frontend-cp/components/ko-organisation-content/template', ['exports'], f
               "column": 6
             },
             "end": {
-              "line": 89,
+              "line": 95,
               "column": 6
             }
           },
@@ -35393,8 +35609,11 @@ define('frontend-cp/components/ko-organisation-content/template', ['exports'], f
           var el2 = dom.createTextNode("\n          ");
           dom.appendChild(el1, el2);
           var el2 = dom.createElement("button");
-          dom.setAttribute(el2,"class","button button--primary u-1/1");
+          var el3 = dom.createTextNode("\n");
+          dom.appendChild(el2, el3);
           var el3 = dom.createComment("");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createTextNode("          ");
           dom.appendChild(el2, el3);
           dom.appendChild(el1, el2);
           var el2 = dom.createTextNode("\n        ");
@@ -35422,25 +35641,27 @@ define('frontend-cp/components/ko-organisation-content/template', ['exports'], f
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
           var element0 = dom.childAt(fragment, [1, 1]);
-          var morphs = new Array(6);
-          morphs[0] = dom.createElementMorph(element0);
-          morphs[1] = dom.createMorphAt(element0,0,0);
-          morphs[2] = dom.createMorphAt(fragment,3,3,contextualElement);
-          morphs[3] = dom.createMorphAt(fragment,5,5,contextualElement);
-          morphs[4] = dom.createMorphAt(fragment,7,7,contextualElement);
-          morphs[5] = dom.createMorphAt(fragment,9,9,contextualElement);
+          var morphs = new Array(7);
+          morphs[0] = dom.createAttrMorph(element0, 'class');
+          morphs[1] = dom.createElementMorph(element0);
+          morphs[2] = dom.createMorphAt(element0,1,1);
+          morphs[3] = dom.createMorphAt(fragment,3,3,contextualElement);
+          morphs[4] = dom.createMorphAt(fragment,5,5,contextualElement);
+          morphs[5] = dom.createMorphAt(fragment,7,7,contextualElement);
+          morphs[6] = dom.createMorphAt(fragment,9,9,contextualElement);
           return morphs;
         },
         statements: [
-          ["element","action",["submit"],[],["loc",[null,[47,55],[47,74]]]],
-          ["inline","format-message",[["subexpr","intl-get",["cases.submit"],[],["loc",[null,[47,92],[47,117]]]]],[],["loc",[null,[47,75],[47,119]]]],
-          ["inline","ko-info-bar/field/tags",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.tags"],[],["loc",[null,[51,32],[51,55]]]]],[],["loc",[null,[51,16],[51,56]]]],"isEdited",["subexpr","@mut",[["get","isTagsFieldEdited",["loc",[null,[52,19],[52,36]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","errorMap.tags",["loc",[null,[53,20],[53,33]]]]],[],[]],"selectedTags",["subexpr","@mut",[["get","model.tags",["loc",[null,[54,23],[54,33]]]]],[],[]],"suggestedTags",["subexpr","@mut",[["get","suggestedTags",["loc",[null,[55,24],[55,37]]]]],[],[]],"newTagText",["subexpr","format-message",[["subexpr","intl-get",["users.newtag"],[],["loc",[null,[56,37],[56,62]]]]],[],["loc",[null,[56,21],[56,63]]]],"addTagText",["subexpr","format-message",[["subexpr","intl-get",["users.addtag"],[],["loc",[null,[57,37],[57,62]]]]],[],["loc",[null,[57,21],[57,63]]]],"onTagAddition",["subexpr","action",["addTag"],[],["loc",[null,[58,24],[58,41]]]],"onTagRemoval",["subexpr","action",["removeTag"],[],["loc",[null,[59,23],[59,43]]]],"onTagSuggestion",["subexpr","action",["suggestTags"],[],["loc",[null,[60,26],[60,48]]]]],["loc",[null,[50,8],[61,10]]]],
-          ["inline","ko-info-bar/field/tags",[],["title",["subexpr","format-message",[["subexpr","intl-get",["organisation.domains"],[],["loc",[null,[64,32],[64,65]]]]],[],["loc",[null,[64,16],[64,66]]]],"isEdited",["subexpr","@mut",[["get","isDomainEdited",["loc",[null,[65,19],[65,33]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","errorMap.domains",["loc",[null,[66,20],[66,36]]]]],[],[]],"errorTags",["subexpr","@mut",[["get","erroredDomains",["loc",[null,[67,20],[67,34]]]]],[],[]],"selectedTags",["subexpr","@mut",[["get","model.domains",["loc",[null,[68,23],[68,36]]]]],[],[]],"onTagAddition",["subexpr","action",["addDomain"],[],["loc",[null,[69,24],[69,44]]]],"onTagRemoval",["subexpr","action",["removeDomain"],[],["loc",[null,[70,23],[70,46]]]]],["loc",[null,[63,8],[71,10]]]],
-          ["block","each",[["get","customFields",["loc",[null,[73,16],[73,28]]]]],[],0,null,["loc",[null,[73,8],[86,17]]]],
-          ["inline","ko-info-bar/metadata",[],["rows",["subexpr","@mut",[["get","organisationDates",["loc",[null,[88,36],[88,53]]]]],[],[]]],["loc",[null,[88,8],[88,55]]]]
+          ["attribute","class",["concat",["button button--primary u-1/1 ",["subexpr","if",[["get","submitDisabled",["loc",[null,[47,59],[47,73]]]],"disabled"],[],["loc",[null,[47,54],[47,86]]]]]]],
+          ["element","action",["submit"],[],["loc",[null,[47,88],[47,107]]]],
+          ["block","if",[["get","isSaving",["loc",[null,[48,18],[48,26]]]]],[],0,1,["loc",[null,[48,12],[52,19]]]],
+          ["inline","ko-info-bar/field/tags",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.tags"],[],["loc",[null,[57,32],[57,55]]]]],[],["loc",[null,[57,16],[57,56]]]],"isEdited",["subexpr","@mut",[["get","isTagsFieldEdited",["loc",[null,[58,19],[58,36]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","errorMap.tags",["loc",[null,[59,20],[59,33]]]]],[],[]],"selectedTags",["subexpr","@mut",[["get","model.tags",["loc",[null,[60,23],[60,33]]]]],[],[]],"suggestedTags",["subexpr","@mut",[["get","suggestedTags",["loc",[null,[61,24],[61,37]]]]],[],[]],"newTagText",["subexpr","format-message",[["subexpr","intl-get",["users.newtag"],[],["loc",[null,[62,37],[62,62]]]]],[],["loc",[null,[62,21],[62,63]]]],"addTagText",["subexpr","format-message",[["subexpr","intl-get",["users.addtag"],[],["loc",[null,[63,37],[63,62]]]]],[],["loc",[null,[63,21],[63,63]]]],"onTagAddition",["subexpr","action",["addTag"],[],["loc",[null,[64,24],[64,41]]]],"onTagRemoval",["subexpr","action",["removeTag"],[],["loc",[null,[65,23],[65,43]]]],"onTagSuggestion",["subexpr","action",["suggestTags"],[],["loc",[null,[66,26],[66,48]]]]],["loc",[null,[56,8],[67,10]]]],
+          ["inline","ko-info-bar/field/tags",[],["title",["subexpr","format-message",[["subexpr","intl-get",["organisation.domains"],[],["loc",[null,[70,32],[70,65]]]]],[],["loc",[null,[70,16],[70,66]]]],"isEdited",["subexpr","@mut",[["get","isDomainEdited",["loc",[null,[71,19],[71,33]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","errorMap.domains",["loc",[null,[72,20],[72,36]]]]],[],[]],"errorTags",["subexpr","@mut",[["get","erroredDomains",["loc",[null,[73,20],[73,34]]]]],[],[]],"selectedTags",["subexpr","@mut",[["get","model.domains",["loc",[null,[74,23],[74,36]]]]],[],[]],"onTagAddition",["subexpr","action",["addDomain"],[],["loc",[null,[75,24],[75,44]]]],"onTagRemoval",["subexpr","action",["removeDomain"],[],["loc",[null,[76,23],[76,46]]]]],["loc",[null,[69,8],[77,10]]]],
+          ["block","each",[["get","customFields",["loc",[null,[79,16],[79,28]]]]],[],2,null,["loc",[null,[79,8],[92,17]]]],
+          ["inline","ko-info-bar/metadata",[],["rows",["subexpr","@mut",[["get","organisationDates",["loc",[null,[94,36],[94,53]]]]],[],[]]],["loc",[null,[94,8],[94,55]]]]
         ],
         locals: [],
-        templates: [child0]
+        templates: [child0, child1, child2]
       };
     }());
     return {
@@ -35453,7 +35674,7 @@ define('frontend-cp/components/ko-organisation-content/template', ['exports'], f
             "column": 0
           },
           "end": {
-            "line": 93,
+            "line": 99,
             "column": 0
           }
         },
@@ -35614,7 +35835,7 @@ define('frontend-cp/components/ko-organisation-content/template', ['exports'], f
         ["inline","ko-editable-text",[],["value",["subexpr","@mut",[["get","model.name",["loc",[null,[11,22],[11,32]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isNameEdited",["loc",[null,[12,25],[12,37]]]]],[],[]],"onValueChange","setName","placeholder",["subexpr","format-message",[["subexpr","intl-get",["organisation.new_organisation_placeholder"],[],["loc",[null,[14,44],[14,98]]]]],[],["loc",[null,[14,28],[14,99]]]]],["loc",[null,[10,12],[15,14]]]],
         ["inline","ko-organisation-action-menu",[],["permissions",["subexpr","@mut",[["get","sessionService.permissions",["loc",[null,[27,23],[27,49]]]]],[],[]],"canDelete",["subexpr","@mut",[["get","canDelete",["loc",[null,[28,21],[28,30]]]]],[],[]],"organisation",["subexpr","@mut",[["get","model",["loc",[null,[29,24],[29,29]]]]],[],[]]],["loc",[null,[26,9],[30,11]]]],
         ["block","ko-text-editor",[],["class","ko-organisation-content__text-editor","viewName","postEditor"],0,null,["loc",[null,[39,8],[41,27]]]],
-        ["block","ko-info-bar",[],[],1,null,["loc",[null,[45,6],[89,22]]]]
+        ["block","ko-info-bar",[],[],1,null,["loc",[null,[45,6],[95,22]]]]
       ],
       locals: [],
       templates: [child0, child1]
@@ -46019,6 +46240,7 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
     suggestedTags: [],
     editedCustomFields: null,
     editingSignature: null,
+    isSaving: false,
 
     signatureModal: false,
 
@@ -46068,6 +46290,19 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
       });
     }),
 
+    submitDisabled: Ember['default'].computed('isSaving', 'isEdited', function () {
+      return this.get('isSaving') || !this.get('isEdited');
+    }),
+
+    isEdited: Ember['default'].computed('isTeamsFieldEdited', 'isTagsFieldEdited', 'isTimezoneEdited', 'isOrganizationEdited', 'isRoleEdited', 'isAccessLevelEdited', 'model.signature', function () {
+      var _this5 = this;
+
+      var fields = ['isTeamsFieldEdited', 'isTagsFieldEdited', 'isTimezoneEdited', 'isOrganizationEdited', 'isRoleEdited', 'isAccessLevelEdited'];
+      return fields.any(function (field) {
+        return _this5.get(field);
+      }) || this.get('model').hasDirtyAttribute('signature');
+    }),
+
     errorMap: Ember['default'].computed('errors', function () {
       var errorMap = {};
       this.get('errors').forEach(function (error) {
@@ -46098,10 +46333,10 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
 
     recentFeedback: [],
     initRecentFeedback: Ember['default'].on('init', function () {
-      var _this5 = this;
+      var _this6 = this;
 
       this.get('store').query('rating', { user_id: this.get('model.id') }).then(function (ratings) {
-        return _this5.set('recentFeedback', ratings);
+        return _this6.set('recentFeedback', ratings);
       });
     }),
 
@@ -46127,13 +46362,14 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
       this.set('isAccessLevelEdited', false);
       this.set('isFollowingSaving', false);
       this.set('isStateSaving', false);
+      this.set('isSaving', false);
     },
 
     refreshTags: function refreshTags() {
-      var _this6 = this;
+      var _this7 = this;
 
       this.get('tagService').refreshTagsForUser(this.get('model')).then(function (tags) {
-        _this6.set('cachedTags', tags.map(function (tag) {
+        _this7.set('cachedTags', tags.map(function (tag) {
           return tag.get('id');
         }));
       });
@@ -46200,12 +46436,12 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
 
     actions: {
       toggleUserState: function toggleUserState() {
-        var _this7 = this;
+        var _this8 = this;
 
         this.set('isStateSaving', true);
         this.toggleProperty('model.isEnabled');
         this.get('model').save().then(function () {
-          return _this7.resetForm();
+          return _this8.resetForm();
         });
       },
 
@@ -46238,11 +46474,11 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
       },
 
       organizationSelect: function organizationSelect(org) {
-        var _this8 = this;
+        var _this9 = this;
 
         this.set('model.organization', org);
         this.get('model').hasDirtyBelongsToRelationship('organization').then(function (relationshipIsDirty) {
-          _this8.set('isOrganizationEdited', relationshipIsDirty);
+          _this9.set('isOrganizationEdited', relationshipIsDirty);
         });
       },
 
@@ -46271,7 +46507,7 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
       },
 
       suggestTeams: function suggestTeams(searchTerm, selectedTeams) {
-        var _this9 = this;
+        var _this10 = this;
 
         if (!searchTerm) {
           this.set('suggestedTeams', []);
@@ -46282,7 +46518,7 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
 
         suggestionService.suggestFilter(this.get('teamRecords'), searchTerm, 'title').then(function (data) {
           var suggestedTeams = suggestionService.exclude(data, selectedTeams, 'title');
-          _this9.set('suggestedTeams', suggestedTeams.map(function (tag) {
+          _this10.set('suggestedTeams', suggestedTeams.map(function (tag) {
             return tag.get('title');
           }));
         });
@@ -46311,7 +46547,7 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
       },
 
       _suggestTags: function _suggestTags(searchTerm, selectedTags) {
-        var _this10 = this;
+        var _this11 = this;
 
         var suggestionService = this.get('tagSuggestionService');
         suggestionService.suggest(searchTerm).then(function (data) {
@@ -46321,7 +46557,7 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
 
           data = suggestionService.exclude(data, selectedTags);
 
-          _this10.set('suggestedTags', data.map(function (tag) {
+          _this11.set('suggestedTags', data.map(function (tag) {
             return tag.get('name');
           }));
           suggestionService.flushQueue();
@@ -46329,7 +46565,7 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
       },
 
       changeUserPassword: function changeUserPassword() {
-        var _this11 = this;
+        var _this12 = this;
 
         var PAYLOAD = { email: this.get('model.primaryEmailAddress') };
 
@@ -46341,31 +46577,33 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
             'Content-Type': 'application/json'
           }
         }).then(function () {
-          _this11.get('notificationService').add({
+          _this12.get('notificationService').add({
             type: 'success',
-            title: _this11.get('intl').findTranslationByKey('users.password_reset_email.success').translation,
+            title: _this12.get('intl').findTranslationByKey('users.password_reset_email.success').translation,
             autodismiss: true
           });
         }, function (response) {
-          _this11.get('errorHandlerService').handleServerError(response.responseJSON);
+          _this12.get('errorHandlerService').handleServerError(response.responseJSON);
         });
       },
 
       submit: function submit() {
-        var _this12 = this;
+        var _this13 = this;
 
+        this.set('isSaving', true);
         this.get('model').save().then(function () {
-          _this12.get('notificationService').add({
+          _this13.get('notificationService').add({
             type: 'success',
-            title: _this12.get('intl').findTranslationByKey('users.user.updated').translation,
+            title: _this13.get('intl').findTranslationByKey('users.user.updated').translation,
             autodismiss: true
           });
 
-          _this12.resetForm();
-          _this12.refreshTags();
+          _this13.resetForm();
+          _this13.refreshTags();
         }, function (e) {
           e.errors || (e.errors = {});
-          _this12.set('errors', e.errors.errors);
+          _this13.set('errors', e.errors.errors);
+          _this13.set('isSaving', false);
         });
       },
 
@@ -46494,11 +46732,95 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 74,
+                "line": 63,
+                "column": 12
+              },
+              "end": {
+                "line": 65,
+                "column": 12
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-user-content/template.hbs"
+          },
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("              ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+            return morphs;
+          },
+          statements: [
+            ["inline","ko-loader",[],["class","ko-user-content__button-loading"],["loc",[null,[64,14],[64,67]]]]
+          ],
+          locals: [],
+          templates: []
+        };
+      }());
+      var child1 = (function() {
+        return {
+          meta: {
+            "revision": "Ember@1.13.10",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 65,
+                "column": 12
+              },
+              "end": {
+                "line": 67,
+                "column": 12
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-user-content/template.hbs"
+          },
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("              ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+            return morphs;
+          },
+          statements: [
+            ["inline","format-message",[["subexpr","intl-get",["cases.submit"],[],["loc",[null,[66,31],[66,56]]]]],[],["loc",[null,[66,14],[66,58]]]]
+          ],
+          locals: [],
+          templates: []
+        };
+      }());
+      var child2 = (function() {
+        return {
+          meta: {
+            "revision": "Ember@1.13.10",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 80,
                 "column": 8
               },
               "end": {
-                "line": 84,
+                "line": 90,
                 "column": 8
               }
             },
@@ -46523,13 +46845,13 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
             return morphs;
           },
           statements: [
-            ["inline","ko-info-bar/field/select",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.infobar.accesslevel"],[],["loc",[null,[76,34],[76,72]]]]],[],["loc",[null,[76,18],[76,73]]]],"options",["subexpr","@mut",[["get","accessLevels",["loc",[null,[77,20],[77,32]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isAccessLevelEdited",["loc",[null,[78,21],[78,40]]]]],[],[]],"value",["subexpr","@mut",[["get","model.accessLevel",["loc",[null,[79,18],[79,35]]]]],[],[]],"onValueChange","accessLevelSelect","idPath","value","labelPath","name"],["loc",[null,[75,10],[83,12]]]]
+            ["inline","ko-info-bar/field/select",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.infobar.accesslevel"],[],["loc",[null,[82,34],[82,72]]]]],[],["loc",[null,[82,18],[82,73]]]],"options",["subexpr","@mut",[["get","accessLevels",["loc",[null,[83,20],[83,32]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isAccessLevelEdited",["loc",[null,[84,21],[84,40]]]]],[],[]],"value",["subexpr","@mut",[["get","model.accessLevel",["loc",[null,[85,18],[85,35]]]]],[],[]],"onValueChange","accessLevelSelect","idPath","value","labelPath","name"],["loc",[null,[81,10],[89,12]]]]
           ],
           locals: [],
           templates: []
         };
       }());
-      var child1 = (function() {
+      var child3 = (function() {
         var child0 = (function() {
           var child0 = (function() {
             return {
@@ -46538,11 +46860,11 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 103,
+                    "line": 109,
                     "column": 12
                   },
                   "end": {
-                    "line": 112,
+                    "line": 118,
                     "column": 12
                   }
                 },
@@ -46567,7 +46889,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
                 return morphs;
               },
               statements: [
-                ["inline","component",[["subexpr","ko-helper",[["get","customFieldsList.componentFor",["loc",[null,[104,37],[104,66]]]],["get","field.fieldType",["loc",[null,[104,67],[104,82]]]]],[],["loc",[null,[104,26],[104,83]]]]],["customFieldsModel",["subexpr","@mut",[["get","model.customFields",["loc",[null,[105,34],[105,52]]]]],[],[]],"field",["subexpr","@mut",[["get","field",["loc",[null,[106,22],[106,27]]]]],[],[]],"fieldValue",["subexpr","ko-helper",[["get","customFieldsList.findCustomFieldValue",["loc",[null,[107,38],[107,75]]]],["get","model.customFields",["loc",[null,[107,76],[107,94]]]],["get","field",["loc",[null,[107,95],[107,100]]]]],[],["loc",[null,[107,27],[107,101]]]],"errors",["subexpr","@mut",[["get","errors",["loc",[null,[108,23],[108,29]]]]],[],[]],"editedCustomFields",["subexpr","@mut",[["get","editedCustomFields",["loc",[null,[109,35],[109,53]]]]],[],[]],"onFieldUpdate",["subexpr","action",["fieldUpdated"],[],["loc",[null,[110,30],[110,53]]]]],["loc",[null,[104,14],[111,16]]]]
+                ["inline","component",[["subexpr","ko-helper",[["get","customFieldsList.componentFor",["loc",[null,[110,37],[110,66]]]],["get","field.fieldType",["loc",[null,[110,67],[110,82]]]]],[],["loc",[null,[110,26],[110,83]]]]],["customFieldsModel",["subexpr","@mut",[["get","model.customFields",["loc",[null,[111,34],[111,52]]]]],[],[]],"field",["subexpr","@mut",[["get","field",["loc",[null,[112,22],[112,27]]]]],[],[]],"fieldValue",["subexpr","ko-helper",[["get","customFieldsList.findCustomFieldValue",["loc",[null,[113,38],[113,75]]]],["get","model.customFields",["loc",[null,[113,76],[113,94]]]],["get","field",["loc",[null,[113,95],[113,100]]]]],[],["loc",[null,[113,27],[113,101]]]],"errors",["subexpr","@mut",[["get","errors",["loc",[null,[114,23],[114,29]]]]],[],[]],"editedCustomFields",["subexpr","@mut",[["get","editedCustomFields",["loc",[null,[115,35],[115,53]]]]],[],[]],"onFieldUpdate",["subexpr","action",["fieldUpdated"],[],["loc",[null,[116,30],[116,53]]]]],["loc",[null,[110,14],[117,16]]]]
               ],
               locals: [],
               templates: []
@@ -46579,11 +46901,11 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 102,
+                  "line": 108,
                   "column": 10
                 },
                 "end": {
-                  "line": 113,
+                  "line": 119,
                   "column": 10
                 }
               },
@@ -46606,7 +46928,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
               return morphs;
             },
             statements: [
-              ["block","if",[["get","field.isEnabled",["loc",[null,[103,18],[103,33]]]]],[],0,null,["loc",[null,[103,12],[112,19]]]]
+              ["block","if",[["get","field.isEnabled",["loc",[null,[109,18],[109,33]]]]],[],0,null,["loc",[null,[109,12],[118,19]]]]
             ],
             locals: [],
             templates: [child0]
@@ -46618,11 +46940,11 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 101,
+                "line": 107,
                 "column": 8
               },
               "end": {
-                "line": 114,
+                "line": 120,
                 "column": 8
               }
             },
@@ -46645,24 +46967,24 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
             return morphs;
           },
           statements: [
-            ["block","if",[["subexpr","ko-helper",[["get","customFieldsList.componentFor",["loc",[null,[102,27],[102,56]]]],["get","field.fieldType",["loc",[null,[102,57],[102,72]]]]],[],["loc",[null,[102,16],[102,73]]]]],[],0,null,["loc",[null,[102,10],[113,17]]]]
+            ["block","if",[["subexpr","ko-helper",[["get","customFieldsList.componentFor",["loc",[null,[108,27],[108,56]]]],["get","field.fieldType",["loc",[null,[108,57],[108,72]]]]],[],["loc",[null,[108,16],[108,73]]]]],[],0,null,["loc",[null,[108,10],[119,17]]]]
           ],
           locals: ["field"],
           templates: [child0]
         };
       }());
-      var child2 = (function() {
+      var child4 = (function() {
         return {
           meta: {
             "revision": "Ember@1.13.10",
             "loc": {
               "source": null,
               "start": {
-                "line": 116,
+                "line": 122,
                 "column": 8
               },
               "end": {
-                "line": 131,
+                "line": 137,
                 "column": 8
               }
             },
@@ -46687,7 +47009,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
             return morphs;
           },
           statements: [
-            ["inline","ko-info-bar/field/tags",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.teams"],[],["loc",[null,[118,34],[118,58]]]]],[],["loc",[null,[118,18],[118,59]]]],"isEdited",["subexpr","@mut",[["get","isTeamsFieldEdited",["loc",[null,[119,21],[119,39]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","errorMap.team_ids",["loc",[null,[120,22],[120,39]]]]],[],[]],"selectedTags",["subexpr","@mut",[["get","model.teams",["loc",[null,[121,25],[121,36]]]]],[],[]],"suggestedTags",["subexpr","@mut",[["get","suggestedTeams",["loc",[null,[122,26],[122,40]]]]],[],[]],"newTagText",["subexpr","format-message",[["subexpr","intl-get",["users.newteam"],[],["loc",[null,[123,39],[123,65]]]]],[],["loc",[null,[123,23],[123,66]]]],"addTagText",["subexpr","format-message",[["subexpr","intl-get",["users.addteam"],[],["loc",[null,[124,39],[124,65]]]]],[],["loc",[null,[124,23],[124,66]]]],"forceLowerCase",false,"isNewTagAllowed",false,"onTagAddition",["subexpr","action",["addTeam"],[],["loc",[null,[127,26],[127,44]]]],"onTagRemoval",["subexpr","action",["removeTeam"],[],["loc",[null,[128,25],[128,46]]]],"onTagSuggestion",["subexpr","action",["suggestTeams"],[],["loc",[null,[129,28],[129,51]]]]],["loc",[null,[117,10],[130,12]]]]
+            ["inline","ko-info-bar/field/tags",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.teams"],[],["loc",[null,[124,34],[124,58]]]]],[],["loc",[null,[124,18],[124,59]]]],"isEdited",["subexpr","@mut",[["get","isTeamsFieldEdited",["loc",[null,[125,21],[125,39]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","errorMap.team_ids",["loc",[null,[126,22],[126,39]]]]],[],[]],"selectedTags",["subexpr","@mut",[["get","model.teams",["loc",[null,[127,25],[127,36]]]]],[],[]],"suggestedTags",["subexpr","@mut",[["get","suggestedTeams",["loc",[null,[128,26],[128,40]]]]],[],[]],"newTagText",["subexpr","format-message",[["subexpr","intl-get",["users.newteam"],[],["loc",[null,[129,39],[129,65]]]]],[],["loc",[null,[129,23],[129,66]]]],"addTagText",["subexpr","format-message",[["subexpr","intl-get",["users.addteam"],[],["loc",[null,[130,39],[130,65]]]]],[],["loc",[null,[130,23],[130,66]]]],"forceLowerCase",false,"isNewTagAllowed",false,"onTagAddition",["subexpr","action",["addTeam"],[],["loc",[null,[133,26],[133,44]]]],"onTagRemoval",["subexpr","action",["removeTeam"],[],["loc",[null,[134,25],[134,46]]]],"onTagSuggestion",["subexpr","action",["suggestTeams"],[],["loc",[null,[135,28],[135,51]]]]],["loc",[null,[123,10],[136,12]]]]
           ],
           locals: [],
           templates: []
@@ -46703,7 +47025,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
               "column": 6
             },
             "end": {
-              "line": 152,
+              "line": 158,
               "column": 6
             }
           },
@@ -46721,8 +47043,11 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
           var el2 = dom.createTextNode("\n          ");
           dom.appendChild(el1, el2);
           var el2 = dom.createElement("button");
-          dom.setAttribute(el2,"class","button button--primary u-1/1");
+          var el3 = dom.createTextNode("\n");
+          dom.appendChild(el2, el3);
           var el3 = dom.createComment("");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createTextNode("          ");
           dom.appendChild(el2, el3);
           dom.appendChild(el1, el2);
           var el2 = dom.createTextNode("\n        ");
@@ -46778,39 +47103,41 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
           var element4 = dom.childAt(fragment, [1, 1]);
-          var morphs = new Array(13);
-          morphs[0] = dom.createElementMorph(element4);
-          morphs[1] = dom.createMorphAt(element4,0,0);
-          morphs[2] = dom.createMorphAt(fragment,3,3,contextualElement);
-          morphs[3] = dom.createMorphAt(fragment,5,5,contextualElement);
-          morphs[4] = dom.createMorphAt(fragment,7,7,contextualElement);
-          morphs[5] = dom.createMorphAt(fragment,9,9,contextualElement);
-          morphs[6] = dom.createMorphAt(fragment,11,11,contextualElement);
-          morphs[7] = dom.createMorphAt(fragment,13,13,contextualElement);
-          morphs[8] = dom.createMorphAt(fragment,15,15,contextualElement);
-          morphs[9] = dom.createMorphAt(fragment,17,17,contextualElement);
-          morphs[10] = dom.createMorphAt(fragment,19,19,contextualElement);
-          morphs[11] = dom.createMorphAt(fragment,21,21,contextualElement);
-          morphs[12] = dom.createMorphAt(fragment,23,23,contextualElement);
+          var morphs = new Array(14);
+          morphs[0] = dom.createAttrMorph(element4, 'class');
+          morphs[1] = dom.createElementMorph(element4);
+          morphs[2] = dom.createMorphAt(element4,1,1);
+          morphs[3] = dom.createMorphAt(fragment,3,3,contextualElement);
+          morphs[4] = dom.createMorphAt(fragment,5,5,contextualElement);
+          morphs[5] = dom.createMorphAt(fragment,7,7,contextualElement);
+          morphs[6] = dom.createMorphAt(fragment,9,9,contextualElement);
+          morphs[7] = dom.createMorphAt(fragment,11,11,contextualElement);
+          morphs[8] = dom.createMorphAt(fragment,13,13,contextualElement);
+          morphs[9] = dom.createMorphAt(fragment,15,15,contextualElement);
+          morphs[10] = dom.createMorphAt(fragment,17,17,contextualElement);
+          morphs[11] = dom.createMorphAt(fragment,19,19,contextualElement);
+          morphs[12] = dom.createMorphAt(fragment,21,21,contextualElement);
+          morphs[13] = dom.createMorphAt(fragment,23,23,contextualElement);
           return morphs;
         },
         statements: [
-          ["element","action",["submit"],[],["loc",[null,[62,55],[62,74]]]],
-          ["inline","format-message",[["subexpr","intl-get",["cases.submit"],[],["loc",[null,[62,92],[62,117]]]]],[],["loc",[null,[62,75],[62,119]]]],
-          ["inline","ko-info-bar/field/select",[],["value",["subexpr","@mut",[["get","model.role",["loc",[null,[66,16],[66,26]]]]],[],[]],"options",["subexpr","@mut",[["get","roles",["loc",[null,[67,18],[67,23]]]]],[],[]],"title",["subexpr","format-message",[["subexpr","intl-get",["users.infobar.role"],[],["loc",[null,[68,32],[68,63]]]]],[],["loc",[null,[68,16],[68,64]]]],"isEdited",["subexpr","@mut",[["get","isRoleEdited",["loc",[null,[69,19],[69,31]]]]],[],[]],"onValueChange",["subexpr","action",["roleSelect"],[],["loc",[null,[70,24],[70,45]]]],"labelPath","title"],["loc",[null,[65,8],[72,10]]]],
-          ["block","if",[["get","canChangeAgentCaseAccessPermission",["loc",[null,[74,14],[74,48]]]]],[],0,null,["loc",[null,[74,8],[84,15]]]],
-          ["inline","ko-info-bar/field/select",[],["value",["subexpr","@mut",[["get","model.organization.content",["loc",[null,[87,16],[87,42]]]]],[],[]],"options",["subexpr","@mut",[["get","organizations",["loc",[null,[88,18],[88,31]]]]],[],[]],"title",["subexpr","format-message",[["subexpr","intl-get",["users.infobar.organization"],[],["loc",[null,[89,32],[89,71]]]]],[],["loc",[null,[89,16],[89,72]]]],"isEdited",["subexpr","@mut",[["get","isOrganizationEdited",["loc",[null,[90,19],[90,39]]]]],[],[]],"onValueChange",["subexpr","action",["organizationSelect"],[],["loc",[null,[91,24],[91,53]]]],"labelPath","name"],["loc",[null,[86,8],[93,10]]]],
-          ["inline","ko-user-content/field/timezone-select",[],["timezone",["subexpr","@mut",[["get","model.timeZone",["loc",[null,[96,19],[96,33]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isTimezoneEdited",["loc",[null,[97,19],[97,35]]]]],[],[]],"onChangeTimezone",["subexpr","action",["timezoneSelect"],[],["loc",[null,[98,27],[98,52]]]]],["loc",[null,[95,8],[99,10]]]],
-          ["block","each",[["get","customFields",["loc",[null,[101,16],[101,28]]]]],[],1,null,["loc",[null,[101,8],[114,17]]]],
-          ["block","if",[["get","canChangeUserTeamPermission",["loc",[null,[116,14],[116,41]]]]],[],2,null,["loc",[null,[116,8],[131,15]]]],
-          ["inline","ko-info-bar/field/tags",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.tags"],[],["loc",[null,[134,32],[134,55]]]]],[],["loc",[null,[134,16],[134,56]]]],"isEdited",["subexpr","@mut",[["get","isTagsFieldEdited",["loc",[null,[135,19],[135,36]]]]],[],[]],"selectedTags",["subexpr","@mut",[["get","userTags",["loc",[null,[136,23],[136,31]]]]],[],[]],"suggestedTags",["subexpr","@mut",[["get","suggestedTags",["loc",[null,[137,24],[137,37]]]]],[],[]],"newTagText",["subexpr","format-message",[["subexpr","intl-get",["users.newtag"],[],["loc",[null,[138,37],[138,62]]]]],[],["loc",[null,[138,21],[138,63]]]],"addTagText",["subexpr","format-message",[["subexpr","intl-get",["users.addtag"],[],["loc",[null,[139,37],[139,62]]]]],[],["loc",[null,[139,21],[139,63]]]],"onTagAddition",["subexpr","action",["addTag"],[],["loc",[null,[140,24],[140,41]]]],"onTagRemoval",["subexpr","action",["removeTag"],[],["loc",[null,[141,23],[141,43]]]],"onTagSuggestion",["subexpr","action",["suggestTags"],[],["loc",[null,[142,26],[142,48]]]]],["loc",[null,[133,8],[143,10]]]],
-          ["inline","ko-identities",[],["parent",["subexpr","@mut",[["get","model",["loc",[null,[145,31],[145,36]]]]],[],[]]],["loc",[null,[145,8],[145,38]]]],
-          ["inline","ko-info-bar/metadata",[],["rows",["subexpr","@mut",[["get","userDates",["loc",[null,[147,36],[147,45]]]]],[],[]]],["loc",[null,[147,8],[147,47]]]],
-          ["inline","ko-recent-cases",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.recent_cases"],[],["loc",[null,[149,48],[149,79]]]]],[],["loc",[null,[149,32],[149,80]]]],"cases",["subexpr","@mut",[["get","model.recentCases",["loc",[null,[149,87],[149,104]]]]],[],[]]],["loc",[null,[149,8],[149,106]]]],
-          ["inline","ko-feedback",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.recent_feedback"],[],["loc",[null,[151,44],[151,78]]]]],[],["loc",[null,[151,28],[151,79]]]],"feedback",["subexpr","@mut",[["get","recentFeedback",["loc",[null,[151,89],[151,103]]]]],[],[]]],["loc",[null,[151,8],[151,105]]]]
+          ["attribute","class",["concat",["button button--primary u-1/1 ",["subexpr","if",[["get","submitDisabled",["loc",[null,[62,59],[62,73]]]],"disabled"],[],["loc",[null,[62,54],[62,86]]]]]]],
+          ["element","action",["submit"],[],["loc",[null,[62,88],[62,107]]]],
+          ["block","if",[["get","isSaving",["loc",[null,[63,18],[63,26]]]]],[],0,1,["loc",[null,[63,12],[67,19]]]],
+          ["inline","ko-info-bar/field/select",[],["value",["subexpr","@mut",[["get","model.role",["loc",[null,[72,16],[72,26]]]]],[],[]],"options",["subexpr","@mut",[["get","roles",["loc",[null,[73,18],[73,23]]]]],[],[]],"title",["subexpr","format-message",[["subexpr","intl-get",["users.infobar.role"],[],["loc",[null,[74,32],[74,63]]]]],[],["loc",[null,[74,16],[74,64]]]],"isEdited",["subexpr","@mut",[["get","isRoleEdited",["loc",[null,[75,19],[75,31]]]]],[],[]],"onValueChange",["subexpr","action",["roleSelect"],[],["loc",[null,[76,24],[76,45]]]],"labelPath","title"],["loc",[null,[71,8],[78,10]]]],
+          ["block","if",[["get","canChangeAgentCaseAccessPermission",["loc",[null,[80,14],[80,48]]]]],[],2,null,["loc",[null,[80,8],[90,15]]]],
+          ["inline","ko-info-bar/field/select",[],["value",["subexpr","@mut",[["get","model.organization.content",["loc",[null,[93,16],[93,42]]]]],[],[]],"options",["subexpr","@mut",[["get","organizations",["loc",[null,[94,18],[94,31]]]]],[],[]],"title",["subexpr","format-message",[["subexpr","intl-get",["users.infobar.organization"],[],["loc",[null,[95,32],[95,71]]]]],[],["loc",[null,[95,16],[95,72]]]],"isEdited",["subexpr","@mut",[["get","isOrganizationEdited",["loc",[null,[96,19],[96,39]]]]],[],[]],"onValueChange",["subexpr","action",["organizationSelect"],[],["loc",[null,[97,24],[97,53]]]],"labelPath","name"],["loc",[null,[92,8],[99,10]]]],
+          ["inline","ko-user-content/field/timezone-select",[],["timezone",["subexpr","@mut",[["get","model.timeZone",["loc",[null,[102,19],[102,33]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isTimezoneEdited",["loc",[null,[103,19],[103,35]]]]],[],[]],"onChangeTimezone",["subexpr","action",["timezoneSelect"],[],["loc",[null,[104,27],[104,52]]]]],["loc",[null,[101,8],[105,10]]]],
+          ["block","each",[["get","customFields",["loc",[null,[107,16],[107,28]]]]],[],3,null,["loc",[null,[107,8],[120,17]]]],
+          ["block","if",[["get","canChangeUserTeamPermission",["loc",[null,[122,14],[122,41]]]]],[],4,null,["loc",[null,[122,8],[137,15]]]],
+          ["inline","ko-info-bar/field/tags",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.tags"],[],["loc",[null,[140,32],[140,55]]]]],[],["loc",[null,[140,16],[140,56]]]],"isEdited",["subexpr","@mut",[["get","isTagsFieldEdited",["loc",[null,[141,19],[141,36]]]]],[],[]],"selectedTags",["subexpr","@mut",[["get","userTags",["loc",[null,[142,23],[142,31]]]]],[],[]],"suggestedTags",["subexpr","@mut",[["get","suggestedTags",["loc",[null,[143,24],[143,37]]]]],[],[]],"newTagText",["subexpr","format-message",[["subexpr","intl-get",["users.newtag"],[],["loc",[null,[144,37],[144,62]]]]],[],["loc",[null,[144,21],[144,63]]]],"addTagText",["subexpr","format-message",[["subexpr","intl-get",["users.addtag"],[],["loc",[null,[145,37],[145,62]]]]],[],["loc",[null,[145,21],[145,63]]]],"onTagAddition",["subexpr","action",["addTag"],[],["loc",[null,[146,24],[146,41]]]],"onTagRemoval",["subexpr","action",["removeTag"],[],["loc",[null,[147,23],[147,43]]]],"onTagSuggestion",["subexpr","action",["suggestTags"],[],["loc",[null,[148,26],[148,48]]]]],["loc",[null,[139,8],[149,10]]]],
+          ["inline","ko-identities",[],["parent",["subexpr","@mut",[["get","model",["loc",[null,[151,31],[151,36]]]]],[],[]]],["loc",[null,[151,8],[151,38]]]],
+          ["inline","ko-info-bar/metadata",[],["rows",["subexpr","@mut",[["get","userDates",["loc",[null,[153,36],[153,45]]]]],[],[]]],["loc",[null,[153,8],[153,47]]]],
+          ["inline","ko-recent-cases",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.recent_cases"],[],["loc",[null,[155,48],[155,79]]]]],[],["loc",[null,[155,32],[155,80]]]],"cases",["subexpr","@mut",[["get","model.recentCases",["loc",[null,[155,87],[155,104]]]]],[],[]]],["loc",[null,[155,8],[155,106]]]],
+          ["inline","ko-feedback",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.recent_feedback"],[],["loc",[null,[157,44],[157,78]]]]],[],["loc",[null,[157,28],[157,79]]]],"feedback",["subexpr","@mut",[["get","recentFeedback",["loc",[null,[157,89],[157,103]]]]],[],[]]],["loc",[null,[157,8],[157,105]]]]
         ],
         locals: [],
-        templates: [child0, child1, child2]
+        templates: [child0, child1, child2, child3, child4]
       };
     }());
     var child2 = (function() {
@@ -46821,11 +47148,11 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 158,
+                "line": 164,
                 "column": 2
               },
               "end": {
-                "line": 173,
+                "line": 179,
                 "column": 2
               }
             },
@@ -46906,12 +47233,12 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
             return morphs;
           },
           statements: [
-            ["inline","textarea",[],["value",["subexpr","@mut",[["get","editingSignature",["loc",[null,[159,21],[159,37]]]]],[],[]],"class","text-area--clean"],["loc",[null,[159,4],[159,64]]]],
-            ["inline","format-message",[["subexpr","intl-get",["users.signaturemessage"],[],["loc",[null,[162,25],[162,60]]]]],[],["loc",[null,[162,8],[162,62]]]],
-            ["element","action",["closeSignatureModal"],[],["loc",[null,[165,11],[165,43]]]],
-            ["inline","format-message",[["subexpr","intl-get",["generic.cancel"],[],["loc",[null,[166,27],[166,54]]]]],[],["loc",[null,[166,10],[166,56]]]],
-            ["element","action",["updateSignature"],[],["loc",[null,[168,47],[168,75]]]],
-            ["inline","format-message",[["subexpr","intl-get",["users.update_signature"],[],["loc",[null,[169,27],[169,62]]]]],[],["loc",[null,[169,10],[169,64]]]]
+            ["inline","textarea",[],["value",["subexpr","@mut",[["get","editingSignature",["loc",[null,[165,21],[165,37]]]]],[],[]],"class","text-area--clean"],["loc",[null,[165,4],[165,64]]]],
+            ["inline","format-message",[["subexpr","intl-get",["users.signaturemessage"],[],["loc",[null,[168,25],[168,60]]]]],[],["loc",[null,[168,8],[168,62]]]],
+            ["element","action",["closeSignatureModal"],[],["loc",[null,[171,11],[171,43]]]],
+            ["inline","format-message",[["subexpr","intl-get",["generic.cancel"],[],["loc",[null,[172,27],[172,54]]]]],[],["loc",[null,[172,10],[172,56]]]],
+            ["element","action",["updateSignature"],[],["loc",[null,[174,47],[174,75]]]],
+            ["inline","format-message",[["subexpr","intl-get",["users.update_signature"],[],["loc",[null,[175,27],[175,62]]]]],[],["loc",[null,[175,10],[175,64]]]]
           ],
           locals: [],
           templates: []
@@ -46923,11 +47250,11 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 157,
+              "line": 163,
               "column": 0
             },
             "end": {
-              "line": 174,
+              "line": 180,
               "column": 0
             }
           },
@@ -46950,7 +47277,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
           return morphs;
         },
         statements: [
-          ["block","ko-editor-modal",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.editsignature"],[],["loc",[null,[158,43],[158,75]]]]],[],["loc",[null,[158,27],[158,76]]]]],0,null,["loc",[null,[158,2],[173,22]]]]
+          ["block","ko-editor-modal",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.editsignature"],[],["loc",[null,[164,43],[164,75]]]]],[],["loc",[null,[164,27],[164,76]]]]],0,null,["loc",[null,[164,2],[179,22]]]]
         ],
         locals: [],
         templates: [child0]
@@ -46966,7 +47293,7 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
             "column": 0
           },
           "end": {
-            "line": 175,
+            "line": 181,
             "column": 0
           }
         },
@@ -47149,8 +47476,8 @@ define('frontend-cp/components/ko-user-content/template', ['exports'], function 
         ["inline","ko-stateful-button",[],["activeText",["subexpr","format-message",[["subexpr","intl-get",["users.button.user.enabled.text"],[],["loc",[null,[30,38],[30,81]]]]],[],["loc",[null,[30,22],[30,82]]]],"activeHoverText",["subexpr","format-message",[["subexpr","intl-get",["users.button.user.enabled.hovertext"],[],["loc",[null,[31,43],[31,91]]]]],[],["loc",[null,[31,27],[31,92]]]],"inactiveText",["subexpr","format-message",[["subexpr","intl-get",["users.button.user.disabled.text"],[],["loc",[null,[32,40],[32,84]]]]],[],["loc",[null,[32,24],[32,85]]]],"inactiveHoverText",["subexpr","format-message",[["subexpr","intl-get",["users.button.user.disabled.hovertext"],[],["loc",[null,[33,45],[33,94]]]]],[],["loc",[null,[33,29],[33,95]]]],"isActive",["subexpr","@mut",[["get","model.isEnabled",["loc",[null,[34,20],[34,35]]]]],[],[]],"isEnabled",["subexpr","@mut",[["get","canModifyUserState",["loc",[null,[35,21],[35,39]]]]],[],[]],"isLoading",["subexpr","@mut",[["get","isStateSaving",["loc",[null,[36,21],[36,34]]]]],[],[]],"onClick","toggleUserState"],["loc",[null,[29,9],[37,38]]]],
         ["inline","ko-user-action-menu",[],["permissions",["subexpr","@mut",[["get","sessionService.permissions",["loc",[null,[41,24],[41,50]]]]],[],[]],"userRoleType",["subexpr","@mut",[["get","model.role.roleType",["loc",[null,[42,25],[42,44]]]]],[],[]],"userModel",["subexpr","@mut",[["get","model",["loc",[null,[43,22],[43,27]]]]],[],[]]],["loc",[null,[40,8],[44,10]]]],
         ["block","ko-text-editor",[],["class","ko-user-content__text-editor","viewName","postEditor","onPeopleSuggestion","suggestPeople"],0,null,["loc",[null,[53,8],[55,27]]]],
-        ["block","ko-info-bar",[],[],1,null,["loc",[null,[60,6],[152,22]]]],
-        ["block","if",[["get","signatureModal",["loc",[null,[157,6],[157,20]]]]],[],2,null,["loc",[null,[157,0],[174,7]]]]
+        ["block","ko-info-bar",[],[],1,null,["loc",[null,[60,6],[158,22]]]],
+        ["block","if",[["get","signatureModal",["loc",[null,[163,6],[163,20]]]]],[],2,null,["loc",[null,[163,0],[180,7]]]]
       ],
       locals: [],
       templates: [child0, child1, child2]
@@ -51941,6 +52268,15 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
         resources: []
       };
     });
+
+    this.get('/api/v1/organizations/:caseid/tags', function (db) {
+      return {
+        status: 200,
+        data: db.tags,
+        resource: 'tag',
+        resources: []
+      };
+    });
   }
 
 });
@@ -54652,6 +54988,19 @@ define('frontend-cp/models/field', ['exports', 'ember', 'ember-data', 'frontend-
     }),
 
     options: DS['default'].hasMany('field-option', { child: true, async: false, url: 'options', inverse: 'parent' })
+  });
+
+});
+define('frontend-cp/models/fieldlocale', ['exports', 'ember-data'], function (exports, DS) {
+
+  'use strict';
+
+  exports['default'] = DS['default'].Model.extend({
+    field: DS['default'].attr('string'),
+    locale: DS['default'].attr('string'),
+    translation: DS['default'].attr('string'),
+    createdAt: DS['default'].attr('date'),
+    updatedAt: DS['default'].attr('date')
   });
 
 });
@@ -79873,7 +80222,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"88d34fd0054d469bcfa2","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+e82aaaa5"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"88d34fd0054d469bcfa2","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+d89c44b3"});
 }
 
 /* jshint ignore:end */
