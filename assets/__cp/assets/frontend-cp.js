@@ -15306,6 +15306,10 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       return Ember['default'].RSVP.Promise.resolve();
     },
 
+    suggestTagsCallback: function suggestTagsCallback() {
+      this.send('_suggestTags', this.get('tagSearchTerm'), this.get('suggestedTags'));
+    },
+
     actions: {
       updateDirtyFieldHash: function updateDirtyFieldHash() {
         this.updateDirtyCaseFieldHash();
@@ -15364,21 +15368,30 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       },
 
       suggestTags: function suggestTags(searchTerm, selectedTags) {
-        var _this12 = this;
-
         if (!searchTerm) {
           this.set('suggestedTags', []);
           return;
         }
 
-        var suggestionService = this.get('tagSuggestionService');
+        this.set('tagSearchTerm', searchTerm);
+        Ember['default'].run.debounce(this, this.suggestTagsCallback, 300);
+      },
 
+      _suggestTags: function _suggestTags(searchTerm, selectedTags) {
+        var _this12 = this;
+
+        var suggestionService = this.get('tagSuggestionService');
         suggestionService.suggest(searchTerm).then(function (data) {
+          if (suggestionService.isPromiseDiscarded(searchTerm)) {
+            return;
+          }
+
           data = suggestionService.exclude(data, selectedTags);
 
           _this12.set('suggestedTags', data.map(function (tag) {
             return tag.get('name');
           }));
+          suggestionService.flushQueue();
         });
       },
 
@@ -35086,6 +35099,10 @@ define('frontend-cp/components/ko-organisation-content/component', ['exports', '
       });
     }),
 
+    suggestTagsCallback: function suggestTagsCallback() {
+      this.send('_suggestTags', this.get('tagSearchTerm'), this.get('suggestedTags'));
+    },
+
     actions: {
       addTag: function addTag(tagName) {
         var newTag = this.get('tagService').getTagByName(tagName);
@@ -35098,18 +35115,30 @@ define('frontend-cp/components/ko-organisation-content/component', ['exports', '
       },
 
       suggestTags: function suggestTags(searchTerm, selectedTags) {
-        var _this3 = this;
-
         if (!searchTerm) {
           this.set('suggestedTags', []);
           return;
         }
 
-        var suggestionService = this.get('tagSuggestionService');
+        this.set('tagSearchTerm', searchTerm);
+        Ember['default'].run.debounce(this, this.suggestTagsCallback, 300);
+      },
 
+      _suggestTags: function _suggestTags(searchTerm, selectedTags) {
+        var _this3 = this;
+
+        var suggestionService = this.get('tagSuggestionService');
         suggestionService.suggest(searchTerm).then(function (data) {
+          if (suggestionService.isPromiseDiscarded(searchTerm)) {
+            return;
+          }
+
           data = suggestionService.exclude(data, selectedTags);
-          _this3.set('suggestedTags', data);
+
+          _this3.set('suggestedTags', data.map(function (tag) {
+            return tag.get('name');
+          }));
+          suggestionService.flushQueue();
         });
       },
 
@@ -46165,6 +46194,10 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
       }
     },
 
+    suggestTagsCallback: function suggestTagsCallback() {
+      this.send('_suggestTags', this.get('tagSearchTerm'), this.get('suggestedTags'));
+    },
+
     actions: {
       toggleUserState: function toggleUserState() {
         var _this7 = this;
@@ -46268,20 +46301,30 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
       },
 
       suggestTags: function suggestTags(searchTerm, selectedTags) {
-        var _this10 = this;
-
         if (!searchTerm) {
           this.set('suggestedTags', []);
           return;
         }
 
-        var suggestionService = this.get('tagSuggestionService');
+        this.set('tagSearchTerm', searchTerm);
+        Ember['default'].run.debounce(this, this.suggestTagsCallback, 300);
+      },
 
+      _suggestTags: function _suggestTags(searchTerm, selectedTags) {
+        var _this10 = this;
+
+        var suggestionService = this.get('tagSuggestionService');
         suggestionService.suggest(searchTerm).then(function (data) {
+          if (suggestionService.isPromiseDiscarded(searchTerm)) {
+            return;
+          }
+
           data = suggestionService.exclude(data, selectedTags);
+
           _this10.set('suggestedTags', data.map(function (tag) {
             return tag.get('name');
           }));
+          suggestionService.flushQueue();
         });
       },
 
@@ -54612,6 +54655,19 @@ define('frontend-cp/models/field', ['exports', 'ember', 'ember-data', 'frontend-
   });
 
 });
+define('frontend-cp/models/fieldlocale', ['exports', 'ember-data'], function (exports, DS) {
+
+  'use strict';
+
+  exports['default'] = DS['default'].Model.extend({
+    field: DS['default'].attr('string'),
+    locale: DS['default'].attr('string'),
+    translation: DS['default'].attr('string'),
+    createdAt: DS['default'].attr('date'),
+    updatedAt: DS['default'].attr('date')
+  });
+
+});
 define('frontend-cp/models/has-addresses', ['exports', 'ember-data'], function (exports, DS) {
 
   'use strict';
@@ -58703,14 +58759,20 @@ define('frontend-cp/services/suggestion/tag', ['exports', 'ember'], function (ex
 
   'use strict';
 
+  var PROMISE_NAME = 'autocomplete-tag';
+
   exports['default'] = Ember['default'].Service.extend({
     storeCache: Ember['default'].inject.service('store-cache'),
     exclusion: Ember['default'].inject.service('suggestion/exclusion'),
+    promiseQueue: Ember['default'].inject.service('suggestion/promise-queue'),
 
     suggest: function suggest(searchTerm) {
-      return this.get('storeCache').query('tag', {
+      var promise = this.get('storeCache').query('tag', {
         name: searchTerm
       });
+
+      this.get('promiseQueue').push(PROMISE_NAME, searchTerm, promise);
+      return promise;
     },
 
     suggestFilter: function suggestFilter(records, searchTerm, key) {
@@ -58721,6 +58783,14 @@ define('frontend-cp/services/suggestion/tag', ['exports', 'ember'], function (ex
           return regexp.test(team.get(key));
         }));
       });
+    },
+
+    isPromiseDiscarded: function isPromiseDiscarded(searchTerm) {
+      return this.get('promiseQueue').isDiscarded(PROMISE_NAME, searchTerm);
+    },
+
+    flushQueue: function flushQueue() {
+      this.get('promiseQueue').flush(PROMISE_NAME);
     },
 
     exclude: function exclude(data, exclusions) {
@@ -79816,7 +79886,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"88d34fd0054d469bcfa2","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+a748d39a"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"88d34fd0054d469bcfa2","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+551967a5"});
 }
 
 /* jshint ignore:end */
