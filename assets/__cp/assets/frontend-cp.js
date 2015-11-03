@@ -63831,20 +63831,9 @@ define('frontend-cp/session/admin/people/user-fields/index/route', ['exports', '
   'use strict';
 
   exports['default'] = Ember['default'].Route.extend({
-    permissionService: Ember['default'].inject.service('permissions'),
-    permissionName: 'admin.team.userfields.view',
-
-    beforeModel: function beforeModel() {
-      if (!this.get('permissionService').has(this.get('permissionName'))) {
-        this.get('permissionService').showError();
-        this.transitionTo('session.admin');
-      }
-    },
-
     model: function model() {
       return this.store.find('user-field');
     }
-
   });
 
 });
@@ -79827,7 +79816,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"88d34fd0054d469bcfa2","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+4ca3b59d"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"88d34fd0054d469bcfa2","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+a748d39a"});
 }
 
 /* jshint ignore:end */
