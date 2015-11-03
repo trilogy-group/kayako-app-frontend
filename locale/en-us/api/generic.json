@@ -79,6 +79,8 @@
   "create_user_panel.submit": "Add user",
   "create_user_panel.info": "Other identities can be added once the user has been created.",
   "create_user_panel.cancel": "cancel",
+  "create_user_panel.user_exists": "This email already in use.",
+  "create_user_panel.user_exists_toast": "This email already belongs to someone",
 
   "create_organisation_panel.title": "Create a new organization",
   "create_organisation_panel.name_label": "Organization Name",
