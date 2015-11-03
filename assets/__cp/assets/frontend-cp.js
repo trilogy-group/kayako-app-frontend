@@ -11839,17 +11839,20 @@ define('frontend-cp/components/ko-agent-dropdown/component', ['exports', 'ember'
     isExpanded: false,
     selectedTab: null,
 
-    focusIn: function focusIn(event) {
-      this.set('isExpanded', true);
+    didInsertElement: function didInsertElement() {
+      var _this = this;
+
+      this.$(document).on('click.' + this.get('elementId'), function (event) {
+        var isStillFocused = Ember['default'].$.contains(_this.$()[0], event.target);
+        if (isStillFocused) {
+          return;
+        }
+        _this.set('isExpanded', false);
+      });
     },
 
-    focusOut: function focusOut(event) {
-      // `focusout` events bubble, so the user might have just switched focus within the component
-      var isStillFocused = Ember['default'].$.contains(this.$()[0], event.relatedTarget);
-      if (isStillFocused) {
-        return;
-      }
-      this.set('isExpanded', false);
+    willDestroyElement: function willDestroyElement() {
+      this.$(document).off('click.' + this.get('elementId'));
     },
 
     caseTab: Ember['default'].computed('navItems', function () {
@@ -11947,7 +11950,6 @@ define('frontend-cp/components/ko-agent-dropdown/component', ['exports', 'ember'
         if (tab.path) {
           var router = this.container.lookup('router:main');
           router.router.transitionTo(tab.path);
-          this.set('isExpanded', false);
         } else {
           this.set('selectedTab', tab || null);
         }
@@ -11963,7 +11965,6 @@ define('frontend-cp/components/ko-agent-dropdown/component', ['exports', 'ember'
         this._createSuccessNotification(route);
 
         router.router.transitionTo(route, model);
-        this.set('isExpanded', false);
       },
 
       onTabCancelled: function onTabCancelled() {
@@ -13751,8 +13752,8 @@ define('frontend-cp/components/ko-agent-dropdown/template', ['exports'], functio
                 "column": 6
               },
               "end": {
-                "line": 25,
-                "column": 267
+                "line": 32,
+                "column": 6
               }
             },
             "moduleName": "frontend-cp/components/ko-agent-dropdown/template.hbs"
@@ -13762,36 +13763,49 @@ define('frontend-cp/components/ko-agent-dropdown/template', ['exports'], functio
           hasRendered: false,
           buildFragment: function buildFragment(dom) {
             var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("        ");
+            dom.appendChild(el0, el1);
             var el1 = dom.createElement("li");
-            dom.setAttribute(el1,"class","ko-agent-dropdown__item");
+            var el2 = dom.createTextNode("\n          ");
+            dom.appendChild(el1, el2);
             var el2 = dom.createElement("button");
             dom.setAttribute(el2,"type","button");
             dom.setAttribute(el2,"class","ko-agent-dropdown__link button-naked");
             dom.setAttribute(el2,"tabindex","0");
+            var el3 = dom.createTextNode("\n            ");
+            dom.appendChild(el2, el3);
             var el3 = dom.createElement("img");
+            dom.appendChild(el2, el3);
+            var el3 = dom.createTextNode("\n            ");
             dom.appendChild(el2, el3);
             var el3 = dom.createElement("div");
             dom.setAttribute(el3,"class","t-center u-mt--");
             var el4 = dom.createComment("");
             dom.appendChild(el3, el4);
             dom.appendChild(el2, el3);
+            var el3 = dom.createTextNode("\n          ");
+            dom.appendChild(el2, el3);
             dom.appendChild(el1, el2);
+            var el2 = dom.createTextNode("\n        ");
+            dom.appendChild(el1, el2);
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
             dom.appendChild(el0, el1);
             return el0;
           },
           buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-            var element0 = dom.childAt(fragment, [0, 0]);
-            var element1 = dom.childAt(element0, [0]);
+            var element0 = dom.childAt(fragment, [1, 1]);
+            var element1 = dom.childAt(element0, [1]);
             var morphs = new Array(3);
             morphs[0] = dom.createElementMorph(element0);
             morphs[1] = dom.createAttrMorph(element1, 'src');
-            morphs[2] = dom.createMorphAt(dom.childAt(element0, [1]),0,0);
+            morphs[2] = dom.createMorphAt(dom.childAt(element0, [3]),0,0);
             return morphs;
           },
           statements: [
-            ["element","action",["selectTab",["get","item",["loc",[null,[25,171],[25,175]]]]],[],["loc",[null,[25,150],[25,177]]]],
-            ["attribute","src",["concat",[["get","item.icon",["loc",[null,[25,190],[25,199]]]]]]],
-            ["content","item.text",["loc",[null,[25,234],[25,247]]]]
+            ["element","action",["selectTab",["get","item",["loc",[null,[27,111],[27,115]]]]],["bubbles",false],["loc",[null,[27,90],[27,131]]]],
+            ["attribute","src",["concat",[["get","item.icon",["loc",[null,[28,24],[28,33]]]]]]],
+            ["content","item.text",["loc",[null,[29,41],[29,54]]]]
           ],
           locals: ["item"],
           templates: []
@@ -13807,7 +13821,7 @@ define('frontend-cp/components/ko-agent-dropdown/template', ['exports'], functio
               "column": 2
             },
             "end": {
-              "line": 62,
+              "line": 69,
               "column": 2
             }
           },
@@ -13825,12 +13839,12 @@ define('frontend-cp/components/ko-agent-dropdown/template', ['exports'], functio
           var el2 = dom.createTextNode("\n    ");
           dom.appendChild(el1, el2);
           var el2 = dom.createElement("ul");
-          dom.setAttribute(el2,"class","list-inline");
-          var el3 = dom.createTextNode("\n      ");
+          dom.setAttribute(el2,"class","ko-agent-dropdown__nav-items");
+          var el3 = dom.createTextNode("\n");
           dom.appendChild(el2, el3);
           var el3 = dom.createComment("");
           dom.appendChild(el2, el3);
-          var el3 = dom.createTextNode("\n    ");
+          var el3 = dom.createTextNode("    ");
           dom.appendChild(el2, el3);
           dom.appendChild(el1, el2);
           var el2 = dom.createTextNode("\n  ");
@@ -13850,7 +13864,7 @@ define('frontend-cp/components/ko-agent-dropdown/template', ['exports'], functio
           return morphs;
         },
         statements: [
-          ["block","each",[["get","navItems",["loc",[null,[25,14],[25,22]]]]],[],0,null,["loc",[null,[25,6],[25,276]]]]
+          ["block","each",[["get","navItems",["loc",[null,[25,14],[25,22]]]]],[],0,null,["loc",[null,[25,6],[32,15]]]]
         ],
         locals: [],
         templates: [child0]
@@ -13866,7 +13880,7 @@ define('frontend-cp/components/ko-agent-dropdown/template', ['exports'], functio
             "column": 0
           },
           "end": {
-            "line": 64,
+            "line": 71,
             "column": 0
           }
         },
@@ -13909,7 +13923,7 @@ define('frontend-cp/components/ko-agent-dropdown/template', ['exports'], functio
         ["attribute","class",["concat",["ko-agent-dropdown__nav-new button i-plus i-size-18",["subexpr","if",[["get","isExpanded",["loc",[null,[1,97],[1,107]]]]," is-active"],[],["loc",[null,[1,92],[1,122]]]]]]],
         ["element","action",["toggleDropdown"],[],["loc",[null,[1,124],[1,151]]]],
         ["attribute","class",["concat",["ko-agent-dropdown__drop box-container ",["subexpr","unless",[["get","isExpanded",["loc",[null,[2,59],[2,69]]]],"u-hidden"],[],["loc",[null,[2,50],[2,82]]]]]]],
-        ["block","if",[["get","selectedTab",["loc",[null,[3,8],[3,19]]]]],[],0,1,["loc",[null,[3,2],[62,9]]]]
+        ["block","if",[["get","selectedTab",["loc",[null,[3,8],[3,19]]]]],[],0,1,["loc",[null,[3,2],[69,9]]]]
       ],
       locals: [],
       templates: [child0, child1]
@@ -39532,6 +39546,9 @@ define('frontend-cp/components/ko-reorderable-list/item/handle/component', ['exp
     }),
 
     handleDragStart: Ember['default'].on('dragStart', function (e) {
+      // Firefox needs this to actually start dragging the element
+      e.dataTransfer.setData('*', '*');
+
       e.dataTransfer.effectAllowed = 'move';
       e.dataTransfer.dropEffect = 'move';
       e.dataTransfer.setDragImage(e.target.parentElement, 0, 0);
@@ -70809,7 +70826,7 @@ define('frontend-cp/tests/acceptance/agent/cases/create-test', ['frontend-cp/tes
     visit('/agent');
 
     click('.ko-agent-dropdown__nav-new');
-    click('.ko-agent-dropdown__item:eq(0) .ko-agent-dropdown__link');
+    click('.ko-agent-dropdown__drop ul li:eq(0) .ko-agent-dropdown__link');
     fillIn('.ko-agent-dropdown-create-case__input input', 'Barney');
 
     andThen(function () {
@@ -79751,7 +79768,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"88d34fd0054d469bcfa2","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+8fdfdf66"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"88d34fd0054d469bcfa2","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+97365650"});
 }
 
 /* jshint ignore:end */
