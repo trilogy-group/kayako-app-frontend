@@ -54655,19 +54655,6 @@ define('frontend-cp/models/field', ['exports', 'ember', 'ember-data', 'frontend-
   });
 
 });
-define('frontend-cp/models/fieldlocale', ['exports', 'ember-data'], function (exports, DS) {
-
-  'use strict';
-
-  exports['default'] = DS['default'].Model.extend({
-    field: DS['default'].attr('string'),
-    locale: DS['default'].attr('string'),
-    translation: DS['default'].attr('string'),
-    createdAt: DS['default'].attr('date'),
-    updatedAt: DS['default'].attr('date')
-  });
-
-});
 define('frontend-cp/models/has-addresses', ['exports', 'ember-data'], function (exports, DS) {
 
   'use strict';
@@ -79886,7 +79873,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"88d34fd0054d469bcfa2","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+551967a5"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"88d34fd0054d469bcfa2","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+e82aaaa5"});
 }
 
 /* jshint ignore:end */
