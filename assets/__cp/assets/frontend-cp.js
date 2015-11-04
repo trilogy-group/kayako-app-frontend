@@ -66526,7 +66526,8 @@ define('frontend-cp/session/agent/cases/new/route', ['exports', 'ember', 'fronte
 
       var requester = this.store.findRecord('user', requester_id);
       var status = this.store.findRecord('case-status', NEW_STATUS_ID);
-      var sourceChannel = this.store.query('channel', { user_id: requester_id }).then(function (channelModels) {
+      var channels = this.store.query('channel', { user_id: requester_id });
+      var sourceChannel = channels.then(function (channelModels) {
         return channelModels.objectAt(0);
       });
       var form = this.store.findAll('case-form').then(function (caseForms) {
@@ -66536,7 +66537,7 @@ define('frontend-cp/session/agent/cases/new/route', ['exports', 'ember', 'fronte
       });
       var caseFields = this.get('storeCache').findAll('case-field'); // TODO: This only concerns to the component? Remove it from here?
 
-      return RSVP.hash({ requester: requester, sourceChannel: sourceChannel, status: status, form: form }).then(function (attrs) {
+      return RSVP.hash({ requester: requester, channels: channels, sourceChannel: sourceChannel, status: status, form: form }).then(function (attrs) {
         return RSVP.hash({ 'case': _this.store.createRecord('case', attrs), caseFields: caseFields });
       });
     },
@@ -81084,7 +81085,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"88d34fd0054d469bcfa2","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+e1e857cf"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"88d34fd0054d469bcfa2","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+0a0490d4"});
 }
 
 /* jshint ignore:end */
