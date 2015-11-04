@@ -98,6 +98,7 @@
   "filter_options.posts": "Posts",
   "filter_options.posts_activities": "Posts and activities",
   "filter_options.posts_events": "Posts and events",
+  "posts.load_more": "Load more",
 
   "deselect_type": "No type",
   "deselect_priority": "No priority",
