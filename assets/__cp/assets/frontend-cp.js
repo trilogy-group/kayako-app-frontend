@@ -35,7 +35,8 @@ define('frontend-cp/adapters/application', ['exports', 'ember', 'ember-data', 'n
     namespace: 'api/v1',
     primaryRecordKey: 'data',
     sessionService: Ember['default'].inject.service('session'),
-    errorService: Ember['default'].inject.service('errorHandler'),
+    errorHandler: Ember['default'].inject.service('error-handler'),
+    notificationHandler: Ember['default'].inject.service('error-handler/notification-strategy'),
 
     /*
      * Each time we findAll on a model, we check to see if we've
@@ -99,10 +100,10 @@ define('frontend-cp/adapters/application', ['exports', 'ember', 'ember-data', 'n
       var _this = this;
 
       return promise.then(function (data) {
-        _this.get('errorService').sendNotifications(data.notifications);
+        _this.get('notificationHandler').processAll(data.notifications);
         return data;
       })['catch'](function (e) {
-        return _this.get('errorService').handleServerError(e);
+        return _this.get('errorHandler').process(e);
       });
     },
 
@@ -8382,7 +8383,6 @@ define('frontend-cp/components/ko-admin/team/component', ['exports', 'ember'], f
   var RSVP = Ember['default'].RSVP;
 
   exports['default'] = Ember['default'].Component.extend({
-    // params
     title: null,
     team: null,
     agents: null,
@@ -8391,6 +8391,7 @@ define('frontend-cp/components/ko-admin/team/component', ['exports', 'ember'], f
 
     intl: inject.service(),
     session: inject.service(),
+    errorHandler: inject.service('error-handler'),
 
     filter: '',
     membersToAdd: null,
@@ -8519,7 +8520,7 @@ define('frontend-cp/components/ko-admin/team/component', ['exports', 'ember'], f
             _this3.set('membersToAdd', []);
             _this3.set('membersToRemove', []);
           })['catch'](function (e) {
-            return _this3.get('errorHandlerService').handleServerError({ errors: e.responseJSON });
+            return _this3.get('errorHandler').process({ errors: e.responseJSON });
           });
         });
       },
@@ -35744,8 +35745,10 @@ define('frontend-cp/components/ko-organisation-content/component', ['exports', '
     }),
 
     errorMap: Ember['default'].computed('errors', function () {
+      var errors = this.get('errors') || [];
       var errorMap = {};
-      this.get('errors').forEach(function (error) {
+
+      errors.forEach(function (error) {
         errorMap[error.parameter] = true;
       });
       return errorMap;
@@ -46510,7 +46513,7 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
     sessionService: Ember['default'].inject.service('session'),
     permissionService: Ember['default'].inject.service('permissions'),
     notificationService: Ember['default'].inject.service('notification'),
-    errorHandlerService: Ember['default'].inject.service('errorHandler'),
+    errorHandler: Ember['default'].inject.service('error-handler'),
     customFieldsList: Ember['default'].inject.service('custom-fields/list'),
     tagService: Ember['default'].inject.service('tags'),
 
@@ -46589,8 +46592,10 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
     }),
 
     errorMap: Ember['default'].computed('errors', function () {
+      var errors = this.get('errors') || [];
       var errorMap = {};
-      this.get('errors').forEach(function (error) {
+
+      errors.forEach(function (error) {
         errorMap[error.parameter] = true;
       });
       return errorMap;
@@ -46867,7 +46872,7 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
             autodismiss: true
           });
         }, function (response) {
-          _this12.get('errorHandlerService').handleServerError(response.responseJSON);
+          _this12.get('errorHandler').process(response.responseJSON);
         });
       },
 
@@ -49977,6 +49982,7 @@ define('frontend-cp/locales/en-us/generic', ['exports'], function (exports) {
     "permissions_denied": "Sorry, you don't have access to view that. Please ask for permissions from an admin.",
     "user_credential_expired": "The credential (e.g. password) is valid but has expired",
     "resource_not_found": "Resource does not exist or has been removed",
+    "generic_error": "A problem occurred and your request wasn't processed",
 
     "create_case_panel.title": "Create a new case",
     "create_case_panel.requester_label": "Requester/Recipient",
@@ -50158,7 +50164,7 @@ define('frontend-cp/login/controller', ['exports', 'ember', 'frontend-cp/config/
   exports['default'] = Ember['default'].Controller.extend(SimpleStateMixin['default'], {
     sessionService: Ember['default'].inject.service('session'),
     notificationService: Ember['default'].inject.service('notification'),
-    errorService: Ember['default'].inject.service('errorHandler'),
+    errorHandler: Ember['default'].inject.service('error-handler'),
     intlService: Ember['default'].inject.service('intl'),
     newPassword1: '',
     otp: '',
@@ -50559,7 +50565,8 @@ define('frontend-cp/login/controller', ['exports', 'ember', 'frontend-cp/config/
         _this5.setState('login.resetPassword.error');
         var data = JSON.parse(response);
         _this5.setErrors(data.notifications);
-        _this5.get('errorService').sendErrorNotification(data.errors, {});
+        _this5.get('errorHandler').accept(data.errors);
+        _this5.get('errorHandler').process();
       });
     },
 
@@ -50583,7 +50590,8 @@ define('frontend-cp/login/controller', ['exports', 'ember', 'frontend-cp/config/
         _this6.setState('login.otp.error');
         var data = JSON.parse(response);
         _this6.setErrors(data.notifications);
-        _this6.get('errorService').sendErrorNotification(data.errors, {});
+        _this6.get('errorHandler').accept(data.errors);
+        _this6.get('errorHandler').process();
       });
     },
 
@@ -58024,131 +58032,320 @@ define('frontend-cp/services/custom-fields', ['exports', 'ember'], function (exp
   });
 
 });
-define('frontend-cp/services/error-handler', ['exports', 'ember', 'npm:lodash'], function (exports, Ember, _) {
+define('frontend-cp/services/error-handler/credential-expired-strategy', ['exports', 'ember'], function (exports, Ember) {
 
   'use strict';
 
   exports['default'] = Ember['default'].Service.extend({
-    notificationService: Ember['default'].inject.service('notification'),
-    sessionService: Ember['default'].inject.service('session'),
-    intlService: Ember['default'].inject.service('intl'),
+    notification: Ember['default'].inject.service('notification'),
+    intl: Ember['default'].inject.service('intl'),
 
-    handleServerError: function handleServerError(error) {
-      if (error && error.errors) {
-        var errors = error.errors;
-        this.sendNotifications(errors.filter(function (x) {
-          return x.code === 'NOTIFICATION';
-        }));
-        this.handleSessionErrors(errors);
-        this.handlePermissionErrors(errors);
-        this.handleCredentialErrors(errors);
-        this.handleResourceNotFound(errors);
+    init: function init() {
+      this._super.apply(this, arguments);
+      this.records = [];
+    },
+
+    accept: function accept(record) {
+      this.get('records').push(record);
+    },
+
+    process: function process() {
+      var recordsCount = this.get('records.length');
+
+      if (recordsCount) {
+        this.get('notification').add({
+          type: 'error',
+          title: this.get('intl').findTranslationByKey('generic.user_credential_expired').translation,
+          autodismiss: true,
+          dismissable: true
+        });
+
+        this.set('records', []);
       }
+
+      return recordsCount;
+    }
+  });
+
+});
+define('frontend-cp/services/error-handler/generic-strategy', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Service.extend({
+    notification: Ember['default'].inject.service('notification'),
+    intl: Ember['default'].inject.service('intl'),
+
+    init: function init() {
+      this._super.apply(this, arguments);
+      this.records = [];
+    },
+
+    accept: function accept(record) {
+      this.get('records').push(record);
+    },
+
+    process: function process() {
+      var recordsCount = this.get('records.length');
+
+      if (recordsCount) {
+        this.get('notification').add({
+          type: 'error',
+          title: this.get('intl').findTranslationByKey('generic.generic_error').translation,
+          autodismiss: true,
+          dismissable: true
+        });
+
+        this.set('records', []);
+      }
+
+      return recordsCount;
+    }
+  });
+
+});
+define('frontend-cp/services/error-handler/notification-strategy', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Service.extend({
+    notification: Ember['default'].inject.service('notification'),
+
+    init: function init() {
+      this._super.apply(this, arguments);
+      this.records = [];
+    },
+
+    processAll: function processAll(records) {
+      this.set('records', records || []);
+      this.process();
+    },
+
+    accept: function accept(record) {
+      this.get('records').push(record);
+    },
+
+    process: function process() {
+      var _this = this;
+
+      var recordsCount = this.get('records.length');
+
+      if (recordsCount) {
+        this.get('records').forEach(function (notification) {
+          _this.get('notification').add({
+            type: notification.type.toLowerCase(),
+            title: notification.message,
+            autodismiss: !notification.sticky,
+            dismissable: true
+          });
+        });
+
+        this.set('records', []);
+      }
+
+      return recordsCount;
+    }
+  });
+
+});
+define('frontend-cp/services/error-handler/permissions-denied-strategy', ['exports', 'ember', 'frontend-cp/utils/base-path'], function (exports, Ember, base_path) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Service.extend({
+    init: function init() {
+      this._super.apply(this, arguments);
+      this.records = [];
+    },
+
+    accept: function accept(record) {
+      this.get('records').push(record);
+    },
+
+    transitionTo: function transitionTo(path) {
+      this.container.lookup('router:main').router.transitionTo(path);
+    },
+
+    process: function process() {
+      var recordsCount = this.get('records.length');
+
+      if (recordsCount) {
+        // Redirect back to the base of the current path
+        var path = base_path.getBasePath();
+
+        var pathname = location.pathname;
+        if (pathname !== path) {
+          this.transitionTo(path);
+        }
+        this.set('records', []);
+      }
+
+      return recordsCount;
+    }
+  });
+
+});
+define('frontend-cp/services/error-handler/resource-not-found-strategy', ['exports', 'ember', 'frontend-cp/utils/base-path'], function (exports, Ember, base_path) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Service.extend({
+    notification: Ember['default'].inject.service('notification'),
+    intl: Ember['default'].inject.service('intl'),
+
+    init: function init() {
+      this._super.apply(this, arguments);
+      this.records = [];
+    },
+
+    accept: function accept(record) {
+      this.get('records').push(record);
+    },
+
+    transitionTo: function transitionTo(path) {
+      this.container.lookup('router:main').router.transitionTo(path);
+    },
+
+    process: function process() {
+      var recordsCount = this.get('records.length');
+
+      if (recordsCount) {
+        this.get('notification').add({
+          type: 'error',
+          title: this.get('intl').findTranslationByKey('generic.resource_not_found').translation,
+          autodismiss: true,
+          dismissable: true
+        });
+        var path = base_path.getBasePath();
+        var pathname = location.pathname;
+        if (pathname !== path) {
+          this.transitionTo(path);
+        }
+
+        this.set('records', []);
+      }
+
+      return recordsCount;
+    }
+  });
+
+});
+define('frontend-cp/services/error-handler/session-loading-failed-strategy', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Service.extend({
+    notification: Ember['default'].inject.service('notification'),
+    intl: Ember['default'].inject.service('intl'),
+    session: Ember['default'].inject.service('session'),
+
+    init: function init() {
+      this._super.apply(this, arguments);
+      this.records = [];
+    },
+
+    accept: function accept(record) {
+      this.get('records').push(record);
+    },
+
+    process: function process() {
+      var _this = this;
+
+      var recordsCount = this.get('records.length');
+
+      if (recordsCount) {
+        this.get('session').logout().then(function () {
+          _this.get('notification').add({
+            type: 'error',
+            title: _this.get('intl').findTranslationByKey('generic.user_logged_out').translation,
+            body: _this.get('intl').findTranslationByKey('generic.session_expired').translation,
+            autodismiss: true
+          });
+
+          _this.set('records', []);
+        });
+      }
+
+      return recordsCount;
+    }
+  });
+
+});
+define('frontend-cp/services/error-handler', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Service.extend({
+    sessionLoadingFailedStrategy: Ember['default'].inject.service('error-handler/session-loading-failed-strategy'),
+    notificationStrategy: Ember['default'].inject.service('error-handler/notification-strategy'),
+    permissionDeniedStrategy: Ember['default'].inject.service('error-handler/permissions-denied-strategy'),
+    resourceNotFoundStrategy: Ember['default'].inject.service('error-handler/resource-not-found-strategy'),
+    credentialExpiredStrategy: Ember['default'].inject.service('error-handler/credential-expired-strategy'),
+    genericStrategy: Ember['default'].inject.service('error-handler/generic-strategy'),
+
+    init: function init() {
+      this._super.apply(this, arguments);
+
+      var strategies = Ember['default'].Object.create({
+        'FIELD_INVALID': null,
+        'FIELD_REQUIRED': null,
+        'FIELD_EMPTY': null,
+        'AUTHENTICATION_FAILED': null,
+        'SESSION_LOADING_FAILED': this.get('sessionLoadingFailedStrategy'),
+        'NOTIFICATION': this.get('notificationStrategy'),
+        'PERMISSIONS_DENIED': this.get('permissionDeniedStrategy'),
+        'RESOURCE_NOT_FOUND': this.get('resourceNotFoundStrategy'),
+        'CREDENTIAL_EXPIRED': this.get('credentialExpiredStrategy'),
+        '_GENERIC': this.get('genericStrategy')
+      });
+
+      this.set('strategies', strategies);
+    },
+
+    process: function process(error) {
+      var _this = this;
+
+      var strategies = this.get('strategies');
+
+      if (error && error.errors) {
+        error.errors.forEach(function (record) {
+          var strategy = _this.getStrategy('_GENERIC');
+
+          if (_this.hasStrategy(record.code)) {
+            strategy = _this.getStrategy(record.code);
+          }
+
+          if (strategy) {
+            strategy.accept(record);
+          }
+        });
+
+        Object.keys(strategies).forEach(function (key) {
+          _this.processStrategy(key);
+        });
+      }
+
+      // we have to throw error to reject Promise
       throw error;
     },
 
-    sendNotifications: function sendNotifications() {
-      var notifications = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
-
-      var notificationService = this.get('notificationService');
-      notifications.forEach(function (notification) {
-        notificationService.add({
-          type: notification.type.toLowerCase(),
-          title: notification.message,
-          autodismiss: !notification.sticky,
-          dismissable: true
-        });
-      });
+    hasStrategy: function hasStrategy(code) {
+      var strategies = this.get('strategies');
+      return strategies[code] || strategies[code] === null;
     },
 
-    getBasePath: function getBasePath() {
-      var path = '/agent';
-      var pathname = location.pathname;
-      // If we are at a deeplink inside admin, redirect back to admin
-      // If we have errored at '/admin' leave path='/agent'
-      if (pathname.startsWith('/admin') && pathname !== '/admin') {
-        path = '/admin';
-      }
-      return path;
+    getStrategy: function getStrategy(code) {
+      var strategies = this.get('strategies');
+      return strategies[code];
     },
 
-    handlePermissionErrors: function handlePermissionErrors(responseErrors) {
-      var isPermissionError = function isPermissionError(responseError) {
-        return responseError.code === 'PERMISSIONS_DENIED';
-      };
-      var hasPermissionErrors = _['default'].some(responseErrors, isPermissionError);
-
-      if (hasPermissionErrors) {
-        // Redirect back to the base of the current path
-        var path = this.getBasePath();
-        var pathname = location.pathname;
-        if (pathname !== path) {
-          this.container.lookup('router:main').router.transitionTo(path);
-        }
+    processStrategy: function processStrategy(key) {
+      var strategies = this.get('strategies');
+      if (strategies[key]) {
+        return strategies[key].process();
       }
-    },
 
-    handleResourceNotFound: function handleResourceNotFound(responseErrors) {
-      var intlService = this.get('intlService');
-
-      var isError = function isError(responseError) {
-        return responseError.code === 'RESOURCE_NOT_FOUND';
-      };
-      var hasErrors = _['default'].some(responseErrors, isError);
-
-      if (hasErrors) {
-        this.get('notificationService').add({
-          type: 'error',
-          title: intlService.findTranslationByKey('generic.resource_not_found').translation,
-          autodismiss: false,
-          dismissable: true
-        });
-        var path = this.getBasePath();
-        var pathname = location.pathname;
-        if (pathname !== path) {
-          this.container.lookup('router:main').router.transitionTo(path);
-        }
-      }
-    },
-
-    handleCredentialErrors: function handleCredentialErrors(responseErrors) {
-      var intlService = this.get('intlService');
-
-      var isError = function isError(responseError) {
-        return responseError.code === 'CREDENTIAL_EXPIRED';
-      };
-      var hasErrors = _['default'].some(responseErrors, isError);
-
-      if (hasErrors) {
-        this.get('notificationService').add({
-          type: 'error',
-          title: intlService.findTranslationByKey('generic.user_credential_expired').translation,
-          autodismiss: false,
-          dismissable: true
-        });
-      }
-    },
-
-    handleSessionErrors: function handleSessionErrors(responseErrors) {
-      var _this = this;
-
-      var intlService = this.get('intlService');
-
-      var isSessionError = function isSessionError(responseError) {
-        return responseError.code === 'SESSION_LOADING_FAILED';
-      };
-      var hasSessionErrors = _['default'].some(responseErrors, isSessionError);
-
-      if (hasSessionErrors) {
-        this.get('sessionService').logout().then(function () {
-          _this.get('notificationService').add({
-            type: 'error',
-            title: intlService.findTranslationByKey('generic.user_logged_out').translation,
-            body: intlService.findTranslationByKey('generic.session_expired').translation,
-            autodismiss: true
-          });
-        });
-      }
+      return 0;
     }
   });
 
@@ -58490,14 +58687,14 @@ define('frontend-cp/services/permissions', ['exports', 'ember'], function (expor
     sessionService: Ember['default'].inject.service('session'),
     notificationService: Ember['default'].inject.service('notification'),
     intlService: Ember['default'].inject.service('intl'),
+    notificationHandler: Ember['default'].inject.service('error-handler/notification-strategy'),
 
     showError: function showError() {
-      this.get('notificationService').add({
+      this.get('notificationHandler').processAll([{
         type: 'error',
-        title: this.get('intlService').findTranslationByKey('generic.permissions_denied').translation,
-        autodismiss: false,
-        dismissable: true
-      });
+        message: this.get('intlService').findTranslationByKey('generic.permissions_denied').translation,
+        sticky: false
+      }]);
     },
 
     has: function has(action, target) {
@@ -80136,6 +80333,311 @@ define('frontend-cp/tests/unit/services/custom-fields-test', ['ember', 'ember-qu
   });
 
 });
+define('frontend-cp/tests/unit/services/error-handler-test', ['ember', 'ember-qunit', 'frontend-cp/services/session'], function (Ember, ember_qunit, Session) {
+
+  'use strict';
+
+  ember_qunit.moduleFor('service:error-handler', 'Unit | Service | error-handler', {
+    needs: ['service:error-handler/session-loading-failed-strategy', 'service:error-handler/notification-strategy', 'service:error-handler/permissions-denied-strategy', 'service:error-handler/resource-not-found-strategy', 'service:error-handler/credential-expired-strategy', 'service:error-handler/generic-strategy', 'service:intl', 'service:notification', 'service:plan', 'service:localStore', 'service:session', 'service:tabStore', 'ember-intl@adapter:-intl-adapter'],
+    beforeEach: function beforeEach() {
+      var intl = this.container.lookup('service:intl');
+      var localeId = 'en-test';
+      var keys = ['generic.user_logged_out', 'generic.session_expired', 'generic.generic_error', 'generic.resource_not_found', 'generic.user_credential_expired'];
+
+      intl.set('locales', [localeId]);
+      intl.createLocale(localeId, {});
+      intl.addMessages(localeId, keys.reduce(function (payload, key) {
+        payload['frontend.api.' + key] = key;
+        return payload;
+      }, {}));
+    }
+  });
+
+  ember_qunit.test('it skips AUTHENTICATION_FAILED, FIELD_INVALID, FIELD_REQUIRED, FIELD_EMPTY error as they does not have separate handler', function (assert) {
+    assert.expect(1);
+
+    var service = this.subject();
+
+    var error = {
+      errors: [{
+        code: 'AUTHENTICATION_FAILED',
+        message: 'Message: AUTHENTICATION_FAILED',
+        more_info: ''
+      }, {
+        code: 'FIELD_INVALID',
+        message: 'Message: FIELD_INVALID',
+        more_info: ''
+      }, {
+        code: 'FIELD_REQUIRED',
+        message: 'Message: FIELD_REQUIRED',
+        more_info: ''
+      }, {
+        code: 'FIELD_EMPTY',
+        message: 'Message: FIELD_EMPTY',
+        more_info: ''
+      }]
+    };
+
+    var globalProcessedCount = 0;
+
+    service.reopen({
+      processStrategy: function processStrategy(key) {
+        var processedCount = this._super.apply(this, arguments);
+
+        globalProcessedCount += processedCount;
+
+        return processedCount;
+      }
+    });
+
+    try {
+      service.process(error);
+    } catch (e) {}
+
+    assert.equal(globalProcessedCount, 0, 'Processed count should be zero as AUTHENTICATION_FAILED, FIELD_INVALID, FIELD_REQUIRED, FIELD_EMPTY do not have separate handler.');
+  });
+
+  ember_qunit.test('it will logout and send notification on SESSION_LOADING_FAILED error', function (assert) {
+    assert.expect(5);
+
+    var service = this.subject();
+
+    var error = {
+      errors: [{
+        code: 'SESSION_LOADING_FAILED',
+        message: '',
+        more_info: ''
+      }]
+    };
+
+    var strategies = service.get('strategies');
+
+    Ember['default'].run(function () {
+      strategies.SESSION_LOADING_FAILED.set('session', Session['default'].create({
+        logout: function logout() {
+          assert.ok(true);
+
+          return Ember['default'].RSVP.Promise.resolve();
+        }
+      }));
+
+      strategies.SESSION_LOADING_FAILED.get('notification').reopen({
+        add: function add(object) {
+          assert.equal('error', object.type);
+          assert.equal('generic.user_logged_out', object.title);
+          assert.equal('generic.session_expired', object.body);
+          assert.equal(true, object.autodismiss);
+        }
+      });
+    });
+
+    try {
+      service.process(error);
+    } catch (e) {}
+  });
+
+  ember_qunit.test('it creates notifications for NOTIFICATION type', function (assert) {
+    assert.expect(6);
+
+    var service = this.subject();
+
+    var error = {
+      errors: [{
+        code: 'NOTIFICATION',
+        type: 'ERROR',
+        message: 'Message 1',
+        sticky: false,
+        more_info: ''
+      }, {
+        code: 'NOTIFICATION',
+        type: 'SUCCESS',
+        message: 'Message 2',
+        sticky: true,
+        more_info: ''
+      }]
+    };
+
+    var strategies = service.get('strategies');
+
+    Ember['default'].run(function () {
+      strategies.SESSION_LOADING_FAILED.get('session').reopen({
+        logout: function logout() {
+          return Ember['default'].RSVP.Promise.resolve();
+        }
+      });
+
+      strategies.NOTIFICATION.get('notification').reopen({
+        add: function add(object) {
+          if (object.title === 'Message 1') {
+            assert.equal('error', object.type);
+            assert.equal('Message 1', object.title);
+            assert.equal(true, object.autodismiss);
+          } else {
+            assert.equal('success', object.type);
+            assert.equal('Message 2', object.title);
+            assert.equal(false, object.autodismiss);
+          }
+        }
+      });
+    });
+
+    try {
+      service.process(error);
+    } catch (e) {}
+  });
+
+  ember_qunit.test('it transitions to the base path when PERMISSIONS_DENIED occurs', function (assert) {
+    assert.expect(1);
+
+    var service = this.subject();
+
+    var error = {
+      errors: [{
+        code: 'PERMISSIONS_DENIED',
+        message: '',
+        more_info: ''
+      }]
+    };
+
+    var strategies = service.get('strategies');
+
+    Ember['default'].run(function () {
+      strategies.PERMISSIONS_DENIED.reopen({
+        transitionTo: function transitionTo(path) {
+          assert.equal('/agent', path);
+        }
+      });
+
+      strategies.SESSION_LOADING_FAILED.get('session').reopen({
+        logout: function logout() {
+          return Ember['default'].RSVP.Promise.resolve();
+        }
+      });
+    });
+
+    try {
+      service.process(error);
+    } catch (e) {}
+  });
+
+  ember_qunit.test('it send notification and transitions to the base path when RESOURCE_NOT_FOUND occurs', function (assert) {
+    assert.expect(5);
+
+    var service = this.subject();
+
+    var error = {
+      errors: [{
+        code: 'RESOURCE_NOT_FOUND',
+        message: '',
+        more_info: ''
+      }]
+    };
+
+    var strategies = service.get('strategies');
+
+    Ember['default'].run(function () {
+      strategies.SESSION_LOADING_FAILED.get('session').reopen({
+        logout: function logout() {
+          return Ember['default'].RSVP.Promise.resolve();
+        }
+      });
+
+      strategies.RESOURCE_NOT_FOUND.reopen({
+        transitionTo: function transitionTo(path) {
+          assert.equal('/agent', path);
+        }
+      });
+
+      strategies.RESOURCE_NOT_FOUND.get('notification').reopen({
+        add: function add(object) {
+          assert.equal('error', object.type);
+          assert.equal('generic.resource_not_found', object.title);
+          assert.equal(true, object.autodismiss);
+          assert.equal(true, object.dismissable);
+        }
+      });
+    });
+
+    try {
+      service.process(error);
+    } catch (e) {}
+  });
+
+  ember_qunit.test('it creates notifications when CREDENTIAL_EXPIRED appear', function (assert) {
+    assert.expect(4);
+
+    var service = this.subject();
+
+    var error = {
+      errors: [{
+        code: 'CREDENTIAL_EXPIRED',
+        message: '',
+        more_info: ''
+      }]
+    };
+
+    var strategies = service.get('strategies');
+
+    Ember['default'].run(function () {
+      strategies.SESSION_LOADING_FAILED.get('session').reopen({
+        logout: function logout() {
+          return Ember['default'].RSVP.Promise.resolve();
+        }
+      });
+
+      strategies.CREDENTIAL_EXPIRED.get('notification').reopen({
+        add: function add(object) {
+          assert.equal('error', object.type);
+          assert.equal('generic.user_credential_expired', object.title);
+          assert.equal(true, object.autodismiss);
+          assert.equal(true, object.dismissable);
+        }
+      });
+    });
+
+    try {
+      service.process(error);
+    } catch (e) {}
+  });
+
+  ember_qunit.test('it fall backs to the _GENERIC handler if unknown error appear', function (assert) {
+    assert.expect(4);
+
+    var service = this.subject();
+
+    var error = {
+      errors: [{
+        code: 'SUPER_UNKNOWN_ERROR',
+        message: '',
+        more_info: ''
+      }]
+    };
+
+    var strategies = service.get('strategies');
+
+    Ember['default'].run(function () {
+      strategies.SESSION_LOADING_FAILED.get('session').reopen({
+        logout: function logout() {
+          return Ember['default'].RSVP.Promise.resolve();
+        }
+      });
+
+      strategies._GENERIC.get('notification').reopen({
+        add: function add(object) {
+          assert.equal('error', object.type);
+          assert.equal('generic.generic_error', object.title);
+          assert.equal(true, object.autodismiss);
+          assert.equal(true, object.dismissable);
+        }
+      });
+    });
+
+    try {
+      service.process(error);
+    } catch (e) {}
+  });
+
+});
 define('frontend-cp/tests/unit/services/plan-test', ['ember-qunit', 'frontend-cp/tests/helpers/setup-mirage-for-integration'], function (ember_qunit, mirage) {
 
   'use strict';
@@ -80517,6 +81019,24 @@ define('frontend-cp/transforms/fragment', ['exports'], function (exports) {
 	exports['default'] = MF.FragmentTransform;
 
 });
+define('frontend-cp/utils/base-path', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports.getBasePath = getBasePath;
+
+  function getBasePath() {
+    var path = '/agent';
+    var pathname = location.pathname;
+    // If we are at a deeplink inside admin, redirect back to admin
+    // If we have errored at '/admin' leave path='/agent'
+    if (pathname.startsWith('/admin') && pathname !== '/admin') {
+      path = '/admin';
+    }
+    return path;
+  }
+
+});
 define('frontend-cp/utils/format-validations', ['exports'], function (exports) {
 
   'use strict';
@@ -80564,7 +81084,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"88d34fd0054d469bcfa2","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+f7e1bd2e"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"88d34fd0054d469bcfa2","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+e1e857cf"});
 }
 
 /* jshint ignore:end */
