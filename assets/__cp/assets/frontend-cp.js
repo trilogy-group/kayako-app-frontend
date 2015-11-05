@@ -57181,6 +57181,10 @@ define('frontend-cp/serializers/view', ['exports', 'ember-data', 'frontend-cp/se
           };
         });
       });
+
+      json.team_ids = snapshot.hasMany('visibilityToTeams').map(function (team) {
+        return team.get('id');
+      });
       return json;
     }
   });
@@ -81279,7 +81283,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"disabled":false,"logEvents":false,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+f622ac84"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"disabled":false,"logEvents":false,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+95f8fd8e"});
 }
 
 /* jshint ignore:end */
