@@ -15949,17 +15949,6 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       });
     },
 
-    cleanupTags: function cleanupTags() {
-      // New tags should be rolled back as they are left
-      // in the store after we save a case. New tags have id = null,
-      // and the same tag with numeric id is also returned from the server.
-      this.get('store').peekAll('tag').forEach(function (record) {
-        if (record.get('hasDirtyAttributes')) {
-          record.rollbackAttributes();
-        }
-      });
-    },
-
     /**
      * Add newly added post to the cache and append or prepend it to the timeline
      * depending on sort settings and whether there'll be no gaps in the timeline
@@ -16104,9 +16093,9 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       this.get('casePostEditor').clear();
       this.get('casePostEditor.postEditor').clear();
       this.set('shouldIgnoreNextPusherUpdate', false);
+      this.set('case.propertiesChangeViaPusher', new Ember['default'].Object());
 
       this.updateDirtyCaseFieldHash();
-      this.cleanupTags();
     },
 
     refreshTags: function refreshTags() {
@@ -54956,6 +54945,15 @@ define('frontend-cp/models/contact-website', ['exports', 'ember-data'], function
   });
 
 });
+define('frontend-cp/models/credential', ['exports', 'ember-data'], function (exports, DS) {
+
+  'use strict';
+
+  exports['default'] = DS['default'].Model.extend({
+    realtimeAppKey: DS['default'].attr('string')
+  });
+
+});
 define('frontend-cp/models/definition-value-fragment', ['exports', 'ember-data'], function (exports, DS) {
 
   'use strict';
@@ -56679,6 +56677,23 @@ define('frontend-cp/serializers/column', ['exports', 'frontend-cp/serializers/ap
 
   exports['default'] = ApplicationSerializer['default'].extend({
     primaryKey: 'name'
+  });
+
+});
+define('frontend-cp/serializers/credential', ['exports', 'frontend-cp/serializers/application'], function (exports, ApplicationSerializer) {
+
+  'use strict';
+
+  exports['default'] = ApplicationSerializer['default'].extend({
+
+    normalizePayload: function normalizePayload(payload) {
+      payload.data.id = 1;
+      payload.data.resource_type = 'credential';
+
+      payload.data = [payload.data];
+      return this._super(payload);
+    }
+
   });
 
 });
@@ -58815,6 +58830,7 @@ define('frontend-cp/services/pusher', ['exports', 'ember', 'frontend-cp/config/e
     options: ENV['default'].APP.PUSHER_OPTIONS,
 
     sessionService: Ember['default'].inject.service('session'),
+    tagService: Ember['default'].inject.service('tags'),
 
     initialize: function initialize() {
       if (this.options.logEvents) {
@@ -58829,21 +58845,33 @@ define('frontend-cp/services/pusher', ['exports', 'ember', 'frontend-cp/config/e
     },
 
     authorize: Ember['default'].observer('sessionService.sessionId', function () {
-      if (!this.get('sessionService.sessionId')) {
+      var _this = this;
+
+      if (this.options.disabled) {
+        // for tests etc, we don't ever want to start pusher
         return;
       }
 
-      this.set('pusher', new Pusher(this.options.key, {
-        encrypted: this.options.encrypted,
-        authEndpoint: this.options.authEndpoint,
-        wsHost: this.options.wsHost,
-        httpHost: this.options.httpHost,
-        auth: {
-          headers: {
-            'X-Session-ID': this.get('sessionService.sessionId')
-          }
+      this.get('store').findAll('credential').then(function (credentials) {
+
+        if (!_this.get('sessionService.sessionId')) {
+          return;
         }
-      }));
+
+        var key = credentials.get('firstObject.realtimeAppKey');
+
+        _this.set('pusher', new Pusher(key, {
+          encrypted: _this.options.encrypted,
+          authEndpoint: _this.options.authEndpoint,
+          wsHost: _this.options.wsHost,
+          httpHost: _this.options.httpHost,
+          auth: {
+            headers: {
+              'X-Session-ID': _this.get('sessionService.sessionId')
+            }
+          }
+        }));
+      });
     }),
 
     subscribeTo: function subscribeTo(channelName, event, context, func, localData) {
@@ -58885,15 +58913,23 @@ define('frontend-cp/services/pusher', ['exports', 'ember', 'frontend-cp/config/e
 
     /*
      * Handle updating of a case
+     * NB: MAGIC! This is called with apply, so the context her is ko-case-content !
      */
     updateCaseFromPusher: function updateCaseFromPusher(serverData, caseId) {
-      var _this = this;
+      var _this2 = this;
+
+      if (this.shouldIgnoreNextPusherUpdate) {
+        this.set('shouldIgnoreNextPusherUpdate', false);
+        return;
+      }
 
       var caseToUpdate = this.get('store').peekRecord('case', caseId);
-
       var initialRelationships = caseToUpdate.get('initialRelationships');
       var originalCustomFields = caseToUpdate.get('initialCustomFields');
       var currentRelationships = caseToUpdate.getRelationships();
+      var initialSubject = caseToUpdate.get('subject');
+      var initialAssigneeTeam = caseToUpdate.get('assignee.team');
+      var initialAssigneeAgent = caseToUpdate.get('assignee.agent');
 
       // cache current id => values
       var currentCustomFieldValueHash = {};
@@ -58904,25 +58940,27 @@ define('frontend-cp/services/pusher', ['exports', 'ember', 'frontend-cp/config/e
       var propertiesChangeViaPusher = caseToUpdate.get('propertiesChangeViaPusher') || new Ember['default'].Object();
 
       caseToUpdate.reload().then(function (newCase) {
-
-        // ember merges my changes and the old changes - we don't
-        // want this to happen, so get
-        newCase.get('tags').forEach(function (tag) {
-          if (tag.get('isNew')) {
-            newCase.get('tags').removeObject(tag);
-          }
-        });
-        // update everything our initial values -- it's clean back from the server
         newCase.cacheRelationships();
 
-        _this.get('store').peekAll('case-field').forEach(function (caseField) {
+        _this2.get('store').peekAll('case-field').forEach(function (caseField) {
           var relationshipName = caseField.get('key');
           if (relationshipName === 'type') {
             relationshipName = 'caseType';
           }
 
           if (caseField.get('isSystem')) {
-            if (newCase.get(relationshipName) === initialRelationships[relationshipName]) {
+            if (relationshipName === 'subject') {
+
+              if (newCase.get('subject') !== initialSubject) {
+                propertiesChangeViaPusher.set(caseField.get('id'), true);
+                propertiesChangeViaPusher.set(relationshipName, true);
+              }
+            } else if (relationshipName === 'assignee') {
+              if (newCase.get('assignee.team') !== initialAssigneeTeam || newCase.get('assignee.agent') !== initialAssigneeAgent) {
+                propertiesChangeViaPusher.set(caseField.get('id'), true);
+                propertiesChangeViaPusher.set(relationshipName, true);
+              }
+            } else if (newCase.get(relationshipName) === initialRelationships[relationshipName]) {
               newCase.set(relationshipName, currentRelationships[relationshipName]);
             } else {
               propertiesChangeViaPusher.set(caseField.get('id'), true);
@@ -58942,35 +58980,41 @@ define('frontend-cp/services/pusher', ['exports', 'ember', 'frontend-cp/config/e
             }
         });
 
-        //tags is a special case (it's not a case field)!
-        var serverTags = newCase.get('tags');
-        var modifiedTags = currentTags;
-        var originalTags = initialRelationships.tags;
-        var allTags = Array.concat(serverTags, modifiedTags, originalTags).uniq();
+        _this2.get('tagService').refreshTagsForCase(newCase).then(function (serverTags) {
+          var serverTagNames = serverTags.map(function (tag) {
+            return tag.get('id');
+          });
+          var modifiedTagNames = currentTags.map(function (tag) {
+            return tag.get('name');
+          });
+          var originalTagNames = _this2.get('cachedCaseTags');
+          var allTagNames = Array.concat(serverTagNames, modifiedTagNames, originalTagNames).uniq();
 
-        var tagsWereModified = serverTags.length !== modifiedTags.length && serverTags.some(function (tag) {
-          return modifiedTags.indexOf(tag) !== -1;
+          _this2.set('cachedCaseTags', serverTagNames);
+
+          var tagsWereModified = serverTagNames.length !== modifiedTagNames.length && serverTagNames.some(function (tag) {
+            return modifiedTagNames.indexOf(tag) !== -1;
+          });
+          // we always want to display pusher modifications once they've been modified
+          var displayModifiedTags = tagsWereModified || propertiesChangeViaPusher.get('tags');
+          propertiesChangeViaPusher.set('tags', displayModifiedTags);
+
+          allTagNames.forEach(function (tagName) {
+            if (originalTagNames.indexOf(tagName) === -1 && modifiedTagNames.indexOf(tagName) === -1) {
+              // server added this tag - we've never seen it before
+              var tagToAdd = _this2.get('store').peekRecord('tag', tagName);
+              tagToAdd.set('isPusherEdited', true);
+              newCase.get('tags').pushObject(tagToAdd);
+            } else if (originalTagNames.indexOf(tagName) > 1 && serverTagNames.indexOf(tagName) === -1) {
+              // server deleted a tag
+              var tagToDelete = _this2.get('store').peekRecord('tag', tagName);
+              newCase.get('tags').removeObject(tagToDelete);
+            }
+          });
+
+          newCase.set('propertiesChangeViaPusher', propertiesChangeViaPusher);
+          _this2.updateDirtyCaseFieldHash();
         });
-        propertiesChangeViaPusher.set('tags', tagsWereModified);
-
-        serverTags.forEach(function (tag) {
-          if (originalTags.indexOf(tag) === -1 && modifiedTags.indexOf(tag) === -1) {
-            // tag wasn't originally in the array (and we didn't add it), so must be a new pusher one
-            tag.set('isPusherEdited', true);
-          }
-        });
-
-        allTags.forEach(function (tag) {
-          if (originalTags.indexOf(tag) === -1 && modifiedTags.indexOf(tag) > -1) {
-            newCase.get('tags').pushObject(tag);
-          } else if (originalTags.indexOf(tag) > -1 && modifiedTags.indexOf(tag) === -1) {
-            newCase.get('tags').removeObject(tag);
-          }
-        });
-
-        newCase.set('propertiesChangeViaPusher', propertiesChangeViaPusher);
-        // `this` is passed in through the apply() so it will be the ko-case-component
-        _this.updateDirtyCaseFieldHash();
       });
     }
 
@@ -81218,7 +81262,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"88d34fd0054d469bcfa2","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+cb818fa5"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"disabled":false,"logEvents":false,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+aa345738"});
 }
 
 /* jshint ignore:end */
