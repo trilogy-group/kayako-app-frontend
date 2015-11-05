@@ -28674,6 +28674,10 @@ define('frontend-cp/components/ko-identities/form/component', ['exports', 'ember
       return inputTypes[this.get('identity.constructor.modelName')];
     }),
 
+    didInsertElement: function didInsertElement() {
+      this.$('input').focus();
+    },
+
     // Actions
     actions: {
       save: function save(e) {
@@ -81276,7 +81280,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"disabled":false,"logEvents":false,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+450b3986"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"disabled":false,"logEvents":false,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+8280226a"});
 }
 
 /* jshint ignore:end */
