@@ -12079,7 +12079,13 @@ define('frontend-cp/components/ko-agent-dropdown/component', ['exports', 'ember'
 
     actions: {
       toggleDropdown: function toggleDropdown() {
+        var _this2 = this;
+
         this.set('isExpanded', true);
+
+        Ember['default'].run.next(function () {
+          _this2.$('.ko-agent-dropdown__drop').focus();
+        });
       },
 
       selectTab: function selectTab(tab) {
@@ -12101,6 +12107,7 @@ define('frontend-cp/components/ko-agent-dropdown/component', ['exports', 'ember'
         this._createSuccessNotification(route);
 
         router.router.transitionTo(route, model);
+        this.set('isExpanded', false);
       },
 
       onTabCancelled: function onTabCancelled() {
@@ -12109,6 +12116,7 @@ define('frontend-cp/components/ko-agent-dropdown/component', ['exports', 'ember'
 
       transitionToRoute: function transitionToRoute() {
         this.sendAction.apply(this, ['transitionToRouteAction'].concat(_slice.call(arguments)));
+        this.set('isExpanded', false);
       }
     }
   });
@@ -59212,6 +59220,7 @@ define('frontend-cp/services/session', ['exports', 'ember'], function (exports, 
 
       return session.destroyRecord().then(function () {
         _this4.set('session', null);
+        _this4.set('sessionId', null);
         _this4.container.lookup('router:main').transitionTo('login.agent');
       })['catch'](function () {
         _this4.container.lookup('router:main').transitionTo('login.agent');
@@ -72745,8 +72754,12 @@ define('frontend-cp/tests/acceptance/agent/cases/create-test', ['frontend-cp/tes
     visit('/agent');
 
     click('.ko-agent-dropdown__nav-new');
-    click('.ko-agent-dropdown__drop ul li:eq(0) .ko-agent-dropdown__link');
-    fillIn('.ko-agent-dropdown-create-case__input input', 'Barney');
+
+    andThen(function () {
+      assert.equal(find('.ko-agent-dropdown__drop').is(':visible'), true, '"+" Dropdown content should be visible');
+      click('.ko-agent-dropdown__drop ul li:eq(0) .ko-agent-dropdown__link');
+      fillIn('.ko-agent-dropdown-create-case__input input', 'Barney');
+    });
 
     andThen(function () {
       click('.ko-agent-dropdown-create-case__input .ko-dropdown_list__item');
@@ -72754,7 +72767,10 @@ define('frontend-cp/tests/acceptance/agent/cases/create-test', ['frontend-cp/tes
     });
 
     andThen(function () {
-      assert.equal(currentURL(), '/agent/cases/new?requester_id=2');
+      assert.equal(currentURL(), '/agent/cases/new?requester_id=2', 'Current URL is /agent/cases/new?requester_id=2');
+
+      assert.equal(find('.ko-agent-dropdown__drop').is(':visible'), false, '"+" Dropdown content should be hidden');
+
       assert.equal(find('.ko-case-content__info-bar .info-bar-item:eq(1) input').val(), 'Barney Stinson', 'The recipient of the new case is Barney');
       assert.ok(find('.breadcrumbs .breadcrumbs__item:eq(0)').text().trim() === 'Barney Stinson' && find('.breadcrumbs .breadcrumbs__item:eq(1)').text().trim() === 'New case', 'Breadcrums are correct');
       assert.equal(find('.nav-tabs__item').length, 1, 'There is only one tab');
@@ -81262,7 +81278,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"disabled":false,"logEvents":false,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+aa345738"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"disabled":false,"logEvents":false,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+b93caea6"});
 }
 
 /* jshint ignore:end */
