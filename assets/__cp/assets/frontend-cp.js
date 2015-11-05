@@ -4852,6 +4852,8 @@ define('frontend-cp/components/ko-admin/case-fields/index/component', ['exports'
 
   'use strict';
 
+  /* eslint-disable no-alert */
+
   exports['default'] = Ember['default'].Component.extend({
     //Params:
     model: null,
@@ -5945,6 +5947,8 @@ define('frontend-cp/components/ko-admin/case-fields/type-icon/template', ['expor
 define('frontend-cp/components/ko-admin/case-forms/edit/component', ['exports', 'ember'], function (exports, Ember) {
 
   'use strict';
+
+  /*eslint-disable camelcase */
 
   exports['default'] = Ember['default'].Component.extend({
     // Params
@@ -8378,6 +8382,8 @@ define('frontend-cp/components/ko-admin/team/component', ['exports', 'ember'], f
 
   'use strict';
 
+  /*eslint-disable camelcase */
+
   var inject = Ember['default'].inject;
   var computed = Ember['default'].computed;
   var RSVP = Ember['default'].RSVP;
@@ -8548,7 +8554,9 @@ define('frontend-cp/components/ko-admin/team/component', ['exports', 'ember'], f
         if (confirm(msg.translation)) {
           // eslint-disable-line
           this.send('deleteTeam', team);
+          return true;
         }
+        return false;
       },
 
       deleteTeam: function deleteTeam(team) {
@@ -8651,7 +8659,7 @@ define('frontend-cp/components/ko-admin/team/template', ['exports'], function (e
             },
             statements: [
               ["block","ko-form/field/label",[],[],0,null,["loc",[null,[13,6],[13,114]]]],
-              ["inline","input",[],["class","input-text","type","text","value",["subexpr","@mut",[["get","team.title",["loc",[null,[14,51],[14,61]]]]],[],[]],"disabled",["subexpr","@mut",[["get","isSubmitting",["loc",[null,[14,71],[14,83]]]]],[],[]]],["loc",[null,[14,6],[14,85]]]]
+              ["inline","input",[],["class","input-text qa-ko-admin_team__input-title","type","text","value",["subexpr","@mut",[["get","team.title",["loc",[null,[14,81],[14,91]]]]],[],[]],"disabled",["subexpr","@mut",[["get","isSubmitting",["loc",[null,[14,101],[14,113]]]]],[],[]]],["loc",[null,[14,6],[14,115]]]]
             ],
             locals: [],
             templates: [child0]
@@ -8868,7 +8876,7 @@ define('frontend-cp/components/ko-admin/team/template', ['exports'], function (e
             var el1 = dom.createTextNode("    ");
             dom.appendChild(el0, el1);
             var el1 = dom.createElement("button");
-            dom.setAttribute(el1,"class","button button--alert");
+            dom.setAttribute(el1,"class","button button--alert qa-ko-admin_team__button-delete");
             var el2 = dom.createTextNode("\n      ");
             dom.appendChild(el1, el2);
             var el2 = dom.createComment("");
@@ -8888,7 +8896,7 @@ define('frontend-cp/components/ko-admin/team/template', ['exports'], function (e
             return morphs;
           },
           statements: [
-            ["attribute","onclick",["subexpr","action",["showDeleteConfirmation",["get","team",["loc",[null,[53,83],[53,87]]]]],[],["loc",[null,[53,49],[53,89]]]]],
+            ["attribute","onclick",["subexpr","action",["showDeleteConfirmation",["get","team",["loc",[null,[53,115],[53,119]]]]],[],["loc",[null,[53,81],[53,121]]]]],
             ["inline","format-message",[["subexpr","intl-get",["admin.teams.labels.delete_team"],[],["loc",[null,[54,23],[54,66]]]]],[],["loc",[null,[54,6],[54,68]]]]
           ],
           locals: [],
@@ -10304,6 +10312,8 @@ define('frontend-cp/components/ko-admin/views/edit/component', ['exports', 'embe
 
   'use strict';
 
+  /*eslint-disable camelcase */
+
   exports['default'] = Ember['default'].Component.extend({
     // params
     currentView: null,
@@ -11514,6 +11524,7 @@ define('frontend-cp/components/ko-admin-card-team/component', ['exports', 'ember
   'use strict';
 
   exports['default'] = Ember['default'].Component.extend({
+    classNames: ['ko-admin-card-team'],
     team: null,
     hasMembers: Ember['default'].computed.gt('team.members.length', 0),
     limitedMembers: Ember['default'].computed('team.members', function () {
@@ -12126,6 +12137,8 @@ define('frontend-cp/components/ko-agent-dropdown/component', ['exports', 'ember'
 define('frontend-cp/components/ko-agent-dropdown/create-case/component', ['exports', 'ember', 'frontend-cp/mixins/autofocus'], function (exports, Ember, AutofocusMixin) {
 
   'use strict';
+
+  /*eslint-disable camelcase */
 
   var SUGGESTION_DEBOUNCE_DURATION = 250;
 
@@ -13267,6 +13280,8 @@ define('frontend-cp/components/ko-agent-dropdown/create-organisation/template', 
 define('frontend-cp/components/ko-agent-dropdown/create-user/component', ['exports', 'ember', 'frontend-cp/mixins/autofocus', 'frontend-cp/utils/format-validations'], function (exports, Ember, AutofocusMixin, format_validations) {
 
   'use strict';
+
+  /* eslint-disable camelcase */
 
   var composeValidators = function composeValidators() {
     for (var _len = arguments.length, validators = Array(_len), _key = 0; _key < _len; _key++) {
@@ -16042,7 +16057,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
           editedCaseFields.set(relationshipKey, _this9.get('case').hasDirtyBelongsToRelationship(relationshipKey));
         } else {
           var customCaseField = _this9.get('case.customFields').find(function (customField) {
-            return field.get('id') == customField.get('field.id');
+            return parseInt(field.get('id')) === parseInt(customField.get('field.id'));
           });
 
           if (customCaseField) {
@@ -26207,7 +26222,6 @@ define('frontend-cp/components/ko-editor-modal/component', ['exports', 'ember'],
   'use strict';
 
   exports['default'] = Ember['default'].Component.extend({
-    //Params:
     title: null
   });
 
@@ -28509,6 +28523,8 @@ define('frontend-cp/components/ko-form/template', ['exports'], function (exports
 define('frontend-cp/components/ko-identities/component', ['exports', 'ember'], function (exports, Ember) {
 
   'use strict';
+
+  /* eslint-disable camelcase, no-alert */
 
   var computed = Ember['default'].computed;
   var service = Ember['default'].inject.service;
@@ -35338,6 +35354,8 @@ define('frontend-cp/components/ko-option-list-drill-down/template', ['exports'],
 define('frontend-cp/components/ko-organisation-action-menu/component', ['exports', 'ember'], function (exports, Ember) {
 
   'use strict';
+
+  /* eslint-disable no-alert */
 
   exports['default'] = Ember['default'].Component.extend({
     //Params
@@ -46502,6 +46520,8 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
 
   'use strict';
 
+  /* eslint-disable camelcase, no-alert */
+
   exports['default'] = Ember['default'].Component.extend({
     classNames: ['ko-user-content'],
 
@@ -50158,7 +50178,8 @@ define('frontend-cp/login/controller', ['exports', 'ember', 'frontend-cp/config/
 
   'use strict';
 
-  /* global console */
+  /* eslint-disable no-console, camelcase */
+
   var htmlSafe = Ember['default'].String.htmlSafe;
 
   exports['default'] = Ember['default'].Controller.extend(SimpleStateMixin['default'], {
@@ -51669,7 +51690,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
     this.get('/api/v1/roles/:id/permissions', function (db) {
       return {
         status: 200,
-        data: [],
+        data: db.permissions,
         resource: 'permission',
         offset: 0,
         limit: 10,
@@ -51845,6 +51866,25 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
         offset: 0,
         limit: 10,
         total_count: db.teams.length
+      };
+    });
+
+    this.get('/api/v1/teams/:id/members', function () {
+      return {
+        status: 200,
+        data: [],
+        resource: 'user',
+        offset: 0,
+        limit: 10,
+        total_count: 0
+      };
+    });
+
+    this.get('/api/v1/teams/:id', function (db, req) {
+      return {
+        status: 200,
+        data: db.teams.find(req.params.id),
+        resource: 'team'
       };
     });
 
@@ -52253,17 +52293,6 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
         'data': db.fieldsoptions,
         'resource': 'field_option',
         'total_count': 3
-      };
-    });
-
-    this.get('/api/v1/teams', function (db) {
-      return {
-        'status': 200,
-        'data': db.teamsdata,
-        'resource': 'team',
-        'offset': 0,
-        'limit': 10,
-        'total_count': 4
       };
     });
 
@@ -53178,6 +53207,19 @@ define('frontend-cp/mirage/factories/organization', ['exports', 'ember-cli-mirag
   });
 
 });
+define('frontend-cp/mirage/factories/permission', ['exports', 'ember-cli-mirage'], function (exports, Mirage) {
+
+  'use strict';
+
+  /*eslint-disable camelcase*/
+
+  exports['default'] = Mirage['default'].Factory.extend({
+    name: 'admin.random',
+    value: true,
+    resource_type: 'permission'
+  });
+
+});
 define('frontend-cp/mirage/factories/plan', ['exports', 'ember-cli-mirage'], function (exports, ember_cli_mirage) {
 
   'use strict';
@@ -53521,6 +53563,8 @@ define('frontend-cp/mirage/factories/view', ['exports', 'ember-cli-mirage'], fun
 define('frontend-cp/mirage/fixtures/en-us-strings', ['exports', 'npm:lodash', 'frontend-cp/locales/en-us/admin', 'frontend-cp/locales/en-us/cases', 'frontend-cp/locales/en-us/feed', 'frontend-cp/locales/en-us/generic', 'frontend-cp/locales/en-us/login', 'frontend-cp/locales/en-us/organisation', 'frontend-cp/locales/en-us/search', 'frontend-cp/locales/en-us/users'], function (exports, _, admin, cases, feed, generic, login, organisation, search, users) {
 
   'use strict';
+
+  /* eslint-disable camelcase */
 
   var locales = {
     admin: admin['default'],
@@ -56586,6 +56630,8 @@ define('frontend-cp/serializers/case', ['exports', 'frontend-cp/serializers/appl
 
   'use strict';
 
+  /* eslint-disable camelcase */
+
   exports['default'] = ApplicationSerializer['default'].extend(CustomFieldSerializationMixin['default'], {
     attrs: {
       caseType: { key: 'type' }
@@ -57026,6 +57072,8 @@ define('frontend-cp/serializers/user', ['exports', 'frontend-cp/serializers/appl
 
   'use strict';
 
+  /* eslint-disable camelcase */
+
   exports['default'] = ApplicationSerializer['default'].extend(CustomFieldSerializationMixin['default'], {
     attrs: {
       avatar: { serialize: false },
@@ -57121,6 +57169,8 @@ define('frontend-cp/services/case-timeline-cache', ['exports', 'ember', 'npm:lod
   var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
 
   function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+  /* eslint-disable camelcase */
 
   var Promise = Ember['default'].RSVP.Promise;
   var defaultPostCount = 10;
@@ -60358,6 +60408,8 @@ define('frontend-cp/session/admin/channels/twitter/link/controller', ['exports',
 
   'use strict';
 
+  /* eslint-disable camelcase */
+
   exports['default'] = Ember['default'].Controller.extend({
     notification: Ember['default'].inject.service('notification'),
     intl: Ember['default'].inject.service('intl'),
@@ -60412,6 +60464,8 @@ define('frontend-cp/session/admin/channels/twitter/link/route', ['exports', 'emb
 define('frontend-cp/session/admin/channels/twitter/reauthorize/controller', ['exports', 'ember'], function (exports, Ember) {
 
   'use strict';
+
+  /* eslint-disable camelcase */
 
   exports['default'] = Ember['default'].Controller.extend({
     notification: Ember['default'].inject.service('notification'),
@@ -63935,7 +63989,7 @@ define('frontend-cp/session/admin/people/teams/edit/template', ['exports'], func
             "column": 0
           },
           "end": {
-            "line": 7,
+            "line": 6,
             "column": 2
           }
         },
@@ -63958,7 +64012,7 @@ define('frontend-cp/session/admin/people/teams/edit/template', ['exports'], func
         return morphs;
       },
       statements: [
-        ["inline","ko-admin/team",[],["title",["subexpr","format-message",[["subexpr","intl-get",["admin.teams.headings.edit"],[],["loc",[null,[2,24],[2,62]]]]],["title",["get","model.title",["loc",[null,[2,69],[2,80]]]]],["loc",[null,[2,8],[2,81]]]],"team",["subexpr","@mut",[["get","model",["loc",[null,[3,7],[3,12]]]]],[],[]],"agents",["subexpr","@mut",[["get","agents",["loc",[null,[4,9],[4,15]]]]],[],[]],"onCancel",["subexpr","action",["transitionToIndexRoute"],[],["loc",[null,[5,11],[5,44]]]],"onSuccess",["subexpr","action",["successTransitionToIndexRoute"],[],["loc",[null,[6,12],[6,52]]]]],["loc",[null,[1,0],[7,2]]]]
+        ["inline","ko-admin/team",[],["title",["subexpr","format-message",[["subexpr","intl-get",["admin.teams.headings.edit"],[],["loc",[null,[2,24],[2,62]]]]],["title",["get","model.title",["loc",[null,[2,69],[2,80]]]]],["loc",[null,[2,8],[2,81]]]],"team",["subexpr","@mut",[["get","model",["loc",[null,[3,7],[3,12]]]]],[],[]],"agents",["subexpr","@mut",[["get","agents",["loc",[null,[4,9],[4,15]]]]],[],[]],"onSuccess",["subexpr","action",["successTransitionToIndexRoute"],[],["loc",[null,[5,12],[5,52]]]]],["loc",[null,[1,0],[6,2]]]]
       ],
       locals: [],
       templates: []
@@ -64183,6 +64237,8 @@ define('frontend-cp/session/admin/people/teams/new/route', ['exports', 'ember'],
 
   'use strict';
 
+  /* eslint-disable no-alert */
+
   var Route = Ember['default'].Route;
   var inject = Ember['default'].inject;
 
@@ -64332,6 +64388,8 @@ define('frontend-cp/session/admin/people/user-fields/edit/template', ['exports']
 define('frontend-cp/session/admin/people/user-fields/index/controller', ['exports', 'ember'], function (exports, Ember) {
 
   'use strict';
+
+  /* eslint-disable no-alert */
 
   exports['default'] = Ember['default'].Controller.extend({
     customFields: Ember['default'].inject.service('custom-fields'),
@@ -66511,6 +66569,8 @@ define('frontend-cp/session/agent/cases/new/organisation/template', ['exports'],
 define('frontend-cp/session/agent/cases/new/route', ['exports', 'ember', 'frontend-cp/routes/abstract/tabbed-route'], function (exports, Ember, TabbedRoute) {
 
   'use strict';
+
+  /* eslint-disable camelcase */
 
   var RSVP = Ember['default'].RSVP;
 
@@ -72460,8 +72520,9 @@ define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['ember', 'q
 
   'use strict';
 
-  var originalConfirm = undefined,
-      brand = undefined,
+  /* eslint-disable camelcase */
+
+  var brand = undefined,
       language = undefined;
   qunit.module('Acceptance | Admin | Manage | Case Forms', {
     beforeEach: function beforeEach() {
@@ -72473,11 +72534,9 @@ define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['ember', 'q
       language = server.create('language');
       brand = server.create('brand', { language: language });
       login(session.id);
-      originalConfirm = window.confirm;
     },
 
     afterEach: function afterEach() {
-      window.confirm = originalConfirm;
       Ember['default'].run(this.application, 'destroy');
     }
   });
@@ -72534,9 +72593,77 @@ define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['ember', 'q
   });
 
 });
+define('frontend-cp/tests/acceptance/admin/people/teams-forms-test', ['ember', 'qunit', 'frontend-cp/tests/helpers/start-app'], function (Ember, qunit, startApp) {
+
+  'use strict';
+
+  /* eslint-disable camelcase */
+
+  var originalConfirm = undefined;
+
+  qunit.module('Acceptance | Admin | People | Teams', {
+    beforeEach: function beforeEach() {
+      this.application = startApp['default']();
+
+      var emails = [server.create('identity-email', { email: 'first@example.com', is_primary: true, is_validated: true }), server.create('identity-email', { email: 'second@example.com', is_primary: false, is_validated: true }), server.create('identity-email', { email: 'third@example.com', is_primary: false, is_validated: false })];
+
+      server.create('team', { title: 'Sales', businesshour: server.create('business-hour') });
+      server.create('team', { title: 'Finance', businesshour: server.create('business-hour') });
+
+      server.create('permission', { name: 'admin.team.create', value: true });
+      server.create('permission', { name: 'admin.team.update', value: true });
+      server.create('permission', { name: 'admin.team.update', value: true });
+      server.create('permission', { name: 'admin.team.delete', value: true });
+      server.create('permission', { name: 'admin.team.view', value: true });
+
+      var user = server.create('user', { emails: emails, role: server.create('role', { roleType: 'ADMIN' }) });
+      var session = server.create('session', { user: user });
+
+      server.create('plan', { limits: [], features: [] });
+
+      server.create('brand', { language: server.create('language') });
+
+      login(session.id);
+      originalConfirm = window.confirm;
+    },
+
+    afterEach: function afterEach() {
+      window.confirm = originalConfirm;
+      Ember['default'].run(this.application, 'destroy');
+    }
+  });
+
+  qunit.test('Trying to Delete Team and Cancelling operation, should leave you on the same page', function (assert) {
+    assert.expect(4);
+
+    visit('/admin/people/teams');
+
+    window.confirm = function (message) {
+      assert.equal(message, 'Are you sure you wish to delete this team?');
+      return false;
+    };
+
+    andThen(function () {
+      assert.equal(find('.ko-admin-card-team').length, 2);
+      find('.ko-admin-card-team:eq(0) .ko-admin-card-team__header a').click();
+    });
+
+    andThen(function () {
+      assert.equal(find('.qa-ko-admin_team__input-title').val(), 'Sales');
+      find('.qa-ko-admin_team__button-delete').click();
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/people/teams/1');
+    });
+  });
+
+});
 define('frontend-cp/tests/acceptance/agent/cases/create-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
 
   'use strict';
+
+  /* eslint-disable camelcase, new-cap */
 
   qunit.app('Acceptance | Case | Create case', {
     beforeEach: function beforeEach() {
@@ -72691,6 +72818,8 @@ define('frontend-cp/tests/acceptance/agent/login/reset-password-test', ['fronten
 define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['ember', 'qunit', 'frontend-cp/tests/helpers/start-app'], function (Ember, qunit, startApp) {
 
   'use strict';
+
+  /* eslint-disable camelcase */
 
   var originalConfirm = undefined;
   qunit.module('Acceptance | Manage Email Identities', {
@@ -79932,6 +80061,8 @@ define('frontend-cp/tests/unit/services/custom-fields-test', ['ember', 'ember-qu
 
   'use strict';
 
+  /* eslint-disable camelcase */
+
   ember_qunit.moduleFor('service:custom-fields', 'Unit | Service | custom-fields', {
     needs: ['model:user-field', 'model:field-option', 'model:field', 'service:custom-fields/types', 'service:custom-fields/options', 'service:intl', 'service:notification', 'ember-intl@adapter:-intl-adapter'],
     beforeEach: function beforeEach() {
@@ -80337,6 +80468,8 @@ define('frontend-cp/tests/unit/services/custom-fields-test', ['ember', 'ember-qu
 define('frontend-cp/tests/unit/services/error-handler-test', ['ember', 'ember-qunit', 'frontend-cp/services/session'], function (Ember, ember_qunit, Session) {
 
   'use strict';
+
+  /* eslint-disable camelcase, no-empty */
 
   ember_qunit.moduleFor('service:error-handler', 'Unit | Service | error-handler', {
     needs: ['service:error-handler/session-loading-failed-strategy', 'service:error-handler/notification-strategy', 'service:error-handler/permissions-denied-strategy', 'service:error-handler/resource-not-found-strategy', 'service:error-handler/credential-expired-strategy', 'service:error-handler/generic-strategy', 'service:intl', 'service:notification', 'service:plan', 'service:localStore', 'service:session', 'service:tabStore', 'ember-intl@adapter:-intl-adapter'],
@@ -81085,7 +81218,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"88d34fd0054d469bcfa2","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+11cd5fc7"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"logEvents":false,"encrypted":true,"key":"88d34fd0054d469bcfa2","authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+389716e2"});
 }
 
 /* jshint ignore:end */
