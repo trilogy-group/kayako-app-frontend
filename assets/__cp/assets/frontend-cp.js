@@ -1028,11 +1028,34 @@ define('frontend-cp/components/app-version', ['exports', 'ember-cli-app-version/
   });
 
 });
-define('frontend-cp/components/ember-wormhole', ['exports', 'ember-wormhole/components/ember-wormhole'], function (exports, Component) {
+define('frontend-cp/components/basic-dropdown', ['exports', 'ember-basic-dropdown/components/basic-dropdown'], function (exports, basic_dropdown) {
 
 	'use strict';
 
-	exports['default'] = Component['default'];
+
+
+	exports['default'] = basic_dropdown['default'];
+
+});
+define('frontend-cp/components/ember-power-select', ['exports', 'ember', 'ember-power-select/components/power-select'], function (exports, Ember, EmberPowerSelectComponent) {
+
+  'use strict';
+
+  exports['default'] = EmberPowerSelectComponent['default'].extend({
+    init: function init() {
+      this._super.apply(this, arguments);
+      Ember['default'].deprecate('The name of the component has been shortened from {{ember-power-select}} to just {{power-select}}. The old component will be removed in the next major version.', false);
+    }
+  });
+
+});
+define('frontend-cp/components/ember-wormhole', ['exports', 'ember-wormhole/components/ember-wormhole'], function (exports, ember_wormhole) {
+
+	'use strict';
+
+
+
+	exports['default'] = ember_wormhole['default'];
 
 });
 define('frontend-cp/components/ko-address/component', ['exports', 'ember'], function (exports, Ember) {
@@ -16834,109 +16857,17 @@ define('frontend-cp/components/ko-case-content/field/post/template', ['exports']
       var child0 = (function() {
         var child0 = (function() {
           var child0 = (function() {
-            var child0 = (function() {
-              var child0 = (function() {
-                return {
-                  meta: {
-                    "revision": "Ember@1.13.10",
-                    "loc": {
-                      "source": null,
-                      "start": {
-                        "line": 32,
-                        "column": 10
-                      },
-                      "end": {
-                        "line": 36,
-                        "column": 10
-                      }
-                    },
-                    "moduleName": "frontend-cp/components/ko-case-content/field/post/template.hbs"
-                  },
-                  arity: 1,
-                  cachedFragment: null,
-                  hasRendered: false,
-                  buildFragment: function buildFragment(dom) {
-                    var el0 = dom.createDocumentFragment();
-                    var el1 = dom.createTextNode("            ");
-                    dom.appendChild(el0, el1);
-                    var el1 = dom.createElement("li");
-                    dom.setAttribute(el1,"class","ko-dropdown_list__item");
-                    var el2 = dom.createTextNode("\n              ");
-                    dom.appendChild(el1, el2);
-                    var el2 = dom.createComment("");
-                    dom.appendChild(el1, el2);
-                    var el2 = dom.createTextNode("\n            ");
-                    dom.appendChild(el1, el2);
-                    dom.appendChild(el0, el1);
-                    var el1 = dom.createTextNode("\n");
-                    dom.appendChild(el0, el1);
-                    return el0;
-                  },
-                  buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-                    var element1 = dom.childAt(fragment, [1]);
-                    var morphs = new Array(2);
-                    morphs[0] = dom.createAttrMorph(element1, 'onclick');
-                    morphs[1] = dom.createMorphAt(element1,1,1);
-                    return morphs;
-                  },
-                  statements: [
-                    ["attribute","onclick",["subexpr","action",["changeChannel",["get","channel",["loc",[null,[33,80],[33,87]]]]],[],["loc",[null,[33,55],[33,89]]]]],
-                    ["content","channel.message",["loc",[null,[34,14],[34,33]]]]
-                  ],
-                  locals: ["channel"],
-                  templates: []
-                };
-              }());
-              return {
-                meta: {
-                  "revision": "Ember@1.13.10",
-                  "loc": {
-                    "source": null,
-                    "start": {
-                      "line": 31,
-                      "column": 8
-                    },
-                    "end": {
-                      "line": 37,
-                      "column": 8
-                    }
-                  },
-                  "moduleName": "frontend-cp/components/ko-case-content/field/post/template.hbs"
-                },
-                arity: 0,
-                cachedFragment: null,
-                hasRendered: false,
-                buildFragment: function buildFragment(dom) {
-                  var el0 = dom.createDocumentFragment();
-                  var el1 = dom.createComment("");
-                  dom.appendChild(el0, el1);
-                  return el0;
-                },
-                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-                  var morphs = new Array(1);
-                  morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
-                  dom.insertBoundary(fragment, 0);
-                  dom.insertBoundary(fragment, null);
-                  return morphs;
-                },
-                statements: [
-                  ["block","each",[["get","channels",["loc",[null,[32,18],[32,26]]]]],[],0,null,["loc",[null,[32,10],[36,19]]]]
-                ],
-                locals: [],
-                templates: [child0]
-              };
-            }());
             return {
               meta: {
                 "revision": "Ember@1.13.10",
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 30,
+                    "line": 29,
                     "column": 6
                   },
                   "end": {
-                    "line": 38,
+                    "line": 31,
                     "column": 6
                   }
                 },
@@ -16947,22 +16878,24 @@ define('frontend-cp/components/ko-case-content/field/post/template', ['exports']
               hasRendered: false,
               buildFragment: function buildFragment(dom) {
                 var el0 = dom.createDocumentFragment();
+                var el1 = dom.createTextNode("        ");
+                dom.appendChild(el0, el1);
                 var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n");
                 dom.appendChild(el0, el1);
                 return el0;
               },
               buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
                 var morphs = new Array(1);
-                morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
-                dom.insertBoundary(fragment, 0);
-                dom.insertBoundary(fragment, null);
+                morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
                 return morphs;
               },
               statements: [
-                ["block","ko-channel-select",[],["label",["subexpr","@mut",[["get","channel.label",["loc",[null,[31,35],[31,48]]]]],[],[]],"iconClass",["subexpr","@mut",[["get","channel.iconClass",["loc",[null,[31,59],[31,76]]]]],[],[]],"hideOnClick",true],0,null,["loc",[null,[31,8],[37,30]]]]
+                ["inline","ko-channel-selector",[],["channels",["subexpr","@mut",[["get","channels",["loc",[null,[30,39],[30,47]]]]],[],[]],"channel",["subexpr","@mut",[["get","channel",["loc",[null,[30,56],[30,63]]]]],[],[]],"onchange",["subexpr","action",[["subexpr","mut",[["get","channel",["loc",[null,[30,86],[30,93]]]]],[],["loc",[null,[30,81],[30,94]]]]],[],["loc",[null,[30,73],[30,95]]]]],["loc",[null,[30,8],[30,97]]]]
               ],
               locals: [],
-              templates: [child0]
+              templates: []
             };
           }());
           return {
@@ -16971,11 +16904,11 @@ define('frontend-cp/components/ko-case-content/field/post/template', ['exports']
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 28,
+                  "line": 27,
                   "column": 2
                 },
                 "end": {
-                  "line": 40,
+                  "line": 33,
                   "column": 2
                 }
               },
@@ -17007,7 +16940,7 @@ define('frontend-cp/components/ko-case-content/field/post/template', ['exports']
               return morphs;
             },
             statements: [
-              ["block","ko-text-editor/toggle-button",[],["action","setReply","isActive",["subexpr","eq",["REPLY",["get","replyType",["loc",[null,[30,77],[30,86]]]]],[],["loc",[null,[30,65],[30,87]]]]],0,null,["loc",[null,[30,6],[38,39]]]]
+              ["block","ko-text-editor/toggle-button",[],["action","setReply","isActive",["subexpr","eq",["REPLY",["get","replyType",["loc",[null,[29,77],[29,86]]]]],[],["loc",[null,[29,65],[29,87]]]]],0,null,["loc",[null,[29,6],[31,39]]]]
             ],
             locals: [],
             templates: [child0]
@@ -17020,11 +16953,11 @@ define('frontend-cp/components/ko-case-content/field/post/template', ['exports']
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 42,
+                  "line": 35,
                   "column": 4
                 },
                 "end": {
-                  "line": 44,
+                  "line": 37,
                   "column": 4
                 }
               },
@@ -17049,7 +16982,7 @@ define('frontend-cp/components/ko-case-content/field/post/template', ['exports']
               return morphs;
             },
             statements: [
-              ["inline","format-message",[["subexpr","intl-get",["cases.notes"],[],["loc",[null,[43,25],[43,49]]]]],[],["loc",[null,[43,8],[43,51]]]]
+              ["inline","format-message",[["subexpr","intl-get",["cases.notes"],[],["loc",[null,[36,25],[36,49]]]]],[],["loc",[null,[36,8],[36,51]]]]
             ],
             locals: [],
             templates: []
@@ -17061,11 +16994,11 @@ define('frontend-cp/components/ko-case-content/field/post/template', ['exports']
             "loc": {
               "source": null,
               "start": {
-                "line": 27,
+                "line": 26,
                 "column": 0
               },
               "end": {
-                "line": 46,
+                "line": 39,
                 "column": 0
               }
             },
@@ -17101,8 +17034,8 @@ define('frontend-cp/components/ko-case-content/field/post/template', ['exports']
             return morphs;
           },
           statements: [
-            ["block","if",[["get","channels.length",["loc",[null,[28,8],[28,23]]]]],[],0,null,["loc",[null,[28,2],[40,9]]]],
-            ["block","ko-text-editor/toggle-button",[],["action","setNote","isActive",["subexpr","eq",["NOTE",["get","replyType",["loc",[null,[42,73],[42,82]]]]],[],["loc",[null,[42,62],[42,83]]]]],1,null,["loc",[null,[42,4],[44,37]]]]
+            ["block","if",[["get","channels.length",["loc",[null,[27,8],[27,23]]]]],[],0,null,["loc",[null,[27,2],[33,9]]]],
+            ["block","ko-text-editor/toggle-button",[],["action","setNote","isActive",["subexpr","eq",["NOTE",["get","replyType",["loc",[null,[35,73],[35,82]]]]],[],["loc",[null,[35,62],[35,83]]]]],1,null,["loc",[null,[35,4],[37,37]]]]
           ],
           locals: [],
           templates: [child0, child1]
@@ -17116,11 +17049,11 @@ define('frontend-cp/components/ko-case-content/field/post/template', ['exports']
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 49,
+                  "line": 42,
                   "column": 2
                 },
                 "end": {
-                  "line": 55,
+                  "line": 48,
                   "column": 2
                 }
               },
@@ -17159,7 +17092,7 @@ define('frontend-cp/components/ko-case-content/field/post/template', ['exports']
               return morphs;
             },
             statements: [
-              ["content","infoMessage",["loc",[null,[52,8],[52,23]]]]
+              ["content","infoMessage",["loc",[null,[45,8],[45,23]]]]
             ],
             locals: [],
             templates: []
@@ -17173,11 +17106,11 @@ define('frontend-cp/components/ko-case-content/field/post/template', ['exports']
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 56,
+                    "line": 49,
                     "column": 4
                   },
                   "end": {
-                    "line": 70,
+                    "line": 63,
                     "column": 4
                   }
                 },
@@ -17241,8 +17174,8 @@ define('frontend-cp/components/ko-case-content/field/post/template', ['exports']
                 return morphs;
               },
               statements: [
-                ["inline","ko-checkbox",[],["class","u-inline-block","checked",["subexpr","@mut",[["get","twitterSendReply",["loc",[null,[60,20],[60,36]]]]],[],[]],"label",["subexpr","format-message",[["subexpr","intl-get",["cases.reply-twitter-message"],[],["loc",[null,[61,34],[61,74]]]]],[],["loc",[null,[61,18],[61,75]]]]],["loc",[null,[59,10],[61,77]]]],
-                ["inline","format-message",[["subexpr","intl-get",["cases.reply-twitter-tooltip"],[],["loc",[null,[64,31],[64,71]]]]],[],["loc",[null,[64,14],[64,73]]]]
+                ["inline","ko-checkbox",[],["class","u-inline-block","checked",["subexpr","@mut",[["get","twitterSendReply",["loc",[null,[53,20],[53,36]]]]],[],[]],"label",["subexpr","format-message",[["subexpr","intl-get",["cases.reply-twitter-message"],[],["loc",[null,[54,34],[54,74]]]]],[],["loc",[null,[54,18],[54,75]]]]],["loc",[null,[52,10],[54,77]]]],
+                ["inline","format-message",[["subexpr","intl-get",["cases.reply-twitter-tooltip"],[],["loc",[null,[57,31],[57,71]]]]],[],["loc",[null,[57,14],[57,73]]]]
               ],
               locals: [],
               templates: []
@@ -17254,11 +17187,11 @@ define('frontend-cp/components/ko-case-content/field/post/template', ['exports']
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 55,
+                  "line": 48,
                   "column": 2
                 },
                 "end": {
-                  "line": 71,
+                  "line": 64,
                   "column": 2
                 }
               },
@@ -17281,7 +17214,7 @@ define('frontend-cp/components/ko-case-content/field/post/template', ['exports']
               return morphs;
             },
             statements: [
-              ["block","if",[["subexpr","eq",[["get","channel.channelType",["loc",[null,[56,14],[56,33]]]],"TWITTER"],[],["loc",[null,[56,10],[56,44]]]]],[],0,null,["loc",[null,[56,4],[70,11]]]]
+              ["block","if",[["subexpr","eq",[["get","channel.channelType",["loc",[null,[49,14],[49,33]]]],"TWITTER"],[],["loc",[null,[49,10],[49,44]]]]],[],0,null,["loc",[null,[49,4],[63,11]]]]
             ],
             locals: [],
             templates: [child0]
@@ -17293,11 +17226,11 @@ define('frontend-cp/components/ko-case-content/field/post/template', ['exports']
             "loc": {
               "source": null,
               "start": {
-                "line": 48,
+                "line": 41,
                 "column": 0
               },
               "end": {
-                "line": 72,
+                "line": 65,
                 "column": 0
               }
             },
@@ -17320,7 +17253,7 @@ define('frontend-cp/components/ko-case-content/field/post/template', ['exports']
             return morphs;
           },
           statements: [
-            ["block","if",[["get","infoMessage",["loc",[null,[49,8],[49,19]]]]],[],0,1,["loc",[null,[49,2],[71,9]]]]
+            ["block","if",[["get","infoMessage",["loc",[null,[42,8],[42,19]]]]],[],0,1,["loc",[null,[42,2],[64,9]]]]
           ],
           locals: [],
           templates: [child0, child1]
@@ -17336,7 +17269,7 @@ define('frontend-cp/components/ko-case-content/field/post/template', ['exports']
               "column": 0
             },
             "end": {
-              "line": 74,
+              "line": 67,
               "column": 0
             }
           },
@@ -17366,8 +17299,8 @@ define('frontend-cp/components/ko-case-content/field/post/template', ['exports']
           return morphs;
         },
         statements: [
-          ["block","if",[["get","editor.isHeader",["loc",[null,[27,6],[27,21]]]]],[],0,null,["loc",[null,[27,0],[46,7]]]],
-          ["block","if",[["get","editor.isInfoMessage",["loc",[null,[48,6],[48,26]]]]],[],1,null,["loc",[null,[48,0],[72,7]]]]
+          ["block","if",[["get","editor.isHeader",["loc",[null,[26,6],[26,21]]]]],[],0,null,["loc",[null,[26,0],[39,7]]]],
+          ["block","if",[["get","editor.isInfoMessage",["loc",[null,[41,6],[41,26]]]]],[],1,null,["loc",[null,[41,0],[65,7]]]]
         ],
         locals: ["editor"],
         templates: [child0, child1]
@@ -17383,7 +17316,7 @@ define('frontend-cp/components/ko-case-content/field/post/template', ['exports']
             "column": 0
           },
           "end": {
-            "line": 77,
+            "line": 70,
             "column": 65
           }
         },
@@ -17411,8 +17344,8 @@ define('frontend-cp/components/ko-case-content/field/post/template', ['exports']
         return morphs;
       },
       statements: [
-        ["block","ko-text-editor",[],["viewName","postEditor","suggestedPeople",["subexpr","@mut",[["get","suggestedPeople",["loc",[null,[3,20],[3,35]]]]],[],[]],"selectedPeople",["subexpr","@mut",[["get","selectedPeople",["loc",[null,[4,19],[4,33]]]]],[],[]],"suggestedPeopleTotal",["subexpr","@mut",[["get","suggestedPeopleTotal",["loc",[null,[5,25],[5,45]]]]],[],[]],"suggestedPeopleLoading",["subexpr","@mut",[["get","suggestedPeopleLoading",["loc",[null,[6,27],[6,49]]]]],[],[]],"isPeopleIconAvailable",["subexpr","@mut",[["get","isPeopleAutoCompleteAvailable",["loc",[null,[7,26],[7,55]]]]],[],[]],"isTimerIconAvailable",["subexpr","@mut",[["get","isTimerAvailable",["loc",[null,[8,25],[8,41]]]]],[],[]],"onPeopleSuggestion","onPeopleSuggestion","onAttachFiles","onAttachFiles","channels",["subexpr","@mut",[["get","channels",["loc",[null,[11,13],[11,21]]]]],[],[]],"channel",["subexpr","@mut",[["get","channel",["loc",[null,[12,12],[12,19]]]]],[],[]],"onChannelChange","setChannel","addParticipant","addParticipant","placeholder",["subexpr","@mut",[["get","placeholderMessage",["loc",[null,[15,16],[15,34]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","isErrored",["loc",[null,[16,14],[16,23]]]]],[],[]],"showControls",["subexpr","@mut",[["get","isShowingControls",["loc",[null,[17,17],[17,34]]]]],[],[]],"peopleTitleText",["subexpr","format-message",[["subexpr","intl-get",["cases.copy-someone-in.title"],[],["loc",[null,[18,36],[18,76]]]]],[],["loc",[null,[18,20],[18,77]]]],"peopleInputPlaceholderText",["subexpr","format-message",[["subexpr","intl-get",["cases.copy-someone-in.input-placeholder"],[],["loc",[null,[19,47],[19,99]]]]],[],["loc",[null,[19,31],[19,100]]]],"peopleFilterNotFoundText",["subexpr","format-message",[["subexpr","intl-get",["cases.copy-someone-in.not-found"],[],["loc",[null,[20,45],[20,89]]]]],[],["loc",[null,[20,29],[20,90]]]],"peopleHelpText",["subexpr","format-message",[["subexpr","intl-get",["cases.copy-someone-in.help-text"],[],["loc",[null,[21,35],[21,79]]]]],[],["loc",[null,[21,19],[21,80]]]],"peopleEmailErrorText",["subexpr","format-message",[["subexpr","intl-get",["cases.copy-someone-in.email-error"],[],["loc",[null,[22,41],[22,87]]]]],[],["loc",[null,[22,25],[22,88]]]],"textAreaIsSmall",["subexpr","@mut",[["get","textAreaIsSmall",["loc",[null,[23,20],[23,35]]]]],[],[]]],0,null,["loc",[null,[1,0],[74,19]]]],
-        ["inline","ko-file-upload",[],["viewName","attachedUploads","files",["subexpr","@mut",[["get","attachedFiles",["loc",[null,[77,50],[77,63]]]]],[],[]]],["loc",[null,[77,0],[77,65]]]]
+        ["block","ko-text-editor",[],["viewName","postEditor","suggestedPeople",["subexpr","@mut",[["get","suggestedPeople",["loc",[null,[3,20],[3,35]]]]],[],[]],"selectedPeople",["subexpr","@mut",[["get","selectedPeople",["loc",[null,[4,19],[4,33]]]]],[],[]],"suggestedPeopleTotal",["subexpr","@mut",[["get","suggestedPeopleTotal",["loc",[null,[5,25],[5,45]]]]],[],[]],"suggestedPeopleLoading",["subexpr","@mut",[["get","suggestedPeopleLoading",["loc",[null,[6,27],[6,49]]]]],[],[]],"isPeopleIconAvailable",["subexpr","@mut",[["get","isPeopleAutoCompleteAvailable",["loc",[null,[7,26],[7,55]]]]],[],[]],"isTimerIconAvailable",["subexpr","@mut",[["get","isTimerAvailable",["loc",[null,[8,25],[8,41]]]]],[],[]],"onPeopleSuggestion","onPeopleSuggestion","onAttachFiles","onAttachFiles","channels",["subexpr","@mut",[["get","channels",["loc",[null,[11,13],[11,21]]]]],[],[]],"channel",["subexpr","@mut",[["get","channel",["loc",[null,[12,12],[12,19]]]]],[],[]],"onChannelChange","setChannel","addParticipant","addParticipant","placeholder",["subexpr","@mut",[["get","placeholderMessage",["loc",[null,[15,16],[15,34]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","isErrored",["loc",[null,[16,14],[16,23]]]]],[],[]],"showControls",["subexpr","@mut",[["get","isShowingControls",["loc",[null,[17,17],[17,34]]]]],[],[]],"peopleTitleText",["subexpr","format-message",[["subexpr","intl-get",["cases.copy-someone-in.title"],[],["loc",[null,[18,36],[18,76]]]]],[],["loc",[null,[18,20],[18,77]]]],"peopleInputPlaceholderText",["subexpr","format-message",[["subexpr","intl-get",["cases.copy-someone-in.input-placeholder"],[],["loc",[null,[19,47],[19,99]]]]],[],["loc",[null,[19,31],[19,100]]]],"peopleFilterNotFoundText",["subexpr","format-message",[["subexpr","intl-get",["cases.copy-someone-in.not-found"],[],["loc",[null,[20,45],[20,89]]]]],[],["loc",[null,[20,29],[20,90]]]],"peopleHelpText",["subexpr","format-message",[["subexpr","intl-get",["cases.copy-someone-in.help-text"],[],["loc",[null,[21,35],[21,79]]]]],[],["loc",[null,[21,19],[21,80]]]],"peopleEmailErrorText",["subexpr","format-message",[["subexpr","intl-get",["cases.copy-someone-in.email-error"],[],["loc",[null,[22,41],[22,87]]]]],[],["loc",[null,[22,25],[22,88]]]],"textAreaIsSmall",["subexpr","@mut",[["get","textAreaIsSmall",["loc",[null,[23,20],[23,35]]]]],[],[]]],0,null,["loc",[null,[1,0],[67,19]]]],
+        ["inline","ko-file-upload",[],["viewName","attachedUploads","files",["subexpr","@mut",[["get","attachedFiles",["loc",[null,[70,50],[70,63]]]]],[],[]]],["loc",[null,[70,0],[70,65]]]]
       ],
       locals: [],
       templates: [child0]
@@ -22467,18 +22400,21 @@ define('frontend-cp/components/ko-center/template', ['exports'], function (expor
   }()));
 
 });
-define('frontend-cp/components/ko-channel-select/button/component', ['exports', 'ember'], function (exports, Ember) {
+define('frontend-cp/components/ko-channel-selector/component', ['exports', 'ember'], function (exports, Ember) {
 
-  'use strict';
+	'use strict';
 
-  exports['default'] = Ember['default'].Component.extend({
-    //Params:
-    label: '',
-    iconClass: ''
-  });
+	exports['default'] = Ember['default'].Component.extend({});
 
 });
-define('frontend-cp/components/ko-channel-select/button/template', ['exports'], function (exports) {
+define('frontend-cp/components/ko-channel-selector/selected-channel/component', ['exports', 'ember'], function (exports, Ember) {
+
+	'use strict';
+
+	exports['default'] = Ember['default'].Component.extend({});
+
+});
+define('frontend-cp/components/ko-channel-selector/selected-channel/template', ['exports'], function (exports) {
 
   'use strict';
 
@@ -22493,34 +22429,27 @@ define('frontend-cp/components/ko-channel-select/button/template', ['exports'], 
             "column": 0
           },
           "end": {
-            "line": 6,
+            "line": 4,
             "column": 0
           }
         },
-        "moduleName": "frontend-cp/components/ko-channel-select/button/template.hbs"
+        "moduleName": "frontend-cp/components/ko-channel-selector/selected-channel/template.hbs"
       },
       arity: 0,
       cachedFragment: null,
       hasRendered: false,
       buildFragment: function buildFragment(dom) {
         var el0 = dom.createDocumentFragment();
-        var el1 = dom.createElement("span");
+        var el1 = dom.createElement("i");
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
-        var el1 = dom.createElement("span");
-        dom.setAttribute(el1,"class","ko-channel-select_button__content");
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createComment("");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n");
-        dom.appendChild(el1, el2);
+        var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
-        var el1 = dom.createElement("span");
-        dom.setAttribute(el1,"class","ko-channel-select_button__icon i-select");
+        var el1 = dom.createElement("i");
+        dom.setAttribute(el1,"class","i-select");
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
@@ -22530,12 +22459,12 @@ define('frontend-cp/components/ko-channel-select/button/template', ['exports'], 
         var element0 = dom.childAt(fragment, [0]);
         var morphs = new Array(2);
         morphs[0] = dom.createAttrMorph(element0, 'class');
-        morphs[1] = dom.createMorphAt(dom.childAt(fragment, [2]),1,1);
+        morphs[1] = dom.createMorphAt(fragment,2,2,contextualElement);
         return morphs;
       },
       statements: [
-        ["attribute","class",["concat",[["get","iconClass",["loc",[null,[1,15],[1,24]]]]," ko-channel-select_button__icon u-mr--"]]],
-        ["content","label",["loc",[null,[3,2],[3,11]]]]
+        ["attribute","class",["get","selection.iconClass",["loc",[null,[1,11],[1,30]]]]],
+        ["content","selection.label",["loc",[null,[2,0],[2,19]]]]
       ],
       locals: [],
       templates: []
@@ -22543,148 +22472,12 @@ define('frontend-cp/components/ko-channel-select/button/template', ['exports'], 
   }()));
 
 });
-define('frontend-cp/components/ko-channel-select/component', ['exports', 'ember'], function (exports, Ember) {
-
-  'use strict';
-
-  exports['default'] = Ember['default'].Component.extend({
-    //Params
-    hideOnClick: false,
-
-    contentStyle: null
-  });
-
-});
-define('frontend-cp/components/ko-channel-select/template', ['exports'], function (exports) {
+define('frontend-cp/components/ko-channel-selector/template', ['exports'], function (exports) {
 
   'use strict';
 
   exports['default'] = Ember.HTMLBars.template((function() {
     var child0 = (function() {
-      var child0 = (function() {
-        return {
-          meta: {
-            "revision": "Ember@1.13.10",
-            "loc": {
-              "source": null,
-              "start": {
-                "line": 2,
-                "column": 2
-              },
-              "end": {
-                "line": 4,
-                "column": 2
-              }
-            },
-            "moduleName": "frontend-cp/components/ko-channel-select/template.hbs"
-          },
-          arity: 0,
-          cachedFragment: null,
-          hasRendered: false,
-          buildFragment: function buildFragment(dom) {
-            var el0 = dom.createDocumentFragment();
-            var el1 = dom.createTextNode("    ");
-            dom.appendChild(el0, el1);
-            var el1 = dom.createComment("");
-            dom.appendChild(el0, el1);
-            var el1 = dom.createTextNode("\n");
-            dom.appendChild(el0, el1);
-            return el0;
-          },
-          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-            var morphs = new Array(1);
-            morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
-            return morphs;
-          },
-          statements: [
-            ["inline","ko-channel-select/button",[],["label",["subexpr","@mut",[["get","label",["loc",[null,[3,37],[3,42]]]]],[],[]],"iconClass",["subexpr","@mut",[["get","iconClass",["loc",[null,[3,53],[3,62]]]]],[],[]]],["loc",[null,[3,4],[3,64]]]]
-          ],
-          locals: [],
-          templates: []
-        };
-      }());
-      var child1 = (function() {
-        var child0 = (function() {
-          return {
-            meta: {
-              "revision": "Ember@1.13.10",
-              "loc": {
-                "source": null,
-                "start": {
-                  "line": 6,
-                  "column": 4
-                },
-                "end": {
-                  "line": 8,
-                  "column": 4
-                }
-              },
-              "moduleName": "frontend-cp/components/ko-channel-select/template.hbs"
-            },
-            arity: 0,
-            cachedFragment: null,
-            hasRendered: false,
-            buildFragment: function buildFragment(dom) {
-              var el0 = dom.createDocumentFragment();
-              var el1 = dom.createTextNode("      ");
-              dom.appendChild(el0, el1);
-              var el1 = dom.createComment("");
-              dom.appendChild(el0, el1);
-              var el1 = dom.createTextNode("\n");
-              dom.appendChild(el0, el1);
-              return el0;
-            },
-            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-              var morphs = new Array(1);
-              morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
-              return morphs;
-            },
-            statements: [
-              ["content","yield",["loc",[null,[7,6],[7,15]]]]
-            ],
-            locals: [],
-            templates: []
-          };
-        }());
-        return {
-          meta: {
-            "revision": "Ember@1.13.10",
-            "loc": {
-              "source": null,
-              "start": {
-                "line": 5,
-                "column": 2
-              },
-              "end": {
-                "line": 9,
-                "column": 2
-              }
-            },
-            "moduleName": "frontend-cp/components/ko-channel-select/template.hbs"
-          },
-          arity: 0,
-          cachedFragment: null,
-          hasRendered: false,
-          buildFragment: function buildFragment(dom) {
-            var el0 = dom.createDocumentFragment();
-            var el1 = dom.createComment("");
-            dom.appendChild(el0, el1);
-            return el0;
-          },
-          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-            var morphs = new Array(1);
-            morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
-            dom.insertBoundary(fragment, 0);
-            dom.insertBoundary(fragment, null);
-            return morphs;
-          },
-          statements: [
-            ["block","ko-dropdown/list",[],["class","ko-dropdown-select__content","style",["subexpr","@mut",[["get","contentStyle",["loc",[null,[6,66],[6,78]]]]],[],[]]],0,null,["loc",[null,[6,4],[8,25]]]]
-          ],
-          locals: [],
-          templates: [child0]
-        };
-      }());
       return {
         meta: {
           "revision": "Ember@1.13.10",
@@ -22695,37 +22488,42 @@ define('frontend-cp/components/ko-channel-select/template', ['exports'], functio
               "column": 0
             },
             "end": {
-              "line": 10,
+              "line": 4,
               "column": 0
             }
           },
-          "moduleName": "frontend-cp/components/ko-channel-select/template.hbs"
+          "moduleName": "frontend-cp/components/ko-channel-selector/template.hbs"
         },
-        arity: 2,
+        arity: 1,
         cachedFragment: null,
         hasRendered: false,
         buildFragment: function buildFragment(dom) {
           var el0 = dom.createDocumentFragment();
-          var el1 = dom.createComment("");
+          var el1 = dom.createTextNode("  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("i");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n  ");
           dom.appendChild(el0, el1);
           var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
           dom.appendChild(el0, el1);
           return el0;
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var element0 = dom.childAt(fragment, [1]);
           var morphs = new Array(2);
-          morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
-          morphs[1] = dom.createMorphAt(fragment,1,1,contextualElement);
-          dom.insertBoundary(fragment, 0);
-          dom.insertBoundary(fragment, null);
+          morphs[0] = dom.createAttrMorph(element0, 'class');
+          morphs[1] = dom.createMorphAt(fragment,3,3,contextualElement);
           return morphs;
         },
         statements: [
-          ["block","if",[["subexpr","eq",[["get","name",["loc",[null,[2,12],[2,16]]]],"button"],[],["loc",[null,[2,8],[2,26]]]]],[],0,null,["loc",[null,[2,2],[4,9]]]],
-          ["block","if",[["subexpr","eq",[["get","name",["loc",[null,[5,12],[5,16]]]],"content"],[],["loc",[null,[5,8],[5,27]]]]],[],1,null,["loc",[null,[5,2],[9,9]]]]
+          ["attribute","class",["get","channel.iconClass",["loc",[null,[2,13],[2,30]]]]],
+          ["content","channel.label",["loc",[null,[3,2],[3,19]]]]
         ],
-        locals: ["name","dropdownContext"],
-        templates: [child0, child1]
+        locals: ["channel"],
+        templates: []
       };
     }());
     return {
@@ -22738,11 +22536,11 @@ define('frontend-cp/components/ko-channel-select/template', ['exports'], functio
             "column": 0
           },
           "end": {
-            "line": 11,
-            "column": 0
+            "line": 4,
+            "column": 17
           }
         },
-        "moduleName": "frontend-cp/components/ko-channel-select/template.hbs"
+        "moduleName": "frontend-cp/components/ko-channel-selector/template.hbs"
       },
       arity: 0,
       cachedFragment: null,
@@ -22761,7 +22559,7 @@ define('frontend-cp/components/ko-channel-select/template', ['exports'], functio
         return morphs;
       },
       statements: [
-        ["block","ko-dropdown/container",[],["hideOnClick",["subexpr","@mut",[["get","hideOnClick",["loc",[null,[1,37],[1,48]]]]],[],[]],"hideOnChildFocus",true],0,null,["loc",[null,[1,0],[10,26]]]]
+        ["block","power-select",[],["options",["subexpr","@mut",[["get","channels",["loc",[null,[1,24],[1,32]]]]],[],[]],"selected",["subexpr","@mut",[["get","channel",["loc",[null,[1,42],[1,49]]]]],[],[]],"renderInPlace",true,"searchEnabled",false,"onchange",["subexpr","@mut",[["get","onchange",["loc",[null,[1,98],[1,106]]]]],[],[]],"selectedComponent","ko-channel-selector/selected-channel"],0,null,["loc",[null,[1,0],[4,17]]]]
       ],
       locals: [],
       templates: [child0]
@@ -48436,6 +48234,60 @@ define('frontend-cp/components/mixins/suggestions', ['exports', 'ember'], functi
   });
 
 });
+define('frontend-cp/components/power-select/multiple/selected', ['exports', 'ember-power-select/components/power-select/multiple/selected'], function (exports, selected) {
+
+	'use strict';
+
+
+
+	exports['default'] = selected['default'];
+
+});
+define('frontend-cp/components/power-select/multiple', ['exports', 'ember-power-select/components/power-select/multiple'], function (exports, multiple) {
+
+	'use strict';
+
+
+
+	exports['default'] = multiple['default'];
+
+});
+define('frontend-cp/components/power-select/options', ['exports', 'ember-power-select/components/power-select/options'], function (exports, options) {
+
+	'use strict';
+
+
+
+	exports['default'] = options['default'];
+
+});
+define('frontend-cp/components/power-select/single/selected', ['exports', 'ember-power-select/components/power-select/single/selected'], function (exports, selected) {
+
+	'use strict';
+
+
+
+	exports['default'] = selected['default'];
+
+});
+define('frontend-cp/components/power-select/single', ['exports', 'ember-power-select/components/power-select/single'], function (exports, single) {
+
+	'use strict';
+
+
+
+	exports['default'] = single['default'];
+
+});
+define('frontend-cp/components/power-select', ['exports', 'ember-power-select/components/power-select'], function (exports, power_select) {
+
+	'use strict';
+
+
+
+	exports['default'] = power_select['default'];
+
+});
 define('frontend-cp/components/sticky-container', ['exports', 'ember', 'ember-cli-sticky/components/sticky-container'], function (exports, Ember, StickyContainer) {
 
 	'use strict';
@@ -48542,6 +48394,16 @@ define('frontend-cp/helpers/duration', ['exports', 'ember', 'frontend-cp/helpers
       return this._super.apply(this, arguments);
     }
   });
+
+});
+define('frontend-cp/helpers/ember-power-select-option-classes', ['exports', 'ember-power-select/helpers/ember-power-select-option-classes'], function (exports, ember_power_select_option_classes) {
+
+	'use strict';
+
+
+
+	exports['default'] = ember_power_select_option_classes['default'];
+	exports.emberPowerSelectOptionClasses = ember_power_select_option_classes.emberPowerSelectOptionClasses;
 
 });
 define('frontend-cp/helpers/eq', ['exports', 'ember', 'ember-truth-helpers/helpers/equal'], function (exports, Ember, equal) {
@@ -79321,27 +79183,6 @@ define('frontend-cp/tests/unit/components/ko-tags/component-test', ['ember', 'fr
   });
 
 });
-define('frontend-cp/tests/unit/components/ko-text-editor/component-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
-
-  'use strict';
-
-  qunit.moduleForComponent('ko-text-editor', {
-    needs: ['component:ko-file-field', 'component:ko-draggable-dropzone', 'component:ko-channel-select', 'component:ko-text-editor/toggle-button', 'component:ko-file-upload', 'component:ko-people']
-  });
-
-  qunit.test('it renders', function (assert) {
-    assert.expect(2);
-
-    // Creates the component instance
-    var component = this.subject();
-    assert.equal(component._state, 'preRender');
-
-    // Renders the component to the page
-    this.render();
-    assert.equal(component._state, 'inDOM');
-  });
-
-});
 define('frontend-cp/tests/unit/components/ko-toggle/component-test', ['ember', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/lib/keycodes'], function (Ember, qunit, KeyCodes) {
 
   'use strict';
@@ -81280,7 +81121,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"disabled":false,"logEvents":false,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+400ea634"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"disabled":false,"logEvents":false,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+7186730c"});
 }
 
 /* jshint ignore:end */
