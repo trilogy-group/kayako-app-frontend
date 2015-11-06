@@ -23,7 +23,7 @@ define('frontend-cp/adapters/access-log', ['exports', 'frontend-cp/adapters/appl
   });
 
 });
-define('frontend-cp/adapters/application', ['exports', 'ember', 'ember-data', 'npm:lodash'], function (exports, Ember, DS, _) {
+define('frontend-cp/adapters/application', ['exports', 'ember', 'ember-data', 'npm:lodash', 'frontend-cp/utils/base-path'], function (exports, Ember, DS, _, base_path) {
 
   'use strict';
 
@@ -52,7 +52,8 @@ define('frontend-cp/adapters/application', ['exports', 'ember', 'ember-data', 'n
       var headers = {
         'Accept': 'application/json',
         'X-Options': 'flat',
-        'X-Requested-With': 'XMLHttpRequest'
+        'X-Requested-With': 'XMLHttpRequest',
+        'X-Portal': base_path.getBasePath() === '/admin' ? 'admin' : 'agent'
       };
       var sessionId = this.get('sessionService.sessionId');
       if (sessionId) {
@@ -657,7 +658,7 @@ define('frontend-cp/adapters/search-result-group', ['exports', 'frontend-cp/adap
   });
 
 });
-define('frontend-cp/adapters/session', ['exports', 'ember', 'frontend-cp/adapters/application'], function (exports, Ember, ApplicationAdapter) {
+define('frontend-cp/adapters/session', ['exports', 'ember', 'frontend-cp/adapters/application', 'frontend-cp/utils/base-path'], function (exports, Ember, ApplicationAdapter, base_path) {
 
   'use strict';
 
@@ -680,7 +681,8 @@ define('frontend-cp/adapters/session', ['exports', 'ember', 'frontend-cp/adapter
         'X-Options': 'flat',
         'X-Session-ID': withPassword ? undefined : sessionId,
         'Authorization': withPassword ? authorizationHeader : undefined,
-        'X-Requested-With': 'XMLHttpRequest'
+        'X-Requested-With': 'XMLHttpRequest',
+        'X-Portal': base_path.getBasePath() === '/admin' ? 'admin' : 'agent'
       };
     })
   });
@@ -57982,11 +57984,11 @@ define('frontend-cp/services/error-handler/credential-expired-strategy', ['expor
     },
 
     accept: function accept(record) {
-      this.get('records').push(record);
+      this.records.push(record);
     },
 
     process: function process() {
-      var recordsCount = this.get('records.length');
+      var recordsCount = this.records.length;
 
       if (recordsCount) {
         this.get('notification').add({
@@ -57996,7 +57998,7 @@ define('frontend-cp/services/error-handler/credential-expired-strategy', ['expor
           dismissable: true
         });
 
-        this.set('records', []);
+        this.records = [];
       }
 
       return recordsCount;
@@ -58018,11 +58020,11 @@ define('frontend-cp/services/error-handler/generic-strategy', ['exports', 'ember
     },
 
     accept: function accept(record) {
-      this.get('records').push(record);
+      this.records.push(record);
     },
 
     process: function process() {
-      var recordsCount = this.get('records.length');
+      var recordsCount = this.records.length;
 
       if (recordsCount) {
         this.get('notification').add({
@@ -58032,7 +58034,7 @@ define('frontend-cp/services/error-handler/generic-strategy', ['exports', 'ember
           dismissable: true
         });
 
-        this.set('records', []);
+        this.records = [];
       }
 
       return recordsCount;
@@ -58053,21 +58055,21 @@ define('frontend-cp/services/error-handler/notification-strategy', ['exports', '
     },
 
     processAll: function processAll(records) {
-      this.set('records', records || []);
+      this.records = records || [];
       this.process();
     },
 
     accept: function accept(record) {
-      this.get('records').push(record);
+      this.records.push(record);
     },
 
     process: function process() {
       var _this = this;
 
-      var recordsCount = this.get('records.length');
+      var recordsCount = this.records.length;
 
       if (recordsCount) {
-        this.get('records').forEach(function (notification) {
+        this.records.forEach(function (notification) {
           _this.get('notification').add({
             type: notification.type.toLowerCase(),
             title: notification.message,
@@ -58076,7 +58078,7 @@ define('frontend-cp/services/error-handler/notification-strategy', ['exports', '
           });
         });
 
-        this.set('records', []);
+        this.records = [];
       }
 
       return recordsCount;
@@ -58095,7 +58097,7 @@ define('frontend-cp/services/error-handler/permissions-denied-strategy', ['expor
     },
 
     accept: function accept(record) {
-      this.get('records').push(record);
+      this.records.push(record);
     },
 
     transitionTo: function transitionTo(path) {
@@ -58103,7 +58105,7 @@ define('frontend-cp/services/error-handler/permissions-denied-strategy', ['expor
     },
 
     process: function process() {
-      var recordsCount = this.get('records.length');
+      var recordsCount = this.records.length;
 
       if (recordsCount) {
         // Redirect back to the base of the current path
@@ -58113,7 +58115,7 @@ define('frontend-cp/services/error-handler/permissions-denied-strategy', ['expor
         if (pathname !== path) {
           this.transitionTo(path);
         }
-        this.set('records', []);
+        this.records = [];
       }
 
       return recordsCount;
@@ -58135,7 +58137,7 @@ define('frontend-cp/services/error-handler/resource-not-found-strategy', ['expor
     },
 
     accept: function accept(record) {
-      this.get('records').push(record);
+      this.records.push(record);
     },
 
     transitionTo: function transitionTo(path) {
@@ -58143,7 +58145,7 @@ define('frontend-cp/services/error-handler/resource-not-found-strategy', ['expor
     },
 
     process: function process() {
-      var recordsCount = this.get('records.length');
+      var recordsCount = this.records.length;
 
       if (recordsCount) {
         this.get('notification').add({
@@ -58158,7 +58160,7 @@ define('frontend-cp/services/error-handler/resource-not-found-strategy', ['expor
           this.transitionTo(path);
         }
 
-        this.set('records', []);
+        this.records = [];
       }
 
       return recordsCount;
@@ -58181,13 +58183,13 @@ define('frontend-cp/services/error-handler/session-loading-failed-strategy', ['e
     },
 
     accept: function accept(record) {
-      this.get('records').push(record);
+      this.records.push(record);
     },
 
     process: function process() {
       var _this = this;
 
-      var recordsCount = this.get('records.length');
+      var recordsCount = this.records.length;
 
       if (recordsCount) {
         this.get('session').logout().then(function () {
@@ -58197,9 +58199,9 @@ define('frontend-cp/services/error-handler/session-loading-failed-strategy', ['e
             body: _this.get('intl').findTranslationByKey('generic.session_expired').translation,
             autodismiss: true
           });
-
-          _this.set('records', []);
         });
+
+        this.records = [];
       }
 
       return recordsCount;
@@ -59078,16 +59080,20 @@ define('frontend-cp/services/session', ['exports', 'ember'], function (exports, 
         // if we have no session, reset session id
         // so ember knows that we want to show login again
         this.container.lookup('router:main').transitionTo('login.agent');
-        return this.set('sessionId', null);
+        this.set('sessionId', null);
+
+        return Ember['default'].RSVP.Promise.resolve();
       }
 
       return session.destroyRecord().then(function () {
+        _this4.set('sessionId', null);
         _this4.set('session', null);
         _this4.set('sessionId', null);
         _this4.container.lookup('router:main').transitionTo('login.agent');
       })['catch'](function () {
+        // catch the error - we don't care it it's already deleted etc.
         _this4.container.lookup('router:main').transitionTo('login.agent');
-      }); // catch the error - we don't care it it's already deleted etc.
+      });
     },
 
     /**
@@ -81121,7 +81127,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"disabled":false,"logEvents":false,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+f490d1b4"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"disabled":false,"logEvents":false,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+b2c515eb"});
 }
 
 /* jshint ignore:end */
