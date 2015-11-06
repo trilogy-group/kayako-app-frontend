@@ -11984,6 +11984,7 @@ define('frontend-cp/components/ko-agent-dropdown/component', ['exports', 'ember'
   exports['default'] = Ember['default'].Component.extend({
     notification: Ember['default'].inject.service('notification'),
     intl: Ember['default'].inject.service('intl'),
+    routing: Ember['default'].inject.service('-routing'),
 
     attributeBindings: ['data-region', 'tabindex'],
     dataRegion: 'navigation-new',
@@ -12119,12 +12120,10 @@ define('frontend-cp/components/ko-agent-dropdown/component', ['exports', 'ember'
       },
 
       onTabCreateComplete: function onTabCreateComplete(route, model) {
-        var router = this.container.lookup('router:main');
-
         this._createSuccessNotification(route);
 
-        router.router.transitionTo(route, model);
         this.set('isExpanded', false);
+        this.get('routing').transitionTo(route, [model]);
       },
 
       onTabCancelled: function onTabCancelled() {
@@ -35172,8 +35171,12 @@ define('frontend-cp/components/ko-organisation-action-menu/component', ['exports
 
     actions: {
       deleteOrganisation: function deleteOrganisation() {
+        var _this = this;
+
         if (confirm(this.get('intlService').findTranslationByKey('generic.confirm.delete').translation)) {
-          this.get('organisation').destroyRecord();
+          this.get('organisation').destroyRecord().then(function () {
+            _this.get('closeTab')();
+          });
         }
       },
       showMenu: function showMenu() {
@@ -35726,11 +35729,11 @@ define('frontend-cp/components/ko-organisation-content/template', ['exports'], f
           "loc": {
             "source": null,
             "start": {
-              "line": 39,
+              "line": 40,
               "column": 8
             },
             "end": {
-              "line": 41,
+              "line": 42,
               "column": 8
             }
           },
@@ -35755,7 +35758,7 @@ define('frontend-cp/components/ko-organisation-content/template', ['exports'], f
           return morphs;
         },
         statements: [
-          ["inline","format-message",[["subexpr","intl-get",["users.add_a_note"],[],["loc",[null,[40,27],[40,56]]]]],[],["loc",[null,[40,10],[40,58]]]]
+          ["inline","format-message",[["subexpr","intl-get",["users.add_a_note"],[],["loc",[null,[41,27],[41,56]]]]],[],["loc",[null,[41,10],[41,58]]]]
         ],
         locals: [],
         templates: []
@@ -35769,11 +35772,11 @@ define('frontend-cp/components/ko-organisation-content/template', ['exports'], f
             "loc": {
               "source": null,
               "start": {
-                "line": 48,
+                "line": 49,
                 "column": 12
               },
               "end": {
-                "line": 50,
+                "line": 51,
                 "column": 12
               }
             },
@@ -35798,7 +35801,7 @@ define('frontend-cp/components/ko-organisation-content/template', ['exports'], f
             return morphs;
           },
           statements: [
-            ["inline","ko-loader",[],["class","ko-organisation-content__button-loading"],["loc",[null,[49,14],[49,75]]]]
+            ["inline","ko-loader",[],["class","ko-organisation-content__button-loading"],["loc",[null,[50,14],[50,75]]]]
           ],
           locals: [],
           templates: []
@@ -35811,11 +35814,11 @@ define('frontend-cp/components/ko-organisation-content/template', ['exports'], f
             "loc": {
               "source": null,
               "start": {
-                "line": 50,
+                "line": 51,
                 "column": 12
               },
               "end": {
-                "line": 52,
+                "line": 53,
                 "column": 12
               }
             },
@@ -35840,7 +35843,7 @@ define('frontend-cp/components/ko-organisation-content/template', ['exports'], f
             return morphs;
           },
           statements: [
-            ["inline","format-message",[["subexpr","intl-get",["cases.submit"],[],["loc",[null,[51,31],[51,56]]]]],[],["loc",[null,[51,14],[51,58]]]]
+            ["inline","format-message",[["subexpr","intl-get",["cases.submit"],[],["loc",[null,[52,31],[52,56]]]]],[],["loc",[null,[52,14],[52,58]]]]
           ],
           locals: [],
           templates: []
@@ -35855,11 +35858,11 @@ define('frontend-cp/components/ko-organisation-content/template', ['exports'], f
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 81,
+                    "line": 82,
                     "column": 12
                   },
                   "end": {
-                    "line": 90,
+                    "line": 91,
                     "column": 12
                   }
                 },
@@ -35884,7 +35887,7 @@ define('frontend-cp/components/ko-organisation-content/template', ['exports'], f
                 return morphs;
               },
               statements: [
-                ["inline","component",[["subexpr","ko-helper",[["get","customFieldsList.componentFor",["loc",[null,[82,37],[82,66]]]],["get","field.fieldType",["loc",[null,[82,67],[82,82]]]]],[],["loc",[null,[82,26],[82,83]]]]],["customFieldsModel",["subexpr","@mut",[["get","model.customFields",["loc",[null,[83,34],[83,52]]]]],[],[]],"field",["subexpr","@mut",[["get","field",["loc",[null,[84,22],[84,27]]]]],[],[]],"fieldValue",["subexpr","ko-helper",[["get","customFieldsList.findCustomFieldValue",["loc",[null,[85,38],[85,75]]]],["get","model.customFields",["loc",[null,[85,76],[85,94]]]],["get","field",["loc",[null,[85,95],[85,100]]]]],[],["loc",[null,[85,27],[85,101]]]],"errors",["subexpr","@mut",[["get","errors",["loc",[null,[86,23],[86,29]]]]],[],[]],"editedCustomFields",["subexpr","@mut",[["get","editedCustomFields",["loc",[null,[87,35],[87,53]]]]],[],[]],"onFieldUpdate",["subexpr","action",["fieldUpdated"],[],["loc",[null,[88,30],[88,53]]]]],["loc",[null,[82,14],[89,16]]]]
+                ["inline","component",[["subexpr","ko-helper",[["get","customFieldsList.componentFor",["loc",[null,[83,37],[83,66]]]],["get","field.fieldType",["loc",[null,[83,67],[83,82]]]]],[],["loc",[null,[83,26],[83,83]]]]],["customFieldsModel",["subexpr","@mut",[["get","model.customFields",["loc",[null,[84,34],[84,52]]]]],[],[]],"field",["subexpr","@mut",[["get","field",["loc",[null,[85,22],[85,27]]]]],[],[]],"fieldValue",["subexpr","ko-helper",[["get","customFieldsList.findCustomFieldValue",["loc",[null,[86,38],[86,75]]]],["get","model.customFields",["loc",[null,[86,76],[86,94]]]],["get","field",["loc",[null,[86,95],[86,100]]]]],[],["loc",[null,[86,27],[86,101]]]],"errors",["subexpr","@mut",[["get","errors",["loc",[null,[87,23],[87,29]]]]],[],[]],"editedCustomFields",["subexpr","@mut",[["get","editedCustomFields",["loc",[null,[88,35],[88,53]]]]],[],[]],"onFieldUpdate",["subexpr","action",["fieldUpdated"],[],["loc",[null,[89,30],[89,53]]]]],["loc",[null,[83,14],[90,16]]]]
               ],
               locals: [],
               templates: []
@@ -35896,11 +35899,11 @@ define('frontend-cp/components/ko-organisation-content/template', ['exports'], f
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 80,
+                  "line": 81,
                   "column": 10
                 },
                 "end": {
-                  "line": 91,
+                  "line": 92,
                   "column": 10
                 }
               },
@@ -35923,7 +35926,7 @@ define('frontend-cp/components/ko-organisation-content/template', ['exports'], f
               return morphs;
             },
             statements: [
-              ["block","if",[["get","field.isEnabled",["loc",[null,[81,18],[81,33]]]]],[],0,null,["loc",[null,[81,12],[90,19]]]]
+              ["block","if",[["get","field.isEnabled",["loc",[null,[82,18],[82,33]]]]],[],0,null,["loc",[null,[82,12],[91,19]]]]
             ],
             locals: [],
             templates: [child0]
@@ -35935,11 +35938,11 @@ define('frontend-cp/components/ko-organisation-content/template', ['exports'], f
             "loc": {
               "source": null,
               "start": {
-                "line": 79,
+                "line": 80,
                 "column": 8
               },
               "end": {
-                "line": 92,
+                "line": 93,
                 "column": 8
               }
             },
@@ -35962,7 +35965,7 @@ define('frontend-cp/components/ko-organisation-content/template', ['exports'], f
             return morphs;
           },
           statements: [
-            ["block","if",[["subexpr","ko-helper",[["get","customFieldsList.componentFor",["loc",[null,[80,27],[80,56]]]],["get","field.fieldType",["loc",[null,[80,57],[80,72]]]]],[],["loc",[null,[80,16],[80,73]]]]],[],0,null,["loc",[null,[80,10],[91,17]]]]
+            ["block","if",[["subexpr","ko-helper",[["get","customFieldsList.componentFor",["loc",[null,[81,27],[81,56]]]],["get","field.fieldType",["loc",[null,[81,57],[81,72]]]]],[],["loc",[null,[81,16],[81,73]]]]],[],0,null,["loc",[null,[81,10],[92,17]]]]
           ],
           locals: ["field"],
           templates: [child0]
@@ -35974,11 +35977,11 @@ define('frontend-cp/components/ko-organisation-content/template', ['exports'], f
           "loc": {
             "source": null,
             "start": {
-              "line": 45,
+              "line": 46,
               "column": 6
             },
             "end": {
-              "line": 95,
+              "line": 96,
               "column": 6
             }
           },
@@ -36039,13 +36042,13 @@ define('frontend-cp/components/ko-organisation-content/template', ['exports'], f
           return morphs;
         },
         statements: [
-          ["attribute","class",["concat",["button button--primary u-1/1 ",["subexpr","if",[["get","submitDisabled",["loc",[null,[47,59],[47,73]]]],"disabled"],[],["loc",[null,[47,54],[47,86]]]]]]],
-          ["element","action",["submit"],[],["loc",[null,[47,88],[47,107]]]],
-          ["block","if",[["get","isSaving",["loc",[null,[48,18],[48,26]]]]],[],0,1,["loc",[null,[48,12],[52,19]]]],
-          ["inline","ko-info-bar/field/tags",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.tags"],[],["loc",[null,[57,32],[57,55]]]]],[],["loc",[null,[57,16],[57,56]]]],"isEdited",["subexpr","@mut",[["get","isTagsFieldEdited",["loc",[null,[58,19],[58,36]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","errorMap.tags",["loc",[null,[59,20],[59,33]]]]],[],[]],"selectedTags",["subexpr","@mut",[["get","model.tags",["loc",[null,[60,23],[60,33]]]]],[],[]],"suggestedTags",["subexpr","@mut",[["get","suggestedTags",["loc",[null,[61,24],[61,37]]]]],[],[]],"newTagText",["subexpr","format-message",[["subexpr","intl-get",["users.newtag"],[],["loc",[null,[62,37],[62,62]]]]],[],["loc",[null,[62,21],[62,63]]]],"addTagText",["subexpr","format-message",[["subexpr","intl-get",["users.addtag"],[],["loc",[null,[63,37],[63,62]]]]],[],["loc",[null,[63,21],[63,63]]]],"onTagAddition",["subexpr","action",["addTag"],[],["loc",[null,[64,24],[64,41]]]],"onTagRemoval",["subexpr","action",["removeTag"],[],["loc",[null,[65,23],[65,43]]]],"onTagSuggestion",["subexpr","action",["suggestTags"],[],["loc",[null,[66,26],[66,48]]]]],["loc",[null,[56,8],[67,10]]]],
-          ["inline","ko-info-bar/field/tags",[],["title",["subexpr","format-message",[["subexpr","intl-get",["organisation.domains"],[],["loc",[null,[70,32],[70,65]]]]],[],["loc",[null,[70,16],[70,66]]]],"isEdited",["subexpr","@mut",[["get","isDomainEdited",["loc",[null,[71,19],[71,33]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","errorMap.domains",["loc",[null,[72,20],[72,36]]]]],[],[]],"errorTags",["subexpr","@mut",[["get","erroredDomains",["loc",[null,[73,20],[73,34]]]]],[],[]],"selectedTags",["subexpr","@mut",[["get","model.domains",["loc",[null,[74,23],[74,36]]]]],[],[]],"onTagAddition",["subexpr","action",["addDomain"],[],["loc",[null,[75,24],[75,44]]]],"onTagRemoval",["subexpr","action",["removeDomain"],[],["loc",[null,[76,23],[76,46]]]]],["loc",[null,[69,8],[77,10]]]],
-          ["block","each",[["get","customFields",["loc",[null,[79,16],[79,28]]]]],[],2,null,["loc",[null,[79,8],[92,17]]]],
-          ["inline","ko-info-bar/metadata",[],["rows",["subexpr","@mut",[["get","organisationDates",["loc",[null,[94,36],[94,53]]]]],[],[]]],["loc",[null,[94,8],[94,55]]]]
+          ["attribute","class",["concat",["button button--primary u-1/1 ",["subexpr","if",[["get","submitDisabled",["loc",[null,[48,59],[48,73]]]],"disabled"],[],["loc",[null,[48,54],[48,86]]]]]]],
+          ["element","action",["submit"],[],["loc",[null,[48,88],[48,107]]]],
+          ["block","if",[["get","isSaving",["loc",[null,[49,18],[49,26]]]]],[],0,1,["loc",[null,[49,12],[53,19]]]],
+          ["inline","ko-info-bar/field/tags",[],["title",["subexpr","format-message",[["subexpr","intl-get",["users.tags"],[],["loc",[null,[58,32],[58,55]]]]],[],["loc",[null,[58,16],[58,56]]]],"isEdited",["subexpr","@mut",[["get","isTagsFieldEdited",["loc",[null,[59,19],[59,36]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","errorMap.tags",["loc",[null,[60,20],[60,33]]]]],[],[]],"selectedTags",["subexpr","@mut",[["get","model.tags",["loc",[null,[61,23],[61,33]]]]],[],[]],"suggestedTags",["subexpr","@mut",[["get","suggestedTags",["loc",[null,[62,24],[62,37]]]]],[],[]],"newTagText",["subexpr","format-message",[["subexpr","intl-get",["users.newtag"],[],["loc",[null,[63,37],[63,62]]]]],[],["loc",[null,[63,21],[63,63]]]],"addTagText",["subexpr","format-message",[["subexpr","intl-get",["users.addtag"],[],["loc",[null,[64,37],[64,62]]]]],[],["loc",[null,[64,21],[64,63]]]],"onTagAddition",["subexpr","action",["addTag"],[],["loc",[null,[65,24],[65,41]]]],"onTagRemoval",["subexpr","action",["removeTag"],[],["loc",[null,[66,23],[66,43]]]],"onTagSuggestion",["subexpr","action",["suggestTags"],[],["loc",[null,[67,26],[67,48]]]]],["loc",[null,[57,8],[68,10]]]],
+          ["inline","ko-info-bar/field/tags",[],["title",["subexpr","format-message",[["subexpr","intl-get",["organisation.domains"],[],["loc",[null,[71,32],[71,65]]]]],[],["loc",[null,[71,16],[71,66]]]],"isEdited",["subexpr","@mut",[["get","isDomainEdited",["loc",[null,[72,19],[72,33]]]]],[],[]],"isErrored",["subexpr","@mut",[["get","errorMap.domains",["loc",[null,[73,20],[73,36]]]]],[],[]],"errorTags",["subexpr","@mut",[["get","erroredDomains",["loc",[null,[74,20],[74,34]]]]],[],[]],"selectedTags",["subexpr","@mut",[["get","model.domains",["loc",[null,[75,23],[75,36]]]]],[],[]],"onTagAddition",["subexpr","action",["addDomain"],[],["loc",[null,[76,24],[76,44]]]],"onTagRemoval",["subexpr","action",["removeDomain"],[],["loc",[null,[77,23],[77,46]]]]],["loc",[null,[70,8],[78,10]]]],
+          ["block","each",[["get","customFields",["loc",[null,[80,16],[80,28]]]]],[],2,null,["loc",[null,[80,8],[93,17]]]],
+          ["inline","ko-info-bar/metadata",[],["rows",["subexpr","@mut",[["get","organisationDates",["loc",[null,[95,36],[95,53]]]]],[],[]]],["loc",[null,[95,8],[95,55]]]]
         ],
         locals: [],
         templates: [child0, child1, child2]
@@ -36061,7 +36064,7 @@ define('frontend-cp/components/ko-organisation-content/template', ['exports'], f
             "column": 0
           },
           "end": {
-            "line": 99,
+            "line": 100,
             "column": 0
           }
         },
@@ -36220,9 +36223,9 @@ define('frontend-cp/components/ko-organisation-content/template', ['exports'], f
       statements: [
         ["attribute","src",["concat",[["get","organizationIconPath",["loc",[null,[6,22],[6,42]]]]]]],
         ["inline","ko-editable-text",[],["value",["subexpr","@mut",[["get","model.name",["loc",[null,[11,22],[11,32]]]]],[],[]],"isEdited",["subexpr","@mut",[["get","isNameEdited",["loc",[null,[12,25],[12,37]]]]],[],[]],"onValueChange","setName","placeholder",["subexpr","format-message",[["subexpr","intl-get",["organisation.new_organisation_placeholder"],[],["loc",[null,[14,44],[14,98]]]]],[],["loc",[null,[14,28],[14,99]]]]],["loc",[null,[10,12],[15,14]]]],
-        ["inline","ko-organisation-action-menu",[],["permissions",["subexpr","@mut",[["get","sessionService.permissions",["loc",[null,[27,23],[27,49]]]]],[],[]],"canDelete",["subexpr","@mut",[["get","canDelete",["loc",[null,[28,21],[28,30]]]]],[],[]],"organisation",["subexpr","@mut",[["get","model",["loc",[null,[29,24],[29,29]]]]],[],[]]],["loc",[null,[26,9],[30,11]]]],
-        ["block","ko-text-editor",[],["class","ko-organisation-content__text-editor","viewName","postEditor"],0,null,["loc",[null,[39,8],[41,27]]]],
-        ["block","ko-info-bar",[],[],1,null,["loc",[null,[45,6],[95,22]]]]
+        ["inline","ko-organisation-action-menu",[],["permissions",["subexpr","@mut",[["get","sessionService.permissions",["loc",[null,[27,23],[27,49]]]]],[],[]],"canDelete",["subexpr","@mut",[["get","canDelete",["loc",[null,[28,21],[28,30]]]]],[],[]],"organisation",["subexpr","@mut",[["get","model",["loc",[null,[29,24],[29,29]]]]],[],[]],"closeTab",["subexpr","@mut",[["get","closeTab",["loc",[null,[30,20],[30,28]]]]],[],[]]],["loc",[null,[26,9],[31,11]]]],
+        ["block","ko-text-editor",[],["class","ko-organisation-content__text-editor","viewName","postEditor"],0,null,["loc",[null,[40,8],[42,27]]]],
+        ["block","ko-info-bar",[],[],1,null,["loc",[null,[46,6],[96,22]]]]
       ],
       locals: [],
       templates: [child0, child1]
@@ -66690,11 +66693,25 @@ define('frontend-cp/session/agent/organisations/organisation/controller', ['expo
   });
 
 });
-define('frontend-cp/session/agent/organisations/organisation/index/route', ['exports', 'ember'], function (exports, Ember) {
+define('frontend-cp/session/agent/organisations/organisation/index/controller', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Controller.extend({
+
+    actions: {
+      closeTab: function closeTab() {
+        this.target.send('closeTab');
+      }
+    }
+  });
+
+});
+define('frontend-cp/session/agent/organisations/organisation/index/route', ['exports', 'frontend-cp/routes/abstract/tabbed-route-child'], function (exports, TabbedRouteChild) {
 
 	'use strict';
 
-	exports['default'] = Ember['default'].Route.extend({});
+	exports['default'] = TabbedRouteChild['default'].extend({});
 
 });
 define('frontend-cp/session/agent/organisations/organisation/index/template', ['exports'], function (exports) {
@@ -66736,7 +66753,7 @@ define('frontend-cp/session/agent/organisations/organisation/index/template', ['
         return morphs;
       },
       statements: [
-        ["inline","ko-organisation-content",[],["model",["subexpr","@mut",[["get","model",["loc",[null,[1,32],[1,37]]]]],[],[]],"canDelete",true],["loc",[null,[1,0],[1,54]]]]
+        ["inline","ko-organisation-content",[],["model",["subexpr","@mut",[["get","model",["loc",[null,[1,32],[1,37]]]]],[],[]],"canDelete",true,"closeTab",["subexpr","action",["closeTab"],[],["loc",[null,[1,62],[1,81]]]]],["loc",[null,[1,0],[1,83]]]]
       ],
       locals: [],
       templates: []
@@ -66755,6 +66772,21 @@ define('frontend-cp/session/agent/organisations/organisation/route', ['exports',
 
     afterModel: function afterModel(model, transition) {
       this.tab = this.get('tabStore').open(transition, model.get('name'));
+    },
+
+    actions: {
+      willTransition: function willTransition(transition) {
+        var model = this.modelFor(this.routeName);
+        if (model && model.get('isDeleted')) {
+          this.get('tabStore').leave(this.tab);
+          this.get('tabStore').close(this.tab);
+        }
+        this._super.apply(this, arguments);
+      },
+
+      closeTab: function closeTab() {
+        this.get('tabStore').close(this.tab);
+      }
     }
   });
 
@@ -71323,7 +71355,7 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
               return morphs;
             },
             statements: [
-              ["block","link-to",[["get","tab.routeName",["loc",[null,[24,27],[24,40]]]],["subexpr","hash-to-query-params",[["get","tab.queryParams",["loc",[null,[24,63],[24,78]]]]],[],["loc",[null,[24,41],[24,79]]]]],["class","nav-tabs__item","current-when",["subexpr","readonly",[["get","tab.routeName",["loc",[null,[24,126],[24,139]]]]],[],["loc",[null,[24,116],[24,140]]]]],0,null,["loc",[null,[24,16],[26,28]]]]
+              ["block","link-to",[["get","tab.routeName",["loc",[null,[24,27],[24,40]]]],["subexpr","hash-to-query-params",[["get","tab.queryParams",["loc",[null,[24,63],[24,78]]]]],[],["loc",[null,[24,41],[24,79]]]]],["class","nav-tabs__item"],0,null,["loc",[null,[24,16],[26,28]]]]
             ],
             locals: [],
             templates: [child0]
@@ -71419,7 +71451,7 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
                 return morphs;
               },
               statements: [
-                ["block","link-to",[["get","tab.routeName",["loc",[null,[28,27],[28,40]]]],["get","tab.dynamicSegments.firstObject",["loc",[null,[28,41],[28,72]]]],["subexpr","hash-to-query-params",[["get","tab.queryParams",["loc",[null,[28,95],[28,110]]]]],[],["loc",[null,[28,73],[28,111]]]]],["class","nav-tabs__item","current-when",["subexpr","readonly",[["get","tab.routeName",["loc",[null,[28,158],[28,171]]]]],[],["loc",[null,[28,148],[28,172]]]]],0,null,["loc",[null,[28,16],[30,28]]]]
+                ["block","link-to",[["get","tab.routeName",["loc",[null,[28,27],[28,40]]]],["get","tab.dynamicSegments.firstObject",["loc",[null,[28,41],[28,72]]]],["subexpr","hash-to-query-params",[["get","tab.queryParams",["loc",[null,[28,95],[28,110]]]]],[],["loc",[null,[28,73],[28,111]]]]],["class","nav-tabs__item"],0,null,["loc",[null,[28,16],[30,28]]]]
               ],
               locals: [],
               templates: [child0]
@@ -71517,7 +71549,7 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
                 return morphs;
               },
               statements: [
-                ["block","link-to",[["get","tab.routeName",["loc",[null,[32,27],[32,40]]]],["get","tab.dynamicSegments.firstObject",["loc",[null,[32,41],[32,72]]]],["get","tab.dynamicSegments.lastObject",["loc",[null,[32,73],[32,103]]]],["subexpr","hash-to-query-params",[["get","tab.queryParams",["loc",[null,[32,126],[32,141]]]]],[],["loc",[null,[32,104],[32,142]]]]],["class","nav-tabs__item","current-when",["subexpr","readonly",[["get","tab.routeName",["loc",[null,[32,189],[32,202]]]]],[],["loc",[null,[32,179],[32,203]]]]],0,null,["loc",[null,[32,16],[34,28]]]]
+                ["block","link-to",[["get","tab.routeName",["loc",[null,[32,27],[32,40]]]],["get","tab.dynamicSegments.firstObject",["loc",[null,[32,41],[32,72]]]],["get","tab.dynamicSegments.lastObject",["loc",[null,[32,73],[32,103]]]],["subexpr","hash-to-query-params",[["get","tab.queryParams",["loc",[null,[32,126],[32,141]]]]],[],["loc",[null,[32,104],[32,142]]]]],["class","nav-tabs__item"],0,null,["loc",[null,[32,16],[34,28]]]]
               ],
               locals: [],
               templates: [child0]
@@ -72346,17 +72378,8 @@ define('frontend-cp/tab-store/service', ['exports', 'ember'], function (exports,
 
     close: function close(tab) {
       var routing = this.get('routing');
-      var url = routing.get('router.url');
-
-      var _url$split = url.split('?');
-
-      var _url$split2 = _slicedToArray(_url$split, 1);
-
-      var currentPath = _url$split2[0];
-
-      var isActiveTab = currentPath === get(tab, 'basePath');
       var tabs = this.get('tabs');
-      if (!isActiveTab) {
+      if (this.get('activeTab') !== tab) {
         tabs.removeObject(tab);
       } else {
         var index = tabs.indexOf(tab);
@@ -72371,8 +72394,10 @@ define('frontend-cp/tab-store/service', ['exports', 'ember'], function (exports,
       run.debounce(this, 'persistTabs', 100);
     },
 
-    leave: function leave() /* tab */{
-      this.set('activeTab', null);
+    leave: function leave(tab) {
+      if (this.get('activeTab') === tab) {
+        this.set('activeTab', null);
+      }
     },
 
     update: function update(tab, changes) {
@@ -72415,11 +72440,11 @@ define('frontend-cp/tab-store/service', ['exports', 'ember'], function (exports,
       }
       var url = this.get('routing').generateURL(routeName, dynamicSegments, queryParams || {});
 
-      var _url$split3 = url.split('?');
+      var _url$split = url.split('?');
 
-      var _url$split32 = _slicedToArray(_url$split3, 1);
+      var _url$split2 = _slicedToArray(_url$split, 1);
 
-      var basePath = _url$split32[0];
+      var basePath = _url$split2[0];
 
       return { basePath: basePath, routeName: routeName, dynamicSegments: dynamicSegments, queryParams: queryParams };
     },
@@ -81127,7 +81152,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"disabled":false,"logEvents":false,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+f110980d"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"disabled":false,"logEvents":false,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+9ddf1edd"});
 }
 
 /* jshint ignore:end */
