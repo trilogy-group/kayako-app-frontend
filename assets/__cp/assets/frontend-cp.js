@@ -15744,8 +15744,13 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       },
 
       replyWithQuote: function replyWithQuote(quote) {
-        this.$('.ql-editor div').remove();
-        this.$('.ql-editor').append('<blockquote>' + quote + '</blockquote>');
+        var editor = this.get('casePostEditor');
+        var postEditor = editor.get('postEditor');
+
+        editor.clear();
+        postEditor.clear();
+
+        postEditor.setHTML('<div class="ko-text-editor__blockquote">"' + quote + '"</div><br /><br />');
       },
 
       applyMacro: function applyMacro(macro) {
@@ -17973,7 +17978,7 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
               return morphs;
             },
             statements: [
-              ["inline","ko-feed/item",[],["event",["subexpr","@mut",[["get","post",["loc",[null,[84,37],[84,41]]]]],[],[]],"onReplyWithQuote","onReplyWithQuote"],["loc",[null,[84,16],[84,79]]]]
+              ["inline","ko-feed/item",[],["event",["subexpr","@mut",[["get","post",["loc",[null,[84,37],[84,41]]]]],[],[]],"onReplyWithQuote","replyWithQuote"],["loc",[null,[84,16],[84,77]]]]
             ],
             locals: [],
             templates: []
@@ -50415,12 +50420,12 @@ define('frontend-cp/login/controller', ['exports', 'ember', 'frontend-cp/config/
           // (or similar)
           _this4.setState('login.password.error');
           _this4.setErrors({ message: 'System error, please contact Customer Support' });
-
-          if (console && console.error) {
-            console.error(error.message);
-          }
         } else {
           _this4.setState('login.password.error');
+        }
+
+        if (console && console.error) {
+          console.error(error.message);
         }
       });
     },
@@ -81213,7 +81218,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"disabled":false,"logEvents":false,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+610c429d"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"disabled":false,"logEvents":false,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+c1e07ff7"});
 }
 
 /* jshint ignore:end */
