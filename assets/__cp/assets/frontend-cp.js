@@ -8491,15 +8491,17 @@ define('frontend-cp/components/ko-admin/team/component', ['exports', 'ember'], f
       var ids = this.get('membersToAdd').map(function (member) {
         return member.get('id');
       }).join(',');
-      return Ember['default'].$.ajax('/api/v1/teams/' + teamId + '/members', {
-        method: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify({ agent_ids: ids }),
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Session-ID': this.get('session.sessionId')
+
+      var adapter = this.container.lookup('adapter:application');
+      var url = adapter.namespace + '/teams/' + teamId + '/members';
+
+      var options = {
+        data: {
+          agent_ids: ids
         }
-      });
+      };
+
+      return adapter.ajax(url, 'POST', options);
     },
 
     removeMembers: function removeMembers() {
@@ -8507,14 +8509,13 @@ define('frontend-cp/components/ko-admin/team/component', ['exports', 'ember'], f
       var ids = this.get('membersToRemove').map(function (member) {
         return member.get('id');
       }).join(',');
-      return Ember['default'].$.ajax('/api/v1/teams/' + teamId + '/members?agent_ids=' + ids, {
-        method: 'DELETE',
-        contentType: 'application/json',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Session-ID': this.get('session.sessionId')
-        }
-      });
+      var adapter = this.container.lookup('adapter:application');
+      var url = adapter.namespace + '/teams/' + teamId + '/members';
+      var options = {
+        data: { agent_ids: ids }
+      };
+
+      return adapter.ajax(url, 'DELETE', options);
     },
 
     getNonMemberSelectedValue: function getNonMemberSelectedValue(agent) {
@@ -46679,8 +46680,9 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
         var _this12 = this;
 
         var PAYLOAD = { email: this.get('model.primaryEmailAddress') };
+        var adapter = this.container.lookup('adapter:application');
 
-        Ember['default'].$.ajax('/api/v1/base/password/reset', {
+        Ember['default'].$.ajax(adapter.namespace + '/base/password/reset', {
           method: 'POST',
           contentType: 'application/json',
           data: JSON.stringify(PAYLOAD),
@@ -57790,6 +57792,8 @@ define('frontend-cp/services/custom-fields', ['exports', 'ember'], function (exp
     },
 
     reorder: function reorder(models, fields, sessionId) {
+      var adapter = this.container.lookup('adapter:application');
+
       var systemFields = models.filter(function (field) {
         return field.get('isSystem');
       });
@@ -57806,19 +57810,19 @@ define('frontend-cp/services/custom-fields', ['exports', 'ember'], function (exp
         sortOrder++;
       });
 
-      var payload = {
-        field_ids: orderedIds.toString() // eslint-disable-line camelcase
-      };
+      var modalName = this._getUrlPrefix(models.get('firstObject').constructor.modelName);
 
-      this._saveReorder('/api/v1/' + this._getUrlPrefix(models.get('firstObject').constructor.modelName) + '/fields/reorder', {
-        method: 'PUT',
-        contentType: 'application/json',
-        data: JSON.stringify(payload),
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Session-ID': sessionId
+      var options = {
+        data: {
+          field_ids: orderedIds.toString() // eslint-disable-line camelcase
         }
-      });
+      };
+      this._saveReorder(adapter.namespace + '/' + modalName + '/fields/reorder', options);
+    },
+
+    _saveReorder: function _saveReorder(url, options) {
+      var adapter = this.container.lookup('adapter:application');
+      adapter.ajax(url, 'PUT', options);
     },
 
     toggleEnabled: function toggleEnabled(field) {
@@ -57920,10 +57924,6 @@ define('frontend-cp/services/custom-fields', ['exports', 'ember'], function (exp
         default:
           return fieldType;
       }
-    },
-
-    _saveReorder: function _saveReorder(url, options) {
-      Ember['default'].$.ajax(url, options);
     },
 
     _getOptionPromises: function _getOptionPromises(options, typeKey, fieldType) {
@@ -58336,6 +58336,7 @@ define('frontend-cp/services/file-upload', ['exports', 'ember', 'jquery'], funct
       if (sessionId) {
         headers['X-Session-ID'] = sessionId;
       }
+      headers['X-Portal'] = 'agent';
       return headers;
     }),
 
@@ -58482,6 +58483,29 @@ define('frontend-cp/services/local-store', ['exports', 'ember'], function (expor
       localStorage.clear();
       sessionStorage.clear();
     }
+  });
+
+});
+define('frontend-cp/services/macro-fetcher', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Service.extend({
+
+    macroRequestsStarted: false,
+
+    store: Ember['default'].inject.service(),
+
+    fetchMacros: function fetchMacros() {
+      if (this.get('macroRequestsStarted')) {
+        return;
+      }
+
+      this.get('store').query('macro', { offset: 0, limit: 20 }).then(function (newMacros) {
+        debugger;
+      });
+    }
+
   });
 
 });
@@ -60940,6 +60964,9 @@ define('frontend-cp/session/admin/manage/case-forms/index/controller', ['exports
 
     actions: {
       makeDefault: function makeDefault(caseform) {
+        var adapter = this.container.lookup('adapter:application');
+        var url = adapter.namespace + '/cases/forms/default';
+
         this.store.peekAll('case-form').forEach(function (caseform) {
           caseform.set('isDefault', false);
         });
@@ -60947,22 +60974,17 @@ define('frontend-cp/session/admin/manage/case-forms/index/controller', ['exports
         //TODO: this model is left dirty - it is not an issue,
         //but ideally we would mark this as clean.
 
-        var payload = { form_id: caseform.get('id') }; // eslint-disable-line camelcase
+        var options = {
+          data: { form_id: caseform.get('id') }
+        };
 
-        Ember['default'].$.ajax('/api/v1/cases/forms/default', {
-          method: 'PUT',
-          contentType: 'application/json',
-          data: JSON.stringify(payload),
-          headers: {
-            'Content-Type': 'application/json',
-            'X-Session-ID': this.get('session.sessionId')
-          }
-        });
-
-        return false;
+        adapter.ajax(url, 'PUT', options);
       },
 
       reorderForms: function reorderForms(orderedForms) {
+        var adapter = this.container.lookup('adapter:application');
+        var url = adapter.namespace + '/cases/forms/reorder';
+
         var startingSortOrderNumber = 1;
         var orderedIds = orderedForms.map(function (form) {
           return form.id;
@@ -60974,19 +60996,11 @@ define('frontend-cp/session/admin/manage/case-forms/index/controller', ['exports
           sortOrder++;
         });
 
-        var payload = {
-          form_ids: orderedIds.toString() // eslint-disable-line camelcase
+        var options = {
+          data: { form_ids: orderedIds.toString() }
         };
 
-        Ember['default'].$.ajax('/api/v1/cases/forms/reorder', {
-          method: 'PUT',
-          contentType: 'application/json',
-          data: JSON.stringify(payload),
-          headers: {
-            'Content-Type': 'application/json',
-            'X-Session-ID': this.get('session.sessionId')
-          }
-        });
+        adapter.ajax(url, 'PUT', options);
       },
 
       toggleEnabledStatus: function toggleEnabledStatus(caseform) {
@@ -61966,6 +61980,9 @@ define('frontend-cp/session/admin/manage/views/index/controller', ['exports', 'e
       },
 
       reorderViews: function reorderViews(orderedViews) {
+        var adapter = this.container.lookup('adapter:application');
+        var url = adapter.namespace + '/views/reorder';
+
         var startingSortOrderNumber = 2; // The inbox is always frst
 
         var orderedIds = orderedViews.getEach('id');
@@ -61976,19 +61993,13 @@ define('frontend-cp/session/admin/manage/views/index/controller', ['exports', 'e
           sortOrder++;
         });
 
-        var payload = {
-          view_ids: orderedIds.toString() // eslint-disable-line camelcase
+        var options = {
+          data: {
+            view_ids: orderedIds.toString() // eslint-disable-line camelcase
+          }
         };
 
-        Ember['default'].$.ajax('/api/v1/views/reorder', {
-          method: 'PUT',
-          contentType: 'application/json',
-          data: JSON.stringify(payload),
-          headers: {
-            'Content-Type': 'application/json',
-            'X-Session-ID': this.get('sessionService.sessionId')
-          }
-        });
+        adapter.ajax(url, 'PUT', options);
       },
 
       toggleEnabledStatus: function toggleEnabledStatus(view) {
@@ -80064,7 +80075,7 @@ define('frontend-cp/tests/unit/services/custom-fields-test', ['ember', 'ember-qu
   /* eslint-disable camelcase */
 
   ember_qunit.moduleFor('service:custom-fields', 'Unit | Service | custom-fields', {
-    needs: ['model:user-field', 'model:field-option', 'model:field', 'service:custom-fields/types', 'service:custom-fields/options', 'service:intl', 'service:notification', 'ember-intl@adapter:-intl-adapter'],
+    needs: ['model:user-field', 'model:field-option', 'model:field', 'service:custom-fields/types', 'service:custom-fields/options', 'service:intl', 'service:notification', 'ember-intl@adapter:-intl-adapter', 'adapter:application', 'service:session', 'service:error-handler', 'service:error-handler/notification-strategy'],
     beforeEach: function beforeEach() {
       var intl = this.container.lookup('service:intl');
       var localeId = 'en-test';
@@ -80411,15 +80422,9 @@ define('frontend-cp/tests/unit/services/custom-fields-test', ['ember', 'ember-qu
 
     service.reopen({
       _saveReorder: function _saveReorder(url, options) {
-        assert.equal('/api/v1/users/fields/reorder', url);
+        assert.equal('api/v1/users/fields/reorder', url);
         assert.deepEqual({
-          method: 'PUT',
-          contentType: 'application/json',
-          data: JSON.stringify(payload),
-          headers: {
-            'Content-Type': 'application/json',
-            'X-Session-ID': sessionId
-          }
+          data: payload
         }, options);
       }
     });
@@ -81218,7 +81223,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"disabled":false,"logEvents":false,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+c1e07ff7"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"disabled":false,"logEvents":false,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+a8f6e8be"});
 }
 
 /* jshint ignore:end */
