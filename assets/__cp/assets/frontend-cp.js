@@ -53953,14 +53953,20 @@ define('frontend-cp/mixins/custom-field-serialization', ['exports', 'ember'], fu
   'use strict';
 
   exports['default'] = Ember['default'].Mixin.create({
-    serializeCustomFields: function serializeCustomFields(customFields) {
+    serializeCustomFields: function serializeCustomFields(customFields, form) {
       var fieldValues = {};
+      var formFields = form ? form.get('fields').map(function (field) {
+        return field.get('key');
+      }) : [];
+
       if (!customFields) {
         return fieldValues;
       }
 
       customFields.forEach(function (customField) {
-        fieldValues[customField.get('field.key')] = customField.get('value');
+        if (!form || formFields.indexOf(customField.get('field.key')) > -1) {
+          fieldValues[customField.get('field.key')] = customField.get('value');
+        }
       });
 
       return fieldValues;
@@ -56473,7 +56479,8 @@ define('frontend-cp/serializers/case-reply', ['exports', 'frontend-cp/serializer
 
     serialize: function serialize(snapshot, options) {
       var json = this._super(snapshot, options);
-      json.field_values = this.serializeCustomFields(snapshot.attr('fieldValues')); //eslint-disable-line camelcase
+      var form = snapshot.get('case.form');
+      json.field_values = this.serializeCustomFields(snapshot.attr('fieldValues'), form); //eslint-disable-line camelcase
 
       return json;
     },
@@ -56509,7 +56516,7 @@ define('frontend-cp/serializers/case', ['exports', 'frontend-cp/serializers/appl
 
     serialize: function serialize(snapshot, options) {
       var json = this._super(snapshot, options);
-      json.field_values = this.serializeCustomFields(snapshot.attr('customFields')); //eslint-disable-line camelcase
+      json.field_values = this.serializeCustomFields(snapshot.attr('customFields'), snapshot.get('form')); //eslint-disable-line camelcase
 
       var assignee = snapshot.attr('assignee');
       json.assignee_agent_id = assignee.get('agentFragment.relationshipId'); // eslint-disable-line camelcase
@@ -79518,6 +79525,55 @@ define('frontend-cp/tests/unit/components/mixins/suggestions-test', ['ember', 'f
   });
 
 });
+define('frontend-cp/tests/unit/mixins/custom-field-serialization-test', ['ember', 'frontend-cp/mixins/custom-field-serialization', 'qunit'], function (Ember, CustomFieldSerializationMixin, qunit) {
+
+  'use strict';
+
+  qunit.module('Unit | Mixin | serialize custom fields');
+
+  qunit.test('it only serializes form fields', function (assert) {
+    assert.expect(2);
+
+    var CustomSerializeObject = Ember['default'].Object.extend(CustomFieldSerializationMixin['default']);
+    var customObject = CustomSerializeObject.create();
+
+    var form = Ember['default'].Object.extend({
+      fields: [Ember['default'].Object.extend({ key: 'test1' }).create(), Ember['default'].Object.extend({ key: 'test2' }).create()]
+    }).create();
+
+    var customFields = [Ember['default'].Object.extend({
+      field: Ember['default'].Object.extend({ key: 'test1' }).create(),
+      value: 'value1'
+    }).create(), Ember['default'].Object.extend({
+      field: Ember['default'].Object.extend({ key: 'test3' }).create(),
+      value: 'value3'
+    }).create()];
+
+    var results = customObject.serializeCustomFields(customFields, form);
+    assert.equal(Object.keys(results).length, 1);
+    assert.equal(results.test1, 'value1');
+  });
+
+  qunit.test('it defaults to all fields without a form', function (assert) {
+    assert.expect(3);
+    var CustomSerializeObject = Ember['default'].Object.extend(CustomFieldSerializationMixin['default']);
+    var customObject = CustomSerializeObject.create();
+
+    var customFields = [Ember['default'].Object.extend({
+      field: Ember['default'].Object.extend({ key: 'test1' }).create(),
+      value: 'value1'
+    }).create(), Ember['default'].Object.extend({
+      field: Ember['default'].Object.extend({ key: 'test3' }).create(),
+      value: 'value3'
+    }).create()];
+
+    var results = customObject.serializeCustomFields(customFields);
+    assert.equal(Object.keys(results).length, 2);
+    assert.equal(results.test1, 'value1');
+    assert.equal(results.test3, 'value3');
+  });
+
+});
 define('frontend-cp/tests/unit/mixins/has-basic-identities-test', ['ember', 'frontend-cp/mixins/has-basic-identities', 'qunit'], function (Ember, HasBasicIdentitiesMixin, qunit) {
 
   'use strict';
@@ -81157,7 +81213,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"disabled":false,"logEvents":false,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+072daa93"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"disabled":false,"logEvents":false,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+610c429d"});
 }
 
 /* jshint ignore:end */
