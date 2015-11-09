@@ -58985,7 +58985,7 @@ define('frontend-cp/services/route-state', ['exports', 'ember'], function (expor
   });
 
 });
-define('frontend-cp/services/session', ['exports', 'ember'], function (exports, Ember) {
+define('frontend-cp/services/session', ['exports', 'ember', 'frontend-cp/utils/base-path'], function (exports, Ember, base_path) {
 
   'use strict';
 
@@ -59077,12 +59077,17 @@ define('frontend-cp/services/session', ['exports', 'ember'], function (exports, 
       var _this4 = this;
 
       var session = this.get('session');
+      var route = 'login.agent';
+      if (base_path.getBasePath() === '/admin' || location.pathname === '/admin') {
+        route = 'login.admin';
+      }
+
       this.get('tabStore').clearAll();
 
       if (!session) {
         // if we have no session, reset session id
         // so ember knows that we want to show login again
-        this.container.lookup('router:main').transitionTo('login.agent');
+        this.container.lookup('router:main').transitionTo(route);
         this.set('sessionId', null);
 
         return Ember['default'].RSVP.Promise.resolve();
@@ -59092,10 +59097,10 @@ define('frontend-cp/services/session', ['exports', 'ember'], function (exports, 
         _this4.set('sessionId', null);
         _this4.set('session', null);
         _this4.set('sessionId', null);
-        _this4.container.lookup('router:main').transitionTo('login.agent');
+        _this4.container.lookup('router:main').transitionTo(route);
       })['catch'](function () {
         // catch the error - we don't care it it's already deleted etc.
-        _this4.container.lookup('router:main').transitionTo('login.agent');
+        _this4.container.lookup('router:main').transitionTo(route);
       });
     },
 
@@ -81152,7 +81157,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"disabled":false,"logEvents":false,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+0cb56756"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"disabled":false,"logEvents":false,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+072daa93"});
 }
 
 /* jshint ignore:end */
