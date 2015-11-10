@@ -54686,75 +54686,69 @@ define('frontend-cp/models/channel', ['exports', 'ember-data', 'ember'], functio
       return this.get('channelType') === 'MAILBOX';
     }),
 
-    iconClass: Ember['default'].computed('channelType', {
-      get: function get() {
-        var channelType = this.get('channelType');
+    iconClass: Ember['default'].computed('channelType', function () {
+      var channelType = this.get('channelType');
 
-        switch (channelType) {
-          case 'MAILBOX':
-            {
-              return 'i-inbox';
-            }
-          case 'FACEBOOK':
-            {
-              return 'i-facebook';
-            }
-          case 'TWITTER':
-            {
-              return 'i-twitter';
-            }
-        }
+      switch (channelType) {
+        case 'MAILBOX':
+          {
+            return 'i-inbox';
+          }
+        case 'FACEBOOK':
+          {
+            return 'i-facebook';
+          }
+        case 'TWITTER':
+          {
+            return 'i-twitter';
+          }
       }
     }),
 
-    handle: Ember['default'].computed('channelType', {
-      get: function get() {
-        var channelType = this.get('channelType');
-        switch (channelType) {
-          case 'MAILBOX':
-            {
-              return this.get('account.address');
-            }
-          case 'FACEBOOK':
-            {
-              return this.get('account.title');
-            }
-          case 'TWITTER':
-            {
-              return this.get('account.screenName');
-            }
-        }
+    handle: Ember['default'].computed('channelType', function () {
+      var channelType = this.get('channelType');
+      switch (channelType) {
+        case 'MAILBOX':
+          {
+            return this.get('account.address');
+          }
+        case 'FACEBOOK':
+          {
+            return this.get('account.title');
+          }
+        case 'TWITTER':
+          {
+            return this.get('account.screenName') + ' - Tweet';
+          }
+        case 'TWITTER_DM':
+          {
+            return this.get('account.screenName') + ' - DM';
+          }
       }
     }),
 
-    message: Ember['default'].computed('channelType', {
-      get: function get() {
-        var channelType = this.get('channelType');
-        var handle = this.get('handle');
+    message: Ember['default'].computed('channelType', function () {
+      var channelType = this.get('channelType');
+      var handle = this.get('handle');
 
-        switch (channelType) {
-          case 'MAILBOX':
-            {
-              return 'Reply via Email (' + handle + ')';
-            }
-          case 'FACEBOOK':
-            {
-              return 'Reply via Facebook (' + handle + ')';
-            }
-          case 'TWITTER':
-            {
-              return 'Reply via Twitter (' + handle + ')';
-            }
-        }
+      switch (channelType) {
+        case 'MAILBOX':
+          {
+            return 'Reply via Email (' + handle + ')';
+          }
+        case 'FACEBOOK':
+          {
+            return 'Reply via Facebook (' + handle + ')';
+          }
+        case 'TWITTER':
+          {
+            return 'Reply via Twitter (' + handle + ')';
+          }
       }
     }),
 
-    label: Ember['default'].computed('handle', {
-      get: function get() {
-        var handle = this.get('handle');
-
-        return handle || 'Reply';
-      }
+    label: Ember['default'].computed('handle', function () {
+      return this.get('handle') || 'Reply';
     })
   });
 
@@ -81223,7 +81217,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"disabled":false,"logEvents":false,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+a8f6e8be"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"disabled":false,"logEvents":false,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+8ced055a"});
 }
 
 /* jshint ignore:end */
