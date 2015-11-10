@@ -26938,10 +26938,26 @@ define('frontend-cp/components/ko-file-upload/component', ['exports', 'ember'], 
 
   exports['default'] = Ember['default'].Component.extend({
     uploadService: Ember['default'].inject.service('fileUpload'),
+    intlService: Ember['default'].inject.service('intl'),
+    notificationService: Ember['default'].inject.service('notification'),
     uploads: null,
+    previousErrorCount: 0,
 
     classNameBindings: ['empty:u-hidden'],
     empty: Ember['default'].computed.empty('uploads'),
+
+    uploadStatus: Ember['default'].observer('uploads.@each.status', function () {
+      var errorCount = this.get('uploads').filterBy('status', 'ERROR').length;
+      if (errorCount > this.get('previousErrorCount')) {
+        this.get('notificationService').add({
+          type: 'error',
+          title: this.get('intlService').findTranslationByKey('generic.uploads.failed').translation,
+          autodismiss: true,
+          dismissable: false
+        });
+      }
+      this.set('previousErrorCount', errorCount);
+    }),
 
     initUploader: Ember['default'].on('init', function () {
       this.clear();
@@ -27136,11 +27152,11 @@ define('frontend-cp/components/ko-file-upload/upload-item/template', ['exports']
           hasRendered: false,
           buildFragment: function buildFragment(dom) {
             var el0 = dom.createDocumentFragment();
-            var el1 = dom.createTextNode("     ");
+            var el1 = dom.createTextNode("    ");
             dom.appendChild(el0, el1);
             var el1 = dom.createComment("");
             dom.appendChild(el0, el1);
-            var el1 = dom.createTextNode("\n     ");
+            var el1 = dom.createTextNode("\n    ");
             dom.appendChild(el0, el1);
             var el1 = dom.createComment("");
             dom.appendChild(el0, el1);
@@ -27155,8 +27171,8 @@ define('frontend-cp/components/ko-file-upload/upload-item/template', ['exports']
             return morphs;
           },
           statements: [
-            ["content","upload.name",["loc",[null,[4,5],[4,20]]]],
-            ["inline","format-message",[["subexpr","intl-get",["generic.uploads.toolarge"],[],["loc",[null,[5,22],[5,59]]]]],[],["loc",[null,[5,5],[5,61]]]]
+            ["content","upload.name",["loc",[null,[4,4],[4,19]]]],
+            ["inline","format-message",[["subexpr","intl-get",["generic.uploads.toolarge"],[],["loc",[null,[5,21],[5,58]]]]],[],["loc",[null,[5,4],[5,60]]]]
           ],
           locals: [],
           templates: []
@@ -27169,11 +27185,11 @@ define('frontend-cp/components/ko-file-upload/upload-item/template', ['exports']
             "loc": {
               "source": null,
               "start": {
-                "line": 7,
+                "line": 6,
                 "column": 2
               },
               "end": {
-                "line": 10,
+                "line": 9,
                 "column": 2
               }
             },
@@ -27184,11 +27200,11 @@ define('frontend-cp/components/ko-file-upload/upload-item/template', ['exports']
           hasRendered: false,
           buildFragment: function buildFragment(dom) {
             var el0 = dom.createDocumentFragment();
-            var el1 = dom.createTextNode("     ");
+            var el1 = dom.createTextNode("    ");
             dom.appendChild(el0, el1);
             var el1 = dom.createComment("");
             dom.appendChild(el0, el1);
-            var el1 = dom.createTextNode("\n     ");
+            var el1 = dom.createTextNode("\n    ");
             dom.appendChild(el0, el1);
             var el1 = dom.createComment("");
             dom.appendChild(el0, el1);
@@ -27203,8 +27219,8 @@ define('frontend-cp/components/ko-file-upload/upload-item/template', ['exports']
             return morphs;
           },
           statements: [
-            ["content","upload.name",["loc",[null,[8,5],[8,20]]]],
-            ["inline","format-message",[["subexpr","intl-get",["generic.uploads.unknown"],[],["loc",[null,[9,22],[9,58]]]]],[],["loc",[null,[9,5],[9,60]]]]
+            ["content","upload.name",["loc",[null,[7,4],[7,19]]]],
+            ["inline","format-message",[["subexpr","intl-get",["generic.uploads.unknown"],[],["loc",[null,[8,21],[8,57]]]]],[],["loc",[null,[8,4],[8,59]]]]
           ],
           locals: [],
           templates: []
@@ -27220,7 +27236,7 @@ define('frontend-cp/components/ko-file-upload/upload-item/template', ['exports']
               "column": 0
             },
             "end": {
-              "line": 12,
+              "line": 11,
               "column": 0
             }
           },
@@ -27239,8 +27255,6 @@ define('frontend-cp/components/ko-file-upload/upload-item/template', ['exports']
           dom.appendChild(el1, el2);
           var el2 = dom.createComment("");
           dom.appendChild(el1, el2);
-          var el2 = dom.createComment("");
-          dom.appendChild(el1, el2);
           var el2 = dom.createTextNode("  ");
           dom.appendChild(el1, el2);
           dom.appendChild(el0, el1);
@@ -27249,15 +27263,12 @@ define('frontend-cp/components/ko-file-upload/upload-item/template', ['exports']
           return el0;
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var element3 = dom.childAt(fragment, [1]);
-          var morphs = new Array(2);
-          morphs[0] = dom.createMorphAt(element3,1,1);
-          morphs[1] = dom.createMorphAt(element3,2,2);
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]),1,1);
           return morphs;
         },
         statements: [
-          ["block","if",[["subexpr","eq",[["get","upload.error",["loc",[null,[3,12],[3,24]]]],"TOO_LARGE"],[],["loc",[null,[3,8],[3,37]]]]],[],0,null,["loc",[null,[3,2],[6,9]]]],
-          ["block","if",[["subexpr","eq",[["get","upload.error",["loc",[null,[7,12],[7,24]]]],"UNKNOWN"],[],["loc",[null,[7,8],[7,35]]]]],[],1,null,["loc",[null,[7,2],[10,9]]]]
+          ["block","if",[["subexpr","eq",[["get","upload.error",["loc",[null,[3,12],[3,24]]]],"TOO_LARGE"],[],["loc",[null,[3,8],[3,37]]]]],[],0,1,["loc",[null,[3,2],[9,9]]]]
         ],
         locals: [],
         templates: [child0, child1]
@@ -27270,11 +27281,11 @@ define('frontend-cp/components/ko-file-upload/upload-item/template', ['exports']
           "loc": {
             "source": null,
             "start": {
-              "line": 14,
+              "line": 13,
               "column": 0
             },
             "end": {
-              "line": 18,
+              "line": 17,
               "column": 0
             }
           },
@@ -27319,9 +27330,9 @@ define('frontend-cp/components/ko-file-upload/upload-item/template', ['exports']
           return morphs;
         },
         statements: [
-          ["element","action",["cancel"],[],["loc",[null,[15,49],[15,68]]]],
-          ["content","upload.name",["loc",[null,[16,68],[16,83]]]],
-          ["content","uploadProgress",["loc",[null,[17,23],[17,41]]]]
+          ["element","action",["cancel"],[],["loc",[null,[14,49],[14,68]]]],
+          ["content","upload.name",["loc",[null,[15,68],[15,83]]]],
+          ["content","uploadProgress",["loc",[null,[16,23],[16,41]]]]
         ],
         locals: [],
         templates: []
@@ -27334,11 +27345,11 @@ define('frontend-cp/components/ko-file-upload/upload-item/template', ['exports']
           "loc": {
             "source": null,
             "start": {
-              "line": 20,
+              "line": 19,
               "column": 0
             },
             "end": {
-              "line": 24,
+              "line": 23,
               "column": 0
             }
           },
@@ -27383,10 +27394,10 @@ define('frontend-cp/components/ko-file-upload/upload-item/template', ['exports']
           return morphs;
         },
         statements: [
-          ["element","action",["cancel"],[],["loc",[null,[21,49],[21,68]]]],
-          ["attribute","href",["concat",[["get","uploadUrl",["loc",[null,[22,39],[22,48]]]]]]],
-          ["content","upload.name",["loc",[null,[22,52],[22,67]]]],
-          ["inline","ko-file-size",[],["size",["subexpr","@mut",[["get","upload.size",["loc",[null,[23,54],[23,65]]]]],[],[]]],["loc",[null,[23,34],[23,67]]]]
+          ["element","action",["cancel"],[],["loc",[null,[20,49],[20,68]]]],
+          ["attribute","href",["concat",[["get","uploadUrl",["loc",[null,[21,39],[21,48]]]]]]],
+          ["content","upload.name",["loc",[null,[21,52],[21,67]]]],
+          ["inline","ko-file-size",[],["size",["subexpr","@mut",[["get","upload.size",["loc",[null,[22,54],[22,65]]]]],[],[]]],["loc",[null,[22,34],[22,67]]]]
         ],
         locals: [],
         templates: []
@@ -27402,7 +27413,7 @@ define('frontend-cp/components/ko-file-upload/upload-item/template', ['exports']
             "column": 0
           },
           "end": {
-            "line": 25,
+            "line": 24,
             "column": 0
           }
         },
@@ -27435,9 +27446,9 @@ define('frontend-cp/components/ko-file-upload/upload-item/template', ['exports']
         return morphs;
       },
       statements: [
-        ["block","if",[["subexpr","eq",[["get","upload.status",["loc",[null,[1,10],[1,23]]]],"ERROR"],[],["loc",[null,[1,6],[1,32]]]]],[],0,null,["loc",[null,[1,0],[12,7]]]],
-        ["block","if",[["subexpr","eq",[["get","upload.status",["loc",[null,[14,10],[14,23]]]],"PROGRESS"],[],["loc",[null,[14,6],[14,35]]]]],[],1,null,["loc",[null,[14,0],[18,7]]]],
-        ["block","if",[["subexpr","eq",[["get","upload.status",["loc",[null,[20,10],[20,23]]]],"SUCCESS"],[],["loc",[null,[20,6],[20,34]]]]],[],2,null,["loc",[null,[20,0],[24,7]]]]
+        ["block","if",[["subexpr","eq",[["get","upload.status",["loc",[null,[1,10],[1,23]]]],"ERROR"],[],["loc",[null,[1,6],[1,32]]]]],[],0,null,["loc",[null,[1,0],[11,7]]]],
+        ["block","if",[["subexpr","eq",[["get","upload.status",["loc",[null,[13,10],[13,23]]]],"PROGRESS"],[],["loc",[null,[13,6],[13,35]]]]],[],1,null,["loc",[null,[13,0],[17,7]]]],
+        ["block","if",[["subexpr","eq",[["get","upload.status",["loc",[null,[19,10],[19,23]]]],"SUCCESS"],[],["loc",[null,[19,6],[19,34]]]]],[],2,null,["loc",[null,[19,0],[23,7]]]]
       ],
       locals: [],
       templates: [child0, child1, child2]
@@ -49839,6 +49850,7 @@ define('frontend-cp/locales/en-us/generic', ['exports'], function (exports) {
     "uploads.toolarge": "is too large.",
     "uploads.unknown": "upload failed. Please contact support",
     "uploads.wrongtype": "is not allowed. Allowed file types: ",
+    "uploads.failed": "There was a problem uploading file(s)",
 
     "confirm.delete": "Are you sure you want to delete this",
     "confirm.lose_changes": "You have unsaved changes on this page. Are you sure you want to discard these changes?",
@@ -58356,9 +58368,11 @@ define('frontend-cp/services/file-upload', ['exports', 'ember', 'jquery'], funct
         },
         error: function error(response) {
           uploadFile.set('status', 'ERROR');
+
           if (response.status === 413) {
             uploadFile.set('error', 'TOO_LARGE');
           }
+
           if (response.status === 500) {
             uploadFile.set('error', 'UNKNOWN');
           }
@@ -81217,7 +81231,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"disabled":false,"logEvents":false,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+8ced055a"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"disabled":false,"logEvents":false,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+a7ecc53a"});
 }
 
 /* jshint ignore:end */
