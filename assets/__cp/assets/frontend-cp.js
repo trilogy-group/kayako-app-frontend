@@ -676,14 +676,20 @@ define('frontend-cp/adapters/session', ['exports', 'ember', 'frontend-cp/adapter
       var authorizationHeader = 'Basic ' + btoa(email + ':' + password);
       var withPassword = email && password;
 
-      return {
+      var headers = {
         'Accept': 'application/json',
         'X-Options': 'flat',
-        'X-Session-ID': withPassword ? undefined : sessionId,
-        'Authorization': withPassword ? authorizationHeader : undefined,
         'X-Requested-With': 'XMLHttpRequest',
         'X-Portal': base_path.getBasePath() === '/admin' ? 'admin' : 'agent'
       };
+
+      if (withPassword) {
+        headers.Authorization = authorizationHeader;
+      } else {
+        headers['X-Session-ID'] = sessionId;
+      }
+
+      return headers;
     })
   });
 
@@ -81121,7 +81127,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"disabled":false,"logEvents":false,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+d97a44f7"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"disabled":false,"logEvents":false,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+526bd4d1"});
 }
 
 /* jshint ignore:end */
