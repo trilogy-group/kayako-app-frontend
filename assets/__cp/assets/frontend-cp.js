@@ -11977,100 +11977,43 @@ define('frontend-cp/components/ko-admin-selectable-card/template', ['exports'], 
   }()));
 
 });
-define('frontend-cp/components/ko-agent-dropdown/component', ['exports', 'ember', 'frontend-cp/lib/keycodes', 'frontend-cp/config/environment'], function (exports, Ember, KeyCodes, config) {
+define('frontend-cp/components/ko-agent-dropdown/component', ['exports', 'ember', 'frontend-cp/config/environment'], function (exports, Ember, config) {
 
   'use strict';
 
-  var _slice = Array.prototype.slice;
-  exports['default'] = Ember['default'].Component.extend({
-    notification: Ember['default'].inject.service('notification'),
-    intl: Ember['default'].inject.service('intl'),
-    routing: Ember['default'].inject.service('-routing'),
+  var inject = Ember['default'].inject;
+  var Component = Ember['default'].Component;
 
-    attributeBindings: ['data-region', 'tabindex'],
-    dataRegion: 'navigation-new',
-    navItems: [{ name: 'case', text: 'Case', path: null, icon: config['default'].assetRoot + '/images/icons/case.svg' }, { name: 'user', text: 'User', path: null, icon: config['default'].assetRoot + '/images/icons/user.svg' }, { name: 'organization', text: 'Organization', path: null, icon: config['default'].assetRoot + '/images/icons/organization.svg' }],
-    isExpanded: false,
-    selectedTab: null,
+  exports['default'] = Component.extend({
+    notification: inject.service(),
+    intl: inject.service(),
+    routing: inject.service('-routing'),
+    classNames: ['ko-agent-dropdown'],
     transitionToRouteAction: 'transitionToRoute',
+    navItems: [{ name: 'case', text: 'Case', path: null, icon: config['default'].assetRoot + '/images/icons/case.svg' }, { name: 'user', text: 'User', path: null, icon: config['default'].assetRoot + '/images/icons/user.svg' }, { name: 'organization', text: 'Organization', path: null, icon: config['default'].assetRoot + '/images/icons/organization.svg' }],
 
-    didInsertElement: function didInsertElement() {
-      var _this = this;
+    // Actions
+    actions: {
+      reset: function reset() {
+        this.set('selectedNavItem', null);
+      },
 
-      this.$(document).on('click.' + this.get('elementId'), function (event) {
-        var isStillFocused = Ember['default'].$.contains(_this.$()[0], event.target);
-        if (isStillFocused) {
-          return;
+      onTabCreateComplete: function onTabCreateComplete(route, model) {
+        this._createSuccessNotification(route);
+        this.get('routing').transitionTo(route, [model]);
+      },
+
+      transitionToRoute: function transitionToRoute(dropdown) {
+        for (var _len = arguments.length, rest = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+          rest[_key - 1] = arguments[_key];
         }
-        _this.set('isExpanded', false);
-      });
-    },
 
-    willDestroyElement: function willDestroyElement() {
-      this.$(document).off('click.' + this.get('elementId'));
-    },
-
-    caseTab: Ember['default'].computed('navItems', function () {
-      return this.get('navItems').objectAt(0);
-    }),
-
-    userTab: Ember['default'].computed('navItems', function () {
-      return this.get('navItems').objectAt(1);
-    }),
-
-    organisationTab: Ember['default'].computed('navItems', function () {
-      return this.get('navItems').objectAt(2);
-    }),
-
-    resetSelectedTabOnHide: Ember['default'].observer('isExpanded', function () {
-      var isExpanded = this.get('isExpanded');
-      if (!isExpanded) {
-        this.set('selectedTab', null);
-      }
-    }),
-
-    maintainFocusDuringTabTransition: Ember['default'].observer('selectedTab', function () {
-      if (!this.get('isExpanded')) {
-        return;
-      }
-      // Switch the focus to the '+' button so that the panel can maintain
-      // focus, even if the new tab contains no focusable elements
-      var $componentElement = this.$();
-      var $focusableElements = getFocusableElements($componentElement);
-      $focusableElements.eq(0).focus();
-    }),
-
-    keyDown: function keyDown(e) {
-      switch (e.keyCode) {
-        case KeyCodes.up:
-          {
-            var isMainTab = !this.get('selectedTab');
-            if (!isMainTab) {
-              return true;
-            }
-            selectPreviousFocusableItem(this.$());
-            return false;
-          }
-        case KeyCodes.down:
-          {
-            var isMainTab = !this.get('selectedTab');
-            if (!isMainTab) {
-              return true;
-            }
-            selectNextFocusableItem(this.$());
-            return false;
-          }
-        case KeyCodes.escape:
-          {
-            if (this.get('selectedTab')) {
-              this.set('selectedTab', null);
-            } else {
-              this.set('isExpanded', false);
-            }
-            return false;
-          }
+        this.sendAction.apply(this, ['transitionToRouteAction'].concat(rest));
+        dropdown.close();
       }
     },
+
+    // Methods
 
     _createSuccessNotification: function _createSuccessNotification(route) {
       var notificationMessage = null;
@@ -12094,69 +12037,8 @@ define('frontend-cp/components/ko-agent-dropdown/component', ['exports', 'ember'
           autodismiss: true
         });
       }
-    },
-
-    actions: {
-      toggleDropdown: function toggleDropdown() {
-        var _this2 = this;
-
-        this.set('isExpanded', true);
-
-        Ember['default'].run.next(function () {
-          _this2.$('.ko-agent-dropdown__drop').focus();
-        });
-      },
-
-      selectTab: function selectTab(tab) {
-        if (tab.path) {
-          var router = this.container.lookup('router:main');
-          router.router.transitionTo(tab.path);
-        } else {
-          this.set('selectedTab', tab || null);
-        }
-      },
-
-      onTabSubmitted: function onTabSubmitted() {
-        this.maintainFocusDuringTabTransition();
-      },
-
-      onTabCreateComplete: function onTabCreateComplete(route, model) {
-        this._createSuccessNotification(route);
-
-        this.set('isExpanded', false);
-        this.get('routing').transitionTo(route, [model]);
-      },
-
-      onTabCancelled: function onTabCancelled() {
-        this.set('selectedTab', null);
-      },
-
-      transitionToRoute: function transitionToRoute() {
-        this.sendAction.apply(this, ['transitionToRouteAction'].concat(_slice.call(arguments)));
-        this.set('isExpanded', false);
-      }
     }
   });
-
-  function selectNextFocusableItem($containerElement) {
-    var $focusableElements = getFocusableElements($containerElement);
-    var $focusedElement = $focusableElements.filter(':focus');
-    var focusedIndex = $focusableElements.index($focusedElement);
-    var updatedFocusIndex = focusedIndex >= $focusableElements.length - 1 ? 0 : focusedIndex + 1;
-    $focusableElements.eq(updatedFocusIndex).focus();
-  }
-
-  function selectPreviousFocusableItem($containerElement) {
-    var $focusableElements = getFocusableElements($containerElement);
-    var $focusedElement = $focusableElements.filter(':focus');
-    var focusedIndex = $focusableElements.index($focusedElement);
-    var updatedFocusIndex = focusedIndex <= 0 ? $focusableElements.length - 1 : focusedIndex - 1;
-    $focusableElements.eq(updatedFocusIndex).focus();
-  }
-
-  function getFocusableElements($containerElement) {
-    return $containerElement.find('button,input,textarea,select,[tabindex]').not('[tabindex="-1"],[disabled]');
-  }
 
 });
 define('frontend-cp/components/ko-agent-dropdown/create-case/component', ['exports', 'ember', 'frontend-cp/mixins/autofocus'], function (exports, Ember, AutofocusMixin) {
@@ -12169,8 +12051,6 @@ define('frontend-cp/components/ko-agent-dropdown/create-case/component', ['expor
 
   exports['default'] = Ember['default'].Component.extend(AutofocusMixin['default'], {
     // params
-    onCancel: function onCancel() {},
-
     isDisabled: false,
 
     store: Ember['default'].inject.service(),
@@ -12842,7 +12722,6 @@ define('frontend-cp/components/ko-agent-dropdown/create-case/template', ['export
         var el4 = dom.createTextNode("\n        ");
         dom.appendChild(el3, el4);
         var el4 = dom.createElement("button");
-        dom.setAttribute(el4,"type","button");
         dom.setAttribute(el4,"class","button t-small");
         dom.setAttribute(el4,"name","cancel");
         var el5 = dom.createTextNode("\n          ");
@@ -12888,7 +12767,7 @@ define('frontend-cp/components/ko-agent-dropdown/create-case/template', ['export
         morphs[1] = dom.createMorphAt(element5,1,1);
         morphs[2] = dom.createMorphAt(element5,3,3);
         morphs[3] = dom.createMorphAt(dom.childAt(element4, [3]),0,0);
-        morphs[4] = dom.createElementMorph(element7);
+        morphs[4] = dom.createAttrMorph(element7, 'onclick');
         morphs[5] = dom.createMorphAt(element7,1,1);
         morphs[6] = dom.createAttrMorph(element8, 'disabled');
         morphs[7] = dom.createElementMorph(element8);
@@ -12900,7 +12779,7 @@ define('frontend-cp/components/ko-agent-dropdown/create-case/template', ['export
         ["block","ko-form/field",[],["field",["subexpr","@mut",[["get","fields.requester",["loc",[null,[7,27],[7,43]]]]],[],[]]],0,null,["loc",[null,[7,4],[47,22]]]],
         ["block","if",[["get","isLoading",["loc",[null,[48,10],[48,19]]]]],[],1,null,["loc",[null,[48,4],[48,87]]]],
         ["inline","format-message",[["subexpr","intl-get",["generic.create_case_panel.info"],[],["loc",[null,[50,56],[50,99]]]]],[],["loc",[null,[50,39],[50,101]]]],
-        ["element","action",[["get","onCancel",["loc",[null,[53,76],[53,84]]]]],[],["loc",[null,[53,67],[53,86]]]],
+        ["attribute","onclick",["get","onCancel",["loc",[null,[53,63],[53,71]]]]],
         ["inline","format-message",[["subexpr","intl-get",["generic.cancel"],[],["loc",[null,[54,27],[54,54]]]]],[],["loc",[null,[54,10],[54,56]]]],
         ["attribute","disabled",["subexpr","not",[["get","fields.requester.value.id",["loc",[null,[56,76],[56,101]]]]],[],["loc",[null,[56,70],[56,103]]]]],
         ["element","action",["submit"],[],["loc",[null,[56,104],[56,123]]]],
@@ -12920,7 +12799,6 @@ define('frontend-cp/components/ko-agent-dropdown/create-organisation/component',
     // params
     onCreate: function onCreate() {},
     onCancel: function onCancel() {},
-    onSubmit: function onSubmit() {},
 
     store: Ember['default'].inject.service(),
 
@@ -12968,13 +12846,19 @@ define('frontend-cp/components/ko-agent-dropdown/create-organisation/component',
       },
 
       submit: function submit() {
+        var _this2 = this;
+
         var organization = this.get('organization');
+        var onSubmit = this.get('onSubmit');
         organization.set('domains', this.get('fields.domains.value'));
-        this.attrs.onSubmit();
+        if (onSubmit) {
+          onSubmit();
+        }
         return organization.save().then(function (organization) {
           organization.set('domains', organization.get('domains').filter(function (domain) {
             return domain.get('id');
           }));
+          _this2.get('dropdown').close();
           return organization;
         });
       },
@@ -13324,7 +13208,6 @@ define('frontend-cp/components/ko-agent-dropdown/create-user/component', ['expor
     // params
     onCreate: function onCreate() {},
     onCancel: function onCancel() {},
-    onSubmit: function onSubmit() {},
 
     fields: null,
 
@@ -13381,22 +13264,29 @@ define('frontend-cp/components/ko-agent-dropdown/create-user/component', ['expor
       },
 
       submit: function submit() {
+        var _this2 = this;
+
         var fields = this.get('fields');
         var store = this.get('store');
-        this.attrs.onSubmit();
-        return store.findRecord('role', 4).then(function (roleModel) {
+        var onSubmit = this.get('onSubmit');
+        if (onSubmit) {
+          onSubmit();
+        }
+        var savePromise = store.findRecord('role', 4).then(function (roleModel) {
           var email = store.createRecord('identity-email', {
-            'isPrimary': true,
-            'email': fields.get('email.value')
+            isPrimary: true,
+            email: fields.get('email.value')
           });
           return store.createRecord('user', {
-            'role': roleModel,
-            'fullName': fields.get('full_name.value'),
-            'emails': [email]
-          });
-        }).then(function (userModel) {
-          return userModel.save();
+            role: roleModel,
+            fullName: fields.get('full_name.value'),
+            emails: [email]
+          }).save();
         });
+        savePromise.then(function () {
+          return _this2.get('dropdown').close();
+        });
+        return savePromise;
       }
     }
   });
@@ -13594,7 +13484,7 @@ define('frontend-cp/components/ko-agent-dropdown/create-user/template', ['export
               "column": 2
             },
             "end": {
-              "line": 28,
+              "line": 27,
               "column": 2
             }
           },
@@ -13639,7 +13529,7 @@ define('frontend-cp/components/ko-agent-dropdown/create-user/template', ['export
           ["block","ko-form/field",[],["field",["subexpr","@mut",[["get","fields.full_name",["loc",[null,[12,27],[12,43]]]]],[],[]]],0,null,["loc",[null,[12,4],[15,22]]]],
           ["block","ko-form/field",[],["field",["subexpr","@mut",[["get","fields.email",["loc",[null,[17,27],[17,39]]]]],[],[]]],1,null,["loc",[null,[17,4],[20,22]]]],
           ["inline","format-message",[["subexpr","intl-get",["generic.create_user_panel.info"],[],["loc",[null,[22,58],[22,101]]]]],[],["loc",[null,[22,41],[22,103]]]],
-          ["inline","ko-form/buttons",[],["onCancel",["subexpr","@mut",[["get","onCancel",["loc",[null,[24,15],[24,23]]]]],[],[]],"submitLabel",["subexpr","format-message",[["subexpr","intl-get",["generic.create_user_panel.submit"],[],["loc",[null,[25,34],[25,79]]]]],[],["loc",[null,[25,18],[25,80]]]],"cancelLabel",["subexpr","format-message",[["subexpr","intl-get",["generic.cancel"],[],["loc",[null,[26,34],[26,61]]]]],[],["loc",[null,[26,18],[26,62]]]]],["loc",[null,[23,4],[27,6]]]]
+          ["inline","ko-form/buttons",[],["onCancel",["subexpr","@mut",[["get","onCancel",["loc",[null,[24,15],[24,23]]]]],[],[]],"submitLabel",["subexpr","format-message",[["subexpr","intl-get",["generic.create_user_panel.submit"],[],["loc",[null,[25,34],[25,79]]]]],[],["loc",[null,[25,18],[25,80]]]],"cancelLabel",["subexpr","format-message",[["subexpr","intl-get",["generic.cancel"],[],["loc",[null,[26,34],[26,61]]]]],[],["loc",[null,[26,18],[26,62]]]]],["loc",[null,[23,4],[26,64]]]]
         ],
         locals: ["_","isSubmitting"],
         templates: [child0, child1]
@@ -13655,7 +13545,7 @@ define('frontend-cp/components/ko-agent-dropdown/create-user/template', ['export
             "column": 0
           },
           "end": {
-            "line": 30,
+            "line": 29,
             "column": 0
           }
         },
@@ -13699,7 +13589,7 @@ define('frontend-cp/components/ko-agent-dropdown/create-user/template', ['export
       },
       statements: [
         ["inline","format-message",[["subexpr","intl-get",["generic.create_user_panel.title"],[],["loc",[null,[2,56],[2,100]]]]],[],["loc",[null,[2,39],[2,102]]]],
-        ["block","ko-form",[],["fields",["subexpr","@mut",[["get","fields",["loc",[null,[7,11],[7,17]]]]],[],[]],"onSubmit",["subexpr","action",["submit"],[],["loc",[null,[8,13],[8,30]]]],"onSuccess",["subexpr","@mut",[["get","onCreate",["loc",[null,[9,14],[9,22]]]]],[],[]],"onError",["subexpr","action",["onError"],[],["loc",[null,[10,12],[10,30]]]]],0,null,["loc",[null,[6,2],[28,14]]]]
+        ["block","ko-form",[],["fields",["subexpr","@mut",[["get","fields",["loc",[null,[7,11],[7,17]]]]],[],[]],"onSubmit",["subexpr","action",["submit"],[],["loc",[null,[8,13],[8,30]]]],"onSuccess",["subexpr","@mut",[["get","onCreate",["loc",[null,[9,14],[9,22]]]]],[],[]],"onError",["subexpr","action",["onError"],[],["loc",[null,[10,12],[10,30]]]]],0,null,["loc",[null,[6,2],[27,14]]]]
       ],
       locals: [],
       templates: [child0]
@@ -13714,18 +13604,224 @@ define('frontend-cp/components/ko-agent-dropdown/template', ['exports'], functio
   exports['default'] = Ember.HTMLBars.template((function() {
     var child0 = (function() {
       var child0 = (function() {
+        var child0 = (function() {
+          return {
+            meta: {
+              "revision": "Ember@1.13.10",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 3,
+                  "column": 4
+                },
+                "end": {
+                  "line": 8,
+                  "column": 4
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-agent-dropdown/template.hbs"
+            },
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode("      ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(1);
+              morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+              return morphs;
+            },
+            statements: [
+              ["inline","ko-agent-dropdown/create-user",[],["dropdown",["subexpr","@mut",[["get","dropdown",["loc",[null,[5,17],[5,25]]]]],[],[]],"onCreate",["subexpr","action",["onTabCreateComplete","session.agent.users.user"],[],["loc",[null,[6,17],[6,74]]]],"onCancel",["subexpr","action",["reset"],[],["loc",[null,[7,17],[7,33]]]]],["loc",[null,[4,6],[7,35]]]]
+            ],
+            locals: [],
+            templates: []
+          };
+        }());
+        var child1 = (function() {
+          var child0 = (function() {
+            return {
+              meta: {
+                "revision": "Ember@1.13.10",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 8,
+                    "column": 4
+                  },
+                  "end": {
+                    "line": 12,
+                    "column": 4
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-agent-dropdown/template.hbs"
+              },
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createTextNode("      ");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var morphs = new Array(1);
+                morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+                return morphs;
+              },
+              statements: [
+                ["inline","ko-agent-dropdown/create-case",[],["onSubmit",["subexpr","action",["transitionToRoute",["get","dropdown",["loc",[null,[10,45],[10,53]]]]],[],["loc",[null,[10,17],[10,54]]]],"onCancel",["subexpr","action",["reset"],[],["loc",[null,[11,17],[11,33]]]]],["loc",[null,[9,6],[11,35]]]]
+              ],
+              locals: [],
+              templates: []
+            };
+          }());
+          var child1 = (function() {
+            var child0 = (function() {
+              return {
+                meta: {
+                  "revision": "Ember@1.13.10",
+                  "loc": {
+                    "source": null,
+                    "start": {
+                      "line": 12,
+                      "column": 4
+                    },
+                    "end": {
+                      "line": 17,
+                      "column": 4
+                    }
+                  },
+                  "moduleName": "frontend-cp/components/ko-agent-dropdown/template.hbs"
+                },
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                  var el0 = dom.createDocumentFragment();
+                  var el1 = dom.createTextNode("      ");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createComment("");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createTextNode("\n    ");
+                  dom.appendChild(el0, el1);
+                  return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                  var morphs = new Array(1);
+                  morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+                  return morphs;
+                },
+                statements: [
+                  ["inline","ko-agent-dropdown/create-organisation",[],["dropdown",["subexpr","@mut",[["get","dropdown",["loc",[null,[14,17],[14,25]]]]],[],[]],"onCreate",["subexpr","action",["onTabCreateComplete","session.agent.organisations.organisation"],[],["loc",[null,[15,17],[15,90]]]],"onCancel",["subexpr","action",["reset"],[],["loc",[null,[16,17],[16,33]]]]],["loc",[null,[13,6],[16,35]]]]
+                ],
+                locals: [],
+                templates: []
+              };
+            }());
+            return {
+              meta: {
+                "revision": "Ember@1.13.10",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 12,
+                    "column": 4
+                  },
+                  "end": {
+                    "line": 17,
+                    "column": 4
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-agent-dropdown/template.hbs"
+              },
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var morphs = new Array(1);
+                morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+                dom.insertBoundary(fragment, 0);
+                dom.insertBoundary(fragment, null);
+                return morphs;
+              },
+              statements: [
+                ["block","if",[["subexpr","eq",[["get","selectedNavItem.name",["loc",[null,[12,18],[12,38]]]],"organization"],[],["loc",[null,[12,14],[12,54]]]]],[],0,null,["loc",[null,[12,4],[17,4]]]]
+              ],
+              locals: [],
+              templates: [child0]
+            };
+          }());
+          return {
+            meta: {
+              "revision": "Ember@1.13.10",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 8,
+                  "column": 4
+                },
+                "end": {
+                  "line": 17,
+                  "column": 4
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-agent-dropdown/template.hbs"
+            },
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(1);
+              morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+              dom.insertBoundary(fragment, 0);
+              dom.insertBoundary(fragment, null);
+              return morphs;
+            },
+            statements: [
+              ["block","if",[["subexpr","eq",[["get","selectedNavItem.name",["loc",[null,[8,18],[8,38]]]],"case"],[],["loc",[null,[8,14],[8,46]]]]],[],0,1,["loc",[null,[8,4],[17,4]]]]
+            ],
+            locals: [],
+            templates: [child0, child1]
+          };
+        }());
         return {
           meta: {
             "revision": "Ember@1.13.10",
             "loc": {
               "source": null,
               "start": {
-                "line": 4,
-                "column": 4
+                "line": 2,
+                "column": 2
               },
               "end": {
-                "line": 9,
-                "column": 4
+                "line": 18,
+                "column": 2
               }
             },
             "moduleName": "frontend-cp/components/ko-agent-dropdown/template.hbs"
@@ -13735,39 +13831,99 @@ define('frontend-cp/components/ko-agent-dropdown/template', ['exports'], functio
           hasRendered: false,
           buildFragment: function buildFragment(dom) {
             var el0 = dom.createDocumentFragment();
-            var el1 = dom.createTextNode("      ");
-            dom.appendChild(el0, el1);
             var el1 = dom.createComment("");
-            dom.appendChild(el0, el1);
-            var el1 = dom.createTextNode("\n");
             dom.appendChild(el0, el1);
             return el0;
           },
           buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
             var morphs = new Array(1);
-            morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+            morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+            dom.insertBoundary(fragment, 0);
+            dom.insertBoundary(fragment, null);
             return morphs;
           },
           statements: [
-            ["inline","ko-agent-dropdown/create-user",[],["onSubmit",["subexpr","action",["onTabSubmitted"],[],["loc",[null,[6,17],[6,42]]]],"onCreate",["subexpr","action",["onTabCreateComplete","session.agent.users.user"],[],["loc",[null,[7,17],[7,74]]]],"onCancel",["subexpr","action",["onTabCancelled"],[],["loc",[null,[8,17],[8,42]]]]],["loc",[null,[5,6],[8,44]]]]
+            ["block","if",[["subexpr","eq",[["get","selectedNavItem.name",["loc",[null,[3,14],[3,34]]]],"user"],[],["loc",[null,[3,10],[3,42]]]]],[],0,1,["loc",[null,[3,4],[17,11]]]]
           ],
           locals: [],
-          templates: []
+          templates: [child0, child1]
         };
       }());
       var child1 = (function() {
+        var child0 = (function() {
+          return {
+            meta: {
+              "revision": "Ember@1.13.10",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 20,
+                  "column": 6
+                },
+                "end": {
+                  "line": 25,
+                  "column": 6
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-agent-dropdown/template.hbs"
+            },
+            arity: 1,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode("        ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createElement("button");
+              dom.setAttribute(el1,"class","ko-agent-dropdown__nav-item button-naked");
+              var el2 = dom.createTextNode("\n          ");
+              dom.appendChild(el1, el2);
+              var el2 = dom.createElement("img");
+              dom.appendChild(el1, el2);
+              var el2 = dom.createTextNode("\n          ");
+              dom.appendChild(el1, el2);
+              var el2 = dom.createElement("div");
+              dom.setAttribute(el2,"class","t-center u-mt--");
+              var el3 = dom.createComment("");
+              dom.appendChild(el2, el3);
+              dom.appendChild(el1, el2);
+              var el2 = dom.createTextNode("\n        ");
+              dom.appendChild(el1, el2);
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var element0 = dom.childAt(fragment, [1]);
+              var element1 = dom.childAt(element0, [1]);
+              var morphs = new Array(3);
+              morphs[0] = dom.createAttrMorph(element0, 'onclick');
+              morphs[1] = dom.createAttrMorph(element1, 'src');
+              morphs[2] = dom.createMorphAt(dom.childAt(element0, [3]),0,0);
+              return morphs;
+            },
+            statements: [
+              ["attribute","onclick",["subexpr","action",[["subexpr","mut",[["get","selectedNavItem",["loc",[null,[21,87],[21,102]]]]],[],["loc",[null,[21,82],[21,103]]]],["get","navItem",["loc",[null,[21,104],[21,111]]]]],[],["loc",[null,[21,73],[21,113]]]]],
+              ["attribute","src",["concat",[["get","navItem.icon",["loc",[null,[22,22],[22,34]]]]]]],
+              ["content","navItem.text",["loc",[null,[23,39],[23,55]]]]
+            ],
+            locals: ["navItem"],
+            templates: []
+          };
+        }());
         return {
           meta: {
             "revision": "Ember@1.13.10",
             "loc": {
               "source": null,
               "start": {
-                "line": 10,
-                "column": 4
+                "line": 18,
+                "column": 2
               },
               "end": {
-                "line": 14,
-                "column": 4
+                "line": 27,
+                "column": 2
               }
             },
             "moduleName": "frontend-cp/components/ko-agent-dropdown/template.hbs"
@@ -13777,51 +13933,16 @@ define('frontend-cp/components/ko-agent-dropdown/template', ['exports'], functio
           hasRendered: false,
           buildFragment: function buildFragment(dom) {
             var el0 = dom.createDocumentFragment();
-            var el1 = dom.createTextNode("      ");
+            var el1 = dom.createTextNode("    ");
             dom.appendChild(el0, el1);
-            var el1 = dom.createComment("");
-            dom.appendChild(el0, el1);
-            var el1 = dom.createTextNode("\n");
-            dom.appendChild(el0, el1);
-            return el0;
-          },
-          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-            var morphs = new Array(1);
-            morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
-            return morphs;
-          },
-          statements: [
-            ["inline","ko-agent-dropdown/create-case",[],["onSubmit",["subexpr","action",["transitionToRoute"],[],["loc",[null,[12,17],[12,45]]]],"onCancel",["subexpr","action",["onTabCancelled"],[],["loc",[null,[13,17],[13,42]]]]],["loc",[null,[11,6],[13,44]]]]
-          ],
-          locals: [],
-          templates: []
-        };
-      }());
-      var child2 = (function() {
-        return {
-          meta: {
-            "revision": "Ember@1.13.10",
-            "loc": {
-              "source": null,
-              "start": {
-                "line": 15,
-                "column": 4
-              },
-              "end": {
-                "line": 20,
-                "column": 4
-              }
-            },
-            "moduleName": "frontend-cp/components/ko-agent-dropdown/template.hbs"
-          },
-          arity: 0,
-          cachedFragment: null,
-          hasRendered: false,
-          buildFragment: function buildFragment(dom) {
-            var el0 = dom.createDocumentFragment();
-            var el1 = dom.createTextNode("      ");
-            dom.appendChild(el0, el1);
-            var el1 = dom.createComment("");
+            var el1 = dom.createElement("div");
+            dom.setAttribute(el1,"class","ko-agent-dropdown__nav-items box box--secondary");
+            var el2 = dom.createTextNode("\n");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createComment("");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createTextNode("    ");
+            dom.appendChild(el1, el2);
             dom.appendChild(el0, el1);
             var el1 = dom.createTextNode("\n");
             dom.appendChild(el0, el1);
@@ -13829,14 +13950,14 @@ define('frontend-cp/components/ko-agent-dropdown/template', ['exports'], functio
           },
           buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
             var morphs = new Array(1);
-            morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+            morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]),1,1);
             return morphs;
           },
           statements: [
-            ["inline","ko-agent-dropdown/create-organisation",[],["onSubmit",["subexpr","action",["onTabSubmitted"],[],["loc",[null,[17,17],[17,42]]]],"onCreate",["subexpr","action",["onTabCreateComplete","session.agent.organisations.organisation"],[],["loc",[null,[18,17],[18,90]]]],"onCancel",["subexpr","action",["onTabCancelled"],[],["loc",[null,[19,17],[19,42]]]]],["loc",[null,[16,6],[19,44]]]]
+            ["block","each",[["get","navItems",["loc",[null,[20,14],[20,22]]]]],[],0,null,["loc",[null,[20,6],[25,15]]]]
           ],
           locals: [],
-          templates: []
+          templates: [child0]
         };
       }());
       return {
@@ -13845,130 +13966,52 @@ define('frontend-cp/components/ko-agent-dropdown/template', ['exports'], functio
           "loc": {
             "source": null,
             "start": {
-              "line": 3,
-              "column": 2
+              "line": 1,
+              "column": 0
             },
             "end": {
-              "line": 21,
-              "column": 2
+              "line": 28,
+              "column": 0
             }
           },
           "moduleName": "frontend-cp/components/ko-agent-dropdown/template.hbs"
         },
-        arity: 0,
+        arity: 1,
         cachedFragment: null,
         hasRendered: false,
         buildFragment: function buildFragment(dom) {
           var el0 = dom.createDocumentFragment();
           var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
-          var el1 = dom.createComment("");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createComment("");
-          dom.appendChild(el0, el1);
           return el0;
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(3);
+          var morphs = new Array(1);
           morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
-          morphs[1] = dom.createMorphAt(fragment,1,1,contextualElement);
-          morphs[2] = dom.createMorphAt(fragment,2,2,contextualElement);
           dom.insertBoundary(fragment, 0);
           dom.insertBoundary(fragment, null);
           return morphs;
         },
         statements: [
-          ["block","if",[["subexpr","eq",[["get","selectedTab",["loc",[null,[4,14],[4,25]]]],["get","userTab",["loc",[null,[4,26],[4,33]]]]],[],["loc",[null,[4,10],[4,34]]]]],[],0,null,["loc",[null,[4,4],[9,11]]]],
-          ["block","if",[["subexpr","eq",[["get","selectedTab",["loc",[null,[10,14],[10,25]]]],["get","caseTab",["loc",[null,[10,26],[10,33]]]]],[],["loc",[null,[10,10],[10,34]]]]],[],1,null,["loc",[null,[10,4],[14,11]]]],
-          ["block","if",[["subexpr","eq",[["get","selectedTab",["loc",[null,[15,14],[15,25]]]],["get","organisationTab",["loc",[null,[15,26],[15,41]]]]],[],["loc",[null,[15,10],[15,42]]]]],[],2,null,["loc",[null,[15,4],[20,11]]]]
+          ["block","if",[["get","selectedNavItem",["loc",[null,[2,8],[2,23]]]]],[],0,1,["loc",[null,[2,2],[27,9]]]]
         ],
-        locals: [],
-        templates: [child0, child1, child2]
+        locals: ["dropdown"],
+        templates: [child0, child1]
       };
     }());
     var child1 = (function() {
-      var child0 = (function() {
-        return {
-          meta: {
-            "revision": "Ember@1.13.10",
-            "loc": {
-              "source": null,
-              "start": {
-                "line": 24,
-                "column": 6
-              },
-              "end": {
-                "line": 31,
-                "column": 6
-              }
-            },
-            "moduleName": "frontend-cp/components/ko-agent-dropdown/template.hbs"
-          },
-          arity: 1,
-          cachedFragment: null,
-          hasRendered: false,
-          buildFragment: function buildFragment(dom) {
-            var el0 = dom.createDocumentFragment();
-            var el1 = dom.createTextNode("        ");
-            dom.appendChild(el0, el1);
-            var el1 = dom.createElement("li");
-            var el2 = dom.createTextNode("\n          ");
-            dom.appendChild(el1, el2);
-            var el2 = dom.createElement("button");
-            dom.setAttribute(el2,"type","button");
-            dom.setAttribute(el2,"class","ko-agent-dropdown__link button-naked");
-            dom.setAttribute(el2,"tabindex","0");
-            var el3 = dom.createTextNode("\n            ");
-            dom.appendChild(el2, el3);
-            var el3 = dom.createElement("img");
-            dom.appendChild(el2, el3);
-            var el3 = dom.createTextNode("\n            ");
-            dom.appendChild(el2, el3);
-            var el3 = dom.createElement("div");
-            dom.setAttribute(el3,"class","t-center u-mt--");
-            var el4 = dom.createComment("");
-            dom.appendChild(el3, el4);
-            dom.appendChild(el2, el3);
-            var el3 = dom.createTextNode("\n          ");
-            dom.appendChild(el2, el3);
-            dom.appendChild(el1, el2);
-            var el2 = dom.createTextNode("\n        ");
-            dom.appendChild(el1, el2);
-            dom.appendChild(el0, el1);
-            var el1 = dom.createTextNode("\n");
-            dom.appendChild(el0, el1);
-            return el0;
-          },
-          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-            var element0 = dom.childAt(fragment, [1, 1]);
-            var element1 = dom.childAt(element0, [1]);
-            var morphs = new Array(3);
-            morphs[0] = dom.createElementMorph(element0);
-            morphs[1] = dom.createAttrMorph(element1, 'src');
-            morphs[2] = dom.createMorphAt(dom.childAt(element0, [3]),0,0);
-            return morphs;
-          },
-          statements: [
-            ["element","action",["selectTab",["get","item",["loc",[null,[26,111],[26,115]]]]],["bubbles",false],["loc",[null,[26,90],[26,131]]]],
-            ["attribute","src",["concat",[["get","item.icon",["loc",[null,[27,24],[27,33]]]]]]],
-            ["content","item.text",["loc",[null,[28,41],[28,54]]]]
-          ],
-          locals: ["item"],
-          templates: []
-        };
-      }());
       return {
         meta: {
           "revision": "Ember@1.13.10",
           "loc": {
             "source": null,
             "start": {
-              "line": 21,
-              "column": 2
+              "line": 28,
+              "column": 0
             },
             "end": {
-              "line": 68,
-              "column": 2
+              "line": 30,
+              "column": 0
             }
           },
           "moduleName": "frontend-cp/components/ko-agent-dropdown/template.hbs"
@@ -13980,40 +14023,19 @@ define('frontend-cp/components/ko-agent-dropdown/template', ['exports'], functio
           var el0 = dom.createDocumentFragment();
           var el1 = dom.createTextNode("  ");
           dom.appendChild(el0, el1);
-          var el1 = dom.createElement("div");
-          dom.setAttribute(el1,"class","box box--secondary");
-          var el2 = dom.createTextNode("\n    ");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createElement("ul");
-          dom.setAttribute(el2,"class","ko-agent-dropdown__nav-items");
-          var el3 = dom.createTextNode("\n");
-          dom.appendChild(el2, el3);
-          var el3 = dom.createComment("");
-          dom.appendChild(el2, el3);
-          var el3 = dom.createTextNode("    ");
-          dom.appendChild(el2, el3);
-          dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n  ");
-          dom.appendChild(el1, el2);
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n  ");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createComment("\n    TODO(SG): Generate recently viewed cases dynamically. Commented out as part of NOVO-327.\n    <div class=\"box box--secondary\">\n    <p class=\"t-caption t-small u-mb-\">\n    Recently viewed:\n    </p>\n    <div class=\"flag flag--auto flag--small u-mb-\" tabindex=\"0\" disabled>\n      <div class=\"flag__img\">\n        {{ko-avatar avatar=member.avatar}}\n      </div>\n      <div class=\"flag__body\">\n        I can't open the internet.\n        <p class=\"t-small t-caption\">Samantha Jones</p>\n      </div>\n    </div>\n    <div class=\"flag flag--auto flag--small u-mb-\" tabindex=\"0\">\n      <div class=\"flag__img\">\n        {{ko-avatar avatar=member.avatar}}\n      </div>\n      <div class=\"flag__body\">\n        I can't open the internet.\n        <p class=\"t-small t-caption\">Samantha Jones</p>\n      </div>\n    </div>\n    <div class=\"flag flag--auto flag--small\" tabindex=\"0\">\n      <div class=\"flag__img\">\n        {{ko-avatar avatar=member.avatar}}\n      </div>\n      <div class=\"flag__body\">\n        I can't open the internet.\n        <p class=\"t-small t-caption\">Samantha Jones</p>\n      </div>\n    </div>\n    </div>");
+          var el1 = dom.createElement("i");
+          dom.setAttribute(el1,"class","ko-agent-dropdown__add-icon i-plus i-size-18");
           dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n");
           dom.appendChild(el0, el1);
           return el0;
         },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1, 1]),1,1);
-          return morphs;
-        },
+        buildRenderNodes: function buildRenderNodes() { return []; },
         statements: [
-          ["block","each",[["get","navItems",["loc",[null,[24,14],[24,22]]]]],[],0,null,["loc",[null,[24,6],[31,15]]]]
+
         ],
         locals: [],
-        templates: [child0]
+        templates: []
       };
     }());
     return {
@@ -14026,8 +14048,8 @@ define('frontend-cp/components/ko-agent-dropdown/template', ['exports'], functio
             "column": 0
           },
           "end": {
-            "line": 70,
-            "column": 0
+            "line": 30,
+            "column": 19
           }
         },
         "moduleName": "frontend-cp/components/ko-agent-dropdown/template.hbs"
@@ -14037,39 +14059,19 @@ define('frontend-cp/components/ko-agent-dropdown/template', ['exports'], functio
       hasRendered: false,
       buildFragment: function buildFragment(dom) {
         var el0 = dom.createDocumentFragment();
-        var el1 = dom.createElement("button");
-        dom.setAttribute(el1,"type","button");
-        dom.setAttribute(el1,"tabindex","0");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createElement("div");
-        dom.setAttribute(el1,"tabindex","-1");
-        dom.setAttribute(el1,"role","menu");
-        var el2 = dom.createTextNode("\n");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createComment("");
-        dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
+        var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var element2 = dom.childAt(fragment, [0]);
-        var element3 = dom.childAt(fragment, [2]);
-        var morphs = new Array(4);
-        morphs[0] = dom.createAttrMorph(element2, 'class');
-        morphs[1] = dom.createElementMorph(element2);
-        morphs[2] = dom.createAttrMorph(element3, 'class');
-        morphs[3] = dom.createMorphAt(element3,1,1);
+        var morphs = new Array(1);
+        morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+        dom.insertBoundary(fragment, 0);
+        dom.insertBoundary(fragment, null);
         return morphs;
       },
       statements: [
-        ["attribute","class",["concat",["ko-agent-dropdown__nav-new button i-plus i-size-18",["subexpr","if",[["get","isExpanded",["loc",[null,[1,97],[1,107]]]]," is-active"],[],["loc",[null,[1,92],[1,122]]]]]]],
-        ["element","action",["toggleDropdown"],[],["loc",[null,[1,124],[1,151]]]],
-        ["attribute","class",["concat",["ko-agent-dropdown__drop box-container ",["subexpr","unless",[["get","isExpanded",["loc",[null,[2,59],[2,69]]]],"u-hidden"],[],["loc",[null,[2,50],[2,82]]]]]]],
-        ["block","if",[["get","selectedTab",["loc",[null,[3,8],[3,19]]]]],[],0,1,["loc",[null,[3,2],[68,9]]]]
+        ["block","basic-dropdown",[],["renderInPlace",true,"dropdownClass","ko-agent-dropdown__drop","onClose",["subexpr","action",["reset"],[],["loc",[null,[1,85],[1,101]]]]],0,1,["loc",[null,[1,0],[30,19]]]]
       ],
       locals: [],
       templates: [child0, child1]
@@ -71281,7 +71283,7 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
             },
             "end": {
               "line": 9,
-              "column": 76
+              "column": 82
             }
           },
           "moduleName": "frontend-cp/session/template.hbs"
@@ -72270,7 +72272,7 @@ define('frontend-cp/session/template', ['exports'], function (exports) {
       },
       statements: [
         ["block","link-to",["session.agent.cases.index"],["class","nav-main__item i-inbox"],0,null,["loc",[null,[8,10],[8,93]]]],
-        ["block","link-to",["session.agent.users"],["class","nav-main__item i-person"],1,null,["loc",[null,[9,10],[9,88]]]],
+        ["block","link-to",["session.agent.users.index"],["class","nav-main__item i-person"],1,null,["loc",[null,[9,10],[9,94]]]],
         ["block","each",[["get","tabStore.tabs",["loc",[null,[16,18],[16,31]]]]],[],2,null,["loc",[null,[16,10],[51,19]]]],
         ["content","ko-agent-dropdown",["loc",[null,[54,6],[54,27]]]],
         ["inline","ko-universal-search",[],["searchResults",["subexpr","@mut",[["get","searchResults",["loc",[null,[59,46],[59,59]]]]],[],[]],"searchingChanged","onSearchingChanged"],["loc",[null,[59,10],[59,99]]]],
@@ -72684,17 +72686,17 @@ define('frontend-cp/tests/acceptance/agent/cases/create-test', ['frontend-cp/tes
   qunit.test('Creating a case using the "+" button in the main header', function (assert) {
     visit('/agent');
 
-    click('.ko-agent-dropdown__nav-new');
+    nativeClick('.ko-agent-dropdown__add-icon');
 
     andThen(function () {
       assert.equal(find('.ko-agent-dropdown__drop').is(':visible'), true, '"+" Dropdown content should be visible');
-      click('.ko-agent-dropdown__drop ul li:eq(0) .ko-agent-dropdown__link');
+      nativeClick('.ko-agent-dropdown__nav-item:eq(0)');
       fillIn('.ko-agent-dropdown-create-case__input input', 'Barney');
     });
 
     andThen(function () {
-      click('.ko-agent-dropdown-create-case__input .ko-dropdown_list__item');
-      click('.ko-agent-dropdown__drop .button--primary');
+      nativeClick('.ko-agent-dropdown-create-case__input .ko-dropdown_list__item');
+      nativeClick('.ko-agent-dropdown__drop .button--primary');
     });
 
     andThen(function () {
@@ -72707,7 +72709,7 @@ define('frontend-cp/tests/acceptance/agent/cases/create-test', ['frontend-cp/tes
       assert.equal(find('.nav-tabs__item').length, 1, 'There is only one tab');
       assert.equal(find('.nav-tabs__item.active').length, 1, 'That tab is active');
       assert.equal(find('.nav-tabs__item').text().trim(), 'New case', 'That tab belongs to the case being created');
-      click('.ko-case-content__header-title .editable-text__text');
+      nativeClick('.ko-case-content__header-title .editable-text__text');
       fillIn('.ko-case-content__header-title input', 'No internet');
       triggerEvent('.ko-case-content__header-title input', 'input');
     });
@@ -72715,9 +72717,9 @@ define('frontend-cp/tests/acceptance/agent/cases/create-test', ['frontend-cp/tes
     andThen(function () {
       find('.ko-case-content__header-title input').trigger($.Event('keydown', { which: 13, keyCode: 13 }));
       fillIn('.ko-text-editor__text-area', 'I press the button and the bomb explodes');
-      click('.info-bar-item:contains("Case form") .dropdown');
-      click('.info-bar-item:contains("Case form") .dropdown-menu__item:contains("Internet Related Issue")');
-      click('.ko-case-content__info-bar .button--primary');
+      nativeClick('.info-bar-item:contains("Case form") .dropdown');
+      nativeClick('.info-bar-item:contains("Case form") .dropdown-menu__item:contains("Internet Related Issue")');
+      nativeClick('.ko-case-content__info-bar .button--primary');
     });
 
     andThen(function () {
@@ -72791,12 +72793,12 @@ define('frontend-cp/tests/acceptance/agent/login/reset-password-test', ['fronten
     visit('/agent/login');
 
     andThen(function () {
-      click('a:contains("Forgot password?")');
+      nativeClick('a:contains("Forgot password?")');
     });
 
     andThen(function () {
       fillIn('input[name=email]', 'test@kayako.com');
-      click('button:contains("Reset your password")');
+      nativeClick('button:contains("Reset your password")');
     });
 
     andThen(function () {
@@ -72838,7 +72840,7 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['ember
     andThen(function () {
       assert.equal(find('.ko-identities__list--emails .ko-dropdown_list__item:eq(0)').text().trim(), 'Remove identity', 'The identity can be removed');
       assert.equal(find('.ko-identities__list--emails .ko-dropdown_list__item:eq(1)').text().trim(), 'Validate identity', 'The identity is not validate');
-      click('.ko-identities__list--emails .ko-dropdown_list__item:eq(1)');
+      nativeClick('.ko-identities__list--emails .ko-dropdown_list__item:eq(1)');
     });
 
     andThen(function () {
@@ -72856,7 +72858,7 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['ember
     triggerEvent('[class*=ko-dropdown--container--button]:contains("second@example.com")', 'focusin');
 
     andThen(function () {
-      click('.ko-identities__list--emails .ko-dropdown_list__item:contains("Make primary")');
+      nativeClick('.ko-identities__list--emails .ko-dropdown_list__item:contains("Make primary")');
     });
 
     andThen(function () {
@@ -72874,7 +72876,7 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['ember
     triggerEvent('[class*=ko-dropdown--container--button]:contains("second@example.com")', 'focusin');
 
     andThen(function () {
-      click('.ko-identities__list--emails .ko-dropdown_list__item:contains("Remove identity")');
+      nativeClick('.ko-identities__list--emails .ko-dropdown_list__item:contains("Remove identity")');
     });
 
     andThen(function () {
@@ -72888,9 +72890,9 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['ember
     triggerEvent('[class*=ko-dropdown--container--button]:contains("Add new")', 'focusin');
 
     andThen(function () {
-      click('.ko-identities__create-dropdown .ko-dropdown_list__item:contains("Email")');
+      nativeClick('.ko-identities__create-dropdown .ko-dropdown_list__item:contains("Email")');
       fillIn('.ko-identities_form input', 'newemail@example.com');
-      click('.ko-identities_form button:contains("Save")');
+      nativeClick('.ko-identities_form button:contains("Save")');
     });
 
     andThen(function () {
@@ -72903,9 +72905,9 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['ember
     triggerEvent('[class*=ko-dropdown--container--button]:contains("Add new")', 'focusin');
 
     andThen(function () {
-      click('.ko-identities__create-dropdown .ko-dropdown_list__item:contains("Email")');
+      nativeClick('.ko-identities__create-dropdown .ko-dropdown_list__item:contains("Email")');
       fillIn('.ko-identities_form input', 'wrong@example');
-      click('.ko-identities_form button:contains("Save")');
+      nativeClick('.ko-identities_form button:contains("Save")');
     });
 
     andThen(function () {
@@ -72938,7 +72940,7 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['ember
     triggerEvent('[class*=ko-dropdown--container--button]:contains("@second")', 'focusin');
 
     andThen(function () {
-      click('.ko-identities__list--twitters .ko-dropdown_list__item:contains("Make primary")');
+      nativeClick('.ko-identities__list--twitters .ko-dropdown_list__item:contains("Make primary")');
     });
 
     andThen(function () {
@@ -72956,7 +72958,7 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['ember
     triggerEvent('[class*=ko-dropdown--container--button]:contains("@second")', 'focusin');
 
     andThen(function () {
-      click('.ko-identities__list--twitters .ko-dropdown_list__item:contains("Remove identity")');
+      nativeClick('.ko-identities__list--twitters .ko-dropdown_list__item:contains("Remove identity")');
     });
 
     andThen(function () {
@@ -72970,9 +72972,9 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['ember
     triggerEvent('[class*=ko-dropdown--container--button]:contains("Add new")', 'focusin');
 
     andThen(function () {
-      click('.ko-identities__create-dropdown .ko-dropdown_list__item:contains("Twitter")');
+      nativeClick('.ko-identities__create-dropdown .ko-dropdown_list__item:contains("Twitter")');
       fillIn('.ko-identities_form input', '@miguelcamba');
-      click('.ko-identities_form button:contains("Save")');
+      nativeClick('.ko-identities_form button:contains("Save")');
     });
 
     andThen(function () {
@@ -73001,7 +73003,7 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['ember
     triggerEvent('[class*=ko-dropdown--container--button]:contains("Mary")', 'focusin');
 
     andThen(function () {
-      click('.ko-identities__list--facebooks .ko-dropdown_list__item:contains("Make primary")');
+      nativeClick('.ko-identities__list--facebooks .ko-dropdown_list__item:contains("Make primary")');
     });
 
     andThen(function () {
@@ -73019,7 +73021,7 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['ember
     triggerEvent('[class*=ko-dropdown--container--button]:contains("Mary")', 'focusin');
 
     andThen(function () {
-      click('.ko-identities__list--facebooks .ko-dropdown_list__item:contains("Remove identity")');
+      nativeClick('.ko-identities__list--facebooks .ko-dropdown_list__item:contains("Remove identity")');
     });
 
     andThen(function () {
@@ -73050,7 +73052,7 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['ember
     triggerEvent('[class*=ko-dropdown--container--button]:contains("+44 2222 222222")', 'focusin');
 
     andThen(function () {
-      click('.ko-identities__list--phones .ko-dropdown_list__item:contains("Make primary")');
+      nativeClick('.ko-identities__list--phones .ko-dropdown_list__item:contains("Make primary")');
     });
 
     andThen(function () {
@@ -73068,7 +73070,7 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['ember
     triggerEvent('[class*=ko-dropdown--container--button]:contains("+44 2222 222222")', 'focusin');
 
     andThen(function () {
-      click('.ko-identities__list--phones .ko-dropdown_list__item:contains("Remove identity")');
+      nativeClick('.ko-identities__list--phones .ko-dropdown_list__item:contains("Remove identity")');
     });
 
     andThen(function () {
@@ -73082,9 +73084,9 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['ember
     triggerEvent('[class*=ko-dropdown--container--button]:contains("Add new")', 'focusin');
 
     andThen(function () {
-      click('.ko-identities__create-dropdown .ko-dropdown_list__item:contains("Phone")');
+      nativeClick('.ko-identities__create-dropdown .ko-dropdown_list__item:contains("Phone")');
       fillIn('.ko-identities_form input', '+44 (7746) 123-456');
-      click('.ko-identities_form button:contains("Save")');
+      nativeClick('.ko-identities_form button:contains("Save")');
     });
 
     andThen(function () {
@@ -73375,7 +73377,7 @@ define('frontend-cp/tests/acceptance/agent/user/user-menu-test', function () {
     });
 
     andThen(function() {
-      click("div[class*='ko-user-menu-'] div[class*='ko-dropdown--container'] li:nth-of-type(3)");
+      nativeClick("div[class*='ko-user-menu-'] div[class*='ko-dropdown--container'] li:nth-of-type(3)");
     });
 
     andThen(function() {
@@ -73813,6 +73815,72 @@ define('frontend-cp/tests/helpers/logout', ['exports', 'ember'], function (expor
   });
 
 });
+define('frontend-cp/tests/helpers/native-click', ['exports', 'ember', 'frontend-cp/tests/helpers/native-focus'], function (exports, Ember, focus) {
+
+  'use strict';
+
+  var run = Ember['default'].run;
+
+  function triggerMouseEvent(node, eventType) {
+    var clickEvent = document.createEvent('MouseEvents');
+    clickEvent.initEvent(eventType, true, true);
+    node.dispatchEvent(clickEvent);
+  }
+
+  exports['default'] = Ember['default'].Test.registerAsyncHelper('nativeClick', function (app, selector, context) {
+    var $el = app.testHelpers.findWithAssert(selector, context);
+    var el = $el[0];
+
+    run(function () {
+      return triggerMouseEvent(el, 'mousedown');
+    });
+
+    focus['default'](el);
+
+    run(function () {
+      return triggerMouseEvent(el, 'mouseup');
+    });
+    run(function () {
+      return triggerMouseEvent(el, 'click');
+    });
+
+    return app.testHelpers.wait();
+  });
+
+});
+define('frontend-cp/tests/helpers/native-focus', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  function fireEvent(node, eventType) {
+    var event = document.createEvent('HTMLEvents');
+    event.initEvent(eventType, true, true);
+    node.dispatchEvent(event);
+  }
+
+  exports['default'] = function (el) {
+    if (!el) {
+      return;
+    }
+    var $el = $(el);
+    if ($(el).is(':input, [contenteditable=true]')) {
+      var type = $el.prop('type');
+      if (type !== 'checkbox' && type !== 'radio' && type !== 'hidden') {
+        Ember['default'].run(el, function () {
+          // Firefox does not trigger the `focusin` event if the window
+          // does not have focus. If the document doesn't have focus just
+          // use trigger('focusin') instead.
+          if (!document.hasFocus || document.hasFocus()) {
+            this.focus();
+          } else {
+            fireEvent(this, 'focusin');
+          }
+        });
+      }
+    }
+  };
+
+});
 define('frontend-cp/tests/helpers/qunit', ['exports', 'ember', 'qunit', 'ember-qunit/qunit-module', 'ember-test-helpers', 'ember-qunit/test', 'frontend-cp/tests/helpers/start-app', 'frontend-cp/tests/helpers/format-date', 'frontend-cp/tests/helpers/format-time', 'frontend-cp/tests/helpers/format-relative', 'frontend-cp/tests/helpers/format-number', 'frontend-cp/tests/helpers/format-html-message', 'frontend-cp/tests/helpers/format-message', 'frontend-cp/tests/helpers/intl-get', 'ember-truth-helpers/helpers/and', 'ember-truth-helpers/helpers/equal', 'ember-truth-helpers/helpers/not', 'ember-truth-helpers/helpers/or', 'ember-truth-helpers/utils/register-helper', 'ember-get-helper/helpers/get-glimmer', 'ember-get-helper/utils/register-helper', 'frontend-cp/tests/assertions/properties-equal'], function (exports, Ember, QUnit, qunit_module, ember_test_helpers, test, startApp, FormatDate, FormatTime, FormatRelative, FormatNumber, FormatHtmlMessage, FormatMessage, IntlGet, and, equal, not, or, register_helper, getHelper, utils__register_helper, propertiesEqualAssertion) {
 
   'use strict';
@@ -73924,7 +73992,7 @@ define('frontend-cp/tests/helpers/setup-mirage-for-integration', ['exports', 'fr
   ;
 
 });
-define('frontend-cp/tests/helpers/start-app', ['exports', 'ember', 'frontend-cp/app', 'frontend-cp/config/environment', 'frontend-cp/tests/helpers/login', 'frontend-cp/tests/helpers/use-default-scenario', 'frontend-cp/tests/helpers/logout'], function (exports, Ember, Application, config, login, useDefaultScenario, logout) {
+define('frontend-cp/tests/helpers/start-app', ['exports', 'ember', 'frontend-cp/app', 'frontend-cp/config/environment', 'frontend-cp/tests/helpers/login', 'frontend-cp/tests/helpers/native-click', 'frontend-cp/tests/helpers/use-default-scenario', 'frontend-cp/tests/helpers/logout'], function (exports, Ember, Application, config, login, nativeClick, useDefaultScenario, logout) {
 
   'use strict';
 
@@ -74009,107 +74077,6 @@ define('frontend-cp/tests/integration/components/ko-address/component-test', ['e
     })()));
 
     assert.equal(this.$().text().trim(), '');
-  });
-
-});
-define('frontend-cp/tests/integration/components/ko-agent-dropdown/component-test', ['frontend-cp/tests/helpers/qunit'], function (qunit) {
-
-  'use strict';
-
-  qunit.moduleForComponent('ko-agent-dropdown', 'Integration | Component | ko agent dropdown', {
-    integration: true
-  });
-
-  qunit.test('it renders', function (assert) {
-    assert.expect(0);
-
-    this.render(Ember.HTMLBars.template((function () {
-      return {
-        meta: {
-          'revision': 'Ember@1.13.10',
-          'loc': {
-            'source': null,
-            'start': {
-              'line': 1,
-              'column': 0
-            },
-            'end': {
-              'line': 3,
-              'column': 2
-            }
-          }
-        },
-        arity: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode('\n   ');
-          dom.appendChild(el0, el1);
-          var el1 = dom.createComment('');
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode('\n  ');
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
-          return morphs;
-        },
-        statements: [['content', 'ko-agent-dropdown', ['loc', [null, [2, 3], [2, 24]]]]],
-        locals: [],
-        templates: []
-      };
-    })()));
-  });
-
-  qunit.test('the dropdown can be expanded by mouse', function (assert) {
-    assert.expect(1);
-
-    this.render(Ember.HTMLBars.template((function () {
-      return {
-        meta: {
-          'revision': 'Ember@1.13.10',
-          'loc': {
-            'source': null,
-            'start': {
-              'line': 1,
-              'column': 0
-            },
-            'end': {
-              'line': 3,
-              'column': 2
-            }
-          }
-        },
-        arity: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode('\n    ');
-          dom.appendChild(el0, el1);
-          var el1 = dom.createComment('');
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode('\n  ');
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
-          return morphs;
-        },
-        statements: [['content', 'ko-agent-dropdown', ['loc', [null, [2, 4], [2, 25]]]]],
-        locals: [],
-        templates: []
-      };
-    })()));
-
-    this.$('.ko-agent-dropdown__nav-new').click();
-
-    assert.equal(this.$('ul li:first:visible').text().trim(), 'Case', 'the first menu item');
   });
 
 });
@@ -74452,14 +74419,13 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
   qunit.test('it submits the form', function (assert) {
     var _this = this;
 
-    assert.expect(19);
+    assert.expect(17);
     var done = assert.async();
 
-    var onSubmit = sinon['default'].spy();
+    this.dropdown = { close: function close() {} };
     var onCreate = sinon['default'].spy();
     var onCancel = sinon['default'].spy();
 
-    this.on('onSubmit', onSubmit);
     this.on('onCancel', onCancel);
     this.on('onCreate', onCreate);
 
@@ -74495,7 +74461,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [['inline', 'ko-agent-dropdown/create-user', [], ['onSubmit', ['subexpr', 'action', ['onSubmit'], [], ['loc', [null, [2, 15], [2, 34]]]], 'onCreate', ['subexpr', 'action', ['onCreate'], [], ['loc', [null, [3, 15], [3, 34]]]], 'onCancel', ['subexpr', 'action', ['onCancel'], [], ['loc', [null, [4, 15], [4, 34]]]]], ['loc', [null, [1, 0], [5, 4]]]]],
+        statements: [['inline', 'ko-agent-dropdown/create-user', [], ['dropdown', ['subexpr', '@mut', [['get', 'dropdown', ['loc', [null, [2, 15], [2, 23]]]]], [], []], 'onCreate', ['subexpr', 'action', ['onCreate'], [], ['loc', [null, [3, 15], [3, 34]]]], 'onCancel', ['subexpr', 'action', ['onCancel'], [], ['loc', [null, [4, 15], [4, 34]]]]], ['loc', [null, [1, 0], [5, 4]]]]],
         locals: [],
         templates: []
       };
@@ -74516,7 +74482,6 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
     fillIn($emailInputElement, 'tim.kendrick@kayako.com');
 
     Ember['default'].run(function () {
-      assert.equal(onSubmit.callCount, 0);
 
       $formElement.submit();
     });
@@ -74529,7 +74494,6 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
       assert.equal($cancelButtonElement.length, 0);
       assert.equal($loaderElement.length, 1);
 
-      assert.equal(onSubmit.callCount, 1);
       assert.equal(onCreate.callCount, 0);
       assert.equal(onCancel.callCount, 0);
     });
@@ -74571,80 +74535,6 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
           id: 4
         }
       });
-
-      done();
-    }, 100); // Delay due to inaccurate `createMockStore` behaviour (see below)
-  });
-
-  qunit.test('it handles submit errors', function (assert) {
-    assert.expect(3);
-    var done = assert.async();
-
-    var onCreate = sinon['default'].spy();
-    var onSubmit = sinon['default'].spy();
-    var onCancel = sinon['default'].spy();
-
-    this.on('onCreate', onCreate);
-    this.on('onSubmit', onSubmit);
-    this.on('onCancel', onCancel);
-
-    this.render(Ember['default'].HTMLBars.template((function () {
-      return {
-        meta: {
-          'revision': 'Ember@1.13.10',
-          'loc': {
-            'source': null,
-            'start': {
-              'line': 1,
-              'column': 0
-            },
-            'end': {
-              'line': 5,
-              'column': 4
-            }
-          }
-        },
-        arity: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createComment('');
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-          dom.insertBoundary(fragment, 0);
-          dom.insertBoundary(fragment, null);
-          return morphs;
-        },
-        statements: [['inline', 'ko-agent-dropdown/create-user', [], ['onSubmit', ['subexpr', 'action', ['onSubmit'], [], ['loc', [null, [2, 15], [2, 34]]]], 'onCreate', ['subexpr', 'action', ['onCreate'], [], ['loc', [null, [3, 15], [3, 34]]]], 'onCancel', ['subexpr', 'action', ['onCancel'], [], ['loc', [null, [4, 15], [4, 34]]]]], ['loc', [null, [1, 0], [5, 4]]]]],
-        locals: [],
-        templates: []
-      };
-    })()));
-
-    var $formElement = this.$('form');
-    var $nameInputElement = getFormControl($formElement, 'full_name');
-    var $emailInputElement = getFormControl($formElement, 'email');
-
-    fillIn($nameInputElement, 'ERROR');
-    fillIn($emailInputElement, 'tim.kendrick@kayako.com');
-
-    Ember['default'].run(function () {
-      $formElement.submit();
-    });
-
-    Ember['default'].run.later(function () {
-      assert.equal(onCreate.callCount, 0);
-
-      var $cancelButtonElement = getFormControl($formElement, 'cancel');
-      var $loaderElement = $formElement.find('.ko-form_buttons__loader');
-
-      assert.equal($cancelButtonElement.length, 1);
-      assert.equal($loaderElement.length, 0);
 
       done();
     }, 100); // Delay due to inaccurate `createMockStore` behaviour (see below)
@@ -81231,7 +81121,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"disabled":false,"logEvents":false,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+a7ecc53a"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"disabled":false,"logEvents":false,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+9c6398ff"});
 }
 
 /* jshint ignore:end */
