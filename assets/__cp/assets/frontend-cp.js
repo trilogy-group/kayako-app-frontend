@@ -67575,7 +67575,7 @@ define('frontend-cp/session/styleguide/template', ['exports'], function (exports
             "column": 0
           },
           "end": {
-            "line": 1485,
+            "line": 1484,
             "column": 0
           }
         },
@@ -68388,7 +68388,7 @@ define('frontend-cp/session/styleguide/template', ['exports'], function (exports
         var el5 = dom.createTextNode("\n\n        ");
         dom.appendChild(el4, el5);
         var el5 = dom.createElement("code");
-        var el6 = dom.createTextNode("\n.alert {\n  z-index: z('alert');\n}\n        ");
+        var el6 = dom.createTextNode("\n.alert {\n  z-index: $z-alert;\n}\n        ");
         dom.appendChild(el5, el6);
         dom.appendChild(el4, el5);
         var el5 = dom.createTextNode("\n\n        ");
@@ -68401,7 +68401,7 @@ define('frontend-cp/session/styleguide/template', ['exports'], function (exports
         var el5 = dom.createTextNode("\n\n        ");
         dom.appendChild(el4, el5);
         var el5 = dom.createElement("code");
-        var el6 = dom.createTextNode("\n.alert {\n  z-index: z('modal', 'editor');\n}\n        ");
+        var el6 = dom.createTextNode("\n.alert {\n  z-index: $z-modal-editor;\n}\n        ");
         dom.appendChild(el5, el6);
         dom.appendChild(el4, el5);
         var el5 = dom.createTextNode("\n      ");
@@ -71169,7 +71169,7 @@ define('frontend-cp/session/styleguide/template', ['exports'], function (exports
         var el2 = dom.createTextNode("\n");
         dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n\n");
+        var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
         return el0;
       },
@@ -81127,7 +81127,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"disabled":false,"logEvents":false,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+c478d8ec"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"disabled":false,"logEvents":false,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+c85f996c"});
 }
 
 /* jshint ignore:end */
