@@ -510,7 +510,7 @@ define('frontend-cp/adapters/identity-email', ['exports', 'frontend-cp/adapters/
 
   exports['default'] = ApplicationAdapter['default'].extend({
     pathForType: function pathForType() {
-      return 'identities/email';
+      return 'identities/emails';
     }
   });
 
@@ -532,7 +532,7 @@ define('frontend-cp/adapters/identity-phone', ['exports', 'frontend-cp/adapters/
 
   exports['default'] = ApplicationAdapter['default'].extend({
     pathForType: function pathForType() {
-      return 'identities/phone';
+      return 'identities/phones';
     }
   });
 
@@ -691,17 +691,6 @@ define('frontend-cp/adapters/session', ['exports', 'ember', 'frontend-cp/adapter
 
       return headers;
     })
-  });
-
-});
-define('frontend-cp/adapters/slack-identity', ['exports', 'frontend-cp/adapters/application'], function (exports, ApplicationAdapter) {
-
-  'use strict';
-
-  exports['default'] = ApplicationAdapter['default'].extend({
-    pathForType: function pathForType() {
-      return 'identities/slack';
-    }
   });
 
 });
@@ -18071,8 +18060,8 @@ define('frontend-cp/components/ko-case-content/template', ['exports'], function 
             return morphs;
           },
           statements: [
-            ["block","if",[["subexpr","eq",[["get","post.constructor.typeKey",["loc",[null,[83,24],[83,48]]]],"post"],[],["loc",[null,[83,20],[83,56]]]]],[],0,null,["loc",[null,[83,14],[85,21]]]],
-            ["block","if",[["subexpr","or",[["subexpr","eq",[["get","post.constructor.typeKey",["loc",[null,[86,28],[86,52]]]],"activity"],[],["loc",[null,[86,24],[86,64]]]],["subexpr","eq",[["get","post.constructor.typeKey",["loc",[null,[86,69],[86,93]]]],"event"],[],["loc",[null,[86,65],[86,102]]]]],[],["loc",[null,[86,20],[86,103]]]]],[],1,null,["loc",[null,[86,14],[88,21]]]]
+            ["block","if",[["subexpr","eq",[["get","post.constructor.modelName",["loc",[null,[83,24],[83,50]]]],"post"],[],["loc",[null,[83,20],[83,58]]]]],[],0,null,["loc",[null,[83,14],[85,21]]]],
+            ["block","if",[["subexpr","or",[["subexpr","eq",[["get","post.constructor.modelName",["loc",[null,[86,28],[86,54]]]],"activity"],[],["loc",[null,[86,24],[86,66]]]],["subexpr","eq",[["get","post.constructor.modelName",["loc",[null,[86,71],[86,97]]]],"event"],[],["loc",[null,[86,67],[86,106]]]]],[],["loc",[null,[86,20],[86,107]]]]],[],1,null,["loc",[null,[86,14],[88,21]]]]
           ],
           locals: ["post"],
           templates: [child0, child1]
@@ -28352,34 +28341,29 @@ define('frontend-cp/components/ko-identities/component', ['exports', 'ember'], f
 
     // CPs
     emailIdentities: computed.filterBy('parent.emails', 'isNew', false),
-    twitterIdentities: computed.filterBy('parent.twitters', 'isNew', false),
+    twitterIdentities: computed.filterBy('parent.twitter', 'isNew', false),
     phoneIdentities: computed.filterBy('parent.phones', 'isNew', false),
-    facebookIdentities: computed.filterBy('parent.facebooks', 'isNew', false),
+    facebookIdentities: computed.filterBy('parent.facebook', 'isNew', false),
 
     // Actions
     actions: {
       makePrimaryIdentity: function makePrimaryIdentity(identity) {
         var _this = this;
 
-        var adapter = this.container.lookup('adapter:application');
-        var identityId = identity.get('id');
-        var url = undefined;
         var identities = undefined;
         if (identity.constructor.modelName === 'identity-email') {
-          url = adapter.namespace + '/identities/emails/' + identityId + '/primary';
           identities = this.get('parent.emails');
         } else if (identity.constructor.modelName === 'identity-twitter') {
-          url = adapter.namespace + '/identities/twitter/' + identityId + '/primary';
-          identities = this.get('parent.twitters');
+          identities = this.get('parent.twitter');
         } else if (identity.constructor.modelName === 'identity-phone') {
-          url = adapter.namespace + '/identities/phones/' + identityId + '/primary';
           identities = this.get('parent.phones');
         } else if (identity.constructor.modelName === 'identity-facebook') {
-          url = adapter.namespace + '/identities/facebook/' + identityId + '/primary';
-          identities = this.get('parent.facebooks');
+          identities = this.get('parent.facebook');
         }
-        adapter.ajax(url, 'PUT').then(function (data) {
-          return _this._handleMarkAsPrimaryResponse(identities, identity, data);
+
+        identity.set('isPrimary', true);
+        identity.save().then(function (identity) {
+          return _this._handleMarkAsPrimaryResponse(identities, identity);
         });
       },
 
@@ -28390,7 +28374,7 @@ define('frontend-cp/components/ko-identities/component', ['exports', 'ember'], f
           (function () {
             var store = _this2.get('store');
             var adapter = _this2.container.lookup('adapter:application');
-            var url = adapter.namespace + '/identities/emails/' + identity.get('id') + '/validate';
+            var url = adapter.namespace + '/identities/emails/' + identity.get('id') + '/send_verification_email';
             adapter.ajax(url, 'PUT').then(function (data) {
               return store.pushPayload('identity-email', data);
             });
@@ -28425,7 +28409,7 @@ define('frontend-cp/components/ko-identities/component', ['exports', 'ember'], f
       saveIdentity: function saveIdentity(identity) {
         var _this3 = this;
 
-        identity.set('parent', this.get('parent'));
+        identity.set(this.get('parent').constructor.modelName, this.get('parent'));
         return identity.save().then(function () {
           return _this3.set('newIdentity', null);
         }, function (e) {
@@ -28450,18 +28434,20 @@ define('frontend-cp/components/ko-identities/component', ['exports', 'ember'], f
     // Due to this, we need to push to the store the updates in the other identitities. That way
     // those identies are modified without making them as dirty for ember-data.
     //
-    _handleMarkAsPrimaryResponse: function _handleMarkAsPrimaryResponse(identitities, updatedIdentity, payload) {
+    _handleMarkAsPrimaryResponse: function _handleMarkAsPrimaryResponse(identities, updatedIdentity) {
       var store = this.get('store');
       var resource_type = underscore(updatedIdentity.constructor.modelName);
 
-      identitities.forEach(function (identity) {
-        var nonPrimaryPayload = {
-          status: 200,
-          data: { id: identity.get('id'), resource_type: resource_type, is_primary: false },
-          resource: resource_type
-        };
-        var data = updatedIdentity === identity ? payload : nonPrimaryPayload;
-        store.pushPayload(dasherize(updatedIdentity.constructor.modelName), data);
+      identities.forEach(function (identity) {
+        if (updatedIdentity !== identity) {
+          var nonPrimaryPayload = {
+            status: 200,
+            data: { id: identity.get('id'), resource_type: resource_type, is_primary: false },
+            resource: resource_type
+          };
+
+          store.pushPayload(dasherize(updatedIdentity.constructor.modelName), nonPrimaryPayload);
+        }
       });
     }
   });
@@ -51353,15 +51339,6 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('/api/v1/users/:id/identities/slack', function (db) {
-      return {
-        status: 200,
-        data: [],
-        resource: 'identity_slack',
-        total_count: 0
-      };
-    });
-
     this.get('/api/v1/users/:id/events', function (db, request) {
       var since = request.queryParams.since;
       var until = request.queryParams.until;
@@ -51384,7 +51361,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.post('/api/v1/users/:user_id/identities/emails', function (db, req) {
+    this.post('/api/v1/identities/emails', function (db, req) {
       var data = JSON.parse(req.requestBody);
       delete data.parent_id;
       delete data.parentType;
@@ -51398,21 +51375,21 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
         resource: identity.resource_type
       };
     });
-    this.post('/api/v1/users/:user_id/identities/twitter', function (db, req) {
+    this.post('/api/v1/identities/twitter', function (db, req) {
       var data = JSON.parse(req.requestBody);
       delete data.parent_id;
       delete data.parentType;
       data.resource_type = 'identity_twitter';
       var user = db.users.find(req.params.user_id);
       var identity = db['identity-twitters'].insert(data);
-      db.users.update(user.id, { twitters: [identity].concat(user.twitters) });
+      db.users.update(user.id, { twitter: [identity].concat(user.twitter) });
       return {
         status: 200,
         data: identity,
         resource: identity.resource_type
       };
     });
-    this.post('/api/v1/users/:user_id/identities/phones', function (db, req) {
+    this.post('/api/v1/identities/phones', function (db, req) {
       var data = JSON.parse(req.requestBody);
       delete data.parent_id;
       delete data.parentType;
@@ -51427,24 +51404,19 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.put('/api/v1/identities/emails/:id/primary', function (db, req) {
-      var identity = db['identity-emails'].find(req.params.id);
-      var user = db.users.toArray().find(function (u) {
-        return u.emails.some(function (e) {
-          return e.id === identity.id;
-        });
-      });
-      user.emails.forEach(function (e) {
-        db['identity-emails'].update(e.id, { is_primary: e.id === identity.id });
-      });
+    this.put('/api/v1/identities/emails/:id', function (db, req) {
+      var id = req.params.id;
+      var attrs = JSON.parse(req.requestBody);
+      var record = db['identity-emails'].update(id, attrs);
+
       return {
         'status': 200,
-        'data': db['identity-emails'].find(req.params.id),
+        'data': record,
         'resource': 'identity_email'
       };
     });
 
-    this.put('/api/v1/identities/emails/:id/validate', function (db, req) {
+    this.put('/api/v1/identities/emails/:id/send_verification_email', function (db, req) {
       return {
         'status': 200,
         'data': db['identity-emails'].update(req.params.id, { is_validated: true }),
@@ -51456,78 +51428,44 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       return { 'status': 200 };
     });
 
-    this.put('/api/v1/identities/twitter/:id/primary', function (db, req) {
-      var identity = db['identity-twitters'].find(req.params.id);
-      var user = db.users.toArray().find(function (u) {
-        return u.twitters.some(function (e) {
-          return e.id === identity.id;
-        });
-      });
-      user.twitters.forEach(function (e) {
-        db['identity-twitters'].update(e.id, { is_primary: e.id === identity.id });
-      });
+    this.put('/api/v1/identities/twitter/:id', function (db, req) {
+      var id = req.params.id;
+      var attrs = JSON.parse(req.requestBody);
+      var record = db['identity-twitters'].update(id, attrs);
+
       return {
         'status': 200,
-        'data': db['identity-twitters'].find(req.params.id),
+        'data': record,
         'resource': 'identity_twitter'
       };
     });
 
-    this.put('/api/v1/identities/phones/:id/primary', function (db, req) {
-      var identity = db['identity-phones'].find(req.params.id);
-      var user = db.users.toArray().find(function (u) {
-        return u.phones.some(function (e) {
-          return e.id === identity.id;
-        });
-      });
-      user.phones.forEach(function (e) {
-        db['identity-phones'].update(e.id, { is_primary: e.id === identity.id });
-      });
+    this.put('/api/v1/identities/phones/:id', function (db, req) {
+      var id = req.params.id;
+      var attrs = JSON.parse(req.requestBody);
+      var record = db['identity-phones'].update(id, attrs);
+
       return {
         'status': 200,
-        'data': db['identity-phones'].find(req.params.id),
+        'data': record,
         'resource': 'identity_phone'
       };
     });
 
-    this.put('/api/v1/identities/facebook/:id/primary', function (db, req) {
-      var identity = db['identity-facebooks'].find(req.params.id);
-      var user = db.users.toArray().find(function (u) {
-        return u.facebooks.some(function (e) {
-          return e.id === identity.id;
-        });
-      });
-      user.facebooks.forEach(function (e) {
-        db['identity-facebooks'].update(e.id, { is_primary: e.id === identity.id });
-      });
+    this.put('/api/v1/identities/facebook/:id', function (db, req) {
+      var id = req.params.id;
+      var attrs = JSON.parse(req.requestBody);
+      var record = db['identity-facebooks'].update(id, attrs);
+
       return {
         'status': 200,
-        'data': db['identity-facebooks'].find(req.params.id),
+        'data': record,
         'resource': 'identity_facebook'
       };
     });
 
-    // This routes are duplicated. Need to fix.
-    this['delete']('/api/v1/users/:user_id/identities/emails/:id', function (db, req) {
-      var user = db.users.find(req.params.user_id);
-      db.users.update(user.id, { emails: user.emails.filter(function (e) {
-          return String(e.id) !== req.params.id;
-        }) });
+    this['delete']('/api/v1/identities/emails/:id', function (db, req) {
       db['identity-emails'].remove(req.params.id);
-      return { status: 200 };
-    });
-
-    this['delete']('/api/v1/identities/email/:id', function (db, req) {
-      db['identity-emails'].remove(req.params.id);
-      return { status: 200 };
-    });
-
-    this['delete']('/api/v1/users/:user_id/identities/twitters/:id', function (db, req) {
-      var user = db.users.find(req.params.user_id);
-      db.users.update(user.id, { emails: user.emails.filter(function (e) {
-          return String(e.id) !== req.params.id;
-        }) });
-      db['identity-twitters'].remove(req.params.id);
       return { status: 200 };
     });
 
@@ -51536,26 +51474,8 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       return { status: 200 };
     });
 
-    this['delete']('/api/v1/users/:user_id/identities/phones/:id', function (db, req) {
-      var user = db.users.find(req.params.user_id);
-      db.users.update(user.id, { emails: user.emails.filter(function (e) {
-          return String(e.id) !== req.params.id;
-        }) });
+    this['delete']('/api/v1/identities/phones/:id', function (db, req) {
       db['identity-phones'].remove(req.params.id);
-      return { status: 200 };
-    });
-
-    this['delete']('/api/v1/identities/phone/:id', function (db, req) {
-      db['identity-phones'].remove(req.params.id);
-      return { status: 200 };
-    });
-
-    this['delete']('/api/v1/users/:user_id/identities/facebooks/:id', function (db, req) {
-      var user = db.users.find(req.params.user_id);
-      db.users.update(user.id, { emails: user.emails.filter(function (e) {
-          return String(e.id) !== req.params.id;
-        }) });
-      db['identity-facebooks'].remove(req.params.id);
       return { status: 200 };
     });
 
@@ -51736,8 +51656,8 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
           field_option: arrayToObjectWithNumberedKeys(db['field-options']),
           identity_email: arrayToObjectWithNumberedKeys(user.emails),
           identity_phone: arrayToObjectWithNumberedKeys(user.phones),
-          identity_twitter: arrayToObjectWithNumberedKeys(user.twitters),
-          identity_facebook: arrayToObjectWithNumberedKeys(user.facebooks),
+          identity_twitter: arrayToObjectWithNumberedKeys(user.twitter),
+          identity_facebook: arrayToObjectWithNumberedKeys(user.facebook),
           role: arrayToObjectWithNumberedKeys(db.roles),
           team: arrayToObjectWithNumberedKeys(user.teams),
           user: arrayToObjectWithNumberedKeys([user]),
@@ -51793,13 +51713,13 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
             return ary.concat(u.emails);
           }, [])),
           identity_twitter: arrayToObjectWithNumberedKeys(users.reduce(function (ary, u) {
-            return ary.concat(u.twitters);
+            return ary.concat(u.twitter);
           }, [])),
           identity_phone: arrayToObjectWithNumberedKeys(users.reduce(function (ary, u) {
             return ary.concat(u.phones);
           }, [])),
           identity_facebook: arrayToObjectWithNumberedKeys(users.reduce(function (ary, u) {
-            return ary.concat(u.facebooks);
+            return ary.concat(u.facebook);
           }, [])),
           role: arrayToObjectWithNumberedKeys(users.reduce(function (ary, u) {
             return ary.concat([u.role]);
@@ -52824,7 +52744,7 @@ define('frontend-cp/mirage/factories/identity-domain', ['exports', 'ember-cli-mi
     created_at: '2015-07-09T15:36:10Z',
     updated_at: '2015-07-09T15:36:10Z',
     resource_type: 'identity_domain',
-    resource_url: 'http://novo/api/index.php?/v1/organizations/1/identities/domains/1'
+    resource_url: 'http://novo/api/index.php?/v1/identities/domains/1'
   });
 
 });
@@ -52842,7 +52762,7 @@ define('frontend-cp/mirage/factories/identity-email', ['exports', 'ember-cli-mir
     // created_at: '2015-07-23T13:36:12Z',
     // updated_at: '2015-07-23T13:36:12Z',
     resource_type: 'identity_email',
-    resource_url: 'http://novo/api/index.php?/v1/users/1/identities/emails/1'
+    resource_url: 'http://novo/api/index.php?/v1/identities/emails/1'
   });
 
 });
@@ -52885,7 +52805,7 @@ define('frontend-cp/mirage/factories/identity-phone', ['exports', 'ember-cli-mir
       return '+44 ' + (4928581320 + i);
     },
     resource_type: 'identity_phone',
-    resource_url: 'http://novo/api/v1/users/5/identities/phones/4',
+    resource_url: 'http://novo/api/v1/identities/phones/4',
     type: 'NONE',
     updated_at: '2015-08-27T11:02:47Z'
   });
@@ -53393,8 +53313,8 @@ define('frontend-cp/mirage/factories/user', ['exports', 'ember-cli-mirage'], fun
     teams: [],
     emails: [],
     phones: [],
-    twitters: [],
-    facebooks: [],
+    twitter: [],
+    facebook: [],
     external_identities: [],
     addresses: [],
     websites: [],
@@ -53494,8 +53414,8 @@ define('frontend-cp/mirage/scenarios/default', ['exports'], function (exports) {
 
     var emails = [server.create('identity-email', { is_primary: true, is_validated: true }), server.create('identity-email', { email: 'altenative@gmail.com', is_validated: true }), server.create('identity-email', { email: 'newemail@example.com', is_validated: false })];
     var phones = [server.create('identity-phone', { is_primary: true }), server.create('identity-phone')];
-    var twitters = [server.create('identity-twitter', { is_primary: true }), server.create('identity-twitter')];
-    var facebooks = [server.create('identity-facebook', { is_primary: true }), server.create('identity-facebook')];
+    var twitter = [server.create('identity-twitter', { is_primary: true }), server.create('identity-twitter')];
+    var facebook = [server.create('identity-facebook', { is_primary: true }), server.create('identity-facebook')];
     var custom_fields = server.createList('user-field-value', 3);
     var metadata = server.create('metadata');
     var defaultUser = server.create('user', {
@@ -53504,8 +53424,8 @@ define('frontend-cp/mirage/scenarios/default', ['exports'], function (exports) {
       teams: teams,
       emails: emails,
       phones: phones,
-      twitters: twitters,
-      facebooks: facebooks,
+      twitter: twitter,
+      facebook: facebook,
       metadata: metadata
     });
 
@@ -53518,11 +53438,11 @@ define('frontend-cp/mirage/scenarios/default', ['exports'], function (exports) {
         // server.create('identity-phone', { is_primary: true }),
         // server.create('identity-phone')
       ],
-      twitters: [
+      twitter: [
         // server.create('identity-twitter', { is_primary: true }),
         // server.create('identity-twitter')
       ],
-      facebooks: [
+      facebook: [
         // server.create('identity-facebook', { is_primary: true }),
         // server.create('identity-facebook')
       ]
@@ -53998,18 +53918,6 @@ define('frontend-cp/mixins/custom-field-serialization', ['exports', 'ember'], fu
 
       return fieldValues;
     }
-  });
-
-});
-define('frontend-cp/mixins/has-basic-identities', ['exports', 'ember', 'ember-data'], function (exports, Ember, DS) {
-
-  'use strict';
-
-  exports['default'] = Ember['default'].Mixin.create({
-    emails: DS['default'].hasMany('identity-email', { async: true, url: 'identities/emails' }),
-    phones: DS['default'].hasMany('identity-phone', { async: true, url: 'identities/phones' }),
-    twitters: DS['default'].hasMany('identity-twitter', { async: true, url: 'identities/twitter' }),
-    facebooks: DS['default'].hasMany('identity-facebook', { async: true, url: 'identities/facebook' })
   });
 
 });
@@ -55036,15 +54944,6 @@ define('frontend-cp/models/has-addresses', ['exports', 'ember-data'], function (
   });
 
 });
-define('frontend-cp/models/has-slack-identities', ['exports', 'ember-data'], function (exports, DS) {
-
-  'use strict';
-
-  exports['default'] = DS['default'].Model.extend({
-    slack: DS['default'].hasMany('identity-slack', { async: true })
-  });
-
-});
 define('frontend-cp/models/has-websites', ['exports', 'ember-data'], function (exports, DS) {
 
   'use strict';
@@ -55072,7 +54971,7 @@ define('frontend-cp/models/identity-autocomplete-email', ['exports', 'ember-data
   exports['default'] = DS['default'].Model.extend({
     identity: DS['default'].belongsTo('identity-email'),
 
-    parent: DS['default'].belongsTo('has-basic-identities', { async: true, polymorphic: true })
+    user: DS['default'].belongsTo('user', { async: true })
   });
 
 });
@@ -55085,7 +54984,8 @@ define('frontend-cp/models/identity-domain', ['exports', 'ember-data', 'ember', 
 
     name: Ember['default'].computed.alias('domain'),
 
-    parent: DS['default'].belongsTo('organization', { async: true, polymorphic: true, parent: true })
+    user: DS['default'].belongsTo('user', { async: true }),
+    organization: DS['default'].belongsTo('organization', { async: true })
   });
 
 });
@@ -55098,7 +54998,7 @@ define('frontend-cp/models/identity-email', ['exports', 'ember-data', 'frontend-
     isNotificationEnabled: DS['default'].attr('string'),
 
     // Relations
-    parent: DS['default'].belongsTo('has-basic-identities', { async: true, polymorphic: true, parent: true }) // User or Organization
+    user: DS['default'].belongsTo('user', { async: true })
   });
 
 });
@@ -55118,7 +55018,7 @@ define('frontend-cp/models/identity-facebook', ['exports', 'ember-data', 'fronte
     locale: DS['default'].attr('string'),
 
     // Relations
-    parent: DS['default'].belongsTo('has-basic-identities', { async: true, polymorphic: true, parent: true }),
+    user: DS['default'].belongsTo('user', { async: true }),
 
     // CPs
     canBeValidated: false
@@ -55134,19 +55034,8 @@ define('frontend-cp/models/identity-phone', ['exports', 'ember-data', 'frontend-
     type: DS['default'].attr('string'),
 
     // Relations
-    parent: DS['default'].belongsTo('has-basic-identities', { async: true, polymorphic: true, parent: true })
-  });
-
-});
-define('frontend-cp/models/identity-slack', ['exports', 'ember-data', 'frontend-cp/models/identity'], function (exports, DS, Identity) {
-
-  'use strict';
-
-  exports['default'] = Identity['default'].extend({
-    userName: DS['default'].attr('string'),
-
-    parent: DS['default'].belongsTo('user', { async: true, polymorphic: true, parent: true })
-    //parent: DS.belongsTo('has-slack-identities', { async: true, polymorphic: true, parent: true })
+    user: DS['default'].belongsTo('user', { async: true }),
+    organization: DS['default'].belongsTo('organization', { async: true })
   });
 
 });
@@ -55166,7 +55055,7 @@ define('frontend-cp/models/identity-twitter', ['exports', 'ember-data', 'fronten
     locale: DS['default'].attr('string'),
 
     // Relations
-    parent: DS['default'].belongsTo('has-basic-identities', { async: true, polymorphic: true, parent: true }),
+    user: DS['default'].belongsTo('user', { async: true }),
 
     // CPs
     canBeValidated: false
@@ -55460,11 +55349,11 @@ define('frontend-cp/models/organization-field', ['exports', 'frontend-cp/models/
 	exports['default'] = Field['default'].extend({});
 
 });
-define('frontend-cp/models/organization', ['exports', 'ember-data', 'ember', 'frontend-cp/mixins/change-aware-model', 'frontend-cp/mixins/has-basic-identities'], function (exports, DS, Ember, ChangeAwareModel, HasBasicIdentities) {
+define('frontend-cp/models/organization', ['exports', 'ember-data', 'ember', 'frontend-cp/mixins/change-aware-model'], function (exports, DS, Ember, ChangeAwareModel) {
 
   'use strict';
 
-  exports['default'] = DS['default'].Model.extend(ChangeAwareModel['default'], Ember['default'].Evented, HasBasicIdentities['default'], {
+  exports['default'] = DS['default'].Model.extend(ChangeAwareModel['default'], Ember['default'].Evented, {
     name: DS['default'].attr('string'),
     isShared: DS['default'].attr('boolean'),
     brand: DS['default'].belongsTo('brand', { async: true }),
@@ -55480,6 +55369,7 @@ define('frontend-cp/models/organization', ['exports', 'ember-data', 'ember', 'fr
 
     // Shadow children fields
     domains: DS['default'].hasMany('identity-domain', { async: false }),
+    phones: DS['default'].hasMany('identity-phone', { async: false }),
     tags: DS['default'].hasMany('tag', { async: true, child: true, noCache: true })
   });
 
@@ -55853,11 +55743,11 @@ define('frontend-cp/models/user-field', ['exports', 'ember-data', 'frontend-cp/m
   });
 
 });
-define('frontend-cp/models/user', ['exports', 'ember-data', 'ember', 'frontend-cp/mixins/change-aware-model', 'frontend-cp/mixins/has-basic-identities'], function (exports, DS, Ember, ChangeAwareModel, HasBasicIdentities) {
+define('frontend-cp/models/user', ['exports', 'ember-data', 'ember', 'frontend-cp/mixins/change-aware-model'], function (exports, DS, Ember, ChangeAwareModel) {
 
   'use strict';
 
-  exports['default'] = DS['default'].Model.extend(ChangeAwareModel['default'], HasBasicIdentities['default'], {
+  exports['default'] = DS['default'].Model.extend(ChangeAwareModel['default'], {
     fullName: DS['default'].attr('string'),
     designation: DS['default'].attr('string'),
     alias: DS['default'].attr('string'),
@@ -55887,10 +55777,14 @@ define('frontend-cp/models/user', ['exports', 'ember-data', 'ember', 'frontend-c
 
     // Shadow children fields
     accesslogs: DS['default'].hasMany('access-log', { async: true, child: true, noCache: true }),
-    slack: DS['default'].hasMany('identity-slack', { async: true, child: true, url: 'identities/slack', noCache: true }),
     recentCases: DS['default'].hasMany('case', { async: true, child: true, inverse: null, noCache: true }),
     events: DS['default'].hasMany('event', { async: true, child: true, inverse: 'creator', noCache: true }),
     tags: DS['default'].hasMany('tag', { async: true, child: true, noCache: true }),
+
+    emails: DS['default'].hasMany('identity-email', { async: false, url: 'identities/emails' }),
+    phones: DS['default'].hasMany('identity-phone', { async: false, url: 'identities/phones' }),
+    twitter: DS['default'].hasMany('identity-twitter', { async: false, url: 'identities/twitter' }),
+    facebook: DS['default'].hasMany('identity-facebook', { async: false, url: 'identities/facebook' }),
 
     save: function save() {
       var _this = this;
@@ -56994,8 +56888,8 @@ define('frontend-cp/serializers/user', ['exports', 'frontend-cp/serializers/appl
       avatar: { serialize: false },
       emails: { serialize: false },
       phones: { serialize: false },
-      twitters: { serialize: false },
-      facebooks: { serialize: false },
+      twitter: { serialize: false },
+      facebook: { serialize: false },
       addresses: { serialize: false },
       website: { serialize: false },
       customFields: { serialize: false },
@@ -72928,8 +72822,8 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['ember
   qunit.module('Acceptance | Manage Twitter Identities', {
     beforeEach: function beforeEach() {
       this.application = startApp['default']();
-      var twitters = [server.create('identity-twitter', { screen_name: '@first', is_primary: true, is_validated: true }), server.create('identity-twitter', { screen_name: '@second', is_primary: false, is_validated: true }), server.create('identity-twitter', { screen_name: '@third', is_primary: false, is_validated: false })];
-      var user = server.create('user', { twitters: twitters, role: server.create('role') });
+      var twitter = [server.create('identity-twitter', { screen_name: '@first', is_primary: true, is_validated: true }), server.create('identity-twitter', { screen_name: '@second', is_primary: false, is_validated: true }), server.create('identity-twitter', { screen_name: '@third', is_primary: false, is_validated: false })];
+      var user = server.create('user', { twitter: twitter, role: server.create('role') });
       var session = server.create('session', { user: user });
       server.create('plan', { limits: [], features: [] });
       login(session.id);
@@ -72991,8 +72885,8 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['ember
   qunit.module('Acceptance | Manage Facebook Identities', {
     beforeEach: function beforeEach() {
       this.application = startApp['default']();
-      var facebooks = [server.create('identity-facebook', { user_name: 'Mike', is_primary: true, is_validated: true }), server.create('identity-facebook', { user_name: 'Mary', is_primary: false, is_validated: true }), server.create('identity-facebook', { user_name: 'John', is_primary: false, is_validated: false })];
-      var user = server.create('user', { facebooks: facebooks, role: server.create('role') });
+      var facebook = [server.create('identity-facebook', { user_name: 'Mike', is_primary: true, is_validated: true }), server.create('identity-facebook', { user_name: 'Mary', is_primary: false, is_validated: true }), server.create('identity-facebook', { user_name: 'John', is_primary: false, is_validated: false })];
+      var user = server.create('user', { facebook: facebook, role: server.create('role') });
       var session = server.create('session', { user: user });
       server.create('plan', { limits: [], features: [] });
       login(session.id);
@@ -79494,20 +79388,6 @@ define('frontend-cp/tests/unit/mixins/custom-field-serialization-test', ['ember'
   });
 
 });
-define('frontend-cp/tests/unit/mixins/has-basic-identities-test', ['ember', 'frontend-cp/mixins/has-basic-identities', 'qunit'], function (Ember, HasBasicIdentitiesMixin, qunit) {
-
-  'use strict';
-
-  qunit.module('Unit | Mixin | has basic identities');
-
-  // Replace this with your real tests.
-  qunit.test('it works', function (assert) {
-    var HasEmailIdentitiesObject = Ember['default'].Object.extend(HasBasicIdentitiesMixin['default']);
-    var subject = HasEmailIdentitiesObject.create();
-    assert.ok(subject);
-  });
-
-});
 define('frontend-cp/tests/unit/mixins/simple-state-test', ['ember', 'frontend-cp/mixins/simple-state', 'qunit'], function (Ember, SimpleStateMixin, qunit) {
 
   'use strict';
@@ -81127,7 +81007,7 @@ catch(err) {
 if (runningTests) {
   require("frontend-cp/tests/test-helper");
 } else {
-  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"disabled":false,"logEvents":false,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+c85f996c"});
+  require("frontend-cp/app")["default"].create({"PUSHER_OPTIONS":{"disabled":false,"logEvents":false,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"name":"frontend-cp","version":"0.0.0+ce8f9fc3"});
 }
 
 /* jshint ignore:end */
