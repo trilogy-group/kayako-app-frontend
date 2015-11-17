@@ -86,10 +86,11 @@
   "field_title.requester": "Requester",
   "notes": "Notes",
   "form-select": "Case form",
-  "null_form_selected": "No form selected",
 
   "sort": "Sort",
   "filter": "Filter",
+
+  "unassigned": "(Unassigned)",
 
   "sort_options.newest_first": "Newest first",
   "sort_options.oldest_first": "Oldest first",
@@ -98,9 +99,5 @@
   "filter_options.posts": "Posts",
   "filter_options.posts_activities": "Posts and activities",
   "filter_options.posts_events": "Posts and events",
-  "posts.load_more": "Load more",
-
-  "deselect_type": "No type",
-  "deselect_priority": "No priority",
-  "deselect_generic": "None"
+  "posts.load_more": "Load more"
 }
