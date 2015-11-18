@@ -1,7 +1,7 @@
 {
   "assets": {
-    "assets/frontend-cp.css": "assets/frontend-cp-a7fd476a5ca030c429f12d46b6d78ea1.css",
-    "assets/frontend-cp.js": "assets/frontend-cp-dae03e859fefd4080f5c0f6f3f9ea978.js",
+    "assets/frontend-cp.css": "assets/frontend-cp-2551b1bd883a49b98b82e6fd1abe0506.css",
+    "assets/frontend-cp.js": "assets/frontend-cp-11a4d3528d47df5a300ee4c51cd2d170.js",
     "assets/intl/intl.complete.js": "assets/intl/intl.complete-56fdd7fc9f0f90ead198a1f20e275842.js",
     "assets/intl/intl.js": "assets/intl/intl-20e0e9aaeb01091e5ab412b67465e837.js",
     "assets/intl/intl.min.js": "assets/intl/intl.min-20e0e9aaeb01091e5ab412b67465e837.js",
@@ -700,7 +700,7 @@
     "assets/intl/locales/zu-za.js": "assets/intl/locales/zu-za-0bfb00ad42fb22ed16f80649e43d0e41.js",
     "assets/intl/locales/zu.js": "assets/intl/locales/zu-2df20d4e194015756c781a323869988c.js",
     "assets/vendor.css": "assets/vendor-d41d8cd98f00b204e9800998ecf8427e.css",
-    "assets/vendor.js": "assets/vendor-6cd0e0ccbcac0c0ec4dbf33e1dd7035b.js",
+    "assets/vendor.js": "assets/vendor-ee62404ef23ddc74910cde62c5219627.js",
     "images/icons/cascading-select.png": "images/icons/cascading-select-caac3065ad73656590904fcf10ada86a.png",
     "images/icons/checkbox.png": "images/icons/checkbox-79a02996a1a01472a381af713b2609a9.png",
     "images/icons/date.png": "images/icons/date-cc6919f28dfdba1b632faa7d039ce1ae.png",
