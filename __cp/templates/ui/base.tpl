@@ -16,7 +16,7 @@
     <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400italic,600,600italic' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="http://i.icomoon.io/public/6ae4e69a02/KayakoApp/style.css">
     <link rel="stylesheet" href="{{ assets('frontend') }}__cp/assets/vendor-d41d8cd98f00b204e9800998ecf8427e.css">
-    <link rel="stylesheet" href="{{ assets('frontend') }}__cp/assets/frontend-cp-484bac98631e9c54df9776f47558946d.css">
+    <link rel="stylesheet" href="{{ assets('frontend') }}__cp/assets/frontend-cp-86deb496c405c0260ddcf7e1ce2d10ba.css">
 
     
   </head>
@@ -26,7 +26,7 @@
     <!-- TODO load only if required -->
     <script src="{{ assets('frontend') }}__cp/assets/intl/intl.complete-d4932f9c3c31253c9d2bde19bf47e4e5.js"></script>
 
-    <script src="{{ assets('frontend') }}__cp/assets/vendor-295edc3f95ec9b584650dd5d6ac4ac59.js"></script>
+    <script src="{{ assets('frontend') }}__cp/assets/vendor-45dbbc317f440ddd097cc3a1a844f395.js"></script>
     <script src="{{ assets('frontend') }}__cp/assets/frontend-cp-d0b1bb4af355e563db69afa4fce25685.js"></script>
 
     <div id="ember-basic-dropdown-wormhole"></div>
