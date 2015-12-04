@@ -100,5 +100,22 @@
   "filter_options.posts": "Posts",
   "filter_options.posts_activities": "Posts and activities",
   "filter_options.posts_events": "Posts and events",
-  "posts.load_more": "Load more"
+  "posts.load_more": "Load more",
+  "suspendedMessages.title": "Suspended messages",
+  "suspendedMessages.confirmDeleteAll": "Are you sure that you want to delete this messages. This action can't be undone.",
+  "suspendedMessages.table.from": "From",
+  "suspendedMessages.table.subject": "Subject",
+  "suspendedMessages.table.createdAt": "Received",
+  "suspendedMessages.table.suspensionCode": "Suspension reason",
+  "suspendedMessages.emptyList": "No suspended messages",
+  "suspendedMessage.title": "Suspended message",
+  "suspendedMessage.table.from": "From",
+  "suspendedMessage.table.subject": "Subject",
+  "suspendedMessage.table.createdAt": "Received at",
+  "suspendedMessage.table.suspensionCode": "Suspension reason",
+  "suspendedMessage.table.to": "Sent to",
+  "suspendedMessage.table.html": "Message",
+  "suspendedMessage.actions.cancel": "Cancel",
+  "suspendedMessage.actions.permanentlyDelete": "Permanently delete",
+  "suspendedMessage.actions.allowThrough": "Allow through"
 }
