@@ -150,6 +150,7 @@
   "casefields.type.select.name": "Select",
   "casefields.type.select.description": "Selecta",
   "casefields.buttons.add_new_casefield": "Add New Field",
+  "casefields.buttons.complete_locale_edit": "Done",
   "casefields.description": "Lorem ipsum dolor sit amet, diam appetere facilisis at pri, his vocibus iudicabit te. Te decore feugiat necessitatibus nec, id eos fugit dicunt. Vis ei ubique blandit, in vidit maiestatis disputationi vix, essent perpetua interesset ei mea. Et mea ubique feugait, ne nam unum clita, no his indoctum conclusionemque. Ad pri aperiri definitionem, nec ei dictas blandit.",
   "casefields.new.heading": "Case Fields / New",
   "casefields.edit.heading": "Case Fields / Edit",
