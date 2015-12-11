@@ -9,5 +9,8 @@
   "repeatpassword": "Password (repeat)",
   "resetpassword": "Reset your password",
   "updatepassword": "Change password",
-  "welcome": "Welcome to Kayako"
+  "welcome": "Welcome to Kayako",
+
+  "error.invalid_email": "Please enter a valid email address",
+  "error.email_not_found": "This email doesn't exist"
 }
