@@ -1,8 +1,8 @@
 {
   "assets": {
-    "assets/frontend-cp.css": "assets/frontend-cp-3ab15d9a5012af277b6935774335a43b.css",
-    "assets/frontend-cp.js": "assets/frontend-cp-e4421180f2a82d75296613f683708019.js",
-    "assets/frontend-cp.map": "assets/frontend-cp-3ad67cfbdd17ae0d7037e0fc0a2d1e77.map",
+    "assets/frontend-cp.css": "assets/frontend-cp-9cee6e0d48acf936dedc2558a27c41f4.css",
+    "assets/frontend-cp.js": "assets/frontend-cp-1bb8e72fe0a26ab56704e30a29a6256e.js",
+    "assets/frontend-cp.map": "assets/frontend-cp-c28b41a26453ee759698bf4041568f7e.map",
     "assets/intl/intl.complete.js": "assets/intl/intl.complete-d4932f9c3c31253c9d2bde19bf47e4e5.js",
     "assets/intl/intl.complete.map": "assets/intl/intl.complete-211ad08856d22950d54281642819f8c8.map",
     "assets/intl/intl.js": "assets/intl/intl-1f9b3f3939a7681070f043f28272174f.js",
@@ -1398,8 +1398,8 @@
     "assets/intl/locales/zu.js": "assets/intl/locales/zu-0d2341e58d46e60ef5f25e8ce092af0c.js",
     "assets/intl/locales/zu.map": "assets/intl/locales/zu-211aff807870f64765e082b3f144e218.map",
     "assets/vendor.css": "assets/vendor-d41d8cd98f00b204e9800998ecf8427e.css",
-    "assets/vendor.js": "assets/vendor-1a62c71c1cd88f00df7711107795a7c8.js",
-    "assets/vendor.map": "assets/vendor-b2c6185aad867f329344b851d8d971bc.map",
+    "assets/vendor.js": "assets/vendor-d7ebf304b0a6f0a581c9d7e5d838cc4f.js",
+    "assets/vendor.map": "assets/vendor-a9f312e22c04923f5ad55abe4d0ff3a8.map",
     "images/icons/cascading-select.png": "images/icons/cascading-select-caac3065ad73656590904fcf10ada86a.png",
     "images/icons/checkbox.png": "images/icons/checkbox-79a02996a1a01472a381af713b2609a9.png",
     "images/icons/date.png": "images/icons/date-cc6919f28dfdba1b632faa7d039ce1ae.png",
