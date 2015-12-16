@@ -76,6 +76,7 @@
   "channelType.FACEBOOK": "Facebook",
   "channelType.none": "-",
   "channelType.NOTE": "Note",
+  "channelType.HELPCENTER": "Helpcenter",
   "new_case": "New case",
   "new_case_subject_placeholder": "Click to add a subject",
   "new_case_tab_placeholder": "New Case",
