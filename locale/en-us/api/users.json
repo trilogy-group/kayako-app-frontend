@@ -33,10 +33,14 @@
   "metadata.updated": "Updated",
   "metadata.lastseen": "Last seen",
   "infobar.accesslevel": "Case access",
-  "infobar.accesslevel.self": "Cases assigned to agent",
-  "infobar.accesslevel.organization": "All assigned to agent's teams",
-  "infobar.accesslevel.inherit": "(Inherit from agent's role)",
-  "infobar.accesslevel.all": "All cases",
+
+  "infobar.agentaccess.self": "Cases assigned to agent",
+  "infobar.agentaccess.teams": "Cases in agent's teams",
+  "infobar.agentaccess.inherit": "(Inherit from role)",
+  "infobar.agentaccess.all": "All cases",
+
+  "infobar.organizationaccess.organization": "All organization’s cases",
+  "infobar.organizationaccess.requested": "Only requested cases",
 
   "add_a_note": "Add a note",
   "password_reset_email.success": "Password reset email has been sent",
