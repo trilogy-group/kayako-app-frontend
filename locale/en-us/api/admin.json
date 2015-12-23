@@ -239,6 +239,7 @@
   "predicate_builder.cases.casestatusid": "Cases: Status",
   "predicate_builder.cases.casetypeid": "Cases: Type",
   "predicate_builder.cases.casepriorityid": "Cases: Priority ID",
+  "predicate_builder.cases.state": "Cases: State",
   "predicate_builder.cases.brandid": "Cases: Brand",
   "predicate_builder.cases.assigneeteamid": "Cases: Assigned Agent Team",
   "predicate_builder.cases.assigneeagentid": "Cases: Assigned Agent",
