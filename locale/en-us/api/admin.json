@@ -246,6 +246,7 @@
   "predicate_builder.cases.requesterid": "Cases: Requester",
   "predicate_builder.cases.lastcompletedat": "Cases: Last Completed",
   "predicate_builder.cases.updatedat": "Cases: Updated At",
+  "predicate_builder.cases.createdat": "Cases: Created At",
   "predicate_builder.caseslametrics.isbreached": "SLA Breached",
   "predicate_builder.label.addition_of_rule": "+ New Criteria",
   "predicate_builder.taglinks.tagid": "Tag",
