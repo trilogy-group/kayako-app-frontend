@@ -81,6 +81,11 @@
   "new_case_subject_placeholder": "Click to add a subject",
   "new_case_tab_placeholder": "New Case",
 
+  "trash": "Trash case",
+  "untrash": "Untrash",
+  "trashed": "Trashed",
+  "confirm.trash": "Are you sure you want to trash this?",
+
   "search.request.result_meta": "Showing {numDisplayResults} of {totalResults} users",
 
   "list.casesnotfound": "There are no cases here.",
