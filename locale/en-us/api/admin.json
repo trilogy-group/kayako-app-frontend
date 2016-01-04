@@ -20,6 +20,8 @@
   "views.radio.label.all": "Every agent",
   "views.radio.label.specific": "A specific team",
   "views.label.sharing": "Make this view available to",
+  "views.sharing.ALL": "ALL",
+  "views.sharing.SELF": "just myself",
   "views.heading.predicate_builder": "Include cases that match the following in this view",
   "views.heading.configure_layout": "Configure Columns",
   "views.label.configure_layout": "Customize what information is shown in this view by adding, removing and reordering fields below. You can add up to 10 columns in your view",
