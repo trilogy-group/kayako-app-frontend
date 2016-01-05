@@ -18,16 +18,30 @@
     <link rel="stylesheet" href="{{ assets('frontend') }}__cp/assets/vendor-d41d8cd98f00b204e9800998ecf8427e.css">
     <link rel="stylesheet" href="{{ assets('frontend') }}__cp/assets/frontend-cp-5f4b59ced745b1084ef6367bebb89bbe.css">
 
-    
+
   </head>
   <body>
-    
+
 
     <!-- TODO load only if required -->
     <script src="{{ assets('frontend') }}__cp/assets/intl/intl.complete-d4932f9c3c31253c9d2bde19bf47e4e5.js"></script>
 
     <script src="{{ assets('frontend') }}__cp/assets/vendor-40f3e8938609a0360bed1e88fbb6bcfc.js"></script>
     <script src="{{ assets('frontend') }}__cp/assets/frontend-cp-e81c1f726aa3db1ea30481e3371f1eeb.js"></script>
+
+	<!-- Start RUM Tag -->
+	<script defer="defer">
+		var _prum = [['id', '568a5fdaabe53da80b316286'],
+					 ['mark', 'firstbyte', (new Date()).getTime()]];
+		(function() {
+			var s = document.getElementsByTagName('script')[0]
+					, p = document.createElement('script');
+			p.async = 'async';
+			p.src = '//rum-static.pingdom.net/prum.min.js';
+			s.parentNode.insertBefore(p, s);
+		})();
+	</script>
+	<!-- End RUM Tag -->
 
     <div id="ember-basic-dropdown-wormhole"></div>
   </body>
