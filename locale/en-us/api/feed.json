@@ -1,3 +1,4 @@
 {
-  "replied": "replied {ago}"
+  "replied": "replied {ago}",
+  "added": "added {ago}"
 }
