@@ -42,6 +42,7 @@
   "infobar.organizationaccess.organization": "All organization’s cases",
   "infobar.organizationaccess.requested": "Only requested cases",
 
+  "notes": "Notes",
   "add_a_note": "Add a note",
   "password_reset_email.success": "Password reset email has been sent",
   "recent_feedback": "Recent feedback",
