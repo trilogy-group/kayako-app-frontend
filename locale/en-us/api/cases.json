@@ -85,6 +85,8 @@
   "untrash": "Untrash",
   "trashed": "Trashed",
   "confirm.trash": "Are you sure you want to trash this?",
+  "trash.success_message": "Case trashed successfully",
+  "trash.restore.success_message": "Case restored successfully",
 
   "search.request.result_meta": "Showing {numDisplayResults} of {totalResults} users",
 
