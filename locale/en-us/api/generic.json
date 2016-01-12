@@ -67,7 +67,7 @@
   "uploads.wrongtype": "is not allowed. Allowed file types: ",
   "uploads.failed": "There was a problem uploading file(s)",
 
-  "confirm.delete": "Are you sure you want to delete this",
+  "confirm.delete": "Are you sure you want to delete this?",
   "confirm.lose_changes": "You have unsaved changes on this page. Are you sure you want to discard these changes?",
   "changes_saved": "Changes saved",
 
@@ -127,6 +127,8 @@
   "identities.errors.invalid_email_format": "Email format invalid",
   "identities.errors.invalid_twitter_handle_format": "Twitter handle format invalid",
   "identities.confirm_remove": "Are you sure you want to remove this identity?",
+  "identities.added.success_message": "Identity added successfully",
+  "identities.removed.success_message": "Identity removed successfully",
 
   "error.field_required": "This action requires the field to be specified",
   "error.field_duplicate": "The value of the field is already used for another resource",
