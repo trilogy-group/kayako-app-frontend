@@ -57,6 +57,8 @@
   "select_placeholder": "Select...",
   "search_result_select_instruction": "Press enter",
   "search.no_results": "No results found",
+  "search.start_typing_to_search": "Start typing to search",
+  "search.searching": "Searching...",
   "shared_with": "Shared with",
 
   "sort.ASC": "Ascending",
