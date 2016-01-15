@@ -43020,7 +43020,7 @@ define("frontend-cp/locales/en-us/cases", ["exports"], function (exports) {
     "subheader": "{time, date, medium} – {time, time, short} {hasChannel, select,\n    true {created via {channel}}\n    false {}\n  } {hasBrand, select,\n    true {, {brand}}\n    false {}\n  }",
     "subject": "Subject",
     "submit": "Submit",
-    "ticketid": "Ticket ID",
+    "ticketid": "Case ID",
     "type": "Type",
     "macro": "Macro",
     "applymacro": "Apply Macro",
@@ -64736,6 +64736,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999},"name":"frontend-cp","version":"0.0.0+7cd8b723"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999},"name":"frontend-cp","version":"0.0.0+9f797f63"});
 }
 /* jshint ignore:end */
