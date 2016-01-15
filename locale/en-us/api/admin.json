@@ -18,7 +18,7 @@
   "views.heading.sharing": "Sharing",
   "views.radio.label.me": "Just myself",
   "views.radio.label.all": "Every agent",
-  "views.radio.label.specific": "A specific team",
+  "views.radio.label.specific": "Specific teams",
   "views.label.sharing": "Make this view available to",
   "views.sharing.ALL": "ALL",
   "views.sharing.SELF": "just myself",
@@ -176,6 +176,8 @@
   "casefields.disabled.success_message": "Case field disabled successfully",
   "casefields.delete.success_message": "Case field deleted successfully",
 
+  "casefields.edit.add_new_priority": "Add a priority",
+
   "case_column_title.caseid": "Case ID",
   "case_column_title.subject": "Subject",
   "case_column_title.assigneeagentid": "Assigned agent",
@@ -222,6 +224,9 @@
   "casefields.edit.heading.statuses": "Statuses",
   "casefields.edit.help.statuses.1": "Case statuses typically map to your workflow and how you handle customer requests and conversations. Throughout its life, a case will move through various statuses. There are some default system statuses and you can also create statuses to customize the workflow.",
   "casefields.edit.help.statuses.2": "If SLAs are enabled in Kayako, you can determine whether or not SLA timers will pause on particular statuses. For example, you may not want the time a case spends while set to Pending (while you are waiting for a customer to get back to you) to count towards your SLA targets.",
+
+  "casefields.edit.statuses.label.is_sla_active": "SLA timers active",
+  "casefields.edit.statuses.label.is_sla_inactive": "SLA timers inactive",
 
   "twitter": "Twitter",
   "twitter.description": "Your Twitter accounts are blah. Organize agents into teams for blah. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Vestibulum id ligula porta felis euismod semper. Aenean lacinia bibendum nulla sed.",
@@ -285,5 +290,3 @@
   "predicate_builder.operators.date_before_or_on": "Date before or on",
   "predicate_builder.operators.date_is": "Date is"
 }
-
-
