@@ -6444,7 +6444,9 @@ define('frontend-cp/tests/acceptance/agent/cases/timeline-test', ['exports', 'fr
         creator: agent,
         identity: identityEmail,
         status: status,
-        assignee: server.create('assignee', { agent: agent })
+        assignee: {
+          agent: agent
+        }
       });
       server.createList('post', 3, {
         creator: agent,

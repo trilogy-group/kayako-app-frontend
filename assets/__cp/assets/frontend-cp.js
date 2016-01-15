@@ -353,9 +353,6 @@ define('frontend-cp/adapters/case-priority', ['exports', 'frontend-cp/adapters/a
     }
   });
 });
-define('frontend-cp/adapters/case-reply-options', ['exports', 'frontend-cp/adapters/application'], function (exports, _frontendCpAdaptersApplication) {
-  exports['default'] = _frontendCpAdaptersApplication['default'].extend({});
-});
 define('frontend-cp/adapters/case-reply', ['exports', 'frontend-cp/adapters/application'], function (exports, _frontendCpAdaptersApplication) {
   exports['default'] = _frontendCpAdaptersApplication['default'].extend({
     pathForType: function pathForType() {
@@ -15843,17 +15840,18 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
     bottomPostsAvailable: _ember['default'].computed.readOnly('tabState.bottomPostsAvailable'),
     posts: _ember['default'].computed.readOnly('tabState.posts'),
     topPostsAvailable: _ember['default'].computed.readOnly('tabState.topPostsAvailable'),
-    tagSearchTerm: _ember['default'].computed.readOnly('tabState.tagSearchTerm'),
-    errors: _ember['default'].computed.readOnly('tabState.errors'),
     errorMap: _ember['default'].computed.readOnly('tabState.errorMap'),
-    shouldIgnoreNextPusherUpdate: _ember['default'].computed.readOnly('tabState.shouldIgnoreNextPusherUpdate'),
     isSaving: _ember['default'].computed.readOnly('tabState.isSaving'),
     suggestedPeople: _ember['default'].computed.readOnly('tabState.suggestedPeople'),
     suggestedPeopleTotal: _ember['default'].computed.readOnly('tabState.suggestedPeopleTotal'),
     suggestedPeopleLoading: _ember['default'].computed.readOnly('tabState.suggestedPeopleLoading'),
     suggestedTags: _ember['default'].computed.readOnly('tabState.suggestedTags'),
-    cachedCaseTags: _ember['default'].computed.readOnly('tabState.cachedCaseTags'),
     ccPopupProxy: _ember['default'].computed.readOnly('tabState.ccPopupProxy'),
+    replyOptions: _ember['default'].computed.readOnly('tabState.replyOptions'),
+    editedCase: _ember['default'].computed.readOnly('tabState.editedCase'),
+    editedTags: _ember['default'].computed.readOnly('tabState.editedTags'),
+    localCustomFields: _ember['default'].computed.readOnly('tabState.localCustomFields'),
+    propertiesChangeViaPusher: _ember['default'].computed.readOnly('tabState.propertiesChangeViaPusher'),
 
     // Child components
     casePostEditor: null,
@@ -15877,16 +15875,6 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
     permissionService: _ember['default'].inject.service('permissions'),
 
     // Lifecycle hooks
-    init: function init() {
-      var _this = this;
-
-      this._super.apply(this, arguments);
-      // Tags
-      this.get('case.tags').then(function (caseTags) {
-        return _this.setState({ cachedCaseTags: caseTags.mapBy('id') });
-      });
-    },
-
     didReceiveAttrs: function didReceiveAttrs(_ref) {
       var oldAttrs = _ref.oldAttrs;
       var newAttrs = _ref.newAttrs;
@@ -15916,13 +15904,24 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       this.setPostContent(this.get('postContent'));
     },
 
-    initializeState: function initializeState(initialState, isDifferentCase) {
+    initializeState: function initializeState(initialState, hasPostId) {
       this.setState({ posts: [] });
-      if (isDifferentCase) {
+      if (hasPostId) {
         this.setState({ topPostsAvailable: true });
         this.loadBottomPosts(this.get('postId'), { including: true });
       } else {
         this.loadBottomPosts(null, { including: true });
+      }
+
+      var editedCase = this.copyCase(this.get('case'));
+      var caseStatus = editedCase.get('status');
+
+      if (!this.get('case.isNew') && caseStatus.get('statusType') === 'NEW') {
+        var statuses = this.get('store').all('case-status');
+        var pendingStatus = statuses.find(function (model) {
+          return model.get('statusType') === 'OPEN';
+        });
+        editedCase.set('status', pendingStatus);
       }
 
       this.setState(merge({
@@ -15934,20 +15933,55 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
         bottomPostsAvailable: true,
         posts: [],
         topPostsAvailable: false,
-        tagSearchTerm: '',
-        errors: [],
         errorMap: _ember['default'].Object.create(),
-        shouldIgnoreNextPusherUpdate: false,
         isSaving: false,
         suggestedPeople: null,
         suggestedPeopleTotal: 0,
         suggestedPeopleLoading: false,
         suggestedTags: [],
-        cachedCaseTags: [],
+        editedCase: editedCase,
+        editedTags: this.initEditedTags(this.get('case')),
+        localCustomFields: this.initCustomFields(this.get('case')),
+        replyOptions: this.get('store').createFragment('case-reply-options'),
+        propertiesChangeViaPusher: _ember['default'].Object.create({
+          customFields: _ember['default'].Object.create()
+        }),
         ccPopupProxy: _ember['default'].Object.create({
           title: this.get('intlService').findTranslationByKey('cases.copy-someone-in.title')
         })
       }, initialState));
+    },
+
+    copyCase: function copyCase(caseModel) {
+      return _ember['default'].Object.create({
+        subject: caseModel.get('subject'),
+        assigneeTeam: caseModel.get('assigneeTeam'),
+        assigneeAgent: caseModel.get('assigneeAgent'),
+        requester: caseModel.get('requester'),
+        status: caseModel.get('status'),
+        caseType: caseModel.get('caseType'),
+        priority: caseModel.get('priority'),
+        form: caseModel.get('form')
+      });
+    },
+
+    initEditedTags: function initEditedTags(caseModel) {
+      return caseModel.get('tags').map(function (tag) {
+        return _ember['default'].Object.create({
+          name: tag.get('name'),
+          isPusherEdited: false,
+          isNew: false
+        });
+      });
+    },
+
+    initCustomFields: function initCustomFields(caseModel) {
+      return caseModel.get('customFields').map(function (field) {
+        return _ember['default'].Object.create({
+          field: field.get('field'),
+          value: field.get('value')
+        });
+      });
     },
 
     willInsertElement: function willInsertElement() {
@@ -15962,15 +15996,9 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
     },
 
     // Observers
-    onPeopleCCdChange: _ember['default'].observer('peopleCCd.[]', function () {
+    onPeopleCCdChange: _ember['default'].observer('replyOptions.cc.[]', function () {
       this.get('ccPopupProxy').reposition();
     }),
-
-    onCaseOrFormFieldsChange: _ember['default'].on('init', _ember['default'].observer('caseOrFormFields.[]', function () {
-      // we need to re-validate dirty state when we have case or form fields
-      // so we mark Status fields with the right tabState.
-      this.validateCaseStatus(this.get('case'));
-    })),
 
     // CPs
     sortOrderTitle: _ember['default'].computed('sortOrder', function () {
@@ -16031,11 +16059,6 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       return [{ label: intlService.findTranslationByKey('cases.filter_options.posts'), content: 'posts' }, { label: intlService.findTranslationByKey('cases.filter_options.all'), content: 'all' }, { label: intlService.findTranslationByKey('cases.filter_options.posts_activities'), content: 'posts,activities' }, { label: intlService.findTranslationByKey('cases.filter_options.posts_events'), content: 'posts,events' }];
     }),
 
-    peopleCCd: _ember['default'].computed('case.replyOptions.cc.[]', 'case.replyOptions.cc.length', function () {
-      var options = this.get('case.replyOptions');
-      return options.get('cc') || [];
-    }),
-
     topPost: _ember['default'].computed('posts.[]', function () {
       return this.get('posts').find(function (post) {
         return post.constructor.modelName === 'post';
@@ -16072,9 +16095,9 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       });
     }),
 
-    caseOrFormFields: _ember['default'].computed('caseFields', 'case.form', function () {
+    caseOrFormFields: _ember['default'].computed('caseFields', 'editedCase.form', function () {
       var caseFields = this.get('caseFields');
-      var form = this.get('case.form');
+      var form = this.get('editedCase.form');
       return form ? form.get('fields') : caseFields.sortBy('sortOrder');
     }),
 
@@ -16135,12 +16158,6 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       return this.get('filter') === 'all' || this.get('filter') === 'posts,events';
     }),
 
-    isTagsFieldEdited: _ember['default'].computed('cachedCaseTags.[]', 'case.tags.@each.id', function () {
-      var cachedTagNames = this.get('cachedCaseTags');
-      var tags = this.get('case.tags');
-      return this.get('tagService').areTagNamesMatchingCache(cachedTagNames, tags);
-    }),
-
     isCaseDisabled: _ember['default'].computed('case.state', function () {
       return this.get('case.state') === 'TRASH';
     }),
@@ -16157,103 +16174,106 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       return channelType === 'NOTE' ? 'NOTE' : 'REPLY';
     }),
 
-    isContentEdited: _ember['default'].computed('casePostEditor.postEditor.currentText', function () {
-      return this.get('casePostEditor.postEditor.currentText') !== '';
-    }),
-
     canRestoreCase: _ember['default'].computed('case.state', function () {
       return this.get('permissionService').has('app.case.untrash');
     }),
 
-    editedCaseFields: _ember['default'].computed('caseOrFormFields.[]', 'case.priority', 'case.requester', 'case.status', 'case.caseType', 'case.subject', 'case.form', 'case.tags', 'case.assignee.team', 'case.assignee.agent', 'case.customFields.@each.value', function () {
-      var _this2 = this;
+    isContentEdited: _ember['default'].computed('casePostEditor.postEditor.currentText', function () {
+      return this.get('casePostEditor.postEditor.currentText') !== '';
+    }),
 
-      var editedCaseFields = _ember['default'].Object.create();
-      this.get('caseOrFormFields').forEach(function (field) {
-        var relationshipKey = field.get('key');
+    isSubjectEdited: _ember['default'].computed('editedCase.subject', 'case.subject', function () {
+      return this.get('case.subject') !== this.get('editedCase.subject');
+    }),
 
-        /* Hack for type - type is a reserved word */
-        if (relationshipKey === 'type') {
-          relationshipKey = 'caseType';
+    isRequesterEdited: _ember['default'].computed('editedCase.requester', 'case.requester', function () {
+      return this.get('case.requester') !== this.get('editedCase.requester');
+    }),
+
+    isAssigneeEdited: _ember['default'].computed('editedCase.assigneeAgent', 'case.assigneeAgent', 'editedCase.assigneeTeam', 'case.assigneeTeam', function () {
+      return this.get('case.assigneeAgent') !== this.get('editedCase.assigneeAgent') || this.get('case.assigneeTeam') !== this.get('editedCase.assigneeTeam');
+    }),
+
+    isStatusEdited: _ember['default'].computed('editedCase.status', 'case.status', function () {
+      return this.get('case.status') !== this.get('editedCase.status');
+    }),
+
+    isTypeEdited: _ember['default'].computed('editedCase.caseType', 'case.caseType', function () {
+      return this.get('case.caseType') !== this.get('editedCase.caseType');
+    }),
+
+    isPriorityEdited: _ember['default'].computed('editedCase.priority', 'case.priority', function () {
+      return this.get('case.priority') !== this.get('editedCase.priority');
+    }),
+
+    isTagsFieldEdited: _ember['default'].computed('editedTags.[]', 'case.tags.@each.name', function () {
+      var editedTags = this.get('editedTags');
+      var tags = this.get('case.tags');
+      if (editedTags.get('length') !== tags.get('length')) {
+        return true;
+      }
+
+      return tags.any(function (tag) {
+        return editedTags.map(function (tag) {
+          return tag.get('name');
+        }).indexOf(tag.get('name')) === -1;
+      });
+    }),
+
+    isFormEdited: _ember['default'].computed('editedCase.form', 'case.form', function () {
+      return this.get('case.form') !== this.get('editedCase.form');
+    }),
+
+    localCustomFieldsMap: _ember['default'].computed('localCustomFields.@each.value', function () {
+      var map = _ember['default'].Object.create();
+      this.get('localCustomFields').forEach(function (field) {
+        map.set(field.get('field.id'), field.get('value'));
+      });
+      return map;
+    }),
+
+    editedCustomFields: _ember['default'].computed('case.customFields.@each.value', 'localCustomFields.@each.value', function () {
+      var _this = this;
+
+      return this.get('localCustomFields').filter(function (fieldObject) {
+        var originalFieldObject = _this.get('case.customFields').find(function (field) {
+          return field.get('field.id') === fieldObject.get('field.id');
+        });
+        if (!originalFieldObject) {
+          // we do not consider field to be edited if it was undefined and became an empty string
+          return Boolean(fieldObject.get('value'));
         }
-
-        /* Hack for assignee - it is made up from two properties (case.assignee.team and case.assignee.agent) */
-        if (relationshipKey === 'assignee') {
-          if (_this2.get('case.assignee')) {
-            editedCaseFields.set(field.get('id'), _this2.get('case.assignee').hasDirtyChanges());
-            editedCaseFields.set(relationshipKey, _this2.get('case.assignee').hasDirtyChanges());
-            return;
-          }
-        }
-
-        /* subject is a attribute */
-        if (relationshipKey === 'subject') {
-          editedCaseFields.set(field.get('id'), !!_this2.get('case').changedAttributes().subject);
-          editedCaseFields.set(relationshipKey, !!_this2.get('case').changedAttributes().subject);
-          return;
-        }
-
-        if (field.get('isSystem')) {
-          editedCaseFields.set(field.get('id'), _this2.get('case').hasDirtyBelongsToRelationship(relationshipKey));
-          editedCaseFields.set(relationshipKey, _this2.get('case').hasDirtyBelongsToRelationship(relationshipKey));
+        if (fieldObject.get('field.fieldType') === 'CHECKBOX') {
+          // Special treatment of checkbox values since 10,12 is the same as 12,10
+          var sort = function sort(value) {
+            return (value || '').split(',').sort().join(',');
+          };
+          return sort(originalFieldObject.get('value')) !== sort(fieldObject.get('value'));
         } else {
-          var customCaseField = _this2.get('case.customFields').find(function (customField) {
-            return parseInt(field.get('id')) === parseInt(customField.get('field.id'));
-          });
-
-          if (customCaseField) {
-            var _ret = (function () {
-              // customFields have values, which are a string. The value can be an array, disguised as a string by comma
-              // separating them: "7,8". This is, unfortunately, the same as "8,7" but changedAttributes() will show this up as
-              // changed (obviously). So, if we have changed attributes, split the string and test to see if all is good
-
-              if (!customCaseField.changedAttributes().value) {
-                // definitely unchanged!
-                editedCaseFields.set(field.get('id'), false);
-                return {
-                  v: undefined
-                };
-              }
-
-              var originalValues = customCaseField.changedAttributes().value[0] ? customCaseField.changedAttributes().value[0].split(',') : [];
-              var modifiedValues = customCaseField.changedAttributes().value[1] ? customCaseField.changedAttributes().value[1].split(',') : [];
-
-              if (originalValues.length !== modifiedValues.length) {
-                editedCaseFields.set(field.get('id'), true);
-                return {
-                  v: undefined
-                };
-              }
-
-              editedCaseFields.set(field.get('id'), originalValues.any(function (value) {
-                return modifiedValues.indexOf(value) === -1;
-              }));
-            })();
-
-            if (typeof _ret === 'object') return _ret.v;
-          }
+          return originalFieldObject.get('value') !== fieldObject.get('value');
         }
+      }).map(function (fieldObject) {
+        return fieldObject.get('field.id');
       });
-      editedCaseFields.set('form', this.get('case').hasDirtyBelongsToRelationship('form'));
-      editedCaseFields.set('requester', this.get('case').hasDirtyBelongsToRelationship('requester'));
-      return editedCaseFields;
     }),
 
-    isCaseEdited: _ember['default'].computed('editedCaseFields', 'isTagsFieldEdited', function () {
-      var editedCaseFields = this.get('editedCaseFields');
-      var isCaseEdited = Object.values(editedCaseFields).reduce(function (accum, current) {
-        return accum || current;
+    editedCustomFieldsMap: _ember['default'].computed('editedCustomFields.[]', function () {
+      var map = _ember['default'].Object.create();
+      this.get('editedCustomFields').forEach(function (field) {
+        map.set(field, true);
       });
-      return isCaseEdited || this.get('isTagsFieldEdited');
+      return map;
     }),
 
-    isEdited: _ember['default'].computed('isContentEdited', 'isCaseEdited', function () {
-      return this.get('isContentEdited') || this.get('isCaseEdited');
+    isCustomFieldsEdited: _ember['default'].computed('editedCustomFields.[]', function () {
+      return this.get('editedCustomFields.length') > 0;
     }),
 
-    submitDisabled: _ember['default'].computed('isSaving', 'isEdited', 'isCaseDisabled', function () {
-      return this.get('isSaving') || !this.get('isEdited') || this.get('isCaseDisabled');
-    }),
+    isEdited: _ember['default'].computed.or('isContentEdited', 'isSubjectEdited', 'isRequesterEdited', 'isAssigneeEdited', 'isStatusEdited', 'isTypeEdited', 'isPriorityEdited', 'isTagsFieldEdited', 'isFormEdited', 'isCustomFieldsEdited'),
+
+    isPristine: _ember['default'].computed.not('isEdited'),
+
+    submitDisabled: _ember['default'].computed.or('isSaving', 'isPristine', 'isCaseDisabled'),
 
     setState: function setState(properties) {
       var tabState = this.get('tabState');
@@ -16281,21 +16301,21 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
     // Actions
     actions: {
       trashCase: function trashCase() {
-        var _this3 = this;
+        var _this2 = this;
 
         if (confirm(this.get('intl').findTranslationByKey('cases.confirm.trash'))) {
           // eslint-disable-line
           this.get('apiAdapter').trashCase(this.get('case.id')).then(function () {
-            _this3.get('notificationService').success(_this3.get('intl').findTranslationByKey('cases.trash.success_message'));
+            _this2.get('notificationService').success(_this2.get('intl').findTranslationByKey('cases.trash.success_message'));
           });
         }
       },
 
       restoreCase: function restoreCase() {
-        var _this4 = this;
+        var _this3 = this;
 
         this.get('apiAdapter').restoreCase(this.get('case.id')).then(function () {
-          _this4.get('notificationService').success(_this4.get('intl').findTranslationByKey('cases.trash.restore.success_message'));
+          _this3.get('notificationService').success(_this3.get('intl').findTranslationByKey('cases.trash.restore.success_message'));
         });
       },
 
@@ -16335,59 +16355,92 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
         this.setState({ channelId: this.get('availableChannels').findBy('channelType', 'NOTE').get('id') });
       },
 
-      setPriority: function setPriority(priority) {
-        this.set('case.priority', priority);
-        this.set('errorMap.priority_id', null);
-      },
-
-      setStatus: function setStatus(status) {
-        this.set('case.status', status);
-        this.set('errorMap.status_id', null);
-      },
-
-      setType: function setType(type) {
-        this.set('case.caseType', type);
-        this.set('errorMap.type_id', null);
+      setPostContent: function setPostContent(newContent) {
+        this.setState({ postContent: newContent });
+        this.set('errorMap.contents', false);
       },
 
       setSubject: function setSubject(subject) {
-        this.set('case.subject', subject);
+        this.get('editedCase').set('subject', subject);
+        this.setState({ editedCase: this.get('editedCase') });
+        this.set('errorMap.subject', false);
       },
 
       setRequester: function setRequester(requester) {
-        this.set('case.requester', requester);
+        this.get('editedCase').set('requester', requester);
+        this.setState({ editedCase: this.get('editedCase') });
+        this.set('errorMap.requester_id', false);
       },
 
       setAssignee: function setAssignee(team, agent) {
-        if (!this.get('case.assignee')) {
-          this.set('case.assignee', this.get('store').createFragment('case-assignee'));
-        }
-        if (!this.get('case.assignee.teamFragment')) {
-          this.set('case.assignee.teamFragment', this.get('store').createFragment('relationship-fragment'));
-        }
-        this.set('case.assignee.teamFragment.relationshipId', team.get('id'));
+        this.get('editedCase').set('assigneeAgent', agent);
+        this.get('editedCase').set('assigneeTeam', team);
+        this.setState({ editedCase: this.get('editedCase') });
+        this.set('errorMap.assignee_agent_id', false);
+        this.set('errorMap.assignee_team_id', false);
+      },
 
-        if (!this.get('case.assignee.agentFragment')) {
-          this.set('case.assignee.agentFragment', this.get('store').createFragment('relationship-fragment'));
-        }
-        this.set('case.assignee.agentFragment.relationshipId', agent ? agent.get('id') : null);
+      setStatus: function setStatus(status) {
+        this.get('editedCase').set('status', status);
+        this.setState({ editedCase: this.get('editedCase') });
+        this.set('errorMap.status_id', false);
+      },
+
+      setType: function setType(type) {
+        this.get('editedCase').set('caseType', type);
+        this.setState({ editedCase: this.get('editedCase') });
+        this.set('errorMap.type_id', false);
+      },
+
+      setPriority: function setPriority(priority) {
+        this.get('editedCase').set('priority', priority);
+        this.setState({ editedCase: this.get('editedCase') });
+        this.set('errorMap.priority_id', false);
       },
 
       setForm: function setForm(form) {
-        this.set('case.form', form);
+        this.get('editedCase').set('form', form);
+        this.setState({ editedCase: this.get('editedCase') });
+        this.set('errorMap.form_id', false);
       },
 
       addTag: function addTag(tagName) {
-        if (this.caseHasTagWithName(tagName)) {
+        if (this.get('editedTags').find(function (tag) {
+          return tag.get('name') === tagName;
+        })) {
           return;
         }
-        var newTag = this.get('tagService').getTagByName(tagName);
-        newTag.set('isNew', true);
-        this.get('case.tags').pushObject(newTag);
+        var pusherChangedTags = this.get('propertiesChangeViaPusher.tags');
+        var newTag = _ember['default'].Object.create({
+          name: tagName,
+          isPusherEdited: pusherChangedTags ? pusherChangedTags.get(tagName) : false,
+          isNew: !this.get('case.tags').find(function (tag) {
+            return tag.get('name') === tagName;
+          })
+        });
+        this.get('editedTags').pushObject(newTag);
+        this.setState({ editedCase: this.get('editedCase') });
+        this.set('errorMap.tags', false);
       },
 
       removeTag: function removeTag(tag) {
-        this.get('case.tags').removeObject(tag);
+        this.get('editedTags').removeObject(tag);
+        this.setState({ editedCase: this.get('editedCase') });
+        this.set('errorMap.tags', false);
+      },
+
+      setCustomField: function setCustomField(field, value) {
+        this.get('errorMap').set(field.get('key'), false);
+        var localCustomFields = this.get('localCustomFields');
+        var valueObject = localCustomFields.find(function (value) {
+          return value.get('field.id') === field.get('id');
+        });
+        if (!valueObject) {
+          valueObject = _ember['default'].Object.create({ field: field, value: value });
+          localCustomFields.pushObject(valueObject);
+        }
+        valueObject.set('value', value);
+        this.setState({ localCustomFields: localCustomFields });
       },
 
       suggestTags: function suggestTags(searchTerm) {
@@ -16396,16 +16449,13 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
           return;
         }
 
-        this.setState({ tagSearchTerm: searchTerm });
-        _ember['default'].run.debounce(this, this.suggestTagsCallback, 300);
+        _ember['default'].run.debounce(this, this.suggestTagsCallback, searchTerm, 300);
       },
 
       addCC: function addCC(email) {
-        if (!this.get('case.replyOptions.cc')) {
-          this.set('case.replyOptions.cc', [email]);
-        } else {
-          this.get('case.replyOptions.cc').pushObject(email);
-        }
+        var replyOptions = this.get('replyOptions');
+        replyOptions.get('cc').pushObject(email);
+        this.setState({ replyOptions: replyOptions });
 
         this.get('metrics').trackEvent({
           event: 'CC Participant Added',
@@ -16416,7 +16466,9 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       },
 
       removeCC: function removeCC(email) {
-        this.get('case.replyOptions.cc').removeObject(email);
+        var replyOptions = this.get('replyOptions');
+        replyOptions.get('cc').removeObject(email);
+        this.setState({ replyOptions: replyOptions });
 
         this.get('metrics').trackEvent({
           event: 'CC Participant Removed',
@@ -16427,9 +16479,10 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       },
 
       submit: function submit() {
-        var _this5 = this;
+        var _this4 = this;
 
         var channel = this.get('channel');
+        var originalCase = this.copyCase(this.get('case'));
         var editor = this.get('casePostEditor.postEditor');
         var post = editor.getText().trim();
         var uploads = this.get('attachedPostFiles');
@@ -16438,8 +16491,6 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
         }).filter(function (id) {
           return id !== null;
         });
-
-        this.setState({ isSaving: true });
 
         // @TODO we need to do something better here, UI wise.
         if (uploads.filter(function (u) {
@@ -16450,35 +16501,90 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
             title: 'Upload in progress',
             autodismiss: true
           });
-          this.setState({ isSaving: false });
           return;
         }
 
-        this.setState({ shouldIgnoreNextPusherUpdate: true });
+        this.setState({ isSaving: true });
+
+        var originalTags = this.get('case.tags').map(function (tag) {
+          return tag;
+        });
+        var originalCustomFields = this.get('case.customFields').map(function (field) {
+          return field;
+        });
+        var rollback = function rollback(e) {
+          _this4.setState({
+            errorMap: _this4.convertErrorsToMap(e.errors),
+            isSaving: false
+          });
+
+          _this4.get('case.errors').clear();
+          _this4.get('case').setProperties({
+            subject: originalCase.get('subject'),
+            assigneeTeam: originalCase.get('assigneeTeam'),
+            assigneeAgent: originalCase.get('assigneeAgent'),
+            requester: originalCase.get('requester'),
+            status: originalCase.get('status'),
+            caseType: originalCase.get('caseType'),
+            priority: originalCase.get('priority'),
+            form: originalCase.get('form'),
+            tags: originalTags,
+            customFields: originalCustomFields
+          });
+        };
+
+        var editedCase = this.get('editedCase');
+        this.get('case').setProperties({
+          subject: editedCase.get('subject'),
+          assigneeTeam: editedCase.get('assigneeTeam'),
+          assigneeAgent: editedCase.get('assigneeAgent'),
+          requester: editedCase.get('requester'),
+          status: editedCase.get('status'),
+          caseType: editedCase.get('caseType'),
+          priority: editedCase.get('priority'),
+          form: editedCase.get('form'),
+          tags: this.get('editedTags').map(function (tag) {
+            return _this4.get('tagService').getTagByName(tag.get('name'));
+          }),
+          customFields: this.get('localCustomFields').map(function (customField) {
+            return _this4.get('store').createFragment('case-field-value', {
+              fieldFragment: _this4.get('store').createFragment('relationship-fragment', {
+                relationshipId: customField.get('field.id'),
+                relationshipType: customField.get('field.type')
+              }),
+              value: customField.get('value')
+            });
+          })
+        });
+
         if (this.get('case.isNew')) {
           this.set('case.contents', post);
           this.set('case.channel', channel.get('channelType'));
           this.set('case.channelId', channel.get('account.id'));
           this.get('case').save().then(function (newCase) {
-            _this5._getCaseSaveNotification('create');
-            _this5.attrs.onCaseCreate(newCase);
-            _this5.attrs.onTabNameUpdate(_this5.get('case.subject'));
+            // this.get('case').setProperties({
+            //   contents: undefined,
+            //   channel: undefined,
+            //   channelId: undefined
+            // });
+            _this4.setState({
+              editedTags: _this4.initEditedTags(newCase),
+              localCustomFields: _this4.initCustomFields(newCase)
+            });
+            _this4._getCaseSaveNotification('create');
+            _this4.attrs.onCaseCreate(newCase);
+            _this4.attrs.onTabNameUpdate(_this4.get('case.subject'));
 
-            _this5.get('metrics').trackEvent({
+            _this4.get('metrics').trackEvent({
               event: 'Case Created',
               category: 'Case',
               action: 'click',
               label: 'submit button'
             });
           }, function (e) {
-            _this5.setState({
-              errors: e.errors,
-              errorMap: _this5.convertErrorsToMap(e.errors),
-              shouldIgnoreNextPusherUpdate: false,
-              isSaving: false
-            });
+            rollback(e);
 
-            _this5.get('metrics').trackEvent({
+            _this4.get('metrics').trackEvent({
               event: 'Case Creation Failed',
               category: 'Case',
               action: 'click',
@@ -16488,26 +16594,25 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
         } else if (!post && !attachmentIds.length) {
           // we are just updating the case -- don't create a case-reply
           this.get('case').save().then(function () {
-            _this5._getCaseSaveNotification('update');
-            _this5.resetCaseFormState();
-            _this5.refreshTags();
-            _this5.attrs.onTabNameUpdate(_this5.get('case.subject'));
+            _this4._getCaseSaveNotification('update');
+            _this4.resetCaseFormState();
+            _this4.refreshTags();
+            _this4.attrs.onTabNameUpdate(_this4.get('case.subject'));
+            _this4.setState({
+              editedTags: _this4.initEditedTags(_this4.get('case')),
+              localCustomFields: _this4.initCustomFields(_this4.get('case'))
+            });
 
-            _this5.get('metrics').trackEvent({
+            _this4.get('metrics').trackEvent({
               event: 'Case Updated',
               category: 'Case',
               action: 'click',
               label: 'submit button'
             });
           }, function (e) {
-            _this5.setState({
-              errors: e.errors,
-              errorMap: _this5.convertErrorsToMap(e.errors),
-              shouldIgnoreNextPusherUpdate: false,
-              isSaving: false
-            });
+            rollback(e);
 
-            _this5.get('metrics').trackEvent({
+            _this4.get('metrics').trackEvent({
               event: 'Case Update Failed',
               category: 'Case',
               action: 'click',
@@ -16515,17 +16620,22 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
             });
           });
         } else {
-          this.get('case').saveWithPost(post, channel, attachmentIds).then(function (caseReply) {
+          var replyOptions = this.get('replyOptions');
+          this.get('case').saveWithPost(post, channel, attachmentIds, replyOptions).then(function (caseReply) {
             caseReply.get('posts').forEach(function (post) {
-              return _this5.addPostFromReply(post);
+              return _this4.addPostFromReply(post);
             });
-            _this5._getCaseSaveNotification('with-reply');
-            _this5.resetCaseFormState();
-            _this5.refreshTags();
-            _this5.attrs.onTabNameUpdate(_this5.get('case.subject'));
+            _this4._getCaseSaveNotification('with-reply');
+            _this4.resetCaseFormState();
+            _this4.refreshTags();
+            _this4.attrs.onTabNameUpdate(_this4.get('case.subject'));
+            _this4.setState({
+              editedTags: _this4.initEditedTags(_this4.get('case')),
+              localCustomFields: _this4.initCustomFields(_this4.get('case'))
+            });
             window.document.body.scrollTop = 0;
 
-            _this5.get('metrics').trackEvent({
+            _this4.get('metrics').trackEvent({
               event: 'Case Replied' + (channel.get('channelType') === 'NOTE' ? ' (with note)' : ''),
               category: 'Case',
               action: 'click',
@@ -16533,7 +16643,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
             });
 
             if (attachmentIds.length) {
-              _this5.get('metrics').trackEvent({
+              _this4.get('metrics').trackEvent({
                 event: 'Case Attachments Added',
                 category: 'Case',
                 action: 'click',
@@ -16542,14 +16652,9 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
               });
             }
           }, function (e) {
-            _this5.setState({
-              errors: e.errors,
-              errorMap: _this5.convertErrorsToMap(e.errors),
-              shouldIgnoreNextPusherUpdate: false,
-              isSaving: false
-            });
+            rollback(e);
 
-            _this5.get('metrics').trackEvent({
+            _this4.get('metrics').trackEvent({
               event: 'Case Reply Failed' + (channel.get('channelType') === 'NOTE' ? ' (with note)' : ''),
               category: 'Case',
               action: 'click',
@@ -16564,12 +16669,6 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
         var postEditor = editor.get('postEditor');
 
         postEditor.clear();
-
-        quote = quote.trim();
-        quote = quote.replace(/\t/g, '');
-        quote = quote.replace(/\s{2,}/g, ' ');
-        quote = quote.replace(/\n/g, '<br/ >');
-
         postEditor.setHTML('<div class="ko-text-editor__blockquote">"' + quote + '"</div><br /><br />');
 
         this.get('metrics').trackEvent({
@@ -16581,19 +16680,9 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       },
 
       applyMacro: function applyMacro(macro) {
-        var _this6 = this;
+        var _this5 = this;
 
-        var currentCase = this.get('case');
-        var contentsToAdd = macro.get('replyContents');
-        var newStatus = macro.get('properties.status');
-        var newPriority = macro.get('properties.priority');
-        var newType = macro.get('properties.macroType');
-        var newAssignedTeam = macro.get('assignee') ? macro.get('assignee.team') : null;
-        var newAssignedAgent = macro.get('assignee') ? macro.get('assignee.agent') : null;
-        var priorityAction = macro.get('properties.priorityAction');
-        var tags = macro.get('tags');
         var replyType = macro.get('replyType');
-
         if (replyType) {
           if (replyType === 'REPLY') {
             this.send('setChannel');
@@ -16602,51 +16691,60 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
           }
         }
 
+        var contentsToAdd = macro.get('replyContents');
         if (contentsToAdd) {
           this.get('casePostEditor.postEditor').insertOrAppendHTML(contentsToAdd);
         }
+
+        var newStatus = macro.get('properties.status');
         if (newStatus) {
-          currentCase.set('status', newStatus);
+          this.send('setStatus', newStatus);
         }
+
+        var newPriority = macro.get('properties.priority');
         if (newPriority) {
-          currentCase.set('priority', newPriority);
+          this.send('setPriority', newPriority);
         }
+
+        var priorityAction = macro.get('properties.priorityAction');
         if (priorityAction) {
           (function () {
             var newPriorityLevel = undefined;
+            var currentCase = _this5.get('editedCase');
 
             if (priorityAction === 'INCREASE_ONE_LEVEL') {
               newPriorityLevel = currentCase.get('priority.level') + 1;
             } else {
-              newPriorityLevel = currentCase.get('priority.level') - 1;
-
-              // if we can't find a valid priority, it should have the lowest priority.
-              if (newPriorityLevel < 1) {
-                newPriorityLevel = 1;
-              }
+              newPriorityLevel = Math.max(1, currentCase.get('priority.level') - 1);
             }
 
-            var newPriority = _this6.get('store').peekAll('case-priority').filter(function (priority) {
+            var newPriority = _this5.get('store').peekAll('case-priority').filter(function (priority) {
               return priority.get('level') === newPriorityLevel;
             }).get('firstObject');
 
             if (newPriority) {
-              currentCase.set('priority', newPriority);
+              _this5.send('setPriority', newPriority);
             }
           })();
         }
+
+        var newType = macro.get('properties.macroType');
         if (newType) {
-          currentCase.set('caseType', newType);
+          this.send('setType', newType);
         }
+
+        var newAssignedTeam = macro.get('assignee.team');
         if (newAssignedTeam) {
-          this.send('setAssignee', newAssignedTeam, newAssignedAgent);
+          this.send('setAssignee', newAssignedTeam, macro.get('assignee.agent'));
         }
+
+        var tags = macro.get('tags');
         if (tags.get('length')) {
           tags.forEach(function (tag) {
             if (tag.get('type') === 'ADD') {
-              _this6.send('addTag', tag.get('name'));
+              _this5.send('addTag', tag.get('name'));
             } else {
-              _this6.send('removeTag', tag.get('name'));
+              _this5.send('removeTag', tag.get('name'));
             }
           });
         }
@@ -16660,7 +16758,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       },
 
       onPeopleSuggestion: function onPeopleSuggestion(searchTerm, selectedPeople) {
-        var _this7 = this;
+        var _this6 = this;
 
         var ccPopupProxy = this.get('ccPopupProxy');
 
@@ -16691,7 +16789,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
 
           identities = peopleSuggestionService.exclude(identities, selectedPeople, 'email');
 
-          _this7.setState({
+          _this6.setState({
             suggestedPeople: identities,
             suggestedPeopleTotal: data.get('meta.total')
           });
@@ -16700,7 +16798,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
 
           peopleSuggestionService.flushQueue();
 
-          _this7.setState({ suggestedPeopleLoading: false });
+          _this6.setState({ suggestedPeopleLoading: false });
         });
       },
 
@@ -16724,10 +16822,6 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
           action: _sort.content,
           label: 'sort dropdown'
         });
-      },
-
-      updatePostContent: function updatePostContent(newContent) {
-        this.setState({ postContent: newContent });
       },
 
       updateQuillText: function updateQuillText() {
@@ -16781,7 +16875,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
     },
 
     loadTopPosts: function loadTopPosts(id) {
-      var _this8 = this;
+      var _this7 = this;
 
       if (this.get('case.isNew')) {
         return;
@@ -16796,9 +16890,9 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
         var morePostsAvailable = _ref2.morePostsAvailable;
 
         posts.forEach(function (post) {
-          return _this8.get('posts').unshiftObject(post);
+          return _this7.get('posts').unshiftObject(post);
         }); // beware: Not equivalent to this.get('posts').unshiftObjects(posts)
-        _this8.setState({
+        _this7.setState({
           loadingTop: false,
           topPostsAvailable: morePostsAvailable
         });
@@ -16806,7 +16900,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
     },
 
     loadBottomPosts: function loadBottomPosts(id, _ref3) {
-      var _this9 = this;
+      var _this8 = this;
 
       var including = _ref3.including;
 
@@ -16824,8 +16918,8 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
         var posts = _ref4.posts;
         var morePostsAvailable = _ref4.morePostsAvailable;
 
-        _this9.get('posts').pushObjects(posts);
-        _this9.setState({
+        _this8.get('posts').pushObjects(posts);
+        _this8.setState({
           loadingBottom: false,
           bottomPostsAvailable: morePostsAvailable
         });
@@ -16847,10 +16941,9 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       }
     },
 
-    suggestTagsCallback: function suggestTagsCallback() {
-      var _this10 = this;
+    suggestTagsCallback: function suggestTagsCallback(searchTerm) {
+      var _this9 = this;
 
-      var searchTerm = this.get('tagSearchTerm');
       var selectedTags = this.get('case.tags');
       var suggestionService = this.get('tagSuggestionService');
       suggestionService.suggest(searchTerm).then(function (data) {
@@ -16860,7 +16953,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
 
         data = suggestionService.exclude(data, selectedTags.mapBy('name'));
 
-        _this10.setState({ suggestedTags: data.map(function (tag) {
+        _this9.setState({ suggestedTags: data.map(function (tag) {
             return tag.get('name');
           }) });
         suggestionService.flushQueue();
@@ -16900,140 +16993,148 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       return defaultChannel ? defaultChannel.get('id') : null;
     },
 
-    validateCaseStatus: function validateCaseStatus(editingCase) {
-      var caseStatus = editingCase.get('status');
-
-      if (editingCase.get('id') && caseStatus.get('statusType') === 'NEW') {
-        var statuses = this.get('store').all('case-status');
-        var pendingStatus = statuses.find(function (model) {
-          return model.get('statusType') === 'OPEN';
-        });
-        editingCase.set('status', pendingStatus);
-      }
-    },
-
     resetCaseFormState: function resetCaseFormState() {
-      this.setState({ errors: [], errorMap: _ember['default'].Object.create(), attachedPostFiles: [] });
       this.get('casePostEditor.postEditor').clear();
-      this.setState({ shouldIgnoreNextPusherUpdate: false });
-      this.set('case.propertiesChangeViaPusher', _ember['default'].Object.create());
-      this.setState({ isSaving: false });
+      this.setState({
+        errorMap: _ember['default'].Object.create(),
+        attachedPostFiles: [],
+        propertiesChangeViaPusher: _ember['default'].Object.create({
+          customFields: _ember['default'].Object.create()
+        }),
+        isSaving: false
+      });
     },
 
     refreshTags: function refreshTags() {
-      var _this11 = this;
-
-      this.get('tagService').refreshTagsForCase(this.get('case')).then(function (caseTags) {
-        _this11.setState({ cachedCaseTags: caseTags.map(function (tag) {
-            return tag.get('id');
-          }) });
-      });
-    },
-
-    caseHasTagWithName: function caseHasTagWithName(tagName) {
-      return !!this.get('case.tags').find(function (tag) {
-        return tag.get('name') === tagName;
-      });
+      this.get('tagService').refreshTagsForCase(this.get('case'));
     },
 
     updateCaseFromPusher: function updateCaseFromPusher(serverData, caseId) {
-      var _this12 = this;
+      var _this10 = this;
 
-      if (this.get('shouldIgnoreNextPusherUpdate')) {
-        this.setState({ shouldIgnoreNextPusherUpdate: false });
+      var caseToUpdate = this.get('store').peekRecord('case', caseId);
+
+      var propertiesChangeViaPusher = this.get('propertiesChangeViaPusher');
+      var original = this.copyCase(this.get('case'));
+      var originalTags = caseToUpdate.get('tags').toArray().slice(0);
+      var originalCustomFieldsHash = {};
+      caseToUpdate.get('customFields').forEach(function (caseField) {
+        originalCustomFieldsHash[caseField.get('field.id')] = caseField.get('value');
+      });
+      var editedCase = this.get('editedCase');
+      var localCustomFields = this.get('localCustomFields');
+      var errorMap = this.get('errorMap');
+
+      if (caseToUpdate.get('isSaving')) {
         return;
       }
 
-      var caseToUpdate = this.get('store').peekRecord('case', caseId);
-      var initialRelationships = caseToUpdate.get('initialRelationships');
-      var originalCustomFields = caseToUpdate.get('initialCustomFields');
-      var currentRelationships = caseToUpdate.getRelationships();
-      var initialSubject = caseToUpdate.get('subject');
-      var initialAssigneeTeam = caseToUpdate.get('assignee.team');
-      var initialAssigneeAgent = caseToUpdate.get('assignee.agent');
+      caseToUpdate.reload().then(function () {
 
-      // cache current id => values
-      var currentCustomFieldValueHash = {};
-      caseToUpdate.get('customFields').forEach(function (caseField) {
-        currentCustomFieldValueHash[caseField.get('field.id')] = caseField.get('value');
-      });
-      var currentTags = caseToUpdate.get('tags').toArray().slice(0);
-      var propertiesChangeViaPusher = caseToUpdate.get('propertiesChangeViaPusher') || new _ember['default'].Object();
+        if (original.get('assigneeTeam') !== caseToUpdate.get('assigneeTeam') || original.get('assigneeAgent') !== caseToUpdate.get('assigneeAgent')) {
+          editedCase.set('assigneeTeam', caseToUpdate.get('assigneeTeam'));
+          editedCase.set('assigneeAgent', caseToUpdate.get('assigneeAgent'));
+          errorMap.set('assignee_agent_id', false);
+          errorMap.set('assignee_team_id', false);
+          propertiesChangeViaPusher.set('assignee', true);
+        }
 
-      caseToUpdate.reload().then(function (newCase) {
-        newCase.cacheRelationships();
-
-        _this12.get('store').peekAll('case-field').forEach(function (caseField) {
-          var relationshipName = caseField.get('key');
-          if (relationshipName === 'type') {
-            relationshipName = 'caseType';
+        var properties = ['subject', 'requester', 'status', 'caseType', 'priority', 'form'];
+        properties.forEach(function (property) {
+          if (original.get(property) !== caseToUpdate.get(property)) {
+            editedCase.set(property, caseToUpdate.get(property));
+            errorMap.set(property, false);
+            propertiesChangeViaPusher.set(property, true);
           }
-
-          if (caseField.get('isSystem')) {
-            if (relationshipName === 'subject') {
-
-              if (newCase.get('subject') !== initialSubject) {
-                propertiesChangeViaPusher.set(caseField.get('id'), true);
-                propertiesChangeViaPusher.set(relationshipName, true);
-              }
-            } else if (relationshipName === 'assignee') {
-              if (newCase.get('assignee.team') !== initialAssigneeTeam || newCase.get('assignee.agent') !== initialAssigneeAgent) {
-                propertiesChangeViaPusher.set(caseField.get('id'), true);
-                propertiesChangeViaPusher.set(relationshipName, true);
-              }
-            } else if (newCase.get(relationshipName) === initialRelationships[relationshipName]) {
-              newCase.set(relationshipName, currentRelationships[relationshipName]);
-            } else {
-              propertiesChangeViaPusher.set(caseField.get('id'), true);
-              propertiesChangeViaPusher.set(relationshipName, true); // we can refer to these either by ID (when looping) or by key (eg for subject)
-            }
-          } else {
-              var updatedCustomField = newCase.get('customFields').find(function (field) {
-                return field.get('field.id') === caseField.get('id');
-              });
-              var userModifiedCustomFieldValue = currentCustomFieldValueHash[caseField.get('id')];
-
-              if (updatedCustomField && updatedCustomField.get('value') === originalCustomFields[caseField.get('id')]) {
-                updatedCustomField.set('value', userModifiedCustomFieldValue);
-              } else {
-                propertiesChangeViaPusher.set(caseField.get('id'), true);
-              }
-            }
         });
 
-        _this12.get('tagService').refreshTagsForCase(newCase).then(function (serverTags) {
+        _this10.get('store').peekAll('case-field').forEach(function (field) {
+          var fieldPredicate = function fieldPredicate(fieldValue) {
+            return fieldValue.get('field.id') === field.get('id');
+          };
+          var updatedField = caseToUpdate.get('customFields').find(fieldPredicate);
+          var userModifiedField = localCustomFields.find(fieldPredicate);
+
+          var originalValue = originalCustomFieldsHash[field.get('id')];
+          var updatedValue = updatedField ? updatedField.get('value') : undefined; // eslint-disable-line no-undefined
+          var userModifiedValue = userModifiedField ? userModifiedField.get('value') : undefined; // eslint-disable-line no-undefined
+
+          if (originalValue !== updatedValue) {
+            // if the missing value was replaced with an empty string or vice versa, we won't mark it
+            // as changed via pusher (given that the local value was also falsish)
+            var isFalsish = function isFalsish(val) {
+              return val === undefined || val === '';
+            }; // eslint-disable-line no-undefined
+            var sameish = _npmLodash['default'].every([userModifiedValue, originalValue, updatedValue], isFalsish);
+            if (!sameish) {
+              propertiesChangeViaPusher.get('customFields').set(field.get('id'), true);
+            }
+            errorMap.set(field.get('key'), false);
+            if (updatedField) {
+              if (userModifiedField) {
+                userModifiedField.set('value', updatedValue);
+              } else {
+                var value = updatedField.get('value');
+                var newField = _ember['default'].Object.create({ field: field, value: value });
+                localCustomFields.pushObject(newField);
+              }
+            } else {
+              localCustomFields.removeObject(userModifiedField);
+            }
+          }
+        });
+
+        _this10.get('tagService').refreshTagsForCase(caseToUpdate).then(function (serverTags) {
+          var editedTags = _this10.get('editedTags');
+
           var serverTagNames = serverTags.map(function (tag) {
-            return tag.get('id');
-          });
-          var modifiedTagNames = currentTags.map(function (tag) {
             return tag.get('name');
           });
-          var originalTagNames = _this12.get('cachedCaseTags');
-          var allTagNames = Array.concat(serverTagNames, modifiedTagNames, originalTagNames).uniq();
-
-          _this12.setState({ cachedCaseTags: serverTagNames });
-
-          var tagsWereModified = serverTagNames.length !== modifiedTagNames.length && serverTagNames.some(function (tag) {
-            return modifiedTagNames.indexOf(tag) !== -1;
+          var originalTagNames = originalTags.map(function (tag) {
+            return tag.get('name');
           });
-          // we always want to display pusher modifications once they've been modified
-          var displayModifiedTags = tagsWereModified || propertiesChangeViaPusher.get('tags');
-          propertiesChangeViaPusher.set('tags', displayModifiedTags);
 
-          allTagNames.forEach(function (tagName) {
-            if (originalTagNames.indexOf(tagName) === -1 && modifiedTagNames.indexOf(tagName) === -1) {
-              // server added this tag - we've never seen it before
-              var tagToAdd = _this12.get('store').peekRecord('tag', tagName);
-              tagToAdd.set('isPusherEdited', true);
-              newCase.get('tags').pushObject(tagToAdd);
-            } else if (originalTagNames.indexOf(tagName) > 1 && serverTagNames.indexOf(tagName) === -1) {
-              // server deleted a tag
-              var tagToDelete = _this12.get('store').peekRecord('tag', tagName);
-              newCase.get('tags').removeObject(tagToDelete);
+          var tagsWereModified = serverTagNames.length !== originalTagNames.length && serverTagNames.some(function (tag) {
+            return originalTagNames.indexOf(tag) !== -1;
+          });
+
+          if (tagsWereModified) {
+            errorMap.set('tags', false);
+            propertiesChangeViaPusher.set('tags', _ember['default'].Object.create());
+          }
+
+          // Tags aded by the server
+          serverTagNames.forEach(function (tagName) {
+            if (originalTagNames.indexOf(tagName) === -1) {
+              propertiesChangeViaPusher.get('tags').set(tagName, true);
+              var tag = editedTags.find(function (tag) {
+                return tag.get('name') === tagName;
+              });
+              if (!tag) {
+                tag = _ember['default'].Object.create({
+                  name: tagName
+                });
+                editedTags.pushObject(tag);
+              }
+              tag.set('isPusherEdited', true);
+              tag.set('isNew', false);
             }
           });
 
-          newCase.set('propertiesChangeViaPusher', propertiesChangeViaPusher);
+          // Tags removed by the server
+          originalTagNames.forEach(function (tagName) {
+            if (serverTagNames.indexOf(tagName) === -1) {
+              propertiesChangeViaPusher.get('tags').set(tagName, true);
+              var tag = editedTags.find(function (tag) {
+                return tag.get('name') === tagName;
+              });
+              if (tag) {
+                editedTags.removeObject(tag);
+              }
+            }
+          });
+
+          _this10.setState({ editedCase: editedCase, editedTags: editedTags, errorMap: errorMap, localCustomFields: localCustomFields, propertiesChangeViaPusher: propertiesChangeViaPusher });
         });
       });
     }
@@ -17330,7 +17431,8 @@ define('frontend-cp/components/ko-case-content/field/assignee/component', ['expo
 
   exports['default'] = _ember['default'].Component.extend({
     // Attributes
-    value: null,
+    agent: null,
+    admin: null,
     field: null,
     isErrored: false,
     isEdited: false,
@@ -17348,10 +17450,8 @@ define('frontend-cp/components/ko-case-content/field/assignee/component', ['expo
     store: _ember['default'].inject.service(),
     storeCache: _ember['default'].inject.service('store-cache'),
 
-    currentlySelectedValue: _ember['default'].computed('value.agent.id', 'value.team.id', function () {
-      var agentName = this.get('value.agent.id');
-      var teamName = this.get('value.team.id');
-      return this.generateTeamAgentId(teamName, agentName);
+    currentlySelectedValue: _ember['default'].computed('agent.id', 'team.id', function () {
+      return this.generateTeamAgentId(this.get('team.id'), this.get('agent.id'));
     }),
 
     setAssigneeValues: _ember['default'].on('init', function () {
@@ -17391,10 +17491,7 @@ define('frontend-cp/components/ko-case-content/field/assignee/component', ['expo
     }),
 
     generateTeamAgentId: function generateTeamAgentId(teamId, agentId) {
-      if (!agentId) {
-        return teamId;
-      }
-      return teamId + '-' + agentId;
+      return agentId ? teamId + '-' + agentId : teamId;
     },
 
     actions: {
@@ -17447,7 +17544,7 @@ define("frontend-cp/components/ko-case-content/field/assignee/template", ["expor
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["inline", "ko-info-bar/field/drill-down", [], ["title", ["subexpr", "@mut", [["get", "field.title", ["loc", [null, [2, 8], [2, 19]]]]], [], []], "options", ["subexpr", "@mut", [["get", "assigneeValues", ["loc", [null, [3, 10], [3, 24]]]]], [], []], "value", ["subexpr", "@mut", [["get", "currentlySelectedValue", ["loc", [null, [4, 8], [4, 30]]]]], [], []], "isEdited", ["subexpr", "@mut", [["get", "isEdited", ["loc", [null, [5, 11], [5, 19]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "isPusherEdited", ["loc", [null, [6, 17], [6, 31]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "caseFieldError", ["loc", [null, [7, 12], [7, 26]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isDisabled", ["loc", [null, [8, 13], [8, 23]]]]], [], []], "onValueChange", ["subexpr", "action", ["assigneeSelected"], [], ["loc", [null, [9, 16], [9, 43]]]], "emptyLabel", ["subexpr", "t", ["cases.unassigned"], [], ["loc", [null, [10, 13], [10, 35]]]], "hasEmptyOption", false], ["loc", [null, [1, 0], [12, 2]]]]],
+      statements: [["inline", "ko-info-bar/field/drill-down", [], ["title", ["subexpr", "@mut", [["get", "field.title", ["loc", [null, [2, 8], [2, 19]]]]], [], []], "options", ["subexpr", "@mut", [["get", "assigneeValues", ["loc", [null, [3, 10], [3, 24]]]]], [], []], "value", ["subexpr", "@mut", [["get", "currentlySelectedValue", ["loc", [null, [4, 8], [4, 30]]]]], [], []], "isEdited", ["subexpr", "@mut", [["get", "isEdited", ["loc", [null, [5, 11], [5, 19]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "isPusherEdited", ["loc", [null, [6, 17], [6, 31]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "isErrored", ["loc", [null, [7, 12], [7, 21]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isDisabled", ["loc", [null, [8, 13], [8, 23]]]]], [], []], "onValueChange", ["subexpr", "action", ["assigneeSelected"], [], ["loc", [null, [9, 16], [9, 43]]]], "emptyLabel", ["subexpr", "t", ["cases.unassigned"], [], ["loc", [null, [10, 13], [10, 35]]]], "hasEmptyOption", false], ["loc", [null, [1, 0], [12, 2]]]]],
       locals: [],
       templates: []
     };
@@ -17478,7 +17575,7 @@ define("frontend-cp/components/ko-case-content/field/forms/template", ["exports"
               "column": 0
             },
             "end": {
-              "line": 13,
+              "line": 14,
               "column": 0
             }
           },
@@ -17502,7 +17599,7 @@ define("frontend-cp/components/ko-case-content/field/forms/template", ["exports"
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [["inline", "ko-info-bar/field/select", [], ["title", ["subexpr", "t", ["cases.form-select"], [], ["loc", [null, [3, 10], [3, 33]]]], "value", ["subexpr", "@mut", [["get", "selectedForm", ["loc", [null, [4, 10], [4, 22]]]]], [], []], "options", ["subexpr", "@mut", [["get", "forms", ["loc", [null, [5, 12], [5, 17]]]]], [], []], "onValueChange", ["subexpr", "@mut", [["get", "attrs.onFormSelected", ["loc", [null, [6, 18], [6, 38]]]]], [], []], "labelPath", "title", "isEdited", ["subexpr", "@mut", [["get", "isEdited", ["loc", [null, [8, 13], [8, 21]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "isPusherEdited", ["loc", [null, [9, 19], [9, 33]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "isErrored", ["loc", [null, [10, 14], [10, 23]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isDisabled", ["loc", [null, [11, 15], [11, 25]]]]], [], []]], ["loc", [null, [2, 2], [12, 4]]]]],
+        statements: [["inline", "ko-info-bar/field/select", [], ["title", ["subexpr", "t", ["cases.form-select"], [], ["loc", [null, [3, 10], [3, 33]]]], "value", ["subexpr", "@mut", [["get", "selectedForm", ["loc", [null, [4, 10], [4, 22]]]]], [], []], "options", ["subexpr", "@mut", [["get", "forms", ["loc", [null, [5, 12], [5, 17]]]]], [], []], "onValueChange", ["subexpr", "@mut", [["get", "attrs.onFormSelected", ["loc", [null, [6, 18], [6, 38]]]]], [], []], "labelPath", "title", "isEdited", ["subexpr", "@mut", [["get", "isEdited", ["loc", [null, [8, 13], [8, 21]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "isPusherEdited", ["loc", [null, [9, 19], [9, 33]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "isErrored", ["loc", [null, [10, 14], [10, 23]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isDisabled", ["loc", [null, [11, 15], [11, 25]]]]], [], []], "hasEmptyOption", false], ["loc", [null, [2, 2], [13, 4]]]]],
         locals: [],
         templates: []
       };
@@ -17517,7 +17614,7 @@ define("frontend-cp/components/ko-case-content/field/forms/template", ["exports"
             "column": 0
           },
           "end": {
-            "line": 14,
+            "line": 15,
             "column": 0
           }
         },
@@ -17539,7 +17636,7 @@ define("frontend-cp/components/ko-case-content/field/forms/template", ["exports"
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["block", "if", [["get", "forms.length", ["loc", [null, [1, 6], [1, 18]]]]], [], 0, null, ["loc", [null, [1, 0], [13, 7]]]]],
+      statements: [["block", "if", [["get", "forms.length", ["loc", [null, [1, 6], [1, 18]]]]], [], 0, null, ["loc", [null, [1, 0], [14, 7]]]]],
       locals: [],
       templates: [child0]
     };
@@ -18428,7 +18525,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
             morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1, 1]), 1, 1);
             return morphs;
           },
-          statements: [["inline", "ko-case-content/field/post", [], ["injectIntoParent", ["subexpr", "action", [["subexpr", "mut", [["get", "casePostEditor", ["loc", [null, [70, 48], [70, 62]]]]], [], ["loc", [null, [70, 43], [70, 63]]]]], [], ["loc", [null, [70, 35], [70, 64]]]], "channels", ["subexpr", "@mut", [["get", "availableReplyChannels", ["loc", [null, [71, 27], [71, 49]]]]], [], []], "channel", ["subexpr", "@mut", [["get", "channel", ["loc", [null, [72, 26], [72, 33]]]]], [], []], "onChannelChange", ["subexpr", "action", ["setChannel"], [], ["loc", [null, [73, 34], [73, 55]]]], "onSetNote", ["subexpr", "action", ["setNote"], [], ["loc", [null, [74, 28], [74, 46]]]], "replyType", ["subexpr", "@mut", [["get", "replyType", ["loc", [null, [75, 28], [75, 37]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "errorMap.contents", ["loc", [null, [76, 28], [76, 45]]]]], [], []], "suggestedPeople", ["subexpr", "@mut", [["get", "suggestedPeople", ["loc", [null, [77, 34], [77, 49]]]]], [], []], "peopleCCd", ["subexpr", "@mut", [["get", "peopleCCd", ["loc", [null, [78, 28], [78, 37]]]]], [], []], "suggestedPeopleTotal", ["subexpr", "@mut", [["get", "suggestedPeopleTotal", ["loc", [null, [79, 39], [79, 59]]]]], [], []], "suggestedPeopleLoading", ["subexpr", "@mut", [["get", "suggestedPeopleLoading", ["loc", [null, [80, 41], [80, 63]]]]], [], []], "isPeopleAutoCompleteAvailable", ["subexpr", "@mut", [["get", "isPeopleAutoCompleteAvailable", ["loc", [null, [81, 48], [81, 77]]]]], [], []], "onPeopleSuggestion", "onPeopleSuggestion", "addCC", ["subexpr", "action", ["addCC"], [], ["loc", [null, [83, 24], [83, 40]]]], "removeCC", ["subexpr", "action", ["removeCC"], [], ["loc", [null, [84, 27], [84, 46]]]], "onPostContentChanged", ["subexpr", "action", ["updatePostContent"], [], ["loc", [null, [85, 39], [85, 67]]]], "onEditorReady", ["subexpr", "action", ["updateQuillText"], [], ["loc", [null, [86, 32], [86, 58]]]], "attachedFiles", ["subexpr", "@mut", [["get", "attachedPostFiles", ["loc", [null, [87, 32], [87, 49]]]]], [], []], "ccPopupProxy", ["subexpr", "@mut", [["get", "ccPopupProxy", ["loc", [null, [88, 31], [88, 43]]]]], [], []]], ["loc", [null, [69, 14], [89, 16]]]]],
+          statements: [["inline", "ko-case-content/field/post", [], ["injectIntoParent", ["subexpr", "action", [["subexpr", "mut", [["get", "casePostEditor", ["loc", [null, [70, 48], [70, 62]]]]], [], ["loc", [null, [70, 43], [70, 63]]]]], [], ["loc", [null, [70, 35], [70, 64]]]], "channels", ["subexpr", "@mut", [["get", "availableReplyChannels", ["loc", [null, [71, 27], [71, 49]]]]], [], []], "channel", ["subexpr", "@mut", [["get", "channel", ["loc", [null, [72, 26], [72, 33]]]]], [], []], "onChannelChange", ["subexpr", "action", ["setChannel"], [], ["loc", [null, [73, 34], [73, 55]]]], "onSetNote", ["subexpr", "action", ["setNote"], [], ["loc", [null, [74, 28], [74, 46]]]], "replyType", ["subexpr", "@mut", [["get", "replyType", ["loc", [null, [75, 28], [75, 37]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "errorMap.contents", ["loc", [null, [76, 28], [76, 45]]]]], [], []], "suggestedPeople", ["subexpr", "@mut", [["get", "suggestedPeople", ["loc", [null, [77, 34], [77, 49]]]]], [], []], "peopleCCd", ["subexpr", "@mut", [["get", "replyOptions.cc", ["loc", [null, [78, 28], [78, 43]]]]], [], []], "suggestedPeopleTotal", ["subexpr", "@mut", [["get", "suggestedPeopleTotal", ["loc", [null, [79, 39], [79, 59]]]]], [], []], "suggestedPeopleLoading", ["subexpr", "@mut", [["get", "suggestedPeopleLoading", ["loc", [null, [80, 41], [80, 63]]]]], [], []], "isPeopleAutoCompleteAvailable", ["subexpr", "@mut", [["get", "isPeopleAutoCompleteAvailable", ["loc", [null, [81, 48], [81, 77]]]]], [], []], "onPeopleSuggestion", "onPeopleSuggestion", "addCC", ["subexpr", "action", ["addCC"], [], ["loc", [null, [83, 24], [83, 40]]]], "removeCC", ["subexpr", "action", ["removeCC"], [], ["loc", [null, [84, 27], [84, 46]]]], "onPostContentChanged", ["subexpr", "action", ["setPostContent"], [], ["loc", [null, [85, 39], [85, 64]]]], "onEditorReady", ["subexpr", "action", ["updateQuillText"], [], ["loc", [null, [86, 32], [86, 58]]]], "attachedFiles", ["subexpr", "@mut", [["get", "attachedPostFiles", ["loc", [null, [87, 32], [87, 49]]]]], [], []], "ccPopupProxy", ["subexpr", "@mut", [["get", "ccPopupProxy", ["loc", [null, [88, 31], [88, 43]]]]], [], []]], ["loc", [null, [69, 14], [89, 16]]]]],
           locals: [],
           templates: []
         };
@@ -18698,7 +18795,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
                   "column": 14
                 },
                 "end": {
-                  "line": 136,
+                  "line": 138,
                   "column": 14
                 }
               },
@@ -18722,7 +18819,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
               morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
               return morphs;
             },
-            statements: [["inline", "ko-feed/item", [], ["event", ["subexpr", "@mut", [["get", "post", ["loc", [null, [133, 37], [133, 41]]]]], [], []], "isReplyDisabled", ["subexpr", "@mut", [["get", "isCaseDisabled", ["loc", [null, [134, 34], [134, 48]]]]], [], []], "onReplyWithQuote", "replyWithQuote"], ["loc", [null, [133, 16], [135, 53]]]]],
+            statements: [["inline", "ko-feed/item", [], ["event", ["subexpr", "@mut", [["get", "post", ["loc", [null, [134, 24], [134, 28]]]]], [], []], "isReplyDisabled", ["subexpr", "@mut", [["get", "isCaseDisabled", ["loc", [null, [135, 34], [135, 48]]]]], [], []], "onReplyWithQuote", ["subexpr", "action", ["replyWithQuote"], [], ["loc", [null, [136, 35], [136, 60]]]]], ["loc", [null, [133, 16], [137, 18]]]]],
             locals: [],
             templates: []
           };
@@ -18734,11 +18831,11 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 137,
+                  "line": 139,
                   "column": 14
                 },
                 "end": {
-                  "line": 139,
+                  "line": 141,
                   "column": 14
                 }
               },
@@ -18762,7 +18859,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
               morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
               return morphs;
             },
-            statements: [["inline", "ko-feed/activity", [], ["activity", ["subexpr", "@mut", [["get", "post", ["loc", [null, [138, 44], [138, 48]]]]], [], []]], ["loc", [null, [138, 16], [138, 50]]]]],
+            statements: [["inline", "ko-feed/activity", [], ["activity", ["subexpr", "@mut", [["get", "post", ["loc", [null, [140, 44], [140, 48]]]]], [], []]], ["loc", [null, [140, 16], [140, 50]]]]],
             locals: [],
             templates: []
           };
@@ -18777,7 +18874,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
                 "column": 12
               },
               "end": {
-                "line": 140,
+                "line": 142,
                 "column": 12
               }
             },
@@ -18802,7 +18899,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
             dom.insertBoundary(fragment, null);
             return morphs;
           },
-          statements: [["block", "if", [["subexpr", "eq", [["get", "post.constructor.modelName", ["loc", [null, [132, 24], [132, 50]]]], "post"], [], ["loc", [null, [132, 20], [132, 58]]]]], [], 0, null, ["loc", [null, [132, 14], [136, 21]]]], ["block", "if", [["subexpr", "or", [["subexpr", "eq", [["get", "post.constructor.modelName", ["loc", [null, [137, 28], [137, 54]]]], "activity"], [], ["loc", [null, [137, 24], [137, 66]]]], ["subexpr", "eq", [["get", "post.constructor.modelName", ["loc", [null, [137, 71], [137, 97]]]], "event"], [], ["loc", [null, [137, 67], [137, 106]]]]], [], ["loc", [null, [137, 20], [137, 107]]]]], [], 1, null, ["loc", [null, [137, 14], [139, 21]]]]],
+          statements: [["block", "if", [["subexpr", "eq", [["get", "post.constructor.modelName", ["loc", [null, [132, 24], [132, 50]]]], "post"], [], ["loc", [null, [132, 20], [132, 58]]]]], [], 0, null, ["loc", [null, [132, 14], [138, 21]]]], ["block", "if", [["subexpr", "or", [["subexpr", "eq", [["get", "post.constructor.modelName", ["loc", [null, [139, 28], [139, 54]]]], "activity"], [], ["loc", [null, [139, 24], [139, 66]]]], ["subexpr", "eq", [["get", "post.constructor.modelName", ["loc", [null, [139, 71], [139, 97]]]], "event"], [], ["loc", [null, [139, 67], [139, 106]]]]], [], ["loc", [null, [139, 20], [139, 107]]]]], [], 1, null, ["loc", [null, [139, 14], [141, 21]]]]],
           locals: ["post"],
           templates: [child0, child1]
         };
@@ -18815,11 +18912,11 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 144,
+                  "line": 146,
                   "column": 14
                 },
                 "end": {
-                  "line": 146,
+                  "line": 148,
                   "column": 14
                 }
               },
@@ -18843,7 +18940,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
               morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
               return morphs;
             },
-            statements: [["inline", "ko-loader", [], ["large", true], ["loc", [null, [145, 16], [145, 40]]]]],
+            statements: [["inline", "ko-loader", [], ["large", true], ["loc", [null, [147, 16], [147, 40]]]]],
             locals: [],
             templates: []
           };
@@ -18855,11 +18952,11 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 146,
+                  "line": 148,
                   "column": 14
                 },
                 "end": {
-                  "line": 148,
+                  "line": 150,
                   "column": 14
                 }
               },
@@ -18887,7 +18984,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
               morphs[1] = dom.createMorphAt(element0, 0, 0);
               return morphs;
             },
-            statements: [["attribute", "onclick", ["subexpr", "action", ["loadPostsBelow"], [], ["loc", [null, [147, 27], [147, 54]]]]], ["inline", "t", ["cases.posts.load_more"], [], ["loc", [null, [147, 55], [147, 84]]]]],
+            statements: [["attribute", "onclick", ["subexpr", "action", ["loadPostsBelow"], [], ["loc", [null, [149, 27], [149, 54]]]]], ["inline", "t", ["cases.posts.load_more"], [], ["loc", [null, [149, 55], [149, 84]]]]],
             locals: [],
             templates: []
           };
@@ -18898,11 +18995,11 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 142,
+                "line": 144,
                 "column": 10
               },
               "end": {
-                "line": 150,
+                "line": 152,
                 "column": 10
               }
             },
@@ -18933,7 +19030,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
             morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
             return morphs;
           },
-          statements: [["block", "if", [["get", "loadingBottom", ["loc", [null, [144, 20], [144, 33]]]]], [], 0, 1, ["loc", [null, [144, 14], [148, 21]]]]],
+          statements: [["block", "if", [["get", "loadingBottom", ["loc", [null, [146, 20], [146, 33]]]]], [], 0, 1, ["loc", [null, [146, 14], [150, 21]]]]],
           locals: [],
           templates: [child0, child1]
         };
@@ -18948,7 +19045,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
               "column": 8
             },
             "end": {
-              "line": 151,
+              "line": 153,
               "column": 8
             }
           },
@@ -19020,52 +19117,12 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [["block", "power-select", [], ["class", "ember-power-select-wrapper--ko", "placeholder", ["subexpr", "@mut", [["get", "sortOrderTitle", ["loc", [null, [99, 28], [99, 42]]]]], [], []], "value", ["subexpr", "@mut", [["get", "sortOrder", ["loc", [null, [100, 22], [100, 31]]]]], [], []], "options", ["subexpr", "@mut", [["get", "sortOptions", ["loc", [null, [101, 24], [101, 35]]]]], [], []], "renderInPlace", true, "searchEnabled", false, "onchange", ["subexpr", "action", ["sort"], [], ["loc", [null, [104, 25], [104, 40]]]]], 0, null, ["loc", [null, [97, 14], [106, 31]]]], ["block", "power-select", [], ["class", "ember-power-select-wrapper--ko", "placeholder", ["subexpr", "@mut", [["get", "sortFilterTitle", ["loc", [null, [111, 26], [111, 41]]]]], [], []], "value", ["subexpr", "@mut", [["get", "filter", ["loc", [null, [112, 20], [112, 26]]]]], [], []], "options", ["subexpr", "@mut", [["get", "filterOptions", ["loc", [null, [113, 22], [113, 35]]]]], [], []], "renderInPlace", true, "searchEnabled", false, "onchange", ["subexpr", "action", ["filter"], [], ["loc", [null, [116, 23], [116, 40]]]]], 1, null, ["loc", [null, [109, 14], [118, 31]]]], ["block", "if", [["get", "topPostsAvailable", ["loc", [null, [121, 16], [121, 33]]]]], [], 2, null, ["loc", [null, [121, 10], [129, 17]]]], ["block", "each", [["get", "posts", ["loc", [null, [131, 20], [131, 25]]]]], [], 3, null, ["loc", [null, [131, 12], [140, 21]]]], ["block", "if", [["get", "bottomPostsAvailable", ["loc", [null, [142, 16], [142, 36]]]]], [], 4, null, ["loc", [null, [142, 10], [150, 17]]]]],
+        statements: [["block", "power-select", [], ["class", "ember-power-select-wrapper--ko", "placeholder", ["subexpr", "@mut", [["get", "sortOrderTitle", ["loc", [null, [99, 28], [99, 42]]]]], [], []], "value", ["subexpr", "@mut", [["get", "sortOrder", ["loc", [null, [100, 22], [100, 31]]]]], [], []], "options", ["subexpr", "@mut", [["get", "sortOptions", ["loc", [null, [101, 24], [101, 35]]]]], [], []], "renderInPlace", true, "searchEnabled", false, "onchange", ["subexpr", "action", ["sort"], [], ["loc", [null, [104, 25], [104, 40]]]]], 0, null, ["loc", [null, [97, 14], [106, 31]]]], ["block", "power-select", [], ["class", "ember-power-select-wrapper--ko", "placeholder", ["subexpr", "@mut", [["get", "sortFilterTitle", ["loc", [null, [111, 26], [111, 41]]]]], [], []], "value", ["subexpr", "@mut", [["get", "filter", ["loc", [null, [112, 20], [112, 26]]]]], [], []], "options", ["subexpr", "@mut", [["get", "filterOptions", ["loc", [null, [113, 22], [113, 35]]]]], [], []], "renderInPlace", true, "searchEnabled", false, "onchange", ["subexpr", "action", ["filter"], [], ["loc", [null, [116, 23], [116, 40]]]]], 1, null, ["loc", [null, [109, 14], [118, 31]]]], ["block", "if", [["get", "topPostsAvailable", ["loc", [null, [121, 16], [121, 33]]]]], [], 2, null, ["loc", [null, [121, 10], [129, 17]]]], ["block", "each", [["get", "posts", ["loc", [null, [131, 20], [131, 25]]]]], [], 3, null, ["loc", [null, [131, 12], [142, 21]]]], ["block", "if", [["get", "bottomPostsAvailable", ["loc", [null, [144, 16], [144, 36]]]]], [], 4, null, ["loc", [null, [144, 10], [152, 17]]]]],
         locals: [],
         templates: [child0, child1, child2, child3, child4]
       };
     })();
     var child4 = (function () {
-      return {
-        meta: {
-          "revision": "Ember@1.13.11",
-          "loc": {
-            "source": null,
-            "start": {
-              "line": 158,
-              "column": 12
-            },
-            "end": {
-              "line": 160,
-              "column": 12
-            }
-          },
-          "moduleName": "frontend-cp/components/ko-case-content/template.hbs"
-        },
-        arity: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("              ");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createComment("");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n");
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
-          return morphs;
-        },
-        statements: [["inline", "ko-loader", [], ["class", "ko-case-content__button-loading"], ["loc", [null, [159, 14], [159, 67]]]]],
-        locals: [],
-        templates: []
-      };
-    })();
-    var child5 = (function () {
       return {
         meta: {
           "revision": "Ember@1.13.11",
@@ -19100,7 +19157,47 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [["inline", "t", ["cases.submit"], [], ["loc", [null, [161, 14], [161, 34]]]]],
+        statements: [["inline", "ko-loader", [], ["class", "ko-case-content__button-loading"], ["loc", [null, [161, 14], [161, 67]]]]],
+        locals: [],
+        templates: []
+      };
+    })();
+    var child5 = (function () {
+      return {
+        meta: {
+          "revision": "Ember@1.13.11",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 162,
+              "column": 12
+            },
+            "end": {
+              "line": 164,
+              "column": 12
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-case-content/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("              ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+          return morphs;
+        },
+        statements: [["inline", "t", ["cases.submit"], [], ["loc", [null, [163, 14], [163, 34]]]]],
         locals: [],
         templates: []
       };
@@ -19112,11 +19209,11 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 175,
+              "line": 176,
               "column": 8
             },
             "end": {
-              "line": 186,
+              "line": 187,
               "column": 8
             }
           },
@@ -19140,7 +19237,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [["inline", "ko-case-content/field/assignee", [], ["value", ["subexpr", "@mut", [["get", "case.assignee", ["loc", [null, [177, 18], [177, 31]]]]], [], []], "field", ["subexpr", "@mut", [["get", "assigneeField", ["loc", [null, [178, 18], [178, 31]]]]], [], []], "errors", ["subexpr", "@mut", [["get", "errors", ["loc", [null, [179, 19], [179, 25]]]]], [], []], "onValueChange", ["subexpr", "action", ["setAssignee"], [], ["loc", [null, [180, 26], [180, 48]]]], "isEdited", ["subexpr", "@mut", [["get", "editedCaseFields.assignee", ["loc", [null, [181, 21], [181, 46]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "case.propertiesChangeViaPusher.assignee", ["loc", [null, [182, 27], [182, 66]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "errorMap.assignee", ["loc", [null, [183, 22], [183, 39]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isCaseDisabled", ["loc", [null, [184, 23], [184, 37]]]]], [], []]], ["loc", [null, [176, 10], [185, 12]]]]],
+        statements: [["inline", "ko-case-content/field/assignee", [], ["team", ["subexpr", "@mut", [["get", "editedCase.assigneeTeam", ["loc", [null, [178, 17], [178, 40]]]]], [], []], "agent", ["subexpr", "@mut", [["get", "editedCase.assigneeAgent", ["loc", [null, [179, 18], [179, 42]]]]], [], []], "field", ["subexpr", "@mut", [["get", "assigneeField", ["loc", [null, [180, 18], [180, 31]]]]], [], []], "onValueChange", ["subexpr", "action", ["setAssignee"], [], ["loc", [null, [181, 26], [181, 48]]]], "isEdited", ["subexpr", "@mut", [["get", "isAssigneeEdited", ["loc", [null, [182, 21], [182, 37]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "propertiesChangeViaPusher.assignee", ["loc", [null, [183, 27], [183, 61]]]]], [], []], "isErrored", ["subexpr", "or", [["get", "errorMap.assignee_agent_id", ["loc", [null, [184, 26], [184, 52]]]], ["get", "errorMap.assignee_team_id", ["loc", [null, [184, 53], [184, 78]]]]], [], ["loc", [null, [184, 22], [184, 79]]]], "isDisabled", ["subexpr", "@mut", [["get", "isCaseDisabled", ["loc", [null, [185, 23], [185, 37]]]]], [], []]], ["loc", [null, [177, 10], [186, 12]]]]],
         locals: [],
         templates: []
       };
@@ -19152,11 +19249,11 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 188,
+              "line": 189,
               "column": 8
             },
             "end": {
-              "line": 200,
+              "line": 201,
               "column": 8
             }
           },
@@ -19180,7 +19277,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [["inline", "ko-case-content/field/status", [], ["case", ["subexpr", "@mut", [["get", "case", ["loc", [null, [190, 17], [190, 21]]]]], [], []], "value", ["subexpr", "@mut", [["get", "case.status", ["loc", [null, [191, 18], [191, 29]]]]], [], []], "field", ["subexpr", "@mut", [["get", "statusField", ["loc", [null, [192, 18], [192, 29]]]]], [], []], "statuses", ["subexpr", "@mut", [["get", "statuses", ["loc", [null, [193, 21], [193, 29]]]]], [], []], "onValueChange", ["subexpr", "action", ["setStatus"], [], ["loc", [null, [194, 26], [194, 46]]]], "isEdited", ["subexpr", "@mut", [["get", "editedCaseFields.status", ["loc", [null, [195, 21], [195, 44]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "case.propertiesChangeViaPusher.status", ["loc", [null, [196, 27], [196, 64]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "errorMap.status_id", ["loc", [null, [197, 22], [197, 40]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isCaseDisabled", ["loc", [null, [198, 23], [198, 37]]]]], [], []]], ["loc", [null, [189, 10], [199, 12]]]]],
+        statements: [["inline", "ko-case-content/field/status", [], ["case", ["subexpr", "@mut", [["get", "case", ["loc", [null, [191, 17], [191, 21]]]]], [], []], "value", ["subexpr", "@mut", [["get", "editedCase.status", ["loc", [null, [192, 18], [192, 35]]]]], [], []], "field", ["subexpr", "@mut", [["get", "statusField", ["loc", [null, [193, 18], [193, 29]]]]], [], []], "statuses", ["subexpr", "@mut", [["get", "statuses", ["loc", [null, [194, 21], [194, 29]]]]], [], []], "onValueChange", ["subexpr", "action", ["setStatus"], [], ["loc", [null, [195, 26], [195, 46]]]], "isEdited", ["subexpr", "@mut", [["get", "isStatusEdited", ["loc", [null, [196, 21], [196, 35]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "propertiesChangeViaPusher.status", ["loc", [null, [197, 27], [197, 59]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "errorMap.status_id", ["loc", [null, [198, 22], [198, 40]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isCaseDisabled", ["loc", [null, [199, 23], [199, 37]]]]], [], []]], ["loc", [null, [190, 10], [200, 12]]]]],
         locals: [],
         templates: []
       };
@@ -19192,11 +19289,11 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 202,
+              "line": 203,
               "column": 8
             },
             "end": {
-              "line": 213,
+              "line": 214,
               "column": 8
             }
           },
@@ -19220,7 +19317,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [["inline", "ko-case-content/field/type", [], ["value", ["subexpr", "@mut", [["get", "case.caseType", ["loc", [null, [204, 18], [204, 31]]]]], [], []], "field", ["subexpr", "@mut", [["get", "typeField", ["loc", [null, [205, 18], [205, 27]]]]], [], []], "types", ["subexpr", "@mut", [["get", "types", ["loc", [null, [206, 18], [206, 23]]]]], [], []], "onValueChange", ["subexpr", "action", ["setType"], [], ["loc", [null, [207, 26], [207, 44]]]], "isEdited", ["subexpr", "@mut", [["get", "editedCaseFields.caseType", ["loc", [null, [208, 21], [208, 46]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "case.propertiesChangeViaPusher.caseType", ["loc", [null, [209, 27], [209, 66]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "errorMap.type_id", ["loc", [null, [210, 22], [210, 38]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isCaseDisabled", ["loc", [null, [211, 23], [211, 37]]]]], [], []]], ["loc", [null, [203, 10], [212, 12]]]]],
+        statements: [["inline", "ko-case-content/field/type", [], ["value", ["subexpr", "@mut", [["get", "editedCase.caseType", ["loc", [null, [205, 18], [205, 37]]]]], [], []], "field", ["subexpr", "@mut", [["get", "typeField", ["loc", [null, [206, 18], [206, 27]]]]], [], []], "types", ["subexpr", "@mut", [["get", "types", ["loc", [null, [207, 18], [207, 23]]]]], [], []], "onValueChange", ["subexpr", "action", ["setType"], [], ["loc", [null, [208, 26], [208, 44]]]], "isEdited", ["subexpr", "@mut", [["get", "isTypeEdited", ["loc", [null, [209, 21], [209, 33]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "propertiesChangeViaPusher.caseType", ["loc", [null, [210, 27], [210, 61]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "errorMap.type_id", ["loc", [null, [211, 22], [211, 38]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isCaseDisabled", ["loc", [null, [212, 23], [212, 37]]]]], [], []]], ["loc", [null, [204, 10], [213, 12]]]]],
         locals: [],
         templates: []
       };
@@ -19232,11 +19329,11 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 215,
+              "line": 216,
               "column": 8
             },
             "end": {
-              "line": 226,
+              "line": 227,
               "column": 8
             }
           },
@@ -19260,7 +19357,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [["inline", "ko-case-content/field/priority", [], ["value", ["subexpr", "@mut", [["get", "case.priority", ["loc", [null, [217, 18], [217, 31]]]]], [], []], "field", ["subexpr", "@mut", [["get", "priorityField", ["loc", [null, [218, 18], [218, 31]]]]], [], []], "priorities", ["subexpr", "@mut", [["get", "priorities", ["loc", [null, [219, 23], [219, 33]]]]], [], []], "onValueChange", ["subexpr", "action", ["setPriority"], [], ["loc", [null, [220, 26], [220, 48]]]], "isEdited", ["subexpr", "@mut", [["get", "editedCaseFields.priority", ["loc", [null, [221, 21], [221, 46]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "case.propertiesChangeViaPusher.priority", ["loc", [null, [222, 27], [222, 66]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "errorMap.priority_id", ["loc", [null, [223, 22], [223, 42]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isCaseDisabled", ["loc", [null, [224, 23], [224, 37]]]]], [], []]], ["loc", [null, [216, 10], [225, 12]]]]],
+        statements: [["inline", "ko-case-content/field/priority", [], ["value", ["subexpr", "@mut", [["get", "editedCase.priority", ["loc", [null, [218, 18], [218, 37]]]]], [], []], "field", ["subexpr", "@mut", [["get", "priorityField", ["loc", [null, [219, 18], [219, 31]]]]], [], []], "priorities", ["subexpr", "@mut", [["get", "priorities", ["loc", [null, [220, 23], [220, 33]]]]], [], []], "onValueChange", ["subexpr", "action", ["setPriority"], [], ["loc", [null, [221, 26], [221, 48]]]], "isEdited", ["subexpr", "@mut", [["get", "isPriorityEdited", ["loc", [null, [222, 21], [222, 37]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "propertiesChangeViaPusher.priority", ["loc", [null, [223, 27], [223, 61]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "errorMap.priority_id", ["loc", [null, [224, 22], [224, 42]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isCaseDisabled", ["loc", [null, [225, 23], [225, 37]]]]], [], []]], ["loc", [null, [217, 10], [226, 12]]]]],
         locals: [],
         templates: []
       };
@@ -19274,11 +19371,11 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 252,
+                  "line": 256,
                   "column": 12
                 },
                 "end": {
-                  "line": 263,
+                  "line": 266,
                   "column": 12
                 }
               },
@@ -19302,7 +19399,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
               morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
               return morphs;
             },
-            statements: [["inline", "component", [["subexpr", "ko-helper", [["get", "customFieldsList.componentFor", ["loc", [null, [253, 37], [253, 66]]]], ["get", "field.fieldType", ["loc", [null, [253, 67], [253, 82]]]]], [], ["loc", [null, [253, 26], [253, 83]]]]], ["case", ["subexpr", "@mut", [["get", "case", ["loc", [null, [254, 21], [254, 25]]]]], [], []], "customFieldsModel", ["subexpr", "@mut", [["get", "case.customFields", ["loc", [null, [255, 34], [255, 51]]]]], [], []], "field", ["subexpr", "@mut", [["get", "field", ["loc", [null, [256, 22], [256, 27]]]]], [], []], "title", ["subexpr", "@mut", [["get", "field.title", ["loc", [null, [257, 22], [257, 33]]]]], [], []], "errors", ["subexpr", "@mut", [["get", "errors", ["loc", [null, [258, 23], [258, 29]]]]], [], []], "editedCustomFields", ["subexpr", "@mut", [["get", "editedCaseFields", ["loc", [null, [259, 35], [259, 51]]]]], [], []], "fieldsEditedByPusher", ["subexpr", "@mut", [["get", "case.propertiesChangeViaPusher", ["loc", [null, [260, 37], [260, 67]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isCaseDisabled", ["loc", [null, [261, 27], [261, 41]]]]], [], []]], ["loc", [null, [253, 14], [262, 16]]]]],
+            statements: [["inline", "component", [["subexpr", "ko-helper", [["get", "customFieldsList.componentFor", ["loc", [null, [257, 37], [257, 66]]]], ["get", "field.fieldType", ["loc", [null, [257, 67], [257, 82]]]]], [], ["loc", [null, [257, 26], [257, 83]]]]], ["field", ["subexpr", "@mut", [["get", "field", ["loc", [null, [258, 22], [258, 27]]]]], [], []], "value", ["subexpr", "get", [["get", "localCustomFieldsMap", ["loc", [null, [259, 27], [259, 47]]]], ["get", "field.id", ["loc", [null, [259, 48], [259, 56]]]]], [], ["loc", [null, [259, 22], [259, 57]]]], "isErrored", ["subexpr", "get", [["get", "errorMap", ["loc", [null, [260, 31], [260, 39]]]], ["get", "field.key", ["loc", [null, [260, 40], [260, 49]]]]], [], ["loc", [null, [260, 26], [260, 50]]]], "isEdited", ["subexpr", "get", [["get", "editedCustomFieldsMap", ["loc", [null, [261, 30], [261, 51]]]], ["get", "field.id", ["loc", [null, [261, 52], [261, 60]]]]], [], ["loc", [null, [261, 25], [261, 61]]]], "isPusherEdited", ["subexpr", "get", [["get", "propertiesChangeViaPusher.customFields", ["loc", [null, [262, 36], [262, 74]]]], ["get", "field.id", ["loc", [null, [262, 75], [262, 83]]]]], [], ["loc", [null, [262, 31], [262, 84]]]], "isDisabled", ["subexpr", "@mut", [["get", "isCaseDisabled", ["loc", [null, [263, 27], [263, 41]]]]], [], []], "onFieldUpdate", ["subexpr", "action", ["setCustomField"], [], ["loc", [null, [264, 30], [264, 55]]]]], ["loc", [null, [257, 14], [265, 16]]]]],
             locals: [],
             templates: []
           };
@@ -19313,11 +19410,11 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 251,
+                "line": 255,
                 "column": 10
               },
               "end": {
-                "line": 264,
+                "line": 267,
                 "column": 10
               }
             },
@@ -19339,7 +19436,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
             dom.insertBoundary(fragment, null);
             return morphs;
           },
-          statements: [["block", "if", [["get", "field.isEnabled", ["loc", [null, [252, 18], [252, 33]]]]], [], 0, null, ["loc", [null, [252, 12], [263, 19]]]]],
+          statements: [["block", "if", [["get", "field.isEnabled", ["loc", [null, [256, 18], [256, 33]]]]], [], 0, null, ["loc", [null, [256, 12], [266, 19]]]]],
           locals: [],
           templates: [child0]
         };
@@ -19350,11 +19447,11 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 250,
+              "line": 254,
               "column": 8
             },
             "end": {
-              "line": 265,
+              "line": 268,
               "column": 8
             }
           },
@@ -19376,7 +19473,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [["block", "if", [["subexpr", "ko-helper", [["get", "customFieldsList.componentFor", ["loc", [null, [251, 27], [251, 56]]]], ["get", "field.fieldType", ["loc", [null, [251, 57], [251, 72]]]]], [], ["loc", [null, [251, 16], [251, 73]]]]], [], 0, null, ["loc", [null, [251, 10], [264, 17]]]]],
+        statements: [["block", "if", [["subexpr", "ko-helper", [["get", "customFieldsList.componentFor", ["loc", [null, [255, 27], [255, 56]]]], ["get", "field.fieldType", ["loc", [null, [255, 57], [255, 72]]]]], [], ["loc", [null, [255, 16], [255, 73]]]]], [], 0, null, ["loc", [null, [255, 10], [267, 17]]]]],
         locals: ["field"],
         templates: [child0]
       };
@@ -19388,11 +19485,11 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 267,
+              "line": 270,
               "column": 8
             },
             "end": {
-              "line": 269,
+              "line": 272,
               "column": 8
             }
           },
@@ -19416,7 +19513,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [["inline", "ko-case/sla-sidebar", [], ["sla", ["subexpr", "@mut", [["get", "case.sla", ["loc", [null, [268, 36], [268, 44]]]]], [], []], "slaMetrics", ["subexpr", "@mut", [["get", "case.slaMetrics", ["loc", [null, [268, 56], [268, 71]]]]], [], []]], ["loc", [null, [268, 10], [268, 73]]]]],
+        statements: [["inline", "ko-case/sla-sidebar", [], ["sla", ["subexpr", "@mut", [["get", "case.sla", ["loc", [null, [271, 36], [271, 44]]]]], [], []], "slaMetrics", ["subexpr", "@mut", [["get", "case.slaMetrics", ["loc", [null, [271, 56], [271, 71]]]]], [], []]], ["loc", [null, [271, 10], [271, 73]]]]],
         locals: [],
         templates: []
       };
@@ -19431,7 +19528,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
             "column": 0
           },
           "end": {
-            "line": 276,
+            "line": 279,
             "column": 0
           }
         },
@@ -19681,7 +19778,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
         morphs[20] = dom.createMorphAt(element11, 21, 21);
         return morphs;
       },
-      statements: [["attribute", "src", ["concat", [["get", "case.requester.avatar", ["loc", [null, [6, 22], [6, 43]]]]]]], ["inline", "ko-editable-text", [], ["value", ["subexpr", "@mut", [["get", "case.subject", ["loc", [null, [11, 22], [11, 34]]]]], [], []], "isEdited", ["subexpr", "@mut", [["get", "editedCaseFields.subject", ["loc", [null, [12, 25], [12, 49]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "case.propertiesChangeViaPusher.subject", ["loc", [null, [13, 31], [13, 69]]]]], [], []], "onValueChange", "setSubject", "isErrored", ["subexpr", "@mut", [["get", "errorMap.subject", ["loc", [null, [15, 26], [15, 42]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isCaseDisabled", ["loc", [null, [16, 27], [16, 41]]]]], [], []], "placeholder", ["subexpr", "t", ["cases.new_case_subject_placeholder"], [], ["loc", [null, [17, 28], [17, 68]]]]], ["loc", [null, [10, 12], [18, 14]]]], ["block", "if", [["get", "case.id", ["loc", [null, [20, 16], [20, 23]]]]], [], 0, null, ["loc", [null, [20, 10], [29, 17]]]], ["block", "if", [["subexpr", "eq", [["get", "case.state", ["loc", [null, [35, 18], [35, 28]]]], "TRASH"], [], ["loc", [null, [35, 14], [35, 37]]]]], [], 1, null, ["loc", [null, [35, 8], [47, 15]]]], ["inline", "ko-case/macro-selector", [], ["macros", ["subexpr", "@mut", [["get", "macros", ["loc", [null, [49, 42], [49, 48]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isCaseDisabled", ["loc", [null, [50, 23], [50, 37]]]]], [], []], "onMacroSelect", ["subexpr", "action", ["applyMacro"], [], ["loc", [null, [51, 26], [51, 47]]]]], ["loc", [null, [49, 10], [51, 49]]]], ["inline", "ko-case-action-menu", [], ["caseState", ["subexpr", "@mut", [["get", "case.state", ["loc", [null, [55, 22], [55, 32]]]]], [], []], "onTrashCase", ["subexpr", "action", ["trashCase"], [], ["loc", [null, [56, 24], [56, 44]]]]], ["loc", [null, [54, 10], [57, 12]]]], ["block", "if", [["subexpr", "not", [["get", "isCaseDisabled", ["loc", [null, [65, 19], [65, 33]]]]], [], ["loc", [null, [65, 14], [65, 34]]]]], [], 2, null, ["loc", [null, [65, 8], [93, 15]]]], ["block", "unless", [["get", "case.isNew", ["loc", [null, [94, 18], [94, 28]]]]], [], 3, null, ["loc", [null, [94, 8], [151, 19]]]], ["attribute", "class", ["concat", ["button button--primary u-1/1 ", ["subexpr", "if", [["get", "submitDisabled", ["loc", [null, [157, 73], [157, 87]]]], "disabled"], [], ["loc", [null, [157, 68], [157, 100]]]]]]], ["attribute", "onclick", ["subexpr", "action", ["submit"], [], ["loc", [null, [157, 110], [157, 129]]]]], ["block", "if", [["get", "isSaving", ["loc", [null, [158, 18], [158, 26]]]]], [], 4, 5, ["loc", [null, [158, 12], [162, 19]]]], ["inline", "ko-case-content/field/requester", [], ["isDisabled", ["subexpr", "@mut", [["get", "isRequesterDisabled", ["loc", [null, [166, 21], [166, 40]]]]], [], []], "requester", ["subexpr", "@mut", [["get", "case.requester", ["loc", [null, [167, 20], [167, 34]]]]], [], []], "onValueChange", ["subexpr", "action", ["setRequester"], [], ["loc", [null, [168, 24], [168, 47]]]], "isEdited", ["subexpr", "@mut", [["get", "editedCaseFields.requester", ["loc", [null, [169, 19], [169, 45]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "errorMap.requester", ["loc", [null, [170, 20], [170, 38]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "case.propertiesChangeViaPusher.requester", ["loc", [null, [171, 25], [171, 65]]]]], [], []]], ["loc", [null, [165, 8], [172, 10]]]], ["block", "if", [["get", "assigneeField", ["loc", [null, [175, 14], [175, 27]]]]], [], 6, null, ["loc", [null, [175, 8], [186, 15]]]], ["block", "if", [["get", "statusField", ["loc", [null, [188, 14], [188, 25]]]]], [], 7, null, ["loc", [null, [188, 8], [200, 15]]]], ["block", "if", [["get", "typeField", ["loc", [null, [202, 14], [202, 23]]]]], [], 8, null, ["loc", [null, [202, 8], [213, 15]]]], ["block", "if", [["get", "priorityField", ["loc", [null, [215, 14], [215, 27]]]]], [], 9, null, ["loc", [null, [215, 8], [226, 15]]]], ["inline", "ko-info-bar/field/tags", [], ["title", ["subexpr", "t", ["cases.tags"], [], ["loc", [null, [229, 16], [229, 32]]]], "isEdited", ["subexpr", "@mut", [["get", "isTagsFieldEdited", ["loc", [null, [230, 19], [230, 36]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isCaseDisabled", ["loc", [null, [231, 21], [231, 35]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "case.propertiesChangeViaPusher.tags", ["loc", [null, [232, 25], [232, 60]]]]], [], []], "selectedTags", ["subexpr", "@mut", [["get", "case.tags", ["loc", [null, [233, 23], [233, 32]]]]], [], []], "suggestedTags", ["subexpr", "@mut", [["get", "suggestedTags", ["loc", [null, [234, 24], [234, 37]]]]], [], []], "onTagAddition", ["subexpr", "action", ["addTag"], [], ["loc", [null, [235, 24], [235, 41]]]], "onTagRemoval", ["subexpr", "action", ["removeTag"], [], ["loc", [null, [236, 23], [236, 43]]]], "onTagSuggestion", ["subexpr", "action", ["suggestTags"], [], ["loc", [null, [237, 26], [237, 48]]]], "newTagText", ["subexpr", "t", ["cases.newtag"], [], ["loc", [null, [238, 21], [238, 39]]]], "addTagText", ["subexpr", "t", ["cases.addtag"], [], ["loc", [null, [239, 21], [239, 39]]]]], ["loc", [null, [228, 8], [239, 41]]]], ["inline", "ko-case-content/field/forms", [], ["selectedForm", ["subexpr", "@mut", [["get", "case.form", ["loc", [null, [242, 23], [242, 32]]]]], [], []], "forms", ["subexpr", "@mut", [["get", "enabledCaseForms", ["loc", [null, [243, 16], [243, 32]]]]], [], []], "onFormSelected", ["subexpr", "action", ["setForm"], [], ["loc", [null, [244, 25], [244, 43]]]], "isEdited", ["subexpr", "@mut", [["get", "editedCaseFields.form", ["loc", [null, [245, 19], [245, 40]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "errorMap.form_id", ["loc", [null, [246, 20], [246, 36]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isCaseDisabled", ["loc", [null, [247, 21], [247, 35]]]]], [], []]], ["loc", [null, [241, 8], [248, 10]]]], ["block", "each", [["get", "caseOrFormFields", ["loc", [null, [250, 16], [250, 32]]]]], [], 10, null, ["loc", [null, [250, 8], [265, 17]]]], ["block", "if", [["get", "case.id", ["loc", [null, [267, 14], [267, 21]]]]], [], 11, null, ["loc", [null, [267, 8], [269, 15]]]], ["inline", "ko-info-bar/metadata", [], ["rows", ["subexpr", "@mut", [["get", "caseDates", ["loc", [null, [271, 36], [271, 45]]]]], [], []]], ["loc", [null, [271, 8], [271, 47]]]]],
+      statements: [["attribute", "src", ["concat", [["get", "editedCase.requester.avatar", ["loc", [null, [6, 22], [6, 49]]]]]]], ["inline", "ko-editable-text", [], ["value", ["subexpr", "@mut", [["get", "editedCase.subject", ["loc", [null, [11, 22], [11, 40]]]]], [], []], "isEdited", ["subexpr", "@mut", [["get", "isSubjectEdited", ["loc", [null, [12, 25], [12, 40]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "propertiesChangeViaPusher.subject", ["loc", [null, [13, 31], [13, 64]]]]], [], []], "onValueChange", ["subexpr", "action", ["setSubject"], [], ["loc", [null, [14, 30], [14, 51]]]], "isErrored", ["subexpr", "@mut", [["get", "errorMap.subject", ["loc", [null, [15, 26], [15, 42]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isCaseDisabled", ["loc", [null, [16, 27], [16, 41]]]]], [], []], "placeholder", ["subexpr", "t", ["cases.new_case_subject_placeholder"], [], ["loc", [null, [17, 28], [17, 68]]]]], ["loc", [null, [10, 12], [18, 14]]]], ["block", "if", [["get", "case.id", ["loc", [null, [20, 16], [20, 23]]]]], [], 0, null, ["loc", [null, [20, 10], [29, 17]]]], ["block", "if", [["subexpr", "eq", [["get", "case.state", ["loc", [null, [35, 18], [35, 28]]]], "TRASH"], [], ["loc", [null, [35, 14], [35, 37]]]]], [], 1, null, ["loc", [null, [35, 8], [47, 15]]]], ["inline", "ko-case/macro-selector", [], ["macros", ["subexpr", "@mut", [["get", "macros", ["loc", [null, [49, 42], [49, 48]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isCaseDisabled", ["loc", [null, [50, 23], [50, 37]]]]], [], []], "onMacroSelect", ["subexpr", "action", ["applyMacro"], [], ["loc", [null, [51, 26], [51, 47]]]]], ["loc", [null, [49, 10], [51, 49]]]], ["inline", "ko-case-action-menu", [], ["caseState", ["subexpr", "@mut", [["get", "case.state", ["loc", [null, [55, 22], [55, 32]]]]], [], []], "onTrashCase", ["subexpr", "action", ["trashCase"], [], ["loc", [null, [56, 24], [56, 44]]]]], ["loc", [null, [54, 10], [57, 12]]]], ["block", "if", [["subexpr", "not", [["get", "isCaseDisabled", ["loc", [null, [65, 19], [65, 33]]]]], [], ["loc", [null, [65, 14], [65, 34]]]]], [], 2, null, ["loc", [null, [65, 8], [93, 15]]]], ["block", "unless", [["get", "case.isNew", ["loc", [null, [94, 18], [94, 28]]]]], [], 3, null, ["loc", [null, [94, 8], [153, 19]]]], ["attribute", "class", ["concat", ["button button--primary u-1/1 ", ["subexpr", "if", [["get", "submitDisabled", ["loc", [null, [159, 73], [159, 87]]]], "disabled"], [], ["loc", [null, [159, 68], [159, 100]]]]]]], ["attribute", "onclick", ["subexpr", "action", ["submit"], [], ["loc", [null, [159, 110], [159, 129]]]]], ["block", "if", [["get", "isSaving", ["loc", [null, [160, 18], [160, 26]]]]], [], 4, 5, ["loc", [null, [160, 12], [164, 19]]]], ["inline", "ko-case-content/field/requester", [], ["isDisabled", ["subexpr", "@mut", [["get", "isRequesterDisabled", ["loc", [null, [168, 21], [168, 40]]]]], [], []], "requester", ["subexpr", "@mut", [["get", "editedCase.requester", ["loc", [null, [169, 20], [169, 40]]]]], [], []], "onValueChange", ["subexpr", "action", ["setRequester"], [], ["loc", [null, [170, 24], [170, 47]]]], "isEdited", ["subexpr", "@mut", [["get", "isRequesterEdited", ["loc", [null, [171, 19], [171, 36]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "errorMap.requester", ["loc", [null, [172, 20], [172, 38]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "propertiesChangeViaPusher.requester", ["loc", [null, [173, 25], [173, 60]]]]], [], []]], ["loc", [null, [167, 8], [174, 10]]]], ["block", "if", [["get", "assigneeField", ["loc", [null, [176, 14], [176, 27]]]]], [], 6, null, ["loc", [null, [176, 8], [187, 15]]]], ["block", "if", [["get", "statusField", ["loc", [null, [189, 14], [189, 25]]]]], [], 7, null, ["loc", [null, [189, 8], [201, 15]]]], ["block", "if", [["get", "typeField", ["loc", [null, [203, 14], [203, 23]]]]], [], 8, null, ["loc", [null, [203, 8], [214, 15]]]], ["block", "if", [["get", "priorityField", ["loc", [null, [216, 14], [216, 27]]]]], [], 9, null, ["loc", [null, [216, 8], [227, 15]]]], ["inline", "ko-info-bar/field/tags", [], ["title", ["subexpr", "t", ["cases.tags"], [], ["loc", [null, [230, 16], [230, 32]]]], "isEdited", ["subexpr", "@mut", [["get", "isTagsFieldEdited", ["loc", [null, [231, 19], [231, 36]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isCaseDisabled", ["loc", [null, [232, 21], [232, 35]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "errorMap.tags", ["loc", [null, [233, 20], [233, 33]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "propertiesChangeViaPusher.tags", ["loc", [null, [234, 25], [234, 55]]]]], [], []], "selectedTags", ["subexpr", "@mut", [["get", "editedTags", ["loc", [null, [235, 23], [235, 33]]]]], [], []], "suggestedTags", ["subexpr", "@mut", [["get", "suggestedTags", ["loc", [null, [236, 24], [236, 37]]]]], [], []], "onTagAddition", ["subexpr", "action", ["addTag"], [], ["loc", [null, [237, 24], [237, 41]]]], "onTagRemoval", ["subexpr", "action", ["removeTag"], [], ["loc", [null, [238, 23], [238, 43]]]], "onTagSuggestion", ["subexpr", "action", ["suggestTags"], [], ["loc", [null, [239, 26], [239, 48]]]], "newTagText", ["subexpr", "t", ["cases.newtag"], [], ["loc", [null, [240, 21], [240, 39]]]], "addTagText", ["subexpr", "t", ["cases.addtag"], [], ["loc", [null, [241, 21], [241, 39]]]]], ["loc", [null, [229, 8], [242, 10]]]], ["inline", "ko-case-content/field/forms", [], ["selectedForm", ["subexpr", "@mut", [["get", "editedCase.form", ["loc", [null, [245, 23], [245, 38]]]]], [], []], "forms", ["subexpr", "@mut", [["get", "enabledCaseForms", ["loc", [null, [246, 16], [246, 32]]]]], [], []], "onFormSelected", ["subexpr", "action", ["setForm"], [], ["loc", [null, [247, 25], [247, 43]]]], "isEdited", ["subexpr", "@mut", [["get", "isFormEdited", ["loc", [null, [248, 19], [248, 31]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "propertiesChangeViaPusher.form", ["loc", [null, [249, 25], [249, 55]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "errorMap.form_id", ["loc", [null, [250, 20], [250, 36]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isCaseDisabled", ["loc", [null, [251, 21], [251, 35]]]]], [], []]], ["loc", [null, [244, 8], [252, 10]]]], ["block", "each", [["get", "caseOrFormFields", ["loc", [null, [254, 16], [254, 32]]]]], [], 10, null, ["loc", [null, [254, 8], [268, 17]]]], ["block", "if", [["get", "case.id", ["loc", [null, [270, 14], [270, 21]]]]], [], 11, null, ["loc", [null, [270, 8], [272, 15]]]], ["inline", "ko-info-bar/metadata", [], ["rows", ["subexpr", "@mut", [["get", "caseDates", ["loc", [null, [274, 36], [274, 45]]]]], [], []]], ["loc", [null, [274, 8], [274, 47]]]]],
       locals: [],
       templates: [child0, child1, child2, child3, child4, child5, child6, child7, child8, child9, child10, child11]
     };
@@ -25205,7 +25302,9 @@ define('frontend-cp/components/ko-feed/item/component', ['exports', 'ember'], fu
 
     actions: {
       onReplyWithQuote: function onReplyWithQuote() {
-        this.sendAction('onReplyWithQuote', this.$('.ko-feed_item__content').html());
+        var quote = this.$('.ko-feed_item__content').html().trim().replace(/\t/g, '').replace(/\s{2,}/g, ' ').replace(/\n/g, '<br/ >');
+
+        this.attrs.onReplyWithQuote(quote);
       }
     }
   });
@@ -27554,13 +27653,25 @@ define('frontend-cp/components/ko-info-bar/component', ['exports', 'ember'], fun
     classNames: ['list-bare']
   });
 });
-define('frontend-cp/components/ko-info-bar/custom-field/cascadingselect/component', ['exports', 'ember', 'npm:lodash', 'frontend-cp/components/ko-info-bar/custom-field/component'], function (exports, _ember, _npmLodash, _frontendCpComponentsKoInfoBarCustomFieldComponent) {
+define('frontend-cp/components/ko-info-bar/custom-field/cascadingselect/component', ['exports', 'ember', 'npm:lodash'], function (exports, _ember, _npmLodash) {
   var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
 
   var map = _npmLodash['default'].map;
   var groupBy = _npmLodash['default'].groupBy;
   var partition = _npmLodash['default'].partition;
-  exports['default'] = _frontendCpComponentsKoInfoBarCustomFieldComponent['default'].extend({
+  exports['default'] = _ember['default'].Component.extend({
+    // Attributes
+    field: null,
+    value: null,
+    isErrored: false,
+    isEdited: false,
+    isPusherEdited: false,
+    isDisabled: false,
+    onFieldUpdate: null,
+
+    // HTML
+    tagName: '',
+
     tree: _ember['default'].computed('field.options', function () {
       var items = this.get('field.options').filter(function (option) {
         return option && _ember['default'].get(option, 'value');
@@ -27639,13 +27750,13 @@ define("frontend-cp/components/ko-info-bar/custom-field/cascadingselect/template
         dom.insertBoundary(fragment, 0);
         return morphs;
       },
-      statements: [["inline", "ko-info-bar/field/drill-down", [], ["title", ["subexpr", "@mut", [["get", "field.title", ["loc", [null, [2, 8], [2, 19]]]]], [], []], "options", ["subexpr", "@mut", [["get", "tree", ["loc", [null, [3, 10], [3, 14]]]]], [], []], "value", ["subexpr", "@mut", [["get", "fieldValue.value", ["loc", [null, [4, 8], [4, 24]]]]], [], []], "isEdited", ["subexpr", "@mut", [["get", "isEdited", ["loc", [null, [5, 11], [5, 19]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "isErrored", ["loc", [null, [6, 12], [6, 21]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "isPusherEdited", ["loc", [null, [7, 17], [7, 31]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isDisabled", ["loc", [null, [8, 13], [8, 23]]]]], [], []], "onValueChange", ["subexpr", "action", ["valueChanged"], [], ["loc", [null, [9, 16], [9, 39]]]]], ["loc", [null, [1, 0], [10, 2]]]]],
+      statements: [["inline", "ko-info-bar/field/drill-down", [], ["title", ["subexpr", "@mut", [["get", "field.title", ["loc", [null, [2, 8], [2, 19]]]]], [], []], "options", ["subexpr", "@mut", [["get", "tree", ["loc", [null, [3, 10], [3, 14]]]]], [], []], "value", ["subexpr", "@mut", [["get", "value", ["loc", [null, [4, 8], [4, 13]]]]], [], []], "isEdited", ["subexpr", "@mut", [["get", "isEdited", ["loc", [null, [5, 11], [5, 19]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "isErrored", ["loc", [null, [6, 12], [6, 21]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "isPusherEdited", ["loc", [null, [7, 17], [7, 31]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isDisabled", ["loc", [null, [8, 13], [8, 23]]]]], [], []], "onValueChange", ["subexpr", "action", [["get", "onFieldUpdate", ["loc", [null, [9, 24], [9, 37]]]], ["get", "field", ["loc", [null, [9, 38], [9, 43]]]]], [], ["loc", [null, [9, 16], [9, 44]]]]], ["loc", [null, [1, 0], [10, 2]]]]],
       locals: [],
       templates: []
     };
   })());
 });
-define('frontend-cp/components/ko-info-bar/custom-field/checkbox/component', ['exports', 'ember', 'frontend-cp/components/ko-info-bar/custom-field/component'], function (exports, _ember, _frontendCpComponentsKoInfoBarCustomFieldComponent) {
+define('frontend-cp/components/ko-info-bar/custom-field/checkbox/component', ['exports', 'ember'], function (exports, _ember) {
 
   var valueToArray = function valueToArray(value) {
     return (value || '').split(',').filter(function (v) {
@@ -27653,29 +27764,26 @@ define('frontend-cp/components/ko-info-bar/custom-field/checkbox/component', ['e
     });
   };
 
-  exports['default'] = _frontendCpComponentsKoInfoBarCustomFieldComponent['default'].extend({
-    value: _ember['default'].computed('fieldValue.value', function () {
-      return valueToArray(this.get('fieldValue.value'));
+  exports['default'] = _ember['default'].Component.extend({
+    // Attributes
+    field: null,
+    value: null,
+    isErrored: false,
+    isEdited: false,
+    isPusherEdited: false,
+    isDisabled: false,
+    onFieldUpdate: null,
+
+    // HTML
+    tagName: '',
+
+    convertedValue: _ember['default'].computed('value', function () {
+      return valueToArray(this.get('value'));
     }),
 
-    updateIsEditedFromHash: _ember['default'].on('init', _ember['default'].observer('field.id', function () {
-      var _this = this;
-
-      /*
-       * We take an object holding the edited status of all case fields with the format:
-       * { id: isEdited, ... }
-       *
-       * we need to observe isEditedObject[field.id] which we can't do as a normal CP because field.id is dynamic
-       * So this is just a computed property wrapped in an observer (so we have the context)
-       */
-      this.set('isEdited', _ember['default'].computed('editedCustomFields.' + this.get('field.id'), function () {
-        return _this.get('editedCustomFields').get(_this.get('field.id'));
-      }));
-    })),
-
     actions: {
-      selectionChanged: function selectionChanged(value) {
-        this.send('valueChanged', value.join(','));
+      valueChanged: function valueChanged(field, value) {
+        this.attrs.onFieldUpdate(field, value.join(','));
       }
     }
   });
@@ -27715,123 +27823,33 @@ define("frontend-cp/components/ko-info-bar/custom-field/checkbox/template", ["ex
         dom.insertBoundary(fragment, 0);
         return morphs;
       },
-      statements: [["inline", "ko-info-bar/field/checkbox", [], ["title", ["subexpr", "@mut", [["get", "field.title", ["loc", [null, [2, 8], [2, 19]]]]], [], []], "value", ["subexpr", "@mut", [["get", "value", ["loc", [null, [3, 8], [3, 13]]]]], [], []], "options", ["subexpr", "@mut", [["get", "field.options", ["loc", [null, [4, 10], [4, 23]]]]], [], []], "isEdited", ["subexpr", "@mut", [["get", "isEdited", ["loc", [null, [5, 11], [5, 19]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "isErrored", ["loc", [null, [6, 12], [6, 21]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "isPusherEdited", ["loc", [null, [7, 17], [7, 31]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isDisabled", ["loc", [null, [8, 13], [8, 23]]]]], [], []], "onValueChange", ["subexpr", "action", ["selectionChanged"], [], ["loc", [null, [9, 16], [9, 43]]]]], ["loc", [null, [1, 0], [10, 2]]]]],
+      statements: [["inline", "ko-info-bar/field/checkbox", [], ["title", ["subexpr", "@mut", [["get", "field.title", ["loc", [null, [2, 8], [2, 19]]]]], [], []], "value", ["subexpr", "@mut", [["get", "convertedValue", ["loc", [null, [3, 8], [3, 22]]]]], [], []], "options", ["subexpr", "@mut", [["get", "field.options", ["loc", [null, [4, 10], [4, 23]]]]], [], []], "isEdited", ["subexpr", "@mut", [["get", "isEdited", ["loc", [null, [5, 11], [5, 19]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "isErrored", ["loc", [null, [6, 12], [6, 21]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "isPusherEdited", ["loc", [null, [7, 17], [7, 31]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isDisabled", ["loc", [null, [8, 13], [8, 23]]]]], [], []], "onValueChange", ["subexpr", "action", ["valueChanged", ["get", "field", ["loc", [null, [9, 39], [9, 44]]]]], [], ["loc", [null, [9, 16], [9, 45]]]]], ["loc", [null, [1, 0], [10, 2]]]]],
       locals: [],
       templates: []
     };
   })());
 });
-define('frontend-cp/components/ko-info-bar/custom-field/component', ['exports', 'ember'], function (exports, _ember) {
+define('frontend-cp/components/ko-info-bar/custom-field/date/component', ['exports', 'ember', 'moment'], function (exports, _ember, _moment) {
   exports['default'] = _ember['default'].Component.extend({
-    //Params
+    // Attributes
+    field: null,
+    value: null,
+    isErrored: false,
+    isEdited: false,
+    isPusherEdited: false,
+    isDisabled: false,
     onFieldUpdate: null,
-    errors: [],
 
-    store: _ember['default'].inject.service(),
-    customFieldsList: _ember['default'].inject.service('custom-fields/list'),
-
+    // HTML
     tagName: '',
 
-    customFieldsModel: null,
-    field: null,
-
-    fieldValue: _ember['default'].computed('customFieldsModel.@each.field', 'field', function () {
-      var field = this.get('field');
-      var customFields = this.get('customFieldsModel');
-      if (!customFields) {
-        return null;
-      }
-
-      var fields = customFields.toArray();
-
-      for (var i = 0; i < fields.length; i++) {
-        if (fields[i].get('field') === field) {
-          return fields[i];
-        }
-      }
-
-      return null;
-    }),
-
-    updateIsEditedFromHash: _ember['default'].on('init', _ember['default'].observer('field.id', function () {
-      var _this = this;
-
-      /*
-       * We take an object holding the edited status of all case fields with the format:
-       * { id: isEdited, ... }
-       *
-       * we need to observe isEditedObject[field.id] which we can't do as a normal CP because field.id is dynamic
-       * So this is just a computed property wrapped in an observer (so we have the context)
-       */
-      this.set('isEdited', _ember['default'].computed('editedCustomFields.' + this.get('field.id'), function () {
-        return _this.get('editedCustomFields').get(_this.get('field.id'));
-      }));
-    })),
-
-    onErrors: _ember['default'].observer('errors.[]', function () {
-      var _this2 = this;
-
-      if (this.get('errors')) {
-        this.set('isErrored', this.get('errors').reduce(function (acc, error) {
-          return acc || error.parameter === _this2.get('field.key');
-        }, false));
-      }
-    }),
-
-    updateIsPusherEditedFromHash: _ember['default'].on('init', _ember['default'].observer('field.id', function () {
-      var _this3 = this;
-
-      /*
-       * We take an object holding the edited status of all case fields with the format:
-       * { id: isEdited, ... }
-       *
-       * we need to observe isEditedObject[field.id] which we can't do as a normal CP because field.id is dynamic
-       * So this is just a computed property wrapped in an observer (so we have the context)
-       */
-      this.set('isPusherEdited', _ember['default'].computed('fieldsEditedByPusher.' + this.get('field.id'), function () {
-        if (_this3.get('fieldsEditedByPusher')) {
-          return _this3.get('fieldsEditedByPusher')[_this3.get('field.id')];
-        }
-        return false;
-      }));
-    })),
-
-    setValue: function setValue(fieldValue, value) {
-      fieldValue.set('value', value);
+    valueToString: function valueToString(value) {
+      return value ? (0, _moment['default'])(value).format('YYYY-MM-DDTHH:mm:ss') + 'Z' : null;
     },
 
     actions: {
-      valueChanged: function valueChanged(value) {
-        this.set('isErrored', false);
-
-        var field = this.get('field');
-        var fieldValue = this.get('fieldValue');
-
-        if (!fieldValue) {
-          fieldValue = this.get('customFieldsModel').createFragment({
-            fieldFragment: this.get('store').createFragment('relationship-fragment', {
-              relationshipId: field.id,
-              relationshipType: field.type
-            })
-          });
-        }
-
-        this.setValue(fieldValue, value);
-        if (this.attrs.onFieldUpdate) {
-          this.attrs.onFieldUpdate();
-        }
-      }
-    }
-  });
-});
-define('frontend-cp/components/ko-info-bar/custom-field/date/component', ['exports', 'frontend-cp/components/ko-info-bar/custom-field/component', 'moment'], function (exports, _frontendCpComponentsKoInfoBarCustomFieldComponent, _moment) {
-  exports['default'] = _frontendCpComponentsKoInfoBarCustomFieldComponent['default'].extend({
-    setValue: function setValue(fieldValue, value) {
-      if (value) {
-        // special format required for API
-        fieldValue.set('value', (0, _moment['default'])(value).format('YYYY-MM-DDTHH:mm:ss') + 'Z');
-      } else {
-        fieldValue.set('value', null);
+      valueChanged: function valueChanged(field, value) {
+        this.attrs.onFieldUpdate(this.get('field'), this.valueToString(value));
       }
     }
   });
@@ -27870,14 +27888,26 @@ define("frontend-cp/components/ko-info-bar/custom-field/date/template", ["export
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["inline", "ko-info-bar/field/date", [], ["title", ["subexpr", "@mut", [["get", "field.title", ["loc", [null, [2, 8], [2, 19]]]]], [], []], "value", ["subexpr", "@mut", [["get", "fieldValue.value", ["loc", [null, [3, 8], [3, 24]]]]], [], []], "isEdited", ["subexpr", "@mut", [["get", "isEdited", ["loc", [null, [4, 11], [4, 19]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "isErrored", ["loc", [null, [5, 12], [5, 21]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "isPusherEdited", ["loc", [null, [6, 17], [6, 31]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isDisabled", ["loc", [null, [7, 13], [7, 23]]]]], [], []], "onValueChange", ["subexpr", "action", ["valueChanged"], [], ["loc", [null, [8, 16], [8, 39]]]]], ["loc", [null, [1, 0], [9, 2]]]]],
+      statements: [["inline", "ko-info-bar/field/date", [], ["title", ["subexpr", "@mut", [["get", "field.title", ["loc", [null, [2, 8], [2, 19]]]]], [], []], "value", ["subexpr", "@mut", [["get", "value", ["loc", [null, [3, 8], [3, 13]]]]], [], []], "isEdited", ["subexpr", "@mut", [["get", "isEdited", ["loc", [null, [4, 11], [4, 19]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "isErrored", ["loc", [null, [5, 12], [5, 21]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "isPusherEdited", ["loc", [null, [6, 17], [6, 31]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isDisabled", ["loc", [null, [7, 13], [7, 23]]]]], [], []], "onValueChange", ["subexpr", "action", ["valueChanged", ["get", "field", ["loc", [null, [8, 39], [8, 44]]]]], [], ["loc", [null, [8, 16], [8, 45]]]]], ["loc", [null, [1, 0], [9, 2]]]]],
       locals: [],
       templates: []
     };
   })());
 });
-define('frontend-cp/components/ko-info-bar/custom-field/decimal/component', ['exports', 'frontend-cp/components/ko-info-bar/custom-field/component'], function (exports, _frontendCpComponentsKoInfoBarCustomFieldComponent) {
-  exports['default'] = _frontendCpComponentsKoInfoBarCustomFieldComponent['default'].extend({});
+define('frontend-cp/components/ko-info-bar/custom-field/decimal/component', ['exports', 'ember'], function (exports, _ember) {
+  exports['default'] = _ember['default'].Component.extend({
+    // Attributes
+    field: null,
+    value: null,
+    isErrored: false,
+    isEdited: false,
+    isPusherEdited: false,
+    isDisabled: false,
+    onFieldUpdate: null,
+
+    // HTML
+    tagName: ''
+  });
 });
 define("frontend-cp/components/ko-info-bar/custom-field/decimal/template", ["exports"], function (exports) {
   exports["default"] = Ember.HTMLBars.template((function () {
@@ -27913,14 +27943,26 @@ define("frontend-cp/components/ko-info-bar/custom-field/decimal/template", ["exp
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["inline", "ko-info-bar/field/text", [], ["title", ["subexpr", "@mut", [["get", "field.title", ["loc", [null, [2, 8], [2, 19]]]]], [], []], "value", ["subexpr", "@mut", [["get", "fieldValue.value", ["loc", [null, [3, 8], [3, 24]]]]], [], []], "isEdited", ["subexpr", "@mut", [["get", "isEdited", ["loc", [null, [4, 11], [4, 19]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "isPusherEdited", ["loc", [null, [5, 17], [5, 31]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "isErrored", ["loc", [null, [6, 12], [6, 21]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isDisabled", ["loc", [null, [7, 13], [7, 23]]]]], [], []], "onValueChange", ["subexpr", "action", ["valueChanged"], [], ["loc", [null, [8, 16], [8, 39]]]]], ["loc", [null, [1, 0], [9, 2]]]]],
+      statements: [["inline", "ko-info-bar/field/text", [], ["title", ["subexpr", "@mut", [["get", "field.title", ["loc", [null, [2, 8], [2, 19]]]]], [], []], "value", ["subexpr", "@mut", [["get", "value", ["loc", [null, [3, 8], [3, 13]]]]], [], []], "isEdited", ["subexpr", "@mut", [["get", "isEdited", ["loc", [null, [4, 11], [4, 19]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "isPusherEdited", ["loc", [null, [5, 17], [5, 31]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "isErrored", ["loc", [null, [6, 12], [6, 21]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isDisabled", ["loc", [null, [7, 13], [7, 23]]]]], [], []], "onValueChange", ["subexpr", "action", [["get", "onFieldUpdate", ["loc", [null, [8, 24], [8, 37]]]], ["get", "field", ["loc", [null, [8, 38], [8, 43]]]]], [], ["loc", [null, [8, 16], [8, 44]]]]], ["loc", [null, [1, 0], [9, 2]]]]],
       locals: [],
       templates: []
     };
   })());
 });
-define('frontend-cp/components/ko-info-bar/custom-field/file/component', ['exports', 'frontend-cp/components/ko-info-bar/custom-field/component'], function (exports, _frontendCpComponentsKoInfoBarCustomFieldComponent) {
-  exports['default'] = _frontendCpComponentsKoInfoBarCustomFieldComponent['default'].extend({});
+define('frontend-cp/components/ko-info-bar/custom-field/file/component', ['exports', 'ember'], function (exports, _ember) {
+  exports['default'] = _ember['default'].Component.extend({
+    // Attributes
+    field: null,
+    value: null,
+    isErrored: false,
+    isEdited: false,
+    isPusherEdited: false,
+    isDisabled: false,
+    onFieldUpdate: null,
+
+    // HTML
+    tagName: ''
+  });
 });
 define("frontend-cp/components/ko-info-bar/custom-field/file/template", ["exports"], function (exports) {
   exports["default"] = Ember.HTMLBars.template((function () {
@@ -27956,14 +27998,26 @@ define("frontend-cp/components/ko-info-bar/custom-field/file/template", ["export
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["inline", "ko-info-bar/field/file", [], ["title", ["subexpr", "@mut", [["get", "field.title", ["loc", [null, [2, 8], [2, 19]]]]], [], []], "value", ["subexpr", "@mut", [["get", "fieldValue.value", ["loc", [null, [3, 8], [3, 24]]]]], [], []], "isEdited", ["subexpr", "@mut", [["get", "isEdited", ["loc", [null, [4, 11], [4, 19]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "isPusherEdited", ["loc", [null, [5, 17], [5, 31]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "isErrored", ["loc", [null, [6, 12], [6, 21]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isDisabled", ["loc", [null, [7, 13], [7, 23]]]]], [], []], "onValueChange", ["subexpr", "action", ["valueChanged"], [], ["loc", [null, [8, 16], [8, 39]]]]], ["loc", [null, [1, 0], [9, 2]]]]],
+      statements: [["inline", "ko-info-bar/field/file", [], ["title", ["subexpr", "@mut", [["get", "field.title", ["loc", [null, [2, 8], [2, 19]]]]], [], []], "value", ["subexpr", "@mut", [["get", "value", ["loc", [null, [3, 8], [3, 13]]]]], [], []], "isEdited", ["subexpr", "@mut", [["get", "isEdited", ["loc", [null, [4, 11], [4, 19]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "isPusherEdited", ["loc", [null, [5, 17], [5, 31]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "isErrored", ["loc", [null, [6, 12], [6, 21]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isDisabled", ["loc", [null, [7, 13], [7, 23]]]]], [], []], "onValueChange", ["subexpr", "action", [["get", "onFieldUpdate", ["loc", [null, [8, 24], [8, 37]]]], ["get", "field", ["loc", [null, [8, 38], [8, 43]]]]], [], ["loc", [null, [8, 16], [8, 44]]]]], ["loc", [null, [1, 0], [9, 2]]]]],
       locals: [],
       templates: []
     };
   })());
 });
-define('frontend-cp/components/ko-info-bar/custom-field/numeric/component', ['exports', 'frontend-cp/components/ko-info-bar/custom-field/component'], function (exports, _frontendCpComponentsKoInfoBarCustomFieldComponent) {
-  exports['default'] = _frontendCpComponentsKoInfoBarCustomFieldComponent['default'].extend({});
+define('frontend-cp/components/ko-info-bar/custom-field/numeric/component', ['exports', 'ember'], function (exports, _ember) {
+  exports['default'] = _ember['default'].Component.extend({
+    // Attributes
+    field: null,
+    value: null,
+    isErrored: false,
+    isEdited: false,
+    isPusherEdited: false,
+    isDisabled: false,
+    onFieldUpdate: null,
+
+    // HTML
+    tagName: ''
+  });
 });
 define("frontend-cp/components/ko-info-bar/custom-field/numeric/template", ["exports"], function (exports) {
   exports["default"] = Ember.HTMLBars.template((function () {
@@ -27999,14 +28053,26 @@ define("frontend-cp/components/ko-info-bar/custom-field/numeric/template", ["exp
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["inline", "ko-info-bar/field/text", [], ["title", ["subexpr", "@mut", [["get", "field.title", ["loc", [null, [2, 8], [2, 19]]]]], [], []], "value", ["subexpr", "@mut", [["get", "fieldValue.value", ["loc", [null, [3, 8], [3, 24]]]]], [], []], "isEdited", ["subexpr", "@mut", [["get", "isEdited", ["loc", [null, [4, 11], [4, 19]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "isPusherEdited", ["loc", [null, [5, 17], [5, 31]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "isErrored", ["loc", [null, [6, 12], [6, 21]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isDisabled", ["loc", [null, [7, 13], [7, 23]]]]], [], []], "onValueChange", ["subexpr", "action", ["valueChanged"], [], ["loc", [null, [8, 16], [8, 39]]]]], ["loc", [null, [1, 0], [9, 2]]]]],
+      statements: [["inline", "ko-info-bar/field/text", [], ["title", ["subexpr", "@mut", [["get", "field.title", ["loc", [null, [2, 8], [2, 19]]]]], [], []], "value", ["subexpr", "@mut", [["get", "value", ["loc", [null, [3, 8], [3, 13]]]]], [], []], "isEdited", ["subexpr", "@mut", [["get", "isEdited", ["loc", [null, [4, 11], [4, 19]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "isPusherEdited", ["loc", [null, [5, 17], [5, 31]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "isErrored", ["loc", [null, [6, 12], [6, 21]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isDisabled", ["loc", [null, [7, 13], [7, 23]]]]], [], []], "onValueChange", ["subexpr", "action", [["get", "onFieldUpdate", ["loc", [null, [8, 24], [8, 37]]]], ["get", "field", ["loc", [null, [8, 38], [8, 43]]]]], [], ["loc", [null, [8, 16], [8, 44]]]]], ["loc", [null, [1, 0], [9, 2]]]]],
       locals: [],
       templates: []
     };
   })());
 });
-define('frontend-cp/components/ko-info-bar/custom-field/radio/component', ['exports', 'frontend-cp/components/ko-info-bar/custom-field/component'], function (exports, _frontendCpComponentsKoInfoBarCustomFieldComponent) {
-  exports['default'] = _frontendCpComponentsKoInfoBarCustomFieldComponent['default'].extend({});
+define('frontend-cp/components/ko-info-bar/custom-field/radio/component', ['exports', 'ember'], function (exports, _ember) {
+  exports['default'] = _ember['default'].Component.extend({
+    // Attributes
+    field: null,
+    value: null,
+    isErrored: false,
+    isEdited: false,
+    isPusherEdited: false,
+    isDisabled: false,
+    onFieldUpdate: null,
+
+    // HTML
+    tagName: ''
+  });
 });
 define("frontend-cp/components/ko-info-bar/custom-field/radio/template", ["exports"], function (exports) {
   exports["default"] = Ember.HTMLBars.template((function () {
@@ -28043,14 +28109,26 @@ define("frontend-cp/components/ko-info-bar/custom-field/radio/template", ["expor
         dom.insertBoundary(fragment, 0);
         return morphs;
       },
-      statements: [["inline", "ko-info-bar/field/select", [], ["title", ["subexpr", "@mut", [["get", "field.title", ["loc", [null, [2, 8], [2, 19]]]]], [], []], "options", ["subexpr", "@mut", [["get", "field.options", ["loc", [null, [3, 10], [3, 23]]]]], [], []], "value", ["subexpr", "@mut", [["get", "fieldValue.value", ["loc", [null, [4, 8], [4, 24]]]]], [], []], "isEdited", ["subexpr", "@mut", [["get", "isEdited", ["loc", [null, [5, 11], [5, 19]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "isPusherEdited", ["loc", [null, [6, 17], [6, 31]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "isErrored", ["loc", [null, [7, 12], [7, 21]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isDisabled", ["loc", [null, [8, 13], [8, 23]]]]], [], []], "onValueChange", ["subexpr", "action", ["valueChanged"], [], ["loc", [null, [9, 16], [9, 39]]]], "idPath", "id", "labelPath", "value", "hasEmptyOption", false], ["loc", [null, [1, 0], [13, 2]]]]],
+      statements: [["inline", "ko-info-bar/field/select", [], ["title", ["subexpr", "@mut", [["get", "field.title", ["loc", [null, [2, 8], [2, 19]]]]], [], []], "options", ["subexpr", "@mut", [["get", "field.options", ["loc", [null, [3, 10], [3, 23]]]]], [], []], "value", ["subexpr", "@mut", [["get", "value", ["loc", [null, [4, 8], [4, 13]]]]], [], []], "isEdited", ["subexpr", "@mut", [["get", "isEdited", ["loc", [null, [5, 11], [5, 19]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "isPusherEdited", ["loc", [null, [6, 17], [6, 31]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "isErrored", ["loc", [null, [7, 12], [7, 21]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isDisabled", ["loc", [null, [8, 13], [8, 23]]]]], [], []], "onValueChange", ["subexpr", "action", [["get", "onFieldUpdate", ["loc", [null, [9, 24], [9, 37]]]], ["get", "field", ["loc", [null, [9, 38], [9, 43]]]]], [], ["loc", [null, [9, 16], [9, 44]]]], "idPath", "id", "labelPath", "value", "hasEmptyOption", false], ["loc", [null, [1, 0], [13, 2]]]]],
       locals: [],
       templates: []
     };
   })());
 });
-define('frontend-cp/components/ko-info-bar/custom-field/regex/component', ['exports', 'frontend-cp/components/ko-info-bar/custom-field/component'], function (exports, _frontendCpComponentsKoInfoBarCustomFieldComponent) {
-  exports['default'] = _frontendCpComponentsKoInfoBarCustomFieldComponent['default'].extend({});
+define('frontend-cp/components/ko-info-bar/custom-field/regex/component', ['exports', 'ember'], function (exports, _ember) {
+  exports['default'] = _ember['default'].Component.extend({
+    // Attributes
+    field: null,
+    value: null,
+    isErrored: false,
+    isEdited: false,
+    isPusherEdited: false,
+    isDisabled: false,
+    onFieldUpdate: null,
+
+    // HTML
+    tagName: ''
+  });
 });
 define("frontend-cp/components/ko-info-bar/custom-field/regex/template", ["exports"], function (exports) {
   exports["default"] = Ember.HTMLBars.template((function () {
@@ -28086,14 +28164,26 @@ define("frontend-cp/components/ko-info-bar/custom-field/regex/template", ["expor
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["inline", "ko-info-bar/field/text", [], ["title", ["subexpr", "@mut", [["get", "field.title", ["loc", [null, [2, 8], [2, 19]]]]], [], []], "value", ["subexpr", "@mut", [["get", "fieldValue.value", ["loc", [null, [3, 8], [3, 24]]]]], [], []], "isEdited", ["subexpr", "@mut", [["get", "isEdited", ["loc", [null, [4, 11], [4, 19]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "isPusherEdited", ["loc", [null, [5, 17], [5, 31]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "isErrored", ["loc", [null, [6, 12], [6, 21]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isDisabled", ["loc", [null, [7, 13], [7, 23]]]]], [], []], "onValueChange", ["subexpr", "action", ["valueChanged"], [], ["loc", [null, [8, 16], [8, 39]]]]], ["loc", [null, [1, 0], [9, 2]]]]],
+      statements: [["inline", "ko-info-bar/field/text", [], ["title", ["subexpr", "@mut", [["get", "field.title", ["loc", [null, [2, 8], [2, 19]]]]], [], []], "value", ["subexpr", "@mut", [["get", "value", ["loc", [null, [3, 8], [3, 13]]]]], [], []], "isEdited", ["subexpr", "@mut", [["get", "isEdited", ["loc", [null, [4, 11], [4, 19]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "isPusherEdited", ["loc", [null, [5, 17], [5, 31]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "isErrored", ["loc", [null, [6, 12], [6, 21]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isDisabled", ["loc", [null, [7, 13], [7, 23]]]]], [], []], "onValueChange", ["subexpr", "action", [["get", "onFieldUpdate", ["loc", [null, [8, 24], [8, 37]]]], ["get", "field", ["loc", [null, [8, 38], [8, 43]]]]], [], ["loc", [null, [8, 16], [8, 44]]]]], ["loc", [null, [1, 0], [9, 2]]]]],
       locals: [],
       templates: []
     };
   })());
 });
-define('frontend-cp/components/ko-info-bar/custom-field/select/component', ['exports', 'frontend-cp/components/ko-info-bar/custom-field/component'], function (exports, _frontendCpComponentsKoInfoBarCustomFieldComponent) {
-  exports['default'] = _frontendCpComponentsKoInfoBarCustomFieldComponent['default'].extend({});
+define('frontend-cp/components/ko-info-bar/custom-field/select/component', ['exports', 'ember'], function (exports, _ember) {
+  exports['default'] = _ember['default'].Component.extend({
+    // Attributes
+    field: null,
+    value: null,
+    isErrored: false,
+    isEdited: false,
+    isPusherEdited: false,
+    isDisabled: false,
+    onFieldUpdate: null,
+
+    // HTML
+    tagName: ''
+  });
 });
 define("frontend-cp/components/ko-info-bar/custom-field/select/template", ["exports"], function (exports) {
   exports["default"] = Ember.HTMLBars.template((function () {
@@ -28130,14 +28220,26 @@ define("frontend-cp/components/ko-info-bar/custom-field/select/template", ["expo
         dom.insertBoundary(fragment, 0);
         return morphs;
       },
-      statements: [["inline", "ko-info-bar/field/select", [], ["title", ["subexpr", "@mut", [["get", "field.title", ["loc", [null, [2, 8], [2, 19]]]]], [], []], "options", ["subexpr", "@mut", [["get", "field.options", ["loc", [null, [3, 10], [3, 23]]]]], [], []], "value", ["subexpr", "@mut", [["get", "fieldValue.value", ["loc", [null, [4, 8], [4, 24]]]]], [], []], "isEdited", ["subexpr", "@mut", [["get", "isEdited", ["loc", [null, [5, 11], [5, 19]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "isPusherEdited", ["loc", [null, [6, 17], [6, 31]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "isErrored", ["loc", [null, [7, 12], [7, 21]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isDisabled", ["loc", [null, [8, 13], [8, 23]]]]], [], []], "onValueChange", ["subexpr", "action", ["valueChanged"], [], ["loc", [null, [9, 16], [9, 39]]]], "idPath", "id", "labelPath", "value"], ["loc", [null, [1, 0], [12, 2]]]]],
+      statements: [["inline", "ko-info-bar/field/select", [], ["title", ["subexpr", "@mut", [["get", "field.title", ["loc", [null, [2, 8], [2, 19]]]]], [], []], "options", ["subexpr", "@mut", [["get", "field.options", ["loc", [null, [3, 10], [3, 23]]]]], [], []], "value", ["subexpr", "@mut", [["get", "value", ["loc", [null, [4, 8], [4, 13]]]]], [], []], "isEdited", ["subexpr", "@mut", [["get", "isEdited", ["loc", [null, [5, 11], [5, 19]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "isPusherEdited", ["loc", [null, [6, 17], [6, 31]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "isErrored", ["loc", [null, [7, 12], [7, 21]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isDisabled", ["loc", [null, [8, 13], [8, 23]]]]], [], []], "onValueChange", ["subexpr", "action", [["get", "onFieldUpdate", ["loc", [null, [9, 24], [9, 37]]]], ["get", "field", ["loc", [null, [9, 38], [9, 43]]]]], [], ["loc", [null, [9, 16], [9, 44]]]], "idPath", "id", "labelPath", "value"], ["loc", [null, [1, 0], [12, 2]]]]],
       locals: [],
       templates: []
     };
   })());
 });
-define('frontend-cp/components/ko-info-bar/custom-field/text/component', ['exports', 'frontend-cp/components/ko-info-bar/custom-field/component'], function (exports, _frontendCpComponentsKoInfoBarCustomFieldComponent) {
-  exports['default'] = _frontendCpComponentsKoInfoBarCustomFieldComponent['default'].extend({});
+define('frontend-cp/components/ko-info-bar/custom-field/text/component', ['exports', 'ember'], function (exports, _ember) {
+  exports['default'] = _ember['default'].Component.extend({
+    // Attributes
+    field: null,
+    value: null,
+    isErrored: false,
+    isEdited: false,
+    isPusherEdited: false,
+    isDisabled: false,
+    onFieldUpdate: null,
+
+    // HTML
+    tagName: ''
+  });
 });
 define("frontend-cp/components/ko-info-bar/custom-field/text/template", ["exports"], function (exports) {
   exports["default"] = Ember.HTMLBars.template((function () {
@@ -28173,14 +28275,26 @@ define("frontend-cp/components/ko-info-bar/custom-field/text/template", ["export
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["inline", "ko-info-bar/field/text", [], ["title", ["subexpr", "@mut", [["get", "field.title", ["loc", [null, [2, 8], [2, 19]]]]], [], []], "value", ["subexpr", "@mut", [["get", "fieldValue.value", ["loc", [null, [3, 8], [3, 24]]]]], [], []], "isEdited", ["subexpr", "@mut", [["get", "isEdited", ["loc", [null, [4, 11], [4, 19]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "isPusherEdited", ["loc", [null, [5, 17], [5, 31]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "isErrored", ["loc", [null, [6, 12], [6, 21]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isDisabled", ["loc", [null, [7, 13], [7, 23]]]]], [], []], "onValueChange", ["subexpr", "action", ["valueChanged"], [], ["loc", [null, [8, 16], [8, 39]]]]], ["loc", [null, [1, 0], [9, 2]]]]],
+      statements: [["inline", "ko-info-bar/field/text", [], ["title", ["subexpr", "@mut", [["get", "field.title", ["loc", [null, [2, 8], [2, 19]]]]], [], []], "value", ["subexpr", "@mut", [["get", "value", ["loc", [null, [3, 8], [3, 13]]]]], [], []], "isEdited", ["subexpr", "@mut", [["get", "isEdited", ["loc", [null, [4, 11], [4, 19]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "isPusherEdited", ["loc", [null, [5, 17], [5, 31]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "isErrored", ["loc", [null, [6, 12], [6, 21]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isDisabled", ["loc", [null, [7, 13], [7, 23]]]]], [], []], "onValueChange", ["subexpr", "action", [["get", "onFieldUpdate", ["loc", [null, [8, 24], [8, 37]]]], ["get", "field", ["loc", [null, [8, 38], [8, 43]]]]], [], ["loc", [null, [8, 16], [8, 44]]]]], ["loc", [null, [1, 0], [9, 2]]]]],
       locals: [],
       templates: []
     };
   })());
 });
-define('frontend-cp/components/ko-info-bar/custom-field/textarea/component', ['exports', 'frontend-cp/components/ko-info-bar/custom-field/component'], function (exports, _frontendCpComponentsKoInfoBarCustomFieldComponent) {
-  exports['default'] = _frontendCpComponentsKoInfoBarCustomFieldComponent['default'].extend({});
+define('frontend-cp/components/ko-info-bar/custom-field/textarea/component', ['exports', 'ember'], function (exports, _ember) {
+  exports['default'] = _ember['default'].Component.extend({
+    // Attributes
+    field: null,
+    value: null,
+    isErrored: false,
+    isEdited: false,
+    isPusherEdited: false,
+    isDisabled: false,
+    onFieldUpdate: null,
+
+    // HTML
+    tagName: ''
+  });
 });
 define("frontend-cp/components/ko-info-bar/custom-field/textarea/template", ["exports"], function (exports) {
   exports["default"] = Ember.HTMLBars.template((function () {
@@ -28216,14 +28330,26 @@ define("frontend-cp/components/ko-info-bar/custom-field/textarea/template", ["ex
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["inline", "ko-info-bar/field/multiline-text", [], ["title", ["subexpr", "@mut", [["get", "field.title", ["loc", [null, [2, 8], [2, 19]]]]], [], []], "value", ["subexpr", "@mut", [["get", "fieldValue.value", ["loc", [null, [3, 8], [3, 24]]]]], [], []], "isEdited", ["subexpr", "@mut", [["get", "isEdited", ["loc", [null, [4, 11], [4, 19]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "isPusherEdited", ["loc", [null, [5, 17], [5, 31]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "isErrored", ["loc", [null, [6, 12], [6, 21]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isDisabled", ["loc", [null, [7, 13], [7, 23]]]]], [], []], "onValueChange", ["subexpr", "action", ["valueChanged"], [], ["loc", [null, [8, 16], [8, 39]]]]], ["loc", [null, [1, 0], [9, 2]]]]],
+      statements: [["inline", "ko-info-bar/field/multiline-text", [], ["title", ["subexpr", "@mut", [["get", "field.title", ["loc", [null, [2, 8], [2, 19]]]]], [], []], "value", ["subexpr", "@mut", [["get", "value", ["loc", [null, [3, 8], [3, 13]]]]], [], []], "isEdited", ["subexpr", "@mut", [["get", "isEdited", ["loc", [null, [4, 11], [4, 19]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "isPusherEdited", ["loc", [null, [5, 17], [5, 31]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "isErrored", ["loc", [null, [6, 12], [6, 21]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isDisabled", ["loc", [null, [7, 13], [7, 23]]]]], [], []], "onValueChange", ["subexpr", "action", [["get", "onFieldUpdate", ["loc", [null, [8, 24], [8, 37]]]], ["get", "field", ["loc", [null, [8, 38], [8, 43]]]]], [], ["loc", [null, [8, 16], [8, 44]]]]], ["loc", [null, [1, 0], [9, 2]]]]],
       locals: [],
       templates: []
     };
   })());
 });
-define('frontend-cp/components/ko-info-bar/custom-field/yesno/component', ['exports', 'ember', 'frontend-cp/components/ko-info-bar/custom-field/component'], function (exports, _ember, _frontendCpComponentsKoInfoBarCustomFieldComponent) {
-  exports['default'] = _frontendCpComponentsKoInfoBarCustomFieldComponent['default'].extend({
+define('frontend-cp/components/ko-info-bar/custom-field/yesno/component', ['exports', 'ember'], function (exports, _ember) {
+  exports['default'] = _ember['default'].Component.extend({
+    // Attributes
+    field: null,
+    value: null,
+    isErrored: false,
+    isEdited: false,
+    isPusherEdited: false,
+    isDisabled: false,
+    onFieldUpdate: null,
+
+    // HTML
+    tagName: '',
+
     optionsList: [_ember['default'].Object.create({ id: 'yes', value: 'Yes' }), _ember['default'].Object.create({ id: 'no', value: 'No' })]
   });
 });
@@ -28261,7 +28387,7 @@ define("frontend-cp/components/ko-info-bar/custom-field/yesno/template", ["expor
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["inline", "ko-info-bar/field/select", [], ["title", ["subexpr", "@mut", [["get", "field.title", ["loc", [null, [2, 8], [2, 19]]]]], [], []], "options", ["subexpr", "@mut", [["get", "optionsList", ["loc", [null, [3, 10], [3, 21]]]]], [], []], "value", ["subexpr", "@mut", [["get", "fieldValue.value", ["loc", [null, [4, 8], [4, 24]]]]], [], []], "isEdited", ["subexpr", "@mut", [["get", "isEdited", ["loc", [null, [5, 11], [5, 19]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "isPusherEdited", ["loc", [null, [6, 17], [6, 31]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "isErrored", ["loc", [null, [7, 12], [7, 21]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isDisabled", ["loc", [null, [8, 13], [8, 23]]]]], [], []], "onValueChange", ["subexpr", "action", ["valueChanged"], [], ["loc", [null, [9, 16], [9, 39]]]], "idPath", "id", "labelPath", "value", "hasEmptyOption", false], ["loc", [null, [1, 0], [13, 2]]]]],
+      statements: [["inline", "ko-info-bar/field/select", [], ["title", ["subexpr", "@mut", [["get", "field.title", ["loc", [null, [2, 8], [2, 19]]]]], [], []], "options", ["subexpr", "@mut", [["get", "optionsList", ["loc", [null, [3, 10], [3, 21]]]]], [], []], "value", ["subexpr", "@mut", [["get", "value", ["loc", [null, [4, 8], [4, 13]]]]], [], []], "isEdited", ["subexpr", "@mut", [["get", "isEdited", ["loc", [null, [5, 11], [5, 19]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "isPusherEdited", ["loc", [null, [6, 17], [6, 31]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "isErrored", ["loc", [null, [7, 12], [7, 21]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isDisabled", ["loc", [null, [8, 13], [8, 23]]]]], [], []], "onValueChange", ["subexpr", "action", [["get", "onFieldUpdate", ["loc", [null, [9, 24], [9, 37]]]], ["get", "field", ["loc", [null, [9, 38], [9, 43]]]]], [], ["loc", [null, [9, 16], [9, 44]]]], "idPath", "id", "labelPath", "value", "hasEmptyOption", false], ["loc", [null, [1, 0], [13, 2]]]]],
       locals: [],
       templates: []
     };
@@ -30854,6 +30980,7 @@ define('frontend-cp/components/ko-organisation-content/component', ['exports', '
     suggestedTags: [],
     erroredDomains: [],
     errors: [],
+    errorMap: null,
 
     isDomainEdited: false,
     isSaving: false,
@@ -30875,6 +31002,10 @@ define('frontend-cp/components/ko-organisation-content/component', ['exports', '
       })];
     }),
 
+    initErrorMap: _ember['default'].on('init', function () {
+      this.set('errorMap', _ember['default'].Object.create());
+    }),
+
     initCustomFields: _ember['default'].on('init', function () {
       var _this = this;
 
@@ -30890,16 +31021,6 @@ define('frontend-cp/components/ko-organisation-content/component', ['exports', '
       return this.get('model.domains'); //.map(domain => domain.get('domain')).uniq();
     }),
 
-    errorMap: _ember['default'].computed('errors', function () {
-      var errors = this.get('errors') || [];
-      var errorMap = {};
-
-      errors.forEach(function (error) {
-        errorMap[error.parameter] = true;
-      });
-      return errorMap;
-    }),
-
     isTagsFieldEdited: _ember['default'].computed('cachedTags.[]', 'model.tags.@each.id', function () {
       var cachedTagNames = this.get('cachedTags');
       var tags = this.get('model.tags');
@@ -30912,6 +31033,14 @@ define('frontend-cp/components/ko-organisation-content/component', ['exports', '
 
     isEdited: _ember['default'].computed.oneWay('isOrganisationEdited'),
 
+    customFieldValueHash: _ember['default'].computed('model.customFields.@each.value', function () {
+      var values = _ember['default'].Object.create();
+      this.get('model.customFields').forEach(function (field) {
+        values.set(field.get('field.id'), field.get('value'));
+      });
+      return values;
+    }),
+
     convertErrorsToMap: function convertErrorsToMap(errors) {
       return (errors || []).filter(function (error) {
         return error.parameter;
@@ -30923,7 +31052,7 @@ define('frontend-cp/components/ko-organisation-content/component', ['exports', '
 
     resetForm: function resetForm() {
       this.set('errors', []);
-      this.set('errorMap', {});
+      this.set('errorMap', _ember['default'].Object.create());
       this.set('isDomainEdited', false);
       this.set('isNameEdited', false);
       this.set('isDomainErrored', false);
@@ -31098,7 +31227,21 @@ define('frontend-cp/components/ko-organisation-content/component', ['exports', '
         });
       },
 
-      fieldUpdated: function fieldUpdated() {
+      fieldUpdated: function fieldUpdated(field, value) {
+        this.get('errorMap').set(field.get('key'), false);
+        var valueObject = this.get('model.customFields').find(function (value) {
+          return value.get('field.id') === field.get('id');
+        });
+
+        if (!valueObject) {
+          valueObject = this.get('model.customFields').createFragment({
+            fieldFragment: this.get('store').createFragment('relationship-fragment', {
+              relationshipId: field.id,
+              relationshipType: field.type
+            })
+          });
+        }
+        valueObject.set('value', value);
         this.updateDirtyFieldHash();
       }
     }
@@ -31302,7 +31445,7 @@ define("frontend-cp/components/ko-organisation-content/template", ["exports"], f
                 morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
                 return morphs;
               },
-              statements: [["inline", "component", [["subexpr", "ko-helper", [["get", "customFieldsList.componentFor", ["loc", [null, [98, 37], [98, 66]]]], ["get", "field.fieldType", ["loc", [null, [98, 67], [98, 82]]]]], [], ["loc", [null, [98, 26], [98, 83]]]]], ["customFieldsModel", ["subexpr", "@mut", [["get", "model.customFields", ["loc", [null, [99, 34], [99, 52]]]]], [], []], "field", ["subexpr", "@mut", [["get", "field", ["loc", [null, [100, 22], [100, 27]]]]], [], []], "errors", ["subexpr", "@mut", [["get", "errors", ["loc", [null, [101, 23], [101, 29]]]]], [], []], "editedCustomFields", ["subexpr", "@mut", [["get", "editedCustomFields", ["loc", [null, [102, 35], [102, 53]]]]], [], []], "onFieldUpdate", ["subexpr", "action", ["fieldUpdated"], [], ["loc", [null, [103, 30], [103, 53]]]]], ["loc", [null, [98, 14], [104, 16]]]]],
+              statements: [["inline", "component", [["subexpr", "ko-helper", [["get", "customFieldsList.componentFor", ["loc", [null, [98, 37], [98, 66]]]], ["get", "field.fieldType", ["loc", [null, [98, 67], [98, 82]]]]], [], ["loc", [null, [98, 26], [98, 83]]]]], ["field", ["subexpr", "@mut", [["get", "field", ["loc", [null, [99, 22], [99, 27]]]]], [], []], "value", ["subexpr", "get", [["get", "customFieldValueHash", ["loc", [null, [100, 27], [100, 47]]]], ["get", "field.id", ["loc", [null, [100, 48], [100, 56]]]]], [], ["loc", [null, [100, 22], [100, 57]]]], "isErrored", ["subexpr", "get", [["get", "errorMap", ["loc", [null, [101, 31], [101, 39]]]], ["get", "field.key", ["loc", [null, [101, 40], [101, 49]]]]], [], ["loc", [null, [101, 26], [101, 50]]]], "isEdited", ["subexpr", "get", [["get", "editedCustomFields", ["loc", [null, [102, 30], [102, 48]]]], ["get", "field.id", ["loc", [null, [102, 49], [102, 57]]]]], [], ["loc", [null, [102, 25], [102, 58]]]], "onFieldUpdate", ["subexpr", "action", ["fieldUpdated"], [], ["loc", [null, [103, 30], [103, 53]]]]], ["loc", [null, [98, 14], [104, 16]]]]],
               locals: [],
               templates: []
             };
@@ -39369,7 +39512,7 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
 
     init: function init() {
       this._super.apply(this, arguments);
-      this.set('errorMap', {});
+      this.set('errorMap', _ember['default'].Object.create());
     },
 
     initCustomFields: _ember['default'].on('init', function () {
@@ -39537,7 +39680,7 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
 
     resetForm: function resetForm() {
       this.set('errors', []);
-      this.set('errorMap', {});
+      this.set('errorMap', _ember['default'].Object.create());
       this.set('isRoleEdited', false);
       this.set('isOrganisationEdited', false);
       this.set('isTimezoneEdited', false);
@@ -39597,6 +39740,14 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
     }),
 
     isEnabled: _ember['default'].computed.bool('model.isEnabled'),
+
+    customFieldValueHash: _ember['default'].computed('model.customFields.@each.value', function () {
+      var values = _ember['default'].Object.create();
+      this.get('model.customFields').forEach(function (field) {
+        values.set(field.get('field.id'), field.get('value'));
+      });
+      return values;
+    }),
 
     componentFor: function componentFor(fieldType) {
       switch (fieldType) {
@@ -39924,7 +40075,21 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
         });
       },
 
-      fieldUpdated: function fieldUpdated() {
+      fieldUpdated: function fieldUpdated(field, value) {
+        this.get('errorMap').set(field.get('key'), false);
+        var valueObject = this.get('model.customFields').find(function (value) {
+          return value.get('field.id') === field.get('id');
+        });
+
+        if (!valueObject) {
+          valueObject = this.get('model.customFields').createFragment({
+            fieldFragment: this.get('store').createFragment('relationship-fragment', {
+              relationshipId: field.id,
+              relationshipType: field.type
+            })
+          });
+        }
+        valueObject.set('value', value);
         this.updateDirtyFieldHash();
       },
 
@@ -40582,7 +40747,7 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
                 morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
                 return morphs;
               },
-              statements: [["inline", "component", [["subexpr", "ko-helper", [["get", "customFieldsList.componentFor", ["loc", [null, [214, 37], [214, 66]]]], ["get", "field.fieldType", ["loc", [null, [214, 67], [214, 82]]]]], [], ["loc", [null, [214, 26], [214, 83]]]]], ["customFieldsModel", ["subexpr", "@mut", [["get", "model.customFields", ["loc", [null, [215, 34], [215, 52]]]]], [], []], "field", ["subexpr", "@mut", [["get", "field", ["loc", [null, [216, 22], [216, 27]]]]], [], []], "errors", ["subexpr", "@mut", [["get", "errors", ["loc", [null, [217, 23], [217, 29]]]]], [], []], "editedCustomFields", ["subexpr", "@mut", [["get", "editedCustomFields", ["loc", [null, [218, 35], [218, 53]]]]], [], []], "onFieldUpdate", ["subexpr", "action", ["fieldUpdated"], [], ["loc", [null, [219, 30], [219, 53]]]]], ["loc", [null, [214, 14], [220, 16]]]]],
+              statements: [["inline", "component", [["subexpr", "ko-helper", [["get", "customFieldsList.componentFor", ["loc", [null, [214, 37], [214, 66]]]], ["get", "field.fieldType", ["loc", [null, [214, 67], [214, 82]]]]], [], ["loc", [null, [214, 26], [214, 83]]]]], ["field", ["subexpr", "@mut", [["get", "field", ["loc", [null, [215, 22], [215, 27]]]]], [], []], "value", ["subexpr", "get", [["get", "customFieldValueHash", ["loc", [null, [216, 27], [216, 47]]]], ["get", "field.id", ["loc", [null, [216, 48], [216, 56]]]]], [], ["loc", [null, [216, 22], [216, 57]]]], "isErrored", ["subexpr", "get", [["get", "errorMap", ["loc", [null, [217, 31], [217, 39]]]], ["get", "field.key", ["loc", [null, [217, 40], [217, 49]]]]], [], ["loc", [null, [217, 26], [217, 50]]]], "isEdited", ["subexpr", "get", [["get", "editedCustomFields", ["loc", [null, [218, 30], [218, 48]]]], ["get", "field.id", ["loc", [null, [218, 49], [218, 57]]]]], [], ["loc", [null, [218, 25], [218, 58]]]], "onFieldUpdate", ["subexpr", "action", ["fieldUpdated"], [], ["loc", [null, [219, 30], [219, 53]]]]], ["loc", [null, [214, 14], [220, 16]]]]],
               locals: [],
               templates: []
             };
@@ -48076,7 +48241,8 @@ define('frontend-cp/mirage/scenarios/default', ['exports'], function (exports) {
     server.createList('definition', 3);
 
     var sourceChannel = server.create('channel');
-    var assignee = server.create('assignee', { agent: defaultUser, team: teams[0] });
+    var assigneeAgent = defaultUser;
+    var assigneeTeam = teams[0];
     var language = server.create('language', {
       isDefault: true,
       locale: 'en-us'
@@ -48098,13 +48264,16 @@ define('frontend-cp/mirage/scenarios/default', ['exports'], function (exports) {
 
     var caseFields = server.createList('case-field', 14);
 
-    var customFields = server.createList('case-field-value', 2, { field: caseFields[0] });
+    // TODO make mirage work with relationships embedded into model fragments
+    // const customFields = server.createList('case-field-value', 2, { field: caseFields[0], value: '' });
+    var customFields = [];
     server.createList('case', 4, {
       source_channel: sourceChannel,
       requester: defaultUser,
       creator: defaultUser,
       identity: identityEmail,
-      assignee: assignee,
+      assignee_agent: assigneeAgent,
+      assignee_team: assigneeTeam,
       brand: brand,
       status: status,
       priority: priority,
@@ -48125,7 +48294,8 @@ define('frontend-cp/mirage/scenarios/default', ['exports'], function (exports) {
       requester: defaultUser,
       creator: defaultUser,
       identity: identityEmail,
-      assignee: assignee,
+      assignee_agent: assigneeAgent,
+      assignee_team: assigneeTeam,
       brand: brand,
       status: statuses[3],
       priority: priority,
@@ -48144,7 +48314,8 @@ define('frontend-cp/mirage/scenarios/default', ['exports'], function (exports) {
       requester: defaultUser,
       creator: defaultUser,
       identity: identityEmail,
-      assignee: assignee,
+      assignee_agent: assigneeAgent,
+      assignee_team: assigneeTeam,
       brand: brand,
       status: status,
       priority: priority,
@@ -48879,20 +49050,6 @@ define('frontend-cp/models/business-hour', ['exports', 'ember-data'], function (
     updatedAt: _emberData['default'].attr('date', { async: false })
   });
 });
-define('frontend-cp/models/case-assignee', ['exports', 'ember', 'model-fragments', 'frontend-cp/mixins/change-aware-model'], function (exports, _ember, _modelFragments, _frontendCpMixinsChangeAwareModel) {
-  exports['default'] = _modelFragments['default'].Fragment.extend(_frontendCpMixinsChangeAwareModel['default'], {
-    teamFragment: _modelFragments['default'].fragment('relationship-fragment'),
-
-    team: _ember['default'].computed('teamFragment', 'teamFragment.relationshipId', function () {
-      return this.store.peekRecord('team', this.get('teamFragment.relationshipId'));
-    }),
-
-    agentFragment: _modelFragments['default'].fragment('relationship-fragment'),
-    agent: _ember['default'].computed('agentFragment', 'agentFragment.relationshipId', function () {
-      return this.store.peekRecord('user', this.get('agentFragment.relationshipId'));
-    })
-  });
-});
 define('frontend-cp/models/case-field-value', ['exports', 'ember', 'ember-data', 'model-fragments'], function (exports, _ember, _emberData, _modelFragments) {
   exports['default'] = _modelFragments['default'].Fragment.extend({
     // TODO fix when relationship support lands to ember-data.model-fragments
@@ -49066,7 +49223,7 @@ define('frontend-cp/models/case-priority', ['exports', 'ember-data'], function (
 });
 define('frontend-cp/models/case-reply-options', ['exports', 'ember-data', 'model-fragments'], function (exports, _emberData, _modelFragments) {
   exports['default'] = _modelFragments['default'].Fragment.extend({
-    cc: _emberData['default'].attr('array')
+    cc: _emberData['default'].attr('array', { defaultValue: [] })
   });
 });
 define('frontend-cp/models/case-reply', ['exports', 'ember-data', 'model-fragments'], function (exports, _emberData, _modelFragments) {
@@ -49076,9 +49233,6 @@ define('frontend-cp/models/case-reply', ['exports', 'ember-data', 'model-fragmen
     channel: _emberData['default'].belongsTo('account', { async: false }),
     inReplyToUuid: _emberData['default'].attr('string'),
     options: _modelFragments['default'].fragment('case-reply-options'),
-    // options[bcc]
-    // options[markdown]
-    // options[send_link]
     status: _emberData['default'].belongsTo('case-status', { async: false }),
     priority: _emberData['default'].belongsTo('case-priority', { async: false }),
     caseType: _emberData['default'].belongsTo('case-type', { async: false }),
@@ -49116,11 +49270,11 @@ define('frontend-cp/models/case-type', ['exports', 'ember-data'], function (expo
     type: _emberData['default'].attr('string')
   });
 });
-define('frontend-cp/models/case', ['exports', 'ember-data', 'model-fragments', 'frontend-cp/mixins/change-aware-model'], function (exports, _emberData, _modelFragments, _frontendCpMixinsChangeAwareModel) {
-  exports['default'] = _emberData['default'].Model.extend(_frontendCpMixinsChangeAwareModel['default'], {
-    assignee: _modelFragments['default'].fragment('case-assignee', { defaultValue: {} }),
-    maskId: _emberData['default'].attr('string'),
-    subject: _emberData['default'].attr('string'),
+define('frontend-cp/models/case', ['exports', 'ember-data', 'model-fragments'], function (exports, _emberData, _modelFragments) {
+  exports['default'] = _emberData['default'].Model.extend({
+    assigneeTeam: _emberData['default'].belongsTo('team', { async: false }),
+    assigneeAgent: _emberData['default'].belongsTo('user', { async: false }),
+    subject: _emberData['default'].attr('string', { defaultValue: '' }),
     portal: _emberData['default'].attr('string'),
     sourceChannel: _emberData['default'].belongsTo('channel', { async: false }),
     requester: _emberData['default'].belongsTo('user', { async: false }),
@@ -49128,7 +49282,7 @@ define('frontend-cp/models/case', ['exports', 'ember-data', 'model-fragments', '
     identity: _emberData['default'].belongsTo('identity', { polymorphic: true, async: false }),
     sla: _emberData['default'].belongsTo('sla', { async: false }),
     slaMetrics: _modelFragments['default'].fragmentArray('sla-metric', { defaultValue: [] }),
-    assignedBy: _emberData['default'].belongsTo('user', { async: false }),
+    lastAssignedBy: _emberData['default'].belongsTo('user', { async: false }),
     brand: _emberData['default'].belongsTo('brand', { async: false }),
     status: _emberData['default'].belongsTo('case-status', { async: false }),
     priority: _emberData['default'].belongsTo('case-priority', { async: false }),
@@ -49140,14 +49294,10 @@ define('frontend-cp/models/case', ['exports', 'ember-data', 'model-fragments', '
     lastReplierIdentity: _emberData['default'].belongsTo('identity', { async: false }),
     creationMode: _emberData['default'].attr('string'),
     state: _emberData['default'].attr('string'),
-    totalPosts: _emberData['default'].attr('number'),
     hasNotes: _emberData['default'].attr('boolean'),
     hasAttachments: _emberData['default'].attr('boolean'),
     rating: _emberData['default'].attr('number'),
     ratingStatus: _emberData['default'].attr('string'),
-    assignDueAt: _emberData['default'].attr('date'),
-    replyDueAt: _emberData['default'].attr('date'),
-    resolutionDueAt: _emberData['default'].attr('date'),
     createdAt: _emberData['default'].attr('date'),
     updatedAt: _emberData['default'].attr('date'),
     lastAgentActivityAt: _emberData['default'].attr('date'),
@@ -49156,14 +49306,14 @@ define('frontend-cp/models/case', ['exports', 'ember-data', 'model-fragments', '
     realtimeChannel: _emberData['default'].attr('string'),
 
     // Children fields
-    messages: _emberData['default'].hasMany('case-message', { async: true, child: true, noCache: true }),
-    posts: _emberData['default'].hasMany('post', { async: true, child: true, noCache: true }),
-    channels: _emberData['default'].hasMany('channel', { async: true, child: true, url: 'channels', noCache: true }),
-    activities: _emberData['default'].hasMany('activity', { async: true, child: true, url: 'activities', noCache: true }),
-    replyChannels: _emberData['default'].hasMany('channel', { async: true, child: true, url: 'reply/channels', noCache: true }),
-    reply: _emberData['default'].hasMany('case-reply', { async: true, child: true, noCache: true }),
-    tags: _emberData['default'].hasMany('tag', { async: true, child: true, noCache: true }),
-    //participants: DS.hasMany('user', { async: true, child: true, url: 'participants', noCache: true }),
+    messages: _emberData['default'].hasMany('case-message', { async: true, child: true }),
+    posts: _emberData['default'].hasMany('post', { async: true, child: true }),
+    channels: _emberData['default'].hasMany('channel', { async: true, child: true, url: 'channels' }),
+    activities: _emberData['default'].hasMany('activity', { async: true, child: true, url: 'activities' }),
+    replyChannels: _emberData['default'].hasMany('channel', { async: true, child: true, url: 'reply/channels' }),
+    reply: _emberData['default'].hasMany('case-reply', { async: true, child: true }),
+    tags: _emberData['default'].hasMany('tag', { async: true, child: true }),
+    //participants: DS.hasMany('user', { async: true, child: true, url: 'participants' }),
 
     // Parent field
     view: _emberData['default'].belongsTo('view', { async: true, parent: true }),
@@ -49173,14 +49323,10 @@ define('frontend-cp/models/case', ['exports', 'ember-data', 'model-fragments', '
     channel: _emberData['default'].attr('string'),
     channelId: _emberData['default'].attr('number'),
 
-    // reply & state fields fields
-    replyOptions: _modelFragments['default'].fragment('case-reply-options', { defaultValue: {} }),
-    selectedChannel: null,
-
     // used in the creation steps
     creationTimestamp: null,
 
-    saveWithPost: function saveWithPost(contents, channel, attachmentIds) {
+    saveWithPost: function saveWithPost(contents, channel, attachmentIds, replyOptions) {
       var _this = this;
 
       var account = channel.get('account');
@@ -49188,11 +49334,11 @@ define('frontend-cp/models/case', ['exports', 'ember-data', 'model-fragments', '
       var reply = this.get('store').createRecord('case-reply', {
         'case': this,
         channel: account,
-        assigneeTeam: this.get('assignee.team'),
-        assigneeAgent: this.get('assignee.agent'),
+        assigneeTeam: this.get('assigneeTeam'),
+        assigneeAgent: this.get('assigneeAgent'),
         channelType: channelType,
         contents: contents,
-        options: this.get('replyOptions').copy(),
+        options: replyOptions.copy(),
         status: this.get('status'),
         caseType: this.get('caseType'),
         priority: this.get('priority'),
@@ -49218,55 +49364,7 @@ define('frontend-cp/models/case', ['exports', 'ember-data', 'model-fragments', '
       // update is implemented
 
       return this.save().then(function () {
-        return reply.save().then(function (caseReply) {
-          _this.cacheRelationships();
-          return caseReply;
-        });
-      });
-    },
-
-    cacheRelationships: function cacheRelationships() {
-      this._super();
-
-      /*
-       * customFields are fragments so we need to cache these
-       * separately
-       */
-      var initialCustomFields = {};
-      this.get('customFields').forEach(function (caseField) {
-        initialCustomFields[caseField.get('field.id')] = caseField.get('value');
-      });
-
-      this.set('initialCustomFields', initialCustomFields);
-    },
-
-    hasDirtyHasManyRelationship: function hasDirtyHasManyRelationship(relationshipKey) {
-      if (relationshipKey !== 'tags') {
-        return this._super(relationshipKey);
-      }
-
-      /*
-       * TAGS is a special case - the equality depends on the
-       * tag name, rather than the tag entity (when we add tags,
-       * the server decides which entity our tag name resolves to - we
-       * don't care)
-       */
-      var initialRelationships = this.get('initialRelationships');
-      var initialTags = initialRelationships.tags || [];
-      var currentTags = this.get('tags') || [];
-
-      if (initialTags.length !== currentTags.length) {
-        return true;
-      }
-
-      return currentTags.any(function (tag, index) {
-        return tag.get('name') !== initialTags[index].get('name');
-      });
-    },
-
-    didUpdate: function didUpdate() {
-      this.get('tags').forEach(function (tag) {
-        return tag.set('isPusherEdited', false);
+        return reply.save();
       });
     }
   });
@@ -50988,14 +51086,6 @@ define('frontend-cp/serializers/avatar', ['exports', 'frontend-cp/serializers/ap
     }
   });
 });
-define('frontend-cp/serializers/case-assignee', ['exports', 'frontend-cp/serializers/application'], function (exports, _frontendCpSerializersApplication) {
-  exports['default'] = _frontendCpSerializersApplication['default'].extend({
-    attrs: {
-      teamFragment: { key: 'team' },
-      agentFragment: { key: 'agent' }
-    }
-  });
-});
 define('frontend-cp/serializers/case-field-type', ['exports', 'ember-data'], function (exports, _emberData) {
   exports['default'] = _emberData['default'].JSONSerializer.extend({});
 });
@@ -51053,7 +51143,7 @@ define('frontend-cp/serializers/case-reply', ['exports', 'frontend-cp/serializer
       channelType: { key: 'channel' },
       caseType: { key: 'type_id' },
       'case': { serialize: false },
-      post: { serialize: false }
+      posts: { serialize: false }
     },
 
     serialize: function serialize(snapshot, options) {
@@ -51098,7 +51188,33 @@ define('frontend-cp/serializers/case-status', ['exports', 'frontend-cp/serialize
 define('frontend-cp/serializers/case', ['exports', 'frontend-cp/serializers/application', 'frontend-cp/mixins/custom-field-serialization'], function (exports, _frontendCpSerializersApplication, _frontendCpMixinsCustomFieldSerialization) {
   exports['default'] = _frontendCpSerializersApplication['default'].extend(_frontendCpMixinsCustomFieldSerialization['default'], {
     attrs: {
-      caseType: { key: 'type' }
+      caseType: { key: 'type' },
+      portal: { serialize: false },
+      slaMetrics: { serialize: false },
+      creationMode: { serialize: false },
+      hasNotes: { serialize: false },
+      hasAttachments: { serialize: false },
+      rating: { serialize: false },
+      ratingStatus: { serialize: false },
+      createdAt: { serialize: false },
+      updatedAt: { serialize: false },
+      lastAgentActivityAt: { serialize: false },
+      lastCustomerActivityAt: { serialize: false },
+      lastCompletedAt: { serialize: false },
+      sourceChannel: { serialize: false },
+      view: { serialize: false },
+      replyChannels: { serialize: false },
+      lastReplier: { serialize: false },
+      lastReplierIdentity: { serialize: false },
+      brand: { serialize: false },
+      lastAssignedBy: { serialize: false },
+      sla: { serialize: false },
+      identity: { serialize: false },
+      realtimeChannel: { serialize: false },
+      creator: { serialize: false },
+      channels: { serialize: false },
+      creationTimestamp: { serialize: false },
+      state: { serialize: false }
     },
 
     extractArrayData: function extractArrayData(data, payload) {
@@ -51113,11 +51229,11 @@ define('frontend-cp/serializers/case', ['exports', 'frontend-cp/serializers/appl
     },
 
     extractSingleData: function extractSingleData(data, payload) {
-      if (data.assignee && !data.assignee.agent && !data.assignee.team) {
-        data.assignee = null;
-      } else if (data.assignee && !data.assignee.agent && data.assignee.team) {
-        data.assignee.agent = { id: null, relationshipId: null, relationshipType: 'user' };
+      if (data.assignee) {
+        data.assigneeAgent = data.assignee.agent;
+        data.assigneeTeam = data.assignee.team;
       }
+      Reflect.deleteProperty(data, 'assignee');
 
       if (data.brand && !Object.keys(data.brand).length) {
         Reflect.deleteProperty(data, 'brand');
@@ -51129,13 +51245,7 @@ define('frontend-cp/serializers/case', ['exports', 'frontend-cp/serializers/appl
     serialize: function serialize(snapshot, options) {
       var json = this._super(snapshot, options);
       json.field_values = this.serializeCustomFields(snapshot.attr('customFields'), snapshot.get('form')); //eslint-disable-line camelcase
-
-      var assignee = snapshot.attr('assignee');
-
-      if (assignee) {
-        json.assignee_agent_id = assignee.get('agentFragment.relationshipId'); // eslint-disable-line camelcase
-        json.assignee_team_id = assignee.get('teamFragment.relationshipId'); // eslint-disable-line camelcase
-      }
+      Reflect.deleteProperty(json, 'custom_fields');
 
       json.type_id = json.type; // eslint-disable-line camelcase
 
@@ -60264,6 +60374,7 @@ define('frontend-cp/session/agent/cases/case/index/route', ['exports', 'ember', 
         types: this.get('storeCache').findAll('case-type'),
         caseFields: this.get('storeCache').findAll('case-field')
       }).then(function (model) {
+        model.tags = model['case'].get('tags');
         model.replyChannel = model['case'].get('replyChannels');
         return _ember['default'].RSVP.hash(model);
       });
@@ -64742,6 +64853,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999},"name":"frontend-cp","version":"0.0.0+71ffda44"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999},"name":"frontend-cp","version":"0.0.0+e5c9d7f5"});
 }
 /* jshint ignore:end */
