@@ -15942,7 +15942,9 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
         editedCase: editedCase,
         editedTags: this.initEditedTags(this.get('case')),
         localCustomFields: this.initCustomFields(this.get('case')),
-        replyOptions: this.get('store').createFragment('case-reply-options'),
+        replyOptions: this.get('store').createFragment('case-reply-options', {
+          cc: []
+        }),
         propertiesChangeViaPusher: _ember['default'].Object.create({
           customFields: _ember['default'].Object.create()
         }),
@@ -49224,7 +49226,7 @@ define('frontend-cp/models/case-priority', ['exports', 'ember-data'], function (
 });
 define('frontend-cp/models/case-reply-options', ['exports', 'ember-data', 'model-fragments'], function (exports, _emberData, _modelFragments) {
   exports['default'] = _modelFragments['default'].Fragment.extend({
-    cc: _emberData['default'].attr('array', { defaultValue: [] })
+    cc: _emberData['default'].attr('array')
   });
 });
 define('frontend-cp/models/case-reply', ['exports', 'ember-data', 'model-fragments'], function (exports, _emberData, _modelFragments) {
@@ -64855,6 +64857,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999},"name":"frontend-cp","version":"0.0.0+da98fe3d"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999},"name":"frontend-cp","version":"0.0.0+afb1c021"});
 }
 /* jshint ignore:end */
