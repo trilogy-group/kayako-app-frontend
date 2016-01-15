@@ -16561,6 +16561,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
           this.set('case.contents', post);
           this.set('case.channel', channel.get('channelType'));
           this.set('case.channelId', channel.get('account.id'));
+          this.set('case.attachmentFileIds', attachmentIds);
           this.get('case').save().then(function (newCase) {
             // this.get('case').setProperties({
             //   contents: undefined,
@@ -49304,6 +49305,7 @@ define('frontend-cp/models/case', ['exports', 'ember-data', 'model-fragments'], 
     lastCustomerActivityAt: _emberData['default'].attr('date'),
     lastCompletedAt: _emberData['default'].attr('date'),
     realtimeChannel: _emberData['default'].attr('string'),
+    attachmentFileIds: _emberData['default'].attr('string'),
 
     // Children fields
     messages: _emberData['default'].hasMany('case-message', { async: true, child: true }),
@@ -64853,6 +64855,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999},"name":"frontend-cp","version":"0.0.0+e5c9d7f5"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999},"name":"frontend-cp","version":"0.0.0+da98fe3d"});
 }
 /* jshint ignore:end */
