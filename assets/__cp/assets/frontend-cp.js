@@ -17097,7 +17097,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
             return tag.get('name');
           });
 
-          var tagsWereModified = serverTagNames.length !== originalTagNames.length && serverTagNames.some(function (tag) {
+          var tagsWereModified = serverTagNames.length !== originalTagNames.length || serverTagNames.some(function (tag) {
             return originalTagNames.indexOf(tag) !== -1;
           });
 
@@ -64857,6 +64857,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999},"name":"frontend-cp","version":"0.0.0+4b4efe19"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999},"name":"frontend-cp","version":"0.0.0+bae4bf73"});
 }
 /* jshint ignore:end */
