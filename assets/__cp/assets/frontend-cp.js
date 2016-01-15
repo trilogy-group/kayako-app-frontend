@@ -27562,7 +27562,9 @@ define('frontend-cp/components/ko-info-bar/custom-field/cascadingselect/componen
   var partition = _npmLodash['default'].partition;
   exports['default'] = _frontendCpComponentsKoInfoBarCustomFieldComponent['default'].extend({
     tree: _ember['default'].computed('field.options', function () {
-      var items = this.get('field.options').map(function (option) {
+      var items = this.get('field.options').filter(function (option) {
+        return option && _ember['default'].get(option, 'value');
+      }).map(function (option) {
         return {
           id: _ember['default'].get(option, 'id'),
           value: _ember['default'].get(option, 'value').split(' / ')
@@ -64740,6 +64742,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999},"name":"frontend-cp","version":"0.0.0+6ebd762e"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999},"name":"frontend-cp","version":"0.0.0+71ffda44"});
 }
 /* jshint ignore:end */
