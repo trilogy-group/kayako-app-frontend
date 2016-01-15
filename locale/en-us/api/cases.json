@@ -64,7 +64,7 @@
   "subheader": "{time, date, medium} – {time, time, short} {hasChannel, select,\n    true {created via {channel}}\n    false {}\n  } {hasBrand, select,\n    true {, {brand}}\n    false {}\n  }",
   "subject": "Subject",
   "submit": "Submit",
-  "ticketid": "Ticket ID",
+  "ticketid": "Case ID",
   "type": "Type",
   "macro": "Macro",
   "applymacro": "Apply Macro",
