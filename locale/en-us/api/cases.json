@@ -122,7 +122,8 @@
   "suspendedMessage.table.createdAt": "Received at",
   "suspendedMessage.table.suspensionCode": "Suspension reason",
   "suspendedMessage.table.to": "Sent to",
-  "suspendedMessage.table.html": "Message",
+  "suspendedMessage.table.html": "HTML Message",
+  "suspendedMessage.table.text": "Text Message",
   "suspendedMessage.actions.cancel": "Cancel",
   "suspendedMessage.actions.permanentlyDelete": "Permanently delete",
   "suspendedMessage.actions.allowThrough": "Allow through"

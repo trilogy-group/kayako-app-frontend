@@ -43245,7 +43245,8 @@ define("frontend-cp/locales/en-us/cases", ["exports"], function (exports) {
     "suspendedMessage.table.createdAt": "Received at",
     "suspendedMessage.table.suspensionCode": "Suspension reason",
     "suspendedMessage.table.to": "Sent to",
-    "suspendedMessage.table.html": "Message",
+    "suspendedMessage.table.html": "HTML Message",
+    "suspendedMessage.table.text": "Text Message",
     "suspendedMessage.actions.cancel": "Cancel",
     "suspendedMessage.actions.permanentlyDelete": "Permanently delete",
     "suspendedMessage.actions.allowThrough": "Allow through"
@@ -60895,11 +60896,169 @@ define("frontend-cp/session/agent/cases/index/suspended-messages/show/template",
             "loc": {
               "source": null,
               "start": {
-                "line": 38,
+                "line": 31,
+                "column": 12
+              },
+              "end": {
+                "line": 33,
+                "column": 12
+              }
+            },
+            "moduleName": "frontend-cp/session/agent/cases/index/suspended-messages/show/template.hbs"
+          },
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("              ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createUnsafeMorphAt(fragment, 1, 1, contextualElement);
+            return morphs;
+          },
+          statements: [["content", "model.text", ["loc", [null, [32, 14], [32, 30]]]]],
+          locals: [],
+          templates: []
+        };
+      })();
+      var child1 = (function () {
+        var child0 = (function () {
+          return {
+            meta: {
+              "revision": "Ember@1.13.11",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 34,
+                  "column": 14
+                },
+                "end": {
+                  "line": 36,
+                  "column": 14
+                }
+              },
+              "moduleName": "frontend-cp/session/agent/cases/index/suspended-messages/show/template.hbs"
+            },
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode("                ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(1);
+              morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+              return morphs;
+            },
+            statements: [["content", "model.source", ["loc", [null, [35, 16], [35, 32]]]]],
+            locals: [],
+            templates: []
+          };
+        })();
+        var child1 = (function () {
+          return {
+            meta: {
+              "revision": "Ember@1.13.11",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 36,
+                  "column": 14
+                },
+                "end": {
+                  "line": 38,
+                  "column": 14
+                }
+              },
+              "moduleName": "frontend-cp/session/agent/cases/index/suspended-messages/show/template.hbs"
+            },
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode("                ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(1);
+              morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+              return morphs;
+            },
+            statements: [["content", "model.html", ["loc", [null, [37, 16], [37, 30]]]]],
+            locals: [],
+            templates: []
+          };
+        })();
+        return {
+          meta: {
+            "revision": "Ember@1.13.11",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 33,
+                "column": 12
+              },
+              "end": {
+                "line": 39,
+                "column": 12
+              }
+            },
+            "moduleName": "frontend-cp/session/agent/cases/index/suspended-messages/show/template.hbs"
+          },
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+            dom.insertBoundary(fragment, 0);
+            dom.insertBoundary(fragment, null);
+            return morphs;
+          },
+          statements: [["block", "if", [["get", "model.source", ["loc", [null, [34, 20], [34, 32]]]]], [], 0, 1, ["loc", [null, [34, 14], [38, 21]]]]],
+          locals: [],
+          templates: [child0, child1]
+        };
+      })();
+      var child2 = (function () {
+        return {
+          meta: {
+            "revision": "Ember@1.13.11",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 50,
                 "column": 4
               },
               "end": {
-                "line": 38,
+                "line": 50,
                 "column": 108
               }
             },
@@ -60921,7 +61080,7 @@ define("frontend-cp/session/agent/cases/index/suspended-messages/show/template",
             dom.insertBoundary(fragment, null);
             return morphs;
           },
-          statements: [["inline", "t", ["cases.suspendedMessage.actions.cancel"], [], ["loc", [null, [38, 63], [38, 108]]]]],
+          statements: [["inline", "t", ["cases.suspendedMessage.actions.cancel"], [], ["loc", [null, [50, 63], [50, 108]]]]],
           locals: [],
           templates: []
         };
@@ -60936,7 +61095,7 @@ define("frontend-cp/session/agent/cases/index/suspended-messages/show/template",
               "column": 0
             },
             "end": {
-              "line": 42,
+              "line": 54,
               "column": 0
             }
           },
@@ -61101,7 +61260,18 @@ define("frontend-cp/session/agent/cases/index/suspended-messages/show/template",
           var el4 = dom.createTextNode("\n        ");
           dom.appendChild(el3, el4);
           var el4 = dom.createElement("td");
-          var el5 = dom.createComment("");
+          var el5 = dom.createTextNode("\n          ");
+          dom.appendChild(el4, el5);
+          var el5 = dom.createElement("div");
+          dom.setAttribute(el5, "class", "suspended-message-modal__text");
+          var el6 = dom.createTextNode("\n");
+          dom.appendChild(el5, el6);
+          var el6 = dom.createComment("");
+          dom.appendChild(el5, el6);
+          var el6 = dom.createTextNode("          ");
+          dom.appendChild(el5, el6);
+          dom.appendChild(el4, el5);
+          var el5 = dom.createTextNode("\n        ");
           dom.appendChild(el4, el5);
           dom.appendChild(el3, el4);
           var el4 = dom.createTextNode("\n      ");
@@ -61168,7 +61338,7 @@ define("frontend-cp/session/agent/cases/index/suspended-messages/show/template",
           morphs[9] = dom.createMorphAt(dom.childAt(element5, [1, 0]), 0, 0);
           morphs[10] = dom.createMorphAt(dom.childAt(element5, [3]), 0, 0);
           morphs[11] = dom.createMorphAt(dom.childAt(element6, [1, 0]), 0, 0);
-          morphs[12] = dom.createUnsafeMorphAt(dom.childAt(element6, [3]), 0, 0);
+          morphs[12] = dom.createMorphAt(dom.childAt(element6, [3, 1]), 1, 1);
           morphs[13] = dom.createMorphAt(element7, 1, 1);
           morphs[14] = dom.createElementMorph(element8);
           morphs[15] = dom.createMorphAt(element8, 0, 0);
@@ -61176,9 +61346,9 @@ define("frontend-cp/session/agent/cases/index/suspended-messages/show/template",
           morphs[17] = dom.createMorphAt(element9, 0, 0);
           return morphs;
         },
-        statements: [["inline", "t", ["cases.suspendedMessage.title"], [], ["loc", [null, [3, 54], [3, 90]]]], ["inline", "t", ["cases.suspendedMessage.table.from"], [], ["loc", [null, [8, 20], [8, 61]]]], ["content", "model.from", ["loc", [null, [9, 12], [9, 26]]]], ["inline", "t", ["cases.suspendedMessage.table.subject"], [], ["loc", [null, [12, 20], [12, 64]]]], ["content", "model.subject", ["loc", [null, [13, 12], [13, 29]]]], ["inline", "t", ["cases.suspendedMessage.table.suspensionCode"], [], ["loc", [null, [16, 20], [16, 71]]]], ["content", "model.suspensionCode", ["loc", [null, [17, 12], [17, 36]]]], ["inline", "t", ["cases.suspendedMessage.table.createdAt"], [], ["loc", [null, [20, 20], [20, 66]]]], ["content", "model.createdAt", ["loc", [null, [21, 12], [21, 31]]]], ["inline", "t", ["cases.suspendedMessage.table.to"], [], ["loc", [null, [24, 20], [24, 59]]]], ["content", "model.to", ["loc", [null, [25, 12], [25, 24]]]], ["inline", "t", ["cases.suspendedMessage.table.html"], [], ["loc", [null, [28, 20], [28, 61]]]], ["content", "model.html", ["loc", [null, [29, 12], [29, 28]]]], ["block", "link-to", ["session.agent.cases.index.suspended-messages"], [], 0, null, ["loc", [null, [38, 4], [38, 120]]]], ["element", "action", ["permanentlyDelete"], [], ["loc", [null, [39, 73], [39, 103]]]], ["inline", "t", ["cases.suspendedMessage.actions.permanentlyDelete"], [], ["loc", [null, [39, 104], [39, 160]]]], ["element", "action", ["allowThrough"], [], ["loc", [null, [40, 75], [40, 100]]]], ["inline", "t", ["cases.suspendedMessage.actions.allowThrough"], [], ["loc", [null, [40, 101], [40, 152]]]]],
+        statements: [["inline", "t", ["cases.suspendedMessage.title"], [], ["loc", [null, [3, 54], [3, 90]]]], ["inline", "t", ["cases.suspendedMessage.table.from"], [], ["loc", [null, [8, 20], [8, 61]]]], ["content", "model.from", ["loc", [null, [9, 12], [9, 26]]]], ["inline", "t", ["cases.suspendedMessage.table.subject"], [], ["loc", [null, [12, 20], [12, 64]]]], ["content", "model.subject", ["loc", [null, [13, 12], [13, 29]]]], ["inline", "t", ["cases.suspendedMessage.table.suspensionCode"], [], ["loc", [null, [16, 20], [16, 71]]]], ["content", "model.suspensionCode", ["loc", [null, [17, 12], [17, 36]]]], ["inline", "t", ["cases.suspendedMessage.table.createdAt"], [], ["loc", [null, [20, 20], [20, 66]]]], ["content", "model.createdAt", ["loc", [null, [21, 12], [21, 31]]]], ["inline", "t", ["cases.suspendedMessage.table.to"], [], ["loc", [null, [24, 20], [24, 59]]]], ["content", "model.to", ["loc", [null, [25, 12], [25, 24]]]], ["inline", "t", ["cases.suspendedMessage.table.text"], [], ["loc", [null, [28, 20], [28, 61]]]], ["block", "if", [["get", "model.text", ["loc", [null, [31, 18], [31, 28]]]]], [], 0, 1, ["loc", [null, [31, 12], [39, 19]]]], ["block", "link-to", ["session.agent.cases.index.suspended-messages"], [], 2, null, ["loc", [null, [50, 4], [50, 120]]]], ["element", "action", ["permanentlyDelete"], [], ["loc", [null, [51, 73], [51, 103]]]], ["inline", "t", ["cases.suspendedMessage.actions.permanentlyDelete"], [], ["loc", [null, [51, 104], [51, 160]]]], ["element", "action", ["allowThrough"], [], ["loc", [null, [52, 75], [52, 100]]]], ["inline", "t", ["cases.suspendedMessage.actions.allowThrough"], [], ["loc", [null, [52, 101], [52, 152]]]]],
         locals: [],
-        templates: [child0]
+        templates: [child0, child1, child2]
       };
     })();
     return {
@@ -61191,7 +61361,7 @@ define("frontend-cp/session/agent/cases/index/suspended-messages/show/template",
             "column": 0
           },
           "end": {
-            "line": 42,
+            "line": 54,
             "column": 13
           }
         },
@@ -61213,7 +61383,7 @@ define("frontend-cp/session/agent/cases/index/suspended-messages/show/template",
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["block", "ko-modal", [], ["class", "suspended-message-modal"], 0, null, ["loc", [null, [1, 0], [42, 13]]]]],
+      statements: [["block", "ko-modal", [], ["class", "suspended-message-modal"], 0, null, ["loc", [null, [1, 0], [54, 13]]]]],
       locals: [],
       templates: [child0]
     };
@@ -64854,6 +65024,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999},"name":"frontend-cp","version":"0.0.0+e12dff6d"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999},"name":"frontend-cp","version":"0.0.0+50cb7314"});
 }
 /* jshint ignore:end */
