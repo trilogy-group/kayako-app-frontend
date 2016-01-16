@@ -12397,7 +12397,7 @@ define('frontend-cp/components/ko-admin-selectable-card/component', ['exports', 
 
     click: function click(e) {
       e.preventDefault();
-      this.send('onSelected', this.get('isSelected'));
+      this.send('onSelected', !this.get('isSelected'));
     },
 
     actions: {
@@ -64857,6 +64857,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999},"name":"frontend-cp","version":"0.0.0+bae4bf73"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999},"name":"frontend-cp","version":"0.0.0+3b61a5a3"});
 }
 /* jshint ignore:end */
