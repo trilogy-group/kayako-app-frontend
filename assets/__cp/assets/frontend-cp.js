@@ -17481,6 +17481,10 @@ define('frontend-cp/components/ko-case-content/field/assignee/component', ['expo
         var teams = _ref.teams;
         var agents = _ref.agents;
 
+        if (_this.get('isDestroyed')) {
+          return;
+        }
+
         var assigneeValues = teams.map(function (team) {
           return {
             value: team.get('title'),
@@ -39650,6 +39654,10 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
       // when we request user note, we convert them to post model
       // that can be used by ko-feed/item component
       store.query('user-note', { parent: user, limit: 20 }).then(function (notes) {
+        if (_this5.get('isDestroyed')) {
+          return;
+        }
+
         _this5.set('totalNotes', notes.get('meta.total'));
 
         var notesList = store.peekAll('post').filter(function (post) {
@@ -60649,8 +60657,15 @@ define('frontend-cp/session/agent/cases/case/route', ['exports', 'frontend-cp/ro
       return this.store.findRecord('case', params.case_id);
     },
 
+    beforeModel: function beforeModel() {
+      this.get('tabStore').set('isEnabled', false);
+      this._super.apply(this, arguments);
+    },
+
     afterModel: function afterModel(model, transition) {
       this.tab = this.get('tabStore').open(transition, model.get('subject'));
+      this.get('tabStore').set('isEnabled', true);
+      this._super.apply(this, arguments);
     }
   });
 });
@@ -65067,6 +65082,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999},"name":"frontend-cp","version":"0.0.0+c4e3d984"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999},"name":"frontend-cp","version":"0.0.0+a331093d"});
 }
 /* jshint ignore:end */
