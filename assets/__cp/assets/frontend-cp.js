@@ -45071,6 +45071,25 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       });
     });
 
+    this.get('/api/v1/views/:id', function (db, req) {
+      var view = db.views.find(req.params.id);
+
+      if (view.columns) {
+        view.columns.forEach(function (column) {
+          Reflect.deleteProperty(column, 'id');
+        });
+      }
+
+      return {
+        data: view,
+        resource: 'view',
+        status: 200,
+        resources: {
+          predicate_collection: arrayToObjectWithNumberedKeys(view.predicate_collections)
+        }
+      };
+    });
+
     this.get('/api/v1/views', function (db) {
       var views = db.views;
 
@@ -65024,6 +65043,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999},"name":"frontend-cp","version":"0.0.0+50cb7314"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999},"name":"frontend-cp","version":"0.0.0+e4873620"});
 }
 /* jshint ignore:end */
