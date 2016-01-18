@@ -15998,7 +15998,9 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
 
     // Observers
     onPeopleCCdChange: _ember['default'].observer('replyOptions.cc.[]', function () {
-      this.get('ccPopupProxy').reposition();
+      if (this.get('ccPopupProxy') && this.get('ccPopupProxy').reposition) {
+        this.get('ccPopupProxy').reposition();
+      }
     }),
 
     // CPs
@@ -16278,8 +16280,11 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
 
     setState: function setState(properties) {
       var tabState = this.get('tabState');
-      tabState.setProperties(properties);
-      this.attrs.onStateUpdate(tabState);
+
+      if (tabState) {
+        tabState.setProperties(properties);
+        this.attrs.onStateUpdate(tabState);
+      }
     },
 
     setPostContent: function setPostContent(postContent) {
@@ -16920,7 +16925,10 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
         var posts = _ref4.posts;
         var morePostsAvailable = _ref4.morePostsAvailable;
 
-        _this8.get('posts').pushObjects(posts);
+        if (_this8.get('posts')) {
+          _this8.get('posts').pushObjects(posts);
+        }
+
         _this8.setState({
           loadingBottom: false,
           bottomPostsAvailable: morePostsAvailable
@@ -64741,7 +64749,6 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
         var el2 = dom.createTextNode("\n  ");
         dom.appendChild(el1, el2);
         var el2 = dom.createElement("div");
-        dom.setAttribute(el2, "class", "nav");
         var el3 = dom.createTextNode("\n    ");
         dom.appendChild(el2, el3);
         var el3 = dom.createElement("div");
@@ -64778,6 +64785,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
         var el5 = dom.createTextNode("\n        ");
         dom.appendChild(el4, el5);
         var el5 = dom.createElement("nav");
+        dom.setAttribute(el5, "class", "nav-tabs");
         var el6 = dom.createTextNode("\n");
         dom.appendChild(el5, el6);
         var el6 = dom.createComment("");
@@ -64855,22 +64863,21 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
         var element6 = dom.childAt(fragment, [0, 1]);
         var element7 = dom.childAt(element6, [1]);
         var element8 = dom.childAt(element7, [3, 1]);
-        var element9 = dom.childAt(element7, [5, 1]);
-        var element10 = dom.childAt(element6, [3, 1]);
-        var element11 = dom.childAt(element10, [1]);
+        var element9 = dom.childAt(element6, [3, 1]);
+        var element10 = dom.childAt(element9, [1]);
         var morphs = new Array(9);
-        morphs[0] = dom.createMorphAt(element8, 1, 1);
-        morphs[1] = dom.createMorphAt(element8, 2, 2);
-        morphs[2] = dom.createAttrMorph(element9, 'class');
-        morphs[3] = dom.createMorphAt(element9, 1, 1);
+        morphs[0] = dom.createAttrMorph(element6, 'class');
+        morphs[1] = dom.createMorphAt(element8, 1, 1);
+        morphs[2] = dom.createMorphAt(element8, 2, 2);
+        morphs[3] = dom.createMorphAt(dom.childAt(element7, [5, 1]), 1, 1);
         morphs[4] = dom.createMorphAt(element7, 7, 7);
-        morphs[5] = dom.createAttrMorph(element11, 'class');
-        morphs[6] = dom.createMorphAt(element11, 1, 1);
-        morphs[7] = dom.createMorphAt(dom.childAt(element10, [3]), 1, 1);
+        morphs[5] = dom.createAttrMorph(element10, 'class');
+        morphs[6] = dom.createMorphAt(element10, 1, 1);
+        morphs[7] = dom.createMorphAt(dom.childAt(element9, [3]), 1, 1);
         morphs[8] = dom.createMorphAt(dom.childAt(fragment, [2]), 1, 1);
         return morphs;
       },
-      statements: [["block", "if", [["get", "tabStore.casesViewId", ["loc", [null, [7, 16], [7, 36]]]]], [], 0, 1, ["loc", [null, [7, 10], [11, 17]]]], ["block", "if", [["get", "features.userTab", ["loc", [null, [12, 16], [12, 32]]]]], [], 2, null, ["loc", [null, [12, 10], [14, 17]]]], ["attribute", "class", ["concat", ["nav-tabs ", ["subexpr", "if", [["subexpr", "not", [["get", "tabStore.isEnabled", ["loc", [null, [18, 39], [18, 57]]]]], [], ["loc", [null, [18, 34], [18, 58]]]], "nav-tabs--disabled"], [], ["loc", [null, [18, 29], [18, 81]]]]]]], ["block", "each", [["get", "tabStore.tabs", ["loc", [null, [19, 18], [19, 31]]]]], [], 3, null, ["loc", [null, [19, 10], [54, 19]]]], ["content", "ko-agent-dropdown", ["loc", [null, [57, 6], [57, 27]]]], ["attribute", "class", ["concat", [["subexpr", "unless", [["get", "hideSessionWidgets", ["loc", [null, [61, 29], [61, 47]]]], "u-3/4 u-inline-block"], [], ["loc", [null, [61, 20], [61, 72]]]]]]], ["inline", "ko-universal-search", [], ["searchResults", ["subexpr", "@mut", [["get", "searchResults", ["loc", [null, [62, 46], [62, 59]]]]], [], []], "searchingChanged", "onSearchingChanged"], ["loc", [null, [62, 10], [62, 99]]]], ["block", "unless", [["get", "hideSessionWidgets", ["loc", [null, [65, 20], [65, 38]]]]], [], 4, null, ["loc", [null, [65, 10], [67, 21]]]], ["content", "outlet", ["loc", [null, [74, 2], [74, 12]]]]],
+      statements: [["attribute", "class", ["concat", ["nav ", ["subexpr", "if", [["subexpr", "not", [["get", "tabStore.isEnabled", ["loc", [null, [2, 28], [2, 46]]]]], [], ["loc", [null, [2, 23], [2, 47]]]], "nav--disabled"], [], ["loc", [null, [2, 18], [2, 65]]]]]]], ["block", "if", [["get", "tabStore.casesViewId", ["loc", [null, [7, 16], [7, 36]]]]], [], 0, 1, ["loc", [null, [7, 10], [11, 17]]]], ["block", "if", [["get", "features.userTab", ["loc", [null, [12, 16], [12, 32]]]]], [], 2, null, ["loc", [null, [12, 10], [14, 17]]]], ["block", "each", [["get", "tabStore.tabs", ["loc", [null, [19, 18], [19, 31]]]]], [], 3, null, ["loc", [null, [19, 10], [54, 19]]]], ["content", "ko-agent-dropdown", ["loc", [null, [57, 6], [57, 27]]]], ["attribute", "class", ["concat", [["subexpr", "unless", [["get", "hideSessionWidgets", ["loc", [null, [61, 29], [61, 47]]]], "u-3/4 u-inline-block"], [], ["loc", [null, [61, 20], [61, 72]]]]]]], ["inline", "ko-universal-search", [], ["searchResults", ["subexpr", "@mut", [["get", "searchResults", ["loc", [null, [62, 46], [62, 59]]]]], [], []], "searchingChanged", "onSearchingChanged"], ["loc", [null, [62, 10], [62, 99]]]], ["block", "unless", [["get", "hideSessionWidgets", ["loc", [null, [65, 20], [65, 38]]]]], [], 4, null, ["loc", [null, [65, 10], [67, 21]]]], ["content", "outlet", ["loc", [null, [74, 2], [74, 12]]]]],
       locals: [],
       templates: [child0, child1, child2, child3, child4]
     };
@@ -65060,6 +65067,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999},"name":"frontend-cp","version":"0.0.0+efadc070"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999},"name":"frontend-cp","version":"0.0.0+c4e3d984"});
 }
 /* jshint ignore:end */
