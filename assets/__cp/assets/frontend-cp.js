@@ -60817,9 +60817,11 @@ define('frontend-cp/session/agent/cases/index/route', ['exports', 'ember', 'fron
 
   var casePageLimit = _frontendCpConfigEnvironment['default'].casesPageSize;
   var caseViewLimit = _frontendCpConfigEnvironment['default'].APP.views.maxLimit;
+  var viewsPollingInterval = _frontendCpConfigEnvironment['default'].APP.views.viewsPollingInterval * 1000;
 
   exports['default'] = _ember['default'].Route.extend({
     metrics: _ember['default'].inject.service(),
+    pollingCountsEnabled: false,
 
     model: function model() {
       this.store.findAll('view-count', { reload: true });
@@ -60832,9 +60834,30 @@ define('frontend-cp/session/agent/cases/index/route', ['exports', 'ember', 'fron
       this._super(controller, views.filter(function (v) {
         return v.id !== inbox.id && v.get('isEnabled');
       }));
+
+      this._setupViewsCountPolling();
+    },
+
+    _setupViewsCountPolling: function _setupViewsCountPolling() {
+      this.set('pollingCountsEnabled', true);
+      _ember['default'].run.later(this, this._pollCurrentViewCounts, viewsPollingInterval);
+    },
+
+    _pollCurrentViewCounts: function _pollCurrentViewCounts() {
+      if (!this.get('pollingCountsEnabled')) {
+        return;
+      }
+
+      this.model(this.paramsFor(this.routeName));
+
+      _ember['default'].run.later(this, this._pollCurrentViewCounts, viewsPollingInterval);
     },
 
     actions: {
+      willTransition: function willTransition() {
+        this.set('pollingCountsEnabled', false);
+      },
+
       updatePagination: function updatePagination(params, meta) {
         this.get('metrics').trackEvent({
           event: 'Case View Page Changed',
@@ -65097,6 +65120,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999},"name":"frontend-cp","version":"0.0.0+07dcbf5c"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30},"name":"frontend-cp","version":"0.0.0+e4a27bbf"});
 }
 /* jshint ignore:end */
