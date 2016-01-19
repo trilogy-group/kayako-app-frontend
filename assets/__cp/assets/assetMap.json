@@ -1,8 +1,8 @@
 {
   "assets": {
-    "assets/frontend-cp.css": "assets/frontend-cp-4784d894ef2b6b1ee447ce1e096151de.css",
-    "assets/frontend-cp.js": "assets/frontend-cp-a4353fc7959d674fdfc9827ba3a23ce4.js",
-    "assets/frontend-cp.map": "assets/frontend-cp-bb11c7d8dbc42588272d91c647c9e676.map",
+    "assets/frontend-cp.css": "assets/frontend-cp-a7196d43dd927f9ff657bb0a4e853f3a.css",
+    "assets/frontend-cp.js": "assets/frontend-cp-b972a2fb7b06cfaf7c7918cef821794b.js",
+    "assets/frontend-cp.map": "assets/frontend-cp-2add45b958bd282103e4aa00a03fd865.map",
     "assets/intl/intl.complete.js": "assets/intl/intl.complete-d4932f9c3c31253c9d2bde19bf47e4e5.js",
     "assets/intl/intl.complete.map": "assets/intl/intl.complete-211ad08856d22950d54281642819f8c8.map",
     "assets/intl/intl.js": "assets/intl/intl-1f9b3f3939a7681070f043f28272174f.js",
@@ -14,8 +14,8 @@
     "assets/intl/locales/en-us.js": "assets/intl/locales/en-us-9f0517fe335514a10bf1384e914dc484.js",
     "assets/intl/locales/en-us.map": "assets/intl/locales/en-us-bfb7bc0a4e366c93cd93a670d5d67b2a.map",
     "assets/vendor.css": "assets/vendor-d41d8cd98f00b204e9800998ecf8427e.css",
-    "assets/vendor.js": "assets/vendor-0d001106aed4f9e042e975c2dd84bd80.js",
-    "assets/vendor.map": "assets/vendor-8ca8086e3c40a3a3fa60adc6a2b9e457.map",
+    "assets/vendor.js": "assets/vendor-33c5ae2ebb5b43abdfb4839c1604ce7c.js",
+    "assets/vendor.map": "assets/vendor-bb527530f5335ae4e00798f9fdab8d03.map",
     "images/icons/cascading-select.png": "images/icons/cascading-select-caac3065ad73656590904fcf10ada86a.png",
     "images/icons/checkbox.png": "images/icons/checkbox-79a02996a1a01472a381af713b2609a9.png",
     "images/icons/date.png": "images/icons/date-cc6919f28dfdba1b632faa7d039ce1ae.png",
