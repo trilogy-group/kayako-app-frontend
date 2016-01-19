@@ -10709,6 +10709,14 @@ define('frontend-cp/components/ko-admin/views/edit/columns/component', ['exports
     },
 
     actions: {
+      reorderColumns: function reorderColumns(list) {
+        var order = 1;
+        list.forEach(function (option) {
+          option.set('sortOrder', order);
+          order++;
+        });
+      },
+
       addViewColumn: function addViewColumn(column) {
         this.get('columns').pushObject(column);
       },
@@ -10867,7 +10875,7 @@ define("frontend-cp/components/ko-admin/views/edit/columns/template", ["exports"
         dom.insertBoundary(fragment, 0);
         return morphs;
       },
-      statements: [["block", "power-select", [], ["searchEnabled", false, "class", ["subexpr", "concat", ["ember-power-select-wrapper--ko ember-power-select-wrapper--size-medium", ["subexpr", "qa-cls", [" qa-configure-column"], [], ["loc", [null, [3, 89], [3, 120]]]], " ko-admin_views_edit_select"], [], ["loc", [null, [3, 8], [3, 151]]]], "dropdownClass", "ko-admin_views_edit_select--dropdown", "options", ["subexpr", "@mut", [["get", "unusedColumns", ["loc", [null, [5, 10], [5, 23]]]]], [], []], "placeholder", ["subexpr", "t", ["generic.select_placeholder"], [], ["loc", [null, [6, 14], [6, 46]]]], "onchange", ["subexpr", "action", ["addViewColumn"], [], ["loc", [null, [7, 11], [7, 35]]]]], 0, null, ["loc", [null, [1, 0], [9, 17]]]], ["block", "ko-reorderable-list", [], ["reorderedListAction", null, "items", ["subexpr", "@mut", [["get", "columns", ["loc", [null, [12, 54], [12, 61]]]]], [], []]], 1, null, ["loc", [null, [12, 0], [19, 25]]]]],
+      statements: [["block", "power-select", [], ["searchEnabled", false, "class", ["subexpr", "concat", ["ember-power-select-wrapper--ko ember-power-select-wrapper--size-medium", ["subexpr", "qa-cls", [" qa-configure-column"], [], ["loc", [null, [3, 89], [3, 120]]]], " ko-admin_views_edit_select"], [], ["loc", [null, [3, 8], [3, 151]]]], "dropdownClass", "ko-admin_views_edit_select--dropdown", "options", ["subexpr", "@mut", [["get", "unusedColumns", ["loc", [null, [5, 10], [5, 23]]]]], [], []], "placeholder", ["subexpr", "t", ["generic.select_placeholder"], [], ["loc", [null, [6, 14], [6, 46]]]], "onchange", ["subexpr", "action", ["addViewColumn"], [], ["loc", [null, [7, 11], [7, 35]]]]], 0, null, ["loc", [null, [1, 0], [9, 17]]]], ["block", "ko-reorderable-list", [], ["reorderedListAction", "reorderColumns", "items", ["subexpr", "@mut", [["get", "columns", ["loc", [null, [12, 66], [12, 73]]]]], [], []]], 1, null, ["loc", [null, [12, 0], [19, 25]]]]],
       locals: [],
       templates: [child0, child1]
     };
@@ -10926,10 +10934,14 @@ define('frontend-cp/components/ko-admin/views/edit/component', ['exports', 'embe
     selectedTeams: _ember['default'].computed.reads('currentView.visibilityToTeams'),
     canDeleteCollection: _ember['default'].computed.gt('currentView.predicateCollections.length', 1),
 
-    sortableColumns: _ember['default'].computed('currentView.columns.[]', function () {
+    orderedColumnList: _ember['default'].computed('currentView.columns', 'currentView.columns.@each.sortOrder', function () {
+      return this.get('currentView.columns').sortBy('sortOrder');
+    }),
+
+    sortableColumns: _ember['default'].computed('orderedColumnList.[]', function () {
       var _this2 = this;
 
-      var columns = this.get('currentView.columns');
+      var columns = this.get('orderedColumnList');
       var columnList = [];
 
       columns.forEach(function (column) {
@@ -11005,7 +11017,10 @@ define('frontend-cp/components/ko-admin/views/edit/component', ['exports', 'embe
       },
 
       saveView: function saveView() {
-        return this.get('currentView').save().then(function (view) {
+        var currentView = this.get('currentView');
+        this.set('currentView.columns', this.get('orderedColumnList'));
+
+        return currentView.save().then(function (view) {
           view.get('predicateCollections').filter(function (predicate) {
             return !predicate.get('id');
           }).forEach(function (predicate) {
@@ -11525,7 +11540,7 @@ define("frontend-cp/components/ko-admin/views/edit/template", ["exports"], funct
             morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
             return morphs;
           },
-          statements: [["inline", "ko-admin/views/edit/columns", [], ["columns", ["subexpr", "@mut", [["get", "currentView.columns", ["loc", [null, [70, 42], [70, 61]]]]], [], []]], ["loc", [null, [70, 4], [70, 63]]]]],
+          statements: [["inline", "ko-admin/views/edit/columns", [], ["columns", ["subexpr", "@mut", [["get", "orderedColumnList", ["loc", [null, [70, 42], [70, 59]]]]], [], []]], ["loc", [null, [70, 4], [70, 61]]]]],
           locals: [],
           templates: []
         };
@@ -65082,6 +65097,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999},"name":"frontend-cp","version":"0.0.0+cfb64055"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999},"name":"frontend-cp","version":"0.0.0+490db246"});
 }
 /* jshint ignore:end */
