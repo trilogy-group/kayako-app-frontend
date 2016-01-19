@@ -1266,8 +1266,10 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
     var fieldTitle = 'fieldTitle';
     var customerTitle = 'customer title';
     var description = 'description';
-    var optionTitle = 'option title';
-    var optionTag = 'option tag';
+    var option1Title = 'option 1 title';
+    var option1Tag = 'option1tag';
+    var option2Title = 'option 2 title';
+    var option2Tag = 'option2tag';
 
     visit('/admin/manage/case-fields/new/RADIO');
 
@@ -1278,7 +1280,9 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
 
       _frontendCpTestsPagesAdminCustomFieldsEdit['default'].customerSettings().clickCustomerVisible().fillInCustomerTitle(customerTitle).fillInDescription(description);
 
-      _frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().fillInTitle(optionTitle).fillInTag(optionTag);
+      _frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().fillInTitle(option1Title).fillInTag(option1Tag);
+
+      _frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().clickAdd().fillInTitle(option2Title).fillInTag(option2Tag);
 
       _frontendCpTestsPagesAdminCustomFieldsEdit['default'].clickSave();
     });
@@ -1292,8 +1296,10 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
       assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].agentSettings().fieldTitle(), fieldTitle);
       assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].customerSettings().customerTitle(), customerTitle);
       assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].customerSettings().description(), description);
-      assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().title(), optionTitle);
-      assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().tag(), optionTag);
+      assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().title(), option1Title);
+      assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().tag(), option1Tag);
+      assert.equal(find('.ko-reorderable-list-item:last input:first').val(), option2Title);
+      assert.equal(find('.ko-reorderable-list-item:last input:last').val(), option2Tag);
     });
   });
 
@@ -1305,8 +1311,10 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
     var fieldTitle = 'fieldTitle';
     var customerTitle = 'customer title';
     var description = 'description';
-    var optionTitle = 'option title';
-    var optionTag = 'option tag';
+    var option1Title = 'option 1 title';
+    var option1Tag = 'option1tag';
+    var option2Title = 'option 2 title';
+    var option2Tag = 'option2tag';
 
     visit('/admin/manage/case-fields/new/SELECT');
 
@@ -1317,7 +1325,9 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
 
       _frontendCpTestsPagesAdminCustomFieldsEdit['default'].customerSettings().clickCustomerVisible().fillInCustomerTitle(customerTitle).fillInDescription(description);
 
-      _frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().fillInTitle(optionTitle).fillInTag(optionTag);
+      _frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().fillInTitle(option1Title).fillInTag(option1Tag);
+
+      _frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().clickAdd().fillInTitle(option2Title).fillInTag(option2Tag);
 
       _frontendCpTestsPagesAdminCustomFieldsEdit['default'].clickSave();
     });
@@ -1331,8 +1341,10 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
       assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].agentSettings().fieldTitle(), fieldTitle);
       assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].customerSettings().customerTitle(), customerTitle);
       assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].customerSettings().description(), description);
-      assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().title(), optionTitle);
-      assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().tag(), optionTag);
+      assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().title(), option1Title);
+      assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().tag(), option1Tag);
+      assert.equal(find('.ko-reorderable-list-item:last input:first').val(), option2Title);
+      assert.equal(find('.ko-reorderable-list-item:last input:last').val(), option2Tag);
     });
   });
 
@@ -1344,8 +1356,10 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
     var fieldTitle = 'fieldTitle';
     var customerTitle = 'customer title';
     var description = 'description';
-    var optionTitle = 'option title';
-    var optionTag = 'option tag';
+    var option1Title = 'option 1 title';
+    var option1Tag = 'option1tag';
+    var option2Title = 'option 2 title';
+    var option2Tag = 'option2tag';
 
     visit('/admin/manage/case-fields/new/CHECKBOX');
 
@@ -1356,7 +1370,9 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
 
       _frontendCpTestsPagesAdminCustomFieldsEdit['default'].customerSettings().clickCustomerVisible().fillInCustomerTitle(customerTitle).fillInDescription(description);
 
-      _frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().fillInTitle(optionTitle).fillInTag(optionTag);
+      _frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().fillInTitle(option1Title).fillInTag(option1Tag);
+
+      _frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().clickAdd().fillInTitle(option2Title).fillInTag(option2Tag);
 
       _frontendCpTestsPagesAdminCustomFieldsEdit['default'].clickSave();
     });
@@ -1370,8 +1386,10 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
       assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].agentSettings().fieldTitle(), fieldTitle);
       assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].customerSettings().customerTitle(), customerTitle);
       assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].customerSettings().description(), description);
-      assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().title(), optionTitle);
-      assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().tag(), optionTag);
+      assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().title(), option1Title);
+      assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().tag(), option1Tag);
+      assert.equal(find('.ko-reorderable-list-item:last input:first').val(), option2Title);
+      assert.equal(find('.ko-reorderable-list-item:last input:last').val(), option2Tag);
     });
   });
 
@@ -1515,8 +1533,10 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
     var fieldTitle = 'fieldTitle';
     var customerTitle = 'customer title';
     var description = 'description';
-    var optionTitle = 'option title';
-    var optionTag = 'option tag';
+    var option1Title = 'option 1 title';
+    var option1Tag = 'option1tag';
+    var option2Title = 'option 2 title';
+    var option2Tag = 'option2tag';
 
     visit('/admin/manage/case-fields/new/CASCADINGSELECT');
 
@@ -1527,7 +1547,9 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
 
       _frontendCpTestsPagesAdminCustomFieldsEdit['default'].customerSettings().clickCustomerVisible().fillInCustomerTitle(customerTitle).fillInDescription(description);
 
-      _frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().fillInTitle(optionTitle).fillInTag(optionTag);
+      _frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().fillInTitle(option1Title).fillInTag(option1Tag);
+
+      _frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().clickAdd().fillInTitle(option2Title).fillInTag(option2Tag);
 
       _frontendCpTestsPagesAdminCustomFieldsEdit['default'].clickSave();
     });
@@ -1541,8 +1563,10 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
       assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].agentSettings().fieldTitle(), fieldTitle);
       assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].customerSettings().customerTitle(), customerTitle);
       assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].customerSettings().description(), description);
-      assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().title(), optionTitle);
-      assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().tag(), optionTag);
+      assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().title(), option1Title);
+      assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().tag(), option1Tag);
+      assert.equal(find('.ko-reorderable-list-item:last input:first').val(), option2Title);
+      assert.equal(find('.ko-reorderable-list-item:last input:last').val(), option2Tag);
     });
   });
 
@@ -3823,8 +3847,10 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
     var fieldTitle = 'fieldTitle';
     var customerTitle = 'customer title';
     var description = 'description';
-    var optionTitle = 'option title';
-    var optionTag = 'option tag';
+    var option1Title = 'option 1 title';
+    var option1Tag = 'option1tag';
+    var option2Title = 'option 2 title';
+    var option2Tag = 'option2tag';
 
     visit('/admin/people/organization-fields/new/RADIO');
 
@@ -3835,7 +3861,9 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
       _frontendCpTestsPagesAdminCustomFieldsEdit['default'].customerSettings().clickCustomerVisible().fillInCustomerTitle(customerTitle).fillInDescription(description);
 
-      _frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().fillInTitle(optionTitle).fillInTag(optionTag);
+      _frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().fillInTitle(option1Title).fillInTag(option1Tag);
+
+      _frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().clickAdd().fillInTitle(option2Title).fillInTag(option2Tag);
 
       _frontendCpTestsPagesAdminCustomFieldsEdit['default'].clickSave();
     });
@@ -3849,8 +3877,10 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
       assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].agentSettings().fieldTitle(), fieldTitle);
       assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].customerSettings().customerTitle(), customerTitle);
       assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].customerSettings().description(), description);
-      assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().title(), optionTitle);
-      assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().tag(), optionTag);
+      assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().title(), option1Title);
+      assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().tag(), option1Tag);
+      assert.equal(find('.ko-reorderable-list-item:last input:first').val(), option2Title);
+      assert.equal(find('.ko-reorderable-list-item:last input:last').val(), option2Tag);
     });
   });
 
@@ -3862,8 +3892,10 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
     var fieldTitle = 'fieldTitle';
     var customerTitle = 'customer title';
     var description = 'description';
-    var optionTitle = 'option title';
-    var optionTag = 'option tag';
+    var option1Title = 'option 1 title';
+    var option1Tag = 'option1tag';
+    var option2Title = 'option 2 title';
+    var option2Tag = 'option2tag';
 
     visit('/admin/people/organization-fields/new/SELECT');
 
@@ -3874,7 +3906,9 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
       _frontendCpTestsPagesAdminCustomFieldsEdit['default'].customerSettings().clickCustomerVisible().fillInCustomerTitle(customerTitle).fillInDescription(description);
 
-      _frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().fillInTitle(optionTitle).fillInTag(optionTag);
+      _frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().fillInTitle(option1Title).fillInTag(option1Tag);
+
+      _frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().clickAdd().fillInTitle(option2Title).fillInTag(option2Tag);
 
       _frontendCpTestsPagesAdminCustomFieldsEdit['default'].clickSave();
     });
@@ -3888,8 +3922,10 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
       assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].agentSettings().fieldTitle(), fieldTitle);
       assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].customerSettings().customerTitle(), customerTitle);
       assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].customerSettings().description(), description);
-      assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().title(), optionTitle);
-      assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().tag(), optionTag);
+      assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().title(), option1Title);
+      assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().tag(), option1Tag);
+      assert.equal(find('.ko-reorderable-list-item:last input:first').val(), option2Title);
+      assert.equal(find('.ko-reorderable-list-item:last input:last').val(), option2Tag);
     });
   });
 
@@ -3901,8 +3937,10 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
     var fieldTitle = 'fieldTitle';
     var customerTitle = 'customer title';
     var description = 'description';
-    var optionTitle = 'option title';
-    var optionTag = 'option tag';
+    var option1Title = 'option 1 title';
+    var option1Tag = 'option1tag';
+    var option2Title = 'option 2 title';
+    var option2Tag = 'option2tag';
 
     visit('/admin/people/organization-fields/new/CHECKBOX');
 
@@ -3913,7 +3951,9 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
       _frontendCpTestsPagesAdminCustomFieldsEdit['default'].customerSettings().clickCustomerVisible().fillInCustomerTitle(customerTitle).fillInDescription(description);
 
-      _frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().fillInTitle(optionTitle).fillInTag(optionTag);
+      _frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().fillInTitle(option1Title).fillInTag(option1Tag);
+
+      _frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().clickAdd().fillInTitle(option2Title).fillInTag(option2Tag);
 
       _frontendCpTestsPagesAdminCustomFieldsEdit['default'].clickSave();
     });
@@ -3927,8 +3967,10 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
       assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].agentSettings().fieldTitle(), fieldTitle);
       assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].customerSettings().customerTitle(), customerTitle);
       assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].customerSettings().description(), description);
-      assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().title(), optionTitle);
-      assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().tag(), optionTag);
+      assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().title(), option1Title);
+      assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().tag(), option1Tag);
+      assert.equal(find('.ko-reorderable-list-item:last input:first').val(), option2Title);
+      assert.equal(find('.ko-reorderable-list-item:last input:last').val(), option2Tag);
     });
   });
 
@@ -4072,8 +4114,10 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
     var fieldTitle = 'fieldTitle';
     var customerTitle = 'customer title';
     var description = 'description';
-    var optionTitle = 'option title';
-    var optionTag = 'option tag';
+    var option1Title = 'option 1 title';
+    var option1Tag = 'option1tag';
+    var option2Title = 'option 2 title';
+    var option2Tag = 'option2tag';
 
     visit('/admin/people/organization-fields/new/CASCADINGSELECT');
 
@@ -4084,7 +4128,9 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
       _frontendCpTestsPagesAdminCustomFieldsEdit['default'].customerSettings().clickCustomerVisible().fillInCustomerTitle(customerTitle).fillInDescription(description);
 
-      _frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().fillInTitle(optionTitle).fillInTag(optionTag);
+      _frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().fillInTitle(option1Title).fillInTag(option1Tag);
+
+      _frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().clickAdd().fillInTitle(option2Title).fillInTag(option2Tag);
 
       _frontendCpTestsPagesAdminCustomFieldsEdit['default'].clickSave();
     });
@@ -4098,8 +4144,10 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
       assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].agentSettings().fieldTitle(), fieldTitle);
       assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].customerSettings().customerTitle(), customerTitle);
       assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].customerSettings().description(), description);
-      assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().title(), optionTitle);
-      assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().tag(), optionTag);
+      assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().title(), option1Title);
+      assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().tag(), option1Tag);
+      assert.equal(find('.ko-reorderable-list-item:last input:first').val(), option2Title);
+      assert.equal(find('.ko-reorderable-list-item:last input:last').val(), option2Tag);
     });
   });
 
@@ -5527,8 +5575,10 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
     var fieldTitle = 'fieldTitle';
     var customerTitle = 'customer title';
     var description = 'description';
-    var optionTitle = 'option title';
-    var optionTag = 'option tag';
+    var option1Title = 'option 1 title';
+    var option1Tag = 'option1tag';
+    var option2Title = 'option 2 title';
+    var option2Tag = 'option2tag';
 
     visit('/admin/people/user-fields/new/RADIO');
 
@@ -5539,7 +5589,9 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
 
       _frontendCpTestsPagesAdminCustomFieldsEdit['default'].customerSettings().clickCustomerVisible().fillInCustomerTitle(customerTitle).fillInDescription(description);
 
-      _frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().fillInTitle(optionTitle).fillInTag(optionTag);
+      _frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().fillInTitle(option1Title).fillInTag(option1Tag);
+
+      _frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().clickAdd().fillInTitle(option2Title).fillInTag(option2Tag);
 
       _frontendCpTestsPagesAdminCustomFieldsEdit['default'].clickSave();
     });
@@ -5553,8 +5605,10 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
       assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].agentSettings().fieldTitle(), fieldTitle);
       assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].customerSettings().customerTitle(), customerTitle);
       assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].customerSettings().description(), description);
-      assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().title(), optionTitle);
-      assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().tag(), optionTag);
+      assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().title(), option1Title);
+      assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().tag(), option1Tag);
+      assert.equal(find('.ko-reorderable-list-item:last input:first').val(), option2Title);
+      assert.equal(find('.ko-reorderable-list-item:last input:last').val(), option2Tag);
     });
   });
 
@@ -5566,8 +5620,10 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
     var fieldTitle = 'fieldTitle';
     var customerTitle = 'customer title';
     var description = 'description';
-    var optionTitle = 'option title';
-    var optionTag = 'option tag';
+    var option1Title = 'option 1 title';
+    var option1Tag = 'option1tag';
+    var option2Title = 'option 2 title';
+    var option2Tag = 'option2tag';
 
     visit('/admin/people/user-fields/new/SELECT');
 
@@ -5578,7 +5634,9 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
 
       _frontendCpTestsPagesAdminCustomFieldsEdit['default'].customerSettings().clickCustomerVisible().fillInCustomerTitle(customerTitle).fillInDescription(description);
 
-      _frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().fillInTitle(optionTitle).fillInTag(optionTag);
+      _frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().fillInTitle(option1Title).fillInTag(option1Tag);
+
+      _frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().clickAdd().fillInTitle(option2Title).fillInTag(option2Tag);
 
       _frontendCpTestsPagesAdminCustomFieldsEdit['default'].clickSave();
     });
@@ -5592,8 +5650,10 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
       assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].agentSettings().fieldTitle(), fieldTitle);
       assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].customerSettings().customerTitle(), customerTitle);
       assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].customerSettings().description(), description);
-      assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().title(), optionTitle);
-      assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().tag(), optionTag);
+      assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().title(), option1Title);
+      assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().tag(), option1Tag);
+      assert.equal(find('.ko-reorderable-list-item:last input:first').val(), option2Title);
+      assert.equal(find('.ko-reorderable-list-item:last input:last').val(), option2Tag);
     });
   });
 
@@ -5605,8 +5665,10 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
     var fieldTitle = 'fieldTitle';
     var customerTitle = 'customer title';
     var description = 'description';
-    var optionTitle = 'option title';
-    var optionTag = 'option tag';
+    var option1Title = 'option 1 title';
+    var option1Tag = 'option1tag';
+    var option2Title = 'option 2 title';
+    var option2Tag = 'option2tag';
 
     visit('/admin/people/user-fields/new/CHECKBOX');
 
@@ -5617,7 +5679,9 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
 
       _frontendCpTestsPagesAdminCustomFieldsEdit['default'].customerSettings().clickCustomerVisible().fillInCustomerTitle(customerTitle).fillInDescription(description);
 
-      _frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().fillInTitle(optionTitle).fillInTag(optionTag);
+      _frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().fillInTitle(option1Title).fillInTag(option1Tag);
+
+      _frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().clickAdd().fillInTitle(option2Title).fillInTag(option2Tag);
 
       _frontendCpTestsPagesAdminCustomFieldsEdit['default'].clickSave();
     });
@@ -5631,8 +5695,10 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
       assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].agentSettings().fieldTitle(), fieldTitle);
       assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].customerSettings().customerTitle(), customerTitle);
       assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].customerSettings().description(), description);
-      assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().title(), optionTitle);
-      assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().tag(), optionTag);
+      assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().title(), option1Title);
+      assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().tag(), option1Tag);
+      assert.equal(find('.ko-reorderable-list-item:last input:first').val(), option2Title);
+      assert.equal(find('.ko-reorderable-list-item:last input:last').val(), option2Tag);
     });
   });
 
@@ -5776,8 +5842,10 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
     var fieldTitle = 'fieldTitle';
     var customerTitle = 'customer title';
     var description = 'description';
-    var optionTitle = 'option title';
-    var optionTag = 'option tag';
+    var option1Title = 'option 1 title';
+    var option1Tag = 'option1tag';
+    var option2Title = 'option 2 title';
+    var option2Tag = 'option2tag';
 
     visit('/admin/people/user-fields/new/CASCADINGSELECT');
 
@@ -5788,7 +5856,9 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
 
       _frontendCpTestsPagesAdminCustomFieldsEdit['default'].customerSettings().clickCustomerVisible().fillInCustomerTitle(customerTitle).fillInDescription(description);
 
-      _frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().fillInTitle(optionTitle).fillInTag(optionTag);
+      _frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().fillInTitle(option1Title).fillInTag(option1Tag);
+
+      _frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().clickAdd().fillInTitle(option2Title).fillInTag(option2Tag);
 
       _frontendCpTestsPagesAdminCustomFieldsEdit['default'].clickSave();
     });
@@ -5802,8 +5872,10 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
       assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].agentSettings().fieldTitle(), fieldTitle);
       assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].customerSettings().customerTitle(), customerTitle);
       assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].customerSettings().description(), description);
-      assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().title(), optionTitle);
-      assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().tag(), optionTag);
+      assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().title(), option1Title);
+      assert.equal(_frontendCpTestsPagesAdminCustomFieldsEdit['default'].fieldOptions().tag(), option1Tag);
+      assert.equal(find('.ko-reorderable-list-item:last input:first').val(), option2Title);
+      assert.equal(find('.ko-reorderable-list-item:last input:last').val(), option2Tag);
     });
   });
 
@@ -11090,7 +11162,8 @@ define('frontend-cp/tests/pages/admin/custom-fields-edit', ['exports', 'frontend
     },
 
     fieldOptions: {
-      fillInTitle: fillable('.ko-reorderable-list-item:first input:first'),
+      clickAdd: clickable('.i-add-circle'),
+      fillInTitle: fillable('.ko-reorderable-list-item:last input:first'),
       title: value('.ko-reorderable-list-item:first input:first'),
       titles: inputArrayToValArray('.ko-reorderable-crud-list__item input[placeholder="Option title"]'),
       dragHandleSelector: function dragHandleSelector() {
@@ -11099,7 +11172,7 @@ define('frontend-cp/tests/pages/admin/custom-fields-edit', ['exports', 'frontend
       itemSelector: function itemSelector() {
         return 'input[placeholder="Option title"]';
       },
-      fillInTag: fillable('.ko-reorderable-list-item:first input:last'),
+      fillInTag: fillable('.ko-reorderable-list-item:last input:last'),
       tag: value('.ko-reorderable-list-item:first input:last')
     },
 
