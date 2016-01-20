@@ -8006,11 +8006,16 @@ define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'ember'], fun
   }
 
   function clickTrigger(scope) {
+    var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+
     var selector = '.ember-power-select-trigger';
     if (scope) {
       selector = scope + ' ' + selector;
     }
     var event = new window.Event('mousedown', { bubbles: true, cancelable: true, view: window });
+    Object.keys(options).forEach(function (key) {
+      return event[key] = options[key];
+    });
     _ember['default'].run(function () {
       return _ember['default'].$(selector)[0].dispatchEvent(event);
     });
@@ -8063,26 +8068,6 @@ define('frontend-cp/tests/helpers/fill-in-rich-text-editor', ['exports', 'ember'
     editor.setHTML(html);
   });
 });
-define('frontend-cp/tests/helpers/format-date', ['exports', 'ember'], function (exports, _ember) {
-  var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
-
-  exports['default'] = _ember['default'].Helper.helper(function (_ref) {
-    var _ref2 = _slicedToArray(_ref, 1);
-
-    var value = _ref2[0];
-    return 'DATE %' + value + '%';
-  });
-});
-define('frontend-cp/tests/helpers/format-html-message', ['exports', 'ember'], function (exports, _ember) {
-  var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
-
-  exports['default'] = _ember['default'].Helper.helper(function (_ref) {
-    var _ref2 = _slicedToArray(_ref, 1);
-
-    var value = _ref2[0];
-    return 'HTML MESSAGE %' + value + '%';
-  });
-});
 define('frontend-cp/tests/helpers/format-message', ['exports', 'ember'], function (exports, _ember) {
   var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
 
@@ -8091,36 +8076,6 @@ define('frontend-cp/tests/helpers/format-message', ['exports', 'ember'], functio
 
     var value = _ref2[0];
     return 'MESSAGE %' + value + '%';
-  });
-});
-define('frontend-cp/tests/helpers/format-number', ['exports', 'ember'], function (exports, _ember) {
-  var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
-
-  exports['default'] = _ember['default'].Helper.helper(function (_ref) {
-    var _ref2 = _slicedToArray(_ref, 1);
-
-    var value = _ref2[0];
-    return 'NUMBER %' + value + '%';
-  });
-});
-define('frontend-cp/tests/helpers/format-relative', ['exports', 'ember'], function (exports, _ember) {
-  var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
-
-  exports['default'] = _ember['default'].Helper.helper(function (_ref) {
-    var _ref2 = _slicedToArray(_ref, 1);
-
-    var value = _ref2[0];
-    return 'RELATIVE %' + value + '%';
-  });
-});
-define('frontend-cp/tests/helpers/format-time', ['exports', 'ember'], function (exports, _ember) {
-  var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
-
-  exports['default'] = _ember['default'].Helper.helper(function (_ref) {
-    var _ref2 = _slicedToArray(_ref, 1);
-
-    var value = _ref2[0];
-    return 'TIME %' + value + '%';
   });
 });
 define('frontend-cp/tests/helpers/login', ['exports', 'ember'], function (exports, _ember) {
@@ -8226,7 +8181,7 @@ define('frontend-cp/tests/helpers/native-focus', ['exports', 'ember'], function 
     }
   };
 });
-define('frontend-cp/tests/helpers/qunit', ['exports', 'ember', 'qunit', 'ember-qunit/qunit-module', 'ember-test-helpers', 'ember-qunit/test', 'frontend-cp/tests/helpers/start-app', 'frontend-cp/tests/helpers/format-date', 'frontend-cp/tests/helpers/format-time', 'frontend-cp/tests/helpers/format-relative', 'frontend-cp/tests/helpers/format-number', 'frontend-cp/tests/helpers/format-html-message', 'frontend-cp/tests/helpers/format-message', 'ember-truth-helpers/helpers/and', 'ember-truth-helpers/helpers/equal', 'ember-truth-helpers/helpers/not', 'ember-truth-helpers/helpers/or', 'ember-truth-helpers/utils/register-helper', 'ember-get-helper/helpers/get-glimmer', 'ember-get-helper/utils/register-helper', 'frontend-cp/tests/assertions/properties-equal'], function (exports, _ember, _qunit, _emberQunitQunitModule, _emberTestHelpers, _emberQunitTest, _frontendCpTestsHelpersStartApp, _frontendCpTestsHelpersFormatDate, _frontendCpTestsHelpersFormatTime, _frontendCpTestsHelpersFormatRelative, _frontendCpTestsHelpersFormatNumber, _frontendCpTestsHelpersFormatHtmlMessage, _frontendCpTestsHelpersFormatMessage, _emberTruthHelpersHelpersAnd, _emberTruthHelpersHelpersEqual, _emberTruthHelpersHelpersNot, _emberTruthHelpersHelpersOr, _emberTruthHelpersUtilsRegisterHelper, _emberGetHelperHelpersGetGlimmer, _emberGetHelperUtilsRegisterHelper, _frontendCpTestsAssertionsPropertiesEqual) {
+define('frontend-cp/tests/helpers/qunit', ['exports', 'ember', 'qunit', 'ember-qunit/qunit-module', 'ember-test-helpers', 'ember-qunit/test', 'frontend-cp/tests/helpers/start-app', 'frontend-cp/tests/helpers/format-message', 'ember-truth-helpers/helpers/and', 'ember-truth-helpers/helpers/equal', 'ember-truth-helpers/helpers/not', 'ember-truth-helpers/helpers/or', 'ember-truth-helpers/utils/register-helper', 'ember-get-helper/helpers/get-glimmer', 'ember-get-helper/utils/register-helper', 'frontend-cp/tests/assertions/properties-equal'], function (exports, _ember, _qunit, _emberQunitQunitModule, _emberTestHelpers, _emberQunitTest, _frontendCpTestsHelpersStartApp, _frontendCpTestsHelpersFormatMessage, _emberTruthHelpersHelpersAnd, _emberTruthHelpersHelpersEqual, _emberTruthHelpersHelpersNot, _emberTruthHelpersHelpersOr, _emberTruthHelpersUtilsRegisterHelper, _emberGetHelperHelpersGetGlimmer, _emberGetHelperUtilsRegisterHelper, _frontendCpTestsAssertionsPropertiesEqual) {
   exports.createModule = createModule;
   exports.moduleForComponent = moduleForComponent;
   exports.moduleForModel = moduleForModel;
@@ -8239,11 +8194,6 @@ define('frontend-cp/tests/helpers/qunit', ['exports', 'ember', 'qunit', 'ember-q
     var actualCallbacks = callbacks || (typeof description === 'object' ? description : {});
     var beforeCallback = actualCallbacks.setup || actualCallbacks.beforeEach;
     actualCallbacks['beforeEach' in actualCallbacks ? 'beforeEach' : 'setup'] = function () {
-      _ember['default'].HTMLBars._registerHelper('format-date', _frontendCpTestsHelpersFormatDate['default']);
-      _ember['default'].HTMLBars._registerHelper('format-time', _frontendCpTestsHelpersFormatTime['default']);
-      _ember['default'].HTMLBars._registerHelper('format-relative', _frontendCpTestsHelpersFormatRelative['default']);
-      _ember['default'].HTMLBars._registerHelper('format-number', _frontendCpTestsHelpersFormatNumber['default']);
-      _ember['default'].HTMLBars._registerHelper('format-html-message', _frontendCpTestsHelpersFormatHtmlMessage['default']);
       _ember['default'].HTMLBars._registerHelper('t', _frontendCpTestsHelpersFormatMessage['default']);
 
       (0, _emberTruthHelpersUtilsRegisterHelper.registerHelper)('and', _emberTruthHelpersHelpersAnd.andHelper);
@@ -8357,9 +8307,9 @@ define('frontend-cp/tests/helpers/reorder', ['exports', 'ember'], function (expo
     return wait();
   });
 });
-define('frontend-cp/tests/helpers/resolver', ['exports', 'ember-resolver', 'frontend-cp/config/environment'], function (exports, _emberResolver, _frontendCpConfigEnvironment) {
+define('frontend-cp/tests/helpers/resolver', ['exports', 'frontend-cp/resolver', 'frontend-cp/config/environment'], function (exports, _frontendCpResolver, _frontendCpConfigEnvironment) {
 
-  var resolver = _emberResolver['default'].create();
+  var resolver = _frontendCpResolver['default'].create();
 
   resolver.namespace = {
     modulePrefix: _frontendCpConfigEnvironment['default'].modulePrefix,
@@ -8431,7 +8381,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-organi
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@1.13.11',
+          'revision': 'Ember@1.13.13',
           'loc': {
             'source': null,
             'start': {
@@ -8482,7 +8432,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-organi
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@1.13.11',
+          'revision': 'Ember@1.13.13',
           'loc': {
             'source': null,
             'start': {
@@ -8560,7 +8510,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@1.13.11',
+          'revision': 'Ember@1.13.13',
           'loc': {
             'source': null,
             'start': {
@@ -8629,7 +8579,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@1.13.11',
+          'revision': 'Ember@1.13.13',
           'loc': {
             'source': null,
             'start': {
@@ -8765,7 +8715,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@1.13.11',
+          'revision': 'Ember@1.13.13',
           'loc': {
             'source': null,
             'start': {
@@ -8883,7 +8833,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@1.13.11',
+          'revision': 'Ember@1.13.13',
           'loc': {
             'source': null,
             'start': {
@@ -8999,7 +8949,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/component-test', ['
     this.render(Ember.HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@1.13.11',
+          'revision': 'Ember@1.13.13',
           'loc': {
             'source': null,
             'start': {
@@ -9068,7 +9018,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@1.13.11',
+          'revision': 'Ember@1.13.13',
           'loc': {
             'source': null,
             'start': {
@@ -9122,7 +9072,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@1.13.11',
+          'revision': 'Ember@1.13.13',
           'loc': {
             'source': null,
             'start': {
@@ -9184,7 +9134,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@1.13.11',
+          'revision': 'Ember@1.13.13',
           'loc': {
             'source': null,
             'start': {
@@ -9243,7 +9193,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@1.13.11',
+          'revision': 'Ember@1.13.13',
           'loc': {
             'source': null,
             'start': {
@@ -9307,7 +9257,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@1.13.11',
+          'revision': 'Ember@1.13.13',
           'loc': {
             'source': null,
             'start': {
@@ -9365,7 +9315,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@1.13.11',
+          'revision': 'Ember@1.13.13',
           'loc': {
             'source': null,
             'start': {
@@ -9426,7 +9376,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@1.13.11',
+          'revision': 'Ember@1.13.13',
           'loc': {
             'source': null,
             'start': {
@@ -9506,7 +9456,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/multiline-tex
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@1.13.11',
+          'revision': 'Ember@1.13.13',
           'loc': {
             'source': null,
             'start': {
@@ -9555,7 +9505,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/multiline-tex
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@1.13.11',
+          'revision': 'Ember@1.13.13',
           'loc': {
             'source': null,
             'start': {
@@ -9620,7 +9570,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/select/compon
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@1.13.11',
+          'revision': 'Ember@1.13.13',
           'loc': {
             'source': null,
             'start': {
@@ -9675,7 +9625,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/select/compon
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@1.13.11',
+          'revision': 'Ember@1.13.13',
           'loc': {
             'source': null,
             'start': {
@@ -9733,7 +9683,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/select/compon
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@1.13.11',
+          'revision': 'Ember@1.13.13',
           'loc': {
             'source': null,
             'start': {
@@ -9794,7 +9744,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/tags/componen
     this.render(Ember.HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@1.13.11',
+          'revision': 'Ember@1.13.13',
           'loc': {
             'source': null,
             'start': {
@@ -9851,7 +9801,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/text/componen
     this.render(Ember.HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@1.13.11',
+          'revision': 'Ember@1.13.13',
           'loc': {
             'source': null,
             'start': {
@@ -9902,7 +9852,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/text/componen
     this.render(Ember.HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@1.13.11',
+          'revision': 'Ember@1.13.13',
           'loc': {
             'source': null,
             'start': {
@@ -9993,7 +9943,7 @@ define('frontend-cp/tests/integration/components/ko-session-widgets/component-te
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@1.13.11',
+          'revision': 'Ember@1.13.13',
           'loc': {
             'source': null,
             'start': {
