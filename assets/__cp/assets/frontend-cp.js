@@ -60821,6 +60821,7 @@ define('frontend-cp/session/agent/cases/index/route', ['exports', 'ember', 'fron
   var casePageLimit = _frontendCpConfigEnvironment['default'].casesPageSize;
   var caseViewLimit = _frontendCpConfigEnvironment['default'].APP.views.maxLimit;
   var viewsPollingInterval = _frontendCpConfigEnvironment['default'].APP.views.viewsPollingInterval * 1000;
+  var isViewsPollingEnabled = _frontendCpConfigEnvironment['default'].APP.views.isPollingEnabled;
 
   exports['default'] = _ember['default'].Route.extend({
     metrics: _ember['default'].inject.service(),
@@ -60838,7 +60839,10 @@ define('frontend-cp/session/agent/cases/index/route', ['exports', 'ember', 'fron
         return v.id !== inbox.id && v.get('isEnabled');
       }));
 
-      this._setupViewsCountPolling();
+      if (isViewsPollingEnabled) {
+        // disable polling for testing environment, as it produces unpredictable outcome
+        this._setupViewsCountPolling();
+      }
     },
 
     _setupViewsCountPolling: function _setupViewsCountPolling() {
@@ -65123,6 +65127,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30},"name":"frontend-cp","version":"0.0.0+8b3f5d02"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+66be833b"});
 }
 /* jshint ignore:end */
