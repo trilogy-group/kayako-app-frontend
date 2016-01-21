@@ -2699,8 +2699,8 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
       fillIn('input[name=title]', fieldTitle);
       click('.ko-toggle__container');
       click('.ko-radio__label:contains(Just myself)');
-      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Cases: Subject');
-      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'String contains');
+      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Case: Subject');
+      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'string contains');
       fillIn('.qa-predicate-builder--proposition:first input:last', rule1String);
       click('.button[name=submit]:first');
     });
@@ -2716,7 +2716,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
       assert.equal(find('input[name=title]').val(), fieldTitle);
       findWithAssert('.ko-toggle__container[aria-checked=true]');
       findWithAssert('.qa-just-myself div[aria-checked=true]');
-      assert.equal(find('.qa-predicate-builder--proposition:first .qa-proposition--column div').text().trim(), 'Cases: Subject');
+      assert.equal(find('.qa-predicate-builder--proposition:first .qa-proposition--column div').text().trim(), 'Case: Subject');
       //Finish edit tests first they will flag this problem more clearly
       //debugger;
       //assert.equal(find('.qa-predicate-builder--proposition:first .qa-proposition--operator div').text().trim(), 'String contains');
@@ -2732,7 +2732,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
 
       fillIn('input[name=title]', fieldTitle);
       click('.ko-radio__label:contains(Just myself)');
-      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'String does not contain');
+      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'string does not contain');
       fillIn('.qa-predicate-builder--proposition:first input:last', rule1String);
       click('.button[name=submit]:first');
     });
@@ -2751,7 +2751,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
 
       fillIn('input[name=title]', fieldTitle);
       click('.ko-radio__label:contains(Just myself)');
-      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Cases: Status');
+      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Case: Status');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'is equal to');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--property', 'New');
       click('.button[name=submit]:first');
@@ -2771,7 +2771,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
 
       fillIn('input[name=title]', fieldTitle);
       click('.ko-radio__label:contains(Just myself)');
-      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Cases: Status');
+      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Case: Status');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'is not equal to');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--property', 'New');
       click('.button[name=submit]:first');
@@ -2791,7 +2791,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
 
       fillIn('input[name=title]', fieldTitle);
       click('.ko-radio__label:contains(Just myself)');
-      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Cases: Priority ID');
+      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Case: Priority ID');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'is less than');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--property', 'Low');
       click('.button[name=submit]:first');
@@ -2811,7 +2811,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
 
       fillIn('input[name=title]', fieldTitle);
       click('.ko-radio__label:contains(Just myself)');
-      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Cases: Priority ID');
+      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Case: Priority ID');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'is greater than');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--property', 'Low');
       click('.button[name=submit]:first');
@@ -2831,8 +2831,8 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
 
       fillIn('input[name=title]', fieldTitle);
       click('.ko-radio__label:contains(Just myself)');
-      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Tags');
-      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'String contains (case insensitive)');
+      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Case: Tags');
+      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'string contains (case insensitive)');
       fillIn('.qa-predicate-builder--proposition:first input:last', rule1String);
       click('.button[name=submit]:first');
     });
@@ -2851,8 +2851,8 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
 
       fillIn('input[name=title]', fieldTitle);
       click('.ko-radio__label:contains(Just myself)');
-      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Tags');
-      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'String does not contain (case insensitive)');
+      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Case: Tags');
+      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'string does not contain (case insensitive)');
       fillIn('.qa-predicate-builder--proposition:first input:last', rule1String);
       click('.button[name=submit]:first');
     });
@@ -2871,8 +2871,8 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
 
       fillIn('input[name=title]', fieldTitle);
       click('.ko-radio__label:contains(Just myself)');
-      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Tags');
-      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'String contains any (case insensitive)');
+      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Case: Tags');
+      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'string contains any (case insensitive)');
       fillIn('.qa-predicate-builder--proposition:first input:last', rule1String);
       click('.button[name=submit]:first');
     });
@@ -2891,8 +2891,8 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
 
       fillIn('input[name=title]', fieldTitle);
       click('.ko-radio__label:contains(Just myself)');
-      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Cases: Subject');
-      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'String contains');
+      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Case: Subject');
+      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'string contains');
       fillIn('.qa-predicate-builder--proposition:first input:last', rule1String);
       selectChoose('.qa-configure-column', 'Created at');
       selectChoose('.qa-sorted-by', 'Created at');
