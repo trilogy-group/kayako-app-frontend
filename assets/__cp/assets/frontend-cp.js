@@ -36781,7 +36781,11 @@ define('frontend-cp/components/ko-tags/component', ['exports', 'ember', 'fronten
         this.set('searchTerm', '');
         this.set('showDropdown', false);
 
-        if (!this.get('selectedTags').contains(tag)) {
+        // We should always compare tags in lower case
+        var lowerCasedTags = this.get('selectedTags').map(function (tag) {
+          return tag.get('name').toLowerCase();
+        });
+        if (!lowerCasedTags.contains(tag.toLowerCase())) {
           this.sendAction('onTagAddition', tag);
           this.updateSuggestions();
         }
@@ -65127,6 +65131,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+66be833b"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+fdafc237"});
 }
 /* jshint ignore:end */
