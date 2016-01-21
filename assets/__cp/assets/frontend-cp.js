@@ -53985,7 +53985,7 @@ define('frontend-cp/services/pusher', ['exports', 'ember', 'frontend-cp/config/e
       }
 
       // TODO: re-enable when pusher is figured out!
-      //this.authorize();
+      this.authorize();
     },
 
     authorize: _ember['default'].observer('sessionService.sessionId', function () {
@@ -54020,6 +54020,13 @@ define('frontend-cp/services/pusher', ['exports', 'ember', 'frontend-cp/config/e
     }),
 
     subscribeTo: function subscribeTo(channelName, event, context, func, localData) {
+
+      // This early exit case is here while we figure out a solution for the problems with
+      // pusher/cases switching tabs.
+      if (/_cases_/.test(channelName)) {
+        return;
+      }
+
       if (!this.get('pusher')) {
         if (console && console.warn) {
           // eslint-disable-line
@@ -54034,7 +54041,6 @@ define('frontend-cp/services/pusher', ['exports', 'ember', 'frontend-cp/config/e
       var handler = function handler(data) {
         Reflect.apply(func, context, [data, localData]);
       };
-
       this.get('channelBindings')[channelName][func] = handler;
       channel.bind(event, handler);
     },
@@ -54043,8 +54049,12 @@ define('frontend-cp/services/pusher', ['exports', 'ember', 'frontend-cp/config/e
       var channelBindings = this.get('channelBindings');
       var channel = channelBindings.get(channelName);
       if (channel) {
-        var handler = channel.get(func);
-        channel.unbind(eventName, handler);
+        if (func) {
+          var handler = channel.channel[func];
+          channel.channel.unbind(eventName, handler);
+        } else {
+          channel.channel.unbind(eventName);
+        }
       }
     },
 
@@ -61073,13 +61083,15 @@ define('frontend-cp/session/agent/cases/index/index/route', ['exports', 'ember']
   exports['default'] = _ember['default'].Route.extend({
     beforeModel: function beforeModel() {
       // Redirect to the first view.
-      var views = this.modelFor('session.agent.cases.index');
+      var views = this.modelFor('session.agent.cases.index').views;
       var inbox = views.findBy('isDefault');
       this.transitionTo('session.agent.cases.index.view', inbox.id);
     }
   });
 });
 define('frontend-cp/session/agent/cases/index/route', ['exports', 'ember', 'frontend-cp/config/environment'], function (exports, _ember, _frontendCpConfigEnvironment) {
+  var run = _ember['default'].run;
+  var RSVP = _ember['default'].RSVP;
 
   var casePageLimit = _frontendCpConfigEnvironment['default'].casesPageSize;
   var caseViewLimit = _frontendCpConfigEnvironment['default'].APP.views.maxLimit;
@@ -61088,39 +61100,40 @@ define('frontend-cp/session/agent/cases/index/route', ['exports', 'ember', 'fron
 
   exports['default'] = _ember['default'].Route.extend({
     metrics: _ember['default'].inject.service(),
+    pusher: _ember['default'].inject.service(),
     pollingCountsEnabled: false,
 
     model: function model() {
-      this.store.findAll('view-count', { reload: true });
-      return this.get('store').query('view', { limit: caseViewLimit }, { reload: true });
+      return RSVP.hash({
+        viewCounts: this.store.findAll('view-count', { reload: true }),
+        views: this.store.query('view', { limit: caseViewLimit }, { reload: true })
+      });
     },
 
-    setupController: function setupController(controller, views) {
+    setupController: function setupController(controller, _ref) {
+      var views = _ref.views;
+
       var inbox = views.findBy('isDefault');
       controller.setProperties({ inboxView: inbox, childRoutePage: 1 });
       this._super(controller, views.filter(function (v) {
         return v.id !== inbox.id && v.get('isEnabled');
       }));
+    },
 
+    activate: function activate() {
+      this._super.apply(this, arguments);
       if (isViewsPollingEnabled) {
-        // disable polling for testing environment, as it produces unpredictable outcome
-        this._setupViewsCountPolling();
+        this.viewsCountPollingTimer = run.later(this, this._pollCurrentViewCounts, viewsPollingInterval);
       }
+      this._subscribeToViewCountUpdates();
     },
 
-    _setupViewsCountPolling: function _setupViewsCountPolling() {
-      this.set('pollingCountsEnabled', true);
-      _ember['default'].run.later(this, this._pollCurrentViewCounts, viewsPollingInterval);
-    },
-
-    _pollCurrentViewCounts: function _pollCurrentViewCounts() {
-      if (!this.get('pollingCountsEnabled')) {
-        return;
+    deactivate: function deactivate() {
+      this._super.apply(this, arguments);
+      if (this.viewsCountPollingTimer) {
+        run.cancel(this.viewsCountPollingTimer);
       }
-
-      this.model(this.paramsFor(this.routeName));
-
-      _ember['default'].run.later(this, this._pollCurrentViewCounts, viewsPollingInterval);
+      this._unsubscribeToViewCountUpdates();
     },
 
     actions: {
@@ -61141,6 +61154,40 @@ define('frontend-cp/session/agent/cases/index/route', ['exports', 'ember', 'fron
           childRouteTotalPages: Math.ceil(meta.total / casePageLimit)
         });
       }
+    },
+
+    // Methods
+    _pollCurrentViewCounts: function _pollCurrentViewCounts() {
+      this.model(this.paramsFor(this.routeName));
+      this.viewsCountPollingTimer = run.later(this, this._pollCurrentViewCounts, viewsPollingInterval);
+    },
+
+    _subscribeToViewCountUpdates: function _subscribeToViewCountUpdates() {
+      var _this = this;
+
+      var viewCounts = this.store.peekAll('view-count');
+      var pusher = this.get('pusher');
+      viewCounts.forEach(function (viewCount) {
+        var realtimeChannel = viewCount.get('realtimeChannel');
+        pusher.subscribeTo(realtimeChannel, 'CHANGE', _this, _this._updateCounterHandler);
+      });
+    },
+
+    _unsubscribeToViewCountUpdates: function _unsubscribeToViewCountUpdates() {
+      var viewCounts = this.store.peekAll('view-count');
+      var pusher = this.get('pusher');
+      viewCounts.forEach(function (viewCount) {
+        var realtimeChannel = viewCount.get('realtimeChannel');
+        pusher.unsubscribeTo(realtimeChannel, 'CHANGE');
+      });
+    },
+
+    _updateCounterHandler: function _updateCounterHandler(data) {
+      this.store.push({
+        id: data.resource_id,
+        type: _ember['default'].String.dasherize(data.resource_type),
+        attributes: data.changed_properties
+      });
     }
   });
 });
@@ -62666,7 +62713,7 @@ define('frontend-cp/session/agent/cases/index/view/route', ['exports', 'ember', 
     model: function model(_ref) {
       var view_id = _ref.view_id;
 
-      var model = this.modelFor('session.agent.cases.index').findBy('id', view_id);
+      var model = this.modelFor('session.agent.cases.index').views.findBy('id', view_id);
       if (!model) {
         this.transitionTo('session.agent.cases.index');
       }
@@ -65390,6 +65437,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+d0e2648f"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+ca434ac1"});
 }
 /* jshint ignore:end */
