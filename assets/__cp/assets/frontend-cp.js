@@ -25320,6 +25320,8 @@ define('frontend-cp/components/ko-feed/item/component', ['exports', 'ember'], fu
 
     isNote: _ember['default'].computed.equal('event.original.postType', 'note'),
 
+    isCarbonCopyCollapsed: true,
+
     translationTitle: _ember['default'].computed('isNote', function () {
       return this.get('isNote') ? 'feed.added' : 'feed.replied';
     }),
@@ -25334,11 +25336,20 @@ define('frontend-cp/components/ko-feed/item/component', ['exports', 'ember'], fu
       this.set('showMenu', false);
     },
 
+    ccRecipients: _ember['default'].computed('event.original.recipients.[]', function () {
+      var recipients = this.get('event.original.recipients') || [];
+      return recipients.filterBy('isCC').mapBy('identity.email').join(', ');
+    }),
+
     actions: {
       onReplyWithQuote: function onReplyWithQuote() {
         var quote = this.$('.ko-feed_item__content').html().trim().replace(/\t/g, '').replace(/\s{2,}/g, ' ').replace(/\n/g, '<br/ >');
 
         this.attrs.onReplyWithQuote(quote);
+      },
+
+      expandCarbonCopy: function expandCarbonCopy() {
+        this.toggleProperty('isCarbonCopyCollapsed');
       }
     }
   });
@@ -25453,11 +25464,165 @@ define("frontend-cp/components/ko-feed/item/template", ["exports"], function (ex
             "loc": {
               "source": null,
               "start": {
-                "line": 14,
+                "line": 13,
+                "column": 4
+              },
+              "end": {
+                "line": 15,
+                "column": 4
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-feed/item/template.hbs"
+          },
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("      ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("span");
+            var el2 = dom.createElement("b");
+            var el3 = dom.createTextNode("From:");
+            dom.appendChild(el2, el3);
+            dom.appendChild(el1, el2);
+            var el2 = dom.createTextNode(" ");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createComment("");
+            dom.appendChild(el1, el2);
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var element4 = dom.childAt(fragment, [1]);
+            var morphs = new Array(2);
+            morphs[0] = dom.createAttrMorph(element4, 'title');
+            morphs[1] = dom.createMorphAt(element4, 2, 2);
+            return morphs;
+          },
+          statements: [["attribute", "title", ["get", "event.original.mailbox.address", ["loc", [null, [14, 20], [14, 50]]]]], ["content", "event.original.mailbox.address", ["loc", [null, [14, 66], [14, 100]]]]],
+          locals: [],
+          templates: []
+        };
+      })();
+      var child1 = (function () {
+        return {
+          meta: {
+            "revision": "Ember@1.13.13",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 17,
+                "column": 4
+              },
+              "end": {
+                "line": 19,
+                "column": 4
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-feed/item/template.hbs"
+          },
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("      ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("span");
+            var el2 = dom.createElement("b");
+            var el3 = dom.createTextNode("CC:");
+            dom.appendChild(el2, el3);
+            dom.appendChild(el1, el2);
+            var el2 = dom.createTextNode(" ");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createComment("");
+            dom.appendChild(el1, el2);
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var element3 = dom.childAt(fragment, [1]);
+            var morphs = new Array(3);
+            morphs[0] = dom.createAttrMorph(element3, 'title');
+            morphs[1] = dom.createElementMorph(element3);
+            morphs[2] = dom.createMorphAt(element3, 2, 2);
+            return morphs;
+          },
+          statements: [["attribute", "title", ["get", "ccRecipients", ["loc", [null, [18, 50], [18, 62]]]]], ["element", "action", ["expandCarbonCopy"], [], ["loc", [null, [18, 12], [18, 41]]]], ["content", "ccRecipients", ["loc", [null, [18, 76], [18, 92]]]]],
+          locals: [],
+          templates: []
+        };
+      })();
+      return {
+        meta: {
+          "revision": "Ember@1.13.13",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 11,
+              "column": 0
+            },
+            "end": {
+              "line": 21,
+              "column": 0
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-feed/item/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          var el2 = dom.createTextNode("\n");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("  ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var element5 = dom.childAt(fragment, [1]);
+          var morphs = new Array(3);
+          morphs[0] = dom.createAttrMorph(element5, 'class');
+          morphs[1] = dom.createMorphAt(element5, 1, 1);
+          morphs[2] = dom.createMorphAt(element5, 3, 3);
+          return morphs;
+        },
+        statements: [["attribute", "class", ["concat", ["ko-feed_item__cc ", ["subexpr", "if", [["get", "isCarbonCopyCollapsed", ["loc", [null, [12, 36], [12, 57]]]], "ko-feed_item__cc--collapsed"], [], ["loc", [null, [12, 31], [12, 89]]]]]]], ["block", "if", [["get", "event.original.mailbox.address", ["loc", [null, [13, 10], [13, 40]]]]], [], 0, null, ["loc", [null, [13, 4], [15, 11]]]], ["block", "if", [["get", "ccRecipients", ["loc", [null, [17, 10], [17, 22]]]]], [], 1, null, ["loc", [null, [17, 4], [19, 11]]]]],
+        locals: [],
+        templates: [child0, child1]
+      };
+    })();
+    var child2 = (function () {
+      var child0 = (function () {
+        return {
+          meta: {
+            "revision": "Ember@1.13.13",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 27,
                 "column": 2
               },
               "end": {
-                "line": 22,
+                "line": 35,
                 "column": 2
               }
             },
@@ -25518,7 +25683,7 @@ define("frontend-cp/components/ko-feed/item/template", ["exports"], function (ex
             morphs[3] = dom.createMorphAt(dom.childAt(element0, [7]), 0, 0);
             return morphs;
           },
-          statements: [["attribute", "src", ["concat", [["get", "attachment.thumbnails.firstObject.url", ["loc", [null, [16, 16], [16, 53]]]], "&_session_id=", ["get", "sessionService.sessionId", ["loc", [null, [16, 70], [16, 94]]]]]]], ["attribute", "href", ["concat", [["get", "attachment.urlDownload", ["loc", [null, [18, 17], [18, 39]]]], "?_session_id=", ["get", "sessionService.sessionId", ["loc", [null, [18, 56], [18, 80]]]]]]], ["content", "attachment.name", ["loc", [null, [18, 84], [18, 103]]]], ["inline", "ko-file-size", [], ["size", ["subexpr", "@mut", [["get", "attachment.size", ["loc", [null, [20, 67], [20, 82]]]]], [], []]], ["loc", [null, [20, 47], [20, 84]]]]],
+          statements: [["attribute", "src", ["concat", [["get", "attachment.thumbnails.firstObject.url", ["loc", [null, [29, 16], [29, 53]]]], "&_session_id=", ["get", "sessionService.sessionId", ["loc", [null, [29, 70], [29, 94]]]]]]], ["attribute", "href", ["concat", [["get", "attachment.urlDownload", ["loc", [null, [31, 17], [31, 39]]]], "?_session_id=", ["get", "sessionService.sessionId", ["loc", [null, [31, 56], [31, 80]]]]]]], ["content", "attachment.name", ["loc", [null, [31, 84], [31, 103]]]], ["inline", "ko-file-size", [], ["size", ["subexpr", "@mut", [["get", "attachment.size", ["loc", [null, [33, 67], [33, 82]]]]], [], []]], ["loc", [null, [33, 47], [33, 84]]]]],
           locals: ["attachment"],
           templates: []
         };
@@ -25529,11 +25694,11 @@ define("frontend-cp/components/ko-feed/item/template", ["exports"], function (ex
           "loc": {
             "source": null,
             "start": {
-              "line": 13,
+              "line": 26,
               "column": 0
             },
             "end": {
-              "line": 23,
+              "line": 36,
               "column": 0
             }
           },
@@ -25555,23 +25720,23 @@ define("frontend-cp/components/ko-feed/item/template", ["exports"], function (ex
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [["block", "each", [["get", "event.attachments", ["loc", [null, [14, 10], [14, 27]]]]], [], 0, null, ["loc", [null, [14, 2], [22, 11]]]]],
+        statements: [["block", "each", [["get", "event.attachments", ["loc", [null, [27, 10], [27, 27]]]]], [], 0, null, ["loc", [null, [27, 2], [35, 11]]]]],
         locals: [],
         templates: [child0]
       };
     })();
-    var child2 = (function () {
+    var child3 = (function () {
       return {
         meta: {
           "revision": "Ember@1.13.13",
           "loc": {
             "source": null,
             "start": {
-              "line": 24,
+              "line": 37,
               "column": 0
             },
             "end": {
-              "line": 26,
+              "line": 39,
               "column": 0
             }
           },
@@ -25595,7 +25760,7 @@ define("frontend-cp/components/ko-feed/item/template", ["exports"], function (ex
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [["inline", "ko-feed/item/menu", [], ["showMenu", ["subexpr", "@mut", [["get", "showMenu", ["loc", [null, [25, 31], [25, 39]]]]], [], []], "onReplyWithQuote", "onReplyWithQuote"], ["loc", [null, [25, 2], [25, 77]]]]],
+        statements: [["inline", "ko-feed/item/menu", [], ["showMenu", ["subexpr", "@mut", [["get", "showMenu", ["loc", [null, [38, 31], [38, 39]]]]], [], []], "onReplyWithQuote", "onReplyWithQuote"], ["loc", [null, [38, 2], [38, 77]]]]],
         locals: [],
         templates: []
       };
@@ -25610,7 +25775,7 @@ define("frontend-cp/components/ko-feed/item/template", ["exports"], function (ex
             "column": 0
           },
           "end": {
-            "line": 27,
+            "line": 40,
             "column": 0
           }
         },
@@ -25644,6 +25809,10 @@ define("frontend-cp/components/ko-feed/item/template", ["exports"], function (ex
         var el2 = dom.createTextNode("\n");
         dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
         var el1 = dom.createElement("div");
@@ -25664,20 +25833,21 @@ define("frontend-cp/components/ko-feed/item/template", ["exports"], function (ex
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var element3 = dom.childAt(fragment, [4]);
-        var morphs = new Array(6);
+        var element6 = dom.childAt(fragment, [4]);
+        var morphs = new Array(7);
         morphs[0] = dom.createMorphAt(fragment, 2, 2, contextualElement);
-        morphs[1] = dom.createMorphAt(element3, 0, 0);
-        morphs[2] = dom.createMorphAt(dom.childAt(element3, [2]), 0, 0);
-        morphs[3] = dom.createMorphAt(dom.childAt(fragment, [6]), 1, 1);
-        morphs[4] = dom.createMorphAt(fragment, 8, 8, contextualElement);
-        morphs[5] = dom.createMorphAt(fragment, 9, 9, contextualElement);
+        morphs[1] = dom.createMorphAt(element6, 0, 0);
+        morphs[2] = dom.createMorphAt(dom.childAt(element6, [2]), 0, 0);
+        morphs[3] = dom.createMorphAt(fragment, 6, 6, contextualElement);
+        morphs[4] = dom.createMorphAt(dom.childAt(fragment, [8]), 1, 1);
+        morphs[5] = dom.createMorphAt(fragment, 10, 10, contextualElement);
+        morphs[6] = dom.createMorphAt(fragment, 11, 11, contextualElement);
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["block", "if", [["get", "event.creator.avatar", ["loc", [null, [3, 6], [3, 26]]]]], [], 0, null, ["loc", [null, [3, 0], [5, 7]]]], ["content", "event.creator.fullName", ["loc", [null, [7, 33], [7, 59]]]], ["inline", "t", [["get", "translationTitle", ["loc", [null, [8, 46], [8, 62]]]]], ["ago", ["subexpr", "moment-from-now", [["get", "event.createdAt", ["loc", [null, [8, 84], [8, 99]]]]], [], ["loc", [null, [8, 67], [8, 100]]]]], ["loc", [null, [8, 42], [8, 102]]]], ["inline", "ko-breaklines", [["subexpr", "linkify", [["get", "event.contents", ["loc", [null, [11, 27], [11, 41]]]], "_blank"], [], ["loc", [null, [11, 18], [11, 51]]]]], [], ["loc", [null, [11, 2], [11, 53]]]], ["block", "if", [["get", "event.attachments", ["loc", [null, [13, 6], [13, 23]]]]], [], 1, null, ["loc", [null, [13, 0], [23, 7]]]], ["block", "if", [["subexpr", "not", [["get", "isReplyDisabled", ["loc", [null, [24, 11], [24, 26]]]]], [], ["loc", [null, [24, 6], [24, 27]]]]], [], 2, null, ["loc", [null, [24, 0], [26, 7]]]]],
+      statements: [["block", "if", [["get", "event.creator.avatar", ["loc", [null, [3, 6], [3, 26]]]]], [], 0, null, ["loc", [null, [3, 0], [5, 7]]]], ["content", "event.creator.fullName", ["loc", [null, [7, 33], [7, 59]]]], ["inline", "t", [["get", "translationTitle", ["loc", [null, [8, 46], [8, 62]]]]], ["ago", ["subexpr", "moment-from-now", [["get", "event.createdAt", ["loc", [null, [8, 84], [8, 99]]]]], [], ["loc", [null, [8, 67], [8, 100]]]]], ["loc", [null, [8, 42], [8, 102]]]], ["block", "if", [["subexpr", "or", [["get", "event.original.mailbox.address", ["loc", [null, [11, 10], [11, 40]]]], ["get", "ccRecipients", ["loc", [null, [11, 41], [11, 53]]]]], [], ["loc", [null, [11, 6], [11, 54]]]]], [], 1, null, ["loc", [null, [11, 0], [21, 7]]]], ["inline", "ko-breaklines", [["subexpr", "linkify", [["get", "event.contents", ["loc", [null, [24, 27], [24, 41]]]], "_blank"], [], ["loc", [null, [24, 18], [24, 51]]]]], [], ["loc", [null, [24, 2], [24, 53]]]], ["block", "if", [["get", "event.attachments", ["loc", [null, [26, 6], [26, 23]]]]], [], 2, null, ["loc", [null, [26, 0], [36, 7]]]], ["block", "if", [["subexpr", "not", [["get", "isReplyDisabled", ["loc", [null, [37, 11], [37, 26]]]]], [], ["loc", [null, [37, 6], [37, 27]]]]], [], 3, null, ["loc", [null, [37, 0], [39, 7]]]]],
       locals: [],
-      templates: [child0, child1, child2]
+      templates: [child0, child1, child2, child3]
     };
   })());
 });
@@ -49989,8 +50159,14 @@ define('frontend-cp/models/mailbox', ['exports', 'ember-data', 'frontend-cp/mode
     isEnabled: _emberData['default'].attr('boolean')
   });
 });
-define('frontend-cp/models/message-recipient', ['exports', 'ember-data'], function (exports, _emberData) {
-  exports['default'] = _emberData['default'].Model.extend({});
+define('frontend-cp/models/message-recipient', ['exports', 'ember-data', 'ember'], function (exports, _emberData, _ember) {
+  exports['default'] = _emberData['default'].Model.extend({
+    name: _emberData['default'].attr('string'),
+    type: _emberData['default'].attr('string'),
+    identity: _emberData['default'].belongsTo('identity', { async: false }),
+
+    isCC: _ember['default'].computed.equal('type', 'CC')
+  });
 });
 define('frontend-cp/models/note', ['exports', 'ember-data', 'frontend-cp/models/postable'], function (exports, _emberData, _frontendCpModelsPostable) {
   exports['default'] = _frontendCpModelsPostable['default'].extend({
@@ -65131,6 +65307,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+fdafc237"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+3f77efaf"});
 }
 /* jshint ignore:end */
