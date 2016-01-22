@@ -55781,7 +55781,11 @@ define('frontend-cp/services/tab-store', ['exports', 'ember', 'frontend-cp/utils
         if (nextTab) {
           routing.transitionTo(nextTab.routeName, nextTab.dynamicSegments, nextTab.queryParams);
         } else {
-          routing.transitionTo('session.agent.cases.index');
+          if (this.get('casesViewId')) {
+            routing.transitionTo('session.agent.cases.index.view', [this.get('casesViewId')]);
+          } else {
+            routing.transitionTo('session.agent.cases.index');
+          }
         }
       }
       run.debounce(this, 'persistTabs', 100);
@@ -66535,6 +66539,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+8ca0a01d"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+66482333"});
 }
 /* jshint ignore:end */
