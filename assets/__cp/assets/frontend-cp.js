@@ -17480,10 +17480,7 @@ define('frontend-cp/components/ko-case-content/field/assignee/component', ['expo
     store: _ember['default'].inject.service(),
     storeCache: _ember['default'].inject.service('store-cache'),
 
-    currentlySelectedValue: _ember['default'].computed('agent.id', 'team.id', function () {
-      return this.generateTeamAgentId(this.get('team.id'), this.get('agent.id'));
-    }),
-
+    // Lifecycle hooks
     setAssigneeValues: _ember['default'].on('init', function () {
       var _this = this;
 
@@ -17524,6 +17521,15 @@ define('frontend-cp/components/ko-case-content/field/assignee/component', ['expo
       });
     }),
 
+    // CPs
+    currentlySelectedValue: _ember['default'].computed('agent.id', 'team.id', function () {
+      return this.generateTeamAgentId(this.get('team.id'), this.get('agent.id'));
+    }),
+
+    placeholder: _ember['default'].computed('team.title', 'agent.fullName', function () {
+      return this.get('team.title') + ' / ' + this.get('agent.fullName');
+    }),
+
     generateTeamAgentId: function generateTeamAgentId(teamId, agentId) {
       return agentId ? teamId + '-' + agentId : teamId;
     },
@@ -17556,7 +17562,7 @@ define("frontend-cp/components/ko-case-content/field/assignee/template", ["expor
             "column": 0
           },
           "end": {
-            "line": 12,
+            "line": 13,
             "column": 2
           }
         },
@@ -17578,7 +17584,7 @@ define("frontend-cp/components/ko-case-content/field/assignee/template", ["expor
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["inline", "ko-info-bar/field/drill-down", [], ["title", ["subexpr", "@mut", [["get", "field.title", ["loc", [null, [2, 8], [2, 19]]]]], [], []], "options", ["subexpr", "@mut", [["get", "assigneeValues", ["loc", [null, [3, 10], [3, 24]]]]], [], []], "value", ["subexpr", "@mut", [["get", "currentlySelectedValue", ["loc", [null, [4, 8], [4, 30]]]]], [], []], "isEdited", ["subexpr", "@mut", [["get", "isEdited", ["loc", [null, [5, 11], [5, 19]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "isPusherEdited", ["loc", [null, [6, 17], [6, 31]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "isErrored", ["loc", [null, [7, 12], [7, 21]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isDisabled", ["loc", [null, [8, 13], [8, 23]]]]], [], []], "onValueChange", ["subexpr", "action", ["assigneeSelected"], [], ["loc", [null, [9, 16], [9, 43]]]], "emptyLabel", ["subexpr", "t", ["cases.unassigned"], [], ["loc", [null, [10, 13], [10, 35]]]], "hasEmptyOption", false], ["loc", [null, [1, 0], [12, 2]]]]],
+      statements: [["inline", "ko-info-bar/field/drill-down", [], ["title", ["subexpr", "@mut", [["get", "field.title", ["loc", [null, [2, 8], [2, 19]]]]], [], []], "placeholder", ["subexpr", "@mut", [["get", "placeholder", ["loc", [null, [3, 14], [3, 25]]]]], [], []], "options", ["subexpr", "@mut", [["get", "assigneeValues", ["loc", [null, [4, 10], [4, 24]]]]], [], []], "value", ["subexpr", "@mut", [["get", "currentlySelectedValue", ["loc", [null, [5, 8], [5, 30]]]]], [], []], "isEdited", ["subexpr", "@mut", [["get", "isEdited", ["loc", [null, [6, 11], [6, 19]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "isPusherEdited", ["loc", [null, [7, 17], [7, 31]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "isErrored", ["loc", [null, [8, 12], [8, 21]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isDisabled", ["loc", [null, [9, 13], [9, 23]]]]], [], []], "onValueChange", ["subexpr", "action", ["assigneeSelected"], [], ["loc", [null, [10, 16], [10, 43]]]], "emptyLabel", ["subexpr", "t", ["cases.unassigned"], [], ["loc", [null, [11, 13], [11, 35]]]], "hasEmptyOption", false], ["loc", [null, [1, 0], [13, 2]]]]],
       locals: [],
       templates: []
     };
@@ -24433,7 +24439,7 @@ define("frontend-cp/components/ko-dropdown/container/template", ["exports"], fun
     };
   })());
 });
-define('frontend-cp/components/ko-dropdown/drill-down/component', ['exports', 'ember', 'npm:lodash'], function (exports, _ember, _npmLodash) {
+define('frontend-cp/components/ko-dropdown/drill-down/component', ['exports', 'ember', 'npm:lodash', 'ember-sanitize/utils/sanitize'], function (exports, _ember, _npmLodash, _emberSanitizeUtilsSanitize) {
   var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
   function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
@@ -24455,13 +24461,22 @@ define('frontend-cp/components/ko-dropdown/drill-down/component', ['exports', 'e
 
     // State
     currentPath: null,
+    sanitizedOptions: [],
 
     resetState: _ember['default'].on('init', 'didReceiveAttrs', function () {
       this.set('currentPath', []);
+
+      var options = this.get('options');
+
+      var sanitizedOptions = options.map(function (option) {
+        return { id: option.id, value: (0, _emberSanitizeUtilsSanitize.sanitize)(option.value), children: option.children };
+      });
+
+      this.set('sanitizedOptions', sanitizedOptions);
     }),
 
     // CPs
-    currentHierarchyLevel: _ember['default'].computed('options', 'currentPath.[]', function () {
+    currentHierarchyLevel: _ember['default'].computed('sanitizedOptions', 'currentPath.[]', function () {
       var find = function find(_x, _x2, _x3) {
         var _again = true;
 
@@ -24501,7 +24516,7 @@ define('frontend-cp/components/ko-dropdown/drill-down/component', ['exports', 'e
         }
       };
 
-      var items = find({ children: this.get('options') }, this.get('currentPath'), []);
+      var items = find({ children: this.get('sanitizedOptions') }, this.get('currentPath'), []);
       if (this.get('hasEmptyOption') && this.get('currentPath').length === 0) {
         items.unshift({
           type: 'empty',
@@ -24518,7 +24533,7 @@ define('frontend-cp/components/ko-dropdown/drill-down/component', ['exports', 'e
       return items;
     }),
 
-    flatOptions: _ember['default'].computed('options', function () {
+    flatOptions: _ember['default'].computed('sanitizedOptions', function () {
       var flatten = function flatten(options) {
         return _npmLodash['default'].flatten(options.map(function (option) {
           var children = flatten(option.children || []).map(function (item) {
@@ -24532,13 +24547,13 @@ define('frontend-cp/components/ko-dropdown/drill-down/component', ['exports', 'e
         }));
       };
 
-      return flatten(this.get('options'));
+      return flatten(this.get('sanitizedOptions'));
     }),
 
     // We can't listen for deeply nested changes in a data structure which can go
     // infinitely deep. Thus the implicit contract between this and parent is
     // immutability of `options`.
-    formattedValue: _ember['default'].computed('options', 'value', function () {
+    formattedValue: _ember['default'].computed('sanitizedOptions', 'value', function () {
       var value = this.get('value');
       if (!value) {
         return this.get('emptyLabel');
@@ -24561,7 +24576,7 @@ define('frontend-cp/components/ko-dropdown/drill-down/component', ['exports', 'e
         }
       };
 
-      return find(this.get('options')).join(' / ');
+      return find(this.get('sanitizedOptions')).join(' / ');
     }),
 
     computedExtra: _ember['default'].computed('extra', 'formattedValue', function () {
@@ -29141,6 +29156,7 @@ define('frontend-cp/components/ko-info-bar/field/drill-down/component', ['export
   exports['default'] = _ember['default'].Component.extend({
     // Params
     title: null,
+    placeholder: null,
     options: [],
     value: null,
     isEdited: false,
@@ -29273,7 +29289,7 @@ define("frontend-cp/components/ko-info-bar/field/drill-down/template", ["exports
             "column": 0
           },
           "end": {
-            "line": 17,
+            "line": 18,
             "column": 0
           }
         },
@@ -29296,7 +29312,7 @@ define("frontend-cp/components/ko-info-bar/field/drill-down/template", ["exports
         dom.insertBoundary(fragment, 0);
         return morphs;
       },
-      statements: [["inline", "ko-dropdown/drill-down", [], ["options", ["subexpr", "@mut", [["get", "options", ["loc", [null, [2, 10], [2, 17]]]]], [], []], "value", ["subexpr", "@mut", [["get", "value", ["loc", [null, [3, 8], [3, 13]]]]], [], []], "onValueChange", ["subexpr", "@mut", [["get", "onValueChange", ["loc", [null, [4, 16], [4, 29]]]]], [], []], "emptyLabel", ["subexpr", "@mut", [["get", "emptyLabel", ["loc", [null, [5, 13], [5, 23]]]]], [], []], "hasEmptyOption", ["subexpr", "@mut", [["get", "hasEmptyOption", ["loc", [null, [6, 17], [6, 31]]]]], [], []], "triggerComponent", "ko-info-bar/field/drill-down/trigger", "optionsComponent", "ko-info-bar/field/drill-down/options", "isDisabled", ["subexpr", "@mut", [["get", "isDisabled", ["loc", [null, [9, 13], [9, 23]]]]], [], []], "extra", ["subexpr", "hash", [], ["title", ["get", "title", ["loc", [null, [11, 10], [11, 15]]]], "isEdited", ["get", "isEdited", ["loc", [null, [12, 13], [12, 21]]]], "isPusherEdited", ["get", "isPusherEdited", ["loc", [null, [13, 19], [13, 33]]]], "isErrored", ["get", "isErrored", ["loc", [null, [14, 14], [14, 23]]]]], ["loc", [null, [10, 8], [15, 3]]]]], ["loc", [null, [1, 0], [16, 2]]]]],
+      statements: [["inline", "ko-dropdown/drill-down", [], ["options", ["subexpr", "@mut", [["get", "options", ["loc", [null, [2, 10], [2, 17]]]]], [], []], "value", ["subexpr", "@mut", [["get", "value", ["loc", [null, [3, 8], [3, 13]]]]], [], []], "onValueChange", ["subexpr", "@mut", [["get", "onValueChange", ["loc", [null, [4, 16], [4, 29]]]]], [], []], "emptyLabel", ["subexpr", "@mut", [["get", "emptyLabel", ["loc", [null, [5, 13], [5, 23]]]]], [], []], "hasEmptyOption", ["subexpr", "@mut", [["get", "hasEmptyOption", ["loc", [null, [6, 17], [6, 31]]]]], [], []], "triggerComponent", "ko-info-bar/field/drill-down/trigger", "optionsComponent", "ko-info-bar/field/drill-down/options", "isDisabled", ["subexpr", "@mut", [["get", "isDisabled", ["loc", [null, [9, 13], [9, 23]]]]], [], []], "extra", ["subexpr", "hash", [], ["title", ["get", "title", ["loc", [null, [11, 10], [11, 15]]]], "placeholder", ["get", "placeholder", ["loc", [null, [12, 16], [12, 27]]]], "isEdited", ["get", "isEdited", ["loc", [null, [13, 13], [13, 21]]]], "isPusherEdited", ["get", "isPusherEdited", ["loc", [null, [14, 19], [14, 33]]]], "isErrored", ["get", "isErrored", ["loc", [null, [15, 14], [15, 23]]]]], ["loc", [null, [10, 8], [16, 3]]]]], ["loc", [null, [1, 0], [17, 2]]]]],
       locals: [],
       templates: []
     };
@@ -29356,6 +29372,49 @@ define('frontend-cp/components/ko-info-bar/field/drill-down/trigger/component', 
 define("frontend-cp/components/ko-info-bar/field/drill-down/trigger/template", ["exports"], function (exports) {
   exports["default"] = Ember.HTMLBars.template((function () {
     var child0 = (function () {
+      var child0 = (function () {
+        return {
+          meta: {
+            "revision": "Ember@1.13.13",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 18,
+                "column": 2
+              },
+              "end": {
+                "line": 20,
+                "column": 2
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-info-bar/field/drill-down/trigger/template.hbs"
+          },
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("    ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("span");
+            dom.setAttribute(el1, "class", "ko-info-bar_field_drill-down__placeholder");
+            var el2 = dom.createComment("");
+            dom.appendChild(el1, el2);
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 0, 0);
+            return morphs;
+          },
+          statements: [["content", "extra.placeholder", ["loc", [null, [19, 60], [19, 81]]]]],
+          locals: [],
+          templates: []
+        };
+      })();
       return {
         meta: {
           "revision": "Ember@1.13.13",
@@ -29366,7 +29425,7 @@ define("frontend-cp/components/ko-info-bar/field/drill-down/trigger/template", [
               "column": 0
             },
             "end": {
-              "line": 19,
+              "line": 22,
               "column": 0
             }
           },
@@ -29377,6 +29436,8 @@ define("frontend-cp/components/ko-info-bar/field/drill-down/trigger/template", [
         hasRendered: false,
         buildFragment: function buildFragment(dom) {
           var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("  ");
           dom.appendChild(el0, el1);
           var el1 = dom.createElement("span");
@@ -29389,13 +29450,15 @@ define("frontend-cp/components/ko-info-bar/field/drill-down/trigger/template", [
           return el0;
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 0, 0);
+          var morphs = new Array(2);
+          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+          morphs[1] = dom.createMorphAt(dom.childAt(fragment, [2]), 0, 0);
+          dom.insertBoundary(fragment, 0);
           return morphs;
         },
-        statements: [["content", "value", ["loc", [null, [18, 58], [18, 67]]]]],
+        statements: [["block", "if", [["subexpr", "not", [["get", "value", ["loc", [null, [18, 13], [18, 18]]]]], [], ["loc", [null, [18, 8], [18, 19]]]]], [], 0, null, ["loc", [null, [18, 2], [20, 9]]]], ["content", "value", ["loc", [null, [21, 58], [21, 67]]]]],
         locals: [],
-        templates: []
+        templates: [child0]
       };
     })();
     return {
@@ -29408,7 +29471,7 @@ define("frontend-cp/components/ko-info-bar/field/drill-down/trigger/template", [
             "column": 0
           },
           "end": {
-            "line": 20,
+            "line": 23,
             "column": 0
           }
         },
@@ -29460,7 +29523,7 @@ define("frontend-cp/components/ko-info-bar/field/drill-down/trigger/template", [
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["attribute", "class", ["concat", ["ko-info-bar_field_drill-down_trigger__icon ", ["subexpr", "if", [["get", "select.isOpen", ["loc", [null, [1, 58], [1, 71]]]], "i-search", "i-select"], [], ["loc", [null, [1, 53], [1, 95]]]]]]], ["content", "extra.title", ["loc", [null, [2, 36], [2, 51]]]], ["attribute", "class", ["concat", ["ko-info-bar_field_drill-down_trigger__input ", ["subexpr", "if", [["subexpr", "not", [["get", "select.isOpen", ["loc", [null, [10, 63], [10, 76]]]]], [], ["loc", [null, [10, 58], [10, 77]]]], "ko-info-bar_field_drill-down_trigger__input--hidden"], [], ["loc", [null, [10, 53], [10, 133]]]]]]], ["attribute", "value", ["get", "value", ["loc", [null, [11, 10], [11, 15]]]]], ["attribute", "onmousedown", ["subexpr", "action", ["handleMouseDown"], [], ["loc", [null, [12, 14], [12, 42]]]]], ["attribute", "onkeydown", ["subexpr", "action", ["handleKeyDown"], [], ["loc", [null, [13, 12], [13, 38]]]]], ["attribute", "onfocus", ["get", "select.actions.open", ["loc", [null, [14, 12], [14, 31]]]]], ["attribute", "oninput", ["subexpr", "action", [["get", "select.actions.search", ["loc", [null, [15, 19], [15, 40]]]]], ["value", "target.value"], ["loc", [null, [15, 10], [15, 63]]]]], ["block", "if", [["subexpr", "not", [["get", "select.isOpen", ["loc", [null, [17, 11], [17, 24]]]]], [], ["loc", [null, [17, 6], [17, 25]]]]], [], 0, null, ["loc", [null, [17, 0], [19, 7]]]]],
+      statements: [["attribute", "class", ["concat", ["ko-info-bar_field_drill-down_trigger__icon ", ["subexpr", "if", [["get", "select.isOpen", ["loc", [null, [1, 58], [1, 71]]]], "i-search", "i-select"], [], ["loc", [null, [1, 53], [1, 95]]]]]]], ["content", "extra.title", ["loc", [null, [2, 36], [2, 51]]]], ["attribute", "class", ["concat", ["ko-info-bar_field_drill-down_trigger__input ", ["subexpr", "if", [["subexpr", "not", [["get", "select.isOpen", ["loc", [null, [10, 63], [10, 76]]]]], [], ["loc", [null, [10, 58], [10, 77]]]], "ko-info-bar_field_drill-down_trigger__input--hidden"], [], ["loc", [null, [10, 53], [10, 133]]]]]]], ["attribute", "value", ["get", "value", ["loc", [null, [11, 10], [11, 15]]]]], ["attribute", "onmousedown", ["subexpr", "action", ["handleMouseDown"], [], ["loc", [null, [12, 14], [12, 42]]]]], ["attribute", "onkeydown", ["subexpr", "action", ["handleKeyDown"], [], ["loc", [null, [13, 12], [13, 38]]]]], ["attribute", "onfocus", ["get", "select.actions.open", ["loc", [null, [14, 12], [14, 31]]]]], ["attribute", "oninput", ["subexpr", "action", [["get", "select.actions.search", ["loc", [null, [15, 19], [15, 40]]]]], ["value", "target.value"], ["loc", [null, [15, 10], [15, 63]]]]], ["block", "if", [["subexpr", "not", [["get", "select.isOpen", ["loc", [null, [17, 11], [17, 24]]]]], [], ["loc", [null, [17, 6], [17, 25]]]]], [], 0, null, ["loc", [null, [17, 0], [22, 7]]]]],
       locals: [],
       templates: [child0]
     };
@@ -66006,6 +66069,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+d6f6871b"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+6c5d8605"});
 }
 /* jshint ignore:end */
