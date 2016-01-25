@@ -16219,8 +16219,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
     caseDates: _ember['default'].computed('case.createdAt', 'case.updatedAt', 'case.activityAt', function () {
       return [{ title: this.get('intl').findTranslationByKey('users.metadata.created'),
         value: this.get('case.createdAt') }, { title: this.get('intl').findTranslationByKey('users.metadata.updated'),
-        value: this.get('case.updatedAt') }, { title: this.get('intl').findTranslationByKey('users.metadata.lastseen'),
-        value: this.get('case.visitedAt') }];
+        value: this.get('case.updatedAt') }];
     }),
 
     replyType: _ember['default'].computed('channel', function () {
@@ -30729,7 +30728,7 @@ define("frontend-cp/components/ko-info-bar/metadata/template", ["exports"], func
           morphs[1] = dom.createMorphAt(dom.childAt(fragment, [3, 1]), 0, 0);
           return morphs;
         },
-        statements: [["content", "row.title", ["loc", [null, [4, 4], [4, 17]]]], ["inline", "ko-datetime-format", [["get", "row.value", ["loc", [null, [7, 33], [7, 42]]]]], [], ["loc", [null, [7, 12], [7, 44]]]]],
+        statements: [["content", "row.title", ["loc", [null, [4, 4], [4, 17]]]], ["inline", "if", [["get", "row.value", ["loc", [null, [7, 17], [7, 26]]]], ["subexpr", "ko-datetime-format", [["get", "row.value", ["loc", [null, [7, 47], [7, 56]]]]], [], ["loc", [null, [7, 27], [7, 57]]]], "-"], [], ["loc", [null, [7, 12], [7, 63]]]]],
         locals: ["row"],
         templates: []
       };
@@ -31618,8 +31617,7 @@ define('frontend-cp/components/ko-organisation-content/component', ['exports', '
     organisationDates: _ember['default'].computed('model.createdAt', 'model.updatedAt', 'model.activityAt', function () {
       return [{ title: this.get('intl').findTranslationByKey('users.metadata.created'),
         value: this.get('model.createdAt') }, { title: this.get('intl').findTranslationByKey('users.metadata.updated'),
-        value: this.get('model.updatedAt') }, { title: this.get('intl').findTranslationByKey('users.metadata.lastseen'),
-        value: this.get('model.visitedAt') }];
+        value: this.get('model.updatedAt') }];
     }),
 
     customFields: _ember['default'].computed('model.customFields', function () {
@@ -66539,6 +66537,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+131dc109"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+d52b03e6"});
 }
 /* jshint ignore:end */
