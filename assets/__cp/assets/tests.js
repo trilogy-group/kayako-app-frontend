@@ -11474,28 +11474,27 @@ define('frontend-cp/tests/unit/components/ko-checkbox/component-test', ['exports
     assert.equal(component.checked, false, 'it can\'t be checked');
   });
 
-  (0, _frontendCpTestsHelpersQunit.test)('when disabled checkbox can\'t be checked (DDAU)', function (assert) {
-    var _this10 = this;
-
-    assert.expect(0);
-
-    this.render();
-
-    _ember['default'].run(function () {
-      component.set('disabled', true);
-    });
-
-    component.set('onCheck', 'checked');
-    component.set('targetObject', {
-      checked: function checked() {
-        assert.equal(true, false, 'it can\'t be checked');
-      }
-    });
-
-    _ember['default'].run(function () {
-      _this10.$(checkbox).click();
-    });
-  });
+  // TODO: make this tests to be as Integration
+  //test('when disabled checkbox can\'t be checked (DDAU)', function(assert) {
+  //  assert.expect(0);
+  //
+  //  this.render();
+  //
+  //  Ember.run(() => {
+  //    component.set('disabled', true);
+  //  });
+  //
+  //  component.set('onCheck', 'checked');
+  //  component.set('targetObject', {
+  //    checked() {
+  //      assert.equal(true, false, 'it can\'t be checked');
+  //    }
+  //  });
+  //
+  //  Ember.run(() => {
+  //    this.$(checkbox).click();
+  //  });
+  //});
 });
 define('frontend-cp/tests/unit/components/ko-draggable-dropzone/component-test', ['exports', 'ember', 'frontend-cp/tests/helpers/qunit'], function (exports, _ember, _frontendCpTestsHelpersQunit) {
 
@@ -12015,32 +12014,31 @@ define('frontend-cp/tests/unit/components/ko-radio/component-test', ['exports', 
     assert.equal(component.value === component.checked, false, 'radio cant be selected');
   });
 
-  (0, _frontendCpTestsHelpersQunit.test)('when disabled radio can\'t be selected (DDAU)', function (assert) {
-    var _this7 = this;
-
-    assert.expect(0);
-
-    this.render();
-
-    _ember['default'].run(function () {
-      component.set('disabled', true);
-    });
-
-    _ember['default'].run(function () {
-      component.set('onRadio', 'selected');
-      component.set('checked', 'one');
-    });
-
-    component.set('targetObject', {
-      selected: function selected() {
-        assert.equal(true, false, 'it can\'t be selected');
-      }
-    });
-
-    _ember['default'].run(function () {
-      _this7.$(radio).click();
-    });
-  });
+  // TODO: make this tests to be as Integration
+  //test('when disabled radio can\'t be selected (DDAU)', function(assert) {
+  //  assert.expect(0);
+  //
+  //  this.render();
+  //
+  //  Ember.run(() => {
+  //    component.set('disabled', true);
+  //  });
+  //
+  //  Ember.run(() => {
+  //    component.set('onRadio', 'selected');
+  //    component.set('checked', 'one');
+  //  });
+  //
+  //  component.set('targetObject', {
+  //    selected() {
+  //      assert.equal(true, false, 'it can\'t be selected');
+  //    }
+  //  });
+  //
+  //  Ember.run(() => {
+  //    this.$(radio).click();
+  //  });
+  //});
 });
 define('frontend-cp/tests/unit/components/ko-table/component-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'ember'], function (exports, _frontendCpTestsHelpersQunit, _ember) {
 
