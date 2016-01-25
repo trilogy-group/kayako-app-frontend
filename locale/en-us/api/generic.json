@@ -8,6 +8,7 @@
   "datepicker.clear": "Clear",
   "datepicker.close": "Close",
   "datepicker.today": "Today",
+  "dateselect.placeholder": "Select a date",
   "filesize": "{size, number, filesize} {unit, select,\n    mb {MB}\n    kb {KB}\n  }",
   "logout": "Logout",
   "view_your_profile": "View your profile",
