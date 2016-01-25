@@ -13819,19 +13819,17 @@ define('frontend-cp/tests/unit/services/plan-test', ['exports', 'ember-qunit', '
     });
   });
 });
-define('frontend-cp/tests/unit/services/suggestion/exclusion-test', ['exports', 'ember', 'ember-qunit'], function (exports, _ember, _emberQunit) {
+define('frontend-cp/tests/unit/utils/exclusion-test', ['exports', 'ember', 'qunit', 'ember-qunit', 'frontend-cp/utils/exclusion'], function (exports, _ember, _qunit, _emberQunit, _frontendCpUtilsExclusion) {
 
-  (0, _emberQunit.moduleFor)('service:suggestion/exclusion', 'Unit | Service | suggestion/exclusion');
+  (0, _qunit.module)('Unit | Utils | exclusion');
 
   (0, _emberQunit.test)('it excludes same records when they are strings', function (assert) {
     assert.expect(1);
 
-    var service = this.subject();
-
     var data = [_ember['default'].Object.create({ name: 'maintenance' }), _ember['default'].Object.create({ name: 'rejected' }), _ember['default'].Object.create({ name: 'approved' }), _ember['default'].Object.create({ name: 'hello-kitty' })];
     var exclusions = ['hello-kitty'];
 
-    var excluded = service.exclude(data, exclusions);
+    var excluded = (0, _frontendCpUtilsExclusion.exclude)(data, exclusions);
 
     excluded = excluded.map(function (record) {
       return record.get('name');
@@ -13843,12 +13841,10 @@ define('frontend-cp/tests/unit/services/suggestion/exclusion-test', ['exports', 
   (0, _emberQunit.test)('it excludes same records when they are emails', function (assert) {
     assert.expect(1);
 
-    var service = this.subject();
-
     var data = [_ember['default'].Object.create({ name: 'demo@demo.com' }), _ember['default'].Object.create({ name: 'demo.demo@demo.com' }), _ember['default'].Object.create({ name: 'any.random.email+demo@demo.com' })];
     var exclusions = ['any.random.email+demo@demo.com'];
 
-    var excluded = service.exclude(data, exclusions);
+    var excluded = (0, _frontendCpUtilsExclusion.exclude)(data, exclusions);
 
     excluded = excluded.map(function (record) {
       return record.get('name');
@@ -13860,96 +13856,70 @@ define('frontend-cp/tests/unit/services/suggestion/exclusion-test', ['exports', 
   (0, _emberQunit.test)('it do not fail if data or exclusions are null or empty', function (assert) {
     assert.expect(3);
 
-    var service = this.subject();
-
     var data = [_ember['default'].Object.create({ name: 'maintenance' }), _ember['default'].Object.create({ name: 'rejected' }), _ember['default'].Object.create({ name: 'approved' })];
 
-    assert.deepEqual(service.exclude(data, null).map(function (record) {
+    assert.deepEqual((0, _frontendCpUtilsExclusion.exclude)(data, null).map(function (record) {
       return record.get('name');
     }), ['maintenance', 'rejected', 'approved']);
 
-    assert.deepEqual(service.exclude(null, null).map(function (record) {
+    assert.deepEqual((0, _frontendCpUtilsExclusion.exclude)(null, null).map(function (record) {
       return record.get('name');
     }), []);
-    assert.deepEqual(service.exclude(null, ['approved']).map(function (record) {
+    assert.deepEqual((0, _frontendCpUtilsExclusion.exclude)(null, ['approved']).map(function (record) {
       return record.get('name');
     }), []);
   });
 });
-define('frontend-cp/tests/unit/services/suggestion/promise-queue-test', ['exports', 'ember', 'ember-qunit'], function (exports, _ember, _emberQunit) {
+define('frontend-cp/tests/unit/utils/promise-queue-test', ['exports', 'ember', 'qunit', 'ember-qunit', 'frontend-cp/utils/promise-queue'], function (exports, _ember, _qunit, _emberQunit, _frontendCpUtilsPromiseQueue) {
 
-  (0, _emberQunit.moduleFor)('service:suggestion/promise-queue', 'Unit | Service | suggestion/promise queue');
+  (0, _qunit.module)('Unit | Utils | promise-queue');
 
-  (0, _emberQunit.test)('it stores promises by name and term', function (assert) {
-    var service = this.subject();
-    service.queue = {};
+  (0, _emberQunit.test)('it stores promises by term', function (assert) {
+    var queue = new _frontendCpUtilsPromiseQueue['default']();
 
     var promise = new _ember['default'].RSVP.Promise(function (resolve, reject) {
       resolve();
     });
 
-    var nameOne = 'testName';
-    var nameTwo = 'anotherName';
+    queue.push('a', promise);
+    queue.push('ab', promise);
+    queue.push('abc', promise);
 
-    service.push(nameOne, 'a', promise);
-    service.push(nameOne, 'ab', promise);
-    service.push(nameOne, 'abc', promise);
-
-    service.push(nameTwo, 'a', promise);
-    service.push(nameTwo, 'ab', promise);
-
-    assert.equal(3, service.queue[nameOne].length);
-    assert.equal(2, service.queue[nameTwo].length);
+    assert.equal(3, queue.queue.length);
   });
 
   (0, _emberQunit.test)('it validates if promise is discarded (not the last one)', function (assert) {
-    var service = this.subject();
-    service.queue = {};
+    var queue = new _frontendCpUtilsPromiseQueue['default']();
 
     var promise = new _ember['default'].RSVP.Promise(function (resolve, reject) {
       resolve();
     });
 
-    service.push('testName', 'a', promise);
-    service.push('testName', 'ab', promise);
-    service.push('testName', 'abc', promise);
+    queue.push('a', promise);
+    queue.push('ab', promise);
+    queue.push('abc', promise);
 
-    assert.equal(true, service.isDiscarded('testName', 'a'));
-    assert.equal(true, service.isDiscarded('testName', 'ab'));
-    assert.equal(false, service.isDiscarded('testName', 'abc'));
+    assert.equal(true, queue.isDiscarded('a'));
+    assert.equal(true, queue.isDiscarded('ab'));
+    assert.equal(false, queue.isDiscarded('abc'));
   });
 
-  (0, _emberQunit.test)('it flushes all promise queue by name', function (assert) {
-    var service = this.subject();
-    service.queue = {};
+  (0, _emberQunit.test)('it flushes all promise queue', function (assert) {
+    var queue = new _frontendCpUtilsPromiseQueue['default']();
 
     var promise = new _ember['default'].RSVP.Promise(function (resolve, reject) {
       resolve();
     });
 
-    var nameOne = 'testName';
-    var nameTwo = 'anotherName';
+    queue.push('a', promise);
+    queue.push('ab', promise);
+    queue.push('abc', promise);
 
-    service.push(nameOne, 'a', promise);
-    service.push(nameOne, 'ab', promise);
-    service.push(nameOne, 'abc', promise);
+    assert.equal(3, queue.queue.length);
 
-    service.push(nameTwo, 'a', promise);
-    service.push(nameTwo, 'ab', promise);
+    queue.flush();
 
-    assert.equal(3, service.queue[nameOne].length);
-    assert.equal(2, service.queue[nameTwo].length);
-
-    service.flush(nameOne);
-
-    assert.equal('undefined', typeof service.queue[nameOne]);
-    assert.equal(2, service.queue[nameTwo].length);
-
-    service.flush(nameTwo);
-    assert.equal('undefined', typeof service.queue[nameOne]);
-    assert.equal('undefined', typeof service.queue[nameTwo]);
-
-    assert.deepEqual({}, service.queue);
+    assert.equal(0, queue.queue.length);
   });
 });
 /* jshint ignore:start */
