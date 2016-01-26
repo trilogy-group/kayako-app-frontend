@@ -38782,25 +38782,63 @@ define("frontend-cp/components/ko-toggle/template", ["exports"], function (expor
 });
 define('frontend-cp/components/ko-universal-search/component', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = _ember['default'].Component.extend({
+    // Attributes
     searchResults: null,
     searchQuery: null,
-    loadSearchRouteAction: 'loadSearchRoute',
+    onLoadSearchRoute: null,
+    onSearchChanged: null,
+
+    // State
+    highlightedResult: null,
+    isLatestSearchPending: false,
+    isMouseHighlight: true,
+
+    // Services
+    universalSearchService: _ember['default'].inject.service('suggestion/universal'),
     store: _ember['default'].inject.service(),
     metrics: _ember['default'].inject.service(),
-    highlightedResult: null,
-
-    universalSearchService: _ember['default'].inject.service('suggestion/universal'),
-    isSearching: _ember['default'].computed.bool('searchQuery'),
-    isLatestSearchPending: false,
 
     didChangeSearchingStatus: _ember['default'].on('init', _ember['default'].observer('isSearching', function () {
-      this.sendAction('searchingChanged', this.get('isSearching'));
+      this.attrs.onSearchChanged(this.get('isSearching'));
     })),
 
     onSearchQueryChanged: _ember['default'].observer('searchQuery', function () {
       this.set('isLatestSearchPending', true);
+      this.set('highlightedResult', null);
       _ember['default'].run.debounce(this, 'fireSearchAction', 250);
     }),
+
+    isSearching: _ember['default'].computed.bool('searchQuery'),
+    isSearchLoading: _ember['default'].computed.and('searchQuery', 'isLatestSearchPending'),
+
+    flattenedResults: _ember['default'].computed('searchResults', function () {
+      return this.get('searchResults').reduce(function (results, searchResultGroup) {
+        searchResultGroup.results.forEach(function (result) {
+          results.pushObject(result);
+        });
+
+        return results;
+      }, []);
+    }),
+
+    adjustScroll: function adjustScroll(highlightIndex) {
+      var down = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
+
+      var rowHeight = 42;
+      var highlight = rowHeight * highlightIndex;
+      var element = _ember['default'].$('.universal-search__results');
+
+      if (down) {
+        var offsetHeight = 9 * rowHeight;
+        if (highlight - element.scrollTop() > offsetHeight) {
+          element.scrollTop(highlight - offsetHeight);
+        }
+      } else {
+        if (highlight < element.scrollTop()) {
+          element.scrollTop(highlight);
+        }
+      }
+    },
 
     fireSearchAction: function fireSearchAction() {
       var _this = this;
@@ -38830,48 +38868,45 @@ define('frontend-cp/components/ko-universal-search/component', ['exports', 'embe
       });
     },
 
-    flattenedResults: _ember['default'].computed('searchResults', function () {
-      return this.get('searchResults').reduce(function (results, searchResultGroup) {
-        searchResultGroup.results.forEach(function (result) {
-          results.pushObject(result);
-        });
-
-        return results;
-      }, []);
-    }),
-
     actions: {
-      clearSearchQuery: function clearSearchQuery() {
+      clearSearch: function clearSearch() {
         this.set('searchQuery', '');
         this.set('searchResults', []);
+        this.set('highlightedResult', null);
       },
 
       highlightResult: function highlightResult(highlightedResult) {
-        this.set('highlightedResult', highlightedResult);
+        if (this.get('isMouseHighlight')) {
+          this.set('highlightedResult', highlightedResult);
+        }
+        this.set('isMouseHighlight', true);
       },
 
-      selectHighlightedResultAction: function selectHighlightedResultAction() {
+      selectHighlightedResult: function selectHighlightedResult() {
         var result = this.get('highlightedResult');
 
-        this.get('metrics').trackEvent({
-          event: 'Sitewide Search Record Clicked',
-          category: 'Sitewide Search',
-          action: 'click',
-          label: result.resource
-        });
+        if (result) {
+          this.get('metrics').trackEvent({
+            event: 'Sitewide Search Record Clicked',
+            category: 'Sitewide Search',
+            action: 'click',
+            label: result.resource
+          });
+          this.send('clearSearch');
 
-        switch (result.resource) {
-          case 'user':
-            this.sendAction('loadSearchRouteAction', '/agent/users/', result.id);
-            break;
-          case 'case':
-            this.sendAction('loadSearchRouteAction', '/agent/cases/', result.id);
-            break;
-          case 'organization':
-            this.sendAction('loadSearchRouteAction', '/agent/organisations/', result.id);
-            break;
-          default:
-            break;
+          switch (result.resource) {
+            case 'user':
+              this.attrs.onLoadSearchRoute('/agent/users/', result.id);
+              break;
+            case 'case':
+              this.attrs.onLoadSearchRoute('/agent/cases/', result.id);
+              break;
+            case 'organization':
+              this.attrs.onLoadSearchRoute('/agent/organisations/', result.id);
+              break;
+            default:
+              break;
+          }
         }
       },
 
@@ -38879,69 +38914,65 @@ define('frontend-cp/components/ko-universal-search/component', ['exports', 'embe
         var currentlyHighlightedResult = this.get('highlightedResult');
         var results = this.get('flattenedResults');
 
+        this.set('isMouseHighlight', false);
+
         if (!currentlyHighlightedResult) {
           this.set('highlightedResult', results.get('firstObject'));
           return;
         }
 
-        var newHighlightedIndex = results.indexOf(currentlyHighlightedResult) + 1;
-
-        // back to the start if we try to go above the list
-        if (newHighlightedIndex === results.length) {
-          newHighlightedIndex = 0;
+        var currentIndex = results.indexOf(currentlyHighlightedResult);
+        if (currentIndex < results.length - 1) {
+          this.set('highlightedResult', results.objectAt(currentIndex + 1));
+          this.adjustScroll(currentIndex + 1, true);
         }
-        this.set('highlightedResult', results.objectAt(newHighlightedIndex));
       },
 
       highlightPreviousResult: function highlightPreviousResult() {
         var currentlyHighlightedResult = this.get('highlightedResult');
         var results = this.get('flattenedResults');
+        var currentIndex = results.indexOf(currentlyHighlightedResult);
 
-        if (!currentlyHighlightedResult) {
-          this.set('highlightedResult', results.get('lastObject'));
-          return;
-        }
-
-        var newHighlightedIndex = results.indexOf(currentlyHighlightedResult) - 1;
+        this.set('isMouseHighlight', false);
 
         // back to the start if we try to go below the list
-        if (newHighlightedIndex === -1) {
-          newHighlightedIndex = results.length - 1;
+        if (currentIndex > 0) {
+          this.set('highlightedResult', results.objectAt(currentIndex - 1));
+          this.adjustScroll(currentIndex - 1, false);
+        } else {
+          this.set('highlightedResult', null);
         }
-        this.set('highlightedResult', results.objectAt(newHighlightedIndex));
       }
     }
   });
 });
 define('frontend-cp/components/ko-universal-search/entry/component', ['exports', 'ember', 'frontend-cp/lib/keycodes'], function (exports, _ember, _frontendCpLibKeycodes) {
   exports['default'] = _ember['default'].TextField.extend({
-    selectHighlightedResultAction: 'selectHighlightedResultAction',
-    highlightNextResultAction: 'highlightNextResult',
-    highlightPreviousResultAction: 'highlightPreviousResult',
-    stopSearchingAction: 'clearSearchQuery',
+    onSelectHighlightedResult: null,
+    onHighlightNextResult: null,
+    onHighlightPreviousResult: null,
+    onStopSearch: null,
 
     keyDown: function keyDown(e) {
       switch (e.keyCode) {
         case _frontendCpLibKeycodes.down:
           {
-            this.sendAction('highlightNextResultAction');
+            this.attrs.onHighlightNextResult();
             break;
           }
         case _frontendCpLibKeycodes.up:
           {
-            this.sendAction('highlightPreviousResultAction');
+            this.attrs.onHighlightPreviousResult();
             break;
           }
         case _frontendCpLibKeycodes.enter:
           {
-            //event.preventDefault();
-            this.sendAction('selectHighlightedResultAction');
-            this.sendAction('stopSearchingAction');
+            this.attrs.onSelectHighlightedResult();
             return false;
           }
         case _frontendCpLibKeycodes.escape:
           {
-            this.sendAction('stopSearchingAction');
+            this.attrs.onStopSearch();
           }
       }
     }
@@ -38952,8 +38983,10 @@ define('frontend-cp/components/ko-universal-search/result/component', ['exports'
     //Parmas:
     result: null,
     isHighlighted: false,
-    selectHighlightedResultAction: 'selectHighlightedResultAction',
-    stopSearchingAction: 'clearSearchQuery',
+    onSelectHighlightedResult: null,
+    onHighlight: null,
+    onHighlightPreviousResult: null,
+    onStopSearch: null,
 
     tagName: 'li',
     classNameBindings: ['isHighlighted:is-active'],
@@ -38963,12 +38996,12 @@ define('frontend-cp/components/ko-universal-search/result/component', ['exports'
     }),
 
     highlight: _ember['default'].on('mouseEnter', function () {
-      this.sendAction('on-highlight', this.get('result'));
+      this.attrs.onHighlight(this.get('result'));
     }),
 
     click: function click() {
-      this.sendAction('selectHighlightedResultAction');
-      this.sendAction('stopSearchingAction');
+      this.attrs.onSelectHighlightedResult();
+      this.attrs.onStopSearch();
     }
 
   });
@@ -39043,11 +39076,51 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
           "loc": {
             "source": null,
             "start": {
-              "line": 3,
+              "line": 1,
+              "column": 0
+            },
+            "end": {
+              "line": 4,
+              "column": 0
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-universal-search/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1, "class", "ko-universal-search__overlay");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var element1 = dom.childAt(fragment, [0]);
+          var morphs = new Array(1);
+          morphs[0] = dom.createAttrMorph(element1, 'onclick');
+          return morphs;
+        },
+        statements: [["attribute", "onclick", ["subexpr", "action", ["clearSearch"], [], ["loc", [null, [3, 12], [3, 36]]]]]],
+        locals: [],
+        templates: []
+      };
+    })();
+    var child1 = (function () {
+      return {
+        meta: {
+          "revision": "Ember@1.13.13",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 8,
               "column": 4
             },
             "end": {
-              "line": 5,
+              "line": 10,
               "column": 4
             }
           },
@@ -39071,23 +39144,23 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [["inline", "ko-loader", [], ["class", "ko-universal-search__loader"], ["loc", [null, [4, 6], [4, 55]]]]],
+        statements: [["inline", "ko-loader", [], ["class", "ko-universal-search__loader"], ["loc", [null, [9, 6], [9, 55]]]]],
         locals: [],
         templates: []
       };
     })();
-    var child1 = (function () {
+    var child2 = (function () {
       return {
         meta: {
           "revision": "Ember@1.13.13",
           "loc": {
             "source": null,
             "start": {
-              "line": 5,
+              "line": 10,
               "column": 4
             },
             "end": {
-              "line": 7,
+              "line": 12,
               "column": 4
             }
           },
@@ -39115,18 +39188,18 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
         templates: []
       };
     })();
-    var child2 = (function () {
+    var child3 = (function () {
       return {
         meta: {
           "revision": "Ember@1.13.13",
           "loc": {
             "source": null,
             "start": {
-              "line": 12,
+              "line": 23,
               "column": 2
             },
             "end": {
-              "line": 14,
+              "line": 25,
               "column": 2
             }
           },
@@ -39155,12 +39228,12 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
           morphs[0] = dom.createAttrMorph(element0, 'onclick');
           return morphs;
         },
-        statements: [["attribute", "onclick", ["subexpr", "action", ["clearSearchQuery"], [], ["loc", [null, [13, 50], [13, 79]]]]]],
+        statements: [["attribute", "onclick", ["subexpr", "action", ["clearSearch"], [], ["loc", [null, [24, 50], [24, 74]]]]]],
         locals: [],
         templates: []
       };
     })();
-    var child3 = (function () {
+    var child4 = (function () {
       var child0 = (function () {
         var child0 = (function () {
           return {
@@ -39169,11 +39242,11 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 22,
+                  "line": 33,
                   "column": 6
                 },
                 "end": {
-                  "line": 28,
+                  "line": 41,
                   "column": 6
                 }
               },
@@ -39197,7 +39270,7 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
               morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
               return morphs;
             },
-            statements: [["inline", "ko-universal-search/result", [], ["result", ["subexpr", "@mut", [["get", "result", ["loc", [null, [24, 13], [24, 19]]]]], [], []], "isHighlighted", ["subexpr", "eq", [["get", "result", ["loc", [null, [25, 24], [25, 30]]]], ["get", "highlightedResult", ["loc", [null, [25, 31], [25, 48]]]]], [], ["loc", [null, [25, 20], [25, 49]]]], "on-highlight", "highlightResult"], ["loc", [null, [23, 6], [27, 8]]]]],
+            statements: [["inline", "ko-universal-search/result", [], ["result", ["subexpr", "@mut", [["get", "result", ["loc", [null, [35, 15], [35, 21]]]]], [], []], "isHighlighted", ["subexpr", "eq", [["get", "result", ["loc", [null, [36, 26], [36, 32]]]], ["get", "highlightedResult", ["loc", [null, [36, 33], [36, 50]]]]], [], ["loc", [null, [36, 22], [36, 51]]]], "onHighlight", ["subexpr", "action", ["highlightResult"], [], ["loc", [null, [37, 20], [37, 46]]]], "onSelectHighlightedResult", ["subexpr", "action", ["selectHighlightedResult"], [], ["loc", [null, [38, 34], [38, 68]]]], "onStopSearch", ["subexpr", "action", ["clearSearch"], [], ["loc", [null, [39, 21], [39, 43]]]]], ["loc", [null, [34, 6], [40, 8]]]]],
             locals: ["result"],
             templates: []
           };
@@ -39208,11 +39281,11 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
             "loc": {
               "source": null,
               "start": {
-                "line": 20,
+                "line": 31,
                 "column": 4
               },
               "end": {
-                "line": 31,
+                "line": 44,
                 "column": 4
               }
             },
@@ -39243,7 +39316,7 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
             morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
             return morphs;
           },
-          statements: [["block", "each", [["get", "resultsGroup.results", ["loc", [null, [22, 14], [22, 34]]]]], [], 0, null, ["loc", [null, [22, 6], [28, 15]]]]],
+          statements: [["block", "each", [["get", "resultsGroup.results", ["loc", [null, [33, 14], [33, 34]]]]], [], 0, null, ["loc", [null, [33, 6], [41, 15]]]]],
           locals: ["resultsGroup"],
           templates: [child0]
         };
@@ -39257,11 +39330,11 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 34,
+                    "line": 47,
                     "column": 8
                   },
                   "end": {
-                    "line": 36,
+                    "line": 49,
                     "column": 8
                   }
                 },
@@ -39285,7 +39358,7 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
                 morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
                 return morphs;
               },
-              statements: [["inline", "t", ["search.searching"], [], ["loc", [null, [35, 10], [35, 34]]]]],
+              statements: [["inline", "t", ["search.searching"], [], ["loc", [null, [48, 10], [48, 34]]]]],
               locals: [],
               templates: []
             };
@@ -39297,11 +39370,11 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 36,
+                    "line": 49,
                     "column": 8
                   },
                   "end": {
-                    "line": 38,
+                    "line": 51,
                     "column": 8
                   }
                 },
@@ -39325,7 +39398,7 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
                 morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
                 return morphs;
               },
-              statements: [["inline", "t", ["search.no-results"], [], ["loc", [null, [37, 10], [37, 35]]]]],
+              statements: [["inline", "t", ["search.no-results"], [], ["loc", [null, [50, 10], [50, 35]]]]],
               locals: [],
               templates: []
             };
@@ -39336,11 +39409,11 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 32,
+                  "line": 45,
                   "column": 4
                 },
                 "end": {
-                  "line": 40,
+                  "line": 53,
                   "column": 4
                 }
               },
@@ -39371,7 +39444,7 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
               morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
               return morphs;
             },
-            statements: [["block", "if", [["get", "isLatestSearchPending", ["loc", [null, [34, 14], [34, 35]]]]], [], 0, 1, ["loc", [null, [34, 8], [38, 15]]]]],
+            statements: [["block", "if", [["get", "isLatestSearchPending", ["loc", [null, [47, 14], [47, 35]]]]], [], 0, 1, ["loc", [null, [47, 8], [51, 15]]]]],
             locals: [],
             templates: [child0, child1]
           };
@@ -39382,11 +39455,11 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
             "loc": {
               "source": null,
               "start": {
-                "line": 31,
+                "line": 44,
                 "column": 4
               },
               "end": {
-                "line": 41,
+                "line": 54,
                 "column": 4
               }
             },
@@ -39408,7 +39481,7 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
             dom.insertBoundary(fragment, null);
             return morphs;
           },
-          statements: [["block", "if", [["get", "isSearching", ["loc", [null, [32, 10], [32, 21]]]]], [], 0, null, ["loc", [null, [32, 4], [40, 11]]]]],
+          statements: [["block", "if", [["get", "isSearching", ["loc", [null, [45, 10], [45, 21]]]]], [], 0, null, ["loc", [null, [45, 4], [53, 11]]]]],
           locals: [],
           templates: [child0]
         };
@@ -39419,11 +39492,11 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
           "loc": {
             "source": null,
             "start": {
-              "line": 17,
+              "line": 28,
               "column": 0
             },
             "end": {
-              "line": 63,
+              "line": 76,
               "column": 0
             }
           },
@@ -39459,7 +39532,7 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
           morphs[0] = dom.createMorphAt(dom.childAt(fragment, [0, 1]), 1, 1);
           return morphs;
         },
-        statements: [["block", "each", [["get", "searchResults", ["loc", [null, [20, 12], [20, 25]]]]], [], 0, 1, ["loc", [null, [20, 4], [41, 13]]]]],
+        statements: [["block", "each", [["get", "searchResults", ["loc", [null, [31, 12], [31, 25]]]]], [], 0, 1, ["loc", [null, [31, 4], [54, 13]]]]],
         locals: [],
         templates: [child0, child1]
       };
@@ -39474,7 +39547,7 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
             "column": 0
           },
           "end": {
-            "line": 64,
+            "line": 77,
             "column": 0
           }
         },
@@ -39485,6 +39558,10 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
       hasRendered: false,
       buildFragment: function buildFragment(dom) {
         var el0 = dom.createDocumentFragment();
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
         var el1 = dom.createElement("div");
         dom.setAttribute(el1, "class", "universal-search__input");
         var el2 = dom.createTextNode("\n  ");
@@ -39514,18 +39591,20 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var element1 = dom.childAt(fragment, [0]);
-        var morphs = new Array(4);
-        morphs[0] = dom.createMorphAt(dom.childAt(element1, [1]), 1, 1);
-        morphs[1] = dom.createMorphAt(element1, 3, 3);
-        morphs[2] = dom.createMorphAt(element1, 5, 5);
-        morphs[3] = dom.createMorphAt(fragment, 2, 2, contextualElement);
+        var element2 = dom.childAt(fragment, [2]);
+        var morphs = new Array(5);
+        morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+        morphs[1] = dom.createMorphAt(dom.childAt(element2, [1]), 1, 1);
+        morphs[2] = dom.createMorphAt(element2, 3, 3);
+        morphs[3] = dom.createMorphAt(element2, 5, 5);
+        morphs[4] = dom.createMorphAt(fragment, 4, 4, contextualElement);
+        dom.insertBoundary(fragment, 0);
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["block", "if", [["get", "isLatestSearchPending", ["loc", [null, [3, 10], [3, 31]]]]], [], 0, 1, ["loc", [null, [3, 4], [7, 11]]]], ["inline", "ko-universal-search/entry", [], ["type", "text", "value", ["subexpr", "@mut", [["get", "searchQuery", ["loc", [null, [10, 48], [10, 59]]]]], [], []], "placeholder", ["subexpr", "t", ["search.placeholder"], [], ["loc", [null, [10, 72], [10, 96]]]]], ["loc", [null, [10, 2], [10, 98]]]], ["block", "if", [["get", "searchQuery", ["loc", [null, [12, 8], [12, 19]]]]], [], 2, null, ["loc", [null, [12, 2], [14, 9]]]], ["block", "if", [["get", "searchQuery", ["loc", [null, [17, 6], [17, 17]]]]], [], 3, null, ["loc", [null, [17, 0], [63, 7]]]]],
+      statements: [["block", "if", [["get", "searchQuery", ["loc", [null, [1, 6], [1, 17]]]]], [], 0, null, ["loc", [null, [1, 0], [4, 7]]]], ["block", "if", [["get", "isSearchLoading", ["loc", [null, [8, 10], [8, 25]]]]], [], 1, 2, ["loc", [null, [8, 4], [12, 11]]]], ["inline", "ko-universal-search/entry", [], ["type", "text", "onSelectHighlightedResult", ["subexpr", "action", ["selectHighlightedResult"], [], ["loc", [null, [16, 30], [16, 64]]]], "onHighlightNextResult", ["subexpr", "action", ["highlightNextResult"], [], ["loc", [null, [17, 26], [17, 56]]]], "onHighlightPreviousResult", ["subexpr", "action", ["highlightPreviousResult"], [], ["loc", [null, [18, 30], [18, 64]]]], "onStopSearch", ["subexpr", "action", ["clearSearch"], [], ["loc", [null, [19, 17], [19, 39]]]], "value", ["subexpr", "@mut", [["get", "searchQuery", ["loc", [null, [20, 10], [20, 21]]]]], [], []], "placeholder", ["subexpr", "t", ["search.placeholder"], [], ["loc", [null, [21, 16], [21, 40]]]]], ["loc", [null, [15, 2], [21, 42]]]], ["block", "if", [["get", "searchQuery", ["loc", [null, [23, 8], [23, 19]]]]], [], 3, null, ["loc", [null, [23, 2], [25, 9]]]], ["block", "if", [["get", "searchQuery", ["loc", [null, [28, 6], [28, 17]]]]], [], 4, null, ["loc", [null, [28, 0], [76, 7]]]]],
       locals: [],
-      templates: [child0, child1, child2, child3]
+      templates: [child0, child1, child2, child3, child4]
     };
   })());
 });
@@ -40608,7 +40687,8 @@ define('frontend-cp/components/ko-user-content/field/timezone-select/component',
 
     tagName: '',
 
-    timezones: ['Africa/Abidjan', 'Africa/Accra', 'Africa/Addis_Ababa', 'Africa/Algiers', 'Africa/Asmara', 'Africa/Bamako', 'Africa/Bangui', 'Africa/Banjul', 'Africa/Bissau', 'Africa/Blantyre', 'Africa/Brazzaville', 'Africa/Bujumbura', 'Africa/Cairo', 'Africa/Casablanca', 'Africa/Ceuta', 'Africa/Conakry', 'Africa/Dakar', 'Africa/Dar_es_Salaam', 'Africa/Djibouti', 'Africa/Douala', 'Africa/El_Aaiun', 'Africa/Freetown', 'Africa/Gaborone', 'Africa/Harare', 'Africa/Johannesburg', 'Africa/Juba', 'Africa/Kampala', 'Africa/Khartoum', 'Africa/Kigali', 'Africa/Kinshasa', 'Africa/Lagos', 'Africa/Libreville', 'Africa/Lome', 'Africa/Luanda', 'Africa/Lubumbashi', 'Africa/Lusaka', 'Africa/Malabo', 'Africa/Maputo', 'Africa/Maseru', 'Africa/Mbabane', 'Africa/Mogadishu', 'Africa/Monrovia', 'Africa/Nairobi', 'Africa/Ndjamena', 'Africa/Niamey', 'Africa/Nouakchott', 'Africa/Ouagadougou', 'Africa/Porto-Novo', 'Africa/Sao_Tome', 'Africa/Tripoli', 'Africa/Tunis', 'Africa/Windhoek', 'America/Adak', 'America/Anchorage', 'America/Anguilla', 'America/Antigua', 'America/Araguaina', 'America/Argentina/Buenos_Aires', 'America/Argentina/Catamarca', 'America/Argentina/Cordoba', 'America/Argentina/Jujuy', 'America/Argentina/La_Rioja', 'America/Argentina/Mendoza', 'America/Argentina/Rio_Gallegos', 'America/Argentina/Salta', 'America/Argentina/San_Juan', 'America/Argentina/San_Luis', 'America/Argentina/Tucuman', 'America/Argentina/Ushuaia', 'America/Aruba', 'America/Asuncion', 'America/Atikokan', 'America/Bahia', 'America/Bahia_Banderas', 'America/Barbados', 'America/Belem', 'America/Belize', 'America/Blanc-Sablon', 'America/Boa_Vista', 'America/Bogota', 'America/Boise', 'America/Cambridge_Bay', 'America/Campo_Grande', 'America/Cancun', 'America/Caracas', 'America/Cayenne', 'America/Cayman', 'America/Chicago', 'America/Chihuahua', 'America/Costa_Rica', 'America/Creston', 'America/Cuiaba', 'America/Curacao', 'America/Danmarkshavn', 'America/Dawson', 'America/Dawson_Creek', 'America/Denver', 'America/Detroit', 'America/Dominica', 'America/Edmonton', 'America/Eirunepe', 'America/El_Salvador', 'America/Fortaleza', 'America/Glace_Bay', 'America/Godthab', 'America/Goose_Bay', 'America/Grand_Turk', 'America/Grenada', 'America/Guadeloupe', 'America/Guatemala', 'America/Guayaquil', 'America/Guyana', 'America/Halifax', 'America/Havana', 'America/Hermosillo', 'America/Indiana/Indianapolis', 'America/Indiana/Knox', 'America/Indiana/Marengo', 'America/Indiana/Petersburg', 'America/Indiana/Tell_City', 'America/Indiana/Vevay', 'America/Indiana/Vincennes', 'America/Indiana/Winamac', 'America/Inuvik', 'America/Iqaluit', 'America/Jamaica', 'America/Juneau', 'America/Kentucky/Louisville', 'America/Kentucky/Monticello', 'America/Kralendijk', 'America/La_Paz', 'America/Lima', 'America/Los_Angeles', 'America/Lower_Princes', 'America/Maceio', 'America/Managua', 'America/Manaus', 'America/Marigot', 'America/Martinique', 'America/Matamoros', 'America/Mazatlan', 'America/Menominee', 'America/Merida', 'America/Metlakatla', 'America/Mexico_City', 'America/Miquelon', 'America/Moncton', 'America/Monterrey', 'America/Montevideo', 'America/Montserrat', 'America/Nassau', 'America/New_York', 'America/Nipigon', 'America/Nome', 'America/Noronha', 'America/North_Dakota/Beulah', 'America/North_Dakota/Center', 'America/North_Dakota/New_Salem', 'America/Ojinaga', 'America/Panama', 'America/Pangnirtung', 'America/Paramaribo', 'America/Phoenix', 'America/Port-au-Prince', 'America/Port_of_Spain', 'America/Porto_Velho', 'America/Puerto_Rico', 'America/Rainy_River', 'America/Rankin_Inlet', 'America/Recife', 'America/Regina', 'America/Resolute', 'America/Rio_Branco', 'America/Santa_Isabel', 'America/Santarem', 'America/Santiago', 'America/Santo_Domingo', 'America/Sao_Paulo', 'America/Scoresbysund', 'America/Sitka', 'America/St_Barthelemy', 'America/St_Johns', 'America/St_Kitts', 'America/St_Lucia', 'America/St_Thomas', 'America/St_Vincent', 'America/Swift_Current', 'America/Tegucigalpa', 'America/Thule', 'America/Thunder_Bay', 'America/Tijuana', 'America/Toronto', 'America/Tortola', 'America/Vancouver', 'America/Whitehorse', 'America/Winnipeg', 'America/Yakutat', 'America/Yellowknife', 'Antarctica/Casey', 'Antarctica/Davis', 'Antarctica/DumontDUrville', 'Antarctica/Macquarie', 'Antarctica/Mawson', 'Antarctica/McMurdo', 'Antarctica/Palmer', 'Antarctica/Rothera', 'Antarctica/Syowa', 'Antarctica/Troll', 'Antarctica/Vostok', 'Arctic/Longyearbyen', 'Asia/Aden', 'Asia/Almaty', 'Asia/Amman', 'Asia/Anadyr', 'Asia/Aqtau', 'Asia/Aqtobe', 'Asia/Ashgabat', 'Asia/Baghdad', 'Asia/Bahrain', 'Asia/Baku', 'Asia/Bangkok', 'Asia/Beirut', 'Asia/Bishkek', 'Asia/Brunei', 'Asia/Chita', 'Asia/Choibalsan', 'Asia/Colombo', 'Asia/Damascus', 'Asia/Dhaka', 'Asia/Dili', 'Asia/Dubai', 'Asia/Dushanbe', 'Asia/Gaza', 'Asia/Hebron', 'Asia/Ho_Chi_Minh', 'Asia/Hong_Kong', 'Asia/Hovd', 'Asia/Irkutsk', 'Asia/Jakarta', 'Asia/Jayapura', 'Asia/Jerusalem', 'Asia/Kabul', 'Asia/Kamchatka', 'Asia/Karachi', 'Asia/Kathmandu', 'Asia/Khandyga', 'Asia/Kolkata', 'Asia/Krasnoyarsk', 'Asia/Kuala_Lumpur', 'Asia/Kuching', 'Asia/Kuwait', 'Asia/Macau', 'Asia/Magadan', 'Asia/Makassar', 'Asia/Manila', 'Asia/Muscat', 'Asia/Nicosia', 'Asia/Novokuznetsk', 'Asia/Novosibirsk', 'Asia/Omsk', 'Asia/Oral', 'Asia/Phnom_Penh', 'Asia/Pontianak', 'Asia/Pyongyang', 'Asia/Qatar', 'Asia/Qyzylorda', 'Asia/Rangoon', 'Asia/Riyadh', 'Asia/Sakhalin', 'Asia/Samarkand', 'Asia/Seoul', 'Asia/Shanghai', 'Asia/Singapore', 'Asia/Srednekolymsk', 'Asia/Taipei', 'Asia/Tashkent', 'Asia/Tbilisi', 'Asia/Tehran', 'Asia/Thimphu', 'Asia/Tokyo', 'Asia/Ulaanbaatar', 'Asia/Urumqi', 'Asia/Ust-Nera', 'Asia/Vientiane', 'Asia/Vladivostok', 'Asia/Yakutsk', 'Asia/Yekaterinburg', 'Asia/Yerevan', 'Atlantic/Azores', 'Atlantic/Bermuda', 'Atlantic/Canary', 'Atlantic/Cape_Verde', 'Atlantic/Faroe', 'Atlantic/Madeira', 'Atlantic/Reykjavik', 'Atlantic/South_Georgia', 'Atlantic/St_Helena', 'Atlantic/Stanley', 'Australia/Adelaide', 'Australia/Brisbane', 'Australia/Broken_Hill', 'Australia/Currie', 'Australia/Darwin', 'Australia/Eucla', 'Australia/Hobart', 'Australia/Lindeman', 'Australia/Lord_Howe', 'Australia/Melbourne', 'Australia/Perth', 'Australia/Sydney', 'Europe/Amsterdam', 'Europe/Andorra', 'Europe/Athens', 'Europe/Belgrade', 'Europe/Berlin', 'Europe/Bratislava', 'Europe/Brussels', 'Europe/Bucharest', 'Europe/Budapest', 'Europe/Busingen', 'Europe/Chisinau', 'Europe/Copenhagen', 'Europe/Dublin', 'Europe/Gibraltar', 'Europe/Guernsey', 'Europe/Helsinki', 'Europe/Isle_of_Man', 'Europe/Istanbul', 'Europe/Jersey', 'Europe/Kaliningrad', 'Europe/Kiev', 'Europe/Lisbon', 'Europe/Ljubljana', 'Europe/London', 'Europe/Luxembourg', 'Europe/Madrid', 'Europe/Malta', 'Europe/Mariehamn', 'Europe/Minsk', 'Europe/Monaco', 'Europe/Moscow', 'Europe/Oslo', 'Europe/Paris', 'Europe/Podgorica', 'Europe/Prague', 'Europe/Riga', 'Europe/Rome', 'Europe/Samara', 'Europe/San_Marino', 'Europe/Sarajevo', 'Europe/Simferopol', 'Europe/Skopje', 'Europe/Sofia', 'Europe/Stockholm', 'Europe/Tallinn', 'Europe/Tirane', 'Europe/Uzhgorod', 'Europe/Vaduz', 'Europe/Vatican', 'Europe/Vienna', 'Europe/Vilnius', 'Europe/Volgograd', 'Europe/Warsaw', 'Europe/Zagreb', 'Europe/Zaporozhye', 'Europe/Zurich', 'Indian/Antananarivo', 'Indian/Chagos', 'Indian/Christmas', 'Indian/Cocos', 'Indian/Comoro', 'Indian/Kerguelen', 'Indian/Mahe', 'Indian/Maldives', 'Indian/Mauritius', 'Indian/Mayotte', 'Indian/Reunion', 'Pacific/Apia', 'Pacific/Auckland', 'Pacific/Bougainville', 'Pacific/Chatham', 'Pacific/Chuuk', 'Pacific/Easter', 'Pacific/Efate', 'Pacific/Enderbury', 'Pacific/Fakaofo', 'Pacific/Fiji', 'Pacific/Funafuti', 'Pacific/Galapagos', 'Pacific/Gambier', 'Pacific/Guadalcanal', 'Pacific/Guam', 'Pacific/Honolulu', 'Pacific/Johnston', 'Pacific/Kiritimati', 'Pacific/Kosrae', 'Pacific/Kwajalein', 'Pacific/Majuro', 'Pacific/Marquesas', 'Pacific/Midway', 'Pacific/Nauru', 'Pacific/Niue', 'Pacific/Norfolk', 'Pacific/Noumea', 'Pacific/Pago_Pago', 'Pacific/Palau', 'Pacific/Pitcairn', 'Pacific/Pohnpei', 'Pacific/Port_Moresby', 'Pacific/Rarotonga', 'Pacific/Saipan', 'Pacific/Tahiti', 'Pacific/Tarawa', 'Pacific/Tongatapu', 'Pacific/Wake', 'Pacific/Wallis', 'UTC']
+    timezones: [{ id: 'Pacific/Niue', text: '(GMT-11:00) Niue' }, { id: 'Pacific/Pago_Pago', text: '(GMT-11:00) Pago Pago' }, { id: 'Pacific/Honolulu', text: '(GMT-10:00) Hawaii Time' }, { id: 'Pacific/Rarotonga', text: '(GMT-10:00) Rarotonga' }, { id: 'Pacific/Tahiti', text: '(GMT-10:00) Tahiti' }, { id: 'Pacific/Marquesas', text: '(GMT-09:30) Marquesas' }, { id: 'America/Anchorage', text: '(GMT-09:00) Alaska Time' }, { id: 'Pacific/Gambier', text: '(GMT-09:00) Gambier' }, { id: 'America/Los_Angeles', text: '(GMT-08:00) Pacific Time' }, { id: 'America/Tijuana', text: '(GMT-08:00) Pacific Time - Tijuana' }, { id: 'America/Vancouver', text: '(GMT-08:00) Pacific Time - Vancouver' }, { id: 'America/Whitehorse', text: '(GMT-08:00) Pacific Time - Whitehorse' }, { id: 'Pacific/Pitcairn', text: '(GMT-08:00) Pitcairn' }, { id: 'America/Dawson_Creek', text: '(GMT-07:00) Mountain Time - Dawson Creek' }, { id: 'America/Denver', text: '(GMT-07:00) Mountain Time' }, { id: 'America/Edmonton', text: '(GMT-07:00) Mountain Time - Edmonton' }, { id: 'America/Hermosillo', text: '(GMT-07:00) Mountain Time - Hermosillo' }, { id: 'America/Mazatlan', text: '(GMT-07:00) Mountain Time - Chihuahua, Mazatlan' }, { id: 'America/Phoenix', text: '(GMT-07:00) Mountain Time - Arizona' }, { id: 'America/Yellowknife', text: '(GMT-07:00) Mountain Time - Yellowknife' }, { id: 'America/Belize', text: '(GMT-06:00) Belize' }, { id: 'America/Chicago', text: '(GMT-06:00) Central Time' }, { id: 'America/Costa_Rica', text: '(GMT-06:00) Costa Rica' }, { id: 'America/El_Salvador', text: '(GMT-06:00) El Salvador' }, { id: 'America/Guatemala', text: '(GMT-06:00) Guatemala' }, { id: 'America/Managua', text: '(GMT-06:00) Managua' }, { id: 'America/Mexico_City', text: '(GMT-06:00) Central Time - Mexico City' }, { id: 'America/Regina', text: '(GMT-06:00) Central Time - Regina' }, { id: 'America/Tegucigalpa', text: '(GMT-06:00) Central Time - Tegucigalpa' }, { id: 'America/Winnipeg', text: '(GMT-06:00) Central Time - Winnipeg' }, { id: 'Pacific/Galapagos', text: '(GMT-06:00) Galapagos' }, { id: 'America/Bogota', text: '(GMT-05:00) Bogota' }, { id: 'America/Cancun', text: '(GMT-05:00) America Cancun' }, { id: 'America/Cayman', text: '(GMT-05:00) Cayman' }, { id: 'America/Guayaquil', text: '(GMT-05:00) Guayaquil' }, { id: 'America/Havana', text: '(GMT-05:00) Havana' }, { id: 'America/Iqaluit', text: '(GMT-05:00) Eastern Time - Iqaluit' }, { id: 'America/Jamaica', text: '(GMT-05:00) Jamaica' }, { id: 'America/Lima', text: '(GMT-05:00) Lima' }, { id: 'America/Nassau', text: '(GMT-05:00) Nassau' }, { id: 'America/New_York', text: '(GMT-05:00) Eastern Time' }, { id: 'America/Panama', text: '(GMT-05:00) Panama' }, { id: 'America/Port-au-Prince', text: '(GMT-05:00) Port-au-Prince' }, { id: 'America/Rio_Branco', text: '(GMT-05:00) Rio Branco' }, { id: 'America/Toronto', text: '(GMT-05:00) Eastern Time - Toronto' }, { id: 'Pacific/Easter', text: '(GMT-05:00) Easter Island' }, { id: 'America/Caracas', text: '(GMT-04:30) Caracas' }, { id: 'America/Asuncion', text: '(GMT-03:00) Asuncion' }, { id: 'America/Barbados', text: '(GMT-04:00) Barbados' }, { id: 'America/Boa_Vista', text: '(GMT-04:00) Boa Vista' }, { id: 'America/Campo_Grande', text: '(GMT-03:00) Campo Grande' }, { id: 'America/Cuiaba', text: '(GMT-03:00) Cuiaba' }, { id: 'America/Curacao', text: '(GMT-04:00) Curacao' }, { id: 'America/Grand_Turk', text: '(GMT-04:00) Grand Turk' }, { id: 'America/Guyana', text: '(GMT-04:00) Guyana' }, { id: 'America/Halifax', text: '(GMT-04:00) Atlantic Time - Halifax' }, { id: 'America/La_Paz', text: '(GMT-04:00) La Paz' }, { id: 'America/Manaus', text: '(GMT-04:00) Manaus' }, { id: 'America/Martinique', text: '(GMT-04:00) Martinique' }, { id: 'America/Port_of_Spain', text: '(GMT-04:00) Port of Spain' }, { id: 'America/Porto_Velho', text: '(GMT-04:00) Porto Velho' }, { id: 'America/Puerto_Rico', text: '(GMT-04:00) Puerto Rico' }, { id: 'America/Santo_Domingo', text: '(GMT-04:00) Santo Domingo' }, { id: 'America/Thule', text: '(GMT-04:00) Thule' }, { id: 'Atlantic/Bermuda', text: '(GMT-04:00) Bermuda' }, { id: 'America/St_Johns', text: '(GMT-03:30) Newfoundland Time - St. Johns' }, { id: 'America/Araguaina', text: '(GMT-03:00) Araguaina' }, { id: 'America/Argentina/Buenos_Aires', text: '(GMT-03:00) Buenos Aires' }, { id: 'America/Bahia', text: '(GMT-03:00) Salvador' }, { id: 'America/Belem', text: '(GMT-03:00) Belem' }, { id: 'America/Cayenne', text: '(GMT-03:00) Cayenne' }, { id: 'America/Fortaleza', text: '(GMT-03:00) Fortaleza' }, { id: 'America/Godthab', text: '(GMT-03:00) Godthab' }, { id: 'America/Maceio', text: '(GMT-03:00) Maceio' }, { id: 'America/Miquelon', text: '(GMT-03:00) Miquelon' }, { id: 'America/Montevideo', text: '(GMT-03:00) Montevideo' }, { id: 'America/Paramaribo', text: '(GMT-03:00) Paramaribo' }, { id: 'America/Recife', text: '(GMT-03:00) Recife' }, { id: 'America/Santiago', text: '(GMT-03:00) Santiago' }, { id: 'America/Sao_Paulo', text: '(GMT-02:00) Sao Paulo' }, { id: 'Antarctica/Palmer', text: '(GMT-03:00) Palmer' }, { id: 'Antarctica/Rothera', text: '(GMT-03:00) Rothera' }, { id: 'Atlantic/Stanley', text: '(GMT-03:00) Stanley' }, { id: 'America/Noronha', text: '(GMT-02:00) Noronha' }, { id: 'Atlantic/South_Georgia', text: '(GMT-02:00) South Georgia' }, { id: 'America/Scoresbysund', text: '(GMT-01:00) Scoresbysund' }, { id: 'Atlantic/Azores', text: '(GMT-01:00) Azores' }, { id: 'Atlantic/Cape_Verde', text: '(GMT-01:00) Cape Verde' }, { id: 'Africa/Abidjan', text: '(GMT+00:00) Abidjan' }, { id: 'Africa/Accra', text: '(GMT+00:00) Accra' }, { id: 'Africa/Bissau', text: '(GMT+00:00) Bissau' }, { id: 'Africa/Casablanca', text: '(GMT+00:00) Casablanca' }, { id: 'Africa/El_Aaiun', text: '(GMT+00:00) El Aaiun' }, { id: 'Africa/Monrovia', text: '(GMT+00:00) Monrovia' }, { id: 'America/Danmarkshavn', text: '(GMT+00:00) Danmarkshavn' }, { id: 'Atlantic/Canary', text: '(GMT+00:00) Canary Islands' }, { id: 'Atlantic/Faroe', text: '(GMT+00:00) Faeroe' }, { id: 'Atlantic/Reykjavik', text: '(GMT+00:00) Reykjavik' }, { id: 'Etc/GMT', text: '(GMT+00:00) GMT (no daylight saving)' }, { id: 'Europe/Dublin', text: '(GMT+00:00) Dublin' }, { id: 'Europe/Lisbon', text: '(GMT+00:00) Lisbon' }, { id: 'Europe/London', text: '(GMT+00:00) London' }, { id: 'Africa/Algiers', text: '(GMT+01:00) Algiers' }, { id: 'Africa/Ceuta', text: '(GMT+01:00) Ceuta' }, { id: 'Africa/Lagos', text: '(GMT+01:00) Lagos' }, { id: 'Africa/Ndjamena', text: '(GMT+01:00) Ndjamena' }, { id: 'Africa/Tunis', text: '(GMT+01:00) Tunis' }, { id: 'Africa/Windhoek', text: '(GMT+02:00) Windhoek' }, { id: 'Europe/Amsterdam', text: '(GMT+01:00) Amsterdam' }, { id: 'Europe/Andorra', text: '(GMT+01:00) Andorra' }, { id: 'Europe/Belgrade', text: '(GMT+01:00) Central European Time - Belgrade' }, { id: 'Europe/Berlin', text: '(GMT+01:00) Berlin' }, { id: 'Europe/Brussels', text: '(GMT+01:00) Brussels' }, { id: 'Europe/Budapest', text: '(GMT+01:00) Budapest' }, { id: 'Europe/Copenhagen', text: '(GMT+01:00) Copenhagen' }, { id: 'Europe/Gibraltar', text: '(GMT+01:00) Gibraltar' }, { id: 'Europe/Luxembourg', text: '(GMT+01:00) Luxembourg' }, { id: 'Europe/Madrid', text: '(GMT+01:00) Madrid' }, { id: 'Europe/Malta', text: '(GMT+01:00) Malta' }, { id: 'Europe/Monaco', text: '(GMT+01:00) Monaco' }, { id: 'Europe/Oslo', text: '(GMT+01:00) Oslo' }, { id: 'Europe/Paris', text: '(GMT+01:00) Paris' }, { id: 'Europe/Prague', text: '(GMT+01:00) Central European Time - Prague' }, { id: 'Europe/Rome', text: '(GMT+01:00) Rome' }, { id: 'Europe/Stockholm', text: '(GMT+01:00) Stockholm' }, { id: 'Europe/Tirane', text: '(GMT+01:00) Tirane' }, { id: 'Europe/Vienna', text: '(GMT+01:00) Vienna' }, { id: 'Europe/Warsaw', text: '(GMT+01:00) Warsaw' }, { id: 'Europe/Zurich', text: '(GMT+01:00) Zurich' }, { id: 'Africa/Cairo', text: '(GMT+02:00) Cairo' }, { id: 'Africa/Johannesburg', text: '(GMT+02:00) Johannesburg' }, { id: 'Africa/Maputo', text: '(GMT+02:00) Maputo' }, { id: 'Africa/Tripoli', text: '(GMT+02:00) Tripoli' }, { id: 'Asia/Amman', text: '(GMT+02:00) Amman' }, { id: 'Asia/Beirut', text: '(GMT+02:00) Beirut' }, { id: 'Asia/Damascus', text: '(GMT+02:00) Damascus' }, { id: 'Asia/Gaza', text: '(GMT+02:00) Gaza' }, { id: 'Asia/Jerusalem', text: '(GMT+02:00) Jerusalem' }, { id: 'Asia/Nicosia', text: '(GMT+02:00) Nicosia' }, { id: 'Europe/Athens', text: '(GMT+02:00) Athens' }, { id: 'Europe/Bucharest', text: '(GMT+02:00) Bucharest' }, { id: 'Europe/Chisinau', text: '(GMT+02:00) Chisinau' }, { id: 'Europe/Helsinki', text: '(GMT+02:00) Helsinki' }, { id: 'Europe/Istanbul', text: '(GMT+02:00) Istanbul' }, { id: 'Europe/Kaliningrad', text: '(GMT+02:00) Moscow-01 - Kaliningrad' }, { id: 'Europe/Kiev', text: '(GMT+02:00) Kiev' }, { id: 'Europe/Riga', text: '(GMT+02:00) Riga' }, { id: 'Europe/Sofia', text: '(GMT+02:00) Sofia' }, { id: 'Europe/Tallinn', text: '(GMT+02:00) Tallinn' }, { id: 'Europe/Vilnius', text: '(GMT+02:00) Vilnius' }, { id: 'Africa/Khartoum', text: '(GMT+03:00) Khartoum' }, { id: 'Africa/Nairobi', text: '(GMT+03:00) Nairobi' }, { id: 'Antarctica/Syowa', text: '(GMT+03:00) Syowa' }, { id: 'Asia/Baghdad', text: '(GMT+03:00) Baghdad' }, { id: 'Asia/Qatar', text: '(GMT+03:00) Qatar' }, { id: 'Asia/Riyadh', text: '(GMT+03:00) Riyadh' }, { id: 'Europe/Minsk', text: '(GMT+03:00) Minsk' }, { id: 'Europe/Moscow', text: '(GMT+03:00) Moscow+00 - Moscow' }, { id: 'Asia/Tehran', text: '(GMT+03:30) Tehran' }, { id: 'Asia/Baku', text: '(GMT+04:00) Baku' }, { id: 'Asia/Dubai', text: '(GMT+04:00) Dubai' }, { id: 'Asia/Tbilisi', text: '(GMT+04:00) Tbilisi' }, { id: 'Asia/Yerevan', text: '(GMT+04:00) Yerevan' }, { id: 'Europe/Samara', text: '(GMT+04:00) Moscow+01 - Samara' }, { id: 'Indian/Mahe', text: '(GMT+04:00) Mahe' }, { id: 'Indian/Mauritius', text: '(GMT+04:00) Mauritius' }, { id: 'Indian/Reunion', text: '(GMT+04:00) Reunion' }, { id: 'Asia/Kabul', text: '(GMT+04:30) Kabul' }, { id: 'Antarctica/Mawson', text: '(GMT+05:00) Mawson' }, { id: 'Asia/Aqtau', text: '(GMT+05:00) Aqtau' }, { id: 'Asia/Aqtobe', text: '(GMT+05:00) Aqtobe' }, { id: 'Asia/Ashgabat', text: '(GMT+05:00) Ashgabat' }, { id: 'Asia/Dushanbe', text: '(GMT+05:00) Dushanbe' }, { id: 'Asia/Karachi', text: '(GMT+05:00) Karachi' }, { id: 'Asia/Tashkent', text: '(GMT+05:00) Tashkent' }, { id: 'Asia/Yekaterinburg', text: '(GMT+05:00) Moscow+02 - Yekaterinburg' }, { id: 'Indian/Kerguelen', text: '(GMT+05:00) Kerguelen' }, { id: 'Indian/Maldives', text: '(GMT+05:00) Maldives' }, { id: 'Asia/Calcutta', text: '(GMT+05:30) India Standard Time' }, { id: 'Asia/Colombo', text: '(GMT+05:30) Colombo' }, { id: 'Asia/Katmandu', text: '(GMT+05:45) Katmandu' }, { id: 'Antarctica/Vostok', text: '(GMT+06:00) Vostok' }, { id: 'Asia/Almaty', text: '(GMT+06:00) Almaty' }, { id: 'Asia/Bishkek', text: '(GMT+06:00) Bishkek' }, { id: 'Asia/Dhaka', text: '(GMT+06:00) Dhaka' }, { id: 'Asia/Omsk', text: '(GMT+06:00) Moscow+03 - Omsk, Novosibirsk' }, { id: 'Asia/Thimphu', text: '(GMT+06:00) Thimphu' }, { id: 'Indian/Chagos', text: '(GMT+06:00) Chagos' }, { id: 'Asia/Rangoon', text: '(GMT+06:30) Rangoon' }, { id: 'Indian/Cocos', text: '(GMT+06:30) Cocos' }, { id: 'Antarctica/Davis', text: '(GMT+07:00) Davis' }, { id: 'Asia/Bangkok', text: '(GMT+07:00) Bangkok' }, { id: 'Asia/Hovd', text: '(GMT+07:00) Hovd' }, { id: 'Asia/Jakarta', text: '(GMT+07:00) Jakarta' }, { id: 'Asia/Krasnoyarsk', text: '(GMT+07:00) Moscow+04 - Krasnoyarsk' }, { id: 'Asia/Saigon', text: '(GMT+07:00) Hanoi' }, { id: 'Indian/Christmas', text: '(GMT+07:00) Christmas' }, { id: 'Antarctica/Casey', text: '(GMT+08:00) Casey' }, { id: 'Asia/Brunei', text: '(GMT+08:00) Brunei' }, { id: 'Asia/Choibalsan', text: '(GMT+08:00) Choibalsan' }, { id: 'Asia/Hong_Kong', text: '(GMT+08:00) Hong Kong' }, { id: 'Asia/Irkutsk', text: '(GMT+08:00) Moscow+05 - Irkutsk' }, { id: 'Asia/Kuala_Lumpur', text: '(GMT+08:00) Kuala Lumpur' }, { id: 'Asia/Macau', text: '(GMT+08:00) Macau' }, { id: 'Asia/Makassar', text: '(GMT+08:00) Makassar' }, { id: 'Asia/Manila', text: '(GMT+08:00) Manila' }, { id: 'Asia/Shanghai', text: '(GMT+08:00) China Time - Beijing' }, { id: 'Asia/Singapore', text: '(GMT+08:00) Singapore' }, { id: 'Asia/Taipei', text: '(GMT+08:00) Taipei' }, { id: 'Asia/Ulaanbaatar', text: '(GMT+08:00) Ulaanbaatar' }, { id: 'Australia/Perth', text: '(GMT+08:00) Western Time - Perth' }, { id: 'Asia/Pyongyang', text: '(GMT+08:30) Pyongyang' }, { id: 'Asia/Dili', text: '(GMT+09:00) Dili' }, { id: 'Asia/Jayapura', text: '(GMT+09:00) Jayapura' }, { id: 'Asia/Seoul', text: '(GMT+09:00) Seoul' }, { id: 'Asia/Tokyo', text: '(GMT+09:00) Tokyo' }, { id: 'Asia/Yakutsk', text: '(GMT+09:00) Moscow+06 - Yakutsk' }, { id: 'Pacific/Palau', text: '(GMT+09:00) Palau' }, { id: 'Australia/Adelaide', text: '(GMT+10:30) Central Time - Adelaide' }, { id: 'Australia/Darwin', text: '(GMT+09:30) Central Time - Darwin' }, { id: 'Antarctica/DumontDUrville', text: '(GMT+10:00) Dumont D\'Urville' }, { id: 'Asia/Magadan', text: '(GMT+10:00) Moscow+08 - Magadan' }, { id: 'Asia/Vladivostok', text: '(GMT+10:00) Moscow+07 - Yuzhno-Sakhalinsk' }, { id: 'Australia/Brisbane', text: '(GMT+10:00) Eastern Time - Brisbane' }, { id: 'Australia/Hobart', text: '(GMT+11:00) Eastern Time - Hobart' }, { id: 'Australia/Sydney', text: '(GMT+11:00) Eastern Time - Melbourne, Sydney' }, { id: 'Pacific/Chuuk', text: '(GMT+10:00) Truk' }, { id: 'Pacific/Guam', text: '(GMT+10:00) Guam' }, { id: 'Pacific/Port_Moresby', text: '(GMT+10:00) Port Moresby' }, { id: 'Pacific/Efate', text: '(GMT+11:00) Efate' }, { id: 'Pacific/Guadalcanal', text: '(GMT+11:00) Guadalcanal' }, { id: 'Pacific/Kosrae', text: '(GMT+11:00) Kosrae' }, { id: 'Pacific/Norfolk', text: '(GMT+11:00) Norfolk' }, { id: 'Pacific/Noumea', text: '(GMT+11:00) Noumea' }, { id: 'Pacific/Pohnpei', text: '(GMT+11:00) Ponape' }, { id: 'Asia/Kamchatka', text: '(GMT+12:00) Moscow+09 - Petropavlovsk-Kamchatskiy' }, { id: 'Pacific/Auckland', text: '(GMT+13:00) Auckland' }, { id: 'Pacific/Fiji', text: '(GMT+12:00) Fiji' }, { id: 'Pacific/Funafuti', text: '(GMT+12:00) Funafuti' }, { id: 'Pacific/Kwajalein', text: '(GMT+12:00) Kwajalein' }, { id: 'Pacific/Majuro', text: '(GMT+12:00) Majuro' }, { id: 'Pacific/Nauru', text: '(GMT+12:00) Nauru' }, { id: 'Pacific/Tarawa', text: '(GMT+12:00) Tarawa' }, { id: 'Pacific/Wake', text: '(GMT+12:00) Wake' }, { id: 'Pacific/Wallis', text: '(GMT+12:00) Wallis' }, { id: 'Pacific/Apia', text: '(GMT+14:00) Apia' }, { id: 'Pacific/Enderbury', text: '(GMT+13:00) Enderbury' }, { id: 'Pacific/Fakaofo', text: '(GMT+13:00) Fakaofo' }, { id: 'Pacific/Tongatapu', text: '(GMT+13:00) Tongatapu' }, { id: 'Pacific/Kiritimati', text: '(GMT+14:00) Kiritimati' }]
+
   });
 });
 define("frontend-cp/components/ko-user-content/field/timezone-select/template", ["exports"], function (exports) {
@@ -40623,7 +40703,7 @@ define("frontend-cp/components/ko-user-content/field/timezone-select/template", 
             "column": 0
           },
           "end": {
-            "line": 10,
+            "line": 12,
             "column": 0
           }
         },
@@ -40646,7 +40726,7 @@ define("frontend-cp/components/ko-user-content/field/timezone-select/template", 
         dom.insertBoundary(fragment, 0);
         return morphs;
       },
-      statements: [["inline", "ko-info-bar/field/select", [], ["value", ["subexpr", "@mut", [["get", "timezone", ["loc", [null, [2, 8], [2, 16]]]]], [], []], "options", ["subexpr", "@mut", [["get", "timezones", ["loc", [null, [3, 10], [3, 19]]]]], [], []], "title", ["subexpr", "t", ["users.infobar.timezone"], [], ["loc", [null, [4, 8], [4, 36]]]], "isEdited", ["subexpr", "@mut", [["get", "isEdited", ["loc", [null, [5, 11], [5, 19]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "isErrored", ["loc", [null, [6, 12], [6, 21]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "isPusherEdited", ["loc", [null, [7, 17], [7, 31]]]]], [], []], "onValueChange", ["subexpr", "action", [["get", "onChangeTimezone", ["loc", [null, [8, 24], [8, 40]]]]], [], ["loc", [null, [8, 16], [8, 41]]]]], ["loc", [null, [1, 0], [9, 2]]]]],
+      statements: [["inline", "ko-info-bar/field/select", [], ["value", ["subexpr", "@mut", [["get", "timezone", ["loc", [null, [2, 8], [2, 16]]]]], [], []], "options", ["subexpr", "@mut", [["get", "timezones", ["loc", [null, [3, 10], [3, 19]]]]], [], []], "title", ["subexpr", "t", ["users.infobar.timezone"], [], ["loc", [null, [4, 8], [4, 36]]]], "isEdited", ["subexpr", "@mut", [["get", "isEdited", ["loc", [null, [5, 11], [5, 19]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "isErrored", ["loc", [null, [6, 12], [6, 21]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "isPusherEdited", ["loc", [null, [7, 17], [7, 31]]]]], [], []], "onValueChange", ["subexpr", "action", [["get", "onChangeTimezone", ["loc", [null, [8, 24], [8, 40]]]]], [], ["loc", [null, [8, 16], [8, 41]]]], "idPath", "id", "labelPath", "text"], ["loc", [null, [1, 0], [11, 2]]]]],
       locals: [],
       templates: []
     };
@@ -64920,7 +65000,7 @@ define('frontend-cp/session/controller', ['exports', 'ember'], function (exports
     },
 
     actions: {
-      onSearchingChanged: function onSearchingChanged(isSearching) {
+      searchingChanged: function searchingChanged(isSearching) {
         this.set('hideSessionWidgets', isSearching);
       },
 
@@ -65040,6 +65120,11 @@ define('frontend-cp/session/route', ['exports', 'ember'], function (exports, _em
     },
 
     actions: {
+      willTransition: function willTransition() {
+        this.controller.set('searchResults', null);
+        this.controller.set('searchQuery', null);
+      },
+
       transitionToRoute: function transitionToRoute() {
         this.transitionTo.apply(this, arguments);
       }
@@ -66027,11 +66112,11 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
           "loc": {
             "source": null,
             "start": {
-              "line": 65,
+              "line": 69,
               "column": 10
             },
             "end": {
-              "line": 67,
+              "line": 71,
               "column": 10
             }
           },
@@ -66055,7 +66140,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [["content", "ko-session-widgets", ["loc", [null, [66, 12], [66, 34]]]]],
+        statements: [["content", "ko-session-widgets", ["loc", [null, [70, 12], [70, 34]]]]],
         locals: [],
         templates: []
       };
@@ -66070,7 +66155,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
             "column": 0
           },
           "end": {
-            "line": 76,
+            "line": 80,
             "column": 0
           }
         },
@@ -66214,7 +66299,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
         morphs[8] = dom.createMorphAt(dom.childAt(fragment, [2]), 1, 1);
         return morphs;
       },
-      statements: [["attribute", "class", ["concat", ["nav ", ["subexpr", "if", [["subexpr", "not", [["get", "tabStore.isEnabled", ["loc", [null, [2, 28], [2, 46]]]]], [], ["loc", [null, [2, 23], [2, 47]]]], "nav--disabled"], [], ["loc", [null, [2, 18], [2, 65]]]]]]], ["block", "if", [["get", "tabStore.casesViewId", ["loc", [null, [7, 16], [7, 36]]]]], [], 0, 1, ["loc", [null, [7, 10], [11, 17]]]], ["block", "if", [["get", "features.userTab", ["loc", [null, [12, 16], [12, 32]]]]], [], 2, null, ["loc", [null, [12, 10], [14, 17]]]], ["block", "each", [["get", "tabStore.tabs", ["loc", [null, [19, 18], [19, 31]]]]], [], 3, null, ["loc", [null, [19, 10], [54, 19]]]], ["content", "ko-agent-dropdown", ["loc", [null, [57, 6], [57, 27]]]], ["attribute", "class", ["concat", [["subexpr", "unless", [["get", "hideSessionWidgets", ["loc", [null, [61, 29], [61, 47]]]], "u-3/4 u-inline-block"], [], ["loc", [null, [61, 20], [61, 72]]]]]]], ["inline", "ko-universal-search", [], ["searchResults", ["subexpr", "@mut", [["get", "searchResults", ["loc", [null, [62, 46], [62, 59]]]]], [], []], "searchingChanged", "onSearchingChanged"], ["loc", [null, [62, 10], [62, 99]]]], ["block", "unless", [["get", "hideSessionWidgets", ["loc", [null, [65, 20], [65, 38]]]]], [], 4, null, ["loc", [null, [65, 10], [67, 21]]]], ["content", "outlet", ["loc", [null, [74, 2], [74, 12]]]]],
+      statements: [["attribute", "class", ["concat", ["nav ", ["subexpr", "if", [["subexpr", "not", [["get", "tabStore.isEnabled", ["loc", [null, [2, 28], [2, 46]]]]], [], ["loc", [null, [2, 23], [2, 47]]]], "nav--disabled"], [], ["loc", [null, [2, 18], [2, 65]]]]]]], ["block", "if", [["get", "tabStore.casesViewId", ["loc", [null, [7, 16], [7, 36]]]]], [], 0, 1, ["loc", [null, [7, 10], [11, 17]]]], ["block", "if", [["get", "features.userTab", ["loc", [null, [12, 16], [12, 32]]]]], [], 2, null, ["loc", [null, [12, 10], [14, 17]]]], ["block", "each", [["get", "tabStore.tabs", ["loc", [null, [19, 18], [19, 31]]]]], [], 3, null, ["loc", [null, [19, 10], [54, 19]]]], ["content", "ko-agent-dropdown", ["loc", [null, [57, 6], [57, 27]]]], ["attribute", "class", ["concat", [["subexpr", "unless", [["get", "hideSessionWidgets", ["loc", [null, [61, 29], [61, 47]]]], "u-3/4 u-inline-block"], [], ["loc", [null, [61, 20], [61, 72]]]]]]], ["inline", "ko-universal-search", [], ["searchResults", ["subexpr", "@mut", [["get", "searchResults", ["loc", [null, [63, 26], [63, 39]]]]], [], []], "searchQuery", ["subexpr", "@mut", [["get", "searchQuery", ["loc", [null, [64, 24], [64, 35]]]]], [], []], "onLoadSearchRoute", ["subexpr", "action", ["loadSearchRoute"], [], ["loc", [null, [65, 30], [65, 56]]]], "onSearchChanged", ["subexpr", "action", ["searchingChanged"], [], ["loc", [null, [66, 28], [66, 55]]]]], ["loc", [null, [62, 10], [66, 57]]]], ["block", "unless", [["get", "hideSessionWidgets", ["loc", [null, [69, 20], [69, 38]]]]], [], 4, null, ["loc", [null, [69, 10], [71, 21]]]], ["content", "outlet", ["loc", [null, [78, 2], [78, 12]]]]],
       locals: [],
       templates: [child0, child1, child2, child3, child4]
     };
@@ -66467,6 +66552,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+17b4ffa9"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+46ee14db"});
 }
 /* jshint ignore:end */
