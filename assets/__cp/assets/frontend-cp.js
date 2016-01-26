@@ -28613,6 +28613,8 @@ define('frontend-cp/components/ko-info-bar/field/drill-down/trigger/component', 
         run.schedule('afterRender', this, function () {
           this.element.querySelector('input').focus();
         });
+      } else if (oldAttrs.select.isOpen && !newAttrs.select.isOpen) {
+        newAttrs.select.actions.search('');
       }
     },
 
@@ -28633,11 +28635,11 @@ define('frontend-cp/components/ko-info-bar/field/drill-down/trigger/component', 
 
       handleKeyDown: function handleKeyDown(e) {
         var select = this.get('select');
-        if (e.keyCode === 13) {
+        if (e.keyCode === 13 && select.isOpen) {
           select.actions.choose(this.get('highlighted'), e);
           e.stopPropagation();
         }
-        if (!this.get('select.isOpen') && e.keyCode !== 9) {
+        if (!this.get('select.isOpen') && e.keyCode !== 9 && e.keyCode !== 13) {
           e.preventDefault();
         }
       }
@@ -29473,19 +29475,6 @@ define('frontend-cp/components/ko-info-bar/field/select/component', ['exports', 
         } else {
           action(normalizedItem);
         }
-      },
-
-      handleKeyDown: function handleKeyDown(select, e) {
-        if (select.isOpen) {
-          return;
-        }
-        if (e.keyCode === 9) {
-          return;
-        }
-        if (e.keyCode === 13) {
-          return;
-        }
-        e.preventDefault();
       }
     }
   });
@@ -29503,7 +29492,7 @@ define("frontend-cp/components/ko-info-bar/field/select/template", ["exports"], 
               "column": 0
             },
             "end": {
-              "line": 26,
+              "line": 25,
               "column": 0
             }
           },
@@ -29527,7 +29516,7 @@ define("frontend-cp/components/ko-info-bar/field/select/template", ["exports"], 
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [["inline", "sanitize-html", [["subexpr", "ko-embolden", [["subexpr", "if", [["get", "labelPath", ["loc", [null, [25, 35], [25, 44]]]], ["subexpr", "get", [["get", "option", ["loc", [null, [25, 50], [25, 56]]]], ["get", "labelPath", ["loc", [null, [25, 57], [25, 66]]]]], [], ["loc", [null, [25, 45], [25, 67]]]], ["get", "option", ["loc", [null, [25, 68], [25, 74]]]]], [], ["loc", [null, [25, 31], [25, 75]]]], ["get", "searchTerm", ["loc", [null, [25, 76], [25, 86]]]]], [], ["loc", [null, [25, 18], [25, 87]]]], "bold"], [], ["loc", [null, [25, 2], [25, 96]]]]],
+        statements: [["inline", "sanitize-html", [["subexpr", "ko-embolden", [["subexpr", "if", [["get", "labelPath", ["loc", [null, [24, 35], [24, 44]]]], ["subexpr", "get", [["get", "option", ["loc", [null, [24, 50], [24, 56]]]], ["get", "labelPath", ["loc", [null, [24, 57], [24, 66]]]]], [], ["loc", [null, [24, 45], [24, 67]]]], ["get", "option", ["loc", [null, [24, 68], [24, 74]]]]], [], ["loc", [null, [24, 31], [24, 75]]]], ["get", "searchTerm", ["loc", [null, [24, 76], [24, 86]]]]], [], ["loc", [null, [24, 18], [24, 87]]]], "bold"], [], ["loc", [null, [24, 2], [24, 96]]]]],
         locals: ["option", "searchTerm"],
         templates: []
       };
@@ -29542,7 +29531,7 @@ define("frontend-cp/components/ko-info-bar/field/select/template", ["exports"], 
             "column": 0
           },
           "end": {
-            "line": 27,
+            "line": 26,
             "column": 0
           }
         },
@@ -29564,7 +29553,7 @@ define("frontend-cp/components/ko-info-bar/field/select/template", ["exports"], 
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["block", "power-select", [], ["options", ["subexpr", "@mut", [["get", "normalizedOptions", ["loc", [null, [2, 10], [2, 27]]]]], [], []], "selected", ["subexpr", "@mut", [["get", "normalizedValue", ["loc", [null, [3, 11], [3, 26]]]]], [], []], "searchEnabled", false, "search", ["subexpr", "@mut", [["get", "search", ["loc", [null, [5, 9], [5, 15]]]]], [], []], "searchField", ["subexpr", "@mut", [["get", "labelPath", ["loc", [null, [6, 14], [6, 23]]]]], [], []], "verticalPosition", "below", "onchange", ["subexpr", "action", ["selectItem"], [], ["loc", [null, [8, 11], [8, 32]]]], "renderInPlace", true, "onkeydown", ["subexpr", "action", ["handleKeyDown"], [], ["loc", [null, [10, 12], [10, 36]]]], "tabindex", -1, "disabled", ["subexpr", "@mut", [["get", "isDisabled", ["loc", [null, [12, 11], [12, 21]]]]], [], []], "loadingMessage", ["subexpr", "@mut", [["get", "loadingMessage", ["loc", [null, [13, 17], [13, 31]]]]], [], []], "extra", ["subexpr", "hash", [], ["title", ["get", "title", ["loc", [null, [15, 10], [15, 15]]]], "labelPath", ["get", "labelPath", ["loc", [null, [16, 14], [16, 23]]]], "isErrored", ["get", "isErrored", ["loc", [null, [17, 14], [17, 23]]]], "isEdited", ["get", "isEdited", ["loc", [null, [18, 13], [18, 21]]]], "isPusherEdited", ["get", "isPusherEdited", ["loc", [null, [19, 19], [19, 33]]]], "placeholder", ["get", "inputPlaceholder", ["loc", [null, [20, 16], [20, 32]]]]], ["loc", [null, [14, 8], [21, 3]]]], "triggerComponent", "ko-info-bar/field/select/trigger"], 0, null, ["loc", [null, [1, 0], [26, 17]]]]],
+      statements: [["block", "power-select", [], ["options", ["subexpr", "@mut", [["get", "normalizedOptions", ["loc", [null, [2, 10], [2, 27]]]]], [], []], "selected", ["subexpr", "@mut", [["get", "normalizedValue", ["loc", [null, [3, 11], [3, 26]]]]], [], []], "searchEnabled", false, "search", ["subexpr", "@mut", [["get", "search", ["loc", [null, [5, 9], [5, 15]]]]], [], []], "searchField", ["subexpr", "@mut", [["get", "labelPath", ["loc", [null, [6, 14], [6, 23]]]]], [], []], "verticalPosition", "below", "onchange", ["subexpr", "action", ["selectItem"], [], ["loc", [null, [8, 11], [8, 32]]]], "renderInPlace", true, "tabindex", -1, "disabled", ["subexpr", "@mut", [["get", "isDisabled", ["loc", [null, [11, 11], [11, 21]]]]], [], []], "loadingMessage", ["subexpr", "@mut", [["get", "loadingMessage", ["loc", [null, [12, 17], [12, 31]]]]], [], []], "extra", ["subexpr", "hash", [], ["title", ["get", "title", ["loc", [null, [14, 10], [14, 15]]]], "labelPath", ["get", "labelPath", ["loc", [null, [15, 14], [15, 23]]]], "isErrored", ["get", "isErrored", ["loc", [null, [16, 14], [16, 23]]]], "isEdited", ["get", "isEdited", ["loc", [null, [17, 13], [17, 21]]]], "isPusherEdited", ["get", "isPusherEdited", ["loc", [null, [18, 19], [18, 33]]]], "placeholder", ["get", "inputPlaceholder", ["loc", [null, [19, 16], [19, 32]]]]], ["loc", [null, [13, 8], [20, 3]]]], "triggerComponent", "ko-info-bar/field/select/trigger"], 0, null, ["loc", [null, [1, 0], [25, 17]]]]],
       locals: [],
       templates: [child0]
     };
@@ -29591,6 +29580,8 @@ define('frontend-cp/components/ko-info-bar/field/select/trigger/component', ['ex
         run.schedule('afterRender', this, function () {
           this.element.querySelector('input').focus();
         });
+      } else if (oldAttrs.select.isOpen && !newAttrs.select.isOpen) {
+        newAttrs.select.actions.search('');
       }
     },
 
@@ -29618,11 +29609,14 @@ define('frontend-cp/components/ko-info-bar/field/select/trigger/component', ['ex
         }
       },
 
-      handleKeydown: function handleKeydown(e) {
+      handleKeyDown: function handleKeyDown(e) {
         var select = this.get('select');
         if (e.keyCode === 13 && select.isOpen) {
           select.actions.choose(this.get('highlighted'), e);
           e.stopPropagation();
+        }
+        if (!this.get('select.isOpen') && e.keyCode !== 9 && e.keyCode !== 13) {
+          e.preventDefault();
         }
       }
     }
@@ -29737,7 +29731,7 @@ define("frontend-cp/components/ko-info-bar/field/select/trigger/template", ["exp
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["attribute", "class", ["concat", ["ko-info-bar_field_select__icon ", ["subexpr", "if", [["get", "select.isOpen", ["loc", [null, [1, 46], [1, 59]]]], "i-search", "i-select"], [], ["loc", [null, [1, 41], [1, 83]]]]]]], ["content", "extra.title", ["loc", [null, [2, 36], [2, 51]]]], ["attribute", "class", ["concat", ["ko-info-bar_field_select_trigger-input ", ["subexpr", "if", [["subexpr", "not", [["get", "select.isOpen", ["loc", [null, [4, 58], [4, 71]]]]], [], ["loc", [null, [4, 53], [4, 72]]]], "ko-info-bar_field_select_trigger-input--hidden"], [], ["loc", [null, [4, 48], [4, 123]]]]]]], ["attribute", "value", ["get", "value", ["loc", [null, [8, 10], [8, 15]]]]], ["attribute", "placeholder", ["get", "extra.placeholder", ["loc", [null, [9, 16], [9, 33]]]]], ["attribute", "onmousedown", ["subexpr", "action", ["handleMouseDown"], [], ["loc", [null, [10, 14], [10, 42]]]]], ["attribute", "oninput", ["subexpr", "action", [["get", "select.actions.search", ["loc", [null, [11, 19], [11, 40]]]]], ["value", "target.value"], ["loc", [null, [11, 10], [11, 63]]]]], ["attribute", "onfocus", ["get", "select.actions.open", ["loc", [null, [12, 12], [12, 31]]]]], ["attribute", "onkeydown", ["subexpr", "action", ["handleKeydown"], [], ["loc", [null, [13, 12], [13, 38]]]]], ["block", "if", [["subexpr", "not", [["get", "select.isOpen", ["loc", [null, [14, 11], [14, 24]]]]], [], ["loc", [null, [14, 6], [14, 25]]]]], [], 0, null, ["loc", [null, [14, 0], [16, 7]]]]],
+      statements: [["attribute", "class", ["concat", ["ko-info-bar_field_select__icon ", ["subexpr", "if", [["get", "select.isOpen", ["loc", [null, [1, 46], [1, 59]]]], "i-search", "i-select"], [], ["loc", [null, [1, 41], [1, 83]]]]]]], ["content", "extra.title", ["loc", [null, [2, 36], [2, 51]]]], ["attribute", "class", ["concat", ["ko-info-bar_field_select_trigger-input ", ["subexpr", "if", [["subexpr", "not", [["get", "select.isOpen", ["loc", [null, [4, 58], [4, 71]]]]], [], ["loc", [null, [4, 53], [4, 72]]]], "ko-info-bar_field_select_trigger-input--hidden"], [], ["loc", [null, [4, 48], [4, 123]]]]]]], ["attribute", "value", ["get", "value", ["loc", [null, [8, 10], [8, 15]]]]], ["attribute", "placeholder", ["get", "extra.placeholder", ["loc", [null, [9, 16], [9, 33]]]]], ["attribute", "onmousedown", ["subexpr", "action", ["handleMouseDown"], [], ["loc", [null, [10, 14], [10, 42]]]]], ["attribute", "oninput", ["subexpr", "action", [["get", "select.actions.search", ["loc", [null, [11, 19], [11, 40]]]]], ["value", "target.value"], ["loc", [null, [11, 10], [11, 63]]]]], ["attribute", "onfocus", ["get", "select.actions.open", ["loc", [null, [12, 12], [12, 31]]]]], ["attribute", "onkeydown", ["subexpr", "action", ["handleKeyDown"], [], ["loc", [null, [13, 12], [13, 38]]]]], ["block", "if", [["subexpr", "not", [["get", "select.isOpen", ["loc", [null, [14, 11], [14, 24]]]]], [], ["loc", [null, [14, 6], [14, 25]]]]], [], 0, null, ["loc", [null, [14, 0], [16, 7]]]]],
       locals: [],
       templates: [child0]
     };
@@ -66473,6 +66467,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+59755028"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+17b4ffa9"});
 }
 /* jshint ignore:end */
