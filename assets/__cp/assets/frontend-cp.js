@@ -23860,11 +23860,11 @@ define('frontend-cp/components/ko-dropdown/drill-down/component', ['exports', 'e
 
     actions: {
       search: function search(term) {
-        var termLowerCase = term.toLowerCase();
-        var matches = function matches(option) {
-          return option.value.toLowerCase().indexOf(termLowerCase) !== -1;
-        };
-        return this.get('flatOptions').filter(matches);
+        var _this = this;
+
+        return new _ember['default'].RSVP.Promise(function (resolve, reject) {
+          _ember['default'].run.debounce(_this, _this._performSearch, term, resolve, reject, 300);
+        });
       },
 
       selectItem: function selectItem(item, dropdown) {
@@ -23882,6 +23882,14 @@ define('frontend-cp/components/ko-dropdown/drill-down/component', ['exports', 'e
           this.get('currentPath').popObject();
         }
       }
+    },
+
+    _performSearch: function _performSearch(term, resolve) {
+      var termLowerCase = term.toLowerCase();
+      var matches = function matches(option) {
+        return option.value.toLowerCase().indexOf(termLowerCase) !== -1;
+      };
+      resolve(this.get('flatOptions').filter(matches));
     }
   });
 });
@@ -24008,8 +24016,8 @@ define("frontend-cp/components/ko-dropdown/drill-down/template", ["exports"], fu
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [["block", "if", [["subexpr", "eq", [["get", "option.type", ["loc", [null, [16, 12], [16, 23]]]], "back"], [], ["loc", [null, [16, 8], [16, 31]]]]], [], 0, null, ["loc", [null, [16, 2], [18, 9]]]], ["inline", "sanitize-html", [["subexpr", "ko-embolden", [["get", "option.value", ["loc", [null, [19, 31], [19, 43]]]], ["get", "searchTerm", ["loc", [null, [19, 44], [19, 54]]]]], [], ["loc", [null, [19, 18], [19, 55]]]], "bold"], [], ["loc", [null, [19, 2], [19, 64]]]], ["block", "if", [["get", "option.children", ["loc", [null, [20, 8], [20, 23]]]]], [], 1, null, ["loc", [null, [20, 2], [22, 9]]]]],
-        locals: ["option", "searchTerm"],
+        statements: [["block", "if", [["subexpr", "eq", [["get", "option.type", ["loc", [null, [16, 12], [16, 23]]]], "back"], [], ["loc", [null, [16, 8], [16, 31]]]]], [], 0, null, ["loc", [null, [16, 2], [18, 9]]]], ["inline", "sanitize-html", [["subexpr", "ko-embolden", [["get", "option.value", ["loc", [null, [19, 31], [19, 43]]]], ["get", "lastSearchedText", ["loc", [null, [19, 44], [19, 60]]]]], [], ["loc", [null, [19, 18], [19, 61]]]], "bold"], [], ["loc", [null, [19, 2], [19, 70]]]], ["block", "if", [["get", "option.children", ["loc", [null, [20, 8], [20, 23]]]]], [], 1, null, ["loc", [null, [20, 2], [22, 9]]]]],
+        locals: ["option", "lastSearchedText"],
         templates: [child0, child1]
       };
     })();
@@ -66552,6 +66560,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+9d8946d2"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+17da33fb"});
 }
 /* jshint ignore:end */

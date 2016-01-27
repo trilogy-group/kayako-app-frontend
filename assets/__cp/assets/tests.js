@@ -9068,6 +9068,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
     var _this2 = this;
 
     assert.expect(1);
+    var done = assert.async();
 
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
@@ -9116,16 +9117,20 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
 
     var expectedList = ['Team A / Jesse Bennett-Chamberlain', 'Team A / Jamie Edwards', 'Team B / Jesse Bennett-Chamberlain'];
 
-    var actualList = this.$(optionListItem).map(function (i, el) {
-      return $(el).text().trim();
-    }).get();
-    assert.deepEqual(actualList, expectedList, 'suggestions list');
+    setTimeout(function () {
+      var actualList = this.$(optionListItem).map(function (i, el) {
+        return $(el).text().trim();
+      }).get();
+      assert.deepEqual(actualList, expectedList, 'suggestions list');
+      done();
+    }, 350);
   });
 
   (0, _emberQunit.test)('suggestions should be able to be selected by mouse', function (assert) {
     var _this3 = this;
 
     assert.expect(1);
+    var done = assert.async();
 
     this.actions.valueChanged = function (value) {
       assert.deepEqual(value, 3, 'external action was called');
@@ -9176,15 +9181,21 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
       return _this3.$(searchField).trigger(new $.Event('input', { target: { value: 'Jamie' } }));
     });
 
-    _ember['default'].run(function () {
-      return _this3.$(firstOption).mouseup();
-    });
+    setTimeout(function () {
+      var _this4 = this;
+
+      _ember['default'].run(function () {
+        return _this4.$(firstOption).mouseup();
+      });
+      done();
+    }, 350);
   });
 
   (0, _emberQunit.test)('suggestions should be able to be selected by enter press on keyboard', function (assert) {
-    var _this4 = this;
+    var _this5 = this;
 
     assert.expect(1);
+    var done = assert.async();
 
     this.actions.valueChanged = function (value) {
       assert.deepEqual(value, 5, 'external action was called');
@@ -9229,29 +9240,36 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
     })()));
 
     _ember['default'].run(function () {
-      return _this4.$(trigger).mousedown();
+      return _this5.$(trigger).mousedown();
     });
     _ember['default'].run(function () {
-      return _this4.$(searchField).trigger(new $.Event('input', { target: { value: 'j' } }));
+      return _this5.$(searchField).trigger(new $.Event('input', { target: { value: 'j' } }));
     });
-    _ember['default'].run(function () {
-      return (0, _frontendCpTestsHelpersEmberPowerSelect.triggerKeydown)(_this4.$(searchField)[0], _frontendCpLibKeycodes.down);
-    });
-    _ember['default'].run(function () {
-      return (0, _frontendCpTestsHelpersEmberPowerSelect.triggerKeydown)(_this4.$(searchField)[0], _frontendCpLibKeycodes.down);
-    });
-    _ember['default'].run(function () {
-      return (0, _frontendCpTestsHelpersEmberPowerSelect.triggerKeydown)(_this4.$(searchField)[0], _frontendCpLibKeycodes.enter);
-    });
+
+    setTimeout(function () {
+      var _this6 = this;
+
+      _ember['default'].run(function () {
+        return (0, _frontendCpTestsHelpersEmberPowerSelect.triggerKeydown)(_this6.$(searchField)[0], _frontendCpLibKeycodes.down);
+      });
+      _ember['default'].run(function () {
+        return (0, _frontendCpTestsHelpersEmberPowerSelect.triggerKeydown)(_this6.$(searchField)[0], _frontendCpLibKeycodes.down);
+      });
+      _ember['default'].run(function () {
+        return (0, _frontendCpTestsHelpersEmberPowerSelect.triggerKeydown)(_this6.$(searchField)[0], _frontendCpLibKeycodes.enter);
+      });
+      done();
+    }, 350);
   });
 
   (0, _emberQunit.test)('search input should be set to selected value', function (assert) {
-    var _this5 = this;
+    var _this7 = this;
 
     assert.expect(1);
+    var done = assert.async();
 
     this.actions.valueChanged = function (value) {
-      _this5.set('value', 5);
+      _this7.set('value', 5);
     };
 
     this.render(_ember['default'].HTMLBars.template((function () {
@@ -9293,25 +9311,33 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
     })()));
 
     _ember['default'].run(function () {
-      return _this5.$(trigger).mousedown();
+      return _this7.$(trigger).mousedown();
     });
     _ember['default'].run(function () {
-      return _this5.$(searchField).trigger(new $.Event('input', { target: { value: 'j' } }));
-    });
-    _ember['default'].run(function () {
-      return (0, _frontendCpTestsHelpersEmberPowerSelect.triggerKeydown)(_this5.$(searchField)[0], _frontendCpLibKeycodes.down);
-    });
-    _ember['default'].run(function () {
-      return (0, _frontendCpTestsHelpersEmberPowerSelect.triggerKeydown)(_this5.$(searchField)[0], _frontendCpLibKeycodes.enter);
+      return _this7.$(searchField).trigger(new $.Event('input', { target: { value: 'j' } }));
     });
 
-    assert.equal(this.$(searchField).val(), 'Team B / Jesse Bennett-Chamberlain', 'empty text');
+    setTimeout(function () {
+      var _this8 = this;
+
+      _ember['default'].run(function () {
+        return (0, _frontendCpTestsHelpersEmberPowerSelect.triggerKeydown)(_this8.$(searchField)[0], _frontendCpLibKeycodes.down);
+      });
+      _ember['default'].run(function () {
+        return (0, _frontendCpTestsHelpersEmberPowerSelect.triggerKeydown)(_this8.$(searchField)[0], _frontendCpLibKeycodes.enter);
+      });
+
+      assert.equal(this.$(searchField).val(), 'Team B / Jesse Bennett-Chamberlain', 'empty text');
+      done();
+    }, 350);
   });
 
   (0, _emberQunit.test)('if a search is started but then all the characters are cleared from the search field the hierarchy dropdown should be shown', function (assert) {
-    var _this6 = this;
+    var _this9 = this;
 
     assert.expect(1);
+    var done = assert.async();
+
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
@@ -9351,25 +9377,28 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
     })()));
 
     _ember['default'].run(function () {
-      return _this6.$(trigger).mousedown();
+      return _this9.$(trigger).mousedown();
     });
     _ember['default'].run(function () {
-      return _this6.$(searchField).trigger(new $.Event('input', { target: { value: 'j' } }));
+      return _this9.$(searchField).trigger(new $.Event('input', { target: { value: 'j' } }));
     });
     _ember['default'].run(function () {
-      return _this6.$(searchField).trigger(new $.Event('input', { target: { value: '' } }));
+      return _this9.$(searchField).trigger(new $.Event('input', { target: { value: '' } }));
     });
 
     var expectedList = ['-', 'Team A', 'Team B', 'Team C', 'Team D'];
 
-    var actualList = this.$(optionListItem).map(function (i, el) {
-      return $(el).text().trim();
-    }).get();
-    assert.deepEqual(actualList, expectedList, '1st level list');
+    setTimeout(function () {
+      var actualList = this.$(optionListItem).map(function (i, el) {
+        return $(el).text().trim();
+      }).get();
+      assert.deepEqual(actualList, expectedList, '1st level list');
+      done();
+    }, 350);
   });
 
   (0, _emberQunit.test)('moving up and down the hierarchy by mouse', function (assert) {
-    var _this7 = this;
+    var _this10 = this;
 
     assert.expect(2);
 
@@ -9411,11 +9440,11 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
       };
     })()));
     _ember['default'].run(function () {
-      return _this7.$(trigger).mousedown();
+      return _this10.$(trigger).mousedown();
     });
 
     _ember['default'].run(function () {
-      return _this7.$(secondOption).mouseup();
+      return _this10.$(secondOption).mouseup();
     });
 
     var expectedListLevel1 = ['Back', 'Team A', 'Team A / Jesse Bennett-Chamberlain', 'Team A / Jamie Edwards', 'Team A / Drew Warkentin'];
@@ -9425,7 +9454,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
     }).get();
     assert.deepEqual(actualListLevel1, expectedListLevel1, 'level 1 hierarchy list');
     _ember['default'].run(function () {
-      return _this7.$(firstOption).mouseup();
+      return _this10.$(firstOption).mouseup();
     });
 
     var expectedRootLevelList = ['-', 'Team A', 'Team B', 'Team C', 'Team D'];
