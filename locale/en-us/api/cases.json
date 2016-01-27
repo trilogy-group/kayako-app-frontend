@@ -78,7 +78,7 @@
   "channelType.NOTE": "Note",
   "channelType.HELPCENTER": "Helpcenter",
   "new_case": "New case",
-  "new_case_subject_placeholder": "Click to add a subject",
+  "new_case_subject_placeholder": "Click to set a subject...",
   "new_case_tab_placeholder": "New Case",
 
   "trash": "Trash case",
@@ -126,5 +126,13 @@
   "suspendedMessage.table.text": "Text Message",
   "suspendedMessage.actions.cancel": "Cancel",
   "suspendedMessage.actions.permanentlyDelete": "Permanently delete",
-  "suspendedMessage.actions.allowThrough": "Allow through"
+  "suspendedMessage.actions.allowThrough": "Allow through",
+  "sla.title.RESOLUTION_TIME": "Resolution",
+  "sla.title.FIRST_REPLY_TIME": "First reply",
+  "sla.title.NEXT_REPLY_TIME": "Next reply",
+
+  "reply.click_to_start": "Click to start a",
+  "reply.or_leave_a": "or leave a",
+  "reply.note": "Note",
+  "reply.reply": "Reply"
 }
