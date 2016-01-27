@@ -64335,7 +64335,10 @@ define('frontend-cp/session/agent/cases/index/view/controller', ['exports', 'emb
   });
 });
 define('frontend-cp/session/agent/cases/index/view/route', ['exports', 'ember', 'frontend-cp/config/environment'], function (exports, _ember, _frontendCpConfigEnvironment) {
+  var run = _ember['default'].run;
 
+  var casesPollingInterval = _frontendCpConfigEnvironment['default'].APP.views.casesPollingInterval * 1000;
+  var isCasesPollingEnabled = _frontendCpConfigEnvironment['default'].APP.views.isPollingEnabled;
   var limit = _frontendCpConfigEnvironment['default'].casesPageSize;
 
   exports['default'] = _ember['default'].Route.extend({
@@ -64358,19 +64361,59 @@ define('frontend-cp/session/agent/cases/index/view/route', ['exports', 'ember', 
       return model;
     },
 
-    afterModel: function afterModel(view) {
+    activate: function activate() {
+      this._super.apply(this, arguments);
+      if (isCasesPollingEnabled) {
+        this.pollViewTimer = run.later(this, this._pollView, casesPollingInterval);
+      }
+    },
+
+    deactivate: function deactivate() {
+      this._super.apply(this, arguments);
+      if (this.pollViewTimer) {
+        run.cancel(this.pollViewTimer);
+      }
+    },
+
+    _pollView: function _pollView() {
       var _this = this;
 
       var _paramsFor = this.paramsFor(this.routeName);
 
-      var orderBy = _paramsFor.orderBy;
-      var orderByColumn = _paramsFor.orderByColumn;
-      var _paramsFor$page = _paramsFor.page;
-      var page = _paramsFor$page === undefined ? 1 : _paramsFor$page;
+      var view_id = _paramsFor.view_id;
+
+      var view = this.modelFor('session.agent.cases.index').views.findBy('id', view_id);
+      this._refreshCases(view).then(function (cases) {
+        _this.controller.set('model', cases);
+        _this.send('updatePagination', _this.paramsFor(_this.routeName), cases.get('meta'));
+        _this.pollViewTimer = run.later(_this, _this._pollView, casesPollingInterval);
+      });
+    },
+
+    afterModel: function afterModel(view) {
+      var _this2 = this;
 
       if (view) {
         this.get('tabStore').setCasesViewId(view.get('id'));
       }
+      return this._refreshCases(view).then(function (cases) {
+        view.set('casesQuery', cases);
+      }, function (error) {
+        if (error.errors && error.errors.findBy('code', 'PERMISSIONS_DENIED')) {
+          _this2.transitionTo('session.agent.cases.index');
+        } else {
+          console.error(error); // eslint-disable-line
+        }
+      });
+    },
+
+    _refreshCases: function _refreshCases(view) {
+      var _paramsFor2 = this.paramsFor(this.routeName);
+
+      var orderBy = _paramsFor2.orderBy;
+      var orderByColumn = _paramsFor2.orderByColumn;
+      var _paramsFor2$page = _paramsFor2.page;
+      var page = _paramsFor2$page === undefined ? 1 : _paramsFor2$page;
 
       return this.store.query('case', {
         limit: limit,
@@ -64378,14 +64421,6 @@ define('frontend-cp/session/agent/cases/index/view/route', ['exports', 'ember', 
         offset: (parseInt(page, 10) - 1) * limit,
         order_by: orderBy,
         order_by_column: orderByColumn
-      }).then(function (cases) {
-        view.set('casesQuery', cases);
-      }, function (error) {
-        if (error.errors && error.errors.findBy('code', 'PERMISSIONS_DENIED')) {
-          _this.transitionTo('session.agent.cases.index');
-        } else {
-          console.error(error); // eslint-disable-line
-        }
       });
     },
 
@@ -64410,8 +64445,8 @@ define("frontend-cp/session/agent/cases/index/view/template", ["exports"], funct
             "column": 0
           },
           "end": {
-            "line": 8,
-            "column": 31
+            "line": 9,
+            "column": 0
           }
         },
         "moduleName": "frontend-cp/session/agent/cases/index/view/template.hbs"
@@ -64423,13 +64458,14 @@ define("frontend-cp/session/agent/cases/index/view/template", ["exports"], funct
         var el0 = dom.createDocumentFragment();
         var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
         var morphs = new Array(1);
         morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
         dom.insertBoundary(fragment, 0);
-        dom.insertBoundary(fragment, null);
         return morphs;
       },
       statements: [["inline", "ko-cases-list", [], ["cases", ["subexpr", "@mut", [["get", "model", ["loc", [null, [2, 8], [2, 13]]]]], [], []], "onCaseListSort", "sortCaseList", "onClick", ["subexpr", "action", ["transitionToCase"], [], ["loc", [null, [4, 10], [4, 37]]]], "columns", ["subexpr", "@mut", [["get", "activeView.columns", ["loc", [null, [5, 10], [5, 28]]]]], [], []], "title", ["subexpr", "@mut", [["get", "activeView.title", ["loc", [null, [6, 8], [6, 24]]]]], [], []], "orderBy", ["subexpr", "@mut", [["get", "orderBy", ["loc", [null, [7, 10], [7, 17]]]]], [], []], "orderByColumn", ["subexpr", "@mut", [["get", "orderByColumn", ["loc", [null, [8, 16], [8, 29]]]]], [], []]], ["loc", [null, [1, 0], [8, 31]]]]],
@@ -67134,6 +67170,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+1fd5cbc6"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+831801d0"});
 }
 /* jshint ignore:end */
