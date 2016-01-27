@@ -6358,7 +6358,7 @@ define('frontend-cp/tests/acceptance/agent/cases/create-test', ['exports', 'fron
 
       assert.equal(find('.ko-agent-dropdown__drop').is(':visible'), false, '"+" Dropdown content should be hidden');
 
-      assert.equal(find('.ko-case-content__info-bar .info-bar-item:eq(1) input').val(), 'Barney Stinson', 'The recipient of the new case is Barney');
+      assert.equal(find('.ko-case-content__main .list-bare .info-bar-item:eq(1) input').val(), 'Barney Stinson', 'The recipient of the new case is Barney');
       assert.ok(find('.breadcrumbs .breadcrumbs__item:eq(0)').text().trim() === 'Barney Stinson' && find('.breadcrumbs .breadcrumbs__item:eq(1)').text().trim() === 'New case', 'Breadcrums are correct');
       assert.equal(find('.nav-tabs__item').length, 1, 'There is only one tab');
       assert.equal(find('.nav-tabs__item.active').length, 1, 'That tab is active');
@@ -6373,7 +6373,7 @@ define('frontend-cp/tests/acceptance/agent/cases/create-test', ['exports', 'fron
       fillInRichTextEditor('I press the button and the bomb explodes');
       // nativeClick('.info-bar-item:contains("Case form")');
       // nativeClick('.info-bar-item:contains("Case form") .dropdown-menu__item:contains("Internet Related Issue")');
-      nativeClick('.ko-case-content__info-bar .button--primary');
+      nativeClick('.ko-case-content__main .list-bare .button--primary');
       var status = find('.info-bar-item__header:contains("Status")').next().val();
       assert.equal(status, 'New', 'Status defaults to NEW');
     });
@@ -6565,6 +6565,10 @@ define('frontend-cp/tests/acceptance/agent/cases/timeline-test', ['exports', 'fr
 
     andThen(function () {
       assert.equal(find('.ko-feed_item--post').length, 3, 'There is three posts');
+      click('.ko-case-content__editor-placeholder');
+    });
+
+    andThen(function () {
       fillInRichTextEditor('Testing replies');
       click('.button--primary');
     });
@@ -6581,6 +6585,10 @@ define('frontend-cp/tests/acceptance/agent/cases/timeline-test', ['exports', 'fr
     andThen(function () {
       assert.equal(find('.ko-feed_item--post').length, 3, 'There is three posts');
       assert.equal(find('.ko-feed_item').length, 3, 'There is three items');
+      click('.ko-case-content__editor-placeholder');
+    });
+
+    andThen(function () {
       click('.ko-text-editor-header-group__item__set-note');
       fillInRichTextEditor('Testing notes');
       click('.button--primary');
@@ -8337,6 +8345,9 @@ define('frontend-cp/tests/helpers/start-app', ['exports', 'ember', 'frontend-cp/
   // eslint-disable-line
 
   (0, _frontendCpTestsHelpersEmberPowerSelect['default'])();
+
+  _ember['default'].deprecate = function () {};
+  _ember['default'].warn = function () {};
 
   function startApp(attrs) {
     var application = undefined;

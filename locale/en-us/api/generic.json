@@ -9,7 +9,7 @@
   "datepicker.close": "Close",
   "datepicker.today": "Today",
   "dateselect.placeholder": "Select a date",
-  "filesize": "{size, number, filesize} {unit, select,\n    mb {MB}\n    kb {KB}\n  }",
+  "filesize": "{size} {unit}",
   "logout": "Logout",
   "view_your_profile": "View your profile",
   "paginatorof": "of {number, number}",
@@ -136,5 +136,13 @@
   "error.field_required": "This action requires the field to be specified",
   "error.field_duplicate": "The value of the field is already used for another resource",
   "error.field_empty": "The value of the field cannot be empty",
-  "error.field_invalid": "The value of the field is invalid"
+  "error.field_invalid": "The value of the field is invalid",
+
+  "reply.click_to_leave_a": "Click to leave a",
+  "reply.note": "Note",
+
+  "units.kB": "kB",
+  "units.MB": "MB",
+  "units.GB": "GB",
+  "units.B": "B"
 }
