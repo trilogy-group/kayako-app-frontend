@@ -6474,7 +6474,7 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
   });
 });
 /* eslint-disable camelcase */
-define('frontend-cp/tests/acceptance/agent/cases/timeline-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
+define('frontend-cp/tests/acceptance/agent/cases/timeline-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'sinon'], function (exports, _frontendCpTestsHelpersQunit, _sinon) {
 
   var targetCase = undefined,
       identityEmail = undefined,
@@ -6520,11 +6520,14 @@ define('frontend-cp/tests/acceptance/agent/cases/timeline-test', ['exports', 'fr
           agent: agent
         }
       });
+
+      var caseMessage = server.create('case-message', { type: 'case-message' });
+
       server.createList('post', 3, {
         creator: agent,
         identity: identityEmail,
         'case': targetCase,
-        original: null
+        original: caseMessage
       });
 
       login(session.id);
@@ -6557,6 +6560,22 @@ define('frontend-cp/tests/acceptance/agent/cases/timeline-test', ['exports', 'fr
 
     andThen(function () {
       assert.equal($('.ko-feed_item__content:first').html().trim(), '<a href="http://google.com" target="_blank">http://google.com</a>');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('posts have a link to the original message', function (assert) {
+    _sinon['default'].stub(window, 'open');
+
+    visit('/agent/cases/' + targetCase.id);
+
+    andThen(function () {
+      click('.ko-feed_item--post:first .ko-link-to-message');
+    });
+
+    andThen(function () {
+      var postId = find('.ko-feed_item--post:first').attr('data-id');
+      assert.ok(window.open.calledWithMatch('/case/display/render/' + targetCase.id + '/' + postId));
+      window.open.restore();
     });
   });
 

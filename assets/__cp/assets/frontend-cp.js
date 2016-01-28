@@ -18277,7 +18277,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
                   "column": 14
                 },
                 "end": {
-                  "line": 145,
+                  "line": 146,
                   "column": 14
                 }
               },
@@ -18301,7 +18301,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
               morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
               return morphs;
             },
-            statements: [["inline", "ko-feed/item", [], ["event", ["subexpr", "@mut", [["get", "post", ["loc", [null, [141, 24], [141, 28]]]]], [], []], "isReplyDisabled", ["subexpr", "@mut", [["get", "isCaseDisabled", ["loc", [null, [142, 34], [142, 48]]]]], [], []], "onReplyWithQuote", ["subexpr", "action", ["replyWithQuote", ["get", "tabId", ["loc", [null, [143, 60], [143, 65]]]], ["get", "post", ["loc", [null, [143, 66], [143, 70]]]]], [], ["loc", [null, [143, 35], [143, 71]]]]], ["loc", [null, [140, 16], [144, 18]]]]],
+            statements: [["inline", "ko-feed/item", [], ["event", ["subexpr", "@mut", [["get", "post", ["loc", [null, [141, 24], [141, 28]]]]], [], []], "parent", ["subexpr", "@mut", [["get", "case", ["loc", [null, [142, 25], [142, 29]]]]], [], []], "isReplyDisabled", ["subexpr", "@mut", [["get", "isCaseDisabled", ["loc", [null, [143, 34], [143, 48]]]]], [], []], "onReplyWithQuote", ["subexpr", "action", ["replyWithQuote", ["get", "tabId", ["loc", [null, [144, 60], [144, 65]]]], ["get", "post", ["loc", [null, [144, 66], [144, 70]]]]], [], ["loc", [null, [144, 35], [144, 71]]]]], ["loc", [null, [140, 16], [145, 18]]]]],
             locals: [],
             templates: []
           };
@@ -18313,11 +18313,11 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 146,
+                  "line": 147,
                   "column": 14
                 },
                 "end": {
-                  "line": 148,
+                  "line": 149,
                   "column": 14
                 }
               },
@@ -18341,7 +18341,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
               morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
               return morphs;
             },
-            statements: [["inline", "ko-feed/activity", [], ["activity", ["subexpr", "@mut", [["get", "post", ["loc", [null, [147, 44], [147, 48]]]]], [], []]], ["loc", [null, [147, 16], [147, 50]]]]],
+            statements: [["inline", "ko-feed/activity", [], ["activity", ["subexpr", "@mut", [["get", "post", ["loc", [null, [148, 44], [148, 48]]]]], [], []]], ["loc", [null, [148, 16], [148, 50]]]]],
             locals: [],
             templates: []
           };
@@ -18356,7 +18356,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
                 "column": 12
               },
               "end": {
-                "line": 149,
+                "line": 150,
                 "column": 12
               }
             },
@@ -18381,7 +18381,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
             dom.insertBoundary(fragment, null);
             return morphs;
           },
-          statements: [["block", "if", [["subexpr", "eq", [["get", "post.constructor.modelName", ["loc", [null, [139, 24], [139, 50]]]], "post"], [], ["loc", [null, [139, 20], [139, 58]]]]], [], 0, null, ["loc", [null, [139, 14], [145, 21]]]], ["block", "if", [["subexpr", "or", [["subexpr", "eq", [["get", "post.constructor.modelName", ["loc", [null, [146, 28], [146, 54]]]], "activity"], [], ["loc", [null, [146, 24], [146, 66]]]], ["subexpr", "eq", [["get", "post.constructor.modelName", ["loc", [null, [146, 71], [146, 97]]]], "event"], [], ["loc", [null, [146, 67], [146, 106]]]]], [], ["loc", [null, [146, 20], [146, 107]]]]], [], 1, null, ["loc", [null, [146, 14], [148, 21]]]]],
+          statements: [["block", "if", [["subexpr", "eq", [["get", "post.constructor.modelName", ["loc", [null, [139, 24], [139, 50]]]], "post"], [], ["loc", [null, [139, 20], [139, 58]]]]], [], 0, null, ["loc", [null, [139, 14], [146, 21]]]], ["block", "if", [["subexpr", "or", [["subexpr", "eq", [["get", "post.constructor.modelName", ["loc", [null, [147, 28], [147, 54]]]], "activity"], [], ["loc", [null, [147, 24], [147, 66]]]], ["subexpr", "eq", [["get", "post.constructor.modelName", ["loc", [null, [147, 71], [147, 97]]]], "event"], [], ["loc", [null, [147, 67], [147, 106]]]]], [], ["loc", [null, [147, 20], [147, 107]]]]], [], 1, null, ["loc", [null, [147, 14], [149, 21]]]]],
           locals: ["post"],
           templates: [child0, child1]
         };
@@ -18394,11 +18394,11 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 153,
+                  "line": 154,
                   "column": 14
                 },
                 "end": {
-                  "line": 155,
+                  "line": 156,
                   "column": 14
                 }
               },
@@ -18422,7 +18422,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
               morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
               return morphs;
             },
-            statements: [["inline", "ko-loader", [], ["large", true], ["loc", [null, [154, 16], [154, 40]]]]],
+            statements: [["inline", "ko-loader", [], ["large", true], ["loc", [null, [155, 16], [155, 40]]]]],
             locals: [],
             templates: []
           };
@@ -18434,11 +18434,11 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 155,
+                  "line": 156,
                   "column": 14
                 },
                 "end": {
-                  "line": 157,
+                  "line": 158,
                   "column": 14
                 }
               },
@@ -18466,7 +18466,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
               morphs[1] = dom.createMorphAt(element1, 0, 0);
               return morphs;
             },
-            statements: [["attribute", "onclick", ["subexpr", "action", ["dispatch", "loadPostsBelow", ["get", "tabId", ["loc", [null, [156, 64], [156, 69]]]], ["subexpr", "hash", [], ["caseModel", ["get", "case", ["loc", [null, [156, 86], [156, 90]]]], "filter", ["get", "filter", ["loc", [null, [156, 98], [156, 104]]]], "sortOrder", ["get", "sortOrder", ["loc", [null, [156, 115], [156, 124]]]], "postId", ["get", "bottomPost.id", ["loc", [null, [156, 132], [156, 145]]]], "including", false], ["loc", [null, [156, 70], [156, 162]]]]], [], ["loc", [null, [156, 27], [156, 164]]]]], ["inline", "t", ["cases.posts.load_more"], [], ["loc", [null, [156, 165], [156, 194]]]]],
+            statements: [["attribute", "onclick", ["subexpr", "action", ["dispatch", "loadPostsBelow", ["get", "tabId", ["loc", [null, [157, 64], [157, 69]]]], ["subexpr", "hash", [], ["caseModel", ["get", "case", ["loc", [null, [157, 86], [157, 90]]]], "filter", ["get", "filter", ["loc", [null, [157, 98], [157, 104]]]], "sortOrder", ["get", "sortOrder", ["loc", [null, [157, 115], [157, 124]]]], "postId", ["get", "bottomPost.id", ["loc", [null, [157, 132], [157, 145]]]], "including", false], ["loc", [null, [157, 70], [157, 162]]]]], [], ["loc", [null, [157, 27], [157, 164]]]]], ["inline", "t", ["cases.posts.load_more"], [], ["loc", [null, [157, 165], [157, 194]]]]],
             locals: [],
             templates: []
           };
@@ -18477,11 +18477,11 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 151,
+                "line": 152,
                 "column": 10
               },
               "end": {
-                "line": 159,
+                "line": 160,
                 "column": 10
               }
             },
@@ -18512,7 +18512,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
             morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
             return morphs;
           },
-          statements: [["block", "if", [["get", "loadingBottom", ["loc", [null, [153, 20], [153, 33]]]]], [], 0, 1, ["loc", [null, [153, 14], [157, 21]]]]],
+          statements: [["block", "if", [["get", "loadingBottom", ["loc", [null, [154, 20], [154, 33]]]]], [], 0, 1, ["loc", [null, [154, 14], [158, 21]]]]],
           locals: [],
           templates: [child0, child1]
         };
@@ -18527,7 +18527,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
               "column": 8
             },
             "end": {
-              "line": 160,
+              "line": 161,
               "column": 8
             }
           },
@@ -18599,7 +18599,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [["block", "power-select", [], ["class", "ember-power-select-wrapper--ko", "placeholder", ["subexpr", "@mut", [["get", "sortOrderTitle", ["loc", [null, [106, 28], [106, 42]]]]], [], []], "value", ["subexpr", "@mut", [["get", "sortOrder", ["loc", [null, [107, 22], [107, 31]]]]], [], []], "options", ["subexpr", "@mut", [["get", "sortOptions", ["loc", [null, [108, 24], [108, 35]]]]], [], []], "renderInPlace", true, "searchEnabled", false, "onchange", ["subexpr", "action", ["sort"], [], ["loc", [null, [111, 25], [111, 40]]]]], 0, null, ["loc", [null, [104, 14], [113, 31]]]], ["block", "power-select", [], ["class", "ember-power-select-wrapper--ko", "placeholder", ["subexpr", "@mut", [["get", "sortFilterTitle", ["loc", [null, [118, 26], [118, 41]]]]], [], []], "value", ["subexpr", "@mut", [["get", "filter", ["loc", [null, [119, 20], [119, 26]]]]], [], []], "options", ["subexpr", "@mut", [["get", "filterOptions", ["loc", [null, [120, 22], [120, 35]]]]], [], []], "renderInPlace", true, "searchEnabled", false, "onchange", ["subexpr", "action", ["filter"], [], ["loc", [null, [123, 23], [123, 40]]]]], 1, null, ["loc", [null, [116, 14], [125, 31]]]], ["block", "if", [["get", "topPostsAvailable", ["loc", [null, [128, 16], [128, 33]]]]], [], 2, null, ["loc", [null, [128, 10], [136, 17]]]], ["block", "each", [["get", "posts", ["loc", [null, [138, 20], [138, 25]]]]], [], 3, null, ["loc", [null, [138, 12], [149, 21]]]], ["block", "if", [["get", "bottomPostsAvailable", ["loc", [null, [151, 16], [151, 36]]]]], [], 4, null, ["loc", [null, [151, 10], [159, 17]]]]],
+        statements: [["block", "power-select", [], ["class", "ember-power-select-wrapper--ko", "placeholder", ["subexpr", "@mut", [["get", "sortOrderTitle", ["loc", [null, [106, 28], [106, 42]]]]], [], []], "value", ["subexpr", "@mut", [["get", "sortOrder", ["loc", [null, [107, 22], [107, 31]]]]], [], []], "options", ["subexpr", "@mut", [["get", "sortOptions", ["loc", [null, [108, 24], [108, 35]]]]], [], []], "renderInPlace", true, "searchEnabled", false, "onchange", ["subexpr", "action", ["sort"], [], ["loc", [null, [111, 25], [111, 40]]]]], 0, null, ["loc", [null, [104, 14], [113, 31]]]], ["block", "power-select", [], ["class", "ember-power-select-wrapper--ko", "placeholder", ["subexpr", "@mut", [["get", "sortFilterTitle", ["loc", [null, [118, 26], [118, 41]]]]], [], []], "value", ["subexpr", "@mut", [["get", "filter", ["loc", [null, [119, 20], [119, 26]]]]], [], []], "options", ["subexpr", "@mut", [["get", "filterOptions", ["loc", [null, [120, 22], [120, 35]]]]], [], []], "renderInPlace", true, "searchEnabled", false, "onchange", ["subexpr", "action", ["filter"], [], ["loc", [null, [123, 23], [123, 40]]]]], 1, null, ["loc", [null, [116, 14], [125, 31]]]], ["block", "if", [["get", "topPostsAvailable", ["loc", [null, [128, 16], [128, 33]]]]], [], 2, null, ["loc", [null, [128, 10], [136, 17]]]], ["block", "each", [["get", "posts", ["loc", [null, [138, 20], [138, 25]]]]], [], 3, null, ["loc", [null, [138, 12], [150, 21]]]], ["block", "if", [["get", "bottomPostsAvailable", ["loc", [null, [152, 16], [152, 36]]]]], [], 4, null, ["loc", [null, [152, 10], [160, 17]]]]],
         locals: [],
         templates: [child0, child1, child2, child3, child4]
       };
@@ -18612,11 +18612,11 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 166,
+                "line": 167,
                 "column": 10
               },
               "end": {
-                "line": 168,
+                "line": 169,
                 "column": 10
               }
             },
@@ -18640,7 +18640,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
             morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
             return morphs;
           },
-          statements: [["inline", "ko-loader", [], ["class", "ko-case-content__button-loading"], ["loc", [null, [167, 12], [167, 65]]]]],
+          statements: [["inline", "ko-loader", [], ["class", "ko-case-content__button-loading"], ["loc", [null, [168, 12], [168, 65]]]]],
           locals: [],
           templates: []
         };
@@ -18652,11 +18652,11 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 168,
+                "line": 169,
                 "column": 10
               },
               "end": {
-                "line": 170,
+                "line": 171,
                 "column": 10
               }
             },
@@ -18680,7 +18680,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
             morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
             return morphs;
           },
-          statements: [["inline", "t", ["cases.submit"], [], ["loc", [null, [169, 12], [169, 32]]]]],
+          statements: [["inline", "t", ["cases.submit"], [], ["loc", [null, [170, 12], [170, 32]]]]],
           locals: [],
           templates: []
         };
@@ -18692,11 +18692,11 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 182,
+                "line": 183,
                 "column": 6
               },
               "end": {
-                "line": 193,
+                "line": 194,
                 "column": 6
               }
             },
@@ -18720,7 +18720,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
             morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
             return morphs;
           },
-          statements: [["inline", "ko-case-content/field/assignee", [], ["team", ["subexpr", "@mut", [["get", "editedCase.assigneeTeam", ["loc", [null, [184, 15], [184, 38]]]]], [], []], "agent", ["subexpr", "@mut", [["get", "editedCase.assigneeAgent", ["loc", [null, [185, 16], [185, 40]]]]], [], []], "field", ["subexpr", "@mut", [["get", "assigneeField", ["loc", [null, [186, 16], [186, 29]]]]], [], []], "onValueChange", ["subexpr", "action", ["dispatch", "setAssignee", ["get", "tabId", ["loc", [null, [187, 57], [187, 62]]]]], [], ["loc", [null, [187, 24], [187, 63]]]], "isEdited", ["subexpr", "@mut", [["get", "isAssigneeEdited", ["loc", [null, [188, 19], [188, 35]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "propertiesChangeViaPusher.assignee", ["loc", [null, [189, 25], [189, 59]]]]], [], []], "isErrored", ["subexpr", "or", [["get", "errorMap.assignee_agent_id", ["loc", [null, [190, 24], [190, 50]]]], ["get", "errorMap.assignee_team_id", ["loc", [null, [190, 51], [190, 76]]]]], [], ["loc", [null, [190, 20], [190, 77]]]], "isDisabled", ["subexpr", "@mut", [["get", "isCaseDisabled", ["loc", [null, [191, 21], [191, 35]]]]], [], []]], ["loc", [null, [183, 8], [192, 10]]]]],
+          statements: [["inline", "ko-case-content/field/assignee", [], ["team", ["subexpr", "@mut", [["get", "editedCase.assigneeTeam", ["loc", [null, [185, 15], [185, 38]]]]], [], []], "agent", ["subexpr", "@mut", [["get", "editedCase.assigneeAgent", ["loc", [null, [186, 16], [186, 40]]]]], [], []], "field", ["subexpr", "@mut", [["get", "assigneeField", ["loc", [null, [187, 16], [187, 29]]]]], [], []], "onValueChange", ["subexpr", "action", ["dispatch", "setAssignee", ["get", "tabId", ["loc", [null, [188, 57], [188, 62]]]]], [], ["loc", [null, [188, 24], [188, 63]]]], "isEdited", ["subexpr", "@mut", [["get", "isAssigneeEdited", ["loc", [null, [189, 19], [189, 35]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "propertiesChangeViaPusher.assignee", ["loc", [null, [190, 25], [190, 59]]]]], [], []], "isErrored", ["subexpr", "or", [["get", "errorMap.assignee_agent_id", ["loc", [null, [191, 24], [191, 50]]]], ["get", "errorMap.assignee_team_id", ["loc", [null, [191, 51], [191, 76]]]]], [], ["loc", [null, [191, 20], [191, 77]]]], "isDisabled", ["subexpr", "@mut", [["get", "isCaseDisabled", ["loc", [null, [192, 21], [192, 35]]]]], [], []]], ["loc", [null, [184, 8], [193, 10]]]]],
           locals: [],
           templates: []
         };
@@ -18732,11 +18732,11 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 195,
+                "line": 196,
                 "column": 6
               },
               "end": {
-                "line": 207,
+                "line": 208,
                 "column": 6
               }
             },
@@ -18760,7 +18760,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
             morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
             return morphs;
           },
-          statements: [["inline", "ko-case-content/field/status", [], ["case", ["subexpr", "@mut", [["get", "case", ["loc", [null, [197, 15], [197, 19]]]]], [], []], "value", ["subexpr", "@mut", [["get", "editedCase.status", ["loc", [null, [198, 16], [198, 33]]]]], [], []], "field", ["subexpr", "@mut", [["get", "statusField", ["loc", [null, [199, 16], [199, 27]]]]], [], []], "statuses", ["subexpr", "@mut", [["get", "statuses", ["loc", [null, [200, 19], [200, 27]]]]], [], []], "onValueChange", ["subexpr", "action", ["dispatch", "setStatus", ["get", "tabId", ["loc", [null, [201, 55], [201, 60]]]]], [], ["loc", [null, [201, 24], [201, 61]]]], "isEdited", ["subexpr", "@mut", [["get", "isStatusEdited", ["loc", [null, [202, 19], [202, 33]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "propertiesChangeViaPusher.status", ["loc", [null, [203, 25], [203, 57]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "errorMap.status_id", ["loc", [null, [204, 20], [204, 38]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isCaseDisabled", ["loc", [null, [205, 21], [205, 35]]]]], [], []]], ["loc", [null, [196, 8], [206, 10]]]]],
+          statements: [["inline", "ko-case-content/field/status", [], ["case", ["subexpr", "@mut", [["get", "case", ["loc", [null, [198, 15], [198, 19]]]]], [], []], "value", ["subexpr", "@mut", [["get", "editedCase.status", ["loc", [null, [199, 16], [199, 33]]]]], [], []], "field", ["subexpr", "@mut", [["get", "statusField", ["loc", [null, [200, 16], [200, 27]]]]], [], []], "statuses", ["subexpr", "@mut", [["get", "statuses", ["loc", [null, [201, 19], [201, 27]]]]], [], []], "onValueChange", ["subexpr", "action", ["dispatch", "setStatus", ["get", "tabId", ["loc", [null, [202, 55], [202, 60]]]]], [], ["loc", [null, [202, 24], [202, 61]]]], "isEdited", ["subexpr", "@mut", [["get", "isStatusEdited", ["loc", [null, [203, 19], [203, 33]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "propertiesChangeViaPusher.status", ["loc", [null, [204, 25], [204, 57]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "errorMap.status_id", ["loc", [null, [205, 20], [205, 38]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isCaseDisabled", ["loc", [null, [206, 21], [206, 35]]]]], [], []]], ["loc", [null, [197, 8], [207, 10]]]]],
           locals: [],
           templates: []
         };
@@ -18772,11 +18772,11 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 209,
+                "line": 210,
                 "column": 6
               },
               "end": {
-                "line": 220,
+                "line": 221,
                 "column": 6
               }
             },
@@ -18800,7 +18800,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
             morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
             return morphs;
           },
-          statements: [["inline", "ko-case-content/field/type", [], ["value", ["subexpr", "@mut", [["get", "editedCase.caseType", ["loc", [null, [211, 16], [211, 35]]]]], [], []], "field", ["subexpr", "@mut", [["get", "typeField", ["loc", [null, [212, 16], [212, 25]]]]], [], []], "types", ["subexpr", "@mut", [["get", "types", ["loc", [null, [213, 16], [213, 21]]]]], [], []], "onValueChange", ["subexpr", "action", ["dispatch", "setType", ["get", "tabId", ["loc", [null, [214, 53], [214, 58]]]]], [], ["loc", [null, [214, 24], [214, 59]]]], "isEdited", ["subexpr", "@mut", [["get", "isTypeEdited", ["loc", [null, [215, 19], [215, 31]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "propertiesChangeViaPusher.caseType", ["loc", [null, [216, 25], [216, 59]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "errorMap.type_id", ["loc", [null, [217, 20], [217, 36]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isCaseDisabled", ["loc", [null, [218, 21], [218, 35]]]]], [], []]], ["loc", [null, [210, 8], [219, 10]]]]],
+          statements: [["inline", "ko-case-content/field/type", [], ["value", ["subexpr", "@mut", [["get", "editedCase.caseType", ["loc", [null, [212, 16], [212, 35]]]]], [], []], "field", ["subexpr", "@mut", [["get", "typeField", ["loc", [null, [213, 16], [213, 25]]]]], [], []], "types", ["subexpr", "@mut", [["get", "types", ["loc", [null, [214, 16], [214, 21]]]]], [], []], "onValueChange", ["subexpr", "action", ["dispatch", "setType", ["get", "tabId", ["loc", [null, [215, 53], [215, 58]]]]], [], ["loc", [null, [215, 24], [215, 59]]]], "isEdited", ["subexpr", "@mut", [["get", "isTypeEdited", ["loc", [null, [216, 19], [216, 31]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "propertiesChangeViaPusher.caseType", ["loc", [null, [217, 25], [217, 59]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "errorMap.type_id", ["loc", [null, [218, 20], [218, 36]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isCaseDisabled", ["loc", [null, [219, 21], [219, 35]]]]], [], []]], ["loc", [null, [211, 8], [220, 10]]]]],
           locals: [],
           templates: []
         };
@@ -18812,11 +18812,11 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 222,
+                "line": 223,
                 "column": 6
               },
               "end": {
-                "line": 233,
+                "line": 234,
                 "column": 6
               }
             },
@@ -18840,7 +18840,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
             morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
             return morphs;
           },
-          statements: [["inline", "ko-case-content/field/priority", [], ["value", ["subexpr", "@mut", [["get", "editedCase.priority", ["loc", [null, [224, 16], [224, 35]]]]], [], []], "field", ["subexpr", "@mut", [["get", "priorityField", ["loc", [null, [225, 16], [225, 29]]]]], [], []], "priorities", ["subexpr", "@mut", [["get", "priorities", ["loc", [null, [226, 21], [226, 31]]]]], [], []], "onValueChange", ["subexpr", "action", ["dispatch", "setPriority", ["get", "tabId", ["loc", [null, [227, 57], [227, 62]]]]], [], ["loc", [null, [227, 24], [227, 63]]]], "isEdited", ["subexpr", "@mut", [["get", "isPriorityEdited", ["loc", [null, [228, 19], [228, 35]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "propertiesChangeViaPusher.priority", ["loc", [null, [229, 25], [229, 59]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "errorMap.priority_id", ["loc", [null, [230, 20], [230, 40]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isCaseDisabled", ["loc", [null, [231, 21], [231, 35]]]]], [], []]], ["loc", [null, [223, 8], [232, 10]]]]],
+          statements: [["inline", "ko-case-content/field/priority", [], ["value", ["subexpr", "@mut", [["get", "editedCase.priority", ["loc", [null, [225, 16], [225, 35]]]]], [], []], "field", ["subexpr", "@mut", [["get", "priorityField", ["loc", [null, [226, 16], [226, 29]]]]], [], []], "priorities", ["subexpr", "@mut", [["get", "priorities", ["loc", [null, [227, 21], [227, 31]]]]], [], []], "onValueChange", ["subexpr", "action", ["dispatch", "setPriority", ["get", "tabId", ["loc", [null, [228, 57], [228, 62]]]]], [], ["loc", [null, [228, 24], [228, 63]]]], "isEdited", ["subexpr", "@mut", [["get", "isPriorityEdited", ["loc", [null, [229, 19], [229, 35]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "propertiesChangeViaPusher.priority", ["loc", [null, [230, 25], [230, 59]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "errorMap.priority_id", ["loc", [null, [231, 20], [231, 40]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isCaseDisabled", ["loc", [null, [232, 21], [232, 35]]]]], [], []]], ["loc", [null, [224, 8], [233, 10]]]]],
           locals: [],
           templates: []
         };
@@ -18854,11 +18854,11 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 262,
+                    "line": 263,
                     "column": 10
                   },
                   "end": {
-                    "line": 273,
+                    "line": 274,
                     "column": 10
                   }
                 },
@@ -18882,7 +18882,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
                 morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
                 return morphs;
               },
-              statements: [["inline", "component", [["subexpr", "ko-helper", [["get", "customFieldsList.componentFor", ["loc", [null, [263, 35], [263, 64]]]], ["get", "field.fieldType", ["loc", [null, [263, 65], [263, 80]]]]], [], ["loc", [null, [263, 24], [263, 81]]]]], ["field", ["subexpr", "@mut", [["get", "field", ["loc", [null, [264, 20], [264, 25]]]]], [], []], "value", ["subexpr", "get", [["get", "localCustomFieldsMap", ["loc", [null, [265, 25], [265, 45]]]], ["get", "field.id", ["loc", [null, [265, 46], [265, 54]]]]], [], ["loc", [null, [265, 20], [265, 55]]]], "isErrored", ["subexpr", "get", [["get", "errorMap", ["loc", [null, [266, 29], [266, 37]]]], ["get", "field.key", ["loc", [null, [266, 38], [266, 47]]]]], [], ["loc", [null, [266, 24], [266, 48]]]], "isEdited", ["subexpr", "get", [["get", "editedCustomFieldsMap", ["loc", [null, [267, 28], [267, 49]]]], ["get", "field.id", ["loc", [null, [267, 50], [267, 58]]]]], [], ["loc", [null, [267, 23], [267, 59]]]], "isPusherEdited", ["subexpr", "get", [["get", "propertiesChangeViaPusher.customFields", ["loc", [null, [268, 34], [268, 72]]]], ["get", "field.id", ["loc", [null, [268, 73], [268, 81]]]]], [], ["loc", [null, [268, 29], [268, 82]]]], "isRequired", ["subexpr", "@mut", [["get", "field.isRequiredForAgents", ["loc", [null, [269, 25], [269, 50]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isCaseDisabled", ["loc", [null, [270, 25], [270, 39]]]]], [], []], "onFieldUpdate", ["subexpr", "action", ["dispatch", "setCustomField", ["get", "tabId", ["loc", [null, [271, 64], [271, 69]]]]], [], ["loc", [null, [271, 28], [271, 70]]]]], ["loc", [null, [263, 12], [272, 14]]]]],
+              statements: [["inline", "component", [["subexpr", "ko-helper", [["get", "customFieldsList.componentFor", ["loc", [null, [264, 35], [264, 64]]]], ["get", "field.fieldType", ["loc", [null, [264, 65], [264, 80]]]]], [], ["loc", [null, [264, 24], [264, 81]]]]], ["field", ["subexpr", "@mut", [["get", "field", ["loc", [null, [265, 20], [265, 25]]]]], [], []], "value", ["subexpr", "get", [["get", "localCustomFieldsMap", ["loc", [null, [266, 25], [266, 45]]]], ["get", "field.id", ["loc", [null, [266, 46], [266, 54]]]]], [], ["loc", [null, [266, 20], [266, 55]]]], "isErrored", ["subexpr", "get", [["get", "errorMap", ["loc", [null, [267, 29], [267, 37]]]], ["get", "field.key", ["loc", [null, [267, 38], [267, 47]]]]], [], ["loc", [null, [267, 24], [267, 48]]]], "isEdited", ["subexpr", "get", [["get", "editedCustomFieldsMap", ["loc", [null, [268, 28], [268, 49]]]], ["get", "field.id", ["loc", [null, [268, 50], [268, 58]]]]], [], ["loc", [null, [268, 23], [268, 59]]]], "isPusherEdited", ["subexpr", "get", [["get", "propertiesChangeViaPusher.customFields", ["loc", [null, [269, 34], [269, 72]]]], ["get", "field.id", ["loc", [null, [269, 73], [269, 81]]]]], [], ["loc", [null, [269, 29], [269, 82]]]], "isRequired", ["subexpr", "@mut", [["get", "field.isRequiredForAgents", ["loc", [null, [270, 25], [270, 50]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isCaseDisabled", ["loc", [null, [271, 25], [271, 39]]]]], [], []], "onFieldUpdate", ["subexpr", "action", ["dispatch", "setCustomField", ["get", "tabId", ["loc", [null, [272, 64], [272, 69]]]]], [], ["loc", [null, [272, 28], [272, 70]]]]], ["loc", [null, [264, 12], [273, 14]]]]],
               locals: [],
               templates: []
             };
@@ -18893,11 +18893,11 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 261,
+                  "line": 262,
                   "column": 8
                 },
                 "end": {
-                  "line": 274,
+                  "line": 275,
                   "column": 8
                 }
               },
@@ -18919,7 +18919,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
               dom.insertBoundary(fragment, null);
               return morphs;
             },
-            statements: [["block", "if", [["get", "field.isEnabled", ["loc", [null, [262, 16], [262, 31]]]]], [], 0, null, ["loc", [null, [262, 10], [273, 17]]]]],
+            statements: [["block", "if", [["get", "field.isEnabled", ["loc", [null, [263, 16], [263, 31]]]]], [], 0, null, ["loc", [null, [263, 10], [274, 17]]]]],
             locals: [],
             templates: [child0]
           };
@@ -18930,11 +18930,11 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 260,
+                "line": 261,
                 "column": 6
               },
               "end": {
-                "line": 275,
+                "line": 276,
                 "column": 6
               }
             },
@@ -18956,7 +18956,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
             dom.insertBoundary(fragment, null);
             return morphs;
           },
-          statements: [["block", "if", [["subexpr", "ko-helper", [["get", "customFieldsList.componentFor", ["loc", [null, [261, 25], [261, 54]]]], ["get", "field.fieldType", ["loc", [null, [261, 55], [261, 70]]]]], [], ["loc", [null, [261, 14], [261, 71]]]]], [], 0, null, ["loc", [null, [261, 8], [274, 15]]]]],
+          statements: [["block", "if", [["subexpr", "ko-helper", [["get", "customFieldsList.componentFor", ["loc", [null, [262, 25], [262, 54]]]], ["get", "field.fieldType", ["loc", [null, [262, 55], [262, 70]]]]], [], ["loc", [null, [262, 14], [262, 71]]]]], [], 0, null, ["loc", [null, [262, 8], [275, 15]]]]],
           locals: ["field"],
           templates: [child0]
         };
@@ -18968,11 +18968,11 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 277,
+                "line": 278,
                 "column": 6
               },
               "end": {
-                "line": 279,
+                "line": 280,
                 "column": 6
               }
             },
@@ -18996,7 +18996,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
             morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
             return morphs;
           },
-          statements: [["inline", "ko-case/sla-sidebar", [], ["sla", ["subexpr", "@mut", [["get", "case.sla", ["loc", [null, [278, 34], [278, 42]]]]], [], []], "slaMetrics", ["subexpr", "@mut", [["get", "case.slaMetrics", ["loc", [null, [278, 54], [278, 69]]]]], [], []]], ["loc", [null, [278, 8], [278, 71]]]]],
+          statements: [["inline", "ko-case/sla-sidebar", [], ["sla", ["subexpr", "@mut", [["get", "case.sla", ["loc", [null, [279, 34], [279, 42]]]]], [], []], "slaMetrics", ["subexpr", "@mut", [["get", "case.slaMetrics", ["loc", [null, [279, 54], [279, 69]]]]], [], []]], ["loc", [null, [279, 8], [279, 71]]]]],
           locals: [],
           templates: []
         };
@@ -19007,11 +19007,11 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 163,
+              "line": 164,
               "column": 4
             },
             "end": {
-              "line": 282,
+              "line": 283,
               "column": 4
             }
           },
@@ -19102,7 +19102,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
           morphs[12] = dom.createMorphAt(fragment, 21, 21, contextualElement);
           return morphs;
         },
-        statements: [["attribute", "class", ["concat", ["button button--primary u-1/1 ", ["subexpr", "if", [["get", "submitDisabled", ["loc", [null, [165, 71], [165, 85]]]], "disabled"], [], ["loc", [null, [165, 66], [165, 98]]]]]]], ["attribute", "onclick", ["subexpr", "action", ["submit", ["get", "tabId", ["loc", [null, [165, 126], [165, 131]]]], ["get", "case", ["loc", [null, [165, 132], [165, 136]]]], ["get", "channel", ["loc", [null, [165, 137], [165, 144]]]]], [], ["loc", [null, [165, 108], [165, 146]]]]], ["block", "if", [["get", "isSaving", ["loc", [null, [166, 16], [166, 24]]]]], [], 0, 1, ["loc", [null, [166, 10], [170, 17]]]], ["inline", "ko-case-content/field/requester", [], ["isDisabled", ["subexpr", "@mut", [["get", "isRequesterDisabled", ["loc", [null, [174, 19], [174, 38]]]]], [], []], "requester", ["subexpr", "@mut", [["get", "editedCase.requester", ["loc", [null, [175, 18], [175, 38]]]]], [], []], "onValueChange", ["subexpr", "action", ["dispatch", "setRequester", ["get", "tabId", ["loc", [null, [176, 56], [176, 61]]]]], [], ["loc", [null, [176, 22], [176, 62]]]], "isEdited", ["subexpr", "@mut", [["get", "isRequesterEdited", ["loc", [null, [177, 17], [177, 34]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "errorMap.requester", ["loc", [null, [178, 18], [178, 36]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "propertiesChangeViaPusher.requester", ["loc", [null, [179, 23], [179, 58]]]]], [], []]], ["loc", [null, [173, 6], [180, 8]]]], ["block", "if", [["get", "assigneeField", ["loc", [null, [182, 12], [182, 25]]]]], [], 2, null, ["loc", [null, [182, 6], [193, 13]]]], ["block", "if", [["get", "statusField", ["loc", [null, [195, 12], [195, 23]]]]], [], 3, null, ["loc", [null, [195, 6], [207, 13]]]], ["block", "if", [["get", "typeField", ["loc", [null, [209, 12], [209, 21]]]]], [], 4, null, ["loc", [null, [209, 6], [220, 13]]]], ["block", "if", [["get", "priorityField", ["loc", [null, [222, 12], [222, 25]]]]], [], 5, null, ["loc", [null, [222, 6], [233, 13]]]], ["inline", "ko-info-bar/field/tags", [], ["title", ["subexpr", "t", ["cases.tags"], [], ["loc", [null, [236, 14], [236, 30]]]], "isEdited", ["subexpr", "@mut", [["get", "isTagsFieldEdited", ["loc", [null, [237, 17], [237, 34]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isCaseDisabled", ["loc", [null, [238, 19], [238, 33]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "errorMap.tags", ["loc", [null, [239, 18], [239, 31]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "propertiesChangeViaPusher.tags", ["loc", [null, [240, 23], [240, 53]]]]], [], []], "selectedTags", ["subexpr", "@mut", [["get", "editedTags", ["loc", [null, [241, 21], [241, 31]]]]], [], []], "suggestedTags", ["subexpr", "@mut", [["get", "suggestedTags", ["loc", [null, [242, 22], [242, 35]]]]], [], []], "onTagAddition", ["subexpr", "action", ["dispatch", "addTag", ["get", "tabId", ["loc", [null, [243, 50], [243, 55]]]], ["get", "case", ["loc", [null, [243, 56], [243, 60]]]]], [], ["loc", [null, [243, 22], [243, 61]]]], "onTagRemoval", ["subexpr", "action", ["dispatch", "removeTag", ["get", "tabId", ["loc", [null, [244, 52], [244, 57]]]]], [], ["loc", [null, [244, 21], [244, 58]]]], "onTagSuggestion", ["subexpr", "action", ["suggestTags"], [], ["loc", [null, [245, 24], [245, 46]]]], "newTagText", ["subexpr", "t", ["cases.newtag"], [], ["loc", [null, [246, 19], [246, 37]]]], "addTagText", ["subexpr", "t", ["cases.addtag"], [], ["loc", [null, [247, 19], [247, 37]]]]], ["loc", [null, [235, 6], [248, 8]]]], ["inline", "ko-case-content/field/forms", [], ["selectedForm", ["subexpr", "@mut", [["get", "editedCase.form", ["loc", [null, [251, 21], [251, 36]]]]], [], []], "forms", ["subexpr", "@mut", [["get", "enabledCaseForms", ["loc", [null, [252, 14], [252, 30]]]]], [], []], "onFormSelected", ["subexpr", "action", ["dispatch", "setForm", ["get", "tabId", ["loc", [null, [253, 52], [253, 57]]]]], [], ["loc", [null, [253, 23], [253, 58]]]], "isEdited", ["subexpr", "@mut", [["get", "isFormEdited", ["loc", [null, [254, 17], [254, 29]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "propertiesChangeViaPusher.form", ["loc", [null, [255, 23], [255, 53]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "errorMap.form_id", ["loc", [null, [256, 18], [256, 34]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isCaseDisabled", ["loc", [null, [257, 19], [257, 33]]]]], [], []]], ["loc", [null, [250, 6], [258, 8]]]], ["block", "each", [["get", "caseOrFormFields", ["loc", [null, [260, 14], [260, 30]]]]], [], 6, null, ["loc", [null, [260, 6], [275, 15]]]], ["block", "if", [["get", "case.id", ["loc", [null, [277, 12], [277, 19]]]]], [], 7, null, ["loc", [null, [277, 6], [279, 13]]]], ["inline", "ko-info-bar/metadata", [], ["rows", ["subexpr", "@mut", [["get", "caseDates", ["loc", [null, [281, 34], [281, 43]]]]], [], []]], ["loc", [null, [281, 6], [281, 45]]]]],
+        statements: [["attribute", "class", ["concat", ["button button--primary u-1/1 ", ["subexpr", "if", [["get", "submitDisabled", ["loc", [null, [166, 71], [166, 85]]]], "disabled"], [], ["loc", [null, [166, 66], [166, 98]]]]]]], ["attribute", "onclick", ["subexpr", "action", ["submit", ["get", "tabId", ["loc", [null, [166, 126], [166, 131]]]], ["get", "case", ["loc", [null, [166, 132], [166, 136]]]], ["get", "channel", ["loc", [null, [166, 137], [166, 144]]]]], [], ["loc", [null, [166, 108], [166, 146]]]]], ["block", "if", [["get", "isSaving", ["loc", [null, [167, 16], [167, 24]]]]], [], 0, 1, ["loc", [null, [167, 10], [171, 17]]]], ["inline", "ko-case-content/field/requester", [], ["isDisabled", ["subexpr", "@mut", [["get", "isRequesterDisabled", ["loc", [null, [175, 19], [175, 38]]]]], [], []], "requester", ["subexpr", "@mut", [["get", "editedCase.requester", ["loc", [null, [176, 18], [176, 38]]]]], [], []], "onValueChange", ["subexpr", "action", ["dispatch", "setRequester", ["get", "tabId", ["loc", [null, [177, 56], [177, 61]]]]], [], ["loc", [null, [177, 22], [177, 62]]]], "isEdited", ["subexpr", "@mut", [["get", "isRequesterEdited", ["loc", [null, [178, 17], [178, 34]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "errorMap.requester", ["loc", [null, [179, 18], [179, 36]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "propertiesChangeViaPusher.requester", ["loc", [null, [180, 23], [180, 58]]]]], [], []]], ["loc", [null, [174, 6], [181, 8]]]], ["block", "if", [["get", "assigneeField", ["loc", [null, [183, 12], [183, 25]]]]], [], 2, null, ["loc", [null, [183, 6], [194, 13]]]], ["block", "if", [["get", "statusField", ["loc", [null, [196, 12], [196, 23]]]]], [], 3, null, ["loc", [null, [196, 6], [208, 13]]]], ["block", "if", [["get", "typeField", ["loc", [null, [210, 12], [210, 21]]]]], [], 4, null, ["loc", [null, [210, 6], [221, 13]]]], ["block", "if", [["get", "priorityField", ["loc", [null, [223, 12], [223, 25]]]]], [], 5, null, ["loc", [null, [223, 6], [234, 13]]]], ["inline", "ko-info-bar/field/tags", [], ["title", ["subexpr", "t", ["cases.tags"], [], ["loc", [null, [237, 14], [237, 30]]]], "isEdited", ["subexpr", "@mut", [["get", "isTagsFieldEdited", ["loc", [null, [238, 17], [238, 34]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isCaseDisabled", ["loc", [null, [239, 19], [239, 33]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "errorMap.tags", ["loc", [null, [240, 18], [240, 31]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "propertiesChangeViaPusher.tags", ["loc", [null, [241, 23], [241, 53]]]]], [], []], "selectedTags", ["subexpr", "@mut", [["get", "editedTags", ["loc", [null, [242, 21], [242, 31]]]]], [], []], "suggestedTags", ["subexpr", "@mut", [["get", "suggestedTags", ["loc", [null, [243, 22], [243, 35]]]]], [], []], "onTagAddition", ["subexpr", "action", ["dispatch", "addTag", ["get", "tabId", ["loc", [null, [244, 50], [244, 55]]]], ["get", "case", ["loc", [null, [244, 56], [244, 60]]]]], [], ["loc", [null, [244, 22], [244, 61]]]], "onTagRemoval", ["subexpr", "action", ["dispatch", "removeTag", ["get", "tabId", ["loc", [null, [245, 52], [245, 57]]]]], [], ["loc", [null, [245, 21], [245, 58]]]], "onTagSuggestion", ["subexpr", "action", ["suggestTags"], [], ["loc", [null, [246, 24], [246, 46]]]], "newTagText", ["subexpr", "t", ["cases.newtag"], [], ["loc", [null, [247, 19], [247, 37]]]], "addTagText", ["subexpr", "t", ["cases.addtag"], [], ["loc", [null, [248, 19], [248, 37]]]]], ["loc", [null, [236, 6], [249, 8]]]], ["inline", "ko-case-content/field/forms", [], ["selectedForm", ["subexpr", "@mut", [["get", "editedCase.form", ["loc", [null, [252, 21], [252, 36]]]]], [], []], "forms", ["subexpr", "@mut", [["get", "enabledCaseForms", ["loc", [null, [253, 14], [253, 30]]]]], [], []], "onFormSelected", ["subexpr", "action", ["dispatch", "setForm", ["get", "tabId", ["loc", [null, [254, 52], [254, 57]]]]], [], ["loc", [null, [254, 23], [254, 58]]]], "isEdited", ["subexpr", "@mut", [["get", "isFormEdited", ["loc", [null, [255, 17], [255, 29]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "propertiesChangeViaPusher.form", ["loc", [null, [256, 23], [256, 53]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "errorMap.form_id", ["loc", [null, [257, 18], [257, 34]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isCaseDisabled", ["loc", [null, [258, 19], [258, 33]]]]], [], []]], ["loc", [null, [251, 6], [259, 8]]]], ["block", "each", [["get", "caseOrFormFields", ["loc", [null, [261, 14], [261, 30]]]]], [], 6, null, ["loc", [null, [261, 6], [276, 15]]]], ["block", "if", [["get", "case.id", ["loc", [null, [278, 12], [278, 19]]]]], [], 7, null, ["loc", [null, [278, 6], [280, 13]]]], ["inline", "ko-info-bar/metadata", [], ["rows", ["subexpr", "@mut", [["get", "caseDates", ["loc", [null, [282, 34], [282, 43]]]]], [], []]], ["loc", [null, [282, 6], [282, 45]]]]],
         locals: [],
         templates: [child0, child1, child2, child3, child4, child5, child6, child7]
       };
@@ -19117,7 +19117,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
             "column": 0
           },
           "end": {
-            "line": 285,
+            "line": 286,
             "column": 0
           }
         },
@@ -19285,7 +19285,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
         morphs[9] = dom.createMorphAt(element13, 3, 3);
         return morphs;
       },
-      statements: [["attribute", "src", ["concat", [["get", "editedCase.requester.avatar", ["loc", [null, [6, 22], [6, 49]]]]]]], ["inline", "ko-editable-text", [], ["value", ["subexpr", "@mut", [["get", "editedCase.subject", ["loc", [null, [11, 22], [11, 40]]]]], [], []], "isEdited", ["subexpr", "@mut", [["get", "isSubjectEdited", ["loc", [null, [12, 25], [12, 40]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "propertiesChangeViaPusher.subject", ["loc", [null, [13, 31], [13, 64]]]]], [], []], "onValueChange", ["subexpr", "action", ["dispatch", "setSubject", ["get", "tabId", ["loc", [null, [14, 62], [14, 67]]]]], [], ["loc", [null, [14, 30], [14, 68]]]], "isErrored", ["subexpr", "@mut", [["get", "errorMap.subject", ["loc", [null, [15, 26], [15, 42]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isCaseDisabled", ["loc", [null, [16, 27], [16, 41]]]]], [], []], "placeholder", ["subexpr", "t", ["cases.new_case_subject_placeholder"], [], ["loc", [null, [17, 28], [17, 68]]]]], ["loc", [null, [10, 12], [18, 14]]]], ["block", "if", [["get", "case.id", ["loc", [null, [20, 16], [20, 23]]]]], [], 0, null, ["loc", [null, [20, 10], [29, 17]]]], ["block", "if", [["subexpr", "eq", [["get", "case.state", ["loc", [null, [35, 18], [35, 28]]]], "TRASH"], [], ["loc", [null, [35, 14], [35, 37]]]]], [], 1, null, ["loc", [null, [35, 8], [47, 15]]]], ["inline", "ko-case/macro-selector", [], ["macros", ["subexpr", "@mut", [["get", "macros", ["loc", [null, [49, 42], [49, 48]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isCaseDisabled", ["loc", [null, [50, 23], [50, 37]]]]], [], []], "onMacroSelect", ["subexpr", "action", ["dispatch", "applyMacro", ["get", "tabId", ["loc", [null, [51, 58], [51, 63]]]]], [], ["loc", [null, [51, 26], [51, 64]]]]], ["loc", [null, [49, 10], [51, 66]]]], ["inline", "ko-case-action-menu", [], ["caseState", ["subexpr", "@mut", [["get", "case.state", ["loc", [null, [55, 22], [55, 32]]]]], [], []], "onTrashCase", ["subexpr", "action", ["trashCase", ["get", "case.id", ["loc", [null, [56, 44], [56, 51]]]]], [], ["loc", [null, [56, 24], [56, 52]]]]], ["loc", [null, [54, 10], [57, 12]]]], ["attribute", "class", ["concat", ["content__main content__main--has-infobar ", ["subexpr", "if", [["get", "case.isNew", ["loc", [null, [64, 64], [64, 74]]]], "ko-case-content__main--new"], [], ["loc", [null, [64, 59], [64, 105]]]]]]], ["block", "if", [["subexpr", "not", [["get", "isCaseDisabled", ["loc", [null, [65, 19], [65, 33]]]]], [], ["loc", [null, [65, 14], [65, 34]]]]], [], 2, null, ["loc", [null, [65, 8], [100, 15]]]], ["block", "unless", [["get", "case.isNew", ["loc", [null, [101, 18], [101, 28]]]]], [], 3, null, ["loc", [null, [101, 8], [160, 19]]]], ["block", "ko-info-bar", [], [], 4, null, ["loc", [null, [163, 4], [282, 20]]]]],
+      statements: [["attribute", "src", ["concat", [["get", "editedCase.requester.avatar", ["loc", [null, [6, 22], [6, 49]]]]]]], ["inline", "ko-editable-text", [], ["value", ["subexpr", "@mut", [["get", "editedCase.subject", ["loc", [null, [11, 22], [11, 40]]]]], [], []], "isEdited", ["subexpr", "@mut", [["get", "isSubjectEdited", ["loc", [null, [12, 25], [12, 40]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "propertiesChangeViaPusher.subject", ["loc", [null, [13, 31], [13, 64]]]]], [], []], "onValueChange", ["subexpr", "action", ["dispatch", "setSubject", ["get", "tabId", ["loc", [null, [14, 62], [14, 67]]]]], [], ["loc", [null, [14, 30], [14, 68]]]], "isErrored", ["subexpr", "@mut", [["get", "errorMap.subject", ["loc", [null, [15, 26], [15, 42]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isCaseDisabled", ["loc", [null, [16, 27], [16, 41]]]]], [], []], "placeholder", ["subexpr", "t", ["cases.new_case_subject_placeholder"], [], ["loc", [null, [17, 28], [17, 68]]]]], ["loc", [null, [10, 12], [18, 14]]]], ["block", "if", [["get", "case.id", ["loc", [null, [20, 16], [20, 23]]]]], [], 0, null, ["loc", [null, [20, 10], [29, 17]]]], ["block", "if", [["subexpr", "eq", [["get", "case.state", ["loc", [null, [35, 18], [35, 28]]]], "TRASH"], [], ["loc", [null, [35, 14], [35, 37]]]]], [], 1, null, ["loc", [null, [35, 8], [47, 15]]]], ["inline", "ko-case/macro-selector", [], ["macros", ["subexpr", "@mut", [["get", "macros", ["loc", [null, [49, 42], [49, 48]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isCaseDisabled", ["loc", [null, [50, 23], [50, 37]]]]], [], []], "onMacroSelect", ["subexpr", "action", ["dispatch", "applyMacro", ["get", "tabId", ["loc", [null, [51, 58], [51, 63]]]]], [], ["loc", [null, [51, 26], [51, 64]]]]], ["loc", [null, [49, 10], [51, 66]]]], ["inline", "ko-case-action-menu", [], ["caseState", ["subexpr", "@mut", [["get", "case.state", ["loc", [null, [55, 22], [55, 32]]]]], [], []], "onTrashCase", ["subexpr", "action", ["trashCase", ["get", "case.id", ["loc", [null, [56, 44], [56, 51]]]]], [], ["loc", [null, [56, 24], [56, 52]]]]], ["loc", [null, [54, 10], [57, 12]]]], ["attribute", "class", ["concat", ["content__main content__main--has-infobar ", ["subexpr", "if", [["get", "case.isNew", ["loc", [null, [64, 64], [64, 74]]]], "ko-case-content__main--new"], [], ["loc", [null, [64, 59], [64, 105]]]]]]], ["block", "if", [["subexpr", "not", [["get", "isCaseDisabled", ["loc", [null, [65, 19], [65, 33]]]]], [], ["loc", [null, [65, 14], [65, 34]]]]], [], 2, null, ["loc", [null, [65, 8], [100, 15]]]], ["block", "unless", [["get", "case.isNew", ["loc", [null, [101, 18], [101, 28]]]]], [], 3, null, ["loc", [null, [101, 8], [161, 19]]]], ["block", "ko-info-bar", [], [], 4, null, ["loc", [null, [164, 4], [283, 20]]]]],
       locals: [],
       templates: [child0, child1, child2, child3, child4]
     };
@@ -25029,9 +25029,9 @@ define('frontend-cp/components/ko-feed/item/component', ['exports', 'ember'], fu
   exports['default'] = _ember['default'].Component.extend({
     //params
     event: null,
+    parent: null,
     isReplyDisabled: false,
     sessionService: _ember['default'].inject.service('session'),
-    intl: _ember['default'].inject.service(),
 
     classNames: ['ko-feed_item'],
     classNameBindings: ['isNote:ko-feed_item--note:ko-feed_item--post'],
@@ -25040,11 +25040,6 @@ define('frontend-cp/components/ko-feed/item/component', ['exports', 'ember'], fu
     isNote: _ember['default'].computed.equal('event.original.postType', 'note'),
 
     isCarbonCopyCollapsed: true,
-
-    translationTitle: _ember['default'].computed('isNote', function () {
-      var textCode = this.get('isNote') ? 'feed.added' : 'feed.replied';
-      return this.get('intl').findTranslationByKey(textCode);
-    }),
 
     showMenu: false,
 
@@ -25067,6 +25062,92 @@ define('frontend-cp/components/ko-feed/item/component', ['exports', 'ember'], fu
       }
     }
   });
+});
+define('frontend-cp/components/ko-feed/item/link-to/component', ['exports', 'ember'], function (exports, _ember) {
+  var on = _ember['default'].on;
+  var computed = _ember['default'].computed;
+  exports['default'] = _ember['default'].Component.extend({
+    classNames: ['ko-link-to-message'],
+    attributeBindings: ['path:href'],
+
+    model: null,
+    parent: null,
+
+    tagName: computed('path', function () {
+      if (this.get('path')) {
+        return 'a';
+      } else {
+        return 'span';
+      }
+    }),
+
+    path: computed('model.id', 'parent.id', function () {
+      var model = this.get('model');
+      var parent = this.get('parent');
+
+      // there is detailed mesage only for email, so we don't need to show popup for notes.
+      var isMessage = ['message'].indexOf(model.get('original.postType')) > -1;
+
+      if (model && parent && isMessage) {
+        var modelName = parent.constructor.modelName;
+
+        switch (modelName) {
+          case 'case':
+            return '/case/display/render/' + parent.get('id') + '/' + model.get('id');
+        }
+      }
+
+      return null;
+    }),
+
+    openPopup: on('click', function (e) {
+      e.preventDefault();
+
+      if (this.get('path')) {
+        window.open(this.get('path'), '', 'width=800, height=500');
+      }
+    })
+  });
+});
+define("frontend-cp/components/ko-feed/item/link-to/template", ["exports"], function (exports) {
+  exports["default"] = Ember.HTMLBars.template((function () {
+    return {
+      meta: {
+        "revision": "Ember@1.13.13",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 1,
+            "column": 9
+          }
+        },
+        "moduleName": "frontend-cp/components/ko-feed/item/link-to/template.hbs"
+      },
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var morphs = new Array(1);
+        morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+        dom.insertBoundary(fragment, 0);
+        dom.insertBoundary(fragment, null);
+        return morphs;
+      },
+      statements: [["content", "yield", ["loc", [null, [1, 0], [1, 9]]]]],
+      locals: [],
+      templates: []
+    };
+  })());
 });
 define('frontend-cp/components/ko-feed/item/menu/component', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = _ember['default'].Component.extend({
@@ -25168,6 +25249,46 @@ define("frontend-cp/components/ko-feed/item/template", ["exports"], function (ex
       };
     })();
     var child1 = (function () {
+      return {
+        meta: {
+          "revision": "Ember@1.13.13",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 11,
+              "column": 4
+            },
+            "end": {
+              "line": 13,
+              "column": 4
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-feed/item/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("      ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+          return morphs;
+        },
+        statements: [["inline", "moment-from-now", [["get", "event.createdAt", ["loc", [null, [12, 24], [12, 39]]]]], [], ["loc", [null, [12, 6], [12, 41]]]]],
+        locals: [],
+        templates: []
+      };
+    })();
+    var child2 = (function () {
       var child0 = (function () {
         return {
           meta: {
@@ -25175,11 +25296,11 @@ define("frontend-cp/components/ko-feed/item/template", ["exports"], function (ex
             "loc": {
               "source": null,
               "start": {
-                "line": 18,
+                "line": 20,
                 "column": 4
               },
               "end": {
-                "line": 20,
+                "line": 22,
                 "column": 4
               }
             },
@@ -25213,7 +25334,7 @@ define("frontend-cp/components/ko-feed/item/template", ["exports"], function (ex
             morphs[1] = dom.createMorphAt(element4, 2, 2);
             return morphs;
           },
-          statements: [["attribute", "title", ["get", "event.original.mailbox.address", ["loc", [null, [19, 20], [19, 50]]]]], ["content", "event.original.mailbox.address", ["loc", [null, [19, 66], [19, 100]]]]],
+          statements: [["attribute", "title", ["get", "event.original.mailbox.address", ["loc", [null, [21, 20], [21, 50]]]]], ["content", "event.original.mailbox.address", ["loc", [null, [21, 66], [21, 100]]]]],
           locals: [],
           templates: []
         };
@@ -25225,11 +25346,11 @@ define("frontend-cp/components/ko-feed/item/template", ["exports"], function (ex
             "loc": {
               "source": null,
               "start": {
-                "line": 22,
+                "line": 24,
                 "column": 4
               },
               "end": {
-                "line": 24,
+                "line": 26,
                 "column": 4
               }
             },
@@ -25264,7 +25385,7 @@ define("frontend-cp/components/ko-feed/item/template", ["exports"], function (ex
             morphs[2] = dom.createMorphAt(element3, 2, 2);
             return morphs;
           },
-          statements: [["attribute", "title", ["get", "ccRecipients", ["loc", [null, [23, 50], [23, 62]]]]], ["element", "action", ["expandCarbonCopy"], [], ["loc", [null, [23, 12], [23, 41]]]], ["content", "ccRecipients", ["loc", [null, [23, 76], [23, 92]]]]],
+          statements: [["attribute", "title", ["get", "ccRecipients", ["loc", [null, [25, 50], [25, 62]]]]], ["element", "action", ["expandCarbonCopy"], [], ["loc", [null, [25, 12], [25, 41]]]], ["content", "ccRecipients", ["loc", [null, [25, 76], [25, 92]]]]],
           locals: [],
           templates: []
         };
@@ -25275,11 +25396,11 @@ define("frontend-cp/components/ko-feed/item/template", ["exports"], function (ex
           "loc": {
             "source": null,
             "start": {
-              "line": 16,
+              "line": 18,
               "column": 0
             },
             "end": {
-              "line": 26,
+              "line": 28,
               "column": 0
             }
           },
@@ -25316,12 +25437,12 @@ define("frontend-cp/components/ko-feed/item/template", ["exports"], function (ex
           morphs[2] = dom.createMorphAt(element5, 3, 3);
           return morphs;
         },
-        statements: [["attribute", "class", ["concat", ["ko-feed_item__cc ", ["subexpr", "if", [["get", "isCarbonCopyCollapsed", ["loc", [null, [17, 36], [17, 57]]]], "ko-feed_item__cc--collapsed"], [], ["loc", [null, [17, 31], [17, 89]]]]]]], ["block", "if", [["get", "event.original.mailbox.address", ["loc", [null, [18, 10], [18, 40]]]]], [], 0, null, ["loc", [null, [18, 4], [20, 11]]]], ["block", "if", [["get", "ccRecipients", ["loc", [null, [22, 10], [22, 22]]]]], [], 1, null, ["loc", [null, [22, 4], [24, 11]]]]],
+        statements: [["attribute", "class", ["concat", ["ko-feed_item__cc ", ["subexpr", "if", [["get", "isCarbonCopyCollapsed", ["loc", [null, [19, 36], [19, 57]]]], "ko-feed_item__cc--collapsed"], [], ["loc", [null, [19, 31], [19, 89]]]]]]], ["block", "if", [["get", "event.original.mailbox.address", ["loc", [null, [20, 10], [20, 40]]]]], [], 0, null, ["loc", [null, [20, 4], [22, 11]]]], ["block", "if", [["get", "ccRecipients", ["loc", [null, [24, 10], [24, 22]]]]], [], 1, null, ["loc", [null, [24, 4], [26, 11]]]]],
         locals: [],
         templates: [child0, child1]
       };
     })();
-    var child2 = (function () {
+    var child3 = (function () {
       var child0 = (function () {
         return {
           meta: {
@@ -25329,11 +25450,11 @@ define("frontend-cp/components/ko-feed/item/template", ["exports"], function (ex
             "loc": {
               "source": null,
               "start": {
-                "line": 32,
+                "line": 34,
                 "column": 2
               },
               "end": {
-                "line": 40,
+                "line": 42,
                 "column": 2
               }
             },
@@ -25394,7 +25515,7 @@ define("frontend-cp/components/ko-feed/item/template", ["exports"], function (ex
             morphs[3] = dom.createMorphAt(dom.childAt(element0, [7]), 0, 0);
             return morphs;
           },
-          statements: [["attribute", "src", ["concat", [["get", "attachment.thumbnails.firstObject.url", ["loc", [null, [34, 16], [34, 53]]]], "&_session_id=", ["get", "sessionService.sessionId", ["loc", [null, [34, 70], [34, 94]]]]]]], ["attribute", "href", ["concat", [["get", "attachment.urlDownload", ["loc", [null, [36, 17], [36, 39]]]], "?_session_id=", ["get", "sessionService.sessionId", ["loc", [null, [36, 56], [36, 80]]]]]]], ["content", "attachment.name", ["loc", [null, [36, 84], [36, 103]]]], ["inline", "ko-file-size", [], ["size", ["subexpr", "@mut", [["get", "attachment.size", ["loc", [null, [38, 67], [38, 82]]]]], [], []]], ["loc", [null, [38, 47], [38, 84]]]]],
+          statements: [["attribute", "src", ["concat", [["get", "attachment.thumbnails.firstObject.url", ["loc", [null, [36, 16], [36, 53]]]], "&_session_id=", ["get", "sessionService.sessionId", ["loc", [null, [36, 70], [36, 94]]]]]]], ["attribute", "href", ["concat", [["get", "attachment.urlDownload", ["loc", [null, [38, 17], [38, 39]]]], "?_session_id=", ["get", "sessionService.sessionId", ["loc", [null, [38, 56], [38, 80]]]]]]], ["content", "attachment.name", ["loc", [null, [38, 84], [38, 103]]]], ["inline", "ko-file-size", [], ["size", ["subexpr", "@mut", [["get", "attachment.size", ["loc", [null, [40, 67], [40, 82]]]]], [], []]], ["loc", [null, [40, 47], [40, 84]]]]],
           locals: ["attachment"],
           templates: []
         };
@@ -25405,11 +25526,11 @@ define("frontend-cp/components/ko-feed/item/template", ["exports"], function (ex
           "loc": {
             "source": null,
             "start": {
-              "line": 31,
+              "line": 33,
               "column": 0
             },
             "end": {
-              "line": 41,
+              "line": 43,
               "column": 0
             }
           },
@@ -25431,23 +25552,23 @@ define("frontend-cp/components/ko-feed/item/template", ["exports"], function (ex
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [["block", "each", [["get", "event.attachments", ["loc", [null, [32, 10], [32, 27]]]]], [], 0, null, ["loc", [null, [32, 2], [40, 11]]]]],
+        statements: [["block", "each", [["get", "event.attachments", ["loc", [null, [34, 10], [34, 27]]]]], [], 0, null, ["loc", [null, [34, 2], [42, 11]]]]],
         locals: [],
         templates: [child0]
       };
     })();
-    var child3 = (function () {
+    var child4 = (function () {
       return {
         meta: {
           "revision": "Ember@1.13.13",
           "loc": {
             "source": null,
             "start": {
-              "line": 42,
+              "line": 44,
               "column": 0
             },
             "end": {
-              "line": 44,
+              "line": 46,
               "column": 0
             }
           },
@@ -25471,7 +25592,7 @@ define("frontend-cp/components/ko-feed/item/template", ["exports"], function (ex
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [["inline", "ko-feed/item/menu", [], ["showMenu", ["subexpr", "@mut", [["get", "showMenu", ["loc", [null, [43, 31], [43, 39]]]]], [], []], "onReplyWithQuote", ["subexpr", "action", [["get", "onReplyWithQuote", ["loc", [null, [43, 65], [43, 81]]]], ["get", "event", ["loc", [null, [43, 82], [43, 87]]]]], [], ["loc", [null, [43, 57], [43, 88]]]]], ["loc", [null, [43, 2], [43, 90]]]]],
+        statements: [["inline", "ko-feed/item/menu", [], ["showMenu", ["subexpr", "@mut", [["get", "showMenu", ["loc", [null, [45, 31], [45, 39]]]]], [], []], "onReplyWithQuote", ["subexpr", "action", [["get", "onReplyWithQuote", ["loc", [null, [45, 65], [45, 81]]]], ["get", "event", ["loc", [null, [45, 82], [45, 87]]]]], [], ["loc", [null, [45, 57], [45, 88]]]]], ["loc", [null, [45, 2], [45, 90]]]]],
         locals: [],
         templates: []
       };
@@ -25486,7 +25607,7 @@ define("frontend-cp/components/ko-feed/item/template", ["exports"], function (ex
             "column": 0
           },
           "end": {
-            "line": 45,
+            "line": 47,
             "column": 0
           }
         },
@@ -25522,11 +25643,11 @@ define("frontend-cp/components/ko-feed/item/template", ["exports"], function (ex
         dom.appendChild(el2, el3);
         var el3 = dom.createElement("span");
         dom.setAttribute(el3, "class", "ko-feed_item__time-ago");
-        var el4 = dom.createTextNode("\n      ");
+        var el4 = dom.createTextNode("\n");
         dom.appendChild(el3, el4);
         var el4 = dom.createComment("");
         dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n    ");
+        var el4 = dom.createTextNode("    ");
         dom.appendChild(el3, el4);
         dom.appendChild(el2, el3);
         var el3 = dom.createTextNode("\n  ");
@@ -25573,9 +25694,9 @@ define("frontend-cp/components/ko-feed/item/template", ["exports"], function (ex
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["block", "if", [["get", "event.creator.avatar", ["loc", [null, [3, 6], [3, 26]]]]], [], 0, null, ["loc", [null, [3, 0], [5, 7]]]], ["content", "event.creator.fullName", ["loc", [null, [7, 33], [7, 59]]]], ["content", "translationTitle", ["loc", [null, [9, 4], [9, 24]]]], ["inline", "moment-from-now", [["get", "event.createdAt", ["loc", [null, [11, 24], [11, 39]]]]], [], ["loc", [null, [11, 6], [11, 41]]]], ["block", "if", [["subexpr", "or", [["get", "event.original.mailbox.address", ["loc", [null, [16, 10], [16, 40]]]], ["get", "ccRecipients", ["loc", [null, [16, 41], [16, 53]]]]], [], ["loc", [null, [16, 6], [16, 54]]]]], [], 1, null, ["loc", [null, [16, 0], [26, 7]]]], ["inline", "ko-breaklines", [["subexpr", "linkify", [["get", "event.contents", ["loc", [null, [29, 27], [29, 41]]]], "_blank"], [], ["loc", [null, [29, 18], [29, 51]]]]], [], ["loc", [null, [29, 2], [29, 53]]]], ["block", "if", [["get", "event.attachments", ["loc", [null, [31, 6], [31, 23]]]]], [], 2, null, ["loc", [null, [31, 0], [41, 7]]]], ["block", "if", [["subexpr", "not", [["get", "isReplyDisabled", ["loc", [null, [42, 11], [42, 26]]]]], [], ["loc", [null, [42, 6], [42, 27]]]]], [], 3, null, ["loc", [null, [42, 0], [44, 7]]]]],
+      statements: [["block", "if", [["get", "event.creator.avatar", ["loc", [null, [3, 6], [3, 26]]]]], [], 0, null, ["loc", [null, [3, 0], [5, 7]]]], ["content", "event.creator.fullName", ["loc", [null, [7, 33], [7, 59]]]], ["inline", "if", [["get", "isNote", ["loc", [null, [9, 9], [9, 15]]]], ["subexpr", "t", ["feed.added"], [], ["loc", [null, [9, 16], [9, 32]]]], ["subexpr", "t", ["feed.replied"], [], ["loc", [null, [9, 33], [9, 51]]]]], [], ["loc", [null, [9, 4], [9, 53]]]], ["block", "ko-feed/item/link-to", [], ["class", "ko-feed_item__title--small", "model", ["subexpr", "@mut", [["get", "event", ["loc", [null, [11, 69], [11, 74]]]]], [], []], "parent", ["subexpr", "@mut", [["get", "parent", ["loc", [null, [11, 82], [11, 88]]]]], [], []]], 1, null, ["loc", [null, [11, 4], [13, 29]]]], ["block", "if", [["subexpr", "or", [["get", "event.original.mailbox.address", ["loc", [null, [18, 10], [18, 40]]]], ["get", "ccRecipients", ["loc", [null, [18, 41], [18, 53]]]]], [], ["loc", [null, [18, 6], [18, 54]]]]], [], 2, null, ["loc", [null, [18, 0], [28, 7]]]], ["inline", "ko-breaklines", [["subexpr", "linkify", [["get", "event.contents", ["loc", [null, [31, 27], [31, 41]]]], "_blank"], [], ["loc", [null, [31, 18], [31, 51]]]]], [], ["loc", [null, [31, 2], [31, 53]]]], ["block", "if", [["get", "event.attachments", ["loc", [null, [33, 6], [33, 23]]]]], [], 3, null, ["loc", [null, [33, 0], [43, 7]]]], ["block", "if", [["subexpr", "not", [["get", "isReplyDisabled", ["loc", [null, [44, 11], [44, 26]]]]], [], ["loc", [null, [44, 6], [44, 27]]]]], [], 4, null, ["loc", [null, [44, 0], [46, 7]]]]],
       locals: [],
-      templates: [child0, child1, child2, child3]
+      templates: [child0, child1, child2, child3, child4]
     };
   })());
 });
@@ -67170,6 +67291,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+831801d0"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+599a6fa6"});
 }
 /* jshint ignore:end */
