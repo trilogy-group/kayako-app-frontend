@@ -14979,7 +14979,7 @@ define('frontend-cp/components/ko-case/macro-selector/component', ['exports', 'e
       var items = this.get('macros').map(function (macro) {
         return {
           id: _ember['default'].get(macro, 'id'),
-          value: _ember['default'].get(macro, 'title').split(' / ')
+          value: _ember['default'].get(macro, 'title').split(/\\/)
         };
       });
 
@@ -15904,6 +15904,8 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
     apiAdapter: _ember['default'].inject.service('api-adapter'),
     permissionService: _ember['default'].inject.service('permissions'),
     caseTab: _ember['default'].inject.service(),
+    sessionService: _ember['default'].inject.service('session'),
+    tabStoreService: _ember['default'].inject.service('tab-store'),
 
     // Lifecycle hooks
     didReceiveAttrs: function didReceiveAttrs(_ref) {
@@ -19285,7 +19287,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
         morphs[9] = dom.createMorphAt(element13, 3, 3);
         return morphs;
       },
-      statements: [["attribute", "src", ["concat", [["get", "editedCase.requester.avatar", ["loc", [null, [6, 22], [6, 49]]]]]]], ["inline", "ko-editable-text", [], ["value", ["subexpr", "@mut", [["get", "editedCase.subject", ["loc", [null, [11, 22], [11, 40]]]]], [], []], "isEdited", ["subexpr", "@mut", [["get", "isSubjectEdited", ["loc", [null, [12, 25], [12, 40]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "propertiesChangeViaPusher.subject", ["loc", [null, [13, 31], [13, 64]]]]], [], []], "onValueChange", ["subexpr", "action", ["dispatch", "setSubject", ["get", "tabId", ["loc", [null, [14, 62], [14, 67]]]]], [], ["loc", [null, [14, 30], [14, 68]]]], "isErrored", ["subexpr", "@mut", [["get", "errorMap.subject", ["loc", [null, [15, 26], [15, 42]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isCaseDisabled", ["loc", [null, [16, 27], [16, 41]]]]], [], []], "placeholder", ["subexpr", "t", ["cases.new_case_subject_placeholder"], [], ["loc", [null, [17, 28], [17, 68]]]]], ["loc", [null, [10, 12], [18, 14]]]], ["block", "if", [["get", "case.id", ["loc", [null, [20, 16], [20, 23]]]]], [], 0, null, ["loc", [null, [20, 10], [29, 17]]]], ["block", "if", [["subexpr", "eq", [["get", "case.state", ["loc", [null, [35, 18], [35, 28]]]], "TRASH"], [], ["loc", [null, [35, 14], [35, 37]]]]], [], 1, null, ["loc", [null, [35, 8], [47, 15]]]], ["inline", "ko-case/macro-selector", [], ["macros", ["subexpr", "@mut", [["get", "macros", ["loc", [null, [49, 42], [49, 48]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isCaseDisabled", ["loc", [null, [50, 23], [50, 37]]]]], [], []], "onMacroSelect", ["subexpr", "action", ["dispatch", "applyMacro", ["get", "tabId", ["loc", [null, [51, 58], [51, 63]]]]], [], ["loc", [null, [51, 26], [51, 64]]]]], ["loc", [null, [49, 10], [51, 66]]]], ["inline", "ko-case-action-menu", [], ["caseState", ["subexpr", "@mut", [["get", "case.state", ["loc", [null, [55, 22], [55, 32]]]]], [], []], "onTrashCase", ["subexpr", "action", ["trashCase", ["get", "case.id", ["loc", [null, [56, 44], [56, 51]]]]], [], ["loc", [null, [56, 24], [56, 52]]]]], ["loc", [null, [54, 10], [57, 12]]]], ["attribute", "class", ["concat", ["content__main content__main--has-infobar ", ["subexpr", "if", [["get", "case.isNew", ["loc", [null, [64, 64], [64, 74]]]], "ko-case-content__main--new"], [], ["loc", [null, [64, 59], [64, 105]]]]]]], ["block", "if", [["subexpr", "not", [["get", "isCaseDisabled", ["loc", [null, [65, 19], [65, 33]]]]], [], ["loc", [null, [65, 14], [65, 34]]]]], [], 2, null, ["loc", [null, [65, 8], [100, 15]]]], ["block", "unless", [["get", "case.isNew", ["loc", [null, [101, 18], [101, 28]]]]], [], 3, null, ["loc", [null, [101, 8], [161, 19]]]], ["block", "ko-info-bar", [], [], 4, null, ["loc", [null, [164, 4], [286, 20]]]]],
+      statements: [["attribute", "src", ["concat", [["get", "editedCase.requester.avatar", ["loc", [null, [6, 22], [6, 49]]]]]]], ["inline", "ko-editable-text", [], ["value", ["subexpr", "@mut", [["get", "editedCase.subject", ["loc", [null, [11, 22], [11, 40]]]]], [], []], "isEdited", ["subexpr", "@mut", [["get", "isSubjectEdited", ["loc", [null, [12, 25], [12, 40]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "propertiesChangeViaPusher.subject", ["loc", [null, [13, 31], [13, 64]]]]], [], []], "onValueChange", ["subexpr", "action", ["dispatch", "setSubject", ["get", "tabId", ["loc", [null, [14, 62], [14, 67]]]]], [], ["loc", [null, [14, 30], [14, 68]]]], "isErrored", ["subexpr", "@mut", [["get", "errorMap.subject", ["loc", [null, [15, 26], [15, 42]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isCaseDisabled", ["loc", [null, [16, 27], [16, 41]]]]], [], []], "placeholder", ["subexpr", "t", ["cases.new_case_subject_placeholder"], [], ["loc", [null, [17, 28], [17, 68]]]]], ["loc", [null, [10, 12], [18, 14]]]], ["block", "if", [["get", "case.id", ["loc", [null, [20, 16], [20, 23]]]]], [], 0, null, ["loc", [null, [20, 10], [29, 17]]]], ["block", "if", [["subexpr", "eq", [["get", "case.state", ["loc", [null, [35, 18], [35, 28]]]], "TRASH"], [], ["loc", [null, [35, 14], [35, 37]]]]], [], 1, null, ["loc", [null, [35, 8], [47, 15]]]], ["inline", "ko-case/macro-selector", [], ["macros", ["subexpr", "@mut", [["get", "macros", ["loc", [null, [49, 42], [49, 48]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isCaseDisabled", ["loc", [null, [50, 23], [50, 37]]]]], [], []], "onMacroSelect", ["subexpr", "action", ["dispatch", "applyMacro", ["get", "tabId", ["loc", [null, [51, 58], [51, 63]]]], ["get", "sessionService.user", ["loc", [null, [51, 64], [51, 83]]]]], [], ["loc", [null, [51, 26], [51, 84]]]]], ["loc", [null, [49, 10], [51, 86]]]], ["inline", "ko-case-action-menu", [], ["caseState", ["subexpr", "@mut", [["get", "case.state", ["loc", [null, [55, 22], [55, 32]]]]], [], []], "onTrashCase", ["subexpr", "action", ["trashCase", ["get", "case.id", ["loc", [null, [56, 44], [56, 51]]]]], [], ["loc", [null, [56, 24], [56, 52]]]]], ["loc", [null, [54, 10], [57, 12]]]], ["attribute", "class", ["concat", ["content__main content__main--has-infobar ", ["subexpr", "if", [["get", "case.isNew", ["loc", [null, [64, 64], [64, 74]]]], "ko-case-content__main--new"], [], ["loc", [null, [64, 59], [64, 105]]]]]]], ["block", "if", [["subexpr", "not", [["get", "isCaseDisabled", ["loc", [null, [65, 19], [65, 33]]]]], [], ["loc", [null, [65, 14], [65, 34]]]]], [], 2, null, ["loc", [null, [65, 8], [100, 15]]]], ["block", "unless", [["get", "case.isNew", ["loc", [null, [101, 18], [101, 28]]]]], [], 3, null, ["loc", [null, [101, 8], [161, 19]]]], ["block", "ko-info-bar", [], [], 4, null, ["loc", [null, [164, 4], [286, 20]]]]],
       locals: [],
       templates: [child0, child1, child2, child3, child4]
     };
@@ -52738,6 +52740,8 @@ define('frontend-cp/services/api-adapter', ['exports', 'ember'], function (expor
  * cannot be readily modelled in an EmberData way
  */
 define('frontend-cp/services/case-tab', ['exports', 'ember', 'npm:lodash', 'frontend-cp/utils/object'], function (exports, _ember, _npmLodash, _frontendCpUtilsObject) {
+  function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
+
   var getProperties = _ember['default'].getProperties;
   var merge = _ember['default'].merge;
 
@@ -53050,7 +53054,20 @@ define('frontend-cp/services/case-tab', ['exports', 'ember', 'npm:lodash', 'fron
       });
     },
 
-    applyMacro: function applyMacro(tabId, macro) {
+    getAssigneeFromMacro: function getAssigneeFromMacro(user, macro) {
+      switch (macro.get('assignee.type')) {
+        case 'UNASSIGNED':
+          return [null, null];
+        case 'CURRENT_AGENT':
+          return [user.get('teams.firstObject'), user];
+        case 'TEAM':
+          return [macro.get('assignee.team'), macro.get('assignee.agent')];
+        case 'AGENT':
+          return [macro.get('assignee.team'), macro.get('assignee.agent')];
+      }
+    },
+
+    applyMacro: function applyMacro(tabId, user, macro) {
       var _this = this;
 
       var replyType = macro.get('replyType');
@@ -53112,9 +53129,9 @@ define('frontend-cp/services/case-tab', ['exports', 'ember', 'npm:lodash', 'fron
         this.setType(tabId, newType);
       }
 
-      var newAssignedTeam = macro.get('assignee.team');
-      if (newAssignedTeam) {
-        this.setAssignee(tabId, newAssignedTeam, macro.get('assignee.agent'));
+      var newAssignee = this.getAssigneeFromMacro(user, macro);
+      if (newAssignee) {
+        this.setAssignee.apply(this, [tabId].concat(_toConsumableArray(newAssignee)));
       }
 
       var tags = macro.get('tags');
@@ -66907,6 +66924,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+cab6880d"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+12a3aecd"});
 }
 /* jshint ignore:end */

@@ -6744,7 +6744,7 @@ define('frontend-cp/tests/acceptance/agent/macros/select-macro-test', ['exports'
       var macroVisibility = server.create('macro-visibility');
 
       server.create('macro', {
-        title: 'Cat 1 / Foo',
+        title: 'Cat 1 \\ Foo',
         agent: agent,
         assignee: macroAssignee,
         properties: macroProperty,
@@ -6753,7 +6753,7 @@ define('frontend-cp/tests/acceptance/agent/macros/select-macro-test', ['exports'
       });
 
       server.create('macro', {
-        title: 'Cat 1 / Bar',
+        title: 'Cat 1 \\ Bar',
         agent: agent,
         assignee: macroAssignee,
         properties: macroProperty,
@@ -6762,7 +6762,7 @@ define('frontend-cp/tests/acceptance/agent/macros/select-macro-test', ['exports'
       });
 
       server.create('macro', {
-        title: 'Cat 2 / Baz',
+        title: 'Cat 2 \\ Baz',
         agent: agent,
         assignee: macroAssignee,
         properties: macroProperty,
@@ -6797,8 +6797,8 @@ define('frontend-cp/tests/acceptance/agent/macros/select-macro-test', ['exports'
 
     andThen(function () {
       assert.equal(find(optionSelector + ':eq(0)').text().trim(), 'Back', 'Back button should be shown');
-      assert.equal(find(optionSelector + ':eq(1)').text().trim(), 'Cat 1 / Foo', '1st level should be shown');
-      assert.equal(find(optionSelector + ':eq(2)').text().trim(), 'Cat 1 / Bar', '1st level should be shown');
+      assert.equal(find(optionSelector + ':eq(1)').text().trim(), 'Cat 1  /  Foo', '1st level should be shown');
+      assert.equal(find(optionSelector + ':eq(2)').text().trim(), 'Cat 1  /  Bar', '1st level should be shown');
       assert.equal(find(optionSelector).length, 3, 'Dropdown should be nested');
       nativeClick(optionSelector + ':eq(2)');
     });
