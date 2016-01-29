@@ -443,7 +443,7 @@ define('frontend-cp/adapters/identity-autocomplete-email', ['exports', 'frontend
 define('frontend-cp/adapters/identity-domain', ['exports', 'frontend-cp/adapters/application'], function (exports, _frontendCpAdaptersApplication) {
   exports['default'] = _frontendCpAdaptersApplication['default'].extend({
     pathForType: function pathForType() {
-      return 'autocomplete/domains';
+      return 'identities/domains';
     }
   });
 });
@@ -40324,6 +40324,7 @@ define("frontend-cp/components/ko-user-action-menu/template", ["exports"], funct
   })());
 });
 define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'], function (exports, _ember) {
+  var get = _ember['default'].get;
   exports['default'] = _ember['default'].Component.extend({
     classNames: ['ko-user-content'],
 
@@ -40631,23 +40632,20 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
     },
 
     processOrganizationPayload: function processOrganizationPayload(payload) {
-      var orgzanizationId = payload.get ? payload.get('id') : payload.id;
+      var organizationId = get(payload, 'id');
       var organization = null;
 
-      if (orgzanizationId) {
-        organization = this.get('store').push({
-          data: {
-            id: orgzanizationId,
-            type: 'organization',
-            attributes: payload
-          }
-        });
+      if (organizationId) {
+        var data = JSON.parse(JSON.stringify(payload));
+        Reflect.deleteProperty(data, 'websites');
+        Reflect.deleteProperty(data, 'addresses');
+        this.get('store').pushPayload({ data: data });
+        organization = this.get('store').peekRecord('organization', organizationId);
       }
 
       var found = this.get('organizations').filter(function (record) {
-        var recordId = record.get ? record.get('id') : record.id;
-        return parseInt(recordId) === parseInt(orgzanizationId);
-      }) || [];
+        return parseInt(get(record, 'id')) === parseInt(organizationId);
+      });
 
       if (!found.length && organization) {
         this.get('organizations').pushObject(organization);
@@ -51035,17 +51033,17 @@ define('frontend-cp/models/organization', ['exports', 'ember-data', 'ember', 'fr
     brand: _emberData['default'].belongsTo('brand', { async: true }),
     addresses: _emberData['default'].hasMany('contact-address', { async: true, url: 'contacts/addresses' }),
     websites: _emberData['default'].hasMany('contact-website', { async: true, url: 'contacts/websites' }),
-    notes: _emberData['default'].hasMany('organization-note', { child: true, url: 'notes', async: true, noCache: true }),
     pinned: _emberData['default'].attr('number'),
     customFields: _modelFragments['default'].fragmentArray('organization-field-value'),
     fieldValues: _modelFragments['default'].fragmentArray('user-field-value', { defaultValue: [] }), // write only
     followers: _emberData['default'].hasMany('user', { async: true, inverse: null, noCache: true }),
     createdAt: _emberData['default'].attr('date'),
     updatedAt: _emberData['default'].attr('date'),
+    domains: _emberData['default'].hasMany('identity-domain', { async: true }),
+    phones: _emberData['default'].hasMany('identity-phone', { async: true }),
 
     // Shadow children fields
-    domains: _emberData['default'].hasMany('identity-domain', { async: false }),
-    phones: _emberData['default'].hasMany('identity-phone', { async: false }),
+    notes: _emberData['default'].hasMany('organization-note', { child: true, url: 'notes', async: true, noCache: true }),
     tags: _emberData['default'].hasMany('tag', { async: true, child: true, noCache: true }),
 
     saveWithNote: function saveWithNote(contents) {
@@ -67327,6 +67325,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+6dc8a372"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+185fba4d"});
 }
 /* jshint ignore:end */
