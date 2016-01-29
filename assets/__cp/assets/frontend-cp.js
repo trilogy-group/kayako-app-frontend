@@ -315,6 +315,13 @@ define('frontend-cp/adapters/application', ['exports', 'ember', 'ember-data', 'n
     }
   });
 });
+define('frontend-cp/adapters/business-hour', ['exports', 'frontend-cp/adapters/application'], function (exports, _frontendCpAdaptersApplication) {
+  exports['default'] = _frontendCpAdaptersApplication['default'].extend({
+    pathForType: function pathForType() {
+      return 'businesshours';
+    }
+  });
+});
 define('frontend-cp/adapters/case-field-type', ['exports', 'frontend-cp/adapters/static-model'], function (exports, _frontendCpAdaptersStaticModel) {
   exports['default'] = _frontendCpAdaptersStaticModel['default'].extend({});
 });
@@ -8669,10 +8676,10 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
           return el0;
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var element0 = dom.childAt(fragment, [1]);
+          var element1 = dom.childAt(fragment, [1]);
           var morphs = new Array(2);
-          morphs[0] = dom.createMorphAt(dom.childAt(element0, [1]), 1, 1);
-          morphs[1] = dom.createMorphAt(element0, 3, 3);
+          morphs[0] = dom.createMorphAt(dom.childAt(element1, [1]), 1, 1);
+          morphs[1] = dom.createMorphAt(element1, 3, 3);
           return morphs;
         },
         statements: [["inline", "t", ["admin.navigation.channels"], [], ["loc", [null, [4, 6], [4, 39]]]], ["block", "link-to", ["session.admin.channels.twitter"], ["class", "t-naked-link ko-admin_sidebar__item"], 0, null, ["loc", [null, [7, 4], [9, 16]]]]],
@@ -8920,6 +8927,102 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
         templates: []
       };
     })();
+    var child7 = (function () {
+      var child0 = (function () {
+        return {
+          meta: {
+            "revision": "Ember@1.13.13",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 53,
+                "column": 2
+              },
+              "end": {
+                "line": 55,
+                "column": 2
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-admin/sidebar/template.hbs"
+          },
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("    ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+            return morphs;
+          },
+          statements: [["inline", "t", ["admin.businesshours"], [], ["loc", [null, [54, 4], [54, 31]]]]],
+          locals: [],
+          templates: []
+        };
+      })();
+      return {
+        meta: {
+          "revision": "Ember@1.13.13",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 48,
+              "column": 0
+            },
+            "end": {
+              "line": 57,
+              "column": 0
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-admin/sidebar/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1, "class", "ko-admin_sidebar__group");
+          var el2 = dom.createTextNode("\n  ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("p");
+          dom.setAttribute(el2, "class", "ko-admin_sidebar__header");
+          var el3 = dom.createTextNode("\n    ");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createComment("");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createTextNode("\n  ");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var element0 = dom.childAt(fragment, [0]);
+          var morphs = new Array(2);
+          morphs[0] = dom.createMorphAt(dom.childAt(element0, [1]), 1, 1);
+          morphs[1] = dom.createMorphAt(element0, 3, 3);
+          return morphs;
+        },
+        statements: [["inline", "t", ["admin.navigation.automation"], [], ["loc", [null, [51, 4], [51, 39]]]], ["block", "link-to", ["session.admin.automation.businesshours"], ["class", "t-naked-link ko-admin_sidebar__item"], 0, null, ["loc", [null, [53, 2], [55, 14]]]]],
+        locals: [],
+        templates: [child0]
+      };
+    })();
     return {
       meta: {
         "revision": "Ember@1.13.13",
@@ -8930,7 +9033,7 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
             "column": 0
           },
           "end": {
-            "line": 47,
+            "line": 58,
             "column": 0
           }
         },
@@ -8999,29 +9102,33 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
         var el2 = dom.createComment("");
         dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
+        var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var element1 = dom.childAt(fragment, [2]);
-        var element2 = dom.childAt(fragment, [4]);
-        var morphs = new Array(9);
+        var element2 = dom.childAt(fragment, [2]);
+        var element3 = dom.childAt(fragment, [4]);
+        var morphs = new Array(10);
         morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-        morphs[1] = dom.createMorphAt(dom.childAt(element1, [1]), 1, 1);
-        morphs[2] = dom.createMorphAt(element1, 3, 3);
-        morphs[3] = dom.createMorphAt(element1, 5, 5);
-        morphs[4] = dom.createMorphAt(element1, 7, 7);
-        morphs[5] = dom.createMorphAt(dom.childAt(element2, [1]), 1, 1);
-        morphs[6] = dom.createMorphAt(element2, 3, 3);
-        morphs[7] = dom.createMorphAt(element2, 5, 5);
-        morphs[8] = dom.createMorphAt(element2, 7, 7);
+        morphs[1] = dom.createMorphAt(dom.childAt(element2, [1]), 1, 1);
+        morphs[2] = dom.createMorphAt(element2, 3, 3);
+        morphs[3] = dom.createMorphAt(element2, 5, 5);
+        morphs[4] = dom.createMorphAt(element2, 7, 7);
+        morphs[5] = dom.createMorphAt(dom.childAt(element3, [1]), 1, 1);
+        morphs[6] = dom.createMorphAt(element3, 3, 3);
+        morphs[7] = dom.createMorphAt(element3, 5, 5);
+        morphs[8] = dom.createMorphAt(element3, 7, 7);
+        morphs[9] = dom.createMorphAt(fragment, 6, 6, contextualElement);
         dom.insertBoundary(fragment, 0);
+        dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["block", "if", [["get", "features.adminTwitter", ["loc", [null, [1, 6], [1, 27]]]]], [], 0, null, ["loc", [null, [1, 0], [11, 7]]]], ["inline", "t", ["admin.navigation.manage"], [], ["loc", [null, [15, 4], [15, 35]]]], ["block", "link-to", ["session.admin.manage.views"], ["class", "t-naked-link ko-admin_sidebar__item"], 1, null, ["loc", [null, [17, 2], [19, 14]]]], ["block", "link-to", ["session.admin.manage.case-fields"], ["class", "t-naked-link ko-admin_sidebar__item"], 2, null, ["loc", [null, [21, 2], [23, 14]]]], ["block", "link-to", ["session.admin.manage.case-forms"], ["class", "t-naked-link ko-admin_sidebar__item"], 3, null, ["loc", [null, [25, 2], [27, 14]]]], ["inline", "t", ["admin.navigation.people"], [], ["loc", [null, [33, 4], [33, 35]]]], ["block", "link-to", ["session.admin.people.teams"], ["class", "t-naked-link ko-admin_sidebar__item"], 4, null, ["loc", [null, [35, 2], [37, 14]]]], ["block", "link-to", ["session.admin.people.user-fields"], ["class", "t-naked-link ko-admin_sidebar__item"], 5, null, ["loc", [null, [39, 2], [41, 14]]]], ["block", "link-to", ["session.admin.people.organization-fields"], ["class", "t-naked-link ko-admin_sidebar__item"], 6, null, ["loc", [null, [43, 2], [45, 14]]]]],
+      statements: [["block", "if", [["get", "features.adminTwitter", ["loc", [null, [1, 6], [1, 27]]]]], [], 0, null, ["loc", [null, [1, 0], [11, 7]]]], ["inline", "t", ["admin.navigation.manage"], [], ["loc", [null, [15, 4], [15, 35]]]], ["block", "link-to", ["session.admin.manage.views"], ["class", "t-naked-link ko-admin_sidebar__item"], 1, null, ["loc", [null, [17, 2], [19, 14]]]], ["block", "link-to", ["session.admin.manage.case-fields"], ["class", "t-naked-link ko-admin_sidebar__item"], 2, null, ["loc", [null, [21, 2], [23, 14]]]], ["block", "link-to", ["session.admin.manage.case-forms"], ["class", "t-naked-link ko-admin_sidebar__item"], 3, null, ["loc", [null, [25, 2], [27, 14]]]], ["inline", "t", ["admin.navigation.people"], [], ["loc", [null, [33, 4], [33, 35]]]], ["block", "link-to", ["session.admin.people.teams"], ["class", "t-naked-link ko-admin_sidebar__item"], 4, null, ["loc", [null, [35, 2], [37, 14]]]], ["block", "link-to", ["session.admin.people.user-fields"], ["class", "t-naked-link ko-admin_sidebar__item"], 5, null, ["loc", [null, [39, 2], [41, 14]]]], ["block", "link-to", ["session.admin.people.organization-fields"], ["class", "t-naked-link ko-admin_sidebar__item"], 6, null, ["loc", [null, [43, 2], [45, 14]]]], ["block", "if", [["get", "features.adminBusinessHours", ["loc", [null, [48, 6], [48, 33]]]]], [], 7, null, ["loc", [null, [48, 0], [57, 7]]]]],
       locals: [],
-      templates: [child0, child1, child2, child3, child4, child5, child6]
+      templates: [child0, child1, child2, child3, child4, child5, child6, child7]
     };
   })());
 });
@@ -43684,6 +43791,7 @@ define("frontend-cp/locales/en-us/admin", ["exports"], function (exports) {
     "navigation.manage": "Manage",
     "navigation.people": "People",
     "navigation.channels": "Channels",
+    "navigation.automation": "Automation",
 
     "administration": "Administration",
     "apps": "Apps",
@@ -43716,6 +43824,10 @@ define("frontend-cp/locales/en-us/admin", ["exports"], function (exports) {
     "views.enabled.message": "View enabled successfully",
     "views.disabled.message": "View disabled successfully",
     "views.deleted.message": "View deleted successfully",
+
+    "businesshours": "Business hours",
+    "businesshours.headings.index": "Business hours",
+    "businesshours.buttons.add": "Add New",
 
     "teams": "Teams",
     "teams.agent": "{numAgents, plural, =1 {agent} other {agents}}",
@@ -49889,11 +50001,18 @@ define('frontend-cp/models/brand', ['exports', 'ember-data'], function (exports,
 define('frontend-cp/models/business-hour', ['exports', 'ember-data'], function (exports, _emberData) {
   exports['default'] = _emberData['default'].Model.extend({
     title: _emberData['default'].attr('string', { async: false }),
-    //zones: DS.hasMany('zone'),
-    holidays: _emberData['default'].hasMany('holiday', { async: false }),
+    zones: _emberData['default'].attr(),
+    holidays: _emberData['default'].hasMany('businesshour-holiday', { async: false }),
     teams: _emberData['default'].hasMany('team', { async: false }),
     createdAt: _emberData['default'].attr('date', { async: false }),
     updatedAt: _emberData['default'].attr('date', { async: false })
+  });
+});
+define('frontend-cp/models/businesshour-holiday', ['exports', 'ember-data'], function (exports, _emberData) {
+  exports['default'] = _emberData['default'].Model.extend({
+    title: _emberData['default'].attr('string'),
+    date: _emberData['default'].attr('date'),
+    openHours: _emberData['default'].attr() //array http://stackoverflow.com/a/26107853
   });
 });
 define('frontend-cp/models/case-field-value', ['exports', 'ember', 'ember-data', 'model-fragments'], function (exports, _ember, _emberData, _modelFragments) {
@@ -50513,13 +50632,6 @@ define('frontend-cp/models/has-addresses', ['exports', 'ember-data'], function (
 define('frontend-cp/models/has-websites', ['exports', 'ember-data'], function (exports, _emberData) {
   exports['default'] = _emberData['default'].Model.extend({
     websites: _emberData['default'].hasMany('contact-website', { async: true })
-  });
-});
-define('frontend-cp/models/holiday', ['exports', 'ember-data'], function (exports, _emberData) {
-  exports['default'] = _emberData['default'].Model.extend({
-    title: _emberData['default'].attr('string'),
-    date: _emberData['default'].attr('date'),
-    openHours: _emberData['default'].attr() //array http://stackoverflow.com/a/26107853
   });
 });
 define('frontend-cp/models/identity-autocomplete-email', ['exports', 'ember-data'], function (exports, _emberData) {
@@ -51611,6 +51723,13 @@ define('frontend-cp/router', ['exports', 'ember', 'frontend-cp/config/environmen
             this.route('select-type', { path: '/select-type' });
             this.route('new', { path: '/new/:type' });
             this.route('edit', { path: '/:organization_field_id' });
+          });
+        });
+
+        this.route('automation', function () {
+          this.route('businesshours', function () {
+            this.route('new', { path: '/new' });
+            this.route('edit', { path: '/:businesshour_id' });
           });
         });
 
@@ -56232,6 +56351,290 @@ define('frontend-cp/services/validations', ['exports', 'ember'], function (expor
       set(this, 'cache', {});
     }
   });
+});
+define('frontend-cp/session/admin/automation/businesshours/index/controller', ['exports', 'ember'], function (exports, _ember) {
+  var Controller = _ember['default'].Controller;
+  exports['default'] = Controller.extend({
+    actions: {
+      transitionToAddNewBusinessHour: function transitionToAddNewBusinessHour() {},
+      editBusinessHour: function editBusinessHour(businessHour) {},
+      makeDefault: function makeDefault(businessHour) {},
+      deleteBusinessHour: function deleteBusinessHour(businessHour) {}
+    }
+  });
+});
+define('frontend-cp/session/admin/automation/businesshours/index/route', ['exports', 'ember'], function (exports, _ember) {
+  var Route = _ember['default'].Route;
+  var inject = _ember['default'].inject;
+  exports['default'] = Route.extend({
+    storeCache: inject.service('store-cache'),
+    store: inject.service(),
+
+    beforeModel: function beforeModel() {},
+
+    model: function model() {
+      return this.get('store').query('business-hour', { limit: 10000 });
+    }
+  });
+});
+define("frontend-cp/session/admin/automation/businesshours/index/template", ["exports"], function (exports) {
+  exports["default"] = Ember.HTMLBars.template((function () {
+    var child0 = (function () {
+      var child0 = (function () {
+        var child0 = (function () {
+          var child0 = (function () {
+            return {
+              meta: {
+                "revision": "Ember@1.13.13",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 10,
+                    "column": 6
+                  },
+                  "end": {
+                    "line": 23,
+                    "column": 6
+                  }
+                },
+                "moduleName": "frontend-cp/session/admin/automation/businesshours/index/template.hbs"
+              },
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createTextNode("        ");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createElement("div");
+                dom.setAttribute(el1, "class", "layout");
+                var el2 = dom.createTextNode("\n          ");
+                dom.appendChild(el1, el2);
+                var el2 = dom.createElement("div");
+                dom.setAttribute(el2, "class", "layout__item u-2/3");
+                var el3 = dom.createTextNode("\n            ");
+                dom.appendChild(el2, el3);
+                var el3 = dom.createElement("span");
+                dom.setAttribute(el3, "class", "t-bold");
+                var el4 = dom.createComment("");
+                dom.appendChild(el3, el4);
+                dom.appendChild(el2, el3);
+                var el3 = dom.createTextNode("\n          ");
+                dom.appendChild(el2, el3);
+                dom.appendChild(el1, el2);
+                var el2 = dom.createComment("\n       ");
+                dom.appendChild(el1, el2);
+                var el2 = dom.createElement("div");
+                dom.setAttribute(el2, "class", "layout__item u-1/3");
+                var el3 = dom.createTextNode("\n            ");
+                dom.appendChild(el2, el3);
+                var el3 = dom.createElement("div");
+                dom.setAttribute(el3, "class", "ko-simple-list__actions");
+                var el4 = dom.createTextNode("\n              ");
+                dom.appendChild(el3, el4);
+                var el4 = dom.createElement("a");
+                var el5 = dom.createComment("");
+                dom.appendChild(el4, el5);
+                dom.appendChild(el3, el4);
+                var el4 = dom.createTextNode(" |\n              ");
+                dom.appendChild(el3, el4);
+                var el4 = dom.createElement("a");
+                var el5 = dom.createComment("");
+                dom.appendChild(el4, el5);
+                dom.appendChild(el3, el4);
+                var el4 = dom.createTextNode(" |\n              ");
+                dom.appendChild(el3, el4);
+                var el4 = dom.createElement("a");
+                var el5 = dom.createComment("");
+                dom.appendChild(el4, el5);
+                dom.appendChild(el3, el4);
+                var el4 = dom.createTextNode("\n            ");
+                dom.appendChild(el3, el4);
+                dom.appendChild(el2, el3);
+                var el3 = dom.createTextNode("\n          ");
+                dom.appendChild(el2, el3);
+                dom.appendChild(el1, el2);
+                var el2 = dom.createTextNode("\n        ");
+                dom.appendChild(el1, el2);
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var element0 = dom.childAt(fragment, [1]);
+                var element1 = dom.childAt(element0, [3, 1]);
+                var element2 = dom.childAt(element1, [1]);
+                var element3 = dom.childAt(element1, [3]);
+                var element4 = dom.childAt(element1, [5]);
+                var morphs = new Array(7);
+                morphs[0] = dom.createMorphAt(dom.childAt(element0, [1, 1]), 0, 0);
+                morphs[1] = dom.createAttrMorph(element2, 'onclick');
+                morphs[2] = dom.createMorphAt(element2, 0, 0);
+                morphs[3] = dom.createAttrMorph(element3, 'onclick');
+                morphs[4] = dom.createMorphAt(element3, 0, 0);
+                morphs[5] = dom.createAttrMorph(element4, 'onclick');
+                morphs[6] = dom.createMorphAt(element4, 0, 0);
+                return morphs;
+              },
+              statements: [["content", "businessHour.title", ["loc", [null, [13, 33], [13, 55]]]], ["attribute", "onclick", ["subexpr", "action", ["makeDefault", ["get", "businessHour", ["loc", [null, [17, 48], [17, 60]]]]], [], ["loc", [null, [17, 25], [17, 62]]]]], ["inline", "t", ["generic.make_default"], [], ["loc", [null, [17, 63], [17, 91]]]], ["attribute", "onclick", ["subexpr", "action", ["editBusinessHour", ["get", "businessHour", ["loc", [null, [18, 53], [18, 65]]]]], [], ["loc", [null, [18, 25], [18, 67]]]]], ["inline", "t", ["generic.edit"], [], ["loc", [null, [18, 68], [18, 88]]]], ["attribute", "onclick", ["subexpr", "action", ["deleteBusinessHour", ["get", "businessHour", ["loc", [null, [19, 55], [19, 67]]]]], [], ["loc", [null, [19, 25], [19, 69]]]]], ["inline", "t", ["generic.delete"], [], ["loc", [null, [19, 70], [19, 92]]]]],
+              locals: [],
+              templates: []
+            };
+          })();
+          return {
+            meta: {
+              "revision": "Ember@1.13.13",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 9,
+                  "column": 4
+                },
+                "end": {
+                  "line": 24,
+                  "column": 4
+                }
+              },
+              "moduleName": "frontend-cp/session/admin/automation/businesshours/index/template.hbs"
+            },
+            arity: 1,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(1);
+              morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+              dom.insertBoundary(fragment, 0);
+              dom.insertBoundary(fragment, null);
+              return morphs;
+            },
+            statements: [["block", "ko-simple-list/row", [], ["action", "editBusinessHour", "content", ["subexpr", "@mut", [["get", "businessHour", ["loc", [null, [10, 62], [10, 74]]]]], [], []], "class", "u-pointer"], 0, null, ["loc", [null, [10, 6], [23, 29]]]]],
+            locals: ["businessHour"],
+            templates: [child0]
+          };
+        })();
+        return {
+          meta: {
+            "revision": "Ember@1.13.13",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 8,
+                "column": 2
+              },
+              "end": {
+                "line": 25,
+                "column": 2
+              }
+            },
+            "moduleName": "frontend-cp/session/admin/automation/businesshours/index/template.hbs"
+          },
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+            dom.insertBoundary(fragment, 0);
+            dom.insertBoundary(fragment, null);
+            return morphs;
+          },
+          statements: [["block", "each", [["get", "model", ["loc", [null, [9, 12], [9, 17]]]]], [], 0, null, ["loc", [null, [9, 4], [24, 13]]]]],
+          locals: [],
+          templates: [child0]
+        };
+      })();
+      return {
+        meta: {
+          "revision": "Ember@1.13.13",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 7,
+              "column": 0
+            },
+            "end": {
+              "line": 26,
+              "column": 0
+            }
+          },
+          "moduleName": "frontend-cp/session/admin/automation/businesshours/index/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [["block", "ko-simple-list", [], [], 0, null, ["loc", [null, [8, 2], [25, 21]]]]],
+        locals: [],
+        templates: [child0]
+      };
+    })();
+    return {
+      meta: {
+        "revision": "Ember@1.13.13",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 27,
+            "column": 0
+          }
+        },
+        "moduleName": "frontend-cp/session/admin/automation/businesshours/index/template.hbs"
+      },
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var morphs = new Array(2);
+        morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+        morphs[1] = dom.createMorphAt(fragment, 2, 2, contextualElement);
+        dom.insertBoundary(fragment, 0);
+        dom.insertBoundary(fragment, null);
+        return morphs;
+      },
+      statements: [["inline", "ko-admin/page-header", [], ["title", ["subexpr", "t", ["admin.businesshours.headings.index"], [], ["loc", [null, [2, 8], [2, 48]]]], "buttonText", ["subexpr", "t", ["admin.businesshours.buttons.add"], [], ["loc", [null, [3, 13], [3, 50]]]], "onSave", ["subexpr", "action", ["transitionToAddNewBusinessHour"], [], ["loc", [null, [4, 9], [4, 50]]]]], ["loc", [null, [1, 0], [5, 2]]]], ["block", "ko-admin/forms/table", [], [], 0, null, ["loc", [null, [7, 0], [26, 25]]]]],
+      locals: [],
+      templates: [child0]
+    };
+  })());
 });
 define('frontend-cp/session/admin/channels/twitter/edit/controller', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = _ember['default'].Controller.extend({
@@ -66924,6 +67327,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+12a3aecd"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+6dc8a372"});
 }
 /* jshint ignore:end */
