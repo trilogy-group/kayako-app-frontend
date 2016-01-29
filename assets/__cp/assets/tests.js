@@ -11746,7 +11746,7 @@ define('frontend-cp/tests/unit/components/ko-info-bar/field/checkbox/component-t
 
     _ember['default'].run(function () {
       component.set('options', options);
-      component.set('value', ['2']);
+      component.set('value', '2');
     });
 
     assert.equal(this.$('[aria-checked]:eq(0)').attr('aria-checked'), 'false');
@@ -11756,7 +11756,7 @@ define('frontend-cp/tests/unit/components/ko-info-bar/field/checkbox/component-t
     component.set('onValueChange', 'checked');
     component.set('targetObject', {
       checked: function checked(value) {
-        assert.deepEqual(value, ['1', '2'], 'it has been checked');
+        assert.deepEqual(value, '1,2', 'it has been checked');
       }
     });
 
