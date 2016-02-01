@@ -3,6 +3,7 @@
   "navigation.manage": "Manage",
   "navigation.people": "People",
   "navigation.channels": "Channels",
+  "navigation.automation": "Automation",
 
   "administration": "Administration",
   "apps": "Apps",
@@ -35,6 +36,10 @@
   "views.enabled.message": "View enabled successfully",
   "views.disabled.message": "View disabled successfully",
   "views.deleted.message": "View deleted successfully",
+
+  "businesshours": "Business hours",
+  "businesshours.headings.index": "Business hours",
+  "businesshours.buttons.add": "Add New",
 
   "teams": "Teams",
   "teams.agent": "{numAgents, plural, =1 {agent} other {agents}}",
