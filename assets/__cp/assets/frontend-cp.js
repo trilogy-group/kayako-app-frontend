@@ -1014,6 +1014,14 @@ define('frontend-cp/components/basic-dropdown', ['exports', 'ember-basic-dropdow
     }
   });
 });
+define('frontend-cp/components/copy-button', ['exports', 'ember-cli-clipboard/components/copy-button'], function (exports, _emberCliClipboardComponentsCopyButton) {
+  Object.defineProperty(exports, 'default', {
+    enumerable: true,
+    get: function get() {
+      return _emberCliClipboardComponentsCopyButton['default'];
+    }
+  });
+});
 define('frontend-cp/components/ember-wormhole', ['exports', 'ember-wormhole/components/ember-wormhole'], function (exports, _emberWormholeComponentsEmberWormhole) {
   Object.defineProperty(exports, 'default', {
     enumerable: true,
@@ -20417,8 +20425,8 @@ define("frontend-cp/components/ko-cases-list/column/subject/template", ["exports
             "column": 0
           },
           "end": {
-            "line": 2,
-            "column": 16
+            "line": 5,
+            "column": 0
           }
         },
         "moduleName": "frontend-cp/components/ko-cases-list/column/subject/template.hbs"
@@ -20432,19 +20440,27 @@ define("frontend-cp/components/ko-cases-list/column/subject/template", ["exports
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
-        var el1 = dom.createComment("");
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1, "class", "ko-cases-list__table-column--subject");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
         var morphs = new Array(2);
         morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-        morphs[1] = dom.createMorphAt(fragment, 2, 2, contextualElement);
+        morphs[1] = dom.createMorphAt(dom.childAt(fragment, [2]), 1, 1);
         dom.insertBoundary(fragment, 0);
-        dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["inline", "ko-avatar", [], ["class", "u-mr-", "avatar", ["subexpr", "@mut", [["get", "case.creator.avatar", ["loc", [null, [1, 33], [1, 52]]]]], [], []]], ["loc", [null, [1, 0], [1, 54]]]], ["content", "case.subject", ["loc", [null, [2, 0], [2, 16]]]]],
+      statements: [["inline", "ko-avatar", [], ["class", "u-mr-", "avatar", ["subexpr", "@mut", [["get", "case.creator.avatar", ["loc", [null, [1, 33], [1, 52]]]]], [], []]], ["loc", [null, [1, 0], [1, 54]]]], ["content", "case.subject", ["loc", [null, [3, 2], [3, 18]]]]],
       locals: [],
       templates: []
     };
@@ -21930,7 +21946,7 @@ define("frontend-cp/components/ko-cases-list/template", ["exports"], function (e
               dom.insertBoundary(fragment, null);
               return morphs;
             },
-            statements: [["block", "ko-table/row", [], ["table", ["subexpr", "@mut", [["get", "table", ["loc", [null, [29, 28], [29, 33]]]]], [], []], "clickable", true, "rowContext", ["subexpr", "@mut", [["get", "case", ["loc", [null, [29, 60], [29, 64]]]]], [], []], "onClick", ["subexpr", "@mut", [["get", "onClick", ["loc", [null, [29, 73], [29, 80]]]]], [], []]], 0, null, ["loc", [null, [29, 6], [35, 23]]]]],
+            statements: [["block", "ko-table/row", [], ["class", "ko-cases-list__row", "table", ["subexpr", "@mut", [["get", "table", ["loc", [null, [29, 55], [29, 60]]]]], [], []], "clickable", true, "rowContext", ["subexpr", "@mut", [["get", "case", ["loc", [null, [29, 87], [29, 91]]]]], [], []], "onClick", ["subexpr", "@mut", [["get", "onClick", ["loc", [null, [29, 100], [29, 107]]]]], [], []]], 0, null, ["loc", [null, [29, 6], [35, 23]]]]],
             locals: ["case"],
             templates: [child0]
           };
@@ -27486,7 +27502,7 @@ define('frontend-cp/components/ko-identities/component', ['exports', 'ember'], f
 
     // Actions
     actions: {
-      makePrimaryIdentity: function makePrimaryIdentity(identity) {
+      makePrimaryIdentity: function makePrimaryIdentity(identity, dropdown) {
         var _this = this;
 
         var identities = undefined;
@@ -27501,48 +27517,61 @@ define('frontend-cp/components/ko-identities/component', ['exports', 'ember'], f
         }
 
         identity.set('isPrimary', true);
+        dropdown.actions.close();
         identity.save().then(function (identity) {
           return _this._handleMarkAsPrimaryResponse(identities, identity);
+        })['catch'](function () {
+          return dropdown.actions.open();
         });
       },
 
-      validateIdentity: function validateIdentity(identity) {
+      validateIdentity: function validateIdentity(identity, dropdown) {
         var _this2 = this;
 
+        dropdown.actions.close();
         if (identity.constructor.modelName === 'identity-email') {
           var adapter = this.container.lookup('adapter:application');
           var url = adapter.namespace + '/identities/emails/' + identity.get('id') + '/send_verification_email';
           adapter.ajax(url, 'PUT').then(function (data) {
             _this2.get('notification').processAll(data.notifications);
+          })['catch'](function () {
+            return dropdown.actions.open();
           });
         }
       },
 
-      // sendValidationEmail(identity) {
+      // sendValidationEmail(identity, dropdown) {
+      //   dropdown.actions.close();
       //   const adapter = this.container.lookup('adapter:application');
-      //   adapter.ajax(`${adapter.namespace}/identities/emails/${identity.get('id')}/send_validation_email`, 'POST');
+      //   adapter.ajax(`${adapter.namespace}/identities/emails/${identity.get('id')}/send_validation_email`, 'POST').catch(() => dropdown.actions.open());
       // },
 
-      removeIdentity: function removeIdentity(identity) {
+      removeIdentity: function removeIdentity(identity, dropdown) {
         var _this3 = this;
 
+        dropdown.actions.close();
         var message = this.get('intl').findTranslationByKey('generic.identities.confirm_remove');
         if (identity.get('isNew') || confirm(message)) {
           identity.destroyRecord().then(function () {
             _this3.get('notificationService').success(_this3.get('intl').findTranslationByKey('generic.identities.removed.success_message'));
+          })['catch'](function () {
+            return dropdown.actions.open();
           });
         }
       },
 
-      addEmail: function addEmail() {
+      addEmail: function addEmail(dropdown) {
+        dropdown.actions.close();
         this.set('newIdentity', this.get('store').createRecord('identity-email'));
       },
 
-      addTwitter: function addTwitter() {
+      addTwitter: function addTwitter(dropdown) {
+        dropdown.actions.close();
         this.set('newIdentity', this.get('store').createRecord('identity-twitter'));
       },
 
-      addPhone: function addPhone() {
+      addPhone: function addPhone(dropdown) {
+        dropdown.actions.close();
         this.set('newIdentity', this.get('store').createRecord('identity-phone'));
       },
 
@@ -27819,7 +27848,1930 @@ define("frontend-cp/components/ko-identities/form/template", ["exports"], functi
     };
   })());
 });
-define("frontend-cp/components/ko-identities/template",["exports"],function(exports){exports["default"] = Ember.HTMLBars.template((function(){var child0=(function(){var child0=(function(){var child0=(function(){var child0=(function(){var child0=(function(){var child0=(function(){return {meta:{"revision":"Ember@1.13.13","loc":{"source":null,"start":{"line":21,"column":26},"end":{"line":21,"column":88}},"moduleName":"frontend-cp/components/ko-identities/template.hbs"},arity:0,cachedFragment:null,hasRendered:false,buildFragment:function buildFragment(dom){var el0=dom.createDocumentFragment();var el1=dom.createElement("i");dom.setAttribute(el1,"class","i-caution");dom.appendChild(el0,el1);return el0;},buildRenderNodes:function buildRenderNodes(){return [];},statements:[],locals:[],templates:[]};})();return {meta:{"revision":"Ember@1.13.13","loc":{"source":null,"start":{"line":16,"column":22},"end":{"line":24,"column":22}},"moduleName":"frontend-cp/components/ko-identities/template.hbs"},arity:0,cachedFragment:null,hasRendered:false,buildFragment:function buildFragment(dom){var el0=dom.createDocumentFragment();var el1=dom.createTextNode("                        ");dom.appendChild(el0,el1);var el1=dom.createElement("div");dom.setAttribute(el1,"class","ko-dropdown_list__item-wrapper");var el2=dom.createTextNode("\n                          ");dom.appendChild(el1,el2);var el2=dom.createElement("div");dom.setAttribute(el2,"class","ko-identities__list-item");var el3=dom.createTextNode("\n                            ");dom.appendChild(el2,el3);var el3=dom.createComment("");dom.appendChild(el2,el3);var el3=dom.createTextNode(" ");dom.appendChild(el2,el3);var el3=dom.createComment("");dom.appendChild(el2,el3);var el3=dom.createTextNode("\n                          ");dom.appendChild(el2,el3);dom.appendChild(el1,el2);var el2=dom.createTextNode("\n                          ");dom.appendChild(el1,el2);var el2=dom.createComment("");dom.appendChild(el1,el2);var el2=dom.createTextNode("\n                          ");dom.appendChild(el1,el2);var el2=dom.createElement("div");dom.setAttribute(el2,"class","ko-dropdown__item-chevron i-chevron-large-down");dom.appendChild(el1,el2);var el2=dom.createTextNode("\n                        ");dom.appendChild(el1,el2);dom.appendChild(el0,el1);var el1=dom.createTextNode("\n");dom.appendChild(el0,el1);return el0;},buildRenderNodes:function buildRenderNodes(dom,fragment,contextualElement){var element19=dom.childAt(fragment,[1]);var element20=dom.childAt(element19,[1]);var morphs=new Array(4);morphs[0] = dom.createAttrMorph(element20,'title');morphs[1] = dom.createMorphAt(element20,1,1);morphs[2] = dom.createMorphAt(element20,3,3);morphs[3] = dom.createMorphAt(element19,3,3);return morphs;},statements:[["attribute","title",["concat",[["get","emailIdentity.email",["loc",[null,[18,73],[18,92]]]]]]],["content","emailIdentity.email",["loc",[null,[19,28],[19,51]]]],["inline","if",[["get","emailIdentity.isPrimary",["loc",[null,[19,57],[19,80]]]],["subexpr","t",["generic.identities.primary_comment"],[],["loc",[null,[19,81],[19,121]]]]],[],["loc",[null,[19,52],[19,123]]]],["block","unless",[["get","emailIdentity.isValidated",["loc",[null,[21,36],[21,61]]]]],[],0,null,["loc",[null,[21,26],[21,99]]]]],locals:[],templates:[child0]};})();var child1=(function(){var child0=(function(){var child0=(function(){return {meta:{"revision":"Ember@1.13.13","loc":{"source":null,"start":{"line":27,"column":26},"end":{"line":31,"column":26}},"moduleName":"frontend-cp/components/ko-identities/template.hbs"},arity:0,cachedFragment:null,hasRendered:false,buildFragment:function buildFragment(dom){var el0=dom.createDocumentFragment();var el1=dom.createTextNode("                            ");dom.appendChild(el0,el1);var el1=dom.createElement("li");dom.setAttribute(el1,"class","ko-dropdown_list__item");var el2=dom.createTextNode("\n                              ");dom.appendChild(el1,el2);var el2=dom.createComment("");dom.appendChild(el1,el2);var el2=dom.createTextNode("\n                            ");dom.appendChild(el1,el2);dom.appendChild(el0,el1);var el1=dom.createTextNode("\n");dom.appendChild(el0,el1);return el0;},buildRenderNodes:function buildRenderNodes(dom,fragment,contextualElement){var element18=dom.childAt(fragment,[1]);var morphs=new Array(2);morphs[0] = dom.createAttrMorph(element18,'onclick');morphs[1] = dom.createMorphAt(element18,1,1);return morphs;},statements:[["attribute","onclick",["subexpr","action",["removeIdentity",["get","emailIdentity",["loc",[null,[28,97],[28,110]]]]],[],["loc",[null,[28,71],[28,112]]]]],["inline","t",["generic.identities.remove_identity"],[],["loc",[null,[29,30],[29,72]]]]],locals:[],templates:[]};})();var child1=(function(){return {meta:{"revision":"Ember@1.13.13","loc":{"source":null,"start":{"line":32,"column":26},"end":{"line":36,"column":26}},"moduleName":"frontend-cp/components/ko-identities/template.hbs"},arity:0,cachedFragment:null,hasRendered:false,buildFragment:function buildFragment(dom){var el0=dom.createDocumentFragment();var el1=dom.createTextNode("                            ");dom.appendChild(el0,el1);var el1=dom.createElement("li");dom.setAttribute(el1,"class","ko-dropdown_list__item");var el2=dom.createTextNode("\n                              ");dom.appendChild(el1,el2);var el2=dom.createComment("");dom.appendChild(el1,el2);var el2=dom.createTextNode("\n                            ");dom.appendChild(el1,el2);dom.appendChild(el0,el1);var el1=dom.createTextNode("\n");dom.appendChild(el0,el1);return el0;},buildRenderNodes:function buildRenderNodes(dom,fragment,contextualElement){var element17=dom.childAt(fragment,[1]);var morphs=new Array(2);morphs[0] = dom.createAttrMorph(element17,'onclick');morphs[1] = dom.createMorphAt(element17,1,1);return morphs;},statements:[["attribute","onclick",["subexpr","action",["makePrimaryIdentity",["get","emailIdentity",["loc",[null,[33,102],[33,115]]]]],[],["loc",[null,[33,71],[33,117]]]]],["inline","t",["generic.identities.make_primary"],[],["loc",[null,[34,30],[34,69]]]]],locals:[],templates:[]};})();var child2=(function(){return {meta:{"revision":"Ember@1.13.13","loc":{"source":null,"start":{"line":37,"column":26},"end":{"line":46,"column":26}},"moduleName":"frontend-cp/components/ko-identities/template.hbs"},arity:0,cachedFragment:null,hasRendered:false,buildFragment:function buildFragment(dom){var el0=dom.createDocumentFragment();var el1=dom.createTextNode("                            ");dom.appendChild(el0,el1);var el1=dom.createElement("li");dom.setAttribute(el1,"class","ko-dropdown_list__item");var el2=dom.createTextNode("\n                              ");dom.appendChild(el1,el2);var el2=dom.createComment("");dom.appendChild(el1,el2);var el2=dom.createTextNode("\n                            ");dom.appendChild(el1,el2);dom.appendChild(el0,el1);var el1=dom.createTextNode("\n");dom.appendChild(el0,el1);return el0;},buildRenderNodes:function buildRenderNodes(dom,fragment,contextualElement){var element16=dom.childAt(fragment,[1]);var morphs=new Array(2);morphs[0] = dom.createAttrMorph(element16,'onclick');morphs[1] = dom.createMorphAt(element16,1,1);return morphs;},statements:[["attribute","onclick",["subexpr","action",["validateIdentity",["get","emailIdentity",["loc",[null,[38,99],[38,112]]]]],[],["loc",[null,[38,71],[38,114]]]]],["inline","t",["generic.identities.validate_identity"],[],["loc",[null,[39,30],[39,74]]]]],locals:[],templates:[]};})();return {meta:{"revision":"Ember@1.13.13","loc":{"source":null,"start":{"line":26,"column":24},"end":{"line":47,"column":24}},"moduleName":"frontend-cp/components/ko-identities/template.hbs"},arity:0,cachedFragment:null,hasRendered:false,buildFragment:function buildFragment(dom){var el0=dom.createDocumentFragment();var el1=dom.createComment("");dom.appendChild(el0,el1);var el1=dom.createComment("");dom.appendChild(el0,el1);var el1=dom.createComment("");dom.appendChild(el0,el1);return el0;},buildRenderNodes:function buildRenderNodes(dom,fragment,contextualElement){var morphs=new Array(3);morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);morphs[1] = dom.createMorphAt(fragment,1,1,contextualElement);morphs[2] = dom.createMorphAt(fragment,2,2,contextualElement);dom.insertBoundary(fragment,0);dom.insertBoundary(fragment,null);return morphs;},statements:[["block","if",[["get","emailIdentity.canBeRemoved",["loc",[null,[27,32],[27,58]]]]],[],0,null,["loc",[null,[27,26],[31,33]]]],["block","if",[["get","emailIdentity.canBePrimarized",["loc",[null,[32,32],[32,61]]]]],[],1,null,["loc",[null,[32,26],[36,33]]]],["block","if",[["get","emailIdentity.canBeValidated",["loc",[null,[37,32],[37,60]]]]],[],2,null,["loc",[null,[37,26],[46,33]]]]],locals:[],templates:[child0,child1,child2]};})();return {meta:{"revision":"Ember@1.13.13","loc":{"source":null,"start":{"line":25,"column":22},"end":{"line":48,"column":22}},"moduleName":"frontend-cp/components/ko-identities/template.hbs"},arity:0,cachedFragment:null,hasRendered:false,buildFragment:function buildFragment(dom){var el0=dom.createDocumentFragment();var el1=dom.createComment("");dom.appendChild(el0,el1);return el0;},buildRenderNodes:function buildRenderNodes(dom,fragment,contextualElement){var morphs=new Array(1);morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);dom.insertBoundary(fragment,0);dom.insertBoundary(fragment,null);return morphs;},statements:[["block","ko-dropdown/list",[],[],0,null,["loc",[null,[26,24],[47,45]]]]],locals:[],templates:[child0]};})();return {meta:{"revision":"Ember@1.13.13","loc":{"source":null,"start":{"line":15,"column":20},"end":{"line":49,"column":20}},"moduleName":"frontend-cp/components/ko-identities/template.hbs"},arity:2,cachedFragment:null,hasRendered:false,buildFragment:function buildFragment(dom){var el0=dom.createDocumentFragment();var el1=dom.createComment("");dom.appendChild(el0,el1);var el1=dom.createComment("");dom.appendChild(el0,el1);return el0;},buildRenderNodes:function buildRenderNodes(dom,fragment,contextualElement){var morphs=new Array(2);morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);morphs[1] = dom.createMorphAt(fragment,1,1,contextualElement);dom.insertBoundary(fragment,0);dom.insertBoundary(fragment,null);return morphs;},statements:[["block","if",[["subexpr","eq",[["get","name",["loc",[null,[16,32],[16,36]]]],"button"],[],["loc",[null,[16,28],[16,46]]]]],[],0,null,["loc",[null,[16,22],[24,29]]]],["block","if",[["subexpr","eq",[["get","name",["loc",[null,[25,32],[25,36]]]],"content"],[],["loc",[null,[25,28],[25,47]]]]],[],1,null,["loc",[null,[25,22],[48,29]]]]],locals:["name","dropdownContext"],templates:[child0,child1]};})();return {meta:{"revision":"Ember@1.13.13","loc":{"source":null,"start":{"line":14,"column":18},"end":{"line":50,"column":18}},"moduleName":"frontend-cp/components/ko-identities/template.hbs"},arity:0,cachedFragment:null,hasRendered:false,buildFragment:function buildFragment(dom){var el0=dom.createDocumentFragment();var el1=dom.createComment("");dom.appendChild(el0,el1);return el0;},buildRenderNodes:function buildRenderNodes(dom,fragment,contextualElement){var morphs=new Array(1);morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);dom.insertBoundary(fragment,0);dom.insertBoundary(fragment,null);return morphs;},statements:[["block","ko-dropdown/container",[],["hideOnClick",true,"hideOnChildFocus",true],0,null,["loc",[null,[15,20],[49,46]]]]],locals:[],templates:[child0]};})();var child1=(function(){return {meta:{"revision":"Ember@1.13.13","loc":{"source":null,"start":{"line":50,"column":18},"end":{"line":52,"column":18}},"moduleName":"frontend-cp/components/ko-identities/template.hbs"},arity:0,cachedFragment:null,hasRendered:false,buildFragment:function buildFragment(dom){var el0=dom.createDocumentFragment();var el1=dom.createTextNode("                    ");dom.appendChild(el0,el1);var el1=dom.createComment("");dom.appendChild(el0,el1);var el1=dom.createTextNode(" ");dom.appendChild(el0,el1);var el1=dom.createComment("");dom.appendChild(el0,el1);var el1=dom.createTextNode("\n");dom.appendChild(el0,el1);return el0;},buildRenderNodes:function buildRenderNodes(dom,fragment,contextualElement){var morphs=new Array(2);morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);morphs[1] = dom.createMorphAt(fragment,3,3,contextualElement);return morphs;},statements:[["content","emailIdentity.email",["loc",[null,[51,20],[51,43]]]],["inline","t",["generic.identities.primary_comment"],[],["loc",[null,[51,44],[51,86]]]]],locals:[],templates:[]};})();return {meta:{"revision":"Ember@1.13.13","loc":{"source":null,"start":{"line":12,"column":14},"end":{"line":54,"column":14}},"moduleName":"frontend-cp/components/ko-identities/template.hbs"},arity:1,cachedFragment:null,hasRendered:false,buildFragment:function buildFragment(dom){var el0=dom.createDocumentFragment();var el1=dom.createTextNode("                ");dom.appendChild(el0,el1);var el1=dom.createElement("li");dom.setAttribute(el1,"class","u-pb-");var el2=dom.createTextNode("\n");dom.appendChild(el1,el2);var el2=dom.createComment("");dom.appendChild(el1,el2);var el2=dom.createTextNode("                ");dom.appendChild(el1,el2);dom.appendChild(el0,el1);var el1=dom.createTextNode("\n");dom.appendChild(el0,el1);return el0;},buildRenderNodes:function buildRenderNodes(dom,fragment,contextualElement){var morphs=new Array(1);morphs[0] = dom.createMorphAt(dom.childAt(fragment,[1]),1,1);return morphs;},statements:[["block","if",[["get","emailIdentity.canBeModified",["loc",[null,[14,24],[14,51]]]]],[],0,1,["loc",[null,[14,18],[52,25]]]]],locals:["emailIdentity"],templates:[child0,child1]};})();return {meta:{"revision":"Ember@1.13.13","loc":{"source":null,"start":{"line":7,"column":6},"end":{"line":58,"column":6}},"moduleName":"frontend-cp/components/ko-identities/template.hbs"},arity:0,cachedFragment:null,hasRendered:false,buildFragment:function buildFragment(dom){var el0=dom.createDocumentFragment();var el1=dom.createTextNode("        ");dom.appendChild(el0,el1);var el1=dom.createElement("tr");dom.setAttribute(el1,"class","u-v-align-top");var el2=dom.createTextNode("\n          ");dom.appendChild(el1,el2);var el2=dom.createElement("td");var el3=dom.createElement("strong");var el4=dom.createComment("");dom.appendChild(el3,el4);dom.appendChild(el2,el3);dom.appendChild(el1,el2);var el2=dom.createTextNode("\n          ");dom.appendChild(el1,el2);var el2=dom.createElement("td");dom.setAttribute(el2,"class","u-pl");var el3=dom.createTextNode("\n            ");dom.appendChild(el2,el3);var el3=dom.createElement("ul");dom.setAttribute(el3,"class","ko-identities__list ko-identities__list--emails");var el4=dom.createTextNode("\n");dom.appendChild(el3,el4);var el4=dom.createComment("");dom.appendChild(el3,el4);var el4=dom.createTextNode("            ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n          ");dom.appendChild(el2,el3);dom.appendChild(el1,el2);var el2=dom.createTextNode("\n        ");dom.appendChild(el1,el2);dom.appendChild(el0,el1);var el1=dom.createTextNode("\n");dom.appendChild(el0,el1);return el0;},buildRenderNodes:function buildRenderNodes(dom,fragment,contextualElement){var element21=dom.childAt(fragment,[1]);var morphs=new Array(2);morphs[0] = dom.createMorphAt(dom.childAt(element21,[1,0]),0,0);morphs[1] = dom.createMorphAt(dom.childAt(element21,[3,1]),1,1);return morphs;},statements:[["inline","t",["generic.identities.email_identities_title"],[],["loc",[null,[9,22],[9,71]]]],["block","each",[["get","emailIdentities",["loc",[null,[12,22],[12,37]]]]],[],0,null,["loc",[null,[12,14],[54,23]]]]],locals:[],templates:[child0]};})();var child1=(function(){var child0=(function(){var child0=(function(){var child0=(function(){return {meta:{"revision":"Ember@1.13.13","loc":{"source":null,"start":{"line":67,"column":20},"end":{"line":74,"column":20}},"moduleName":"frontend-cp/components/ko-identities/template.hbs"},arity:0,cachedFragment:null,hasRendered:false,buildFragment:function buildFragment(dom){var el0=dom.createDocumentFragment();var el1=dom.createTextNode("                      ");dom.appendChild(el0,el1);var el1=dom.createElement("div");dom.setAttribute(el1,"class","ko-dropdown_list__item-wrapper");var el2=dom.createTextNode("\n                        ");dom.appendChild(el1,el2);var el2=dom.createElement("div");dom.setAttribute(el2,"class","ko-identities__list-item");var el3=dom.createTextNode("\n                          @");dom.appendChild(el2,el3);var el3=dom.createComment("");dom.appendChild(el2,el3);var el3=dom.createTextNode(" ");dom.appendChild(el2,el3);var el3=dom.createComment("");dom.appendChild(el2,el3);var el3=dom.createTextNode("\n                        ");dom.appendChild(el2,el3);dom.appendChild(el1,el2);var el2=dom.createTextNode("\n                        ");dom.appendChild(el1,el2);var el2=dom.createElement("div");dom.setAttribute(el2,"class","ko-dropdown__item-chevron i-chevron-large-down");dom.appendChild(el1,el2);var el2=dom.createTextNode("\n                      ");dom.appendChild(el1,el2);dom.appendChild(el0,el1);var el1=dom.createTextNode("\n");dom.appendChild(el0,el1);return el0;},buildRenderNodes:function buildRenderNodes(dom,fragment,contextualElement){var element14=dom.childAt(fragment,[1,1]);var morphs=new Array(3);morphs[0] = dom.createAttrMorph(element14,'title');morphs[1] = dom.createMorphAt(element14,1,1);morphs[2] = dom.createMorphAt(element14,3,3);return morphs;},statements:[["attribute","title",["concat",["@",["get","twitterIdentity.screenName",["loc",[null,[69,72],[69,98]]]]]]],["content","twitterIdentity.screenName",["loc",[null,[70,27],[70,57]]]],["inline","if",[["get","twitterIdentity.isPrimary",["loc",[null,[70,63],[70,88]]]],["subexpr","t",["generic.identities.primary_comment"],[],["loc",[null,[70,89],[70,129]]]]],[],["loc",[null,[70,58],[70,131]]]]],locals:[],templates:[]};})();var child1=(function(){var child0=(function(){var child0=(function(){return {meta:{"revision":"Ember@1.13.13","loc":{"source":null,"start":{"line":77,"column":24},"end":{"line":79,"column":24}},"moduleName":"frontend-cp/components/ko-identities/template.hbs"},arity:0,cachedFragment:null,hasRendered:false,buildFragment:function buildFragment(dom){var el0=dom.createDocumentFragment();var el1=dom.createTextNode("                          ");dom.appendChild(el0,el1);var el1=dom.createElement("li");dom.setAttribute(el1,"class","ko-dropdown_list__item");var el2=dom.createComment("");dom.appendChild(el1,el2);dom.appendChild(el0,el1);var el1=dom.createTextNode("\n");dom.appendChild(el0,el1);return el0;},buildRenderNodes:function buildRenderNodes(dom,fragment,contextualElement){var element12=dom.childAt(fragment,[1]);var morphs=new Array(2);morphs[0] = dom.createAttrMorph(element12,'onclick');morphs[1] = dom.createMorphAt(element12,0,0);return morphs;},statements:[["attribute","onclick",["subexpr","action",["removeIdentity",["get","twitterIdentity",["loc",[null,[78,95],[78,110]]]]],[],["loc",[null,[78,69],[78,112]]]]],["inline","t",["generic.identities.remove_identity"],[],["loc",[null,[78,113],[78,155]]]]],locals:[],templates:[]};})();var child1=(function(){return {meta:{"revision":"Ember@1.13.13","loc":{"source":null,"start":{"line":80,"column":24},"end":{"line":82,"column":24}},"moduleName":"frontend-cp/components/ko-identities/template.hbs"},arity:0,cachedFragment:null,hasRendered:false,buildFragment:function buildFragment(dom){var el0=dom.createDocumentFragment();var el1=dom.createTextNode("                          ");dom.appendChild(el0,el1);var el1=dom.createElement("li");dom.setAttribute(el1,"class","ko-dropdown_list__item");var el2=dom.createComment("");dom.appendChild(el1,el2);dom.appendChild(el0,el1);var el1=dom.createTextNode("\n");dom.appendChild(el0,el1);return el0;},buildRenderNodes:function buildRenderNodes(dom,fragment,contextualElement){var element11=dom.childAt(fragment,[1]);var morphs=new Array(2);morphs[0] = dom.createAttrMorph(element11,'onclick');morphs[1] = dom.createMorphAt(element11,0,0);return morphs;},statements:[["attribute","onclick",["subexpr","action",["makePrimaryIdentity",["get","twitterIdentity",["loc",[null,[81,100],[81,115]]]]],[],["loc",[null,[81,69],[81,117]]]]],["inline","t",["generic.identities.make_primary"],[],["loc",[null,[81,118],[81,157]]]]],locals:[],templates:[]};})();return {meta:{"revision":"Ember@1.13.13","loc":{"source":null,"start":{"line":76,"column":22},"end":{"line":86,"column":22}},"moduleName":"frontend-cp/components/ko-identities/template.hbs"},arity:0,cachedFragment:null,hasRendered:false,buildFragment:function buildFragment(dom){var el0=dom.createDocumentFragment();var el1=dom.createComment("");dom.appendChild(el0,el1);var el1=dom.createComment("");dom.appendChild(el0,el1);var el1=dom.createTextNode("                        ");dom.appendChild(el0,el1);var el1=dom.createElement("li");dom.setAttribute(el1,"class","ko-dropdown_list__item");var el2=dom.createTextNode("\n                          ");dom.appendChild(el1,el2);var el2=dom.createElement("a");dom.setAttribute(el2,"taget","_blank");var el3=dom.createTextNode("See profile");dom.appendChild(el2,el3);dom.appendChild(el1,el2);var el2=dom.createTextNode("\n                        ");dom.appendChild(el1,el2);dom.appendChild(el0,el1);var el1=dom.createTextNode("\n");dom.appendChild(el0,el1);return el0;},buildRenderNodes:function buildRenderNodes(dom,fragment,contextualElement){var element13=dom.childAt(fragment,[3,1]);var morphs=new Array(3);morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);morphs[1] = dom.createMorphAt(fragment,1,1,contextualElement);morphs[2] = dom.createAttrMorph(element13,'href');dom.insertBoundary(fragment,0);return morphs;},statements:[["block","if",[["get","twitterIdentity.canBeRemoved",["loc",[null,[77,30],[77,58]]]]],[],0,null,["loc",[null,[77,24],[79,31]]]],["block","if",[["get","twitterIdentity.canBePrimarized",["loc",[null,[80,30],[80,61]]]]],[],1,null,["loc",[null,[80,24],[82,31]]]],["attribute","href",["concat",["https://twitter.com/",["get","twitterIdentity.screenName",["loc",[null,[84,57],[84,83]]]]]]]],locals:[],templates:[child0,child1]};})();return {meta:{"revision":"Ember@1.13.13","loc":{"source":null,"start":{"line":75,"column":20},"end":{"line":87,"column":20}},"moduleName":"frontend-cp/components/ko-identities/template.hbs"},arity:0,cachedFragment:null,hasRendered:false,buildFragment:function buildFragment(dom){var el0=dom.createDocumentFragment();var el1=dom.createComment("");dom.appendChild(el0,el1);return el0;},buildRenderNodes:function buildRenderNodes(dom,fragment,contextualElement){var morphs=new Array(1);morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);dom.insertBoundary(fragment,0);dom.insertBoundary(fragment,null);return morphs;},statements:[["block","ko-dropdown/list",[],[],0,null,["loc",[null,[76,22],[86,43]]]]],locals:[],templates:[child0]};})();return {meta:{"revision":"Ember@1.13.13","loc":{"source":null,"start":{"line":66,"column":18},"end":{"line":88,"column":18}},"moduleName":"frontend-cp/components/ko-identities/template.hbs"},arity:2,cachedFragment:null,hasRendered:false,buildFragment:function buildFragment(dom){var el0=dom.createDocumentFragment();var el1=dom.createComment("");dom.appendChild(el0,el1);var el1=dom.createComment("");dom.appendChild(el0,el1);return el0;},buildRenderNodes:function buildRenderNodes(dom,fragment,contextualElement){var morphs=new Array(2);morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);morphs[1] = dom.createMorphAt(fragment,1,1,contextualElement);dom.insertBoundary(fragment,0);dom.insertBoundary(fragment,null);return morphs;},statements:[["block","if",[["subexpr","eq",[["get","name",["loc",[null,[67,30],[67,34]]]],"button"],[],["loc",[null,[67,26],[67,44]]]]],[],0,null,["loc",[null,[67,20],[74,27]]]],["block","if",[["subexpr","eq",[["get","name",["loc",[null,[75,30],[75,34]]]],"content"],[],["loc",[null,[75,26],[75,45]]]]],[],1,null,["loc",[null,[75,20],[87,27]]]]],locals:["name","dropdownContext"],templates:[child0,child1]};})();return {meta:{"revision":"Ember@1.13.13","loc":{"source":null,"start":{"line":64,"column":14},"end":{"line":90,"column":14}},"moduleName":"frontend-cp/components/ko-identities/template.hbs"},arity:1,cachedFragment:null,hasRendered:false,buildFragment:function buildFragment(dom){var el0=dom.createDocumentFragment();var el1=dom.createTextNode("                ");dom.appendChild(el0,el1);var el1=dom.createElement("li");dom.setAttribute(el1,"class","u-pb-");var el2=dom.createTextNode("\n");dom.appendChild(el1,el2);var el2=dom.createComment("");dom.appendChild(el1,el2);var el2=dom.createTextNode("                ");dom.appendChild(el1,el2);dom.appendChild(el0,el1);var el1=dom.createTextNode("\n");dom.appendChild(el0,el1);return el0;},buildRenderNodes:function buildRenderNodes(dom,fragment,contextualElement){var morphs=new Array(1);morphs[0] = dom.createMorphAt(dom.childAt(fragment,[1]),1,1);return morphs;},statements:[["block","ko-dropdown/container",[],["hideOnClick",true,"hideOnChildFocus",true],0,null,["loc",[null,[66,18],[88,44]]]]],locals:["twitterIdentity"],templates:[child0]};})();return {meta:{"revision":"Ember@1.13.13","loc":{"source":null,"start":{"line":59,"column":6},"end":{"line":94,"column":6}},"moduleName":"frontend-cp/components/ko-identities/template.hbs"},arity:0,cachedFragment:null,hasRendered:false,buildFragment:function buildFragment(dom){var el0=dom.createDocumentFragment();var el1=dom.createTextNode("        ");dom.appendChild(el0,el1);var el1=dom.createElement("tr");dom.setAttribute(el1,"class","u-v-align-top");var el2=dom.createTextNode("\n          ");dom.appendChild(el1,el2);var el2=dom.createElement("td");var el3=dom.createElement("strong");var el4=dom.createComment("");dom.appendChild(el3,el4);dom.appendChild(el2,el3);dom.appendChild(el1,el2);var el2=dom.createTextNode("\n          ");dom.appendChild(el1,el2);var el2=dom.createElement("td");dom.setAttribute(el2,"class","u-pl");var el3=dom.createTextNode("\n            ");dom.appendChild(el2,el3);var el3=dom.createElement("ul");dom.setAttribute(el3,"class","ko-identities__list ko-identities__list--twitters");var el4=dom.createTextNode("\n");dom.appendChild(el3,el4);var el4=dom.createComment("");dom.appendChild(el3,el4);var el4=dom.createTextNode("            ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n          ");dom.appendChild(el2,el3);dom.appendChild(el1,el2);var el2=dom.createTextNode("\n        ");dom.appendChild(el1,el2);dom.appendChild(el0,el1);var el1=dom.createTextNode("\n");dom.appendChild(el0,el1);return el0;},buildRenderNodes:function buildRenderNodes(dom,fragment,contextualElement){var element15=dom.childAt(fragment,[1]);var morphs=new Array(2);morphs[0] = dom.createMorphAt(dom.childAt(element15,[1,0]),0,0);morphs[1] = dom.createMorphAt(dom.childAt(element15,[3,1]),1,1);return morphs;},statements:[["inline","t",["generic.identities.twitter_identities_title"],[],["loc",[null,[61,22],[61,73]]]],["block","each",[["get","twitterIdentities",["loc",[null,[64,22],[64,39]]]]],[],0,null,["loc",[null,[64,14],[90,23]]]]],locals:[],templates:[child0]};})();var child2=(function(){var child0=(function(){var child0=(function(){var child0=(function(){var child0=(function(){return {meta:{"revision":"Ember@1.13.13","loc":{"source":null,"start":{"line":104,"column":22},"end":{"line":111,"column":22}},"moduleName":"frontend-cp/components/ko-identities/template.hbs"},arity:0,cachedFragment:null,hasRendered:false,buildFragment:function buildFragment(dom){var el0=dom.createDocumentFragment();var el1=dom.createTextNode("                        ");dom.appendChild(el0,el1);var el1=dom.createElement("div");dom.setAttribute(el1,"class","ko-dropdown_list__item-wrapper");var el2=dom.createTextNode("\n                          ");dom.appendChild(el1,el2);var el2=dom.createElement("div");dom.setAttribute(el2,"class","ko-identities__list-item");var el3=dom.createTextNode("\n                            ");dom.appendChild(el2,el3);var el3=dom.createComment("");dom.appendChild(el2,el3);var el3=dom.createTextNode(" ");dom.appendChild(el2,el3);var el3=dom.createComment("");dom.appendChild(el2,el3);var el3=dom.createTextNode("\n                          ");dom.appendChild(el2,el3);dom.appendChild(el1,el2);var el2=dom.createTextNode("\n                          ");dom.appendChild(el1,el2);var el2=dom.createElement("div");dom.setAttribute(el2,"class","ko-dropdown__item-chevron i-chevron-large-down");dom.appendChild(el1,el2);var el2=dom.createTextNode("\n                        ");dom.appendChild(el1,el2);dom.appendChild(el0,el1);var el1=dom.createTextNode("\n");dom.appendChild(el0,el1);return el0;},buildRenderNodes:function buildRenderNodes(dom,fragment,contextualElement){var element9=dom.childAt(fragment,[1,1]);var morphs=new Array(3);morphs[0] = dom.createAttrMorph(element9,'title');morphs[1] = dom.createMorphAt(element9,1,1);morphs[2] = dom.createMorphAt(element9,3,3);return morphs;},statements:[["attribute","title",["concat",[["get","phoneIdentity.number",["loc",[null,[106,73],[106,93]]]]]]],["content","phoneIdentity.number",["loc",[null,[107,28],[107,52]]]],["inline","if",[["get","phoneIdentity.isPrimary",["loc",[null,[107,58],[107,81]]]],["subexpr","t",["generic.identities.primary_comment"],[],["loc",[null,[107,82],[107,122]]]]],[],["loc",[null,[107,53],[107,124]]]]],locals:[],templates:[]};})();var child1=(function(){var child0=(function(){var child0=(function(){return {meta:{"revision":"Ember@1.13.13","loc":{"source":null,"start":{"line":114,"column":26},"end":{"line":116,"column":26}},"moduleName":"frontend-cp/components/ko-identities/template.hbs"},arity:0,cachedFragment:null,hasRendered:false,buildFragment:function buildFragment(dom){var el0=dom.createDocumentFragment();var el1=dom.createTextNode("                            ");dom.appendChild(el0,el1);var el1=dom.createElement("li");dom.setAttribute(el1,"class","ko-dropdown_list__item");var el2=dom.createComment("");dom.appendChild(el1,el2);dom.appendChild(el0,el1);var el1=dom.createTextNode("\n");dom.appendChild(el0,el1);return el0;},buildRenderNodes:function buildRenderNodes(dom,fragment,contextualElement){var element8=dom.childAt(fragment,[1]);var morphs=new Array(2);morphs[0] = dom.createAttrMorph(element8,'onclick');morphs[1] = dom.createMorphAt(element8,0,0);return morphs;},statements:[["attribute","onclick",["subexpr","action",["removeIdentity",["get","phoneIdentity",["loc",[null,[115,97],[115,110]]]]],[],["loc",[null,[115,71],[115,112]]]]],["inline","t",["generic.identities.remove_identity"],[],["loc",[null,[115,113],[115,155]]]]],locals:[],templates:[]};})();var child1=(function(){return {meta:{"revision":"Ember@1.13.13","loc":{"source":null,"start":{"line":117,"column":26},"end":{"line":119,"column":26}},"moduleName":"frontend-cp/components/ko-identities/template.hbs"},arity:0,cachedFragment:null,hasRendered:false,buildFragment:function buildFragment(dom){var el0=dom.createDocumentFragment();var el1=dom.createTextNode("                            ");dom.appendChild(el0,el1);var el1=dom.createElement("li");dom.setAttribute(el1,"class","ko-dropdown_list__item");var el2=dom.createComment("");dom.appendChild(el1,el2);dom.appendChild(el0,el1);var el1=dom.createTextNode("\n");dom.appendChild(el0,el1);return el0;},buildRenderNodes:function buildRenderNodes(dom,fragment,contextualElement){var element7=dom.childAt(fragment,[1]);var morphs=new Array(2);morphs[0] = dom.createAttrMorph(element7,'onclick');morphs[1] = dom.createMorphAt(element7,0,0);return morphs;},statements:[["attribute","onclick",["subexpr","action",["makePrimaryIdentity",["get","phoneIdentity",["loc",[null,[118,102],[118,115]]]]],[],["loc",[null,[118,71],[118,117]]]]],["inline","t",["generic.identities.make_primary"],[],["loc",[null,[118,118],[118,157]]]]],locals:[],templates:[]};})();return {meta:{"revision":"Ember@1.13.13","loc":{"source":null,"start":{"line":113,"column":24},"end":{"line":120,"column":24}},"moduleName":"frontend-cp/components/ko-identities/template.hbs"},arity:0,cachedFragment:null,hasRendered:false,buildFragment:function buildFragment(dom){var el0=dom.createDocumentFragment();var el1=dom.createComment("");dom.appendChild(el0,el1);var el1=dom.createComment("");dom.appendChild(el0,el1);return el0;},buildRenderNodes:function buildRenderNodes(dom,fragment,contextualElement){var morphs=new Array(2);morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);morphs[1] = dom.createMorphAt(fragment,1,1,contextualElement);dom.insertBoundary(fragment,0);dom.insertBoundary(fragment,null);return morphs;},statements:[["block","if",[["get","phoneIdentity.canBeRemoved",["loc",[null,[114,32],[114,58]]]]],[],0,null,["loc",[null,[114,26],[116,33]]]],["block","if",[["get","phoneIdentity.canBePrimarized",["loc",[null,[117,32],[117,61]]]]],[],1,null,["loc",[null,[117,26],[119,33]]]]],locals:[],templates:[child0,child1]};})();return {meta:{"revision":"Ember@1.13.13","loc":{"source":null,"start":{"line":112,"column":22},"end":{"line":121,"column":22}},"moduleName":"frontend-cp/components/ko-identities/template.hbs"},arity:0,cachedFragment:null,hasRendered:false,buildFragment:function buildFragment(dom){var el0=dom.createDocumentFragment();var el1=dom.createComment("");dom.appendChild(el0,el1);return el0;},buildRenderNodes:function buildRenderNodes(dom,fragment,contextualElement){var morphs=new Array(1);morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);dom.insertBoundary(fragment,0);dom.insertBoundary(fragment,null);return morphs;},statements:[["block","ko-dropdown/list",[],[],0,null,["loc",[null,[113,24],[120,45]]]]],locals:[],templates:[child0]};})();return {meta:{"revision":"Ember@1.13.13","loc":{"source":null,"start":{"line":103,"column":20},"end":{"line":122,"column":20}},"moduleName":"frontend-cp/components/ko-identities/template.hbs"},arity:2,cachedFragment:null,hasRendered:false,buildFragment:function buildFragment(dom){var el0=dom.createDocumentFragment();var el1=dom.createComment("");dom.appendChild(el0,el1);var el1=dom.createComment("");dom.appendChild(el0,el1);return el0;},buildRenderNodes:function buildRenderNodes(dom,fragment,contextualElement){var morphs=new Array(2);morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);morphs[1] = dom.createMorphAt(fragment,1,1,contextualElement);dom.insertBoundary(fragment,0);dom.insertBoundary(fragment,null);return morphs;},statements:[["block","if",[["subexpr","eq",[["get","name",["loc",[null,[104,32],[104,36]]]],"button"],[],["loc",[null,[104,28],[104,46]]]]],[],0,null,["loc",[null,[104,22],[111,29]]]],["block","if",[["subexpr","eq",[["get","name",["loc",[null,[112,32],[112,36]]]],"content"],[],["loc",[null,[112,28],[112,47]]]]],[],1,null,["loc",[null,[112,22],[121,29]]]]],locals:["name","dropdownContext"],templates:[child0,child1]};})();return {meta:{"revision":"Ember@1.13.13","loc":{"source":null,"start":{"line":102,"column":18},"end":{"line":123,"column":18}},"moduleName":"frontend-cp/components/ko-identities/template.hbs"},arity:0,cachedFragment:null,hasRendered:false,buildFragment:function buildFragment(dom){var el0=dom.createDocumentFragment();var el1=dom.createComment("");dom.appendChild(el0,el1);return el0;},buildRenderNodes:function buildRenderNodes(dom,fragment,contextualElement){var morphs=new Array(1);morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);dom.insertBoundary(fragment,0);dom.insertBoundary(fragment,null);return morphs;},statements:[["block","ko-dropdown/container",[],["hideOnClick",true,"hideOnChildFocus",true],0,null,["loc",[null,[103,20],[122,46]]]]],locals:[],templates:[child0]};})();var child1=(function(){return {meta:{"revision":"Ember@1.13.13","loc":{"source":null,"start":{"line":123,"column":18},"end":{"line":125,"column":18}},"moduleName":"frontend-cp/components/ko-identities/template.hbs"},arity:0,cachedFragment:null,hasRendered:false,buildFragment:function buildFragment(dom){var el0=dom.createDocumentFragment();var el1=dom.createTextNode("                    ");dom.appendChild(el0,el1);var el1=dom.createComment("");dom.appendChild(el0,el1);var el1=dom.createTextNode(" ");dom.appendChild(el0,el1);var el1=dom.createComment("");dom.appendChild(el0,el1);var el1=dom.createTextNode("\n");dom.appendChild(el0,el1);return el0;},buildRenderNodes:function buildRenderNodes(dom,fragment,contextualElement){var morphs=new Array(2);morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);morphs[1] = dom.createMorphAt(fragment,3,3,contextualElement);return morphs;},statements:[["content","phoneIdentity.number",["loc",[null,[124,20],[124,44]]]],["inline","t",["generic.identities.primary_comment"],[],["loc",[null,[124,45],[124,87]]]]],locals:[],templates:[]};})();return {meta:{"revision":"Ember@1.13.13","loc":{"source":null,"start":{"line":100,"column":14},"end":{"line":127,"column":14}},"moduleName":"frontend-cp/components/ko-identities/template.hbs"},arity:1,cachedFragment:null,hasRendered:false,buildFragment:function buildFragment(dom){var el0=dom.createDocumentFragment();var el1=dom.createTextNode("                ");dom.appendChild(el0,el1);var el1=dom.createElement("li");dom.setAttribute(el1,"class","u-pb-");var el2=dom.createTextNode("\n");dom.appendChild(el1,el2);var el2=dom.createComment("");dom.appendChild(el1,el2);var el2=dom.createTextNode("                ");dom.appendChild(el1,el2);dom.appendChild(el0,el1);var el1=dom.createTextNode("\n");dom.appendChild(el0,el1);return el0;},buildRenderNodes:function buildRenderNodes(dom,fragment,contextualElement){var morphs=new Array(1);morphs[0] = dom.createMorphAt(dom.childAt(fragment,[1]),1,1);return morphs;},statements:[["block","if",[["get","phoneIdentity.canBeModified",["loc",[null,[102,24],[102,51]]]]],[],0,1,["loc",[null,[102,18],[125,25]]]]],locals:["phoneIdentity"],templates:[child0,child1]};})();return {meta:{"revision":"Ember@1.13.13","loc":{"source":null,"start":{"line":95,"column":6},"end":{"line":131,"column":6}},"moduleName":"frontend-cp/components/ko-identities/template.hbs"},arity:0,cachedFragment:null,hasRendered:false,buildFragment:function buildFragment(dom){var el0=dom.createDocumentFragment();var el1=dom.createTextNode("        ");dom.appendChild(el0,el1);var el1=dom.createElement("tr");dom.setAttribute(el1,"class","u-v-align-top");var el2=dom.createTextNode("\n          ");dom.appendChild(el1,el2);var el2=dom.createElement("td");var el3=dom.createElement("strong");var el4=dom.createComment("");dom.appendChild(el3,el4);dom.appendChild(el2,el3);dom.appendChild(el1,el2);var el2=dom.createTextNode("\n          ");dom.appendChild(el1,el2);var el2=dom.createElement("td");dom.setAttribute(el2,"class","u-pl");var el3=dom.createTextNode("\n            ");dom.appendChild(el2,el3);var el3=dom.createElement("ul");dom.setAttribute(el3,"class","ko-identities__list ko-identities__list--phones");var el4=dom.createTextNode("\n");dom.appendChild(el3,el4);var el4=dom.createComment("");dom.appendChild(el3,el4);var el4=dom.createTextNode("            ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n          ");dom.appendChild(el2,el3);dom.appendChild(el1,el2);var el2=dom.createTextNode("\n        ");dom.appendChild(el1,el2);dom.appendChild(el0,el1);var el1=dom.createTextNode("\n");dom.appendChild(el0,el1);return el0;},buildRenderNodes:function buildRenderNodes(dom,fragment,contextualElement){var element10=dom.childAt(fragment,[1]);var morphs=new Array(2);morphs[0] = dom.createMorphAt(dom.childAt(element10,[1,0]),0,0);morphs[1] = dom.createMorphAt(dom.childAt(element10,[3,1]),1,1);return morphs;},statements:[["inline","t",["generic.identities.phones_identities_title"],[],["loc",[null,[97,22],[97,72]]]],["block","each",[["get","phoneIdentities",["loc",[null,[100,22],[100,37]]]]],[],0,null,["loc",[null,[100,14],[127,23]]]]],locals:[],templates:[child0]};})();var child3=(function(){var child0=(function(){var child0=(function(){var child0=(function(){var child0=(function(){return {meta:{"revision":"Ember@1.13.13","loc":{"source":null,"start":{"line":141,"column":22},"end":{"line":148,"column":22}},"moduleName":"frontend-cp/components/ko-identities/template.hbs"},arity:0,cachedFragment:null,hasRendered:false,buildFragment:function buildFragment(dom){var el0=dom.createDocumentFragment();var el1=dom.createTextNode("                        ");dom.appendChild(el0,el1);var el1=dom.createElement("div");dom.setAttribute(el1,"class","ko-dropdown_list__item-wrapper");var el2=dom.createTextNode("\n                          ");dom.appendChild(el1,el2);var el2=dom.createElement("div");dom.setAttribute(el2,"class","ko-identities__list-item");var el3=dom.createTextNode("\n                            ");dom.appendChild(el2,el3);var el3=dom.createComment("");dom.appendChild(el2,el3);var el3=dom.createTextNode(" ");dom.appendChild(el2,el3);var el3=dom.createComment("");dom.appendChild(el2,el3);var el3=dom.createTextNode("\n                          ");dom.appendChild(el2,el3);dom.appendChild(el1,el2);var el2=dom.createTextNode("\n                          ");dom.appendChild(el1,el2);var el2=dom.createElement("div");dom.setAttribute(el2,"class","ko-dropdown__item-chevron i-chevron-large-down");dom.appendChild(el1,el2);var el2=dom.createTextNode("\n                        ");dom.appendChild(el1,el2);dom.appendChild(el0,el1);var el1=dom.createTextNode("\n");dom.appendChild(el0,el1);return el0;},buildRenderNodes:function buildRenderNodes(dom,fragment,contextualElement){var element5=dom.childAt(fragment,[1,1]);var morphs=new Array(3);morphs[0] = dom.createAttrMorph(element5,'title');morphs[1] = dom.createMorphAt(element5,1,1);morphs[2] = dom.createMorphAt(element5,3,3);return morphs;},statements:[["attribute","title",["concat",[["get","facebookIdentity.userName",["loc",[null,[143,73],[143,98]]]]]]],["content","facebookIdentity.userName",["loc",[null,[144,28],[144,57]]]],["inline","if",[["get","facebookIdentity.isPrimary",["loc",[null,[144,63],[144,89]]]],["subexpr","t",["generic.identities.primary_comment"],[],["loc",[null,[144,90],[144,130]]]]],[],["loc",[null,[144,58],[144,132]]]]],locals:[],templates:[]};})();var child1=(function(){var child0=(function(){var child0=(function(){return {meta:{"revision":"Ember@1.13.13","loc":{"source":null,"start":{"line":151,"column":26},"end":{"line":153,"column":26}},"moduleName":"frontend-cp/components/ko-identities/template.hbs"},arity:0,cachedFragment:null,hasRendered:false,buildFragment:function buildFragment(dom){var el0=dom.createDocumentFragment();var el1=dom.createTextNode("                            ");dom.appendChild(el0,el1);var el1=dom.createElement("li");dom.setAttribute(el1,"class","ko-dropdown_list__item");var el2=dom.createComment("");dom.appendChild(el1,el2);dom.appendChild(el0,el1);var el1=dom.createTextNode("\n");dom.appendChild(el0,el1);return el0;},buildRenderNodes:function buildRenderNodes(dom,fragment,contextualElement){var element4=dom.childAt(fragment,[1]);var morphs=new Array(2);morphs[0] = dom.createAttrMorph(element4,'onclick');morphs[1] = dom.createMorphAt(element4,0,0);return morphs;},statements:[["attribute","onclick",["subexpr","action",["removeIdentity",["get","facebookIdentity",["loc",[null,[152,97],[152,113]]]]],[],["loc",[null,[152,71],[152,115]]]]],["inline","t",["generic.identities.remove_identity"],[],["loc",[null,[152,116],[152,158]]]]],locals:[],templates:[]};})();var child1=(function(){return {meta:{"revision":"Ember@1.13.13","loc":{"source":null,"start":{"line":154,"column":26},"end":{"line":156,"column":26}},"moduleName":"frontend-cp/components/ko-identities/template.hbs"},arity:0,cachedFragment:null,hasRendered:false,buildFragment:function buildFragment(dom){var el0=dom.createDocumentFragment();var el1=dom.createTextNode("                            ");dom.appendChild(el0,el1);var el1=dom.createElement("li");dom.setAttribute(el1,"class","ko-dropdown_list__item");var el2=dom.createComment("");dom.appendChild(el1,el2);dom.appendChild(el0,el1);var el1=dom.createTextNode("\n");dom.appendChild(el0,el1);return el0;},buildRenderNodes:function buildRenderNodes(dom,fragment,contextualElement){var element3=dom.childAt(fragment,[1]);var morphs=new Array(2);morphs[0] = dom.createAttrMorph(element3,'onclick');morphs[1] = dom.createMorphAt(element3,0,0);return morphs;},statements:[["attribute","onclick",["subexpr","action",["makePrimaryIdentity",["get","facebookIdentity",["loc",[null,[155,102],[155,118]]]]],[],["loc",[null,[155,71],[155,120]]]]],["inline","t",["generic.identities.make_primary"],[],["loc",[null,[155,121],[155,160]]]]],locals:[],templates:[]};})();return {meta:{"revision":"Ember@1.13.13","loc":{"source":null,"start":{"line":150,"column":24},"end":{"line":157,"column":24}},"moduleName":"frontend-cp/components/ko-identities/template.hbs"},arity:0,cachedFragment:null,hasRendered:false,buildFragment:function buildFragment(dom){var el0=dom.createDocumentFragment();var el1=dom.createComment("");dom.appendChild(el0,el1);var el1=dom.createComment("");dom.appendChild(el0,el1);return el0;},buildRenderNodes:function buildRenderNodes(dom,fragment,contextualElement){var morphs=new Array(2);morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);morphs[1] = dom.createMorphAt(fragment,1,1,contextualElement);dom.insertBoundary(fragment,0);dom.insertBoundary(fragment,null);return morphs;},statements:[["block","if",[["get","facebookIdentity.canBeRemoved",["loc",[null,[151,32],[151,61]]]]],[],0,null,["loc",[null,[151,26],[153,33]]]],["block","if",[["get","facebookIdentity.canBePrimarized",["loc",[null,[154,32],[154,64]]]]],[],1,null,["loc",[null,[154,26],[156,33]]]]],locals:[],templates:[child0,child1]};})();return {meta:{"revision":"Ember@1.13.13","loc":{"source":null,"start":{"line":149,"column":22},"end":{"line":158,"column":22}},"moduleName":"frontend-cp/components/ko-identities/template.hbs"},arity:0,cachedFragment:null,hasRendered:false,buildFragment:function buildFragment(dom){var el0=dom.createDocumentFragment();var el1=dom.createComment("");dom.appendChild(el0,el1);return el0;},buildRenderNodes:function buildRenderNodes(dom,fragment,contextualElement){var morphs=new Array(1);morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);dom.insertBoundary(fragment,0);dom.insertBoundary(fragment,null);return morphs;},statements:[["block","ko-dropdown/list",[],[],0,null,["loc",[null,[150,24],[157,45]]]]],locals:[],templates:[child0]};})();return {meta:{"revision":"Ember@1.13.13","loc":{"source":null,"start":{"line":140,"column":20},"end":{"line":159,"column":20}},"moduleName":"frontend-cp/components/ko-identities/template.hbs"},arity:2,cachedFragment:null,hasRendered:false,buildFragment:function buildFragment(dom){var el0=dom.createDocumentFragment();var el1=dom.createComment("");dom.appendChild(el0,el1);var el1=dom.createComment("");dom.appendChild(el0,el1);return el0;},buildRenderNodes:function buildRenderNodes(dom,fragment,contextualElement){var morphs=new Array(2);morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);morphs[1] = dom.createMorphAt(fragment,1,1,contextualElement);dom.insertBoundary(fragment,0);dom.insertBoundary(fragment,null);return morphs;},statements:[["block","if",[["subexpr","eq",[["get","name",["loc",[null,[141,32],[141,36]]]],"button"],[],["loc",[null,[141,28],[141,46]]]]],[],0,null,["loc",[null,[141,22],[148,29]]]],["block","if",[["subexpr","eq",[["get","name",["loc",[null,[149,32],[149,36]]]],"content"],[],["loc",[null,[149,28],[149,47]]]]],[],1,null,["loc",[null,[149,22],[158,29]]]]],locals:["name","dropdownContext"],templates:[child0,child1]};})();return {meta:{"revision":"Ember@1.13.13","loc":{"source":null,"start":{"line":139,"column":18},"end":{"line":160,"column":18}},"moduleName":"frontend-cp/components/ko-identities/template.hbs"},arity:0,cachedFragment:null,hasRendered:false,buildFragment:function buildFragment(dom){var el0=dom.createDocumentFragment();var el1=dom.createComment("");dom.appendChild(el0,el1);return el0;},buildRenderNodes:function buildRenderNodes(dom,fragment,contextualElement){var morphs=new Array(1);morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);dom.insertBoundary(fragment,0);dom.insertBoundary(fragment,null);return morphs;},statements:[["block","ko-dropdown/container",[],["hideOnClick",true,"hideOnChildFocus",true],0,null,["loc",[null,[140,20],[159,46]]]]],locals:[],templates:[child0]};})();var child1=(function(){return {meta:{"revision":"Ember@1.13.13","loc":{"source":null,"start":{"line":160,"column":18},"end":{"line":162,"column":18}},"moduleName":"frontend-cp/components/ko-identities/template.hbs"},arity:0,cachedFragment:null,hasRendered:false,buildFragment:function buildFragment(dom){var el0=dom.createDocumentFragment();var el1=dom.createTextNode("                    ");dom.appendChild(el0,el1);var el1=dom.createComment("");dom.appendChild(el0,el1);var el1=dom.createTextNode(" ");dom.appendChild(el0,el1);var el1=dom.createComment("");dom.appendChild(el0,el1);var el1=dom.createTextNode("\n");dom.appendChild(el0,el1);return el0;},buildRenderNodes:function buildRenderNodes(dom,fragment,contextualElement){var morphs=new Array(2);morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);morphs[1] = dom.createMorphAt(fragment,3,3,contextualElement);return morphs;},statements:[["content","facebookIdentity.userName",["loc",[null,[161,20],[161,49]]]],["inline","t",["generic.identities.primary_comment"],[],["loc",[null,[161,50],[161,92]]]]],locals:[],templates:[]};})();return {meta:{"revision":"Ember@1.13.13","loc":{"source":null,"start":{"line":137,"column":14},"end":{"line":164,"column":14}},"moduleName":"frontend-cp/components/ko-identities/template.hbs"},arity:1,cachedFragment:null,hasRendered:false,buildFragment:function buildFragment(dom){var el0=dom.createDocumentFragment();var el1=dom.createTextNode("                ");dom.appendChild(el0,el1);var el1=dom.createElement("li");dom.setAttribute(el1,"class","u-pb-");var el2=dom.createTextNode("\n");dom.appendChild(el1,el2);var el2=dom.createComment("");dom.appendChild(el1,el2);var el2=dom.createTextNode("                ");dom.appendChild(el1,el2);dom.appendChild(el0,el1);var el1=dom.createTextNode("\n");dom.appendChild(el0,el1);return el0;},buildRenderNodes:function buildRenderNodes(dom,fragment,contextualElement){var morphs=new Array(1);morphs[0] = dom.createMorphAt(dom.childAt(fragment,[1]),1,1);return morphs;},statements:[["block","if",[["get","facebookIdentity.canBeModified",["loc",[null,[139,24],[139,54]]]]],[],0,1,["loc",[null,[139,18],[162,25]]]]],locals:["facebookIdentity"],templates:[child0,child1]};})();return {meta:{"revision":"Ember@1.13.13","loc":{"source":null,"start":{"line":132,"column":6},"end":{"line":168,"column":6}},"moduleName":"frontend-cp/components/ko-identities/template.hbs"},arity:0,cachedFragment:null,hasRendered:false,buildFragment:function buildFragment(dom){var el0=dom.createDocumentFragment();var el1=dom.createTextNode("        ");dom.appendChild(el0,el1);var el1=dom.createElement("tr");dom.setAttribute(el1,"class","u-v-align-top");var el2=dom.createTextNode("\n          ");dom.appendChild(el1,el2);var el2=dom.createElement("td");var el3=dom.createElement("strong");var el4=dom.createComment("");dom.appendChild(el3,el4);dom.appendChild(el2,el3);dom.appendChild(el1,el2);var el2=dom.createTextNode("\n          ");dom.appendChild(el1,el2);var el2=dom.createElement("td");dom.setAttribute(el2,"class","u-pl");var el3=dom.createTextNode("\n            ");dom.appendChild(el2,el3);var el3=dom.createElement("ul");dom.setAttribute(el3,"class","ko-identities__list ko-identities__list--facebooks");var el4=dom.createTextNode("\n");dom.appendChild(el3,el4);var el4=dom.createComment("");dom.appendChild(el3,el4);var el4=dom.createTextNode("            ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n          ");dom.appendChild(el2,el3);dom.appendChild(el1,el2);var el2=dom.createTextNode("\n        ");dom.appendChild(el1,el2);dom.appendChild(el0,el1);var el1=dom.createTextNode("\n");dom.appendChild(el0,el1);return el0;},buildRenderNodes:function buildRenderNodes(dom,fragment,contextualElement){var element6=dom.childAt(fragment,[1]);var morphs=new Array(2);morphs[0] = dom.createMorphAt(dom.childAt(element6,[1,0]),0,0);morphs[1] = dom.createMorphAt(dom.childAt(element6,[3,1]),1,1);return morphs;},statements:[["inline","t",["generic.identities.facebook_identities_title"],[],["loc",[null,[134,22],[134,74]]]],["block","each",[["get","facebookIdentities",["loc",[null,[137,22],[137,40]]]]],[],0,null,["loc",[null,[137,14],[164,23]]]]],locals:[],templates:[child0]};})();var child4=(function(){var child0=(function(){var child0=(function(){return {meta:{"revision":"Ember@1.13.13","loc":{"source":null,"start":{"line":174,"column":14},"end":{"line":177,"column":14}},"moduleName":"frontend-cp/components/ko-identities/template.hbs"},arity:0,cachedFragment:null,hasRendered:false,buildFragment:function buildFragment(dom){var el0=dom.createDocumentFragment();var el1=dom.createTextNode("                ");dom.appendChild(el0,el1);var el1=dom.createComment("");dom.appendChild(el0,el1);var el1=dom.createTextNode("\n                ");dom.appendChild(el0,el1);var el1=dom.createElement("div");dom.setAttribute(el1,"class","ko-dropdown__item-chevron i-chevron-large-down");dom.appendChild(el0,el1);var el1=dom.createTextNode("\n");dom.appendChild(el0,el1);return el0;},buildRenderNodes:function buildRenderNodes(dom,fragment,contextualElement){var morphs=new Array(1);morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);return morphs;},statements:[["inline","t",["generic.identities.add_new"],[],["loc",[null,[175,16],[175,50]]]]],locals:[],templates:[]};})();var child1=(function(){var child0=(function(){return {meta:{"revision":"Ember@1.13.13","loc":{"source":null,"start":{"line":179,"column":16},"end":{"line":183,"column":16}},"moduleName":"frontend-cp/components/ko-identities/template.hbs"},arity:0,cachedFragment:null,hasRendered:false,buildFragment:function buildFragment(dom){var el0=dom.createDocumentFragment();var el1=dom.createTextNode("                  ");dom.appendChild(el0,el1);var el1=dom.createElement("li");dom.setAttribute(el1,"class","ko-dropdown_list__item");var el2=dom.createComment("");dom.appendChild(el1,el2);dom.appendChild(el0,el1);var el1=dom.createTextNode("\n                  ");dom.appendChild(el0,el1);var el1=dom.createElement("li");dom.setAttribute(el1,"class","ko-dropdown_list__item");var el2=dom.createComment("");dom.appendChild(el1,el2);dom.appendChild(el0,el1);var el1=dom.createTextNode("\n                  ");dom.appendChild(el0,el1);var el1=dom.createElement("li");dom.setAttribute(el1,"class","ko-dropdown_list__item");var el2=dom.createComment("");dom.appendChild(el1,el2);dom.appendChild(el0,el1);var el1=dom.createTextNode("\n");dom.appendChild(el0,el1);return el0;},buildRenderNodes:function buildRenderNodes(dom,fragment,contextualElement){var element0=dom.childAt(fragment,[1]);var element1=dom.childAt(fragment,[3]);var element2=dom.childAt(fragment,[5]);var morphs=new Array(6);morphs[0] = dom.createAttrMorph(element0,'onclick');morphs[1] = dom.createMorphAt(element0,0,0);morphs[2] = dom.createAttrMorph(element1,'onclick');morphs[3] = dom.createMorphAt(element1,0,0);morphs[4] = dom.createAttrMorph(element2,'onclick');morphs[5] = dom.createMorphAt(element2,0,0);return morphs;},statements:[["attribute","onclick",["subexpr","action",["addEmail"],[],["loc",[null,[180,61],[180,82]]]]],["inline","t",["generic.identities.add_email_identity"],[],["loc",[null,[180,83],[180,128]]]],["attribute","onclick",["subexpr","action",["addPhone"],[],["loc",[null,[181,61],[181,82]]]]],["inline","t",["generic.identities.add_phone_identity"],[],["loc",[null,[181,83],[181,128]]]],["attribute","onclick",["subexpr","action",["addTwitter"],[],["loc",[null,[182,61],[182,84]]]]],["inline","t",["generic.identities.add_twitter_identity"],[],["loc",[null,[182,85],[182,132]]]]],locals:[],templates:[]};})();return {meta:{"revision":"Ember@1.13.13","loc":{"source":null,"start":{"line":178,"column":14},"end":{"line":184,"column":14}},"moduleName":"frontend-cp/components/ko-identities/template.hbs"},arity:0,cachedFragment:null,hasRendered:false,buildFragment:function buildFragment(dom){var el0=dom.createDocumentFragment();var el1=dom.createComment("");dom.appendChild(el0,el1);return el0;},buildRenderNodes:function buildRenderNodes(dom,fragment,contextualElement){var morphs=new Array(1);morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);dom.insertBoundary(fragment,0);dom.insertBoundary(fragment,null);return morphs;},statements:[["block","ko-dropdown/list",[],[],0,null,["loc",[null,[179,16],[183,37]]]]],locals:[],templates:[child0]};})();return {meta:{"revision":"Ember@1.13.13","loc":{"source":null,"start":{"line":173,"column":12},"end":{"line":185,"column":12}},"moduleName":"frontend-cp/components/ko-identities/template.hbs"},arity:2,cachedFragment:null,hasRendered:false,buildFragment:function buildFragment(dom){var el0=dom.createDocumentFragment();var el1=dom.createComment("");dom.appendChild(el0,el1);var el1=dom.createComment("");dom.appendChild(el0,el1);return el0;},buildRenderNodes:function buildRenderNodes(dom,fragment,contextualElement){var morphs=new Array(2);morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);morphs[1] = dom.createMorphAt(fragment,1,1,contextualElement);dom.insertBoundary(fragment,0);dom.insertBoundary(fragment,null);return morphs;},statements:[["block","if",[["subexpr","eq",[["get","name",["loc",[null,[174,24],[174,28]]]],"button"],[],["loc",[null,[174,20],[174,38]]]]],[],0,null,["loc",[null,[174,14],[177,21]]]],["block","if",[["subexpr","eq",[["get","name",["loc",[null,[178,24],[178,28]]]],"content"],[],["loc",[null,[178,20],[178,39]]]]],[],1,null,["loc",[null,[178,14],[184,21]]]]],locals:["name","dropdownContext"],templates:[child0,child1]};})();return {meta:{"revision":"Ember@1.13.13","loc":{"source":null,"start":{"line":169,"column":6},"end":{"line":188,"column":6}},"moduleName":"frontend-cp/components/ko-identities/template.hbs"},arity:0,cachedFragment:null,hasRendered:false,buildFragment:function buildFragment(dom){var el0=dom.createDocumentFragment();var el1=dom.createTextNode("        ");dom.appendChild(el0,el1);var el1=dom.createElement("tr");var el2=dom.createTextNode("\n          ");dom.appendChild(el1,el2);var el2=dom.createElement("td");dom.appendChild(el1,el2);var el2=dom.createTextNode("\n          ");dom.appendChild(el1,el2);var el2=dom.createElement("td");dom.setAttribute(el2,"class","u-pl");var el3=dom.createTextNode("\n");dom.appendChild(el2,el3);var el3=dom.createComment("");dom.appendChild(el2,el3);var el3=dom.createTextNode("          ");dom.appendChild(el2,el3);dom.appendChild(el1,el2);var el2=dom.createTextNode("\n        ");dom.appendChild(el1,el2);dom.appendChild(el0,el1);var el1=dom.createTextNode("\n");dom.appendChild(el0,el1);return el0;},buildRenderNodes:function buildRenderNodes(dom,fragment,contextualElement){var morphs=new Array(1);morphs[0] = dom.createMorphAt(dom.childAt(fragment,[1,3]),1,1);return morphs;},statements:[["block","ko-dropdown/container",[],["class","ko-identities__create-dropdown ","hideOnClick",true,"hideOnChildFocus",true],0,null,["loc",[null,[173,12],[185,38]]]]],locals:[],templates:[child0]};})();var child5=(function(){return {meta:{"revision":"Ember@1.13.13","loc":{"source":null,"start":{"line":192,"column":2},"end":{"line":194,"column":2}},"moduleName":"frontend-cp/components/ko-identities/template.hbs"},arity:0,cachedFragment:null,hasRendered:false,buildFragment:function buildFragment(dom){var el0=dom.createDocumentFragment();var el1=dom.createTextNode("    ");dom.appendChild(el0,el1);var el1=dom.createComment("");dom.appendChild(el0,el1);var el1=dom.createTextNode("\n");dom.appendChild(el0,el1);return el0;},buildRenderNodes:function buildRenderNodes(dom,fragment,contextualElement){var morphs=new Array(1);morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);return morphs;},statements:[["inline","ko-identities/form",[],["identity",["subexpr","@mut",[["get","newIdentity",["loc",[null,[193,34],[193,45]]]]],[],[]],"save",["subexpr","action",["saveIdentity"],[],["loc",[null,[193,51],[193,74]]]],"cancel",["subexpr","action",["removeNewIdentity"],[],["loc",[null,[193,82],[193,110]]]]],["loc",[null,[193,4],[193,112]]]]],locals:[],templates:[]};})();return {meta:{"revision":"Ember@1.13.13","loc":{"source":null,"start":{"line":1,"column":0},"end":{"line":195,"column":5}},"moduleName":"frontend-cp/components/ko-identities/template.hbs"},arity:0,cachedFragment:null,hasRendered:false,buildFragment:function buildFragment(dom){var el0=dom.createDocumentFragment();var el1=dom.createElement("li");dom.setAttribute(el1,"class","info-bar-item info-bar-item--no-hover");var el2=dom.createTextNode("\n  ");dom.appendChild(el1,el2);var el2=dom.createElement("div");dom.setAttribute(el2,"class","info-bar__heading");var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createComment("");dom.appendChild(el2,el3);var el3=dom.createTextNode("\n  ");dom.appendChild(el2,el3);dom.appendChild(el1,el2);var el2=dom.createTextNode("\n  ");dom.appendChild(el1,el2);var el2=dom.createElement("table");dom.setAttribute(el2,"class","ko-identities__table");var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("tbody");var el4=dom.createTextNode("\n");dom.appendChild(el3,el4);var el4=dom.createComment("");dom.appendChild(el3,el4);var el4=dom.createComment("");dom.appendChild(el3,el4);var el4=dom.createComment("");dom.appendChild(el3,el4);var el4=dom.createComment("");dom.appendChild(el3,el4);var el4=dom.createComment("");dom.appendChild(el3,el4);var el4=dom.createTextNode("      ");dom.appendChild(el3,el4);var el4=dom.createElement("tr");dom.appendChild(el3,el4);var el4=dom.createTextNode("\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n  ");dom.appendChild(el2,el3);dom.appendChild(el1,el2);var el2=dom.createTextNode("\n");dom.appendChild(el1,el2);var el2=dom.createComment("");dom.appendChild(el1,el2);dom.appendChild(el0,el1);return el0;},buildRenderNodes:function buildRenderNodes(dom,fragment,contextualElement){var element22=dom.childAt(fragment,[0]);var element23=dom.childAt(element22,[3,1]);var morphs=new Array(7);morphs[0] = dom.createMorphAt(dom.childAt(element22,[1]),1,1);morphs[1] = dom.createMorphAt(element23,1,1);morphs[2] = dom.createMorphAt(element23,2,2);morphs[3] = dom.createMorphAt(element23,3,3);morphs[4] = dom.createMorphAt(element23,4,4);morphs[5] = dom.createMorphAt(element23,5,5);morphs[6] = dom.createMorphAt(element22,5,5);return morphs;},statements:[["inline","t",["generic.identities.component_title"],[],["loc",[null,[3,4],[3,46]]]],["block","if",[["get","emailIdentities.length",["loc",[null,[7,12],[7,34]]]]],[],0,null,["loc",[null,[7,6],[58,13]]]],["block","if",[["get","twitterIdentities.length",["loc",[null,[59,12],[59,36]]]]],[],1,null,["loc",[null,[59,6],[94,13]]]],["block","if",[["get","phoneIdentities.length",["loc",[null,[95,12],[95,34]]]]],[],2,null,["loc",[null,[95,6],[131,13]]]],["block","if",[["get","facebookIdentities.length",["loc",[null,[132,12],[132,37]]]]],[],3,null,["loc",[null,[132,6],[168,13]]]],["block","unless",[["get","newIdentity",["loc",[null,[169,16],[169,27]]]]],[],4,null,["loc",[null,[169,6],[188,17]]]],["block","if",[["get","newIdentity",["loc",[null,[192,8],[192,19]]]]],[],5,null,["loc",[null,[192,2],[194,9]]]]],locals:[],templates:[child0,child1,child2,child3,child4,child5]};})());});
+define("frontend-cp/components/ko-identities/template", ["exports"], function (exports) {
+  exports["default"] = Ember.HTMLBars.template((function () {
+    var child0 = (function () {
+      var child0 = (function () {
+        var child0 = (function () {
+          var child0 = (function () {
+            return {
+              meta: {
+                "revision": "Ember@1.13.13",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 11,
+                    "column": 16
+                  },
+                  "end": {
+                    "line": 15,
+                    "column": 16
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-identities/template.hbs"
+              },
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createTextNode("                  ");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createElement("li");
+                dom.setAttribute(el1, "class", "identities-dropdown_item");
+                var el2 = dom.createTextNode("\n                    ");
+                dom.appendChild(el1, el2);
+                var el2 = dom.createComment("");
+                dom.appendChild(el1, el2);
+                var el2 = dom.createTextNode("\n                  ");
+                dom.appendChild(el1, el2);
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var element17 = dom.childAt(fragment, [1]);
+                var morphs = new Array(2);
+                morphs[0] = dom.createAttrMorph(element17, 'onclick');
+                morphs[1] = dom.createMorphAt(element17, 1, 1);
+                return morphs;
+              },
+              statements: [["attribute", "onclick", ["subexpr", "action", ["removeIdentity", ["get", "emailIdentity", ["loc", [null, [12, 89], [12, 102]]]], ["get", "dropdown", ["loc", [null, [12, 103], [12, 111]]]]], [], ["loc", [null, [12, 63], [12, 113]]]]], ["inline", "t", ["generic.identities.remove_identity"], [], ["loc", [null, [13, 20], [13, 62]]]]],
+              locals: [],
+              templates: []
+            };
+          })();
+          var child1 = (function () {
+            return {
+              meta: {
+                "revision": "Ember@1.13.13",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 16,
+                    "column": 16
+                  },
+                  "end": {
+                    "line": 20,
+                    "column": 16
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-identities/template.hbs"
+              },
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createTextNode("                  ");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createElement("li");
+                dom.setAttribute(el1, "class", "identities-dropdown_item");
+                var el2 = dom.createTextNode("\n                    ");
+                dom.appendChild(el1, el2);
+                var el2 = dom.createComment("");
+                dom.appendChild(el1, el2);
+                var el2 = dom.createTextNode("\n                  ");
+                dom.appendChild(el1, el2);
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var element16 = dom.childAt(fragment, [1]);
+                var morphs = new Array(2);
+                morphs[0] = dom.createAttrMorph(element16, 'onclick');
+                morphs[1] = dom.createMorphAt(element16, 1, 1);
+                return morphs;
+              },
+              statements: [["attribute", "onclick", ["subexpr", "action", ["makePrimaryIdentity", ["get", "emailIdentity", ["loc", [null, [17, 94], [17, 107]]]], ["get", "dropdown", ["loc", [null, [17, 108], [17, 116]]]]], [], ["loc", [null, [17, 63], [17, 118]]]]], ["inline", "t", ["generic.identities.make_primary"], [], ["loc", [null, [18, 20], [18, 59]]]]],
+              locals: [],
+              templates: []
+            };
+          })();
+          var child2 = (function () {
+            return {
+              meta: {
+                "revision": "Ember@1.13.13",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 21,
+                    "column": 16
+                  },
+                  "end": {
+                    "line": 30,
+                    "column": 16
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-identities/template.hbs"
+              },
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createTextNode("                  ");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createElement("li");
+                dom.setAttribute(el1, "class", "identities-dropdown_item");
+                var el2 = dom.createTextNode("\n                    ");
+                dom.appendChild(el1, el2);
+                var el2 = dom.createComment("");
+                dom.appendChild(el1, el2);
+                var el2 = dom.createTextNode("\n                  ");
+                dom.appendChild(el1, el2);
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var element15 = dom.childAt(fragment, [1]);
+                var morphs = new Array(2);
+                morphs[0] = dom.createAttrMorph(element15, 'onclick');
+                morphs[1] = dom.createMorphAt(element15, 1, 1);
+                return morphs;
+              },
+              statements: [["attribute", "onclick", ["subexpr", "action", ["validateIdentity", ["get", "emailIdentity", ["loc", [null, [22, 91], [22, 104]]]], ["get", "dropdown", ["loc", [null, [22, 105], [22, 113]]]]], [], ["loc", [null, [22, 63], [22, 115]]]]], ["inline", "t", ["generic.identities.validate_identity"], [], ["loc", [null, [23, 20], [23, 64]]]]],
+              locals: [],
+              templates: []
+            };
+          })();
+          var child3 = (function () {
+            return {
+              meta: {
+                "revision": "Ember@1.13.13",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 31,
+                    "column": 16
+                  },
+                  "end": {
+                    "line": 33,
+                    "column": 16
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-identities/template.hbs"
+              },
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createTextNode("                  ");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var morphs = new Array(1);
+                morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+                return morphs;
+              },
+              statements: [["inline", "t", ["generic.identities.copy_identity"], [], ["loc", [null, [32, 18], [32, 58]]]]],
+              locals: [],
+              templates: []
+            };
+          })();
+          return {
+            meta: {
+              "revision": "Ember@1.13.13",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 10,
+                  "column": 14
+                },
+                "end": {
+                  "line": 34,
+                  "column": 14
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-identities/template.hbs"
+            },
+            arity: 1,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(4);
+              morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+              morphs[1] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+              morphs[2] = dom.createMorphAt(fragment, 2, 2, contextualElement);
+              morphs[3] = dom.createMorphAt(fragment, 3, 3, contextualElement);
+              dom.insertBoundary(fragment, 0);
+              dom.insertBoundary(fragment, null);
+              return morphs;
+            },
+            statements: [["block", "if", [["get", "emailIdentity.canBeRemoved", ["loc", [null, [11, 22], [11, 48]]]]], [], 0, null, ["loc", [null, [11, 16], [15, 23]]]], ["block", "if", [["get", "emailIdentity.canBePrimarized", ["loc", [null, [16, 22], [16, 51]]]]], [], 1, null, ["loc", [null, [16, 16], [20, 23]]]], ["block", "if", [["get", "emailIdentity.canBeValidated", ["loc", [null, [21, 22], [21, 50]]]]], [], 2, null, ["loc", [null, [21, 16], [30, 23]]]], ["block", "copy-button", [], ["tagName", "li", "class", "identities-dropdown_item", "clipboardText", ["subexpr", "@mut", [["get", "emailIdentity.email", ["loc", [null, [31, 91], [31, 110]]]]], [], []], "success", ["subexpr", "@mut", [["get", "dropdown.actions.close", ["loc", [null, [31, 119], [31, 141]]]]], [], []]], 3, null, ["loc", [null, [31, 16], [33, 32]]]]],
+            locals: ["dropdown"],
+            templates: [child0, child1, child2, child3]
+          };
+        })();
+        var child1 = (function () {
+          var child0 = (function () {
+            return {
+              meta: {
+                "revision": "Ember@1.13.13",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 39,
+                    "column": 18
+                  },
+                  "end": {
+                    "line": 39,
+                    "column": 80
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-identities/template.hbs"
+              },
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createElement("i");
+                dom.setAttribute(el1, "class", "i-caution");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes() {
+                return [];
+              },
+              statements: [],
+              locals: [],
+              templates: []
+            };
+          })();
+          return {
+            meta: {
+              "revision": "Ember@1.13.13",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 34,
+                  "column": 14
+                },
+                "end": {
+                  "line": 42,
+                  "column": 14
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-identities/template.hbs"
+            },
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode("                ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createElement("div");
+              dom.setAttribute(el1, "class", "ko-dropdown_list__item-wrapper");
+              var el2 = dom.createTextNode("\n                  ");
+              dom.appendChild(el1, el2);
+              var el2 = dom.createElement("div");
+              dom.setAttribute(el2, "class", "ko-identities__list-item");
+              var el3 = dom.createTextNode("\n                    ");
+              dom.appendChild(el2, el3);
+              var el3 = dom.createComment("");
+              dom.appendChild(el2, el3);
+              var el3 = dom.createTextNode(" ");
+              dom.appendChild(el2, el3);
+              var el3 = dom.createComment("");
+              dom.appendChild(el2, el3);
+              var el3 = dom.createTextNode("\n                  ");
+              dom.appendChild(el2, el3);
+              dom.appendChild(el1, el2);
+              var el2 = dom.createTextNode("\n                  ");
+              dom.appendChild(el1, el2);
+              var el2 = dom.createComment("");
+              dom.appendChild(el1, el2);
+              var el2 = dom.createTextNode("\n                  ");
+              dom.appendChild(el1, el2);
+              var el2 = dom.createElement("div");
+              dom.setAttribute(el2, "class", "ko-dropdown__item-chevron i-chevron-large-down");
+              dom.appendChild(el1, el2);
+              var el2 = dom.createTextNode("\n                ");
+              dom.appendChild(el1, el2);
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var element13 = dom.childAt(fragment, [1]);
+              var element14 = dom.childAt(element13, [1]);
+              var morphs = new Array(4);
+              morphs[0] = dom.createAttrMorph(element14, 'title');
+              morphs[1] = dom.createMorphAt(element14, 1, 1);
+              morphs[2] = dom.createMorphAt(element14, 3, 3);
+              morphs[3] = dom.createMorphAt(element13, 3, 3);
+              return morphs;
+            },
+            statements: [["attribute", "title", ["concat", [["get", "emailIdentity.email", ["loc", [null, [36, 65], [36, 84]]]]]]], ["content", "emailIdentity.email", ["loc", [null, [37, 20], [37, 43]]]], ["inline", "if", [["get", "emailIdentity.isPrimary", ["loc", [null, [37, 49], [37, 72]]]], ["subexpr", "t", ["generic.identities.primary_comment"], [], ["loc", [null, [37, 73], [37, 113]]]]], [], ["loc", [null, [37, 44], [37, 115]]]], ["block", "unless", [["get", "emailIdentity.isValidated", ["loc", [null, [39, 28], [39, 53]]]]], [], 0, null, ["loc", [null, [39, 18], [39, 91]]]]],
+            locals: [],
+            templates: [child0]
+          };
+        })();
+        return {
+          meta: {
+            "revision": "Ember@1.13.13",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 8,
+                "column": 10
+              },
+              "end": {
+                "line": 44,
+                "column": 10
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-identities/template.hbs"
+          },
+          arity: 1,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("            ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("li");
+            dom.setAttribute(el1, "class", "u-pb-");
+            var el2 = dom.createTextNode("\n");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createComment("");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createTextNode("            ");
+            dom.appendChild(el1, el2);
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
+            return morphs;
+          },
+          statements: [["block", "basic-dropdown", [], ["renderInPlace", true, "class", "ko-dropdown-container"], 0, 1, ["loc", [null, [10, 14], [42, 33]]]]],
+          locals: ["emailIdentity"],
+          templates: [child0, child1]
+        };
+      })();
+      return {
+        meta: {
+          "revision": "Ember@1.13.13",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 5,
+              "column": 6
+            },
+            "end": {
+              "line": 46,
+              "column": 6
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-identities/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("        ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("p");
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n        ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("ul");
+          dom.setAttribute(el1, "class", "ko-identities__list ko-identities__list--emails");
+          var el2 = dom.createTextNode("\n");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("        ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(2);
+          morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 0, 0);
+          morphs[1] = dom.createMorphAt(dom.childAt(fragment, [3]), 1, 1);
+          return morphs;
+        },
+        statements: [["inline", "t", ["generic.identities.email_identities_title"], [], ["loc", [null, [6, 11], [6, 60]]]], ["block", "each", [["get", "emailIdentities", ["loc", [null, [8, 18], [8, 33]]]]], [], 0, null, ["loc", [null, [8, 10], [44, 19]]]]],
+        locals: [],
+        templates: [child0]
+      };
+    })();
+    var child1 = (function () {
+      var child0 = (function () {
+        var child0 = (function () {
+          var child0 = (function () {
+            return {
+              meta: {
+                "revision": "Ember@1.13.13",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 53,
+                    "column": 18
+                  },
+                  "end": {
+                    "line": 55,
+                    "column": 18
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-identities/template.hbs"
+              },
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createTextNode("                    ");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createElement("li");
+                dom.setAttribute(el1, "class", "identities-dropdown_item");
+                var el2 = dom.createComment("");
+                dom.appendChild(el1, el2);
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var element11 = dom.childAt(fragment, [1]);
+                var morphs = new Array(2);
+                morphs[0] = dom.createAttrMorph(element11, 'onclick');
+                morphs[1] = dom.createMorphAt(element11, 0, 0);
+                return morphs;
+              },
+              statements: [["attribute", "onclick", ["subexpr", "action", ["removeIdentity", ["get", "twitterIdentity", ["loc", [null, [54, 91], [54, 106]]]], ["get", "dropdown", ["loc", [null, [54, 107], [54, 115]]]]], [], ["loc", [null, [54, 65], [54, 117]]]]], ["inline", "t", ["generic.identities.remove_identity"], [], ["loc", [null, [54, 118], [54, 160]]]]],
+              locals: [],
+              templates: []
+            };
+          })();
+          var child1 = (function () {
+            return {
+              meta: {
+                "revision": "Ember@1.13.13",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 56,
+                    "column": 18
+                  },
+                  "end": {
+                    "line": 58,
+                    "column": 18
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-identities/template.hbs"
+              },
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createTextNode("                    ");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createElement("li");
+                dom.setAttribute(el1, "class", "identities-dropdown_item");
+                var el2 = dom.createComment("");
+                dom.appendChild(el1, el2);
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var element10 = dom.childAt(fragment, [1]);
+                var morphs = new Array(2);
+                morphs[0] = dom.createAttrMorph(element10, 'onclick');
+                morphs[1] = dom.createMorphAt(element10, 0, 0);
+                return morphs;
+              },
+              statements: [["attribute", "onclick", ["subexpr", "action", ["makePrimaryIdentity", ["get", "twitterIdentity", ["loc", [null, [57, 96], [57, 111]]]], ["get", "dropdown", ["loc", [null, [57, 112], [57, 120]]]]], [], ["loc", [null, [57, 65], [57, 122]]]]], ["inline", "t", ["generic.identities.make_primary"], [], ["loc", [null, [57, 123], [57, 162]]]]],
+              locals: [],
+              templates: []
+            };
+          })();
+          var child2 = (function () {
+            return {
+              meta: {
+                "revision": "Ember@1.13.13",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 62,
+                    "column": 18
+                  },
+                  "end": {
+                    "line": 64,
+                    "column": 18
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-identities/template.hbs"
+              },
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createTextNode("                    ");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var morphs = new Array(1);
+                morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+                return morphs;
+              },
+              statements: [["inline", "t", ["generic.identities.copy_identity"], [], ["loc", [null, [63, 20], [63, 60]]]]],
+              locals: [],
+              templates: []
+            };
+          })();
+          return {
+            meta: {
+              "revision": "Ember@1.13.13",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 52,
+                  "column": 14
+                },
+                "end": {
+                  "line": 65,
+                  "column": 16
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-identities/template.hbs"
+            },
+            arity: 1,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("                  ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createElement("li");
+              dom.setAttribute(el1, "class", "identities-dropdown_item");
+              var el2 = dom.createTextNode("\n                    ");
+              dom.appendChild(el1, el2);
+              var el2 = dom.createElement("a");
+              dom.setAttribute(el2, "taget", "_blank");
+              var el3 = dom.createTextNode("See profile");
+              dom.appendChild(el2, el3);
+              dom.appendChild(el1, el2);
+              var el2 = dom.createTextNode("\n                  ");
+              dom.appendChild(el1, el2);
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var element12 = dom.childAt(fragment, [3, 1]);
+              var morphs = new Array(4);
+              morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+              morphs[1] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+              morphs[2] = dom.createAttrMorph(element12, 'href');
+              morphs[3] = dom.createMorphAt(fragment, 5, 5, contextualElement);
+              dom.insertBoundary(fragment, 0);
+              dom.insertBoundary(fragment, null);
+              return morphs;
+            },
+            statements: [["block", "if", [["get", "twitterIdentity.canBeRemoved", ["loc", [null, [53, 24], [53, 52]]]]], [], 0, null, ["loc", [null, [53, 18], [55, 25]]]], ["block", "if", [["get", "twitterIdentity.canBePrimarized", ["loc", [null, [56, 24], [56, 55]]]]], [], 1, null, ["loc", [null, [56, 18], [58, 25]]]], ["attribute", "href", ["concat", ["https://twitter.com/", ["get", "twitterIdentity.screenName", ["loc", [null, [60, 51], [60, 77]]]]]]], ["block", "copy-button", [], ["tagName", "li", "class", "identities-dropdown_item", "clipboardText", ["subexpr", "@mut", [["get", "twitterIdentity.screenName", ["loc", [null, [62, 93], [62, 119]]]]], [], []], "success", ["subexpr", "@mut", [["get", "dropdown.actions.close", ["loc", [null, [62, 128], [62, 150]]]]], [], []]], 2, null, ["loc", [null, [62, 18], [64, 34]]]]],
+            locals: ["dropdown"],
+            templates: [child0, child1, child2]
+          };
+        })();
+        var child1 = (function () {
+          return {
+            meta: {
+              "revision": "Ember@1.13.13",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 65,
+                  "column": 16
+                },
+                "end": {
+                  "line": 72,
+                  "column": 14
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-identities/template.hbs"
+            },
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode("                  ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createElement("div");
+              dom.setAttribute(el1, "class", "ko-dropdown_list__item-wrapper");
+              var el2 = dom.createTextNode("\n                    ");
+              dom.appendChild(el1, el2);
+              var el2 = dom.createElement("div");
+              dom.setAttribute(el2, "class", "ko-identities__list-item");
+              var el3 = dom.createTextNode("\n                      @");
+              dom.appendChild(el2, el3);
+              var el3 = dom.createComment("");
+              dom.appendChild(el2, el3);
+              var el3 = dom.createTextNode(" ");
+              dom.appendChild(el2, el3);
+              var el3 = dom.createComment("");
+              dom.appendChild(el2, el3);
+              var el3 = dom.createTextNode("\n                    ");
+              dom.appendChild(el2, el3);
+              dom.appendChild(el1, el2);
+              var el2 = dom.createTextNode("\n                    ");
+              dom.appendChild(el1, el2);
+              var el2 = dom.createElement("div");
+              dom.setAttribute(el2, "class", "ko-dropdown__item-chevron i-chevron-large-down");
+              dom.appendChild(el1, el2);
+              var el2 = dom.createTextNode("\n                  ");
+              dom.appendChild(el1, el2);
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var element9 = dom.childAt(fragment, [1, 1]);
+              var morphs = new Array(3);
+              morphs[0] = dom.createAttrMorph(element9, 'title');
+              morphs[1] = dom.createMorphAt(element9, 1, 1);
+              morphs[2] = dom.createMorphAt(element9, 3, 3);
+              return morphs;
+            },
+            statements: [["attribute", "title", ["concat", ["@", ["get", "twitterIdentity.screenName", ["loc", [null, [67, 68], [67, 94]]]]]]], ["content", "twitterIdentity.screenName", ["loc", [null, [68, 23], [68, 53]]]], ["inline", "if", [["get", "twitterIdentity.isPrimary", ["loc", [null, [68, 59], [68, 84]]]], ["subexpr", "t", ["generic.identities.primary_comment"], [], ["loc", [null, [68, 85], [68, 125]]]]], [], ["loc", [null, [68, 54], [68, 127]]]]],
+            locals: [],
+            templates: []
+          };
+        })();
+        return {
+          meta: {
+            "revision": "Ember@1.13.13",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 50,
+                "column": 10
+              },
+              "end": {
+                "line": 74,
+                "column": 10
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-identities/template.hbs"
+          },
+          arity: 1,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("            ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("li");
+            dom.setAttribute(el1, "class", "u-pb-");
+            var el2 = dom.createTextNode("\n");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createComment("");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createTextNode("            ");
+            dom.appendChild(el1, el2);
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
+            return morphs;
+          },
+          statements: [["block", "basic-dropdown", [], ["renderInPlace", true, "class", "ko-dropdown-container"], 0, 1, ["loc", [null, [52, 14], [72, 33]]]]],
+          locals: ["twitterIdentity"],
+          templates: [child0, child1]
+        };
+      })();
+      return {
+        meta: {
+          "revision": "Ember@1.13.13",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 47,
+              "column": 6
+            },
+            "end": {
+              "line": 76,
+              "column": 6
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-identities/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("        ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("p");
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n        ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("ul");
+          dom.setAttribute(el1, "class", "ko-identities__list ko-identities__list--twitters");
+          var el2 = dom.createTextNode("\n");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("        ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(2);
+          morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 0, 0);
+          morphs[1] = dom.createMorphAt(dom.childAt(fragment, [3]), 1, 1);
+          return morphs;
+        },
+        statements: [["inline", "t", ["generic.identities.twitter_identities_title"], [], ["loc", [null, [48, 11], [48, 62]]]], ["block", "each", [["get", "twitterIdentities", ["loc", [null, [50, 18], [50, 35]]]]], [], 0, null, ["loc", [null, [50, 10], [74, 19]]]]],
+        locals: [],
+        templates: [child0]
+      };
+    })();
+    var child2 = (function () {
+      var child0 = (function () {
+        var child0 = (function () {
+          var child0 = (function () {
+            var child0 = (function () {
+              return {
+                meta: {
+                  "revision": "Ember@1.13.13",
+                  "loc": {
+                    "source": null,
+                    "start": {
+                      "line": 84,
+                      "column": 18
+                    },
+                    "end": {
+                      "line": 86,
+                      "column": 18
+                    }
+                  },
+                  "moduleName": "frontend-cp/components/ko-identities/template.hbs"
+                },
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                  var el0 = dom.createDocumentFragment();
+                  var el1 = dom.createTextNode("                    ");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createElement("li");
+                  dom.setAttribute(el1, "class", "identities-dropdown_item");
+                  var el2 = dom.createComment("");
+                  dom.appendChild(el1, el2);
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createTextNode("\n");
+                  dom.appendChild(el0, el1);
+                  return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                  var element8 = dom.childAt(fragment, [1]);
+                  var morphs = new Array(2);
+                  morphs[0] = dom.createAttrMorph(element8, 'onclick');
+                  morphs[1] = dom.createMorphAt(element8, 0, 0);
+                  return morphs;
+                },
+                statements: [["attribute", "onclick", ["subexpr", "action", ["removeIdentity", ["get", "phoneIdentity", ["loc", [null, [85, 91], [85, 104]]]], ["get", "dropdown", ["loc", [null, [85, 105], [85, 113]]]]], [], ["loc", [null, [85, 65], [85, 115]]]]], ["inline", "t", ["generic.identities.remove_identity"], [], ["loc", [null, [85, 116], [85, 158]]]]],
+                locals: [],
+                templates: []
+              };
+            })();
+            var child1 = (function () {
+              return {
+                meta: {
+                  "revision": "Ember@1.13.13",
+                  "loc": {
+                    "source": null,
+                    "start": {
+                      "line": 87,
+                      "column": 18
+                    },
+                    "end": {
+                      "line": 89,
+                      "column": 18
+                    }
+                  },
+                  "moduleName": "frontend-cp/components/ko-identities/template.hbs"
+                },
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                  var el0 = dom.createDocumentFragment();
+                  var el1 = dom.createTextNode("                    ");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createElement("li");
+                  dom.setAttribute(el1, "class", "identities-dropdown_item");
+                  var el2 = dom.createComment("");
+                  dom.appendChild(el1, el2);
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createTextNode("\n");
+                  dom.appendChild(el0, el1);
+                  return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                  var element7 = dom.childAt(fragment, [1]);
+                  var morphs = new Array(2);
+                  morphs[0] = dom.createAttrMorph(element7, 'onclick');
+                  morphs[1] = dom.createMorphAt(element7, 0, 0);
+                  return morphs;
+                },
+                statements: [["attribute", "onclick", ["subexpr", "action", ["makePrimaryIdentity", ["get", "phoneIdentity", ["loc", [null, [88, 96], [88, 109]]]], ["get", "dropdown", ["loc", [null, [88, 110], [88, 118]]]]], [], ["loc", [null, [88, 65], [88, 120]]]]], ["inline", "t", ["generic.identities.make_primary"], [], ["loc", [null, [88, 121], [88, 160]]]]],
+                locals: [],
+                templates: []
+              };
+            })();
+            var child2 = (function () {
+              return {
+                meta: {
+                  "revision": "Ember@1.13.13",
+                  "loc": {
+                    "source": null,
+                    "start": {
+                      "line": 90,
+                      "column": 18
+                    },
+                    "end": {
+                      "line": 92,
+                      "column": 18
+                    }
+                  },
+                  "moduleName": "frontend-cp/components/ko-identities/template.hbs"
+                },
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                  var el0 = dom.createDocumentFragment();
+                  var el1 = dom.createTextNode("                    ");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createComment("");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createTextNode("\n");
+                  dom.appendChild(el0, el1);
+                  return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                  var morphs = new Array(1);
+                  morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+                  return morphs;
+                },
+                statements: [["inline", "t", ["generic.identities.copy_identity"], [], ["loc", [null, [91, 20], [91, 60]]]]],
+                locals: [],
+                templates: []
+              };
+            })();
+            return {
+              meta: {
+                "revision": "Ember@1.13.13",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 83,
+                    "column": 16
+                  },
+                  "end": {
+                    "line": 93,
+                    "column": 16
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-identities/template.hbs"
+              },
+              arity: 1,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var morphs = new Array(3);
+                morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+                morphs[1] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+                morphs[2] = dom.createMorphAt(fragment, 2, 2, contextualElement);
+                dom.insertBoundary(fragment, 0);
+                dom.insertBoundary(fragment, null);
+                return morphs;
+              },
+              statements: [["block", "if", [["get", "phoneIdentity.canBeRemoved", ["loc", [null, [84, 24], [84, 50]]]]], [], 0, null, ["loc", [null, [84, 18], [86, 25]]]], ["block", "if", [["get", "phoneIdentity.canBePrimarized", ["loc", [null, [87, 24], [87, 53]]]]], [], 1, null, ["loc", [null, [87, 18], [89, 25]]]], ["block", "copy-button", [], ["tagName", "li", "class", "identities-dropdown_item", "clipboardText", ["subexpr", "@mut", [["get", "phoneIdentity.number", ["loc", [null, [90, 93], [90, 113]]]]], [], []], "success", ["subexpr", "@mut", [["get", "dropdown.actions.close", ["loc", [null, [90, 122], [90, 144]]]]], [], []]], 2, null, ["loc", [null, [90, 18], [92, 34]]]]],
+              locals: ["dropdown"],
+              templates: [child0, child1, child2]
+            };
+          })();
+          var child1 = (function () {
+            return {
+              meta: {
+                "revision": "Ember@1.13.13",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 93,
+                    "column": 16
+                  },
+                  "end": {
+                    "line": 100,
+                    "column": 16
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-identities/template.hbs"
+              },
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createTextNode("                  ");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createElement("div");
+                dom.setAttribute(el1, "class", "ko-dropdown_list__item-wrapper");
+                var el2 = dom.createTextNode("\n                    ");
+                dom.appendChild(el1, el2);
+                var el2 = dom.createElement("div");
+                dom.setAttribute(el2, "class", "ko-identities__list-item");
+                var el3 = dom.createTextNode("\n                      ");
+                dom.appendChild(el2, el3);
+                var el3 = dom.createComment("");
+                dom.appendChild(el2, el3);
+                var el3 = dom.createTextNode(" ");
+                dom.appendChild(el2, el3);
+                var el3 = dom.createComment("");
+                dom.appendChild(el2, el3);
+                var el3 = dom.createTextNode("\n                    ");
+                dom.appendChild(el2, el3);
+                dom.appendChild(el1, el2);
+                var el2 = dom.createTextNode("\n                    ");
+                dom.appendChild(el1, el2);
+                var el2 = dom.createElement("div");
+                dom.setAttribute(el2, "class", "ko-dropdown__item-chevron i-chevron-large-down");
+                dom.appendChild(el1, el2);
+                var el2 = dom.createTextNode("\n                  ");
+                dom.appendChild(el1, el2);
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var element6 = dom.childAt(fragment, [1, 1]);
+                var morphs = new Array(3);
+                morphs[0] = dom.createAttrMorph(element6, 'title');
+                morphs[1] = dom.createMorphAt(element6, 1, 1);
+                morphs[2] = dom.createMorphAt(element6, 3, 3);
+                return morphs;
+              },
+              statements: [["attribute", "title", ["concat", [["get", "phoneIdentity.number", ["loc", [null, [95, 67], [95, 87]]]]]]], ["content", "phoneIdentity.number", ["loc", [null, [96, 22], [96, 46]]]], ["inline", "if", [["get", "phoneIdentity.isPrimary", ["loc", [null, [96, 52], [96, 75]]]], ["subexpr", "t", ["generic.identities.primary_comment"], [], ["loc", [null, [96, 76], [96, 116]]]]], [], ["loc", [null, [96, 47], [96, 118]]]]],
+              locals: [],
+              templates: []
+            };
+          })();
+          return {
+            meta: {
+              "revision": "Ember@1.13.13",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 82,
+                  "column": 14
+                },
+                "end": {
+                  "line": 101,
+                  "column": 14
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-identities/template.hbs"
+            },
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(1);
+              morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+              dom.insertBoundary(fragment, 0);
+              dom.insertBoundary(fragment, null);
+              return morphs;
+            },
+            statements: [["block", "basic-dropdown", [], ["renderInPlace", true, "class", "ko-dropdown-container"], 0, 1, ["loc", [null, [83, 16], [100, 35]]]]],
+            locals: [],
+            templates: [child0, child1]
+          };
+        })();
+        var child1 = (function () {
+          return {
+            meta: {
+              "revision": "Ember@1.13.13",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 101,
+                  "column": 14
+                },
+                "end": {
+                  "line": 103,
+                  "column": 14
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-identities/template.hbs"
+            },
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode("                ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode(" ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(2);
+              morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+              morphs[1] = dom.createMorphAt(fragment, 3, 3, contextualElement);
+              return morphs;
+            },
+            statements: [["content", "phoneIdentity.number", ["loc", [null, [102, 16], [102, 40]]]], ["inline", "t", ["generic.identities.primary_comment"], [], ["loc", [null, [102, 41], [102, 83]]]]],
+            locals: [],
+            templates: []
+          };
+        })();
+        return {
+          meta: {
+            "revision": "Ember@1.13.13",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 80,
+                "column": 10
+              },
+              "end": {
+                "line": 105,
+                "column": 10
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-identities/template.hbs"
+          },
+          arity: 1,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("            ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("li");
+            dom.setAttribute(el1, "class", "u-pb-");
+            var el2 = dom.createTextNode("\n");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createComment("");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createTextNode("            ");
+            dom.appendChild(el1, el2);
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
+            return morphs;
+          },
+          statements: [["block", "if", [["get", "phoneIdentity.canBeModified", ["loc", [null, [82, 20], [82, 47]]]]], [], 0, 1, ["loc", [null, [82, 14], [103, 21]]]]],
+          locals: ["phoneIdentity"],
+          templates: [child0, child1]
+        };
+      })();
+      return {
+        meta: {
+          "revision": "Ember@1.13.13",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 77,
+              "column": 6
+            },
+            "end": {
+              "line": 107,
+              "column": 6
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-identities/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("        ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("p");
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n        ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("ul");
+          dom.setAttribute(el1, "class", "ko-identities__list ko-identities__list--phones");
+          var el2 = dom.createTextNode("\n");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("        ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(2);
+          morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 0, 0);
+          morphs[1] = dom.createMorphAt(dom.childAt(fragment, [3]), 1, 1);
+          return morphs;
+        },
+        statements: [["inline", "t", ["generic.identities.phones_identities_title"], [], ["loc", [null, [78, 11], [78, 61]]]], ["block", "each", [["get", "phoneIdentities", ["loc", [null, [80, 18], [80, 33]]]]], [], 0, null, ["loc", [null, [80, 10], [105, 19]]]]],
+        locals: [],
+        templates: [child0]
+      };
+    })();
+    var child3 = (function () {
+      var child0 = (function () {
+        var child0 = (function () {
+          var child0 = (function () {
+            var child0 = (function () {
+              return {
+                meta: {
+                  "revision": "Ember@1.13.13",
+                  "loc": {
+                    "source": null,
+                    "start": {
+                      "line": 115,
+                      "column": 18
+                    },
+                    "end": {
+                      "line": 117,
+                      "column": 18
+                    }
+                  },
+                  "moduleName": "frontend-cp/components/ko-identities/template.hbs"
+                },
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                  var el0 = dom.createDocumentFragment();
+                  var el1 = dom.createTextNode("                    ");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createElement("li");
+                  dom.setAttribute(el1, "class", "identities-dropdown_item");
+                  var el2 = dom.createComment("");
+                  dom.appendChild(el1, el2);
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createTextNode("\n");
+                  dom.appendChild(el0, el1);
+                  return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                  var element5 = dom.childAt(fragment, [1]);
+                  var morphs = new Array(2);
+                  morphs[0] = dom.createAttrMorph(element5, 'onclick');
+                  morphs[1] = dom.createMorphAt(element5, 0, 0);
+                  return morphs;
+                },
+                statements: [["attribute", "onclick", ["subexpr", "action", ["removeIdentity", ["get", "facebookIdentity", ["loc", [null, [116, 91], [116, 107]]]], ["get", "dropdown", ["loc", [null, [116, 108], [116, 116]]]]], [], ["loc", [null, [116, 65], [116, 118]]]]], ["inline", "t", ["generic.identities.remove_identity"], [], ["loc", [null, [116, 119], [116, 161]]]]],
+                locals: [],
+                templates: []
+              };
+            })();
+            var child1 = (function () {
+              return {
+                meta: {
+                  "revision": "Ember@1.13.13",
+                  "loc": {
+                    "source": null,
+                    "start": {
+                      "line": 118,
+                      "column": 18
+                    },
+                    "end": {
+                      "line": 120,
+                      "column": 18
+                    }
+                  },
+                  "moduleName": "frontend-cp/components/ko-identities/template.hbs"
+                },
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                  var el0 = dom.createDocumentFragment();
+                  var el1 = dom.createTextNode("                    ");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createElement("li");
+                  dom.setAttribute(el1, "class", "identities-dropdown_item");
+                  var el2 = dom.createComment("");
+                  dom.appendChild(el1, el2);
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createTextNode("\n");
+                  dom.appendChild(el0, el1);
+                  return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                  var element4 = dom.childAt(fragment, [1]);
+                  var morphs = new Array(2);
+                  morphs[0] = dom.createAttrMorph(element4, 'onclick');
+                  morphs[1] = dom.createMorphAt(element4, 0, 0);
+                  return morphs;
+                },
+                statements: [["attribute", "onclick", ["subexpr", "action", ["makePrimaryIdentity", ["get", "facebookIdentity", ["loc", [null, [119, 96], [119, 112]]]], ["get", "dropdown", ["loc", [null, [119, 113], [119, 121]]]]], [], ["loc", [null, [119, 65], [119, 123]]]]], ["inline", "t", ["generic.identities.make_primary"], [], ["loc", [null, [119, 124], [119, 163]]]]],
+                locals: [],
+                templates: []
+              };
+            })();
+            var child2 = (function () {
+              return {
+                meta: {
+                  "revision": "Ember@1.13.13",
+                  "loc": {
+                    "source": null,
+                    "start": {
+                      "line": 121,
+                      "column": 18
+                    },
+                    "end": {
+                      "line": 123,
+                      "column": 18
+                    }
+                  },
+                  "moduleName": "frontend-cp/components/ko-identities/template.hbs"
+                },
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                  var el0 = dom.createDocumentFragment();
+                  var el1 = dom.createTextNode("                    ");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createComment("");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createTextNode("\n");
+                  dom.appendChild(el0, el1);
+                  return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                  var morphs = new Array(1);
+                  morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+                  return morphs;
+                },
+                statements: [["inline", "t", ["generic.identities.copy_identity"], [], ["loc", [null, [122, 20], [122, 60]]]]],
+                locals: [],
+                templates: []
+              };
+            })();
+            return {
+              meta: {
+                "revision": "Ember@1.13.13",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 114,
+                    "column": 16
+                  },
+                  "end": {
+                    "line": 124,
+                    "column": 16
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-identities/template.hbs"
+              },
+              arity: 1,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var morphs = new Array(3);
+                morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+                morphs[1] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+                morphs[2] = dom.createMorphAt(fragment, 2, 2, contextualElement);
+                dom.insertBoundary(fragment, 0);
+                dom.insertBoundary(fragment, null);
+                return morphs;
+              },
+              statements: [["block", "if", [["get", "facebookIdentity.canBeRemoved", ["loc", [null, [115, 24], [115, 53]]]]], [], 0, null, ["loc", [null, [115, 18], [117, 25]]]], ["block", "if", [["get", "facebookIdentity.canBePrimarized", ["loc", [null, [118, 24], [118, 56]]]]], [], 1, null, ["loc", [null, [118, 18], [120, 25]]]], ["block", "copy-button", [], ["tagName", "li", "class", "identities-dropdown_item", "clipboardText", ["subexpr", "@mut", [["get", "facebookIdentity.userName", ["loc", [null, [121, 93], [121, 118]]]]], [], []], "success", ["subexpr", "@mut", [["get", "dropdown.actions.close", ["loc", [null, [121, 127], [121, 149]]]]], [], []]], 2, null, ["loc", [null, [121, 18], [123, 34]]]]],
+              locals: ["dropdown"],
+              templates: [child0, child1, child2]
+            };
+          })();
+          var child1 = (function () {
+            return {
+              meta: {
+                "revision": "Ember@1.13.13",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 124,
+                    "column": 16
+                  },
+                  "end": {
+                    "line": 131,
+                    "column": 16
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-identities/template.hbs"
+              },
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createTextNode("                  ");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createElement("div");
+                dom.setAttribute(el1, "class", "ko-dropdown_list__item-wrapper");
+                var el2 = dom.createTextNode("\n                    ");
+                dom.appendChild(el1, el2);
+                var el2 = dom.createElement("div");
+                dom.setAttribute(el2, "class", "ko-identities__list-item");
+                var el3 = dom.createTextNode("\n                      ");
+                dom.appendChild(el2, el3);
+                var el3 = dom.createComment("");
+                dom.appendChild(el2, el3);
+                var el3 = dom.createTextNode(" ");
+                dom.appendChild(el2, el3);
+                var el3 = dom.createComment("");
+                dom.appendChild(el2, el3);
+                var el3 = dom.createTextNode("\n                    ");
+                dom.appendChild(el2, el3);
+                dom.appendChild(el1, el2);
+                var el2 = dom.createTextNode("\n                    ");
+                dom.appendChild(el1, el2);
+                var el2 = dom.createElement("div");
+                dom.setAttribute(el2, "class", "ko-dropdown__item-chevron i-chevron-large-down");
+                dom.appendChild(el1, el2);
+                var el2 = dom.createTextNode("\n                  ");
+                dom.appendChild(el1, el2);
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var element3 = dom.childAt(fragment, [1, 1]);
+                var morphs = new Array(3);
+                morphs[0] = dom.createAttrMorph(element3, 'title');
+                morphs[1] = dom.createMorphAt(element3, 1, 1);
+                morphs[2] = dom.createMorphAt(element3, 3, 3);
+                return morphs;
+              },
+              statements: [["attribute", "title", ["concat", [["get", "facebookIdentity.userName", ["loc", [null, [126, 67], [126, 92]]]]]]], ["content", "facebookIdentity.userName", ["loc", [null, [127, 22], [127, 51]]]], ["inline", "if", [["get", "facebookIdentity.isPrimary", ["loc", [null, [127, 57], [127, 83]]]], ["subexpr", "t", ["generic.identities.primary_comment"], [], ["loc", [null, [127, 84], [127, 124]]]]], [], ["loc", [null, [127, 52], [127, 126]]]]],
+              locals: [],
+              templates: []
+            };
+          })();
+          return {
+            meta: {
+              "revision": "Ember@1.13.13",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 113,
+                  "column": 14
+                },
+                "end": {
+                  "line": 132,
+                  "column": 14
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-identities/template.hbs"
+            },
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(1);
+              morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+              dom.insertBoundary(fragment, 0);
+              dom.insertBoundary(fragment, null);
+              return morphs;
+            },
+            statements: [["block", "basic-dropdown", [], ["renderInPlace", true, "class", "ko-dropdown-container"], 0, 1, ["loc", [null, [114, 16], [131, 35]]]]],
+            locals: [],
+            templates: [child0, child1]
+          };
+        })();
+        var child1 = (function () {
+          return {
+            meta: {
+              "revision": "Ember@1.13.13",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 132,
+                  "column": 14
+                },
+                "end": {
+                  "line": 134,
+                  "column": 14
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-identities/template.hbs"
+            },
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode("                ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode(" ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(2);
+              morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+              morphs[1] = dom.createMorphAt(fragment, 3, 3, contextualElement);
+              return morphs;
+            },
+            statements: [["content", "facebookIdentity.userName", ["loc", [null, [133, 16], [133, 45]]]], ["inline", "t", ["generic.identities.primary_comment"], [], ["loc", [null, [133, 46], [133, 88]]]]],
+            locals: [],
+            templates: []
+          };
+        })();
+        return {
+          meta: {
+            "revision": "Ember@1.13.13",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 111,
+                "column": 10
+              },
+              "end": {
+                "line": 136,
+                "column": 10
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-identities/template.hbs"
+          },
+          arity: 1,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("            ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("li");
+            dom.setAttribute(el1, "class", "u-pb-");
+            var el2 = dom.createTextNode("\n");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createComment("");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createTextNode("            ");
+            dom.appendChild(el1, el2);
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
+            return morphs;
+          },
+          statements: [["block", "if", [["get", "facebookIdentity.canBeModified", ["loc", [null, [113, 20], [113, 50]]]]], [], 0, 1, ["loc", [null, [113, 14], [134, 21]]]]],
+          locals: ["facebookIdentity"],
+          templates: [child0, child1]
+        };
+      })();
+      return {
+        meta: {
+          "revision": "Ember@1.13.13",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 108,
+              "column": 6
+            },
+            "end": {
+              "line": 138,
+              "column": 6
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-identities/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("        ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("p");
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n        ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("ul");
+          dom.setAttribute(el1, "class", "ko-identities__list ko-identities__list--facebooks");
+          var el2 = dom.createTextNode("\n");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("        ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(2);
+          morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 0, 0);
+          morphs[1] = dom.createMorphAt(dom.childAt(fragment, [3]), 1, 1);
+          return morphs;
+        },
+        statements: [["inline", "t", ["generic.identities.facebook_identities_title"], [], ["loc", [null, [109, 11], [109, 63]]]], ["block", "each", [["get", "facebookIdentities", ["loc", [null, [111, 18], [111, 36]]]]], [], 0, null, ["loc", [null, [111, 10], [136, 19]]]]],
+        locals: [],
+        templates: [child0]
+      };
+    })();
+    var child4 = (function () {
+      var child0 = (function () {
+        return {
+          meta: {
+            "revision": "Ember@1.13.13",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 140,
+                "column": 8
+              },
+              "end": {
+                "line": 144,
+                "column": 8
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-identities/template.hbs"
+          },
+          arity: 1,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("          ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("li");
+            dom.setAttribute(el1, "class", "identities-dropdown_item");
+            var el2 = dom.createComment("");
+            dom.appendChild(el1, el2);
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n          ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("li");
+            dom.setAttribute(el1, "class", "identities-dropdown_item");
+            var el2 = dom.createComment("");
+            dom.appendChild(el1, el2);
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n          ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("li");
+            dom.setAttribute(el1, "class", "identities-dropdown_item");
+            var el2 = dom.createComment("");
+            dom.appendChild(el1, el2);
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var element0 = dom.childAt(fragment, [1]);
+            var element1 = dom.childAt(fragment, [3]);
+            var element2 = dom.childAt(fragment, [5]);
+            var morphs = new Array(6);
+            morphs[0] = dom.createAttrMorph(element0, 'onclick');
+            morphs[1] = dom.createMorphAt(element0, 0, 0);
+            morphs[2] = dom.createAttrMorph(element1, 'onclick');
+            morphs[3] = dom.createMorphAt(element1, 0, 0);
+            morphs[4] = dom.createAttrMorph(element2, 'onclick');
+            morphs[5] = dom.createMorphAt(element2, 0, 0);
+            return morphs;
+          },
+          statements: [["attribute", "onclick", ["subexpr", "action", ["addEmail", ["get", "dropdown", ["loc", [null, [141, 75], [141, 83]]]]], [], ["loc", [null, [141, 55], [141, 85]]]]], ["inline", "t", ["generic.identities.add_email_identity"], [], ["loc", [null, [141, 86], [141, 131]]]], ["attribute", "onclick", ["subexpr", "action", ["addPhone", ["get", "dropdown", ["loc", [null, [142, 75], [142, 83]]]]], [], ["loc", [null, [142, 55], [142, 85]]]]], ["inline", "t", ["generic.identities.add_phone_identity"], [], ["loc", [null, [142, 86], [142, 131]]]], ["attribute", "onclick", ["subexpr", "action", ["addTwitter", ["get", "dropdown", ["loc", [null, [143, 77], [143, 85]]]]], [], ["loc", [null, [143, 55], [143, 87]]]]], ["inline", "t", ["generic.identities.add_twitter_identity"], [], ["loc", [null, [143, 88], [143, 135]]]]],
+          locals: ["dropdown"],
+          templates: []
+        };
+      })();
+      var child1 = (function () {
+        return {
+          meta: {
+            "revision": "Ember@1.13.13",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 144,
+                "column": 8
+              },
+              "end": {
+                "line": 151,
+                "column": 8
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-identities/template.hbs"
+          },
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("          ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("div");
+            dom.setAttribute(el1, "class", "ko-dropdown_list__item-wrapper");
+            var el2 = dom.createTextNode("\n            ");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createElement("div");
+            dom.setAttribute(el2, "class", "ko-identities__list-item");
+            var el3 = dom.createTextNode("\n              ");
+            dom.appendChild(el2, el3);
+            var el3 = dom.createComment("");
+            dom.appendChild(el2, el3);
+            var el3 = dom.createTextNode("\n              ");
+            dom.appendChild(el2, el3);
+            var el3 = dom.createElement("div");
+            dom.setAttribute(el3, "class", "ko-dropdown__item-chevron i-chevron-large-down");
+            dom.appendChild(el2, el3);
+            var el3 = dom.createTextNode("\n            ");
+            dom.appendChild(el2, el3);
+            dom.appendChild(el1, el2);
+            var el2 = dom.createTextNode("\n          ");
+            dom.appendChild(el1, el2);
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1, 1]), 1, 1);
+            return morphs;
+          },
+          statements: [["inline", "t", ["generic.identities.add_new"], [], ["loc", [null, [147, 14], [147, 48]]]]],
+          locals: [],
+          templates: []
+        };
+      })();
+      return {
+        meta: {
+          "revision": "Ember@1.13.13",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 139,
+              "column": 6
+            },
+            "end": {
+              "line": 152,
+              "column": 6
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-identities/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [["block", "basic-dropdown", [], ["renderInPlace", true, "class", "ko-dropdown-container ko-identities__create-dropdown"], 0, 1, ["loc", [null, [140, 8], [151, 27]]]]],
+        locals: [],
+        templates: [child0, child1]
+      };
+    })();
+    var child5 = (function () {
+      return {
+        meta: {
+          "revision": "Ember@1.13.13",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 153,
+              "column": 2
+            },
+            "end": {
+              "line": 155,
+              "column": 2
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-identities/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("    ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+          return morphs;
+        },
+        statements: [["inline", "ko-identities/form", [], ["identity", ["subexpr", "@mut", [["get", "newIdentity", ["loc", [null, [154, 34], [154, 45]]]]], [], []], "save", ["subexpr", "action", ["saveIdentity"], [], ["loc", [null, [154, 51], [154, 74]]]], "cancel", ["subexpr", "action", ["removeNewIdentity"], [], ["loc", [null, [154, 82], [154, 110]]]]], ["loc", [null, [154, 4], [154, 112]]]]],
+        locals: [],
+        templates: []
+      };
+    })();
+    return {
+      meta: {
+        "revision": "Ember@1.13.13",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 157,
+            "column": 0
+          }
+        },
+        "moduleName": "frontend-cp/components/ko-identities/template.hbs"
+      },
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("li");
+        dom.setAttribute(el1, "class", "info-bar-item info-bar-item--no-hover");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2, "class", "info-bar__heading");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var element18 = dom.childAt(fragment, [0]);
+        var morphs = new Array(7);
+        morphs[0] = dom.createMorphAt(dom.childAt(element18, [1]), 1, 1);
+        morphs[1] = dom.createMorphAt(element18, 3, 3);
+        morphs[2] = dom.createMorphAt(element18, 4, 4);
+        morphs[3] = dom.createMorphAt(element18, 5, 5);
+        morphs[4] = dom.createMorphAt(element18, 6, 6);
+        morphs[5] = dom.createMorphAt(element18, 7, 7);
+        morphs[6] = dom.createMorphAt(element18, 8, 8);
+        return morphs;
+      },
+      statements: [["inline", "t", ["generic.identities.component_title"], [], ["loc", [null, [3, 4], [3, 46]]]], ["block", "if", [["get", "emailIdentities.length", ["loc", [null, [5, 12], [5, 34]]]]], [], 0, null, ["loc", [null, [5, 6], [46, 13]]]], ["block", "if", [["get", "twitterIdentities.length", ["loc", [null, [47, 12], [47, 36]]]]], [], 1, null, ["loc", [null, [47, 6], [76, 13]]]], ["block", "if", [["get", "phoneIdentities.length", ["loc", [null, [77, 12], [77, 34]]]]], [], 2, null, ["loc", [null, [77, 6], [107, 13]]]], ["block", "if", [["get", "facebookIdentities.length", ["loc", [null, [108, 12], [108, 37]]]]], [], 3, null, ["loc", [null, [108, 6], [138, 13]]]], ["block", "unless", [["get", "newIdentity", ["loc", [null, [139, 16], [139, 27]]]]], [], 4, null, ["loc", [null, [139, 6], [152, 17]]]], ["block", "if", [["get", "newIdentity", ["loc", [null, [153, 8], [153, 19]]]]], [], 5, null, ["loc", [null, [153, 2], [155, 9]]]]],
+      locals: [],
+      templates: [child0, child1, child2, child3, child4, child5]
+    };
+  })());
+});
 define('frontend-cp/components/ko-info-bar/component', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = _ember['default'].Component.extend({
     tagName: 'ul',
@@ -31669,12 +33621,12 @@ define("frontend-cp/components/ko-organisation-content/template", ["exports"], f
             "loc": {
               "source": null,
               "start": {
-                "line": 107,
-                "column": 10
+                "line": 108,
+                "column": 12
               },
               "end": {
-                "line": 109,
-                "column": 10
+                "line": 110,
+                "column": 12
               }
             },
             "moduleName": "frontend-cp/components/ko-organisation-content/template.hbs"
@@ -31684,7 +33636,7 @@ define("frontend-cp/components/ko-organisation-content/template", ["exports"], f
           hasRendered: false,
           buildFragment: function buildFragment(dom) {
             var el0 = dom.createDocumentFragment();
-            var el1 = dom.createTextNode("            ");
+            var el1 = dom.createTextNode("              ");
             dom.appendChild(el0, el1);
             var el1 = dom.createComment("");
             dom.appendChild(el0, el1);
@@ -31697,7 +33649,7 @@ define("frontend-cp/components/ko-organisation-content/template", ["exports"], f
             morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
             return morphs;
           },
-          statements: [["inline", "ko-loader", [], ["class", "ko-organisation-content__button-loading"], ["loc", [null, [108, 12], [108, 73]]]]],
+          statements: [["inline", "ko-loader", [], ["class", "ko-organisation-content__button-loading"], ["loc", [null, [109, 14], [109, 75]]]]],
           locals: [],
           templates: []
         };
@@ -31709,12 +33661,12 @@ define("frontend-cp/components/ko-organisation-content/template", ["exports"], f
             "loc": {
               "source": null,
               "start": {
-                "line": 109,
-                "column": 10
+                "line": 110,
+                "column": 12
               },
               "end": {
-                "line": 111,
-                "column": 10
+                "line": 112,
+                "column": 12
               }
             },
             "moduleName": "frontend-cp/components/ko-organisation-content/template.hbs"
@@ -31724,7 +33676,7 @@ define("frontend-cp/components/ko-organisation-content/template", ["exports"], f
           hasRendered: false,
           buildFragment: function buildFragment(dom) {
             var el0 = dom.createDocumentFragment();
-            var el1 = dom.createTextNode("            ");
+            var el1 = dom.createTextNode("              ");
             dom.appendChild(el0, el1);
             var el1 = dom.createComment("");
             dom.appendChild(el0, el1);
@@ -31737,7 +33689,7 @@ define("frontend-cp/components/ko-organisation-content/template", ["exports"], f
             morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
             return morphs;
           },
-          statements: [["inline", "t", ["cases.submit"], [], ["loc", [null, [110, 12], [110, 32]]]]],
+          statements: [["inline", "t", ["cases.submit"], [], ["loc", [null, [111, 14], [111, 34]]]]],
           locals: [],
           templates: []
         };
@@ -31751,12 +33703,12 @@ define("frontend-cp/components/ko-organisation-content/template", ["exports"], f
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 152,
-                    "column": 10
+                    "line": 153,
+                    "column": 12
                   },
                   "end": {
-                    "line": 164,
-                    "column": 10
+                    "line": 165,
+                    "column": 12
                   }
                 },
                 "moduleName": "frontend-cp/components/ko-organisation-content/template.hbs"
@@ -31766,7 +33718,7 @@ define("frontend-cp/components/ko-organisation-content/template", ["exports"], f
               hasRendered: false,
               buildFragment: function buildFragment(dom) {
                 var el0 = dom.createDocumentFragment();
-                var el1 = dom.createTextNode("            ");
+                var el1 = dom.createTextNode("              ");
                 dom.appendChild(el0, el1);
                 var el1 = dom.createComment("");
                 dom.appendChild(el0, el1);
@@ -31779,7 +33731,7 @@ define("frontend-cp/components/ko-organisation-content/template", ["exports"], f
                 morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
                 return morphs;
               },
-              statements: [["inline", "component", [["subexpr", "ko-helper", [["get", "customFieldsList.componentFor", ["loc", [null, [153, 35], [153, 64]]]], ["get", "field.fieldType", ["loc", [null, [153, 65], [153, 80]]]]], [], ["loc", [null, [153, 24], [153, 81]]]]], ["value", ["subexpr", "get", [["get", "customFieldValueHash", ["loc", [null, [154, 25], [154, 45]]]], ["get", "field.id", ["loc", [null, [154, 46], [154, 54]]]]], [], ["loc", [null, [154, 20], [154, 55]]]], "options", ["subexpr", "@mut", [["get", "field.options", ["loc", [null, [155, 22], [155, 35]]]]], [], []], "title", ["subexpr", "@mut", [["get", "field.title", ["loc", [null, [156, 20], [156, 31]]]]], [], []], "isErrored", ["subexpr", "get", [["get", "errorMap", ["loc", [null, [157, 29], [157, 37]]]], ["get", "field.key", ["loc", [null, [157, 38], [157, 47]]]]], [], ["loc", [null, [157, 24], [157, 48]]]], "isEdited", ["subexpr", "get", [["get", "editedCustomFields", ["loc", [null, [158, 28], [158, 46]]]], ["get", "field.id", ["loc", [null, [158, 47], [158, 55]]]]], [], ["loc", [null, [158, 23], [158, 56]]]], "hasEmptyOption", ["subexpr", "not", [["get", "field.isRequiredForAgents", ["loc", [null, [159, 34], [159, 59]]]]], [], ["loc", [null, [159, 29], [159, 60]]]], "onValueChange", ["subexpr", "action", ["fieldUpdated", ["get", "field", ["loc", [null, [160, 51], [160, 56]]]]], [], ["loc", [null, [160, 28], [160, 57]]]], "idPath", "id", "labelPath", "value"], ["loc", [null, [153, 12], [163, 14]]]]],
+              statements: [["inline", "component", [["subexpr", "ko-helper", [["get", "customFieldsList.componentFor", ["loc", [null, [154, 37], [154, 66]]]], ["get", "field.fieldType", ["loc", [null, [154, 67], [154, 82]]]]], [], ["loc", [null, [154, 26], [154, 83]]]]], ["value", ["subexpr", "get", [["get", "customFieldValueHash", ["loc", [null, [155, 27], [155, 47]]]], ["get", "field.id", ["loc", [null, [155, 48], [155, 56]]]]], [], ["loc", [null, [155, 22], [155, 57]]]], "options", ["subexpr", "@mut", [["get", "field.options", ["loc", [null, [156, 24], [156, 37]]]]], [], []], "title", ["subexpr", "@mut", [["get", "field.title", ["loc", [null, [157, 22], [157, 33]]]]], [], []], "isErrored", ["subexpr", "get", [["get", "errorMap", ["loc", [null, [158, 31], [158, 39]]]], ["get", "field.key", ["loc", [null, [158, 40], [158, 49]]]]], [], ["loc", [null, [158, 26], [158, 50]]]], "isEdited", ["subexpr", "get", [["get", "editedCustomFields", ["loc", [null, [159, 30], [159, 48]]]], ["get", "field.id", ["loc", [null, [159, 49], [159, 57]]]]], [], ["loc", [null, [159, 25], [159, 58]]]], "hasEmptyOption", ["subexpr", "not", [["get", "field.isRequiredForAgents", ["loc", [null, [160, 36], [160, 61]]]]], [], ["loc", [null, [160, 31], [160, 62]]]], "onValueChange", ["subexpr", "action", ["fieldUpdated", ["get", "field", ["loc", [null, [161, 53], [161, 58]]]]], [], ["loc", [null, [161, 30], [161, 59]]]], "idPath", "id", "labelPath", "value"], ["loc", [null, [154, 14], [164, 16]]]]],
               locals: [],
               templates: []
             };
@@ -31790,12 +33742,12 @@ define("frontend-cp/components/ko-organisation-content/template", ["exports"], f
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 151,
-                  "column": 8
+                  "line": 152,
+                  "column": 10
                 },
                 "end": {
-                  "line": 165,
-                  "column": 8
+                  "line": 166,
+                  "column": 10
                 }
               },
               "moduleName": "frontend-cp/components/ko-organisation-content/template.hbs"
@@ -31816,7 +33768,7 @@ define("frontend-cp/components/ko-organisation-content/template", ["exports"], f
               dom.insertBoundary(fragment, null);
               return morphs;
             },
-            statements: [["block", "if", [["get", "field.isEnabled", ["loc", [null, [152, 16], [152, 31]]]]], [], 0, null, ["loc", [null, [152, 10], [164, 17]]]]],
+            statements: [["block", "if", [["get", "field.isEnabled", ["loc", [null, [153, 18], [153, 33]]]]], [], 0, null, ["loc", [null, [153, 12], [165, 19]]]]],
             locals: [],
             templates: [child0]
           };
@@ -31827,12 +33779,12 @@ define("frontend-cp/components/ko-organisation-content/template", ["exports"], f
             "loc": {
               "source": null,
               "start": {
-                "line": 150,
-                "column": 6
+                "line": 151,
+                "column": 8
               },
               "end": {
-                "line": 166,
-                "column": 6
+                "line": 167,
+                "column": 8
               }
             },
             "moduleName": "frontend-cp/components/ko-organisation-content/template.hbs"
@@ -31853,7 +33805,7 @@ define("frontend-cp/components/ko-organisation-content/template", ["exports"], f
             dom.insertBoundary(fragment, null);
             return morphs;
           },
-          statements: [["block", "if", [["subexpr", "ko-helper", [["get", "customFieldsList.componentFor", ["loc", [null, [151, 25], [151, 54]]]], ["get", "field.fieldType", ["loc", [null, [151, 55], [151, 70]]]]], [], ["loc", [null, [151, 14], [151, 71]]]]], [], 0, null, ["loc", [null, [151, 8], [165, 15]]]]],
+          statements: [["block", "if", [["subexpr", "ko-helper", [["get", "customFieldsList.componentFor", ["loc", [null, [152, 27], [152, 56]]]], ["get", "field.fieldType", ["loc", [null, [152, 57], [152, 72]]]]], [], ["loc", [null, [152, 16], [152, 73]]]]], [], 0, null, ["loc", [null, [152, 10], [166, 17]]]]],
           locals: ["field"],
           templates: [child0]
         };
@@ -31864,12 +33816,12 @@ define("frontend-cp/components/ko-organisation-content/template", ["exports"], f
           "loc": {
             "source": null,
             "start": {
-              "line": 104,
-              "column": 4
+              "line": 105,
+              "column": 6
             },
             "end": {
-              "line": 169,
-              "column": 4
+              "line": 170,
+              "column": 6
             }
           },
           "moduleName": "frontend-cp/components/ko-organisation-content/template.hbs"
@@ -31879,11 +33831,11 @@ define("frontend-cp/components/ko-organisation-content/template", ["exports"], f
         hasRendered: false,
         buildFragment: function buildFragment(dom) {
           var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("      ");
+          var el1 = dom.createTextNode("        ");
           dom.appendChild(el0, el1);
           var el1 = dom.createElement("li");
           dom.setAttribute(el1, "class", "info-bar-item");
-          var el2 = dom.createTextNode("\n        ");
+          var el2 = dom.createTextNode("\n          ");
           dom.appendChild(el1, el2);
           var el2 = dom.createElement("button");
           dom.setAttribute(el2, "type", "button");
@@ -31891,21 +33843,21 @@ define("frontend-cp/components/ko-organisation-content/template", ["exports"], f
           dom.appendChild(el2, el3);
           var el3 = dom.createComment("");
           dom.appendChild(el2, el3);
-          var el3 = dom.createTextNode("        ");
+          var el3 = dom.createTextNode("          ");
           dom.appendChild(el2, el3);
           dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n      ");
+          var el2 = dom.createTextNode("\n        ");
           dom.appendChild(el1, el2);
           dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n\n      ");
+          var el1 = dom.createTextNode("\n\n        ");
           dom.appendChild(el0, el1);
           var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n\n      ");
+          var el1 = dom.createTextNode("\n\n        ");
           dom.appendChild(el0, el1);
           var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n\n      ");
+          var el1 = dom.createTextNode("\n\n        ");
           dom.appendChild(el0, el1);
           var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
@@ -31913,7 +33865,7 @@ define("frontend-cp/components/ko-organisation-content/template", ["exports"], f
           dom.appendChild(el0, el1);
           var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n      ");
+          var el1 = dom.createTextNode("\n        ");
           dom.appendChild(el0, el1);
           var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
@@ -31934,7 +33886,7 @@ define("frontend-cp/components/ko-organisation-content/template", ["exports"], f
           morphs[7] = dom.createMorphAt(fragment, 11, 11, contextualElement);
           return morphs;
         },
-        statements: [["attribute", "class", ["concat", ["button button--primary u-1/1 ", ["subexpr", "if", [["get", "submitDisabled", ["loc", [null, [106, 71], [106, 85]]]], "disabled"], [], ["loc", [null, [106, 66], [106, 98]]]]]]], ["attribute", "onclick", ["subexpr", "action", ["submit"], [], ["loc", [null, [106, 108], [106, 127]]]]], ["block", "if", [["get", "isSaving", ["loc", [null, [107, 16], [107, 24]]]]], [], 0, 1, ["loc", [null, [107, 10], [111, 17]]]], ["inline", "ko-info-bar/field/tags", [], ["title", ["subexpr", "t", ["users.tags"], [], ["loc", [null, [116, 14], [116, 30]]]], "isEdited", ["subexpr", "@mut", [["get", "isTagsFieldEdited", ["loc", [null, [117, 17], [117, 34]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "errorMap.tags", ["loc", [null, [118, 18], [118, 31]]]]], [], []], "selectedTags", ["subexpr", "@mut", [["get", "model.tags", ["loc", [null, [119, 21], [119, 31]]]]], [], []], "suggestedTags", ["subexpr", "@mut", [["get", "suggestedTags", ["loc", [null, [120, 22], [120, 35]]]]], [], []], "newTagText", ["subexpr", "t", ["users.newtag"], [], ["loc", [null, [121, 19], [121, 37]]]], "addTagText", ["subexpr", "t", ["users.addtag"], [], ["loc", [null, [122, 19], [122, 37]]]], "onTagAddition", ["subexpr", "action", ["addTag"], [], ["loc", [null, [123, 22], [123, 39]]]], "onTagRemoval", ["subexpr", "action", ["removeTag"], [], ["loc", [null, [124, 21], [124, 41]]]], "onTagSuggestion", ["subexpr", "action", ["suggestTags"], [], ["loc", [null, [125, 24], [125, 46]]]]], ["loc", [null, [115, 6], [126, 8]]]], ["inline", "ko-info-bar/field/tags", [], ["title", ["subexpr", "t", ["organisation.domains"], [], ["loc", [null, [129, 14], [129, 40]]]], "isEdited", ["subexpr", "@mut", [["get", "isDomainEdited", ["loc", [null, [130, 17], [130, 31]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "errorMap.domains", ["loc", [null, [131, 18], [131, 34]]]]], [], []], "errorTags", ["subexpr", "@mut", [["get", "erroredDomains", ["loc", [null, [132, 18], [132, 32]]]]], [], []], "selectedTags", ["subexpr", "@mut", [["get", "model.domains", ["loc", [null, [133, 21], [133, 34]]]]], [], []], "onTagAddition", ["subexpr", "action", ["addDomain"], [], ["loc", [null, [134, 22], [134, 42]]]], "onTagRemoval", ["subexpr", "action", ["removeDomain"], [], ["loc", [null, [135, 21], [135, 44]]]]], ["loc", [null, [128, 6], [136, 8]]]], ["inline", "ko-info-bar/field/select", [], ["title", ["subexpr", "t", ["organisation.infobar.accesslevel"], [], ["loc", [null, [139, 14], [139, 52]]]], "options", ["subexpr", "@mut", [["get", "caseAccessList", ["loc", [null, [140, 16], [140, 30]]]]], [], []], "value", ["subexpr", "@mut", [["get", "model.isShared", ["loc", [null, [141, 14], [141, 28]]]]], [], []], "onValueChange", ["subexpr", "action", ["casesSharedStateSelect"], [], ["loc", [null, [142, 22], [142, 55]]]], "hasEmptyOption", false, "renderInPlace", true, "searchEnabled", false, "idPath", "value", "labelPath", "name"], ["loc", [null, [138, 6], [148, 8]]]], ["block", "each", [["get", "customFields", ["loc", [null, [150, 14], [150, 26]]]]], [], 2, null, ["loc", [null, [150, 6], [166, 15]]]], ["inline", "ko-info-bar/metadata", [], ["rows", ["subexpr", "@mut", [["get", "organisationDates", ["loc", [null, [168, 34], [168, 51]]]]], [], []]], ["loc", [null, [168, 6], [168, 53]]]]],
+        statements: [["attribute", "class", ["concat", ["button button--primary u-1/1 ", ["subexpr", "if", [["get", "submitDisabled", ["loc", [null, [107, 73], [107, 87]]]], "disabled"], [], ["loc", [null, [107, 68], [107, 100]]]]]]], ["attribute", "onclick", ["subexpr", "action", ["submit"], [], ["loc", [null, [107, 110], [107, 129]]]]], ["block", "if", [["get", "isSaving", ["loc", [null, [108, 18], [108, 26]]]]], [], 0, 1, ["loc", [null, [108, 12], [112, 19]]]], ["inline", "ko-info-bar/field/tags", [], ["title", ["subexpr", "t", ["users.tags"], [], ["loc", [null, [117, 16], [117, 32]]]], "isEdited", ["subexpr", "@mut", [["get", "isTagsFieldEdited", ["loc", [null, [118, 19], [118, 36]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "errorMap.tags", ["loc", [null, [119, 20], [119, 33]]]]], [], []], "selectedTags", ["subexpr", "@mut", [["get", "model.tags", ["loc", [null, [120, 23], [120, 33]]]]], [], []], "suggestedTags", ["subexpr", "@mut", [["get", "suggestedTags", ["loc", [null, [121, 24], [121, 37]]]]], [], []], "newTagText", ["subexpr", "t", ["users.newtag"], [], ["loc", [null, [122, 21], [122, 39]]]], "addTagText", ["subexpr", "t", ["users.addtag"], [], ["loc", [null, [123, 21], [123, 39]]]], "onTagAddition", ["subexpr", "action", ["addTag"], [], ["loc", [null, [124, 24], [124, 41]]]], "onTagRemoval", ["subexpr", "action", ["removeTag"], [], ["loc", [null, [125, 23], [125, 43]]]], "onTagSuggestion", ["subexpr", "action", ["suggestTags"], [], ["loc", [null, [126, 26], [126, 48]]]]], ["loc", [null, [116, 8], [127, 10]]]], ["inline", "ko-info-bar/field/tags", [], ["title", ["subexpr", "t", ["organisation.domains"], [], ["loc", [null, [130, 16], [130, 42]]]], "isEdited", ["subexpr", "@mut", [["get", "isDomainEdited", ["loc", [null, [131, 19], [131, 33]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "errorMap.domains", ["loc", [null, [132, 20], [132, 36]]]]], [], []], "errorTags", ["subexpr", "@mut", [["get", "erroredDomains", ["loc", [null, [133, 20], [133, 34]]]]], [], []], "selectedTags", ["subexpr", "@mut", [["get", "model.domains", ["loc", [null, [134, 23], [134, 36]]]]], [], []], "onTagAddition", ["subexpr", "action", ["addDomain"], [], ["loc", [null, [135, 24], [135, 44]]]], "onTagRemoval", ["subexpr", "action", ["removeDomain"], [], ["loc", [null, [136, 23], [136, 46]]]]], ["loc", [null, [129, 8], [137, 10]]]], ["inline", "ko-info-bar/field/select", [], ["title", ["subexpr", "t", ["organisation.infobar.accesslevel"], [], ["loc", [null, [140, 16], [140, 54]]]], "options", ["subexpr", "@mut", [["get", "caseAccessList", ["loc", [null, [141, 18], [141, 32]]]]], [], []], "value", ["subexpr", "@mut", [["get", "model.isShared", ["loc", [null, [142, 16], [142, 30]]]]], [], []], "onValueChange", ["subexpr", "action", ["casesSharedStateSelect"], [], ["loc", [null, [143, 24], [143, 57]]]], "hasEmptyOption", false, "renderInPlace", true, "searchEnabled", false, "idPath", "value", "labelPath", "name"], ["loc", [null, [139, 8], [149, 10]]]], ["block", "each", [["get", "customFields", ["loc", [null, [151, 16], [151, 28]]]]], [], 2, null, ["loc", [null, [151, 8], [167, 17]]]], ["inline", "ko-info-bar/metadata", [], ["rows", ["subexpr", "@mut", [["get", "organisationDates", ["loc", [null, [169, 36], [169, 53]]]]], [], []]], ["loc", [null, [169, 8], [169, 55]]]]],
         locals: [],
         templates: [child0, child1, child2]
       };
@@ -31949,7 +33901,7 @@ define("frontend-cp/components/ko-organisation-content/template", ["exports"], f
             "column": 0
           },
           "end": {
-            "line": 172,
+            "line": 174,
             "column": 0
           }
         },
@@ -32051,11 +34003,11 @@ define("frontend-cp/components/ko-organisation-content/template", ["exports"], f
         var el2 = dom.createTextNode("\n\n  ");
         dom.appendChild(el1, el2);
         var el2 = dom.createElement("div");
-        dom.setAttribute(el2, "class", "ko-organisation-content__main u-mt");
+        dom.setAttribute(el2, "class", "ko-organization-content__main u-mt");
         var el3 = dom.createTextNode("\n    ");
         dom.appendChild(el2, el3);
         var el3 = dom.createElement("div");
-        dom.setAttribute(el3, "class", "ko-organisation-content__main__content");
+        dom.setAttribute(el3, "class", "ko-organization-content__main__content");
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
         var el4 = dom.createElement("div");
@@ -32085,11 +34037,18 @@ define("frontend-cp/components/ko-organisation-content/template", ["exports"], f
         var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
         dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n");
+        var el3 = dom.createTextNode("\n    ");
         dom.appendChild(el2, el3);
-        var el3 = dom.createComment("");
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3, "class", "ko-organization-content__main__sidebar");
+        var el4 = dom.createTextNode("\n");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("    ");
+        dom.appendChild(el3, el4);
         dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("  ");
+        var el3 = dom.createTextNode("\n  ");
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n");
@@ -32114,10 +34073,10 @@ define("frontend-cp/components/ko-organisation-content/template", ["exports"], f
         morphs[3] = dom.createMorphAt(element8, 1, 1);
         morphs[4] = dom.createMorphAt(element9, 1, 1);
         morphs[5] = dom.createMorphAt(element9, 3, 3);
-        morphs[6] = dom.createMorphAt(element7, 3, 3);
+        morphs[6] = dom.createMorphAt(dom.childAt(element7, [3]), 1, 1);
         return morphs;
       },
-      statements: [["attribute", "src", ["concat", [["get", "organizationIconPath", ["loc", [null, [6, 22], [6, 42]]]]]]], ["inline", "ko-editable-text", [], ["value", ["subexpr", "@mut", [["get", "model.name", ["loc", [null, [11, 22], [11, 32]]]]], [], []], "isEdited", ["subexpr", "@mut", [["get", "isNameEdited", ["loc", [null, [12, 25], [12, 37]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "errorMap.name", ["loc", [null, [13, 26], [13, 39]]]]], [], []], "onValueChange", "setName", "placeholder", ["subexpr", "t", ["organisation.new_organisation_placeholder"], [], ["loc", [null, [15, 28], [15, 75]]]]], ["loc", [null, [10, 12], [16, 14]]]], ["inline", "ko-organisation-action-menu", [], ["permissions", ["subexpr", "@mut", [["get", "sessionService.permissions", ["loc", [null, [28, 23], [28, 49]]]]], [], []], "canDelete", ["subexpr", "@mut", [["get", "canDelete", ["loc", [null, [29, 21], [29, 30]]]]], [], []], "organisation", ["subexpr", "@mut", [["get", "model", ["loc", [null, [30, 24], [30, 29]]]]], [], []], "closeTab", ["subexpr", "@mut", [["get", "closeTab", ["loc", [null, [31, 20], [31, 28]]]]], [], []]], ["loc", [null, [27, 9], [32, 11]]]], ["block", "if", [["get", "features.organizationNote", ["loc", [null, [41, 14], [41, 39]]]]], [], 0, null, ["loc", [null, [41, 8], [84, 15]]]], ["block", "each", [["get", "notes", ["loc", [null, [87, 18], [87, 23]]]]], [], 1, null, ["loc", [null, [87, 10], [95, 19]]]], ["block", "if", [["subexpr", "gt", [["get", "totalNotes", ["loc", [null, [97, 20], [97, 30]]]], 20], [], ["loc", [null, [97, 16], [97, 34]]]]], [], 2, null, ["loc", [null, [97, 10], [100, 17]]]], ["block", "ko-info-bar", [], [], 3, null, ["loc", [null, [104, 4], [169, 20]]]]],
+      statements: [["attribute", "src", ["concat", [["get", "organizationIconPath", ["loc", [null, [6, 22], [6, 42]]]]]]], ["inline", "ko-editable-text", [], ["value", ["subexpr", "@mut", [["get", "model.name", ["loc", [null, [11, 22], [11, 32]]]]], [], []], "isEdited", ["subexpr", "@mut", [["get", "isNameEdited", ["loc", [null, [12, 25], [12, 37]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "errorMap.name", ["loc", [null, [13, 26], [13, 39]]]]], [], []], "onValueChange", "setName", "placeholder", ["subexpr", "t", ["organisation.new_organisation_placeholder"], [], ["loc", [null, [15, 28], [15, 75]]]]], ["loc", [null, [10, 12], [16, 14]]]], ["inline", "ko-organisation-action-menu", [], ["permissions", ["subexpr", "@mut", [["get", "sessionService.permissions", ["loc", [null, [28, 23], [28, 49]]]]], [], []], "canDelete", ["subexpr", "@mut", [["get", "canDelete", ["loc", [null, [29, 21], [29, 30]]]]], [], []], "organisation", ["subexpr", "@mut", [["get", "model", ["loc", [null, [30, 24], [30, 29]]]]], [], []], "closeTab", ["subexpr", "@mut", [["get", "closeTab", ["loc", [null, [31, 20], [31, 28]]]]], [], []]], ["loc", [null, [27, 9], [32, 11]]]], ["block", "if", [["get", "features.organizationNote", ["loc", [null, [41, 14], [41, 39]]]]], [], 0, null, ["loc", [null, [41, 8], [84, 15]]]], ["block", "each", [["get", "notes", ["loc", [null, [87, 18], [87, 23]]]]], [], 1, null, ["loc", [null, [87, 10], [95, 19]]]], ["block", "if", [["subexpr", "gt", [["get", "totalNotes", ["loc", [null, [97, 20], [97, 30]]]], 20], [], ["loc", [null, [97, 16], [97, 34]]]]], [], 2, null, ["loc", [null, [97, 10], [100, 17]]]], ["block", "ko-info-bar", [], [], 3, null, ["loc", [null, [105, 6], [170, 22]]]]],
       locals: [],
       templates: [child0, child1, child2, child3]
     };
@@ -35516,7 +37475,7 @@ define("frontend-cp/components/ko-sidebar/template", ["exports"], function (expo
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["inline", "ko-sidebar/item", [], ["casesView", ["subexpr", "@mut", [["get", "inboxView", ["loc", [null, [1, 28], [1, 37]]]]], [], []], "icon", "i-inbox"], ["loc", [null, [1, 0], [1, 54]]]], ["block", "if", [["get", "customViews.length", ["loc", [null, [3, 6], [3, 24]]]]], [], 0, null, ["loc", [null, [3, 0], [9, 7]]]], ["block", "link-to", ["session.agent.cases.index.suspended-messages"], ["class", "sidebar__link t-naked-link"], 1, null, ["loc", [null, [13, 0], [15, 12]]]], ["block", "if", [["get", "trashView", ["loc", [null, [17, 6], [17, 15]]]]], [], 2, null, ["loc", [null, [17, 0], [19, 7]]]]],
+      statements: [["inline", "ko-sidebar/item", [], ["casesView", ["subexpr", "@mut", [["get", "inboxView", ["loc", [null, [1, 28], [1, 37]]]]], [], []], "icon", "i-inbox", "class", "sidebar__first-item"], ["loc", [null, [1, 0], [1, 82]]]], ["block", "if", [["get", "customViews.length", ["loc", [null, [3, 6], [3, 24]]]]], [], 0, null, ["loc", [null, [3, 0], [9, 7]]]], ["block", "link-to", ["session.agent.cases.index.suspended-messages"], ["class", "sidebar__link t-naked-link"], 1, null, ["loc", [null, [13, 0], [15, 12]]]], ["block", "if", [["get", "trashView", ["loc", [null, [17, 6], [17, 15]]]]], [], 2, null, ["loc", [null, [17, 0], [19, 7]]]]],
       locals: [],
       templates: [child0, child1, child2]
     };
@@ -41467,11 +43426,11 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 121,
+                "line": 122,
                 "column": 12
               },
               "end": {
-                "line": 123,
+                "line": 124,
                 "column": 12
               }
             },
@@ -41495,7 +43454,7 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
             morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
             return morphs;
           },
-          statements: [["inline", "ko-loader", [], ["class", "ko-user-content__button-loading"], ["loc", [null, [122, 14], [122, 67]]]]],
+          statements: [["inline", "ko-loader", [], ["class", "ko-user-content__button-loading"], ["loc", [null, [123, 14], [123, 67]]]]],
           locals: [],
           templates: []
         };
@@ -41507,11 +43466,11 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 123,
+                "line": 124,
                 "column": 12
               },
               "end": {
-                "line": 125,
+                "line": 126,
                 "column": 12
               }
             },
@@ -41535,7 +43494,7 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
             morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
             return morphs;
           },
-          statements: [["inline", "t", ["cases.submit"], [], ["loc", [null, [124, 14], [124, 34]]]]],
+          statements: [["inline", "t", ["cases.submit"], [], ["loc", [null, [125, 14], [125, 34]]]]],
           locals: [],
           templates: []
         };
@@ -41547,11 +43506,11 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 141,
+                "line": 142,
                 "column": 8
               },
               "end": {
-                "line": 153,
+                "line": 154,
                 "column": 8
               }
             },
@@ -41575,7 +43534,7 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
             morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
             return morphs;
           },
-          statements: [["inline", "ko-info-bar/field/select", [], ["title", ["subexpr", "t", ["users.infobar.accesslevel"], [], ["loc", [null, [143, 18], [143, 49]]]], "options", ["subexpr", "@mut", [["get", "agentAccessLevels", ["loc", [null, [144, 20], [144, 37]]]]], [], []], "isEdited", ["subexpr", "@mut", [["get", "isAccessLevelEdited", ["loc", [null, [145, 21], [145, 40]]]]], [], []], "value", ["subexpr", "@mut", [["get", "model.agentCaseAccess", ["loc", [null, [146, 18], [146, 39]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "errorMap.agent_case_access", ["loc", [null, [147, 22], [147, 48]]]]], [], []], "onValueChange", ["subexpr", "action", ["agentLevelSelect"], [], ["loc", [null, [148, 26], [148, 53]]]], "hasEmptyOption", false, "idPath", "value", "labelPath", "name"], ["loc", [null, [142, 10], [152, 12]]]]],
+          statements: [["inline", "ko-info-bar/field/select", [], ["title", ["subexpr", "t", ["users.infobar.accesslevel"], [], ["loc", [null, [144, 18], [144, 49]]]], "options", ["subexpr", "@mut", [["get", "agentAccessLevels", ["loc", [null, [145, 20], [145, 37]]]]], [], []], "isEdited", ["subexpr", "@mut", [["get", "isAccessLevelEdited", ["loc", [null, [146, 21], [146, 40]]]]], [], []], "value", ["subexpr", "@mut", [["get", "model.agentCaseAccess", ["loc", [null, [147, 18], [147, 39]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "errorMap.agent_case_access", ["loc", [null, [148, 22], [148, 48]]]]], [], []], "onValueChange", ["subexpr", "action", ["agentLevelSelect"], [], ["loc", [null, [149, 26], [149, 53]]]], "hasEmptyOption", false, "idPath", "value", "labelPath", "name"], ["loc", [null, [143, 10], [153, 12]]]]],
           locals: [],
           templates: []
         };
@@ -41587,11 +43546,11 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 155,
+                "line": 156,
                 "column": 8
               },
               "end": {
-                "line": 167,
+                "line": 168,
                 "column": 8
               }
             },
@@ -41615,7 +43574,7 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
             morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
             return morphs;
           },
-          statements: [["inline", "ko-info-bar/field/select", [], ["title", ["subexpr", "t", ["users.infobar.accesslevel"], [], ["loc", [null, [157, 18], [157, 49]]]], "options", ["subexpr", "@mut", [["get", "organizationAccessLevels", ["loc", [null, [158, 20], [158, 44]]]]], [], []], "isEdited", ["subexpr", "@mut", [["get", "isAccessLevelEdited", ["loc", [null, [159, 21], [159, 40]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "errorMap.organization_case_access", ["loc", [null, [160, 22], [160, 55]]]]], [], []], "value", ["subexpr", "@mut", [["get", "model.organizationCaseAccess", ["loc", [null, [161, 18], [161, 46]]]]], [], []], "onValueChange", ["subexpr", "action", ["organizationLevelSelect"], [], ["loc", [null, [162, 26], [162, 60]]]], "hasEmptyOption", false, "idPath", "value", "labelPath", "name"], ["loc", [null, [156, 10], [166, 12]]]]],
+          statements: [["inline", "ko-info-bar/field/select", [], ["title", ["subexpr", "t", ["users.infobar.accesslevel"], [], ["loc", [null, [158, 18], [158, 49]]]], "options", ["subexpr", "@mut", [["get", "organizationAccessLevels", ["loc", [null, [159, 20], [159, 44]]]]], [], []], "isEdited", ["subexpr", "@mut", [["get", "isAccessLevelEdited", ["loc", [null, [160, 21], [160, 40]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "errorMap.organization_case_access", ["loc", [null, [161, 22], [161, 55]]]]], [], []], "value", ["subexpr", "@mut", [["get", "model.organizationCaseAccess", ["loc", [null, [162, 18], [162, 46]]]]], [], []], "onValueChange", ["subexpr", "action", ["organizationLevelSelect"], [], ["loc", [null, [163, 26], [163, 60]]]], "hasEmptyOption", false, "idPath", "value", "labelPath", "name"], ["loc", [null, [157, 10], [167, 12]]]]],
           locals: [],
           templates: []
         };
@@ -41627,11 +43586,11 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 189,
+                "line": 190,
                 "column": 8
               },
               "end": {
-                "line": 204,
+                "line": 205,
                 "column": 8
               }
             },
@@ -41655,7 +43614,7 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
             morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
             return morphs;
           },
-          statements: [["inline", "ko-info-bar/field/tags", [], ["title", ["subexpr", "t", ["users.teams"], [], ["loc", [null, [191, 18], [191, 35]]]], "isEdited", ["subexpr", "@mut", [["get", "isTeamsFieldEdited", ["loc", [null, [192, 21], [192, 39]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "errorMap.team_ids", ["loc", [null, [193, 22], [193, 39]]]]], [], []], "isDisabled", ["subexpr", "not", [["get", "canChangeUserTeamPermission", ["loc", [null, [194, 28], [194, 55]]]]], [], ["loc", [null, [194, 23], [194, 56]]]], "selectedTags", ["subexpr", "@mut", [["get", "model.teams", ["loc", [null, [195, 25], [195, 36]]]]], [], []], "suggestedTags", ["subexpr", "@mut", [["get", "suggestedTeams", ["loc", [null, [196, 26], [196, 40]]]]], [], []], "newTagText", ["subexpr", "t", ["users.newteam"], [], ["loc", [null, [197, 23], [197, 42]]]], "addTagText", ["subexpr", "t", ["users.addteam"], [], ["loc", [null, [198, 23], [198, 42]]]], "forceLowerCase", false, "onTagAddition", ["subexpr", "action", ["addTeam"], [], ["loc", [null, [200, 26], [200, 44]]]], "onTagRemoval", ["subexpr", "action", ["removeTeam"], [], ["loc", [null, [201, 25], [201, 46]]]], "onTagSuggestion", ["subexpr", "action", ["suggestTeams"], [], ["loc", [null, [202, 28], [202, 51]]]]], ["loc", [null, [190, 10], [203, 12]]]]],
+          statements: [["inline", "ko-info-bar/field/tags", [], ["title", ["subexpr", "t", ["users.teams"], [], ["loc", [null, [192, 18], [192, 35]]]], "isEdited", ["subexpr", "@mut", [["get", "isTeamsFieldEdited", ["loc", [null, [193, 21], [193, 39]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "errorMap.team_ids", ["loc", [null, [194, 22], [194, 39]]]]], [], []], "isDisabled", ["subexpr", "not", [["get", "canChangeUserTeamPermission", ["loc", [null, [195, 28], [195, 55]]]]], [], ["loc", [null, [195, 23], [195, 56]]]], "selectedTags", ["subexpr", "@mut", [["get", "model.teams", ["loc", [null, [196, 25], [196, 36]]]]], [], []], "suggestedTags", ["subexpr", "@mut", [["get", "suggestedTeams", ["loc", [null, [197, 26], [197, 40]]]]], [], []], "newTagText", ["subexpr", "t", ["users.newteam"], [], ["loc", [null, [198, 23], [198, 42]]]], "addTagText", ["subexpr", "t", ["users.addteam"], [], ["loc", [null, [199, 23], [199, 42]]]], "forceLowerCase", false, "onTagAddition", ["subexpr", "action", ["addTeam"], [], ["loc", [null, [201, 26], [201, 44]]]], "onTagRemoval", ["subexpr", "action", ["removeTeam"], [], ["loc", [null, [202, 25], [202, 46]]]], "onTagSuggestion", ["subexpr", "action", ["suggestTeams"], [], ["loc", [null, [203, 28], [203, 51]]]]], ["loc", [null, [191, 10], [204, 12]]]]],
           locals: [],
           templates: []
         };
@@ -41669,11 +43628,11 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 220,
+                    "line": 221,
                     "column": 12
                   },
                   "end": {
-                    "line": 232,
+                    "line": 233,
                     "column": 12
                   }
                 },
@@ -41697,7 +43656,7 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
                 morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
                 return morphs;
               },
-              statements: [["inline", "component", [["subexpr", "ko-helper", [["get", "customFieldsList.componentFor", ["loc", [null, [221, 37], [221, 66]]]], ["get", "field.fieldType", ["loc", [null, [221, 67], [221, 82]]]]], [], ["loc", [null, [221, 26], [221, 83]]]]], ["value", ["subexpr", "get", [["get", "customFieldValueHash", ["loc", [null, [222, 27], [222, 47]]]], ["get", "field.id", ["loc", [null, [222, 48], [222, 56]]]]], [], ["loc", [null, [222, 22], [222, 57]]]], "options", ["subexpr", "@mut", [["get", "field.options", ["loc", [null, [223, 24], [223, 37]]]]], [], []], "title", ["subexpr", "@mut", [["get", "field.title", ["loc", [null, [224, 22], [224, 33]]]]], [], []], "isErrored", ["subexpr", "get", [["get", "errorMap", ["loc", [null, [225, 31], [225, 39]]]], ["get", "field.key", ["loc", [null, [225, 40], [225, 49]]]]], [], ["loc", [null, [225, 26], [225, 50]]]], "isEdited", ["subexpr", "get", [["get", "editedCustomFields", ["loc", [null, [226, 30], [226, 48]]]], ["get", "field.id", ["loc", [null, [226, 49], [226, 57]]]]], [], ["loc", [null, [226, 25], [226, 58]]]], "onValueChange", ["subexpr", "action", ["fieldUpdated", ["get", "field", ["loc", [null, [227, 53], [227, 58]]]]], [], ["loc", [null, [227, 30], [227, 59]]]], "hasEmptyOption", ["subexpr", "not", [["get", "field.isRequiredForAgents", ["loc", [null, [228, 36], [228, 61]]]]], [], ["loc", [null, [228, 31], [228, 62]]]], "idPath", "id", "labelPath", "value"], ["loc", [null, [221, 14], [231, 16]]]]],
+              statements: [["inline", "component", [["subexpr", "ko-helper", [["get", "customFieldsList.componentFor", ["loc", [null, [222, 37], [222, 66]]]], ["get", "field.fieldType", ["loc", [null, [222, 67], [222, 82]]]]], [], ["loc", [null, [222, 26], [222, 83]]]]], ["value", ["subexpr", "get", [["get", "customFieldValueHash", ["loc", [null, [223, 27], [223, 47]]]], ["get", "field.id", ["loc", [null, [223, 48], [223, 56]]]]], [], ["loc", [null, [223, 22], [223, 57]]]], "options", ["subexpr", "@mut", [["get", "field.options", ["loc", [null, [224, 24], [224, 37]]]]], [], []], "title", ["subexpr", "@mut", [["get", "field.title", ["loc", [null, [225, 22], [225, 33]]]]], [], []], "isErrored", ["subexpr", "get", [["get", "errorMap", ["loc", [null, [226, 31], [226, 39]]]], ["get", "field.key", ["loc", [null, [226, 40], [226, 49]]]]], [], ["loc", [null, [226, 26], [226, 50]]]], "isEdited", ["subexpr", "get", [["get", "editedCustomFields", ["loc", [null, [227, 30], [227, 48]]]], ["get", "field.id", ["loc", [null, [227, 49], [227, 57]]]]], [], ["loc", [null, [227, 25], [227, 58]]]], "onValueChange", ["subexpr", "action", ["fieldUpdated", ["get", "field", ["loc", [null, [228, 53], [228, 58]]]]], [], ["loc", [null, [228, 30], [228, 59]]]], "hasEmptyOption", ["subexpr", "not", [["get", "field.isRequiredForAgents", ["loc", [null, [229, 36], [229, 61]]]]], [], ["loc", [null, [229, 31], [229, 62]]]], "idPath", "id", "labelPath", "value"], ["loc", [null, [222, 14], [232, 16]]]]],
               locals: [],
               templates: []
             };
@@ -41708,11 +43667,11 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 219,
+                  "line": 220,
                   "column": 10
                 },
                 "end": {
-                  "line": 233,
+                  "line": 234,
                   "column": 10
                 }
               },
@@ -41734,7 +43693,7 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
               dom.insertBoundary(fragment, null);
               return morphs;
             },
-            statements: [["block", "if", [["get", "field.isEnabled", ["loc", [null, [220, 18], [220, 33]]]]], [], 0, null, ["loc", [null, [220, 12], [232, 19]]]]],
+            statements: [["block", "if", [["get", "field.isEnabled", ["loc", [null, [221, 18], [221, 33]]]]], [], 0, null, ["loc", [null, [221, 12], [233, 19]]]]],
             locals: [],
             templates: [child0]
           };
@@ -41745,11 +43704,11 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 218,
+                "line": 219,
                 "column": 8
               },
               "end": {
-                "line": 234,
+                "line": 235,
                 "column": 8
               }
             },
@@ -41771,7 +43730,7 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
             dom.insertBoundary(fragment, null);
             return morphs;
           },
-          statements: [["block", "if", [["subexpr", "ko-helper", [["get", "customFieldsList.componentFor", ["loc", [null, [219, 27], [219, 56]]]], ["get", "field.fieldType", ["loc", [null, [219, 57], [219, 72]]]]], [], ["loc", [null, [219, 16], [219, 73]]]]], [], 0, null, ["loc", [null, [219, 10], [233, 17]]]]],
+          statements: [["block", "if", [["subexpr", "ko-helper", [["get", "customFieldsList.componentFor", ["loc", [null, [220, 27], [220, 56]]]], ["get", "field.fieldType", ["loc", [null, [220, 57], [220, 72]]]]], [], ["loc", [null, [220, 16], [220, 73]]]]], [], 0, null, ["loc", [null, [220, 10], [234, 17]]]]],
           locals: ["field"],
           templates: [child0]
         };
@@ -41782,11 +43741,11 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 118,
+              "line": 119,
               "column": 6
             },
             "end": {
-              "line": 243,
+              "line": 245,
               "column": 6
             }
           },
@@ -41863,7 +43822,7 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
           dom.appendChild(el0, el1);
           var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n");
+          var el1 = dom.createTextNode("\n\n");
           dom.appendChild(el0, el1);
           return el0;
         },
@@ -41887,7 +43846,7 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
           morphs[14] = dom.createMorphAt(fragment, 25, 25, contextualElement);
           return morphs;
         },
-        statements: [["attribute", "class", ["concat", ["button button--primary u-1/1 ", ["subexpr", "if", [["get", "submitDisabled", ["loc", [null, [120, 73], [120, 87]]]], "disabled"], [], ["loc", [null, [120, 68], [120, 100]]]]]]], ["attribute", "onclick", ["subexpr", "action", ["submit"], [], ["loc", [null, [120, 110], [120, 129]]]]], ["block", "if", [["get", "isSaving", ["loc", [null, [121, 18], [121, 26]]]]], [], 0, 1, ["loc", [null, [121, 12], [125, 19]]]], ["inline", "ko-info-bar/field/select", [], ["value", ["subexpr", "@mut", [["get", "model.role", ["loc", [null, [130, 16], [130, 26]]]]], [], []], "options", ["subexpr", "@mut", [["get", "roles", ["loc", [null, [131, 18], [131, 23]]]]], [], []], "title", ["subexpr", "t", ["users.infobar.role"], [], ["loc", [null, [132, 16], [132, 40]]]], "isEdited", ["subexpr", "@mut", [["get", "isRoleEdited", ["loc", [null, [133, 19], [133, 31]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "errorMap.role_id", ["loc", [null, [134, 20], [134, 36]]]]], [], []], "isDisabled", ["subexpr", "not", [["get", "canChangeRolePermission", ["loc", [null, [135, 26], [135, 49]]]]], [], ["loc", [null, [135, 21], [135, 50]]]], "onValueChange", ["subexpr", "action", ["roleSelect"], [], ["loc", [null, [136, 24], [136, 45]]]], "labelPath", "title", "hasEmptyOption", false], ["loc", [null, [129, 8], [139, 10]]]], ["block", "if", [["get", "canChangeAgentAccessPermission", ["loc", [null, [141, 14], [141, 44]]]]], [], 2, null, ["loc", [null, [141, 8], [153, 15]]]], ["block", "if", [["get", "canChangeOrganizationAccessPermission", ["loc", [null, [155, 14], [155, 51]]]]], [], 3, null, ["loc", [null, [155, 8], [167, 15]]]], ["inline", "ko-info-bar/field/select", [], ["value", ["subexpr", "@mut", [["get", "model.organization.content", ["loc", [null, [170, 16], [170, 42]]]]], [], []], "options", ["subexpr", "@mut", [["get", "organizations", ["loc", [null, [171, 18], [171, 31]]]]], [], []], "title", ["subexpr", "t", ["users.infobar.organization"], [], ["loc", [null, [172, 16], [172, 48]]]], "search", ["subexpr", "action", ["searchOrganization"], [], ["loc", [null, [173, 17], [173, 46]]]], "inputPlaceholder", ["subexpr", "t", ["generic.search.start_typing_to_search"], [], ["loc", [null, [174, 27], [174, 70]]]], "loadingMessage", ["subexpr", "t", ["generic.search.searching"], [], ["loc", [null, [175, 25], [175, 55]]]], "isEdited", ["subexpr", "@mut", [["get", "isOrganisationEdited", ["loc", [null, [176, 19], [176, 39]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "errorMap.organization_id", ["loc", [null, [177, 20], [177, 44]]]]], [], []], "onValueChange", ["subexpr", "action", ["organizationSelect"], [], ["loc", [null, [178, 24], [178, 53]]]], "labelPath", "name"], ["loc", [null, [169, 8], [180, 10]]]], ["inline", "ko-user-content/field/timezone-select", [], ["timezone", ["subexpr", "@mut", [["get", "model.timeZone", ["loc", [null, [183, 19], [183, 33]]]]], [], []], "isEdited", ["subexpr", "@mut", [["get", "isTimezoneEdited", ["loc", [null, [184, 19], [184, 35]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "errorMap.time_zone", ["loc", [null, [185, 20], [185, 38]]]]], [], []], "onChangeTimezone", ["subexpr", "action", ["timezoneSelect"], [], ["loc", [null, [186, 27], [186, 52]]]]], ["loc", [null, [182, 8], [187, 10]]]], ["block", "if", [["get", "canViewUserTeamPermission", ["loc", [null, [189, 14], [189, 39]]]]], [], 4, null, ["loc", [null, [189, 8], [204, 15]]]], ["inline", "ko-info-bar/field/tags", [], ["title", ["subexpr", "t", ["users.tags"], [], ["loc", [null, [207, 16], [207, 32]]]], "isEdited", ["subexpr", "@mut", [["get", "isTagsFieldEdited", ["loc", [null, [208, 19], [208, 36]]]]], [], []], "selectedTags", ["subexpr", "@mut", [["get", "model.tags", ["loc", [null, [209, 23], [209, 33]]]]], [], []], "suggestedTags", ["subexpr", "@mut", [["get", "suggestedTags", ["loc", [null, [210, 24], [210, 37]]]]], [], []], "newTagText", ["subexpr", "t", ["users.newtag"], [], ["loc", [null, [211, 21], [211, 39]]]], "addTagText", ["subexpr", "t", ["users.addtag"], [], ["loc", [null, [212, 21], [212, 39]]]], "onTagAddition", ["subexpr", "action", ["addTag"], [], ["loc", [null, [213, 24], [213, 41]]]], "onTagRemoval", ["subexpr", "action", ["removeTag"], [], ["loc", [null, [214, 23], [214, 43]]]], "onTagSuggestion", ["subexpr", "action", ["suggestTags"], [], ["loc", [null, [215, 26], [215, 48]]]]], ["loc", [null, [206, 8], [216, 10]]]], ["block", "each", [["get", "customFields", ["loc", [null, [218, 16], [218, 28]]]]], [], 5, null, ["loc", [null, [218, 8], [234, 17]]]], ["inline", "ko-identities", [], ["parent", ["subexpr", "@mut", [["get", "model", ["loc", [null, [236, 31], [236, 36]]]]], [], []]], ["loc", [null, [236, 8], [236, 38]]]], ["inline", "ko-info-bar/metadata", [], ["rows", ["subexpr", "@mut", [["get", "userDates", ["loc", [null, [238, 36], [238, 45]]]]], [], []]], ["loc", [null, [238, 8], [238, 47]]]], ["inline", "ko-recent-cases", [], ["title", ["subexpr", "t", ["users.recent_cases"], [], ["loc", [null, [240, 32], [240, 56]]]], "cases", ["subexpr", "@mut", [["get", "model.recentCases", ["loc", [null, [240, 63], [240, 80]]]]], [], []]], ["loc", [null, [240, 8], [240, 82]]]], ["inline", "ko-feedback", [], ["title", ["subexpr", "t", ["users.recent_feedback"], [], ["loc", [null, [242, 28], [242, 55]]]], "feedback", ["subexpr", "@mut", [["get", "recentFeedback", ["loc", [null, [242, 65], [242, 79]]]]], [], []]], ["loc", [null, [242, 8], [242, 81]]]]],
+        statements: [["attribute", "class", ["concat", ["button button--primary u-1/1 ", ["subexpr", "if", [["get", "submitDisabled", ["loc", [null, [121, 73], [121, 87]]]], "disabled"], [], ["loc", [null, [121, 68], [121, 100]]]]]]], ["attribute", "onclick", ["subexpr", "action", ["submit"], [], ["loc", [null, [121, 110], [121, 129]]]]], ["block", "if", [["get", "isSaving", ["loc", [null, [122, 18], [122, 26]]]]], [], 0, 1, ["loc", [null, [122, 12], [126, 19]]]], ["inline", "ko-info-bar/field/select", [], ["value", ["subexpr", "@mut", [["get", "model.role", ["loc", [null, [131, 16], [131, 26]]]]], [], []], "options", ["subexpr", "@mut", [["get", "roles", ["loc", [null, [132, 18], [132, 23]]]]], [], []], "title", ["subexpr", "t", ["users.infobar.role"], [], ["loc", [null, [133, 16], [133, 40]]]], "isEdited", ["subexpr", "@mut", [["get", "isRoleEdited", ["loc", [null, [134, 19], [134, 31]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "errorMap.role_id", ["loc", [null, [135, 20], [135, 36]]]]], [], []], "isDisabled", ["subexpr", "not", [["get", "canChangeRolePermission", ["loc", [null, [136, 26], [136, 49]]]]], [], ["loc", [null, [136, 21], [136, 50]]]], "onValueChange", ["subexpr", "action", ["roleSelect"], [], ["loc", [null, [137, 24], [137, 45]]]], "labelPath", "title", "hasEmptyOption", false], ["loc", [null, [130, 8], [140, 10]]]], ["block", "if", [["get", "canChangeAgentAccessPermission", ["loc", [null, [142, 14], [142, 44]]]]], [], 2, null, ["loc", [null, [142, 8], [154, 15]]]], ["block", "if", [["get", "canChangeOrganizationAccessPermission", ["loc", [null, [156, 14], [156, 51]]]]], [], 3, null, ["loc", [null, [156, 8], [168, 15]]]], ["inline", "ko-info-bar/field/select", [], ["value", ["subexpr", "@mut", [["get", "model.organization.content", ["loc", [null, [171, 16], [171, 42]]]]], [], []], "options", ["subexpr", "@mut", [["get", "organizations", ["loc", [null, [172, 18], [172, 31]]]]], [], []], "title", ["subexpr", "t", ["users.infobar.organization"], [], ["loc", [null, [173, 16], [173, 48]]]], "search", ["subexpr", "action", ["searchOrganization"], [], ["loc", [null, [174, 17], [174, 46]]]], "inputPlaceholder", ["subexpr", "t", ["generic.search.start_typing_to_search"], [], ["loc", [null, [175, 27], [175, 70]]]], "loadingMessage", ["subexpr", "t", ["generic.search.searching"], [], ["loc", [null, [176, 25], [176, 55]]]], "isEdited", ["subexpr", "@mut", [["get", "isOrganisationEdited", ["loc", [null, [177, 19], [177, 39]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "errorMap.organization_id", ["loc", [null, [178, 20], [178, 44]]]]], [], []], "onValueChange", ["subexpr", "action", ["organizationSelect"], [], ["loc", [null, [179, 24], [179, 53]]]], "labelPath", "name"], ["loc", [null, [170, 8], [181, 10]]]], ["inline", "ko-user-content/field/timezone-select", [], ["timezone", ["subexpr", "@mut", [["get", "model.timeZone", ["loc", [null, [184, 19], [184, 33]]]]], [], []], "isEdited", ["subexpr", "@mut", [["get", "isTimezoneEdited", ["loc", [null, [185, 19], [185, 35]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "errorMap.time_zone", ["loc", [null, [186, 20], [186, 38]]]]], [], []], "onChangeTimezone", ["subexpr", "action", ["timezoneSelect"], [], ["loc", [null, [187, 27], [187, 52]]]]], ["loc", [null, [183, 8], [188, 10]]]], ["block", "if", [["get", "canViewUserTeamPermission", ["loc", [null, [190, 14], [190, 39]]]]], [], 4, null, ["loc", [null, [190, 8], [205, 15]]]], ["inline", "ko-info-bar/field/tags", [], ["title", ["subexpr", "t", ["users.tags"], [], ["loc", [null, [208, 16], [208, 32]]]], "isEdited", ["subexpr", "@mut", [["get", "isTagsFieldEdited", ["loc", [null, [209, 19], [209, 36]]]]], [], []], "selectedTags", ["subexpr", "@mut", [["get", "model.tags", ["loc", [null, [210, 23], [210, 33]]]]], [], []], "suggestedTags", ["subexpr", "@mut", [["get", "suggestedTags", ["loc", [null, [211, 24], [211, 37]]]]], [], []], "newTagText", ["subexpr", "t", ["users.newtag"], [], ["loc", [null, [212, 21], [212, 39]]]], "addTagText", ["subexpr", "t", ["users.addtag"], [], ["loc", [null, [213, 21], [213, 39]]]], "onTagAddition", ["subexpr", "action", ["addTag"], [], ["loc", [null, [214, 24], [214, 41]]]], "onTagRemoval", ["subexpr", "action", ["removeTag"], [], ["loc", [null, [215, 23], [215, 43]]]], "onTagSuggestion", ["subexpr", "action", ["suggestTags"], [], ["loc", [null, [216, 26], [216, 48]]]]], ["loc", [null, [207, 8], [217, 10]]]], ["block", "each", [["get", "customFields", ["loc", [null, [219, 16], [219, 28]]]]], [], 5, null, ["loc", [null, [219, 8], [235, 17]]]], ["inline", "ko-identities", [], ["parent", ["subexpr", "@mut", [["get", "model", ["loc", [null, [237, 31], [237, 36]]]]], [], []]], ["loc", [null, [237, 8], [237, 38]]]], ["inline", "ko-recent-cases", [], ["title", ["subexpr", "t", ["users.recent_cases"], [], ["loc", [null, [239, 32], [239, 56]]]], "cases", ["subexpr", "@mut", [["get", "model.recentCases", ["loc", [null, [239, 63], [239, 80]]]]], [], []]], ["loc", [null, [239, 8], [239, 82]]]], ["inline", "ko-feedback", [], ["title", ["subexpr", "t", ["users.recent_feedback"], [], ["loc", [null, [241, 28], [241, 55]]]], "feedback", ["subexpr", "@mut", [["get", "recentFeedback", ["loc", [null, [241, 65], [241, 79]]]]], [], []]], ["loc", [null, [241, 8], [241, 81]]]], ["inline", "ko-info-bar/metadata", [], ["rows", ["subexpr", "@mut", [["get", "userDates", ["loc", [null, [243, 36], [243, 45]]]]], [], []]], ["loc", [null, [243, 8], [243, 47]]]]],
         locals: [],
         templates: [child0, child1, child2, child3, child4, child5]
       };
@@ -41900,11 +43859,11 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 248,
+                "line": 251,
                 "column": 2
               },
               "end": {
-                "line": 263,
+                "line": 266,
                 "column": 2
               }
             },
@@ -41984,7 +43943,7 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
             morphs[5] = dom.createMorphAt(element3, 1, 1);
             return morphs;
           },
-          statements: [["inline", "textarea", [], ["value", ["subexpr", "@mut", [["get", "editingSignature", ["loc", [null, [249, 21], [249, 37]]]]], [], []], "class", "text-area--clean"], ["loc", [null, [249, 4], [249, 64]]]], ["inline", "t", ["users.signaturemessage"], [], ["loc", [null, [252, 8], [252, 38]]]], ["attribute", "onclick", ["subexpr", "action", ["closeSignatureModal"], [], ["loc", [null, [255, 19], [255, 51]]]]], ["inline", "t", ["generic.cancel"], [], ["loc", [null, [256, 10], [256, 32]]]], ["attribute", "onclick", ["subexpr", "action", ["updateSignature"], [], ["loc", [null, [258, 55], [258, 83]]]]], ["inline", "t", ["users.update_signature"], [], ["loc", [null, [259, 10], [259, 40]]]]],
+          statements: [["inline", "textarea", [], ["value", ["subexpr", "@mut", [["get", "editingSignature", ["loc", [null, [252, 21], [252, 37]]]]], [], []], "class", "text-area--clean"], ["loc", [null, [252, 4], [252, 64]]]], ["inline", "t", ["users.signaturemessage"], [], ["loc", [null, [255, 8], [255, 38]]]], ["attribute", "onclick", ["subexpr", "action", ["closeSignatureModal"], [], ["loc", [null, [258, 19], [258, 51]]]]], ["inline", "t", ["generic.cancel"], [], ["loc", [null, [259, 10], [259, 32]]]], ["attribute", "onclick", ["subexpr", "action", ["updateSignature"], [], ["loc", [null, [261, 55], [261, 83]]]]], ["inline", "t", ["users.update_signature"], [], ["loc", [null, [262, 10], [262, 40]]]]],
           locals: [],
           templates: []
         };
@@ -41995,11 +43954,11 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 247,
+              "line": 250,
               "column": 0
             },
             "end": {
-              "line": 264,
+              "line": 267,
               "column": 0
             }
           },
@@ -42021,7 +43980,7 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [["block", "ko-editor-modal", [], ["title", ["subexpr", "t", ["users.editsignature"], [], ["loc", [null, [248, 27], [248, 52]]]]], 0, null, ["loc", [null, [248, 2], [263, 22]]]]],
+        statements: [["block", "ko-editor-modal", [], ["title", ["subexpr", "t", ["users.editsignature"], [], ["loc", [null, [251, 27], [251, 52]]]]], 0, null, ["loc", [null, [251, 2], [266, 22]]]]],
         locals: [],
         templates: [child0]
       };
@@ -42036,7 +43995,7 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
             "column": 0
           },
           "end": {
-            "line": 265,
+            "line": 268,
             "column": 0
           }
         },
@@ -42185,11 +44144,18 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
         var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
         dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n");
+        var el3 = dom.createTextNode("\n    ");
         dom.appendChild(el2, el3);
-        var el3 = dom.createComment("");
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3, "class", "ko-user-content__main__sidebar");
+        var el4 = dom.createTextNode("\n");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("    ");
+        dom.appendChild(el3, el4);
         dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("  ");
+        var el3 = dom.createTextNode("\n  ");
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n");
@@ -42219,12 +44185,12 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
         morphs[5] = dom.createMorphAt(element13, 1, 1);
         morphs[6] = dom.createMorphAt(element14, 1, 1);
         morphs[7] = dom.createMorphAt(element14, 3, 3);
-        morphs[8] = dom.createMorphAt(element12, 3, 3);
+        morphs[8] = dom.createMorphAt(dom.childAt(element12, [3]), 1, 1);
         morphs[9] = dom.createMorphAt(fragment, 2, 2, contextualElement);
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["attribute", "src", ["concat", [["get", "model.avatar", ["loc", [null, [6, 22], [6, 34]]]]]]], ["content", "model.fullName", ["loc", [null, [10, 12], [10, 30]]]], ["inline", "ko-stateful-button", [], ["activeText", ["subexpr", "t", ["users.button.following.active.text"], [], ["loc", [null, [20, 22], [20, 62]]]], "activeHoverText", ["subexpr", "t", ["users.button.following.active.hovertext"], [], ["loc", [null, [21, 27], [21, 72]]]], "inactiveText", ["subexpr", "t", ["users.button.following.inactive.text"], [], ["loc", [null, [22, 24], [22, 66]]]], "inactiveHoverText", ["subexpr", "t", ["users.button.following.inactive.hovertext"], [], ["loc", [null, [23, 29], [23, 76]]]], "isActive", false, "isLoading", ["subexpr", "@mut", [["get", "isFollowingSaving", ["loc", [null, [25, 21], [25, 38]]]]], [], []], "isEnabled", ["subexpr", "@mut", [["get", "canFollowUser", ["loc", [null, [26, 21], [26, 34]]]]], [], []]], ["loc", [null, [19, 9], [26, 36]]]], ["inline", "ko-stateful-button", [], ["activeText", ["subexpr", "t", ["users.button.user.enabled.text"], [], ["loc", [null, [30, 22], [30, 58]]]], "activeHoverText", ["subexpr", "t", ["users.button.user.enabled.hovertext"], [], ["loc", [null, [31, 27], [31, 68]]]], "inactiveText", ["subexpr", "t", ["users.button.user.disabled.text"], [], ["loc", [null, [32, 24], [32, 61]]]], "inactiveHoverText", ["subexpr", "t", ["users.button.user.disabled.hovertext"], [], ["loc", [null, [33, 29], [33, 71]]]], "isActive", ["subexpr", "@mut", [["get", "model.isEnabled", ["loc", [null, [34, 20], [34, 35]]]]], [], []], "isEnabled", ["subexpr", "@mut", [["get", "canModifyUserState", ["loc", [null, [35, 21], [35, 39]]]]], [], []], "isLoading", ["subexpr", "@mut", [["get", "isStateSaving", ["loc", [null, [36, 21], [36, 34]]]]], [], []], "onClick", "toggleUserState"], ["loc", [null, [29, 9], [37, 38]]]], ["inline", "ko-user-action-menu", [], ["permissions", ["subexpr", "@mut", [["get", "sessionService.permissions", ["loc", [null, [41, 24], [41, 50]]]]], [], []], "userRoleType", ["subexpr", "@mut", [["get", "model.role.roleType", ["loc", [null, [42, 25], [42, 44]]]]], [], []], "userModel", ["subexpr", "@mut", [["get", "model", ["loc", [null, [43, 22], [43, 27]]]]], [], []], "onCreateNewCase", ["subexpr", "action", [["get", "onCreateNewCase", ["loc", [null, [44, 36], [44, 51]]]], ["get", "model", ["loc", [null, [44, 52], [44, 57]]]]], [], ["loc", [null, [44, 28], [44, 58]]]]], ["loc", [null, [40, 8], [45, 10]]]], ["block", "if", [["get", "features.userNote", ["loc", [null, [54, 14], [54, 31]]]]], [], 0, null, ["loc", [null, [54, 8], [98, 15]]]], ["block", "each", [["get", "notes", ["loc", [null, [101, 18], [101, 23]]]]], [], 1, null, ["loc", [null, [101, 10], [109, 19]]]], ["block", "if", [["subexpr", "gt", [["get", "totalNotes", ["loc", [null, [111, 20], [111, 30]]]], 20], [], ["loc", [null, [111, 16], [111, 34]]]]], [], 2, null, ["loc", [null, [111, 10], [114, 17]]]], ["block", "ko-info-bar", [], [], 3, null, ["loc", [null, [118, 6], [243, 22]]]], ["block", "if", [["get", "signatureModal", ["loc", [null, [247, 6], [247, 20]]]]], [], 4, null, ["loc", [null, [247, 0], [264, 7]]]]],
+      statements: [["attribute", "src", ["concat", [["get", "model.avatar", ["loc", [null, [6, 22], [6, 34]]]]]]], ["content", "model.fullName", ["loc", [null, [10, 12], [10, 30]]]], ["inline", "ko-stateful-button", [], ["activeText", ["subexpr", "t", ["users.button.following.active.text"], [], ["loc", [null, [20, 22], [20, 62]]]], "activeHoverText", ["subexpr", "t", ["users.button.following.active.hovertext"], [], ["loc", [null, [21, 27], [21, 72]]]], "inactiveText", ["subexpr", "t", ["users.button.following.inactive.text"], [], ["loc", [null, [22, 24], [22, 66]]]], "inactiveHoverText", ["subexpr", "t", ["users.button.following.inactive.hovertext"], [], ["loc", [null, [23, 29], [23, 76]]]], "isActive", false, "isLoading", ["subexpr", "@mut", [["get", "isFollowingSaving", ["loc", [null, [25, 21], [25, 38]]]]], [], []], "isEnabled", ["subexpr", "@mut", [["get", "canFollowUser", ["loc", [null, [26, 21], [26, 34]]]]], [], []]], ["loc", [null, [19, 9], [26, 36]]]], ["inline", "ko-stateful-button", [], ["activeText", ["subexpr", "t", ["users.button.user.enabled.text"], [], ["loc", [null, [30, 22], [30, 58]]]], "activeHoverText", ["subexpr", "t", ["users.button.user.enabled.hovertext"], [], ["loc", [null, [31, 27], [31, 68]]]], "inactiveText", ["subexpr", "t", ["users.button.user.disabled.text"], [], ["loc", [null, [32, 24], [32, 61]]]], "inactiveHoverText", ["subexpr", "t", ["users.button.user.disabled.hovertext"], [], ["loc", [null, [33, 29], [33, 71]]]], "isActive", ["subexpr", "@mut", [["get", "model.isEnabled", ["loc", [null, [34, 20], [34, 35]]]]], [], []], "isEnabled", ["subexpr", "@mut", [["get", "canModifyUserState", ["loc", [null, [35, 21], [35, 39]]]]], [], []], "isLoading", ["subexpr", "@mut", [["get", "isStateSaving", ["loc", [null, [36, 21], [36, 34]]]]], [], []], "onClick", "toggleUserState"], ["loc", [null, [29, 9], [37, 38]]]], ["inline", "ko-user-action-menu", [], ["permissions", ["subexpr", "@mut", [["get", "sessionService.permissions", ["loc", [null, [41, 24], [41, 50]]]]], [], []], "userRoleType", ["subexpr", "@mut", [["get", "model.role.roleType", ["loc", [null, [42, 25], [42, 44]]]]], [], []], "userModel", ["subexpr", "@mut", [["get", "model", ["loc", [null, [43, 22], [43, 27]]]]], [], []], "onCreateNewCase", ["subexpr", "action", [["get", "onCreateNewCase", ["loc", [null, [44, 36], [44, 51]]]], ["get", "model", ["loc", [null, [44, 52], [44, 57]]]]], [], ["loc", [null, [44, 28], [44, 58]]]]], ["loc", [null, [40, 8], [45, 10]]]], ["block", "if", [["get", "features.userNote", ["loc", [null, [54, 14], [54, 31]]]]], [], 0, null, ["loc", [null, [54, 8], [98, 15]]]], ["block", "each", [["get", "notes", ["loc", [null, [101, 18], [101, 23]]]]], [], 1, null, ["loc", [null, [101, 10], [109, 19]]]], ["block", "if", [["subexpr", "gt", [["get", "totalNotes", ["loc", [null, [111, 20], [111, 30]]]], 20], [], ["loc", [null, [111, 16], [111, 34]]]]], [], 2, null, ["loc", [null, [111, 10], [114, 17]]]], ["block", "ko-info-bar", [], [], 3, null, ["loc", [null, [119, 6], [245, 22]]]], ["block", "if", [["get", "signatureModal", ["loc", [null, [250, 6], [250, 20]]]]], [], 4, null, ["loc", [null, [250, 0], [267, 7]]]]],
       locals: [],
       templates: [child0, child1, child2, child3, child4]
     };
@@ -44354,6 +46320,7 @@ define("frontend-cp/locales/en-us/generic", ["exports"], function (exports) {
     "identities.primary_comment": "(primary)",
     "identities.remove_identity": "Remove identity",
     "identities.validate_identity": "Send verification email",
+    "identities.copy_identity": "Copy",
     "identities.make_primary": "Make primary",
     "identities.placeholders.email": "Add email address",
     "identities.placeholders.twitter": "Add twitter handle",
@@ -65918,7 +67885,7 @@ define('frontend-cp/session/styleguide/route', ['exports', 'frontend-cp/routes/a
     }
   });
 });
-define("frontend-cp/session/styleguide/template",["exports"],function(exports){exports["default"] = Ember.HTMLBars.template((function(){return {meta:{"revision":"Ember@1.13.13","loc":{"source":null,"start":{"line":1,"column":0},"end":{"line":1484,"column":0}},"moduleName":"frontend-cp/session/styleguide/template.hbs"},arity:0,cachedFragment:null,hasRendered:false,buildFragment:function buildFragment(dom){var el0=dom.createDocumentFragment();var el1=dom.createElement("div");dom.setAttribute(el1,"class","styleguide container");var el2=dom.createTextNode("\n  ");dom.appendChild(el1,el2);var el2=dom.createElement("div");dom.setAttribute(el2,"class","styleguide-header");var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("div");dom.setAttribute(el3,"class","flag flag--auto");dom.setAttribute(el3,"style","margin: auto;");var el4=dom.createTextNode("\n      ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","flag__img");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");dom.setAttribute(el5,"class","styleguide-header__img");dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createTextNode("\n      ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","flag__body");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("h1");dom.setAttribute(el5,"class","styleguide-header__title");var el6=dom.createTextNode("Kayako 5.0 Styleguide");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createTextNode("\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n  ");dom.appendChild(el2,el3);dom.appendChild(el1,el2);var el2=dom.createTextNode("\n\n  ");dom.appendChild(el1,el2);var el2=dom.createElement("div");dom.setAttribute(el2,"class","styleguide-item");var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("h2");dom.setAttribute(el3,"class","styleguide-item__title");var el4=dom.createTextNode("Introduction");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("p");var el4=dom.createTextNode("\n      The CSS approach revolves around three core principles: simplicity, consistency and predictability. In the fewest\n      lines possible we want to create an equilibrium between expressiveness and function.\n\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n  ");dom.appendChild(el2,el3);dom.appendChild(el1,el2);var el2=dom.createTextNode("\n\n  ");dom.appendChild(el1,el2);var el2=dom.createElement("div");dom.setAttribute(el2,"class","styleguide-item");var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("h2");dom.setAttribute(el3,"class","styleguide-item__title");var el4=dom.createTextNode("Inuit");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("div");dom.setAttribute(el3,"class","layout");var el4=dom.createTextNode("\n      ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/2");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          We are using ");dom.appendChild(el5,el6);var el6=dom.createElement("a");dom.setAttribute(el6,"href","https://github.com/inuitcss");var el7=dom.createTextNode("InuitCSS");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode(". Inuit is a micro-framework that we have used\n          to lay the foundation and structure of our CSS. Namely variable configuration. Your interaction with inuit\n          will be few and far between, it sits quietly in the posterior. The grid will be the thing you use the most\n          (and is documented further down). In the `package.json` you will find a list of all of the packages we use\n          under inuit-*. I will go over those of any significance. Everything else can be forgotten about and merely\n          used to take comfort in the fact there are forces at work, indifferent to you, that transcend you or your proclivity for solipsism.\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("h4");dom.setAttribute(el6,"class","styleguide-item__subtitle");var el7=dom.createTextNode("Functions");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("p");var el7=dom.createTextNode("\n            Used rarely, but you may find helpful.\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("code");var el7=dom.createTextNode("\n.ko-info-bar {\n  width: quarter(55.5px);\n  width: halve(55.5px);\n  width: double(55.5px);\n  width: quadruple(55.5px);\n  width: round(55.5px);\n}\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createComment("\n   ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/2");var el5=dom.createTextNode("\n       ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);var el6=dom.createElement("h4");dom.setAttribute(el6,"class","styleguide-item__subtitle");var el7=dom.createTextNode("Lists");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("p");var el7=dom.createTextNode("\n            Self explanatory, helper classes that make a list inline, or remove the default styling list. If you make something inline, it will also inherit bare.\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("code");var el7=dom.createTextNode("\n./%list-inline\n./%list-bare\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("h4");dom.setAttribute(el6,"class","styleguide-item__subtitle");var el7=dom.createTextNode("Clearfix");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("p");var el7=dom.createTextNode("This should, almost never, ever, ever, ever, ever be used. But no self-respecting framework will come without one.");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("code");var el7=dom.createTextNode("\n./%clearfix\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createTextNode("\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n  ");dom.appendChild(el2,el3);dom.appendChild(el1,el2);var el2=dom.createTextNode("\n\n  ");dom.appendChild(el1,el2);var el2=dom.createElement("div");dom.setAttribute(el2,"class","styleguide-item");var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("h2");dom.setAttribute(el3,"class","styleguide-item__title");var el4=dom.createTextNode("Grid");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("div");dom.setAttribute(el3,"class","layout");var el4=dom.createTextNode("\n      ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/2");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          We are using the grid that is provided by Inuit. I have used it across several projects of varying sizes and\n          it has yet to falter. It is beautifully predictable, requires you to learn three classes, and in return you\n          are given a very powerful and simple layout system. It is also worth noting that we will using flexbox\n          limitedly. Absolutely not for layout. Things such as tags and tabs are the perfect use cases for flexbox, please use sparingly.\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          It essentially boils down to three classes:\n\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("code");var el7=dom.createTextNode("\n.layout\n.layout__item\n.u-1/3 // this has numerous variations, they're all fractions!\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n\n          We are not building a responsive app, and thankfully, a lot of the designs are very friendly to layout,\n          there is little requirement for any extravagant layout solutions, so these three classes will happily carry us to launch.\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          The most common thing we want to do is to have two containers side by side.\n\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("code");var el7=dom.createTextNode("\n");dom.appendChild(el6,el7);var el7=dom.createComment("");dom.appendChild(el6,el7);var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n\n          This example may introduce more questions than it answers.\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createComment("\n   ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/2");var el5=dom.createTextNode("\n       ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\n");dom.appendChild(el5,el6);var el6=dom.createComment("");dom.appendChild(el5,el6);var el6=dom.createTextNode("\n       ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n       ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n         This is the container class for all grids, and must be present. This is essential as the most basic way\n         of building a grid is to give all children a left spacing, then subtract one spacing from the parent to line\n         them up. Without this wrapper, everything breaks. It is also worth noting there are few different flavours that\n         can be tacked on via modifiers, namely `.layout--flush` which will strip all the spacing between the columns.\n       ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n       ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\n");dom.appendChild(el5,el6);var el6=dom.createComment("");dom.appendChild(el5,el6);var el6=dom.createTextNode("\n       ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n       ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n        A few things at play here, firstly the `layout__item` class is again, essential for the grid to work. This\n        is what applies the necessary inline-block and some nice tweaks. Secondly, `u-1/2` is an atomic class that only\n        applies a percentage width. You will almost never require anything outside of u-1/4, u-1/3, u-1/2. If you do,\n        for some reason, smaller fractions can be toggled in the settings file `settings/_layout`. For example, to have\n        a 66%/33% grid, you would need: `u-2/3` and `u-1/3`.\n       ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n       ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n        Yes the HTML comments between layout__items are an eye soar, and yes they are necessary. This is unfortunate but\n        due to the way whitespace is handled with inline-blocks, if you do not close the space you can sometimes be left\n        with physical gaps between your elements, which can cause incorrect distances but more often than not, will cause your\n        columns totalling 100% to overflow and not fit on one line. This used to be fixable with CSS, but Chrome 38(?) introduced a change and killed that overnight. Thanks Google.\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n       ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n        Occasionally writing a HTML comment does not override the power and simplicity of this grid and is not even remotely close to a worthy reason to not use it.\n       ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          Lastly, you may want to ditch the gutters altogether, in which case simply add\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\nlayout layout--flush\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createTextNode("\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n  ");dom.appendChild(el2,el3);dom.appendChild(el1,el2);var el2=dom.createTextNode("\n\n  ");dom.appendChild(el1,el2);var el2=dom.createElement("div");dom.setAttribute(el2,"class","styleguide-item");var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("h2");dom.setAttribute(el3,"class","styleguide-item__title");var el4=dom.createTextNode("BEM");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("div");dom.setAttribute(el3,"class","layout");var el4=dom.createTextNode("\n      ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/1");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          Block, element, modifier. This is the approach we are taking with regards to naming conventions.\n\n          In conjunction with the aforementioned exception, there is one more: Ember's default active class is,\n          you guessed it: `.active`, for the sake of consistency and ease of use we will occasionally use this class.\n          Other than those, we are using to the T BEM within our stylesheets.\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          All ELEMENTS must be their own unique selector (no nesting!). All MODIFIERS must be nested (how annoying!).\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          These are not strictly enforced, but encouraged that for the elements and modifiers you stick to some of our\n          naming standards for consistency, it will be quite rare for you to fall outside of these:\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\nclass___actions\nclass___action\nclass___item\nclass___content\nclass___label\nclass___title\n\nclass--is-selected\nclass--is-disabled\nclass--is-highlighted\nclass--has-actions\nclass--has-{action}\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n          ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\n& {\n  width: 100%;\n}\n\n.ko-info-bar__item {\n  color: red;\n\n  &--is-active {\n    border: 1px solid $color-primary;\n  }\n}\n\n.ko-info-bar__action {\n  font-size: $font-size-small;\n}\n          ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createTextNode("\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n  ");dom.appendChild(el2,el3);dom.appendChild(el1,el2);var el2=dom.createTextNode("\n\n  ");dom.appendChild(el1,el2);var el2=dom.createElement("div");dom.setAttribute(el2,"class","styleguide-item");var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("h2");dom.setAttribute(el3,"class","styleguide-item__title");var el4=dom.createTextNode("Component CSS (&)");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("div");dom.setAttribute(el3,"class","layout");var el4=dom.createTextNode("\n      ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/2");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("a");dom.setAttribute(el6,"href","https://github.com/ebryn/ember-component-css");var el7=dom.createTextNode("Component CSS — C(CSS)");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode(" was introduced about one third\n          of the way through the first beta build, it went through a lot of trial and error, and growing pains, but we believe\n          as it stands to have been implemented in a desirable way. As it is so new, it is wide open to feedback. We're confident\n          in it, but we have not yet seen it survive in the wild yet.\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          The power that C(CSS) brings is the encapsulation and scoping of styles. This is done automagically by Ember.\n          All that it requires is in your `ko-component/` folder you have an accompanying `styles.scss` file. All selectors\n          in that file will have a class name generated and prepended to it. This is done by taking the name of the component\n          and adding a unique hash to the end. As a result, whatever you write in this file simply cannot be interfered with\n          outside of that scope. We have found this to be quite powerful, you can work on a style sheet with confidence that your changes\n          here will have a near non-existent ripple effect across the rest of the styles.\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          We must strive to put as much CSS as we can feasibly fit into our components, there are some exceptions that are covered\n          later, but they should be few and far between. CSS in the global scope should be the final resort.\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          Simply put, if you have a component called: `ko-info-bar`, you may write a file like so:\n\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("code");var el7=dom.createTextNode("\n& {\n  width: 100%;\n}\n\n  .ko-info-bar__item {\n    display: inline-block;\n  }\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n\n          This will generate:\n\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("code");var el7=dom.createTextNode("\n.ko-info-bar--4ja84 { width: 100%; }\n.ko-info-bar--4ja84 .ko-info-bar__item { display: inline-block; }\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n\n          As you can see, the selector has been scoped out by requiring a unique, generated hash to access. The first knee-jerk\n          (and mine!) reaction to this approach is almost always the impact on repetition. Firstly, it really is not as big an\n          issue as first thought. Secondly, we have come to find this isolated way of writing CSS to be in the long run,\n          a time save — not sink. At the peak of this project, there may well be a few hundred redundant lines,\n          but that is nothing in contrast to the developers being able to write freely within the styles.scss file without\n          having to give thought to the outside world, nor test the endless implementations of the class they are changing.\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createComment("\n   ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/2");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n           The ampersand (&) selector is very useful to us as it allows us to select the component's wrapping class, the class\n           that is applied with a generated hash, in this instance: `ko-info-bar--4ja84`.\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n       ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          This power comes with some caveats.\n\n          In order to use modifiers, we must break (and this is ");dom.appendChild(el5,el6);var el6=dom.createElement("i");var el7=dom.createTextNode("only");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode(" place this should happen) BEM.\n\n          Which can then be used like so:\n\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("code");var el7=dom.createTextNode("\n& {\n  width: 100%;\n\n    &.has-error {\n      border: 1px solid red;\n    }\n}\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          What happens if you absolutely ");dom.appendChild(el5,el6);var el6=dom.createElement("i");var el7=dom.createTextNode("must");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode(" style a component that is dependant on whether or not it is sitting in another component? In this instance you would use a contains selector:\n\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("code");var el7=dom.createTextNode("\n& {\n  width: 100%;\n\n    & [class*=\"ko-info-bar--\"] {\n      background: red;\n    }\n}\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n\n          This is explicitly reserved for this problem. You may require this due to the cascading nature of CSS and inability\n          to move up the chain. This may force you to have to move upward, to come back down. As in, styling a child component\n          from a parent component. This is discouraged and avoided at all costs, but it has proven to be unavoidable in some cases.\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createTextNode("\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n  ");dom.appendChild(el2,el3);dom.appendChild(el1,el2);var el2=dom.createTextNode("\n\n  ");dom.appendChild(el1,el2);var el2=dom.createElement("div");dom.setAttribute(el2,"class","styleguide-item");var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("div");dom.setAttribute(el3,"class","layout");var el4=dom.createTextNode("\n      ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/2");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("h2");dom.setAttribute(el5,"class","styleguide-item__title");dom.setAttribute(el5,"id","headings");var el6=dom.createTextNode("Selectors");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          Our rules on selectors are very simple: NEVER EVER FOR ANY REASON, LIKE, I HONESTLY COULDN'T CARE IF YOU\n          CAME WITH YOUR DIRTY CAP IN HAND BEGGING — NO — HTML — ELEMENT — SELECTORS.\n\n          Nothing you will ever say, do or cry about will ever change the fact we are not using HTML elements for selectors.\n\n          If you only require a quick small change and are trying to shortcut with an element selector, you Sir/Madam\n          are ripe for a utility class, else, it is time to write a class.\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          \"Although I admire the passion it would be good to have a few reasons why they invoke such rage, help justify it\" - Stuart Quin, 12th October 2015\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          Good question Stuart, the reasoning behind this is specificty in CSS is a huge problem and one that we are going to great lengths to\n          prevent, using HTML elements in selectors is the steroids of the specificty world, you will instantly be teleported into a world of\n          rapidly developing specifity with horrible side effects. A common theme of programming is to avoid coupling, calling CSS programming is a\n          borderline sin, but a lot of aspects carry over. Using HTML selectors causes a horrific dependance on HTML structure and type. We do not\n          want to be working with CSS that can break by someone changing a span to a div.\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          What may be a quick fix, will potentially cause a lot of issues down the road.\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\n.ko-info-bar ul > li > * > a { display: none; } //I dare you.\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          It is also worth noting that the Team JavaScript should never be selecting off of classes that are not prefixed with `.js-`.\n          This is important as we want to seperate concerns between JavaScript functionality and styling, this lubricates\n          refactoring as Team CSS can freely edit styles without having to go ahead and fix tests, magic!\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createComment("\n   ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/2");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("h2");dom.setAttribute(el5,"class","styleguide-item__title");dom.setAttribute(el5,"id","headings");var el6=dom.createTextNode("REM");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          Our REM usage is equally as simple, other than font sizes, it is not to be used anywhere else, ever.\n          We even have an elegant mixin that'll hold for your hand through the entire thing.\n\n          This helpful little devil will also deal with line-height. How helpful indeed.\n\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("code");var el7=dom.createTextNode("\n@include inuit-font-size(14px);\n@include inuit-font-size($font-size-small);\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createTextNode("\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n  ");dom.appendChild(el2,el3);dom.appendChild(el1,el2);var el2=dom.createTextNode("\n\n  ");dom.appendChild(el1,el2);var el2=dom.createElement("div");dom.setAttribute(el2,"class","styleguide-item");var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("div");dom.setAttribute(el3,"class","layout");var el4=dom.createTextNode("\n      ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/2");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("h2");dom.setAttribute(el5,"class","styleguide-item__title");dom.setAttribute(el5,"id","headings");var el6=dom.createTextNode("Comments");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          Commenting is heavily encouraged, and outright necessary for certain pieces of work. Same premise as all\n          programming comments, please make them descriptive as to ");dom.appendChild(el5,el6);var el6=dom.createElement("i");var el7=dom.createTextNode("why");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode(" you did something, not necessarily ");dom.appendChild(el5,el6);var el6=dom.createElement("i");var el7=dom.createTextNode("how");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode(".\n          We can read properties and come to understand how things work, but may require your comments to understand the reasoning and what future changes to the file may invoke.\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          We use SCSS `//` comments, this is so when compiled all comments are automatically disregarded and do not make\n          it to the public facing file. Inline comments in most cases are sufficient. In the rare scenario that you\n          need something greater, you have two options:\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          Pseudo block comments.\n\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("code");var el7=dom.createTextNode("\n//Lorem ipsum dolor sit amet, consetetur sadipscing elitr,\n//sed diam nonumy eirmod tempor invidunt ut labore et dolore\n//magna aliquyam erat.\n//At vero eos et accusam et justo duo dolores et ea rebum.\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n\n          In most cases, this is sufficient, sometimes you require a greater level of control.\n\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("code");var el7=dom.createTextNode("\n//This is the description of what we have done\n//[1] - This is a detailed account of why we did this\n//[2] - Why we did this, why you shouldn't change this\n//[3] - Why this property may have knock on effects.\n.ko-info-bar__item {\n  width: 100%;      // [1]\n  color: red;       // [2]\n  margin-left: 9px; // [3]\n}\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createComment("\n   ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/2");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("h2");dom.setAttribute(el5,"class","styleguide-item__title");dom.setAttribute(el5,"id","headings");var el6=dom.createTextNode("Silent classes (%) / Extending");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          Continuing the super simple approach: Never, ever extend a class (.xyz). For a decent run down go ");dom.appendChild(el5,el6);var el6=dom.createElement("a");dom.setAttribute(el6,"href","http://www.smashingmagazine.com/2015/05/extending-in-sass-without-mess/");var el7=dom.createTextNode("here");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode(".\n\n          The gist is: we only ever extend placeholder classes / silent classes (%class-name), and this itself should be\n          used selectively, currently the only implementations of this are for re-using similar base styling across modules and\n          occasionally extending things like `@extend %t-caption`, so, you guessed it, we look like a caption! This\n          is useful when the thing you're styling requires several properties, and exceeds the boundary of using a utility class, thus extending\n          the utility class within the styling class is appropriate. As a side benefit, it allows us to have a single source of\n          truth. If our caption styles change, we only have to look in one place.\n\n");dom.appendChild(el5,el6);var el6=dom.createElement("p");dom.setAttribute(el6,"class","t-good u-mt");var el7=dom.createTextNode("Good!");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("code");var el7=dom.createTextNode("\n.ko-info-bar {\n  @extend %base-bar-styles;\n}\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n\n");dom.appendChild(el5,el6);var el6=dom.createElement("p");dom.setAttribute(el6,"class","t-bad");var el7=dom.createTextNode("Naughty!");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("code");var el7=dom.createTextNode("\n.ko-info-bar {\n  @extend .base-bar-styles;\n}\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createTextNode("\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n  ");dom.appendChild(el2,el3);dom.appendChild(el1,el2);var el2=dom.createTextNode("\n\n  ");dom.appendChild(el1,el2);var el2=dom.createElement("div");dom.setAttribute(el2,"class","styleguide-item");var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("h2");dom.setAttribute(el3,"class","styleguide-item__title");var el4=dom.createTextNode("z-index");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("div");dom.setAttribute(el3,"class","layout");var el4=dom.createTextNode("\n      ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/2");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          z-index is notoriously a frustrating part of dealing with CSS, so we have\n          implemented some helper functions and standards to help mitigate this.\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          For the sake of typing, simplicity and the current scope not warranting it, we\n          never exceed a z-index of 100. Major increments will be made in 10, medium by 5, minor by 1.\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          Major increments are to differentiate between modules and regions, medium is to\n          distinguish between similar modules that require a tight hierarchy,\n          and lastly, the minor are there to solve very focused edge cases and issues.\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          All of these will be declared within the app/styles/settings/_z-index.scss and should never be done\n          elsewhere. Aiming for the unicorn that is the single source of truth. Please be sparing when making\n          new additions, a new module does not necessarily warrant a new entry. There are generic\n          ones that we should reuse as much as possible (dropdown, raised, alert — etc).\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          Using the function should be familiar to all of you, it works a lot like translations. You can declare\n          a standalone z-index, or nest them under a namespace.\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          For a standalone z-index you would do:\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\n.alert {\n  z-index: $z-alert;\n}\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          For a nested z-index you would do:\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\n.alert {\n  z-index: $z-modal-editor;\n}\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createComment("\n   ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/2");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\n$z-layers: (\n  'overlay': 100,\n  'alert': 80,\n  'notification': 70,\n  'tooltip': 60,\n  'search': (\n    'input': 70,\n    'results': 70\n  ),\n  'menu': (\n    'action': 50\n  ),\n  'modal': (\n    'default': 50,\n    'editor': 51,\n    'example-higher': 52\n  ),\n  'pagination': 40,\n  'dropdown': 30,\n  'raised': 20,\n  'default': 10,\n  'hidden': -1\n);\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createTextNode("\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n  ");dom.appendChild(el2,el3);dom.appendChild(el1,el2);var el2=dom.createTextNode("\n\n  ");dom.appendChild(el1,el2);var el2=dom.createElement("div");dom.setAttribute(el2,"class","styleguide-item");var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("h2");dom.setAttribute(el3,"class","styleguide-item__title");dom.setAttribute(el3,"id","headings");var el4=dom.createTextNode("Headings");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("h1");var el4=dom.createTextNode("Heading 1");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("h2");var el4=dom.createTextNode("Heading 2");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("h3");var el4=dom.createTextNode("Heading 3");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("h4");var el4=dom.createTextNode("Heading 3");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("h5");var el4=dom.createTextNode("Heading 5");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("h6");var el4=dom.createTextNode("Heading 6");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("div");dom.setAttribute(el3,"class","layout");var el4=dom.createTextNode("\n      ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/2");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("h2");dom.setAttribute(el5,"class","heading");var el6=dom.createTextNode("\n          I am a heading\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("h6");dom.setAttribute(el5,"class","subheading");var el6=dom.createTextNode("\n          I am a subheading\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\n");dom.appendChild(el5,el6);var el6=dom.createComment("");dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createComment("\n   ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/2");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("h2");dom.setAttribute(el5,"class","heading heading--capitalized");var el6=dom.createTextNode("\n          I am a capitalized heading\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\n");dom.appendChild(el5,el6);var el6=dom.createComment("");dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createTextNode("\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n  ");dom.appendChild(el2,el3);dom.appendChild(el1,el2);var el2=dom.createTextNode("\n\n  ");dom.appendChild(el1,el2);var el2=dom.createElement("div");dom.setAttribute(el2,"class","styleguide-item");var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("h2");dom.setAttribute(el3,"class","styleguide-item__title");var el4=dom.createTextNode("Arrow");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("p");dom.setAttribute(el3,"class","styleguide-item__content");var el4=dom.createTextNode("\n      It is worth noting, that for the sake of cross browser support and more importantly,\n      allowing JavaScript to position the arrow dynamically, the arrow cannot be implemented via\n      ::before/::after, so to use the arrow, the parent's immediate child must be the div\n      containing the arrow classes you wish to use.\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("div");dom.setAttribute(el3,"class","layout");var el4=dom.createTextNode("\n      ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/2");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");dom.setAttribute(el5,"class","box u-pos-rel");var el6=dom.createTextNode("\n          I have an arrow at the top! :)\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("div");dom.setAttribute(el6,"class","arrow arrow--top arrow--no-title");dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\n");dom.appendChild(el5,el6);var el6=dom.createComment("");dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createComment("\n   ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/2");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");dom.setAttribute(el5,"class","box u-pos-rel");var el6=dom.createTextNode("\n          I have an arrow at the bottom! :(\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("div");dom.setAttribute(el6,"class","arrow arrow--bottom");dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\n");dom.appendChild(el5,el6);var el6=dom.createComment("");dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createTextNode("\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n  ");dom.appendChild(el2,el3);dom.appendChild(el1,el2);var el2=dom.createTextNode("\n\n  ");dom.appendChild(el1,el2);var el2=dom.createElement("div");dom.setAttribute(el2,"class","styleguide-item");var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("h2");dom.setAttribute(el3,"class","styleguide-item__title");var el4=dom.createTextNode("Box");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("div");dom.setAttribute(el3,"class","layout");var el4=dom.createTextNode("\n      ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/2");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");dom.setAttribute(el5,"class","box");var el6=dom.createTextNode("\n          I am a standard box!\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\n");dom.appendChild(el5,el6);var el6=dom.createComment("");dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n    ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createComment("\n ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/2");var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);var el5=dom.createElement("div");dom.setAttribute(el5,"class","box box--secondary");var el6=dom.createTextNode("\n        I am a box with secondary styling!\n      ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\n");dom.appendChild(el5,el6);var el6=dom.createComment("");dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n    ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createTextNode("\n  ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("div");dom.setAttribute(el3,"class","box-container");var el4=dom.createTextNode("\n      ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","box");var el5=dom.createTextNode("I am a box with a container");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createTextNode("\n      ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","box box--wide");var el5=dom.createTextNode("\n        I am a wide box with a container ;)\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createTextNode("\n      ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","box");var el5=dom.createTextNode("I am a box container");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createTextNode("\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("code");var el4=dom.createTextNode("\n");dom.appendChild(el3,el4);var el4=dom.createComment("");dom.appendChild(el3,el4);var el4=dom.createTextNode("\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n  ");dom.appendChild(el2,el3);dom.appendChild(el1,el2);var el2=dom.createTextNode("\n\n  ");dom.appendChild(el1,el2);var el2=dom.createElement("div");dom.setAttribute(el2,"class","styleguide-item");var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("h2");dom.setAttribute(el3,"class","styleguide-item__title");var el4=dom.createTextNode("Flag");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("div");dom.setAttribute(el3,"class","flag");var el4=dom.createTextNode("\n      ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","flag__img");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("img");dom.setAttribute(el5,"width","48");dom.setAttribute(el5,"height","48");dom.setAttribute(el5,"src","http://i.imgur.com/C9QgICy.jpg");dom.setAttribute(el5,"alt","");dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createTextNode("\n      ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","flag__body");var el5=dom.createTextNode("\n        I am the flag body!\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createTextNode("\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("code");var el4=dom.createTextNode("\n");dom.appendChild(el3,el4);var el4=dom.createComment("");dom.appendChild(el3,el4);var el4=dom.createTextNode("\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("p");dom.setAttribute(el3,"class","styleguide-item__content");var el4=dom.createTextNode("\n      There are also some additional modifiers you can use with the flag to change spacing and alignment.\n\n      For even more, check the settings file to enable/disable.\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("code");var el4=dom.createTextNode("\n.flag--small\n.flag--large\n.flag--flush\n\n.flag--top\n.flag--bottom\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n  ");dom.appendChild(el2,el3);dom.appendChild(el1,el2);var el2=dom.createTextNode("\n\n\n  ");dom.appendChild(el1,el2);var el2=dom.createElement("div");dom.setAttribute(el2,"class","styleguide-item");var el3=dom.createTextNode("\n  ");dom.appendChild(el2,el3);dom.appendChild(el1,el2);var el2=dom.createTextNode("\n\n  ");dom.appendChild(el1,el2);var el2=dom.createElement("div");dom.setAttribute(el2,"class","styleguide-item");var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("h2");dom.setAttribute(el3,"class","styleguide-item__title");var el4=dom.createTextNode("Animations");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("div");dom.setAttribute(el3,"class","layout");var el4=dom.createTextNode("\n      ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/3");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");dom.setAttribute(el5,"class","a-error u-p");var el6=dom.createTextNode("\n          I am an error! :(\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createComment("\n   ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/3");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");dom.setAttribute(el5,"class","a-success u-p");var el6=dom.createTextNode("\n          I am success :D\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createComment("\n   ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/3");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");dom.setAttribute(el5,"class","a-fade-in-out u-p");var el6=dom.createTextNode("\n          I fade out, then in. ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createTextNode("\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n  ");dom.appendChild(el2,el3);dom.appendChild(el1,el2);var el2=dom.createTextNode("\n\n  ");dom.appendChild(el1,el2);var el2=dom.createElement("div");dom.setAttribute(el2,"class","styleguide-item");var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("h2");dom.setAttribute(el3,"class","styleguide-item__title");var el4=dom.createTextNode("Variables");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("div");dom.setAttribute(el3,"class","layout");var el4=dom.createTextNode("\n      ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/3");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("h3");dom.setAttribute(el5,"class","styleguide-item__subtitle");var el6=dom.createTextNode("Brand");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\n$brand-rounding | border-radius // 2px\n\n$brand-border\n\n$brand-box-shadow\n$brand-box-shadow--dark\n\n%brand-focus\n\n$brand-avatar-size // 30px\n$brand-avatar-size--large //48px\n$brand-avatar-size--small //24px\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createComment("\n     ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/3");var el5=dom.createTextNode("\n          ");dom.appendChild(el4,el5);var el5=dom.createElement("h3");dom.setAttribute(el5,"class","styleguide-item__subtitle");var el6=dom.createTextNode("Colors");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n          ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\n$color-primary //turquoise\n$color-primary-trim //dark turquoise\n$color-secondary //light grey\n$color-tertiary //dark grey\n$color-trim //dark grey (compliments secondary)\n$color-trim--dark\n\n$color-active //light blue\n\n$color-text-primary //black\n$color-text-secondary //grey\n$color-text-secondary--dark //dark grey\n\n\n$color-good //green\n$color-bad //red\n$color-warning //orange\n$color-open //grey\n\n\n$color-twitter\n$color-facebook\n\n$color-note-background //light orange\n$color-note-border //dark orange\n          ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createComment("\n     ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/3");var el5=dom.createTextNode("\n          ");dom.appendChild(el4,el5);var el5=dom.createElement("h3");dom.setAttribute(el5,"class","styleguide-item__subtitle");var el6=dom.createTextNode("Defaults");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n          ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\n$large-spacing-unit // 36px\n$base-spacing-unit // 18px\n$mid-spacing-unit // 13.5px\n$half-spacing-unit // 9px\n$quarter-spacing-unit // 4.5px\n\n$base-font-size // 14px\n$base-line-height // 18px\n$base-text-color // black\n$base-background-color //offset white\n$base-font-family //Source Sans Pro, Sans-Serif\n          ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createTextNode("\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n ");dom.appendChild(el2,el3);dom.appendChild(el1,el2);var el2=dom.createTextNode("\n\n  ");dom.appendChild(el1,el2);var el2=dom.createElement("div");dom.setAttribute(el2,"class","styleguide-item");var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("h2");dom.setAttribute(el3,"class","styleguide-item__title");var el4=dom.createTextNode("\n      Utilities\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("h3");dom.setAttribute(el3,"class","styleguide-item__subtitle");var el4=dom.createTextNode("\n      Layout\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("div");dom.setAttribute(el3,"class","layout");var el4=dom.createTextNode("\n      ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/2");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("h4");var el6=dom.createTextNode("Display");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\n.u-inline-block\n.u-hidden\n.u-invisible\n.u-disable-link\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createComment("\n   ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/2");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("h4");var el6=dom.createTextNode("Positioning");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\n.u-pos-rel\n.u-pos-abs\n%u-v-center, .u-v-center\n%u-h-center, .u-h-center\n%u-center, .u-center\n%absolute-fill\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createComment("\n   ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/2");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("h4");var el6=dom.createTextNode("Alignment");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\n.u-v-align\n.u-v-align-top\n.u-reset-lh\n.u-inherit-lh\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createComment("\n   ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/2");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("h4");var el6=dom.createTextNode("Overflow");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\n.u-overflow-scroll\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createTextNode("\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("h2");dom.setAttribute(el3,"class","styleguide-item__subtitle");var el4=dom.createTextNode("Typography");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("h4");var el4=dom.createTextNode("States");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("div");dom.setAttribute(el3,"class","layout");var el4=dom.createTextNode("\n      ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/2");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","t-good");var el6=dom.createTextNode("I am a good message! :)");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\n");dom.appendChild(el5,el6);var el6=dom.createComment("");dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createComment("\n   ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/2");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","t-bad");var el6=dom.createTextNode("I am a bad message! >:)");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\n");dom.appendChild(el5,el6);var el6=dom.createComment("");dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createComment("\n   ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/2");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","t-warning");var el6=dom.createTextNode("I am a warning message! :(");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\n");dom.appendChild(el5,el6);var el6=dom.createComment("");dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createComment("\n   ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/2");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","t-open");var el6=dom.createTextNode("I am an open message! :(");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\n");dom.appendChild(el5,el6);var el6=dom.createComment("");dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createTextNode("\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("h4");var el4=dom.createTextNode("Position");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("p");dom.setAttribute(el3,"class","t-center");var el4=dom.createTextNode("I am center aligned");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("p");dom.setAttribute(el3,"class","t-left");var el4=dom.createTextNode("I am left aligned");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("p");dom.setAttribute(el3,"class","t-right");var el4=dom.createTextNode("I am right aligned");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("code");var el4=dom.createTextNode("\n");dom.appendChild(el3,el4);var el4=dom.createComment("");dom.appendChild(el3,el4);var el4=dom.createTextNode("\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("h4");var el4=dom.createTextNode("Style");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("div");dom.setAttribute(el3,"class","layout");var el4=dom.createTextNode("\n      ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/3");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","t-caption");var el6=dom.createTextNode("I am a caption!");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\n");dom.appendChild(el5,el6);var el6=dom.createComment("");dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createComment("\n   ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/3");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","t-small");var el6=dom.createTextNode("I am small!");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\n");dom.appendChild(el5,el6);var el6=dom.createComment("");dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createComment("\n   ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/3");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","t-bold");var el6=dom.createTextNode("I am bold!");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\n");dom.appendChild(el5,el6);var el6=dom.createComment("");dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createTextNode("\n");dom.appendChild(el3,el4);var el4=dom.createComment("\n   ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/3");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","t-italic");var el6=dom.createTextNode("I am italic!");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\n");dom.appendChild(el5,el6);var el6=dom.createComment("");dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createTextNode("\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n  ");dom.appendChild(el2,el3);dom.appendChild(el1,el2);var el2=dom.createTextNode("\n\n  ");dom.appendChild(el1,el2);var el2=dom.createElement("div");dom.setAttribute(el2,"class","styleguide-item");var el3=dom.createTextNode("\n\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("h2");dom.setAttribute(el3,"class","styleguide-item__title");var el4=dom.createTextNode("\n      Icons\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("div");dom.setAttribute(el3,"class","layout");var el4=dom.createTextNode("\n      ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/2");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          For the font icons we are using ");dom.appendChild(el5,el6);var el6=dom.createElement("a");dom.setAttribute(el6,"href","http://icomoon.io");var el7=dom.createTextNode("Icomoon");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode(", these are dealt with and uploaded by\n          Jesse Bennett-Chamberlaine (Designer). For missing, or incorrect icons please contact him. In the same vein, the PNG\n          icons are also supplied by Jesse. When we are ready for live, these will have been optimised into a PNG sprite, using a process yet to be decided.\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          Everything that you require can be found in `styles/partials/_icon.scss`. Here you will find helper mixins and classes.\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("h3");dom.setAttribute(el5,"class","styleguide-item__subtitle");var el6=dom.createTextNode("Mixins");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          Given the HTML structure of:\n\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("code");var el7=dom.createTextNode("\n");dom.appendChild(el6,el7);var el7=dom.createComment("");dom.appendChild(el6,el7);var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n\n          You would write:\n\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("code");var el7=dom.createTextNode("\n.ko-info-bar {\n\n  @include child-icon {\n    color: red;\n  }\n}\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          Given the HTML structure of:\n\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("code");var el7=dom.createTextNode("\n");dom.appendChild(el6,el7);var el7=dom.createComment("");dom.appendChild(el6,el7);var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n\n          You would write:\n\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("code");var el7=dom.createTextNode("\n.ko-info-bar {\n\n  @include icon {\n    color: red;\n  }\n}\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createComment("\n   ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/2");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("h3");dom.setAttribute(el5,"class","styleguide-item__subtitle");var el6=dom.createTextNode("Utilities");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("h4");var el6=dom.createTextNode("Global");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);var el6=dom.createElement("code");var el7=dom.createTextNode("\n[class^=\"i-\"], [class*=\" i-\"] {\n  &:before {\n    vertical-align: middle;\n  }\n}\n        ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n\n        This is applied to all `.i-` classes, as almost always you will want it to be vertically aligned to the middle.\n        This is also the select that is used by icomoon to apply all their necessary font-family and optimisations.\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("h4");var el6=dom.createTextNode("Positioning");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n        The most infrequently used classes in my experience.\n        ");dom.appendChild(el5,el6);var el6=dom.createElement("code");var el7=dom.createTextNode("\n.i-after {\n  @include icon {\n    @extend %u-v-center;\n    right: $half-spacing-unit;\n  }\n}\n\n.i-center {\n  @include icon {\n    @extend %u-center;\n  }\n}\n\n.i-inherit-lh {\n  line-height: inherit !important;  //override 3rd party css\n}\n        ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("h4");dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createTextNode("\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n\n   ");dom.appendChild(el2,el3);var el3=dom.createElement("h3");dom.setAttribute(el3,"class","styleguide-item__subtitle");var el4=dom.createTextNode("\n      Font Icons\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("div");dom.setAttribute(el3,"class","layout i-size-16");var el4=dom.createTextNode("\n      ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/3");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-event-twitter");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-event-twitter");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-happy-outline");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-happy-outline");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-sad-outline");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-sad-outline");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-dragstrip");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-dragstrip");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-add-circle");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-add-circle");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-minus-circle");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-minus-circle");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-caution-solid");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-caution-solid");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-phone-accept");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-phone-accept");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-phone-decline");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-phone-decline");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-happy");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-happy");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-sad");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-sad");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-bell");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-bell");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-plus");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-plus");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-cross");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-cross");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-home");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-home");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-inbox");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-inbox");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-person");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-person");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-insights");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-insights");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-help");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-help");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-search");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-search");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-minus");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-minus");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-triangle");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-triangle");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-plus-square");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-plus-square");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-minus-square");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-minus-square");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-inbox-sm");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-inbox-sm");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-email");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-email");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createComment("\n   ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/3");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-eye");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-eye");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-lock");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-lock");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-info");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-info");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-globe");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-globe");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-cross-bold");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-cross-bold");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-pause");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-pause");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-reply");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-reply");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-caution");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-caution");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-bold");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-bold");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-bullet-list");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-bullet-list");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-camera");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-camera");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-italic");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-italic");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-link");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-link");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-number-list");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-number-list");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-quote");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-quote");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-users");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-users");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-pencil");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-pencil");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-tick");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-tick");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-trash");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-trash");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-grid");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-grid");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-list");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-list");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-search-small");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-search-small");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-clip");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-clip");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-calendar");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-calendar");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-case");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-case");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-clock");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-clock");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createComment("\n   ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/3");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-gear");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-gear");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-icon-help");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-icon-help");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-rocket");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-rocket");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-stopwatch");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-stopwatch");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-user");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-user");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-twitter");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-twitter");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-facebook");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-facebook");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-chevron-large-left");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-chevron-large-left");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-chevron-large-right");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-chevron-large-right");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-select");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-select");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-chevron-double-down");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-chevron-double-down");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-chevron-double-up");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-chevron-double-up");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-chevron-large-down");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-chevron-large-down");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-chevron-large-up");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-chevron-large-up");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-chevron-small-down");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-chevron-small-down");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-chevron-small-up");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-chevron-small-up");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createTextNode("\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("h3");dom.setAttribute(el3,"class","styleguide-item__subtitle u-mt");var el4=dom.createTextNode("\n      PNG Icons\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("div");dom.setAttribute(el3,"class","layout");var el4=dom.createTextNode("\n      ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/3");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-png-icon i-png-TEXT");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-png-TEXT");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-png-icon i-png-TEXTAREA");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-png-TEXTAREA");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-png-icon i-png-RADIO");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-png-RADIO");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-png-icon i-png-SELECT");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-png-SELECT");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createComment("\n   ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/3");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-png-icon i-png-CHECKBOX");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-png-CHECKBOX");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-png-icon i-png-NUMERIC");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-png-NUMERIC");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-png-icon i-png-DECIMAL");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-png-DECIMAL");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-png-icon i-png-FILE");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-png-FILE");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createComment("\n   ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/3");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-png-icon i-png-YESNO");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-png-YESNO");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-png-icon i-png-CASCADINGSELECT");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-png-CASCADINGSELECT");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-png-icon i-png-DATE");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-png-DATE");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-png-icon i-png-REGEX");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-png-REGEX");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createTextNode("\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n  ");dom.appendChild(el2,el3);dom.appendChild(el1,el2);var el2=dom.createTextNode("\n\n  ");dom.appendChild(el1,el2);var el2=dom.createElement("div");dom.setAttribute(el2,"class","styleguide-quote");var el3=dom.createTextNode("\n    All men's miseries derive from not being able to sit in a quiet room alone... and write CSS.\n\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("span");dom.setAttribute(el3,"class","styleguide-quote__author");var el4=dom.createTextNode("Blaise Pascal — 1650");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n  ");dom.appendChild(el2,el3);dom.appendChild(el1,el2);var el2=dom.createTextNode("\n");dom.appendChild(el1,el2);dom.appendChild(el0,el1);var el1=dom.createTextNode("\n");dom.appendChild(el0,el1);return el0;},buildRenderNodes:function buildRenderNodes(dom,fragment,contextualElement){var element0=dom.childAt(fragment,[0]);var element1=dom.childAt(element0,[7,3]);var element2=dom.childAt(element1,[3]);var element3=dom.childAt(element0,[19,15]);var element4=dom.childAt(element0,[21,5]);var element5=dom.childAt(element0,[23]);var element6=dom.childAt(element5,[3]);var element7=dom.childAt(element0,[33]);var element8=dom.childAt(element7,[11]);var element9=dom.childAt(element7,[25]);var element10=dom.childAt(element0,[35,3,1]);var morphs=new Array(22);morphs[0] = dom.createMorphAt(dom.childAt(element1,[1,5,1]),1,1);morphs[1] = dom.createMorphAt(dom.childAt(element2,[1]),1,1);morphs[2] = dom.createMorphAt(dom.childAt(element2,[5]),1,1);morphs[3] = dom.createMorphAt(dom.childAt(element3,[1,5]),1,1);morphs[4] = dom.createMorphAt(dom.childAt(element3,[3,3]),1,1);morphs[5] = dom.createMorphAt(dom.childAt(element4,[1,3]),1,1);morphs[6] = dom.createMorphAt(dom.childAt(element4,[3,3]),1,1);morphs[7] = dom.createMorphAt(dom.childAt(element6,[1,3]),1,1);morphs[8] = dom.createMorphAt(dom.childAt(element6,[3,3]),1,1);morphs[9] = dom.createMorphAt(dom.childAt(element5,[7]),1,1);morphs[10] = dom.createMorphAt(dom.childAt(element0,[25,5]),1,1);morphs[11] = dom.createMorphAt(dom.childAt(element8,[1,3]),1,1);morphs[12] = dom.createMorphAt(dom.childAt(element8,[3,3]),1,1);morphs[13] = dom.createMorphAt(dom.childAt(element8,[5,3]),1,1);morphs[14] = dom.createMorphAt(dom.childAt(element8,[7,3]),1,1);morphs[15] = dom.createMorphAt(dom.childAt(element7,[21]),1,1);morphs[16] = dom.createMorphAt(dom.childAt(element9,[1,3]),1,1);morphs[17] = dom.createMorphAt(dom.childAt(element9,[3,3]),1,1);morphs[18] = dom.createMorphAt(dom.childAt(element9,[5,3]),1,1);morphs[19] = dom.createMorphAt(dom.childAt(element9,[8,3]),1,1);morphs[20] = dom.createMorphAt(dom.childAt(element10,[7,1]),1,1);morphs[21] = dom.createMorphAt(dom.childAt(element10,[9,1]),1,1);return morphs;},statements:[["inline","escape-html",["<div class=\"layout\">\n  <div class=\"layout__item u-1/2\">\n    I am 50% on the left\n  </div><!--\n--><div class=\"layout__item u-1/2\">\n    I am 50% on the right!\n  </div>\n</div>"],[],["loc",[null,[101,0],[110,2]]]],["inline","escape-html",["<div class=\"layout\">"],[],["loc",[null,[118,0],[120,2]]]],["inline","escape-html",["<div class=\"layout__item u-1/2\">"],[],["loc",[null,[131,0],[133,2]]]],["inline","escape-html",["<h2 class=\"heading\">\n  I am a heading\n</h2>\n<h6 class=\"subheading\">\n  I am a subheading\n</h6>"],[],["loc",[null,[545,0],[552,2]]]],["inline","escape-html",["<h2 class=\"heading heading--capitalized\">\n  I am a capitalized heading\n</h2>"],[],["loc",[null,[560,0],[564,2]]]],["inline","escape-html",["<div class=\"box\">\n  <div class=\"arrow arrow--top\"></div>\n</div>"],[],["loc",[null,[587,0],[591,2]]]],["inline","escape-html",["<div class=\"box\">\n  <div class=\"arrow arrow--bottom\"></div>\n</div>"],[],["loc",[null,[600,0],[604,2]]]],["inline","escape-html",["<div class=\"box\">\n  I am a box with secondary styling!\n</div>"],[],["loc",[null,[619,0],[623,2]]]],["inline","escape-html",["<div class=\"box box--secondary\">\n  I am a box with secondary styling!\n</div>"],[],["loc",[null,[631,0],[635,2]]]],["inline","escape-html",["<div class=\"box-container\">\n  <div class=\"box\">I am a box with a container</div>\n  <div class=\"box box--wide\">\n    I am a wide box with a container ;)\n  </div>\n  <div class=\"box\">I am a box container</div>\n</div>"],[],["loc",[null,[648,0],[656,2]]]],["inline","escape-html",["<div class=\"flag\">\n  <div class=\"flag__img\">\n    <img class=\"avatar\" src=\"http://i.imgur.com/C9QgICy.jpg\" alt=\"\">\n  </div>\n  <div class=\"flag__body\">\n    I am the flag body!\n  </div>\n</div>"],[],["loc",[null,[672,0],[681,2]]]],["inline","escape-html",["<p class=\"t-good\">I am a good message! :)</p>"],[],["loc",[null,[858,0],[860,2]]]],["inline","escape-html",["<p class=\"t-bad\">I am a bad message! :)</p>"],[],["loc",[null,[866,0],[868,2]]]],["inline","escape-html",["<p class=\"t-warning\">I am a warning message! :)</p>"],[],["loc",[null,[874,0],[876,2]]]],["inline","escape-html",["<p class=\"t-open\">I am a open message! :)</p>"],[],["loc",[null,[882,0],[884,2]]]],["inline","escape-html",["<p class=\"t-center\">I am center aligned</p>\n<p class=\"t-left\">I am left aligned</p>\n<p class=\"t-right\">I am right aligned</p>"],[],["loc",[null,[896,0],[900,2]]]],["inline","escape-html",["<p class=\"t-caption\">I am a caption!</p>"],[],["loc",[null,[909,0],[911,2]]]],["inline","escape-html",["<p class=\"t-small\">I am small!</p>"],[],["loc",[null,[917,0],[919,2]]]],["inline","escape-html",["<p class=\"t-bold\">I am bold!</p>"],[],["loc",[null,[925,0],[927,2]]]],["inline","escape-html",["<p class=\"t-bold\">I am italic!</p>"],[],["loc",[null,[934,0],[936,2]]]],["inline","escape-html",["<div class=\"ko-info-bar\">\n  <span class=\"ko-info-bar__action\"></span>\n  <span class=\"i-caution-solid\"></span>\n</div>"],[],["loc",[null,[963,0],[967,9]]]],["inline","escape-html",["<div class=\"ko-info-bar i-caution-solid\">\n  <span class=\"ko-info-bar__action\"></span>\n</div>"],[],["loc",[null,[985,0],[988,9]]]]],locals:[],templates:[]};})());});
+define("frontend-cp/session/styleguide/template",["exports"],function(exports){exports["default"] = Ember.HTMLBars.template((function(){return {meta:{"revision":"Ember@1.13.13","loc":{"source":null,"start":{"line":1,"column":0},"end":{"line":1484,"column":0}},"moduleName":"frontend-cp/session/styleguide/template.hbs"},arity:0,cachedFragment:null,hasRendered:false,buildFragment:function buildFragment(dom){var el0=dom.createDocumentFragment();var el1=dom.createElement("div");dom.setAttribute(el1,"class","styleguide container");var el2=dom.createTextNode("\n  ");dom.appendChild(el1,el2);var el2=dom.createElement("div");dom.setAttribute(el2,"class","styleguide-header");var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("div");dom.setAttribute(el3,"class","flag flag--auto");dom.setAttribute(el3,"style","margin: auto;");var el4=dom.createTextNode("\n      ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","flag__img");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");dom.setAttribute(el5,"class","styleguide-header__img");dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createTextNode("\n      ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","flag__body");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("h1");dom.setAttribute(el5,"class","styleguide-header__title");var el6=dom.createTextNode("Kayako 5.0 Styleguide");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createTextNode("\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n  ");dom.appendChild(el2,el3);dom.appendChild(el1,el2);var el2=dom.createTextNode("\n\n  ");dom.appendChild(el1,el2);var el2=dom.createElement("div");dom.setAttribute(el2,"class","styleguide-item");var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("h2");dom.setAttribute(el3,"class","styleguide-item__title");var el4=dom.createTextNode("Introduction");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("p");var el4=dom.createTextNode("\n      The CSS approach revolves around three core principles: simplicity, consistency and predictability. In the fewest\n      lines possible we want to create an equilibrium between expressiveness and function.\n\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n  ");dom.appendChild(el2,el3);dom.appendChild(el1,el2);var el2=dom.createTextNode("\n\n  ");dom.appendChild(el1,el2);var el2=dom.createElement("div");dom.setAttribute(el2,"class","styleguide-item");var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("h2");dom.setAttribute(el3,"class","styleguide-item__title");var el4=dom.createTextNode("Inuit");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("div");dom.setAttribute(el3,"class","layout");var el4=dom.createTextNode("\n      ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/2");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          We are using ");dom.appendChild(el5,el6);var el6=dom.createElement("a");dom.setAttribute(el6,"href","https://github.com/inuitcss");var el7=dom.createTextNode("InuitCSS");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode(". Inuit is a micro-framework that we have used\n          to lay the foundation and structure of our CSS. Namely variable configuration. Your interaction with inuit\n          will be few and far between, it sits quietly in the posterior. The grid will be the thing you use the most\n          (and is documented further down). In the `package.json` you will find a list of all of the packages we use\n          under inuit-*. I will go over those of any significance. Everything else can be forgotten about and merely\n          used to take comfort in the fact there are forces at work, indifferent to you, that transcend you or your proclivity for solipsism.\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("h4");dom.setAttribute(el6,"class","styleguide-item__subtitle");var el7=dom.createTextNode("Functions");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("p");var el7=dom.createTextNode("\n            Used rarely, but you may find helpful.\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("code");var el7=dom.createTextNode("\n.ko-info-bar {\n  width: quarter(55.5px);\n  width: halve(55.5px);\n  width: double(55.5px);\n  width: quadruple(55.5px);\n  width: round(55.5px);\n}\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createComment("\n   ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/2");var el5=dom.createTextNode("\n       ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);var el6=dom.createElement("h4");dom.setAttribute(el6,"class","styleguide-item__subtitle");var el7=dom.createTextNode("Lists");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("p");var el7=dom.createTextNode("\n            Self explanatory, helper classes that make a list inline, or remove the default styling list. If you make something inline, it will also inherit bare.\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("code");var el7=dom.createTextNode("\n./%list-inline\n./%list-bare\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("h4");dom.setAttribute(el6,"class","styleguide-item__subtitle");var el7=dom.createTextNode("Clearfix");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("p");var el7=dom.createTextNode("This should, almost never, ever, ever, ever, ever be used. But no self-respecting framework will come without one.");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("code");var el7=dom.createTextNode("\n./%clearfix\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createTextNode("\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n  ");dom.appendChild(el2,el3);dom.appendChild(el1,el2);var el2=dom.createTextNode("\n\n  ");dom.appendChild(el1,el2);var el2=dom.createElement("div");dom.setAttribute(el2,"class","styleguide-item");var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("h2");dom.setAttribute(el3,"class","styleguide-item__title");var el4=dom.createTextNode("Grid");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("div");dom.setAttribute(el3,"class","layout");var el4=dom.createTextNode("\n      ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/2");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          We are using the grid that is provided by Inuit. I have used it across several projects of varying sizes and\n          it has yet to falter. It is beautifully predictable, requires you to learn three classes, and in return you\n          are given a very powerful and simple layout system. It is also worth noting that we will using flexbox\n          limitedly. Absolutely not for layout. Things such as tags and tabs are the perfect use cases for flexbox, please use sparingly.\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          It essentially boils down to three classes:\n\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("code");var el7=dom.createTextNode("\n.layout\n.layout__item\n.u-1/3 // this has numerous variations, they're all fractions!\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n\n          We are not building a responsive app, and thankfully, a lot of the designs are very friendly to layout,\n          there is little requirement for any extravagant layout solutions, so these three classes will happily carry us to launch.\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          The most common thing we want to do is to have two containers side by side.\n\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("code");var el7=dom.createTextNode("\n");dom.appendChild(el6,el7);var el7=dom.createComment("");dom.appendChild(el6,el7);var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n\n          This example may introduce more questions than it answers.\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createComment("\n   ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/2");var el5=dom.createTextNode("\n       ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\n");dom.appendChild(el5,el6);var el6=dom.createComment("");dom.appendChild(el5,el6);var el6=dom.createTextNode("\n       ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n       ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n         This is the container class for all grids, and must be present. This is essential as the most basic way\n         of building a grid is to give all children a left spacing, then subtract one spacing from the parent to line\n         them up. Without this wrapper, everything breaks. It is also worth noting there are few different flavours that\n         can be tacked on via modifiers, namely `.layout--flush` which will strip all the spacing between the columns.\n       ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n       ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\n");dom.appendChild(el5,el6);var el6=dom.createComment("");dom.appendChild(el5,el6);var el6=dom.createTextNode("\n       ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n       ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n        A few things at play here, firstly the `layout__item` class is again, essential for the grid to work. This\n        is what applies the necessary inline-block and some nice tweaks. Secondly, `u-1/2` is an atomic class that only\n        applies a percentage width. You will almost never require anything outside of u-1/4, u-1/3, u-1/2. If you do,\n        for some reason, smaller fractions can be toggled in the settings file `settings/_layout`. For example, to have\n        a 66%/33% grid, you would need: `u-2/3` and `u-1/3`.\n       ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n       ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n        Yes the HTML comments between layout__items are an eye soar, and yes they are necessary. This is unfortunate but\n        due to the way whitespace is handled with inline-blocks, if you do not close the space you can sometimes be left\n        with physical gaps between your elements, which can cause incorrect distances but more often than not, will cause your\n        columns totalling 100% to overflow and not fit on one line. This used to be fixable with CSS, but Chrome 38(?) introduced a change and killed that overnight. Thanks Google.\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n       ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n        Occasionally writing a HTML comment does not override the power and simplicity of this grid and is not even remotely close to a worthy reason to not use it.\n       ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          Lastly, you may want to ditch the gutters altogether, in which case simply add\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\nlayout layout--flush\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createTextNode("\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n  ");dom.appendChild(el2,el3);dom.appendChild(el1,el2);var el2=dom.createTextNode("\n\n  ");dom.appendChild(el1,el2);var el2=dom.createElement("div");dom.setAttribute(el2,"class","styleguide-item");var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("h2");dom.setAttribute(el3,"class","styleguide-item__title");var el4=dom.createTextNode("BEM");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("div");dom.setAttribute(el3,"class","layout");var el4=dom.createTextNode("\n      ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/1");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          Block, element, modifier. This is the approach we are taking with regards to naming conventions.\n\n          In conjunction with the aforementioned exception, there is one more: Ember's default active class is,\n          you guessed it: `.active`, for the sake of consistency and ease of use we will occasionally use this class.\n          Other than those, we are using to the T BEM within our stylesheets.\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          All ELEMENTS must be their own unique selector (no nesting!). All MODIFIERS must be nested (how annoying!).\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          These are not strictly enforced, but encouraged that for the elements and modifiers you stick to some of our\n          naming standards for consistency, it will be quite rare for you to fall outside of these:\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\nclass___actions\nclass___action\nclass___item\nclass___content\nclass___label\nclass___title\n\nclass--is-selected\nclass--is-disabled\nclass--is-highlighted\nclass--has-actions\nclass--has-{action}\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n          ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\n& {\n  width: 100%;\n}\n\n.ko-info-bar__item {\n  color: red;\n\n  &--is-active {\n    border: 1px solid $color-primary;\n  }\n}\n\n.ko-info-bar__action {\n  font-size: $font-size-small;\n}\n          ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createTextNode("\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n  ");dom.appendChild(el2,el3);dom.appendChild(el1,el2);var el2=dom.createTextNode("\n\n  ");dom.appendChild(el1,el2);var el2=dom.createElement("div");dom.setAttribute(el2,"class","styleguide-item");var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("h2");dom.setAttribute(el3,"class","styleguide-item__title");var el4=dom.createTextNode("Component CSS (&)");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("div");dom.setAttribute(el3,"class","layout");var el4=dom.createTextNode("\n      ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/2");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("a");dom.setAttribute(el6,"href","https://github.com/ebryn/ember-component-css");var el7=dom.createTextNode("Component CSS — C(CSS)");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode(" was introduced about one third\n          of the way through the first beta build, it went through a lot of trial and error, and growing pains, but we believe\n          as it stands to have been implemented in a desirable way. As it is so new, it is wide open to feedback. We're confident\n          in it, but we have not yet seen it survive in the wild yet.\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          The power that C(CSS) brings is the encapsulation and scoping of styles. This is done automagically by Ember.\n          All that it requires is in your `ko-component/` folder you have an accompanying `styles.scss` file. All selectors\n          in that file will have a class name generated and prepended to it. This is done by taking the name of the component\n          and adding a unique hash to the end. As a result, whatever you write in this file simply cannot be interfered with\n          outside of that scope. We have found this to be quite powerful, you can work on a style sheet with confidence that your changes\n          here will have a near non-existent ripple effect across the rest of the styles.\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          We must strive to put as much CSS as we can feasibly fit into our components, there are some exceptions that are covered\n          later, but they should be few and far between. CSS in the global scope should be the final resort.\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          Simply put, if you have a component called: `ko-info-bar`, you may write a file like so:\n\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("code");var el7=dom.createTextNode("\n& {\n  width: 100%;\n}\n\n  .ko-info-bar__item {\n    display: inline-block;\n  }\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n\n          This will generate:\n\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("code");var el7=dom.createTextNode("\n.ko-info-bar--4ja84 { width: 100%; }\n.ko-info-bar--4ja84 .ko-info-bar__item { display: inline-block; }\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n\n          As you can see, the selector has been scoped out by requiring a unique, generated hash to access. The first knee-jerk\n          (and mine!) reaction to this approach is almost always the impact on repetition. Firstly, it really is not as big an\n          issue as first thought. Secondly, we have come to find this isolated way of writing CSS to be in the long run,\n          a time save — not sink. At the peak of this project, there may well be a few hundred redundant lines,\n          but that is nothing in contrast to the developers being able to write freely within the styles.scss file without\n          having to give thought to the outside world, nor test the endless implementations of the class they are changing.\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createComment("\n   ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/2");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n           The ampersand (&) selector is very useful to us as it allows us to select the component's wrapping class, the class\n           that is applied with a generated hash, in this instance: `ko-info-bar--4ja84`.\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n       ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          This power comes with some caveats.\n\n          In order to use modifiers, we must break (and this is ");dom.appendChild(el5,el6);var el6=dom.createElement("i");var el7=dom.createTextNode("only");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode(" place this should happen) BEM.\n\n          Which can then be used like so:\n\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("code");var el7=dom.createTextNode("\n& {\n  width: 100%;\n\n    &.has-error {\n      border: 1px solid red;\n    }\n}\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          What happens if you absolutely ");dom.appendChild(el5,el6);var el6=dom.createElement("i");var el7=dom.createTextNode("must");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode(" style a component that is dependant on whether or not it is sitting in another component? In this instance you would use a contains selector:\n\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("code");var el7=dom.createTextNode("\n& {\n  width: 100%;\n\n    & [class*=\"ko-info-bar--\"] {\n      background: red;\n    }\n}\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n\n          This is explicitly reserved for this problem. You may require this due to the cascading nature of CSS and inability\n          to move up the chain. This may force you to have to move upward, to come back down. As in, styling a child component\n          from a parent component. This is discouraged and avoided at all costs, but it has proven to be unavoidable in some cases.\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createTextNode("\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n  ");dom.appendChild(el2,el3);dom.appendChild(el1,el2);var el2=dom.createTextNode("\n\n  ");dom.appendChild(el1,el2);var el2=dom.createElement("div");dom.setAttribute(el2,"class","styleguide-item");var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("div");dom.setAttribute(el3,"class","layout");var el4=dom.createTextNode("\n      ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/2");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("h2");dom.setAttribute(el5,"class","styleguide-item__title");dom.setAttribute(el5,"id","headings");var el6=dom.createTextNode("Selectors");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          Our rules on selectors are very simple: NEVER EVER FOR ANY REASON, LIKE, I HONESTLY COULDN'T CARE IF YOU\n          CAME WITH YOUR DIRTY CAP IN HAND BEGGING — NO — HTML — ELEMENT — SELECTORS.\n\n          Nothing you will ever say, do or cry about will ever change the fact we are not using HTML elements for selectors.\n\n          If you only require a quick small change and are trying to shortcut with an element selector, you Sir/Madam\n          are ripe for a utility class, else, it is time to write a class.\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          \"Although I admire the passion it would be good to have a few reasons why they invoke such rage, help justify it\" - Stuart Quin, 12th October 2015\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          Good question Stuart, the reasoning behind this is specificty in CSS is a huge problem and one that we are going to great lengths to\n          prevent, using HTML elements in selectors is the steroids of the specificty world, you will instantly be teleported into a world of\n          rapidly developing specifity with horrible side effects. A common theme of programming is to avoid coupling, calling CSS programming is a\n          borderline sin, but a lot of aspects carry over. Using HTML selectors causes a horrific dependance on HTML structure and type. We do not\n          want to be working with CSS that can break by someone changing a span to a div.\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          What may be a quick fix, will potentially cause a lot of issues down the road.\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\n.ko-info-bar ul > li > * > a { display: none; } //I dare you.\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          It is also worth noting that the Team JavaScript should never be selecting off of classes that are not prefixed with `.js-`.\n          This is important as we want to seperate concerns between JavaScript functionality and styling, this lubricates\n          refactoring as Team CSS can freely edit styles without having to go ahead and fix tests, magic!\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createComment("\n   ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/2");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("h2");dom.setAttribute(el5,"class","styleguide-item__title");dom.setAttribute(el5,"id","headings");var el6=dom.createTextNode("REM");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          Our REM usage is equally as simple, other than font sizes, it is not to be used anywhere else, ever.\n          We even have an elegant mixin that'll hold for your hand through the entire thing.\n\n          This helpful little devil will also deal with line-height. How helpful indeed.\n\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("code");var el7=dom.createTextNode("\n@include inuit-font-size(14px);\n@include inuit-font-size($font-size-small);\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createTextNode("\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n  ");dom.appendChild(el2,el3);dom.appendChild(el1,el2);var el2=dom.createTextNode("\n\n  ");dom.appendChild(el1,el2);var el2=dom.createElement("div");dom.setAttribute(el2,"class","styleguide-item");var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("div");dom.setAttribute(el3,"class","layout");var el4=dom.createTextNode("\n      ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/2");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("h2");dom.setAttribute(el5,"class","styleguide-item__title");dom.setAttribute(el5,"id","headings");var el6=dom.createTextNode("Comments");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          Commenting is heavily encouraged, and outright necessary for certain pieces of work. Same premise as all\n          programming comments, please make them descriptive as to ");dom.appendChild(el5,el6);var el6=dom.createElement("i");var el7=dom.createTextNode("why");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode(" you did something, not necessarily ");dom.appendChild(el5,el6);var el6=dom.createElement("i");var el7=dom.createTextNode("how");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode(".\n          We can read properties and come to understand how things work, but may require your comments to understand the reasoning and what future changes to the file may invoke.\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          We use SCSS `//` comments, this is so when compiled all comments are automatically disregarded and do not make\n          it to the public facing file. Inline comments in most cases are sufficient. In the rare scenario that you\n          need something greater, you have two options:\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          Pseudo block comments.\n\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("code");var el7=dom.createTextNode("\n//Lorem ipsum dolor sit amet, consetetur sadipscing elitr,\n//sed diam nonumy eirmod tempor invidunt ut labore et dolore\n//magna aliquyam erat.\n//At vero eos et accusam et justo duo dolores et ea rebum.\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n\n          In most cases, this is sufficient, sometimes you require a greater level of control.\n\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("code");var el7=dom.createTextNode("\n//This is the description of what we have done\n//[1] - This is a detailed account of why we did this\n//[2] - Why we did this, why you shouldn't change this\n//[3] - Why this property may have knock on effects.\n.ko-info-bar__item {\n  width: 100%;      // [1]\n  color: red;       // [2]\n  margin-left: 9px; // [3]\n}\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createComment("\n   ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/2");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("h2");dom.setAttribute(el5,"class","styleguide-item__title");dom.setAttribute(el5,"id","headings");var el6=dom.createTextNode("Silent classes (%) / Extending");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          Continuing the super simple approach: Never, ever extend a class (.xyz). For a decent run down go ");dom.appendChild(el5,el6);var el6=dom.createElement("a");dom.setAttribute(el6,"href","http://www.smashingmagazine.com/2015/05/extending-in-sass-without-mess/");var el7=dom.createTextNode("here");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode(".\n\n          The gist is: we only ever extend placeholder classes / silent classes (%class-name), and this itself should be\n          used selectively, currently the only implementations of this are for re-using similar base styling across modules and\n          occasionally extending things like `@extend %t-caption`, so, you guessed it, we look like a caption! This\n          is useful when the thing you're styling requires several properties, and exceeds the boundary of using a utility class, thus extending\n          the utility class within the styling class is appropriate. As a side benefit, it allows us to have a single source of\n          truth. If our caption styles change, we only have to look in one place.\n\n");dom.appendChild(el5,el6);var el6=dom.createElement("p");dom.setAttribute(el6,"class","t-good u-mt");var el7=dom.createTextNode("Good!");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("code");var el7=dom.createTextNode("\n.ko-info-bar {\n  @extend %base-bar-styles;\n}\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n\n");dom.appendChild(el5,el6);var el6=dom.createElement("p");dom.setAttribute(el6,"class","t-bad");var el7=dom.createTextNode("Naughty!");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("code");var el7=dom.createTextNode("\n.ko-info-bar {\n  @extend .base-bar-styles;\n}\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createTextNode("\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n  ");dom.appendChild(el2,el3);dom.appendChild(el1,el2);var el2=dom.createTextNode("\n\n  ");dom.appendChild(el1,el2);var el2=dom.createElement("div");dom.setAttribute(el2,"class","styleguide-item");var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("h2");dom.setAttribute(el3,"class","styleguide-item__title");var el4=dom.createTextNode("z-index");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("div");dom.setAttribute(el3,"class","layout");var el4=dom.createTextNode("\n      ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/2");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          z-index is notoriously a frustrating part of dealing with CSS, so we have\n          implemented some helper functions and standards to help mitigate this.\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          For the sake of typing, simplicity and the current scope not warranting it, we\n          never exceed a z-index of 100. Major increments will be made in 10, medium by 5, minor by 1.\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          Major increments are to differentiate between modules and regions, medium is to\n          distinguish between similar modules that require a tight hierarchy,\n          and lastly, the minor are there to solve very focused edge cases and issues.\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          All of these will be declared within the app/styles/settings/_z-index.scss and should never be done\n          elsewhere. Aiming for the unicorn that is the single source of truth. Please be sparing when making\n          new additions, a new module does not necessarily warrant a new entry. There are generic\n          ones that we should reuse as much as possible (dropdown, raised, alert — etc).\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          Using the function should be familiar to all of you, it works a lot like translations. You can declare\n          a standalone z-index, or nest them under a namespace.\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          For a standalone z-index you would do:\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\n.alert {\n  z-index: $z-alert;\n}\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          For a nested z-index you would do:\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\n.alert {\n  z-index: $z-modal-editor;\n}\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createComment("\n   ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/2");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\n$z-layers: (\n  'overlay': 100,\n  'alert': 80,\n  'notification': 70,\n  'tooltip': 60,\n  'search': (\n    'input': 70,\n    'results': 70\n  ),\n  'menu': (\n    'action': 50\n  ),\n  'modal': (\n    'default': 50,\n    'editor': 51,\n    'example-higher': 52\n  ),\n  'pagination': 40,\n  'dropdown': 30,\n  'raised': 20,\n  'default': 10,\n  'hidden': -1\n);\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createTextNode("\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n  ");dom.appendChild(el2,el3);dom.appendChild(el1,el2);var el2=dom.createTextNode("\n\n  ");dom.appendChild(el1,el2);var el2=dom.createElement("div");dom.setAttribute(el2,"class","styleguide-item");var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("h2");dom.setAttribute(el3,"class","styleguide-item__title");dom.setAttribute(el3,"id","headings");var el4=dom.createTextNode("Headings");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("h1");var el4=dom.createTextNode("Heading 1");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("h2");var el4=dom.createTextNode("Heading 2");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("h3");var el4=dom.createTextNode("Heading 3");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("h4");var el4=dom.createTextNode("Heading 3");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("h5");var el4=dom.createTextNode("Heading 5");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("h6");var el4=dom.createTextNode("Heading 6");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("div");dom.setAttribute(el3,"class","layout");var el4=dom.createTextNode("\n      ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/2");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("h2");dom.setAttribute(el5,"class","heading");var el6=dom.createTextNode("\n          I am a heading\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("h6");dom.setAttribute(el5,"class","subheading");var el6=dom.createTextNode("\n          I am a subheading\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\n");dom.appendChild(el5,el6);var el6=dom.createComment("");dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createComment("\n   ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/2");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("h2");dom.setAttribute(el5,"class","heading heading--capitalized");var el6=dom.createTextNode("\n          I am a capitalized heading\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\n");dom.appendChild(el5,el6);var el6=dom.createComment("");dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createTextNode("\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n  ");dom.appendChild(el2,el3);dom.appendChild(el1,el2);var el2=dom.createTextNode("\n\n  ");dom.appendChild(el1,el2);var el2=dom.createElement("div");dom.setAttribute(el2,"class","styleguide-item");var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("h2");dom.setAttribute(el3,"class","styleguide-item__title");var el4=dom.createTextNode("Arrow");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("p");dom.setAttribute(el3,"class","styleguide-item__content");var el4=dom.createTextNode("\n      It is worth noting, that for the sake of cross browser support and more importantly,\n      allowing JavaScript to position the arrow dynamically, the arrow cannot be implemented via\n      ::before/::after, so to use the arrow, the parent's immediate child must be the div\n      containing the arrow classes you wish to use.\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("div");dom.setAttribute(el3,"class","layout");var el4=dom.createTextNode("\n      ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/2");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");dom.setAttribute(el5,"class","box u-pos-rel");var el6=dom.createTextNode("\n          I have an arrow at the top! :)\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("div");dom.setAttribute(el6,"class","arrow arrow--top arrow--no-title");dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\n");dom.appendChild(el5,el6);var el6=dom.createComment("");dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createComment("\n   ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/2");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");dom.setAttribute(el5,"class","box u-pos-rel");var el6=dom.createTextNode("\n          I have an arrow at the bottom! :(\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("div");dom.setAttribute(el6,"class","arrow arrow--bottom");dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\n");dom.appendChild(el5,el6);var el6=dom.createComment("");dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createTextNode("\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n  ");dom.appendChild(el2,el3);dom.appendChild(el1,el2);var el2=dom.createTextNode("\n\n  ");dom.appendChild(el1,el2);var el2=dom.createElement("div");dom.setAttribute(el2,"class","styleguide-item");var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("h2");dom.setAttribute(el3,"class","styleguide-item__title");var el4=dom.createTextNode("Box");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("div");dom.setAttribute(el3,"class","layout");var el4=dom.createTextNode("\n      ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/2");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");dom.setAttribute(el5,"class","box");var el6=dom.createTextNode("\n          I am a standard box!\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\n");dom.appendChild(el5,el6);var el6=dom.createComment("");dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n    ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createComment("\n ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/2");var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);var el5=dom.createElement("div");dom.setAttribute(el5,"class","box box--secondary");var el6=dom.createTextNode("\n        I am a box with secondary styling!\n      ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\n");dom.appendChild(el5,el6);var el6=dom.createComment("");dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n    ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createTextNode("\n  ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("div");dom.setAttribute(el3,"class","box-container");var el4=dom.createTextNode("\n      ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","box");var el5=dom.createTextNode("I am a box with a container");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createTextNode("\n      ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","box box--wide");var el5=dom.createTextNode("\n        I am a wide box with a container ;)\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createTextNode("\n      ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","box");var el5=dom.createTextNode("I am a box container");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createTextNode("\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("code");var el4=dom.createTextNode("\n");dom.appendChild(el3,el4);var el4=dom.createComment("");dom.appendChild(el3,el4);var el4=dom.createTextNode("\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n  ");dom.appendChild(el2,el3);dom.appendChild(el1,el2);var el2=dom.createTextNode("\n\n  ");dom.appendChild(el1,el2);var el2=dom.createElement("div");dom.setAttribute(el2,"class","styleguide-item");var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("h2");dom.setAttribute(el3,"class","styleguide-item__title");var el4=dom.createTextNode("Flag");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("div");dom.setAttribute(el3,"class","flag");var el4=dom.createTextNode("\n      ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","flag__img");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("img");dom.setAttribute(el5,"width","48");dom.setAttribute(el5,"height","48");dom.setAttribute(el5,"src","http://i.imgur.com/C9QgICy.jpg");dom.setAttribute(el5,"alt","");dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createTextNode("\n      ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","flag__body");var el5=dom.createTextNode("\n        I am the flag body!\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createTextNode("\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("code");var el4=dom.createTextNode("\n");dom.appendChild(el3,el4);var el4=dom.createComment("");dom.appendChild(el3,el4);var el4=dom.createTextNode("\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("p");dom.setAttribute(el3,"class","styleguide-item__content");var el4=dom.createTextNode("\n      There are also some additional modifiers you can use with the flag to change spacing and alignment.\n\n      For even more, check the settings file to enable/disable.\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("code");var el4=dom.createTextNode("\n.flag--small\n.flag--large\n.flag--flush\n\n.flag--top\n.flag--bottom\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n  ");dom.appendChild(el2,el3);dom.appendChild(el1,el2);var el2=dom.createTextNode("\n\n\n  ");dom.appendChild(el1,el2);var el2=dom.createElement("div");dom.setAttribute(el2,"class","styleguide-item");var el3=dom.createTextNode("\n  ");dom.appendChild(el2,el3);dom.appendChild(el1,el2);var el2=dom.createTextNode("\n\n  ");dom.appendChild(el1,el2);var el2=dom.createElement("div");dom.setAttribute(el2,"class","styleguide-item");var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("h2");dom.setAttribute(el3,"class","styleguide-item__title");var el4=dom.createTextNode("Animations");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("div");dom.setAttribute(el3,"class","layout");var el4=dom.createTextNode("\n      ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/3");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");dom.setAttribute(el5,"class","a-error u-p");var el6=dom.createTextNode("\n          I am an error! :(\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createComment("\n   ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/3");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");dom.setAttribute(el5,"class","a-success u-p");var el6=dom.createTextNode("\n          I am success :D\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createComment("\n   ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/3");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");dom.setAttribute(el5,"class","a-fade-in-out u-p");var el6=dom.createTextNode("\n          I fade out, then in. ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createTextNode("\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n  ");dom.appendChild(el2,el3);dom.appendChild(el1,el2);var el2=dom.createTextNode("\n\n  ");dom.appendChild(el1,el2);var el2=dom.createElement("div");dom.setAttribute(el2,"class","styleguide-item");var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("h2");dom.setAttribute(el3,"class","styleguide-item__title");var el4=dom.createTextNode("Variables");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("div");dom.setAttribute(el3,"class","layout");var el4=dom.createTextNode("\n      ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/3");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("h3");dom.setAttribute(el5,"class","styleguide-item__subtitle");var el6=dom.createTextNode("Brand");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\n$brand-rounding | border-radius // 2px\n\n$brand-border\n\n$brand-box-shadow\n$brand-box-shadow--dark\n\n%brand-focus\n\n$brand-avatar-size // 30px\n$brand-avatar-size--large //48px\n$brand-avatar-size--small //24px\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createComment("\n     ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/3");var el5=dom.createTextNode("\n          ");dom.appendChild(el4,el5);var el5=dom.createElement("h3");dom.setAttribute(el5,"class","styleguide-item__subtitle");var el6=dom.createTextNode("Colors");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n          ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\n$color-primary //turquoise\n$color-primary-trim //dark turquoise\n$color-secondary //light grey\n$color-tertiary //dark grey\n$color-trim //dark grey (compliments secondary)\n$color-trim--dark\n\n$color-active\n\n$color-text-primary //black\n$color-text-secondary //grey\n$color-text-secondary--dark //dark grey\n\n\n$color-good //green\n$color-bad //red\n$color-warning //orange\n$color-open //grey\n\n\n$color-twitter\n$color-facebook\n\n$color-note-background //light orange\n$color-note-border //dark orange\n          ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createComment("\n     ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/3");var el5=dom.createTextNode("\n          ");dom.appendChild(el4,el5);var el5=dom.createElement("h3");dom.setAttribute(el5,"class","styleguide-item__subtitle");var el6=dom.createTextNode("Defaults");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n          ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\n$large-spacing-unit // 36px\n$base-spacing-unit // 18px\n$mid-spacing-unit // 13.5px\n$half-spacing-unit // 9px\n$quarter-spacing-unit // 4.5px\n\n$base-font-size // 14px\n$base-line-height // 18px\n$base-text-color // black\n$base-background-color //offset white\n$base-font-family //Source Sans Pro, Sans-Serif\n          ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createTextNode("\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n ");dom.appendChild(el2,el3);dom.appendChild(el1,el2);var el2=dom.createTextNode("\n\n  ");dom.appendChild(el1,el2);var el2=dom.createElement("div");dom.setAttribute(el2,"class","styleguide-item");var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("h2");dom.setAttribute(el3,"class","styleguide-item__title");var el4=dom.createTextNode("\n      Utilities\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("h3");dom.setAttribute(el3,"class","styleguide-item__subtitle");var el4=dom.createTextNode("\n      Layout\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("div");dom.setAttribute(el3,"class","layout");var el4=dom.createTextNode("\n      ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/2");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("h4");var el6=dom.createTextNode("Display");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\n.u-inline-block\n.u-hidden\n.u-invisible\n.u-disable-link\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createComment("\n   ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/2");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("h4");var el6=dom.createTextNode("Positioning");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\n.u-pos-rel\n.u-pos-abs\n%u-v-center, .u-v-center\n%u-h-center, .u-h-center\n%u-center, .u-center\n%absolute-fill\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createComment("\n   ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/2");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("h4");var el6=dom.createTextNode("Alignment");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\n.u-v-align\n.u-v-align-top\n.u-reset-lh\n.u-inherit-lh\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createComment("\n   ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/2");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("h4");var el6=dom.createTextNode("Overflow");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\n.u-overflow-scroll\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createTextNode("\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("h2");dom.setAttribute(el3,"class","styleguide-item__subtitle");var el4=dom.createTextNode("Typography");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("h4");var el4=dom.createTextNode("States");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("div");dom.setAttribute(el3,"class","layout");var el4=dom.createTextNode("\n      ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/2");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","t-good");var el6=dom.createTextNode("I am a good message! :)");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\n");dom.appendChild(el5,el6);var el6=dom.createComment("");dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createComment("\n   ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/2");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","t-bad");var el6=dom.createTextNode("I am a bad message! >:)");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\n");dom.appendChild(el5,el6);var el6=dom.createComment("");dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createComment("\n   ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/2");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","t-warning");var el6=dom.createTextNode("I am a warning message! :(");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\n");dom.appendChild(el5,el6);var el6=dom.createComment("");dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createComment("\n   ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/2");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","t-open");var el6=dom.createTextNode("I am an open message! :(");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\n");dom.appendChild(el5,el6);var el6=dom.createComment("");dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createTextNode("\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("h4");var el4=dom.createTextNode("Position");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("p");dom.setAttribute(el3,"class","t-center");var el4=dom.createTextNode("I am center aligned");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("p");dom.setAttribute(el3,"class","t-left");var el4=dom.createTextNode("I am left aligned");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("p");dom.setAttribute(el3,"class","t-right");var el4=dom.createTextNode("I am right aligned");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("code");var el4=dom.createTextNode("\n");dom.appendChild(el3,el4);var el4=dom.createComment("");dom.appendChild(el3,el4);var el4=dom.createTextNode("\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("h4");var el4=dom.createTextNode("Style");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("div");dom.setAttribute(el3,"class","layout");var el4=dom.createTextNode("\n      ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/3");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","t-caption");var el6=dom.createTextNode("I am a caption!");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\n");dom.appendChild(el5,el6);var el6=dom.createComment("");dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createComment("\n   ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/3");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","t-small");var el6=dom.createTextNode("I am small!");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\n");dom.appendChild(el5,el6);var el6=dom.createComment("");dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createComment("\n   ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/3");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","t-bold");var el6=dom.createTextNode("I am bold!");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\n");dom.appendChild(el5,el6);var el6=dom.createComment("");dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createTextNode("\n");dom.appendChild(el3,el4);var el4=dom.createComment("\n   ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/3");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","t-italic");var el6=dom.createTextNode("I am italic!");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("code");var el6=dom.createTextNode("\n");dom.appendChild(el5,el6);var el6=dom.createComment("");dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createTextNode("\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n  ");dom.appendChild(el2,el3);dom.appendChild(el1,el2);var el2=dom.createTextNode("\n\n  ");dom.appendChild(el1,el2);var el2=dom.createElement("div");dom.setAttribute(el2,"class","styleguide-item");var el3=dom.createTextNode("\n\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("h2");dom.setAttribute(el3,"class","styleguide-item__title");var el4=dom.createTextNode("\n      Icons\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("div");dom.setAttribute(el3,"class","layout");var el4=dom.createTextNode("\n      ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/2");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          For the font icons we are using ");dom.appendChild(el5,el6);var el6=dom.createElement("a");dom.setAttribute(el6,"href","http://icomoon.io");var el7=dom.createTextNode("Icomoon");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode(", these are dealt with and uploaded by\n          Jesse Bennett-Chamberlaine (Designer). For missing, or incorrect icons please contact him. In the same vein, the PNG\n          icons are also supplied by Jesse. When we are ready for live, these will have been optimised into a PNG sprite, using a process yet to be decided.\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          Everything that you require can be found in `styles/partials/_icon.scss`. Here you will find helper mixins and classes.\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("h3");dom.setAttribute(el5,"class","styleguide-item__subtitle");var el6=dom.createTextNode("Mixins");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          Given the HTML structure of:\n\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("code");var el7=dom.createTextNode("\n");dom.appendChild(el6,el7);var el7=dom.createComment("");dom.appendChild(el6,el7);var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n\n          You would write:\n\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("code");var el7=dom.createTextNode("\n.ko-info-bar {\n\n  @include child-icon {\n    color: red;\n  }\n}\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n          Given the HTML structure of:\n\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("code");var el7=dom.createTextNode("\n");dom.appendChild(el6,el7);var el7=dom.createComment("");dom.appendChild(el6,el7);var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n\n          You would write:\n\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("code");var el7=dom.createTextNode("\n.ko-info-bar {\n\n  @include icon {\n    color: red;\n  }\n}\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createComment("\n   ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/2");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("h3");dom.setAttribute(el5,"class","styleguide-item__subtitle");var el6=dom.createTextNode("Utilities");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("h4");var el6=dom.createTextNode("Global");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);var el6=dom.createElement("code");var el7=dom.createTextNode("\n[class^=\"i-\"], [class*=\" i-\"] {\n  &:before {\n    vertical-align: middle;\n  }\n}\n        ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n\n        This is applied to all `.i-` classes, as almost always you will want it to be vertically aligned to the middle.\n        This is also the select that is used by icomoon to apply all their necessary font-family and optimisations.\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("h4");var el6=dom.createTextNode("Positioning");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n        The most infrequently used classes in my experience.\n        ");dom.appendChild(el5,el6);var el6=dom.createElement("code");var el7=dom.createTextNode("\n.i-after {\n  @include icon {\n    @extend %u-v-center;\n    right: $half-spacing-unit;\n  }\n}\n\n.i-center {\n  @include icon {\n    @extend %u-center;\n  }\n}\n\n.i-inherit-lh {\n  line-height: inherit !important;  //override 3rd party css\n}\n        ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("h4");dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("p");dom.setAttribute(el5,"class","styleguide-item__content");var el6=dom.createTextNode("\n\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createTextNode("\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n\n   ");dom.appendChild(el2,el3);var el3=dom.createElement("h3");dom.setAttribute(el3,"class","styleguide-item__subtitle");var el4=dom.createTextNode("\n      Font Icons\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("div");dom.setAttribute(el3,"class","layout i-size-16");var el4=dom.createTextNode("\n      ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/3");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-event-twitter");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-event-twitter");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-happy-outline");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-happy-outline");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-sad-outline");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-sad-outline");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-dragstrip");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-dragstrip");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-add-circle");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-add-circle");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-minus-circle");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-minus-circle");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-caution-solid");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-caution-solid");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-phone-accept");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-phone-accept");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-phone-decline");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-phone-decline");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-happy");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-happy");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-sad");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-sad");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-bell");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-bell");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-plus");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-plus");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-cross");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-cross");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-home");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-home");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-inbox");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-inbox");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-person");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-person");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-insights");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-insights");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-help");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-help");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-search");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-search");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-minus");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-minus");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-triangle");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-triangle");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-plus-square");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-plus-square");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-minus-square");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-minus-square");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-inbox-sm");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-inbox-sm");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-email");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-email");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createComment("\n   ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/3");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-eye");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-eye");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-lock");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-lock");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-info");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-info");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-globe");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-globe");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-cross-bold");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-cross-bold");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-pause");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-pause");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-reply");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-reply");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-caution");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-caution");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-bold");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-bold");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-bullet-list");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-bullet-list");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-camera");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-camera");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-italic");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-italic");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-link");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-link");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-number-list");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-number-list");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-quote");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-quote");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-users");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-users");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-pencil");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-pencil");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-tick");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-tick");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-trash");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-trash");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-grid");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-grid");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-list");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-list");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-search-small");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-search-small");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-clip");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-clip");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-calendar");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-calendar");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-case");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-case");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-clock");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-clock");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createComment("\n   ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/3");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-gear");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-gear");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-icon-help");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-icon-help");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-rocket");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-rocket");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-stopwatch");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-stopwatch");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-user");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-user");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-twitter");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-twitter");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-facebook");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-facebook");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-chevron-large-left");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-chevron-large-left");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-chevron-large-right");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-chevron-large-right");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-select");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-select");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-chevron-double-down");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-chevron-double-down");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-chevron-double-up");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-chevron-double-up");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-chevron-large-down");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-chevron-large-down");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-chevron-large-up");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-chevron-large-up");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-chevron-small-down");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-chevron-small-down");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","i-chevron-small-up");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-chevron-small-up");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createTextNode("\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("h3");dom.setAttribute(el3,"class","styleguide-item__subtitle u-mt");var el4=dom.createTextNode("\n      PNG Icons\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("div");dom.setAttribute(el3,"class","layout");var el4=dom.createTextNode("\n      ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/3");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-png-icon i-png-TEXT");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-png-TEXT");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-png-icon i-png-TEXTAREA");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-png-TEXTAREA");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-png-icon i-png-RADIO");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-png-RADIO");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-png-icon i-png-SELECT");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-png-SELECT");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createComment("\n   ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/3");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-png-icon i-png-CHECKBOX");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-png-CHECKBOX");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-png-icon i-png-NUMERIC");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-png-NUMERIC");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-png-icon i-png-DECIMAL");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-png-DECIMAL");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-png-icon i-png-FILE");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-png-FILE");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createComment("\n   ");dom.appendChild(el3,el4);var el4=dom.createElement("div");dom.setAttribute(el4,"class","layout__item u-1/3");var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-png-icon i-png-YESNO");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-png-YESNO");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-png-icon i-png-CASCADINGSELECT");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-png-CASCADINGSELECT");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-png-icon i-png-DATE");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-png-DATE");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n        ");dom.appendChild(el4,el5);var el5=dom.createElement("div");var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-png-icon i-png-REGEX");var el7=dom.createTextNode("\n          ");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n          ");dom.appendChild(el5,el6);var el6=dom.createElement("span");dom.setAttribute(el6,"class","styleguide-icon");var el7=dom.createTextNode(" i-png-REGEX");dom.appendChild(el6,el7);dom.appendChild(el5,el6);var el6=dom.createTextNode("\n        ");dom.appendChild(el5,el6);dom.appendChild(el4,el5);var el5=dom.createTextNode("\n      ");dom.appendChild(el4,el5);dom.appendChild(el3,el4);var el4=dom.createTextNode("\n    ");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n  ");dom.appendChild(el2,el3);dom.appendChild(el1,el2);var el2=dom.createTextNode("\n\n  ");dom.appendChild(el1,el2);var el2=dom.createElement("div");dom.setAttribute(el2,"class","styleguide-quote");var el3=dom.createTextNode("\n    All men's miseries derive from not being able to sit in a quiet room alone... and write CSS.\n\n    ");dom.appendChild(el2,el3);var el3=dom.createElement("span");dom.setAttribute(el3,"class","styleguide-quote__author");var el4=dom.createTextNode("Blaise Pascal — 1650");dom.appendChild(el3,el4);dom.appendChild(el2,el3);var el3=dom.createTextNode("\n  ");dom.appendChild(el2,el3);dom.appendChild(el1,el2);var el2=dom.createTextNode("\n");dom.appendChild(el1,el2);dom.appendChild(el0,el1);var el1=dom.createTextNode("\n");dom.appendChild(el0,el1);return el0;},buildRenderNodes:function buildRenderNodes(dom,fragment,contextualElement){var element0=dom.childAt(fragment,[0]);var element1=dom.childAt(element0,[7,3]);var element2=dom.childAt(element1,[3]);var element3=dom.childAt(element0,[19,15]);var element4=dom.childAt(element0,[21,5]);var element5=dom.childAt(element0,[23]);var element6=dom.childAt(element5,[3]);var element7=dom.childAt(element0,[33]);var element8=dom.childAt(element7,[11]);var element9=dom.childAt(element7,[25]);var element10=dom.childAt(element0,[35,3,1]);var morphs=new Array(22);morphs[0] = dom.createMorphAt(dom.childAt(element1,[1,5,1]),1,1);morphs[1] = dom.createMorphAt(dom.childAt(element2,[1]),1,1);morphs[2] = dom.createMorphAt(dom.childAt(element2,[5]),1,1);morphs[3] = dom.createMorphAt(dom.childAt(element3,[1,5]),1,1);morphs[4] = dom.createMorphAt(dom.childAt(element3,[3,3]),1,1);morphs[5] = dom.createMorphAt(dom.childAt(element4,[1,3]),1,1);morphs[6] = dom.createMorphAt(dom.childAt(element4,[3,3]),1,1);morphs[7] = dom.createMorphAt(dom.childAt(element6,[1,3]),1,1);morphs[8] = dom.createMorphAt(dom.childAt(element6,[3,3]),1,1);morphs[9] = dom.createMorphAt(dom.childAt(element5,[7]),1,1);morphs[10] = dom.createMorphAt(dom.childAt(element0,[25,5]),1,1);morphs[11] = dom.createMorphAt(dom.childAt(element8,[1,3]),1,1);morphs[12] = dom.createMorphAt(dom.childAt(element8,[3,3]),1,1);morphs[13] = dom.createMorphAt(dom.childAt(element8,[5,3]),1,1);morphs[14] = dom.createMorphAt(dom.childAt(element8,[7,3]),1,1);morphs[15] = dom.createMorphAt(dom.childAt(element7,[21]),1,1);morphs[16] = dom.createMorphAt(dom.childAt(element9,[1,3]),1,1);morphs[17] = dom.createMorphAt(dom.childAt(element9,[3,3]),1,1);morphs[18] = dom.createMorphAt(dom.childAt(element9,[5,3]),1,1);morphs[19] = dom.createMorphAt(dom.childAt(element9,[8,3]),1,1);morphs[20] = dom.createMorphAt(dom.childAt(element10,[7,1]),1,1);morphs[21] = dom.createMorphAt(dom.childAt(element10,[9,1]),1,1);return morphs;},statements:[["inline","escape-html",["<div class=\"layout\">\n  <div class=\"layout__item u-1/2\">\n    I am 50% on the left\n  </div><!--\n--><div class=\"layout__item u-1/2\">\n    I am 50% on the right!\n  </div>\n</div>"],[],["loc",[null,[101,0],[110,2]]]],["inline","escape-html",["<div class=\"layout\">"],[],["loc",[null,[118,0],[120,2]]]],["inline","escape-html",["<div class=\"layout__item u-1/2\">"],[],["loc",[null,[131,0],[133,2]]]],["inline","escape-html",["<h2 class=\"heading\">\n  I am a heading\n</h2>\n<h6 class=\"subheading\">\n  I am a subheading\n</h6>"],[],["loc",[null,[545,0],[552,2]]]],["inline","escape-html",["<h2 class=\"heading heading--capitalized\">\n  I am a capitalized heading\n</h2>"],[],["loc",[null,[560,0],[564,2]]]],["inline","escape-html",["<div class=\"box\">\n  <div class=\"arrow arrow--top\"></div>\n</div>"],[],["loc",[null,[587,0],[591,2]]]],["inline","escape-html",["<div class=\"box\">\n  <div class=\"arrow arrow--bottom\"></div>\n</div>"],[],["loc",[null,[600,0],[604,2]]]],["inline","escape-html",["<div class=\"box\">\n  I am a box with secondary styling!\n</div>"],[],["loc",[null,[619,0],[623,2]]]],["inline","escape-html",["<div class=\"box box--secondary\">\n  I am a box with secondary styling!\n</div>"],[],["loc",[null,[631,0],[635,2]]]],["inline","escape-html",["<div class=\"box-container\">\n  <div class=\"box\">I am a box with a container</div>\n  <div class=\"box box--wide\">\n    I am a wide box with a container ;)\n  </div>\n  <div class=\"box\">I am a box container</div>\n</div>"],[],["loc",[null,[648,0],[656,2]]]],["inline","escape-html",["<div class=\"flag\">\n  <div class=\"flag__img\">\n    <img class=\"avatar\" src=\"http://i.imgur.com/C9QgICy.jpg\" alt=\"\">\n  </div>\n  <div class=\"flag__body\">\n    I am the flag body!\n  </div>\n</div>"],[],["loc",[null,[672,0],[681,2]]]],["inline","escape-html",["<p class=\"t-good\">I am a good message! :)</p>"],[],["loc",[null,[858,0],[860,2]]]],["inline","escape-html",["<p class=\"t-bad\">I am a bad message! :)</p>"],[],["loc",[null,[866,0],[868,2]]]],["inline","escape-html",["<p class=\"t-warning\">I am a warning message! :)</p>"],[],["loc",[null,[874,0],[876,2]]]],["inline","escape-html",["<p class=\"t-open\">I am a open message! :)</p>"],[],["loc",[null,[882,0],[884,2]]]],["inline","escape-html",["<p class=\"t-center\">I am center aligned</p>\n<p class=\"t-left\">I am left aligned</p>\n<p class=\"t-right\">I am right aligned</p>"],[],["loc",[null,[896,0],[900,2]]]],["inline","escape-html",["<p class=\"t-caption\">I am a caption!</p>"],[],["loc",[null,[909,0],[911,2]]]],["inline","escape-html",["<p class=\"t-small\">I am small!</p>"],[],["loc",[null,[917,0],[919,2]]]],["inline","escape-html",["<p class=\"t-bold\">I am bold!</p>"],[],["loc",[null,[925,0],[927,2]]]],["inline","escape-html",["<p class=\"t-bold\">I am italic!</p>"],[],["loc",[null,[934,0],[936,2]]]],["inline","escape-html",["<div class=\"ko-info-bar\">\n  <span class=\"ko-info-bar__action\"></span>\n  <span class=\"i-caution-solid\"></span>\n</div>"],[],["loc",[null,[963,0],[967,9]]]],["inline","escape-html",["<div class=\"ko-info-bar i-caution-solid\">\n  <span class=\"ko-info-bar__action\"></span>\n</div>"],[],["loc",[null,[985,0],[988,9]]]]],locals:[],templates:[]};})());});
 define("frontend-cp/session/template", ["exports"], function (exports) {
   exports["default"] = Ember.HTMLBars.template((function () {
     var child0 = (function () {
@@ -67325,6 +69292,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+185fba4d"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+3384f0f2"});
 }
 /* jshint ignore:end */

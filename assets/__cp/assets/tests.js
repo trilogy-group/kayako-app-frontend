@@ -6831,12 +6831,12 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('Validate an email identity of a user', function (assert) {
-    triggerEvent('[class*=ko-dropdown--container--button]:contains("third@example.com")', 'focusin');
+    click('[class*=ember-basic-dropdown-trigger ]:contains("third@example.com")');
 
     andThen(function () {
-      assert.equal(find('.ko-identities__list--emails .ko-dropdown_list__item:eq(0)').text().trim(), 'Remove identity', 'The identity can be removed');
-      assert.equal(find('.ko-identities__list--emails .ko-dropdown_list__item:eq(1)').text().trim(), 'Send verification email', 'The identity is not validated');
-      nativeClick('.ko-identities__list--emails .ko-dropdown_list__item:eq(1)');
+      assert.equal(find('.ko-identities__list--emails .ember-basic-dropdown-content li:eq(0)').text().trim(), 'Remove identity', 'The identity can be removed');
+      assert.equal(find('.ko-identities__list--emails .ember-basic-dropdown-content li:eq(1)').text().trim(), 'Send verification email', 'The identity is not validated');
+      click('.ko-identities__list--emails .ember-basic-dropdown-content li:eq(1)');
     });
 
     andThen(function () {
@@ -6845,10 +6845,10 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('Mark a validate email as primary', function (assert) {
-    triggerEvent('[class*=ko-dropdown--container--button]:contains("second@example.com")', 'focusin');
+    click('[class*=ember-basic-dropdown-trigger ]:contains("second@example.com")');
 
     andThen(function () {
-      nativeClick('.ko-identities__list--emails .ko-dropdown_list__item:contains("Make primary")');
+      click('.ko-identities__list--emails .ember-basic-dropdown-content li:contains("Make primary")');
     });
 
     andThen(function () {
@@ -6863,10 +6863,10 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
       assert.equal(message, 'Are you sure you want to remove this identity?');
       return true;
     };
-    triggerEvent('[class*=ko-dropdown--container--button]:contains("second@example.com")', 'focusin');
+    click('[class*=ember-basic-dropdown-trigger ]:contains("second@example.com")');
 
     andThen(function () {
-      nativeClick('.ko-identities__list--emails .ko-dropdown_list__item:contains("Remove identity")');
+      click('.ko-identities__list--emails .ember-basic-dropdown-content li:contains("Remove identity")');
     });
 
     andThen(function () {
@@ -6877,12 +6877,12 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('Add an email identity', function (assert) {
-    triggerEvent('[class*=ko-dropdown--container--button]:contains("Add new")', 'focusin');
+    click('[class*=ember-basic-dropdown-trigger ]:contains("Add new")');
 
     andThen(function () {
-      nativeClick('.ko-identities__create-dropdown .ko-dropdown_list__item:contains("Email")');
+      click('.ko-identities__create-dropdown .ember-basic-dropdown-content li:contains("Email")');
       fillIn('.ko-identities_form input', 'newemail@example.com');
-      nativeClick('.ko-identities_form button:contains("Save")');
+      click('.ko-identities_form button:contains("Save")');
     });
 
     andThen(function () {
@@ -6892,12 +6892,12 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('Add an invalid email identity shows an error message', function (assert) {
-    triggerEvent('[class*=ko-dropdown--container--button]:contains("Add new")', 'focusin');
+    click('[class*=ember-basic-dropdown-trigger ]:contains("Add new")');
 
     andThen(function () {
-      nativeClick('.ko-identities__create-dropdown .ko-dropdown_list__item:contains("Email")');
+      click('.ko-identities__create-dropdown .ember-basic-dropdown-content li:contains("Email")');
       fillIn('.ko-identities_form input', 'wrong@example');
-      nativeClick('.ko-identities_form button:contains("Save")');
+      click('.ko-identities_form button:contains("Save")');
     });
 
     andThen(function () {
@@ -6926,10 +6926,10 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('Mark a validate twitter as primary', function (assert) {
-    triggerEvent('[class*=ko-dropdown--container--button]:contains("@second")', 'focusin');
+    click('[class*=ember-basic-dropdown-trigger ]:contains("@second")');
 
     andThen(function () {
-      nativeClick('.ko-identities__list--twitters .ko-dropdown_list__item:contains("Make primary")');
+      click('.ko-identities__list--twitters .ember-basic-dropdown-content li:contains("Make primary")');
     });
 
     andThen(function () {
@@ -6944,10 +6944,10 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
       assert.equal(message, 'Are you sure you want to remove this identity?');
       return true;
     };
-    triggerEvent('[class*=ko-dropdown--container--button]:contains("@second")', 'focusin');
+    click('[class*=ember-basic-dropdown-trigger ]:contains("@second")');
 
     andThen(function () {
-      nativeClick('.ko-identities__list--twitters .ko-dropdown_list__item:contains("Remove identity")');
+      click('.ko-identities__list--twitters .ember-basic-dropdown-content li:contains("Remove identity")');
     });
 
     andThen(function () {
@@ -6958,12 +6958,12 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('Add an twitter identity', function (assert) {
-    triggerEvent('[class*=ko-dropdown--container--button]:contains("Add new")', 'focusin');
+    click('[class*=ember-basic-dropdown-trigger ]:contains("Add new")');
 
     andThen(function () {
-      nativeClick('.ko-identities__create-dropdown .ko-dropdown_list__item:contains("Twitter")');
+      click('.ko-identities__create-dropdown .ember-basic-dropdown-content li:contains("Twitter")');
       fillIn('.ko-identities_form input', '@miguelcamba');
-      nativeClick('.ko-identities_form button:contains("Save")');
+      click('.ko-identities_form button:contains("Save")');
     });
 
     andThen(function () {
@@ -6988,10 +6988,10 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('Mark a validate facebook as primary', function (assert) {
-    triggerEvent('[class*=ko-dropdown--container--button]:contains("Mary")', 'focusin');
+    click('[class*=ember-basic-dropdown-trigger ]:contains("Mary")');
 
     andThen(function () {
-      nativeClick('.ko-identities__list--facebooks .ko-dropdown_list__item:contains("Make primary")');
+      click('.ko-identities__list--facebooks .ember-basic-dropdown-content li:contains("Make primary")');
     });
 
     andThen(function () {
@@ -7006,10 +7006,10 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
       assert.equal(message, 'Are you sure you want to remove this identity?');
       return true;
     };
-    triggerEvent('[class*=ko-dropdown--container--button]:contains("Mary")', 'focusin');
+    click('[class*=ember-basic-dropdown-trigger ]:contains("Mary")');
 
     andThen(function () {
-      nativeClick('.ko-identities__list--facebooks .ko-dropdown_list__item:contains("Remove identity")');
+      click('.ko-identities__list--facebooks .ember-basic-dropdown-content li:contains("Remove identity")');
     });
 
     andThen(function () {
@@ -7036,10 +7036,10 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('Mark a validate phone as primary', function (assert) {
-    triggerEvent('[class*=ko-dropdown--container--button]:contains("+44 2222 222222")', 'focusin');
+    click('[class*=ember-basic-dropdown-trigger ]:contains("+44 2222 222222")');
 
     andThen(function () {
-      nativeClick('.ko-identities__list--phones .ko-dropdown_list__item:contains("Make primary")');
+      click('.ko-identities__list--phones .ember-basic-dropdown-content li:contains("Make primary")');
     });
 
     andThen(function () {
@@ -7054,10 +7054,10 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
       assert.equal(message, 'Are you sure you want to remove this identity?');
       return true;
     };
-    triggerEvent('[class*=ko-dropdown--container--button]:contains("+44 2222 222222")', 'focusin');
+    click('[class*=ember-basic-dropdown-trigger ]:contains("+44 2222 222222")');
 
     andThen(function () {
-      nativeClick('.ko-identities__list--phones .ko-dropdown_list__item:contains("Remove identity")');
+      click('.ko-identities__list--phones .ember-basic-dropdown-content li:contains("Remove identity")');
     });
 
     andThen(function () {
@@ -7068,10 +7068,10 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('Add an phone identity', function (assert) {
-    triggerEvent('[class*=ko-dropdown--container--button]:contains("Add new")', 'focusin');
+    click('[class*=ember-basic-dropdown-trigger ]:contains("Add new")');
 
     andThen(function () {
-      nativeClick('.ko-identities__create-dropdown .ko-dropdown_list__item:contains("Phone")');
+      click('.ko-identities__create-dropdown .ember-basic-dropdown-content li:contains("Phone")');
       fillIn('.ko-identities_form input', '+44 (7746) 123-456');
       nativeClick('.ko-identities_form button:contains("Save")');
     });
