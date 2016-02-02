@@ -2016,7 +2016,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/reorder-test', ['e
       var items = findWithAssert(handleSelector);
       var sortedItems = [items[1], items[2], items[3], items[4], items[0]];
 
-      items[4].scrollIntoView();
+      items[0].scrollIntoView();
       reorder.apply(undefined, [handleSelector].concat(sortedItems));
     });
 
@@ -2547,7 +2547,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
       var agent = server.create('user', { role: adminRole });
       var session = server.create('session', { user: agent });
       login(session.id);
-
+      server.create('view');
       server.create('plan', {
         limits: [],
         features: []
@@ -2581,7 +2581,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
     });
 
     andThen(function () {
-      assert.equal(currentURL(), '/admin/manage/views/1');
+      assert.equal(currentURL(), '/admin/manage/views/2');
       assert.equal(find('input[name=title]').val(), fieldTitle);
       findWithAssert('.ko-toggle__container[aria-checked=true]');
       findWithAssert('.qa-just-myself div[aria-checked=true]');
@@ -2627,7 +2627,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
     });
 
     andThen(function () {
-      assert.equal(currentURL(), '/admin/manage/views/1');
+      assert.equal(currentURL(), '/admin/manage/views/2');
       assert.equal(find('input[name=title]').val(), fieldTitle);
       findWithAssert('.ko-toggle__container[aria-checked=true]');
       findWithAssert('.qa-just-myself div[aria-checked=true]');
@@ -2654,7 +2654,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
     });
 
     andThen(function () {
-      assert.equal(currentURL(), '/admin/manage/views/1');
+      assert.equal(currentURL(), '/admin/manage/views/2');
       assert.equal(find('input[name=title]').val(), fieldTitle);
       findWithAssert('.ko-toggle__container[aria-checked=true]');
       findWithAssert('.qa-every-agent div[aria-checked=true]');
@@ -2683,7 +2683,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
     });
 
     andThen(function () {
-      assert.equal(currentURL(), '/admin/manage/views/1');
+      assert.equal(currentURL(), '/admin/manage/views/2');
       assert.equal(find('input[name=title]').val(), fieldTitle);
       findWithAssert('.ko-toggle__container[aria-checked=true]');
       findWithAssert('.qa-specific-team div[aria-checked=true]');
@@ -2712,7 +2712,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
     });
 
     andThen(function () {
-      assert.equal(currentURL(), '/admin/manage/views/1');
+      assert.equal(currentURL(), '/admin/manage/views/2');
       assert.equal(find('input[name=title]').val(), fieldTitle);
       findWithAssert('.ko-toggle__container[aria-checked=true]');
       findWithAssert('.qa-just-myself div[aria-checked=true]');
@@ -7456,39 +7456,6 @@ define('frontend-cp/tests/acceptance/agent/users/create-test', ['exports', 'fron
   });
 });
 /* eslint-disable camelcase, new-cap */
-define("frontend-cp/tests/acceptance/agent/users/user-menu-test", ["exports"], function (exports) {});
-/*
-TODO(SG): Once the user page is implemented and we bring back the menu,
-we'll need to bring that back. Uncommented for now. NOVO-327.
-
-import Ember from 'ember';
-import {
-  app,
-  test
-} from 'frontend-cp/tests/helpers/qunit';
-
-app('Acceptance | User-menu');
-
-test('visiting /user-menu', function(assert) {
-  assert.expect(1);
-  useDefaultScenario();
-  login();
-
-  visit('/agent');
-  visit('/agent/cases');
-
-  andThen(function() {
-    Ember.$("div[class*='ko-user-menu-'] div[class*='ko-dropdown--container']").focus();
-  });
-
-  andThen(function() {
-    nativeClick("div[class*='ko-user-menu-'] div[class*='ko-dropdown--container'] li:nth-of-type(3)");
-  });
-
-  andThen(function() {
-    assert.equal(currentURL(), '/agent/users/1');
-  });
-});*/
 define('frontend-cp/tests/acceptance/suspended-messages-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
 
   var originalConfirm = window.confirm;
@@ -8054,21 +8021,21 @@ define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'ember'], fun
     var isEmberOne = _ember['default'].VERSION.match(/1\.13/);
 
     _ember['default'].Test.registerAsyncHelper('selectChoose', function (app, cssPath, value) {
-      var uuid = find(cssPath).find('.ember-power-select-trigger').attr('class').match(/ember-power-select-trigger-(\d+)/)[1];
+      var id = find(cssPath).find('.ember-power-select-trigger').attr('class').match(/ember-power-select-trigger-ember(\d+)/)[1];
       // If the dropdown is closed, open it
-      if (_ember['default'].$('.ember-power-select-dropdown-' + uuid).length === 0) {
+      if (_ember['default'].$('.ember-power-select-dropdown-ember' + id).length === 0) {
         click(cssPath + ' .ember-power-select-trigger');
       }
 
       // Select the option with the given text
-      click('.ember-power-select-dropdown-' + uuid + ' .ember-power-select-option:contains("' + value + '")');
+      click('.ember-power-select-dropdown-ember' + id + ' .ember-power-select-option:contains("' + value + '")');
     });
 
     _ember['default'].Test.registerAsyncHelper('selectSearch', function (app, cssPath, value) {
-      var uuid = find(cssPath).find('.ember-power-select-trigger').attr('class').match(/ember-power-select-trigger-(\d+)/)[1];
+      var id = find(cssPath).find('.ember-power-select-trigger').attr('class').match(/ember-power-select-trigger-ember(\d+)/)[1];
       var isMultipleSelect = _ember['default'].$(cssPath + ' .ember-power-select-trigger-multiple-input').length > 0;
 
-      var dropdownIsClosed = _ember['default'].$('.ember-power-select-dropdown-' + uuid).length === 0;
+      var dropdownIsClosed = _ember['default'].$('.ember-power-select-dropdown-ember' + id).length === 0;
       if (dropdownIsClosed) {
         click(cssPath + ' .ember-power-select-trigger');
       }
@@ -8081,7 +8048,7 @@ define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'ember'], fun
       } else {
         fillIn('.ember-power-select-search input', value);
         if (isEmberOne) {
-          triggerEvent('.ember-power-select-dropdown-' + uuid + ' .ember-power-select-search input', 'input');
+          triggerEvent('.ember-power-select-dropdown-ember' + id + ' .ember-power-select-search input', 'input');
         }
       }
     });
@@ -9951,97 +9918,6 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/text/componen
     $inputField.val('Khaleesi');
 
     this.$('input').trigger(new $.Event('input'));
-  });
-});
-define('frontend-cp/tests/integration/components/ko-session-widgets/component-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/tests/helpers/setup-mirage-for-integration', 'ember'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpTestsHelpersSetupMirageForIntegration, _ember) {
-
-  (0, _frontendCpTestsHelpersQunit.moduleForComponent)('ko-session-widgets', 'Integration | Component | ko session widgets', {
-    integration: true,
-    setup: function setup() {
-      /* eslint-disable no-undef, camelcase */
-      (0, _frontendCpTestsHelpersSetupMirageForIntegration['default'])(this.container);
-      var role = server.create('role');
-      var defaultUser = server.create('user', {
-        id: 1,
-        full_name: 'John Doe',
-        role: role
-      });
-
-      server.create('session', {
-        user: defaultUser
-      });
-
-      var limit = server.create('limit', {
-        name: 'collaborators',
-        limit: 10
-      });
-
-      var feature = server.create('feature', {
-        code: 3232,
-        name: 'collaborators',
-        description: 'People who may log in as a team member'
-      });
-
-      server.create('plan', {
-        limits: [limit],
-        features: [feature]
-      });
-
-      /*eslint-enable no-undef, camelcase */
-      document.cookie = 'novo_sessionid=pPW6tnOyJG6TmWCVea175d1bfc5dbf073a89ffeb6a2a198c61aae941Aqc7ahmzw8a';
-      this.container.lookup('service:session').getSession();
-    },
-    teardown: function teardown() {
-      document.cookie = 'novo_sessionid=pPW6tnOyJG6TmWCVea175d1bfc5dbf073a89ffeb6a2a198c61aae941Aqc7ahmzw8a; expires=0';
-    }
-  });
-
-  (0, _frontendCpTestsHelpersQunit.test)('it renders', function (assert) {
-    assert.expect(1);
-
-    this.render(_ember['default'].HTMLBars.template((function () {
-      return {
-        meta: {
-          'revision': 'Ember@1.13.13',
-          'loc': {
-            'source': null,
-            'start': {
-              'line': 1,
-              'column': 0
-            },
-            'end': {
-              'line': 3,
-              'column': 2
-            }
-          }
-        },
-        arity: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode('\n    ');
-          dom.appendChild(el0, el1);
-          var el1 = dom.createComment('');
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode('\n  ');
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
-          return morphs;
-        },
-        statements: [['content', 'ko-session-widgets', ['loc', [null, [2, 4], [2, 26]]]]],
-        locals: [],
-        templates: []
-      };
-    })()));
-
-    _ember['default'].run.later(this, function () {
-      assert.equal(this.$('div.flag__body').text().trim(), 'John Doe');
-    });
   });
 });
 define('frontend-cp/tests/page-object/collection', ['exports', 'ember', 'frontend-cp/tests/page-object/descriptor', 'frontend-cp/tests/page-object/create', 'frontend-cp/tests/page-object/properties/count', 'frontend-cp/tests/page-object/helpers'], function (exports, _ember, _frontendCpTestsPageObjectDescriptor, _frontendCpTestsPageObjectCreate, _frontendCpTestsPageObjectPropertiesCount, _frontendCpTestsPageObjectHelpers) {
