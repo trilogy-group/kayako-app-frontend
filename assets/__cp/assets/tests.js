@@ -2763,6 +2763,28 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
     });
   });
 
+  (0, _frontendCpTestsHelpersQunit.test)('creating a new view with a single proposition using is equal to on an autocomplete field', function (assert) {
+    visit('/admin/manage/views/new');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/manage/views/new');
+
+      fillIn('input[name=title]', fieldTitle);
+      click('.ko-radio__label:contains(Just myself)');
+      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Case: Assigned Agent');
+      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'is equal to');
+
+      selectSearch('.qa-predicate-builder--proposition:first .qa-proposition--property', 'current user');
+      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--property', '(current user)');
+      click('.button[name=submit]:first');
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/manage/views');
+      findWithAssert('.qa-view-list-inactive--title:contains(' + fieldTitle + ')');
+    });
+  });
+
   (0, _frontendCpTestsHelpersQunit.test)('creating a new view with a single proposition using is not equal to', function (assert) {
     visit('/admin/manage/views/new');
 

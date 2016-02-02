@@ -35059,6 +35059,7 @@ define('frontend-cp/components/ko-predicate-builder/rule/component', ['exports',
     definitions: [],
     onRuleDeletion: null,
     rule: null,
+    currentUserString: 'current user',
 
     definition: computed('definitions.@each.id', 'rule.field', function () {
       return this.get('definitions').findBy('id', this.get('rule.field'));
@@ -35090,8 +35091,13 @@ define('frontend-cp/components/ko-predicate-builder/rule/component', ['exports',
           }
         case 'autocomplete':
           {
+            var currentUserString = '(' + this.get('currentUserString') + ')';
             if (ruleValue) {
-              return this.get('store').findRecord(this.get('autocompleteType'), ruleValue);
+              if (ruleValue === currentUserString) {
+                return _ember['default'].Object.create({ id: currentUserString, fullName: currentUserString });
+              } else {
+                return this.get('store').findRecord(this.get('autocompleteType'), ruleValue);
+              }
             } else {
               return null;
             }
@@ -35200,7 +35206,23 @@ define('frontend-cp/components/ko-predicate-builder/rule/component', ['exports',
       },
 
       searchAutocomplete: function searchAutocomplete(text) {
-        return this.get('store').query(this.get('autocompleteType'), _npmLodash['default'].extend({}, this.get('autocompleteQueryOptions'), { name: text }));
+        var currentUserString = this.get('currentUserString');
+        var autocompleteType = this.get('autocompleteType');
+        var results = new _ember['default'].A();
+
+        this.get('store').query(autocompleteType, _npmLodash['default'].extend({}, this.get('autocompleteQueryOptions'), { name: text })).then(function (searchResults) {
+          if (autocompleteType === 'user' && currentUserString.indexOf(text) !== -1) {
+            results.pushObject(_ember['default'].Object.create({
+              id: '(' + currentUserString + ')',
+              fullName: '(' + currentUserString + ')'
+            }));
+          }
+          return searchResults.forEach(function (searchResult) {
+            results.pushObject(searchResult);
+          });
+        });
+
+        return results;
       }
     }
   });
@@ -69532,6 +69554,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+2749e12b"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+798d99d3"});
 }
 /* jshint ignore:end */
