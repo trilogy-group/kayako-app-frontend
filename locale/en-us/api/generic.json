@@ -123,6 +123,7 @@
   "identities.primary_comment": "(primary)",
   "identities.remove_identity": "Remove identity",
   "identities.validate_identity": "Send verification email",
+  "identities.copy_identity": "Copy",
   "identities.make_primary": "Make primary",
   "identities.placeholders.email": "Add email address",
   "identities.placeholders.twitter": "Add twitter handle",
