@@ -24861,7 +24861,10 @@ define("frontend-cp/components/ko-dropdown/select/template", ["exports"], functi
   })());
 });
 define('frontend-cp/components/ko-editable-text/component', ['exports', 'ember'], function (exports, _ember) {
-  exports['default'] = _ember['default'].Component.extend({
+  var computed = _ember['default'].computed;
+  var run = _ember['default'].run;
+  var Component = _ember['default'].Component;
+  exports['default'] = Component.extend({
     //Params:
     onValueChange: null,
     placeholder: null,
@@ -24875,30 +24878,20 @@ define('frontend-cp/components/ko-editable-text/component', ['exports', 'ember']
 
     isEditing: false,
     isEdited: false,
-    isEmpty: _ember['default'].computed.not('value'),
-    valueToSave: null,
 
-    valueDidChange: _ember['default'].observer('value', function () {
-      if (this.get('isEditing')) {
-        return;
+    // CPs
+    isEmpty: computed.not('value'),
+    displayText: computed.or('value', 'placeholder'),
+    valueToSave: computed('value', {
+      get: function get() {
+        return this.get('value');
+      },
+      set: function set(_, v) {
+        return v;
       }
-      this.set('valueToSave', this.get('value'));
     }),
 
-    displayText: _ember['default'].computed('value', 'placeholder', function () {
-      return this.get('value') ? this.get('value') : this.get('placeholder');
-    }),
-
-    stopEditing: function stopEditing() {
-      this.set('isEditing', false);
-
-      if (this.get('onValueChange')) {
-        this.sendAction('onValueChange', this.get('valueToSave'));
-      } else {
-        this.set('value', this.get('valueToSave'));
-      }
-    },
-
+    // Actions
     actions: {
       edit: function edit() {
         if (!this.get('isDisabled')) {
@@ -24923,9 +24916,19 @@ define('frontend-cp/components/ko-editable-text/component', ['exports', 'ember']
 
       this.set('isEditing', true);
       this.set('valueToSave', this.get('value'));
-      _ember['default'].run.scheduleOnce('afterRender', this, function () {
+      run.scheduleOnce('afterRender', this, function () {
         _this.$().find('.editable-text__input').focus();
       });
+    },
+
+    stopEditing: function stopEditing() {
+      this.set('isEditing', false);
+
+      if (this.get('onValueChange')) {
+        this.sendAction('onValueChange', this.get('valueToSave'));
+      } else {
+        this.set('value', this.get('valueToSave'));
+      }
     }
   });
 });
@@ -24993,7 +24996,7 @@ define("frontend-cp/components/ko-editable-text/template", ["exports"], function
         morphs[8] = dom.createAttrMorph(element3, 'onkeydown');
         return morphs;
       },
-      statements: [["attribute", "onclick", ["subexpr", "action", ["edit"], [], ["loc", [null, [1, 13], [1, 30]]]]], ["attribute", "class", ["concat", ["editable-text__text ", ["subexpr", "if", [["get", "isDisabled", ["loc", [null, [1, 63], [1, 73]]]], "editable-text__text--disabled"], [], ["loc", [null, [1, 58], [1, 107]]]], " ", ["subexpr", "if", [["get", "isEditing", ["loc", [null, [1, 113], [1, 122]]]], "u-hidden"], [], ["loc", [null, [1, 108], [1, 135]]]], " ", ["subexpr", "if", [["get", "isPusherEdited", ["loc", [null, [1, 141], [1, 155]]]], "editable-text__text--pusher-edited"], [], ["loc", [null, [1, 136], [1, 194]]]], " ", ["subexpr", "if", [["get", "isEdited", ["loc", [null, [1, 201], [1, 209]]]], "editable-text__text--edited"], [], ["loc", [null, [1, 195], [1, 242]]]]]]], ["content", "displayText", ["loc", [null, [1, 244], [1, 259]]]], ["attribute", "onclick", ["subexpr", "action", ["edit"], [], ["loc", [null, [2, 14], [2, 31]]]]], ["attribute", "class", ["concat", ["editable-text__pencil i-pencil i-color-grey i-size-14 u-invisible ", ["subexpr", "if", [["get", "isDisabled", ["loc", [null, [2, 110], [2, 120]]]], "u-hidden"], [], ["loc", [null, [2, 105], [2, 133]]]], " ", ["subexpr", "if", [["get", "isEditing", ["loc", [null, [2, 139], [2, 148]]]], "u-hidden"], [], ["loc", [null, [2, 134], [2, 161]]]]]]], ["attribute", "class", ["concat", ["editable-text__input-field ", ["subexpr", "unless", [["get", "isEditing", ["loc", [null, [4, 48], [4, 57]]]], "u-hidden"], [], ["loc", [null, [4, 39], [4, 70]]]]]]], ["attribute", "value", ["get", "valueToSave", ["loc", [null, [5, 29], [5, 40]]]]], ["attribute", "oninput", ["subexpr", "action", [["subexpr", "mut", [["get", "valueToSave", ["loc", [null, [5, 65], [5, 76]]]]], [], ["loc", [null, [5, 60], [5, 77]]]]], ["value", "target.value"], ["loc", [null, [5, 51], [5, 100]]]]], ["attribute", "onkeydown", ["subexpr", "action", ["handleKeyDown"], [], ["loc", [null, [5, 111], [5, 137]]]]]],
+      statements: [["attribute", "onclick", ["subexpr", "action", ["edit"], [], ["loc", [null, [1, 13], [1, 30]]]]], ["attribute", "class", ["concat", ["editable-text__text ", ["subexpr", "if", [["get", "isDisabled", ["loc", [null, [1, 63], [1, 73]]]], "editable-text__text--disabled"], [], ["loc", [null, [1, 58], [1, 107]]]], " ", ["subexpr", "if", [["get", "isEditing", ["loc", [null, [1, 113], [1, 122]]]], "u-hidden"], [], ["loc", [null, [1, 108], [1, 135]]]], " ", ["subexpr", "if", [["get", "isPusherEdited", ["loc", [null, [1, 141], [1, 155]]]], "editable-text__text--pusher-edited"], [], ["loc", [null, [1, 136], [1, 194]]]], " ", ["subexpr", "if", [["get", "isEdited", ["loc", [null, [1, 201], [1, 209]]]], "editable-text__text--edited"], [], ["loc", [null, [1, 195], [1, 242]]]]]]], ["content", "displayText", ["loc", [null, [1, 244], [1, 259]]]], ["attribute", "onclick", ["subexpr", "action", ["edit"], [], ["loc", [null, [2, 14], [2, 31]]]]], ["attribute", "class", ["concat", ["editable-text__pencil i-pencil i-color-grey i-size-14 u-invisible ", ["subexpr", "if", [["get", "isDisabled", ["loc", [null, [2, 110], [2, 120]]]], "u-hidden"], [], ["loc", [null, [2, 105], [2, 133]]]], " ", ["subexpr", "if", [["get", "isEditing", ["loc", [null, [2, 139], [2, 148]]]], "u-hidden"], [], ["loc", [null, [2, 134], [2, 161]]]]]]], ["attribute", "class", ["concat", ["editable-text__input-field ", ["subexpr", "unless", [["get", "isEditing", ["loc", [null, [4, 48], [4, 57]]]], "u-hidden"], [], ["loc", [null, [4, 39], [4, 70]]]]]]], ["attribute", "value", ["get", "value", ["loc", [null, [5, 29], [5, 34]]]]], ["attribute", "oninput", ["subexpr", "action", [["subexpr", "mut", [["get", "valueToSave", ["loc", [null, [5, 59], [5, 70]]]]], [], ["loc", [null, [5, 54], [5, 71]]]]], ["value", "target.value"], ["loc", [null, [5, 45], [5, 94]]]]], ["attribute", "onkeydown", ["subexpr", "action", ["handleKeyDown"], [], ["loc", [null, [5, 105], [5, 131]]]]]],
       locals: [],
       templates: []
     };
@@ -69554,6 +69557,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+798d99d3"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+efc9a9e1"});
 }
 /* jshint ignore:end */

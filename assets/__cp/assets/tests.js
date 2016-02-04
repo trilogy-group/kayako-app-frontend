@@ -11578,28 +11578,6 @@ define('frontend-cp/tests/unit/components/ko-editable-text/component-test', ['ex
 
     assert.equal(component.isEditing, false, 'is not editable');
   });
-
-  (0, _frontendCpTestsHelpersQunit.test)('focus out cancels editing changes', function (assert) {
-    var _this3 = this;
-
-    assert.expect(1);
-
-    this.render();
-
-    _ember['default'].run(function () {
-      _this3.$(edit).click();
-    });
-
-    _ember['default'].run(function () {
-      component.set('value', 'I am a hunky munkyy');
-    });
-
-    _ember['default'].run(function () {
-      component.focusOut();
-    });
-
-    assert.equal(component.valueToSave, 'I am a hunky munky', 'value stays the same');
-  });
 });
 define('frontend-cp/tests/unit/components/ko-info-bar/field/checkbox/component-test', ['exports', 'ember', 'frontend-cp/tests/helpers/qunit'], function (exports, _ember, _frontendCpTestsHelpersQunit) {
 
