@@ -2214,7 +2214,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['exports', 
 
     visit('/admin/manage/case-forms');
     andThen(function () {
-      assert.equal(find('.ko-reorderable-list .layout__item:eq(0)').text().trim(), 'The Default Case Form (Default)');
+      assert.equal(find('.ko-reorderable-list .ko-simple-list_cell:eq(0)').text().trim(), 'The Default Case Form (Default)');
     });
   });
 
@@ -2227,7 +2227,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['exports', 
 
     visit('/admin/manage/case-forms');
     andThen(function () {
-      assert.deepEqual(_npmLodash['default'].map(find('.ko-reorderable-list .layout__item:eq(1) a'), function (element) {
+      assert.deepEqual(_npmLodash['default'].map(find('.ko-reorderable-list .ko-simple-list_cell:eq(1) a'), function (element) {
         return $(element).text().trim();
       }), ['Edit', 'Disable', 'Make default', 'Delete']);
     });
@@ -2242,7 +2242,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['exports', 
 
     visit('/admin/manage/case-forms');
     andThen(function () {
-      assert.deepEqual(_npmLodash['default'].map(find('.ko-reorderable-list .layout__item:eq(1) a'), function (element) {
+      assert.deepEqual(_npmLodash['default'].map(find('.ko-reorderable-list .ko-simple-list_cell:eq(1) a'), function (element) {
         return $(element).text().trim();
       }), ['Edit']);
     });
@@ -2270,13 +2270,13 @@ define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['exports', 
 
     andThen(function () {
       assert.equal(find('.qa-admin_case-forms__enabled-list .qa-admin_case-forms__list-row').length, 1);
-      nativeClick('.qa-admin_case-forms__enabled-list .layout__item:eq(1) a:contains("Disable")');
+      nativeClick('.qa-admin_case-forms__enabled-list .ko-simple-list_cell:eq(1) a:contains("Disable")');
     });
 
     andThen(function () {
       assert.equal(find('.qa-admin_case-forms__enabled-list .qa-admin_case-forms__list-row').length, 0);
       assert.equal(find('.qa-admin_case-forms__disabled-list .qa-admin_case-forms__list-row').length, 1);
-      nativeClick('.qa-admin_case-forms__disabled-list .layout__item:eq(1) a:contains("Enable")');
+      nativeClick('.qa-admin_case-forms__disabled-list .ko-simple-list_cell:eq(1) a:contains("Enable")');
     });
 
     andThen(function () {
@@ -6380,28 +6380,28 @@ define('frontend-cp/tests/acceptance/agent/cases/create-test', ['exports', 'fron
 
       assert.equal(find('.ko-agent-dropdown__drop').is(':visible'), false, '"+" Dropdown content should be hidden');
 
-      assert.equal(find('.ko-case-content__main .list-bare .info-bar-item:eq(1) input').val(), 'Barney Stinson', 'The recipient of the new case is Barney');
+      assert.equal(find('.ko-layout_advanced__sidebar .list-bare .ko-info-bar_item:eq(1) input').val(), 'Barney Stinson', 'The recipient of the new case is Barney');
       assert.ok(find('.breadcrumbs .breadcrumbs__item:eq(0)').text().trim() === 'Barney Stinson' && find('.breadcrumbs .breadcrumbs__item:eq(1)').text().trim() === 'New case', 'Breadcrums are correct');
       assert.equal(find('.nav-tabs__item').length, 1, 'There is only one tab');
       assert.equal(find('.nav-tabs__item.active').length, 1, 'That tab is active');
       assert.equal(find('.nav-tabs__item').text().trim(), 'New case', 'That tab belongs to the case being created');
-      nativeClick('.ko-case-content__header-title .editable-text__text');
-      fillIn('.ko-case-content__header-title input', 'No internet');
-      triggerEvent('.ko-case-content__header-title input', 'input');
+      nativeClick('.ko-layout_advanced_section__subject .editable-text__text');
+      fillIn('.ko-layout_advanced_section__subject input', 'No internet');
+      triggerEvent('.ko-layout_advanced_section__subject input', 'input');
     });
 
     andThen(function () {
-      find('.ko-case-content__header-title input').trigger($.Event('keydown', { which: 13, keyCode: 13 }));
+      find('.ko-layout_advanced_section__subject input').trigger($.Event('keydown', { which: 13, keyCode: 13 }));
       fillInRichTextEditor('I press the button and the bomb explodes');
-      // nativeClick('.info-bar-item:contains("Case form")');
-      // nativeClick('.info-bar-item:contains("Case form") .dropdown-menu__item:contains("Internet Related Issue")');
-      nativeClick('.ko-case-content__main .list-bare .button--primary');
-      var status = find('.info-bar-item__header:contains("Status")').next().val();
+      // nativeClick('.ko-info-bar_item:contains("Case form")');
+      // nativeClick('.ko-info-bar_item:contains("Case form") .dropdown-menu__item:contains("Internet Related Issue")');
+      nativeClick('.ko-layout_advanced__sidebar .list-bare .button--primary');
+      var status = find('.ko-info-bar_item__header:contains("Status")').next().val();
       assert.equal(status, 'New', 'Status defaults to NEW');
     });
 
     andThen(function () {
-      var status = find('.info-bar-item__header:contains("Status")').next().val();
+      var status = find('.ko-info-bar_item__header:contains("Status")').next().val();
       assert.equal(status, 'Open', 'Status has updated to OPEN');
       assert.equal(find('.nav-tabs__item').length, 1, 'There is only one tab');
       assert.equal(find('.nav-tabs__item').text().trim(), 'No internet', 'That title of the tab has updated');
@@ -6491,7 +6491,7 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
     visit('/agent/cases/' + unassignedCase.id);
 
     andThen(function () {
-      assert.ok(!/Assignee/i.test($('.info-bar-item--edited .info-bar-item__header').text()));
+      assert.ok(!/Assignee/i.test($('.ko-info-bar_item--edited .ko-info-bar_item__header').text()));
     });
   });
 });
@@ -6606,7 +6606,7 @@ define('frontend-cp/tests/acceptance/agent/cases/timeline-test', ['exports', 'fr
 
     andThen(function () {
       assert.equal(find('.ko-feed_item--post').length, 3, 'There is three posts');
-      click('.ko-case-content__editor-placeholder');
+      click('.ko-layout_advanced_editor__placeholder');
     });
 
     andThen(function () {
@@ -6626,7 +6626,7 @@ define('frontend-cp/tests/acceptance/agent/cases/timeline-test', ['exports', 'fr
     andThen(function () {
       assert.equal(find('.ko-feed_item--post').length, 3, 'There is three posts');
       assert.equal(find('.ko-feed_item').length, 3, 'There is three items');
-      click('.ko-case-content__editor-placeholder');
+      click('.ko-layout_advanced_editor__placeholder');
     });
 
     andThen(function () {
@@ -7177,19 +7177,12 @@ define('frontend-cp/tests/acceptance/agent/tabs/tabs-test', ['exports', 'fronten
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('cases open in their own tabs', function (assert) {
-    assert.expect(27);
+    assert.expect(26);
 
     useDefaultScenario();
     login();
 
     visit('/agent');
-
-    andThen(function () {
-      var $tabElements = getTabElements();
-      assert.equal($tabElements.length, 0);
-    });
-
-    visit('/styleguide');
 
     andThen(function () {
       var $tabElements = getTabElements();
@@ -7469,7 +7462,7 @@ define('frontend-cp/tests/acceptance/agent/users/create-test', ['exports', 'fron
 
       assert.equal(find('.ko-agent-dropdown__drop').length, 0, false, '"+" Dropdown content should be hidden');
 
-      assert.equal(find('.ko-user-content__header-title').text().trim(), 'Barney Stinson', 'The name of the user is vissible in the header');
+      assert.equal(find('.ko-layout_advanced_section__subject').text().trim(), 'Barney Stinson', 'The name of the user is vissible in the header');
       assert.equal(find('.breadcrumbs .breadcrumbs__item:eq(0)').text().trim(), 'Barney Stinson', 'Breadcrums are correct');
       assert.equal(find('.nav-tabs__item').length, 1, 'There is only one tab');
       assert.equal(find('.nav-tabs__item.active').length, 1, 'That tab is active');
@@ -11599,7 +11592,7 @@ define('frontend-cp/tests/unit/components/ko-info-bar/field/checkbox/component-t
       component.set('title', title);
     });
 
-    assert.equal($.trim(this.$('.info-bar-item__header').text()), title);
+    assert.equal($.trim(this.$('.ko-info-bar_item__header').text()), title);
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('it has checkboxes', function (assert) {
@@ -11650,7 +11643,7 @@ define('frontend-cp/tests/unit/components/ko-people-popover/component-test', ['e
   var debounce = _ember['default'].run.debounce;
 
   (0, _frontendCpTestsHelpersQunit.moduleForComponent)('ko-people-popover', {
-    needs: ['component:ko-checkbox', 'component:ko-avatar', 'component:ko-loader'],
+    needs: ['component:ko-checkbox', 'component:ko-avatar', 'component:ko-loader', 'component:ko-flag'],
     beforeEach: function beforeEach() {
       component = this.subject();
       _ember['default'].run.debounce = function () {
