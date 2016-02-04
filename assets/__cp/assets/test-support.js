@@ -1684,14 +1684,14 @@ requireModule("ember-testing");
 
 })();
 /*!
- * QUnit 1.20.0
- * http://qunitjs.com/
+ * QUnit 1.21.0
+ * https://qunitjs.com/
  *
  * Copyright jQuery Foundation and other contributors
  * Released under the MIT license
- * http://jquery.org/license
+ * https://jquery.org/license
  *
- * Date: 2015-10-27T17:53Z
+ * Date: 2016-02-01T13:07Z
  */
 
 (function( global ) {
@@ -2081,7 +2081,7 @@ function verifyLoggingCallbacks() {
 				global.console.warn(
 					"QUnit." + loggingCallback + " was replaced with a new value.\n" +
 					"Please, check out the documentation on how to apply logging callbacks.\n" +
-					"Reference: http://api.qunitjs.com/category/callbacks/"
+					"Reference: https://api.qunitjs.com/category/callbacks/"
 				);
 			}
 		}
@@ -2132,7 +2132,7 @@ QUnit.urlParams = urlParams;
 QUnit.isLocal = !( defined.document && window.location.protocol !== "file:" );
 
 // Expose the current QUnit version
-QUnit.version = "1.20.0";
+QUnit.version = "1.21.0";
 
 extend( QUnit, {
 
@@ -2462,6 +2462,7 @@ function setHook( module, hookName ) {
 }
 
 var focused = false;
+var priorityCount = 0;
 
 function Test( settings ) {
 	var i, l;
@@ -2819,10 +2820,10 @@ Test.prototype = {
 	},
 
 	valid: function() {
-		var include,
-			filter = config.filter && config.filter.toLowerCase(),
+		var filter = config.filter,
+			regexFilter = /^(!?)\/([\w\W]*)\/(i?$)/.exec( filter ),
 			module = QUnit.urlParams.module && QUnit.urlParams.module.toLowerCase(),
-			fullName = ( this.module.name + ": " + this.testName ).toLowerCase();
+			fullName = ( this.module.name + ": " + this.testName );
 
 		function testInModuleChain( testModule ) {
 			var testModuleName = testModule.name ? testModule.name.toLowerCase() : null;
@@ -2852,7 +2853,23 @@ Test.prototype = {
 			return true;
 		}
 
-		include = filter.charAt( 0 ) !== "!";
+		return regexFilter ?
+			this.regexFilter( !!regexFilter[1], regexFilter[2], regexFilter[3], fullName ) :
+			this.stringFilter( filter, fullName );
+	},
+
+	regexFilter: function( exclude, pattern, flags, fullName ) {
+		var regex = new RegExp( pattern, flags );
+		var match = regex.test( fullName );
+
+		return match !== exclude;
+	},
+
+	stringFilter: function( filter, fullName ) {
+		filter = filter.toLowerCase();
+		fullName = fullName.toLowerCase();
+
+		var include = filter.charAt( 0 ) !== "!";
 		if ( !include ) {
 			filter = filter.slice( 1 );
 		}
@@ -2936,7 +2953,7 @@ function synchronize( callback, priority ) {
 	}
 
 	if ( priority ) {
-		priorityFill( callback );
+		config.queue.splice( priorityCount++, 0, callback );
 	} else {
 		config.queue.push( callback );
 	}
@@ -2945,22 +2962,6 @@ function synchronize( callback, priority ) {
 		process( last );
 	}
 }
-
-// Place previously failed tests on a queue priority line, respecting the order they get assigned.
-function priorityFill( callback ) {
-	var queue, prioritizedQueue;
-
-	queue = config.queue.slice( priorityFill.pos );
-	prioritizedQueue = config.queue.slice( 0, -config.queue.length + priorityFill.pos );
-
-	queue.unshift( callback );
-	queue.unshift.apply( queue, prioritizedQueue );
-
-	config.queue = queue;
-
-	priorityFill.pos += 1;
-}
-priorityFill.pos = 0;
 
 function saveGlobal() {
 	config.pollution = [];
@@ -3150,7 +3151,7 @@ QUnit.assert = Assert.prototype = {
 	notOk: function( result, message ) {
 		message = message || ( !result ? "okay" : "failed, expected argument to be falsy, was: " +
 			QUnit.dump.parse( result ) );
-		this.push( !result, result, false, message, true );
+		this.push( !result, result, false, message );
 	},
 
 	equal: function( actual, expected, message ) {
@@ -3286,26 +3287,28 @@ QUnit.equiv = (function() {
 	var parents = [];
 	var parentsB = [];
 
+	var getProto = Object.getPrototypeOf || function( obj ) {
+
+		/*jshint proto: true */
+		return obj.__proto__;
+	};
+
 	function useStrictEquality( b, a ) {
 
-		/*jshint eqeqeq:false */
-		if ( b instanceof a.constructor || a instanceof b.constructor ) {
-
-			// To catch short annotation VS 'new' annotation of a declaration. e.g.:
-			// `var i = 1;`
-			// `var j = new Number(1);`
-			return a == b;
-		} else {
-			return a === b;
+		// To catch short annotation VS 'new' annotation of a declaration. e.g.:
+		// `var i = 1;`
+		// `var j = new Number(1);`
+		if ( typeof a === "object" ) {
+			a = a.valueOf();
 		}
+		if ( typeof b === "object" ) {
+			b = b.valueOf();
+		}
+
+		return a === b;
 	}
 
 	function compareConstructors( a, b ) {
-		var getProto = Object.getPrototypeOf || function( obj ) {
-
-			/*jshint proto: true */
-			return obj.__proto__;
-		};
 		var protoA = getProto( a );
 		var protoB = getProto( b );
 
@@ -3334,6 +3337,10 @@ QUnit.equiv = (function() {
 		return false;
 	}
 
+	function getRegExpFlags( regexp ) {
+		return "flags" in regexp ? regexp.flags : regexp.toString().match( /[gimuy]*$/ )[ 0 ];
+	}
+
 	var callbacks = {
 		"string": useStrictEquality,
 		"boolean": useStrictEquality,
@@ -3341,28 +3348,17 @@ QUnit.equiv = (function() {
 		"null": useStrictEquality,
 		"undefined": useStrictEquality,
 		"symbol": useStrictEquality,
+		"date": useStrictEquality,
 
-		"nan": function( b ) {
-			return isNaN( b );
-		},
-
-		"date": function( b, a ) {
-			return QUnit.objectType( b ) === "date" && a.valueOf() === b.valueOf();
+		"nan": function() {
+			return true;
 		},
 
 		"regexp": function( b, a ) {
-			return QUnit.objectType( b ) === "regexp" &&
+			return a.source === b.source &&
 
-				// The regex itself
-				a.source === b.source &&
-
-				// And its modifiers
-				a.global === b.global &&
-
-				// (gmi) ...
-				a.ignoreCase === b.ignoreCase &&
-				a.multiline === b.multiline &&
-				a.sticky === b.sticky;
+				// Include flags in the comparison
+				getRegExpFlags( a ) === getRegExpFlags( b );
 		},
 
 		// - skip when the property is a method of an instance (OOP)
@@ -3375,11 +3371,6 @@ QUnit.equiv = (function() {
 
 		"array": function( b, a ) {
 			var i, j, len, loop, aCircular, bCircular;
-
-			// b could be an object literal here
-			if ( QUnit.objectType( b ) !== "array" ) {
-				return false;
-			}
 
 			len = a.length;
 			if ( len !== b.length ) {
@@ -3419,11 +3410,6 @@ QUnit.equiv = (function() {
 		"set": function( b, a ) {
 			var aArray, bArray;
 
-			// `b` could be any object here
-			if ( QUnit.objectType( b ) !== "set" ) {
-				return false;
-			}
-
 			aArray = [];
 			a.forEach( function( v ) {
 				aArray.push( v );
@@ -3438,11 +3424,6 @@ QUnit.equiv = (function() {
 
 		"map": function( b, a ) {
 			var aArray, bArray;
-
-			// `b` could be any object here
-			if ( QUnit.objectType( b ) !== "map" ) {
-				return false;
-			}
 
 			aArray = [];
 			a.forEach( function( v, k ) {
@@ -3515,37 +3496,23 @@ QUnit.equiv = (function() {
 	};
 
 	function typeEquiv( a, b ) {
-		var prop = QUnit.objectType( a );
-		return callbacks[ prop ]( b, a );
+		var type = QUnit.objectType( a );
+		return QUnit.objectType( b ) === type && callbacks[ type ]( b, a );
 	}
 
 	// The real equiv function
-	function innerEquiv() {
-		var args = [].slice.apply( arguments );
-		if ( args.length < 2 ) {
+	function innerEquiv( a, b ) {
 
-			// End transition
+		// We're done when there's nothing more to compare
+		if ( arguments.length < 2 ) {
 			return true;
 		}
 
-		return ( (function( a, b ) {
-			if ( a === b ) {
+		// Require type-specific equality
+		return ( a === b || typeEquiv( a, b ) ) &&
 
-				// Catch the most you can
-				return true;
-			} else if ( a === null || b === null || typeof a === "undefined" ||
-					typeof b === "undefined" ||
-					QUnit.objectType( a ) !== QUnit.objectType( b ) ) {
-
-				// Don't lose time with error prone cases
-				return false;
-			} else {
-				return typeEquiv( a, b );
-			}
-
-		// Apply transition with (1..n) arguments
-		}( args[ 0 ], args[ 1 ] ) ) &&
-			innerEquiv.apply( this, args.splice( 1, args.length - 1 ) ) );
+			// ...across all consecutive argument pairs
+			( arguments.length === 2 || innerEquiv.apply( this, [].slice.call( arguments, 1 ) ) );
 	}
 
 	return innerEquiv;
@@ -3793,7 +3760,7 @@ QUnit.dump = (function() {
 				key: quote,
 				// function calls it internally, it's the content of the function
 				functionCode: "[code]",
-				// node calls it internally, it's an html attribute value
+				// node calls it internally, it's a html attribute value
 				attribute: quote,
 				string: quote,
 				date: quote,
@@ -3895,13 +3862,13 @@ if ( typeof define === "function" && define.amd ) {
  * The original source of google-diff-match-patch is attributable and licensed as follows:
  *
  * Copyright 2006 Google Inc.
- * http://code.google.com/p/google-diff-match-patch/
+ * https://code.google.com/p/google-diff-match-patch/
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -4128,7 +4095,7 @@ QUnit.diff = ( function() {
 			return 0;
 		}
 		// Binary search.
-		// Performance analysis: http://neil.fraser.name/news/2007/10/09/
+		// Performance analysis: https://neil.fraser.name/news/2007/10/09/
 		pointermin = 0;
 		pointermax = Math.min( text1.length, text2.length );
 		pointermid = pointermax;
@@ -4161,7 +4128,7 @@ QUnit.diff = ( function() {
 			return 0;
 		}
 		// Binary search.
-		// Performance analysis: http://neil.fraser.name/news/2007/10/09/
+		// Performance analysis: https://neil.fraser.name/news/2007/10/09/
 		pointermin = 0;
 		pointermax = Math.min( text1.length, text2.length );
 		pointermid = pointermax;
@@ -4743,7 +4710,7 @@ QUnit.diff = ( function() {
 
 		// Start by looking for a single character match
 		// and increase length until no match is found.
-		// Performance analysis: http://neil.fraser.name/news/2010/11/04/
+		// Performance analysis: https://neil.fraser.name/news/2010/11/04/
 		best = 0;
 		length = 1;
 		while ( true ) {
@@ -4878,7 +4845,7 @@ QUnit.diff = ( function() {
 				// Upon reaching an equality, check for prior redundancies.
 				if ( countDelete + countInsert > 1 ) {
 					if ( countDelete !== 0 && countInsert !== 0 ) {
-						// Factor out any common prefixies.
+						// Factor out any common prefixes.
 						commonlength = this.diffCommonPrefix( textInsert, textDelete );
 						if ( commonlength !== 0 ) {
 							if ( ( pointer - countDelete - countInsert ) > 0 &&
@@ -5723,7 +5690,7 @@ QUnit.log(function( details ) {
 
 		message += "</table>";
 
-	// this occours when pushFailure is set and we have an extracted stack trace
+	// this occurs when pushFailure is set and we have an extracted stack trace
 	} else if ( !details.result && details.source ) {
 		message += "<table>" +
 			"<tr class='test-source'><th>Source: </th><td><pre>" +
@@ -12192,8 +12159,8 @@ define('ember-test-helpers/abstract-test-module', ['exports', 'klassy', 'ember-t
   'use strict';
 
   exports['default'] = _klassy.Klass.extend({
-    init: function init(description, options) {
-      this.description = description;
+    init: function init(name, options) {
+      this.name = name;
       this.callbacks = options || {};
 
       this.initSetupSteps();
@@ -12697,6 +12664,10 @@ define('ember-test-helpers/test-module-for-component', ['exports', 'ember-test-h
         }
         hook.apply(module, Array.prototype.slice.call(arguments, 1));
       };
+
+      context.clearRender = function () {
+        module.teardownComponent();
+      };
     },
 
     setupContext: function setupContext() {
@@ -12720,6 +12691,268 @@ define('ember-test-helpers/test-module-for-component', ['exports', 'ember-test-h
           component.destroy();
         });
       }
+    }
+  });
+});
+define('ember-test-helpers/test-module-for-integration', ['exports', 'ember', 'ember-test-helpers/test-context', 'ember-test-helpers/abstract-test-module', 'ember-test-helpers/test-resolver', 'ember-test-helpers/build-registry', 'ember-test-helpers/has-ember-version'], function (exports, _ember, _emberTestHelpersTestContext, _emberTestHelpersAbstractTestModule, _emberTestHelpersTestResolver, _emberTestHelpersBuildRegistry, _emberTestHelpersHasEmberVersion) {
+  'use strict';
+
+  exports['default'] = _emberTestHelpersAbstractTestModule['default'].extend({
+    initSetupSteps: function initSetupSteps() {
+      this.setupSteps = [];
+      this.contextualizedSetupSteps = [];
+
+      if (this.callbacks.beforeSetup) {
+        this.setupSteps.push(this.callbacks.beforeSetup);
+        delete this.callbacks.beforeSetup;
+      }
+
+      this.setupSteps.push(this.setupContainer);
+      this.setupSteps.push(this.setupContext);
+      this.setupSteps.push(this.setupTestElements);
+      this.setupSteps.push(this.setupAJAXListeners);
+      this.setupSteps.push(this.setupComponentIntegrationTest);
+
+      if (_ember['default'].View && _ember['default'].View.views) {
+        this.setupSteps.push(this._aliasViewRegistry);
+      }
+
+      if (this.callbacks.setup) {
+        this.contextualizedSetupSteps.push(this.callbacks.setup);
+        delete this.callbacks.setup;
+      }
+    },
+
+    initTeardownSteps: function initTeardownSteps() {
+      this.teardownSteps = [];
+      this.contextualizedTeardownSteps = [];
+
+      if (this.callbacks.teardown) {
+        this.contextualizedTeardownSteps.push(this.callbacks.teardown);
+        delete this.callbacks.teardown;
+      }
+
+      this.teardownSteps.push(this.teardownContainer);
+      this.teardownSteps.push(this.teardownContext);
+      this.teardownSteps.push(this.teardownAJAXListeners);
+      this.teardownSteps.push(this.teardownComponent);
+
+      if (_ember['default'].View && _ember['default'].View.views) {
+        this.teardownSteps.push(this._resetViewRegistry);
+      }
+
+      this.teardownSteps.push(this.teardownTestElements);
+
+      if (this.callbacks.afterTeardown) {
+        this.teardownSteps.push(this.callbacks.afterTeardown);
+        delete this.callbacks.afterTeardown;
+      }
+    },
+
+    setupContainer: function setupContainer() {
+      var resolver = (0, _emberTestHelpersTestResolver.getResolver)();
+      var items = (0, _emberTestHelpersBuildRegistry['default'])(resolver);
+
+      this.container = items.container;
+      this.registry = items.registry;
+
+      if ((0, _emberTestHelpersHasEmberVersion['default'])(1, 13)) {
+        var thingToRegisterWith = this.registry || this.container;
+        var router = resolver.resolve('router:main');
+        router = router || _ember['default'].Router.extend();
+        thingToRegisterWith.register('router:main', router);
+      }
+    },
+
+    setupContext: function setupContext() {
+      var subjectName = this.subjectName;
+      var container = this.container;
+
+      var factory = function factory() {
+        return container.lookupFactory(subjectName);
+      };
+
+      this._super({
+        container: this.container,
+        registry: this.registry,
+        factory: factory,
+        register: function register() {
+          var target = this.registry || this.container;
+          return target.register.apply(target, arguments);
+        }
+      });
+
+      var context = this.context = (0, _emberTestHelpersTestContext.getContext)();
+
+      if (_ember['default'].setOwner) {
+        _ember['default'].setOwner(context, this.container.owner);
+      }
+
+      if (_ember['default'].inject) {
+        var keys = (Object.keys || _ember['default'].keys)(_ember['default'].inject);
+        keys.forEach(function (typeName) {
+          context.inject[typeName] = function (name, opts) {
+            var alias = opts && opts.as || name;
+            _ember['default'].set(context, alias, context.container.lookup(typeName + ':' + name));
+          };
+        });
+      }
+
+      // only setup the injection if we are running against a version
+      // of Ember that has `-view-registry:main` (Ember >= 1.12)
+      if (this.container.lookupFactory('-view-registry:main')) {
+        (this.registry || this.container).injection('component', '_viewRegistry', '-view-registry:main');
+      }
+    },
+
+    setupComponentIntegrationTest: function setupComponentIntegrationTest() {
+      var module = this;
+      var context = this.context;
+
+      this.actionHooks = {};
+
+      context.dispatcher = this.container.lookup('event_dispatcher:main') || _ember['default'].EventDispatcher.create();
+      context.dispatcher.setup({}, '#ember-testing');
+      context.actions = module.actionHooks;
+
+      (this.registry || this.container).register('component:-test-holder', _ember['default'].Component.extend());
+
+      context.render = function (template) {
+        if (!template) {
+          throw new Error("in a component integration test you must pass a template to `render()`");
+        }
+        if (_ember['default'].isArray(template)) {
+          template = template.join('');
+        }
+        if (typeof template === 'string') {
+          template = _ember['default'].Handlebars.compile(template);
+        }
+        module.component = module.container.lookupFactory('component:-test-holder').create({
+          layout: template
+        });
+
+        module.component.set('context', context);
+        module.component.set('controller', context);
+
+        _ember['default'].run(function () {
+          module.component.appendTo('#ember-testing');
+        });
+      };
+
+      context.$ = function () {
+        return module.component.$.apply(module.component, arguments);
+      };
+
+      context.set = function (key, value) {
+        var ret = _ember['default'].run(function () {
+          return _ember['default'].set(context, key, value);
+        });
+
+        if ((0, _emberTestHelpersHasEmberVersion['default'])(2, 0)) {
+          return ret;
+        }
+      };
+
+      context.setProperties = function (hash) {
+        var ret = _ember['default'].run(function () {
+          return _ember['default'].setProperties(context, hash);
+        });
+
+        if ((0, _emberTestHelpersHasEmberVersion['default'])(2, 0)) {
+          return ret;
+        }
+      };
+
+      context.get = function (key) {
+        return _ember['default'].get(context, key);
+      };
+
+      context.getProperties = function () {
+        var args = Array.prototype.slice.call(arguments);
+        return _ember['default'].getProperties(context, args);
+      };
+
+      context.on = function (actionName, handler) {
+        module.actionHooks[actionName] = handler;
+      };
+
+      context.send = function (actionName) {
+        var hook = module.actionHooks[actionName];
+        if (!hook) {
+          throw new Error("integration testing template received unexpected action " + actionName);
+        }
+        hook.apply(module, Array.prototype.slice.call(arguments, 1));
+      };
+
+      context.clearRender = function () {
+        module.teardownComponent();
+      };
+    },
+
+    teardownComponent: function teardownComponent() {
+      var component = this.component;
+      if (component) {
+        _ember['default'].run(function () {
+          component.destroy();
+        });
+      }
+    },
+
+    teardownContainer: function teardownContainer() {
+      var container = this.container;
+      _ember['default'].run(function () {
+        container.destroy();
+      });
+    },
+
+    // allow arbitrary named factories, like rspec let
+    contextualizeCallbacks: function contextualizeCallbacks() {
+      var callbacks = this.callbacks;
+      var context = this.context;
+
+      this.cache = this.cache || {};
+      this.cachedCalls = this.cachedCalls || {};
+
+      var keys = (Object.keys || _ember['default'].keys)(callbacks);
+      var keysLength = keys.length;
+
+      if (keysLength) {
+        for (var i = 0; i < keysLength; i++) {
+          this._contextualizeCallback(context, keys[i], context);
+        }
+      }
+    },
+
+    _contextualizeCallback: function _contextualizeCallback(context, key, callbackContext) {
+      var _this = this;
+      var callbacks = this.callbacks;
+      var factory = context.factory;
+
+      context[key] = function (options) {
+        if (_this.cachedCalls[key]) {
+          return _this.cache[key];
+        }
+
+        var result = callbacks[key].call(callbackContext, options, factory());
+
+        _this.cache[key] = result;
+        _this.cachedCalls[key] = true;
+
+        return result;
+      };
+    },
+
+    _aliasViewRegistry: function _aliasViewRegistry() {
+      this._originalGlobalViewRegistry = _ember['default'].View.views;
+      var viewRegistry = this.container.lookup('-view-registry:main');
+
+      if (viewRegistry) {
+        _ember['default'].View.views = viewRegistry;
+      }
+    },
+
+    _resetViewRegistry: function _resetViewRegistry() {
+      _ember['default'].View.views = this._originalGlobalViewRegistry;
     }
   });
 });
@@ -13140,13 +13373,14 @@ define('ember-test-helpers/wait', ['exports', 'ember'], function (exports, _embe
     });
   }
 });
-define('ember-test-helpers', ['exports', 'ember', 'ember-test-helpers/test-module', 'ember-test-helpers/test-module-for-acceptance', 'ember-test-helpers/test-module-for-component', 'ember-test-helpers/test-module-for-model', 'ember-test-helpers/test-context', 'ember-test-helpers/test-resolver'], function (exports, _ember, _emberTestHelpersTestModule, _emberTestHelpersTestModuleForAcceptance, _emberTestHelpersTestModuleForComponent, _emberTestHelpersTestModuleForModel, _emberTestHelpersTestContext, _emberTestHelpersTestResolver) {
+define('ember-test-helpers', ['exports', 'ember', 'ember-test-helpers/test-module', 'ember-test-helpers/test-module-for-acceptance', 'ember-test-helpers/test-module-for-integration', 'ember-test-helpers/test-module-for-component', 'ember-test-helpers/test-module-for-model', 'ember-test-helpers/test-context', 'ember-test-helpers/test-resolver'], function (exports, _ember, _emberTestHelpersTestModule, _emberTestHelpersTestModuleForAcceptance, _emberTestHelpersTestModuleForIntegration, _emberTestHelpersTestModuleForComponent, _emberTestHelpersTestModuleForModel, _emberTestHelpersTestContext, _emberTestHelpersTestResolver) {
   'use strict';
 
   _ember['default'].testing = true;
 
   exports.TestModule = _emberTestHelpersTestModule['default'];
   exports.TestModuleForAcceptance = _emberTestHelpersTestModuleForAcceptance['default'];
+  exports.TestModuleForIntegration = _emberTestHelpersTestModuleForIntegration['default'];
   exports.TestModuleForComponent = _emberTestHelpersTestModuleForComponent['default'];
   exports.TestModuleForModel = _emberTestHelpersTestModuleForModel['default'];
   exports.getContext = _emberTestHelpersTestContext.getContext;
