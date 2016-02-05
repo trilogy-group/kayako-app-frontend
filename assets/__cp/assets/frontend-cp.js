@@ -16978,7 +16978,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
 
       if (!oldAttrs || newAttrs['case'].value !== oldAttrs['case'].value || newAttrs.sortOrder.value !== oldAttrs.sortOrder.value || newAttrs.filter.value !== oldAttrs.filter.value) {
         this.get('caseTab').loadPosts(this.get('tabId'), {
-          caseModel: this.get('case'),
+          model: this.get('case'),
           filter: this.get('filter'),
           sortOrder: this.get('sortOrder'),
           postId: this.get('postId')
@@ -19706,7 +19706,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
             morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
             return morphs;
           },
-          statements: [["inline", "ko-timeline", [], ["model", ["subexpr", "@mut", [["get", "case", ["loc", [null, [233, 12], [233, 16]]]]], [], []], "loadingTop", ["subexpr", "@mut", [["get", "tabState.loadingTop", ["loc", [null, [234, 17], [234, 36]]]]], [], []], "loadingBottom", ["subexpr", "@mut", [["get", "tabState.loadingBottom", ["loc", [null, [235, 20], [235, 42]]]]], [], []], "bottomPostsAvailable", ["subexpr", "@mut", [["get", "tabState.bottomPostsAvailable", ["loc", [null, [236, 27], [236, 56]]]]], [], []], "topPostsAvailable", ["subexpr", "@mut", [["get", "tabState.topPostsAvailable", ["loc", [null, [237, 24], [237, 50]]]]], [], []], "posts", ["subexpr", "@mut", [["get", "tabState.posts", ["loc", [null, [238, 12], [238, 26]]]]], [], []], "sortOrder", ["subexpr", "@mut", [["get", "sortOrder", ["loc", [null, [239, 16], [239, 25]]]]], [], []], "filter", ["subexpr", "@mut", [["get", "filter", ["loc", [null, [240, 13], [240, 19]]]]], [], []], "isReplyDisabled", ["subexpr", "@mut", [["get", "isCaseDisabled", ["loc", [null, [241, 22], [241, 36]]]]], [], []], "onQueryParamsUpdate", ["subexpr", "@mut", [["get", "onQueryParamsUpdate", ["loc", [null, [242, 26], [242, 45]]]]], [], []], "onReplyWithQuote", ["subexpr", "action", ["replyWithQuote", ["get", "tabId", ["loc", [null, [243, 48], [243, 53]]]]], [], ["loc", [null, [243, 23], [243, 54]]]], "onLoadPostsBelow", ["subexpr", "action", ["dispatch", "loadPostsBelow", ["get", "tabId", ["loc", [null, [244, 59], [244, 64]]]], ["subexpr", "hash", [], ["caseModel", ["get", "case", ["loc", [null, [244, 81], [244, 85]]]], "filter", ["get", "filter", ["loc", [null, [244, 93], [244, 99]]]], "sortOrder", ["get", "sortOrder", ["loc", [null, [244, 110], [244, 119]]]], "postId", ["get", "bottomPost.id", ["loc", [null, [244, 127], [244, 140]]]], "including", false], ["loc", [null, [244, 65], [244, 157]]]]], [], ["loc", [null, [244, 23], [244, 158]]]], "onLoadPostsAbove", ["subexpr", "action", ["dispatch", "loadPostsAbove", ["get", "tabId", ["loc", [null, [245, 59], [245, 64]]]], ["subexpr", "hash", [], ["caseModel", ["get", "case", ["loc", [null, [245, 81], [245, 85]]]], "filter", ["get", "filter", ["loc", [null, [245, 93], [245, 99]]]], "sortOrder", ["get", "sortOrder", ["loc", [null, [245, 110], [245, 119]]]], "postId", ["get", "topPost.id", ["loc", [null, [245, 127], [245, 137]]]]], ["loc", [null, [245, 65], [245, 138]]]]], [], ["loc", [null, [245, 23], [245, 139]]]]], ["loc", [null, [232, 4], [246, 6]]]]],
+          statements: [["inline", "ko-timeline", [], ["model", ["subexpr", "@mut", [["get", "case", ["loc", [null, [233, 12], [233, 16]]]]], [], []], "loadingTop", ["subexpr", "@mut", [["get", "tabState.loadingTop", ["loc", [null, [234, 17], [234, 36]]]]], [], []], "loadingBottom", ["subexpr", "@mut", [["get", "tabState.loadingBottom", ["loc", [null, [235, 20], [235, 42]]]]], [], []], "bottomPostsAvailable", ["subexpr", "@mut", [["get", "tabState.bottomPostsAvailable", ["loc", [null, [236, 27], [236, 56]]]]], [], []], "topPostsAvailable", ["subexpr", "@mut", [["get", "tabState.topPostsAvailable", ["loc", [null, [237, 24], [237, 50]]]]], [], []], "posts", ["subexpr", "@mut", [["get", "tabState.posts", ["loc", [null, [238, 12], [238, 26]]]]], [], []], "sortOrder", ["subexpr", "@mut", [["get", "sortOrder", ["loc", [null, [239, 16], [239, 25]]]]], [], []], "filter", ["subexpr", "@mut", [["get", "filter", ["loc", [null, [240, 13], [240, 19]]]]], [], []], "isReplyDisabled", ["subexpr", "@mut", [["get", "isCaseDisabled", ["loc", [null, [241, 22], [241, 36]]]]], [], []], "onQueryParamsUpdate", ["subexpr", "@mut", [["get", "onQueryParamsUpdate", ["loc", [null, [242, 26], [242, 45]]]]], [], []], "onReplyWithQuote", ["subexpr", "action", ["replyWithQuote", ["get", "tabId", ["loc", [null, [243, 48], [243, 53]]]]], [], ["loc", [null, [243, 23], [243, 54]]]], "onLoadPostsBelow", ["subexpr", "action", ["dispatch", "loadPostsBelow", ["get", "tabId", ["loc", [null, [244, 59], [244, 64]]]], ["subexpr", "hash", [], ["model", ["get", "case", ["loc", [null, [244, 77], [244, 81]]]], "filter", ["get", "filter", ["loc", [null, [244, 89], [244, 95]]]], "sortOrder", ["get", "sortOrder", ["loc", [null, [244, 106], [244, 115]]]], "postId", ["get", "bottomPost.id", ["loc", [null, [244, 123], [244, 136]]]], "including", false], ["loc", [null, [244, 65], [244, 153]]]]], [], ["loc", [null, [244, 23], [244, 154]]]], "onLoadPostsAbove", ["subexpr", "action", ["dispatch", "loadPostsAbove", ["get", "tabId", ["loc", [null, [245, 59], [245, 64]]]], ["subexpr", "hash", [], ["model", ["get", "case", ["loc", [null, [245, 77], [245, 81]]]], "filter", ["get", "filter", ["loc", [null, [245, 89], [245, 95]]]], "sortOrder", ["get", "sortOrder", ["loc", [null, [245, 106], [245, 115]]]], "postId", ["get", "topPost.id", ["loc", [null, [245, 123], [245, 133]]]]], ["loc", [null, [245, 65], [245, 134]]]]], [], ["loc", [null, [245, 23], [245, 135]]]]], ["loc", [null, [232, 4], [246, 6]]]]],
           locals: [],
           templates: []
         };
@@ -53926,8 +53926,8 @@ define('frontend-cp/models/case-type', ['exports', 'ember-data'], function (expo
     type: _emberData['default'].attr('string')
   });
 });
-define('frontend-cp/models/case', ['exports', 'ember-data', 'model-fragments'], function (exports, _emberData, _modelFragments) {
-  exports['default'] = _emberData['default'].Model.extend({
+define('frontend-cp/models/case', ['exports', 'ember-data', 'model-fragments', 'frontend-cp/models/has-posts'], function (exports, _emberData, _modelFragments, _frontendCpModelsHasPosts) {
+  exports['default'] = _frontendCpModelsHasPosts['default'].extend({
     assigneeTeam: _emberData['default'].belongsTo('team', { async: false }),
     assigneeAgent: _emberData['default'].belongsTo('user', { async: false }),
     subject: _emberData['default'].attr('string', { defaultValue: '' }),
@@ -54318,6 +54318,11 @@ define('frontend-cp/models/field', ['exports', 'ember', 'ember-data', 'frontend-
 define('frontend-cp/models/has-addresses', ['exports', 'ember-data'], function (exports, _emberData) {
   exports['default'] = _emberData['default'].Model.extend({
     addresses: _emberData['default'].hasMany('contact-address', { async: true, url: 'contacts/addresses' })
+  });
+});
+define('frontend-cp/models/has-posts', ['exports', 'ember-data'], function (exports, _emberData) {
+  exports['default'] = _emberData['default'].Model.extend({
+    posts: _emberData['default'].hasMany('post', { async: true, child: true, polymorphic: true })
   });
 });
 define('frontend-cp/models/has-websites', ['exports', 'ember-data'], function (exports, _emberData) {
@@ -54719,8 +54724,8 @@ define('frontend-cp/models/organization-note', ['exports', 'ember-data', 'fronte
     postType: 'note'
   });
 });
-define('frontend-cp/models/organization', ['exports', 'ember-data', 'ember', 'frontend-cp/mixins/change-aware-model', 'model-fragments'], function (exports, _emberData, _ember, _frontendCpMixinsChangeAwareModel, _modelFragments) {
-  exports['default'] = _emberData['default'].Model.extend(_frontendCpMixinsChangeAwareModel['default'], _ember['default'].Evented, {
+define('frontend-cp/models/organization', ['exports', 'ember-data', 'ember', 'frontend-cp/mixins/change-aware-model', 'model-fragments', 'frontend-cp/models/has-posts'], function (exports, _emberData, _ember, _frontendCpMixinsChangeAwareModel, _modelFragments, _frontendCpModelsHasPosts) {
+  exports['default'] = _frontendCpModelsHasPosts['default'].extend(_frontendCpMixinsChangeAwareModel['default'], _ember['default'].Evented, {
     name: _emberData['default'].attr('string'),
     isShared: _emberData['default'].attr('boolean'),
     brand: _emberData['default'].belongsTo('brand', { async: true }),
@@ -54738,6 +54743,7 @@ define('frontend-cp/models/organization', ['exports', 'ember-data', 'ember', 'fr
     // Shadow children fields
     notes: _emberData['default'].hasMany('organization-note', { child: true, url: 'notes', async: true, noCache: true }),
     tags: _emberData['default'].hasMany('tag', { async: true, child: true, noCache: true }),
+    posts: _emberData['default'].hasMany('post', { async: true, child: true, noCache: true }),
 
     saveWithNote: function saveWithNote(contents) {
       var _this = this;
@@ -54793,7 +54799,7 @@ define('frontend-cp/models/post', ['exports', 'ember-data'], function (exports, 
     updatedAt: _emberData['default'].attr('date'),
 
     // Virtual parent field
-    'case': _emberData['default'].belongsTo('case', { async: true, parent: true })
+    parent: _emberData['default'].belongsTo('has-posts', { async: true, parent: true, polymorphic: true })
   });
 });
 define('frontend-cp/models/postable', ['exports', 'ember-data'], function (exports, _emberData) {
@@ -55136,8 +55142,8 @@ define('frontend-cp/models/user-note', ['exports', 'ember-data', 'frontend-cp/mo
     postType: 'note'
   });
 });
-define('frontend-cp/models/user', ['exports', 'ember-data', 'model-fragments', 'ember', 'frontend-cp/mixins/change-aware-model'], function (exports, _emberData, _modelFragments, _ember, _frontendCpMixinsChangeAwareModel) {
-  exports['default'] = _emberData['default'].Model.extend(_frontendCpMixinsChangeAwareModel['default'], {
+define('frontend-cp/models/user', ['exports', 'ember-data', 'model-fragments', 'ember', 'frontend-cp/mixins/change-aware-model', 'frontend-cp/models/has-posts'], function (exports, _emberData, _modelFragments, _ember, _frontendCpMixinsChangeAwareModel, _frontendCpModelsHasPosts) {
+  exports['default'] = _frontendCpModelsHasPosts['default'].extend(_frontendCpMixinsChangeAwareModel['default'], {
     fullName: _emberData['default'].attr('string'),
     designation: _emberData['default'].attr('string'),
     alias: _emberData['default'].attr('string'),
@@ -55172,6 +55178,7 @@ define('frontend-cp/models/user', ['exports', 'ember-data', 'model-fragments', '
     recentCases: _emberData['default'].hasMany('case', { async: true, child: true, inverse: null, noCache: true }),
     events: _emberData['default'].hasMany('event', { async: true, child: true, inverse: 'creator', noCache: true }),
     tags: _emberData['default'].hasMany('tag', { async: true, child: true, noCache: true }),
+    posts: _emberData['default'].hasMany('post', { async: true, child: true, noCache: true }),
 
     emails: _emberData['default'].hasMany('identity-email', { async: false, url: 'identities/emails' }),
     phones: _emberData['default'].hasMany('identity-phone', { async: false, url: 'identities/phones' }),
@@ -56610,18 +56617,10 @@ define('frontend-cp/services/case-tab', ['exports', 'ember', 'npm:lodash', 'fron
     });
   };
 
-  var includeActivities = function includeActivities(filter) {
-    return filter === 'all' || filter === 'posts,activities';
-  };
-
-  var includeEvents = function includeEvents(filter) {
-    return filter === 'all' || filter === 'posts,events';
-  };
-
   exports['default'] = _ember['default'].Service.extend({
     intl: _ember['default'].inject.service(),
     metrics: _ember['default'].inject.service(),
-    timelineCacheService: _ember['default'].inject.service('case-timeline-cache'),
+    timeline: _ember['default'].inject.service('timeline'),
     store: _ember['default'].inject.service(),
     tabStore: _ember['default'].inject.service(),
     tagService: _ember['default'].inject.service('tags'),
@@ -56710,7 +56709,7 @@ define('frontend-cp/services/case-tab', ['exports', 'ember', 'npm:lodash', 'fron
     },
 
     loadPosts: function loadPosts(tabId, _ref) {
-      var caseModel = _ref.caseModel;
+      var model = _ref.model;
       var filter = _ref.filter;
       var sortOrder = _ref.sortOrder;
       var postId = _ref.postId;
@@ -56719,65 +56718,28 @@ define('frontend-cp/services/case-tab', ['exports', 'ember', 'npm:lodash', 'fron
       state.set('posts', []);
       state.set('bottomPostsAvailable', true);
       state.set('topPostsAvailable', Boolean(postId));
-      this.loadPostsBelow(tabId, { caseModel: caseModel, filter: filter, sortOrder: sortOrder, postId: postId || null, including: true });
+      this.loadPostsBelow(tabId, { model: model, filter: filter, sortOrder: sortOrder, postId: postId || null, including: true });
     },
 
     loadPostsAbove: function loadPostsAbove(tabId, _ref2) {
-      var caseModel = _ref2.caseModel;
+      var model = _ref2.model;
       var filter = _ref2.filter;
       var sortOrder = _ref2.sortOrder;
       var postId = _ref2.postId;
 
       var state = this.getState(tabId);
-      if (state.get('loadingTop')) {
-        return;
-      }
-      if (caseModel.get('isNew')) {
-        return;
-      }
-      state.set('loadingTop', true);
-      this.get('timelineCacheService').getPosts(caseModel, postId, {
-        direction: sortOrder === 'newest' ? 'newer' : 'older',
-        includeActivities: includeActivities(filter),
-        includeEvents: includeEvents(filter)
-      }).then(function (_ref3) {
-        var posts = _ref3.posts;
-        var morePostsAvailable = _ref3.morePostsAvailable;
-
-        state.get('posts').unshiftObjects(posts.reverse());
-        state.set('loadingTop', false);
-        state.set('topPostsAvailable', morePostsAvailable);
-      });
+      this.get('timeline').loadPostsAbove(state, { model: model, filter: filter, sortOrder: sortOrder, postId: postId });
     },
 
-    loadPostsBelow: function loadPostsBelow(tabId, _ref4) {
-      var caseModel = _ref4.caseModel;
-      var filter = _ref4.filter;
-      var sortOrder = _ref4.sortOrder;
-      var postId = _ref4.postId;
-      var including = _ref4.including;
+    loadPostsBelow: function loadPostsBelow(tabId, _ref3) {
+      var model = _ref3.model;
+      var filter = _ref3.filter;
+      var sortOrder = _ref3.sortOrder;
+      var postId = _ref3.postId;
+      var including = _ref3.including;
 
       var state = this.getState(tabId);
-      if (state.get('loadingBottom')) {
-        return;
-      }
-      if (caseModel.get('isNew')) {
-        return;
-      }
-      state.set('loadingBottom', true);
-      this.get('timelineCacheService').getPosts(caseModel, postId, {
-        direction: sortOrder === 'newest' ? 'older' : 'newer',
-        including: including,
-        includeActivities: includeActivities(filter),
-        includeEvents: includeEvents(filter)
-      }).then(function (_ref5) {
-        var posts = _ref5.posts;
-        var morePostsAvailable = _ref5.morePostsAvailable;
-
-        state.get('posts').pushObjects(posts);
-        state.set('loadingBottom', false);
-        state.set('bottomPostsAvailable', morePostsAvailable);
-      });
+      this.get('timeline').loadPostsBelow(state, { model: model, filter: filter, sortOrder: sortOrder, postId: postId, including: including });
     },
 
     refreshTags: function refreshTags(model) {
@@ -56787,8 +56749,7 @@ define('frontend-cp/services/case-tab', ['exports', 'ember', 'npm:lodash', 'fron
 
     addPostFromReply: function addPostFromReply(tabId, model, post, sortOrder) {
       var state = this.getState(tabId);
-
-      this.get('timelineCacheService').addPost(model, post);
+      this.get('timeline').addPost(model, post);
 
       if (sortOrder === 'newest' && !state.get('topPostsAvailable')) {
         state.get('posts').unshiftObject(post);
@@ -57410,407 +57371,6 @@ define('frontend-cp/services/case-tab', ['exports', 'ember', 'npm:lodash', 'fron
     }
   });
 });
-define('frontend-cp/services/case-timeline-cache', ['exports', 'ember', 'npm:lodash'], function (exports, _ember, _npmLodash) {
-  var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
-
-  function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-  var Promise = _ember['default'].RSVP.Promise;
-  var defaultPostCount = 10;
-
-  exports['default'] = _ember['default'].Service.extend({
-    store: _ember['default'].inject.service(),
-
-    cache: null,
-
-    initCache: _ember['default'].on('init', function () {
-      this.set('cache', {});
-    }),
-
-    /**
-     * Return cache object for a given case
-     *
-     * @param {DS.Model} caseModel case
-     * @return {*} cache object
-     */
-    getCaseCache: function getCaseCache(caseModel) {
-      var caseCache = this.get('cache')[caseModel.get('id')];
-      if (!caseCache) {
-        caseCache = this.get('cache')[caseModel.get('id')] = {
-          posts: {},
-          newestPost: null,
-          oldestPost: null,
-          total: null,
-          activities: [],
-          firstActivityTimestamp: null,
-          lastActivityTimestamp: null
-        };
-      }
-      return caseCache;
-    },
-
-    /**
-     * Return the most recent post, or null if no posts. Result is wrapped
-     * in a Promise.
-     *
-     * @private
-     * @param {DS.Model} caseModel case
-     * @return {Promise} post
-     */
-    _getNewestPost: function _getNewestPost(caseModel) {
-      var caseCache = this.getCaseCache(caseModel);
-      return this._fetchPosts(caseModel).then(function () {
-        return caseCache.newestPost;
-      });
-    },
-
-    /**
-     * Add post to the cache.
-     *
-     * @param {DS.Model} caseModel case
-     * @param {DS.Model} post post
-     */
-    addPost: function addPost(caseModel, post) {
-      var caseCache = this.getCaseCache(caseModel);
-      caseCache.posts[post.get('sequence')] = post;
-      caseCache.total += 1;
-      var previousPost = caseCache.newestPost;
-      if (!previousPost || previousPost.get('sequence') < post.get('sequence')) {
-        caseCache.newestPost = post;
-      }
-    },
-
-    /**
-     * Return the oldest post, or null if no posts. Result is wrapped
-     * in a Promise.
-     *
-     * @private
-     * @param {DS.Model} caseModel case
-     * @return {Promise<DS.Model>} post
-     */
-    _getOldestPost: function _getOldestPost(caseModel) {
-      var caseCache = this.getCaseCache(caseModel);
-      if (caseCache.oldestPost) {
-        return Promise.resolve(caseCache.oldestPost);
-      } else if (caseCache.total === 0) {
-        return Promise.resolve(null);
-      } else {
-        return this._fetchPosts(caseModel, { afterId: 0 }).then(function () {
-          return caseCache.oldestPost;
-        });
-      }
-    },
-
-    /**
-     * Get a single post.
-     *
-     * @private
-     * @param {DS.Model} caseModel case
-     * @param {DS.Model} postId post id
-     * @return {Promise<DS.Model>} post
-     */
-    _getSinglePost: function _getSinglePost(caseModel, postId) {
-      var post = this.get('store').peekRecord('post', postId);
-      if (post) {
-        if (post.get('isReloading')) {
-          return post.reload();
-        } else {
-          return Promise.resolve(post);
-        }
-      } else {
-        // TODO FIXME the API should allow fetching post without providing case id
-        post = this.get('store').createRecord('post', { id: postId });
-        post.set('case', caseModel);
-        return post.reload();
-      }
-    },
-
-    /**
-     * Return posts for a given case.
-     *
-     * @param {DS.Model} caseModel case
-     * @param {Number} postId reference post id
-     * @param {[String]} options.direction whether to request 'older' or 'newer' posts
-     * @param {[Number]} options.count post count
-     * @param {[Number]} options.including whether to include the post with specified id
-     * @return {Promise} posts
-     */
-    getPosts: function getPosts(caseModel, postId) {
-      var _this = this;
-
-      var _ref = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
-
-      var _ref$direction = _ref.direction;
-      var direction = _ref$direction === undefined ? 'older' : _ref$direction;
-      var _ref$count = _ref.count;
-      var count = _ref$count === undefined ? defaultPostCount : _ref$count;
-      var _ref$includeActivities = _ref.includeActivities;
-      var includeActivities = _ref$includeActivities === undefined ? true : _ref$includeActivities;
-      var _ref$includeEvents = _ref.includeEvents;
-      var includeEvents = _ref$includeEvents === undefined ? true : _ref$includeEvents;
-      var _ref$including = _ref.including;
-      var including = _ref$including === undefined ? false : _ref$including;
-
-      var post = undefined;
-
-      if (postId) {
-        post = this._getSinglePost(caseModel, postId);
-      } else {
-        post = direction === 'older' ? this._getNewestPost(caseModel) : this._getOldestPost(caseModel);
-      }
-
-      return post.then(function (post) {
-        if (!post) {
-          return { posts: [], morePostsAvailable: false };
-        }
-        return _this._getPostsRecursive(caseModel, post, direction, including ? count - 1 : count).then(function (posts) {
-          return [post].concat(posts);
-        })
-        // Load activities
-        .then(function (posts) {
-          return Promise.all([includeActivities ? _this._getActivitiesForPosts(caseModel, posts, direction, 'activity') : [], includeEvents ? _this._getActivitiesForPosts(caseModel, posts, direction, 'event') : [], posts]);
-        }).then(function (_ref2) {
-          var _ref22 = _slicedToArray(_ref2, 3);
-
-          var activities = _ref22[0];
-          var events = _ref22[1];
-          var posts = _ref22[2];
-
-          var caseCache = _this.getCaseCache(caseModel);
-          var morePostsAvailable = undefined;
-          if (direction === 'older') {
-            morePostsAvailable = posts.get('lastObject.sequence') !== 1;
-          } else {
-            morePostsAvailable = posts.get('lastObject.sequence') !== caseCache.total;
-          }
-
-          // Merge events, activities and posts
-          var all = _this._mergeTwoTimelines(_this._mergeTwoTimelines(activities, events, direction), posts, direction);
-          // Finally, remove initial post if it's not required
-          all = including ? all : all.filter(function (p) {
-            return p !== post;
-          });
-          return { posts: all, morePostsAvailable: morePostsAvailable };
-        });
-      });
-    },
-
-    /**
-     * Perform merge by timestamp.
-     * When same-date conflicts occur, the first timeline objects will be
-     * considered to be newer.
-     *
-     * @private
-     * @param {Array<DS.Model>} activities 1st timeline
-     * @param {Array<DS.Model>} posts 2nd timeline
-     * @param {String} direction older or newer
-     * @return {Array<DS.Model>} merged timeline
-     */
-    _mergeTwoTimelines: function _mergeTwoTimelines(activities, posts, direction) {
-      var postsWithActivities = [];
-      while (posts.length !== 0 || activities.length !== 0) {
-        var topPost = posts[0];
-        var topActivity = activities[0];
-
-        if (!topPost) {
-          postsWithActivities.push(topActivity);
-          activities.splice(0, 1);
-          continue;
-        }
-
-        if (!topActivity) {
-          postsWithActivities.push(topPost);
-          posts.splice(0, 1);
-          continue;
-        }
-
-        var postDate = topPost.get('createdAt');
-        var activityDate = topActivity.get('createdAt');
-
-        if (direction === 'newer') {
-          if (activityDate.getTime() < postDate.getTime()) {
-            postsWithActivities.push(topActivity);
-            activities.splice(0, 1);
-          } else {
-            postsWithActivities.push(topPost);
-            posts.splice(0, 1);
-          }
-        } else if (direction === 'older') {
-          if (postDate.getTime() > activityDate.getTime()) {
-            postsWithActivities.push(topPost);
-            posts.splice(0, 1);
-          } else {
-            postsWithActivities.push(topActivity);
-            activities.splice(0, 1);
-          }
-        }
-      }
-      return postsWithActivities;
-    },
-
-    /**
-     * Get all activites for a range of posts.
-     *
-     * @private
-     * @param {DS.Model} caseModel case
-     * @param {Array<DS.Model>} posts posts
-     * @param {String} direction older or newer
-     * @param {String} type activity or event
-     * @return {Promise<Array<DS.Model>>} activities
-     */
-    _getActivitiesForPosts: function _getActivitiesForPosts(caseModel, posts, direction, type) {
-      var _this2 = this;
-
-      var cache = this.getCaseCache(caseModel);
-
-      var parseNextUrl = function parseNextUrl(nextUrl) {
-        return _npmLodash['default'].zipObject(nextUrl.split('&').map(function (segment) {
-          return segment.split('=');
-        }));
-      };
-
-      // Fetch all activities or events between two points in time (inclusive).
-      var fetchActivities = function fetchActivities(timestamps, end, direction) {
-        return _this2.get('store').query(type, {
-          parent: type === 'activity' ? caseModel : caseModel.get('requester'),
-          // since and until are exclusive
-          since: timestamps.since,
-          until: timestamps.until,
-          sort_order: direction === 'newer' ? 'ASC' : 'DESC',
-          limit: 10
-        }).then(function (result) {
-          var isActivityNotCreatedBeforeLastRecord = function isActivityNotCreatedBeforeLastRecord(activity) {
-            return activity.get('createdAt').getTime() >= end.getTime();
-          };
-          var isActivityNotCreatedAfterLastRecord = function isActivityNotCreatedAfterLastRecord(activity) {
-            return activity.get('createdAt').getTime() <= end.getTime();
-          };
-          var filteringFunction = undefined;
-          if (!end) {
-            filteringFunction = function () {
-              return true;
-            };
-          } else if (direction === 'older') {
-            filteringFunction = isActivityNotCreatedBeforeLastRecord;
-          } else {
-            filteringFunction = isActivityNotCreatedAfterLastRecord;
-          }
-
-          var activities = _npmLodash['default'].filter(result.toArray(), filteringFunction);
-          if (activities.length < 10) {
-            return activities;
-          } else {
-            var nextUrl = _this2.get('store').metadataFor('activity').next;
-            return fetchActivities(parseNextUrl(nextUrl), end, direction).then(function (moreActivities) {
-              return activities.concat(moreActivities);
-            });
-          }
-        });
-      };
-
-      var getActivitiesBetweenCases = function getActivitiesBetweenCases(from, to, direction) {
-        var newer = direction === 'newer';
-        var isBounded = !to || (newer ? to.get('sequence') === cache.total : to.get('sequence') === 1);
-        var start = new Date(from.get('createdAt').getTime() - (newer ? 0 : 1000));
-        var end = !isBounded ? new Date(to.get('createdAt').getTime() - (newer ? 1000 : 0)) : null;
-        var timestamps = {
-          since: direction === 'newer' ? Math.floor((start.getTime() - 1000) / 1000) : null,
-          until: direction === 'older' ? Math.floor((start.getTime() + 1000) / 1000) : null
-        };
-        return fetchActivities(timestamps, end, direction);
-      };
-
-      var from = posts[0];
-      var to = posts.length === 1 ? null : posts[posts.length - 1];
-
-      return getActivitiesBetweenCases(from, to, direction);
-    },
-
-    /**
-     * Recursive function used by getPosts
-     *
-     * @private
-     * @param {DS.Model} caseModel case
-     * @param {DS.Model} post post
-     * @param {DS.Model} direction 'older' or 'newer'
-     * @param {[Number]} count count
-     * @return {Promise} posts
-     */
-    _getPostsRecursive: function _getPostsRecursive(caseModel, post, direction) {
-      var _this3 = this;
-
-      var count = arguments.length <= 3 || arguments[3] === undefined ? defaultPostCount : arguments[3];
-
-      if (count === 0) {
-        return Promise.resolve([]);
-      }
-
-      var caseCache = this.getCaseCache(caseModel);
-
-      var nextSequence = post.get('sequence') + (direction === 'older' ? -1 : 1);
-      if (caseCache.total !== null && nextSequence === 0) {
-        return Promise.resolve([]);
-      }
-
-      var nextPost = caseCache.posts[nextSequence];
-      var queryParamName = direction === 'older' ? 'beforeId' : 'afterId';
-
-      return (nextPost ? Promise.resolve(nextPost) : this._fetchPosts(caseModel, _defineProperty({}, queryParamName, post.get('id'))).then(function () {
-        return caseCache.posts[nextSequence];
-      })).then(function (post) {
-        if (!post) {
-          return [];
-        } else {
-          return _this3._getPostsRecursive(caseModel, post, direction, count - 1).then(function (posts) {
-            return [post].concat(posts);
-          });
-        }
-      });
-    },
-
-    /**
-     * Retrieves posts from the server. Returns a promise which resolves when
-     * fetch is successful
-     *
-     * @private
-     * @param {DS.Model} caseModel case
-     * @param {[Number]} options.afterId id of the post
-     * @param {[Number]} options.beforeId id of the post
-     * @return {Promise} promise
-     */
-    _fetchPosts: function _fetchPosts(caseModel) {
-      var _ref3 = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
-
-      var _ref3$afterId = _ref3.afterId;
-      var afterId = _ref3$afterId === undefined ? null : _ref3$afterId;
-      var _ref3$beforeId = _ref3.beforeId;
-      var beforeId = _ref3$beforeId === undefined ? null : _ref3$beforeId;
-
-      var caseCache = this.getCaseCache(caseModel);
-      var params = { parent: caseModel };
-      if (afterId !== null) {
-        params.after_id = afterId; // eslint-disable-line camelcase
-      }
-      if (beforeId !== null) {
-        params.before_id = beforeId; // eslint-disable-line camelcase
-      }
-
-      return this.get('store').query('post', params).then(function (newPosts) {
-        caseCache.total = newPosts.get('meta').total;
-        newPosts.forEach(function (post) {
-          caseCache.posts[post.get('sequence')] = post;
-          if (post.get('sequence') === caseCache.total) {
-            caseCache.newestPost = post;
-          }
-          if (post.get('sequence') === 1) {
-            caseCache.oldestPost = post;
-          }
-        });
-      });
-    }
-  });
-});
-/* eslint-disable camelcase */
 define('frontend-cp/services/custom-fields/list', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = _ember['default'].Service.extend({
     componentFor: function componentFor(fieldType) {
@@ -59477,7 +59037,6 @@ define('frontend-cp/services/session', ['exports', 'ember', 'frontend-cp/utils/b
         _this3.set('session', session);
         _this3.set('sessionId', session.get('id'));
         _this3.set('user', session.get('user'));
-        _this3.getPermissions();
         _this3.get('planService').fetchPlan();
         return _this3.getPermissions();
       });
@@ -60059,6 +59618,471 @@ define('frontend-cp/services/tags', ['exports', 'ember'], function (exports, _em
 
   });
 });
+define('frontend-cp/services/timeline', ['exports', 'ember', 'npm:lodash'], function (exports, _ember, _npmLodash) {
+  var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
+
+  function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+  var Promise = _ember['default'].RSVP.Promise;
+  var defaultPostCount = 10;
+
+  var includeActivities = function includeActivities(filter) {
+    return filter === 'all' || filter === 'posts,activities';
+  };
+  var includeEvents = function includeEvents(filter) {
+    return filter === 'all' || filter === 'posts,events';
+  };
+
+  exports['default'] = _ember['default'].Service.extend({
+    store: _ember['default'].inject.service(),
+
+    cache: null,
+
+    initCache: _ember['default'].on('init', function () {
+      this.set('cache', {});
+    }),
+
+    /**
+     * Return cache object for a given parent model
+     *
+     * @private
+     * @param {DS.Model} model model
+     * @return {*} cache object
+     */
+    _getCache: function _getCache(model) {
+      var cacheKey = model.constructor.modelName + '_' + model.get('id');
+
+      var cache = this.get('cache')[cacheKey];
+      if (!cache) {
+        cache = this.get('cache')[cacheKey] = {
+          posts: {},
+          newestPost: null,
+          oldestPost: null,
+          total: null,
+          activities: [],
+          firstActivityTimestamp: null,
+          lastActivityTimestamp: null
+        };
+      }
+      return cache;
+    },
+
+    /**
+     * Return the most recent post, or null if no posts. Result is wrapped
+     * in a Promise.
+     *
+     * @private
+     * @param {DS.Model} model model
+     * @return {Promise} post
+     */
+    _getNewestPost: function _getNewestPost(model) {
+      var _this = this;
+
+      return this._fetchPosts(model).then(function () {
+        return _this._getCache(model).newestPost;
+      });
+    },
+
+    /**
+     * Add post to the cache.
+     *
+     * @param {DS.Model} model model
+     * @param {DS.Model} post post
+     */
+    addPost: function addPost(model, post) {
+      var cache = this._getCache(model);
+      cache.posts[post.get('sequence')] = post;
+      cache.total += 1;
+      var previousPost = cache.newestPost;
+      if (!previousPost || previousPost.get('sequence') < post.get('sequence')) {
+        cache.newestPost = post;
+      }
+    },
+
+    /**
+     * Return the oldest post, or null if no posts. Result is wrapped
+     * in a Promise.
+     *
+     * @private
+     * @param {DS.Model} model model
+     * @return {Promise<DS.Model>} post
+     */
+    _getOldestPost: function _getOldestPost(model) {
+      var cache = this._getCache(model);
+      if (cache.oldestPost) {
+        return Promise.resolve(cache.oldestPost);
+      } else if (cache.total === 0) {
+        return Promise.resolve(null);
+      } else {
+        return this._fetchPosts(model, { afterId: 0 }).then(function () {
+          return cache.oldestPost;
+        });
+      }
+    },
+
+    /**
+     * Get a single post.
+     *
+     * @private
+     * @param {DS.Model} model model
+     * @param {Number} postId post id
+     * @return {Promise<DS.Model>} post
+     */
+    _getSinglePost: function _getSinglePost(model, postId) {
+      var post = this.get('store').peekRecord('post', postId);
+      if (post) {
+        if (post.get('isReloading')) {
+          return post.reload();
+        } else {
+          return Promise.resolve(post);
+        }
+      } else {
+        post = this.get('store').createRecord('post', { id: postId });
+        post.set('parent', model);
+        return post.reload();
+      }
+    },
+
+    /**
+     * Return posts for a given parent model.
+     *
+     * @param {DS.Model} model model
+     * @param {Number} postId reference post id
+     * @param {[String]} options.direction whether to request 'older' or 'newer' posts
+     * @param {[Number]} options.count post count
+     * @param {[Number]} options.including whether to include the post with specified id
+     * @return {Promise} posts
+     */
+    getPosts: function getPosts(model, postId) {
+      var _this2 = this;
+
+      var _ref = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+
+      var _ref$direction = _ref.direction;
+      var direction = _ref$direction === undefined ? 'older' : _ref$direction;
+      var _ref$count = _ref.count;
+      var count = _ref$count === undefined ? defaultPostCount : _ref$count;
+      var _ref$includeActivities = _ref.includeActivities;
+      var includeActivities = _ref$includeActivities === undefined ? true : _ref$includeActivities;
+      var _ref$includeEvents = _ref.includeEvents;
+      var includeEvents = _ref$includeEvents === undefined ? true : _ref$includeEvents;
+      var _ref$including = _ref.including;
+      var including = _ref$including === undefined ? false : _ref$including;
+
+      var post = undefined;
+
+      if (postId) {
+        post = this._getSinglePost(model, postId);
+      } else {
+        post = direction === 'older' ? this._getNewestPost(model) : this._getOldestPost(model);
+      }
+
+      return post.then(function (post) {
+        if (!post) {
+          return { posts: [], morePostsAvailable: false };
+        }
+        return _this2._getPostsRecursive(model, post, direction, including ? count - 1 : count).then(function (posts) {
+          return [post].concat(posts);
+        })
+        // Load activities
+        .then(function (posts) {
+          return Promise.all([includeActivities ? _this2._getActivitiesForPosts(model, posts, direction, 'activity') : [], includeEvents ? _this2._getActivitiesForPosts(model, posts, direction, 'event') : [], posts]);
+        }).then(function (_ref2) {
+          var _ref22 = _slicedToArray(_ref2, 3);
+
+          var activities = _ref22[0];
+          var events = _ref22[1];
+          var posts = _ref22[2];
+
+          var cache = _this2._getCache(model);
+          var morePostsAvailable = undefined;
+          if (direction === 'older') {
+            morePostsAvailable = posts.get('lastObject.sequence') !== 1;
+          } else {
+            morePostsAvailable = posts.get('lastObject.sequence') !== cache.total;
+          }
+
+          // Merge events, activities and posts
+          var all = _this2._mergeTwoTimelines(_this2._mergeTwoTimelines(activities, events, direction), posts, direction);
+          // Finally, remove initial post if it's not required
+          all = including ? all : all.filter(function (p) {
+            return p !== post;
+          });
+          return { posts: all, morePostsAvailable: morePostsAvailable };
+        });
+      });
+    },
+
+    loadPostsAbove: function loadPostsAbove(state, _ref3) {
+      var model = _ref3.model;
+      var filter = _ref3.filter;
+      var sortOrder = _ref3.sortOrder;
+      var postId = _ref3.postId;
+
+      if (state.get('loadingTop') || model.get('isNew')) {
+        return;
+      }
+
+      state.set('loadingTop', true);
+
+      this.getPosts(model, postId, {
+        direction: sortOrder === 'newest' ? 'newer' : 'older',
+        includeActivities: includeActivities(filter),
+        includeEvents: includeEvents(filter)
+      }).then(function (_ref4) {
+        var posts = _ref4.posts;
+        var morePostsAvailable = _ref4.morePostsAvailable;
+
+        state.get('posts').unshiftObjects(posts.reverse());
+        state.set('loadingTop', false);
+        state.set('topPostsAvailable', morePostsAvailable);
+      });
+    },
+
+    loadPostsBelow: function loadPostsBelow(state, _ref5) {
+      var model = _ref5.model;
+      var filter = _ref5.filter;
+      var sortOrder = _ref5.sortOrder;
+      var postId = _ref5.postId;
+      var including = _ref5.including;
+
+      if (state.get('loadingBottom') || model.get('isNew')) {
+        return;
+      }
+
+      state.set('loadingBottom', true);
+
+      this.getPosts(model, postId, {
+        direction: sortOrder === 'newest' ? 'older' : 'newer',
+        including: including,
+        includeActivities: includeActivities(filter),
+        includeEvents: includeEvents(filter)
+      }).then(function (_ref6) {
+        var posts = _ref6.posts;
+        var morePostsAvailable = _ref6.morePostsAvailable;
+
+        state.get('posts').pushObjects(posts);
+        state.set('loadingBottom', false);
+        state.set('bottomPostsAvailable', morePostsAvailable);
+      });
+    },
+
+    /**
+     * Perform merge by timestamp.
+     * When same-date conflicts occur, the first timeline objects will be
+     * considered to be newer.
+     *
+     * @private
+     * @param {Array<DS.Model>} activities 1st timeline
+     * @param {Array<DS.Model>} posts 2nd timeline
+     * @param {String} direction older or newer
+     * @return {Array<DS.Model>} merged timeline
+     */
+    _mergeTwoTimelines: function _mergeTwoTimelines(activities, posts, direction) {
+      var postsWithActivities = [];
+      while (posts.length !== 0 || activities.length !== 0) {
+        var topPost = posts[0];
+        var topActivity = activities[0];
+
+        if (!topPost) {
+          postsWithActivities.push(topActivity);
+          activities.splice(0, 1);
+          continue;
+        }
+
+        if (!topActivity) {
+          postsWithActivities.push(topPost);
+          posts.splice(0, 1);
+          continue;
+        }
+
+        var postDate = topPost.get('createdAt');
+        var activityDate = topActivity.get('createdAt');
+
+        if (direction === 'newer') {
+          if (activityDate.getTime() < postDate.getTime()) {
+            postsWithActivities.push(topActivity);
+            activities.splice(0, 1);
+          } else {
+            postsWithActivities.push(topPost);
+            posts.splice(0, 1);
+          }
+        } else if (direction === 'older') {
+          if (postDate.getTime() > activityDate.getTime()) {
+            postsWithActivities.push(topPost);
+            posts.splice(0, 1);
+          } else {
+            postsWithActivities.push(topActivity);
+            activities.splice(0, 1);
+          }
+        }
+      }
+      return postsWithActivities;
+    },
+
+    /**
+     * Get all activites for a range of posts.
+     *
+     * @private
+     * @param {DS.Model} model model
+     * @param {Array<DS.Model>} posts posts
+     * @param {String} direction older or newer
+     * @param {String} type activity or event
+     * @return {Promise<Array<DS.Model>>} activities
+     */
+    _getActivitiesForPosts: function _getActivitiesForPosts(model, posts, direction, type) {
+      var _this3 = this;
+
+      var cache = this._getCache(model);
+
+      var parseNextUrl = function parseNextUrl(nextUrl) {
+        return _npmLodash['default'].zipObject(nextUrl.split('&').map(function (segment) {
+          return segment.split('=');
+        }));
+      };
+
+      // Fetch all activities or events between two points in time (inclusive).
+      var fetchActivities = function fetchActivities(timestamps, end, direction) {
+        return _this3.get('store').query(type, {
+          parent: type === 'activity' ? model : model.get('requester'),
+          // since and until are exclusive
+          since: timestamps.since,
+          until: timestamps.until,
+          sort_order: direction === 'newer' ? 'ASC' : 'DESC',
+          limit: 10
+        }).then(function (result) {
+          var isActivityNotCreatedBeforeLastRecord = function isActivityNotCreatedBeforeLastRecord(activity) {
+            return activity.get('createdAt').getTime() >= end.getTime();
+          };
+          var isActivityNotCreatedAfterLastRecord = function isActivityNotCreatedAfterLastRecord(activity) {
+            return activity.get('createdAt').getTime() <= end.getTime();
+          };
+          var filteringFunction = undefined;
+          if (!end) {
+            filteringFunction = function () {
+              return true;
+            };
+          } else if (direction === 'older') {
+            filteringFunction = isActivityNotCreatedBeforeLastRecord;
+          } else {
+            filteringFunction = isActivityNotCreatedAfterLastRecord;
+          }
+
+          var activities = _npmLodash['default'].filter(result.toArray(), filteringFunction);
+          if (activities.length < 10) {
+            return activities;
+          } else {
+            var nextUrl = _this3.get('store').metadataFor('activity').next;
+            return fetchActivities(parseNextUrl(nextUrl), end, direction).then(function (moreActivities) {
+              return activities.concat(moreActivities);
+            });
+          }
+        });
+      };
+
+      var getActivitiesBetweenPosts = function getActivitiesBetweenPosts(from, to, direction) {
+        var newer = direction === 'newer';
+        var isBounded = !to || (newer ? to.get('sequence') === cache.total : to.get('sequence') === 1);
+        var start = new Date(from.get('createdAt').getTime() - (newer ? 0 : 1000));
+        var end = !isBounded ? new Date(to.get('createdAt').getTime() - (newer ? 1000 : 0)) : null;
+        var timestamps = {
+          since: direction === 'newer' ? Math.floor((start.getTime() - 1000) / 1000) : null,
+          until: direction === 'older' ? Math.floor((start.getTime() + 1000) / 1000) : null
+        };
+        return fetchActivities(timestamps, end, direction);
+      };
+
+      var from = posts[0];
+      var to = posts.length === 1 ? null : posts[posts.length - 1];
+
+      return getActivitiesBetweenPosts(from, to, direction);
+    },
+
+    /**
+     * Recursive function used by getPosts
+     *
+     * @private
+     * @param {DS.Model} model model
+     * @param {DS.Model} post post
+     * @param {DS.Model} direction 'older' or 'newer'
+     * @param {[Number]} count count
+     * @return {Promise} posts
+     */
+    _getPostsRecursive: function _getPostsRecursive(model, post, direction) {
+      var _this4 = this;
+
+      var count = arguments.length <= 3 || arguments[3] === undefined ? defaultPostCount : arguments[3];
+
+      if (count === 0) {
+        return Promise.resolve([]);
+      }
+
+      var cache = this._getCache(model);
+
+      var nextSequence = post.get('sequence') + (direction === 'older' ? -1 : 1);
+      if (cache.total !== null && nextSequence === 0) {
+        return Promise.resolve([]);
+      }
+
+      var nextPost = cache.posts[nextSequence];
+      var queryParamName = direction === 'older' ? 'beforeId' : 'afterId';
+
+      return (nextPost ? Promise.resolve(nextPost) : this._fetchPosts(model, _defineProperty({}, queryParamName, post.get('id'))).then(function () {
+        return cache.posts[nextSequence];
+      })).then(function (post) {
+        if (!post) {
+          return [];
+        } else {
+          return _this4._getPostsRecursive(model, post, direction, count - 1).then(function (posts) {
+            return [post].concat(posts);
+          });
+        }
+      });
+    },
+
+    /**
+     * Retrieves posts from the server. Returns a promise which resolves when
+     * fetch is successful
+     *
+     * @private
+     * @param {DS.Model} model model
+     * @param {[Number]} options.afterId id of the post
+     * @param {[Number]} options.beforeId id of the post
+     * @return {Promise} promise
+     */
+    _fetchPosts: function _fetchPosts(model) {
+      var _ref7 = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+
+      var _ref7$afterId = _ref7.afterId;
+      var afterId = _ref7$afterId === undefined ? null : _ref7$afterId;
+      var _ref7$beforeId = _ref7.beforeId;
+      var beforeId = _ref7$beforeId === undefined ? null : _ref7$beforeId;
+
+      var cache = this._getCache(model);
+      var params = { parent: model };
+      if (afterId !== null) {
+        params.after_id = afterId; // eslint-disable-line camelcase
+      }
+      if (beforeId !== null) {
+        params.before_id = beforeId; // eslint-disable-line camelcase
+      }
+
+      return this.get('store').query('post', params).then(function (newPosts) {
+        cache.total = newPosts.get('meta').total;
+        newPosts.forEach(function (post) {
+          cache.posts[post.get('sequence')] = post;
+          if (post.get('sequence') === cache.total) {
+            cache.newestPost = post;
+          }
+          if (post.get('sequence') === 1) {
+            cache.oldestPost = post;
+          }
+        });
+      });
+    }
+  });
+});
+/* eslint-disable camelcase */
 define('frontend-cp/services/url', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = _ember['default'].Service.extend({
     currentUrl: null
@@ -72238,6 +72262,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+8a51d3c9"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+13c09cee"});
 }
 /* jshint ignore:end */
