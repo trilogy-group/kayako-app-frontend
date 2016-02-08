@@ -6412,6 +6412,8 @@ define('frontend-cp/tests/acceptance/agent/cases/create-test', ['exports', 'fron
 /* eslint-disable camelcase, new-cap */
 define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
 
+  var originalConfirm = window.confirm;
+
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | Case | List', {
     beforeEach: function beforeEach() {
       useDefaultScenario();
@@ -6419,6 +6421,7 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
     },
 
     afterEach: function afterEach() {
+      window.confirm = originalConfirm;
       logout();
     }
   });
@@ -6431,18 +6434,18 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
     andThen(function () {
       assert.equal(currentURL(), '/agent/cases/view/1');
       assert.equal(find('tbody tr').length, 6);
-      assert.equal($('tbody tr td:first').text().trim(), '1');
-      click('thead th:first');
+      assert.equal($('tbody tr:first td:nth-child(2)').text().trim(), '1');
+      click('thead th:nth-child(2)');
     });
 
     andThen(function () {
-      assert.ok($('thead th:first span:last').hasClass('i-chevron-small-up'));
-      click('thead th:first');
+      assert.ok($('thead th:nth-child(2) span:last').hasClass('i-chevron-small-up'));
+      click('thead th:nth-child(2)');
     });
 
     andThen(function () {
-      assert.ok($('thead th:first span:last').hasClass('i-chevron-small-down'));
-      assert.equal($('tbody tr td:first').text().trim(), '6');
+      assert.ok($('thead th:nth-child(2) span:last').hasClass('i-chevron-small-down'));
+      assert.equal($('tbody tr:first td:nth-child(2)').text().trim(), '6');
     });
   });
 
@@ -6475,6 +6478,62 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
 
     andThen(function () {
       assert.equal(currentURL(), '/agent/cases/view/1');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('Selecting cases shows trash button, hides pagination', function (assert) {
+    visit('/agent/cases/view/1');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/agent/cases/view/1');
+      assert.equal(find('.ko-cases-list__action-button').length, 0);
+    });
+
+    andThen(function () {
+      assert.ok(find('.ko-pagination__container').length);
+      click('tbody .ko-checkbox__checkbox:first');
+    });
+
+    andThen(function () {
+      assert.equal(find('.ko-cases-list__action-button').length, 1);
+      assert.notOk(find('.ko-pagination__container').length);
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('Select all cases', function (assert) {
+    visit('/agent/cases/view/1');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/agent/cases/view/1');
+    });
+
+    andThen(function () {
+      click('thead .ko-checkbox__checkbox:first');
+    });
+
+    andThen(function () {
+      assert.equal(find('.ko-checkbox__checkbox').attr('aria-checked'), 'true');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('Show confirmation when trashing cases', function (assert) {
+    assert.expect(2);
+
+    window.confirm = function () {
+      return assert.ok(true, 'dialogue shown');
+    };
+    visit('/agent/cases/view/1');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/agent/cases/view/1');
+    });
+
+    andThen(function () {
+      click('thead .ko-checkbox__checkbox:first');
+    });
+
+    andThen(function () {
+      click('.ko-cases-list__action-button');
     });
   });
 

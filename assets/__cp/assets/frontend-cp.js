@@ -20992,12 +20992,20 @@ define("frontend-cp/components/ko-cases-list/column/updatedat/template", ["expor
     };
   })());
 });
-define('frontend-cp/components/ko-cases-list/component', ['exports', 'ember'], function (exports, _ember) {
+define('frontend-cp/components/ko-cases-list/component', ['exports', 'ember', 'npm:lodash'], function (exports, _ember, _npmLodash) {
   exports['default'] = _ember['default'].Component.extend({
     // Params
     cases: [],
     onCaseListSort: null,
     columns: [],
+    trashable: false,
+
+    checkedRows: null,
+
+    bulkService: _ember['default'].inject.service('case-bulk-update'),
+    intl: _ember['default'].inject.service(),
+    notification: _ember['default'].inject.service(),
+    isUpdatingCases: false,
 
     classForHeader: function classForHeader(column) {
       return 'ko-cases-list__table-th ko-cases-list__header--' + _ember['default'].String.dasherize(column.get('name'));
@@ -21030,6 +21038,46 @@ define('frontend-cp/components/ko-cases-list/component', ['exports', 'ember'], f
     actions: {
       tableSorted: function tableSorted(column, order) {
         this.sendAction('onCaseListSort', column, order);
+      },
+
+      toggleCheck: function toggleCheck(rowCase, checked) {
+        var checkedRows = _ember['default'].Object.create(this.get('checkedRows'));
+        checkedRows.set(rowCase.id, checked);
+
+        this.set('isSomeChecked', _npmLodash['default'].some(Object.values(checkedRows)));
+        this.attrs.onSetCheckedRows(checkedRows);
+      },
+
+      selectionChanged: function selectionChanged(rows, checked) {
+        var checkedRows = _ember['default'].Object.create(this.get('checkedRows'));
+        this.get('cases').forEach(function (item) {
+          checkedRows[item.get('id')] = checked;
+        });
+
+        this.set('isSomeChecked', checked);
+        this.attrs.onSetCheckedRows(checkedRows);
+      },
+
+      trashCases: function trashCases() {
+        var _this = this;
+
+        var trashConfirmationMessage = this.get('intl').findTranslationByKey('generic.confirm.trashcases');
+
+        if (confirm(trashConfirmationMessage)) {
+          var trashedIds = _npmLodash['default'].pairs(this.get('checkedRows')).filter(function (row) {
+            return row[1];
+          }).map(function (row) {
+            return row[0];
+          });
+          this.set('isUpdatingCases', true);
+          this.get('bulkService').trashCases(trashedIds).then(function () {
+            _this.set('isUpdatingCases', false);
+            _this.attrs.onTrashCases();
+            _this.get('notification').success(_this.get('intl').findTranslationByKey('generic.casestrashed'));
+          }, function (error) {
+            _this.set('isUpdatingCases', false);
+          });
+        }
       }
     }
   });
@@ -22080,6 +22128,175 @@ define("frontend-cp/components/ko-cases-list/template", ["exports"], function (e
     var child0 = (function () {
       var child0 = (function () {
         var child0 = (function () {
+          return {
+            meta: {
+              "revision": "Ember@1.13.13",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 13,
+                  "column": 10
+                },
+                "end": {
+                  "line": 13,
+                  "column": 37
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-cases-list/template.hbs"
+            },
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(1);
+              morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+              dom.insertBoundary(fragment, 0);
+              dom.insertBoundary(fragment, null);
+              return morphs;
+            },
+            statements: [["content", "ko-loader", ["loc", [null, [13, 24], [13, 37]]]]],
+            locals: [],
+            templates: []
+          };
+        })();
+        return {
+          meta: {
+            "revision": "Ember@1.13.13",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 12,
+                "column": 8
+              },
+              "end": {
+                "line": 14,
+                "column": 8
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-cases-list/template.hbs"
+          },
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("          ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+            return morphs;
+          },
+          statements: [["block", "ko-center", [], [], 0, null, ["loc", [null, [13, 10], [13, 51]]]]],
+          locals: [],
+          templates: [child0]
+        };
+      })();
+      var child1 = (function () {
+        return {
+          meta: {
+            "revision": "Ember@1.13.13",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 14,
+                "column": 8
+              },
+              "end": {
+                "line": 16,
+                "column": 8
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-cases-list/template.hbs"
+          },
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("          ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+            return morphs;
+          },
+          statements: [["inline", "t", ["cases.trash"], [], ["loc", [null, [15, 10], [15, 29]]]]],
+          locals: [],
+          templates: []
+        };
+      })();
+      return {
+        meta: {
+          "revision": "Ember@1.13.13",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 7,
+              "column": 4
+            },
+            "end": {
+              "line": 18,
+              "column": 4
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-cases-list/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("    ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("button");
+          dom.setAttribute(el1, "type", "button");
+          dom.setAttribute(el1, "class", "button button--default ko-cases-list__action-button");
+          var el2 = dom.createTextNode("\n");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("    ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var element0 = dom.childAt(fragment, [1]);
+          var morphs = new Array(3);
+          morphs[0] = dom.createAttrMorph(element0, 'onclick');
+          morphs[1] = dom.createAttrMorph(element0, 'disabled');
+          morphs[2] = dom.createMorphAt(element0, 1, 1);
+          return morphs;
+        },
+        statements: [["attribute", "onclick", ["subexpr", "action", ["trashCases"], [], ["loc", [null, [9, 14], [9, 37]]]]], ["attribute", "disabled", ["get", "isUpdatingCases", ["loc", [null, [10, 17], [10, 32]]]]], ["block", "if", [["get", "isUpdatingCases", ["loc", [null, [12, 14], [12, 29]]]]], [], 0, 1, ["loc", [null, [12, 8], [16, 15]]]]],
+        locals: [],
+        templates: [child0, child1]
+      };
+    })();
+    var child1 = (function () {
+      var child0 = (function () {
+        var child0 = (function () {
           var child0 = (function () {
             return {
               meta: {
@@ -22087,11 +22304,11 @@ define("frontend-cp/components/ko-cases-list/template", ["exports"], function (e
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 16,
+                    "line": 27,
                     "column": 6
                   },
                   "end": {
-                    "line": 24,
+                    "line": 35,
                     "column": 6
                   }
                 },
@@ -22115,7 +22332,7 @@ define("frontend-cp/components/ko-cases-list/template", ["exports"], function (e
                 morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
                 return morphs;
               },
-              statements: [["inline", "component", [["subexpr", "ko-helper", [["get", "componentForHeader", ["loc", [null, [23, 31], [23, 49]]]], ["get", "column", ["loc", [null, [23, 50], [23, 56]]]]], [], ["loc", [null, [23, 20], [23, 57]]]]], ["tagName", "span"], ["loc", [null, [23, 8], [23, 74]]]]],
+              statements: [["inline", "component", [["subexpr", "ko-helper", [["get", "componentForHeader", ["loc", [null, [34, 31], [34, 49]]]], ["get", "column", ["loc", [null, [34, 50], [34, 56]]]]], [], ["loc", [null, [34, 20], [34, 57]]]]], ["tagName", "span"], ["loc", [null, [34, 8], [34, 74]]]]],
               locals: [],
               templates: []
             };
@@ -22126,199 +22343,7 @@ define("frontend-cp/components/ko-cases-list/template", ["exports"], function (e
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 15,
-                  "column": 4
-                },
-                "end": {
-                  "line": 25,
-                  "column": 4
-                }
-              },
-              "moduleName": "frontend-cp/components/ko-cases-list/template.hbs"
-            },
-            arity: 1,
-            cachedFragment: null,
-            hasRendered: false,
-            buildFragment: function buildFragment(dom) {
-              var el0 = dom.createDocumentFragment();
-              var el1 = dom.createComment("");
-              dom.appendChild(el0, el1);
-              return el0;
-            },
-            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-              var morphs = new Array(1);
-              morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-              dom.insertBoundary(fragment, 0);
-              dom.insertBoundary(fragment, null);
-              return morphs;
-            },
-            statements: [["block", "ko-table/column", [], ["column", ["subexpr", "@mut", [["get", "column", ["loc", [null, [17, 15], [17, 21]]]]], [], []], "class", ["subexpr", "ko-helper", [["get", "classForHeader", ["loc", [null, [18, 25], [18, 39]]]], ["get", "column", ["loc", [null, [18, 40], [18, 46]]]]], [], ["loc", [null, [18, 14], [18, 47]]]], "sortable", true, "onSort", "tableSorted", "orderBy", ["subexpr", "@mut", [["get", "orderBy", ["loc", [null, [21, 16], [21, 23]]]]], [], []], "orderByColumn", ["subexpr", "@mut", [["get", "orderByColumn", ["loc", [null, [22, 22], [22, 35]]]]], [], []]], 0, null, ["loc", [null, [16, 6], [24, 26]]]]],
-            locals: ["column"],
-            templates: [child0]
-          };
-        })();
-        return {
-          meta: {
-            "revision": "Ember@1.13.13",
-            "loc": {
-              "source": null,
-              "start": {
-                "line": 14,
-                "column": 2
-              },
-              "end": {
-                "line": 26,
-                "column": 2
-              }
-            },
-            "moduleName": "frontend-cp/components/ko-cases-list/template.hbs"
-          },
-          arity: 0,
-          cachedFragment: null,
-          hasRendered: false,
-          buildFragment: function buildFragment(dom) {
-            var el0 = dom.createDocumentFragment();
-            var el1 = dom.createComment("");
-            dom.appendChild(el0, el1);
-            return el0;
-          },
-          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-            var morphs = new Array(1);
-            morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-            dom.insertBoundary(fragment, 0);
-            dom.insertBoundary(fragment, null);
-            return morphs;
-          },
-          statements: [["block", "each", [["get", "columns", ["loc", [null, [15, 12], [15, 19]]]]], [], 0, null, ["loc", [null, [15, 4], [25, 13]]]]],
-          locals: [],
-          templates: [child0]
-        };
-      })();
-      var child1 = (function () {
-        var child0 = (function () {
-          var child0 = (function () {
-            var child0 = (function () {
-              var child0 = (function () {
-                return {
-                  meta: {
-                    "revision": "Ember@1.13.13",
-                    "loc": {
-                      "source": null,
-                      "start": {
-                        "line": 31,
-                        "column": 10
-                      },
-                      "end": {
-                        "line": 33,
-                        "column": 10
-                      }
-                    },
-                    "moduleName": "frontend-cp/components/ko-cases-list/template.hbs"
-                  },
-                  arity: 0,
-                  cachedFragment: null,
-                  hasRendered: false,
-                  buildFragment: function buildFragment(dom) {
-                    var el0 = dom.createDocumentFragment();
-                    var el1 = dom.createTextNode("            ");
-                    dom.appendChild(el0, el1);
-                    var el1 = dom.createComment("");
-                    dom.appendChild(el0, el1);
-                    var el1 = dom.createTextNode("\n");
-                    dom.appendChild(el0, el1);
-                    return el0;
-                  },
-                  buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-                    var morphs = new Array(1);
-                    morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
-                    return morphs;
-                  },
-                  statements: [["inline", "component", [["subexpr", "ko-helper", [["get", "componentForColumn", ["loc", [null, [32, 35], [32, 53]]]], ["get", "column", ["loc", [null, [32, 54], [32, 60]]]]], [], ["loc", [null, [32, 24], [32, 61]]]]], ["case", ["subexpr", "@mut", [["get", "case", ["loc", [null, [32, 67], [32, 71]]]]], [], []]], ["loc", [null, [32, 12], [32, 73]]]]],
-                  locals: [],
-                  templates: []
-                };
-              })();
-              return {
-                meta: {
-                  "revision": "Ember@1.13.13",
-                  "loc": {
-                    "source": null,
-                    "start": {
-                      "line": 30,
-                      "column": 8
-                    },
-                    "end": {
-                      "line": 34,
-                      "column": 8
-                    }
-                  },
-                  "moduleName": "frontend-cp/components/ko-cases-list/template.hbs"
-                },
-                arity: 1,
-                cachedFragment: null,
-                hasRendered: false,
-                buildFragment: function buildFragment(dom) {
-                  var el0 = dom.createDocumentFragment();
-                  var el1 = dom.createComment("");
-                  dom.appendChild(el0, el1);
-                  return el0;
-                },
-                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-                  var morphs = new Array(1);
-                  morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-                  dom.insertBoundary(fragment, 0);
-                  dom.insertBoundary(fragment, null);
-                  return morphs;
-                },
-                statements: [["block", "ko-table/cell", [], ["class", ["subexpr", "ko-contextual-helper", [["get", "classForColumn", ["loc", [null, [31, 55], [31, 69]]]], ["get", "this", ["loc", [null, [31, 70], [31, 74]]]], ["get", "column", ["loc", [null, [31, 75], [31, 81]]]]], [], ["loc", [null, [31, 33], [31, 82]]]]], 0, null, ["loc", [null, [31, 10], [33, 28]]]]],
-                locals: ["column"],
-                templates: [child0]
-              };
-            })();
-            return {
-              meta: {
-                "revision": "Ember@1.13.13",
-                "loc": {
-                  "source": null,
-                  "start": {
-                    "line": 29,
-                    "column": 6
-                  },
-                  "end": {
-                    "line": 35,
-                    "column": 6
-                  }
-                },
-                "moduleName": "frontend-cp/components/ko-cases-list/template.hbs"
-              },
-              arity: 0,
-              cachedFragment: null,
-              hasRendered: false,
-              buildFragment: function buildFragment(dom) {
-                var el0 = dom.createDocumentFragment();
-                var el1 = dom.createComment("");
-                dom.appendChild(el0, el1);
-                return el0;
-              },
-              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-                var morphs = new Array(1);
-                morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-                dom.insertBoundary(fragment, 0);
-                dom.insertBoundary(fragment, null);
-                return morphs;
-              },
-              statements: [["block", "each", [["get", "columns", ["loc", [null, [30, 16], [30, 23]]]]], [], 0, null, ["loc", [null, [30, 8], [34, 17]]]]],
-              locals: [],
-              templates: [child0]
-            };
-          })();
-          return {
-            meta: {
-              "revision": "Ember@1.13.13",
-              "loc": {
-                "source": null,
-                "start": {
-                  "line": 28,
+                  "line": 26,
                   "column": 4
                 },
                 "end": {
@@ -22344,8 +22369,8 @@ define("frontend-cp/components/ko-cases-list/template", ["exports"], function (e
               dom.insertBoundary(fragment, null);
               return morphs;
             },
-            statements: [["block", "ko-table/row", [], ["class", "ko-cases-list__row", "table", ["subexpr", "@mut", [["get", "table", ["loc", [null, [29, 55], [29, 60]]]]], [], []], "clickable", true, "rowContext", ["subexpr", "@mut", [["get", "case", ["loc", [null, [29, 87], [29, 91]]]]], [], []], "onClick", ["subexpr", "@mut", [["get", "onClick", ["loc", [null, [29, 100], [29, 107]]]]], [], []]], 0, null, ["loc", [null, [29, 6], [35, 23]]]]],
-            locals: ["case"],
+            statements: [["block", "ko-table/column", [], ["column", ["subexpr", "@mut", [["get", "column", ["loc", [null, [28, 15], [28, 21]]]]], [], []], "class", ["subexpr", "ko-helper", [["get", "classForHeader", ["loc", [null, [29, 25], [29, 39]]]], ["get", "column", ["loc", [null, [29, 40], [29, 46]]]]], [], ["loc", [null, [29, 14], [29, 47]]]], "sortable", true, "onSort", "tableSorted", "orderBy", ["subexpr", "@mut", [["get", "orderBy", ["loc", [null, [32, 16], [32, 23]]]]], [], []], "orderByColumn", ["subexpr", "@mut", [["get", "orderByColumn", ["loc", [null, [33, 22], [33, 35]]]]], [], []]], 0, null, ["loc", [null, [27, 6], [35, 26]]]]],
+            locals: ["column"],
             templates: [child0]
           };
         })();
@@ -22355,7 +22380,7 @@ define("frontend-cp/components/ko-cases-list/template", ["exports"], function (e
             "loc": {
               "source": null,
               "start": {
-                "line": 27,
+                "line": 25,
                 "column": 2
               },
               "end": {
@@ -22381,7 +22406,199 @@ define("frontend-cp/components/ko-cases-list/template", ["exports"], function (e
             dom.insertBoundary(fragment, null);
             return morphs;
           },
-          statements: [["block", "each", [["get", "cases", ["loc", [null, [28, 12], [28, 17]]]]], [], 0, null, ["loc", [null, [28, 4], [36, 13]]]]],
+          statements: [["block", "each", [["get", "columns", ["loc", [null, [26, 12], [26, 19]]]]], [], 0, null, ["loc", [null, [26, 4], [36, 13]]]]],
+          locals: [],
+          templates: [child0]
+        };
+      })();
+      var child1 = (function () {
+        var child0 = (function () {
+          var child0 = (function () {
+            var child0 = (function () {
+              var child0 = (function () {
+                return {
+                  meta: {
+                    "revision": "Ember@1.13.13",
+                    "loc": {
+                      "source": null,
+                      "start": {
+                        "line": 48,
+                        "column": 10
+                      },
+                      "end": {
+                        "line": 50,
+                        "column": 10
+                      }
+                    },
+                    "moduleName": "frontend-cp/components/ko-cases-list/template.hbs"
+                  },
+                  arity: 0,
+                  cachedFragment: null,
+                  hasRendered: false,
+                  buildFragment: function buildFragment(dom) {
+                    var el0 = dom.createDocumentFragment();
+                    var el1 = dom.createTextNode("            ");
+                    dom.appendChild(el0, el1);
+                    var el1 = dom.createComment("");
+                    dom.appendChild(el0, el1);
+                    var el1 = dom.createTextNode("\n");
+                    dom.appendChild(el0, el1);
+                    return el0;
+                  },
+                  buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                    var morphs = new Array(1);
+                    morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+                    return morphs;
+                  },
+                  statements: [["inline", "component", [["subexpr", "ko-helper", [["get", "componentForColumn", ["loc", [null, [49, 35], [49, 53]]]], ["get", "column", ["loc", [null, [49, 54], [49, 60]]]]], [], ["loc", [null, [49, 24], [49, 61]]]]], ["case", ["subexpr", "@mut", [["get", "case", ["loc", [null, [49, 67], [49, 71]]]]], [], []]], ["loc", [null, [49, 12], [49, 73]]]]],
+                  locals: [],
+                  templates: []
+                };
+              })();
+              return {
+                meta: {
+                  "revision": "Ember@1.13.13",
+                  "loc": {
+                    "source": null,
+                    "start": {
+                      "line": 47,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 51,
+                      "column": 8
+                    }
+                  },
+                  "moduleName": "frontend-cp/components/ko-cases-list/template.hbs"
+                },
+                arity: 1,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                  var el0 = dom.createDocumentFragment();
+                  var el1 = dom.createComment("");
+                  dom.appendChild(el0, el1);
+                  return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                  var morphs = new Array(1);
+                  morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+                  dom.insertBoundary(fragment, 0);
+                  dom.insertBoundary(fragment, null);
+                  return morphs;
+                },
+                statements: [["block", "ko-table/cell", [], ["class", ["subexpr", "ko-contextual-helper", [["get", "classForColumn", ["loc", [null, [48, 55], [48, 69]]]], ["get", "this", ["loc", [null, [48, 70], [48, 74]]]], ["get", "column", ["loc", [null, [48, 75], [48, 81]]]]], [], ["loc", [null, [48, 33], [48, 82]]]]], 0, null, ["loc", [null, [48, 10], [50, 28]]]]],
+                locals: ["column"],
+                templates: [child0]
+              };
+            })();
+            return {
+              meta: {
+                "revision": "Ember@1.13.13",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 40,
+                    "column": 6
+                  },
+                  "end": {
+                    "line": 52,
+                    "column": 6
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-cases-list/template.hbs"
+              },
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var morphs = new Array(1);
+                morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+                dom.insertBoundary(fragment, 0);
+                dom.insertBoundary(fragment, null);
+                return morphs;
+              },
+              statements: [["block", "each", [["get", "columns", ["loc", [null, [47, 16], [47, 23]]]]], [], 0, null, ["loc", [null, [47, 8], [51, 17]]]]],
+              locals: [],
+              templates: [child0]
+            };
+          })();
+          return {
+            meta: {
+              "revision": "Ember@1.13.13",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 39,
+                  "column": 4
+                },
+                "end": {
+                  "line": 53,
+                  "column": 4
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-cases-list/template.hbs"
+            },
+            arity: 1,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(1);
+              morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+              dom.insertBoundary(fragment, 0);
+              dom.insertBoundary(fragment, null);
+              return morphs;
+            },
+            statements: [["block", "ko-table/row", [], ["class", "ko-cases-list__row", "table", ["subexpr", "@mut", [["get", "table", ["loc", [null, [41, 14], [41, 19]]]]], [], []], "clickable", true, "rowContext", ["subexpr", "@mut", [["get", "case", ["loc", [null, [43, 19], [43, 23]]]]], [], []], "selectableDisabled", ["subexpr", "@mut", [["get", "isUpdatingCases", ["loc", [null, [44, 27], [44, 42]]]]], [], []], "onSelectChange", ["subexpr", "action", ["toggleCheck", ["get", "case", ["loc", [null, [45, 45], [45, 49]]]]], [], ["loc", [null, [45, 23], [45, 50]]]], "onClick", ["subexpr", "@mut", [["get", "onClick", ["loc", [null, [46, 16], [46, 23]]]]], [], []]], 0, null, ["loc", [null, [40, 6], [52, 23]]]]],
+            locals: ["case"],
+            templates: [child0]
+          };
+        })();
+        return {
+          meta: {
+            "revision": "Ember@1.13.13",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 38,
+                "column": 2
+              },
+              "end": {
+                "line": 54,
+                "column": 2
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-cases-list/template.hbs"
+          },
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+            dom.insertBoundary(fragment, 0);
+            dom.insertBoundary(fragment, null);
+            return morphs;
+          },
+          statements: [["block", "each", [["get", "cases", ["loc", [null, [39, 12], [39, 17]]]]], [], 0, null, ["loc", [null, [39, 4], [53, 13]]]]],
           locals: [],
           templates: [child0]
         };
@@ -22392,11 +22609,11 @@ define("frontend-cp/components/ko-cases-list/template", ["exports"], function (e
           "loc": {
             "source": null,
             "start": {
-              "line": 13,
+              "line": 23,
               "column": 0
             },
             "end": {
-              "line": 38,
+              "line": 55,
               "column": 0
             }
           },
@@ -22421,23 +22638,23 @@ define("frontend-cp/components/ko-cases-list/template", ["exports"], function (e
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [["block", "ko-table/header", [], ["class", "ko-cases-list__table-header"], 0, null, ["loc", [null, [14, 2], [26, 22]]]], ["block", "ko-table/body", [], [], 1, null, ["loc", [null, [27, 2], [37, 20]]]]],
+        statements: [["block", "ko-table/header", [], ["class", "ko-cases-list__table-header"], 0, null, ["loc", [null, [25, 2], [37, 22]]]], ["block", "ko-table/body", [], [], 1, null, ["loc", [null, [38, 2], [54, 20]]]]],
         locals: ["table"],
         templates: [child0, child1]
       };
     })();
-    var child1 = (function () {
+    var child2 = (function () {
       return {
         meta: {
           "revision": "Ember@1.13.13",
           "loc": {
             "source": null,
             "start": {
-              "line": 39,
+              "line": 56,
               "column": 0
             },
             "end": {
-              "line": 43,
+              "line": 60,
               "column": 0
             }
           },
@@ -22466,7 +22683,7 @@ define("frontend-cp/components/ko-cases-list/template", ["exports"], function (e
           morphs[0] = dom.createMorphAt(dom.childAt(fragment, [0]), 1, 1);
           return morphs;
         },
-        statements: [["inline", "t", ["cases.list.casesnotfound"], [], ["loc", [null, [41, 2], [41, 34]]]]],
+        statements: [["inline", "t", ["cases.list.casesnotfound"], [], ["loc", [null, [58, 2], [58, 34]]]]],
         locals: [],
         templates: []
       };
@@ -22481,7 +22698,7 @@ define("frontend-cp/components/ko-cases-list/template", ["exports"], function (e
             "column": 0
           },
           "end": {
-            "line": 44,
+            "line": 61,
             "column": 0
           }
         },
@@ -22493,34 +22710,31 @@ define("frontend-cp/components/ko-cases-list/template", ["exports"], function (e
       buildFragment: function buildFragment(dom) {
         var el0 = dom.createDocumentFragment();
         var el1 = dom.createElement("div");
-        dom.setAttribute(el1, "class", "layout u-mv");
+        dom.setAttribute(el1, "class", "ko-cases-list__title");
         var el2 = dom.createTextNode("\n  ");
         dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2, "class", "layout__item u-2/3");
+        var el2 = dom.createElement("h4");
+        dom.setAttribute(el2, "class", "ko-cases-list__heading");
         var el3 = dom.createTextNode("\n    ");
         dom.appendChild(el2, el3);
-        var el3 = dom.createElement("h4");
-        dom.setAttribute(el3, "class", "ko-cases-list__title heading");
-        var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createComment("");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n\n      ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("i");
-        dom.setAttribute(el4, "class", "i-chevron-large-down i-color-grey--dark");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n    ");
-        dom.appendChild(el3, el4);
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("i");
+        dom.setAttribute(el3, "class", "i-chevron-large-down i-color-grey--dark");
         dom.appendChild(el2, el3);
         var el3 = dom.createTextNode("\n  ");
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
-        var el2 = dom.createComment("\n");
+        var el2 = dom.createTextNode("\n  ");
         dom.appendChild(el1, el2);
         var el2 = dom.createElement("div");
-        dom.setAttribute(el2, "class", "layout__item u-1/3 t-right");
+        dom.setAttribute(el2, "class", "ko-cases-list__actions");
+        var el3 = dom.createTextNode("\n");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
         var el3 = dom.createTextNode("\n  ");
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
@@ -22536,16 +22750,18 @@ define("frontend-cp/components/ko-cases-list/template", ["exports"], function (e
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var morphs = new Array(3);
-        morphs[0] = dom.createMorphAt(dom.childAt(fragment, [0, 1, 1]), 1, 1);
-        morphs[1] = dom.createMorphAt(fragment, 2, 2, contextualElement);
-        morphs[2] = dom.createMorphAt(fragment, 3, 3, contextualElement);
+        var element1 = dom.childAt(fragment, [0]);
+        var morphs = new Array(4);
+        morphs[0] = dom.createMorphAt(dom.childAt(element1, [1]), 1, 1);
+        morphs[1] = dom.createMorphAt(dom.childAt(element1, [3]), 1, 1);
+        morphs[2] = dom.createMorphAt(fragment, 2, 2, contextualElement);
+        morphs[3] = dom.createMorphAt(fragment, 3, 3, contextualElement);
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["content", "title", ["loc", [null, [4, 6], [4, 15]]]], ["block", "ko-table", [], ["selectable", false], 0, null, ["loc", [null, [13, 0], [38, 13]]]], ["block", "if", [["subexpr", "not", [["get", "cases", ["loc", [null, [39, 11], [39, 16]]]]], [], ["loc", [null, [39, 6], [39, 17]]]]], [], 1, null, ["loc", [null, [39, 0], [43, 7]]]]],
+      statements: [["content", "title", ["loc", [null, [3, 4], [3, 13]]]], ["block", "if", [["get", "isSomeChecked", ["loc", [null, [7, 10], [7, 23]]]]], [], 0, null, ["loc", [null, [7, 4], [18, 11]]]], ["block", "ko-table", [], ["selectable", ["subexpr", "@mut", [["get", "trashable", ["loc", [null, [23, 23], [23, 32]]]]], [], []], "onSelectionChange", ["subexpr", "action", ["selectionChanged"], [], ["loc", [null, [24, 20], [24, 47]]]]], 1, null, ["loc", [null, [23, 0], [55, 13]]]], ["block", "if", [["subexpr", "not", [["get", "cases", ["loc", [null, [56, 11], [56, 16]]]]], [], ["loc", [null, [56, 6], [56, 17]]]]], [], 2, null, ["loc", [null, [56, 0], [60, 7]]]]],
       locals: [],
-      templates: [child0, child1]
+      templates: [child0, child1, child2]
     };
   })());
 });
@@ -39968,7 +40184,7 @@ define('frontend-cp/components/ko-table/component', ['exports', 'ember'], functi
         var selectionAction = this.get('onSelectionChange');
         if (selectionAction) {
           var models = this.get('rows').filterBy('selected').mapBy('rowContext');
-          selectionAction(models);
+          selectionAction(models, true);
         }
       },
 
@@ -39979,7 +40195,7 @@ define('frontend-cp/components/ko-table/component', ['exports', 'ember'], functi
         var selectionAction = this.get('onSelectionChange');
         if (selectionAction) {
           var models = this.get('rows').filterBy('selected').mapBy('rowContext');
-          selectionAction(models);
+          selectionAction(models, false);
         }
       },
 
@@ -40143,8 +40359,9 @@ define('frontend-cp/components/ko-table/row/component', ['exports', 'ember'], fu
     // will be undefined
     selectable: _ember['default'].computed.readOnly('parentView.parentView.selectable'),
     selected: false,
+    selectableDisabled: false,
 
-    classNameBindings: [':ko-table_row', 'selected:ko-table_row--selected'],
+    classNameBindings: [':ko-table_row', 'selected'],
 
     // Lifecycle hooks
     willInsertElement: function willInsertElement() {
@@ -40176,7 +40393,7 @@ define('frontend-cp/components/ko-table/row/component', ['exports', 'ember'], fu
         this.toggleProperty('selected');
         var action = this.get('onSelectChange');
         if (action) {
-          action();
+          action(this.get('selected'));
         }
       }
     }
@@ -40220,7 +40437,7 @@ define("frontend-cp/components/ko-table/row/template", ["exports"], function (ex
             morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
             return morphs;
           },
-          statements: [["inline", "ko-checkbox", [], ["checked", ["subexpr", "@mut", [["get", "selected", ["loc", [null, [3, 26], [3, 34]]]]], [], []], "onCheck", ["subexpr", "action", ["toggleRow"], [], ["loc", [null, [3, 43], [3, 63]]]]], ["loc", [null, [3, 4], [3, 65]]]]],
+          statements: [["inline", "ko-checkbox", [], ["disabled", ["subexpr", "@mut", [["get", "selectableDisabled", ["loc", [null, [3, 27], [3, 45]]]]], [], []], "checked", ["subexpr", "@mut", [["get", "selected", ["loc", [null, [3, 54], [3, 62]]]]], [], []], "onCheck", ["subexpr", "action", ["toggleRow"], [], ["loc", [null, [3, 71], [3, 91]]]]], ["loc", [null, [3, 4], [3, 93]]]]],
           locals: [],
           templates: []
         };
@@ -47984,8 +48201,10 @@ define("frontend-cp/locales/en-us/generic", ["exports"], function (exports) {
     "uploads.failed": "There was a problem uploading file(s)",
 
     "confirm.delete": "Are you sure you want to delete this?",
+    "confirm.trashcases": "Are you sure you want to delete these cases?",
     "confirm.lose_changes": "You have unsaved changes on this page. Are you sure you want to discard these changes?",
     "changes_saved": "Changes saved",
+    "casestrashed": "Cases trashed",
 
     "create_user_panel.title": "Create a new user",
     "create_user_panel.name_label": "First and last name",
@@ -56549,6 +56768,18 @@ define('frontend-cp/services/api-adapter', ['exports', 'ember'], function (expor
  * Wrapper for a collection of methods that make requests to the API that
  * cannot be readily modelled in an EmberData way
  */
+define('frontend-cp/services/case-bulk-update', ['exports', 'ember'], function (exports, _ember) {
+  exports['default'] = _ember['default'].Service.extend({
+
+    trashCases: function trashCases(caseIds) {
+      var adapter = this.container.lookup('adapter:application');
+      var adapterNamespace = adapter.get('namespace');
+      var url = adapterNamespace + '/cases?ids=' + caseIds.toString();
+
+      return adapter.ajax(url, 'PUT', { data: { state: 'TRASH' } });
+    }
+  });
+});
 define('frontend-cp/services/case-tab', ['exports', 'ember', 'npm:lodash', 'frontend-cp/utils/object'], function (exports, _ember, _npmLodash, _frontendCpUtilsObject) {
   function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
 
@@ -67625,6 +67856,17 @@ define("frontend-cp/session/agent/cases/case/user/template", ["exports"], functi
     };
   })());
 });
+define('frontend-cp/session/agent/cases/index/controller', ['exports', 'ember'], function (exports, _ember) {
+  exports['default'] = _ember['default'].Controller.extend({
+    casesController: _ember['default'].inject.controller('session.agent.cases.index.view'),
+
+    actions: {
+      clearCheckedRows: function clearCheckedRows() {
+        this.get('casesController').send('clearCheckedRows');
+      }
+    }
+  });
+});
 define('frontend-cp/session/agent/cases/index/index/route', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = _ember['default'].Route.extend({
     beforeModel: function beforeModel() {
@@ -67660,7 +67902,7 @@ define('frontend-cp/session/agent/cases/index/route', ['exports', 'ember', 'fron
       var views = _ref.views;
 
       var inbox = views.findBy('isDefault');
-      controller.setProperties({ inboxView: inbox, childRoutePage: 1 });
+      controller.setProperties({ inboxView: inbox, childRoutePage: 1, showPagination: true });
       this._super(controller, views.filter(function (v) {
         return v.id !== inbox.id && v.get('isEnabled');
       }));
@@ -69067,35 +69309,75 @@ define("frontend-cp/session/agent/cases/index/template", ["exports"], function (
   exports["default"] = Ember.HTMLBars.template((function () {
     var child0 = (function () {
       var child0 = (function () {
+        var child0 = (function () {
+          return {
+            meta: {
+              "revision": "Ember@1.13.13",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 12,
+                  "column": 6
+                },
+                "end": {
+                  "line": 12,
+                  "column": 45
+                }
+              },
+              "moduleName": "frontend-cp/session/agent/cases/index/template.hbs"
+            },
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes() {
+              return [];
+            },
+            statements: [],
+            locals: [],
+            templates: []
+          };
+        })();
         return {
           meta: {
             "revision": "Ember@1.13.13",
             "loc": {
               "source": null,
               "start": {
-                "line": 10,
-                "column": 6
+                "line": 11,
+                "column": 4
               },
               "end": {
-                "line": 10,
-                "column": 45
+                "line": 13,
+                "column": 4
               }
             },
             "moduleName": "frontend-cp/session/agent/cases/index/template.hbs"
           },
-          arity: 0,
+          arity: 1,
           cachedFragment: null,
           hasRendered: false,
           buildFragment: function buildFragment(dom) {
             var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("      ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
             return el0;
           },
-          buildRenderNodes: function buildRenderNodes() {
-            return [];
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+            return morphs;
           },
-          statements: [],
-          locals: [],
-          templates: []
+          statements: [["block", "link-to", [["subexpr", "query-params", [], ["page", ["get", "number", ["loc", [null, [12, 36], [12, 42]]]]], ["loc", [null, [12, 17], [12, 43]]]]], [], 0, null, ["loc", [null, [12, 6], [12, 57]]]]],
+          locals: ["number"],
+          templates: [child0]
         };
       })();
       return {
@@ -69104,36 +69386,34 @@ define("frontend-cp/session/agent/cases/index/template", ["exports"], function (
           "loc": {
             "source": null,
             "start": {
-              "line": 9,
-              "column": 4
+              "line": 10,
+              "column": 2
             },
             "end": {
-              "line": 11,
-              "column": 4
+              "line": 14,
+              "column": 2
             }
           },
           "moduleName": "frontend-cp/session/agent/cases/index/template.hbs"
         },
-        arity: 1,
+        arity: 0,
         cachedFragment: null,
         hasRendered: false,
         buildFragment: function buildFragment(dom) {
           var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("      ");
-          dom.appendChild(el0, el1);
           var el1 = dom.createComment("");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n");
           dom.appendChild(el0, el1);
           return el0;
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
           var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [["block", "link-to", [["subexpr", "query-params", [], ["page", ["get", "number", ["loc", [null, [10, 36], [10, 42]]]]], ["loc", [null, [10, 17], [10, 43]]]]], [], 0, null, ["loc", [null, [10, 6], [10, 57]]]]],
-        locals: ["number"],
+        statements: [["block", "ko-pagination", [], ["currentPage", ["subexpr", "@mut", [["get", "childRoutePage", ["loc", [null, [11, 33], [11, 47]]]]], [], []], "loadingPage", ["subexpr", "@mut", [["get", "childRouteLoadingPage", ["loc", [null, [11, 60], [11, 81]]]]], [], []], "pageCount", ["subexpr", "@mut", [["get", "childRouteTotalPages", ["loc", [null, [11, 92], [11, 112]]]]], [], []]], 0, null, ["loc", [null, [11, 4], [13, 22]]]]],
+        locals: [],
         templates: [child0]
       };
     })();
@@ -69147,7 +69427,7 @@ define("frontend-cp/session/agent/cases/index/template", ["exports"], function (
             "column": 0
           },
           "end": {
-            "line": 14,
+            "line": 17,
             "column": 0
           }
         },
@@ -69182,7 +69462,7 @@ define("frontend-cp/session/agent/cases/index/template", ["exports"], function (
         var el3 = dom.createTextNode("\n  ");
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n  ");
+        var el2 = dom.createTextNode("\n\n  ");
         dom.appendChild(el1, el2);
         var el2 = dom.createElement("div");
         dom.setAttribute(el2, "class", "ko-session-agent-cases-index__pagination");
@@ -69208,7 +69488,7 @@ define("frontend-cp/session/agent/cases/index/template", ["exports"], function (
         morphs[2] = dom.createMorphAt(dom.childAt(element0, [5]), 1, 1);
         return morphs;
       },
-      statements: [["inline", "ko-sidebar", [], ["inboxView", ["subexpr", "@mut", [["get", "inboxView", ["loc", [null, [3, 27], [3, 36]]]]], [], []], "customViews", ["subexpr", "@mut", [["get", "model", ["loc", [null, [3, 49], [3, 54]]]]], [], []]], ["loc", [null, [3, 4], [3, 56]]]], ["content", "outlet", ["loc", [null, [6, 4], [6, 14]]]], ["block", "ko-pagination", [], ["currentPage", ["subexpr", "@mut", [["get", "childRoutePage", ["loc", [null, [9, 33], [9, 47]]]]], [], []], "loadingPage", ["subexpr", "@mut", [["get", "childRouteLoadingPage", ["loc", [null, [9, 60], [9, 81]]]]], [], []], "pageCount", ["subexpr", "@mut", [["get", "childRouteTotalPages", ["loc", [null, [9, 92], [9, 112]]]]], [], []]], 0, null, ["loc", [null, [9, 4], [11, 22]]]]],
+      statements: [["inline", "ko-sidebar", [], ["inboxView", ["subexpr", "@mut", [["get", "inboxView", ["loc", [null, [3, 27], [3, 36]]]]], [], []], "customViews", ["subexpr", "@mut", [["get", "model", ["loc", [null, [3, 49], [3, 54]]]]], [], []]], ["loc", [null, [3, 4], [3, 56]]]], ["content", "outlet", ["loc", [null, [6, 4], [6, 14]]]], ["block", "if", [["get", "showPagination", ["loc", [null, [10, 8], [10, 22]]]]], [], 0, null, ["loc", [null, [10, 2], [14, 9]]]]],
       locals: [],
       templates: [child0]
     };
@@ -69219,6 +69499,14 @@ define('frontend-cp/session/agent/cases/index/view/controller', ['exports', 'emb
     queryParams: ['page', 'view', 'orderBy', 'orderByColumn'],
     page: 1,
     metrics: _ember['default'].inject.service(),
+
+    parentController: _ember['default'].inject.controller('session.agent.cases.index'),
+
+    isPollingEnabled: true,
+
+    isTrash: _ember['default'].computed('activeView.viewType', function () {
+      return this.get('activeView.viewType') === 'TRASH';
+    }),
 
     // Actions
     actions: {
@@ -69238,6 +69526,20 @@ define('frontend-cp/session/agent/cases/index/view/controller', ['exports', 'emb
           orderBy: order,
           orderByColumn: column && column.get('name')
         });
+      },
+
+      setCheckedRows: function setCheckedRows(checkedRows) {
+        this.set('checkedRows', checkedRows);
+        var hasChecked = Object.values(checkedRows).reduce(function (prev, current) {
+          return prev || current;
+        }, false);
+
+        this.set('isPollingEnabled', !hasChecked);
+        this.get('parentController').set('showPagination', !hasChecked);
+      },
+
+      trashCases: function trashCases() {
+        this.send('reloadCases');
       }
     }
   });
@@ -69276,6 +69578,16 @@ define('frontend-cp/session/agent/cases/index/view/route', ['exports', 'ember', 
       }
     },
 
+    _initCheckedRows: function _initCheckedRows(cases) {
+      var checkedRows = _ember['default'].Object.create({});
+      cases.forEach(function (item) {
+        checkedRows[item.get('id')] = false;
+      });
+      this.controller.setProperties({
+        checkedRows: checkedRows
+      });
+    },
+
     deactivate: function deactivate() {
       this._super.apply(this, arguments);
       if (this.pollViewTimer) {
@@ -69286,16 +69598,18 @@ define('frontend-cp/session/agent/cases/index/view/route', ['exports', 'ember', 
     _pollView: function _pollView() {
       var _this = this;
 
-      var _paramsFor = this.paramsFor(this.routeName);
+      if (this.controller.get('isPollingEnabled')) {
+        var _paramsFor = this.paramsFor(this.routeName);
 
-      var view_id = _paramsFor.view_id;
+        var view_id = _paramsFor.view_id;
 
-      var view = this.modelFor('session.agent.cases.index').views.findBy('id', view_id);
-      this._refreshCases(view).then(function (cases) {
-        _this.controller.set('model', cases);
-        _this.send('updatePagination', _this.paramsFor(_this.routeName), cases.get('meta'));
-        _this.pollViewTimer = run.later(_this, _this._pollView, casesPollingInterval);
-      });
+        var view = this.modelFor('session.agent.cases.index').views.findBy('id', view_id);
+        this._refreshCases(view).then(function (cases) {
+          _this.controller.set('model', cases);
+          _this.send('updatePagination', _this.paramsFor(_this.routeName), cases.get('meta'));
+          _this.pollViewTimer = run.later(_this, _this._pollView, casesPollingInterval);
+        });
+      }
     },
 
     afterModel: function afterModel(view) {
@@ -69337,6 +69651,17 @@ define('frontend-cp/session/agent/cases/index/view/route', ['exports', 'ember', 
       this._super(controller, cases);
       controller.set('activeView', view);
       this.send('updatePagination', this.paramsFor(this.routeName), cases.get('meta'));
+      this._initCheckedRows(cases);
+    },
+
+    actions: {
+      clearCheckedRows: function clearCheckedRows() {
+        this._initCheckedRows(this.controller.get('model'));
+      },
+
+      reloadCases: function reloadCases() {
+        this.refresh();
+      }
     }
   });
 });
@@ -69353,7 +69678,7 @@ define("frontend-cp/session/agent/cases/index/view/template", ["exports"], funct
             "column": 0
           },
           "end": {
-            "line": 9,
+            "line": 13,
             "column": 0
           }
         },
@@ -69376,7 +69701,7 @@ define("frontend-cp/session/agent/cases/index/view/template", ["exports"], funct
         dom.insertBoundary(fragment, 0);
         return morphs;
       },
-      statements: [["inline", "ko-cases-list", [], ["cases", ["subexpr", "@mut", [["get", "model", ["loc", [null, [2, 8], [2, 13]]]]], [], []], "onCaseListSort", "sortCaseList", "onClick", ["subexpr", "action", ["transitionToCase"], [], ["loc", [null, [4, 10], [4, 37]]]], "columns", ["subexpr", "@mut", [["get", "activeView.columns", ["loc", [null, [5, 10], [5, 28]]]]], [], []], "title", ["subexpr", "@mut", [["get", "activeView.title", ["loc", [null, [6, 8], [6, 24]]]]], [], []], "orderBy", ["subexpr", "@mut", [["get", "orderBy", ["loc", [null, [7, 10], [7, 17]]]]], [], []], "orderByColumn", ["subexpr", "@mut", [["get", "orderByColumn", ["loc", [null, [8, 16], [8, 29]]]]], [], []]], ["loc", [null, [1, 0], [8, 31]]]]],
+      statements: [["inline", "ko-cases-list", [], ["cases", ["subexpr", "@mut", [["get", "model", ["loc", [null, [2, 8], [2, 13]]]]], [], []], "onCaseListSort", "sortCaseList", "onClick", ["subexpr", "action", ["transitionToCase"], [], ["loc", [null, [4, 10], [4, 37]]]], "columns", ["subexpr", "@mut", [["get", "activeView.columns", ["loc", [null, [5, 10], [5, 28]]]]], [], []], "title", ["subexpr", "@mut", [["get", "activeView.title", ["loc", [null, [6, 8], [6, 24]]]]], [], []], "orderBy", ["subexpr", "@mut", [["get", "orderBy", ["loc", [null, [7, 10], [7, 17]]]]], [], []], "onSetCheckedRows", ["subexpr", "action", ["setCheckedRows"], [], ["loc", [null, [8, 19], [8, 44]]]], "onTrashCases", ["subexpr", "action", ["trashCases"], [], ["loc", [null, [9, 15], [9, 36]]]], "trashable", ["subexpr", "not", [["get", "isTrash", ["loc", [null, [10, 17], [10, 24]]]]], [], ["loc", [null, [10, 12], [10, 25]]]], "checkedRows", ["subexpr", "@mut", [["get", "checkedRows", ["loc", [null, [11, 14], [11, 25]]]]], [], []], "orderByColumn", ["subexpr", "@mut", [["get", "orderByColumn", ["loc", [null, [12, 16], [12, 29]]]]], [], []]], ["loc", [null, [1, 0], [12, 31]]]]],
       locals: [],
       templates: []
     };
@@ -72257,6 +72582,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+b23afa66"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+564a0e55"});
 }
 /* jshint ignore:end */
