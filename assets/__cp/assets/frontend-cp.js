@@ -58652,7 +58652,7 @@ define('frontend-cp/services/permissions', ['exports', 'ember'], function (expor
       return roleTypes.CUSTOMER.rank === targetRoleType.rank;
     }
 
-    return roleType.rank === roleTypes.ADMIN.rank;
+    return roleType.rank >= roleTypes.ADMIN.rank;
   };
 
   /*
@@ -58709,13 +58709,13 @@ define('frontend-cp/services/permissions', ['exports', 'ember'], function (expor
         return false;
       }
       var targetRoleType = roleTypes[target.get('role').get('roleType')];
-      return roleType.rank === roleTypes.ADMIN.rank && (targetRoleType.rank === roleTypes.AGENT.rank || targetRoleType.rank === roleTypes.COLLABORATOR.rank);
+      return roleType.rank >= roleTypes.ADMIN.rank && (targetRoleType.rank === roleTypes.AGENT.rank || targetRoleType.rank === roleTypes.COLLABORATOR.rank);
     },
     'app.user.change_agent_access_permission': function appUserChange_agent_access_permission(myRoleType, me, targetUser) {
-      return targetUser.get('role.roleType') !== 'CUSTOMER' && myRoleType.rank === roleTypes.ADMIN.rank;
+      return targetUser.get('role.roleType') !== 'CUSTOMER' && myRoleType.rank >= roleTypes.ADMIN.rank;
     },
     'app.user.change_organization_access_permission': function appUserChange_organization_access_permission(myRoleType, me, targetUser) {
-      return targetUser.get('role.roleType') === 'CUSTOMER' && myRoleType.rank === roleTypes.ADMIN.rank;
+      return targetUser.get('role.roleType') === 'CUSTOMER' && myRoleType.rank >= roleTypes.ADMIN.rank;
     },
     'app.user.change_team_permission': function appUserChange_team_permission(myRoleType, me, targetUser) {
       return targetUser.get('role.roleType') !== 'CUSTOMER' && myRoleType.rank >= roleTypes.ADMIN.rank;
@@ -58733,7 +58733,7 @@ define('frontend-cp/services/permissions', ['exports', 'ember'], function (expor
       return myRank >= roleTypes.ADMIN.rank && myRank >= targetRank;
     },
     'app.admin.access': function appAdminAccess(myRoleType) {
-      return myRoleType.rank === roleTypes.ADMIN.rank;
+      return myRoleType.rank >= roleTypes.ADMIN.rank;
     },
     'app.case.trash': function appCaseTrash(myRoleType) {
       return myRoleType.rank >= roleTypes.AGENT.rank;
@@ -72257,6 +72257,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+fcc208b5"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+4ac3b391"});
 }
 /* jshint ignore:end */
