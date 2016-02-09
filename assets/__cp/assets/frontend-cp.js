@@ -58999,9 +58999,15 @@ define('frontend-cp/services/permissions', ['exports', 'ember'], function (expor
         return applicationActions[action](subjectRoleType, this.get('sessionService.user'), target);
       }
 
+      var roleRegex = new RegExp('(customer|collaborator|agent|admin|owner)\.', 'i');
+
       // Check role permissions
       return permissions.filter(function (perm) {
-        return perm.get('name') === action && perm.get('value');
+        // this is required as we want to compare only real permission name
+        // excluding role type in the beginning of the string
+        var permissionName = perm.get('name').replace(roleRegex, '');
+        var actionName = action.replace(roleRegex, '');
+        return permissionName === actionName && perm.get('value');
       }).length > 0;
     }
   });
@@ -72582,6 +72588,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+564a0e55"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+9ffea650"});
 }
 /* jshint ignore:end */
