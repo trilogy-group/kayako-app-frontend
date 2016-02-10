@@ -17770,7 +17770,11 @@ define('frontend-cp/components/ko-case-content/field/assignee/component', ['expo
     }),
 
     placeholder: _ember['default'].computed('team.title', 'agent.fullName', function () {
-      return this.get('team.title') + ' / ' + this.get('agent.fullName');
+      var pieces = [this.get('team.title')];
+      if (this.get('agent.fullName')) {
+        pieces.push(this.get('agent.fullName'));
+      }
+      return pieces.join(' / ');
     }),
 
     generateTeamAgentId: function generateTeamAgentId(teamId, agentId) {
@@ -59160,7 +59164,9 @@ define('frontend-cp/services/sections-history', ['exports', 'ember', 'ember-data
       // TODO: Add support for query params??
       var sectionName = routeName.split('.')[1];
       var data = { routeName: routeName };
-      if (model && !_ember['default'].isArray(model) && (!(model instanceof _emberData['default'].Model) || !model.get('isNew'))) {
+
+      // TODO: model.get('id') check could be removed after PDM-1398 is fixed
+      if (model && !_ember['default'].isArray(model) && model instanceof _emberData['default'].Model && !model.get('isNew') && model.get('id')) {
         data.model = model;
       }
       _ember['default'].set(this.history, sectionName, data);
@@ -72588,6 +72594,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+1313989a"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+b487d4d3"});
 }
 /* jshint ignore:end */
