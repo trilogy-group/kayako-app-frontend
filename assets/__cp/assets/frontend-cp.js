@@ -61633,6 +61633,11 @@ define('frontend-cp/session/admin/manage/case-fields/edit/route', ['exports', 'e
       return this.store.findRecord('case-field', params.case_field_id);
     },
 
+    setupController: function setupController(controller, model) {
+      model.cacheRelationships();
+      this._super(controller, model);
+    },
+
     afterModel: function afterModel(model) {
       var fieldType = model.get('fieldType');
 
@@ -61998,6 +62003,11 @@ define('frontend-cp/session/admin/manage/case-forms/edit/route', ['exports', 'em
 
     model: function model(params) {
       return this.store.findRecord('case-form', params.case_form_id);
+    },
+
+    setupController: function setupController(controller, model) {
+      model.cacheRelationships();
+      this._super(controller, model);
     },
 
     actions: {
@@ -64573,6 +64583,11 @@ define('frontend-cp/session/admin/people/organization-fields/edit/route', ['expo
       return this.store.findRecord('organization-field', params.organization_field_id);
     },
 
+    setupController: function setupController(controller, model) {
+      model.cacheRelationships();
+      this._super(controller, model);
+    },
+
     actions: {
       willTransition: function willTransition(transition) {
         this.get('customFields').validateTransition(this.controller, transition);
@@ -66162,6 +66177,11 @@ define('frontend-cp/session/admin/people/user-fields/edit/route', ['exports', 'e
 
     model: function model(params) {
       return this.store.findRecord('user-field', params.user_field_id);
+    },
+
+    setupController: function setupController(controller, model) {
+      model.cacheRelationships();
+      this._super(controller, model);
     },
 
     actions: {
@@ -72595,6 +72615,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+6cf66683"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+654f370a"});
 }
 /* jshint ignore:end */
