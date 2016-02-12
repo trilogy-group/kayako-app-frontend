@@ -20998,7 +20998,9 @@ define("frontend-cp/components/ko-cases-list/column/updatedat/template", ["expor
     };
   })());
 });
-define('frontend-cp/components/ko-cases-list/component', ['exports', 'ember', 'npm:lodash'], function (exports, _ember, _npmLodash) {
+define('frontend-cp/components/ko-cases-list/component', ['exports', 'ember'], function (exports, _ember) {
+  function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
+
   exports['default'] = _ember['default'].Component.extend({
     // Params
     cases: [],
@@ -21037,6 +21039,14 @@ define('frontend-cp/components/ko-cases-list/component', ['exports', 'ember', 'n
       return 'ko-cases-list/column/' + _ember['default'].String.dasherize(column.get('name'));
     },
 
+    classForRow: function classForRow(rowCase, trashable) {
+      var classes = ['ko-cases-list__row'];
+      if (trashable && rowCase.get('state') === 'TRASH') {
+        classes.push('ko-cases-list__row--trashed');
+      }
+      return classes.join(' ');
+    },
+
     isFixed: function isFixed(column) {
       return column.get('name') === 'subject';
     },
@@ -21047,20 +21057,27 @@ define('frontend-cp/components/ko-cases-list/component', ['exports', 'ember', 'n
       },
 
       toggleCheck: function toggleCheck(rowCase, checked) {
-        var checkedRows = _ember['default'].Object.create(this.get('checkedRows'));
-        checkedRows.set(rowCase.id, checked);
+        var checkedRows = [].concat(_toConsumableArray(this.get('checkedRows')));
+        if (checked) {
+          checkedRows.push(rowCase.id);
+        } else {
+          checkedRows.removeObject(rowCase.id);
+        }
 
-        this.set('isSomeChecked', _npmLodash['default'].some(Object.values(checkedRows)));
+        this.set('isSomeChecked', checkedRows.length > 0);
         this.attrs.onSetCheckedRows(checkedRows);
       },
 
       selectionChanged: function selectionChanged(rows, checked) {
-        var checkedRows = _ember['default'].Object.create(this.get('checkedRows'));
-        this.get('cases').forEach(function (item) {
-          checkedRows[item.get('id')] = checked;
-        });
+        var checkedRows = [];
 
-        this.set('isSomeChecked', checked);
+        if (checked) {
+          checkedRows = this.get('cases').filter(function (item) {
+            return item.get('state') !== 'TRASH';
+          }).getEach('id');
+        }
+
+        this.set('isSomeChecked', checkedRows.length > 0);
         this.attrs.onSetCheckedRows(checkedRows);
       },
 
@@ -21070,13 +21087,8 @@ define('frontend-cp/components/ko-cases-list/component', ['exports', 'ember', 'n
         var trashConfirmationMessage = this.get('intl').findTranslationByKey('generic.confirm.trashcases');
 
         if (confirm(trashConfirmationMessage)) {
-          var trashedIds = _npmLodash['default'].pairs(this.get('checkedRows')).filter(function (row) {
-            return row[1];
-          }).map(function (row) {
-            return row[0];
-          });
           this.set('isUpdatingCases', true);
-          this.get('bulkService').trashCases(trashedIds).then(function () {
+          this.get('bulkService').trashCases(this.get('checkedRows')).then(function () {
             _this.set('isUpdatingCases', false);
             _this.attrs.onTrashCases();
             _this.get('notification').success(_this.get('intl').findTranslationByKey('generic.casestrashed'));
@@ -22245,7 +22257,7 @@ define("frontend-cp/components/ko-cases-list/template", ["exports"], function (e
             morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
             return morphs;
           },
-          statements: [["inline", "t", ["cases.trash"], [], ["loc", [null, [15, 10], [15, 29]]]]],
+          statements: [["inline", "t", ["cases.trashcases"], [], ["loc", [null, [15, 10], [15, 34]]]]],
           locals: [],
           templates: []
         };
@@ -22310,11 +22322,11 @@ define("frontend-cp/components/ko-cases-list/template", ["exports"], function (e
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 27,
+                    "line": 28,
                     "column": 6
                   },
                   "end": {
-                    "line": 35,
+                    "line": 36,
                     "column": 6
                   }
                 },
@@ -22338,7 +22350,7 @@ define("frontend-cp/components/ko-cases-list/template", ["exports"], function (e
                 morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
                 return morphs;
               },
-              statements: [["inline", "component", [["subexpr", "ko-helper", [["get", "componentForHeader", ["loc", [null, [34, 31], [34, 49]]]], ["get", "column", ["loc", [null, [34, 50], [34, 56]]]]], [], ["loc", [null, [34, 20], [34, 57]]]]], ["tagName", "span"], ["loc", [null, [34, 8], [34, 74]]]]],
+              statements: [["inline", "component", [["subexpr", "ko-helper", [["get", "componentForHeader", ["loc", [null, [35, 31], [35, 49]]]], ["get", "column", ["loc", [null, [35, 50], [35, 56]]]]], [], ["loc", [null, [35, 20], [35, 57]]]]], ["tagName", "span"], ["loc", [null, [35, 8], [35, 74]]]]],
               locals: [],
               templates: []
             };
@@ -22349,11 +22361,11 @@ define("frontend-cp/components/ko-cases-list/template", ["exports"], function (e
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 26,
+                  "line": 27,
                   "column": 4
                 },
                 "end": {
-                  "line": 36,
+                  "line": 37,
                   "column": 4
                 }
               },
@@ -22375,7 +22387,7 @@ define("frontend-cp/components/ko-cases-list/template", ["exports"], function (e
               dom.insertBoundary(fragment, null);
               return morphs;
             },
-            statements: [["block", "ko-table/column", [], ["column", ["subexpr", "@mut", [["get", "column", ["loc", [null, [28, 15], [28, 21]]]]], [], []], "class", ["subexpr", "ko-helper", [["get", "classForHeader", ["loc", [null, [29, 25], [29, 39]]]], ["get", "column", ["loc", [null, [29, 40], [29, 46]]]]], [], ["loc", [null, [29, 14], [29, 47]]]], "sortable", true, "onSort", "tableSorted", "orderBy", ["subexpr", "@mut", [["get", "orderBy", ["loc", [null, [32, 16], [32, 23]]]]], [], []], "orderByColumn", ["subexpr", "@mut", [["get", "orderByColumn", ["loc", [null, [33, 22], [33, 35]]]]], [], []]], 0, null, ["loc", [null, [27, 6], [35, 26]]]]],
+            statements: [["block", "ko-table/column", [], ["column", ["subexpr", "@mut", [["get", "column", ["loc", [null, [29, 15], [29, 21]]]]], [], []], "class", ["subexpr", "ko-helper", [["get", "classForHeader", ["loc", [null, [30, 25], [30, 39]]]], ["get", "column", ["loc", [null, [30, 40], [30, 46]]]]], [], ["loc", [null, [30, 14], [30, 47]]]], "sortable", true, "onSort", "tableSorted", "orderBy", ["subexpr", "@mut", [["get", "orderBy", ["loc", [null, [33, 16], [33, 23]]]]], [], []], "orderByColumn", ["subexpr", "@mut", [["get", "orderByColumn", ["loc", [null, [34, 22], [34, 35]]]]], [], []]], 0, null, ["loc", [null, [28, 6], [36, 26]]]]],
             locals: ["column"],
             templates: [child0]
           };
@@ -22386,11 +22398,11 @@ define("frontend-cp/components/ko-cases-list/template", ["exports"], function (e
             "loc": {
               "source": null,
               "start": {
-                "line": 25,
+                "line": 26,
                 "column": 2
               },
               "end": {
-                "line": 37,
+                "line": 38,
                 "column": 2
               }
             },
@@ -22412,7 +22424,7 @@ define("frontend-cp/components/ko-cases-list/template", ["exports"], function (e
             dom.insertBoundary(fragment, null);
             return morphs;
           },
-          statements: [["block", "each", [["get", "columns", ["loc", [null, [26, 12], [26, 19]]]]], [], 0, null, ["loc", [null, [26, 4], [36, 13]]]]],
+          statements: [["block", "each", [["get", "columns", ["loc", [null, [27, 12], [27, 19]]]]], [], 0, null, ["loc", [null, [27, 4], [37, 13]]]]],
           locals: [],
           templates: [child0]
         };
@@ -22428,11 +22440,11 @@ define("frontend-cp/components/ko-cases-list/template", ["exports"], function (e
                     "loc": {
                       "source": null,
                       "start": {
-                        "line": 48,
+                        "line": 51,
                         "column": 10
                       },
                       "end": {
-                        "line": 50,
+                        "line": 53,
                         "column": 10
                       }
                     },
@@ -22456,7 +22468,7 @@ define("frontend-cp/components/ko-cases-list/template", ["exports"], function (e
                     morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
                     return morphs;
                   },
-                  statements: [["inline", "component", [["subexpr", "ko-helper", [["get", "componentForColumn", ["loc", [null, [49, 35], [49, 53]]]], ["get", "column", ["loc", [null, [49, 54], [49, 60]]]]], [], ["loc", [null, [49, 24], [49, 61]]]]], ["case", ["subexpr", "@mut", [["get", "case", ["loc", [null, [49, 67], [49, 71]]]]], [], []]], ["loc", [null, [49, 12], [49, 73]]]]],
+                  statements: [["inline", "component", [["subexpr", "ko-helper", [["get", "componentForColumn", ["loc", [null, [52, 35], [52, 53]]]], ["get", "column", ["loc", [null, [52, 54], [52, 60]]]]], [], ["loc", [null, [52, 24], [52, 61]]]]], ["case", ["subexpr", "@mut", [["get", "case", ["loc", [null, [52, 67], [52, 71]]]]], [], []]], ["loc", [null, [52, 12], [52, 73]]]]],
                   locals: [],
                   templates: []
                 };
@@ -22467,11 +22479,11 @@ define("frontend-cp/components/ko-cases-list/template", ["exports"], function (e
                   "loc": {
                     "source": null,
                     "start": {
-                      "line": 47,
+                      "line": 50,
                       "column": 8
                     },
                     "end": {
-                      "line": 51,
+                      "line": 54,
                       "column": 8
                     }
                   },
@@ -22493,7 +22505,7 @@ define("frontend-cp/components/ko-cases-list/template", ["exports"], function (e
                   dom.insertBoundary(fragment, null);
                   return morphs;
                 },
-                statements: [["block", "ko-table/cell", [], ["class", ["subexpr", "ko-contextual-helper", [["get", "classForColumn", ["loc", [null, [48, 55], [48, 69]]]], ["get", "this", ["loc", [null, [48, 70], [48, 74]]]], ["get", "column", ["loc", [null, [48, 75], [48, 81]]]]], [], ["loc", [null, [48, 33], [48, 82]]]]], 0, null, ["loc", [null, [48, 10], [50, 28]]]]],
+                statements: [["block", "ko-table/cell", [], ["class", ["subexpr", "ko-contextual-helper", [["get", "classForColumn", ["loc", [null, [51, 55], [51, 69]]]], ["get", "this", ["loc", [null, [51, 70], [51, 74]]]], ["get", "column", ["loc", [null, [51, 75], [51, 81]]]]], [], ["loc", [null, [51, 33], [51, 82]]]]], 0, null, ["loc", [null, [51, 10], [53, 28]]]]],
                 locals: ["column"],
                 templates: [child0]
               };
@@ -22504,11 +22516,11 @@ define("frontend-cp/components/ko-cases-list/template", ["exports"], function (e
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 40,
+                    "line": 41,
                     "column": 6
                   },
                   "end": {
-                    "line": 52,
+                    "line": 55,
                     "column": 6
                   }
                 },
@@ -22530,7 +22542,7 @@ define("frontend-cp/components/ko-cases-list/template", ["exports"], function (e
                 dom.insertBoundary(fragment, null);
                 return morphs;
               },
-              statements: [["block", "each", [["get", "columns", ["loc", [null, [47, 16], [47, 23]]]]], [], 0, null, ["loc", [null, [47, 8], [51, 17]]]]],
+              statements: [["block", "each", [["get", "columns", ["loc", [null, [50, 16], [50, 23]]]]], [], 0, null, ["loc", [null, [50, 8], [54, 17]]]]],
               locals: [],
               templates: [child0]
             };
@@ -22541,11 +22553,11 @@ define("frontend-cp/components/ko-cases-list/template", ["exports"], function (e
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 39,
+                  "line": 40,
                   "column": 4
                 },
                 "end": {
-                  "line": 53,
+                  "line": 56,
                   "column": 4
                 }
               },
@@ -22567,7 +22579,7 @@ define("frontend-cp/components/ko-cases-list/template", ["exports"], function (e
               dom.insertBoundary(fragment, null);
               return morphs;
             },
-            statements: [["block", "ko-table/row", [], ["class", "ko-cases-list__row", "table", ["subexpr", "@mut", [["get", "table", ["loc", [null, [41, 14], [41, 19]]]]], [], []], "clickable", true, "rowContext", ["subexpr", "@mut", [["get", "case", ["loc", [null, [43, 19], [43, 23]]]]], [], []], "selectableDisabled", ["subexpr", "@mut", [["get", "isUpdatingCases", ["loc", [null, [44, 27], [44, 42]]]]], [], []], "onSelectChange", ["subexpr", "action", ["toggleCheck", ["get", "case", ["loc", [null, [45, 45], [45, 49]]]]], [], ["loc", [null, [45, 23], [45, 50]]]], "onClick", ["subexpr", "@mut", [["get", "onClick", ["loc", [null, [46, 16], [46, 23]]]]], [], []]], 0, null, ["loc", [null, [40, 6], [52, 23]]]]],
+            statements: [["block", "ko-table/row", [], ["class", ["subexpr", "ko-helper", [["get", "classForRow", ["loc", [null, [42, 25], [42, 36]]]], ["get", "case", ["loc", [null, [42, 37], [42, 41]]]], ["get", "trashable", ["loc", [null, [42, 42], [42, 51]]]]], [], ["loc", [null, [42, 14], [42, 52]]]], "table", ["subexpr", "@mut", [["get", "table", ["loc", [null, [43, 14], [43, 19]]]]], [], []], "clickable", true, "rowContext", ["subexpr", "@mut", [["get", "case", ["loc", [null, [45, 19], [45, 23]]]]], [], []], "selectableDisabled", ["subexpr", "or", [["get", "isUpdatingCases", ["loc", [null, [46, 31], [46, 46]]]], ["subexpr", "eq", [["get", "case.state", ["loc", [null, [46, 51], [46, 61]]]], "TRASH"], [], ["loc", [null, [46, 47], [46, 70]]]]], [], ["loc", [null, [46, 27], [46, 71]]]], "onSelectChange", ["subexpr", "action", ["toggleCheck", ["get", "case", ["loc", [null, [47, 45], [47, 49]]]]], [], ["loc", [null, [47, 23], [47, 50]]]], "selected", ["subexpr", "contains", [["get", "case.id", ["loc", [null, [48, 27], [48, 34]]]], ["get", "checkedRows", ["loc", [null, [48, 35], [48, 46]]]]], [], ["loc", [null, [48, 17], [48, 47]]]], "onClick", ["subexpr", "@mut", [["get", "onClick", ["loc", [null, [49, 16], [49, 23]]]]], [], []]], 0, null, ["loc", [null, [41, 6], [55, 23]]]]],
             locals: ["case"],
             templates: [child0]
           };
@@ -22578,11 +22590,11 @@ define("frontend-cp/components/ko-cases-list/template", ["exports"], function (e
             "loc": {
               "source": null,
               "start": {
-                "line": 38,
+                "line": 39,
                 "column": 2
               },
               "end": {
-                "line": 54,
+                "line": 57,
                 "column": 2
               }
             },
@@ -22604,7 +22616,7 @@ define("frontend-cp/components/ko-cases-list/template", ["exports"], function (e
             dom.insertBoundary(fragment, null);
             return morphs;
           },
-          statements: [["block", "each", [["get", "cases", ["loc", [null, [39, 12], [39, 17]]]]], [], 0, null, ["loc", [null, [39, 4], [53, 13]]]]],
+          statements: [["block", "each", [["get", "cases", ["loc", [null, [40, 12], [40, 17]]]]], [], 0, null, ["loc", [null, [40, 4], [56, 13]]]]],
           locals: [],
           templates: [child0]
         };
@@ -22619,7 +22631,7 @@ define("frontend-cp/components/ko-cases-list/template", ["exports"], function (e
               "column": 0
             },
             "end": {
-              "line": 55,
+              "line": 58,
               "column": 0
             }
           },
@@ -22644,7 +22656,7 @@ define("frontend-cp/components/ko-cases-list/template", ["exports"], function (e
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [["block", "ko-table/header", [], ["class", "ko-cases-list__table-header"], 0, null, ["loc", [null, [25, 2], [37, 22]]]], ["block", "ko-table/body", [], [], 1, null, ["loc", [null, [38, 2], [54, 20]]]]],
+        statements: [["block", "ko-table/header", [], ["class", "ko-cases-list__table-header"], 0, null, ["loc", [null, [26, 2], [38, 22]]]], ["block", "ko-table/body", [], [], 1, null, ["loc", [null, [39, 2], [57, 20]]]]],
         locals: ["table"],
         templates: [child0, child1]
       };
@@ -22656,11 +22668,11 @@ define("frontend-cp/components/ko-cases-list/template", ["exports"], function (e
           "loc": {
             "source": null,
             "start": {
-              "line": 56,
+              "line": 59,
               "column": 0
             },
             "end": {
-              "line": 60,
+              "line": 63,
               "column": 0
             }
           },
@@ -22689,7 +22701,7 @@ define("frontend-cp/components/ko-cases-list/template", ["exports"], function (e
           morphs[0] = dom.createMorphAt(dom.childAt(fragment, [0]), 1, 1);
           return morphs;
         },
-        statements: [["inline", "t", ["cases.list.casesnotfound"], [], ["loc", [null, [58, 2], [58, 34]]]]],
+        statements: [["inline", "t", ["cases.list.casesnotfound"], [], ["loc", [null, [61, 2], [61, 34]]]]],
         locals: [],
         templates: []
       };
@@ -22704,7 +22716,7 @@ define("frontend-cp/components/ko-cases-list/template", ["exports"], function (e
             "column": 0
           },
           "end": {
-            "line": 61,
+            "line": 64,
             "column": 0
           }
         },
@@ -22765,7 +22777,7 @@ define("frontend-cp/components/ko-cases-list/template", ["exports"], function (e
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["content", "title", ["loc", [null, [3, 4], [3, 13]]]], ["block", "if", [["get", "isSomeChecked", ["loc", [null, [7, 10], [7, 23]]]]], [], 0, null, ["loc", [null, [7, 4], [18, 11]]]], ["block", "ko-table", [], ["selectable", ["subexpr", "@mut", [["get", "trashable", ["loc", [null, [23, 23], [23, 32]]]]], [], []], "onSelectionChange", ["subexpr", "action", ["selectionChanged"], [], ["loc", [null, [24, 20], [24, 47]]]]], 1, null, ["loc", [null, [23, 0], [55, 13]]]], ["block", "if", [["subexpr", "not", [["get", "cases", ["loc", [null, [56, 11], [56, 16]]]]], [], ["loc", [null, [56, 6], [56, 17]]]]], [], 2, null, ["loc", [null, [56, 0], [60, 7]]]]],
+      statements: [["content", "title", ["loc", [null, [3, 4], [3, 13]]]], ["block", "if", [["get", "isSomeChecked", ["loc", [null, [7, 10], [7, 23]]]]], [], 0, null, ["loc", [null, [7, 4], [18, 11]]]], ["block", "ko-table", [], ["selectable", ["subexpr", "@mut", [["get", "trashable", ["loc", [null, [24, 13], [24, 22]]]]], [], []], "onSelectionChange", ["subexpr", "action", ["selectionChanged"], [], ["loc", [null, [25, 20], [25, 47]]]]], 1, null, ["loc", [null, [23, 0], [58, 13]]]], ["block", "if", [["subexpr", "not", [["get", "cases", ["loc", [null, [59, 11], [59, 16]]]]], [], ["loc", [null, [59, 6], [59, 17]]]]], [], 2, null, ["loc", [null, [59, 0], [63, 7]]]]],
       locals: [],
       templates: [child0, child1, child2]
     };
@@ -39898,7 +39910,14 @@ define("frontend-cp/components/ko-table/body/template", ["exports"], function (e
 });
 define('frontend-cp/components/ko-table/cell/component', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = _ember['default'].Component.extend({
-    tagName: 'td'
+    tagName: 'td',
+    click: function click(event) {
+      if (this.attrs.onClick) {
+        event.preventDefault();
+        event.stopPropagation();
+        this.attrs.onClick(event);
+      }
+    }
   });
 });
 define("frontend-cp/components/ko-table/cell/template", ["exports"], function (exports) {
@@ -40183,7 +40202,10 @@ define('frontend-cp/components/ko-table/component', ['exports', 'ember'], functi
       return !status;
     }),
     allRowsSelected: computed('rows.@each.selected', function () {
-      return this.get('rows.length') > 0 && this.get('rows').every(function (row) {
+      var rows = this.get('rows').filter(function (row) {
+        return !row.get('selectableDisabled');
+      });
+      return rows.length > 0 && rows.every(function (row) {
         return row.get('selected');
       });
     }),
@@ -40414,10 +40436,12 @@ define('frontend-cp/components/ko-table/row/component', ['exports', 'ember'], fu
     // Actions
     actions: {
       toggleRow: function toggleRow() {
-        this.toggleProperty('selected');
-        var action = this.get('onSelectChange');
-        if (action) {
-          action(this.get('selected'));
+        if (!this.get('selectableDisabled')) {
+          this.toggleProperty('selected');
+          var action = this.get('onSelectChange');
+          if (action) {
+            action(this.get('selected'));
+          }
         }
       }
     }
@@ -40498,7 +40522,7 @@ define("frontend-cp/components/ko-table/row/template", ["exports"], function (ex
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [["block", "ko-table/cell", [], ["class", "ko-table_cell--selectable"], 0, null, ["loc", [null, [2, 2], [4, 20]]]]],
+        statements: [["block", "ko-table/cell", [], ["class", "ko-table_cell--selectable", "onClick", ["subexpr", "action", ["toggleRow"], [], ["loc", [null, [2, 61], [2, 81]]]]], 0, null, ["loc", [null, [2, 2], [4, 20]]]]],
         locals: [],
         templates: [child0]
       };
@@ -46622,6 +46646,15 @@ define('frontend-cp/helpers/and', ['exports', 'ember', 'ember-truth-helpers/help
 
   exports['default'] = forExport;
 });
+define('frontend-cp/helpers/contains', ['exports', 'ember'], function (exports, _ember) {
+  exports['default'] = _ember['default'].Helper.extend({
+    compute: function compute(params, hash) {
+      var item = params[0];
+      var list = params[1];
+      return list && params[1].contains(item);
+    }
+  });
+});
 define('frontend-cp/helpers/ember-power-select-build-selection', ['exports', 'ember-power-select/helpers/ember-power-select-build-selection'], function (exports, _emberPowerSelectHelpersEmberPowerSelectBuildSelection) {
   Object.defineProperty(exports, 'default', {
     enumerable: true,
@@ -48090,6 +48123,7 @@ define("frontend-cp/locales/en-us/cases", ["exports"], function (exports) {
     "new_case_tab_placeholder": "New Case",
 
     "trash": "Trash case",
+    "trashcases": "Trash cases",
     "untrash": "Untrash",
     "trashed": "Trashed",
     "confirm.trash": "Are you sure you want to trash this?",
@@ -48225,7 +48259,7 @@ define("frontend-cp/locales/en-us/generic", ["exports"], function (exports) {
     "uploads.failed": "There was a problem uploading file(s)",
 
     "confirm.delete": "Are you sure you want to delete this?",
-    "confirm.trashcases": "Are you sure you want to delete these cases?",
+    "confirm.trashcases": "Are you sure you want to trash these?",
     "confirm.lose_changes": "You have unsaved changes on this page. Are you sure you want to discard these changes?",
     "changes_saved": "Changes saved",
     "casestrashed": "Cases trashed",
@@ -69550,9 +69584,7 @@ define('frontend-cp/session/agent/cases/index/view/controller', ['exports', 'emb
 
       setCheckedRows: function setCheckedRows(checkedRows) {
         this.set('checkedRows', checkedRows);
-        var hasChecked = Object.values(checkedRows).reduce(function (prev, current) {
-          return prev || current;
-        }, false);
+        var hasChecked = checkedRows.length > 0;
 
         this.set('isPollingEnabled', !hasChecked);
         this.get('parentController').set('showPagination', !hasChecked);
@@ -69599,12 +69631,8 @@ define('frontend-cp/session/agent/cases/index/view/route', ['exports', 'ember', 
     },
 
     _initCheckedRows: function _initCheckedRows(cases) {
-      var checkedRows = _ember['default'].Object.create({});
-      cases.forEach(function (item) {
-        checkedRows[item.get('id')] = false;
-      });
       this.controller.setProperties({
-        checkedRows: checkedRows
+        checkedRows: []
       });
     },
 
@@ -72602,6 +72630,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+1ecde705"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+57f3d1ff"});
 }
 /* jshint ignore:end */
