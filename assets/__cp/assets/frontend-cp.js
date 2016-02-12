@@ -56178,7 +56178,7 @@ define('frontend-cp/serializers/case', ['exports', 'frontend-cp/serializers/appl
       lastReplierIdentity: { serialize: false },
       brand: { serialize: false },
       lastAssignedBy: { serialize: false },
-      sla: { serialize: false },
+      sla: { serialize: false, key: 'slaVersion' },
       identity: { serialize: false },
       realtimeChannel: { serialize: false },
       creator: { serialize: false },
@@ -72630,6 +72630,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+57f3d1ff"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+1086ae5b"});
 }
 /* jshint ignore:end */
