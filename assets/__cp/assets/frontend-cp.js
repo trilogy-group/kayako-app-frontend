@@ -54488,7 +54488,7 @@ define('frontend-cp/models/field-option', ['exports', 'ember', 'ember-data', 'fr
     fielduuid: _emberData['default'].attr('string'),
     values: _emberData['default'].hasMany('locale-field', { async: false }),
     tag: _emberData['default'].attr('string'),
-    sortOrder: _emberData['default'].attr('number'),
+    sortOrder: _emberData['default'].attr('number', { 'default': 1 }),
     createdAt: _emberData['default'].attr('date'),
     updatedAt: _emberData['default'].attr('date'),
 
@@ -57680,9 +57680,7 @@ define('frontend-cp/services/custom-fields/options', ['exports', 'ember'], funct
       var store = this.get('store');
       var languages = store.peekAll('language');
 
-      var newFieldOption = store.createRecord('field-option', {
-        sortOrder: 1
-      });
+      var newFieldOption = store.createRecord('field-option');
       languages.forEach(function (element) {
         var localeField = store.createRecord('locale-field', {
           locale: element.get('locale')
@@ -57802,7 +57800,7 @@ define('frontend-cp/services/custom-fields/types', ['exports', 'ember'], functio
     }
   });
 });
-define('frontend-cp/services/custom-fields', ['exports', 'ember'], function (exports, _ember) {
+define('frontend-cp/services/custom-fields', ['exports', 'ember', 'npm:lodash'], function (exports, _ember, _npmLodash) {
   exports['default'] = _ember['default'].Service.extend({
     notification: _ember['default'].inject.service('notification'),
     intl: _ember['default'].inject.service('intl'),
@@ -57867,6 +57865,24 @@ define('frontend-cp/services/custom-fields', ['exports', 'ember'], function (exp
       });
     },
 
+    hasChangedOptions: function hasChangedOptions(options) {
+      // Locale is always changed when we create a new record, need to omit
+      // cases where the only change is setting the default locales
+      var localeChanges = _npmLodash['default'].flatten(options.map(function (opt) {
+        return _npmLodash['default'].flatten(opt.get('values').map(function (val) {
+          return Object.keys(val.changedAttributes());
+        }));
+      }));
+
+      var optionChanges = _npmLodash['default'].flatten(options.map(function (opt) {
+        return Object.keys(opt.changedAttributes());
+      }));
+
+      return !_npmLodash['default'].every(localeChanges, function (c) {
+        return c === 'locale';
+      }) || optionChanges.length > 0;
+    },
+
     rollback: function rollback(model) {
       this.get('customFieldsOptions').rollbackAttributes(model.get('options'));
 
@@ -57875,6 +57891,11 @@ define('frontend-cp/services/custom-fields', ['exports', 'ember'], function (exp
       });
       model.get('descriptions').toArray().forEach(function (locale) {
         locale.rollbackAttributes();
+      });
+      model.get('options').toArray().forEach(function (option) {
+        option.get('values').toArray().forEach(function (value) {
+          value.rollbackAttributes();
+        });
       });
       model.rollbackAttributes();
     },
@@ -57907,9 +57928,10 @@ define('frontend-cp/services/custom-fields', ['exports', 'ember'], function (exp
 
     validateTransition: function validateTransition(controller, transition) {
       var changedAttributes = controller.getChangedAttributes();
+      var hasChangedOptions = controller.hasChangedOptions();
       var onlyFieldTypeChanged = Object.keys(changedAttributes).length === 1 && changedAttributes.fieldType;
 
-      if (!onlyFieldTypeChanged) {
+      if (hasChangedOptions || !onlyFieldTypeChanged) {
         if (controller.userHasChangedModel()) {
           if (confirm(this._getTranslation('generic.confirm.lose_changes'))) {
             // eslint-disable-line
@@ -61803,6 +61825,10 @@ define('frontend-cp/session/admin/manage/case-fields/new/controller', ['exports'
       return this.get('model').hasDirtyChanges();
     },
 
+    hasChangedOptions: function hasChangedOptions() {
+      return this.get('customFields').hasChangedOptions(this.get('model.options'));
+    },
+
     successAction: function successAction() {
       this.get('notification').add({
         type: 'success',
@@ -65580,6 +65606,10 @@ define('frontend-cp/session/admin/people/organization-fields/new/controller', ['
       return this.get('model').hasDirtyChanges();
     },
 
+    hasChangedOptions: function hasChangedOptions() {
+      return this.get('customFields').hasChangedOptions(this.get('model.options'));
+    },
+
     successAction: function successAction() {
       this.get('notification').add({
         type: 'success',
@@ -67174,6 +67204,10 @@ define('frontend-cp/session/admin/people/user-fields/new/controller', ['exports'
 
     userHasChangedModel: function userHasChangedModel() {
       return this.get('model').hasDirtyChanges();
+    },
+
+    hasChangedOptions: function hasChangedOptions() {
+      return this.get('customFields').hasChangedOptions(this.get('model.options'));
     },
 
     successAction: function successAction() {
@@ -72630,6 +72664,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+1086ae5b"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+11cc92b4"});
 }
 /* jshint ignore:end */
