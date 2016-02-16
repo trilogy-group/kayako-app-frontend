@@ -13492,7 +13492,7 @@ define('frontend-cp/components/ko-agent-dropdown/component', ['exports', 'ember'
     notification: inject.service(),
     intl: inject.service(),
     routing: inject.service('-routing'),
-    classNames: ['ko-agent-dropdown'],
+    classNames: ['u-inline-block'],
     transitionToRouteAction: 'transitionToRoute',
     navItems: [{ name: 'case', text: 'Case', path: null, icon: _frontendCpConfigEnvironment['default'].assetRoot + '/images/icons/case.svg' }, { name: 'user', text: 'User', path: null, icon: _frontendCpConfigEnvironment['default'].assetRoot + '/images/icons/user.svg' }, { name: 'organization', text: 'Organization', path: null, icon: _frontendCpConfigEnvironment['default'].assetRoot + '/images/icons/organization.svg' }],
 
@@ -13556,6 +13556,8 @@ define('frontend-cp/components/ko-agent-dropdown/create-case/component', ['expor
 
     // Lifecycle hooks
     init: function init() {
+      var _this = this;
+
       this._super.apply(this, arguments);
       var intl = this.get('intl');
       var requesterErrorText = intl.findTranslationByKey('generic.create_case_panel.requester_required');
@@ -13568,6 +13570,10 @@ define('frontend-cp/components/ko-agent-dropdown/create-case/component', ['expor
         }
       }));
       this.set('filteredUsers', null);
+
+      _ember['default'].run.next(function () {
+        _this.$('.ember-power-select-typeahead-input').focus();
+      });
     },
 
     // CPs
@@ -13583,7 +13589,7 @@ define('frontend-cp/components/ko-agent-dropdown/create-case/component', ['expor
     // Actions
     actions: {
       searchUsers: function searchUsers(filterString) {
-        var _this = this;
+        var _this2 = this;
 
         if (this.get('fields.requester.value')) {
           this.set('fields.requester.value', null);
@@ -13592,7 +13598,7 @@ define('frontend-cp/components/ko-agent-dropdown/create-case/component', ['expor
 
         this.get('store').unloadAll('search-result-group');
         return new _ember['default'].RSVP.Promise(function (resolve) {
-          _ember['default'].run.debounce(_this, _this._searchUsers, filterString, resolve, 200);
+          _ember['default'].run.debounce(_this2, _this2._searchUsers, filterString, resolve, 200);
         });
       },
 
@@ -14142,7 +14148,7 @@ define('frontend-cp/components/ko-agent-dropdown/create-organisation/component',
       }));
 
       _ember['default'].run.next(function () {
-        _this.$('.ko-agent-dropdown-create-organization__name').focus();
+        _this.$('.ko-agent-dropdown-create-organisation__name').focus();
       });
     },
 
@@ -15170,6 +15176,9 @@ define("frontend-cp/components/ko-agent-dropdown/template", ["exports"], functio
               var el2 = dom.createTextNode("\n          ");
               dom.appendChild(el1, el2);
               var el2 = dom.createElement("img");
+              dom.setAttribute(el2, "class", "ko-agent-dropdown__nav-item-img");
+              dom.setAttribute(el2, "width", "75");
+              dom.setAttribute(el2, "height", "75");
               dom.appendChild(el1, el2);
               var el2 = dom.createTextNode("\n          ");
               dom.appendChild(el1, el2);
@@ -15194,7 +15203,7 @@ define("frontend-cp/components/ko-agent-dropdown/template", ["exports"], functio
               morphs[2] = dom.createMorphAt(dom.childAt(element0, [3]), 0, 0);
               return morphs;
             },
-            statements: [["attribute", "onclick", ["subexpr", "action", [["subexpr", "mut", [["get", "selectedNavItem", ["loc", [null, [21, 101], [21, 116]]]]], [], ["loc", [null, [21, 96], [21, 117]]]], ["get", "navItem", ["loc", [null, [21, 118], [21, 125]]]]], [], ["loc", [null, [21, 87], [21, 127]]]]], ["attribute", "src", ["concat", [["get", "navItem.icon", ["loc", [null, [22, 22], [22, 34]]]]]]], ["content", "navItem.text", ["loc", [null, [23, 39], [23, 55]]]]],
+            statements: [["attribute", "onclick", ["subexpr", "action", [["subexpr", "mut", [["get", "selectedNavItem", ["loc", [null, [21, 101], [21, 116]]]]], [], ["loc", [null, [21, 96], [21, 117]]]], ["get", "navItem", ["loc", [null, [21, 118], [21, 125]]]]], [], ["loc", [null, [21, 87], [21, 127]]]]], ["attribute", "src", ["concat", [["get", "navItem.icon", ["loc", [null, [22, 85], [22, 97]]]]]]], ["content", "navItem.text", ["loc", [null, [23, 39], [23, 55]]]]],
             locals: ["navItem"],
             templates: []
           };
@@ -15293,7 +15302,7 @@ define("frontend-cp/components/ko-agent-dropdown/template", ["exports"], functio
               "column": 0
             },
             "end": {
-              "line": 30,
+              "line": 32,
               "column": 0
             }
           },
@@ -15306,8 +15315,15 @@ define("frontend-cp/components/ko-agent-dropdown/template", ["exports"], functio
           var el0 = dom.createDocumentFragment();
           var el1 = dom.createTextNode("  ");
           dom.appendChild(el0, el1);
-          var el1 = dom.createElement("i");
-          dom.setAttribute(el1, "class", "ko-agent-dropdown__add-icon u-pointer i-plus i-size-18");
+          var el1 = dom.createElement("span");
+          dom.setAttribute(el1, "class", "ko-agent-dropdown__icon-square");
+          var el2 = dom.createTextNode("\n    ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("i");
+          dom.setAttribute(el2, "class", "ko-agent-dropdown__add-icon u-pointer i-plus i-size-18");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n  ");
+          dom.appendChild(el1, el2);
           dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n");
           dom.appendChild(el0, el1);
@@ -15331,8 +15347,8 @@ define("frontend-cp/components/ko-agent-dropdown/template", ["exports"], functio
             "column": 0
           },
           "end": {
-            "line": 31,
-            "column": 0
+            "line": 32,
+            "column": 19
           }
         },
         "moduleName": "frontend-cp/components/ko-agent-dropdown/template.hbs"
@@ -15353,7 +15369,7 @@ define("frontend-cp/components/ko-agent-dropdown/template", ["exports"], functio
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["block", "basic-dropdown", [], ["renderInPlace", true, "dropdownClass", "ko-agent-dropdown__drop", "onClose", ["subexpr", "action", ["reset"], [], ["loc", [null, [1, 85], [1, 101]]]], "triggerClass", "ko-agent-dropdown__trigger"], 0, 1, ["loc", [null, [1, 0], [30, 19]]]]],
+      statements: [["block", "basic-dropdown", [], ["renderInPlace", true, "dropdownClass", "ko-agent-dropdown__drop", "onClose", ["subexpr", "action", ["reset"], [], ["loc", [null, [1, 85], [1, 101]]]], "triggerClass", "ko-agent-dropdown__trigger"], 0, 1, ["loc", [null, [1, 0], [32, 19]]]]],
       locals: [],
       templates: [child0, child1]
     };
@@ -48362,6 +48378,7 @@ define("frontend-cp/locales/en-us/search", ["exports"], function (exports) {
 });
 define("frontend-cp/locales/en-us/users", ["exports"], function (exports) {
   exports["default"] = {
+    "users": "Users",
     "addnewuser": "Add New User",
     "button.following.active.text": "Following",
     "button.following.active.hovertext": "Stop Following",
@@ -71073,7 +71090,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
               },
               "end": {
                 "line": 8,
-                "column": 109
+                "column": 133
               }
             },
             "moduleName": "frontend-cp/session/template.hbs"
@@ -71127,7 +71144,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [["block", "link-to", ["session.agent.cases.index.view", ["get", "tabStore.casesViewId", ["loc", [null, [8, 56], [8, 76]]]]], ["class", "nav-main__item i-inbox"], 0, null, ["loc", [null, [8, 12], [8, 121]]]]],
+        statements: [["block", "link-to", ["session.agent.cases.index.view", ["get", "tabStore.casesViewId", ["loc", [null, [8, 56], [8, 76]]]]], ["title", ["subexpr", "t", ["cases.cases"], [], ["loc", [null, [8, 83], [8, 100]]]], "class", "nav-main__item i-inbox"], 0, null, ["loc", [null, [8, 12], [8, 145]]]]],
         locals: [],
         templates: [child0]
       };
@@ -71145,7 +71162,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
               },
               "end": {
                 "line": 10,
-                "column": 83
+                "column": 107
               }
             },
             "moduleName": "frontend-cp/session/template.hbs"
@@ -71199,7 +71216,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [["block", "link-to", ["session.agent.cases.index"], ["class", "nav-main__item i-inbox"], 0, null, ["loc", [null, [10, 12], [10, 95]]]]],
+        statements: [["block", "link-to", ["session.agent.cases.index"], ["title", ["subexpr", "t", ["cases.cases"], [], ["loc", [null, [10, 57], [10, 74]]]], "class", "nav-main__item i-inbox"], 0, null, ["loc", [null, [10, 12], [10, 119]]]]],
         locals: [],
         templates: [child0]
       };
@@ -71218,7 +71235,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
                 },
                 "end": {
                   "line": 14,
-                  "column": 132
+                  "column": 165
                 }
               },
               "moduleName": "frontend-cp/session/template.hbs"
@@ -71272,7 +71289,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
             morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
             return morphs;
           },
-          statements: [["block", "link-to", [["get", "sectionsHistory.history.admin.routeName", ["loc", [null, [14, 25], [14, 64]]]], ["get", "sectionsHistory.history.admin.model", ["loc", [null, [14, 65], [14, 100]]]]], ["class", "nav-main__item i-gear"], 0, null, ["loc", [null, [14, 14], [14, 144]]]]],
+          statements: [["block", "link-to", [["get", "sectionsHistory.history.admin.routeName", ["loc", [null, [14, 25], [14, 64]]]], ["get", "sectionsHistory.history.admin.model", ["loc", [null, [14, 65], [14, 100]]]]], ["title", ["subexpr", "t", ["admin.administration"], [], ["loc", [null, [14, 107], [14, 133]]]], "class", "nav-main__item i-gear"], 0, null, ["loc", [null, [14, 14], [14, 177]]]]],
           locals: [],
           templates: [child0]
         };
@@ -71290,7 +71307,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
                 },
                 "end": {
                   "line": 16,
-                  "column": 96
+                  "column": 129
                 }
               },
               "moduleName": "frontend-cp/session/template.hbs"
@@ -71344,7 +71361,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
             morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
             return morphs;
           },
-          statements: [["block", "link-to", [["get", "sectionsHistory.history.admin.routeName", ["loc", [null, [16, 25], [16, 64]]]]], ["class", "nav-main__item i-gear"], 0, null, ["loc", [null, [16, 14], [16, 108]]]]],
+          statements: [["block", "link-to", [["get", "sectionsHistory.history.admin.routeName", ["loc", [null, [16, 25], [16, 64]]]]], ["title", ["subexpr", "t", ["admin.administration"], [], ["loc", [null, [16, 71], [16, 97]]]], "class", "nav-main__item i-gear"], 0, null, ["loc", [null, [16, 14], [16, 141]]]]],
           locals: [],
           templates: [child0]
         };
@@ -71399,7 +71416,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
               },
               "end": {
                 "line": 20,
-                "column": 84
+                "column": 108
               }
             },
             "moduleName": "frontend-cp/session/template.hbs"
@@ -71453,7 +71470,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [["block", "link-to", ["session.agent.users.index"], ["class", "nav-main__item i-person"], 0, null, ["loc", [null, [20, 12], [20, 96]]]]],
+        statements: [["block", "link-to", ["session.agent.users.index"], ["title", ["subexpr", "t", ["users.users"], [], ["loc", [null, [20, 57], [20, 74]]]], "class", "nav-main__item i-person"], 0, null, ["loc", [null, [20, 12], [20, 120]]]]],
         locals: [],
         templates: [child0]
       };
@@ -72649,6 +72666,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+21688577"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+9c10e841"});
 }
 /* jshint ignore:end */
