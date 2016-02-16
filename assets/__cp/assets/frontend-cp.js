@@ -1196,7 +1196,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/options/template", ["ex
               "column": 0
             },
             "end": {
-              "line": 20,
+              "line": 16,
               "column": 0
             }
           },
@@ -1210,47 +1210,33 @@ define("frontend-cp/components/ko-admin/case-fields/edit/options/template", ["ex
           var el1 = dom.createTextNode("  ");
           dom.appendChild(el0, el1);
           var el1 = dom.createElement("div");
-          dom.setAttribute(el1, "class", "layout layout--flush");
+          dom.setAttribute(el1, "class", "ko-reorderable-crud-list-item__values");
           var el2 = dom.createTextNode("\n    ");
           dom.appendChild(el1, el2);
-          var el2 = dom.createElement("div");
-          dom.setAttribute(el2, "class", "layout__item u-11/20");
-          var el3 = dom.createTextNode("\n      ");
-          dom.appendChild(el2, el3);
-          var el3 = dom.createComment("");
-          dom.appendChild(el2, el3);
-          var el3 = dom.createTextNode("\n      ");
-          dom.appendChild(el2, el3);
-          var el3 = dom.createElement("div");
-          dom.setAttribute(el3, "class", "ko-admin_case-fields_edit_options__actions");
-          var el4 = dom.createTextNode("\n        ");
-          dom.appendChild(el3, el4);
-          var el4 = dom.createComment("");
-          dom.appendChild(el3, el4);
-          var el4 = dom.createTextNode("\n      ");
-          dom.appendChild(el3, el4);
-          dom.appendChild(el2, el3);
-          var el3 = dom.createTextNode("\n      ");
-          dom.appendChild(el2, el3);
-          var el3 = dom.createComment("");
-          dom.appendChild(el2, el3);
-          var el3 = dom.createTextNode("\n    ");
-          dom.appendChild(el2, el3);
+          var el2 = dom.createComment("");
           dom.appendChild(el1, el2);
-          var el2 = dom.createComment("\n  ");
+          var el2 = dom.createTextNode("\n    ");
           dom.appendChild(el1, el2);
-          var el2 = dom.createElement("div");
-          dom.setAttribute(el2, "class", "layout__item u-9/20");
-          var el3 = dom.createTextNode("\n      ");
-          dom.appendChild(el2, el3);
-          var el3 = dom.createComment("");
-          dom.appendChild(el2, el3);
-          var el3 = dom.createTextNode("\n      ");
-          dom.appendChild(el2, el3);
-          var el3 = dom.createComment("");
-          dom.appendChild(el2, el3);
-          var el3 = dom.createTextNode("\n    ");
-          dom.appendChild(el2, el3);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n  ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1, "class", "ko-reorderable-crud-list-item__values");
+          var el2 = dom.createTextNode("\n    ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n    ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
           dom.appendChild(el1, el2);
           var el2 = dom.createTextNode("\n  ");
           dom.appendChild(el1, el2);
@@ -1261,17 +1247,16 @@ define("frontend-cp/components/ko-admin/case-fields/edit/options/template", ["ex
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
           var element0 = dom.childAt(fragment, [1]);
-          var element1 = dom.childAt(element0, [1]);
-          var element2 = dom.childAt(element0, [3]);
+          var element1 = dom.childAt(fragment, [5]);
           var morphs = new Array(5);
-          morphs[0] = dom.createMorphAt(element1, 1, 1);
-          morphs[1] = dom.createMorphAt(dom.childAt(element1, [3]), 1, 1);
-          morphs[2] = dom.createMorphAt(element1, 5, 5);
-          morphs[3] = dom.createMorphAt(element2, 1, 1);
-          morphs[4] = dom.createMorphAt(element2, 3, 3);
+          morphs[0] = dom.createMorphAt(element0, 1, 1);
+          morphs[1] = dom.createMorphAt(element0, 3, 3);
+          morphs[2] = dom.createMorphAt(fragment, 3, 3, contextualElement);
+          morphs[3] = dom.createMorphAt(element1, 1, 1);
+          morphs[4] = dom.createMorphAt(element1, 3, 3);
           return morphs;
         },
-        statements: [["inline", "input", [], ["type", "text", "class", "input-text", "value", ["subexpr", "@mut", [["get", "option.value", ["loc", [null, [9, 51], [9, 63]]]]], [], []], "placeholder", ["subexpr", "t", ["admin.casefields.type.checkbox.field_options.title"], [], ["loc", [null, [9, 76], [9, 132]]]]], ["loc", [null, [9, 6], [9, 134]]]], ["inline", "ko-admin/inline-locale-edit", [], ["localeFields", ["subexpr", "@mut", [["get", "option.values", ["loc", [null, [11, 51], [11, 64]]]]], [], []], "field", "label"], ["loc", [null, [11, 8], [11, 80]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "option.errors.value", ["loc", [null, [13, 36], [13, 55]]]]], [], []]], ["loc", [null, [13, 6], [13, 57]]]], ["inline", "input", [], ["type", "text", "class", "input-text", "value", ["subexpr", "@mut", [["get", "option.tag", ["loc", [null, [16, 51], [16, 61]]]]], [], []], "placeholder", ["subexpr", "t", ["admin.casefields.type.checkbox.field_options.tag"], [], ["loc", [null, [16, 74], [16, 128]]]]], ["loc", [null, [16, 6], [16, 130]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "option.errors.tag", ["loc", [null, [17, 36], [17, 53]]]]], [], []]], ["loc", [null, [17, 6], [17, 55]]]]],
+        statements: [["inline", "input", [], ["type", "text", "class", "input-text", "value", ["subexpr", "@mut", [["get", "option.value", ["loc", [null, [8, 49], [8, 61]]]]], [], []], "placeholder", ["subexpr", "t", ["admin.casefields.type.checkbox.field_options.title"], [], ["loc", [null, [8, 74], [8, 130]]]]], ["loc", [null, [8, 4], [8, 132]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "option.errors.value", ["loc", [null, [9, 34], [9, 53]]]]], [], []]], ["loc", [null, [9, 4], [9, 55]]]], ["inline", "ko-admin/inline-locale-edit", [], ["class", "ko-reorderable-crud-list-item__values", "localeFields", ["subexpr", "@mut", [["get", "option.values", ["loc", [null, [11, 91], [11, 104]]]]], [], []], "field", "label"], ["loc", [null, [11, 2], [11, 120]]]], ["inline", "input", [], ["type", "text", "class", "input-text", "value", ["subexpr", "@mut", [["get", "option.tag", ["loc", [null, [13, 49], [13, 59]]]]], [], []], "placeholder", ["subexpr", "t", ["admin.casefields.type.checkbox.field_options.tag"], [], ["loc", [null, [13, 72], [13, 126]]]]], ["loc", [null, [13, 4], [13, 128]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "option.errors.tag", ["loc", [null, [14, 34], [14, 51]]]]], [], []]], ["loc", [null, [14, 4], [14, 53]]]]],
         locals: ["option"],
         templates: []
       };
@@ -1286,7 +1271,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/options/template", ["ex
             "column": 0
           },
           "end": {
-            "line": 21,
+            "line": 17,
             "column": 0
           }
         },
@@ -1308,7 +1293,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/options/template", ["ex
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["block", "ko-reorderable-crud-list", [], ["removeItemAction", "removeOption", "createItemAction", "createOption", "reorderListAction", "reorderList", "items", ["subexpr", "@mut", [["get", "orderedOptionList", ["loc", [null, [5, 8], [5, 25]]]]], [], []]], 0, null, ["loc", [null, [1, 0], [20, 29]]]]],
+      statements: [["block", "ko-reorderable-crud-list", [], ["removeItemAction", "removeOption", "createItemAction", "createOption", "reorderListAction", "reorderList", "items", ["subexpr", "@mut", [["get", "orderedOptionList", ["loc", [null, [5, 8], [5, 25]]]]], [], []]], 0, null, ["loc", [null, [1, 0], [16, 29]]]]],
       locals: [],
       templates: [child0]
     };
@@ -8614,7 +8599,7 @@ define('frontend-cp/components/ko-admin/inline-locale-edit/component', ['exports
     defaultLocale: '',
 
     // HTML
-    tagName: 'span',
+    tagName: 'div',
     classNameBindings: ['isTextArea:ko-admin_inline-locale-edit--text-area'],
 
     store: _ember['default'].inject.service(),
@@ -23419,7 +23404,7 @@ define('frontend-cp/components/ko-context-modal/component', ['exports', 'ember',
      */
 
     overlayStyle: _ember['default'].computed('globalX', 'globalY', 'documentWidth', 'documentHeight', function () {
-      return htmlSafe('position:absolute; top:' + -this.get('globalY') + 'px; left:' + -this.get('globalX') + 'px; width:' + this.get('documentWidth') + 'px; height:' + this.get('documentHeight') + 'px;');
+      return htmlSafe('position: fixed; top: 0; left:0; right: 0; bottom: 0;');
     }),
 
     containerStyle: _ember['default'].computed('positionY', 'positionX', 'modalVisible', function () {
@@ -37763,7 +37748,7 @@ define("frontend-cp/components/ko-reorderable-crud-list/template", ["exports"], 
           var el2 = dom.createTextNode("\n  ");
           dom.appendChild(el1, el2);
           var el2 = dom.createElement("div");
-          dom.setAttribute(el2, "class", "ko-reorderable-crud-list-actions");
+          dom.setAttribute(el2, "class", "ko-reorderable-crud-list-item__values ko-reorderable-crud-list-actions");
           var el3 = dom.createTextNode("\n    ");
           dom.appendChild(el2, el3);
           var el3 = dom.createElement("div");
@@ -72664,6 +72649,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+11cc92b4"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+21688577"});
 }
 /* jshint ignore:end */
