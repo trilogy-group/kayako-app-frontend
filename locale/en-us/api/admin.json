@@ -259,6 +259,7 @@
   "twitter.help.display_public_tweets": "Kayako can display the latest non-@mention Tweets sent from this account in your Help Center. This is useful if you use this account to keep your customers up to date with news and events.",
   "twitter.connection_lost": "connection lost",
   "twitter.reconnect": "Reconnect",
+  "twitter.deleted.message": "Twitter account deleted successfully",
 
   "predicate_builder.cases.subject": "Case: Subject",
   "predicate_builder.cases.casestatusid": "Case: Status",
