@@ -38,8 +38,18 @@
   "views.deleted.message": "View deleted successfully",
 
   "businesshours": "Business hours",
+  "businesshours.info": "Click and drag to toggle your hours",
+  "businesshours.holidays": "Holidays",
+  "businesshours.holidays.info": "What will your hours be on holidays?",
   "businesshours.headings.index": "Business hours",
   "businesshours.buttons.add": "Add New",
+  "businesshours.headings.new": "Business hours / New",
+  "businesshours.headings.edit": "Business hours / {title}",
+  "businesshours.heading.details": "Details",
+  "businesshours.label.title": "Business Hours title",
+  "businesshours.holidays.label.title": "Holiday title",
+  "businesshours.holidays.addaholiday": "Add a Holiday",
+  "businesshours.holidays.saveholiday": "Save Holiday",
 
   "teams": "Teams",
   "teams.agent": "{numAgents, plural, =1 {agent} other {agents}}",
