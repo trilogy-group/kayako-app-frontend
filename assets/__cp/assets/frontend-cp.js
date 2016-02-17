@@ -19713,7 +19713,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
             morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
             return morphs;
           },
-          statements: [["inline", "ko-timeline", [], ["model", ["subexpr", "@mut", [["get", "case", ["loc", [null, [235, 12], [235, 16]]]]], [], []], "loadingTop", ["subexpr", "@mut", [["get", "tabState.loadingTop", ["loc", [null, [236, 17], [236, 36]]]]], [], []], "loadingBottom", ["subexpr", "@mut", [["get", "tabState.loadingBottom", ["loc", [null, [237, 20], [237, 42]]]]], [], []], "bottomPostsAvailable", ["subexpr", "@mut", [["get", "tabState.bottomPostsAvailable", ["loc", [null, [238, 27], [238, 56]]]]], [], []], "topPostsAvailable", ["subexpr", "@mut", [["get", "tabState.topPostsAvailable", ["loc", [null, [239, 24], [239, 50]]]]], [], []], "posts", ["subexpr", "@mut", [["get", "tabState.posts", ["loc", [null, [240, 12], [240, 26]]]]], [], []], "sortOrder", ["subexpr", "@mut", [["get", "sortOrder", ["loc", [null, [241, 16], [241, 25]]]]], [], []], "filter", ["subexpr", "@mut", [["get", "filter", ["loc", [null, [242, 13], [242, 19]]]]], [], []], "isReplyDisabled", ["subexpr", "@mut", [["get", "isCaseDisabled", ["loc", [null, [243, 22], [243, 36]]]]], [], []], "onQueryParamsUpdate", ["subexpr", "@mut", [["get", "onQueryParamsUpdate", ["loc", [null, [244, 26], [244, 45]]]]], [], []], "onReplyWithQuote", ["subexpr", "action", ["replyWithQuote", ["get", "tabId", ["loc", [null, [245, 48], [245, 53]]]]], [], ["loc", [null, [245, 23], [245, 54]]]], "onLoadPostsBelow", ["subexpr", "action", ["dispatch", "loadPostsBelow", ["get", "tabId", ["loc", [null, [246, 59], [246, 64]]]], ["subexpr", "hash", [], ["model", ["get", "case", ["loc", [null, [246, 77], [246, 81]]]], "filter", ["get", "filter", ["loc", [null, [246, 89], [246, 95]]]], "sortOrder", ["get", "sortOrder", ["loc", [null, [246, 106], [246, 115]]]], "postId", ["get", "bottomPost.id", ["loc", [null, [246, 123], [246, 136]]]], "including", false], ["loc", [null, [246, 65], [246, 153]]]]], [], ["loc", [null, [246, 23], [246, 154]]]], "onLoadPostsAbove", ["subexpr", "action", ["dispatch", "loadPostsAbove", ["get", "tabId", ["loc", [null, [247, 59], [247, 64]]]], ["subexpr", "hash", [], ["model", ["get", "case", ["loc", [null, [247, 77], [247, 81]]]], "filter", ["get", "filter", ["loc", [null, [247, 89], [247, 95]]]], "sortOrder", ["get", "sortOrder", ["loc", [null, [247, 106], [247, 115]]]], "postId", ["get", "topPost.id", ["loc", [null, [247, 123], [247, 133]]]]], ["loc", [null, [247, 65], [247, 134]]]]], [], ["loc", [null, [247, 23], [247, 135]]]]], ["loc", [null, [234, 4], [248, 6]]]]],
+          statements: [["inline", "ko-timeline", [], ["model", ["subexpr", "@mut", [["get", "case", ["loc", [null, [235, 12], [235, 16]]]]], [], []], "loadingTop", ["subexpr", "@mut", [["get", "tabState.loadingTop", ["loc", [null, [236, 17], [236, 36]]]]], [], []], "loadingBottom", ["subexpr", "@mut", [["get", "tabState.loadingBottom", ["loc", [null, [237, 20], [237, 42]]]]], [], []], "bottomPostsAvailable", ["subexpr", "@mut", [["get", "tabState.bottomPostsAvailable", ["loc", [null, [238, 27], [238, 56]]]]], [], []], "topPostsAvailable", ["subexpr", "@mut", [["get", "tabState.topPostsAvailable", ["loc", [null, [239, 24], [239, 50]]]]], [], []], "posts", ["subexpr", "@mut", [["get", "tabState.posts", ["loc", [null, [240, 12], [240, 26]]]]], [], []], "sortOrder", ["subexpr", "@mut", [["get", "sortOrder", ["loc", [null, [241, 16], [241, 25]]]]], [], []], "filter", ["subexpr", "@mut", [["get", "filter", ["loc", [null, [242, 13], [242, 19]]]]], [], []], "isReplyDisabled", ["subexpr", "@mut", [["get", "isCaseDisabled", ["loc", [null, [243, 22], [243, 36]]]]], [], []], "onQueryParamsUpdate", ["subexpr", "@mut", [["get", "onQueryParamsUpdate", ["loc", [null, [244, 26], [244, 45]]]]], [], []], "onReplyWithQuote", ["subexpr", "action", ["replyWithQuote", ["get", "tabId", ["loc", [null, [245, 48], [245, 53]]]]], [], ["loc", [null, [245, 23], [245, 54]]]], "onLoadPostsBelow", ["subexpr", "action", ["dispatch", "loadPostsBelow", ["get", "tabId", ["loc", [null, [246, 59], [246, 64]]]]], [], ["loc", [null, [246, 23], [246, 65]]]], "onLoadPostsAbove", ["subexpr", "action", ["dispatch", "loadPostsAbove", ["get", "tabId", ["loc", [null, [247, 59], [247, 64]]]]], [], ["loc", [null, [247, 23], [247, 65]]]]], ["loc", [null, [234, 4], [248, 6]]]]],
           locals: [],
           templates: []
         };
@@ -19785,8 +19785,8 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
             "column": 0
           },
           "end": {
-            "line": 250,
-            "column": 23
+            "line": 251,
+            "column": 0
           }
         },
         "moduleName": "frontend-cp/components/ko-case-content/template.hbs"
@@ -42466,7 +42466,7 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
               morphs[1] = dom.createMorphAt(element1, 0, 0);
               return morphs;
             },
-            statements: [["attribute", "onclick", ["subexpr", "action", [["get", "onLoadPostsAbove", ["loc", [null, [36, 28], [36, 44]]]]], [], ["loc", [null, [36, 19], [36, 46]]]]], ["inline", "t", ["cases.posts.load_more"], [], ["loc", [null, [36, 47], [36, 76]]]]],
+            statements: [["attribute", "onclick", ["subexpr", "action", [["get", "onLoadPostsAbove", ["loc", [null, [36, 28], [36, 44]]]], ["subexpr", "hash", [], ["model", ["get", "model", ["loc", [null, [36, 57], [36, 62]]]], "filter", ["get", "filter", ["loc", [null, [36, 70], [36, 76]]]], "sortOrder", ["get", "sortOrder", ["loc", [null, [36, 87], [36, 96]]]], "postId", ["get", "topPost.id", ["loc", [null, [36, 104], [36, 114]]]]], ["loc", [null, [36, 45], [36, 115]]]]], [], ["loc", [null, [36, 19], [36, 117]]]]], ["inline", "t", ["cases.posts.load_more"], [], ["loc", [null, [36, 118], [36, 147]]]]],
             locals: [],
             templates: []
           };
@@ -42763,7 +42763,7 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
               morphs[1] = dom.createMorphAt(element0, 0, 0);
               return morphs;
             },
-            statements: [["attribute", "onclick", ["subexpr", "action", [["get", "onLoadPostsBelow", ["loc", [null, [65, 28], [65, 44]]]]], [], ["loc", [null, [65, 19], [65, 46]]]]], ["inline", "t", ["cases.posts.load_more"], [], ["loc", [null, [65, 47], [65, 76]]]]],
+            statements: [["attribute", "onclick", ["subexpr", "action", [["get", "onLoadPostsBelow", ["loc", [null, [65, 28], [65, 44]]]], ["subexpr", "hash", [], ["model", ["get", "model", ["loc", [null, [65, 57], [65, 62]]]], "filter", ["get", "filter", ["loc", [null, [65, 70], [65, 76]]]], "sortOrder", ["get", "sortOrder", ["loc", [null, [65, 87], [65, 96]]]], "postId", ["get", "bottomPost.id", ["loc", [null, [65, 104], [65, 117]]]], "including", false], ["loc", [null, [65, 45], [65, 134]]]]], [], ["loc", [null, [65, 19], [65, 136]]]]], ["inline", "t", ["cases.posts.load_more"], [], ["loc", [null, [65, 137], [65, 166]]]]],
             locals: [],
             templates: []
           };
@@ -42897,8 +42897,8 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
             "column": 0
           },
           "end": {
-            "line": 69,
-            "column": 11
+            "line": 70,
+            "column": 0
           }
         },
         "moduleName": "frontend-cp/components/ko-timeline/template.hbs"
@@ -72666,6 +72666,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+9c10e841"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+983bd5e8"});
 }
 /* jshint ignore:end */
