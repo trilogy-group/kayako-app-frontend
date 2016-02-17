@@ -48002,6 +48002,7 @@ define("frontend-cp/locales/en-us/admin", ["exports"], function (exports) {
     "twitter.help.display_public_tweets": "Kayako can display the latest non-@mention Tweets sent from this account in your Help Center. This is useful if you use this account to keep your customers up to date with news and events.",
     "twitter.connection_lost": "connection lost",
     "twitter.reconnect": "Reconnect",
+    "twitter.deleted.message": "Twitter account deleted successfully",
 
     "predicate_builder.cases.subject": "Case: Subject",
     "predicate_builder.cases.casestatusid": "Case: Status",
@@ -49824,7 +49825,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       Reflect.deleteProperty(data, 'parentType');
 
       data.resource_type = 'identity_email';
-      var user = db.users.find(req.params.user_id);
+      var user = db.users.find(data.user_id);
       var identity = db['identity-emails'].insert(data);
       db.users.update(user.id, { emails: [identity].concat(user.emails) });
       return {
@@ -49852,7 +49853,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       Reflect.deleteProperty(data, 'parent_id');
       Reflect.deleteProperty(data, 'parentType');
       data.resource_type = 'identity_phone';
-      var user = db.users.find(req.params.user_id);
+      var user = db.users.find(data.user_id);
       var identity = db['identity-phones'].insert(data);
       db.users.update(user.id, { phones: [identity].concat(user.phones) });
       return {
@@ -60767,15 +60768,19 @@ define("frontend-cp/session/admin/channels/twitter/edit/template", ["exports"], 
   })());
 });
 define('frontend-cp/session/admin/channels/twitter/index/controller', ['exports', 'ember'], function (exports, _ember) {
-  exports['default'] = _ember['default'].Controller.extend({
-    intlService: _ember['default'].inject.service('intl'),
+  var inject = _ember['default'].inject;
+  var computed = _ember['default'].computed;
+  var Controller = _ember['default'].Controller;
+  exports['default'] = Controller.extend({
+    intl: inject.service('intl'),
+    notifications: inject.service('notification'),
 
-    enabledAccounts: _ember['default'].computed('model.@each.isEnabled', function () {
+    enabledAccounts: computed('model.@each.isEnabled', function () {
       return this.get('model').filter(function (account) {
         return account.get('isEnabled') === true;
       });
     }),
-    disabledAccounts: _ember['default'].computed('model.@each.isEnabled', function () {
+    disabledAccounts: computed('model.@each.isEnabled', function () {
       return this.get('model').filter(function (account) {
         return account.get('isEnabled') !== true;
       });
@@ -60796,8 +60801,12 @@ define('frontend-cp/session/admin/channels/twitter/index/controller', ['exports'
       },
 
       showDeleteConfirmation: function showDeleteConfirmation(account) {
-        if (confirm(this.get('intlService').findTranslationByKey('generic.confirm.delete'))) {
-          account.destroyRecord();
+        var _this = this;
+
+        if (confirm(this.get('intl').findTranslationByKey('generic.confirm.delete'))) {
+          account.destroyRecord().then(function () {
+            _this.get('notifications').success(_this.get('intl').findTranslationByKey('admin.twitter.deleted.message'));
+          });
         }
       },
       redirectToTwitterAuthenticationEndpoint: function redirectToTwitterAuthenticationEndpoint(e) {
@@ -60838,12 +60847,12 @@ define("frontend-cp/session/admin/channels/twitter/index/template", ["exports"],
                     "loc": {
                       "source": null,
                       "start": {
-                        "line": 18,
-                        "column": 62
+                        "line": 20,
+                        "column": 12
                       },
                       "end": {
-                        "line": 18,
-                        "column": 146
+                        "line": 20,
+                        "column": 96
                       }
                     },
                     "moduleName": "frontend-cp/session/admin/channels/twitter/index/template.hbs"
@@ -60871,7 +60880,7 @@ define("frontend-cp/session/admin/channels/twitter/index/template", ["exports"],
                     morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
                     return morphs;
                   },
-                  statements: [["content", "account.brand.name", ["loc", [null, [18, 115], [18, 137]]]]],
+                  statements: [["content", "account.brand.name", ["loc", [null, [20, 65], [20, 87]]]]],
                   locals: [],
                   templates: []
                 };
@@ -60883,12 +60892,12 @@ define("frontend-cp/session/admin/channels/twitter/index/template", ["exports"],
                     "loc": {
                       "source": null,
                       "start": {
-                        "line": 19,
-                        "column": 10
+                        "line": 21,
+                        "column": 12
                       },
                       "end": {
-                        "line": 19,
-                        "column": 121
+                        "line": 21,
+                        "column": 123
                       }
                     },
                     "moduleName": "frontend-cp/session/admin/channels/twitter/index/template.hbs"
@@ -60914,7 +60923,7 @@ define("frontend-cp/session/admin/channels/twitter/index/template", ["exports"],
                     morphs[0] = dom.createMorphAt(dom.childAt(fragment, [0]), 1, 1);
                     return morphs;
                   },
-                  statements: [["inline", "t", ["admin.twitter.connection_lost"], [], ["loc", [null, [19, 75], [19, 112]]]]],
+                  statements: [["inline", "t", ["admin.twitter.connection_lost"], [], ["loc", [null, [21, 77], [21, 114]]]]],
                   locals: [],
                   templates: []
                 };
@@ -60929,7 +60938,7 @@ define("frontend-cp/session/admin/channels/twitter/index/template", ["exports"],
                       "column": 8
                     },
                     "end": {
-                      "line": 20,
+                      "line": 23,
                       "column": 8
                     }
                   },
@@ -60942,33 +60951,40 @@ define("frontend-cp/session/admin/channels/twitter/index/template", ["exports"],
                   var el0 = dom.createDocumentFragment();
                   var el1 = dom.createTextNode("          ");
                   dom.appendChild(el0, el1);
-                  var el1 = dom.createElement("span");
-                  dom.setAttribute(el1, "class", "t-bold");
-                  var el2 = dom.createTextNode("@");
+                  var el1 = dom.createElement("div");
+                  var el2 = dom.createTextNode("\n            ");
+                  dom.appendChild(el1, el2);
+                  var el2 = dom.createElement("span");
+                  dom.setAttribute(el2, "class", "t-bold");
+                  var el3 = dom.createTextNode("@");
+                  dom.appendChild(el2, el3);
+                  var el3 = dom.createComment("");
+                  dom.appendChild(el2, el3);
+                  dom.appendChild(el1, el2);
+                  var el2 = dom.createTextNode("\n            ");
                   dom.appendChild(el1, el2);
                   var el2 = dom.createComment("");
                   dom.appendChild(el1, el2);
-                  dom.appendChild(el0, el1);
-                  var el1 = dom.createTextNode(" ");
-                  dom.appendChild(el0, el1);
-                  var el1 = dom.createComment("");
-                  dom.appendChild(el0, el1);
-                  var el1 = dom.createTextNode("\n          ");
-                  dom.appendChild(el0, el1);
-                  var el1 = dom.createComment("");
+                  var el2 = dom.createTextNode("\n            ");
+                  dom.appendChild(el1, el2);
+                  var el2 = dom.createComment("");
+                  dom.appendChild(el1, el2);
+                  var el2 = dom.createTextNode("\n          ");
+                  dom.appendChild(el1, el2);
                   dom.appendChild(el0, el1);
                   var el1 = dom.createTextNode("\n");
                   dom.appendChild(el0, el1);
                   return el0;
                 },
                 buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                  var element5 = dom.childAt(fragment, [1]);
                   var morphs = new Array(3);
-                  morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
-                  morphs[1] = dom.createMorphAt(fragment, 3, 3, contextualElement);
-                  morphs[2] = dom.createMorphAt(fragment, 5, 5, contextualElement);
+                  morphs[0] = dom.createMorphAt(dom.childAt(element5, [1]), 1, 1);
+                  morphs[1] = dom.createMorphAt(element5, 3, 3);
+                  morphs[2] = dom.createMorphAt(element5, 5, 5);
                   return morphs;
                 },
-                statements: [["content", "account.screenName", ["loc", [null, [18, 32], [18, 54]]]], ["block", "if", [["get", "account.brand.name", ["loc", [null, [18, 68], [18, 86]]]]], [], 0, null, ["loc", [null, [18, 62], [18, 153]]]], ["block", "unless", [["subexpr", "eq", [["get", "account.status", ["loc", [null, [19, 24], [19, 38]]]], "AVAILABLE"], [], ["loc", [null, [19, 20], [19, 51]]]]], [], 1, null, ["loc", [null, [19, 10], [19, 132]]]]],
+                statements: [["content", "account.screenName", ["loc", [null, [19, 34], [19, 56]]]], ["block", "if", [["get", "account.brand.name", ["loc", [null, [20, 18], [20, 36]]]]], [], 0, null, ["loc", [null, [20, 12], [20, 103]]]], ["block", "unless", [["subexpr", "eq", [["get", "account.status", ["loc", [null, [21, 26], [21, 40]]]], "AVAILABLE"], [], ["loc", [null, [21, 22], [21, 53]]]]], [], 1, null, ["loc", [null, [21, 12], [21, 134]]]]],
                 locals: [],
                 templates: [child0, child1]
               };
@@ -60981,11 +60997,11 @@ define("frontend-cp/session/admin/channels/twitter/index/template", ["exports"],
                     "loc": {
                       "source": null,
                       "start": {
-                        "line": 23,
+                        "line": 26,
                         "column": 10
                       },
                       "end": {
-                        "line": 23,
+                        "line": 26,
                         "column": 88
                       }
                     },
@@ -61007,7 +61023,7 @@ define("frontend-cp/session/admin/channels/twitter/index/template", ["exports"],
                     dom.insertBoundary(fragment, null);
                     return morphs;
                   },
-                  statements: [["inline", "t", ["generic.edit"], [], ["loc", [null, [23, 68], [23, 88]]]]],
+                  statements: [["inline", "t", ["generic.edit"], [], ["loc", [null, [26, 68], [26, 88]]]]],
                   locals: [],
                   templates: []
                 };
@@ -61018,11 +61034,11 @@ define("frontend-cp/session/admin/channels/twitter/index/template", ["exports"],
                   "loc": {
                     "source": null,
                     "start": {
-                      "line": 21,
+                      "line": 24,
                       "column": 8
                     },
                     "end": {
-                      "line": 26,
+                      "line": 29,
                       "column": 8
                     }
                   },
@@ -61074,7 +61090,7 @@ define("frontend-cp/session/admin/channels/twitter/index/template", ["exports"],
                   morphs[6] = dom.createMorphAt(element4, 0, 0);
                   return morphs;
                 },
-                statements: [["attribute", "onclick", ["subexpr", "action", ["redirectToTwitterAuthenticationForReauthorize", ["get", "account", ["loc", [null, [22, 78], [22, 85]]]]], [], ["loc", [null, [22, 21], [22, 87]]]]], ["inline", "t", ["admin.twitter.reconnect"], [], ["loc", [null, [22, 88], [22, 119]]]], ["block", "link-to", ["session.admin.channels.twitter.edit", ["get", "account", ["loc", [null, [23, 59], [23, 66]]]]], [], 0, null, ["loc", [null, [23, 10], [23, 100]]]], ["attribute", "onclick", ["subexpr", "action", ["toggleEnabledProperty", ["get", "account", ["loc", [null, [24, 54], [24, 61]]]]], [], ["loc", [null, [24, 21], [24, 63]]]]], ["inline", "t", ["generic.disable"], [], ["loc", [null, [24, 64], [24, 87]]]], ["attribute", "onclick", ["subexpr", "action", ["showDeleteConfirmation", ["get", "account", ["loc", [null, [25, 104], [25, 111]]]]], [], ["loc", [null, [25, 70], [25, 113]]]]], ["inline", "t", ["generic.delete"], [], ["loc", [null, [25, 114], [25, 136]]]]],
+                statements: [["attribute", "onclick", ["subexpr", "action", ["redirectToTwitterAuthenticationForReauthorize", ["get", "account", ["loc", [null, [25, 78], [25, 85]]]]], [], ["loc", [null, [25, 21], [25, 87]]]]], ["inline", "t", ["admin.twitter.reconnect"], [], ["loc", [null, [25, 88], [25, 119]]]], ["block", "link-to", ["session.admin.channels.twitter.edit", ["get", "account", ["loc", [null, [26, 59], [26, 66]]]]], [], 0, null, ["loc", [null, [26, 10], [26, 100]]]], ["attribute", "onclick", ["subexpr", "action", ["toggleEnabledProperty", ["get", "account", ["loc", [null, [27, 54], [27, 61]]]]], [], ["loc", [null, [27, 21], [27, 63]]]]], ["inline", "t", ["generic.disable"], [], ["loc", [null, [27, 64], [27, 87]]]], ["attribute", "onclick", ["subexpr", "action", ["showDeleteConfirmation", ["get", "account", ["loc", [null, [28, 104], [28, 111]]]]], [], ["loc", [null, [28, 70], [28, 113]]]]], ["inline", "t", ["generic.delete"], [], ["loc", [null, [28, 114], [28, 136]]]]],
                 locals: [],
                 templates: [child0]
               };
@@ -61089,7 +61105,7 @@ define("frontend-cp/session/admin/channels/twitter/index/template", ["exports"],
                     "column": 6
                   },
                   "end": {
-                    "line": 27,
+                    "line": 30,
                     "column": 6
                   }
                 },
@@ -61114,7 +61130,7 @@ define("frontend-cp/session/admin/channels/twitter/index/template", ["exports"],
                 dom.insertBoundary(fragment, null);
                 return morphs;
               },
-              statements: [["block", "ko-simple-list/cell", [], [], 0, null, ["loc", [null, [17, 8], [20, 32]]]], ["block", "ko-simple-list/actions", [], [], 1, null, ["loc", [null, [21, 8], [26, 35]]]]],
+              statements: [["block", "ko-simple-list/cell", [], [], 0, null, ["loc", [null, [17, 8], [23, 32]]]], ["block", "ko-simple-list/actions", [], [], 1, null, ["loc", [null, [24, 8], [29, 35]]]]],
               locals: [],
               templates: [child0, child1]
             };
@@ -61129,7 +61145,7 @@ define("frontend-cp/session/admin/channels/twitter/index/template", ["exports"],
                   "column": 4
                 },
                 "end": {
-                  "line": 29,
+                  "line": 32,
                   "column": 4
                 }
               },
@@ -61152,7 +61168,7 @@ define("frontend-cp/session/admin/channels/twitter/index/template", ["exports"],
               dom.insertBoundary(fragment, 0);
               return morphs;
             },
-            statements: [["block", "ko-simple-list/row", [], ["onClick", ["subexpr", "action", ["editAccount", ["get", "account", ["loc", [null, [16, 58], [16, 65]]]]], [], ["loc", [null, [16, 36], [16, 66]]]]], 0, null, ["loc", [null, [16, 6], [27, 29]]]]],
+            statements: [["block", "ko-simple-list/row", [], ["onClick", ["subexpr", "action", ["editAccount", ["get", "account", ["loc", [null, [16, 58], [16, 65]]]]], [], ["loc", [null, [16, 36], [16, 66]]]]], 0, null, ["loc", [null, [16, 6], [30, 29]]]]],
             locals: ["account"],
             templates: [child0]
           };
@@ -61167,7 +61183,7 @@ define("frontend-cp/session/admin/channels/twitter/index/template", ["exports"],
                 "column": 2
               },
               "end": {
-                "line": 30,
+                "line": 33,
                 "column": 2
               }
             },
@@ -61202,7 +61218,7 @@ define("frontend-cp/session/admin/channels/twitter/index/template", ["exports"],
             dom.insertBoundary(fragment, null);
             return morphs;
           },
-          statements: [["inline", "t", ["generic.enabled"], [], ["loc", [null, [11, 6], [11, 29]]]], ["block", "each", [["get", "enabledAccounts", ["loc", [null, [15, 12], [15, 27]]]]], [], 0, null, ["loc", [null, [15, 4], [29, 13]]]]],
+          statements: [["inline", "t", ["generic.enabled"], [], ["loc", [null, [11, 6], [11, 29]]]], ["block", "each", [["get", "enabledAccounts", ["loc", [null, [15, 12], [15, 27]]]]], [], 0, null, ["loc", [null, [15, 4], [32, 13]]]]],
           locals: [],
           templates: [child0]
         };
@@ -61217,7 +61233,7 @@ define("frontend-cp/session/admin/channels/twitter/index/template", ["exports"],
               "column": 0
             },
             "end": {
-              "line": 31,
+              "line": 34,
               "column": 0
             }
           },
@@ -61239,7 +61255,7 @@ define("frontend-cp/session/admin/channels/twitter/index/template", ["exports"],
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [["block", "ko-simple-list", [], [], 0, null, ["loc", [null, [9, 2], [30, 21]]]]],
+        statements: [["block", "ko-simple-list", [], [], 0, null, ["loc", [null, [9, 2], [33, 21]]]]],
         locals: [],
         templates: [child0]
       };
@@ -61255,11 +61271,11 @@ define("frontend-cp/session/admin/channels/twitter/index/template", ["exports"],
                   "loc": {
                     "source": null,
                     "start": {
-                      "line": 41,
+                      "line": 44,
                       "column": 10
                     },
                     "end": {
-                      "line": 43,
+                      "line": 46,
                       "column": 10
                     }
                   },
@@ -61296,7 +61312,7 @@ define("frontend-cp/session/admin/channels/twitter/index/template", ["exports"],
                   morphs[1] = dom.createMorphAt(dom.childAt(fragment, [3]), 0, 0);
                   return morphs;
                 },
-                statements: [["content", "account.screenName", ["loc", [null, [42, 34], [42, 56]]]], ["content", "account.brand.title", ["loc", [null, [42, 88], [42, 111]]]]],
+                statements: [["content", "account.screenName", ["loc", [null, [45, 34], [45, 56]]]], ["content", "account.brand.title", ["loc", [null, [45, 88], [45, 111]]]]],
                 locals: [],
                 templates: []
               };
@@ -61308,11 +61324,11 @@ define("frontend-cp/session/admin/channels/twitter/index/template", ["exports"],
                   "loc": {
                     "source": null,
                     "start": {
-                      "line": 44,
+                      "line": 47,
                       "column": 10
                     },
                     "end": {
-                      "line": 47,
+                      "line": 50,
                       "column": 10
                     }
                   },
@@ -61350,7 +61366,7 @@ define("frontend-cp/session/admin/channels/twitter/index/template", ["exports"],
                   morphs[3] = dom.createMorphAt(element1, 0, 0);
                   return morphs;
                 },
-                statements: [["attribute", "onclick", ["subexpr", "action", ["toggleEnabledProperty", ["get", "account", ["loc", [null, [45, 58], [45, 65]]]]], [], ["loc", [null, [45, 25], [45, 67]]]]], ["inline", "t", ["generic.enable"], [], ["loc", [null, [45, 68], [45, 90]]]], ["attribute", "onclick", ["subexpr", "action", ["showDeleteConfirmation", ["get", "account", ["loc", [null, [46, 108], [46, 115]]]]], [], ["loc", [null, [46, 74], [46, 117]]]]], ["inline", "t", ["generic.delete"], [], ["loc", [null, [46, 118], [46, 140]]]]],
+                statements: [["attribute", "onclick", ["subexpr", "action", ["toggleEnabledProperty", ["get", "account", ["loc", [null, [48, 58], [48, 65]]]]], [], ["loc", [null, [48, 25], [48, 67]]]]], ["inline", "t", ["generic.enable"], [], ["loc", [null, [48, 68], [48, 90]]]], ["attribute", "onclick", ["subexpr", "action", ["showDeleteConfirmation", ["get", "account", ["loc", [null, [49, 108], [49, 115]]]]], [], ["loc", [null, [49, 74], [49, 117]]]]], ["inline", "t", ["generic.delete"], [], ["loc", [null, [49, 118], [49, 140]]]]],
                 locals: [],
                 templates: []
               };
@@ -61361,11 +61377,11 @@ define("frontend-cp/session/admin/channels/twitter/index/template", ["exports"],
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 40,
+                    "line": 43,
                     "column": 6
                   },
                   "end": {
-                    "line": 48,
+                    "line": 51,
                     "column": 6
                   }
                 },
@@ -61390,7 +61406,7 @@ define("frontend-cp/session/admin/channels/twitter/index/template", ["exports"],
                 dom.insertBoundary(fragment, null);
                 return morphs;
               },
-              statements: [["block", "ko-simple-list/cell", [], [], 0, null, ["loc", [null, [41, 10], [43, 34]]]], ["block", "ko-simple-list/actions", [], [], 1, null, ["loc", [null, [44, 10], [47, 37]]]]],
+              statements: [["block", "ko-simple-list/cell", [], [], 0, null, ["loc", [null, [44, 10], [46, 34]]]], ["block", "ko-simple-list/actions", [], [], 1, null, ["loc", [null, [47, 10], [50, 37]]]]],
               locals: [],
               templates: [child0, child1]
             };
@@ -61401,11 +61417,11 @@ define("frontend-cp/session/admin/channels/twitter/index/template", ["exports"],
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 39,
+                  "line": 42,
                   "column": 4
                 },
                 "end": {
-                  "line": 49,
+                  "line": 52,
                   "column": 4
                 }
               },
@@ -61427,7 +61443,7 @@ define("frontend-cp/session/admin/channels/twitter/index/template", ["exports"],
               dom.insertBoundary(fragment, null);
               return morphs;
             },
-            statements: [["block", "ko-simple-list/row", [], [], 0, null, ["loc", [null, [40, 6], [48, 29]]]]],
+            statements: [["block", "ko-simple-list/row", [], [], 0, null, ["loc", [null, [43, 6], [51, 29]]]]],
             locals: ["account"],
             templates: [child0]
           };
@@ -61438,11 +61454,11 @@ define("frontend-cp/session/admin/channels/twitter/index/template", ["exports"],
             "loc": {
               "source": null,
               "start": {
-                "line": 34,
+                "line": 37,
                 "column": 2
               },
               "end": {
-                "line": 50,
+                "line": 53,
                 "column": 2
               }
             },
@@ -61477,7 +61493,7 @@ define("frontend-cp/session/admin/channels/twitter/index/template", ["exports"],
             dom.insertBoundary(fragment, null);
             return morphs;
           },
-          statements: [["inline", "t", ["generic.disabled"], [], ["loc", [null, [36, 6], [36, 30]]]], ["block", "each", [["get", "disabledAccounts", ["loc", [null, [39, 12], [39, 28]]]]], [], 0, null, ["loc", [null, [39, 4], [49, 13]]]]],
+          statements: [["inline", "t", ["generic.disabled"], [], ["loc", [null, [39, 6], [39, 30]]]], ["block", "each", [["get", "disabledAccounts", ["loc", [null, [42, 12], [42, 28]]]]], [], 0, null, ["loc", [null, [42, 4], [52, 13]]]]],
           locals: [],
           templates: [child0]
         };
@@ -61488,11 +61504,11 @@ define("frontend-cp/session/admin/channels/twitter/index/template", ["exports"],
           "loc": {
             "source": null,
             "start": {
-              "line": 33,
+              "line": 36,
               "column": 0
             },
             "end": {
-              "line": 51,
+              "line": 54,
               "column": 0
             }
           },
@@ -61514,7 +61530,7 @@ define("frontend-cp/session/admin/channels/twitter/index/template", ["exports"],
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [["block", "ko-simple-list", [], [], 0, null, ["loc", [null, [34, 2], [50, 21]]]]],
+        statements: [["block", "ko-simple-list", [], [], 0, null, ["loc", [null, [37, 2], [53, 21]]]]],
         locals: [],
         templates: [child0]
       };
@@ -61529,7 +61545,7 @@ define("frontend-cp/session/admin/channels/twitter/index/template", ["exports"],
             "column": 0
           },
           "end": {
-            "line": 52,
+            "line": 55,
             "column": 0
           }
         },
@@ -61561,7 +61577,7 @@ define("frontend-cp/session/admin/channels/twitter/index/template", ["exports"],
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["inline", "ko-admin/page-header", [], ["title", ["subexpr", "t", ["admin.twitter.headings.index"], [], ["loc", [null, [2, 8], [2, 42]]]], "buttonText", ["subexpr", "t", ["admin.twitter.buttons.create_account"], [], ["loc", [null, [3, 13], [3, 55]]]], "onSave", ["subexpr", "action", ["redirectToTwitterAuthenticationEndpoint"], [], ["loc", [null, [4, 9], [4, 59]]]], "pageCopy", ["subexpr", "t", ["admin.twitter.description"], [], ["loc", [null, [5, 11], [5, 42]]]]], ["loc", [null, [1, 0], [6, 2]]]], ["block", "if", [["get", "enabledAccounts.length", ["loc", [null, [8, 6], [8, 28]]]]], [], 0, null, ["loc", [null, [8, 0], [31, 7]]]], ["block", "if", [["get", "disabledAccounts.length", ["loc", [null, [33, 6], [33, 29]]]]], [], 1, null, ["loc", [null, [33, 0], [51, 7]]]]],
+      statements: [["inline", "ko-admin/page-header", [], ["title", ["subexpr", "t", ["admin.twitter.headings.index"], [], ["loc", [null, [2, 8], [2, 42]]]], "buttonText", ["subexpr", "t", ["admin.twitter.buttons.create_account"], [], ["loc", [null, [3, 13], [3, 55]]]], "onSave", ["subexpr", "action", ["redirectToTwitterAuthenticationEndpoint"], [], ["loc", [null, [4, 9], [4, 59]]]], "pageCopy", ["subexpr", "t", ["admin.twitter.description"], [], ["loc", [null, [5, 11], [5, 42]]]]], ["loc", [null, [1, 0], [6, 2]]]], ["block", "if", [["get", "enabledAccounts.length", ["loc", [null, [8, 6], [8, 28]]]]], [], 0, null, ["loc", [null, [8, 0], [34, 7]]]], ["block", "if", [["get", "disabledAccounts.length", ["loc", [null, [36, 6], [36, 29]]]]], [], 1, null, ["loc", [null, [36, 0], [54, 7]]]]],
       locals: [],
       templates: [child0, child1]
     };
@@ -72666,6 +72682,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+983bd5e8"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+78be97b3"});
 }
 /* jshint ignore:end */
