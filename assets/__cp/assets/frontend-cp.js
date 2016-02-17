@@ -322,6 +322,13 @@ define('frontend-cp/adapters/business-hour', ['exports', 'frontend-cp/adapters/a
     }
   });
 });
+define('frontend-cp/adapters/businesshour-holiday', ['exports', 'frontend-cp/adapters/application'], function (exports, _frontendCpAdaptersApplication) {
+  exports['default'] = _frontendCpAdaptersApplication['default'].extend({
+    pathForType: function pathForType() {
+      return 'holidays';
+    }
+  });
+});
 define('frontend-cp/adapters/case-field-type', ['exports', 'frontend-cp/adapters/static-model'], function (exports, _frontendCpAdaptersStaticModel) {
   exports['default'] = _frontendCpAdaptersStaticModel['default'].extend({});
 });
@@ -1029,6 +1036,772 @@ define('frontend-cp/components/ember-wormhole', ['exports', 'ember-wormhole/comp
       return _emberWormholeComponentsEmberWormhole['default'];
     }
   });
+});
+define('frontend-cp/components/ko-admin/businesshours/edit/component', ['exports', 'ember', 'npm:lodash', 'moment'], function (exports, _ember, _npmLodash, _moment) {
+
+  // Weekday codes that match with model.zones keys in order matching moment.weekdays()
+  var localeWeekdays = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+  _npmLodash['default'].times(_moment['default'].localeData().firstDayOfWeek(), function () {
+    return localeWeekdays.push(localeWeekdays.shift());
+  });
+
+  exports['default'] = _ember['default'].Component.extend({
+    // Attributes
+    title: null,
+    model: null,
+
+    // Services
+    intl: _ember['default'].inject.service(),
+    store: _ember['default'].inject.service(),
+    errorHandler: _ember['default'].inject.service('error-handler'),
+
+    // State
+    newHoliday: null,
+
+    titles: _ember['default'].computed('model.zones', function () {
+      var weekdays = _moment['default'].weekdays();
+      _npmLodash['default'].times(_moment['default'].localeData().firstDayOfWeek(), function () {
+        return weekdays.push(weekdays.shift());
+      });
+      return weekdays;
+    }).readOnly(),
+
+    businessHourGrid: _ember['default'].computed('model', function () {
+      var _this = this;
+
+      return localeWeekdays.map(function (weekday) {
+        return _npmLodash['default'].range(24).map(function (col) {
+          return _this.get('model.zones')[weekday].contains(col);
+        });
+      });
+    }).readOnly(),
+
+    hoursLegend: _ember['default'].computed(function () {
+      return _npmLodash['default'].range(24).map(function (hour) {
+        var label = hour + ':00';
+        return hour < 10 ? '0' + label : label;
+      });
+    }),
+
+    actions: {
+      save: function save() {
+        var _this2 = this;
+
+        return this.get('model').save().then(function () {
+          var duplicated = _this2.get('model.holidays').filterBy('id', null);
+          duplicated.forEach(function (holiday) {
+            return holiday.destroy();
+          });
+        });
+      },
+
+      businessHourRangeSelect: function businessHourRangeSelect(grid) {
+        var zones = {};
+        localeWeekdays.forEach(function (weekday, index) {
+          zones[weekday] = grid[index].map(function (col, index) {
+            return col ? index : col;
+          }).filter(function (col) {
+            return col !== false;
+          });
+        });
+        this.set('model.zones', zones);
+      },
+
+      showHolidayForm: function showHolidayForm() {
+        this.set('newHoliday', this.get('store').createRecord('businesshour-holiday'));
+      },
+
+      cancelAddingHoliday: function cancelAddingHoliday() {
+        this.set('newHoliday', null);
+      },
+
+      deleteHoliday: function deleteHoliday(holiday) {
+        this.get('model.holidays').removeObject(holiday);
+      },
+
+      addHoliday: function addHoliday(holiday) {
+        this.get('model.holidays').pushObject(holiday);
+        this.set('newHoliday', null);
+      }
+    }
+  });
+});
+define("frontend-cp/components/ko-admin/businesshours/edit/template", ["exports"], function (exports) {
+  exports["default"] = Ember.HTMLBars.template((function () {
+    var child0 = (function () {
+      var child0 = (function () {
+        var child0 = (function () {
+          var child0 = (function () {
+            return {
+              meta: {
+                "revision": "Ember@1.13.13",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 13,
+                    "column": 6
+                  },
+                  "end": {
+                    "line": 13,
+                    "column": 69
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-admin/businesshours/edit/template.hbs"
+              },
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var morphs = new Array(1);
+                morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+                dom.insertBoundary(fragment, 0);
+                dom.insertBoundary(fragment, null);
+                return morphs;
+              },
+              statements: [["inline", "t", ["admin.businesshours.label.title"], [], ["loc", [null, [13, 30], [13, 69]]]]],
+              locals: [],
+              templates: []
+            };
+          })();
+          return {
+            meta: {
+              "revision": "Ember@1.13.13",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 12,
+                  "column": 4
+                },
+                "end": {
+                  "line": 20,
+                  "column": 4
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-admin/businesshours/edit/template.hbs"
+            },
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode("      ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n      ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n      ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(3);
+              morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+              morphs[1] = dom.createMorphAt(fragment, 3, 3, contextualElement);
+              morphs[2] = dom.createMorphAt(fragment, 5, 5, contextualElement);
+              return morphs;
+            },
+            statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [13, 6], [13, 93]]]], ["inline", "input", [], ["class", "input input-text", "name", "title", "type", "text", "value", ["subexpr", "@mut", [["get", "model.title", ["loc", [null, [17, 14], [17, 25]]]]], [], []], "disabled", ["subexpr", "@mut", [["get", "isSubmitting", ["loc", [null, [18, 17], [18, 29]]]]], [], []]], ["loc", [null, [14, 6], [18, 31]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "model.errors.title", ["loc", [null, [19, 36], [19, 54]]]]], [], []]], ["loc", [null, [19, 6], [19, 56]]]]],
+            locals: [],
+            templates: [child0]
+          };
+        })();
+        return {
+          meta: {
+            "revision": "Ember@1.13.13",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 11,
+                "column": 2
+              },
+              "end": {
+                "line": 21,
+                "column": 2
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-admin/businesshours/edit/template.hbs"
+          },
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+            dom.insertBoundary(fragment, 0);
+            dom.insertBoundary(fragment, null);
+            return morphs;
+          },
+          statements: [["block", "ko-form/field", [], [], 0, null, ["loc", [null, [12, 4], [20, 22]]]]],
+          locals: [],
+          templates: [child0]
+        };
+      })();
+      var child1 = (function () {
+        var child0 = (function () {
+          var child0 = (function () {
+            return {
+              meta: {
+                "revision": "Ember@1.13.13",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 32,
+                    "column": 6
+                  },
+                  "end": {
+                    "line": 36,
+                    "column": 6
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-admin/businesshours/edit/template.hbs"
+              },
+              arity: 1,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createTextNode("        ");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createElement("div");
+                dom.setAttribute(el1, "class", "ko-admin_businesshours__grid-title t-bold");
+                var el2 = dom.createTextNode("\n          ");
+                dom.appendChild(el1, el2);
+                var el2 = dom.createComment("");
+                dom.appendChild(el1, el2);
+                var el2 = dom.createTextNode("\n        ");
+                dom.appendChild(el1, el2);
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var morphs = new Array(1);
+                morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
+                return morphs;
+              },
+              statements: [["content", "title", ["loc", [null, [34, 10], [34, 19]]]]],
+              locals: ["title"],
+              templates: []
+            };
+          })();
+          return {
+            meta: {
+              "revision": "Ember@1.13.13",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 27,
+                  "column": 4
+                },
+                "end": {
+                  "line": 37,
+                  "column": 4
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-admin/businesshours/edit/template.hbs"
+            },
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(1);
+              morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+              dom.insertBoundary(fragment, 0);
+              dom.insertBoundary(fragment, null);
+              return morphs;
+            },
+            statements: [["block", "each", [["get", "titles", ["loc", [null, [32, 14], [32, 20]]]]], [], 0, null, ["loc", [null, [32, 6], [36, 15]]]]],
+            locals: [],
+            templates: [child0]
+          };
+        })();
+        return {
+          meta: {
+            "revision": "Ember@1.13.13",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 23,
+                "column": 2
+              },
+              "end": {
+                "line": 38,
+                "column": 2
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-admin/businesshours/edit/template.hbs"
+          },
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("    ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("h5");
+            var el2 = dom.createComment("");
+            dom.appendChild(el1, el2);
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n    ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("p");
+            var el2 = dom.createComment("");
+            dom.appendChild(el1, el2);
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n\n");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(3);
+            morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 0, 0);
+            morphs[1] = dom.createMorphAt(dom.childAt(fragment, [3]), 0, 0);
+            morphs[2] = dom.createMorphAt(fragment, 5, 5, contextualElement);
+            dom.insertBoundary(fragment, null);
+            return morphs;
+          },
+          statements: [["inline", "t", ["admin.businesshours"], [], ["loc", [null, [24, 8], [24, 35]]]], ["inline", "t", ["admin.businesshours.info"], [], ["loc", [null, [25, 7], [25, 39]]]], ["block", "ko-grid-picker", [], ["initialGrid", ["subexpr", "@mut", [["get", "businessHourGrid", ["loc", [null, [28, 18], [28, 34]]]]], [], []], "legend", ["subexpr", "@mut", [["get", "hoursLegend", ["loc", [null, [29, 13], [29, 24]]]]], [], []], "onRangeSelect", ["subexpr", "action", ["businessHourRangeSelect"], [], ["loc", [null, [30, 20], [30, 54]]]]], 0, null, ["loc", [null, [27, 4], [37, 23]]]]],
+          locals: [],
+          templates: [child0]
+        };
+      })();
+      var child2 = (function () {
+        var child0 = (function () {
+          var child0 = (function () {
+            return {
+              meta: {
+                "revision": "Ember@1.13.13",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 45,
+                    "column": 6
+                  },
+                  "end": {
+                    "line": 49,
+                    "column": 6
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-admin/businesshours/edit/template.hbs"
+              },
+              arity: 1,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createTextNode("        ");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var morphs = new Array(1);
+                morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+                return morphs;
+              },
+              statements: [["inline", "ko-admin/holidays/row", [], ["model", ["subexpr", "@mut", [["get", "holiday", ["loc", [null, [47, 16], [47, 23]]]]], [], []], "onHolidayDelete", ["subexpr", "action", ["deleteHoliday"], [], ["loc", [null, [48, 26], [48, 50]]]]], ["loc", [null, [46, 8], [48, 52]]]]],
+              locals: ["holiday"],
+              templates: []
+            };
+          })();
+          var child1 = (function () {
+            var child0 = (function () {
+              var child0 = (function () {
+                return {
+                  meta: {
+                    "revision": "Ember@1.13.13",
+                    "loc": {
+                      "source": null,
+                      "start": {
+                        "line": 52,
+                        "column": 8
+                      },
+                      "end": {
+                        "line": 57,
+                        "column": 8
+                      }
+                    },
+                    "moduleName": "frontend-cp/components/ko-admin/businesshours/edit/template.hbs"
+                  },
+                  arity: 0,
+                  cachedFragment: null,
+                  hasRendered: false,
+                  buildFragment: function buildFragment(dom) {
+                    var el0 = dom.createDocumentFragment();
+                    var el1 = dom.createTextNode("          ");
+                    dom.appendChild(el0, el1);
+                    var el1 = dom.createComment("");
+                    dom.appendChild(el0, el1);
+                    var el1 = dom.createTextNode("\n");
+                    dom.appendChild(el0, el1);
+                    return el0;
+                  },
+                  buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                    var morphs = new Array(1);
+                    morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+                    return morphs;
+                  },
+                  statements: [["inline", "ko-admin/holidays/edit", [], ["model", ["subexpr", "@mut", [["get", "newHoliday", ["loc", [null, [54, 18], [54, 28]]]]], [], []], "onSave", ["subexpr", "action", ["addHoliday"], [], ["loc", [null, [55, 19], [55, 40]]]], "onCancel", ["subexpr", "action", ["cancelAddingHoliday"], [], ["loc", [null, [56, 21], [56, 51]]]]], ["loc", [null, [53, 10], [56, 53]]]]],
+                  locals: [],
+                  templates: []
+                };
+              })();
+              return {
+                meta: {
+                  "revision": "Ember@1.13.13",
+                  "loc": {
+                    "source": null,
+                    "start": {
+                      "line": 51,
+                      "column": 6
+                    },
+                    "end": {
+                      "line": 58,
+                      "column": 6
+                    }
+                  },
+                  "moduleName": "frontend-cp/components/ko-admin/businesshours/edit/template.hbs"
+                },
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                  var el0 = dom.createDocumentFragment();
+                  var el1 = dom.createComment("");
+                  dom.appendChild(el0, el1);
+                  return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                  var morphs = new Array(1);
+                  morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+                  dom.insertBoundary(fragment, 0);
+                  dom.insertBoundary(fragment, null);
+                  return morphs;
+                },
+                statements: [["block", "ko-simple-list/cell", [], [], 0, null, ["loc", [null, [52, 8], [57, 32]]]]],
+                locals: [],
+                templates: [child0]
+              };
+            })();
+            return {
+              meta: {
+                "revision": "Ember@1.13.13",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 50,
+                    "column": 6
+                  },
+                  "end": {
+                    "line": 59,
+                    "column": 6
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-admin/businesshours/edit/template.hbs"
+              },
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var morphs = new Array(1);
+                morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+                dom.insertBoundary(fragment, 0);
+                dom.insertBoundary(fragment, null);
+                return morphs;
+              },
+              statements: [["block", "ko-simple-list/row", [], [], 0, null, ["loc", [null, [51, 6], [58, 29]]]]],
+              locals: [],
+              templates: [child0]
+            };
+          })();
+          return {
+            meta: {
+              "revision": "Ember@1.13.13",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 44,
+                  "column": 4
+                },
+                "end": {
+                  "line": 60,
+                  "column": 4
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-admin/businesshours/edit/template.hbs"
+            },
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(2);
+              morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+              morphs[1] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+              dom.insertBoundary(fragment, 0);
+              dom.insertBoundary(fragment, null);
+              return morphs;
+            },
+            statements: [["block", "each", [["get", "model.holidays", ["loc", [null, [45, 14], [45, 28]]]]], [], 0, null, ["loc", [null, [45, 6], [49, 15]]]], ["block", "if", [["get", "newHoliday", ["loc", [null, [50, 12], [50, 22]]]]], [], 1, null, ["loc", [null, [50, 6], [59, 13]]]]],
+            locals: [],
+            templates: [child0, child1]
+          };
+        })();
+        var child1 = (function () {
+          return {
+            meta: {
+              "revision": "Ember@1.13.13",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 62,
+                  "column": 4
+                },
+                "end": {
+                  "line": 70,
+                  "column": 4
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-admin/businesshours/edit/template.hbs"
+            },
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode("      ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createElement("div");
+              dom.setAttribute(el1, "class", "ko-admin_businesshours__add-holiday");
+              var el2 = dom.createTextNode("\n        ");
+              dom.appendChild(el1, el2);
+              var el2 = dom.createElement("button");
+              dom.setAttribute(el2, "type", "button");
+              dom.setAttribute(el2, "class", "button button--default");
+              var el3 = dom.createTextNode("\n          ");
+              dom.appendChild(el2, el3);
+              var el3 = dom.createComment("");
+              dom.appendChild(el2, el3);
+              var el3 = dom.createTextNode("\n        ");
+              dom.appendChild(el2, el3);
+              dom.appendChild(el1, el2);
+              var el2 = dom.createTextNode("\n      ");
+              dom.appendChild(el1, el2);
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var element0 = dom.childAt(fragment, [1, 1]);
+              var morphs = new Array(2);
+              morphs[0] = dom.createAttrMorph(element0, 'onclick');
+              morphs[1] = dom.createMorphAt(element0, 1, 1);
+              return morphs;
+            },
+            statements: [["attribute", "onclick", ["subexpr", "action", ["showHolidayForm"], [], ["loc", [null, [65, 17], [65, 45]]]]], ["inline", "t", ["admin.businesshours.holidays.addaholiday"], [], ["loc", [null, [67, 10], [67, 58]]]]],
+            locals: [],
+            templates: []
+          };
+        })();
+        return {
+          meta: {
+            "revision": "Ember@1.13.13",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 40,
+                "column": 2
+              },
+              "end": {
+                "line": 72,
+                "column": 2
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-admin/businesshours/edit/template.hbs"
+          },
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("    ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("h5");
+            var el2 = dom.createComment("");
+            dom.appendChild(el1, el2);
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n    ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("p");
+            var el2 = dom.createComment("");
+            dom.appendChild(el1, el2);
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n\n");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(4);
+            morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 0, 0);
+            morphs[1] = dom.createMorphAt(dom.childAt(fragment, [3]), 0, 0);
+            morphs[2] = dom.createMorphAt(fragment, 5, 5, contextualElement);
+            morphs[3] = dom.createMorphAt(fragment, 7, 7, contextualElement);
+            return morphs;
+          },
+          statements: [["inline", "t", ["admin.businesshours.holidays"], [], ["loc", [null, [41, 8], [41, 44]]]], ["inline", "t", ["admin.businesshours.holidays.info"], [], ["loc", [null, [42, 7], [42, 48]]]], ["block", "ko-simple-list", [], [], 0, null, ["loc", [null, [44, 4], [60, 23]]]], ["block", "if", [["subexpr", "not", [["get", "newHoliday", ["loc", [null, [62, 15], [62, 25]]]]], [], ["loc", [null, [62, 10], [62, 26]]]]], [], 1, null, ["loc", [null, [62, 4], [70, 11]]]]],
+          locals: [],
+          templates: [child0, child1]
+        };
+      })();
+      return {
+        meta: {
+          "revision": "Ember@1.13.13",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 1,
+              "column": 0
+            },
+            "end": {
+              "line": 74,
+              "column": 0
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-admin/businesshours/edit/template.hbs"
+        },
+        arity: 2,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("\n  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n\n");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(5);
+          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+          morphs[1] = dom.createMorphAt(fragment, 3, 3, contextualElement);
+          morphs[2] = dom.createMorphAt(fragment, 5, 5, contextualElement);
+          morphs[3] = dom.createMorphAt(fragment, 7, 7, contextualElement);
+          morphs[4] = dom.createMorphAt(fragment, 9, 9, contextualElement);
+          return morphs;
+        },
+        statements: [["inline", "ko-admin/page-header", [], ["title", ["subexpr", "@mut", [["get", "title", ["loc", [null, [7, 10], [7, 15]]]]], [], []], "onCancel", ["subexpr", "@mut", [["get", "onCancel", ["loc", [null, [8, 13], [8, 21]]]]], [], []], "buttonText", ["subexpr", "t", ["generic.save"], [], ["loc", [null, [9, 15], [9, 33]]]]], ["loc", [null, [6, 2], [9, 35]]]], ["block", "ko-admin/forms/group", [], ["legend", ["subexpr", "t", ["admin.businesshours.heading.details"], [], ["loc", [null, [11, 33], [11, 74]]]]], 0, null, ["loc", [null, [11, 2], [21, 27]]]], ["block", "ko-admin/forms/group", [], [], 1, null, ["loc", [null, [23, 2], [38, 27]]]], ["block", "ko-admin/forms/group", [], [], 2, null, ["loc", [null, [40, 2], [72, 27]]]], ["inline", "ko-admin/page-footer", [], ["buttonText", ["subexpr", "t", ["generic.save"], [], ["loc", [null, [73, 36], [73, 54]]]], "onCancel", ["subexpr", "@mut", [["get", "onCancel", ["loc", [null, [73, 64], [73, 72]]]]], [], []]], ["loc", [null, [73, 2], [73, 74]]]]],
+        locals: ["_", "isSubmitting"],
+        templates: [child0, child1, child2]
+      };
+    })();
+    return {
+      meta: {
+        "revision": "Ember@1.13.13",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 75,
+            "column": 0
+          }
+        },
+        "moduleName": "frontend-cp/components/ko-admin/businesshours/edit/template.hbs"
+      },
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var morphs = new Array(1);
+        morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+        dom.insertBoundary(fragment, 0);
+        dom.insertBoundary(fragment, null);
+        return morphs;
+      },
+      statements: [["block", "ko-form", [], ["onSubmit", ["subexpr", "action", ["save"], [], ["loc", [null, [2, 11], [2, 26]]]], "onSuccess", ["subexpr", "@mut", [["get", "onSuccess", ["loc", [null, [3, 12], [3, 21]]]]], [], []]], 0, null, ["loc", [null, [1, 0], [74, 12]]]]],
+      locals: [],
+      templates: [child0]
+    };
+  })());
 });
 define('frontend-cp/components/ko-admin/case-fields/edit/component', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = _ember['default'].Component.extend({
@@ -8588,6 +9361,667 @@ define("frontend-cp/components/ko-admin/forms/group/template", ["exports"], func
     };
   })());
 });
+define('frontend-cp/components/ko-admin/holidays/edit/component', ['exports', 'ember', 'npm:lodash', 'moment'], function (exports, _ember, _npmLodash, _moment) {
+  exports['default'] = _ember['default'].Component.extend({
+
+    // Attributes
+    model: null,
+    onCancel: null,
+
+    // State
+    selectedGrid: null,
+
+    initGrid: _ember['default'].on('init', function () {
+      this.set('selectedGrid', this.get('holidayGrid'));
+    }),
+
+    holidayGrid: _ember['default'].computed('model', function () {
+      var openHours = this.get('model.openHours');
+      return [_npmLodash['default'].range(24).map(function (hour) {
+        return openHours.contains(hour);
+      })];
+    }).readOnly(),
+
+    hoursLegend: _ember['default'].computed(function () {
+      return _npmLodash['default'].range(24).map(function (hour) {
+        var label = hour + ':00';
+        return hour < 10 ? '0' + label : label;
+      });
+    }),
+
+    holidayDate: _ember['default'].computed('model.date', function () {
+      return (0, _moment['default'])(this.get('model.date'), 'DD/MM/YYYY').toDate();
+    }),
+
+    actions: {
+      selectHolidayDate: function selectHolidayDate(date) {
+        this.set('model.date', (0, _moment['default'])(date).format('DD/MM/YYYY'));
+      },
+
+      selectRange: function selectRange(grid) {
+        this.set('selectedGrid', grid);
+        if (this.attrs.onRangeSelect) {
+          this.attrs.onRangeSelect(this.get('model'));
+        }
+      },
+
+      save: function save(event) {
+        event.stopPropagation();
+        if (!this.get('model.date')) {
+          this.set('model.date', (0, _moment['default'])().format('DD/MM/YYYY'));
+        }
+
+        var hours = this.get('selectedGrid.firstObject').map(function (col, index) {
+          return col ? index : col;
+        });
+        this.set('model.openHours', hours.filter(function (col) {
+          return col !== false;
+        }));
+        this.attrs.onSave(this.get('model'));
+      },
+
+      cancelEditing: function cancelEditing(event) {
+        event.stopPropagation();
+        this.attrs.onCancel();
+      }
+    }
+  });
+});
+define("frontend-cp/components/ko-admin/holidays/edit/template", ["exports"], function (exports) {
+  exports["default"] = Ember.HTMLBars.template((function () {
+    var child0 = (function () {
+      var child0 = (function () {
+        return {
+          meta: {
+            "revision": "Ember@1.13.13",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 2,
+                "column": 2
+              },
+              "end": {
+                "line": 2,
+                "column": 74
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-admin/holidays/edit/template.hbs"
+          },
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+            dom.insertBoundary(fragment, 0);
+            dom.insertBoundary(fragment, null);
+            return morphs;
+          },
+          statements: [["inline", "t", ["admin.businesshours.holidays.label.title"], [], ["loc", [null, [2, 26], [2, 74]]]]],
+          locals: [],
+          templates: []
+        };
+      })();
+      return {
+        meta: {
+          "revision": "Ember@1.13.13",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 1,
+              "column": 0
+            },
+            "end": {
+              "line": 9,
+              "column": 0
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-admin/holidays/edit/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(3);
+          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+          morphs[1] = dom.createMorphAt(fragment, 3, 3, contextualElement);
+          morphs[2] = dom.createMorphAt(fragment, 5, 5, contextualElement);
+          return morphs;
+        },
+        statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [2, 2], [2, 98]]]], ["inline", "input", [], ["class", "input input-text", "name", "title", "type", "text", "value", ["subexpr", "@mut", [["get", "model.title", ["loc", [null, [6, 10], [6, 21]]]]], [], []], "disabled", ["subexpr", "@mut", [["get", "isSubmitting", ["loc", [null, [7, 13], [7, 25]]]]], [], []]], ["loc", [null, [3, 2], [7, 27]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "model.errors.title", ["loc", [null, [8, 32], [8, 50]]]]], [], []]], ["loc", [null, [8, 2], [8, 52]]]]],
+        locals: [],
+        templates: [child0]
+      };
+    })();
+    var child1 = (function () {
+      return {
+        meta: {
+          "revision": "Ember@1.13.13",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 11,
+              "column": 0
+            },
+            "end": {
+              "line": 22,
+              "column": 0
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-admin/holidays/edit/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createElement("div");
+          var el2 = dom.createTextNode("\n    ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n  ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var element0 = dom.childAt(fragment, [0]);
+          var morphs = new Array(2);
+          morphs[0] = dom.createAttrMorph(element0, 'class');
+          morphs[1] = dom.createMorphAt(element0, 1, 1);
+          return morphs;
+        },
+        statements: [["attribute", "class", ["concat", ["ko-admin_holidays_edit__title ", ["subexpr", "if", [["get", "model.errors.date", ["loc", [null, [16, 47], [16, 64]]]], "error"], [], ["loc", [null, [16, 42], [16, 74]]]]]]], ["inline", "ko-date-select", [], ["value", ["subexpr", "@mut", [["get", "holidayDate", ["loc", [null, [18, 12], [18, 23]]]]], [], []], "placeholder", "Add date", "onChange", ["subexpr", "action", ["selectHolidayDate"], [], ["loc", [null, [20, 15], [20, 43]]]]], ["loc", [null, [17, 4], [20, 45]]]]],
+        locals: [],
+        templates: []
+      };
+    })();
+    return {
+      meta: {
+        "revision": "Ember@1.13.13",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 36,
+            "column": 0
+          }
+        },
+        "moduleName": "frontend-cp/components/ko-admin/holidays/edit/template.hbs"
+      },
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("div");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("button");
+        dom.setAttribute(el2, "type", "button");
+        dom.setAttribute(el2, "class", "button button--default");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("button");
+        dom.setAttribute(el2, "type", "button");
+        dom.setAttribute(el2, "class", "button t-small");
+        dom.setAttribute(el2, "name", "cancel");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var element1 = dom.childAt(fragment, [4]);
+        var element2 = dom.childAt(element1, [1]);
+        var element3 = dom.childAt(element1, [3]);
+        var morphs = new Array(7);
+        morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+        morphs[1] = dom.createMorphAt(fragment, 2, 2, contextualElement);
+        morphs[2] = dom.createAttrMorph(element1, 'class');
+        morphs[3] = dom.createAttrMorph(element2, 'onclick');
+        morphs[4] = dom.createMorphAt(element2, 1, 1);
+        morphs[5] = dom.createAttrMorph(element3, 'onclick');
+        morphs[6] = dom.createMorphAt(element3, 1, 1);
+        dom.insertBoundary(fragment, 0);
+        return morphs;
+      },
+      statements: [["block", "ko-form/field", [], [], 0, null, ["loc", [null, [1, 0], [9, 18]]]], ["block", "ko-grid-picker", [], ["initialGrid", ["subexpr", "@mut", [["get", "holidayGrid", ["loc", [null, [12, 14], [12, 25]]]]], [], []], "legend", ["subexpr", "@mut", [["get", "hoursLegend", ["loc", [null, [13, 9], [13, 20]]]]], [], []], "onRangeSelect", ["subexpr", "action", ["selectRange"], [], ["loc", [null, [14, 16], [14, 38]]]]], 1, null, ["loc", [null, [11, 0], [22, 19]]]], ["attribute", "class", ["concat", [["subexpr", "qa-cls", ["ko-admin_holidays_edit__buttons"], [], ["loc", [null, [24, 12], [24, 56]]]]]]], ["attribute", "onclick", ["subexpr", "action", ["save"], [], ["loc", [null, [26, 11], [26, 28]]]]], ["inline", "t", ["admin.businesshours.holidays.saveholiday"], [], ["loc", [null, [28, 4], [28, 52]]]], ["attribute", "onclick", ["subexpr", "action", ["cancelEditing"], [], ["loc", [null, [32, 26], [32, 52]]]]], ["inline", "t", ["generic.cancel"], [], ["loc", [null, [33, 4], [33, 26]]]]],
+      locals: [],
+      templates: [child0, child1]
+    };
+  })());
+});
+define('frontend-cp/components/ko-admin/holidays/row/component', ['exports', 'ember', 'moment'], function (exports, _ember, _moment) {
+  exports['default'] = _ember['default'].Component.extend({
+    model: null,
+    tagName: '',
+
+    formattedDate: _ember['default'].computed('model.date', function () {
+      return (0, _moment['default'])(this.get('model.date'), 'DD/MM/YYYY');
+    }),
+
+    actions: {
+      editHoliday: function editHoliday() {
+        this.set('isEditing', true);
+      },
+
+      cancelEditing: function cancelEditing() {
+        this.set('isEditing', false);
+      },
+
+      deleteHoliday: function deleteHoliday() {
+        this.attrs.onHolidayDelete(this.get('model'));
+      },
+
+      saveHoliday: function saveHoliday() {
+        this.set('isEditing', false);
+      }
+    }
+  });
+});
+define("frontend-cp/components/ko-admin/holidays/row/template", ["exports"], function (exports) {
+  exports["default"] = Ember.HTMLBars.template((function () {
+    var child0 = (function () {
+      var child0 = (function () {
+        var child0 = (function () {
+          return {
+            meta: {
+              "revision": "Ember@1.13.13",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 3,
+                  "column": 4
+                },
+                "end": {
+                  "line": 8,
+                  "column": 4
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-admin/holidays/row/template.hbs"
+            },
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode("      ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(1);
+              morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+              return morphs;
+            },
+            statements: [["inline", "ko-admin/holidays/edit", [], ["model", ["subexpr", "@mut", [["get", "model", ["loc", [null, [5, 14], [5, 19]]]]], [], []], "onSave", ["subexpr", "action", ["saveHoliday"], [], ["loc", [null, [6, 15], [6, 37]]]], "onCancel", ["subexpr", "action", ["cancelEditing"], [], ["loc", [null, [7, 17], [7, 41]]]]], ["loc", [null, [4, 6], [7, 43]]]]],
+            locals: [],
+            templates: []
+          };
+        })();
+        return {
+          meta: {
+            "revision": "Ember@1.13.13",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 2,
+                "column": 2
+              },
+              "end": {
+                "line": 9,
+                "column": 2
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-admin/holidays/row/template.hbs"
+          },
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+            dom.insertBoundary(fragment, 0);
+            dom.insertBoundary(fragment, null);
+            return morphs;
+          },
+          statements: [["block", "ko-simple-list/cell", [], [], 0, null, ["loc", [null, [3, 4], [8, 28]]]]],
+          locals: [],
+          templates: [child0]
+        };
+      })();
+      var child1 = (function () {
+        var child0 = (function () {
+          return {
+            meta: {
+              "revision": "Ember@1.13.13",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 10,
+                  "column": 4
+                },
+                "end": {
+                  "line": 12,
+                  "column": 4
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-admin/holidays/row/template.hbs"
+            },
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode("      ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createElement("span");
+              dom.setAttribute(el1, "class", "t-bold");
+              var el2 = dom.createComment("");
+              dom.appendChild(el1, el2);
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(1);
+              morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 0, 0);
+              return morphs;
+            },
+            statements: [["content", "model.title", ["loc", [null, [11, 27], [11, 42]]]]],
+            locals: [],
+            templates: []
+          };
+        })();
+        var child1 = (function () {
+          return {
+            meta: {
+              "revision": "Ember@1.13.13",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 13,
+                  "column": 4
+                },
+                "end": {
+                  "line": 15,
+                  "column": 4
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-admin/holidays/row/template.hbs"
+            },
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode("      ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createElement("span");
+              dom.setAttribute(el1, "class", "t-caption");
+              var el2 = dom.createComment("");
+              dom.appendChild(el1, el2);
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(1);
+              morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 0, 0);
+              return morphs;
+            },
+            statements: [["inline", "format-date", [["get", "formattedDate", ["loc", [null, [14, 44], [14, 57]]]]], ["format", "full"], ["loc", [null, [14, 30], [14, 73]]]]],
+            locals: [],
+            templates: []
+          };
+        })();
+        var child2 = (function () {
+          return {
+            meta: {
+              "revision": "Ember@1.13.13",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 17,
+                  "column": 4
+                },
+                "end": {
+                  "line": 21,
+                  "column": 4
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-admin/holidays/row/template.hbs"
+            },
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode("      ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createElement("a");
+              var el2 = dom.createComment("");
+              dom.appendChild(el1, el2);
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n      ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createElement("span");
+              dom.setAttribute(el1, "class", "t-caption");
+              var el2 = dom.createTextNode("|");
+              dom.appendChild(el1, el2);
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n      ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createElement("a");
+              var el2 = dom.createComment("");
+              dom.appendChild(el1, el2);
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var element0 = dom.childAt(fragment, [1]);
+              var element1 = dom.childAt(fragment, [5]);
+              var morphs = new Array(4);
+              morphs[0] = dom.createAttrMorph(element0, 'onclick');
+              morphs[1] = dom.createMorphAt(element0, 0, 0);
+              morphs[2] = dom.createAttrMorph(element1, 'onclick');
+              morphs[3] = dom.createMorphAt(element1, 0, 0);
+              return morphs;
+            },
+            statements: [["attribute", "onclick", ["subexpr", "action", ["editHoliday", ["get", "model", ["loc", [null, [18, 40], [18, 45]]]]], [], ["loc", [null, [18, 17], [18, 47]]]]], ["inline", "t", ["generic.edit"], [], ["loc", [null, [18, 48], [18, 68]]]], ["attribute", "onclick", ["subexpr", "action", ["deleteHoliday", ["get", "model", ["loc", [null, [20, 42], [20, 47]]]]], [], ["loc", [null, [20, 17], [20, 49]]]]], ["inline", "t", ["generic.delete"], [], ["loc", [null, [20, 50], [20, 72]]]]],
+            locals: [],
+            templates: []
+          };
+        })();
+        return {
+          meta: {
+            "revision": "Ember@1.13.13",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 9,
+                "column": 2
+              },
+              "end": {
+                "line": 22,
+                "column": 2
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-admin/holidays/row/template.hbs"
+          },
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(3);
+            morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+            morphs[1] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+            morphs[2] = dom.createMorphAt(fragment, 3, 3, contextualElement);
+            dom.insertBoundary(fragment, 0);
+            dom.insertBoundary(fragment, null);
+            return morphs;
+          },
+          statements: [["block", "ko-simple-list/cell", [], [], 0, null, ["loc", [null, [10, 4], [12, 28]]]], ["block", "ko-simple-list/cell", [], [], 1, null, ["loc", [null, [13, 4], [15, 28]]]], ["block", "ko-simple-list/actions", [], [], 2, null, ["loc", [null, [17, 4], [21, 31]]]]],
+          locals: [],
+          templates: [child0, child1, child2]
+        };
+      })();
+      return {
+        meta: {
+          "revision": "Ember@1.13.13",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 1,
+              "column": 0
+            },
+            "end": {
+              "line": 23,
+              "column": 0
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-admin/holidays/row/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [["block", "if", [["get", "isEditing", ["loc", [null, [2, 8], [2, 17]]]]], [], 0, 1, ["loc", [null, [2, 2], [22, 9]]]]],
+        locals: [],
+        templates: [child0, child1]
+      };
+    })();
+    return {
+      meta: {
+        "revision": "Ember@1.13.13",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 24,
+            "column": 0
+          }
+        },
+        "moduleName": "frontend-cp/components/ko-admin/holidays/row/template.hbs"
+      },
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var morphs = new Array(1);
+        morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+        dom.insertBoundary(fragment, 0);
+        dom.insertBoundary(fragment, null);
+        return morphs;
+      },
+      statements: [["block", "ko-simple-list/row", [], ["onClick", ["subexpr", "if", [["subexpr", "not", [["get", "isEditing", ["loc", [null, [1, 39], [1, 48]]]]], [], ["loc", [null, [1, 34], [1, 49]]]], ["subexpr", "action", ["editHoliday", ["get", "model", ["loc", [null, [1, 72], [1, 77]]]]], [], ["loc", [null, [1, 50], [1, 78]]]]], [], ["loc", [null, [1, 30], [1, 79]]]]], 0, null, ["loc", [null, [1, 0], [23, 23]]]]],
+      locals: [],
+      templates: [child0]
+    };
+  })());
+});
 define('frontend-cp/components/ko-admin/inline-locale-edit/component', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = _ember['default'].Component.extend({
     // Attributes
@@ -12167,6 +13601,7 @@ define('frontend-cp/components/ko-admin/team/component', ['exports', 'ember'], f
 
     intl: inject.service(),
     session: inject.service(),
+    store: inject.service(),
     errorHandler: inject.service('error-handler'),
     storeCache: inject.service('store-cache'),
 
@@ -12175,6 +13610,9 @@ define('frontend-cp/components/ko-admin/team/component', ['exports', 'ember'], f
     membersToAdd: null,
     membersToRemove: null,
 
+    businessHours: null,
+    selectedBusinessHour: null,
+
     isMembersLoading: true,
 
     initFields: _ember['default'].on('init', function () {
@@ -12182,6 +13620,16 @@ define('frontend-cp/components/ko-admin/team/component', ['exports', 'ember'], f
 
       this.set('membersToRemove', []);
       this.set('membersToAdd', []);
+
+      this.get('store').query('business-hour', { limit: 10000 }).then(function (businessHours) {
+        _this.set('businessHours', businessHours);
+        var businessHour = _this.get('team.businesshour');
+        if (businessHour) {
+          _this.set('selectedBusinessHour', businessHours.findBy('id', businessHour.get('id')));
+        } else {
+          _this.set('selectedBusinessHour', businessHours.findBy('isDefault', true));
+        }
+      });
 
       this.get('storeCache').query('user', { role: 'AGENT', limit: 500, is_enabled: true }).then(function (agents) {
         // we filter for isEnabled because /users endpoint do not support is_enabled
@@ -12339,6 +13787,11 @@ define('frontend-cp/components/ko-admin/team/component', ['exports', 'ember'], f
             _this5.attrs.onSuccess();
           });
         }
+      },
+
+      selectBusinessHours: function selectBusinessHours(businessHour) {
+        this.set('selectedBusinessHour', businessHour);
+        this.set('team.businesshour', businessHour);
       }
     }
   });
@@ -12431,6 +13884,84 @@ define("frontend-cp/components/ko-admin/team/template", ["exports"], function (e
             templates: [child0]
           };
         })();
+        var child1 = (function () {
+          return {
+            meta: {
+              "revision": "Ember@1.13.13",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 19,
+                  "column": 6
+                },
+                "end": {
+                  "line": 19,
+                  "column": 57
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-admin/team/template.hbs"
+            },
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(1);
+              morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+              dom.insertBoundary(fragment, 0);
+              dom.insertBoundary(fragment, null);
+              return morphs;
+            },
+            statements: [["inline", "t", ["admin.businesshours"], [], ["loc", [null, [19, 30], [19, 57]]]]],
+            locals: [],
+            templates: []
+          };
+        })();
+        var child2 = (function () {
+          return {
+            meta: {
+              "revision": "Ember@1.13.13",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 20,
+                  "column": 6
+                },
+                "end": {
+                  "line": 28,
+                  "column": 6
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-admin/team/template.hbs"
+            },
+            arity: 1,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode("        ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(1);
+              morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+              return morphs;
+            },
+            statements: [["content", "value.title", ["loc", [null, [27, 8], [27, 23]]]]],
+            locals: ["value"],
+            templates: []
+          };
+        })();
         return {
           meta: {
             "revision": "Ember@1.13.13",
@@ -12441,7 +13972,7 @@ define("frontend-cp/components/ko-admin/team/template", ["exports"], function (e
                 "column": 2
               },
               "end": {
-                "line": 17,
+                "line": 30,
                 "column": 2
               }
             },
@@ -12458,20 +13989,38 @@ define("frontend-cp/components/ko-admin/team/template", ["exports"], function (e
             dom.appendChild(el0, el1);
             var el1 = dom.createComment("");
             dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n\n    ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("div");
+            dom.setAttribute(el1, "class", "ko-admin_team__businesshours");
+            var el2 = dom.createTextNode("\n      ");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createComment("");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createTextNode("\n");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createComment("");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createTextNode("    ");
+            dom.appendChild(el1, el2);
+            dom.appendChild(el0, el1);
             var el1 = dom.createTextNode("\n");
             dom.appendChild(el0, el1);
             return el0;
           },
           buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-            var morphs = new Array(2);
+            var element1 = dom.childAt(fragment, [4]);
+            var morphs = new Array(4);
             morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
             morphs[1] = dom.createMorphAt(fragment, 2, 2, contextualElement);
+            morphs[2] = dom.createMorphAt(element1, 1, 1);
+            morphs[3] = dom.createMorphAt(element1, 3, 3);
             dom.insertBoundary(fragment, 0);
             return morphs;
           },
-          statements: [["block", "ko-form/field", [], [], 0, null, ["loc", [null, [12, 4], [15, 22]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "team.errors.title", ["loc", [null, [16, 34], [16, 51]]]]], [], []]], ["loc", [null, [16, 4], [16, 53]]]]],
+          statements: [["block", "ko-form/field", [], [], 0, null, ["loc", [null, [12, 4], [15, 22]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "team.errors.title", ["loc", [null, [16, 34], [16, 51]]]]], [], []]], ["loc", [null, [16, 4], [16, 53]]]], ["block", "ko-form/field/label", [], [], 1, null, ["loc", [null, [19, 6], [19, 81]]]], ["block", "power-select", [], ["class", ["subexpr", "concat", ["ember-power-select-wrapper--ko ember-power-select-wrapper--height-medium", ["subexpr", "qa-cls", [" qa-proposition--property"], [], ["loc", [null, [21, 97], [21, 133]]]]], [], ["loc", [null, [21, 14], [21, 134]]]], "selected", ["subexpr", "@mut", [["get", "selectedBusinessHour", ["loc", [null, [22, 17], [22, 37]]]]], [], []], "searchField", "title", "options", ["subexpr", "@mut", [["get", "businessHours", ["loc", [null, [24, 16], [24, 29]]]]], [], []], "disabled", ["subexpr", "@mut", [["get", "isSubmitting", ["loc", [null, [25, 17], [25, 29]]]]], [], []], "onchange", ["subexpr", "action", ["selectBusinessHours"], [], ["loc", [null, [26, 17], [26, 47]]]]], 2, null, ["loc", [null, [20, 6], [28, 23]]]]],
           locals: [],
-          templates: [child0]
+          templates: [child0, child1, child2]
         };
       })();
       var child1 = (function () {
@@ -12482,11 +14031,11 @@ define("frontend-cp/components/ko-admin/team/template", ["exports"], function (e
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 36,
+                  "line": 49,
                   "column": 8
                 },
                 "end": {
-                  "line": 36,
+                  "line": 49,
                   "column": 46
                 }
               },
@@ -12508,7 +14057,7 @@ define("frontend-cp/components/ko-admin/team/template", ["exports"], function (e
               dom.insertBoundary(fragment, null);
               return morphs;
             },
-            statements: [["inline", "ko-loader", [], ["large", true], ["loc", [null, [36, 22], [36, 46]]]]],
+            statements: [["inline", "ko-loader", [], ["large", true], ["loc", [null, [49, 22], [49, 46]]]]],
             locals: [],
             templates: []
           };
@@ -12519,11 +14068,11 @@ define("frontend-cp/components/ko-admin/team/template", ["exports"], function (e
             "loc": {
               "source": null,
               "start": {
-                "line": 34,
+                "line": 47,
                 "column": 4
               },
               "end": {
-                "line": 38,
+                "line": 51,
                 "column": 4
               }
             },
@@ -12554,7 +14103,7 @@ define("frontend-cp/components/ko-admin/team/template", ["exports"], function (e
             morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
             return morphs;
           },
-          statements: [["block", "ko-center", [], [], 0, null, ["loc", [null, [36, 8], [36, 60]]]]],
+          statements: [["block", "ko-center", [], [], 0, null, ["loc", [null, [49, 8], [49, 60]]]]],
           locals: [],
           templates: [child0]
         };
@@ -12568,11 +14117,11 @@ define("frontend-cp/components/ko-admin/team/template", ["exports"], function (e
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 40,
+                    "line": 53,
                     "column": 7
                   },
                   "end": {
-                    "line": 47,
+                    "line": 60,
                     "column": 7
                   }
                 },
@@ -12603,7 +14152,7 @@ define("frontend-cp/components/ko-admin/team/template", ["exports"], function (e
                 morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
                 return morphs;
               },
-              statements: [["inline", "ko-admin-card-user", [], ["user", ["subexpr", "@mut", [["get", "agent", ["loc", [null, [43, 19], [43, 24]]]]], [], []], "isSelected", ["subexpr", "ko-contextual-helper", [["get", "getMemberSelectedValue", ["loc", [null, [44, 47], [44, 69]]]], ["get", "this", ["loc", [null, [44, 70], [44, 74]]]], ["get", "agent", ["loc", [null, [44, 75], [44, 80]]]]], [], ["loc", [null, [44, 25], [44, 81]]]], "userSelectedAction", "onUserSelected"], ["loc", [null, [42, 11], [45, 51]]]]],
+              statements: [["inline", "ko-admin-card-user", [], ["user", ["subexpr", "@mut", [["get", "agent", ["loc", [null, [56, 19], [56, 24]]]]], [], []], "isSelected", ["subexpr", "ko-contextual-helper", [["get", "getMemberSelectedValue", ["loc", [null, [57, 47], [57, 69]]]], ["get", "this", ["loc", [null, [57, 70], [57, 74]]]], ["get", "agent", ["loc", [null, [57, 75], [57, 80]]]]], [], ["loc", [null, [57, 25], [57, 81]]]], "userSelectedAction", "onUserSelected"], ["loc", [null, [55, 11], [58, 51]]]]],
               locals: ["agent"],
               templates: []
             };
@@ -12614,11 +14163,11 @@ define("frontend-cp/components/ko-admin/team/template", ["exports"], function (e
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 39,
+                  "line": 52,
                   "column": 6
                 },
                 "end": {
-                  "line": 48,
+                  "line": 61,
                   "column": 6
                 }
               },
@@ -12640,7 +14189,7 @@ define("frontend-cp/components/ko-admin/team/template", ["exports"], function (e
               dom.insertBoundary(fragment, null);
               return morphs;
             },
-            statements: [["block", "each", [["get", "filteredMembers", ["loc", [null, [40, 15], [40, 30]]]]], [], 0, null, ["loc", [null, [40, 7], [47, 16]]]]],
+            statements: [["block", "each", [["get", "filteredMembers", ["loc", [null, [53, 15], [53, 30]]]]], [], 0, null, ["loc", [null, [53, 7], [60, 16]]]]],
             locals: [],
             templates: [child0]
           };
@@ -12652,11 +14201,11 @@ define("frontend-cp/components/ko-admin/team/template", ["exports"], function (e
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 49,
+                  "line": 62,
                   "column": 6
                 },
                 "end": {
-                  "line": 56,
+                  "line": 69,
                   "column": 6
                 }
               },
@@ -12687,7 +14236,7 @@ define("frontend-cp/components/ko-admin/team/template", ["exports"], function (e
               morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
               return morphs;
             },
-            statements: [["inline", "ko-admin-card-user", [], ["user", ["subexpr", "@mut", [["get", "agent", ["loc", [null, [52, 17], [52, 22]]]]], [], []], "isSelected", ["subexpr", "ko-contextual-helper", [["get", "getNonMemberSelectedValue", ["loc", [null, [53, 45], [53, 70]]]], ["get", "this", ["loc", [null, [53, 71], [53, 75]]]], ["get", "agent", ["loc", [null, [53, 76], [53, 81]]]]], [], ["loc", [null, [53, 23], [53, 82]]]], "userSelectedAction", "onUserSelected"], ["loc", [null, [51, 9], [54, 49]]]]],
+            statements: [["inline", "ko-admin-card-user", [], ["user", ["subexpr", "@mut", [["get", "agent", ["loc", [null, [65, 17], [65, 22]]]]], [], []], "isSelected", ["subexpr", "ko-contextual-helper", [["get", "getNonMemberSelectedValue", ["loc", [null, [66, 45], [66, 70]]]], ["get", "this", ["loc", [null, [66, 71], [66, 75]]]], ["get", "agent", ["loc", [null, [66, 76], [66, 81]]]]], [], ["loc", [null, [66, 23], [66, 82]]]], "userSelectedAction", "onUserSelected"], ["loc", [null, [64, 9], [67, 49]]]]],
             locals: ["agent"],
             templates: []
           };
@@ -12698,11 +14247,11 @@ define("frontend-cp/components/ko-admin/team/template", ["exports"], function (e
             "loc": {
               "source": null,
               "start": {
-                "line": 38,
+                "line": 51,
                 "column": 4
               },
               "end": {
-                "line": 57,
+                "line": 70,
                 "column": 4
               }
             },
@@ -12727,7 +14276,7 @@ define("frontend-cp/components/ko-admin/team/template", ["exports"], function (e
             dom.insertBoundary(fragment, null);
             return morphs;
           },
-          statements: [["block", "if", [["subexpr", "not", [["get", "team.isNew", ["loc", [null, [39, 17], [39, 27]]]]], [], ["loc", [null, [39, 12], [39, 28]]]]], [], 0, null, ["loc", [null, [39, 6], [48, 13]]]], ["block", "each", [["get", "filteredNonMembers", ["loc", [null, [49, 14], [49, 32]]]]], [], 1, null, ["loc", [null, [49, 6], [56, 15]]]]],
+          statements: [["block", "if", [["subexpr", "not", [["get", "team.isNew", ["loc", [null, [52, 17], [52, 27]]]]], [], ["loc", [null, [52, 12], [52, 28]]]]], [], 0, null, ["loc", [null, [52, 6], [61, 13]]]], ["block", "each", [["get", "filteredNonMembers", ["loc", [null, [62, 14], [62, 32]]]]], [], 1, null, ["loc", [null, [62, 6], [69, 15]]]]],
           locals: [],
           templates: [child0, child1]
         };
@@ -12739,11 +14288,11 @@ define("frontend-cp/components/ko-admin/team/template", ["exports"], function (e
             "loc": {
               "source": null,
               "start": {
-                "line": 60,
+                "line": 73,
                 "column": 2
               },
               "end": {
-                "line": 64,
+                "line": 77,
                 "column": 2
               }
             },
@@ -12776,7 +14325,7 @@ define("frontend-cp/components/ko-admin/team/template", ["exports"], function (e
             morphs[1] = dom.createMorphAt(element0, 1, 1);
             return morphs;
           },
-          statements: [["attribute", "onclick", ["subexpr", "action", ["deleteTeam", ["get", "team", ["loc", [null, [61, 100], [61, 104]]]]], [], ["loc", [null, [61, 78], [61, 106]]]]], ["inline", "t", ["admin.teams.labels.delete_team"], [], ["loc", [null, [62, 6], [62, 44]]]]],
+          statements: [["attribute", "onclick", ["subexpr", "action", ["deleteTeam", ["get", "team", ["loc", [null, [74, 100], [74, 104]]]]], [], ["loc", [null, [74, 78], [74, 106]]]]], ["inline", "t", ["admin.teams.labels.delete_team"], [], ["loc", [null, [75, 6], [75, 44]]]]],
           locals: [],
           templates: []
         };
@@ -12791,7 +14340,7 @@ define("frontend-cp/components/ko-admin/team/template", ["exports"], function (e
               "column": 0
             },
             "end": {
-              "line": 65,
+              "line": 78,
               "column": 0
             }
           },
@@ -12877,19 +14426,19 @@ define("frontend-cp/components/ko-admin/team/template", ["exports"], function (e
           return el0;
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var element1 = dom.childAt(fragment, [5]);
+          var element2 = dom.childAt(fragment, [5]);
           var morphs = new Array(7);
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           morphs[1] = dom.createMorphAt(fragment, 3, 3, contextualElement);
-          morphs[2] = dom.createMorphAt(dom.childAt(element1, [1]), 0, 0);
-          morphs[3] = dom.createMorphAt(dom.childAt(element1, [3]), 0, 0);
+          morphs[2] = dom.createMorphAt(dom.childAt(element2, [1]), 0, 0);
+          morphs[3] = dom.createMorphAt(dom.childAt(element2, [3]), 0, 0);
           morphs[4] = dom.createMorphAt(dom.childAt(fragment, [7, 1, 1]), 1, 1);
           morphs[5] = dom.createMorphAt(dom.childAt(fragment, [9]), 1, 1);
           morphs[6] = dom.createMorphAt(fragment, 11, 11, contextualElement);
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [["inline", "ko-admin/page-header", [], ["title", ["subexpr", "@mut", [["get", "title", ["loc", [null, [6, 10], [6, 15]]]]], [], []], "onCancel", ["subexpr", "@mut", [["get", "onCancel", ["loc", [null, [7, 13], [7, 21]]]]], [], []], "buttonText", ["subexpr", "t", ["generic.save"], [], ["loc", [null, [8, 15], [8, 33]]]]], ["loc", [null, [5, 2], [9, 4]]]], ["block", "ko-admin/forms/group", [], ["legend", ["subexpr", "t", ["admin.teams.legend.edit.details"], [], ["loc", [null, [11, 33], [11, 70]]]]], 0, null, ["loc", [null, [11, 2], [17, 27]]]], ["inline", "t", ["admin.teams.info.title"], [], ["loc", [null, [20, 8], [20, 38]]]], ["inline", "t", ["admin.teams.info.content"], [], ["loc", [null, [21, 7], [21, 39]]]], ["inline", "input", [], ["class", "input-text input-text--search", "type", "text", "value", ["subexpr", "@mut", [["get", "filter", ["loc", [null, [27, 72], [27, 78]]]]], [], []], "placeholder", ["subexpr", "t", ["admin.teams.labels.filter_agents"], [], ["loc", [null, [27, 91], [27, 129]]]]], ["loc", [null, [27, 8], [27, 131]]]], ["block", "if", [["get", "isMembersLoading", ["loc", [null, [34, 10], [34, 26]]]]], [], 1, 2, ["loc", [null, [34, 4], [57, 11]]]], ["block", "if", [["get", "team.id", ["loc", [null, [60, 8], [60, 15]]]]], [], 3, null, ["loc", [null, [60, 2], [64, 9]]]]],
+        statements: [["inline", "ko-admin/page-header", [], ["title", ["subexpr", "@mut", [["get", "title", ["loc", [null, [6, 10], [6, 15]]]]], [], []], "onCancel", ["subexpr", "@mut", [["get", "onCancel", ["loc", [null, [7, 13], [7, 21]]]]], [], []], "buttonText", ["subexpr", "t", ["generic.save"], [], ["loc", [null, [8, 15], [8, 33]]]]], ["loc", [null, [5, 2], [9, 4]]]], ["block", "ko-admin/forms/group", [], ["legend", ["subexpr", "t", ["admin.teams.legend.edit.details"], [], ["loc", [null, [11, 33], [11, 70]]]]], 0, null, ["loc", [null, [11, 2], [30, 27]]]], ["inline", "t", ["admin.teams.info.title"], [], ["loc", [null, [33, 8], [33, 38]]]], ["inline", "t", ["admin.teams.info.content"], [], ["loc", [null, [34, 7], [34, 39]]]], ["inline", "input", [], ["class", "input-text input-text--search", "type", "text", "value", ["subexpr", "@mut", [["get", "filter", ["loc", [null, [40, 72], [40, 78]]]]], [], []], "placeholder", ["subexpr", "t", ["admin.teams.labels.filter_agents"], [], ["loc", [null, [40, 91], [40, 129]]]]], ["loc", [null, [40, 8], [40, 131]]]], ["block", "if", [["get", "isMembersLoading", ["loc", [null, [47, 10], [47, 26]]]]], [], 1, 2, ["loc", [null, [47, 4], [70, 11]]]], ["block", "if", [["get", "team.id", ["loc", [null, [73, 8], [73, 15]]]]], [], 3, null, ["loc", [null, [73, 2], [77, 9]]]]],
         locals: ["_", "isSubmitting"],
         templates: [child0, child1, child2, child3]
       };
@@ -12904,8 +14453,8 @@ define("frontend-cp/components/ko-admin/team/template", ["exports"], function (e
             "column": 0
           },
           "end": {
-            "line": 65,
-            "column": 12
+            "line": 79,
+            "column": 0
           }
         },
         "moduleName": "frontend-cp/components/ko-admin/team/template.hbs"
@@ -12926,7 +14475,7 @@ define("frontend-cp/components/ko-admin/team/template", ["exports"], function (e
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["block", "ko-form", [], ["onSubmit", ["subexpr", "action", ["saveTeam"], [], ["loc", [null, [2, 11], [2, 30]]]], "onSuccess", ["subexpr", "@mut", [["get", "onSuccess", ["loc", [null, [3, 12], [3, 21]]]]], [], []]], 0, null, ["loc", [null, [1, 0], [65, 12]]]]],
+      statements: [["block", "ko-form", [], ["onSubmit", ["subexpr", "action", ["saveTeam"], [], ["loc", [null, [2, 11], [2, 30]]]], "onSuccess", ["subexpr", "@mut", [["get", "onSuccess", ["loc", [null, [3, 12], [3, 21]]]]], [], []]], 0, null, ["loc", [null, [1, 0], [78, 12]]]]],
       locals: [],
       templates: [child0]
     };
@@ -26064,7 +27613,7 @@ define("frontend-cp/components/ko-date-select/template", ["exports"], function (
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["block", "basic-dropdown", [], ["class", "ko-date-select__dropdown", "triggerClass", "ko-date-select__trigger", "dropdownClass", "ko-date-select__content", "renderInPlace", true, "matchTriggerWidth", true], 0, 1, ["loc", [null, [1, 0], [16, 19]]]]],
+      statements: [["block", "basic-dropdown", [], ["class", "ko-date-select__dropdown", "triggerClass", "ko-date-select__trigger", "dropdownClass", "ko-date-select__content", "horizontalPosition", "left"], 0, 1, ["loc", [null, [1, 0], [16, 19]]]]],
       locals: [],
       templates: [child0, child1]
     };
@@ -30748,6 +32297,342 @@ define("frontend-cp/components/ko-form/template", ["exports"], function (exports
       statements: [["inline", "yield", [["get", "isFormValid", ["loc", [null, [1, 8], [1, 19]]]], ["get", "isSubmitting", ["loc", [null, [1, 20], [1, 32]]]]], [], ["loc", [null, [1, 0], [1, 34]]]]],
       locals: [],
       templates: []
+    };
+  })());
+});
+define('frontend-cp/components/ko-grid-picker/component', ['exports', 'ember', 'npm:lodash'], function (exports, _ember, _npmLodash) {
+  exports['default'] = _ember['default'].Component.extend({
+
+    // Attributes
+    initialGrid: null,
+    legend: null,
+    classNames: ['ko-grid-picker'],
+
+    // State
+    grid: null,
+    startRow: null,
+    startCol: null,
+    prevRow: null,
+    prevCol: null,
+    rowCount: null,
+    colCount: null,
+
+    isSelecting: false,
+
+    gridCopy: null,
+
+    initGrid: _ember['default'].on('init', function () {
+      var initialGrid = this.get('initialGrid');
+      this.set('rowCount', initialGrid.get('length'));
+      this.set('colCount', _npmLodash['default'].max(initialGrid.map(function (row) {
+        return row.length;
+      })));
+      this.set('grid', this.getFreshGrid(initialGrid));
+    }),
+
+    cols: _ember['default'].computed('colCount', function () {
+      return _npmLodash['default'].range(this.get('colCount'));
+    }),
+
+    displayLegend: _ember['default'].computed('legend.[]', function () {
+      if (this.get('legend.length')) {
+        return this.get('legend');
+      } else {
+        return this.get('cols');
+      }
+    }),
+
+    getFreshGrid: function getFreshGrid(grid) {
+      var _this = this;
+
+      return _npmLodash['default'].range(this.get('rowCount')).map(function (index) {
+        return _this.get('cols').map(function (hour) {
+          return grid[index][hour];
+        });
+      });
+    },
+
+    toggleCell: function toggleCell(grid, row, col) {
+      var isSelected = this.get('gridCopy')[row][col];
+      grid[row][col] = !isSelected;
+    },
+
+    isPrevCell: function isPrevCell(row, col) {
+      return row === this.get('prevRow') && col === this.get('prevCol');
+    },
+
+    mouseMove: function mouseMove(event) {
+      var target = event.target;
+      if (_ember['default'].isNone(target.dataset.row) || _ember['default'].isNone(target.dataset.col)) {
+        return;
+      }
+      var row = parseInt(target.dataset.row, 10);
+      var col = parseInt(target.dataset.col, 10);
+
+      if (this.get('isSelecting') && !this.isPrevCell(row, col)) {
+        this.highlightRegion(this.get('startRow'), this.get('startCol'), row, col);
+        this.set('prevRow', row);
+        this.set('prevCol', col);
+      }
+    },
+
+    mouseUp: function mouseUp() {
+      this.set('isSelecting', false);
+      this.attrs.onRangeSelect(this.get('grid'));
+    },
+
+    mouseDown: function mouseDown(event) {
+      event.preventDefault();
+      var target = event.target;
+      if (_ember['default'].isNone(target.dataset.row) || _ember['default'].isNone(target.dataset.col)) {
+        return;
+      }
+
+      var row = parseInt(target.dataset.row, 10);
+      var col = parseInt(target.dataset.col, 10);
+
+      this.set('gridCopy', this.getFreshGrid(this.get('grid')));
+
+      this.set('isSelecting', true);
+      this.set('startRow', row);
+      this.set('startCol', col);
+      this.set('prevRow', row);
+      this.set('prevCol', col);
+
+      this.highlightRegion(row, col, row, col);
+    },
+
+    highlightRegion: function highlightRegion(startRow, startCol, endRow, endCol) {
+      if (startRow > endRow) {
+        var _ref = [endRow, startRow];
+        startRow = _ref[0];
+        endRow = _ref[1];
+      }
+      if (startCol > endCol) {
+        var _ref2 = [endCol, startCol];
+        startCol = _ref2[0];
+        endCol = _ref2[1];
+      }
+
+      var grid = this.getFreshGrid(this.get('gridCopy'));
+
+      for (var i = startRow; i <= endRow; i++) {
+        for (var j = startCol; j <= endCol; j++) {
+          this.toggleCell(grid, i, j);
+        }
+      }
+      this.set('grid', grid);
+    }
+  });
+});
+define("frontend-cp/components/ko-grid-picker/template", ["exports"], function (exports) {
+  exports["default"] = Ember.HTMLBars.template((function () {
+    var child0 = (function () {
+      var child0 = (function () {
+        return {
+          meta: {
+            "revision": "Ember@1.13.13",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 8,
+                "column": 4
+              },
+              "end": {
+                "line": 13,
+                "column": 4
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-grid-picker/template.hbs"
+          },
+          arity: 2,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("      ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("div");
+            var el2 = dom.createTextNode("\n      ");
+            dom.appendChild(el1, el2);
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var element0 = dom.childAt(fragment, [1]);
+            var morphs = new Array(3);
+            morphs[0] = dom.createAttrMorph(element0, 'class');
+            morphs[1] = dom.createAttrMorph(element0, 'data-col');
+            morphs[2] = dom.createAttrMorph(element0, 'data-row');
+            return morphs;
+          },
+          statements: [["attribute", "class", ["concat", ["ko-grid-picker__cell ", ["subexpr", "if", [["get", "col", ["loc", [null, [9, 44], [9, 47]]]], "selected"], [], ["loc", [null, [9, 39], [9, 60]]]]]]], ["attribute", "data-col", ["concat", [["get", "colIndex", ["loc", [null, [10, 22], [10, 30]]]]]]], ["attribute", "data-row", ["concat", [["get", "rowIndex", ["loc", [null, [11, 22], [11, 30]]]]]]]],
+          locals: ["col", "colIndex"],
+          templates: []
+        };
+      })();
+      return {
+        meta: {
+          "revision": "Ember@1.13.13",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 6,
+              "column": 2
+            },
+            "end": {
+              "line": 15,
+              "column": 2
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-grid-picker/template.hbs"
+        },
+        arity: 2,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1, "class", "ko-grid-picker__row");
+          var el2 = dom.createTextNode("\n");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("  ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
+          return morphs;
+        },
+        statements: [["block", "each", [["get", "row", ["loc", [null, [8, 12], [8, 15]]]]], [], 0, null, ["loc", [null, [8, 4], [13, 13]]]]],
+        locals: ["row", "rowIndex"],
+        templates: [child0]
+      };
+    })();
+    var child1 = (function () {
+      return {
+        meta: {
+          "revision": "Ember@1.13.13",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 18,
+              "column": 4
+            },
+            "end": {
+              "line": 22,
+              "column": 4
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-grid-picker/template.hbs"
+        },
+        arity: 1,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("    ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1, "class", "ko-grid-picker__legend-cell");
+          var el2 = dom.createTextNode("\n       ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n      ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
+          return morphs;
+        },
+        statements: [["content", "label", ["loc", [null, [20, 7], [20, 16]]]]],
+        locals: ["label"],
+        templates: []
+      };
+    })();
+    return {
+      meta: {
+        "revision": "Ember@1.13.13",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 25,
+            "column": 0
+          }
+        },
+        "moduleName": "frontend-cp/components/ko-grid-picker/template.hbs"
+      },
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1, "class", "ko-grid-picker__titles");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1, "class", "ko-grid-picker__grid");
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2, "class", "ko-grid-picker__legend");
+        var el3 = dom.createTextNode("\n");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var element1 = dom.childAt(fragment, [2]);
+        var morphs = new Array(3);
+        morphs[0] = dom.createMorphAt(dom.childAt(fragment, [0]), 1, 1);
+        morphs[1] = dom.createMorphAt(element1, 1, 1);
+        morphs[2] = dom.createMorphAt(dom.childAt(element1, [3]), 1, 1);
+        return morphs;
+      },
+      statements: [["content", "yield", ["loc", [null, [2, 2], [2, 11]]]], ["block", "each", [["get", "grid", ["loc", [null, [6, 10], [6, 14]]]]], [], 0, null, ["loc", [null, [6, 2], [15, 11]]]], ["block", "each", [["get", "displayLegend", ["loc", [null, [18, 12], [18, 25]]]]], [], 1, null, ["loc", [null, [18, 4], [22, 13]]]]],
+      locals: [],
+      templates: [child0, child1]
     };
   })());
 });
@@ -50396,8 +52281,18 @@ define("frontend-cp/locales/en-us/admin", ["exports"], function (exports) {
     "views.deleted.message": "View deleted successfully",
 
     "businesshours": "Business hours",
+    "businesshours.info": "Click and drag to toggle your hours",
+    "businesshours.holidays": "Holidays",
+    "businesshours.holidays.info": "What will your hours be on holidays?",
     "businesshours.headings.index": "Business hours",
     "businesshours.buttons.add": "Add New",
+    "businesshours.headings.new": "Business hours / New",
+    "businesshours.headings.edit": "Business hours / {title}",
+    "businesshours.heading.details": "Details",
+    "businesshours.label.title": "Business Hours title",
+    "businesshours.holidays.label.title": "Holiday title",
+    "businesshours.holidays.addaholiday": "Add a Holiday",
+    "businesshours.holidays.saveholiday": "Save Holiday",
 
     "teams": "Teams",
     "teams.agent": "{numAgents, plural, =1 {agent} other {agents}}",
@@ -54454,6 +56349,27 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
         resource: 'file'
       };
     });
+
+    this.get('/api/v1/businesshours', function (db) {
+      return {
+        status: 200,
+        data: db.businesshours,
+        resource: 'business_hour',
+        resources: {
+          businesshour_holiday: {}
+        }
+      };
+    });
+
+    this.get('/api/v1/businesshours/:id', function (db, req) {
+      var id = req.params.id;
+      return {
+        status: 200,
+        data: db.businesshours.find(id),
+        resource: 'business_hour',
+        resources: {}
+      };
+    });
   };
 });
 /*eslint-disable camelcase*/
@@ -54538,6 +56454,27 @@ define('frontend-cp/mirage/factories/business-hour', ['exports', 'ember-cli-mira
     updated_at: '2015-07-23T13:36:12Z',
     resource_type: 'business_hour',
     resource_url: 'http://novo/api/index.php?/v1/businesshours/1'
+  });
+});
+/*eslint-disable camelcase*/
+define('frontend-cp/mirage/factories/businesshours', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
+  exports['default'] = _emberCliMirage['default'].Factory.extend({
+    title: _emberCliMirage.faker.list.cycle('Normal Guys', 'Tier 2', 'Support', 'Human Resources'),
+    zones: {
+      monday: [1, 2, 3],
+      tuesday: [],
+      wednesday: [],
+      thursday: [],
+      friday: [],
+      saturday: [],
+      sunday: []
+    },
+    holidays: [],
+    is_default: false,
+    created_at: '2012-01-24T22:09:30Z',
+    updated_at: '2016-02-03T00:57:01Z',
+    resource_type: 'business_hour',
+    resource_url: 'https://support.kayakostage.net/api/v1/businesshours/5'
   });
 });
 /*eslint-disable camelcase*/
@@ -56125,6 +58062,8 @@ define('frontend-cp/mirage/scenarios/default', ['exports'], function (exports) {
 
     server.createList('mail', 5, { status: 'RECEIVED' });
     server.createList('mail', 12, { is_suspended: true, status: 'SUSPENDED', suspension_code: 'SPAM' });
+
+    server.createList('businesshours', 10);
   };
 });
 define('frontend-cp/mixins/autofocus', ['exports', 'ember'], function (exports, _ember) {
@@ -56714,21 +58653,50 @@ define('frontend-cp/models/brand', ['exports', 'ember-data'], function (exports,
     isEnabled: _emberData['default'].attr('boolean')
   });
 });
-define('frontend-cp/models/business-hour', ['exports', 'ember-data'], function (exports, _emberData) {
+define('frontend-cp/models/business-hour', ['exports', 'ember-data', 'npm:lodash'], function (exports, _emberData, _npmLodash) {
   exports['default'] = _emberData['default'].Model.extend({
     title: _emberData['default'].attr('string', { async: false }),
-    zones: _emberData['default'].attr(),
+    zones: _emberData['default'].attr({ defaultValue: [] }),
     holidays: _emberData['default'].hasMany('businesshour-holiday', { async: false }),
     teams: _emberData['default'].hasMany('team', { async: false }),
+    isDefault: _emberData['default'].attr('boolean'),
     createdAt: _emberData['default'].attr('date', { async: false }),
-    updatedAt: _emberData['default'].attr('date', { async: false })
+    updatedAt: _emberData['default'].attr('date', { async: false }),
+
+    hasChanges: function hasChanges() {
+      var changedAttributes = this.changedAttributes();
+      var changedHolidays = this.get('holidays').map(function (h) {
+        return h.changedAttributes();
+      });
+      var zonesChanged = false;
+      var holidayChanged = false;
+
+      if (changedAttributes.zones && changedAttributes.zones.length > 1) {
+        zonesChanged = !_npmLodash['default'].isEqual(changedAttributes.zones[0], changedAttributes.zones[1]);
+        Reflect.deleteProperty(changedAttributes, 'zones');
+      }
+
+      changedHolidays.forEach(function (changes) {
+        if (changes.openHours && changes.openHours.length > 1) {
+          if (!_npmLodash['default'].isEqual(changes.openHours[0], changes.openHours[1])) {
+            holidayChanged = true;
+          }
+          Reflect.deleteProperty(changes, 'openHours');
+          if (Object.keys(changes).length > 0) {
+            holidayChanged = true;
+          }
+        }
+      });
+
+      return holidayChanged || zonesChanged || Object.keys(changedAttributes).length > 0;
+    }
   });
 });
 define('frontend-cp/models/businesshour-holiday', ['exports', 'ember-data'], function (exports, _emberData) {
   exports['default'] = _emberData['default'].Model.extend({
     title: _emberData['default'].attr('string'),
-    date: _emberData['default'].attr('date'),
-    openHours: _emberData['default'].attr() //array http://stackoverflow.com/a/26107853
+    date: _emberData['default'].attr('string'),
+    openHours: _emberData['default'].attr({ defaultValue: [] }) //array http://stackoverflow.com/a/26107853
   });
 });
 define('frontend-cp/models/case-field-value', ['exports', 'ember', 'ember-data', 'model-fragments'], function (exports, _ember, _emberData, _modelFragments) {
@@ -58727,7 +60695,7 @@ define('frontend-cp/serializers/application', ['exports', 'ember', 'ember-data',
             Reflect.deleteProperty(resource, key);
           }
         } else if (_npmLodash['default'].isArray(value)) {
-          resource[key] = _npmLodash['default'].compact(value.map(function (v) {
+          resource[key] = value.map(function (v) {
             if (v.id && v.resource_type) {
               if (_this4._hasModelFor(v.resource_type)) {
                 return {
@@ -58740,7 +60708,7 @@ define('frontend-cp/serializers/application', ['exports', 'ember', 'ember-data',
             } else {
               return v;
             }
-          }));
+          }).compact();
         }
       });
     },
@@ -58818,6 +60786,18 @@ define('frontend-cp/serializers/avatar', ['exports', 'frontend-cp/serializers/ap
       url: { serialize: false },
       createdAt: { serialize: false },
       updatedAt: { serialize: false }
+    }
+  });
+});
+define('frontend-cp/serializers/business-hour', ['exports', 'ember-data', 'frontend-cp/serializers/application'], function (exports, _emberData, _frontendCpSerializersApplication) {
+  exports['default'] = _frontendCpSerializersApplication['default'].extend(_emberData['default'].EmbeddedRecordsMixin, {
+    attrs: {
+      holidays: { embedded: 'always' }
+    },
+    serialize: function serialize(snapshot, options) {
+      var json = this._super(snapshot, options);
+      json.zones = JSON.stringify(json.zones);
+      return json;
     }
   });
 });
@@ -63200,14 +65180,128 @@ define('frontend-cp/services/validations', ['exports', 'ember'], function (expor
     }
   });
 });
+define('frontend-cp/session/admin/automation/businesshours/edit/route', ['exports', 'ember'], function (exports, _ember) {
+  var Route = _ember['default'].Route;
+  var inject = _ember['default'].inject;
+  exports['default'] = Route.extend({
+    intl: inject.service(),
+    controllerName: 'session.admin.automation.businesshours.new',
+
+    model: function model(params) {
+      return this.store.findRecord('business-hour', params.businesshour_id);
+    },
+
+    actions: {
+      willTransition: function willTransition(transition) {
+        if (this.controller.userHasChangedModel()) {
+          var translatedConfirmationMessage = this.get('intl').findTranslationByKey('generic.confirm.lose_changes');
+          var shouldRollBackModel = confirm(translatedConfirmationMessage); // eslint-disable-line
+
+          if (shouldRollBackModel) {
+            this.controller.send('rollbackModel');
+            return true;
+          } else {
+            transition.abort();
+          }
+        }
+      }
+    }
+  });
+});
+define("frontend-cp/session/admin/automation/businesshours/edit/template", ["exports"], function (exports) {
+  exports["default"] = Ember.HTMLBars.template((function () {
+    return {
+      meta: {
+        "revision": "Ember@1.13.13",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 7,
+            "column": 0
+          }
+        },
+        "moduleName": "frontend-cp/session/admin/automation/businesshours/edit/template.hbs"
+      },
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var morphs = new Array(1);
+        morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+        dom.insertBoundary(fragment, 0);
+        return morphs;
+      },
+      statements: [["inline", "ko-admin/businesshours/edit", [], ["model", ["subexpr", "@mut", [["get", "model", ["loc", [null, [2, 8], [2, 13]]]]], [], []], "onSuccess", ["subexpr", "action", ["updated"], [], ["loc", [null, [3, 12], [3, 30]]]], "onCancel", ["subexpr", "action", ["cancelled"], [], ["loc", [null, [4, 11], [4, 31]]]], "title", ["subexpr", "t", ["admin.businesshours.headings.edit"], ["title", ["get", "model.title", ["loc", [null, [5, 53], [5, 64]]]]], ["loc", [null, [5, 8], [5, 65]]]]], ["loc", [null, [1, 0], [6, 2]]]]],
+      locals: [],
+      templates: []
+    };
+  })());
+});
 define('frontend-cp/session/admin/automation/businesshours/index/controller', ['exports', 'ember'], function (exports, _ember) {
   var Controller = _ember['default'].Controller;
   exports['default'] = Controller.extend({
+    store: _ember['default'].inject.service(),
+    metrics: _ember['default'].inject.service(),
+
     actions: {
-      transitionToAddNewBusinessHour: function transitionToAddNewBusinessHour() {},
-      editBusinessHour: function editBusinessHour(businessHour) {},
-      makeDefault: function makeDefault(businessHour) {},
-      deleteBusinessHour: function deleteBusinessHour(businessHour) {}
+      transitionToAddNewBusinessHour: function transitionToAddNewBusinessHour() {
+        this.transitionToRoute('session.admin.automation.businesshours.new');
+      },
+      editBusinessHour: function editBusinessHour(businessHour) {
+        this.transitionToRoute('session.admin.automation.businesshours.edit', businessHour);
+      },
+      makeDefault: function makeDefault(businessHour, event) {
+        var _this = this;
+
+        event.stopPropagation();
+        var prevDefault = this.get('store').peekAll('business-hour').findBy('isDefault', true);
+        prevDefault.set('isDefault', false);
+
+        businessHour.set('isDefault', true);
+        businessHour.save().then(function () {
+          _this.get('metrics').trackEvent({
+            event: 'Admin Business Hour Make Default',
+            category: 'Admin Business Hours',
+            action: 'click',
+            label: 'make default'
+          });
+
+          prevDefault.reload();
+        }, function () {
+          _this.get('metrics').trackEvent({
+            event: 'Admin Business Hour Make Default Failed',
+            category: 'Admin Business Hours',
+            action: 'click',
+            label: 'make default'
+          });
+
+          businessHour.rollbackAttributes();
+        });
+      },
+      deleteBusinessHour: function deleteBusinessHour(businessHour, event) {
+        event.stopPropagation();
+        businessHour.deleteRecord();
+        businessHour.save();
+
+        this.get('metrics').trackEvent({
+          event: 'Admin Business Hour Delete',
+          category: 'Admin Business Hours',
+          action: 'click',
+          label: 'delete'
+        });
+      }
     }
   });
 });
@@ -63231,6 +65325,53 @@ define("frontend-cp/session/admin/automation/businesshours/index/template", ["ex
       var child0 = (function () {
         var child0 = (function () {
           var child0 = (function () {
+            var child0 = (function () {
+              return {
+                meta: {
+                  "revision": "Ember@1.13.13",
+                  "loc": {
+                    "source": null,
+                    "start": {
+                      "line": 12,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 14,
+                      "column": 8
+                    }
+                  },
+                  "moduleName": "frontend-cp/session/admin/automation/businesshours/index/template.hbs"
+                },
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                  var el0 = dom.createDocumentFragment();
+                  var el1 = dom.createTextNode("        ");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createElement("span");
+                  dom.setAttribute(el1, "class", "t-caption");
+                  var el2 = dom.createTextNode(" (");
+                  dom.appendChild(el1, el2);
+                  var el2 = dom.createComment("");
+                  dom.appendChild(el1, el2);
+                  var el2 = dom.createTextNode(")");
+                  dom.appendChild(el1, el2);
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createTextNode("\n");
+                  dom.appendChild(el0, el1);
+                  return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                  var morphs = new Array(1);
+                  morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
+                  return morphs;
+                },
+                statements: [["inline", "t", ["generic.default"], [], ["loc", [null, [13, 39], [13, 62]]]]],
+                locals: [],
+                templates: []
+              };
+            })();
             return {
               meta: {
                 "revision": "Ember@1.13.13",
@@ -63241,7 +65382,7 @@ define("frontend-cp/session/admin/automation/businesshours/index/template", ["ex
                     "column": 6
                   },
                   "end": {
-                    "line": 12,
+                    "line": 15,
                     "column": 6
                   }
                 },
@@ -63261,30 +65402,136 @@ define("frontend-cp/session/admin/automation/businesshours/index/template", ["ex
                 dom.appendChild(el0, el1);
                 var el1 = dom.createTextNode("\n");
                 dom.appendChild(el0, el1);
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
                 return el0;
               },
               buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-                var morphs = new Array(1);
+                var morphs = new Array(2);
                 morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 0, 0);
+                morphs[1] = dom.createMorphAt(fragment, 3, 3, contextualElement);
+                dom.insertBoundary(fragment, null);
                 return morphs;
               },
-              statements: [["content", "businessHour.title", ["loc", [null, [11, 29], [11, 51]]]]],
+              statements: [["content", "businessHour.title", ["loc", [null, [11, 29], [11, 51]]]], ["block", "if", [["get", "businessHour.isDefault", ["loc", [null, [12, 14], [12, 36]]]]], [], 0, null, ["loc", [null, [12, 8], [14, 15]]]]],
               locals: [],
-              templates: []
+              templates: [child0]
             };
           })();
           var child1 = (function () {
+            var child0 = (function () {
+              return {
+                meta: {
+                  "revision": "Ember@1.13.13",
+                  "loc": {
+                    "source": null,
+                    "start": {
+                      "line": 17,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 20,
+                      "column": 8
+                    }
+                  },
+                  "moduleName": "frontend-cp/session/admin/automation/businesshours/index/template.hbs"
+                },
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                  var el0 = dom.createDocumentFragment();
+                  var el1 = dom.createTextNode("        ");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createElement("a");
+                  var el2 = dom.createComment("");
+                  dom.appendChild(el1, el2);
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createTextNode("\n        ");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createElement("span");
+                  dom.setAttribute(el1, "class", "t-caption");
+                  var el2 = dom.createTextNode("|");
+                  dom.appendChild(el1, el2);
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createTextNode("\n");
+                  dom.appendChild(el0, el1);
+                  return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                  var element1 = dom.childAt(fragment, [1]);
+                  var morphs = new Array(2);
+                  morphs[0] = dom.createAttrMorph(element1, 'onclick');
+                  morphs[1] = dom.createMorphAt(element1, 0, 0);
+                  return morphs;
+                },
+                statements: [["attribute", "onclick", ["subexpr", "action", ["makeDefault", ["get", "businessHour", ["loc", [null, [18, 42], [18, 54]]]]], [], ["loc", [null, [18, 19], [18, 56]]]]], ["inline", "t", ["generic.make_default"], [], ["loc", [null, [18, 57], [18, 85]]]]],
+                locals: [],
+                templates: []
+              };
+            })();
+            var child1 = (function () {
+              return {
+                meta: {
+                  "revision": "Ember@1.13.13",
+                  "loc": {
+                    "source": null,
+                    "start": {
+                      "line": 22,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 25,
+                      "column": 8
+                    }
+                  },
+                  "moduleName": "frontend-cp/session/admin/automation/businesshours/index/template.hbs"
+                },
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                  var el0 = dom.createDocumentFragment();
+                  var el1 = dom.createTextNode("        ");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createElement("span");
+                  dom.setAttribute(el1, "class", "t-caption");
+                  var el2 = dom.createTextNode("|");
+                  dom.appendChild(el1, el2);
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createTextNode("\n        ");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createElement("a");
+                  var el2 = dom.createComment("");
+                  dom.appendChild(el1, el2);
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createTextNode("\n");
+                  dom.appendChild(el0, el1);
+                  return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                  var element0 = dom.childAt(fragment, [3]);
+                  var morphs = new Array(2);
+                  morphs[0] = dom.createAttrMorph(element0, 'onclick');
+                  morphs[1] = dom.createMorphAt(element0, 0, 0);
+                  return morphs;
+                },
+                statements: [["attribute", "onclick", ["subexpr", "action", ["deleteBusinessHour", ["get", "businessHour", ["loc", [null, [24, 49], [24, 61]]]]], [], ["loc", [null, [24, 19], [24, 63]]]]], ["inline", "t", ["generic.delete"], [], ["loc", [null, [24, 64], [24, 86]]]]],
+                locals: [],
+                templates: []
+              };
+            })();
             return {
               meta: {
                 "revision": "Ember@1.13.13",
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 13,
+                    "line": 16,
                     "column": 6
                   },
                   "end": {
-                    "line": 17,
+                    "line": 26,
                     "column": 6
                   }
                 },
@@ -63295,19 +65542,9 @@ define("frontend-cp/session/admin/automation/businesshours/index/template", ["ex
               hasRendered: false,
               buildFragment: function buildFragment(dom) {
                 var el0 = dom.createDocumentFragment();
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
                 var el1 = dom.createTextNode("        ");
-                dom.appendChild(el0, el1);
-                var el1 = dom.createElement("a");
-                var el2 = dom.createComment("");
-                dom.appendChild(el1, el2);
-                dom.appendChild(el0, el1);
-                var el1 = dom.createTextNode(" |\n        ");
-                dom.appendChild(el0, el1);
-                var el1 = dom.createElement("a");
-                var el2 = dom.createComment("");
-                dom.appendChild(el1, el2);
-                dom.appendChild(el0, el1);
-                var el1 = dom.createTextNode(" |\n        ");
                 dom.appendChild(el0, el1);
                 var el1 = dom.createElement("a");
                 var el2 = dom.createComment("");
@@ -63315,24 +65552,24 @@ define("frontend-cp/session/admin/automation/businesshours/index/template", ["ex
                 dom.appendChild(el0, el1);
                 var el1 = dom.createTextNode("\n");
                 dom.appendChild(el0, el1);
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
                 return el0;
               },
               buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-                var element0 = dom.childAt(fragment, [1]);
-                var element1 = dom.childAt(fragment, [3]);
-                var element2 = dom.childAt(fragment, [5]);
-                var morphs = new Array(6);
-                morphs[0] = dom.createAttrMorph(element0, 'onclick');
-                morphs[1] = dom.createMorphAt(element0, 0, 0);
-                morphs[2] = dom.createAttrMorph(element1, 'onclick');
-                morphs[3] = dom.createMorphAt(element1, 0, 0);
-                morphs[4] = dom.createAttrMorph(element2, 'onclick');
-                morphs[5] = dom.createMorphAt(element2, 0, 0);
+                var element2 = dom.childAt(fragment, [2]);
+                var morphs = new Array(4);
+                morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+                morphs[1] = dom.createAttrMorph(element2, 'onclick');
+                morphs[2] = dom.createMorphAt(element2, 0, 0);
+                morphs[3] = dom.createMorphAt(fragment, 4, 4, contextualElement);
+                dom.insertBoundary(fragment, 0);
+                dom.insertBoundary(fragment, null);
                 return morphs;
               },
-              statements: [["attribute", "onclick", ["subexpr", "action", ["makeDefault", ["get", "businessHour", ["loc", [null, [14, 42], [14, 54]]]]], [], ["loc", [null, [14, 19], [14, 56]]]]], ["inline", "t", ["generic.make_default"], [], ["loc", [null, [14, 57], [14, 85]]]], ["attribute", "onclick", ["subexpr", "action", ["editBusinessHour", ["get", "businessHour", ["loc", [null, [15, 47], [15, 59]]]]], [], ["loc", [null, [15, 19], [15, 61]]]]], ["inline", "t", ["generic.edit"], [], ["loc", [null, [15, 62], [15, 82]]]], ["attribute", "onclick", ["subexpr", "action", ["deleteBusinessHour", ["get", "businessHour", ["loc", [null, [16, 49], [16, 61]]]]], [], ["loc", [null, [16, 19], [16, 63]]]]], ["inline", "t", ["generic.delete"], [], ["loc", [null, [16, 64], [16, 86]]]]],
+              statements: [["block", "if", [["subexpr", "not", [["get", "businessHour.isDefault", ["loc", [null, [17, 19], [17, 41]]]]], [], ["loc", [null, [17, 14], [17, 42]]]]], [], 0, null, ["loc", [null, [17, 8], [20, 15]]]], ["attribute", "onclick", ["subexpr", "action", ["editBusinessHour", ["get", "businessHour", ["loc", [null, [21, 47], [21, 59]]]]], [], ["loc", [null, [21, 19], [21, 61]]]]], ["inline", "t", ["generic.edit"], [], ["loc", [null, [21, 62], [21, 82]]]], ["block", "if", [["subexpr", "not", [["get", "businessHour.isDefault", ["loc", [null, [22, 19], [22, 41]]]]], [], ["loc", [null, [22, 14], [22, 42]]]]], [], 1, null, ["loc", [null, [22, 8], [25, 15]]]]],
               locals: [],
-              templates: []
+              templates: [child0, child1]
             };
           })();
           return {
@@ -63345,7 +65582,7 @@ define("frontend-cp/session/admin/automation/businesshours/index/template", ["ex
                   "column": 4
                 },
                 "end": {
-                  "line": 18,
+                  "line": 27,
                   "column": 4
                 }
               },
@@ -63370,7 +65607,7 @@ define("frontend-cp/session/admin/automation/businesshours/index/template", ["ex
               dom.insertBoundary(fragment, null);
               return morphs;
             },
-            statements: [["block", "ko-simple-list/cell", [], [], 0, null, ["loc", [null, [10, 6], [12, 30]]]], ["block", "ko-simple-list/actions", [], [], 1, null, ["loc", [null, [13, 6], [17, 33]]]]],
+            statements: [["block", "ko-simple-list/cell", [], [], 0, null, ["loc", [null, [10, 6], [15, 30]]]], ["block", "ko-simple-list/actions", [], [], 1, null, ["loc", [null, [16, 6], [26, 33]]]]],
             locals: [],
             templates: [child0, child1]
           };
@@ -63385,7 +65622,7 @@ define("frontend-cp/session/admin/automation/businesshours/index/template", ["ex
                 "column": 2
               },
               "end": {
-                "line": 19,
+                "line": 28,
                 "column": 2
               }
             },
@@ -63407,7 +65644,7 @@ define("frontend-cp/session/admin/automation/businesshours/index/template", ["ex
             dom.insertBoundary(fragment, null);
             return morphs;
           },
-          statements: [["block", "ko-simple-list/row", [], ["onClick", ["subexpr", "action", ["editBusinessHour", ["get", "businessHour", ["loc", [null, [9, 61], [9, 73]]]]], [], ["loc", [null, [9, 34], [9, 74]]]]], 0, null, ["loc", [null, [9, 4], [18, 27]]]]],
+          statements: [["block", "ko-simple-list/row", [], ["onClick", ["subexpr", "action", ["editBusinessHour", ["get", "businessHour", ["loc", [null, [9, 61], [9, 73]]]]], [], ["loc", [null, [9, 34], [9, 74]]]]], 0, null, ["loc", [null, [9, 4], [27, 27]]]]],
           locals: ["businessHour"],
           templates: [child0]
         };
@@ -63422,7 +65659,7 @@ define("frontend-cp/session/admin/automation/businesshours/index/template", ["ex
               "column": 0
             },
             "end": {
-              "line": 20,
+              "line": 29,
               "column": 0
             }
           },
@@ -63444,7 +65681,7 @@ define("frontend-cp/session/admin/automation/businesshours/index/template", ["ex
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [["block", "each", [["get", "model", ["loc", [null, [8, 10], [8, 15]]]]], [], 0, null, ["loc", [null, [8, 2], [19, 11]]]]],
+        statements: [["block", "each", [["get", "model", ["loc", [null, [8, 10], [8, 15]]]]], [], 0, null, ["loc", [null, [8, 2], [28, 11]]]]],
         locals: [],
         templates: [child0]
       };
@@ -63459,7 +65696,7 @@ define("frontend-cp/session/admin/automation/businesshours/index/template", ["ex
             "column": 0
           },
           "end": {
-            "line": 21,
+            "line": 30,
             "column": 0
           }
         },
@@ -63486,9 +65723,140 @@ define("frontend-cp/session/admin/automation/businesshours/index/template", ["ex
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["inline", "ko-admin/page-header", [], ["title", ["subexpr", "t", ["admin.businesshours.headings.index"], [], ["loc", [null, [2, 8], [2, 48]]]], "buttonText", ["subexpr", "t", ["admin.businesshours.buttons.add"], [], ["loc", [null, [3, 13], [3, 50]]]], "onSave", ["subexpr", "action", ["transitionToAddNewBusinessHour"], [], ["loc", [null, [4, 9], [4, 50]]]]], ["loc", [null, [1, 0], [5, 2]]]], ["block", "ko-simple-list", [], [], 0, null, ["loc", [null, [7, 0], [20, 19]]]]],
+      statements: [["inline", "ko-admin/page-header", [], ["title", ["subexpr", "t", ["admin.businesshours.headings.index"], [], ["loc", [null, [2, 8], [2, 48]]]], "buttonText", ["subexpr", "t", ["admin.businesshours.buttons.add"], [], ["loc", [null, [3, 13], [3, 50]]]], "onSave", ["subexpr", "action", ["transitionToAddNewBusinessHour"], [], ["loc", [null, [4, 9], [4, 50]]]]], ["loc", [null, [1, 0], [5, 2]]]], ["block", "ko-simple-list", [], [], 0, null, ["loc", [null, [7, 0], [29, 19]]]]],
       locals: [],
       templates: [child0]
+    };
+  })());
+});
+define('frontend-cp/session/admin/automation/businesshours/new/controller', ['exports', 'ember'], function (exports, _ember) {
+  exports['default'] = _ember['default'].Controller.extend({
+    notification: _ember['default'].inject.service(),
+    intl: _ember['default'].inject.service(),
+    metrics: _ember['default'].inject.service(),
+
+    successAction: function successAction() {
+      this.get('notification').add({
+        type: 'success',
+        title: this.get('intl').findTranslationByKey('generic.changes_saved'),
+        autodismiss: true
+      });
+
+      this.transitionToRoute('session.admin.automation.businesshours.index');
+    },
+
+    userHasChangedModel: function userHasChangedModel() {
+      return this.get('model').hasChanges();
+    },
+
+    actions: {
+      saved: function saved() {
+        this.get('metrics').trackEvent({
+          event: 'Admin Business Hour Created',
+          category: 'Admin Business Hours',
+          action: 'click',
+          label: 'save button'
+        });
+        this.successAction();
+      },
+      updated: function updated() {
+        this.get('metrics').trackEvent({
+          event: 'Admin Business Hour Updated',
+          category: 'Admin Business Hours',
+          action: 'click',
+          label: 'save button'
+        });
+        this.successAction();
+      },
+      cancelled: function cancelled() {
+        this.get('metrics').trackEvent({
+          event: 'Admin Business Hour Cancelled',
+          category: 'Admin Business Hours',
+          action: 'click',
+          label: 'cancel button'
+        });
+        this.transitionToRoute('session.admin.automation.businesshours.index');
+      },
+      rollbackModel: function rollbackModel() {
+        this.get('model').rollbackAttributes();
+        this.get('model.holidays').forEach(function (holiday) {
+          holiday.rollbackAttributes();
+        });
+      }
+    }
+  });
+});
+define('frontend-cp/session/admin/automation/businesshours/new/route', ['exports', 'ember'], function (exports, _ember) {
+  exports['default'] = _ember['default'].Route.extend({
+    model: function model() {
+      return this.store.createRecord('business-hour', {
+        zones: {
+          monday: [],
+          tuesday: [],
+          wednesday: [],
+          thursday: [],
+          friday: [],
+          saturday: [],
+          sunday: []
+        }
+      });
+    },
+
+    actions: {
+      willTransition: function willTransition(transition) {
+        if (this.controller.userHasChangedModel()) {
+          var translatedConfirmationMessage = this.get('intl').findTranslationByKey('generic.confirm.lose_changes');
+          var shouldRollBackModel = confirm(translatedConfirmationMessage); // eslint-disable-line
+
+          if (shouldRollBackModel) {
+            this.controller.send('rollbackModel');
+            return true;
+          } else {
+            transition.abort();
+          }
+        }
+      }
+    }
+  });
+});
+define("frontend-cp/session/admin/automation/businesshours/new/template", ["exports"], function (exports) {
+  exports["default"] = Ember.HTMLBars.template((function () {
+    return {
+      meta: {
+        "revision": "Ember@1.13.13",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 7,
+            "column": 0
+          }
+        },
+        "moduleName": "frontend-cp/session/admin/automation/businesshours/new/template.hbs"
+      },
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var morphs = new Array(1);
+        morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+        dom.insertBoundary(fragment, 0);
+        return morphs;
+      },
+      statements: [["inline", "ko-admin/businesshours/edit", [], ["model", ["subexpr", "@mut", [["get", "model", ["loc", [null, [2, 8], [2, 13]]]]], [], []], "onSuccess", ["subexpr", "action", ["saved"], [], ["loc", [null, [3, 12], [3, 28]]]], "onCancel", ["subexpr", "action", ["cancelled"], [], ["loc", [null, [4, 11], [4, 31]]]], "title", ["subexpr", "t", ["admin.businesshours.headings.new"], [], ["loc", [null, [5, 8], [5, 46]]]]], ["loc", [null, [1, 0], [6, 2]]]]],
+      locals: [],
+      templates: []
     };
   })());
 });
@@ -76025,6 +78393,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+c6c84660"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+a82c0220"});
 }
 /* jshint ignore:end */

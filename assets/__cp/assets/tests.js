@@ -1,3 +1,73 @@
+define('frontend-cp/tests/acceptance/admin/automation/businesshours/edit-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
+
+  (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/automation/businesshours Edit', {
+    beforeEach: function beforeEach() {
+      /*eslint-disable camelcase*/
+      server.create('plan', { limits: [], features: [] });
+      var adminRole = server.create('role', { type: 'ADMIN' });
+      var agent = server.create('user', { role: adminRole });
+      var session = server.create('session', { user: agent });
+      login(session.id);
+
+      server.create('businesshours', {
+        title: 'Initial Default',
+        isDefault: true,
+        zones: {
+          monday: [],
+          tuesday: [],
+          wednesday: [],
+          thursday: [],
+          friday: [],
+          saturday: [],
+          sunday: []
+        }
+      });
+    },
+
+    afterEach: function afterEach() {
+      logout();
+    }
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('select some busines hours by clicking', function (assert) {
+    visit('/admin/automation/businesshours/1');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/businesshours/1');
+      click('.ko-grid-picker__cell:first-child');
+    });
+
+    andThen(function () {
+      assert.equal(find('.ko-grid-picker__row .selected').length, 7);
+      click('.ko-grid-picker__row:first-child .ko-grid-picker__cell:first-child');
+    });
+
+    andThen(function () {
+      assert.equal(find('.ko-grid-picker__row .selected').length, 6);
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('Add a holiday', function (assert) {
+    visit('/admin/automation/businesshours/1');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/businesshours/1');
+      click('.button--default');
+    });
+
+    andThen(function () {
+      fillIn('.ko-simple-list_cell .input-text', 'My Birthday');
+    });
+
+    andThen(function () {
+      click('.ko-admin_holidays_edit__buttons button:first');
+    });
+
+    andThen(function () {
+      assert.equal(find('.ko-simple-list--actionable').length, 1);
+    });
+  });
+});
 define('frontend-cp/tests/acceptance/admin/manage/case-fields/delete-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/tests/pages/admin/custom-fields-index'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpTestsPagesAdminCustomFieldsIndex) {
 
   var originalConfirm = undefined;
