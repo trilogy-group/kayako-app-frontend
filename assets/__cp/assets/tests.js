@@ -2344,6 +2344,114 @@ define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['exports', 
   });
 });
 /* eslint-disable camelcase */
+define('frontend-cp/tests/acceptance/admin/manage/macros/new-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
+
+  (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/manage/macros/new', {
+    beforeEach: function beforeEach() {
+      /*eslint-disable camelcase, quote-props*/
+      server.create('language', {
+        locale: 'en-us',
+        isDefault: true
+      });
+
+      var businesshour = server.create('business-hour', { title: 'Default Business Hours' });
+      var salesTeam = server.create('team', { title: 'Sales', businesshour: businesshour });
+      var agentRole = server.create('role', { type: 'AGENT' });
+
+      server.create('user', { teams: [salesTeam], role: agentRole, full_name: 'Leeroy Jenkins' });
+      server.create('case-status', { label: 'New' });
+      server.create('case-type', { label: 'Question' });
+      server.create('case-priority', { label: 'Low' });
+
+      var adminRole = server.create('role', { type: 'ADMIN' });
+      var agent = server.create('user', { role: adminRole });
+      var session = server.create('session', { user: agent });
+
+      login(session.id);
+
+      server.create('plan', {
+        limits: [],
+        features: []
+      });
+      /*eslint-enable camelcase, quote-props*/
+    },
+
+    afterEach: function afterEach() {
+      logout();
+    }
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('creating a new macro', function (assert) {
+    var actionSelect = '.ember-power-select:contains("Please select an action")';
+
+    function formSelectFor(id) {
+      return '.qa-ko-admin-macros-action-' + id + '\n           .ko-admin-macros-action__form .ember-power-select';
+    }
+
+    function formOptionFor(id, value) {
+      return formSelectFor(id) + ' .ember-power-select-trigger:contains("' + value + '")';
+    }
+
+    function typeOptionFor(id, value) {
+      return '.qa-ko-admin-macros-action-' + id + '\n            .ko-admin-macros-action__types\n            .ember-power-select-trigger:contains("' + value + '")';
+    }
+
+    function addTag(id, name) {
+      var input = '.qa-ko-admin-macros-action-' + id + ' .ko-tags input';
+
+      fillIn(input, name);
+      triggerEvent(input, 'focus');
+      triggerEvent(input, 'input');
+      triggerEvent(input, 'blur');
+    }
+
+    visit('/admin/manage/macros/new');
+
+    fillIn('.qa-admin_macros_edit__title-input', 'New Macro');
+    selectChoose(actionSelect, 'Reply Contents');
+    selectChoose(actionSelect, 'Reply Type');
+    selectChoose(actionSelect, 'Status');
+    selectChoose(actionSelect, 'Type');
+    selectChoose(actionSelect, 'Assignee');
+    selectChoose(actionSelect, 'Add Tags');
+    selectChoose(actionSelect, 'Remove Tags');
+    selectChoose(actionSelect, 'Priority');
+
+    fillIn('.qa-ko-admin-macros-action-reply-contents textarea', 'Some contents');
+    selectChoose(formSelectFor('reply-type'), 'Note');
+    selectChoose(formSelectFor('status'), 'New');
+    selectChoose(formSelectFor('type'), 'Question');
+    selectChoose(formSelectFor('priority'), 'Low');
+
+    var assigneeFormSelect = formSelectFor('assignee');
+    selectChoose(assigneeFormSelect, 'Sales');
+    selectChoose(assigneeFormSelect, 'Leeroy Jenkins');
+    addTag('add-tags', 'tag-to-add');
+    addTag('remove-tags', 'tag-to-remove');
+    click('.qa-admin_macros_edit__submit-button');
+
+    andThen(function () {
+      assert.equal(find('.qa-admin_macros__title:contains("New Macro")').length, 1);
+    });
+
+    click('.qa-admin_macros__title:contains("New Macro")');
+
+    andThen(function () {
+      assert.equal(find('.qa-admin_macros_edit__title-input').val(), 'New Macro');
+      assert.equal(find('.ko-admin-macros-action-reply-contents__textarea').val(), 'Some contents');
+      assert.equal(find(typeOptionFor('reply-type', 'Change to')).length, 1);
+      assert.equal(find(typeOptionFor('assignee', 'Change to')).length, 1);
+      assert.equal(find(typeOptionFor('status', 'Change to')).length, 1);
+      assert.equal(find(typeOptionFor('type', 'Change to')).length, 1);
+      assert.equal(find(typeOptionFor('priority', 'Change to')).length, 1);
+      assert.equal(find(formOptionFor('reply-type', 'Note')).length, 1);
+      assert.equal(find(formOptionFor('assignee', 'Sales / Leeroy Jenkins')).length, 1);
+      assert.equal(find(formOptionFor('status', 'New')).length, 1);
+      assert.equal(find(formOptionFor('type', 'Question')).length, 1);
+      assert.equal(find(formOptionFor('priority', 'Low')).length, 1);
+    });
+  });
+});
 define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
 
   var originalConfirm = undefined;
