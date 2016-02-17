@@ -10,6 +10,7 @@
   "datepicker.today": "Today",
   "dateselect.placeholder": "Select a date",
   "filesize": "{size} {unit}",
+  "drilldown.back": "Back",
   "logout": "Logout",
   "view_your_profile": "View your profile",
   "paginatorof": "of {number, number}",
