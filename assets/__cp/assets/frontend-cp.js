@@ -601,7 +601,7 @@ define('frontend-cp/adapters/rating', ['exports', 'frontend-cp/adapters/applicat
 define('frontend-cp/adapters/search-result-group', ['exports', 'frontend-cp/adapters/application'], function (exports, _frontendCpAdaptersApplication) {
   exports['default'] = _frontendCpAdaptersApplication['default'].extend({
     pathForType: function pathForType() {
-      return 'search/all';
+      return 'search';
     }
   });
 });
@@ -55561,35 +55561,48 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
-    this.get('/api/v1/search/all', function (db, request) {
+    this.get('/api/v1/search', function (db, request) {
       var queryString = request.queryParams.query.toLowerCase();
-      if (request.queryParams['in'] === 'users') {
-        var users = db.users.filter(function (u) {
-          return u.full_name.toLowerCase().indexOf(queryString) > -1;
-        });
-        var results = users.map(function (u) {
-          return {
-            id: u.id,
-            title: u.full_name,
-            data: { id: u.id, resource_type: 'user' },
-            resource: 'user',
-            snippet: u.full_name.replace(request.queryParams.query, '<em>' + request.queryParams.query + '</em>')
-          };
-        });
+      var users = db.users.filter(function (u) {
+        return u.full_name.toLowerCase().indexOf(queryString) > -1;
+      });
+      var cases = db.cases.filter(function (c) {
+        return c.subject.toLowerCase().indexOf(queryString) > -1;
+      });
+
+      var userResults = users.map(function (u) {
         return {
-          status: 200,
-          resource: 'object',
-          data: [{ results: results, resource: 'user' }],
-          resources: {
-            user: arrayToObjectWithNumberedKeys(users),
-            identity_email: arrayToObjectWithNumberedKeys(users.reduce(function (ary, u) {
-              return ary.concat(u.emails);
-            }, []))
-          }
+          id: u.id,
+          title: u.full_name,
+          relevance: 0.089531735,
+          resource: 'user',
+          snippet: u.full_name.replace(request.queryParams.query, '<em>' + request.queryParams.query + '</em>')
         };
-      } else {
-        throw new Error('This search is not implemented in mirage');
-      }
+      });
+
+      var caseResults = cases.map(function (c) {
+        return {
+          id: c.id,
+          title: c.subject,
+          relevance: 0.089531735,
+          resource: 'case'
+        };
+      });
+
+      return {
+        status: 200,
+        data: [{
+          results: caseResults,
+          resource: 'case',
+          total_count: caseResults.length
+        }, {
+          results: userResults,
+          resource: 'user',
+          total_count: userResults.length
+        }],
+        resource: 'object',
+        total_count: caseResults.length + userResults.length
+      };
     });
 
     this.get('/api/v1/plan', function (db) {
@@ -64450,12 +64463,10 @@ define('frontend-cp/services/suggestion/universal', ['exports', 'ember', 'fronte
 
     search: function search(searchTerm) {
       var adapter = this.container.lookup('adapter:application');
-      var url = adapter.namespace + '/search/all';
+      var url = adapter.namespace + '/search';
       var options = {
         data: {
-          query: searchTerm,
-          fields: 'snippet,resource',
-          'in': 'users,organizations,cases'
+          query: searchTerm
         }
       };
       var promise = adapter.ajax(url, 'GET', options);
@@ -78393,6 +78404,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+a82c0220"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+41456c6b"});
 }
 /* jshint ignore:end */
