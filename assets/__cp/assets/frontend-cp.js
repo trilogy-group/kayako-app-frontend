@@ -22999,7 +22999,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
               morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
               return morphs;
             },
-            statements: [["inline", "ko-case/macro-selector", [], ["macros", ["subexpr", "@mut", [["get", "macros", ["loc", [null, [181, 46], [181, 52]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isCaseDisabled", ["loc", [null, [182, 27], [182, 41]]]]], [], []], "onMacroSelect", ["subexpr", "action", ["dispatch", "applyMacro", ["get", "tabId", ["loc", [null, [183, 62], [183, 67]]]], ["get", "sessionService.user", ["loc", [null, [183, 68], [183, 87]]]]], [], ["loc", [null, [183, 30], [183, 88]]]]], ["loc", [null, [181, 14], [184, 16]]]]],
+            statements: [["inline", "ko-case/macro-selector", [], ["macros", ["subexpr", "@mut", [["get", "macros", ["loc", [null, [181, 46], [181, 52]]]]], [], []], "isDisabled", ["subexpr", "@mut", [["get", "isCaseDisabled", ["loc", [null, [182, 27], [182, 41]]]]], [], []], "onMacroSelect", ["subexpr", "action", ["dispatch", "applyMacro", ["get", "tabId", ["loc", [null, [183, 62], [183, 67]]]], ["get", "case", ["loc", [null, [183, 68], [183, 72]]]], ["get", "sessionService.user", ["loc", [null, [183, 73], [183, 92]]]], ["get", "availableChannels", ["loc", [null, [183, 93], [183, 110]]]]], [], ["loc", [null, [183, 30], [183, 111]]]]], ["loc", [null, [181, 14], [184, 16]]]]],
             locals: [],
             templates: []
           };
@@ -58288,7 +58288,9 @@ define('frontend-cp/models/brand', ['exports', 'ember-data'], function (exports,
 define('frontend-cp/models/business-hour', ['exports', 'ember-data', 'npm:lodash'], function (exports, _emberData, _npmLodash) {
   exports['default'] = _emberData['default'].Model.extend({
     title: _emberData['default'].attr('string', { async: false }),
-    zones: _emberData['default'].attr({ defaultValue: [] }),
+    zones: _emberData['default'].attr({ defaultValue: function defaultValue() {
+        return [];
+      } }),
     holidays: _emberData['default'].hasMany('businesshour-holiday', { async: false }),
     teams: _emberData['default'].hasMany('team', { async: false }),
     isDefault: _emberData['default'].attr('boolean'),
@@ -58328,7 +58330,9 @@ define('frontend-cp/models/businesshour-holiday', ['exports', 'ember-data'], fun
   exports['default'] = _emberData['default'].Model.extend({
     title: _emberData['default'].attr('string'),
     date: _emberData['default'].attr('string'),
-    openHours: _emberData['default'].attr({ defaultValue: [] }) //array http://stackoverflow.com/a/26107853
+    openHours: _emberData['default'].attr({ defaultValue: function defaultValue() {
+        return [];
+      } })
   });
 });
 define('frontend-cp/models/case-field-value', ['exports', 'ember', 'ember-data', 'model-fragments'], function (exports, _ember, _emberData, _modelFragments) {
@@ -59150,8 +59154,12 @@ define('frontend-cp/models/macro', ['exports', 'ember-data', 'model-fragments'],
     priorityAction: _emberData['default'].attr('string'),
     priority: _emberData['default'].belongsTo('case-priority'),
     status: _emberData['default'].belongsTo('case-status'),
-    addTags: _modelFragments['default'].array('string'),
-    removeTags: _modelFragments['default'].array('string'),
+    addTags: _emberData['default'].attr({ defaultValue: function defaultValue() {
+        return [];
+      } }),
+    removeTags: _emberData['default'].attr({ defaultValue: function defaultValue() {
+        return [];
+      } }),
 
     // read only
     agent: _emberData['default'].belongsTo('user', { async: false }),
@@ -60743,7 +60751,7 @@ define('frontend-cp/serializers/macro-assignee', ['exports', 'frontend-cp/serial
 define('frontend-cp/serializers/macro', ['exports', 'frontend-cp/serializers/application'], function (exports, _frontendCpSerializersApplication) {
   exports['default'] = _frontendCpSerializersApplication['default'].extend({
     attrs: {
-      caseType: { key: 'type_id' }
+      caseType: { key: 'type' }
     },
 
     _transformRecord: function _transformRecord(data) {
@@ -60755,8 +60763,6 @@ define('frontend-cp/serializers/macro', ['exports', 'frontend-cp/serializers/app
           data.assigneeType = data.assignee.type;
         }
       }
-
-      Reflect.deleteProperty(data, 'assignee');
     },
 
     extractArrayData: function extractArrayData(data, payload) {
@@ -60780,6 +60786,10 @@ define('frontend-cp/serializers/macro', ['exports', 'frontend-cp/serializers/app
 
       if (!json.assignee_type) {
         Reflect.deleteProperty(json, 'assignee_type');
+      }
+
+      if (snapshot.get('caseType')) {
+        json.type_id = snapshot.get('caseType.id'); // eslint-disable-line camelcase
       }
 
       return json;
@@ -61523,7 +61533,7 @@ define('frontend-cp/services/case-tab', ['exports', 'ember', 'npm:lodash', 'fron
       }
     },
 
-    applyMacro: function applyMacro(tabId, user, macro) {
+    applyMacro: function applyMacro(tabId, model, user, channels, macro) {
       var _this = this;
 
       var replyType = macro.get('replyType');
@@ -61533,7 +61543,7 @@ define('frontend-cp/services/case-tab', ['exports', 'ember', 'npm:lodash', 'fron
         if (replyType === 'REPLY') {
           this.setChannel(tabId);
         } else {
-          this.setNote(tabId);
+          this.setNote(tabId, channels);
         }
       }
 
@@ -61597,15 +61607,12 @@ define('frontend-cp/services/case-tab', ['exports', 'ember', 'npm:lodash', 'fron
         this.setAssignee.apply(this, [tabId].concat(_toConsumableArray(newAssignee)));
       }
 
-      var addTags = macro.get('addTags');
-      var removeTags = macro.get('removeTags');
-
-      addTags.forEach(function (tag) {
-        _this.addTag(tabId, tag.get('name'));
+      macro.get('addTags').forEach(function (name) {
+        _this.addTag(tabId, model, name);
       });
 
-      removeTags.forEach(function (tag) {
-        _this.removeTag(tabId, tag.get('name'));
+      macro.get('removeTags').forEach(function (name) {
+        _this.removeTag(tabId, _this.get('tagService').getTagByName(name));
       });
 
       this.persistTabState(tabId);
@@ -61640,7 +61647,8 @@ define('frontend-cp/services/case-tab', ['exports', 'ember', 'npm:lodash', 'fron
 
     removeTag: function removeTag(tabId, tag) {
       var state = this.getState(tabId);
-      state.get('editedTags').removeObject(tag);
+      var tags = state.get('editedTags').rejectBy('name', tag.get('name'));
+      state.set('editedTags', tags);
       state.set('errorMap.tags', false);
       this.persistTabState(tabId);
     },
@@ -78026,6 +78034,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+da087da4"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+39d26388"});
 }
 /* jshint ignore:end */
