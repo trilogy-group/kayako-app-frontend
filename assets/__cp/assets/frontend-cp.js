@@ -61572,7 +61572,7 @@ define('frontend-cp/services/case-bulk-update', ['exports', 'ember'], function (
     trashCases: function trashCases(caseIds) {
       var adapter = this.container.lookup('adapter:application');
       var adapterNamespace = adapter.get('namespace');
-      var url = adapterNamespace + '/cases?ids=' + caseIds.toString();
+      var url = adapterNamespace + '/cases/trash?ids=' + caseIds.toString();
 
       return adapter.ajax(url, 'PUT', { data: { state: 'TRASH' } });
     }
@@ -78364,6 +78364,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+7aac714e"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+1b04c34d"});
 }
 /* jshint ignore:end */
