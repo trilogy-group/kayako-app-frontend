@@ -29715,7 +29715,7 @@ define("frontend-cp/components/ko-editable-text/template", ["exports"], function
         var el1 = dom.createElement("div");
         var el2 = dom.createComment("");
         dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n");
+        var el2 = dom.createTextNode("\n  ");
         dom.appendChild(el1, el2);
         var el2 = dom.createElement("span");
         dom.appendChild(el1, el2);
@@ -29743,19 +29743,18 @@ define("frontend-cp/components/ko-editable-text/template", ["exports"], function
         var element1 = dom.childAt(element0, [2]);
         var element2 = dom.childAt(fragment, [2]);
         var element3 = dom.childAt(element2, [1]);
-        var morphs = new Array(9);
+        var morphs = new Array(8);
         morphs[0] = dom.createAttrMorph(element0, 'onclick');
         morphs[1] = dom.createAttrMorph(element0, 'class');
         morphs[2] = dom.createMorphAt(element0, 0, 0);
-        morphs[3] = dom.createAttrMorph(element1, 'onclick');
-        morphs[4] = dom.createAttrMorph(element1, 'class');
-        morphs[5] = dom.createAttrMorph(element2, 'class');
-        morphs[6] = dom.createAttrMorph(element3, 'value');
-        morphs[7] = dom.createAttrMorph(element3, 'oninput');
-        morphs[8] = dom.createAttrMorph(element3, 'onkeydown');
+        morphs[3] = dom.createAttrMorph(element1, 'class');
+        morphs[4] = dom.createAttrMorph(element2, 'class');
+        morphs[5] = dom.createAttrMorph(element3, 'value');
+        morphs[6] = dom.createAttrMorph(element3, 'oninput');
+        morphs[7] = dom.createAttrMorph(element3, 'onkeydown');
         return morphs;
       },
-      statements: [["attribute", "onclick", ["subexpr", "action", ["edit"], [], ["loc", [null, [1, 13], [1, 30]]]]], ["attribute", "class", ["concat", ["editable-text__text ", ["subexpr", "if", [["get", "isDisabled", ["loc", [null, [1, 63], [1, 73]]]], "editable-text__text--disabled"], [], ["loc", [null, [1, 58], [1, 107]]]], " ", ["subexpr", "if", [["get", "isEditing", ["loc", [null, [1, 113], [1, 122]]]], "u-hidden"], [], ["loc", [null, [1, 108], [1, 135]]]], " ", ["subexpr", "if", [["get", "isPusherEdited", ["loc", [null, [1, 141], [1, 155]]]], "editable-text__text--pusher-edited"], [], ["loc", [null, [1, 136], [1, 194]]]], " ", ["subexpr", "if", [["get", "isEdited", ["loc", [null, [1, 201], [1, 209]]]], "editable-text__text--edited"], [], ["loc", [null, [1, 195], [1, 242]]]]]]], ["content", "displayText", ["loc", [null, [1, 244], [1, 259]]]], ["attribute", "onclick", ["subexpr", "action", ["edit"], [], ["loc", [null, [2, 14], [2, 31]]]]], ["attribute", "class", ["concat", ["editable-text__pencil i-pencil i-color-grey i-size-14 u-invisible ", ["subexpr", "if", [["get", "isDisabled", ["loc", [null, [2, 110], [2, 120]]]], "u-hidden"], [], ["loc", [null, [2, 105], [2, 133]]]], " ", ["subexpr", "if", [["get", "isEditing", ["loc", [null, [2, 139], [2, 148]]]], "u-hidden"], [], ["loc", [null, [2, 134], [2, 161]]]]]]], ["attribute", "class", ["concat", ["editable-text__input-field ", ["subexpr", "unless", [["get", "isEditing", ["loc", [null, [5, 48], [5, 57]]]], "u-hidden"], [], ["loc", [null, [5, 39], [5, 70]]]]]]], ["attribute", "value", ["get", "value", ["loc", [null, [6, 29], [6, 34]]]]], ["attribute", "oninput", ["subexpr", "action", [["subexpr", "mut", [["get", "valueToSave", ["loc", [null, [6, 59], [6, 70]]]]], [], ["loc", [null, [6, 54], [6, 71]]]]], ["value", "target.value"], ["loc", [null, [6, 45], [6, 94]]]]], ["attribute", "onkeydown", ["subexpr", "action", ["handleKeyDown"], [], ["loc", [null, [6, 105], [6, 131]]]]]],
+      statements: [["attribute", "onclick", ["subexpr", "action", ["edit"], [], ["loc", [null, [1, 13], [1, 30]]]]], ["attribute", "class", ["concat", ["editable-text__text ", ["subexpr", "if", [["get", "isDisabled", ["loc", [null, [1, 63], [1, 73]]]], "editable-text__text--disabled"], [], ["loc", [null, [1, 58], [1, 107]]]], " ", ["subexpr", "if", [["get", "isEditing", ["loc", [null, [1, 113], [1, 122]]]], "u-hidden"], [], ["loc", [null, [1, 108], [1, 135]]]], " ", ["subexpr", "if", [["get", "isPusherEdited", ["loc", [null, [1, 141], [1, 155]]]], "editable-text__text--pusher-edited"], [], ["loc", [null, [1, 136], [1, 194]]]], " ", ["subexpr", "if", [["get", "isEdited", ["loc", [null, [1, 201], [1, 209]]]], "editable-text__text--edited"], [], ["loc", [null, [1, 195], [1, 242]]]]]]], ["content", "displayText", ["loc", [null, [1, 244], [1, 259]]]], ["attribute", "class", ["concat", ["editable-text__pencil i-pencil i-color-grey i-size-14 u-invisible ", ["subexpr", "if", [["get", "isDisabled", ["loc", [null, [2, 86], [2, 96]]]], "u-hidden"], [], ["loc", [null, [2, 81], [2, 109]]]]]]], ["attribute", "class", ["concat", ["editable-text__input-field ", ["subexpr", "unless", [["get", "isEditing", ["loc", [null, [5, 48], [5, 57]]]], "u-hidden"], [], ["loc", [null, [5, 39], [5, 70]]]]]]], ["attribute", "value", ["get", "value", ["loc", [null, [6, 29], [6, 34]]]]], ["attribute", "oninput", ["subexpr", "action", [["subexpr", "mut", [["get", "valueToSave", ["loc", [null, [6, 59], [6, 70]]]]], [], ["loc", [null, [6, 54], [6, 71]]]]], ["value", "target.value"], ["loc", [null, [6, 45], [6, 94]]]]], ["attribute", "onkeydown", ["subexpr", "action", ["handleKeyDown"], [], ["loc", [null, [6, 105], [6, 131]]]]]],
       locals: [],
       templates: []
     };
@@ -78365,6 +78364,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+be1c7834"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+f30839f6"});
 }
 /* jshint ignore:end */
