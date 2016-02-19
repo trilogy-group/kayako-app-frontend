@@ -274,6 +274,7 @@
   "predicate_builder.cases.subject": "Case: Subject",
   "predicate_builder.cases.casestatusid": "Case: Status",
   "predicate_builder.cases.casetypeid": "Case: Type",
+  "predicate_builder.cases.channeltype": "Case: Channel Type",
   "predicate_builder.cases.casepriorityid": "Case: Priority ID",
   "predicate_builder.cases.state": "Case: State",
   "predicate_builder.cases.brandid": "Case: Brand",
