@@ -20825,10 +20825,9 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       return Boolean(this.get('case.brand.companyName'));
     }),
 
-    // TODO: Ideally we should be getting the most recently user valid channel
-    // this will require bigger changes.. coming soon
     defaultReplyChannel: _ember['default'].computed('case.sourceChannel', 'availableReplyChannels.firstObject', function () {
-      return this.get('availableReplyChannels.firstObject');
+      var defaultChannel = this.get('availableReplyChannels').findBy('account.isDefault');
+      return defaultChannel || this.get('availableReplyChannels.firstObject');
     }),
 
     channel: _ember['default'].computed('channelId', 'availableChannels.[]', function () {
@@ -21075,6 +21074,35 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
           category: 'Case',
           action: 'click',
           label: 'quote icon'
+        });
+      },
+
+      replyToPost: function replyToPost(tabId, post) {
+        var original = post.get('original');
+        var channel = post.get('sourceChannel');
+
+        if (channel) {
+          var caseTab = this.get('caseTab');
+          caseTab.setChannel(tabId, channel);
+          caseTab.setInReplyTo(tabId, original.get('uuid'));
+          caseTab.setEditInProgress(tabId, true);
+
+          var recipients = original.get('recipients');
+          if (recipients) {
+            var ccs = recipients.filterBy('isCC');
+            caseTab.setCCs(tabId, ccs.getEach('identity.email'));
+          }
+
+          _ember['default'].run.scheduleOnce('afterRender', function () {
+            _ember['default'].$('.ql-editor').focus();
+          });
+        }
+
+        this.get('metrics').trackEvent({
+          event: 'Reply To Post',
+          category: 'Case Feed',
+          action: 'click',
+          label: 'reply button'
         });
       },
 
@@ -23469,7 +23497,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
                 "column": 2
               },
               "end": {
-                "line": 253,
+                "line": 255,
                 "column": 2
               }
             },
@@ -23493,7 +23521,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
             morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
             return morphs;
           },
-          statements: [["inline", "ko-timeline", [], ["model", ["subexpr", "@mut", [["get", "case", ["loc", [null, [239, 12], [239, 16]]]]], [], []], "loadingTop", ["subexpr", "@mut", [["get", "tabState.loadingTop", ["loc", [null, [240, 17], [240, 36]]]]], [], []], "loadingBottom", ["subexpr", "@mut", [["get", "tabState.loadingBottom", ["loc", [null, [241, 20], [241, 42]]]]], [], []], "bottomPostsAvailable", ["subexpr", "@mut", [["get", "tabState.bottomPostsAvailable", ["loc", [null, [242, 27], [242, 56]]]]], [], []], "topPostsAvailable", ["subexpr", "@mut", [["get", "tabState.topPostsAvailable", ["loc", [null, [243, 24], [243, 50]]]]], [], []], "posts", ["subexpr", "@mut", [["get", "tabState.posts", ["loc", [null, [244, 12], [244, 26]]]]], [], []], "sortOrder", ["subexpr", "@mut", [["get", "sortOrder", ["loc", [null, [245, 16], [245, 25]]]]], [], []], "filter", ["subexpr", "@mut", [["get", "filter", ["loc", [null, [246, 13], [246, 19]]]]], [], []], "isReplyDisabled", ["subexpr", "@mut", [["get", "isCaseDisabled", ["loc", [null, [247, 22], [247, 36]]]]], [], []], "onQueryParamsUpdate", ["subexpr", "@mut", [["get", "onQueryParamsUpdate", ["loc", [null, [248, 26], [248, 45]]]]], [], []], "onReplyWithQuote", ["subexpr", "action", ["replyWithQuote", ["get", "tabId", ["loc", [null, [249, 48], [249, 53]]]]], [], ["loc", [null, [249, 23], [249, 54]]]], "onLoadPostsBelow", ["subexpr", "action", ["dispatch", "loadPostsBelow", ["get", "tabId", ["loc", [null, [250, 59], [250, 64]]]]], [], ["loc", [null, [250, 23], [250, 65]]]], "onLoadPostsAbove", ["subexpr", "action", ["dispatch", "loadPostsAbove", ["get", "tabId", ["loc", [null, [251, 59], [251, 64]]]]], [], ["loc", [null, [251, 23], [251, 65]]]]], ["loc", [null, [238, 4], [252, 6]]]]],
+          statements: [["inline", "ko-timeline", [], ["model", ["subexpr", "@mut", [["get", "case", ["loc", [null, [239, 12], [239, 16]]]]], [], []], "availableReplyChannels", ["subexpr", "@mut", [["get", "availableReplyChannels", ["loc", [null, [240, 29], [240, 51]]]]], [], []], "loadingTop", ["subexpr", "@mut", [["get", "tabState.loadingTop", ["loc", [null, [241, 17], [241, 36]]]]], [], []], "loadingBottom", ["subexpr", "@mut", [["get", "tabState.loadingBottom", ["loc", [null, [242, 20], [242, 42]]]]], [], []], "bottomPostsAvailable", ["subexpr", "@mut", [["get", "tabState.bottomPostsAvailable", ["loc", [null, [243, 27], [243, 56]]]]], [], []], "topPostsAvailable", ["subexpr", "@mut", [["get", "tabState.topPostsAvailable", ["loc", [null, [244, 24], [244, 50]]]]], [], []], "posts", ["subexpr", "@mut", [["get", "tabState.posts", ["loc", [null, [245, 12], [245, 26]]]]], [], []], "sortOrder", ["subexpr", "@mut", [["get", "sortOrder", ["loc", [null, [246, 16], [246, 25]]]]], [], []], "filter", ["subexpr", "@mut", [["get", "filter", ["loc", [null, [247, 13], [247, 19]]]]], [], []], "isReplyDisabled", ["subexpr", "@mut", [["get", "isCaseDisabled", ["loc", [null, [248, 22], [248, 36]]]]], [], []], "onQueryParamsUpdate", ["subexpr", "@mut", [["get", "onQueryParamsUpdate", ["loc", [null, [249, 26], [249, 45]]]]], [], []], "onReplyToPost", ["subexpr", "action", ["replyToPost", ["get", "tabId", ["loc", [null, [250, 42], [250, 47]]]]], [], ["loc", [null, [250, 20], [250, 48]]]], "onReplyWithQuote", ["subexpr", "action", ["replyWithQuote", ["get", "tabId", ["loc", [null, [251, 48], [251, 53]]]]], [], ["loc", [null, [251, 23], [251, 54]]]], "onLoadPostsBelow", ["subexpr", "action", ["dispatch", "loadPostsBelow", ["get", "tabId", ["loc", [null, [252, 59], [252, 64]]]]], [], ["loc", [null, [252, 23], [252, 65]]]], "onLoadPostsAbove", ["subexpr", "action", ["dispatch", "loadPostsAbove", ["get", "tabId", ["loc", [null, [253, 59], [253, 64]]]]], [], ["loc", [null, [253, 23], [253, 65]]]]], ["loc", [null, [238, 4], [254, 6]]]]],
           locals: [],
           templates: []
         };
@@ -23508,7 +23536,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
               "column": 0
             },
             "end": {
-              "line": 254,
+              "line": 256,
               "column": 0
             }
           },
@@ -23550,7 +23578,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [["block", "if", [["subexpr", "eq", [["get", "name", ["loc", [null, [2, 12], [2, 16]]]], "sidebar-sticky"], [], ["loc", [null, [2, 8], [2, 34]]]]], [], 0, null, ["loc", [null, [2, 2], [12, 9]]]], ["block", "if", [["subexpr", "eq", [["get", "name", ["loc", [null, [14, 12], [14, 16]]]], "sidebar"], [], ["loc", [null, [14, 8], [14, 27]]]]], [], 1, null, ["loc", [null, [14, 2], [127, 9]]]], ["block", "if", [["subexpr", "eq", [["get", "name", ["loc", [null, [129, 12], [129, 16]]]], "heading"], [], ["loc", [null, [129, 8], [129, 27]]]]], [], 2, null, ["loc", [null, [129, 2], [198, 9]]]], ["block", "if", [["subexpr", "not", [["get", "isCaseDisabled", ["loc", [null, [200, 13], [200, 27]]]]], [], ["loc", [null, [200, 8], [200, 28]]]]], [], 3, null, ["loc", [null, [200, 2], [235, 9]]]], ["block", "if", [["subexpr", "eq", [["get", "name", ["loc", [null, [237, 12], [237, 16]]]], "timeline-area"], [], ["loc", [null, [237, 8], [237, 33]]]]], [], 4, null, ["loc", [null, [237, 2], [253, 9]]]]],
+        statements: [["block", "if", [["subexpr", "eq", [["get", "name", ["loc", [null, [2, 12], [2, 16]]]], "sidebar-sticky"], [], ["loc", [null, [2, 8], [2, 34]]]]], [], 0, null, ["loc", [null, [2, 2], [12, 9]]]], ["block", "if", [["subexpr", "eq", [["get", "name", ["loc", [null, [14, 12], [14, 16]]]], "sidebar"], [], ["loc", [null, [14, 8], [14, 27]]]]], [], 1, null, ["loc", [null, [14, 2], [127, 9]]]], ["block", "if", [["subexpr", "eq", [["get", "name", ["loc", [null, [129, 12], [129, 16]]]], "heading"], [], ["loc", [null, [129, 8], [129, 27]]]]], [], 2, null, ["loc", [null, [129, 2], [198, 9]]]], ["block", "if", [["subexpr", "not", [["get", "isCaseDisabled", ["loc", [null, [200, 13], [200, 27]]]]], [], ["loc", [null, [200, 8], [200, 28]]]]], [], 3, null, ["loc", [null, [200, 2], [235, 9]]]], ["block", "if", [["subexpr", "eq", [["get", "name", ["loc", [null, [237, 12], [237, 16]]]], "timeline-area"], [], ["loc", [null, [237, 8], [237, 33]]]]], [], 4, null, ["loc", [null, [237, 2], [255, 9]]]]],
         locals: ["name"],
         templates: [child0, child1, child2, child3, child4]
       };
@@ -23565,7 +23593,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
             "column": 0
           },
           "end": {
-            "line": 255,
+            "line": 257,
             "column": 0
           }
         },
@@ -23587,7 +23615,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["block", "ko-layout/advanced", [], ["isNew", ["subexpr", "@mut", [["get", "case.isNew", ["loc", [null, [1, 28], [1, 38]]]]], [], []]], 0, null, ["loc", [null, [1, 0], [254, 23]]]]],
+      statements: [["block", "ko-layout/advanced", [], ["isNew", ["subexpr", "@mut", [["get", "case.isNew", ["loc", [null, [1, 28], [1, 38]]]]], [], []]], 0, null, ["loc", [null, [1, 0], [256, 23]]]]],
       locals: [],
       templates: [child0]
     };
@@ -29918,6 +29946,8 @@ define('frontend-cp/components/ko-feed/item/component', ['exports', 'ember'], fu
     event: null,
     parent: null,
     isReplyDisabled: false,
+    canReplyToPost: false,
+
     sessionService: _ember['default'].inject.service('session'),
 
     classNames: ['ko-feed_item'],
@@ -30040,7 +30070,9 @@ define('frontend-cp/components/ko-feed/item/menu/component', ['exports', 'ember'
   exports['default'] = _ember['default'].Component.extend({
     // Attributes
     onReplyWithQuote: null,
+    onReplyToPost: null,
     showMenu: false,
+    canReplyToPost: false,
 
     // HTML
     classNameBindings: ['showMenu::u-hidden'],
@@ -30050,6 +30082,46 @@ define('frontend-cp/components/ko-feed/item/menu/component', ['exports', 'ember'
 });
 define("frontend-cp/components/ko-feed/item/menu/template", ["exports"], function (exports) {
   exports["default"] = Ember.HTMLBars.template((function () {
+    var child0 = (function () {
+      return {
+        meta: {
+          "revision": "Ember@1.13.13",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 1,
+              "column": 0
+            },
+            "end": {
+              "line": 3,
+              "column": 0
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-feed/item/menu/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createElement("li");
+          dom.setAttribute(el1, "class", "ko-feed-item_menu__item i-reply i-color-grey--dark");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var element0 = dom.childAt(fragment, [0]);
+          var morphs = new Array(1);
+          morphs[0] = dom.createAttrMorph(element0, 'onclick');
+          return morphs;
+        },
+        statements: [["attribute", "onclick", ["get", "onReplyToPost", ["loc", [null, [2, 14], [2, 27]]]]]],
+        locals: [],
+        templates: []
+      };
+    })();
     return {
       meta: {
         "revision": "Ember@1.13.13",
@@ -30060,7 +30132,7 @@ define("frontend-cp/components/ko-feed/item/menu/template", ["exports"], functio
             "column": 0
           },
           "end": {
-            "line": 2,
+            "line": 5,
             "column": 0
           }
         },
@@ -30071,6 +30143,8 @@ define("frontend-cp/components/ko-feed/item/menu/template", ["exports"], functio
       hasRendered: false,
       buildFragment: function buildFragment(dom) {
         var el0 = dom.createDocumentFragment();
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
         var el1 = dom.createElement("li");
         dom.setAttribute(el1, "class", "ko-feed-item_menu__item i-quote i-color-grey--dark");
         dom.appendChild(el0, el1);
@@ -30079,14 +30153,16 @@ define("frontend-cp/components/ko-feed/item/menu/template", ["exports"], functio
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var element0 = dom.childAt(fragment, [0]);
-        var morphs = new Array(1);
-        morphs[0] = dom.createAttrMorph(element0, 'onclick');
+        var element1 = dom.childAt(fragment, [1]);
+        var morphs = new Array(2);
+        morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+        morphs[1] = dom.createAttrMorph(element1, 'onclick');
+        dom.insertBoundary(fragment, 0);
         return morphs;
       },
-      statements: [["attribute", "onclick", ["get", "onReplyWithQuote", ["loc", [null, [1, 14], [1, 30]]]]]],
+      statements: [["block", "if", [["get", "canReplyToPost", ["loc", [null, [1, 6], [1, 20]]]]], [], 0, null, ["loc", [null, [1, 0], [3, 7]]]], ["attribute", "onclick", ["get", "onReplyWithQuote", ["loc", [null, [4, 14], [4, 30]]]]]],
       locals: [],
-      templates: []
+      templates: [child0]
     };
   })());
 });
@@ -30455,7 +30531,7 @@ define("frontend-cp/components/ko-feed/item/template", ["exports"], function (ex
               "column": 0
             },
             "end": {
-              "line": 46,
+              "line": 49,
               "column": 0
             }
           },
@@ -30479,7 +30555,7 @@ define("frontend-cp/components/ko-feed/item/template", ["exports"], function (ex
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [["inline", "ko-feed/item/menu", [], ["showMenu", ["subexpr", "@mut", [["get", "showMenu", ["loc", [null, [45, 31], [45, 39]]]]], [], []], "onReplyWithQuote", ["subexpr", "action", [["get", "onReplyWithQuote", ["loc", [null, [45, 65], [45, 81]]]], ["get", "event", ["loc", [null, [45, 82], [45, 87]]]]], [], ["loc", [null, [45, 57], [45, 88]]]]], ["loc", [null, [45, 2], [45, 90]]]]],
+        statements: [["inline", "ko-feed/item/menu", [], ["showMenu", ["subexpr", "@mut", [["get", "showMenu", ["loc", [null, [45, 31], [45, 39]]]]], [], []], "canReplyToPost", ["subexpr", "@mut", [["get", "canReplyToPost", ["loc", [null, [46, 19], [46, 33]]]]], [], []], "onReplyWithQuote", ["subexpr", "action", [["get", "onReplyWithQuote", ["loc", [null, [47, 29], [47, 45]]]], ["get", "event", ["loc", [null, [47, 46], [47, 51]]]]], [], ["loc", [null, [47, 21], [47, 52]]]], "onReplyToPost", ["subexpr", "action", [["get", "onReplyToPost", ["loc", [null, [48, 26], [48, 39]]]], ["get", "event", ["loc", [null, [48, 40], [48, 45]]]]], [], ["loc", [null, [48, 18], [48, 46]]]]], ["loc", [null, [45, 2], [48, 48]]]]],
         locals: [],
         templates: []
       };
@@ -30494,7 +30570,7 @@ define("frontend-cp/components/ko-feed/item/template", ["exports"], function (ex
             "column": 0
           },
           "end": {
-            "line": 47,
+            "line": 50,
             "column": 0
           }
         },
@@ -30581,7 +30657,7 @@ define("frontend-cp/components/ko-feed/item/template", ["exports"], function (ex
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["block", "if", [["get", "event.creator.avatar", ["loc", [null, [3, 6], [3, 26]]]]], [], 0, null, ["loc", [null, [3, 0], [5, 7]]]], ["content", "event.creator.fullName", ["loc", [null, [7, 33], [7, 59]]]], ["inline", "if", [["get", "isNote", ["loc", [null, [9, 9], [9, 15]]]], ["subexpr", "t", ["feed.added"], [], ["loc", [null, [9, 16], [9, 32]]]], ["subexpr", "t", ["feed.replied"], [], ["loc", [null, [9, 33], [9, 51]]]]], [], ["loc", [null, [9, 4], [9, 53]]]], ["block", "ko-feed/item/link-to", [], ["class", "ko-feed_item__title--small", "model", ["subexpr", "@mut", [["get", "event", ["loc", [null, [11, 69], [11, 74]]]]], [], []], "parent", ["subexpr", "@mut", [["get", "parent", ["loc", [null, [11, 82], [11, 88]]]]], [], []]], 1, null, ["loc", [null, [11, 4], [13, 29]]]], ["block", "if", [["subexpr", "or", [["get", "event.original.mailbox.address", ["loc", [null, [18, 10], [18, 40]]]], ["get", "ccRecipients", ["loc", [null, [18, 41], [18, 53]]]]], [], ["loc", [null, [18, 6], [18, 54]]]]], [], 2, null, ["loc", [null, [18, 0], [28, 7]]]], ["inline", "ko-breaklines", [["subexpr", "linkify", [["get", "event.contents", ["loc", [null, [31, 27], [31, 41]]]], "_blank"], [], ["loc", [null, [31, 18], [31, 51]]]]], [], ["loc", [null, [31, 2], [31, 53]]]], ["block", "if", [["get", "event.attachments", ["loc", [null, [33, 6], [33, 23]]]]], [], 3, null, ["loc", [null, [33, 0], [43, 7]]]], ["block", "if", [["subexpr", "not", [["get", "isReplyDisabled", ["loc", [null, [44, 11], [44, 26]]]]], [], ["loc", [null, [44, 6], [44, 27]]]]], [], 4, null, ["loc", [null, [44, 0], [46, 7]]]]],
+      statements: [["block", "if", [["get", "event.creator.avatar", ["loc", [null, [3, 6], [3, 26]]]]], [], 0, null, ["loc", [null, [3, 0], [5, 7]]]], ["content", "event.creator.fullName", ["loc", [null, [7, 33], [7, 59]]]], ["inline", "if", [["get", "isNote", ["loc", [null, [9, 9], [9, 15]]]], ["subexpr", "t", ["feed.added"], [], ["loc", [null, [9, 16], [9, 32]]]], ["subexpr", "t", ["feed.replied"], [], ["loc", [null, [9, 33], [9, 51]]]]], [], ["loc", [null, [9, 4], [9, 53]]]], ["block", "ko-feed/item/link-to", [], ["class", "ko-feed_item__title--small", "model", ["subexpr", "@mut", [["get", "event", ["loc", [null, [11, 69], [11, 74]]]]], [], []], "parent", ["subexpr", "@mut", [["get", "parent", ["loc", [null, [11, 82], [11, 88]]]]], [], []]], 1, null, ["loc", [null, [11, 4], [13, 29]]]], ["block", "if", [["subexpr", "or", [["get", "event.original.mailbox.address", ["loc", [null, [18, 10], [18, 40]]]], ["get", "ccRecipients", ["loc", [null, [18, 41], [18, 53]]]]], [], ["loc", [null, [18, 6], [18, 54]]]]], [], 2, null, ["loc", [null, [18, 0], [28, 7]]]], ["inline", "ko-breaklines", [["subexpr", "linkify", [["get", "event.contents", ["loc", [null, [31, 27], [31, 41]]]], "_blank"], [], ["loc", [null, [31, 18], [31, 51]]]]], [], ["loc", [null, [31, 2], [31, 53]]]], ["block", "if", [["get", "event.attachments", ["loc", [null, [33, 6], [33, 23]]]]], [], 3, null, ["loc", [null, [33, 0], [43, 7]]]], ["block", "if", [["subexpr", "not", [["get", "isReplyDisabled", ["loc", [null, [44, 11], [44, 26]]]]], [], ["loc", [null, [44, 6], [44, 27]]]]], [], 4, null, ["loc", [null, [44, 0], [49, 7]]]]],
       locals: [],
       templates: [child0, child1, child2, child3, child4]
     };
@@ -46592,6 +46668,7 @@ define('frontend-cp/components/ko-timeline/component', ['exports', 'ember', 'npm
     onLoadPostsBelow: null,
     onLoadPostsAbove: null,
     onQueryParamsUpdate: null,
+    availableReplyChannels: null,
 
     topPostsAvailable: null,
     bottomPostsAvailable: null,
@@ -47030,7 +47107,7 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
                   "column": 6
                 },
                 "end": {
-                  "line": 49,
+                  "line": 51,
                   "column": 6
                 }
               },
@@ -47054,7 +47131,7 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
               morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
               return morphs;
             },
-            statements: [["inline", "ko-feed/item", [], ["event", ["subexpr", "@mut", [["get", "post", ["loc", [null, [44, 14], [44, 18]]]]], [], []], "parent", ["subexpr", "@mut", [["get", "model", ["loc", [null, [45, 15], [45, 20]]]]], [], []], "isReplyDisabled", ["subexpr", "@mut", [["get", "isReplyDisabled", ["loc", [null, [46, 24], [46, 39]]]]], [], []], "onReplyWithQuote", ["subexpr", "action", [["get", "onReplyWithQuote", ["loc", [null, [47, 33], [47, 49]]]], ["get", "post", ["loc", [null, [47, 50], [47, 54]]]]], [], ["loc", [null, [47, 25], [47, 55]]]]], ["loc", [null, [43, 8], [48, 10]]]]],
+            statements: [["inline", "ko-feed/item", [], ["event", ["subexpr", "@mut", [["get", "post", ["loc", [null, [44, 14], [44, 18]]]]], [], []], "parent", ["subexpr", "@mut", [["get", "model", ["loc", [null, [45, 15], [45, 20]]]]], [], []], "isReplyDisabled", ["subexpr", "@mut", [["get", "isReplyDisabled", ["loc", [null, [46, 24], [46, 39]]]]], [], []], "canReplyToPost", ["subexpr", "contains", [["get", "post.sourceChannel", ["loc", [null, [47, 33], [47, 51]]]], ["get", "availableReplyChannels", ["loc", [null, [47, 52], [47, 74]]]]], [], ["loc", [null, [47, 23], [47, 75]]]], "onReplyToPost", ["subexpr", "action", [["get", "onReplyToPost", ["loc", [null, [48, 30], [48, 43]]]], ["get", "post", ["loc", [null, [48, 44], [48, 48]]]]], [], ["loc", [null, [48, 22], [48, 49]]]], "onReplyWithQuote", ["subexpr", "action", [["get", "onReplyWithQuote", ["loc", [null, [49, 33], [49, 49]]]], ["get", "post", ["loc", [null, [49, 50], [49, 54]]]]], [], ["loc", [null, [49, 25], [49, 55]]]]], ["loc", [null, [43, 8], [50, 10]]]]],
             locals: [],
             templates: []
           };
@@ -47066,11 +47143,11 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 50,
+                  "line": 52,
                   "column": 6
                 },
                 "end": {
-                  "line": 52,
+                  "line": 54,
                   "column": 6
                 }
               },
@@ -47094,7 +47171,7 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
               morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
               return morphs;
             },
-            statements: [["inline", "ko-feed/activity", [], ["activity", ["subexpr", "@mut", [["get", "post", ["loc", [null, [51, 36], [51, 40]]]]], [], []]], ["loc", [null, [51, 8], [51, 42]]]]],
+            statements: [["inline", "ko-feed/activity", [], ["activity", ["subexpr", "@mut", [["get", "post", ["loc", [null, [53, 36], [53, 40]]]]], [], []]], ["loc", [null, [53, 8], [53, 42]]]]],
             locals: [],
             templates: []
           };
@@ -47109,7 +47186,7 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
                 "column": 4
               },
               "end": {
-                "line": 53,
+                "line": 55,
                 "column": 4
               }
             },
@@ -47134,7 +47211,7 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
             dom.insertBoundary(fragment, null);
             return morphs;
           },
-          statements: [["block", "if", [["subexpr", "or", [["subexpr", "eq", [["get", "post.constructor.modelName", ["loc", [null, [42, 20], [42, 46]]]], "post"], [], ["loc", [null, [42, 16], [42, 54]]]], ["subexpr", "eq", [["get", "post.constructor.modelName", ["loc", [null, [42, 59], [42, 85]]]], "user-note"], [], ["loc", [null, [42, 55], [42, 98]]]], ["subexpr", "eq", [["get", "post.constructor.modelName", ["loc", [null, [42, 103], [42, 129]]]], "organization-note"], [], ["loc", [null, [42, 99], [42, 150]]]]], [], ["loc", [null, [42, 12], [42, 151]]]]], [], 0, null, ["loc", [null, [42, 6], [49, 13]]]], ["block", "if", [["subexpr", "or", [["subexpr", "eq", [["get", "post.constructor.modelName", ["loc", [null, [50, 20], [50, 46]]]], "activity"], [], ["loc", [null, [50, 16], [50, 58]]]], ["subexpr", "eq", [["get", "post.constructor.modelName", ["loc", [null, [50, 63], [50, 89]]]], "event"], [], ["loc", [null, [50, 59], [50, 98]]]]], [], ["loc", [null, [50, 12], [50, 99]]]]], [], 1, null, ["loc", [null, [50, 6], [52, 13]]]]],
+          statements: [["block", "if", [["subexpr", "or", [["subexpr", "eq", [["get", "post.constructor.modelName", ["loc", [null, [42, 20], [42, 46]]]], "post"], [], ["loc", [null, [42, 16], [42, 54]]]], ["subexpr", "eq", [["get", "post.constructor.modelName", ["loc", [null, [42, 59], [42, 85]]]], "user-note"], [], ["loc", [null, [42, 55], [42, 98]]]], ["subexpr", "eq", [["get", "post.constructor.modelName", ["loc", [null, [42, 103], [42, 129]]]], "organization-note"], [], ["loc", [null, [42, 99], [42, 150]]]]], [], ["loc", [null, [42, 12], [42, 151]]]]], [], 0, null, ["loc", [null, [42, 6], [51, 13]]]], ["block", "if", [["subexpr", "or", [["subexpr", "eq", [["get", "post.constructor.modelName", ["loc", [null, [52, 20], [52, 46]]]], "activity"], [], ["loc", [null, [52, 16], [52, 58]]]], ["subexpr", "eq", [["get", "post.constructor.modelName", ["loc", [null, [52, 63], [52, 89]]]], "event"], [], ["loc", [null, [52, 59], [52, 98]]]]], [], ["loc", [null, [52, 12], [52, 99]]]]], [], 1, null, ["loc", [null, [52, 6], [54, 13]]]]],
           locals: ["post"],
           templates: [child0, child1]
         };
@@ -47146,11 +47223,11 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
             "loc": {
               "source": null,
               "start": {
-                "line": 55,
+                "line": 57,
                 "column": 4
               },
               "end": {
-                "line": 58,
+                "line": 60,
                 "column": 4
               }
             },
@@ -47179,7 +47256,7 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
             morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
             return morphs;
           },
-          statements: [["content", "totalNotes", ["loc", [null, [57, 91], [57, 105]]]]],
+          statements: [["content", "totalNotes", ["loc", [null, [59, 91], [59, 105]]]]],
           locals: [],
           templates: []
         };
@@ -47192,11 +47269,11 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 62,
+                  "line": 64,
                   "column": 6
                 },
                 "end": {
-                  "line": 64,
+                  "line": 66,
                   "column": 6
                 }
               },
@@ -47220,7 +47297,7 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
               morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
               return morphs;
             },
-            statements: [["inline", "ko-loader", [], ["large", true], ["loc", [null, [63, 8], [63, 32]]]]],
+            statements: [["inline", "ko-loader", [], ["large", true], ["loc", [null, [65, 8], [65, 32]]]]],
             locals: [],
             templates: []
           };
@@ -47232,11 +47309,11 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 64,
+                  "line": 66,
                   "column": 6
                 },
                 "end": {
-                  "line": 66,
+                  "line": 68,
                   "column": 6
                 }
               },
@@ -47264,7 +47341,7 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
               morphs[1] = dom.createMorphAt(element0, 0, 0);
               return morphs;
             },
-            statements: [["attribute", "onclick", ["subexpr", "action", [["get", "onLoadPostsBelow", ["loc", [null, [65, 28], [65, 44]]]], ["subexpr", "hash", [], ["model", ["get", "model", ["loc", [null, [65, 57], [65, 62]]]], "filter", ["get", "filter", ["loc", [null, [65, 70], [65, 76]]]], "sortOrder", ["get", "sortOrder", ["loc", [null, [65, 87], [65, 96]]]], "postId", ["get", "bottomPost.id", ["loc", [null, [65, 104], [65, 117]]]], "including", false], ["loc", [null, [65, 45], [65, 134]]]]], [], ["loc", [null, [65, 19], [65, 136]]]]], ["inline", "t", ["cases.posts.load_more"], [], ["loc", [null, [65, 137], [65, 166]]]]],
+            statements: [["attribute", "onclick", ["subexpr", "action", [["get", "onLoadPostsBelow", ["loc", [null, [67, 28], [67, 44]]]], ["subexpr", "hash", [], ["model", ["get", "model", ["loc", [null, [67, 57], [67, 62]]]], "filter", ["get", "filter", ["loc", [null, [67, 70], [67, 76]]]], "sortOrder", ["get", "sortOrder", ["loc", [null, [67, 87], [67, 96]]]], "postId", ["get", "bottomPost.id", ["loc", [null, [67, 104], [67, 117]]]], "including", false], ["loc", [null, [67, 45], [67, 134]]]]], [], ["loc", [null, [67, 19], [67, 136]]]]], ["inline", "t", ["cases.posts.load_more"], [], ["loc", [null, [67, 137], [67, 166]]]]],
             locals: [],
             templates: []
           };
@@ -47275,11 +47352,11 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
             "loc": {
               "source": null,
               "start": {
-                "line": 60,
+                "line": 62,
                 "column": 2
               },
               "end": {
-                "line": 68,
+                "line": 70,
                 "column": 2
               }
             },
@@ -47310,7 +47387,7 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
             morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
             return morphs;
           },
-          statements: [["block", "if", [["get", "loadingBottom", ["loc", [null, [62, 12], [62, 25]]]]], [], 0, 1, ["loc", [null, [62, 6], [66, 13]]]]],
+          statements: [["block", "if", [["get", "loadingBottom", ["loc", [null, [64, 12], [64, 25]]]]], [], 0, 1, ["loc", [null, [64, 6], [68, 13]]]]],
           locals: [],
           templates: [child0, child1]
         };
@@ -47325,7 +47402,7 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
               "column": 0
             },
             "end": {
-              "line": 69,
+              "line": 71,
               "column": 0
             }
           },
@@ -47383,7 +47460,7 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [["block", "if", [["get", "controlsVisible", ["loc", [null, [3, 10], [3, 25]]]]], [], 0, null, ["loc", [null, [3, 4], [28, 11]]]], ["block", "if", [["get", "topPostsAvailable", ["loc", [null, [31, 8], [31, 25]]]]], [], 1, null, ["loc", [null, [31, 2], [39, 9]]]], ["block", "each", [["get", "posts", ["loc", [null, [41, 12], [41, 17]]]]], [], 2, null, ["loc", [null, [41, 4], [53, 13]]]], ["block", "if", [["subexpr", "gt", [["get", "totalNotes", ["loc", [null, [55, 14], [55, 24]]]], 20], [], ["loc", [null, [55, 10], [55, 28]]]]], [], 3, null, ["loc", [null, [55, 4], [58, 11]]]], ["block", "if", [["get", "bottomPostsAvailable", ["loc", [null, [60, 8], [60, 28]]]]], [], 4, null, ["loc", [null, [60, 2], [68, 9]]]]],
+        statements: [["block", "if", [["get", "controlsVisible", ["loc", [null, [3, 10], [3, 25]]]]], [], 0, null, ["loc", [null, [3, 4], [28, 11]]]], ["block", "if", [["get", "topPostsAvailable", ["loc", [null, [31, 8], [31, 25]]]]], [], 1, null, ["loc", [null, [31, 2], [39, 9]]]], ["block", "each", [["get", "posts", ["loc", [null, [41, 12], [41, 17]]]]], [], 2, null, ["loc", [null, [41, 4], [55, 13]]]], ["block", "if", [["subexpr", "gt", [["get", "totalNotes", ["loc", [null, [57, 14], [57, 24]]]], 20], [], ["loc", [null, [57, 10], [57, 28]]]]], [], 3, null, ["loc", [null, [57, 4], [60, 11]]]], ["block", "if", [["get", "bottomPostsAvailable", ["loc", [null, [62, 8], [62, 28]]]]], [], 4, null, ["loc", [null, [62, 2], [70, 9]]]]],
         locals: [],
         templates: [child0, child1, child2, child3, child4]
       };
@@ -47398,7 +47475,7 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
             "column": 0
           },
           "end": {
-            "line": 70,
+            "line": 72,
             "column": 0
           }
         },
@@ -47420,7 +47497,7 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["block", "unless", [["get", "model.isNew", ["loc", [null, [1, 10], [1, 21]]]]], [], 0, null, ["loc", [null, [1, 0], [69, 11]]]]],
+      statements: [["block", "unless", [["get", "model.isNew", ["loc", [null, [1, 10], [1, 21]]]]], [], 0, null, ["loc", [null, [1, 0], [71, 11]]]]],
       locals: [],
       templates: [child0]
     };
@@ -58978,7 +59055,7 @@ define('frontend-cp/models/case', ['exports', 'ember-data', 'model-fragments', '
     // used in the creation steps
     creationTimestamp: null,
 
-    saveWithPost: function saveWithPost(contents, channel, attachmentIds, replyOptions) {
+    saveWithPost: function saveWithPost(contents, channel, attachmentIds, replyOptions, inReplyToUuid) {
       var _this = this;
 
       var account = channel.get('account');
@@ -58990,6 +59067,7 @@ define('frontend-cp/models/case', ['exports', 'ember-data', 'model-fragments', '
         assigneeAgent: this.get('assigneeAgent'),
         channelType: channelType,
         contents: contents,
+        inReplyToUuid: inReplyToUuid,
         options: replyOptions.copy(),
         status: this.get('status'),
         caseType: this.get('caseType'),
@@ -59526,6 +59604,7 @@ define('frontend-cp/models/macro', ['exports', 'ember-data', 'model-fragments'],
 });
 define('frontend-cp/models/mailbox', ['exports', 'ember-data', 'frontend-cp/models/account'], function (exports, _emberData, _frontendCpModelsAccount) {
   exports['default'] = _frontendCpModelsAccount['default'].extend({
+    uuid: _emberData['default'].attr('string'),
     service: _emberData['default'].attr('string'),
     encryption: _emberData['default'].attr('string'),
     address: _emberData['default'].attr('string'),
@@ -59749,6 +59828,7 @@ define('frontend-cp/models/post', ['exports', 'ember-data'], function (exports, 
     subject: _emberData['default'].attr('string'),
     contents: _emberData['default'].attr('string'),
     creator: _emberData['default'].belongsTo('user', { async: false }),
+    sourceChannel: _emberData['default'].belongsTo('channel', { async: false }),
     identity: _emberData['default'].belongsTo('identity', { async: false }),
     attachments: _emberData['default'].hasMany('attachment', { async: true }),
     downloadAll: _emberData['default'].attr('string'),
@@ -61671,6 +61751,7 @@ define('frontend-cp/services/case-tab', ['exports', 'ember', 'npm:lodash', 'fron
         topPostsAvailable: false,
         errorMap: _ember['default'].Object.create(),
         isSaving: false,
+        inReplyToUuid: null,
         suggestedPeople: null,
         suggestedPeopleTotal: 0,
         suggestedPeopleLoading: false,
@@ -61726,6 +61807,7 @@ define('frontend-cp/services/case-tab', ['exports', 'ember', 'npm:lodash', 'fron
         customFields: _ember['default'].Object.create()
       }));
       state.set('isSaving', false);
+      state.set('inReplyToUuid', null);
       state.set('postContent', '');
       state.set('replyOptions.cc', []);
 
@@ -61795,6 +61877,11 @@ define('frontend-cp/services/case-tab', ['exports', 'ember', 'npm:lodash', 'fron
       this.persistTabState(tabId);
     },
 
+    setInReplyTo: function setInReplyTo(tabId, replyToUUID) {
+      this.getState(tabId).set('inReplyToUuid', replyToUUID);
+      this.persistTabState(tabId);
+    },
+
     setChannel: function setChannel(tabId, channel) {
       var state = this.getState(tabId);
       var channelId = undefined;
@@ -61832,6 +61919,17 @@ define('frontend-cp/services/case-tab', ['exports', 'ember', 'npm:lodash', 'fron
       this.persistTabState(tabId);
       this.get('metrics').trackEvent({
         event: 'CC Participant Added',
+        category: 'Case CC',
+        action: 'click',
+        label: 'add button'
+      });
+    },
+
+    setCCs: function setCCs(tabId, emails) {
+      this.getState(tabId).set('replyOptions.cc', emails);
+      this.persistTabState(tabId);
+      this.get('metrics').trackEvent({
+        event: 'CC Participants Set',
         category: 'Case CC',
         action: 'click',
         label: 'add button'
@@ -62203,12 +62301,13 @@ define('frontend-cp/services/case-tab', ['exports', 'ember', 'npm:lodash', 'fron
       var uploads = state.get('attachedPostFiles');
       var attachmentIds = uploads.mapBy('attachmentId').compact();
       var replyOptions = state.get('replyOptions');
+      var inReplyToUuid = state.get('inReplyToUuid');
       var post = state.get('postContent').trim();
 
       state.set('isSaving', true);
       this.updateModel(model, state);
 
-      return model.saveWithPost(post, channel, attachmentIds, replyOptions).then(function (caseReply) {
+      return model.saveWithPost(post, channel, attachmentIds, replyOptions, inReplyToUuid).then(function (caseReply) {
         caseReply.get('posts').forEach(function (post) {
           _this5.addPostFromReply(tabId, model, post, sortOrder);
         });
@@ -78364,6 +78463,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+1b04c34d"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+d8ec37a3"});
 }
 /* jshint ignore:end */
