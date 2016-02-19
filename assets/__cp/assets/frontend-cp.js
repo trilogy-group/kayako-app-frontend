@@ -8407,7 +8407,7 @@ define("frontend-cp/components/ko-admin/case-forms/edit/fields/template", ["expo
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [["block", "power-select", [], ["class", ["subexpr", "concat", ["ember-power-select-wrapper--ko ember-power-select-wrapper--size-medium", ["subexpr", "qa-cls", [" qa-admin_case-forms_edit_fields__configure-dropdown"], [], ["loc", [null, [34, 91], [34, 154]]]]], [], ["loc", [null, [34, 10], [34, 155]]]], "placeholder", ["subexpr", "t", ["admin.caseforms.label.add_new_field"], [], ["loc", [null, [35, 16], [35, 57]]]], "options", ["subexpr", "@mut", [["get", "unusedCaseFields", ["loc", [null, [36, 12], [36, 28]]]]], [], []], "renderInPlace", true, "searchEnabled", false, "onchange", ["subexpr", "@mut", [["get", "onCaseFieldAddition", ["loc", [null, [39, 13], [39, 32]]]]], [], []]], 0, null, ["loc", [null, [33, 2], [41, 19]]]]],
+        statements: [["block", "ko-select", [], ["class", ["subexpr", "qa-cls", ["qa-admin_case-forms_edit_fields__configure-dropdown"], [], ["loc", [null, [34, 10], [34, 72]]]], "placeholder", ["subexpr", "t", ["admin.caseforms.label.add_new_field"], [], ["loc", [null, [35, 16], [35, 57]]]], "options", ["subexpr", "@mut", [["get", "unusedCaseFields", ["loc", [null, [36, 12], [36, 28]]]]], [], []], "onChange", ["subexpr", "@mut", [["get", "onCaseFieldAddition", ["loc", [null, [37, 13], [37, 32]]]]], [], []], "size", "medium"], 0, null, ["loc", [null, [33, 2], [41, 16]]]]],
         locals: [],
         templates: [child0]
       };
@@ -10802,7 +10802,7 @@ define("frontend-cp/components/ko-admin/macros/action/priority/template", ["expo
                   "column": 4
                 },
                 "end": {
-                  "line": 10,
+                  "line": 5,
                   "column": 4
                 }
               },
@@ -10826,7 +10826,7 @@ define("frontend-cp/components/ko-admin/macros/action/priority/template", ["expo
               morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
               return morphs;
             },
-            statements: [["content", "priority.label", ["loc", [null, [9, 6], [9, 24]]]]],
+            statements: [["content", "priority.label", ["loc", [null, [4, 6], [4, 24]]]]],
             locals: ["priority"],
             templates: []
           };
@@ -10841,7 +10841,7 @@ define("frontend-cp/components/ko-admin/macros/action/priority/template", ["expo
                 "column": 2
               },
               "end": {
-                "line": 11,
+                "line": 6,
                 "column": 2
               }
             },
@@ -10863,7 +10863,7 @@ define("frontend-cp/components/ko-admin/macros/action/priority/template", ["expo
             dom.insertBoundary(fragment, null);
             return morphs;
           },
-          statements: [["block", "power-select", [], ["options", ["subexpr", "@mut", [["get", "priorities", ["loc", [null, [4, 14], [4, 24]]]]], [], []], "searchEnabled", false, "selected", ["subexpr", "@mut", [["get", "priority", ["loc", [null, [6, 15], [6, 23]]]]], [], []], "class", "ember-power-select-wrapper--ko ember-power-select-wrapper--size-medium", "onchange", ["subexpr", "action", ["selectPriority"], [], ["loc", [null, [8, 15], [8, 40]]]]], 0, null, ["loc", [null, [3, 4], [10, 21]]]]],
+          statements: [["block", "ko-select", [], ["options", ["subexpr", "@mut", [["get", "priorities", ["loc", [null, [3, 25], [3, 35]]]]], [], []], "onChange", ["subexpr", "action", ["selectPriority"], [], ["loc", [null, [3, 45], [3, 70]]]], "selected", ["subexpr", "@mut", [["get", "priority", ["loc", [null, [3, 80], [3, 88]]]]], [], []]], 0, null, ["loc", [null, [3, 4], [5, 18]]]]],
           locals: [],
           templates: [child0]
         };
@@ -10878,7 +10878,7 @@ define("frontend-cp/components/ko-admin/macros/action/priority/template", ["expo
               "column": 0
             },
             "end": {
-              "line": 12,
+              "line": 7,
               "column": 0
             }
           },
@@ -10900,7 +10900,7 @@ define("frontend-cp/components/ko-admin/macros/action/priority/template", ["expo
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [["block", "unless", [["get", "macro.priorityAction", ["loc", [null, [2, 12], [2, 32]]]]], [], 0, null, ["loc", [null, [2, 2], [11, 13]]]]],
+        statements: [["block", "unless", [["get", "macro.priorityAction", ["loc", [null, [2, 12], [2, 32]]]]], [], 0, null, ["loc", [null, [2, 2], [6, 13]]]]],
         locals: [],
         templates: [child0]
       };
@@ -10915,7 +10915,7 @@ define("frontend-cp/components/ko-admin/macros/action/priority/template", ["expo
             "column": 0
           },
           "end": {
-            "line": 13,
+            "line": 8,
             "column": 0
           }
         },
@@ -10937,7 +10937,7 @@ define("frontend-cp/components/ko-admin/macros/action/priority/template", ["expo
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["block", "ko-admin/macros/action", [], ["action", ["subexpr", "@mut", [["get", "action", ["loc", [null, [1, 33], [1, 39]]]]], [], []], "types", ["subexpr", "@mut", [["get", "types", ["loc", [null, [1, 46], [1, 51]]]]], [], []]], 0, null, ["loc", [null, [1, 0], [12, 27]]]]],
+      statements: [["block", "ko-admin/macros/action", [], ["action", ["subexpr", "@mut", [["get", "action", ["loc", [null, [1, 33], [1, 39]]]]], [], []], "types", ["subexpr", "@mut", [["get", "types", ["loc", [null, [1, 46], [1, 51]]]]], [], []]], 0, null, ["loc", [null, [1, 0], [7, 27]]]]],
       locals: [],
       templates: [child0]
     };
@@ -11175,7 +11175,7 @@ define("frontend-cp/components/ko-admin/macros/action/reply-type/template", ["ex
                 "column": 2
               },
               "end": {
-                "line": 10,
+                "line": 4,
                 "column": 2
               }
             },
@@ -11199,7 +11199,7 @@ define("frontend-cp/components/ko-admin/macros/action/reply-type/template", ["ex
             morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
             return morphs;
           },
-          statements: [["content", "type.label", ["loc", [null, [9, 4], [9, 18]]]]],
+          statements: [["content", "type.label", ["loc", [null, [3, 4], [3, 18]]]]],
           locals: ["type"],
           templates: []
         };
@@ -11214,7 +11214,7 @@ define("frontend-cp/components/ko-admin/macros/action/reply-type/template", ["ex
               "column": 0
             },
             "end": {
-              "line": 11,
+              "line": 5,
               "column": 0
             }
           },
@@ -11236,7 +11236,7 @@ define("frontend-cp/components/ko-admin/macros/action/reply-type/template", ["ex
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [["block", "power-select", [], ["searchEnabled", false, "options", ["subexpr", "@mut", [["get", "availableTypes", ["loc", [null, [4, 12], [4, 26]]]]], [], []], "selected", ["subexpr", "@mut", [["get", "selectedType", ["loc", [null, [5, 13], [5, 25]]]]], [], []], "class", "ember-power-select-wrapper--ko ember-power-select-wrapper--size-medium", "onchange", ["subexpr", "action", ["selectType"], [], ["loc", [null, [7, 13], [7, 34]]]]], 0, null, ["loc", [null, [2, 2], [10, 19]]]]],
+        statements: [["block", "ko-select", [], ["options", ["subexpr", "@mut", [["get", "availableTypes", ["loc", [null, [2, 23], [2, 37]]]]], [], []], "selected", ["subexpr", "@mut", [["get", "selectedType", ["loc", [null, [2, 47], [2, 59]]]]], [], []], "onChange", ["subexpr", "action", ["selectType"], [], ["loc", [null, [2, 69], [2, 90]]]]], 0, null, ["loc", [null, [2, 2], [4, 16]]]]],
         locals: [],
         templates: [child0]
       };
@@ -11251,7 +11251,7 @@ define("frontend-cp/components/ko-admin/macros/action/reply-type/template", ["ex
             "column": 0
           },
           "end": {
-            "line": 12,
+            "line": 6,
             "column": 0
           }
         },
@@ -11273,7 +11273,7 @@ define("frontend-cp/components/ko-admin/macros/action/reply-type/template", ["ex
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["block", "ko-admin/macros/action", [], ["action", ["subexpr", "@mut", [["get", "action", ["loc", [null, [1, 33], [1, 39]]]]], [], []]], 0, null, ["loc", [null, [1, 0], [11, 27]]]]],
+      statements: [["block", "ko-admin/macros/action", [], ["action", ["subexpr", "@mut", [["get", "action", ["loc", [null, [1, 33], [1, 39]]]]], [], []]], 0, null, ["loc", [null, [1, 0], [5, 27]]]]],
       locals: [],
       templates: [child0]
     };
@@ -11316,7 +11316,7 @@ define("frontend-cp/components/ko-admin/macros/action/status/template", ["export
                 "column": 2
               },
               "end": {
-                "line": 9,
+                "line": 4,
                 "column": 2
               }
             },
@@ -11340,7 +11340,7 @@ define("frontend-cp/components/ko-admin/macros/action/status/template", ["export
             morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
             return morphs;
           },
-          statements: [["content", "status.label", ["loc", [null, [8, 4], [8, 20]]]]],
+          statements: [["content", "status.label", ["loc", [null, [3, 4], [3, 20]]]]],
           locals: ["status"],
           templates: []
         };
@@ -11355,7 +11355,7 @@ define("frontend-cp/components/ko-admin/macros/action/status/template", ["export
               "column": 0
             },
             "end": {
-              "line": 10,
+              "line": 5,
               "column": 0
             }
           },
@@ -11377,7 +11377,7 @@ define("frontend-cp/components/ko-admin/macros/action/status/template", ["export
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [["block", "power-select", [], ["options", ["subexpr", "@mut", [["get", "statuses", ["loc", [null, [3, 12], [3, 20]]]]], [], []], "searchEnabled", false, "selected", ["subexpr", "@mut", [["get", "status", ["loc", [null, [5, 13], [5, 19]]]]], [], []], "class", "ember-power-select-wrapper--ko ember-power-select-wrapper--size-medium", "onchange", ["subexpr", "action", ["selectStatus"], [], ["loc", [null, [7, 13], [7, 36]]]]], 0, null, ["loc", [null, [2, 2], [9, 19]]]]],
+        statements: [["block", "ko-select", [], ["options", ["subexpr", "@mut", [["get", "statuses", ["loc", [null, [2, 23], [2, 31]]]]], [], []], "selected", ["subexpr", "@mut", [["get", "status", ["loc", [null, [2, 41], [2, 47]]]]], [], []], "onChange", ["subexpr", "action", ["selectStatus"], [], ["loc", [null, [2, 57], [2, 80]]]]], 0, null, ["loc", [null, [2, 2], [4, 16]]]]],
         locals: [],
         templates: [child0]
       };
@@ -11392,7 +11392,7 @@ define("frontend-cp/components/ko-admin/macros/action/status/template", ["export
             "column": 0
           },
           "end": {
-            "line": 11,
+            "line": 6,
             "column": 0
           }
         },
@@ -11414,7 +11414,7 @@ define("frontend-cp/components/ko-admin/macros/action/status/template", ["export
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["block", "ko-admin/macros/action", [], ["action", ["subexpr", "@mut", [["get", "action", ["loc", [null, [1, 33], [1, 39]]]]], [], []]], 0, null, ["loc", [null, [1, 0], [10, 27]]]]],
+      statements: [["block", "ko-admin/macros/action", [], ["action", ["subexpr", "@mut", [["get", "action", ["loc", [null, [1, 33], [1, 39]]]]], [], []]], 0, null, ["loc", [null, [1, 0], [5, 27]]]]],
       locals: [],
       templates: [child0]
     };
@@ -11434,7 +11434,7 @@ define("frontend-cp/components/ko-admin/macros/action/template", ["exports"], fu
                 "column": 6
               },
               "end": {
-                "line": 21,
+                "line": 16,
                 "column": 6
               }
             },
@@ -11445,7 +11445,7 @@ define("frontend-cp/components/ko-admin/macros/action/template", ["exports"], fu
           hasRendered: false,
           buildFragment: function buildFragment(dom) {
             var el0 = dom.createDocumentFragment();
-            var el1 = dom.createTextNode("          ");
+            var el1 = dom.createTextNode("        ");
             dom.appendChild(el0, el1);
             var el1 = dom.createComment("");
             dom.appendChild(el0, el1);
@@ -11458,7 +11458,7 @@ define("frontend-cp/components/ko-admin/macros/action/template", ["exports"], fu
             morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
             return morphs;
           },
-          statements: [["content", "type.label", ["loc", [null, [20, 10], [20, 24]]]]],
+          statements: [["content", "type.label", ["loc", [null, [15, 8], [15, 22]]]]],
           locals: ["type"],
           templates: []
         };
@@ -11473,7 +11473,7 @@ define("frontend-cp/components/ko-admin/macros/action/template", ["exports"], fu
               "column": 2
             },
             "end": {
-              "line": 23,
+              "line": 18,
               "column": 2
             }
           },
@@ -11504,7 +11504,7 @@ define("frontend-cp/components/ko-admin/macros/action/template", ["exports"], fu
           morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
           return morphs;
         },
-        statements: [["block", "power-select", [], ["searchEnabled", false, "options", ["subexpr", "@mut", [["get", "types", ["loc", [null, [16, 16], [16, 21]]]]], [], []], "selected", ["subexpr", "@mut", [["get", "activeType", ["loc", [null, [17, 17], [17, 27]]]]], [], []], "class", "ember-power-select-wrapper--ko ember-power-select-wrapper--size-medium", "onchange", ["subexpr", "action", ["selectType"], [], ["loc", [null, [19, 17], [19, 38]]]]], 0, null, ["loc", [null, [14, 6], [21, 23]]]]],
+        statements: [["block", "ko-select", [], ["options", ["subexpr", "@mut", [["get", "types", ["loc", [null, [14, 27], [14, 32]]]]], [], []], "selected", ["subexpr", "@mut", [["get", "activeType", ["loc", [null, [14, 42], [14, 52]]]]], [], []], "onChange", ["subexpr", "action", ["selectType"], [], ["loc", [null, [14, 62], [14, 83]]]]], 0, null, ["loc", [null, [14, 6], [16, 20]]]]],
         locals: [],
         templates: [child0]
       };
@@ -11519,7 +11519,7 @@ define("frontend-cp/components/ko-admin/macros/action/template", ["exports"], fu
             "column": 0
           },
           "end": {
-            "line": 29,
+            "line": 24,
             "column": 0
           }
         },
@@ -11594,7 +11594,7 @@ define("frontend-cp/components/ko-admin/macros/action/template", ["exports"], fu
         morphs[3] = dom.createMorphAt(dom.childAt(element1, [5]), 1, 1);
         return morphs;
       },
-      statements: [["attribute", "onclick", ["subexpr", "action", ["remove"], [], ["loc", [null, [1, 68], [1, 87]]]]], ["content", "action.label", ["loc", [null, [7, 8], [7, 24]]]], ["block", "if", [["get", "types", ["loc", [null, [12, 8], [12, 13]]]]], [], 0, null, ["loc", [null, [12, 2], [23, 9]]]], ["content", "yield", ["loc", [null, [26, 4], [26, 13]]]]],
+      statements: [["attribute", "onclick", ["subexpr", "action", ["remove"], [], ["loc", [null, [1, 68], [1, 87]]]]], ["content", "action.label", ["loc", [null, [7, 8], [7, 24]]]], ["block", "if", [["get", "types", ["loc", [null, [12, 8], [12, 13]]]]], [], 0, null, ["loc", [null, [12, 2], [18, 9]]]], ["content", "yield", ["loc", [null, [21, 4], [21, 13]]]]],
       locals: [],
       templates: [child0]
     };
@@ -11637,7 +11637,7 @@ define("frontend-cp/components/ko-admin/macros/action/type/template", ["exports"
                 "column": 2
               },
               "end": {
-                "line": 9,
+                "line": 4,
                 "column": 2
               }
             },
@@ -11661,7 +11661,7 @@ define("frontend-cp/components/ko-admin/macros/action/type/template", ["exports"
             morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
             return morphs;
           },
-          statements: [["content", "type.label", ["loc", [null, [8, 4], [8, 18]]]]],
+          statements: [["content", "type.label", ["loc", [null, [3, 4], [3, 18]]]]],
           locals: ["type"],
           templates: []
         };
@@ -11676,7 +11676,7 @@ define("frontend-cp/components/ko-admin/macros/action/type/template", ["exports"
               "column": 0
             },
             "end": {
-              "line": 10,
+              "line": 5,
               "column": 0
             }
           },
@@ -11698,7 +11698,7 @@ define("frontend-cp/components/ko-admin/macros/action/type/template", ["exports"
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [["block", "power-select", [], ["options", ["subexpr", "@mut", [["get", "types", ["loc", [null, [3, 12], [3, 17]]]]], [], []], "searchEnabled", false, "selected", ["subexpr", "@mut", [["get", "type", ["loc", [null, [5, 13], [5, 17]]]]], [], []], "class", "ember-power-select-wrapper--ko ember-power-select-wrapper--size-medium", "onchange", ["subexpr", "action", ["selectType"], [], ["loc", [null, [7, 13], [7, 34]]]]], 0, null, ["loc", [null, [2, 2], [9, 19]]]]],
+        statements: [["block", "ko-select", [], ["options", ["subexpr", "@mut", [["get", "types", ["loc", [null, [2, 23], [2, 28]]]]], [], []], "selected", ["subexpr", "@mut", [["get", "type", ["loc", [null, [2, 38], [2, 42]]]]], [], []], "onChange", ["subexpr", "action", ["selectType"], [], ["loc", [null, [2, 52], [2, 73]]]]], 0, null, ["loc", [null, [2, 2], [4, 16]]]]],
         locals: [],
         templates: [child0]
       };
@@ -11713,7 +11713,7 @@ define("frontend-cp/components/ko-admin/macros/action/type/template", ["exports"
             "column": 0
           },
           "end": {
-            "line": 11,
+            "line": 6,
             "column": 0
           }
         },
@@ -11735,7 +11735,7 @@ define("frontend-cp/components/ko-admin/macros/action/type/template", ["exports"
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["block", "ko-admin/macros/action", [], ["action", ["subexpr", "@mut", [["get", "action", ["loc", [null, [1, 33], [1, 39]]]]], [], []]], 0, null, ["loc", [null, [1, 0], [10, 27]]]]],
+      statements: [["block", "ko-admin/macros/action", [], ["action", ["subexpr", "@mut", [["get", "action", ["loc", [null, [1, 33], [1, 39]]]]], [], []]], 0, null, ["loc", [null, [1, 0], [5, 27]]]]],
       locals: [],
       templates: [child0]
     };
@@ -12142,7 +12142,7 @@ define("frontend-cp/components/ko-admin/macros/edit/template", ["exports"], func
                     "column": 8
                   },
                   "end": {
-                    "line": 42,
+                    "line": 39,
                     "column": 8
                   }
                 },
@@ -12166,7 +12166,7 @@ define("frontend-cp/components/ko-admin/macros/edit/template", ["exports"], func
                 morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
                 return morphs;
               },
-              statements: [["content", "team.title", ["loc", [null, [41, 12], [41, 26]]]]],
+              statements: [["content", "team.title", ["loc", [null, [38, 12], [38, 26]]]]],
               locals: ["team"],
               templates: []
             };
@@ -12181,7 +12181,7 @@ define("frontend-cp/components/ko-admin/macros/edit/template", ["exports"], func
                   "column": 4
                 },
                 "end": {
-                  "line": 45,
+                  "line": 42,
                   "column": 4
                 }
               },
@@ -12244,7 +12244,7 @@ define("frontend-cp/components/ko-admin/macros/edit/template", ["exports"], func
               morphs[5] = dom.createMorphAt(fragment, 11, 11, contextualElement);
               return morphs;
             },
-            statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [23, 6], [23, 96]]]], ["inline", "ko-radio", [], ["class", ["subexpr", "qa-cls", [" qa-just-myself"], [], ["loc", [null, [24, 23], [24, 49]]]], "label", ["subexpr", "t", ["admin.macros.radio.label.me"], [], ["loc", [null, [24, 56], [24, 89]]]], "checked", ["subexpr", "eq", [["get", "macro.visibilityType", ["loc", [null, [24, 102], [24, 122]]]], "PRIVATE"], [], ["loc", [null, [24, 98], [24, 133]]]], "onRadio", ["subexpr", "action", ["setMacroSharing", "PRIVATE"], [], ["loc", [null, [24, 142], [24, 178]]]], "disabled", ["subexpr", "@mut", [["get", "isSubmitting", ["loc", [null, [24, 188], [24, 200]]]]], [], []]], ["loc", [null, [24, 6], [24, 202]]]], ["inline", "ko-radio", [], ["class", ["subexpr", "qa-cls", [" qa-every-agent"], [], ["loc", [null, [25, 23], [25, 49]]]], "label", ["subexpr", "t", ["admin.macros.radio.label.all"], [], ["loc", [null, [25, 56], [25, 90]]]], "checked", ["subexpr", "eq", [["get", "macro.visibilityType", ["loc", [null, [25, 103], [25, 123]]]], "ALL"], [], ["loc", [null, [25, 99], [25, 130]]]], "onRadio", ["subexpr", "action", ["setMacroSharing", "ALL"], [], ["loc", [null, [25, 139], [25, 171]]]], "disabled", ["subexpr", "@mut", [["get", "isSubmitting", ["loc", [null, [25, 181], [25, 193]]]]], [], []]], ["loc", [null, [25, 6], [25, 195]]]], ["inline", "ko-radio", [], ["class", ["subexpr", "qa-cls", [" qa-specific-team"], [], ["loc", [null, [28, 25], [28, 53]]]], "label", ["subexpr", "t", ["admin.macros.radio.label.specific"], [], ["loc", [null, [28, 60], [28, 99]]]], "checked", ["subexpr", "eq", [["get", "macro.visibilityType", ["loc", [null, [28, 112], [28, 132]]]], "TEAM"], [], ["loc", [null, [28, 108], [28, 140]]]], "onRadio", ["subexpr", "action", ["setMacroSharing", "TEAM"], [], ["loc", [null, [28, 149], [28, 182]]]], "disabled", ["subexpr", "@mut", [["get", "isSubmitting", ["loc", [null, [28, 192], [28, 204]]]]], [], []]], ["loc", [null, [28, 8], [28, 206]]]], ["block", "power-select", [], ["searchEnabled", false, "class", "ember-power-select-wrapper--ko ember-power-select-wrapper--size-medium", "renderInPlace", true, "placeholder", ["subexpr", "t", ["generic.select_placeholder"], [], ["loc", [null, [35, 22], [35, 54]]]], "options", ["subexpr", "@mut", [["get", "teams", ["loc", [null, [36, 18], [36, 23]]]]], [], []], "selected", ["subexpr", "@mut", [["get", "selectedTeam", ["loc", [null, [37, 19], [37, 31]]]]], [], []], "searchField", "title", "onchange", ["subexpr", "action", ["selectTeam"], [], ["loc", [null, [39, 19], [39, 40]]]], "disabled", ["subexpr", "not-eq", [["get", "macro.visibilityType", ["loc", [null, [40, 27], [40, 47]]]], "TEAM"], [], ["loc", [null, [40, 19], [40, 55]]]]], 1, null, ["loc", [null, [31, 8], [42, 25]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "macro.errors.visibilityType", ["loc", [null, [44, 36], [44, 63]]]]], [], []]], ["loc", [null, [44, 6], [44, 65]]]]],
+            statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [23, 6], [23, 96]]]], ["inline", "ko-radio", [], ["class", ["subexpr", "qa-cls", [" qa-just-myself"], [], ["loc", [null, [24, 23], [24, 49]]]], "label", ["subexpr", "t", ["admin.macros.radio.label.me"], [], ["loc", [null, [24, 56], [24, 89]]]], "checked", ["subexpr", "eq", [["get", "macro.visibilityType", ["loc", [null, [24, 102], [24, 122]]]], "PRIVATE"], [], ["loc", [null, [24, 98], [24, 133]]]], "onRadio", ["subexpr", "action", ["setMacroSharing", "PRIVATE"], [], ["loc", [null, [24, 142], [24, 178]]]], "disabled", ["subexpr", "@mut", [["get", "isSubmitting", ["loc", [null, [24, 188], [24, 200]]]]], [], []]], ["loc", [null, [24, 6], [24, 202]]]], ["inline", "ko-radio", [], ["class", ["subexpr", "qa-cls", [" qa-every-agent"], [], ["loc", [null, [25, 23], [25, 49]]]], "label", ["subexpr", "t", ["admin.macros.radio.label.all"], [], ["loc", [null, [25, 56], [25, 90]]]], "checked", ["subexpr", "eq", [["get", "macro.visibilityType", ["loc", [null, [25, 103], [25, 123]]]], "ALL"], [], ["loc", [null, [25, 99], [25, 130]]]], "onRadio", ["subexpr", "action", ["setMacroSharing", "ALL"], [], ["loc", [null, [25, 139], [25, 171]]]], "disabled", ["subexpr", "@mut", [["get", "isSubmitting", ["loc", [null, [25, 181], [25, 193]]]]], [], []]], ["loc", [null, [25, 6], [25, 195]]]], ["inline", "ko-radio", [], ["class", ["subexpr", "qa-cls", [" qa-specific-team"], [], ["loc", [null, [28, 25], [28, 53]]]], "label", ["subexpr", "t", ["admin.macros.radio.label.specific"], [], ["loc", [null, [28, 60], [28, 99]]]], "checked", ["subexpr", "eq", [["get", "macro.visibilityType", ["loc", [null, [28, 112], [28, 132]]]], "TEAM"], [], ["loc", [null, [28, 108], [28, 140]]]], "onRadio", ["subexpr", "action", ["setMacroSharing", "TEAM"], [], ["loc", [null, [28, 149], [28, 182]]]], "disabled", ["subexpr", "@mut", [["get", "isSubmitting", ["loc", [null, [28, 192], [28, 204]]]]], [], []]], ["loc", [null, [28, 8], [28, 206]]]], ["block", "ko-select", [], ["size", "medium", "placeholder", ["subexpr", "t", ["generic.select_placeholder"], [], ["loc", [null, [33, 22], [33, 54]]]], "options", ["subexpr", "@mut", [["get", "teams", ["loc", [null, [34, 18], [34, 23]]]]], [], []], "selected", ["subexpr", "@mut", [["get", "selectedTeam", ["loc", [null, [35, 19], [35, 31]]]]], [], []], "onChange", ["subexpr", "action", ["selectTeam"], [], ["loc", [null, [36, 19], [36, 40]]]], "disabled", ["subexpr", "not-eq", [["get", "macro.visibilityType", ["loc", [null, [37, 27], [37, 47]]]], "TEAM"], [], ["loc", [null, [37, 19], [37, 55]]]]], 1, null, ["loc", [null, [31, 8], [39, 22]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "macro.errors.visibilityType", ["loc", [null, [41, 36], [41, 63]]]]], [], []]], ["loc", [null, [41, 6], [41, 65]]]]],
             locals: [],
             templates: [child0, child1]
           };
@@ -12259,7 +12259,7 @@ define("frontend-cp/components/ko-admin/macros/edit/template", ["exports"], func
                 "column": 2
               },
               "end": {
-                "line": 46,
+                "line": 43,
                 "column": 2
               }
             },
@@ -12281,7 +12281,7 @@ define("frontend-cp/components/ko-admin/macros/edit/template", ["exports"], func
             dom.insertBoundary(fragment, null);
             return morphs;
           },
-          statements: [["block", "ko-form/field", [], [], 0, null, ["loc", [null, [22, 4], [45, 22]]]]],
+          statements: [["block", "ko-form/field", [], [], 0, null, ["loc", [null, [22, 4], [42, 22]]]]],
           locals: [],
           templates: [child0]
         };
@@ -12294,11 +12294,11 @@ define("frontend-cp/components/ko-admin/macros/edit/template", ["exports"], func
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 50,
+                  "line": 47,
                   "column": 6
                 },
                 "end": {
-                  "line": 50,
+                  "line": 47,
                   "column": 66
                 }
               },
@@ -12320,7 +12320,7 @@ define("frontend-cp/components/ko-admin/macros/edit/template", ["exports"], func
               dom.insertBoundary(fragment, null);
               return morphs;
             },
-            statements: [["inline", "t", ["admin.macros.heading.actions"], [], ["loc", [null, [50, 30], [50, 66]]]]],
+            statements: [["inline", "t", ["admin.macros.heading.actions"], [], ["loc", [null, [47, 30], [47, 66]]]]],
             locals: [],
             templates: []
           };
@@ -12332,11 +12332,11 @@ define("frontend-cp/components/ko-admin/macros/edit/template", ["exports"], func
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 52,
+                  "line": 49,
                   "column": 6
                 },
                 "end": {
-                  "line": 61,
+                  "line": 56,
                   "column": 6
                 }
               },
@@ -12360,7 +12360,7 @@ define("frontend-cp/components/ko-admin/macros/edit/template", ["exports"], func
               morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
               return morphs;
             },
-            statements: [["content", "macroAction.label", ["loc", [null, [60, 10], [60, 31]]]]],
+            statements: [["content", "macroAction.label", ["loc", [null, [55, 10], [55, 31]]]]],
             locals: ["macroAction"],
             templates: []
           };
@@ -12372,11 +12372,11 @@ define("frontend-cp/components/ko-admin/macros/edit/template", ["exports"], func
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 64,
+                  "line": 59,
                   "column": 4
                 },
                 "end": {
-                  "line": 69,
+                  "line": 64,
                   "column": 4
                 }
               },
@@ -12400,7 +12400,7 @@ define("frontend-cp/components/ko-admin/macros/edit/template", ["exports"], func
               morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
               return morphs;
             },
-            statements: [["inline", "component", [["get", "macroAction.component", ["loc", [null, [66, 8], [66, 29]]]]], ["action", ["subexpr", "@mut", [["get", "macroAction", ["loc", [null, [67, 15], [67, 26]]]]], [], []], "class", ["subexpr", "concat", ["qa-ko-admin-macros-action-", ["get", "macroAction.id", ["loc", [null, [68, 51], [68, 65]]]]], [], ["loc", [null, [68, 14], [68, 66]]]]], ["loc", [null, [65, 6], [68, 68]]]]],
+            statements: [["inline", "component", [["get", "macroAction.component", ["loc", [null, [61, 8], [61, 29]]]]], ["action", ["subexpr", "@mut", [["get", "macroAction", ["loc", [null, [62, 15], [62, 26]]]]], [], []], "class", ["subexpr", "concat", ["qa-ko-admin-macros-action-", ["get", "macroAction.id", ["loc", [null, [63, 51], [63, 65]]]]], [], ["loc", [null, [63, 14], [63, 66]]]]], ["loc", [null, [60, 6], [63, 68]]]]],
             locals: ["macroAction"],
             templates: []
           };
@@ -12411,11 +12411,11 @@ define("frontend-cp/components/ko-admin/macros/edit/template", ["exports"], func
             "loc": {
               "source": null,
               "start": {
-                "line": 48,
+                "line": 45,
                 "column": 2
               },
               "end": {
-                "line": 70,
+                "line": 65,
                 "column": 2
               }
             },
@@ -12456,7 +12456,7 @@ define("frontend-cp/components/ko-admin/macros/edit/template", ["exports"], func
             dom.insertBoundary(fragment, null);
             return morphs;
           },
-          statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [50, 6], [50, 90]]]], ["block", "power-select", [], ["searchEnabled", false, "renderInPlace", true, "disabled", ["subexpr", "not", [["get", "selectableMacroActions", ["loc", [null, [55, 22], [55, 44]]]]], [], ["loc", [null, [55, 17], [55, 45]]]], "class", "ember-power-select-wrapper--ko ember-power-select-wrapper--size-medium", "options", ["subexpr", "@mut", [["get", "selectableMacroActions", ["loc", [null, [57, 16], [57, 38]]]]], [], []], "placeholder", ["subexpr", "t", ["admin.macros.label.new_action"], [], ["loc", [null, [58, 20], [58, 55]]]], "onchange", ["subexpr", "action", ["addNewAction"], [], ["loc", [null, [59, 17], [59, 40]]]]], 1, null, ["loc", [null, [52, 6], [61, 23]]]], ["block", "each", [["get", "activeMacroActions", ["loc", [null, [64, 12], [64, 30]]]]], [], 2, null, ["loc", [null, [64, 4], [69, 13]]]]],
+          statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [47, 6], [47, 90]]]], ["block", "ko-select", [], ["disabled", ["subexpr", "not", [["get", "selectableMacroActions", ["loc", [null, [50, 22], [50, 44]]]]], [], ["loc", [null, [50, 17], [50, 45]]]], "size", "medium", "options", ["subexpr", "@mut", [["get", "selectableMacroActions", ["loc", [null, [52, 16], [52, 38]]]]], [], []], "placeholder", ["subexpr", "t", ["admin.macros.label.new_action"], [], ["loc", [null, [53, 20], [53, 55]]]], "onChange", ["subexpr", "action", ["addNewAction"], [], ["loc", [null, [54, 17], [54, 40]]]]], 1, null, ["loc", [null, [49, 6], [56, 20]]]], ["block", "each", [["get", "activeMacroActions", ["loc", [null, [59, 12], [59, 30]]]]], [], 2, null, ["loc", [null, [59, 4], [64, 13]]]]],
           locals: [],
           templates: [child0, child1, child2]
         };
@@ -12471,7 +12471,7 @@ define("frontend-cp/components/ko-admin/macros/edit/template", ["exports"], func
               "column": 0
             },
             "end": {
-              "line": 78,
+              "line": 73,
               "column": 0
             }
           },
@@ -12515,7 +12515,7 @@ define("frontend-cp/components/ko-admin/macros/edit/template", ["exports"], func
           morphs[4] = dom.createMorphAt(fragment, 9, 9, contextualElement);
           return morphs;
         },
-        statements: [["inline", "ko-admin/page-header", [], ["title", ["subexpr", "@mut", [["get", "title", ["loc", [null, [6, 10], [6, 15]]]]], [], []], "onCancel", ["subexpr", "@mut", [["get", "onCancel", ["loc", [null, [7, 13], [7, 21]]]]], [], []], "submitClass", ["subexpr", "qa-cls", ["qa-admin_macros_edit__submit-button"], [], ["loc", [null, [8, 16], [8, 62]]]], "cancelButtonClass", ["subexpr", "qa-cls", ["qa-admin_macros__cancel-button"], [], ["loc", [null, [9, 22], [9, 63]]]], "buttonText", ["subexpr", "t", ["generic.save"], [], ["loc", [null, [10, 15], [10, 33]]]]], ["loc", [null, [5, 2], [11, 4]]]], ["block", "ko-admin/forms/group", [], ["legend", ["subexpr", "t", ["admin.macros.heading.details"], [], ["loc", [null, [13, 33], [13, 67]]]]], 0, null, ["loc", [null, [13, 2], [19, 27]]]], ["block", "ko-admin/forms/group", [], ["legend", ["subexpr", "t", ["admin.macros.heading.sharing"], [], ["loc", [null, [21, 33], [21, 67]]]]], 1, null, ["loc", [null, [21, 2], [46, 27]]]], ["block", "ko-admin/forms/group", [], [], 2, null, ["loc", [null, [48, 2], [70, 27]]]], ["inline", "ko-admin/page-footer", [], ["onCancel", ["subexpr", "@mut", [["get", "onCancel", ["loc", [null, [73, 13], [73, 21]]]]], [], []], "submitClass", "qa-admin_macros_edit__submit-button", "cancelButtonClass", "qa-admin_macros__cancel-button", "buttonText", ["subexpr", "t", ["generic.save"], [], ["loc", [null, [76, 15], [76, 33]]]]], ["loc", [null, [72, 2], [77, 4]]]]],
+        statements: [["inline", "ko-admin/page-header", [], ["title", ["subexpr", "@mut", [["get", "title", ["loc", [null, [6, 10], [6, 15]]]]], [], []], "onCancel", ["subexpr", "@mut", [["get", "onCancel", ["loc", [null, [7, 13], [7, 21]]]]], [], []], "submitClass", ["subexpr", "qa-cls", ["qa-admin_macros_edit__submit-button"], [], ["loc", [null, [8, 16], [8, 62]]]], "cancelButtonClass", ["subexpr", "qa-cls", ["qa-admin_macros__cancel-button"], [], ["loc", [null, [9, 22], [9, 63]]]], "buttonText", ["subexpr", "t", ["generic.save"], [], ["loc", [null, [10, 15], [10, 33]]]]], ["loc", [null, [5, 2], [11, 4]]]], ["block", "ko-admin/forms/group", [], ["legend", ["subexpr", "t", ["admin.macros.heading.details"], [], ["loc", [null, [13, 33], [13, 67]]]]], 0, null, ["loc", [null, [13, 2], [19, 27]]]], ["block", "ko-admin/forms/group", [], ["legend", ["subexpr", "t", ["admin.macros.heading.sharing"], [], ["loc", [null, [21, 33], [21, 67]]]]], 1, null, ["loc", [null, [21, 2], [43, 27]]]], ["block", "ko-admin/forms/group", [], [], 2, null, ["loc", [null, [45, 2], [65, 27]]]], ["inline", "ko-admin/page-footer", [], ["onCancel", ["subexpr", "@mut", [["get", "onCancel", ["loc", [null, [68, 13], [68, 21]]]]], [], []], "submitClass", "qa-admin_macros_edit__submit-button", "cancelButtonClass", "qa-admin_macros__cancel-button", "buttonText", ["subexpr", "t", ["generic.save"], [], ["loc", [null, [71, 15], [71, 33]]]]], ["loc", [null, [67, 2], [72, 4]]]]],
         locals: ["_", "isSubmitting"],
         templates: [child0, child1, child2]
       };
@@ -12530,7 +12530,7 @@ define("frontend-cp/components/ko-admin/macros/edit/template", ["exports"], func
             "column": 0
           },
           "end": {
-            "line": 79,
+            "line": 74,
             "column": 0
           }
         },
@@ -12552,7 +12552,7 @@ define("frontend-cp/components/ko-admin/macros/edit/template", ["exports"], func
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["block", "ko-form", [], ["onSubmit", ["subexpr", "action", ["saveMacro"], [], ["loc", [null, [2, 11], [2, 31]]]], "onSuccess", ["subexpr", "@mut", [["get", "onSuccess", ["loc", [null, [3, 12], [3, 21]]]]], [], []]], 0, null, ["loc", [null, [1, 0], [78, 12]]]]],
+      statements: [["block", "ko-form", [], ["onSubmit", ["subexpr", "action", ["saveMacro"], [], ["loc", [null, [2, 11], [2, 31]]]], "onSuccess", ["subexpr", "@mut", [["get", "onSuccess", ["loc", [null, [3, 12], [3, 21]]]]], [], []]], 0, null, ["loc", [null, [1, 0], [73, 12]]]]],
       locals: [],
       templates: [child0]
     };
@@ -13093,7 +13093,7 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
           morphs[1] = dom.createMorphAt(element1, 3, 3);
           return morphs;
         },
-        statements: [["inline", "t", ["admin.navigation.channels"], [], ["loc", [null, [4, 6], [4, 39]]]], ["block", "link-to", ["session.admin.channels.twitter"], ["class", "t-naked-link ko-admin_sidebar__item"], 0, null, ["loc", [null, [7, 4], [9, 16]]]]],
+        statements: [["inline", "t", ["admin.navigation.channels"], [], ["loc", [null, [4, 6], [4, 39]]]], ["block", "link-to", ["session.admin.channels.twitter"], ["class", "ko-admin_sidebar__item"], 0, null, ["loc", [null, [7, 4], [9, 16]]]]],
         locals: [],
         templates: [child0]
       };
@@ -13469,7 +13469,7 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
           morphs[1] = dom.createMorphAt(element0, 3, 3);
           return morphs;
         },
-        statements: [["inline", "t", ["admin.navigation.automation"], [], ["loc", [null, [55, 4], [55, 39]]]], ["block", "link-to", ["session.admin.automation.businesshours"], ["class", "t-naked-link ko-admin_sidebar__item"], 0, null, ["loc", [null, [57, 2], [59, 14]]]]],
+        statements: [["inline", "t", ["admin.navigation.automation"], [], ["loc", [null, [55, 4], [55, 39]]]], ["block", "link-to", ["session.admin.automation.businesshours"], ["class", "ko-admin_sidebar__item"], 0, null, ["loc", [null, [57, 2], [59, 14]]]]],
         locals: [],
         templates: [child0]
       };
@@ -13582,7 +13582,7 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["block", "if", [["get", "features.adminTwitter", ["loc", [null, [1, 6], [1, 27]]]]], [], 0, null, ["loc", [null, [1, 0], [11, 7]]]], ["inline", "t", ["admin.navigation.manage"], [], ["loc", [null, [15, 4], [15, 35]]]], ["block", "link-to", ["session.admin.manage.views"], ["class", "t-naked-link ko-admin_sidebar__item"], 1, null, ["loc", [null, [17, 2], [19, 14]]]], ["block", "link-to", ["session.admin.manage.case-fields"], ["class", "t-naked-link ko-admin_sidebar__item"], 2, null, ["loc", [null, [21, 2], [23, 14]]]], ["block", "link-to", ["session.admin.manage.case-forms"], ["class", "t-naked-link ko-admin_sidebar__item"], 3, null, ["loc", [null, [25, 2], [27, 14]]]], ["block", "link-to", ["session.admin.manage.macros"], ["class", "t-naked-link ko-admin_sidebar__item"], 4, null, ["loc", [null, [29, 2], [31, 14]]]], ["inline", "t", ["admin.navigation.people"], [], ["loc", [null, [37, 4], [37, 35]]]], ["block", "link-to", ["session.admin.people.teams"], ["class", "t-naked-link ko-admin_sidebar__item"], 5, null, ["loc", [null, [39, 2], [41, 14]]]], ["block", "link-to", ["session.admin.people.user-fields"], ["class", "t-naked-link ko-admin_sidebar__item"], 6, null, ["loc", [null, [43, 2], [45, 14]]]], ["block", "link-to", ["session.admin.people.organization-fields"], ["class", "t-naked-link ko-admin_sidebar__item"], 7, null, ["loc", [null, [47, 2], [49, 14]]]], ["block", "if", [["get", "features.adminBusinessHours", ["loc", [null, [52, 6], [52, 33]]]]], [], 8, null, ["loc", [null, [52, 0], [61, 7]]]]],
+      statements: [["block", "if", [["get", "features.adminTwitter", ["loc", [null, [1, 6], [1, 27]]]]], [], 0, null, ["loc", [null, [1, 0], [11, 7]]]], ["inline", "t", ["admin.navigation.manage"], [], ["loc", [null, [15, 4], [15, 35]]]], ["block", "link-to", ["session.admin.manage.views"], ["class", "ko-admin_sidebar__item"], 1, null, ["loc", [null, [17, 2], [19, 14]]]], ["block", "link-to", ["session.admin.manage.case-fields"], ["class", "ko-admin_sidebar__item"], 2, null, ["loc", [null, [21, 2], [23, 14]]]], ["block", "link-to", ["session.admin.manage.case-forms"], ["class", "ko-admin_sidebar__item"], 3, null, ["loc", [null, [25, 2], [27, 14]]]], ["block", "link-to", ["session.admin.manage.macros"], ["class", "t-naked-link ko-admin_sidebar__item"], 4, null, ["loc", [null, [29, 2], [31, 14]]]], ["inline", "t", ["admin.navigation.people"], [], ["loc", [null, [37, 4], [37, 35]]]], ["block", "link-to", ["session.admin.people.teams"], ["class", "ko-admin_sidebar__item"], 5, null, ["loc", [null, [39, 2], [41, 14]]]], ["block", "link-to", ["session.admin.people.user-fields"], ["class", "ko-admin_sidebar__item"], 6, null, ["loc", [null, [43, 2], [45, 14]]]], ["block", "link-to", ["session.admin.people.organization-fields"], ["class", "ko-admin_sidebar__item"], 7, null, ["loc", [null, [47, 2], [49, 14]]]], ["block", "if", [["get", "features.adminBusinessHours", ["loc", [null, [52, 6], [52, 33]]]]], [], 8, null, ["loc", [null, [52, 0], [61, 7]]]]],
       locals: [],
       templates: [child0, child1, child2, child3, child4, child5, child6, child7, child8]
     };
@@ -14552,90 +14552,43 @@ define("frontend-cp/components/ko-admin/twitter/edit/template", ["exports"], fun
             };
           })();
           var child1 = (function () {
-            var child0 = (function () {
-              return {
-                meta: {
-                  "revision": "Ember@1.13.13",
-                  "loc": {
-                    "source": null,
-                    "start": {
-                      "line": 16,
-                      "column": 8
-                    },
-                    "end": {
-                      "line": 21,
-                      "column": 8
-                    }
-                  },
-                  "moduleName": "frontend-cp/components/ko-admin/twitter/edit/template.hbs"
-                },
-                arity: 1,
-                cachedFragment: null,
-                hasRendered: false,
-                buildFragment: function buildFragment(dom) {
-                  var el0 = dom.createDocumentFragment();
-                  var el1 = dom.createTextNode("            ");
-                  dom.appendChild(el0, el1);
-                  var el1 = dom.createElement("li");
-                  dom.setAttribute(el1, "class", "ko-dropdown_list__item");
-                  var el2 = dom.createTextNode("\n              ");
-                  dom.appendChild(el1, el2);
-                  var el2 = dom.createComment("");
-                  dom.appendChild(el1, el2);
-                  var el2 = dom.createTextNode("\n            ");
-                  dom.appendChild(el1, el2);
-                  dom.appendChild(el0, el1);
-                  var el1 = dom.createTextNode("\n");
-                  dom.appendChild(el0, el1);
-                  return el0;
-                },
-                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-                  var element0 = dom.childAt(fragment, [1]);
-                  var morphs = new Array(2);
-                  morphs[0] = dom.createAttrMorph(element0, 'onclick');
-                  morphs[1] = dom.createMorphAt(element0, 1, 1);
-                  return morphs;
-                },
-                statements: [["attribute", "onclick", ["subexpr", "action", ["setBrand", ["get", "brand", ["loc", [null, [18, 75], [18, 80]]]]], [], ["loc", [null, [18, 55], [18, 82]]]]], ["content", "brand.name", ["loc", [null, [19, 14], [19, 28]]]]],
-                locals: ["brand"],
-                templates: []
-              };
-            })();
             return {
               meta: {
                 "revision": "Ember@1.13.13",
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 15,
+                    "line": 16,
                     "column": 6
                   },
                   "end": {
-                    "line": 22,
+                    "line": 18,
                     "column": 6
                   }
                 },
                 "moduleName": "frontend-cp/components/ko-admin/twitter/edit/template.hbs"
               },
-              arity: 0,
+              arity: 1,
               cachedFragment: null,
               hasRendered: false,
               buildFragment: function buildFragment(dom) {
                 var el0 = dom.createDocumentFragment();
+                var el1 = dom.createTextNode("        ");
+                dom.appendChild(el0, el1);
                 var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n");
                 dom.appendChild(el0, el1);
                 return el0;
               },
               buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
                 var morphs = new Array(1);
-                morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-                dom.insertBoundary(fragment, 0);
-                dom.insertBoundary(fragment, null);
+                morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
                 return morphs;
               },
-              statements: [["block", "each", [["get", "brands", ["loc", [null, [16, 16], [16, 22]]]]], [], 0, null, ["loc", [null, [16, 8], [21, 17]]]]],
-              locals: [],
-              templates: [child0]
+              statements: [["content", "brand.name", ["loc", [null, [17, 8], [17, 22]]]]],
+              locals: ["brand"],
+              templates: []
             };
           })();
           var child2 = (function () {
@@ -14645,11 +14598,11 @@ define("frontend-cp/components/ko-admin/twitter/edit/template", ["exports"], fun
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 24,
+                    "line": 20,
                     "column": 6
                   },
                   "end": {
-                    "line": 24,
+                    "line": 20,
                     "column": 61
                   }
                 },
@@ -14671,7 +14624,7 @@ define("frontend-cp/components/ko-admin/twitter/edit/template", ["exports"], fun
                 dom.insertBoundary(fragment, null);
                 return morphs;
               },
-              statements: [["inline", "t", ["admin.twitter.help.brand"], [], ["loc", [null, [24, 29], [24, 61]]]]],
+              statements: [["inline", "t", ["admin.twitter.help.brand"], [], ["loc", [null, [20, 29], [20, 61]]]]],
               locals: [],
               templates: []
             };
@@ -14686,7 +14639,7 @@ define("frontend-cp/components/ko-admin/twitter/edit/template", ["exports"], fun
                   "column": 4
                 },
                 "end": {
-                  "line": 25,
+                  "line": 21,
                   "column": 4
                 }
               },
@@ -14725,7 +14678,7 @@ define("frontend-cp/components/ko-admin/twitter/edit/template", ["exports"], fun
               morphs[3] = dom.createMorphAt(fragment, 7, 7, contextualElement);
               return morphs;
             },
-            statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [14, 6], [14, 87]]]], ["block", "ko-dropdown/select", [], ["label", ["subexpr", "@mut", [["get", "account.brand.name", ["loc", [null, [15, 34], [15, 52]]]]], [], []]], 1, null, ["loc", [null, [15, 6], [22, 29]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "account.errors.brand", ["loc", [null, [23, 36], [23, 56]]]]], [], []]], ["loc", [null, [23, 6], [23, 58]]]], ["block", "ko-form/field/help", [], [], 2, null, ["loc", [null, [24, 6], [24, 84]]]]],
+            statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [14, 6], [14, 87]]]], ["block", "ko-select", [], ["options", ["subexpr", "@mut", [["get", "brands", ["loc", [null, [16, 27], [16, 33]]]]], [], []], "selected", ["subexpr", "@mut", [["get", "account.brand", ["loc", [null, [16, 43], [16, 56]]]]], [], []], "size", "medium", "onChange", ["subexpr", "action", ["setBrand"], [], ["loc", [null, [16, 80], [16, 99]]]]], 1, null, ["loc", [null, [16, 6], [18, 20]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "account.errors.brand", ["loc", [null, [19, 36], [19, 56]]]]], [], []]], ["loc", [null, [19, 6], [19, 58]]]], ["block", "ko-form/field/help", [], [], 2, null, ["loc", [null, [20, 6], [20, 84]]]]],
             locals: [],
             templates: [child0, child1, child2]
           };
@@ -14740,7 +14693,7 @@ define("frontend-cp/components/ko-admin/twitter/edit/template", ["exports"], fun
                 "column": 2
               },
               "end": {
-                "line": 26,
+                "line": 22,
                 "column": 2
               }
             },
@@ -14762,7 +14715,7 @@ define("frontend-cp/components/ko-admin/twitter/edit/template", ["exports"], fun
             dom.insertBoundary(fragment, null);
             return morphs;
           },
-          statements: [["block", "ko-form/field", [], [], 0, null, ["loc", [null, [13, 4], [25, 22]]]]],
+          statements: [["block", "ko-form/field", [], [], 0, null, ["loc", [null, [13, 4], [21, 22]]]]],
           locals: [],
           templates: [child0]
         };
@@ -14775,11 +14728,11 @@ define("frontend-cp/components/ko-admin/twitter/edit/template", ["exports"], fun
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 29,
+                  "line": 25,
                   "column": 4
                 },
                 "end": {
-                  "line": 31,
+                  "line": 27,
                   "column": 4
                 }
               },
@@ -14803,7 +14756,7 @@ define("frontend-cp/components/ko-admin/twitter/edit/template", ["exports"], fun
               morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
               return morphs;
             },
-            statements: [["inline", "t", ["admin.twitter.help.capture"], [], ["loc", [null, [30, 6], [30, 40]]]]],
+            statements: [["inline", "t", ["admin.twitter.help.capture"], [], ["loc", [null, [26, 6], [26, 40]]]]],
             locals: [],
             templates: []
           };
@@ -14816,11 +14769,11 @@ define("frontend-cp/components/ko-admin/twitter/edit/template", ["exports"], fun
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 34,
+                    "line": 30,
                     "column": 6
                   },
                   "end": {
-                    "line": 34,
+                    "line": 30,
                     "column": 66
                   }
                 },
@@ -14842,7 +14795,7 @@ define("frontend-cp/components/ko-admin/twitter/edit/template", ["exports"], fun
                 dom.insertBoundary(fragment, null);
                 return morphs;
               },
-              statements: [["inline", "t", ["admin.twitter.label.mentions"], [], ["loc", [null, [34, 30], [34, 66]]]]],
+              statements: [["inline", "t", ["admin.twitter.label.mentions"], [], ["loc", [null, [30, 30], [30, 66]]]]],
               locals: [],
               templates: []
             };
@@ -14853,11 +14806,11 @@ define("frontend-cp/components/ko-admin/twitter/edit/template", ["exports"], fun
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 33,
+                  "line": 29,
                   "column": 4
                 },
                 "end": {
-                  "line": 40,
+                  "line": 36,
                   "column": 4
                 }
               },
@@ -14891,7 +14844,7 @@ define("frontend-cp/components/ko-admin/twitter/edit/template", ["exports"], fun
               morphs[2] = dom.createMorphAt(fragment, 5, 5, contextualElement);
               return morphs;
             },
-            statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [34, 6], [34, 90]]]], ["inline", "ko-toggle", [], ["activated", ["subexpr", "@mut", [["get", "account.routeMentions", ["loc", [null, [36, 18], [36, 39]]]]], [], []], "label", ["subexpr", "t", [["subexpr", "if", [["get", "account.routeMentions", ["loc", [null, [37, 21], [37, 42]]]], "admin.twitter.description_on.mentions", "admin.twitter.description_off.mentions"], [], ["loc", [null, [37, 17], [37, 124]]]]], [], ["loc", [null, [37, 14], [37, 125]]]]], ["loc", [null, [35, 6], [38, 8]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "account.errors.routeMentions", ["loc", [null, [39, 36], [39, 64]]]]], [], []]], ["loc", [null, [39, 6], [39, 66]]]]],
+            statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [30, 6], [30, 90]]]], ["inline", "ko-toggle", [], ["activated", ["subexpr", "@mut", [["get", "account.routeMentions", ["loc", [null, [32, 18], [32, 39]]]]], [], []], "label", ["subexpr", "t", [["subexpr", "if", [["get", "account.routeMentions", ["loc", [null, [33, 21], [33, 42]]]], "admin.twitter.description_on.mentions", "admin.twitter.description_off.mentions"], [], ["loc", [null, [33, 17], [33, 124]]]]], [], ["loc", [null, [33, 14], [33, 125]]]]], ["loc", [null, [31, 6], [34, 8]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "account.errors.routeMentions", ["loc", [null, [35, 36], [35, 64]]]]], [], []]], ["loc", [null, [35, 6], [35, 66]]]]],
             locals: [],
             templates: [child0]
           };
@@ -14904,11 +14857,11 @@ define("frontend-cp/components/ko-admin/twitter/edit/template", ["exports"], fun
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 43,
+                    "line": 39,
                     "column": 6
                   },
                   "end": {
-                    "line": 43,
+                    "line": 39,
                     "column": 73
                   }
                 },
@@ -14930,7 +14883,7 @@ define("frontend-cp/components/ko-admin/twitter/edit/template", ["exports"], fun
                 dom.insertBoundary(fragment, null);
                 return morphs;
               },
-              statements: [["inline", "t", ["admin.twitter.label.direct_messages"], [], ["loc", [null, [43, 30], [43, 73]]]]],
+              statements: [["inline", "t", ["admin.twitter.label.direct_messages"], [], ["loc", [null, [39, 30], [39, 73]]]]],
               locals: [],
               templates: []
             };
@@ -14941,11 +14894,11 @@ define("frontend-cp/components/ko-admin/twitter/edit/template", ["exports"], fun
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 42,
+                  "line": 38,
                   "column": 4
                 },
                 "end": {
-                  "line": 49,
+                  "line": 45,
                   "column": 4
                 }
               },
@@ -14979,7 +14932,7 @@ define("frontend-cp/components/ko-admin/twitter/edit/template", ["exports"], fun
               morphs[2] = dom.createMorphAt(fragment, 5, 5, contextualElement);
               return morphs;
             },
-            statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [43, 6], [43, 97]]]], ["inline", "ko-toggle", [], ["activated", ["subexpr", "@mut", [["get", "account.routeMessages", ["loc", [null, [45, 18], [45, 39]]]]], [], []], "label", ["subexpr", "t", [["subexpr", "if", [["get", "account.routeMessages", ["loc", [null, [46, 21], [46, 42]]]], "admin.twitter.description_on.direct_messages", "admin.twitter.description_off.direct_messages"], [], ["loc", [null, [46, 17], [46, 138]]]]], [], ["loc", [null, [46, 14], [46, 139]]]]], ["loc", [null, [44, 6], [47, 8]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "account.errors.routeMessages", ["loc", [null, [48, 36], [48, 64]]]]], [], []]], ["loc", [null, [48, 6], [48, 66]]]]],
+            statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [39, 6], [39, 97]]]], ["inline", "ko-toggle", [], ["activated", ["subexpr", "@mut", [["get", "account.routeMessages", ["loc", [null, [41, 18], [41, 39]]]]], [], []], "label", ["subexpr", "t", [["subexpr", "if", [["get", "account.routeMessages", ["loc", [null, [42, 21], [42, 42]]]], "admin.twitter.description_on.direct_messages", "admin.twitter.description_off.direct_messages"], [], ["loc", [null, [42, 17], [42, 138]]]]], [], ["loc", [null, [42, 14], [42, 139]]]]], ["loc", [null, [40, 6], [43, 8]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "account.errors.routeMessages", ["loc", [null, [44, 36], [44, 64]]]]], [], []]], ["loc", [null, [44, 6], [44, 66]]]]],
             locals: [],
             templates: [child0]
           };
@@ -14992,11 +14945,11 @@ define("frontend-cp/components/ko-admin/twitter/edit/template", ["exports"], fun
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 52,
+                    "line": 48,
                     "column": 6
                   },
                   "end": {
-                    "line": 52,
+                    "line": 48,
                     "column": 75
                   }
                 },
@@ -15018,7 +14971,7 @@ define("frontend-cp/components/ko-admin/twitter/edit/template", ["exports"], fun
                 dom.insertBoundary(fragment, null);
                 return morphs;
               },
-              statements: [["inline", "t", ["admin.twitter.label.favourited_tweets"], [], ["loc", [null, [52, 30], [52, 75]]]]],
+              statements: [["inline", "t", ["admin.twitter.label.favourited_tweets"], [], ["loc", [null, [48, 30], [48, 75]]]]],
               locals: [],
               templates: []
             };
@@ -15029,11 +14982,11 @@ define("frontend-cp/components/ko-admin/twitter/edit/template", ["exports"], fun
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 51,
+                  "line": 47,
                   "column": 4
                 },
                 "end": {
-                  "line": 58,
+                  "line": 54,
                   "column": 4
                 }
               },
@@ -15067,7 +15020,7 @@ define("frontend-cp/components/ko-admin/twitter/edit/template", ["exports"], fun
               morphs[2] = dom.createMorphAt(fragment, 5, 5, contextualElement);
               return morphs;
             },
-            statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [52, 6], [52, 99]]]], ["inline", "ko-toggle", [], ["activated", ["subexpr", "@mut", [["get", "account.routeFavorites", ["loc", [null, [54, 18], [54, 40]]]]], [], []], "label", ["subexpr", "t", [["subexpr", "if", [["get", "account.routeFavorites", ["loc", [null, [55, 21], [55, 43]]]], "admin.twitter.description_on.favourited_tweets", "admin.twitter.description_off.favourited_tweets"], [], ["loc", [null, [55, 17], [55, 143]]]]], [], ["loc", [null, [55, 14], [55, 144]]]]], ["loc", [null, [53, 6], [56, 8]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "account.errors.routeFavorites", ["loc", [null, [57, 36], [57, 65]]]]], [], []]], ["loc", [null, [57, 6], [57, 67]]]]],
+            statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [48, 6], [48, 99]]]], ["inline", "ko-toggle", [], ["activated", ["subexpr", "@mut", [["get", "account.routeFavorites", ["loc", [null, [50, 18], [50, 40]]]]], [], []], "label", ["subexpr", "t", [["subexpr", "if", [["get", "account.routeFavorites", ["loc", [null, [51, 21], [51, 43]]]], "admin.twitter.description_on.favourited_tweets", "admin.twitter.description_off.favourited_tweets"], [], ["loc", [null, [51, 17], [51, 143]]]]], [], ["loc", [null, [51, 14], [51, 144]]]]], ["loc", [null, [49, 6], [52, 8]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "account.errors.routeFavorites", ["loc", [null, [53, 36], [53, 65]]]]], [], []]], ["loc", [null, [53, 6], [53, 67]]]]],
             locals: [],
             templates: [child0]
           };
@@ -15078,11 +15031,11 @@ define("frontend-cp/components/ko-admin/twitter/edit/template", ["exports"], fun
             "loc": {
               "source": null,
               "start": {
-                "line": 28,
+                "line": 24,
                 "column": 2
               },
               "end": {
-                "line": 59,
+                "line": 55,
                 "column": 2
               }
             },
@@ -15119,7 +15072,7 @@ define("frontend-cp/components/ko-admin/twitter/edit/template", ["exports"], fun
             dom.insertBoundary(fragment, null);
             return morphs;
           },
-          statements: [["block", "ko-form/field/help", [], [], 0, null, ["loc", [null, [29, 4], [31, 27]]]], ["block", "ko-form/field", [], [], 1, null, ["loc", [null, [33, 4], [40, 22]]]], ["block", "ko-form/field", [], [], 2, null, ["loc", [null, [42, 4], [49, 22]]]], ["block", "ko-form/field", [], [], 3, null, ["loc", [null, [51, 4], [58, 22]]]]],
+          statements: [["block", "ko-form/field/help", [], [], 0, null, ["loc", [null, [25, 4], [27, 27]]]], ["block", "ko-form/field", [], [], 1, null, ["loc", [null, [29, 4], [36, 22]]]], ["block", "ko-form/field", [], [], 2, null, ["loc", [null, [38, 4], [45, 22]]]], ["block", "ko-form/field", [], [], 3, null, ["loc", [null, [47, 4], [54, 22]]]]],
           locals: [],
           templates: [child0, child1, child2, child3]
         };
@@ -15133,11 +15086,11 @@ define("frontend-cp/components/ko-admin/twitter/edit/template", ["exports"], fun
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 63,
+                    "line": 59,
                     "column": 6
                   },
                   "end": {
-                    "line": 63,
+                    "line": 59,
                     "column": 79
                   }
                 },
@@ -15159,7 +15112,7 @@ define("frontend-cp/components/ko-admin/twitter/edit/template", ["exports"], fun
                 dom.insertBoundary(fragment, null);
                 return morphs;
               },
-              statements: [["inline", "t", ["admin.twitter.label.display_public_tweets"], [], ["loc", [null, [63, 30], [63, 79]]]]],
+              statements: [["inline", "t", ["admin.twitter.label.display_public_tweets"], [], ["loc", [null, [59, 30], [59, 79]]]]],
               locals: [],
               templates: []
             };
@@ -15171,11 +15124,11 @@ define("frontend-cp/components/ko-admin/twitter/edit/template", ["exports"], fun
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 69,
+                    "line": 65,
                     "column": 6
                   },
                   "end": {
-                    "line": 69,
+                    "line": 65,
                     "column": 77
                   }
                 },
@@ -15197,7 +15150,7 @@ define("frontend-cp/components/ko-admin/twitter/edit/template", ["exports"], fun
                 dom.insertBoundary(fragment, null);
                 return morphs;
               },
-              statements: [["inline", "t", ["admin.twitter.help.display_public_tweets"], [], ["loc", [null, [69, 29], [69, 77]]]]],
+              statements: [["inline", "t", ["admin.twitter.help.display_public_tweets"], [], ["loc", [null, [65, 29], [65, 77]]]]],
               locals: [],
               templates: []
             };
@@ -15208,11 +15161,11 @@ define("frontend-cp/components/ko-admin/twitter/edit/template", ["exports"], fun
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 62,
+                  "line": 58,
                   "column": 4
                 },
                 "end": {
-                  "line": 70,
+                  "line": 66,
                   "column": 4
                 }
               },
@@ -15251,7 +15204,7 @@ define("frontend-cp/components/ko-admin/twitter/edit/template", ["exports"], fun
               morphs[3] = dom.createMorphAt(fragment, 7, 7, contextualElement);
               return morphs;
             },
-            statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [63, 6], [63, 103]]]], ["inline", "ko-toggle", [], ["activated", ["subexpr", "@mut", [["get", "account.showInHelpCenter", ["loc", [null, [65, 18], [65, 42]]]]], [], []], "label", ["subexpr", "t", [["subexpr", "if", [["get", "account.showInHelpCenter", ["loc", [null, [66, 21], [66, 45]]]], "admin.twitter.description_on.display_public_tweets", "admin.twitter.description_off.display_public_tweets"], [], ["loc", [null, [66, 17], [66, 153]]]]], [], ["loc", [null, [66, 14], [66, 154]]]]], ["loc", [null, [64, 6], [67, 8]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "account.errors.showInHelpCenter", ["loc", [null, [68, 36], [68, 67]]]]], [], []]], ["loc", [null, [68, 6], [68, 69]]]], ["block", "ko-form/field/help", [], [], 1, null, ["loc", [null, [69, 6], [69, 100]]]]],
+            statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [59, 6], [59, 103]]]], ["inline", "ko-toggle", [], ["activated", ["subexpr", "@mut", [["get", "account.showInHelpCenter", ["loc", [null, [61, 18], [61, 42]]]]], [], []], "label", ["subexpr", "t", [["subexpr", "if", [["get", "account.showInHelpCenter", ["loc", [null, [62, 21], [62, 45]]]], "admin.twitter.description_on.display_public_tweets", "admin.twitter.description_off.display_public_tweets"], [], ["loc", [null, [62, 17], [62, 153]]]]], [], ["loc", [null, [62, 14], [62, 154]]]]], ["loc", [null, [60, 6], [63, 8]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "account.errors.showInHelpCenter", ["loc", [null, [64, 36], [64, 67]]]]], [], []]], ["loc", [null, [64, 6], [64, 69]]]], ["block", "ko-form/field/help", [], [], 1, null, ["loc", [null, [65, 6], [65, 100]]]]],
             locals: [],
             templates: [child0, child1]
           };
@@ -15262,11 +15215,11 @@ define("frontend-cp/components/ko-admin/twitter/edit/template", ["exports"], fun
             "loc": {
               "source": null,
               "start": {
-                "line": 61,
+                "line": 57,
                 "column": 2
               },
               "end": {
-                "line": 71,
+                "line": 67,
                 "column": 2
               }
             },
@@ -15288,7 +15241,7 @@ define("frontend-cp/components/ko-admin/twitter/edit/template", ["exports"], fun
             dom.insertBoundary(fragment, null);
             return morphs;
           },
-          statements: [["block", "ko-form/field", [], [], 0, null, ["loc", [null, [62, 4], [70, 22]]]]],
+          statements: [["block", "ko-form/field", [], [], 0, null, ["loc", [null, [58, 4], [66, 22]]]]],
           locals: [],
           templates: [child0]
         };
@@ -15303,7 +15256,7 @@ define("frontend-cp/components/ko-admin/twitter/edit/template", ["exports"], fun
               "column": 0
             },
             "end": {
-              "line": 77,
+              "line": 73,
               "column": 0
             }
           },
@@ -15347,7 +15300,7 @@ define("frontend-cp/components/ko-admin/twitter/edit/template", ["exports"], fun
           morphs[4] = dom.createMorphAt(fragment, 9, 9, contextualElement);
           return morphs;
         },
-        statements: [["inline", "ko-admin/page-header", [], ["title", ["subexpr", "t", ["admin.twitter.edit.heading"], ["screenName", ["get", "account.screenName", ["loc", [null, [6, 53], [6, 71]]]]], ["loc", [null, [6, 10], [6, 72]]]], "onCancel", ["subexpr", "@mut", [["get", "onCancel", ["loc", [null, [7, 13], [7, 21]]]]], [], []], "buttonText", ["subexpr", "t", ["generic.save"], [], ["loc", [null, [8, 15], [8, 33]]]], "pageCopy", null], ["loc", [null, [5, 2], [10, 4]]]], ["block", "ko-admin/forms/group", [], ["legend", ["subexpr", "t", ["admin.twitter.heading.account_settings"], [], ["loc", [null, [12, 33], [12, 77]]]]], 0, null, ["loc", [null, [12, 2], [26, 27]]]], ["block", "ko-admin/forms/group", [], ["legend", ["subexpr", "t", ["admin.twitter.heading.capture_settings"], [], ["loc", [null, [28, 33], [28, 77]]]]], 1, null, ["loc", [null, [28, 2], [59, 27]]]], ["block", "ko-admin/forms/group", [], ["legend", ["subexpr", "t", ["admin.twitter.heading.help_settings"], [], ["loc", [null, [61, 33], [61, 74]]]]], 2, null, ["loc", [null, [61, 2], [71, 27]]]], ["inline", "ko-admin/page-footer", [], ["onCancel", ["subexpr", "@mut", [["get", "onCancel", ["loc", [null, [74, 13], [74, 21]]]]], [], []], "buttonText", ["subexpr", "t", ["generic.save"], [], ["loc", [null, [75, 15], [75, 33]]]]], ["loc", [null, [73, 2], [76, 4]]]]],
+        statements: [["inline", "ko-admin/page-header", [], ["title", ["subexpr", "t", ["admin.twitter.edit.heading"], ["screenName", ["get", "account.screenName", ["loc", [null, [6, 53], [6, 71]]]]], ["loc", [null, [6, 10], [6, 72]]]], "onCancel", ["subexpr", "@mut", [["get", "onCancel", ["loc", [null, [7, 13], [7, 21]]]]], [], []], "buttonText", ["subexpr", "t", ["generic.save"], [], ["loc", [null, [8, 15], [8, 33]]]], "pageCopy", null], ["loc", [null, [5, 2], [10, 4]]]], ["block", "ko-admin/forms/group", [], ["legend", ["subexpr", "t", ["admin.twitter.heading.account_settings"], [], ["loc", [null, [12, 33], [12, 77]]]]], 0, null, ["loc", [null, [12, 2], [22, 27]]]], ["block", "ko-admin/forms/group", [], ["legend", ["subexpr", "t", ["admin.twitter.heading.capture_settings"], [], ["loc", [null, [24, 33], [24, 77]]]]], 1, null, ["loc", [null, [24, 2], [55, 27]]]], ["block", "ko-admin/forms/group", [], ["legend", ["subexpr", "t", ["admin.twitter.heading.help_settings"], [], ["loc", [null, [57, 33], [57, 74]]]]], 2, null, ["loc", [null, [57, 2], [67, 27]]]], ["inline", "ko-admin/page-footer", [], ["onCancel", ["subexpr", "@mut", [["get", "onCancel", ["loc", [null, [70, 13], [70, 21]]]]], [], []], "buttonText", ["subexpr", "t", ["generic.save"], [], ["loc", [null, [71, 15], [71, 33]]]]], ["loc", [null, [69, 2], [72, 4]]]]],
         locals: ["_", "isSubmitting"],
         templates: [child0, child1, child2]
       };
@@ -15362,7 +15315,7 @@ define("frontend-cp/components/ko-admin/twitter/edit/template", ["exports"], fun
             "column": 0
           },
           "end": {
-            "line": 78,
+            "line": 74,
             "column": 0
           }
         },
@@ -15384,7 +15337,7 @@ define("frontend-cp/components/ko-admin/twitter/edit/template", ["exports"], fun
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["block", "ko-form", [], ["onSubmit", ["subexpr", "@mut", [["get", "onSave", ["loc", [null, [2, 11], [2, 17]]]]], [], []], "onSuccess", ["subexpr", "@mut", [["get", "onSuccess", ["loc", [null, [3, 12], [3, 21]]]]], [], []]], 0, null, ["loc", [null, [1, 0], [77, 12]]]]],
+      statements: [["block", "ko-form", [], ["onSubmit", ["subexpr", "@mut", [["get", "onSave", ["loc", [null, [2, 11], [2, 17]]]]], [], []], "onSuccess", ["subexpr", "@mut", [["get", "onSuccess", ["loc", [null, [3, 12], [3, 21]]]]], [], []]], 0, null, ["loc", [null, [1, 0], [73, 12]]]]],
       locals: [],
       templates: [child0]
     };
@@ -15466,7 +15419,7 @@ define("frontend-cp/components/ko-admin/views/edit/columns/template", ["exports"
         hasRendered: false,
         buildFragment: function buildFragment(dom) {
           var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("    ");
+          var el1 = dom.createTextNode("  ");
           dom.appendChild(el0, el1);
           var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
@@ -15479,7 +15432,7 @@ define("frontend-cp/components/ko-admin/views/edit/columns/template", ["exports"
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [["inline", "ko-contextual-helper", [["get", "columnTitleTranslation", ["loc", [null, [8, 27], [8, 49]]]], ["get", "this", ["loc", [null, [8, 50], [8, 54]]]], ["get", "column.id", ["loc", [null, [8, 55], [8, 64]]]]], [], ["loc", [null, [8, 4], [8, 66]]]]],
+        statements: [["inline", "ko-contextual-helper", [["get", "columnTitleTranslation", ["loc", [null, [8, 25], [8, 47]]]], ["get", "this", ["loc", [null, [8, 48], [8, 52]]]], ["get", "column.id", ["loc", [null, [8, 53], [8, 62]]]]], [], ["loc", [null, [8, 2], [8, 64]]]]],
         locals: ["column"],
         templates: []
       };
@@ -15589,7 +15542,7 @@ define("frontend-cp/components/ko-admin/views/edit/columns/template", ["exports"
         dom.insertBoundary(fragment, 0);
         return morphs;
       },
-      statements: [["block", "power-select", [], ["searchEnabled", false, "class", ["subexpr", "concat", ["ember-power-select-wrapper--ko ember-power-select-wrapper--size-medium", ["subexpr", "qa-cls", [" qa-configure-column"], [], ["loc", [null, [3, 89], [3, 120]]]], " ko-admin_views_edit_select"], [], ["loc", [null, [3, 8], [3, 151]]]], "dropdownClass", "ko-admin_views_edit_select--dropdown", "options", ["subexpr", "@mut", [["get", "unusedColumns", ["loc", [null, [5, 10], [5, 23]]]]], [], []], "placeholder", ["subexpr", "t", ["generic.select_placeholder"], [], ["loc", [null, [6, 14], [6, 46]]]], "onchange", ["subexpr", "action", ["addViewColumn"], [], ["loc", [null, [7, 11], [7, 35]]]]], 0, null, ["loc", [null, [1, 0], [9, 17]]]], ["block", "ko-reorderable-list", [], ["onReorder", ["subexpr", "action", ["reorderColumns"], [], ["loc", [null, [12, 33], [12, 58]]]], "items", ["subexpr", "@mut", [["get", "columns", ["loc", [null, [12, 65], [12, 72]]]]], [], []]], 1, null, ["loc", [null, [12, 0], [19, 25]]]]],
+      statements: [["block", "ko-select", [], ["class", ["subexpr", "qa-cls", ["qa-configure-column"], [], ["loc", [null, [2, 8], [2, 38]]]], "options", ["subexpr", "@mut", [["get", "unusedColumns", ["loc", [null, [3, 10], [3, 23]]]]], [], []], "onChange", ["subexpr", "action", ["addViewColumn"], [], ["loc", [null, [4, 11], [4, 35]]]], "placeholder", ["subexpr", "t", ["generic.select_placeholder"], [], ["loc", [null, [5, 14], [5, 46]]]], "size", "medium"], 0, null, ["loc", [null, [1, 0], [9, 14]]]], ["block", "ko-reorderable-list", [], ["onReorder", ["subexpr", "action", ["reorderColumns"], [], ["loc", [null, [12, 33], [12, 58]]]], "items", ["subexpr", "@mut", [["get", "columns", ["loc", [null, [12, 65], [12, 72]]]]], [], []]], 1, null, ["loc", [null, [12, 0], [19, 25]]]]],
       locals: [],
       templates: [child0, child1]
     };
@@ -16322,7 +16275,7 @@ define("frontend-cp/components/ko-admin/views/edit/template", ["exports"], funct
                 hasRendered: false,
                 buildFragment: function buildFragment(dom) {
                   var el0 = dom.createDocumentFragment();
-                  var el1 = dom.createTextNode("              ");
+                  var el1 = dom.createTextNode("            ");
                   dom.appendChild(el0, el1);
                   var el1 = dom.createComment("");
                   dom.appendChild(el0, el1);
@@ -16335,7 +16288,7 @@ define("frontend-cp/components/ko-admin/views/edit/template", ["exports"], funct
                   morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
                   return morphs;
                 },
-                statements: [["content", "column.label", ["loc", [null, [86, 14], [86, 30]]]]],
+                statements: [["content", "column.label", ["loc", [null, [86, 12], [86, 28]]]]],
                 locals: ["column"],
                 templates: []
               };
@@ -16351,7 +16304,7 @@ define("frontend-cp/components/ko-admin/views/edit/template", ["exports"], funct
                       "column": 10
                     },
                     "end": {
-                      "line": 101,
+                      "line": 100,
                       "column": 10
                     }
                   },
@@ -16362,7 +16315,7 @@ define("frontend-cp/components/ko-admin/views/edit/template", ["exports"], funct
                 hasRendered: false,
                 buildFragment: function buildFragment(dom) {
                   var el0 = dom.createDocumentFragment();
-                  var el1 = dom.createTextNode("              ");
+                  var el1 = dom.createTextNode("            ");
                   dom.appendChild(el0, el1);
                   var el1 = dom.createComment("");
                   dom.appendChild(el0, el1);
@@ -16375,7 +16328,7 @@ define("frontend-cp/components/ko-admin/views/edit/template", ["exports"], funct
                   morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
                   return morphs;
                 },
-                statements: [["content", "direction.label", ["loc", [null, [100, 14], [100, 33]]]]],
+                statements: [["content", "direction.label", ["loc", [null, [99, 12], [99, 31]]]]],
                 locals: ["direction"],
                 templates: []
               };
@@ -16390,7 +16343,7 @@ define("frontend-cp/components/ko-admin/views/edit/template", ["exports"], funct
                     "column": 6
                   },
                   "end": {
-                    "line": 104,
+                    "line": 103,
                     "column": 6
                   }
                 },
@@ -16454,7 +16407,7 @@ define("frontend-cp/components/ko-admin/views/edit/template", ["exports"], funct
                 morphs[4] = dom.createMorphAt(dom.childAt(element1, [3]), 0, 0);
                 return morphs;
               },
-              statements: [["block", "ko-form/field/help", [], [], 0, null, ["loc", [null, [76, 8], [76, 87]]]], ["block", "power-select", [], ["searchEnabled", false, "class", ["subexpr", "concat", ["ember-power-select-wrapper--ko ember-power-select-wrapper--size-medium", ["subexpr", "qa-cls", [" qa-sorted-by"], [], ["loc", [null, [80, 99], [80, 123]]]], " ko-admin_views_edit_select"], [], ["loc", [null, [80, 18], [80, 154]]]], "renderInPlace", true, "placeholder", ["subexpr", "t", ["generic.select_placeholder"], [], ["loc", [null, [82, 24], [82, 56]]]], "options", ["subexpr", "@mut", [["get", "sortableColumns", ["loc", [null, [83, 20], [83, 35]]]]], [], []], "selected", ["subexpr", "@mut", [["get", "selectedSortableColumn", ["loc", [null, [84, 21], [84, 43]]]]], [], []], "onchange", ["subexpr", "action", ["selectOrderByColumn"], [], ["loc", [null, [85, 21], [85, 51]]]]], 1, null, ["loc", [null, [78, 10], [87, 27]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "currentView.errors.orderByColumn", ["loc", [null, [88, 45], [88, 77]]]]], [], []]], ["loc", [null, [88, 15], [88, 79]]]], ["block", "power-select", [], ["searchEnabled", false, "class", "ember-power-select-wrapper--ko ember-power-select-wrapper--size-medium ko-admin_views_edit_select", "renderInPlace", true, "placeholder", ["subexpr", "t", ["generic.select_placeholder"], [], ["loc", [null, [96, 24], [96, 56]]]], "options", ["subexpr", "@mut", [["get", "sortOrderDirections", ["loc", [null, [97, 20], [97, 39]]]]], [], []], "selected", ["subexpr", "@mut", [["get", "selectedSortingDirection", ["loc", [null, [98, 21], [98, 45]]]]], [], []], "onchange", ["subexpr", "action", ["selectOrderByDirection"], [], ["loc", [null, [99, 21], [99, 54]]]]], 2, null, ["loc", [null, [92, 10], [101, 27]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "currentView.errors.orderBy", ["loc", [null, [102, 45], [102, 71]]]]], [], []]], ["loc", [null, [102, 15], [102, 73]]]]],
+              statements: [["block", "ko-form/field/help", [], [], 0, null, ["loc", [null, [76, 8], [76, 87]]]], ["block", "ko-select", [], ["class", ["subexpr", "qa-cls", ["qa-sorted-by"], [], ["loc", [null, [79, 18], [79, 41]]]], "placeholder", ["subexpr", "t", ["generic.select_placeholder"], [], ["loc", [null, [80, 24], [80, 56]]]], "options", ["subexpr", "@mut", [["get", "sortableColumns", ["loc", [null, [81, 20], [81, 35]]]]], [], []], "selected", ["subexpr", "@mut", [["get", "selectedSortableColumn", ["loc", [null, [82, 21], [82, 43]]]]], [], []], "onChange", ["subexpr", "action", ["selectOrderByColumn"], [], ["loc", [null, [83, 21], [83, 51]]]], "size", "medium"], 1, null, ["loc", [null, [78, 10], [87, 24]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "currentView.errors.orderByColumn", ["loc", [null, [88, 45], [88, 77]]]]], [], []]], ["loc", [null, [88, 15], [88, 79]]]], ["block", "ko-select", [], ["placeholder", ["subexpr", "t", ["generic.select_placeholder"], [], ["loc", [null, [93, 24], [93, 56]]]], "options", ["subexpr", "@mut", [["get", "sortOrderDirections", ["loc", [null, [94, 20], [94, 39]]]]], [], []], "selected", ["subexpr", "@mut", [["get", "selectedSortingDirection", ["loc", [null, [95, 21], [95, 45]]]]], [], []], "onChange", ["subexpr", "action", ["selectOrderByDirection"], [], ["loc", [null, [96, 21], [96, 54]]]], "size", "medium"], 2, null, ["loc", [null, [92, 10], [100, 24]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "currentView.errors.orderBy", ["loc", [null, [101, 45], [101, 71]]]]], [], []]], ["loc", [null, [101, 15], [101, 73]]]]],
               locals: [],
               templates: [child0, child1, child2]
             };
@@ -16466,11 +16419,11 @@ define("frontend-cp/components/ko-admin/views/edit/template", ["exports"], funct
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 105,
+                    "line": 104,
                     "column": 6
                   },
                   "end": {
-                    "line": 105,
+                    "line": 104,
                     "column": 68
                   }
                 },
@@ -16492,7 +16445,7 @@ define("frontend-cp/components/ko-admin/views/edit/template", ["exports"], funct
                 dom.insertBoundary(fragment, null);
                 return morphs;
               },
-              statements: [["inline", "t", ["admin.views.description.sorting"], [], ["loc", [null, [105, 29], [105, 68]]]]],
+              statements: [["inline", "t", ["admin.views.description.sorting"], [], ["loc", [null, [104, 29], [104, 68]]]]],
               locals: [],
               templates: []
             };
@@ -16507,7 +16460,7 @@ define("frontend-cp/components/ko-admin/views/edit/template", ["exports"], funct
                   "column": 4
                 },
                 "end": {
-                  "line": 106,
+                  "line": 105,
                   "column": 4
                 }
               },
@@ -16535,7 +16488,7 @@ define("frontend-cp/components/ko-admin/views/edit/template", ["exports"], funct
               dom.insertBoundary(fragment, 0);
               return morphs;
             },
-            statements: [["block", "ko-form/field", [], [], 0, null, ["loc", [null, [75, 6], [104, 24]]]], ["block", "ko-form/field/help", [], [], 1, null, ["loc", [null, [105, 6], [105, 91]]]]],
+            statements: [["block", "ko-form/field", [], [], 0, null, ["loc", [null, [75, 6], [103, 24]]]], ["block", "ko-form/field/help", [], [], 1, null, ["loc", [null, [104, 6], [104, 91]]]]],
             locals: [],
             templates: [child0, child1]
           };
@@ -16547,11 +16500,11 @@ define("frontend-cp/components/ko-admin/views/edit/template", ["exports"], funct
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 106,
+                  "line": 105,
                   "column": 4
                 },
                 "end": {
-                  "line": 108,
+                  "line": 107,
                   "column": 4
                 }
               },
@@ -16575,7 +16528,7 @@ define("frontend-cp/components/ko-admin/views/edit/template", ["exports"], funct
               morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
               return morphs;
             },
-            statements: [["inline", "t", ["admin.views.edit.select_columns"], [], ["loc", [null, [107, 6], [107, 45]]]]],
+            statements: [["inline", "t", ["admin.views.edit.select_columns"], [], ["loc", [null, [106, 6], [106, 45]]]]],
             locals: [],
             templates: []
           };
@@ -16590,7 +16543,7 @@ define("frontend-cp/components/ko-admin/views/edit/template", ["exports"], funct
                 "column": 2
               },
               "end": {
-                "line": 109,
+                "line": 108,
                 "column": 2
               }
             },
@@ -16612,7 +16565,7 @@ define("frontend-cp/components/ko-admin/views/edit/template", ["exports"], funct
             dom.insertBoundary(fragment, null);
             return morphs;
           },
-          statements: [["block", "if", [["get", "currentView.columns.length", ["loc", [null, [74, 10], [74, 36]]]]], [], 0, 1, ["loc", [null, [74, 4], [108, 11]]]]],
+          statements: [["block", "if", [["get", "currentView.columns.length", ["loc", [null, [74, 10], [74, 36]]]]], [], 0, 1, ["loc", [null, [74, 4], [107, 11]]]]],
           locals: [],
           templates: [child0, child1]
         };
@@ -16627,7 +16580,7 @@ define("frontend-cp/components/ko-admin/views/edit/template", ["exports"], funct
               "column": 0
             },
             "end": {
-              "line": 115,
+              "line": 114,
               "column": 0
             }
           },
@@ -16681,7 +16634,7 @@ define("frontend-cp/components/ko-admin/views/edit/template", ["exports"], funct
           morphs[6] = dom.createMorphAt(fragment, 13, 13, contextualElement);
           return morphs;
         },
-        statements: [["inline", "ko-admin/page-header", [], ["title", ["subexpr", "@mut", [["get", "title", ["loc", [null, [7, 10], [7, 15]]]]], [], []], "onCancel", ["subexpr", "@mut", [["get", "onCancel", ["loc", [null, [8, 13], [8, 21]]]]], [], []], "buttonText", ["subexpr", "t", ["generic.save"], [], ["loc", [null, [9, 15], [9, 33]]]]], ["loc", [null, [6, 2], [10, 4]]]], ["block", "ko-admin/forms/group", [], ["legend", ["subexpr", "t", ["admin.views.heading.view_details"], [], ["loc", [null, [12, 33], [12, 71]]]]], 0, null, ["loc", [null, [12, 2], [26, 27]]]], ["block", "ko-admin/forms/group", [], ["legend", ["subexpr", "t", ["admin.views.heading.sharing"], [], ["loc", [null, [28, 33], [28, 66]]]]], 1, null, ["loc", [null, [28, 2], [51, 27]]]], ["block", "if", [["subexpr", "not", [["subexpr", "eq", [["get", "currentView.viewType", ["loc", [null, [53, 17], [53, 37]]]], "TRASH"], [], ["loc", [null, [53, 13], [53, 46]]]]], [], ["loc", [null, [53, 8], [53, 47]]]]], [], 2, null, ["loc", [null, [53, 2], [67, 9]]]], ["block", "ko-admin/forms/group", [], ["legend", ["subexpr", "t", ["admin.views.heading.configure_layout"], [], ["loc", [null, [69, 33], [69, 75]]]]], 3, null, ["loc", [null, [69, 2], [71, 27]]]], ["block", "ko-admin/forms/group", [], ["legend", ["subexpr", "t", ["admin.views.heading.sorting"], [], ["loc", [null, [73, 33], [73, 66]]]]], 4, null, ["loc", [null, [73, 2], [109, 27]]]], ["inline", "ko-admin/page-footer", [], ["onCancel", ["subexpr", "@mut", [["get", "onCancel", ["loc", [null, [112, 13], [112, 21]]]]], [], []], "buttonText", ["subexpr", "t", ["generic.save"], [], ["loc", [null, [113, 15], [113, 33]]]]], ["loc", [null, [111, 2], [114, 4]]]]],
+        statements: [["inline", "ko-admin/page-header", [], ["title", ["subexpr", "@mut", [["get", "title", ["loc", [null, [7, 10], [7, 15]]]]], [], []], "onCancel", ["subexpr", "@mut", [["get", "onCancel", ["loc", [null, [8, 13], [8, 21]]]]], [], []], "buttonText", ["subexpr", "t", ["generic.save"], [], ["loc", [null, [9, 15], [9, 33]]]]], ["loc", [null, [6, 2], [10, 4]]]], ["block", "ko-admin/forms/group", [], ["legend", ["subexpr", "t", ["admin.views.heading.view_details"], [], ["loc", [null, [12, 33], [12, 71]]]]], 0, null, ["loc", [null, [12, 2], [26, 27]]]], ["block", "ko-admin/forms/group", [], ["legend", ["subexpr", "t", ["admin.views.heading.sharing"], [], ["loc", [null, [28, 33], [28, 66]]]]], 1, null, ["loc", [null, [28, 2], [51, 27]]]], ["block", "if", [["subexpr", "not", [["subexpr", "eq", [["get", "currentView.viewType", ["loc", [null, [53, 17], [53, 37]]]], "TRASH"], [], ["loc", [null, [53, 13], [53, 46]]]]], [], ["loc", [null, [53, 8], [53, 47]]]]], [], 2, null, ["loc", [null, [53, 2], [67, 9]]]], ["block", "ko-admin/forms/group", [], ["legend", ["subexpr", "t", ["admin.views.heading.configure_layout"], [], ["loc", [null, [69, 33], [69, 75]]]]], 3, null, ["loc", [null, [69, 2], [71, 27]]]], ["block", "ko-admin/forms/group", [], ["legend", ["subexpr", "t", ["admin.views.heading.sorting"], [], ["loc", [null, [73, 33], [73, 66]]]]], 4, null, ["loc", [null, [73, 2], [108, 27]]]], ["inline", "ko-admin/page-footer", [], ["onCancel", ["subexpr", "@mut", [["get", "onCancel", ["loc", [null, [111, 13], [111, 21]]]]], [], []], "buttonText", ["subexpr", "t", ["generic.save"], [], ["loc", [null, [112, 15], [112, 33]]]]], ["loc", [null, [110, 2], [113, 4]]]]],
         locals: ["_", "isSubmitting"],
         templates: [child0, child1, child2, child3, child4]
       };
@@ -16696,7 +16649,7 @@ define("frontend-cp/components/ko-admin/views/edit/template", ["exports"], funct
             "column": 0
           },
           "end": {
-            "line": 116,
+            "line": 115,
             "column": 0
           }
         },
@@ -16718,7 +16671,7 @@ define("frontend-cp/components/ko-admin/views/edit/template", ["exports"], funct
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["block", "ko-form", [], ["fields", ["subexpr", "@mut", [["get", "fields", ["loc", [null, [2, 9], [2, 15]]]]], [], []], "onSubmit", ["subexpr", "action", ["saveView"], [], ["loc", [null, [3, 11], [3, 30]]]], "onSuccess", ["subexpr", "@mut", [["get", "onSuccess", ["loc", [null, [4, 12], [4, 21]]]]], [], []]], 0, null, ["loc", [null, [1, 0], [115, 12]]]]],
+      statements: [["block", "ko-form", [], ["fields", ["subexpr", "@mut", [["get", "fields", ["loc", [null, [2, 9], [2, 15]]]]], [], []], "onSubmit", ["subexpr", "action", ["saveView"], [], ["loc", [null, [3, 11], [3, 30]]]], "onSuccess", ["subexpr", "@mut", [["get", "onSuccess", ["loc", [null, [4, 12], [4, 21]]]]], [], []]], 0, null, ["loc", [null, [1, 0], [114, 12]]]]],
       locals: [],
       templates: [child0]
     };
@@ -19808,108 +19761,6 @@ define('frontend-cp/components/ko-case/macro-selector/component', ['exports', 'e
     }
   });
 });
-define('frontend-cp/components/ko-case/macro-selector/options/component', ['exports', 'ember'], function (exports, _ember) {
-  exports['default'] = _ember['default'].Component.extend({
-    actions: {
-      preserveFocus: function preserveFocus(e) {
-        e.preventDefault();
-        e.stopPropagation();
-      }
-    }
-  });
-});
-define("frontend-cp/components/ko-case/macro-selector/options/template", ["exports"], function (exports) {
-  exports["default"] = Ember.HTMLBars.template((function () {
-    var child0 = (function () {
-      return {
-        meta: {
-          "revision": "Ember@1.13.13",
-          "loc": {
-            "source": null,
-            "start": {
-              "line": 1,
-              "column": 0
-            },
-            "end": {
-              "line": 11,
-              "column": 0
-            }
-          },
-          "moduleName": "frontend-cp/components/ko-case/macro-selector/options/template.hbs"
-        },
-        arity: 1,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("  ");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createElement("li");
-          dom.setAttribute(el1, "role", "menuitem");
-          var el2 = dom.createTextNode("\n    ");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createComment("");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n  ");
-          dom.appendChild(el1, el2);
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n");
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var element0 = dom.childAt(fragment, [1]);
-          var morphs = new Array(5);
-          morphs[0] = dom.createAttrMorph(element0, 'class');
-          morphs[1] = dom.createAttrMorph(element0, 'onmousedown');
-          morphs[2] = dom.createAttrMorph(element0, 'onmouseup');
-          morphs[3] = dom.createAttrMorph(element0, 'onmousemove');
-          morphs[4] = dom.createMorphAt(element0, 1, 1);
-          return morphs;
-        },
-        statements: [["attribute", "class", ["concat", ["ember-power-select-option ", ["subexpr", "ember-power-select-option-classes", [["get", "opt", ["loc", [null, [3, 73], [3, 76]]]], ["get", "selection", ["loc", [null, [3, 77], [3, 86]]]], ["get", "highlighted", ["loc", [null, [3, 87], [3, 98]]]]], [], ["loc", [null, [3, 37], [3, 100]]]]]]], ["attribute", "onmousedown", ["subexpr", "action", ["preserveFocus"], [], ["loc", [null, [4, 16], [4, 42]]]]], ["attribute", "onmouseup", ["subexpr", "action", [["get", "select.actions.select", ["loc", [null, [5, 23], [5, 44]]]], ["get", "opt", ["loc", [null, [5, 45], [5, 48]]]]], [], ["loc", [null, [5, 14], [5, 50]]]]], ["attribute", "onmousemove", ["subexpr", "action", [["get", "select.actions.highlight", ["loc", [null, [6, 25], [6, 49]]]], ["get", "opt", ["loc", [null, [6, 50], [6, 53]]]]], [], ["loc", [null, [6, 16], [6, 55]]]]], ["inline", "yield", [["get", "opt", ["loc", [null, [9, 12], [9, 15]]]], ["get", "lastSearchedText", ["loc", [null, [9, 16], [9, 32]]]]], [], ["loc", [null, [9, 4], [9, 34]]]]],
-        locals: ["opt"],
-        templates: []
-      };
-    })();
-    return {
-      meta: {
-        "revision": "Ember@1.13.13",
-        "loc": {
-          "source": null,
-          "start": {
-            "line": 1,
-            "column": 0
-          },
-          "end": {
-            "line": 12,
-            "column": 0
-          }
-        },
-        "moduleName": "frontend-cp/components/ko-case/macro-selector/options/template.hbs"
-      },
-      arity: 0,
-      cachedFragment: null,
-      hasRendered: false,
-      buildFragment: function buildFragment(dom) {
-        var el0 = dom.createDocumentFragment();
-        var el1 = dom.createComment("");
-        dom.appendChild(el0, el1);
-        return el0;
-      },
-      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var morphs = new Array(1);
-        morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-        dom.insertBoundary(fragment, 0);
-        dom.insertBoundary(fragment, null);
-        return morphs;
-      },
-      statements: [["block", "each", [["get", "options", ["loc", [null, [1, 8], [1, 15]]]]], [], 0, null, ["loc", [null, [1, 0], [11, 9]]]]],
-      locals: [],
-      templates: [child0]
-    };
-  })());
-});
 define("frontend-cp/components/ko-case/macro-selector/template", ["exports"], function (exports) {
   exports["default"] = Ember.HTMLBars.template((function () {
     return {
@@ -19922,7 +19773,7 @@ define("frontend-cp/components/ko-case/macro-selector/template", ["exports"], fu
             "column": 0
           },
           "end": {
-            "line": 15,
+            "line": 14,
             "column": 0
           }
         },
@@ -19945,7 +19796,7 @@ define("frontend-cp/components/ko-case/macro-selector/template", ["exports"], fu
         dom.insertBoundary(fragment, 0);
         return morphs;
       },
-      statements: [["inline", "ko-dropdown/drill-down", [], ["options", ["subexpr", "@mut", [["get", "macroValueList", ["loc", [null, [2, 10], [2, 24]]]]], [], []], "value", ["subexpr", "@mut", [["get", "value", ["loc", [null, [3, 8], [3, 13]]]]], [], []], "onValueChange", ["subexpr", "action", ["onMacroSelect"], [], ["loc", [null, [4, 16], [4, 40]]]], "hasEmptyOption", false, "searchPlaceholder", ["subexpr", "t", ["cases.applymacroplaceholder"], [], ["loc", [null, [6, 20], [6, 53]]]], "searchEnabled", true, "triggerComponent", "ko-case/macro-selector/trigger", "optionsComponent", "ko-case/macro-selector/options", "isDisabled", ["subexpr", "@mut", [["get", "isDisabled", ["loc", [null, [10, 13], [10, 23]]]]], [], []], "extra", ["subexpr", "hash", [], ["label", ["subexpr", "t", ["cases.macro"], [], ["loc", [null, [12, 10], [12, 27]]]]], ["loc", [null, [11, 8], [13, 3]]]]], ["loc", [null, [1, 0], [14, 2]]]]],
+      statements: [["inline", "ko-dropdown/drill-down", [], ["options", ["subexpr", "@mut", [["get", "macroValueList", ["loc", [null, [2, 10], [2, 24]]]]], [], []], "value", ["subexpr", "@mut", [["get", "value", ["loc", [null, [3, 8], [3, 13]]]]], [], []], "onValueChange", ["subexpr", "action", ["onMacroSelect"], [], ["loc", [null, [4, 16], [4, 40]]]], "hasEmptyOption", false, "searchPlaceholder", ["subexpr", "t", ["cases.applymacroplaceholder"], [], ["loc", [null, [6, 20], [6, 53]]]], "searchEnabled", true, "triggerComponent", "ko-case/macro-selector/trigger", "isDisabled", ["subexpr", "@mut", [["get", "isDisabled", ["loc", [null, [9, 13], [9, 23]]]]], [], []], "extra", ["subexpr", "hash", [], ["label", ["subexpr", "t", ["cases.macro"], [], ["loc", [null, [11, 10], [11, 27]]]]], ["loc", [null, [10, 8], [12, 3]]]]], ["loc", [null, [1, 0], [13, 2]]]]],
       locals: [],
       templates: []
     };
@@ -28845,7 +28696,6 @@ define('frontend-cp/components/ko-dropdown/drill-down/component', ['exports', 'e
     hasEmptyOption: true,
     extra: null,
     triggerComponent: null,
-    optionsComponent: null,
     searchPlaceholder: null,
     searchEnabled: false,
     isDisabled: false,
@@ -28853,6 +28703,14 @@ define('frontend-cp/components/ko-dropdown/drill-down/component', ['exports', 'e
     // State
     currentPath: null,
     sanitizedOptions: [],
+
+    // HTML
+    classNames: ['ko-dropdown_drill-down'],
+
+    mouseDown: function mouseDown(e) {
+      e.preventDefault();
+      e.stopPropagation();
+    },
 
     resetState: _ember['default'].on('init', 'didReceiveAttrs', function () {
       this.set('currentPath', []);
@@ -29172,7 +29030,7 @@ define("frontend-cp/components/ko-dropdown/drill-down/template", ["exports"], fu
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["block", "power-select", [], ["onchange", ["subexpr", "action", ["selectItem"], [], ["loc", [null, [2, 11], [2, 32]]]], "verticalPosition", "below", "options", ["subexpr", "@mut", [["get", "currentHierarchyLevel", ["loc", [null, [4, 10], [4, 31]]]]], [], []], "tabindex", "-1", "renderInPlace", true, "searchEnabled", ["subexpr", "@mut", [["get", "searchEnabled", ["loc", [null, [7, 16], [7, 29]]]]], [], []], "disabled", ["subexpr", "@mut", [["get", "isDisabled", ["loc", [null, [8, 11], [8, 21]]]]], [], []], "triggerComponent", ["subexpr", "@mut", [["get", "triggerComponent", ["loc", [null, [9, 19], [9, 35]]]]], [], []], "optionsComponent", ["subexpr", "@mut", [["get", "optionsComponent", ["loc", [null, [10, 19], [10, 35]]]]], [], []], "searchPlaceholder", ["subexpr", "@mut", [["get", "searchPlaceholder", ["loc", [null, [11, 20], [11, 37]]]]], [], []], "search", ["subexpr", "action", ["search"], [], ["loc", [null, [12, 9], [12, 26]]]], "extra", ["subexpr", "@mut", [["get", "computedExtra", ["loc", [null, [13, 8], [13, 21]]]]], [], []], "closeOnSelect", false], 0, null, ["loc", [null, [1, 0], [23, 17]]]]],
+      statements: [["block", "power-select", [], ["onchange", ["subexpr", "action", ["selectItem"], [], ["loc", [null, [2, 11], [2, 32]]]], "verticalPosition", "below", "options", ["subexpr", "@mut", [["get", "currentHierarchyLevel", ["loc", [null, [4, 10], [4, 31]]]]], [], []], "tabindex", "-1", "renderInPlace", true, "searchEnabled", ["subexpr", "@mut", [["get", "searchEnabled", ["loc", [null, [7, 16], [7, 29]]]]], [], []], "disabled", ["subexpr", "@mut", [["get", "isDisabled", ["loc", [null, [8, 11], [8, 21]]]]], [], []], "triggerComponent", ["subexpr", "@mut", [["get", "triggerComponent", ["loc", [null, [9, 19], [9, 35]]]]], [], []], "searchPlaceholder", ["subexpr", "@mut", [["get", "searchPlaceholder", ["loc", [null, [10, 20], [10, 37]]]]], [], []], "searchMessage", false, "search", ["subexpr", "action", ["search"], [], ["loc", [null, [12, 9], [12, 26]]]], "extra", ["subexpr", "@mut", [["get", "computedExtra", ["loc", [null, [13, 8], [13, 21]]]]], [], []], "closeOnSelect", false], 0, null, ["loc", [null, [1, 0], [23, 17]]]]],
       locals: [],
       templates: [child0]
     };
@@ -29204,104 +29062,6 @@ define('frontend-cp/components/ko-dropdown/list/component', ['exports', 'ember']
 
     classNames: ['ko-dropdown_list']
   });
-});
-define('frontend-cp/components/ko-dropdown/list/group/component', ['exports', 'ember'], function (exports, _ember) {
-  exports['default'] = _ember['default'].Component.extend({});
-});
-define("frontend-cp/components/ko-dropdown/list/group/template", ["exports"], function (exports) {
-  exports["default"] = Ember.HTMLBars.template((function () {
-    return {
-      meta: {
-        "revision": "Ember@1.13.13",
-        "loc": {
-          "source": null,
-          "start": {
-            "line": 1,
-            "column": 0
-          },
-          "end": {
-            "line": 4,
-            "column": 0
-          }
-        },
-        "moduleName": "frontend-cp/components/ko-dropdown/list/group/template.hbs"
-      },
-      arity: 0,
-      cachedFragment: null,
-      hasRendered: false,
-      buildFragment: function buildFragment(dom) {
-        var el0 = dom.createDocumentFragment();
-        var el1 = dom.createElement("div");
-        dom.setAttribute(el1, "class", "ko-dropdown_list_group__label");
-        var el2 = dom.createComment("");
-        dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createElement("div");
-        dom.setAttribute(el1, "class", "ko-dropdown_list_group__content");
-        var el2 = dom.createComment("");
-        dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n\n");
-        dom.appendChild(el0, el1);
-        return el0;
-      },
-      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var morphs = new Array(2);
-        morphs[0] = dom.createMorphAt(dom.childAt(fragment, [0]), 0, 0);
-        morphs[1] = dom.createMorphAt(dom.childAt(fragment, [2]), 0, 0);
-        return morphs;
-      },
-      statements: [["content", "label", ["loc", [null, [1, 43], [1, 52]]]], ["content", "yield", ["loc", [null, [2, 45], [2, 54]]]]],
-      locals: [],
-      templates: []
-    };
-  })());
-});
-define('frontend-cp/components/ko-dropdown/list/hr/component', ['exports', 'ember'], function (exports, _ember) {
-  exports['default'] = _ember['default'].Component.extend({});
-});
-define("frontend-cp/components/ko-dropdown/list/hr/template", ["exports"], function (exports) {
-  exports["default"] = Ember.HTMLBars.template((function () {
-    return {
-      meta: {
-        "revision": "Ember@1.13.13",
-        "loc": {
-          "source": null,
-          "start": {
-            "line": 1,
-            "column": 0
-          },
-          "end": {
-            "line": 2,
-            "column": 0
-          }
-        },
-        "moduleName": "frontend-cp/components/ko-dropdown/list/hr/template.hbs"
-      },
-      arity: 0,
-      cachedFragment: null,
-      hasRendered: false,
-      buildFragment: function buildFragment(dom) {
-        var el0 = dom.createDocumentFragment();
-        var el1 = dom.createComment("");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
-        dom.appendChild(el0, el1);
-        return el0;
-      },
-      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var morphs = new Array(1);
-        morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-        dom.insertBoundary(fragment, 0);
-        return morphs;
-      },
-      statements: [["content", "yield", ["loc", [null, [1, 0], [1, 9]]]]],
-      locals: [],
-      templates: []
-    };
-  })());
 });
 define("frontend-cp/components/ko-dropdown/list/template", ["exports"], function (exports) {
   exports["default"] = Ember.HTMLBars.template((function () {
@@ -29424,222 +29184,6 @@ define("frontend-cp/components/ko-dropdown/select/button/template", ["exports"],
         return morphs;
       },
       statements: [["content", "label", ["loc", [null, [1, 0], [1, 9]]]], ["block", "if", [["get", "displayIcon", ["loc", [null, [1, 15], [1, 26]]]]], [], 0, null, ["loc", [null, [1, 9], [1, 90]]]]],
-      locals: [],
-      templates: [child0]
-    };
-  })());
-});
-define('frontend-cp/components/ko-dropdown/select/component', ['exports', 'ember'], function (exports, _ember) {
-  exports['default'] = _ember['default'].Component.extend({
-    //Params
-    hideOnClick: true,
-
-    contentStyle: null,
-
-    actions: {
-      onFocusIn: function onFocusIn() {
-        this.sendAction('onFocusIn');
-      },
-      onFocusOut: function onFocusOut() {
-        this.sendAction('onFocusOut');
-      }
-    }
-  });
-});
-define("frontend-cp/components/ko-dropdown/select/template", ["exports"], function (exports) {
-  exports["default"] = Ember.HTMLBars.template((function () {
-    var child0 = (function () {
-      var child0 = (function () {
-        return {
-          meta: {
-            "revision": "Ember@1.13.13",
-            "loc": {
-              "source": null,
-              "start": {
-                "line": 2,
-                "column": 2
-              },
-              "end": {
-                "line": 4,
-                "column": 2
-              }
-            },
-            "moduleName": "frontend-cp/components/ko-dropdown/select/template.hbs"
-          },
-          arity: 0,
-          cachedFragment: null,
-          hasRendered: false,
-          buildFragment: function buildFragment(dom) {
-            var el0 = dom.createDocumentFragment();
-            var el1 = dom.createTextNode("    ");
-            dom.appendChild(el0, el1);
-            var el1 = dom.createComment("");
-            dom.appendChild(el0, el1);
-            var el1 = dom.createTextNode("\n");
-            dom.appendChild(el0, el1);
-            return el0;
-          },
-          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-            var morphs = new Array(1);
-            morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
-            return morphs;
-          },
-          statements: [["inline", "ko-dropdown/select/button", [], ["label", ["subexpr", "@mut", [["get", "label", ["loc", [null, [3, 38], [3, 43]]]]], [], []]], ["loc", [null, [3, 4], [3, 45]]]]],
-          locals: [],
-          templates: []
-        };
-      })();
-      var child1 = (function () {
-        var child0 = (function () {
-          return {
-            meta: {
-              "revision": "Ember@1.13.13",
-              "loc": {
-                "source": null,
-                "start": {
-                  "line": 6,
-                  "column": 4
-                },
-                "end": {
-                  "line": 8,
-                  "column": 4
-                }
-              },
-              "moduleName": "frontend-cp/components/ko-dropdown/select/template.hbs"
-            },
-            arity: 0,
-            cachedFragment: null,
-            hasRendered: false,
-            buildFragment: function buildFragment(dom) {
-              var el0 = dom.createDocumentFragment();
-              var el1 = dom.createTextNode("      ");
-              dom.appendChild(el0, el1);
-              var el1 = dom.createComment("");
-              dom.appendChild(el0, el1);
-              var el1 = dom.createTextNode("\n");
-              dom.appendChild(el0, el1);
-              return el0;
-            },
-            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-              var morphs = new Array(1);
-              morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
-              return morphs;
-            },
-            statements: [["content", "yield", ["loc", [null, [7, 6], [7, 15]]]]],
-            locals: [],
-            templates: []
-          };
-        })();
-        return {
-          meta: {
-            "revision": "Ember@1.13.13",
-            "loc": {
-              "source": null,
-              "start": {
-                "line": 5,
-                "column": 2
-              },
-              "end": {
-                "line": 9,
-                "column": 2
-              }
-            },
-            "moduleName": "frontend-cp/components/ko-dropdown/select/template.hbs"
-          },
-          arity: 0,
-          cachedFragment: null,
-          hasRendered: false,
-          buildFragment: function buildFragment(dom) {
-            var el0 = dom.createDocumentFragment();
-            var el1 = dom.createComment("");
-            dom.appendChild(el0, el1);
-            return el0;
-          },
-          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-            var morphs = new Array(1);
-            morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-            dom.insertBoundary(fragment, 0);
-            dom.insertBoundary(fragment, null);
-            return morphs;
-          },
-          statements: [["block", "ko-dropdown/list", [], ["class", "ko-dropdown-select__content", "style", ["subexpr", "@mut", [["get", "contentStyle", ["loc", [null, [6, 66], [6, 78]]]]], [], []]], 0, null, ["loc", [null, [6, 4], [8, 25]]]]],
-          locals: [],
-          templates: [child0]
-        };
-      })();
-      return {
-        meta: {
-          "revision": "Ember@1.13.13",
-          "loc": {
-            "source": null,
-            "start": {
-              "line": 1,
-              "column": 0
-            },
-            "end": {
-              "line": 10,
-              "column": 0
-            }
-          },
-          "moduleName": "frontend-cp/components/ko-dropdown/select/template.hbs"
-        },
-        arity: 2,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createComment("");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createComment("");
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(2);
-          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-          morphs[1] = dom.createMorphAt(fragment, 1, 1, contextualElement);
-          dom.insertBoundary(fragment, 0);
-          dom.insertBoundary(fragment, null);
-          return morphs;
-        },
-        statements: [["block", "if", [["subexpr", "eq", [["get", "name", ["loc", [null, [2, 12], [2, 16]]]], "button"], [], ["loc", [null, [2, 8], [2, 26]]]]], [], 0, null, ["loc", [null, [2, 2], [4, 9]]]], ["block", "if", [["subexpr", "eq", [["get", "name", ["loc", [null, [5, 12], [5, 16]]]], "content"], [], ["loc", [null, [5, 8], [5, 27]]]]], [], 1, null, ["loc", [null, [5, 2], [9, 9]]]]],
-        locals: ["name", "dropdownContext"],
-        templates: [child0, child1]
-      };
-    })();
-    return {
-      meta: {
-        "revision": "Ember@1.13.13",
-        "loc": {
-          "source": null,
-          "start": {
-            "line": 1,
-            "column": 0
-          },
-          "end": {
-            "line": 11,
-            "column": 0
-          }
-        },
-        "moduleName": "frontend-cp/components/ko-dropdown/select/template.hbs"
-      },
-      arity: 0,
-      cachedFragment: null,
-      hasRendered: false,
-      buildFragment: function buildFragment(dom) {
-        var el0 = dom.createDocumentFragment();
-        var el1 = dom.createComment("");
-        dom.appendChild(el0, el1);
-        return el0;
-      },
-      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var morphs = new Array(1);
-        morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-        dom.insertBoundary(fragment, 0);
-        dom.insertBoundary(fragment, null);
-        return morphs;
-      },
-      statements: [["block", "ko-dropdown/container", [], ["class", ["subexpr", "qa-cls", ["qa-dropdown_select__container"], [], ["loc", [null, [1, 31], [1, 71]]]], "onFocusIn", "onFocusIn", "onFocusOut", "onFocusOut", "hideOnClick", ["subexpr", "@mut", [["get", "hideOnClick", ["loc", [null, [1, 130], [1, 141]]]]], [], []], "hideOnChildFocus", true], 0, null, ["loc", [null, [1, 0], [10, 26]]]]],
       locals: [],
       templates: [child0]
     };
@@ -35525,114 +35069,9 @@ define('frontend-cp/components/ko-info-bar/field/drill-down/component', ['export
     emptyLabel: '-',
 
     // HTML
-    tagName: 'div'
+    tagName: 'div',
+    classNames: ['ko-info-bar_field_drill-down']
   });
-});
-define('frontend-cp/components/ko-info-bar/field/drill-down/options/component', ['exports', 'ember'], function (exports, _ember) {
-  exports['default'] = _ember['default'].Component.extend({
-    tagName: 'ul',
-    attributeBindings: ['role'],
-    role: 'menu',
-
-    actions: {
-      preserveFocus: function preserveFocus(e) {
-        e.preventDefault();
-        e.stopPropagation();
-      }
-    }
-  });
-});
-define("frontend-cp/components/ko-info-bar/field/drill-down/options/template", ["exports"], function (exports) {
-  exports["default"] = Ember.HTMLBars.template((function () {
-    var child0 = (function () {
-      return {
-        meta: {
-          "revision": "Ember@1.13.13",
-          "loc": {
-            "source": null,
-            "start": {
-              "line": 1,
-              "column": 0
-            },
-            "end": {
-              "line": 11,
-              "column": 0
-            }
-          },
-          "moduleName": "frontend-cp/components/ko-info-bar/field/drill-down/options/template.hbs"
-        },
-        arity: 1,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("  ");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createElement("li");
-          dom.setAttribute(el1, "role", "menuitem");
-          var el2 = dom.createTextNode("\n    ");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createComment("");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n  ");
-          dom.appendChild(el1, el2);
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n");
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var element0 = dom.childAt(fragment, [1]);
-          var morphs = new Array(5);
-          morphs[0] = dom.createAttrMorph(element0, 'class');
-          morphs[1] = dom.createAttrMorph(element0, 'onmousedown');
-          morphs[2] = dom.createAttrMorph(element0, 'onmouseup');
-          morphs[3] = dom.createAttrMorph(element0, 'onmousemove');
-          morphs[4] = dom.createMorphAt(element0, 1, 1);
-          return morphs;
-        },
-        statements: [["attribute", "class", ["concat", ["ember-power-select-option ", ["subexpr", "ember-power-select-option-classes", [["get", "opt", ["loc", [null, [3, 73], [3, 76]]]], ["get", "selection", ["loc", [null, [3, 77], [3, 86]]]], ["get", "highlighted", ["loc", [null, [3, 87], [3, 98]]]]], [], ["loc", [null, [3, 37], [3, 100]]]]]]], ["attribute", "onmousedown", ["subexpr", "action", ["preserveFocus"], [], ["loc", [null, [4, 16], [4, 42]]]]], ["attribute", "onmouseup", ["subexpr", "action", [["get", "select.actions.select", ["loc", [null, [5, 23], [5, 44]]]], ["get", "opt", ["loc", [null, [5, 45], [5, 48]]]]], [], ["loc", [null, [5, 14], [5, 50]]]]], ["attribute", "onmousemove", ["subexpr", "action", [["get", "select.actions.highlight", ["loc", [null, [6, 25], [6, 49]]]], ["get", "opt", ["loc", [null, [6, 50], [6, 53]]]]], [], ["loc", [null, [6, 16], [6, 55]]]]], ["inline", "yield", [["get", "opt", ["loc", [null, [9, 12], [9, 15]]]], ["get", "lastSearchedText", ["loc", [null, [9, 16], [9, 32]]]]], [], ["loc", [null, [9, 4], [9, 34]]]]],
-        locals: ["opt"],
-        templates: []
-      };
-    })();
-    return {
-      meta: {
-        "revision": "Ember@1.13.13",
-        "loc": {
-          "source": null,
-          "start": {
-            "line": 1,
-            "column": 0
-          },
-          "end": {
-            "line": 12,
-            "column": 0
-          }
-        },
-        "moduleName": "frontend-cp/components/ko-info-bar/field/drill-down/options/template.hbs"
-      },
-      arity: 0,
-      cachedFragment: null,
-      hasRendered: false,
-      buildFragment: function buildFragment(dom) {
-        var el0 = dom.createDocumentFragment();
-        var el1 = dom.createComment("");
-        dom.appendChild(el0, el1);
-        return el0;
-      },
-      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var morphs = new Array(1);
-        morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-        dom.insertBoundary(fragment, 0);
-        dom.insertBoundary(fragment, null);
-        return morphs;
-      },
-      statements: [["block", "each", [["get", "options", ["loc", [null, [1, 8], [1, 15]]]]], [], 0, null, ["loc", [null, [1, 0], [11, 9]]]]],
-      locals: [],
-      templates: [child0]
-    };
-  })());
 });
 define("frontend-cp/components/ko-info-bar/field/drill-down/template", ["exports"], function (exports) {
   exports["default"] = Ember.HTMLBars.template((function () {
@@ -35646,7 +35085,7 @@ define("frontend-cp/components/ko-info-bar/field/drill-down/template", ["exports
             "column": 0
           },
           "end": {
-            "line": 18,
+            "line": 17,
             "column": 0
           }
         },
@@ -35669,7 +35108,7 @@ define("frontend-cp/components/ko-info-bar/field/drill-down/template", ["exports
         dom.insertBoundary(fragment, 0);
         return morphs;
       },
-      statements: [["inline", "ko-dropdown/drill-down", [], ["options", ["subexpr", "@mut", [["get", "options", ["loc", [null, [2, 10], [2, 17]]]]], [], []], "value", ["subexpr", "@mut", [["get", "value", ["loc", [null, [3, 8], [3, 13]]]]], [], []], "onValueChange", ["subexpr", "@mut", [["get", "onValueChange", ["loc", [null, [4, 16], [4, 29]]]]], [], []], "emptyLabel", ["subexpr", "@mut", [["get", "emptyLabel", ["loc", [null, [5, 13], [5, 23]]]]], [], []], "hasEmptyOption", ["subexpr", "@mut", [["get", "hasEmptyOption", ["loc", [null, [6, 17], [6, 31]]]]], [], []], "triggerComponent", "ko-info-bar/field/drill-down/trigger", "optionsComponent", "ko-info-bar/field/drill-down/options", "isDisabled", ["subexpr", "@mut", [["get", "isDisabled", ["loc", [null, [9, 13], [9, 23]]]]], [], []], "extra", ["subexpr", "hash", [], ["title", ["get", "title", ["loc", [null, [11, 10], [11, 15]]]], "placeholder", ["get", "placeholder", ["loc", [null, [12, 16], [12, 27]]]], "isEdited", ["get", "isEdited", ["loc", [null, [13, 13], [13, 21]]]], "isPusherEdited", ["get", "isPusherEdited", ["loc", [null, [14, 19], [14, 33]]]], "isErrored", ["get", "isErrored", ["loc", [null, [15, 14], [15, 23]]]]], ["loc", [null, [10, 8], [16, 3]]]]], ["loc", [null, [1, 0], [17, 2]]]]],
+      statements: [["inline", "ko-dropdown/drill-down", [], ["options", ["subexpr", "@mut", [["get", "options", ["loc", [null, [2, 10], [2, 17]]]]], [], []], "value", ["subexpr", "@mut", [["get", "value", ["loc", [null, [3, 8], [3, 13]]]]], [], []], "onValueChange", ["subexpr", "@mut", [["get", "onValueChange", ["loc", [null, [4, 16], [4, 29]]]]], [], []], "emptyLabel", ["subexpr", "@mut", [["get", "emptyLabel", ["loc", [null, [5, 13], [5, 23]]]]], [], []], "hasEmptyOption", ["subexpr", "@mut", [["get", "hasEmptyOption", ["loc", [null, [6, 17], [6, 31]]]]], [], []], "triggerComponent", "ko-info-bar/field/drill-down/trigger", "isDisabled", ["subexpr", "@mut", [["get", "isDisabled", ["loc", [null, [8, 13], [8, 23]]]]], [], []], "extra", ["subexpr", "hash", [], ["title", ["get", "title", ["loc", [null, [10, 10], [10, 15]]]], "placeholder", ["get", "placeholder", ["loc", [null, [11, 16], [11, 27]]]], "isEdited", ["get", "isEdited", ["loc", [null, [12, 13], [12, 21]]]], "isPusherEdited", ["get", "isPusherEdited", ["loc", [null, [13, 19], [13, 33]]]], "isErrored", ["get", "isErrored", ["loc", [null, [14, 14], [14, 23]]]]], ["loc", [null, [9, 8], [15, 3]]]]], ["loc", [null, [1, 0], [16, 2]]]]],
       locals: [],
       templates: []
     };
@@ -40843,7 +40282,7 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
               "column": 4
             },
             "end": {
-              "line": 15,
+              "line": 14,
               "column": 4
             }
           },
@@ -40854,7 +40293,7 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
         hasRendered: false,
         buildFragment: function buildFragment(dom) {
           var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("        ");
+          var el1 = dom.createTextNode("      ");
           dom.appendChild(el0, el1);
           var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
@@ -40867,7 +40306,7 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [["inline", "t", [["subexpr", "concat", ["admin.predicate_builder.", ["get", "definition.id", ["loc", [null, [14, 47], [14, 60]]]]], [], ["loc", [null, [14, 12], [14, 61]]]]], [], ["loc", [null, [14, 8], [14, 63]]]]],
+        statements: [["inline", "t", [["subexpr", "concat", ["admin.predicate_builder.", ["get", "definition.id", ["loc", [null, [13, 45], [13, 58]]]]], [], ["loc", [null, [13, 10], [13, 59]]]]], [], ["loc", [null, [13, 6], [13, 61]]]]],
         locals: ["definition"],
         templates: []
       };
@@ -40879,11 +40318,11 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
           "loc": {
             "source": null,
             "start": {
-              "line": 18,
+              "line": 17,
               "column": 4
             },
             "end": {
-              "line": 26,
+              "line": 24,
               "column": 4
             }
           },
@@ -40894,7 +40333,7 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
         hasRendered: false,
         buildFragment: function buildFragment(dom) {
           var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("        ");
+          var el1 = dom.createTextNode("      ");
           dom.appendChild(el0, el1);
           var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
@@ -40907,7 +40346,7 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [["inline", "t", [["subexpr", "concat", ["admin.predicate_builder.operators.", ["subexpr", "or", [["get", "operator", ["loc", [null, [25, 61], [25, 69]]]], "none"], [], ["loc", [null, [25, 57], [25, 77]]]]], [], ["loc", [null, [25, 12], [25, 78]]]]], [], ["loc", [null, [25, 8], [25, 80]]]]],
+        statements: [["inline", "t", [["subexpr", "concat", ["admin.predicate_builder.operators.", ["subexpr", "or", [["get", "operator", ["loc", [null, [23, 59], [23, 67]]]], "none"], [], ["loc", [null, [23, 55], [23, 75]]]]], [], ["loc", [null, [23, 10], [23, 76]]]]], [], ["loc", [null, [23, 6], [23, 78]]]]],
         locals: ["operator"],
         templates: []
       };
@@ -40920,11 +40359,11 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
             "loc": {
               "source": null,
               "start": {
-                "line": 30,
+                "line": 28,
                 "column": 6
               },
               "end": {
-                "line": 39,
+                "line": 37,
                 "column": 6
               }
             },
@@ -40948,7 +40387,7 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
             morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
             return morphs;
           },
-          statements: [["content", "value.string", ["loc", [null, [38, 10], [38, 26]]]]],
+          statements: [["content", "value.string", ["loc", [null, [36, 10], [36, 26]]]]],
           locals: ["value"],
           templates: []
         };
@@ -40959,11 +40398,11 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
           "loc": {
             "source": null,
             "start": {
-              "line": 29,
+              "line": 27,
               "column": 4
             },
             "end": {
-              "line": 40,
+              "line": 38,
               "column": 4
             }
           },
@@ -40985,7 +40424,7 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [["block", "power-select-multiple", [], ["class", ["subexpr", "concat", ["ember-power-select-wrapper--ko ember-power-select-wrapper--height-medium", ["subexpr", "qa-cls", [" qa-proposition--property"], [], ["loc", [null, [31, 97], [31, 133]]]]], [], ["loc", [null, [31, 14], [31, 134]]]], "searchField", "string", "selected", ["subexpr", "@mut", [["get", "value", ["loc", [null, [33, 17], [33, 22]]]]], [], []], "options", ["subexpr", "@mut", [["get", "definition.values", ["loc", [null, [34, 16], [34, 33]]]]], [], []], "searchEnabled", true, "renderInPlace", true, "onchange", ["subexpr", "action", ["selectValue"], [], ["loc", [null, [37, 17], [37, 39]]]]], 0, null, ["loc", [null, [30, 6], [39, 32]]]]],
+        statements: [["block", "power-select-multiple", [], ["class", ["subexpr", "concat", ["ember-power-select-wrapper--ko ember-power-select-wrapper--height-medium", ["subexpr", "qa-cls", [" qa-proposition--property"], [], ["loc", [null, [29, 97], [29, 133]]]]], [], ["loc", [null, [29, 14], [29, 134]]]], "searchField", "string", "selected", ["subexpr", "@mut", [["get", "value", ["loc", [null, [31, 17], [31, 22]]]]], [], []], "options", ["subexpr", "@mut", [["get", "definition.values", ["loc", [null, [32, 16], [32, 33]]]]], [], []], "searchEnabled", true, "renderInPlace", true, "onchange", ["subexpr", "action", ["selectValue"], [], ["loc", [null, [35, 17], [35, 39]]]]], 0, null, ["loc", [null, [28, 6], [37, 32]]]]],
         locals: [],
         templates: [child0]
       };
@@ -40999,11 +40438,11 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 41,
+                  "line": 39,
                   "column": 6
                 },
                 "end": {
-                  "line": 49,
+                  "line": 47,
                   "column": 6
                 }
               },
@@ -41027,7 +40466,7 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
               morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
               return morphs;
             },
-            statements: [["inline", "get", [["get", "value", ["loc", [null, [48, 16], [48, 21]]]], ["get", "autocompleteOptionLabelPath", ["loc", [null, [48, 22], [48, 49]]]]], [], ["loc", [null, [48, 10], [48, 51]]]]],
+            statements: [["inline", "get", [["get", "value", ["loc", [null, [46, 16], [46, 21]]]], ["get", "autocompleteOptionLabelPath", ["loc", [null, [46, 22], [46, 49]]]]], [], ["loc", [null, [46, 10], [46, 51]]]]],
             locals: ["value"],
             templates: []
           };
@@ -41038,11 +40477,11 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
             "loc": {
               "source": null,
               "start": {
-                "line": 40,
+                "line": 38,
                 "column": 4
               },
               "end": {
-                "line": 50,
+                "line": 48,
                 "column": 4
               }
             },
@@ -41064,7 +40503,7 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
             dom.insertBoundary(fragment, null);
             return morphs;
           },
-          statements: [["block", "power-select", [], ["class", ["subexpr", "concat", ["ember-power-select-wrapper--ko ember-power-select-wrapper--height-medium", ["subexpr", "qa-cls", [" qa-proposition--property"], [], ["loc", [null, [42, 97], [42, 133]]]]], [], ["loc", [null, [42, 14], [42, 134]]]], "selected", ["subexpr", "@mut", [["get", "value", ["loc", [null, [43, 17], [43, 22]]]]], [], []], "searchEnabled", true, "renderInPlace", true, "search", ["subexpr", "action", ["searchAutocomplete"], [], ["loc", [null, [46, 15], [46, 44]]]], "onchange", ["subexpr", "action", ["selectAutocompleteValue"], [], ["loc", [null, [47, 17], [47, 51]]]]], 0, null, ["loc", [null, [41, 6], [49, 23]]]]],
+          statements: [["block", "power-select", [], ["class", ["subexpr", "concat", ["ember-power-select-wrapper--ko ember-power-select-wrapper--height-medium", ["subexpr", "qa-cls", [" qa-proposition--property"], [], ["loc", [null, [40, 97], [40, 133]]]]], [], ["loc", [null, [40, 14], [40, 134]]]], "selected", ["subexpr", "@mut", [["get", "value", ["loc", [null, [41, 17], [41, 22]]]]], [], []], "searchEnabled", true, "renderInPlace", true, "search", ["subexpr", "action", ["searchAutocomplete"], [], ["loc", [null, [44, 15], [44, 44]]]], "onchange", ["subexpr", "action", ["selectAutocompleteValue"], [], ["loc", [null, [45, 17], [45, 51]]]]], 0, null, ["loc", [null, [39, 6], [47, 23]]]]],
           locals: [],
           templates: [child0]
         };
@@ -41077,11 +40516,11 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 50,
+                  "line": 48,
                   "column": 4
                 },
                 "end": {
-                  "line": 57,
+                  "line": 55,
                   "column": 4
                 }
               },
@@ -41112,7 +40551,7 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
               morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
               return morphs;
             },
-            statements: [["inline", "ko-tags", [], ["selectedTags", ["subexpr", "@mut", [["get", "value", ["loc", [null, [53, 23], [53, 28]]]]], [], []], "onTagAddition", ["subexpr", "action", ["addTagToValue"], [], ["loc", [null, [54, 24], [54, 48]]]], "onTagRemoval", ["subexpr", "action", ["removeTagFromValue"], [], ["loc", [null, [55, 23], [55, 52]]]]], ["loc", [null, [52, 8], [55, 54]]]]],
+            statements: [["inline", "ko-tags", [], ["selectedTags", ["subexpr", "@mut", [["get", "value", ["loc", [null, [51, 23], [51, 28]]]]], [], []], "onTagAddition", ["subexpr", "action", ["addTagToValue"], [], ["loc", [null, [52, 24], [52, 48]]]], "onTagRemoval", ["subexpr", "action", ["removeTagFromValue"], [], ["loc", [null, [53, 23], [53, 52]]]]], ["loc", [null, [50, 8], [53, 54]]]]],
             locals: [],
             templates: []
           };
@@ -41126,11 +40565,11 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
                   "loc": {
                     "source": null,
                     "start": {
-                      "line": 58,
+                      "line": 56,
                       "column": 6
                     },
                     "end": {
-                      "line": 67,
+                      "line": 65,
                       "column": 6
                     }
                   },
@@ -41154,7 +40593,7 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
                   morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
                   return morphs;
                 },
-                statements: [["content", "value.string", ["loc", [null, [66, 10], [66, 26]]]]],
+                statements: [["content", "value.string", ["loc", [null, [64, 10], [64, 26]]]]],
                 locals: ["value"],
                 templates: []
               };
@@ -41165,11 +40604,11 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 57,
+                    "line": 55,
                     "column": 4
                   },
                   "end": {
-                    "line": 68,
+                    "line": 66,
                     "column": 4
                   }
                 },
@@ -41191,13 +40630,53 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
                 dom.insertBoundary(fragment, null);
                 return morphs;
               },
-              statements: [["block", "power-select", [], ["class", ["subexpr", "concat", ["ember-power-select-wrapper--ko ember-power-select-wrapper--height-medium", ["subexpr", "qa-cls", [" qa-proposition--property"], [], ["loc", [null, [59, 97], [59, 133]]]]], [], ["loc", [null, [59, 14], [59, 134]]]], "searchField", "string", "selected", ["subexpr", "@mut", [["get", "value", ["loc", [null, [61, 17], [61, 22]]]]], [], []], "options", ["subexpr", "@mut", [["get", "definition.values", ["loc", [null, [62, 16], [62, 33]]]]], [], []], "searchEnabled", true, "renderInPlace", true, "onchange", ["subexpr", "action", ["selectValue"], [], ["loc", [null, [65, 17], [65, 39]]]]], 0, null, ["loc", [null, [58, 6], [67, 23]]]]],
+              statements: [["block", "power-select", [], ["class", ["subexpr", "concat", ["ember-power-select-wrapper--ko ember-power-select-wrapper--height-medium", ["subexpr", "qa-cls", [" qa-proposition--property"], [], ["loc", [null, [57, 97], [57, 133]]]]], [], ["loc", [null, [57, 14], [57, 134]]]], "searchField", "string", "selected", ["subexpr", "@mut", [["get", "value", ["loc", [null, [59, 17], [59, 22]]]]], [], []], "options", ["subexpr", "@mut", [["get", "definition.values", ["loc", [null, [60, 16], [60, 33]]]]], [], []], "searchEnabled", true, "renderInPlace", true, "onchange", ["subexpr", "action", ["selectValue"], [], ["loc", [null, [63, 17], [63, 39]]]]], 0, null, ["loc", [null, [56, 6], [65, 23]]]]],
               locals: [],
               templates: [child0]
             };
           })();
           var child1 = (function () {
             var child0 = (function () {
+              return {
+                meta: {
+                  "revision": "Ember@1.13.13",
+                  "loc": {
+                    "source": null,
+                    "start": {
+                      "line": 66,
+                      "column": 4
+                    },
+                    "end": {
+                      "line": 68,
+                      "column": 4
+                    }
+                  },
+                  "moduleName": "frontend-cp/components/ko-predicate-builder/rule/template.hbs"
+                },
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                  var el0 = dom.createDocumentFragment();
+                  var el1 = dom.createTextNode("      ");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createComment("");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createTextNode("\n");
+                  dom.appendChild(el0, el1);
+                  return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                  var morphs = new Array(1);
+                  morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+                  return morphs;
+                },
+                statements: [["inline", "ko-date-select", [], ["value", ["subexpr", "@mut", [["get", "rule.value", ["loc", [null, [67, 29], [67, 39]]]]], [], []], "onChange", ["subexpr", "action", [["subexpr", "mut", [["get", "rule.value", ["loc", [null, [67, 62], [67, 72]]]]], [], ["loc", [null, [67, 57], [67, 73]]]]], [], ["loc", [null, [67, 49], [67, 74]]]]], ["loc", [null, [67, 6], [67, 76]]]]],
+                locals: [],
+                templates: []
+              };
+            })();
+            var child1 = (function () {
               return {
                 meta: {
                   "revision": "Ember@1.13.13",
@@ -41223,46 +40702,6 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
                   dom.appendChild(el0, el1);
                   var el1 = dom.createComment("");
                   dom.appendChild(el0, el1);
-                  var el1 = dom.createTextNode("\n");
-                  dom.appendChild(el0, el1);
-                  return el0;
-                },
-                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-                  var morphs = new Array(1);
-                  morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
-                  return morphs;
-                },
-                statements: [["inline", "ko-date-select", [], ["value", ["subexpr", "@mut", [["get", "rule.value", ["loc", [null, [69, 29], [69, 39]]]]], [], []], "onChange", ["subexpr", "action", [["subexpr", "mut", [["get", "rule.value", ["loc", [null, [69, 62], [69, 72]]]]], [], ["loc", [null, [69, 57], [69, 73]]]]], [], ["loc", [null, [69, 49], [69, 74]]]]], ["loc", [null, [69, 6], [69, 76]]]]],
-                locals: [],
-                templates: []
-              };
-            })();
-            var child1 = (function () {
-              return {
-                meta: {
-                  "revision": "Ember@1.13.13",
-                  "loc": {
-                    "source": null,
-                    "start": {
-                      "line": 70,
-                      "column": 4
-                    },
-                    "end": {
-                      "line": 72,
-                      "column": 4
-                    }
-                  },
-                  "moduleName": "frontend-cp/components/ko-predicate-builder/rule/template.hbs"
-                },
-                arity: 0,
-                cachedFragment: null,
-                hasRendered: false,
-                buildFragment: function buildFragment(dom) {
-                  var el0 = dom.createDocumentFragment();
-                  var el1 = dom.createTextNode("      ");
-                  dom.appendChild(el0, el1);
-                  var el1 = dom.createComment("");
-                  dom.appendChild(el0, el1);
                   var el1 = dom.createTextNode("\n    ");
                   dom.appendChild(el0, el1);
                   return el0;
@@ -41272,7 +40711,7 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
                   morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
                   return morphs;
                 },
-                statements: [["inline", "input", [], ["type", "text", "class", "ko-predicate-builder_rule__input input-text", "value", ["subexpr", "@mut", [["get", "rule.value", ["loc", [null, [71, 84], [71, 94]]]]], [], []]], ["loc", [null, [71, 6], [71, 96]]]]],
+                statements: [["inline", "input", [], ["type", "text", "class", "ko-predicate-builder_rule__input input-text", "value", ["subexpr", "@mut", [["get", "rule.value", ["loc", [null, [69, 84], [69, 94]]]]], [], []]], ["loc", [null, [69, 6], [69, 96]]]]],
                 locals: [],
                 templates: []
               };
@@ -41283,11 +40722,11 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 68,
+                    "line": 66,
                     "column": 4
                   },
                   "end": {
-                    "line": 72,
+                    "line": 70,
                     "column": 4
                   }
                 },
@@ -41309,7 +40748,7 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
                 dom.insertBoundary(fragment, null);
                 return morphs;
               },
-              statements: [["block", "if", [["subexpr", "eq", [["get", "definitionInputType", ["loc", [null, [68, 18], [68, 37]]]], "date-absolute"], [], ["loc", [null, [68, 14], [68, 54]]]]], [], 0, 1, ["loc", [null, [68, 4], [72, 4]]]]],
+              statements: [["block", "if", [["subexpr", "eq", [["get", "definitionInputType", ["loc", [null, [66, 18], [66, 37]]]], "date-absolute"], [], ["loc", [null, [66, 14], [66, 54]]]]], [], 0, 1, ["loc", [null, [66, 4], [70, 4]]]]],
               locals: [],
               templates: [child0, child1]
             };
@@ -41320,11 +40759,11 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 57,
+                  "line": 55,
                   "column": 4
                 },
                 "end": {
-                  "line": 72,
+                  "line": 70,
                   "column": 4
                 }
               },
@@ -41346,7 +40785,7 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
               dom.insertBoundary(fragment, null);
               return morphs;
             },
-            statements: [["block", "if", [["subexpr", "eq", [["get", "definitionInputType", ["loc", [null, [57, 18], [57, 37]]]], "options"], [], ["loc", [null, [57, 14], [57, 48]]]]], [], 0, 1, ["loc", [null, [57, 4], [72, 4]]]]],
+            statements: [["block", "if", [["subexpr", "eq", [["get", "definitionInputType", ["loc", [null, [55, 18], [55, 37]]]], "options"], [], ["loc", [null, [55, 14], [55, 48]]]]], [], 0, 1, ["loc", [null, [55, 4], [70, 4]]]]],
             locals: [],
             templates: [child0, child1]
           };
@@ -41357,11 +40796,11 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
             "loc": {
               "source": null,
               "start": {
-                "line": 50,
+                "line": 48,
                 "column": 4
               },
               "end": {
-                "line": 72,
+                "line": 70,
                 "column": 4
               }
             },
@@ -41383,7 +40822,7 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
             dom.insertBoundary(fragment, null);
             return morphs;
           },
-          statements: [["block", "if", [["subexpr", "eq", [["get", "definitionInputType", ["loc", [null, [50, 18], [50, 37]]]], "tags"], [], ["loc", [null, [50, 14], [50, 45]]]]], [], 0, 1, ["loc", [null, [50, 4], [72, 4]]]]],
+          statements: [["block", "if", [["subexpr", "eq", [["get", "definitionInputType", ["loc", [null, [48, 18], [48, 37]]]], "tags"], [], ["loc", [null, [48, 14], [48, 45]]]]], [], 0, 1, ["loc", [null, [48, 4], [70, 4]]]]],
           locals: [],
           templates: [child0, child1]
         };
@@ -41394,11 +40833,11 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
           "loc": {
             "source": null,
             "start": {
-              "line": 40,
+              "line": 38,
               "column": 4
             },
             "end": {
-              "line": 72,
+              "line": 70,
               "column": 4
             }
           },
@@ -41420,7 +40859,7 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [["block", "if", [["subexpr", "eq", [["get", "definitionInputType", ["loc", [null, [40, 18], [40, 37]]]], "autocomplete"], [], ["loc", [null, [40, 14], [40, 53]]]]], [], 0, 1, ["loc", [null, [40, 4], [72, 4]]]]],
+        statements: [["block", "if", [["subexpr", "eq", [["get", "definitionInputType", ["loc", [null, [38, 18], [38, 37]]]], "autocomplete"], [], ["loc", [null, [38, 14], [38, 53]]]]], [], 0, 1, ["loc", [null, [38, 4], [70, 4]]]]],
         locals: [],
         templates: [child0, child1]
       };
@@ -41432,11 +40871,11 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
           "loc": {
             "source": null,
             "start": {
-              "line": 75,
+              "line": 73,
               "column": 6
             },
             "end": {
-              "line": 79,
+              "line": 77,
               "column": 6
             }
           },
@@ -41469,7 +40908,7 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
           morphs[0] = dom.createAttrMorph(element0, 'onclick');
           return morphs;
         },
-        statements: [["attribute", "onclick", ["subexpr", "action", [["get", "onRuleDeletion", ["loc", [null, [77, 76], [77, 90]]]], ["get", "rule", ["loc", [null, [77, 91], [77, 95]]]]], [], ["loc", [null, [77, 67], [77, 97]]]]]],
+        statements: [["attribute", "onclick", ["subexpr", "action", [["get", "onRuleDeletion", ["loc", [null, [75, 76], [75, 90]]]], ["get", "rule", ["loc", [null, [75, 91], [75, 95]]]]], [], ["loc", [null, [75, 67], [75, 97]]]]]],
         locals: [],
         templates: []
       };
@@ -41484,7 +40923,7 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
             "column": 0
           },
           "end": {
-            "line": 82,
+            "line": 80,
             "column": 0
           }
         },
@@ -41569,7 +41008,7 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
         morphs[4] = dom.createMorphAt(dom.childAt(element1, [7]), 1, 1);
         return morphs;
       },
-      statements: [["inline", "t", ["generic.or"], [], ["loc", [null, [2, 2], [2, 20]]]], ["block", "power-select", [], ["class", ["subexpr", "concat", ["ember-power-select-wrapper--ko ember-power-select-wrapper--height-medium", ["subexpr", "qa-cls", [" qa-proposition--column"], [], ["loc", [null, [8, 95], [8, 129]]]]], [], ["loc", [null, [8, 12], [8, 130]]]], "selected", ["subexpr", "@mut", [["get", "definition", ["loc", [null, [9, 15], [9, 25]]]]], [], []], "options", ["subexpr", "@mut", [["get", "definitions", ["loc", [null, [10, 14], [10, 25]]]]], [], []], "searchEnabled", false, "renderInPlace", true, "onchange", ["subexpr", "action", ["selectDefinition"], [], ["loc", [null, [13, 15], [13, 42]]]]], 0, null, ["loc", [null, [7, 4], [15, 21]]]], ["block", "power-select", [], ["class", ["subexpr", "concat", ["ember-power-select-wrapper--ko ember-power-select-wrapper--height-medium ", ["subexpr", "qa-cls", [" qa-proposition--operator"], [], ["loc", [null, [19, 96], [19, 132]]]]], [], ["loc", [null, [19, 12], [19, 133]]]], "selected", ["subexpr", "@mut", [["get", "rule.operator", ["loc", [null, [20, 15], [20, 28]]]]], [], []], "options", ["subexpr", "@mut", [["get", "definition.operators", ["loc", [null, [21, 14], [21, 34]]]]], [], []], "searchEnabled", false, "renderInPlace", true, "onchange", ["subexpr", "action", [["subexpr", "mut", [["get", "rule.operator", ["loc", [null, [24, 28], [24, 41]]]]], [], ["loc", [null, [24, 23], [24, 42]]]]], [], ["loc", [null, [24, 15], [24, 43]]]]], 1, null, ["loc", [null, [18, 4], [26, 21]]]], ["block", "if", [["subexpr", "eq", [["get", "definitionInputType", ["loc", [null, [29, 14], [29, 33]]]], "multiple"], [], ["loc", [null, [29, 10], [29, 45]]]]], [], 2, 3, ["loc", [null, [29, 4], [72, 11]]]], ["block", "if", [["get", "canDeleteRule", ["loc", [null, [75, 12], [75, 25]]]]], [], 4, null, ["loc", [null, [75, 6], [79, 13]]]]],
+      statements: [["inline", "t", ["generic.or"], [], ["loc", [null, [2, 2], [2, 20]]]], ["block", "ko-select", [], ["class", ["subexpr", "qa-cls", ["qa-proposition--column"], [], ["loc", [null, [8, 12], [8, 45]]]], "selected", ["subexpr", "@mut", [["get", "definition", ["loc", [null, [9, 15], [9, 25]]]]], [], []], "options", ["subexpr", "@mut", [["get", "definitions", ["loc", [null, [10, 14], [10, 25]]]]], [], []], "onChange", ["subexpr", "action", ["selectDefinition"], [], ["loc", [null, [11, 15], [11, 42]]]]], 0, null, ["loc", [null, [7, 4], [14, 18]]]], ["block", "ko-select", [], ["class", ["subexpr", "qa-cls", ["qa-proposition--operator"], [], ["loc", [null, [18, 12], [18, 47]]]], "selected", ["subexpr", "@mut", [["get", "rule.operator", ["loc", [null, [19, 15], [19, 28]]]]], [], []], "options", ["subexpr", "@mut", [["get", "definition.operators", ["loc", [null, [20, 14], [20, 34]]]]], [], []], "onChange", ["subexpr", "action", [["subexpr", "mut", [["get", "rule.operator", ["loc", [null, [21, 28], [21, 41]]]]], [], ["loc", [null, [21, 23], [21, 42]]]]], [], ["loc", [null, [21, 15], [21, 43]]]]], 1, null, ["loc", [null, [17, 4], [24, 18]]]], ["block", "if", [["subexpr", "eq", [["get", "definitionInputType", ["loc", [null, [27, 14], [27, 33]]]], "multiple"], [], ["loc", [null, [27, 10], [27, 45]]]]], [], 2, 3, ["loc", [null, [27, 4], [70, 11]]]], ["block", "if", [["get", "canDeleteRule", ["loc", [null, [73, 12], [73, 25]]]]], [], 4, null, ["loc", [null, [73, 6], [77, 13]]]]],
       locals: [],
       templates: [child0, child1, child2, child3, child4]
     };
@@ -42546,6 +41985,111 @@ define("frontend-cp/components/ko-reorderable-list/template", ["exports"], funct
         return morphs;
       },
       statements: [["block", "sortable-group", [], ["classNames", "ko-reorderable-list", "tagName", "ul", "onChange", ["subexpr", "@mut", [["get", "onReorder", ["loc", [null, [1, 73], [1, 82]]]]], [], []]], 0, null, ["loc", [null, [1, 0], [10, 19]]]]],
+      locals: [],
+      templates: [child0]
+    };
+  })());
+});
+define('frontend-cp/components/ko-select/component', ['exports', 'ember'], function (exports, _ember) {
+  var Component = _ember['default'].Component;
+  var computed = _ember['default'].computed;
+  exports['default'] = Component.extend({
+    // Attributes
+    onChange: null,
+    options: null,
+    selected: null,
+    size: null,
+    placeholder: null,
+    disabled: false,
+
+    // HTML
+    classNames: ['ko-select'],
+    classNameBindings: ['sizeClass'],
+
+    // CPs
+    sizeClass: computed('size', function () {
+      var size = this.get('size');
+      if (size === 'medium') {
+        return 'ko-select--medium';
+      }
+    })
+  });
+});
+define("frontend-cp/components/ko-select/template", ["exports"], function (exports) {
+  exports["default"] = Ember.HTMLBars.template((function () {
+    var child0 = (function () {
+      return {
+        meta: {
+          "revision": "Ember@1.13.13",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 1,
+              "column": 0
+            },
+            "end": {
+              "line": 12,
+              "column": 0
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-select/template.hbs"
+        },
+        arity: 1,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+          return morphs;
+        },
+        statements: [["inline", "yield", [["get", "option", ["loc", [null, [11, 10], [11, 16]]]]], [], ["loc", [null, [11, 2], [11, 18]]]]],
+        locals: ["option"],
+        templates: []
+      };
+    })();
+    return {
+      meta: {
+        "revision": "Ember@1.13.13",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 13,
+            "column": 0
+          }
+        },
+        "moduleName": "frontend-cp/components/ko-select/template.hbs"
+      },
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var morphs = new Array(1);
+        morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+        dom.insertBoundary(fragment, 0);
+        dom.insertBoundary(fragment, null);
+        return morphs;
+      },
+      statements: [["block", "power-select", [], ["selected", ["subexpr", "@mut", [["get", "selected", ["loc", [null, [2, 11], [2, 19]]]]], [], []], "options", ["subexpr", "@mut", [["get", "options", ["loc", [null, [3, 10], [3, 17]]]]], [], []], "onchange", ["subexpr", "@mut", [["get", "onChange", ["loc", [null, [4, 11], [4, 19]]]]], [], []], "searchEnabled", false, "renderInPlace", true, "placeholder", ["subexpr", "@mut", [["get", "placeholder", ["loc", [null, [7, 14], [7, 25]]]]], [], []], "disabled", ["subexpr", "@mut", [["get", "disabled", ["loc", [null, [8, 11], [8, 19]]]]], [], []], "class", "ko-select__select"], 0, null, ["loc", [null, [1, 0], [12, 17]]]]],
       locals: [],
       templates: [child0]
     };
@@ -46833,7 +46377,7 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
                   "column": 8
                 },
                 "end": {
-                  "line": 14,
+                  "line": 12,
                   "column": 8
                 }
               },
@@ -46846,9 +46390,7 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
               var el0 = dom.createDocumentFragment();
               var el1 = dom.createTextNode("          ");
               dom.appendChild(el0, el1);
-              var el1 = dom.createElement("li");
-              var el2 = dom.createComment("");
-              dom.appendChild(el1, el2);
+              var el1 = dom.createComment("");
               dom.appendChild(el0, el1);
               var el1 = dom.createTextNode("\n");
               dom.appendChild(el0, el1);
@@ -46856,10 +46398,10 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
             },
             buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
               var morphs = new Array(1);
-              morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 0, 0);
+              morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
               return morphs;
             },
-            statements: [["content", "field.label", ["loc", [null, [13, 14], [13, 29]]]]],
+            statements: [["content", "field.label", ["loc", [null, [11, 10], [11, 25]]]]],
             locals: ["field"],
             templates: []
           };
@@ -46871,11 +46413,11 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 17,
+                  "line": 15,
                   "column": 8
                 },
                 "end": {
-                  "line": 26,
+                  "line": 22,
                   "column": 8
                 }
               },
@@ -46888,9 +46430,7 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
               var el0 = dom.createDocumentFragment();
               var el1 = dom.createTextNode("          ");
               dom.appendChild(el0, el1);
-              var el1 = dom.createElement("li");
-              var el2 = dom.createComment("");
-              dom.appendChild(el1, el2);
+              var el1 = dom.createComment("");
               dom.appendChild(el0, el1);
               var el1 = dom.createTextNode("\n");
               dom.appendChild(el0, el1);
@@ -46898,10 +46438,10 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
             },
             buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
               var morphs = new Array(1);
-              morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 0, 0);
+              morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
               return morphs;
             },
-            statements: [["content", "field.label", ["loc", [null, [25, 14], [25, 29]]]]],
+            statements: [["content", "field.label", ["loc", [null, [21, 10], [21, 25]]]]],
             locals: ["field"],
             templates: []
           };
@@ -46916,7 +46456,7 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
                 "column": 4
               },
               "end": {
-                "line": 28,
+                "line": 24,
                 "column": 4
               }
             },
@@ -46959,7 +46499,7 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
             morphs[1] = dom.createMorphAt(dom.childAt(fragment, [3]), 1, 1);
             return morphs;
           },
-          statements: [["block", "power-select", [], ["class", "ember-power-select-wrapper--ko", "placeholder", ["subexpr", "@mut", [["get", "sortOrderTitle", ["loc", [null, [7, 20], [7, 34]]]]], [], []], "value", ["subexpr", "@mut", [["get", "sortOrder", ["loc", [null, [8, 14], [8, 23]]]]], [], []], "options", ["subexpr", "@mut", [["get", "sortOptions", ["loc", [null, [9, 16], [9, 27]]]]], [], []], "renderInPlace", true, "searchEnabled", false, "onchange", ["subexpr", "action", ["sort"], [], ["loc", [null, [12, 17], [12, 32]]]]], 0, null, ["loc", [null, [5, 8], [14, 25]]]], ["block", "power-select", [], ["class", "ember-power-select-wrapper--ko", "placeholder", ["subexpr", "@mut", [["get", "sortFilterTitle", ["loc", [null, [19, 20], [19, 35]]]]], [], []], "value", ["subexpr", "@mut", [["get", "filter", ["loc", [null, [20, 14], [20, 20]]]]], [], []], "options", ["subexpr", "@mut", [["get", "filterOptions", ["loc", [null, [21, 16], [21, 29]]]]], [], []], "renderInPlace", true, "searchEnabled", false, "onchange", ["subexpr", "action", ["filter"], [], ["loc", [null, [24, 17], [24, 34]]]]], 1, null, ["loc", [null, [17, 8], [26, 25]]]]],
+          statements: [["block", "ko-select", [], ["placeholder", ["subexpr", "@mut", [["get", "sortOrderTitle", ["loc", [null, [6, 22], [6, 36]]]]], [], []], "value", ["subexpr", "@mut", [["get", "sortOrder", ["loc", [null, [7, 16], [7, 25]]]]], [], []], "options", ["subexpr", "@mut", [["get", "sortOptions", ["loc", [null, [8, 18], [8, 29]]]]], [], []], "onChange", ["subexpr", "action", ["sort"], [], ["loc", [null, [9, 19], [9, 34]]]]], 0, null, ["loc", [null, [5, 8], [12, 22]]]], ["block", "ko-select", [], ["placeholder", ["subexpr", "@mut", [["get", "sortFilterTitle", ["loc", [null, [16, 22], [16, 37]]]]], [], []], "value", ["subexpr", "@mut", [["get", "filter", ["loc", [null, [17, 16], [17, 22]]]]], [], []], "options", ["subexpr", "@mut", [["get", "filterOptions", ["loc", [null, [18, 18], [18, 31]]]]], [], []], "onChange", ["subexpr", "action", ["filter"], [], ["loc", [null, [19, 19], [19, 36]]]]], 1, null, ["loc", [null, [15, 8], [22, 22]]]]],
           locals: [],
           templates: [child0, child1]
         };
@@ -46972,11 +46512,11 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 33,
+                  "line": 29,
                   "column": 6
                 },
                 "end": {
-                  "line": 35,
+                  "line": 31,
                   "column": 6
                 }
               },
@@ -47000,7 +46540,7 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
               morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
               return morphs;
             },
-            statements: [["inline", "ko-loader", [], ["large", true], ["loc", [null, [34, 8], [34, 32]]]]],
+            statements: [["inline", "ko-loader", [], ["large", true], ["loc", [null, [30, 8], [30, 32]]]]],
             locals: [],
             templates: []
           };
@@ -47012,11 +46552,11 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 35,
+                  "line": 31,
                   "column": 6
                 },
                 "end": {
-                  "line": 37,
+                  "line": 33,
                   "column": 6
                 }
               },
@@ -47044,7 +46584,7 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
               morphs[1] = dom.createMorphAt(element1, 0, 0);
               return morphs;
             },
-            statements: [["attribute", "onclick", ["subexpr", "action", [["get", "onLoadPostsAbove", ["loc", [null, [36, 28], [36, 44]]]], ["subexpr", "hash", [], ["model", ["get", "model", ["loc", [null, [36, 57], [36, 62]]]], "filter", ["get", "filter", ["loc", [null, [36, 70], [36, 76]]]], "sortOrder", ["get", "sortOrder", ["loc", [null, [36, 87], [36, 96]]]], "postId", ["get", "topPost.id", ["loc", [null, [36, 104], [36, 114]]]]], ["loc", [null, [36, 45], [36, 115]]]]], [], ["loc", [null, [36, 19], [36, 117]]]]], ["inline", "t", ["cases.posts.load_more"], [], ["loc", [null, [36, 118], [36, 147]]]]],
+            statements: [["attribute", "onclick", ["subexpr", "action", [["get", "onLoadPostsAbove", ["loc", [null, [32, 28], [32, 44]]]], ["subexpr", "hash", [], ["model", ["get", "model", ["loc", [null, [32, 57], [32, 62]]]], "filter", ["get", "filter", ["loc", [null, [32, 70], [32, 76]]]], "sortOrder", ["get", "sortOrder", ["loc", [null, [32, 87], [32, 96]]]], "postId", ["get", "topPost.id", ["loc", [null, [32, 104], [32, 114]]]]], ["loc", [null, [32, 45], [32, 115]]]]], [], ["loc", [null, [32, 19], [32, 117]]]]], ["inline", "t", ["cases.posts.load_more"], [], ["loc", [null, [32, 118], [32, 147]]]]],
             locals: [],
             templates: []
           };
@@ -47055,11 +46595,11 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
             "loc": {
               "source": null,
               "start": {
-                "line": 31,
+                "line": 27,
                 "column": 2
               },
               "end": {
-                "line": 39,
+                "line": 35,
                 "column": 2
               }
             },
@@ -47090,7 +46630,7 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
             morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
             return morphs;
           },
-          statements: [["block", "if", [["get", "loadingTop", ["loc", [null, [33, 12], [33, 22]]]]], [], 0, 1, ["loc", [null, [33, 6], [37, 13]]]]],
+          statements: [["block", "if", [["get", "loadingTop", ["loc", [null, [29, 12], [29, 22]]]]], [], 0, 1, ["loc", [null, [29, 6], [33, 13]]]]],
           locals: [],
           templates: [child0, child1]
         };
@@ -47103,11 +46643,11 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 42,
+                  "line": 38,
                   "column": 6
                 },
                 "end": {
-                  "line": 51,
+                  "line": 47,
                   "column": 6
                 }
               },
@@ -47131,7 +46671,7 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
               morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
               return morphs;
             },
-            statements: [["inline", "ko-feed/item", [], ["event", ["subexpr", "@mut", [["get", "post", ["loc", [null, [44, 14], [44, 18]]]]], [], []], "parent", ["subexpr", "@mut", [["get", "model", ["loc", [null, [45, 15], [45, 20]]]]], [], []], "isReplyDisabled", ["subexpr", "@mut", [["get", "isReplyDisabled", ["loc", [null, [46, 24], [46, 39]]]]], [], []], "canReplyToPost", ["subexpr", "contains", [["get", "post.sourceChannel", ["loc", [null, [47, 33], [47, 51]]]], ["get", "availableReplyChannels", ["loc", [null, [47, 52], [47, 74]]]]], [], ["loc", [null, [47, 23], [47, 75]]]], "onReplyToPost", ["subexpr", "action", [["get", "onReplyToPost", ["loc", [null, [48, 30], [48, 43]]]], ["get", "post", ["loc", [null, [48, 44], [48, 48]]]]], [], ["loc", [null, [48, 22], [48, 49]]]], "onReplyWithQuote", ["subexpr", "action", [["get", "onReplyWithQuote", ["loc", [null, [49, 33], [49, 49]]]], ["get", "post", ["loc", [null, [49, 50], [49, 54]]]]], [], ["loc", [null, [49, 25], [49, 55]]]]], ["loc", [null, [43, 8], [50, 10]]]]],
+            statements: [["inline", "ko-feed/item", [], ["event", ["subexpr", "@mut", [["get", "post", ["loc", [null, [40, 14], [40, 18]]]]], [], []], "parent", ["subexpr", "@mut", [["get", "model", ["loc", [null, [41, 15], [41, 20]]]]], [], []], "isReplyDisabled", ["subexpr", "@mut", [["get", "isReplyDisabled", ["loc", [null, [42, 24], [42, 39]]]]], [], []], "canReplyToPost", ["subexpr", "contains", [["get", "post.sourceChannel", ["loc", [null, [43, 33], [43, 51]]]], ["get", "availableReplyChannels", ["loc", [null, [43, 52], [43, 74]]]]], [], ["loc", [null, [43, 23], [43, 75]]]], "onReplyToPost", ["subexpr", "action", [["get", "onReplyToPost", ["loc", [null, [44, 30], [44, 43]]]], ["get", "post", ["loc", [null, [44, 44], [44, 48]]]]], [], ["loc", [null, [44, 22], [44, 49]]]], "onReplyWithQuote", ["subexpr", "action", [["get", "onReplyWithQuote", ["loc", [null, [45, 33], [45, 49]]]], ["get", "post", ["loc", [null, [45, 50], [45, 54]]]]], [], ["loc", [null, [45, 25], [45, 55]]]]], ["loc", [null, [39, 8], [46, 10]]]]],
             locals: [],
             templates: []
           };
@@ -47143,11 +46683,11 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 52,
+                  "line": 48,
                   "column": 6
                 },
                 "end": {
-                  "line": 54,
+                  "line": 50,
                   "column": 6
                 }
               },
@@ -47171,7 +46711,7 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
               morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
               return morphs;
             },
-            statements: [["inline", "ko-feed/activity", [], ["activity", ["subexpr", "@mut", [["get", "post", ["loc", [null, [53, 36], [53, 40]]]]], [], []]], ["loc", [null, [53, 8], [53, 42]]]]],
+            statements: [["inline", "ko-feed/activity", [], ["activity", ["subexpr", "@mut", [["get", "post", ["loc", [null, [49, 36], [49, 40]]]]], [], []]], ["loc", [null, [49, 8], [49, 42]]]]],
             locals: [],
             templates: []
           };
@@ -47182,11 +46722,11 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
             "loc": {
               "source": null,
               "start": {
-                "line": 41,
+                "line": 37,
                 "column": 4
               },
               "end": {
-                "line": 55,
+                "line": 51,
                 "column": 4
               }
             },
@@ -47211,7 +46751,7 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
             dom.insertBoundary(fragment, null);
             return morphs;
           },
-          statements: [["block", "if", [["subexpr", "or", [["subexpr", "eq", [["get", "post.constructor.modelName", ["loc", [null, [42, 20], [42, 46]]]], "post"], [], ["loc", [null, [42, 16], [42, 54]]]], ["subexpr", "eq", [["get", "post.constructor.modelName", ["loc", [null, [42, 59], [42, 85]]]], "user-note"], [], ["loc", [null, [42, 55], [42, 98]]]], ["subexpr", "eq", [["get", "post.constructor.modelName", ["loc", [null, [42, 103], [42, 129]]]], "organization-note"], [], ["loc", [null, [42, 99], [42, 150]]]]], [], ["loc", [null, [42, 12], [42, 151]]]]], [], 0, null, ["loc", [null, [42, 6], [51, 13]]]], ["block", "if", [["subexpr", "or", [["subexpr", "eq", [["get", "post.constructor.modelName", ["loc", [null, [52, 20], [52, 46]]]], "activity"], [], ["loc", [null, [52, 16], [52, 58]]]], ["subexpr", "eq", [["get", "post.constructor.modelName", ["loc", [null, [52, 63], [52, 89]]]], "event"], [], ["loc", [null, [52, 59], [52, 98]]]]], [], ["loc", [null, [52, 12], [52, 99]]]]], [], 1, null, ["loc", [null, [52, 6], [54, 13]]]]],
+          statements: [["block", "if", [["subexpr", "or", [["subexpr", "eq", [["get", "post.constructor.modelName", ["loc", [null, [38, 20], [38, 46]]]], "post"], [], ["loc", [null, [38, 16], [38, 54]]]], ["subexpr", "eq", [["get", "post.constructor.modelName", ["loc", [null, [38, 59], [38, 85]]]], "user-note"], [], ["loc", [null, [38, 55], [38, 98]]]], ["subexpr", "eq", [["get", "post.constructor.modelName", ["loc", [null, [38, 103], [38, 129]]]], "organization-note"], [], ["loc", [null, [38, 99], [38, 150]]]]], [], ["loc", [null, [38, 12], [38, 151]]]]], [], 0, null, ["loc", [null, [38, 6], [47, 13]]]], ["block", "if", [["subexpr", "or", [["subexpr", "eq", [["get", "post.constructor.modelName", ["loc", [null, [48, 20], [48, 46]]]], "activity"], [], ["loc", [null, [48, 16], [48, 58]]]], ["subexpr", "eq", [["get", "post.constructor.modelName", ["loc", [null, [48, 63], [48, 89]]]], "event"], [], ["loc", [null, [48, 59], [48, 98]]]]], [], ["loc", [null, [48, 12], [48, 99]]]]], [], 1, null, ["loc", [null, [48, 6], [50, 13]]]]],
           locals: ["post"],
           templates: [child0, child1]
         };
@@ -47223,11 +46763,11 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
             "loc": {
               "source": null,
               "start": {
-                "line": 57,
+                "line": 53,
                 "column": 4
               },
               "end": {
-                "line": 60,
+                "line": 56,
                 "column": 4
               }
             },
@@ -47256,7 +46796,7 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
             morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
             return morphs;
           },
-          statements: [["content", "totalNotes", ["loc", [null, [59, 91], [59, 105]]]]],
+          statements: [["content", "totalNotes", ["loc", [null, [55, 91], [55, 105]]]]],
           locals: [],
           templates: []
         };
@@ -47269,11 +46809,11 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 64,
+                  "line": 60,
                   "column": 6
                 },
                 "end": {
-                  "line": 66,
+                  "line": 62,
                   "column": 6
                 }
               },
@@ -47297,7 +46837,7 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
               morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
               return morphs;
             },
-            statements: [["inline", "ko-loader", [], ["large", true], ["loc", [null, [65, 8], [65, 32]]]]],
+            statements: [["inline", "ko-loader", [], ["large", true], ["loc", [null, [61, 8], [61, 32]]]]],
             locals: [],
             templates: []
           };
@@ -47309,11 +46849,11 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 66,
+                  "line": 62,
                   "column": 6
                 },
                 "end": {
-                  "line": 68,
+                  "line": 64,
                   "column": 6
                 }
               },
@@ -47341,7 +46881,7 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
               morphs[1] = dom.createMorphAt(element0, 0, 0);
               return morphs;
             },
-            statements: [["attribute", "onclick", ["subexpr", "action", [["get", "onLoadPostsBelow", ["loc", [null, [67, 28], [67, 44]]]], ["subexpr", "hash", [], ["model", ["get", "model", ["loc", [null, [67, 57], [67, 62]]]], "filter", ["get", "filter", ["loc", [null, [67, 70], [67, 76]]]], "sortOrder", ["get", "sortOrder", ["loc", [null, [67, 87], [67, 96]]]], "postId", ["get", "bottomPost.id", ["loc", [null, [67, 104], [67, 117]]]], "including", false], ["loc", [null, [67, 45], [67, 134]]]]], [], ["loc", [null, [67, 19], [67, 136]]]]], ["inline", "t", ["cases.posts.load_more"], [], ["loc", [null, [67, 137], [67, 166]]]]],
+            statements: [["attribute", "onclick", ["subexpr", "action", [["get", "onLoadPostsBelow", ["loc", [null, [63, 28], [63, 44]]]], ["subexpr", "hash", [], ["model", ["get", "model", ["loc", [null, [63, 57], [63, 62]]]], "filter", ["get", "filter", ["loc", [null, [63, 70], [63, 76]]]], "sortOrder", ["get", "sortOrder", ["loc", [null, [63, 87], [63, 96]]]], "postId", ["get", "bottomPost.id", ["loc", [null, [63, 104], [63, 117]]]], "including", false], ["loc", [null, [63, 45], [63, 134]]]]], [], ["loc", [null, [63, 19], [63, 136]]]]], ["inline", "t", ["cases.posts.load_more"], [], ["loc", [null, [63, 137], [63, 166]]]]],
             locals: [],
             templates: []
           };
@@ -47352,11 +46892,11 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
             "loc": {
               "source": null,
               "start": {
-                "line": 62,
+                "line": 58,
                 "column": 2
               },
               "end": {
-                "line": 70,
+                "line": 66,
                 "column": 2
               }
             },
@@ -47387,7 +46927,7 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
             morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
             return morphs;
           },
-          statements: [["block", "if", [["get", "loadingBottom", ["loc", [null, [64, 12], [64, 25]]]]], [], 0, 1, ["loc", [null, [64, 6], [68, 13]]]]],
+          statements: [["block", "if", [["get", "loadingBottom", ["loc", [null, [60, 12], [60, 25]]]]], [], 0, 1, ["loc", [null, [60, 6], [64, 13]]]]],
           locals: [],
           templates: [child0, child1]
         };
@@ -47402,7 +46942,7 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
               "column": 0
             },
             "end": {
-              "line": 71,
+              "line": 67,
               "column": 0
             }
           },
@@ -47460,7 +47000,7 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [["block", "if", [["get", "controlsVisible", ["loc", [null, [3, 10], [3, 25]]]]], [], 0, null, ["loc", [null, [3, 4], [28, 11]]]], ["block", "if", [["get", "topPostsAvailable", ["loc", [null, [31, 8], [31, 25]]]]], [], 1, null, ["loc", [null, [31, 2], [39, 9]]]], ["block", "each", [["get", "posts", ["loc", [null, [41, 12], [41, 17]]]]], [], 2, null, ["loc", [null, [41, 4], [55, 13]]]], ["block", "if", [["subexpr", "gt", [["get", "totalNotes", ["loc", [null, [57, 14], [57, 24]]]], 20], [], ["loc", [null, [57, 10], [57, 28]]]]], [], 3, null, ["loc", [null, [57, 4], [60, 11]]]], ["block", "if", [["get", "bottomPostsAvailable", ["loc", [null, [62, 8], [62, 28]]]]], [], 4, null, ["loc", [null, [62, 2], [70, 9]]]]],
+        statements: [["block", "if", [["get", "controlsVisible", ["loc", [null, [3, 10], [3, 25]]]]], [], 0, null, ["loc", [null, [3, 4], [24, 11]]]], ["block", "if", [["get", "topPostsAvailable", ["loc", [null, [27, 8], [27, 25]]]]], [], 1, null, ["loc", [null, [27, 2], [35, 9]]]], ["block", "each", [["get", "posts", ["loc", [null, [37, 12], [37, 17]]]]], [], 2, null, ["loc", [null, [37, 4], [51, 13]]]], ["block", "if", [["subexpr", "gt", [["get", "totalNotes", ["loc", [null, [53, 14], [53, 24]]]], 20], [], ["loc", [null, [53, 10], [53, 28]]]]], [], 3, null, ["loc", [null, [53, 4], [56, 11]]]], ["block", "if", [["get", "bottomPostsAvailable", ["loc", [null, [58, 8], [58, 28]]]]], [], 4, null, ["loc", [null, [58, 2], [66, 9]]]]],
         locals: [],
         templates: [child0, child1, child2, child3, child4]
       };
@@ -47475,7 +47015,7 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
             "column": 0
           },
           "end": {
-            "line": 72,
+            "line": 68,
             "column": 0
           }
         },
@@ -47497,7 +47037,7 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["block", "unless", [["get", "model.isNew", ["loc", [null, [1, 10], [1, 21]]]]], [], 0, null, ["loc", [null, [1, 0], [71, 11]]]]],
+      statements: [["block", "unless", [["get", "model.isNew", ["loc", [null, [1, 10], [1, 21]]]]], [], 0, null, ["loc", [null, [1, 0], [67, 11]]]]],
       locals: [],
       templates: [child0]
     };
@@ -51248,17 +50788,17 @@ define('frontend-cp/helpers/ember-power-select-build-selection', ['exports', 'em
     }
   });
 });
-define('frontend-cp/helpers/ember-power-select-option-classes', ['exports', 'ember-power-select/helpers/ember-power-select-option-classes'], function (exports, _emberPowerSelectHelpersEmberPowerSelectOptionClasses) {
+define('frontend-cp/helpers/ember-power-select-is-selected', ['exports', 'ember-power-select/helpers/ember-power-select-is-selected'], function (exports, _emberPowerSelectHelpersEmberPowerSelectIsSelected) {
   Object.defineProperty(exports, 'default', {
     enumerable: true,
     get: function get() {
-      return _emberPowerSelectHelpersEmberPowerSelectOptionClasses['default'];
+      return _emberPowerSelectHelpersEmberPowerSelectIsSelected['default'];
     }
   });
-  Object.defineProperty(exports, 'emberPowerSelectOptionClasses', {
+  Object.defineProperty(exports, 'emberPowerSelectIsSelected', {
     enumerable: true,
     get: function get() {
-      return _emberPowerSelectHelpersEmberPowerSelectOptionClasses.emberPowerSelectOptionClasses;
+      return _emberPowerSelectHelpersEmberPowerSelectIsSelected.emberPowerSelectIsSelected;
     }
   });
 });
@@ -51734,6 +51274,18 @@ define('frontend-cp/helpers/t', ['exports', 'ember-intl/helpers/t', 'ember'], fu
       }
     }
   });
+});
+define('frontend-cp/helpers/xor', ['exports', 'ember', 'ember-truth-helpers/helpers/xor'], function (exports, _ember, _emberTruthHelpersHelpersXor) {
+
+  var forExport = null;
+
+  if (_ember['default'].Helper) {
+    forExport = _ember['default'].Helper.helper(_emberTruthHelpersHelpersXor.xorHelper);
+  } else if (_ember['default'].HTMLBars.makeBoundHelper) {
+    forExport = _ember['default'].HTMLBars.makeBoundHelper(_emberTruthHelpersHelpersXor.xorHelper);
+  }
+
+  exports['default'] = forExport;
 });
 define('frontend-cp/initializers/app-version', ['exports', 'ember-cli-app-version/initializer-factory', 'frontend-cp/config/environment'], function (exports, _emberCliAppVersionInitializerFactory, _frontendCpConfigEnvironment) {
   exports['default'] = {
@@ -52595,6 +52147,7 @@ define("frontend-cp/locales/en-us/admin", ["exports"], function (exports) {
     "predicate_builder.cases.subject": "Case: Subject",
     "predicate_builder.cases.casestatusid": "Case: Status",
     "predicate_builder.cases.casetypeid": "Case: Type",
+    "predicate_builder.cases.channeltype": "Case: Channel Type",
     "predicate_builder.cases.casepriorityid": "Case: Priority ID",
     "predicate_builder.cases.state": "Case: State",
     "predicate_builder.cases.brandid": "Case: Brand",
@@ -59215,7 +58768,13 @@ define('frontend-cp/models/definition', ['exports', 'ember-data', 'model-fragmen
     inputType: _emberData['default'].attr('string'),
     subType: _emberData['default'].attr('string'),
     operators: _emberData['default'].attr('array'),
-    values: _modelFragments['default'].fragmentArray('definition-value-fragment') //can be an empty string or an object with keys as value and properties as text
+
+    // Can be one of the following things:
+    // * an empty string
+    // * an object with keys as value and properties as text
+    // * an array of strings
+    // * a unicorn
+    values: _modelFragments['default'].fragmentArray('definition-value-fragment')
   });
 });
 define('frontend-cp/models/event', ['exports', 'ember-data'], function (exports, _emberData) {
@@ -61082,12 +60641,21 @@ define('frontend-cp/serializers/definition', ['exports', 'frontend-cp/serializer
     // Turning an object of type {key => value} into array [{id: key, value: value}]
     extractItem: function extractItem(data) {
       data = this._super.apply(this, arguments);
-      data.values = _npmLodash['default'].map(data.values, function (val, id) {
-        return {
-          value: id,
-          string: val
-        };
-      });
+      if (_npmLodash['default'].isArray(data.values)) {
+        data.values = _npmLodash['default'].map(data.values, function (val) {
+          return {
+            value: val,
+            string: val
+          };
+        });
+      } else {
+        data.values = _npmLodash['default'].map(data.values, function (val, id) {
+          return {
+            value: id,
+            string: val
+          };
+        });
+      }
       return data;
     }
   });
@@ -61335,6 +60903,12 @@ define('frontend-cp/serializers/predicate-collection', ['exports', 'frontend-cp/
   exports['default'] = _frontendCpSerializersApplication['default'].extend({
     attrs: {
       id: { key: 'uuid' }
+    },
+
+    serialize: function serialize(snapshot) {
+      // For some reason we don't need to submit either UUID or operator properties
+      var json = this._super.apply(this, arguments);
+      return json.propositions;
     }
   });
 });
@@ -61550,6 +61124,7 @@ define('frontend-cp/serializers/view', ['exports', 'ember-data', 'frontend-cp/se
       updatedAt: { serialize: false },
       createdAt: { serialize: false },
       columns: { embedded: 'always' },
+      predicateCollections: { embedded: 'always' },
       viewType: { key: 'type' }
     },
 
@@ -61557,18 +61132,6 @@ define('frontend-cp/serializers/view', ['exports', 'ember-data', 'frontend-cp/se
       var json = this._super(snapshot, options);
       json.columns = snapshot.hasMany('columns').map(function (column) {
         return column.get('name');
-      });
-
-      /* Collections look *nothing* like how they are received */
-      json.predicate_collections = snapshot.hasMany('predicateCollections').map(function (collection) {
-        // eslint-disable-line camelcase
-        return collection.get('propositions').map(function (proposition) {
-          return {
-            field: proposition.get('field'),
-            operator: proposition.get('operator'),
-            value: proposition.get('value')
-          };
-        });
       });
 
       if (snapshot.get('visibilityType') === 'TEAM') {
@@ -78463,6 +78026,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+d8ec37a3"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+da087da4"});
 }
 /* jshint ignore:end */

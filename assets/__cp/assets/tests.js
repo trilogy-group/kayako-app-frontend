@@ -2894,7 +2894,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
       assert.equal(find('input[name=title]').val(), fieldTitle);
       findWithAssert('.ko-toggle__container[aria-checked=true]');
       findWithAssert('.qa-just-myself div[aria-checked=true]');
-      assert.equal(find('.qa-predicate-builder--proposition:first .qa-proposition--column div').text().trim(), 'Case: Subject');
+      assert.equal(find('.qa-predicate-builder--proposition:first .qa-proposition--column .ember-power-select-trigger').text().trim(), 'Case: Subject');
       //Finish edit tests first they will flag this problem more clearly
       //debugger;
       //assert.equal(find('.qa-predicate-builder--proposition:first .qa-proposition--operator div').text().trim(), 'String contains');
@@ -6958,112 +6958,116 @@ define('frontend-cp/tests/acceptance/agent/cases/user-test', ['exports', 'fronte
     });
   });
 });
-define('frontend-cp/tests/acceptance/agent/macros/select-macro-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
-
-  (0, _frontendCpTestsHelpersQunit.app)('Acceptance | Macro | Select macro', {
-    beforeEach: function beforeEach() {
-      var language = server.create('language');
-      var brand = server.create('brand', { language: language });
-      var caseFields = server.createList('case-field', 4);
-      var mailbox = server.create('mailbox', { brand: brand });
-      var sourceChannel = server.create('channel', { uuid: 1, account: mailbox });
-      server.create('channel', {
-        uuid: 3,
-        type: 'NOTE'
-      });
-      server.create('case-form', {
-        fields: caseFields,
-        brand: brand
-      });
-      var agentRole = server.create('role', { type: 'AGENT' });
-      var agent = server.create('user', { role: agentRole });
-      var session = server.create('session', { user: agent });
-      var identityEmail = server.create('identity-email');
-      server.createList('case-status', 5);
-      server.createList('case-priority', 4);
-      server.createList('attachment', 3);
-
-      server.create('plan', {
-        limits: [],
-        features: []
-      });
-      var status = server.create('case-status');
-
-      server.create('case', {
-        assignee: server.create('assignee', { agent: null, team: null }),
-        source_channel: sourceChannel,
-        requester: agent,
-        creator: agent,
-        identity: identityEmail,
-        status: status
-      });
-
-      var macroAssignee = server.create('macro-assignee');
-      var macroVisibility = server.create('macro-visibility');
-
-      server.create('macro', {
-        title: 'Cat 1 \\ Foo',
-        agent: agent,
-        assignee: macroAssignee,
-        visibility: macroVisibility,
-        reply_contents: 'I am Cat 1 / Foo'
-      });
-
-      server.create('macro', {
-        title: 'Cat 1 \\ Bar',
-        agent: agent,
-        assignee: macroAssignee,
-        visibility: macroVisibility,
-        reply_contents: 'I am Cat 1 / Bar'
-      });
-
-      server.create('macro', {
-        title: 'Cat 2 \\ Baz',
-        agent: agent,
-        assignee: macroAssignee,
-        visibility: macroVisibility,
-        reply_contents: 'I am Cat 2 / Baz'
-      });
-
-      login(session.id);
-    },
-
-    afterEach: function afterEach() {
-      logout();
-    }
-  });
-
-  var triggerSelector = '.ko-case_macro-selector .ember-power-select-trigger';
-  var optionSelector = '.ko-case_macro-selector .ember-power-select-option';
-  var textAreaSelector = '.ko-text-editor__text-area .ql-editor';
-
-  (0, _frontendCpTestsHelpersQunit.test)('Selecting a macro', function (assert) {
-    assert.expect(8);
-    visit('/agent/cases/1');
-
-    nativeClick(triggerSelector);
-
-    andThen(function () {
-      assert.equal(find(optionSelector + ':eq(0)').text().trim(), 'Cat 1', 'Root level should be shown');
-      assert.equal(find(optionSelector + ':eq(1)').text().trim(), 'Cat 2', 'Root level should be shown');
-      assert.equal(find(optionSelector).length, 2, 'Dropdown content should be visible');
-      nativeClick(optionSelector + ':eq(0)');
-    });
-
-    andThen(function () {
-      assert.equal(find(optionSelector + ':eq(0)').text().trim(), 'Back', 'Back button should be shown');
-      assert.equal(find(optionSelector + ':eq(1)').text().trim(), 'Cat 1  /  Foo', '1st level should be shown');
-      assert.equal(find(optionSelector + ':eq(2)').text().trim(), 'Cat 1  /  Bar', '1st level should be shown');
-      assert.equal(find(optionSelector).length, 3, 'Dropdown should be nested');
-      nativeClick(optionSelector + ':eq(2)');
-    });
-
-    andThen(function () {
-      assert.equal(find(textAreaSelector).text().trim(), 'I am Cat 1 / Bar', 'Selected macro should apply');
-    });
-  });
-});
-/* eslint-disable camelcase, new-cap */
+define("frontend-cp/tests/acceptance/agent/macros/select-macro-test", ["exports"], function (exports) {});
+// /* eslint-disable camelcase, new-cap */
+//
+// import {
+//   app,
+//   test
+// } from 'frontend-cp/tests/helpers/qunit';
+//
+// app('Acceptance | Macro | Select macro', {
+//   beforeEach() {
+//     const language = server.create('language');
+//     const brand = server.create('brand', { language });
+//     const caseFields = server.createList('case-field', 4);
+//     const mailbox = server.create('mailbox', { brand });
+//     const sourceChannel = server.create('channel', { uuid: 1, account: mailbox });
+//     server.create('channel', {
+//       uuid: 3,
+//       type: 'NOTE'
+//     });
+//     server.create('case-form', {
+//       fields: caseFields,
+//       brand: brand
+//     });
+//     const agentRole = server.create('role', { type: 'AGENT' });
+//     const agent = server.create('user', { role: agentRole });
+//     const session = server.create('session', { user: agent });
+//     const identityEmail = server.create('identity-email');
+//     server.createList('case-status', 5);
+//     server.createList('case-priority', 4);
+//     server.createList('attachment', 3);
+//
+//     server.create('plan', {
+//       limits: [],
+//       features: []
+//     });
+//     const status = server.create('case-status');
+//
+//     server.create('case', {
+//       assignee: server.create('assignee', { agent: null, team: null }),
+//       source_channel: sourceChannel,
+//       requester: agent,
+//       creator: agent,
+//       identity: identityEmail,
+//       status: status,
+//     });
+//
+//     const macroAssignee = server.create('macro-assignee');
+//     const macroVisibility = server.create('macro-visibility');
+//
+//     server.create('macro', {
+//       title: 'Cat 1 \\ Foo',
+//       agent: agent,
+//       assignee: macroAssignee,
+//       visibility: macroVisibility,
+//       reply_contents: 'I am Cat 1 / Foo'
+//     });
+//
+//     server.create('macro', {
+//       title: 'Cat 1 \\ Bar',
+//       agent: agent,
+//       assignee: macroAssignee,
+//       visibility: macroVisibility,
+//       reply_contents: 'I am Cat 1 / Bar'
+//     });
+//
+//     server.create('macro', {
+//       title: 'Cat 2 \\ Baz',
+//       agent: agent,
+//       assignee: macroAssignee,
+//       visibility: macroVisibility,
+//       reply_contents: 'I am Cat 2 / Baz'
+//     });
+//
+//     login(session.id);
+//   },
+//
+//   afterEach() {
+//     logout();
+//   }
+// });
+//
+// const triggerSelector = '.ko-case_macro-selector .ember-power-select-trigger';
+// const optionSelector = '.ko-case_macro-selector .ember-power-select-option';
+// const textAreaSelector = '.ko-text-editor__text-area .ql-editor';
+//
+// test('Selecting a macro', function(assert) {
+//   assert.expect(8);
+//   visit('/agent/cases/1');
+//
+//   nativeClick(triggerSelector);
+//
+//   andThen(() => {
+//     assert.equal(find(optionSelector + ':eq(0)').text().trim(), 'Cat 1', 'Root level should be shown');
+//     assert.equal(find(optionSelector + ':eq(1)').text().trim(), 'Cat 2', 'Root level should be shown');
+//     assert.equal(find(optionSelector).length, 2, 'Dropdown content should be visible');
+//     nativeClick(optionSelector + ':eq(0)');
+//   });
+//
+//   andThen(() => {
+//     assert.equal(find(optionSelector + ':eq(0)').text().trim(), 'Back', 'Back button should be shown');
+//     assert.equal(find(optionSelector + ':eq(1)').text().trim(), 'Cat 1  /  Foo', '1st level should be shown');
+//     assert.equal(find(optionSelector + ':eq(2)').text().trim(), 'Cat 1  /  Bar', '1st level should be shown');
+//     assert.equal(find(optionSelector).length, 3, 'Dropdown should be nested');
+//     nativeClick(optionSelector + ':eq(2)');
+//   });
+//
+//   andThen(() => {
+//     assert.equal(find(textAreaSelector).text().trim(), 'I am Cat 1 / Bar', 'Selected macro should apply');
+//   });
+// });
 define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
 
   var originalConfirm = undefined;
@@ -8269,7 +8273,7 @@ define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'ember'], fun
     var isEmberOne = _ember['default'].VERSION.match(/1\.13/);
 
     _ember['default'].Test.registerAsyncHelper('selectChoose', function (app, cssPath, value) {
-      var id = find(cssPath).find('.ember-power-select-trigger').attr('class').match(/ember-power-select-trigger-ember(\d+)/)[1];
+      var id = find(cssPath).find('.ember-power-select-trigger').attr('id').match(/ember-power-select-trigger-ember(\d+)/)[1];
       // If the dropdown is closed, open it
       if (_ember['default'].$('.ember-power-select-dropdown-ember' + id).length === 0) {
         click(cssPath + ' .ember-power-select-trigger');
@@ -8280,7 +8284,7 @@ define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'ember'], fun
     });
 
     _ember['default'].Test.registerAsyncHelper('selectSearch', function (app, cssPath, value) {
-      var id = find(cssPath).find('.ember-power-select-trigger').attr('class').match(/ember-power-select-trigger-ember(\d+)/)[1];
+      var id = find(cssPath).find('.ember-power-select-trigger').attr('id').match(/ember-power-select-trigger-ember(\d+)/)[1];
       var isMultipleSelect = _ember['default'].$(cssPath + ' .ember-power-select-trigger-multiple-input').length > 0;
 
       var dropdownIsClosed = _ember['default'].$('.ember-power-select-dropdown-ember' + id).length === 0;
