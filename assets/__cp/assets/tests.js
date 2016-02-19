@@ -6999,14 +6999,12 @@ define('frontend-cp/tests/acceptance/agent/macros/select-macro-test', ['exports'
       });
 
       var macroAssignee = server.create('macro-assignee');
-      var macroProperty = server.create('macro-property');
       var macroVisibility = server.create('macro-visibility');
 
       server.create('macro', {
         title: 'Cat 1 \\ Foo',
         agent: agent,
         assignee: macroAssignee,
-        properties: macroProperty,
         visibility: macroVisibility,
         reply_contents: 'I am Cat 1 / Foo'
       });
@@ -7015,7 +7013,6 @@ define('frontend-cp/tests/acceptance/agent/macros/select-macro-test', ['exports'
         title: 'Cat 1 \\ Bar',
         agent: agent,
         assignee: macroAssignee,
-        properties: macroProperty,
         visibility: macroVisibility,
         reply_contents: 'I am Cat 1 / Bar'
       });
@@ -7024,7 +7021,6 @@ define('frontend-cp/tests/acceptance/agent/macros/select-macro-test', ['exports'
         title: 'Cat 2 \\ Baz',
         agent: agent,
         assignee: macroAssignee,
-        properties: macroProperty,
         visibility: macroVisibility,
         reply_contents: 'I am Cat 2 / Baz'
       });

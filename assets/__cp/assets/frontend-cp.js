@@ -56967,16 +56967,6 @@ define('frontend-cp/mirage/factories/macro-assignee', ['exports', 'ember-cli-mir
   });
 });
 /*eslint-disable camelcase*/
-define('frontend-cp/mirage/factories/macro-property', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
-  exports['default'] = _emberCliMirage['default'].Factory.extend({
-    type: null,
-    status: null,
-    priority_action: null,
-    priority: null,
-    resource_type: 'macro_property'
-  });
-});
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/macro-visibility', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     type: 'ALL',
@@ -58065,13 +58055,11 @@ define('frontend-cp/mirage/scenarios/default', ['exports'], function (exports) {
     });
 
     var macroAssignee = server.create('macro-assignee');
-    var macroProperty = server.create('macro-property');
     var macroVisibility = server.create('macro-visibility');
 
     server.create('macro', {
       agent: defaultUser,
       assignee: macroAssignee,
-      properties: macroProperty,
       visibility: macroVisibility
     });
 
@@ -59498,26 +59486,6 @@ define('frontend-cp/models/macro-assignee', ['exports', 'ember', 'ember-data', '
     agent: _ember['default'].computed('agentFragment.relationshipId', function () {
       return this.store.peekRecord('user', this.get('agentFragment.relationshipId'));
     })
-  });
-});
-define('frontend-cp/models/macro-properties', ['exports', 'ember', 'ember-data', 'model-fragments'], function (exports, _ember, _emberData, _modelFragments) {
-  exports['default'] = _modelFragments['default'].Fragment.extend({
-    typeFragment: _modelFragments['default'].fragment('relationship-fragment'),
-    macroType: _ember['default'].computed('typeFragment.relationshipId', function () {
-      return this.store.peekRecord('case-type', this.get('typeFragment.relationshipId'));
-    }),
-
-    statusFragment: _modelFragments['default'].fragment('relationship-fragment'),
-    status: _ember['default'].computed('statusFragment.relationshipId', function () {
-      return this.store.peekRecord('case-status', this.get('statusFragment.relationshipId'));
-    }),
-
-    priorityFragment: _modelFragments['default'].fragment('relationship-fragment'),
-    priority: _ember['default'].computed('priorityFragment.relationshipId', function () {
-      return this.store.peekRecord('case-priority', this.get('priorityFragment.relationshipId'));
-    }),
-
-    priorityAction: _emberData['default'].attr('string')
   });
 });
 define('frontend-cp/models/macro-tag', ['exports', 'ember-data'], function (exports, _emberData) {
@@ -61122,15 +61090,6 @@ define('frontend-cp/serializers/macro-assignee', ['exports', 'frontend-cp/serial
     attrs: {
       teamFragment: { key: 'team' },
       agentFragment: { key: 'agent' }
-    }
-  });
-});
-define('frontend-cp/serializers/macro-properties', ['exports', 'frontend-cp/serializers/application'], function (exports, _frontendCpSerializersApplication) {
-  exports['default'] = _frontendCpSerializersApplication['default'].extend({
-    attrs: {
-      typeFragment: { key: 'type' },
-      statusFragment: { key: 'status' },
-      priorityFragment: { key: 'priority' }
     }
   });
 });
@@ -78406,6 +78365,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+f831f8f3"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+be1c7834"});
 }
 /* jshint ignore:end */
