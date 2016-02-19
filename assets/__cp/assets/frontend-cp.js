@@ -64767,7 +64767,7 @@ define('frontend-cp/services/timeline', ['exports', 'ember', 'npm:lodash'], func
       } else if (cache.total === 0) {
         return Promise.resolve(null);
       } else {
-        return this._fetchPosts(model, { afterId: 0 }).then(function () {
+        return this._fetchPosts(model, { beforeId: 0 }).then(function () {
           return cache.oldestPost;
         });
       }
@@ -65057,8 +65057,8 @@ define('frontend-cp/services/timeline', ['exports', 'ember', 'npm:lodash'], func
      * @private
      * @param {DS.Model} model model
      * @param {DS.Model} post post
-     * @param {DS.Model} direction 'older' or 'newer'
-     * @param {[Number]} count count
+     * @param {String} direction 'older' or 'newer'
+     * @param {Number} [count] count
      * @return {Promise} posts
      */
     _getPostsRecursive: function _getPostsRecursive(model, post, direction) {
@@ -65078,7 +65078,7 @@ define('frontend-cp/services/timeline', ['exports', 'ember', 'npm:lodash'], func
       }
 
       var nextPost = cache.posts[nextSequence];
-      var queryParamName = direction === 'older' ? 'beforeId' : 'afterId';
+      var queryParamName = direction === 'older' ? 'afterId' : 'beforeId';
 
       return (nextPost ? Promise.resolve(nextPost) : this._fetchPosts(model, _defineProperty({}, queryParamName, post.get('id'))).then(function () {
         return cache.posts[nextSequence];
@@ -65099,25 +65099,25 @@ define('frontend-cp/services/timeline', ['exports', 'ember', 'npm:lodash'], func
      *
      * @private
      * @param {DS.Model} model model
-     * @param {[Number]} options.afterId id of the post
      * @param {[Number]} options.beforeId id of the post
+     * @param {[Number]} options.afterId id of the post
      * @return {Promise} promise
      */
     _fetchPosts: function _fetchPosts(model) {
       var _ref7 = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
-      var _ref7$afterId = _ref7.afterId;
-      var afterId = _ref7$afterId === undefined ? null : _ref7$afterId;
       var _ref7$beforeId = _ref7.beforeId;
       var beforeId = _ref7$beforeId === undefined ? null : _ref7$beforeId;
+      var _ref7$afterId = _ref7.afterId;
+      var afterId = _ref7$afterId === undefined ? null : _ref7$afterId;
 
       var cache = this._getCache(model);
       var params = { parent: model };
-      if (afterId !== null) {
-        params.after_id = afterId; // eslint-disable-line camelcase
-      }
       if (beforeId !== null) {
         params.before_id = beforeId; // eslint-disable-line camelcase
+      }
+      if (afterId !== null) {
+        params.after_id = afterId; // eslint-disable-line camelcase
       }
 
       return this.get('store').query('post', params).then(function (newPosts) {
@@ -78364,6 +78364,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+f30839f6"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+7aac714e"});
 }
 /* jshint ignore:end */
