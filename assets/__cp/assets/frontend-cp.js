@@ -20946,6 +20946,7 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
     onStateUpdate: null,
     onQueryParamsUpdate: null,
     onCaseCreate: null,
+    tabState: null,
 
     // State
     suggestedTags: null,
@@ -20979,9 +20980,9 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
       var newAttrs = _ref.newAttrs;
 
       this._super.apply(this, arguments);
-
       if (!oldAttrs || newAttrs['case'].value !== oldAttrs['case'].value) {
         this.get('caseTab').initState(this.get('tabId'), this.get('case'), this.get('defaultReplyChannel'));
+        this.set('tabState', this.get('caseTab').getState(this.get('tabId')));
 
         this.set('suggestedPeople', null);
         this.set('suggestedPeopleLoading', false);
@@ -21016,10 +21017,6 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember', 
     }),
 
     // State attributes
-    tabState: _ember['default'].computed('tabId', function () {
-      return this.get('caseTab').getState(this.get('tabId'));
-    }),
-
     channelId: readOnly('tabState.channelId'),
     postContent: readOnly('tabState.postContent'),
     attachedPostFiles: readOnly('tabState.attachedPostFiles'),
@@ -62667,8 +62664,7 @@ define('frontend-cp/services/case-tab', ['exports', 'ember', 'npm:lodash', 'fron
       var nonPersistedState = tab.nonPersistedState;
 
       if (!nonPersistedState['case']) {
-        nonPersistedState['case'] = new _ember['default'].Object();
-        nonPersistedState['case'].setProperties((0, _frontendCpUtilsObject.jsonToObject)(tab.state['case'] || {}));
+        nonPersistedState['case'] = _ember['default'].Object.create((0, _frontendCpUtilsObject.jsonToObject)(tab.state['case'] || {}));
       }
 
       return nonPersistedState['case'];
@@ -81429,6 +81425,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+0b5e09f6"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+c768a404"});
 }
 /* jshint ignore:end */
