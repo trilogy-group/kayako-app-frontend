@@ -6612,18 +6612,18 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
     andThen(function () {
       assert.equal(currentURL(), '/agent/cases/view/1');
       assert.equal(find('tbody tr').length, 6);
-      assert.equal($('tbody tr:first td:nth-child(2)').text().trim(), '1');
-      click('thead th:nth-child(2)');
+      assert.equal($('tbody tr:first td:nth-child(3)').text().trim(), '1');
+      click('thead th:nth-child(3)');
     });
 
     andThen(function () {
-      assert.ok($('thead th:nth-child(2) span:last').hasClass('i-chevron-small-up'));
-      click('thead th:nth-child(2)');
+      assert.ok($('thead th:nth-child(3) span:last').hasClass('i-chevron-small-up'));
+      click('thead th:nth-child(3)');
     });
 
     andThen(function () {
-      assert.ok($('thead th:nth-child(2) span:last').hasClass('i-chevron-small-down'));
-      assert.equal($('tbody tr:first td:nth-child(2)').text().trim(), '6');
+      assert.ok($('thead th:nth-child(3) span:last').hasClass('i-chevron-small-down'));
+      assert.equal($('tbody tr:first td:nth-child(3)').text().trim(), '6');
     });
   });
 
@@ -6652,6 +6652,7 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('Unavailable views redirect to default', function (assert) {
+    assert.expect(1);
     visit('/agent/cases/view/666');
 
     andThen(function () {
@@ -6659,7 +6660,8 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
     });
   });
 
-  (0, _frontendCpTestsHelpersQunit.test)('Selecting cases shows trash button, hides pagination', function (assert) {
+  (0, _frontendCpTestsHelpersQunit.test)('Selecting cases shows trash button and bulk sidebar, hides pagination', function (assert) {
+    assert.expect(6);
     visit('/agent/cases/view/1');
 
     andThen(function () {
@@ -6675,10 +6677,12 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
     andThen(function () {
       assert.equal(find('.ko-cases-list__action-button').length, 1);
       assert.notOk(find('.ko-pagination__container').length);
+      assert.equal(find('.ko-bulk-sidebar__title').text().trim(), 'Update Cases');
     });
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('Select all cases', function (assert) {
+    assert.expect(2);
     visit('/agent/cases/view/1');
 
     andThen(function () {
@@ -6715,7 +6719,81 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
     });
   });
 
+  (0, _frontendCpTestsHelpersQunit.test)('Bulk side bar should be shown with "No Changes" options set and cancel button disabled as default', function (assert) {
+    assert.expect(6);
+
+    visit('/agent/cases/view/1');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/agent/cases/view/1');
+    });
+
+    andThen(function () {
+      click('thead .ko-checkbox__checkbox:first');
+    });
+
+    andThen(function () {
+      var _this = this;
+
+      assert.equal(find('.ko-info-bar_field_drill-down__placeholder').text(), 'No Changes');
+      find('.ko-info-bar_field_select__placeholder').each(function (index, placeholder) {
+        assert.equal(_this.$(placeholder).text(), 'No Changes');
+      });
+      assert.ok(find('button[name=update-cases]').hasClass('disabled'));
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('Bulk sidebar cancel button shows the views sidebar and removes all selections', function (assert) {
+    assert.expect(4);
+
+    visit('/agent/cases/view/1');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/agent/cases/view/1');
+    });
+
+    andThen(function () {
+      click('thead .ko-checkbox__checkbox:first');
+    });
+
+    andThen(function () {
+      assert.equal(find('.ko-bulk-sidebar__title').text().trim(), 'Update Cases');
+      click('button[name=cancel]');
+    });
+
+    andThen(function () {
+      assert.equal(find('.sidebar__first-item').text().trim(), 'Inbox');
+      assert.equal(find('.ko-checkbox__checkbox').attr('aria-checked'), 'false');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('After a bulk update has been performed the view sidebar should be shown and no cases should be selected', function (assert) {
+    assert.expect(4);
+
+    visit('/agent/cases/view/1');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/agent/cases/view/1');
+    });
+
+    andThen(function () {
+      click('thead .ko-checkbox__checkbox:first');
+    });
+
+    andThen(function () {
+      assert.equal(find('.ko-bulk-sidebar__title').text().trim(), 'Update Cases');
+      selectChoose('.fields div:nth-child(2) .ember-power-select', 'Open');
+      click('button[name=update-cases]');
+    });
+
+    andThen(function () {
+      assert.equal(find('.sidebar__first-item').text().trim(), 'Inbox');
+      assert.equal(find('.ko-checkbox__checkbox').attr('aria-checked'), 'false');
+    });
+  });
+
   (0, _frontendCpTestsHelpersQunit.test)('REGRESSION(FT-278) A case without assignee (assignee.agent and assignee.team are null) is not considered dirty', function (assert) {
+    assert.expect(1);
     var defautlUser = server.db.users[0];
     var unassignedCase = unassignedCase = server.create('case', {
       assignee: server.create('assignee', { agent: null, team: null }),
