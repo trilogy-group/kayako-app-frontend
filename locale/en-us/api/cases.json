@@ -28,6 +28,7 @@
 
   "case.created": "Case Created",
   "case.updated": "Case Updated",
+  "cases.updated": "Cases Updated",
 
   "requester-language": "Requester Language",
   "organization": "Organization",
@@ -62,6 +63,7 @@
   "satisfaction-status": "Satisfaction status",
   "status": "Status",
   "subheader": "{time, date, medium} – {time, time, short} {hasChannel, select,\n    true {created via {channel}}\n    false {}\n  } {hasBrand, select,\n    true {, {brand}}\n    false {}\n  }",
+  "avatar": "Avatar",
   "subject": "Subject",
   "submit": "Submit",
   "ticketid": "Case ID",
@@ -92,6 +94,7 @@
   "search.request.result_meta": "Showing {numDisplayResults} of {totalResults} users",
 
   "list.casesnotfound": "There are no cases here.",
+  "list.bulkupdate.updatecases": "Update cases",
 
   "field_title.requester": "Requester",
   "notes": "Notes",
