@@ -76,6 +76,7 @@
   "confirm.lose_changes": "You have unsaved changes on this page. Are you sure you want to discard these changes?",
   "changes_saved": "Changes saved",
   "casestrashed": "Cases trashed",
+  "no_changes": "No Changes",
 
   "create_user_panel.title": "Create a new user",
   "create_user_panel.name_label": "First and last name",
