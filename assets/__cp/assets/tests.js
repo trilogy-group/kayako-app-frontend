@@ -1198,9 +1198,12 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-types-test'
 
   (0, _qunit.test)('editing a type', function (assert) {
     visit('/admin/manage/case-fields/' + caseFieldId);
-    click('.qa-custom-type-edit:first');
-    fillIn('.qa-custom-type-label-input', 'Edited Type');
-    click('.qa-custom-type-save');
+
+    andThen(function () {
+      click('.qa-custom-type-edit:first');
+      fillIn('.qa-custom-type-label-input', 'Edited Type');
+      click('.qa-custom-type-save');
+    });
 
     andThen(function () {
       assert.equal(find('.qa-custom-type-label:contains("Edited Type")').length, 1);
@@ -2896,7 +2899,6 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
       findWithAssert('.qa-just-myself div[aria-checked=true]');
       assert.equal(find('.qa-predicate-builder--proposition:first .qa-proposition--column .ember-power-select-trigger').text().trim(), 'Case: Subject');
       //Finish edit tests first they will flag this problem more clearly
-      //debugger;
       //assert.equal(find('.qa-predicate-builder--proposition:first .qa-proposition--operator div').text().trim(), 'String contains');
       //assert.equal(find('.qa-predicate-builder--proposition:first input:last').val(), rule1String);
     });
@@ -3169,7 +3171,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/delete-tes
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('deleting a text field', function (assert) {
-
     visit('/admin/people/organization-fields');
 
     window.confirm = function (message) {
@@ -4872,7 +4873,6 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/delete-test', ['ex
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('deleting a text field', function (assert) {
-
     visit('/admin/people/user-fields');
 
     window.confirm = function (message) {
@@ -13006,52 +13006,6 @@ define('frontend-cp/tests/unit/components/ko-toggle/component-test', ['exports',
     _ember['default'].run(function () {
       _this8.$(label).click();
     });
-  });
-});
-define('frontend-cp/tests/unit/mixins/custom-field-serialization-test', ['exports', 'ember', 'frontend-cp/mixins/custom-field-serialization', 'qunit'], function (exports, _ember, _frontendCpMixinsCustomFieldSerialization, _qunit) {
-
-  (0, _qunit.module)('Unit | Mixin | serialize custom fields');
-
-  (0, _qunit.test)('it only serializes form fields', function (assert) {
-    assert.expect(2);
-
-    var CustomSerializeObject = _ember['default'].Object.extend(_frontendCpMixinsCustomFieldSerialization['default']);
-    var customObject = CustomSerializeObject.create();
-
-    var form = _ember['default'].Object.extend({
-      fields: [_ember['default'].Object.extend({ key: 'test1' }).create(), _ember['default'].Object.extend({ key: 'test2' }).create()]
-    }).create();
-
-    var customFields = [_ember['default'].Object.extend({
-      field: _ember['default'].Object.extend({ key: 'test1' }).create(),
-      value: 'value1'
-    }).create(), _ember['default'].Object.extend({
-      field: _ember['default'].Object.extend({ key: 'test3' }).create(),
-      value: 'value3'
-    }).create()];
-
-    var results = customObject.serializeCustomFields(customFields, form);
-    assert.equal(Object.keys(results).length, 1);
-    assert.equal(results.test1, 'value1');
-  });
-
-  (0, _qunit.test)('it defaults to all fields without a form', function (assert) {
-    assert.expect(3);
-    var CustomSerializeObject = _ember['default'].Object.extend(_frontendCpMixinsCustomFieldSerialization['default']);
-    var customObject = CustomSerializeObject.create();
-
-    var customFields = [_ember['default'].Object.extend({
-      field: _ember['default'].Object.extend({ key: 'test1' }).create(),
-      value: 'value1'
-    }).create(), _ember['default'].Object.extend({
-      field: _ember['default'].Object.extend({ key: 'test3' }).create(),
-      value: 'value3'
-    }).create()];
-
-    var results = customObject.serializeCustomFields(customFields);
-    assert.equal(Object.keys(results).length, 2);
-    assert.equal(results.test1, 'value1');
-    assert.equal(results.test3, 'value3');
   });
 });
 define('frontend-cp/tests/unit/services/custom-fields/options-test', ['exports', 'ember', 'ember-qunit'], function (exports, _ember, _emberQunit) {

@@ -18,36 +18,37 @@ define('frontend-cp/adapters/access-log', ['exports', 'frontend-cp/adapters/appl
     }
   });
 });
+define('frontend-cp/adapters/activity', ['exports', 'ember', 'frontend-cp/adapters/application'], function (exports, _ember, _frontendCpAdaptersApplication) {
+  exports['default'] = _frontendCpAdaptersApplication['default'].extend({
+    urlForQuery: function urlForQuery(query, modelName) {
+      if (query.parent) {
+        var id = query.parent.id;
+        var pluralParentType = _ember['default'].String.pluralize(query.parent.constructor.modelName);
+        var url = this._super.apply(this, arguments);
+        Reflect.deleteProperty(query, 'parent');
+        return url.replace('/activities', '/' + pluralParentType + '/' + id + '/activities');
+      }
+      return this._super.apply(this, arguments);
+    }
+  });
+});
 define('frontend-cp/adapters/application', ['exports', 'ember', 'ember-data', 'npm:lodash'], function (exports, _ember, _emberData, _npmLodash) {
-
-  var get = _ember['default'].get;
-
-  //TODO: override handleResponse and not create/find/update/delete/.../../.. for error handling
-
+  var computed = _ember['default'].computed;
+  var service = _ember['default'].inject.service;
   exports['default'] = _emberData['default'].RESTAdapter.extend({
     namespace: 'api/v1',
-    primaryRecordKey: 'data',
-    sessionService: _ember['default'].inject.service('session'),
-    errorHandler: _ember['default'].inject.service('error-handler'),
-    notificationHandler: _ember['default'].inject.service('error-handler/notification-strategy'),
+    session: service(),
+    errorHandler: service(),
+    notificationHandler: service('error-handler/notification-strategy'),
 
-    /*
-     * Each time we findAll on a model, we check to see if we've
-     * loaded it - we don't reload the model once this has happened.
-     * (all new models will be pushed to the store via pusher)
-     */
-    foundAllHash: null,
-    initFoundAllHash: _ember['default'].on('init', function () {
-      this.set('foundAllHash', {});
-    }),
-
-    headers: _ember['default'].computed('sessionService.sessionId', function () {
+    // CPs
+    headers: computed('session.sessionId', function () {
       var headers = {
         Accept: 'application/json',
         'X-Options': 'flat',
         'X-Requested-With': 'XMLHttpRequest'
       };
-      var sessionId = this.get('sessionService.sessionId');
+      var sessionId = this.get('session.sessionId');
       if (sessionId) {
         headers['X-Session-ID'] = sessionId;
       }
@@ -97,181 +98,9 @@ define('frontend-cp/adapters/application', ['exports', 'ember', 'ember-data', 'n
       return promise.then(function (data) {
         _this.get('notificationHandler').processAll(data.notifications);
         return data;
-      })['catch'](function (e) {
+      }, function (e) {
         return _this.get('errorHandler').process(e);
       });
-    },
-
-    createRecord: function createRecord() {
-      return this.handleErrors(this._super.apply(this, arguments));
-    },
-
-    updateRecord: function updateRecord() {
-      return this.handleErrors(this._super.apply(this, arguments));
-    },
-
-    deleteRecord: function deleteRecord() {
-      return this.handleErrors(this._super.apply(this, arguments));
-    },
-
-    findAll: function findAll() {
-      return this.handleErrors(this._super.apply(this, arguments));
-    },
-
-    findBelongsTo: function findBelongsTo() {
-      return this.handleErrors(this._super.apply(this, arguments));
-    },
-
-    findMany: function findMany() {
-      return this.handleErrors(this._super.apply(this, arguments));
-    },
-
-    findRecord: function findRecord() {
-      return this.handleErrors(this._super.apply(this, arguments));
-    },
-
-    queryRecord: function queryRecord(store, type, query) {
-      var url = this.buildURL(type.modelName, null, null, 'queryRecord', query);
-
-      if (this.sortQueryParams) {
-        query = this.sortQueryParams(query);
-      }
-
-      return this.handleErrors(this.ajax(url, 'GET', { data: query }));
-    },
-
-    buildURL: function buildURL() {
-      var url = [];
-      var prefix = this.getURLPrefix();
-      if (prefix) {
-        url.push(prefix);
-      }
-      url.push(this.buildURLFragment.apply(this, arguments));
-      url = url.join('/');
-
-      var host = get(this, 'host');
-      if (!host && url && url.charAt(0) !== '/') {
-        url = '/' + url;
-      }
-
-      return url;
-    },
-
-    buildURLFragment: function buildURLFragment(type, id, snapshot, requestType, query) {
-      var url = [];
-      var inverseRelationship = undefined;
-      var store = get(this, 'store');
-      var typeObject = store.modelFor(type);
-      var parentSnapshot = undefined;
-
-      typeObject.eachRelationship(function (name, relationship) {
-        if (relationship.options.parent) {
-          // Entity representing the parent
-          if (snapshot) {
-            parentSnapshot = snapshot.belongsTo(name);
-          } else if (query && query.parent) {
-            parentSnapshot = query.parent._createSnapshot();
-            Reflect.deleteProperty(query, 'parent');
-          }
-          // The inverse relationship (parent-child)
-          inverseRelationship = typeObject.inverseFor(name, store);
-        }
-      });
-
-      if (parentSnapshot) {
-        // Adapter for the parent entity
-        var adapter = store.adapterFor(parentSnapshot.modelName);
-        // Build the URL for the parent entity
-        url.push(adapter.buildURLFragment(parentSnapshot.modelName, parentSnapshot.id, parentSnapshot, requestType, query));
-        // Options hash for the inverse relationship
-        var relationshipMeta = parentSnapshot.type.metaForProperty(inverseRelationship.name);
-        url.push(relationshipMeta.options.url || this.pathForType(type));
-      } else {
-        url.push(this.pathForType(type));
-      }
-
-      if (id) {
-        url.push(encodeURIComponent(id));
-      }
-
-      return url.join('/');
-    },
-
-    urlPrefix: function urlPrefix(path, parentURL) {
-      var host = get(this, 'host');
-      var url = [];
-
-      // Protocol relative url
-      if (/^\/\//.test(path)) {// eslint-disable-line no-empty
-        // Do nothing, the full host is already included. This branch
-        // avoids the absolute path logic and the relative path logic.
-
-        // Absolute path
-      } else if (path.charAt(0) === '/') {
-          if (host) {
-            path = path.slice(1);
-            url.push(host);
-          }
-          // Relative path
-        } else if (!/^http(s)?:\/\//.test(path)) {
-            url.push(parentURL);
-          }
-      url.push(path);
-
-      return url.join('/');
-    },
-
-    getURLPrefix: function getURLPrefix() {
-      var url = [];
-      var host = this.get('host');
-      var namespace = this.get('namespace');
-      if (host) {
-        url.push(host);
-      }
-      if (namespace) {
-        url.push(namespace);
-      }
-
-      return url.join('/');
-    },
-
-    // If the items fetched via hasMany relationship refer to the related entity
-    // as their parent (via "parent" property in options), a property with the
-    // parent's ID will be added to every child.
-    // Ideally it's a job of a serializer, but this is the only place where we can
-    // get access the relationship object.
-    findHasMany: function findHasMany(store, snapshot, url, relationship) {
-      var _this2 = this;
-
-      return this.handleErrors(this._super.apply(this, arguments).then(function (payload) {
-        var inverse = snapshot.type.inverseFor(relationship.key, store);
-        if (inverse && payload[_this2.primaryRecordKey]) {
-          payload[_this2.primaryRecordKey].forEach(function (entry) {
-            if (!entry[inverse]) {
-              entry[inverse] = {
-                id: snapshot.id,
-                type: snapshot.type
-              };
-            }
-          });
-        }
-        return payload;
-      }));
-    },
-
-    pathForType: function pathForType(type) {
-      var dasherized = _ember['default'].String.dasherize(type);
-      return _ember['default'].String.pluralize(dasherized);
-    },
-
-    query: function query(store, type, _query) {
-      var url = this.buildURL(type.modelName, null, null, 'query', _query);
-
-      if (this.sortQueryParams) {
-        _query = this.sortQueryParams(_query);
-      }
-
-      return this.handleErrors(this.ajax(url, 'GET', { data: _query }));
     },
 
     isInvalid: function isInvalid(status, header, payload) {
@@ -286,32 +115,8 @@ define('frontend-cp/adapters/application', ['exports', 'ember', 'ember-data', 'n
       return status === 422 || hasValidationErrors(payload.errors);
     },
 
-    /*
-     * If we've already requested a resource, we will never
-     * need to update it (pusher will handle all the things)
-     *
-     * We're never background reloading.
-     */
-
-    shouldReloadAll: function shouldReloadAll(store, snapshotRecordArray) {
-      if (this.get('foundAllHash.' + snapshotRecordArray.type.modelName)) {
-        return false;
-      }
-      this.set('foundAllHash.' + snapshotRecordArray.type.modelName, true);
-      return true;
-    },
-
-    shouldBackgroundReloadAll: function shouldBackgroundReloadAll() {
-      return false;
-    },
-
-    /* TODO: Remove when Ember 2.0 is relased (just for deprecation warnings) */
-    shouldReloadRecord: function shouldReloadRecord() {
-      return false;
-    },
-
-    shouldBackgroundReloadRecord: function shouldBackgroundReloadRecord() {
-      return true;
+    ajax: function ajax() {
+      return this.handleErrors(this._super.apply(this, arguments));
     }
   });
 });
@@ -371,6 +176,12 @@ define('frontend-cp/adapters/case-reply', ['exports', 'frontend-cp/adapters/appl
   exports['default'] = _frontendCpAdaptersApplication['default'].extend({
     pathForType: function pathForType() {
       return 'reply';
+    },
+
+    urlForCreateRecord: function urlForCreateRecord(modelType, snapshot) {
+      var pathForType = this.pathForType();
+      var url = this._super.apply(this, arguments);
+      return url.replace(pathForType, 'cases/' + snapshot.record.get('case.id') + '/' + pathForType);
     }
   });
 });
@@ -390,6 +201,15 @@ define('frontend-cp/adapters/case-type', ['exports', 'frontend-cp/adapters/appli
 });
 define('frontend-cp/adapters/case', ['exports', 'frontend-cp/adapters/application'], function (exports, _frontendCpAdaptersApplication) {
   exports['default'] = _frontendCpAdaptersApplication['default'].extend({
+    urlForQuery: function urlForQuery(query, modelName) {
+      if (query.parent) {
+        var id = query.parent.id;
+        var url = this._super.apply(this, arguments);
+        Reflect.deleteProperty(query, 'parent');
+        return url.replace('/cases', '/views/' + id + '/cases');
+      }
+      return this._super.apply(this, arguments);
+    },
     /*
      * Pusher will keep this record up to date
      */
@@ -425,6 +245,20 @@ define('frontend-cp/adapters/definition', ['exports', 'frontend-cp/adapters/appl
   exports['default'] = _frontendCpAdaptersApplication['default'].extend({
     pathForType: function pathForType() {
       return 'views/definition';
+    }
+  });
+});
+define('frontend-cp/adapters/event', ['exports', 'ember', 'frontend-cp/adapters/application'], function (exports, _ember, _frontendCpAdaptersApplication) {
+  exports['default'] = _frontendCpAdaptersApplication['default'].extend({
+    urlForQuery: function urlForQuery(query, modelName) {
+      if (query.parent) {
+        var id = query.parent.id;
+        var pluralParentType = _ember['default'].String.pluralize(query.parent.constructor.modelName);
+        var url = this._super.apply(this, arguments);
+        Reflect.deleteProperty(query, 'parent');
+        return url.replace('/events', '/' + pluralParentType + '/' + id + '/events');
+      }
+      return this._super.apply(this, arguments);
     }
   });
 });
@@ -536,7 +370,7 @@ define('frontend-cp/adapters/metric', ['exports', 'frontend-cp/adapters/applicat
 });
 define('frontend-cp/adapters/oauth-link', ['exports', 'frontend-cp/adapters/application'], function (exports, _frontendCpAdaptersApplication) {
   exports['default'] = _frontendCpAdaptersApplication['default'].extend({
-    buildURLFragment: function buildURLFragment() {
+    pathForType: function pathForType() {
       return 'twitter/account/link.json';
     }
   });
@@ -548,19 +382,35 @@ define('frontend-cp/adapters/organization-field', ['exports', 'frontend-cp/adapt
     }
   });
 });
-define('frontend-cp/adapters/organization-note', ['exports', 'frontend-cp/adapters/application'], function (exports, _frontendCpAdaptersApplication) {
+define('frontend-cp/adapters/organization-note', ['exports', 'frontend-cp/adapters/application', 'ember'], function (exports, _frontendCpAdaptersApplication, _ember) {
   exports['default'] = _frontendCpAdaptersApplication['default'].extend({
     pathForType: function pathForType() {
       return 'notes';
     },
 
-    query: function query(store, type, _query) {
-      var _this = this;
+    urlForQuery: function urlForQuery(query, modelName) {
+      var parent = query.parent;
+      if (parent) {
+        Reflect.deleteProperty(query, 'parent');
+        var id = parent.id;
+        var url = this._super.apply(this, arguments);
+        var pathForType = this.pathForType();
+        return url.replace(pathForType, _ember['default'].String.pluralize(parent._internalModel.modelName) + '/' + id + '/' + pathForType);
+      }
+      return this._super.apply(this, arguments);
+    },
 
+    urlForCreateRecord: function urlForCreateRecord(modelType, snapshot) {
+      var pathForType = this.pathForType();
+      var url = this._super.apply(this, arguments);
+      return url.replace(pathForType, 'organizations/' + snapshot.record.get('organization.id') + '/' + pathForType);
+    },
+
+    query: function query(store, type, _query) {
       var organization = _query.parent;
 
       return this._super.apply(this, arguments).then(function (payload) {
-        payload[_this.primaryRecordKey].forEach(function (entry) {
+        payload.data.forEach(function (entry) {
           entry.parent = {
             id: organization.get('id'),
             type: 'organization'
@@ -591,6 +441,25 @@ define('frontend-cp/adapters/plan', ['exports', 'frontend-cp/adapters/applicatio
     }
   });
 });
+define('frontend-cp/adapters/post', ['exports', 'ember', 'frontend-cp/adapters/application'], function (exports, _ember, _frontendCpAdaptersApplication) {
+  exports['default'] = _frontendCpAdaptersApplication['default'].extend({
+    urlForQuery: function urlForQuery(query, modelName) {
+      if (query.parent) {
+        var id = query.parent.id;
+        var url = this._super.apply(this, arguments);
+        Reflect.deleteProperty(query, 'parent');
+        return url.replace('/posts', '/cases/' + id + '/posts');
+      }
+      return this._super.apply(this, arguments);
+    },
+
+    urlForFindRecord: function urlForFindRecord(id, modelName, snapshot) {
+      var parent = snapshot.belongsTo('parent');
+      var sup = this._super.apply(this, arguments);
+      return sup.replace('posts', _ember['default'].String.pluralize(parent.type.modelName) + '/' + parent.id + '/posts');
+    }
+  });
+});
 define('frontend-cp/adapters/rating', ['exports', 'frontend-cp/adapters/application'], function (exports, _frontendCpAdaptersApplication) {
   exports['default'] = _frontendCpAdaptersApplication['default'].extend({
     pathForType: function pathForType() {
@@ -598,32 +467,21 @@ define('frontend-cp/adapters/rating', ['exports', 'frontend-cp/adapters/applicat
     }
   });
 });
-define('frontend-cp/adapters/search-result-group', ['exports', 'frontend-cp/adapters/application'], function (exports, _frontendCpAdaptersApplication) {
-  exports['default'] = _frontendCpAdaptersApplication['default'].extend({
-    pathForType: function pathForType() {
-      return 'search';
-    }
-  });
-});
 define('frontend-cp/adapters/session', ['exports', 'ember', 'frontend-cp/adapters/application'], function (exports, _ember, _frontendCpAdaptersApplication) {
+
+  function b64EncodeUnicode(str) {
+    return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function (match, p1) {
+      return String.fromCharCode('0x' + p1);
+    }));
+  }
+
   exports['default'] = _frontendCpAdaptersApplication['default'].extend({
-    namespace: 'api/v1',
-
-    buildURLFragment: function buildURLFragment() {
-      return 'session';
-    },
-
-    b64EncodeUnicode: function b64EncodeUnicode(str) {
-      return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function (match, p1) {
-        return String.fromCharCode('0x' + p1);
-      }));
-    },
-
-    headers: _ember['default'].computed('sessionService.{email,password,sessionId}', function () {
-      var sessionId = this.get('sessionService.sessionId');
-      var email = this.get('sessionService.email');
-      var password = this.get('sessionService.password');
-      var authorizationHeader = 'Basic ' + this.b64EncodeUnicode(email + ':' + password);
+    // CPs
+    headers: _ember['default'].computed('session.{email,password,sessionId}', function () {
+      var sessionId = this.get('session.sessionId');
+      var email = this.get('session.email');
+      var password = this.get('session.password');
+      var authorizationHeader = 'Basic ' + b64EncodeUnicode(email + ':' + password);
       var withPassword = email && password;
 
       var headers = {
@@ -639,7 +497,12 @@ define('frontend-cp/adapters/session', ['exports', 'ember', 'frontend-cp/adapter
       }
 
       return headers;
-    })
+    }),
+
+    // Methods
+    pathForType: function pathForType() {
+      return 'session';
+    }
   });
 });
 define('frontend-cp/adapters/static-model', ['exports', 'ember-data', 'npm:lodash'], function (exports, _emberData, _npmLodash) {
@@ -669,41 +532,23 @@ define('frontend-cp/adapters/static-model', ['exports', 'ember-data', 'npm:lodas
     }
   });
 });
-define('frontend-cp/adapters/tag', ['exports', 'frontend-cp/adapters/application', 'ember'], function (exports, _frontendCpAdaptersApplication, _ember) {
-  var get = _ember['default'].get;
+define('frontend-cp/adapters/tag', ['exports', 'frontend-cp/adapters/application'], function (exports, _frontendCpAdaptersApplication) {
   exports['default'] = _frontendCpAdaptersApplication['default'].extend({
-
-    buildURL: function buildURL(modelName, id, snapshot, requestType, query) {
-      var url = [];
-      var prefix = this.getURLPrefix();
-      if (prefix) {
-        url.push(prefix);
-      }
-
-      if (requestType === 'query') {
-        if (query.caseId) {
-          url.push('cases/' + query.caseId + '/tags');
-          Reflect.deleteProperty(query, 'caseId');
-        } else if (query.userId) {
-          url.push('users/' + query.userId + '/tags');
-          Reflect.deleteProperty(query, 'userId');
-        } else if (query.organizationId) {
-          url.push('organizations/' + query.organizationId + '/tags');
-          Reflect.deleteProperty(query, 'organizationId');
-        } else {
-          url.push('autocomplete/tags');
-        }
+    urlForQuery: function urlForQuery(query, modelName) {
+      var urlParts = [this.urlPrefix()];
+      if (query.caseId) {
+        urlParts.push('cases/' + query.caseId + '/tags');
+        Reflect.deleteProperty(query, 'caseId');
+      } else if (query.userId) {
+        urlParts.push('users/' + query.userId + '/tags');
+        Reflect.deleteProperty(query, 'userId');
+      } else if (query.organizationId) {
+        urlParts.push('organizations/' + query.organizationId + '/tags');
+        Reflect.deleteProperty(query, 'organizationId');
       } else {
-        url.push(this.buildURLFragment.apply(this, arguments));
+        urlParts.push('autocomplete/tags');
       }
-      url = url.join('/');
-
-      var host = get(this, 'host');
-      if (!host && url && url.charAt(0) !== '/') {
-        url = '/' + url;
-      }
-
-      return url;
+      return urlParts.join('/');
     }
   });
 });
@@ -728,23 +573,35 @@ define('frontend-cp/adapters/user-field', ['exports', 'frontend-cp/adapters/appl
     }
   });
 });
-define('frontend-cp/adapters/user-note', ['exports', 'frontend-cp/adapters/application'], function (exports, _frontendCpAdaptersApplication) {
+define('frontend-cp/adapters/user-note', ['exports', 'frontend-cp/adapters/application', 'ember'], function (exports, _frontendCpAdaptersApplication, _ember) {
   exports['default'] = _frontendCpAdaptersApplication['default'].extend({
     pathForType: function pathForType() {
       return 'notes';
     },
 
+    urlForQuery: function urlForQuery(query, modelName) {
+      var parent = query.parent;
+      if (parent) {
+        Reflect.deleteProperty(query, 'parent');
+        var id = parent.id;
+        var url = this._super.apply(this, arguments);
+        var pathForType = this.pathForType();
+        return url.replace(pathForType, _ember['default'].String.pluralize(parent._internalModel.modelName) + '/' + id + '/' + pathForType);
+      }
+      return this._super.apply(this, arguments);
+    },
+
+    urlForCreateRecord: function urlForCreateRecord(modelType, snapshot) {
+      var pathForType = this.pathForType();
+      var url = this._super.apply(this, arguments);
+      return url.replace(pathForType, 'users/' + snapshot.record.get('user.id') + '/' + pathForType);
+    },
+
     query: function query(store, type, _query) {
-      var _this = this;
-
       var user = _query.parent;
-
       return this._super.apply(this, arguments).then(function (payload) {
-        payload[_this.primaryRecordKey].forEach(function (entry) {
-          entry.parent = {
-            id: user.get('id'),
-            type: 'user'
-          };
+        payload.data.forEach(function (entry) {
+          entry.parent = { id: user.get('id'), type: 'user' };
         });
 
         // Need to unload posts for current user when we request new user notes
@@ -766,12 +623,8 @@ define('frontend-cp/adapters/user-note', ['exports', 'frontend-cp/adapters/appli
 });
 define('frontend-cp/adapters/user', ['exports', 'frontend-cp/adapters/application'], function (exports, _frontendCpAdaptersApplication) {
   exports['default'] = _frontendCpAdaptersApplication['default'].extend({
-    buildURLFragment: function buildURLFragment(modelName, id, snapshot, requestType, query) {
-      if (query && query.name) {
-        return 'autocomplete/users';
-      } else {
-        return this._super.apply(this, arguments);
-      }
+    urlForQuery: function urlForQuery(query) {
+      return query.name ? this.urlPrefix() + '/autocomplete/users' : this._super.apply(this, arguments);
     }
   });
 });
@@ -17291,7 +17144,6 @@ define('frontend-cp/components/ko-agent-dropdown/create-case/component', ['expor
           this.set('requesterName', filterString);
         }
 
-        this.get('store').unloadAll('search-result-group');
         return new _ember['default'].RSVP.Promise(function (resolve) {
           _ember['default'].run.debounce(_this2, _this2._searchUsers, filterString, resolve, 200);
         });
@@ -32951,15 +32803,11 @@ define('frontend-cp/components/ko-identities/component', ['exports', 'ember'], f
       },
 
       validateIdentity: function validateIdentity(identity, dropdown) {
-        var _this2 = this;
-
         dropdown.actions.close();
         if (identity.constructor.modelName === 'identity-email') {
           var adapter = this.container.lookup('adapter:application');
           var url = adapter.namespace + '/identities/emails/' + identity.get('id') + '/send_verification_email';
-          adapter.ajax(url, 'PUT').then(function (data) {
-            _this2.get('notification').processAll(data.notifications);
-          })['catch'](function () {
+          adapter.ajax(url, 'PUT')['catch'](function () {
             return dropdown.actions.open();
           });
         }
@@ -32972,13 +32820,13 @@ define('frontend-cp/components/ko-identities/component', ['exports', 'ember'], f
       // },
 
       removeIdentity: function removeIdentity(identity, dropdown) {
-        var _this3 = this;
+        var _this2 = this;
 
         dropdown.actions.close();
         var message = this.get('intl').findTranslationByKey('generic.identities.confirm_remove');
         if (identity.get('isNew') || confirm(message)) {
           identity.destroyRecord().then(function () {
-            _this3.get('notificationService').success(_this3.get('intl').findTranslationByKey('generic.identities.removed.success_message'));
+            _this2.get('notificationService').success(_this2.get('intl').findTranslationByKey('generic.identities.removed.success_message'));
           })['catch'](function () {
             return dropdown.actions.open();
           });
@@ -33001,12 +32849,12 @@ define('frontend-cp/components/ko-identities/component', ['exports', 'ember'], f
       },
 
       saveIdentity: function saveIdentity(identity) {
-        var _this4 = this;
+        var _this3 = this;
 
         identity.set(this.get('parent').constructor.modelName, this.get('parent'));
         return identity.save().then(function () {
-          _this4.get('notificationService').success(_this4.get('intl').findTranslationByKey('generic.identities.added.success_message'));
-          return _this4.set('newIdentity', null);
+          _this3.get('notificationService').success(_this3.get('intl').findTranslationByKey('generic.identities.added.success_message'));
+          return _this3.set('newIdentity', null);
         }, function (e) {
           identity.set('parent', null);
           throw e;
@@ -49641,9 +49489,7 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember'],
 
       if (organizationId) {
         var data = JSON.parse(JSON.stringify(payload));
-        Reflect.deleteProperty(data, 'websites');
-        Reflect.deleteProperty(data, 'addresses');
-        this.get('store').pushPayload({ data: data });
+        this.get('store').pushPayload({ organization: data });
         organization = this.get('store').peekRecord('organization', organizationId);
       }
 
@@ -55168,13 +55014,23 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
 
     // Helper functions
     function arrayToObjectWithNumberedKeys(source) {
-      var pos = 1;
+      var indexKey = arguments.length <= 1 || arguments[1] === undefined ? 'id' : arguments[1];
+
       var object = {};
 
-      source.forEach(function (item) {
-        object[pos] = item;
-        pos++;
-      });
+      if (indexKey) {
+        source.forEach(function (item) {
+          return object[item[indexKey]] = item;
+        });
+      } else {
+        (function () {
+          var pos = 1;
+          source.forEach(function (item) {
+            object[pos] = item;
+            pos++;
+          });
+        })();
+      }
 
       return object;
     }
@@ -55445,12 +55301,18 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
         });
       }
 
+      var predicateCollections = db['predicate-collections'].find(view.predicate_collections.map(function (e) {
+        return e.id;
+      })).map(function (e) {
+        return { uuid: e.uuid, operator: e.operator, propositions: e.propositions, resource_type: e.resource_type };
+      });
+
       return {
         data: view,
         resource: 'view',
         status: 200,
         resources: {
-          predicate_collection: arrayToObjectWithNumberedKeys(view.predicate_collections)
+          predicate_collection: arrayToObjectWithNumberedKeys(predicateCollections, 'uuid')
         }
       };
     });
@@ -55468,13 +55330,17 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
         });
       }
 
+      var predicateCollections = db['predicate-collections'].map(function (e) {
+        return { uuid: e.uuid, operator: e.operator, propositions: e.propositions, resource_type: e.resource_type };
+      });
+
       return {
         data: views,
         limit: 10,
         offset: 0,
         resource: 'view',
         resources: {
-          predicate_collection: arrayToObjectWithNumberedKeys(db['predicate-collections'])
+          predicate_collection: arrayToObjectWithNumberedKeys(predicateCollections, 'uuid')
         },
         status: 200,
         total_count: db.views.length
@@ -55493,32 +55359,42 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       });
 
       requestData.predicate_collections = requestData.predicate_collections.map(function (collection) {
-        var id = db['predicate-collections'].insert().id;
-        var propositions = [];
-
-        collection.forEach(function (proposition) {
-          propositions.push({
+        var propositions = collection.map(function (proposition) {
+          return db.propositions.insert({
             field: proposition.field,
             operator: proposition.operator.key,
-            value: proposition.value
+            value: proposition.value,
+            resource_type: 'proposition'
           });
         });
 
-        db['predicate-collections'].update(id, {
-          uuid: id,
+        var uuid = _emberCliMirage.faker.random.uuid();
+        db['predicate-collections'].insert({
+          id: uuid,
           operator: 'OR',
-          propositions: propositions
+          uuid: uuid,
+          propositions: propositions,
+          resource_type: 'predicate_collection'
         });
 
         return {
-          id: id,
+          id: uuid,
           resource_type: 'predicate_collection'
         };
       });
 
+      if (requestData.team_ids) {
+        requestData.visibility_to_teams = requestData.team_ids.map(function (id) {
+          return { id: id, resource_type: 'team' };
+        });
+      }
+      Reflect.deleteProperty(requestData, 'team_ids');
+      requestData.resource_type = 'view';
       var responseData = db.views.insert(requestData);
+      var predicateCollections = db['predicate-collections'].map(function (e) {
+        return { uuid: e.uuid, operator: e.operator, propositions: e.propositions, resource_type: 'predicate_collection' };
+      });
 
-      responseData.resource_type = 'view';
       var payload = {
         status: 201,
         data: responseData,
@@ -55528,7 +55404,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
           team: arrayToObjectWithNumberedKeys(db.teams),
           user: arrayToObjectWithNumberedKeys(db.users),
           user_field: arrayToObjectWithNumberedKeys(db['user-fields']),
-          predicate_collection: arrayToObjectWithNumberedKeys(db['predicate-collections']),
+          predicate_collection: arrayToObjectWithNumberedKeys(predicateCollections, 'uuid'),
           organization_field: arrayToObjectWithNumberedKeys(db['organization-fields']),
           organization: arrayToObjectWithNumberedKeys(db.organizations),
           identity_email: arrayToObjectWithNumberedKeys(db['identity-emails']),
@@ -55960,8 +55836,6 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
           brand: arrayToObjectWithNumberedKeys(db.brands),
           attachments: arrayToObjectWithNumberedKeys(db.attachments),
           case_message: arrayToObjectWithNumberedKeys(db['case-messages']),
-          contact_address: arrayToObjectWithNumberedKeys(db['contact-addresses']),
-          contact_website: arrayToObjectWithNumberedKeys(db['contact-websites']),
           identity_domain: arrayToObjectWithNumberedKeys(db['identity-domains']),
           identity_email: arrayToObjectWithNumberedKeys(db['identity-emails']),
           identity_phone: arrayToObjectWithNumberedKeys(db['identity-phones']),
@@ -56027,10 +55901,9 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
 
     this.put('/api/v1/cases/:id', function (db, req) {
       var body = JSON.parse(req.requestBody);
-      body.tags = String(body.tags).split(',');
-
       var targetCase = db.cases.update(req.params.id, body);
-
+      Reflect.deleteProperty(targetCase, 'reply_channels');
+      body.tags = String(body.tags).split(',');
       return {
         status: 200,
         resource: 'case',
@@ -56043,9 +55916,10 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
         throw Error('Caught by a wild card!');
       }
       var id = parseInt(request.params.id);
+      var theCase = db.cases.find(id);
       return {
         status: 200,
-        data: db.cases.find(id),
+        data: theCase,
         resource: 'case',
         resources: {
           language: db.languages,
@@ -56578,13 +56452,13 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
         });
       }
 
+      requestData.resource_type = 'user_field';
       var responseData = db['user-fields'].insert(requestData);
 
       responseData.customer_titles = newCustomerTitles;
       responseData.descriptions = newDescriptions;
       responseData.options = newOptions;
 
-      responseData.resource_type = 'user_field';
       var payload = {
         status: 201,
         data: responseData,
@@ -56610,9 +56484,13 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
     });
 
     this.get('/api/v1/tags/:id', function (db, req) {
+      var tag = db.tags.find(req.params.id);
       return {
         status: 200,
-        data: db.tags.find(req.params.id),
+        data: {
+          name: tag.name,
+          resource_type: 'tag'
+        },
         resource: 'tag'
       };
     });
@@ -56657,13 +56535,13 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
         });
       }
 
+      requestData.resource_type = 'user_field';
       var responseData = db['user-fields'].update(id, requestData);
 
       responseData.customer_titles = newCustomerTitles;
       responseData.descriptions = newDescriptions;
       responseData.options = newOptions;
 
-      responseData.resource_type = 'user_field';
       var payload = {
         status: 200,
         data: responseData,
@@ -56735,7 +56613,6 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
     //Case Fields
     this.post('/api/v1/cases/fields', function (db, request) {
       var requestData = JSON.parse(request.requestBody);
-
       var newCustomerTitles = [];
       var customerTitles = requestData.customer_titles;
       Reflect.deleteProperty(requestData, 'customer_titles');
@@ -56771,14 +56648,13 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
           newOptions.push({ id: newField.id, resource_type: 'field_option' });
         });
       }
-
+      requestData.resource_type = 'case_field';
       var responseData = db['case-fields'].insert(requestData);
 
       responseData.customer_titles = newCustomerTitles;
       responseData.descriptions = newDescriptions;
       responseData.options = newOptions;
 
-      responseData.resource_type = 'case_field';
       var payload = {
         status: 201,
         data: responseData,
@@ -56843,6 +56719,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
         });
       }
 
+      requestData.resource_type = 'case_field';
       var responseData = db['case-fields'].update(id, requestData);
 
       Reflect.deleteProperty(responseData, 'priorities');
@@ -56863,7 +56740,6 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       responseData.descriptions = newDescriptions;
       responseData.options = newOptions;
 
-      responseData.resource_type = 'case_field';
       var payload = {
         status: 200,
         data: responseData,
@@ -56976,13 +56852,13 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
         });
       }
 
+      requestData.resource_type = 'organization_field';
       var responseData = db['organization-fields'].insert(requestData);
 
       responseData.customer_titles = newCustomerTitles;
       responseData.descriptions = newDescriptions;
       responseData.options = newOptions;
 
-      responseData.resource_type = 'organization_field';
       var payload = {
         status: 201,
         data: responseData,
@@ -57047,6 +56923,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
         });
       }
 
+      requestData.resource_type = 'organization_field';
       var responseData = db['organization-fields'].update(id, requestData);
 
       responseData.customer_titles.forEach(function (customerTitle) {
@@ -57065,7 +56942,6 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       responseData.descriptions = newDescriptions;
       responseData.options = newOptions;
 
-      responseData.resource_type = 'organization_field';
       var payload = {
         status: 200,
         data: responseData,
@@ -57440,8 +57316,8 @@ define('frontend-cp/mirage/factories/case-message', ['exports', 'ember-cli-mirag
     subject: function subject(i) {
       return 'Subject ' + i;
     },
-    bodyText: 'Lorem ipsum dolor sit amet',
-    bodyHtml: '<em>Lorem ipsum</em> dolor sit amet',
+    body_text: 'Lorem ipsum dolor sit amet',
+    body_html: '<em>Lorem ipsum</em> dolor sit amet',
     recipients: [],
     fullname: 'John Doe',
     email: function email(i) {
@@ -57453,14 +57329,15 @@ define('frontend-cp/mirage/factories/case-message', ['exports', 'ember-cli-mirag
     attachments: [],
     location: null,
 
-    creationMode: null,
+    creation_mode: null,
     locale: null,
-    responseTime: null,
+    response_time: null,
 
     // Parent field
     'case': null,
 
-    postType: 'message'
+    post_type: 'message',
+    resource_type: 'case-message'
   });
 });
 /*eslint-disable camelcase*/
@@ -57568,34 +57445,6 @@ define('frontend-cp/mirage/factories/column', ['exports', 'ember-cli-mirage'], f
   });
 });
 /*eslint-disable camelcase*/
-define('frontend-cp/mirage/factories/contact-address', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
-  exports['default'] = _emberCliMirage['default'].Factory.extend({
-    address1: '30 Avenue',
-    address2: '#320',
-    city: 'Salinas',
-    country: 'US',
-    created_at: '2015-08-27T11:02:47Z',
-    is_primary: false,
-    postal_code: '93905',
-    resource_type: 'contact_address',
-    resource_url: 'http://novo/api/v1/users/5/contacts/addresses/5',
-    state: 'CA',
-    type: 'OTHER',
-    updated_at: '2015-08-27T11:02:47Z'
-  });
-});
-/*eslint-disable camelcase*/
-define('frontend-cp/mirage/factories/contact-website', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
-  exports['default'] = _emberCliMirage['default'].Factory.extend({
-    created_at: '2015-08-27T11:02:47Z',
-    is_primary: false,
-    resource_type: 'contact_website',
-    resource_url: 'http://novo/api/v1/users/5/contacts/websites/5',
-    updated_at: '2015-08-27T11:02:47Z',
-    url: 'www.brewfictus.com'
-  });
-});
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/definition', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     field: _emberCliMirage.faker.list.cycle('cases.subject', 'cases.casestatusid', 'cases.casetypeid'),
@@ -57616,7 +57465,7 @@ define('frontend-cp/mirage/factories/definition', ['exports', 'ember-cli-mirage'
         case 'cases.casestatusid':
           return ['comparison_equalto', 'comparison_not_equalto', 'comparison_lessthan', 'comparison_greaterthan'];
         case 'cases.casetypeid':
-          return ['comparison_equalto', 'comparison_not-equalto'];
+          return ['comparison_equalto', 'comparison_not_equalto'];
       }
     },
     values: function values(i) {
@@ -57977,8 +57826,6 @@ define('frontend-cp/mirage/factories/organization', ['exports', 'ember-cli-mirag
     is_shared: false,
     domains: [],
     phone: [],
-    addresses: [],
-    websites: [],
     notes: [],
     pinned_notes_count: 0,
     tags: [],
@@ -58034,7 +57881,20 @@ define('frontend-cp/mirage/factories/post', ['exports', 'ember-cli-mirage'], fun
 });
 /*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/predicate-collection', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
+
+  var lastSequence = undefined,
+      lastUUID = undefined;
+  function uniqueUUIDPerModel(sequence) {
+    if (lastSequence !== sequence) {
+      lastUUID = _emberCliMirage.faker.random.uuid();
+      lastSequence = sequence;
+    }
+    return lastUUID;
+  }
+
   exports['default'] = _emberCliMirage['default'].Factory.extend({
+    id: uniqueUUIDPerModel,
+    uuid: uniqueUUIDPerModel,
     operator: 'OR',
     propositions: [],
     resource_type: 'predicate_collection'
@@ -58191,8 +58051,6 @@ define('frontend-cp/mirage/factories/user', ['exports', 'ember-cli-mirage'], fun
     twitter: [],
     facebook: [],
     external_identities: [],
-    addresses: [],
-    websites: [],
     custom_fields: [],
     metadata: {},
     tags: [],
@@ -58889,8 +58747,6 @@ define('frontend-cp/mirage/scenarios/default', ['exports'], function (exports) {
     server.createList('event', 5);
     server.createList('activity', 5);
 
-    server.create('contact-address');
-    server.create('contact-website');
     server.create('identity-phone');
 
     server.create('message-recipient', {
@@ -59242,8 +59098,8 @@ define('frontend-cp/mixins/custom-field-serialization', ['exports', 'ember'], fu
   exports['default'] = _ember['default'].Mixin.create({
     serializeCustomFields: function serializeCustomFields(customFields, form) {
       var fieldValues = {};
-      var formFields = form ? form.get('fields').map(function (field) {
-        return field.get('key');
+      var formFields = form ? form.hasMany('fields').map(function (field) {
+        return field.attr('key');
       }) : [];
 
       if (!customFields) {
@@ -59413,7 +59269,7 @@ define('frontend-cp/mixins/simple-state', ['exports', 'ember'], function (export
 });
 define('frontend-cp/models/access-log', ['exports', 'ember-data'], function (exports, _emberData) {
   exports['default'] = _emberData['default'].Model.extend({
-    user: _emberData['default'].belongsTo('user', { async: true, parent: true }),
+    user: _emberData['default'].belongsTo('user', { async: true }),
     action: _emberData['default'].attr('string'),
     createdAt: _emberData['default'].attr('date')
   });
@@ -59486,7 +59342,7 @@ define('frontend-cp/models/activity', ['exports', 'ember', 'ember-data', 'model-
     ipAddress: _emberData['default'].attr('string'),
     createdAt: _emberData['default'].attr('date'),
 
-    'case': _emberData['default'].belongsTo('case', { async: true, parent: true }),
+    'case': _emberData['default'].belongsTo('case', { async: true }),
 
     plainTextSummary: _ember['default'].computed('summary', function () {
       return this.get('summary').replace(/<.*?\|(.*?)>/g, '$1');
@@ -59531,7 +59387,7 @@ define('frontend-cp/models/attachment', ['exports', 'ember-data', 'model-fragmen
     createdAt: _emberData['default'].attr('date'), // TODO should exist on attachment within posts/:id
 
     // Virtual parent field
-    message: _emberData['default'].belongsTo('case-message', { async: true, parent: true })
+    message: _emberData['default'].belongsTo('case-message', { async: true })
   });
 });
 define('frontend-cp/models/brand', ['exports', 'ember-data'], function (exports, _emberData) {
@@ -59619,9 +59475,9 @@ define('frontend-cp/models/case-field', ['exports', 'ember', 'ember-data', 'fron
     isCustomerEditable: _emberData['default'].attr('boolean'),
     isRequiredForCustomers: _emberData['default'].attr('boolean'),
     isSystem: _emberData['default'].attr('boolean'),
-    priorities: _emberData['default'].hasMany('case-priority', { child: true, async: true, url: '/api/v1/cases/priorities', noCache: true }),
-    statuses: _emberData['default'].hasMany('case-status', { child: true, async: true, url: '/api/v1/cases/statuses', noCache: true }),
-    types: _emberData['default'].hasMany('case-type', { child: true, async: true, url: '/api/v1/cases/types', noCache: true }),
+    priorities: _emberData['default'].hasMany('case-priority', { async: true, noCache: true }),
+    statuses: _emberData['default'].hasMany('case-status', { async: true, noCache: true }),
+    types: _emberData['default'].hasMany('case-type', { async: true, noCache: true }),
 
     customerTitle: _ember['default'].computed('customerTitles', {
       get: function get() {
@@ -59716,23 +59572,23 @@ define('frontend-cp/models/case-message', ['exports', 'ember-data', 'frontend-cp
     subject: _emberData['default'].attr('string'),
     bodyText: _emberData['default'].attr('string'),
     bodyHtml: _emberData['default'].attr('string'),
-    recipients: _emberData['default'].hasMany('message-recipient', { async: false }),
     fullname: _emberData['default'].attr('string'),
     email: _emberData['default'].attr('string'),
-    creator: _emberData['default'].belongsTo('user', { async: false }),
-    identity: _emberData['default'].belongsTo('identity', { async: false }),
-    mailbox: _emberData['default'].belongsTo('mailbox', { async: false }),
-    attachments: _emberData['default'].hasMany('attachment', { async: false }),
-    location: _emberData['default'].belongsTo('location', { async: false }),
-    // metadata: DS...
     creationMode: _emberData['default'].attr('string'),
     locale: _emberData['default'].attr('string'),
     responseTime: _emberData['default'].attr('number'),
     createdAt: _emberData['default'].attr('date'),
     updatedAt: _emberData['default'].attr('date'),
 
-    // Parent field
-    'case': _emberData['default'].belongsTo('case', { async: true, parent: true }),
+    // Relations
+    'case': _emberData['default'].belongsTo('case', { async: true }),
+    creator: _emberData['default'].belongsTo('user', { async: false }),
+    identity: _emberData['default'].belongsTo('identity', { async: false }),
+    mailbox: _emberData['default'].belongsTo('mailbox', { async: false }),
+    location: _emberData['default'].belongsTo('location', { async: false }),
+
+    recipients: _emberData['default'].hasMany('message-recipient', { async: false }),
+    attachments: _emberData['default'].hasMany('attachment', { async: false }),
 
     postType: 'message'
   });
@@ -59749,7 +59605,7 @@ define('frontend-cp/models/case-note', ['exports', 'ember-data', 'frontend-cp/mo
     createdAt: _emberData['default'].attr('date'),
     updatedAt: _emberData['default'].attr('date'),
 
-    'case': _emberData['default'].belongsTo('case', { async: false, parent: true }),
+    'case': _emberData['default'].belongsTo('case', { async: false }),
     note: _emberData['default'].belongsTo('note', { async: false }),
     post: _emberData['default'].belongsTo('post', { async: true })
   });
@@ -59760,7 +59616,9 @@ define('frontend-cp/models/case-priority', ['exports', 'ember-data'], function (
     level: _emberData['default'].attr('number'),
     color: _emberData['default'].attr('string'),
     createdAt: _emberData['default'].attr('date'),
-    updatedAt: _emberData['default'].attr('date')
+    updatedAt: _emberData['default'].attr('date'),
+
+    parent: _emberData['default'].belongsTo('case-field', { async: true, noCache: true })
   });
 });
 define('frontend-cp/models/case-reply-options', ['exports', 'ember-data', 'model-fragments'], function (exports, _emberData, _modelFragments) {
@@ -59788,7 +59646,7 @@ define('frontend-cp/models/case-reply', ['exports', 'ember-data', 'model-fragmen
 
     attachmentFileIds: _emberData['default'].attr('string'),
 
-    'case': _emberData['default'].belongsTo('case', { async: true, parent: true }),
+    'case': _emberData['default'].belongsTo('case', { async: true }),
     posts: _emberData['default'].hasMany('post', { async: true })
   });
 });
@@ -59849,17 +59707,16 @@ define('frontend-cp/models/case', ['exports', 'ember-data', 'model-fragments', '
     attachmentFileIds: _emberData['default'].attr('string'),
 
     // Children fields
-    messages: _emberData['default'].hasMany('case-message', { async: true, child: true }),
-    posts: _emberData['default'].hasMany('post', { async: true, child: true }),
-    channels: _emberData['default'].hasMany('channel', { async: true, child: true, url: 'channels' }),
-    activities: _emberData['default'].hasMany('activity', { async: true, child: true, url: 'activities' }),
-    replyChannels: _emberData['default'].hasMany('channel', { async: true, child: true, url: 'reply/channels' }),
-    reply: _emberData['default'].hasMany('case-reply', { async: true, child: true }),
-    tags: _emberData['default'].hasMany('tag', { async: true, child: true }),
-    //participants: DS.hasMany('user', { async: true, child: true, url: 'participants' }),
+    messages: _emberData['default'].hasMany('case-message', { async: true, noCache: true }),
+    posts: _emberData['default'].hasMany('post', { async: true, noCache: true }),
+    channels: _emberData['default'].hasMany('channel', { async: true, noCache: true }),
+    activities: _emberData['default'].hasMany('activity', { async: true, noCache: true }),
+    replyChannels: _emberData['default'].hasMany('channel', { async: true, noCache: true }),
+    reply: _emberData['default'].hasMany('case-reply', { async: true, noCache: true }),
+    tags: _emberData['default'].hasMany('tag', { async: true, noCache: true }),
 
     // Parent field
-    view: _emberData['default'].belongsTo('view', { async: true, parent: true }),
+    view: _emberData['default'].belongsTo('view', { async: true }),
 
     // Creation Fields
     contents: _emberData['default'].attr('string'),
@@ -59911,7 +59768,7 @@ define('frontend-cp/models/case', ['exports', 'ember-data', 'model-fragments', '
 define('frontend-cp/models/channel', ['exports', 'ember-data', 'ember'], function (exports, _emberData, _ember) {
   exports['default'] = _emberData['default'].Model.extend({
     channelType: _emberData['default'].attr('string'),
-    charaterLimit: _emberData['default'].attr('number'),
+    characterLimit: _emberData['default'].attr('number'),
     account: _emberData['default'].belongsTo('account', { polymorphic: true, async: false }),
 
     isChannelTypeMailbox: _ember['default'].computed('channelType', function () {
@@ -59989,28 +59846,6 @@ define('frontend-cp/models/column', ['exports', 'ember-data', 'ember'], function
     name: _ember['default'].computed.alias('id')
   });
 });
-define('frontend-cp/models/contact-address', ['exports', 'ember-data'], function (exports, _emberData) {
-  exports['default'] = _emberData['default'].Model.extend({
-    isPrimary: _emberData['default'].attr('boolean', { defaultValue: false }),
-    address1: _emberData['default'].attr('string'),
-    address2: _emberData['default'].attr('string'),
-    city: _emberData['default'].attr('string'),
-    state: _emberData['default'].attr('string'),
-    postalCode: _emberData['default'].attr('string'), // TODO maybe integer?
-    country: _emberData['default'].attr('string'), // TODO should be country code
-    type: _emberData['default'].attr('string', { defaultValue: 'OTHER' }),
-
-    parent: _emberData['default'].belongsTo('has-addresses', { async: true, polymorphic: true, parent: true })
-  });
-});
-define('frontend-cp/models/contact-website', ['exports', 'ember-data'], function (exports, _emberData) {
-  exports['default'] = _emberData['default'].Model.extend({
-    isPrimary: _emberData['default'].attr('boolean', { defaultValue: false }),
-    url: _emberData['default'].attr('string'),
-
-    parent: _emberData['default'].belongsTo('has-websites', { async: true, polymorphic: true, parent: true })
-  });
-});
 define('frontend-cp/models/credential', ['exports', 'ember-data'], function (exports, _emberData) {
   exports['default'] = _emberData['default'].Model.extend({
     realtimeAppKey: _emberData['default'].attr('string')
@@ -60033,7 +59868,6 @@ define('frontend-cp/models/definition', ['exports', 'ember-data', 'model-fragmen
     // Can be one of the following things:
     // * an empty string
     // * an object with keys as value and properties as text
-    // * an array of strings
     // * a unicorn
     values: _modelFragments['default'].fragmentArray('definition-value-fragment')
   });
@@ -60045,7 +59879,7 @@ define('frontend-cp/models/event', ['exports', 'ember-data'], function (exports,
     channel: _emberData['default'].attr('string'),
     participants: _emberData['default'].hasMany('users'),
     avatarUrl: _emberData['default'].attr('string'),
-    creator: _emberData['default'].belongsTo('user', { parent: true }),
+    creator: _emberData['default'].belongsTo('user'),
     // properties: [],
     attachments: _emberData['default'].hasMany('attachment'),
     downloadAll: _emberData['default'].attr('string'),
@@ -60108,7 +59942,7 @@ define('frontend-cp/models/field-option', ['exports', 'ember', 'ember-data', 'fr
     createdAt: _emberData['default'].attr('date'),
     updatedAt: _emberData['default'].attr('date'),
 
-    parent: _emberData['default'].belongsTo('field', { polymorphic: true, async: true, parent: true, noCache: true }),
+    parent: _emberData['default'].belongsTo('field', { polymorphic: true, async: true, noCache: true }),
 
     markedForDeletion: _emberData['default'].attr('boolean', { defaultValue: false }),
 
@@ -60176,22 +60010,12 @@ define('frontend-cp/models/field', ['exports', 'ember', 'ember-data', 'frontend-
       }
     }),
 
-    options: _emberData['default'].hasMany('field-option', { child: true, async: false, url: 'options', inverse: 'parent' })
-  });
-});
-define('frontend-cp/models/has-addresses', ['exports', 'ember-data'], function (exports, _emberData) {
-  exports['default'] = _emberData['default'].Model.extend({
-    addresses: _emberData['default'].hasMany('contact-address', { async: true, url: 'contacts/addresses' })
+    options: _emberData['default'].hasMany('field-option', { async: false })
   });
 });
 define('frontend-cp/models/has-posts', ['exports', 'ember-data'], function (exports, _emberData) {
   exports['default'] = _emberData['default'].Model.extend({
-    posts: _emberData['default'].hasMany('post', { async: true, child: true, polymorphic: true })
-  });
-});
-define('frontend-cp/models/has-websites', ['exports', 'ember-data'], function (exports, _emberData) {
-  exports['default'] = _emberData['default'].Model.extend({
-    websites: _emberData['default'].hasMany('contact-website', { async: true })
+    posts: _emberData['default'].hasMany('post', { async: true, polymorphic: true })
   });
 });
 define('frontend-cp/models/identity-autocomplete-email', ['exports', 'ember-data'], function (exports, _emberData) {
@@ -60333,7 +60157,7 @@ define('frontend-cp/models/locale-string', ['exports', 'ember-data'], function (
   exports['default'] = _emberData['default'].Model.extend({
     value: _emberData['default'].attr('string'),
 
-    locale: _emberData['default'].belongsTo('locale', { async: true, parent: true })
+    locale: _emberData['default'].belongsTo('locale', { async: true })
   });
 });
 define('frontend-cp/models/locale', ['exports', 'ember-data'], function (exports, _emberData) {
@@ -60349,7 +60173,7 @@ define('frontend-cp/models/locale', ['exports', 'ember-data'], function (exports
     createdAt: _emberData['default'].attr('date'),
     updatedAt: _emberData['default'].attr('date'),
 
-    strings: _emberData['default'].hasMany('locale-string', { async: true, child: true, url: 'strings' })
+    strings: _emberData['default'].hasMany('locale-string', { async: true })
   });
 });
 define('frontend-cp/models/location', ['exports', 'ember-data'], function (exports, _emberData) {
@@ -60402,15 +60226,10 @@ define('frontend-cp/models/macro', ['exports', 'ember-data', 'model-fragments'],
     usageCount: _emberData['default'].attr('number'),
     lastUsedAt: _emberData['default'].attr('date'),
     visibilityType: _emberData['default'].attr('string', { defaultValue: 'PRIVATE' }),
-    visibleToTeam: _emberData['default'].belongsTo('team'),
     replyType: _emberData['default'].attr('string'),
     replyContents: _emberData['default'].attr('string'),
-    assigneeTeam: _emberData['default'].belongsTo('team', { async: false }),
-    assigneeAgent: _emberData['default'].belongsTo('user', { async: false }),
     assigneeType: _emberData['default'].attr('string'),
     priorityAction: _emberData['default'].attr('string'),
-    priority: _emberData['default'].belongsTo('case-priority'),
-    status: _emberData['default'].belongsTo('case-status'),
     addTags: _emberData['default'].attr({ defaultValue: function defaultValue() {
         return [];
       } }),
@@ -60418,12 +60237,19 @@ define('frontend-cp/models/macro', ['exports', 'ember-data', 'model-fragments'],
         return [];
       } }),
 
-    // read only
+    // Relationships
+    visibleToTeam: _emberData['default'].belongsTo('team'),
+    assigneeTeam: _emberData['default'].belongsTo('team', { async: false }),
+    assigneeAgent: _emberData['default'].belongsTo('user', { async: false }),
+    priority: _emberData['default'].belongsTo('case-priority'),
+    status: _emberData['default'].belongsTo('case-status'),
     agent: _emberData['default'].belongsTo('user', { async: false }),
-    visibility: _modelFragments['default'].fragment('macro-visibility'),
-    assignee: _modelFragments['default'].fragment('macro-assignee'),
     caseType: _emberData['default'].belongsTo('case-type'),
-    tags: _emberData['default'].hasMany('macro-tag')
+    tags: _emberData['default'].hasMany('macro-tag'),
+
+    // read only
+    visibility: _modelFragments['default'].fragment('macro-visibility'),
+    assignee: _modelFragments['default'].fragment('macro-assignee')
   });
 });
 define('frontend-cp/models/mailbox', ['exports', 'ember-data', 'frontend-cp/models/account'], function (exports, _emberData, _frontendCpModelsAccount) {
@@ -60446,10 +60272,10 @@ define('frontend-cp/models/mailbox', ['exports', 'ember-data', 'frontend-cp/mode
 define('frontend-cp/models/message-recipient', ['exports', 'ember-data', 'ember'], function (exports, _emberData, _ember) {
   exports['default'] = _emberData['default'].Model.extend({
     name: _emberData['default'].attr('string'),
-    type: _emberData['default'].attr('string'),
+    messageRecipientType: _emberData['default'].attr('string'),
     identity: _emberData['default'].belongsTo('identity', { async: false }),
 
-    isCC: _ember['default'].computed.equal('type', 'CC')
+    isCC: _ember['default'].computed.equal('messageRecipientType', 'CC')
   });
 });
 define('frontend-cp/models/note', ['exports', 'ember-data', 'frontend-cp/models/postable'], function (exports, _emberData, _frontendCpModelsPostable) {
@@ -60460,7 +60286,7 @@ define('frontend-cp/models/note', ['exports', 'ember-data', 'frontend-cp/models/
     isPinned: _emberData['default'].attr('boolean'),
 
     user: _emberData['default'].belongsTo('user', { async: false }),
-    parent: _emberData['default'].belongsTo('case', { async: true, parent: true, polymorphic: true }),
+    parent: _emberData['default'].belongsTo('case', { async: true, polymorphic: true }),
 
     createdAt: _emberData['default'].attr('date'),
     updatedAt: _emberData['default'].attr('date'),
@@ -60576,7 +60402,7 @@ define('frontend-cp/models/organization-note', ['exports', 'ember-data', 'fronte
     createdAt: _emberData['default'].attr('date'),
     updatedAt: _emberData['default'].attr('date'),
 
-    organization: _emberData['default'].belongsTo('organization', { async: false, parent: true, inverse: 'notes' }),
+    organization: _emberData['default'].belongsTo('organization', { async: false, inverse: 'notes' }),
     note: _emberData['default'].belongsTo('note', { async: false }),
     post: _emberData['default'].belongsTo('post', { async: true }),
 
@@ -60590,8 +60416,6 @@ define('frontend-cp/models/organization', ['exports', 'ember-data', 'ember', 'fr
     name: _emberData['default'].attr('string'),
     isShared: _emberData['default'].attr('boolean'),
     brand: _emberData['default'].belongsTo('brand', { async: true }),
-    addresses: _emberData['default'].hasMany('contact-address', { async: true, url: 'contacts/addresses' }),
-    websites: _emberData['default'].hasMany('contact-website', { async: true, url: 'contacts/websites' }),
     pinned: _emberData['default'].attr('number'),
     customFields: _modelFragments['default'].fragmentArray('organization-field-value'),
     fieldValues: _modelFragments['default'].fragmentArray('user-field-value', { defaultValue: [] }), // write only
@@ -60602,9 +60426,9 @@ define('frontend-cp/models/organization', ['exports', 'ember-data', 'ember', 'fr
     phones: _emberData['default'].hasMany('identity-phone', { async: true }),
 
     // Shadow children fields
-    notes: _emberData['default'].hasMany('organization-note', { child: true, url: 'notes', async: true, noCache: true }),
-    tags: _emberData['default'].hasMany('tag', { async: true, child: true, noCache: true }),
-    posts: _emberData['default'].hasMany('post', { async: true, child: true, noCache: true }),
+    notes: _emberData['default'].hasMany('organization-note', { async: true, noCache: true }),
+    tags: _emberData['default'].hasMany('tag', { async: true, noCache: true }),
+    posts: _emberData['default'].hasMany('post', { async: true, noCache: true }),
 
     saveWithNote: function saveWithNote(contents) {
       var _this = this;
@@ -60661,7 +60485,7 @@ define('frontend-cp/models/post', ['exports', 'ember-data'], function (exports, 
     updatedAt: _emberData['default'].attr('date'),
 
     // Virtual parent field
-    parent: _emberData['default'].belongsTo('has-posts', { async: true, parent: true, polymorphic: true })
+    parent: _emberData['default'].belongsTo('has-posts', { async: true, polymorphic: true })
   });
 });
 define('frontend-cp/models/postable', ['exports', 'ember-data'], function (exports, _emberData) {
@@ -60700,17 +60524,7 @@ define('frontend-cp/models/role', ['exports', 'ember-data'], function (exports, 
   exports['default'] = _emberData['default'].Model.extend({
     title: _emberData['default'].attr('string'),
     roleType: _emberData['default'].attr('string'),
-    permissions: _emberData['default'].hasMany('permission', { child: true, async: true, url: 'permissions' })
-  });
-});
-define('frontend-cp/models/search-result-group', ['exports', 'ember-data', 'model-fragments'], function (exports, _emberData, _modelFragments) {
-
-  /*
-   * We use resource ('case'/'organisation'/'person') as the ID
-   */
-  exports['default'] = _emberData['default'].Model.extend({
-    totalCount: _emberData['default'].attr('number'),
-    results: _modelFragments['default'].fragmentArray('search-result')
+    permissions: _emberData['default'].hasMany('permission', { async: true })
   });
 });
 define('frontend-cp/models/search-result', ['exports', 'ember-data', 'model-fragments'], function (exports, _emberData, _modelFragments) {
@@ -60828,9 +60642,9 @@ define('frontend-cp/models/tab', ['exports', 'ember'], function (exports, _ember
     state: null
   });
 });
-define('frontend-cp/models/tag', ['exports', 'ember-data', 'ember', 'frontend-cp/mixins/change-aware-model'], function (exports, _emberData, _ember, _frontendCpMixinsChangeAwareModel) {
+define('frontend-cp/models/tag', ['exports', 'ember-data', 'frontend-cp/mixins/change-aware-model'], function (exports, _emberData, _frontendCpMixinsChangeAwareModel) {
   exports['default'] = _emberData['default'].Model.extend(_frontendCpMixinsChangeAwareModel['default'], {
-    name: _ember['default'].computed.alias('id'),
+    name: _emberData['default'].attr('string'),
 
     isNew: false
   });
@@ -60841,7 +60655,7 @@ define('frontend-cp/models/team', ['exports', 'ember-data', 'ember', 'frontend-c
     memberCount: _emberData['default'].attr('number'),
     businesshour: _emberData['default'].belongsTo('business-hour', { async: false }),
     followers: _emberData['default'].hasMany('user', { async: false, noCache: true }),
-    members: _emberData['default'].hasMany('user', { async: true, child: true, inverse: 'teams', url: 'members?is_enabled=true&limit=500', noCache: true }),
+    members: _emberData['default'].hasMany('user', { async: true, inverse: 'teams', noCache: true }),
 
     isNew: false,
 
@@ -60855,7 +60669,6 @@ define('frontend-cp/models/thumbnail', ['exports', 'ember-data', 'model-fragment
     size: _emberData['default'].attr('number'),
     width: _emberData['default'].attr('number'),
     height: _emberData['default'].attr('number'),
-    thumbnailType: _emberData['default'].attr('string'),
     url: _emberData['default'].attr('string'),
     createdAt: _emberData['default'].attr('date')
   });
@@ -60997,7 +60810,7 @@ define('frontend-cp/models/user-note', ['exports', 'ember-data', 'frontend-cp/mo
     createdAt: _emberData['default'].attr('date'),
     updatedAt: _emberData['default'].attr('date'),
 
-    user: _emberData['default'].belongsTo('user', { async: false, parent: true, inverse: 'notes' }),
+    user: _emberData['default'].belongsTo('user', { async: false, inverse: 'notes' }),
     note: _emberData['default'].belongsTo('note', { async: false }),
     post: _emberData['default'].belongsTo('post', { async: true }),
 
@@ -61014,11 +60827,8 @@ define('frontend-cp/models/user', ['exports', 'ember-data', 'model-fragments', '
     avatar: _emberData['default'].attr('string'),
     organization: _emberData['default'].belongsTo('organization', { async: true }),
     teams: _emberData['default'].hasMany('team', { async: false }),
-    addresses: _emberData['default'].hasMany('contact-address', { async: true, url: 'contacts/addresses' }),
-    websites: _emberData['default'].hasMany('contact-website', { async: true, url: 'contacts/websites' }),
     customFields: _modelFragments['default'].fragmentArray('user-field-value', { defaultValue: [] }),
     fieldValues: _modelFragments['default'].fragmentArray('user-field-value', { defaultValue: [] }), // write only
-    notes: _emberData['default'].hasMany('user-note', { child: true, url: 'notes', async: true, noCache: true }),
     locale: _emberData['default'].attr('string'),
     timeZone: _emberData['default'].attr('string'),
     timeZoneOffset: _emberData['default'].attr('number'),
@@ -61036,16 +60846,16 @@ define('frontend-cp/models/user', ['exports', 'ember-data', 'model-fragments', '
     organizationCaseAccess: _emberData['default'].attr('string', { defaultValue: 'REQUESTED' }),
 
     // Shadow children fields
-    accesslogs: _emberData['default'].hasMany('access-log', { async: true, child: true, noCache: true }),
-    recentCases: _emberData['default'].hasMany('case', { async: true, child: true, inverse: null, noCache: true }),
-    events: _emberData['default'].hasMany('event', { async: true, child: true, inverse: 'creator', noCache: true }),
-    tags: _emberData['default'].hasMany('tag', { async: true, child: true, noCache: true }),
-    posts: _emberData['default'].hasMany('post', { async: true, child: true, noCache: true }),
+    accesslogs: _emberData['default'].hasMany('access-log', { async: true, noCache: true }),
+    recentCases: _emberData['default'].hasMany('case', { async: true, inverse: null, noCache: true }),
+    events: _emberData['default'].hasMany('event', { async: true, inverse: 'creator', noCache: true }),
+    tags: _emberData['default'].hasMany('tag', { async: true, noCache: true }),
+    notes: _emberData['default'].hasMany('user-note', { async: true, noCache: true }),
 
-    emails: _emberData['default'].hasMany('identity-email', { async: false, url: 'identities/emails' }),
-    phones: _emberData['default'].hasMany('identity-phone', { async: false, url: 'identities/phones' }),
-    twitter: _emberData['default'].hasMany('identity-twitter', { async: false, url: 'identities/twitter' }),
-    facebook: _emberData['default'].hasMany('identity-facebook', { async: false, url: 'identities/facebook' }),
+    emails: _emberData['default'].hasMany('identity-email', { async: false }),
+    phones: _emberData['default'].hasMany('identity-phone', { async: false }),
+    twitter: _emberData['default'].hasMany('identity-twitter', { async: false }),
+    facebook: _emberData['default'].hasMany('identity-facebook', { async: false }),
 
     saveWithNote: function saveWithNote(contents) {
       var _this = this;
@@ -61129,13 +60939,8 @@ define('frontend-cp/models/view', ['exports', 'ember', 'ember-data', 'frontend-c
     intl: _ember['default'].inject.service(),
 
     title: _emberData['default'].attr('string'),
-    agent: _emberData['default'].belongsTo('user', { async: false }),
     visibilityType: _emberData['default'].attr('string'), // ALL | TEAM
-    visibilityToTeams: _emberData['default'].hasMany('team', { async: false }),
-    columns: _emberData['default'].hasMany('column', { async: false }),
-    predicateCollections: _emberData['default'].hasMany('predicate-collection', { defaultValue: [], async: false }),
     orderByColumn: _emberData['default'].attr('string', { defaultValue: null }),
-    viewCount: _emberData['default'].belongsTo('view-count', { async: true }),
     orderBy: _emberData['default'].attr('string'),
     sortOrder: _emberData['default'].attr('number'),
     isEnabled: _emberData['default'].attr('boolean'),
@@ -61144,8 +60949,13 @@ define('frontend-cp/models/view', ['exports', 'ember', 'ember-data', 'frontend-c
     updatedAt: _emberData['default'].attr('date'),
     viewType: _emberData['default'].attr('string'),
 
-    // Children fields
-    cases: _emberData['default'].hasMany('case', { async: true, child: true, url: 'cases', noCache: true }),
+    // Relations
+    agent: _emberData['default'].belongsTo('user', { async: false }),
+    visibilityToTeams: _emberData['default'].hasMany('team', { async: false }),
+    columns: _emberData['default'].hasMany('column', { async: false }),
+    predicateCollections: _emberData['default'].hasMany('predicate-collection', { defaultValue: [], async: false }),
+    viewCount: _emberData['default'].belongsTo('view-count', { async: true }),
+    cases: _emberData['default'].hasMany('case', { async: true, noCache: true }),
 
     visibilityString: _ember['default'].computed('visibilityType', 'visibilityToTeams', function () {
       var trans = 'admin.views.sharing.' + this.get('visibilityType');
@@ -61390,262 +61200,119 @@ define('frontend-cp/sanitizers/bold', ['exports'], function (exports) {
   };
 });
 define('frontend-cp/serializers/application', ['exports', 'ember', 'ember-data', 'npm:lodash'], function (exports, _ember, _emberData, _npmLodash) {
-  var get = _ember['default'].get;
   var merge = _ember['default'].merge;
   var inject = _ember['default'].inject;
-  var warn = _ember['default'].warn;
-  var pluralize = _ember['default'].String.pluralize;
+  var _Ember$String = _ember['default'].String;
+  var pluralize = _Ember$String.pluralize;
+  var underscore = _Ember$String.underscore;
+
+  var errorCodes = ['FIELD_REQUIRED', 'FIELD_DUPLICATE', 'FIELD_EMPTY', 'FIELD_INVALID'];
+  var errorMessages = _npmLodash['default'].zipObject(errorCodes.map(function (e) {
+    return [e, 'generic.error.' + e.toLowerCase()];
+  }));
+  var isValidationError = function isValidationError(e) {
+    return errorCodes.includes(e.code);
+  };
+
   exports['default'] = _emberData['default'].RESTSerializer.extend({
-    primaryRecordKey: 'data',
-    sideloadedRecordsKey: 'resources',
+    isNewSerializerAPI: true,
 
     intlService: inject.service('intl'),
 
-    normalizePayload: function normalizePayload(payload) {
-      if (!payload) {
-        return {};
-      }
-
-      if (_npmLodash['default'].isNumber(payload.status)) {
-        Reflect.deleteProperty(payload, 'status');
-      }
-
-      if (payload.logs) {
-        Reflect.deleteProperty(payload, 'logs');
-      }
-
-      var data = payload[this.primaryRecordKey];
-      if (data) {
-        this.extractData(data, payload);
-        Reflect.deleteProperty(payload, this.primaryRecordKey);
-      }
-
-      var sideloaded = payload[this.sideloadedRecordsKey];
-      if (sideloaded) {
-        var relationships = this.extractSideloaded(sideloaded);
-        Reflect.deleteProperty(payload, this.sideloadedRecordsKey);
-        merge(payload, relationships);
-      }
-
+    normalizeResponse: function normalizeResponse(store, primaryModelClass, payload, id, requestType) {
+      this.removeBacklistedSideloadedResources(payload.resources);
+      payload[pluralize(payload.resource)] = _ember['default'].makeArray(payload.data);
+      Reflect.deleteProperty(payload, 'status');
       Reflect.deleteProperty(payload, 'resource');
+      Reflect.deleteProperty(payload, 'logs');
 
-      return payload;
-    },
-
-    extractData: function extractData(data, payload) {
-      if (_ember['default'].isArray(data)) {
-        this.extractArrayData(data, payload);
-      } else {
-        this.extractSingleData(data, payload);
-      }
-    },
-
-    /**
-     * Extract top-level "data" containing a single primary data
-     *
-     * @param {Object[]} data - data
-     * @param {Object[]} payload - payload
-     */
-    extractSingleData: function extractSingleData(data, payload) {
-      payload[data.resource_type] = data;
-      this.extractItem(data, data.resource_type);
-    },
-
-    /**
-     * @param {Object[]} data - data
-     * @param {String} typeKey - type of the item being extracted
-     * @return {Object} data — data extracted
-     */
-    extractItem: function extractItem(data, typeKey) {
-      var _this = this;
-
-      if (!this._hasModelFor(typeKey)) {
-        _npmLodash['default'].forOwn(data, function (_, key) {
-          Reflect.deleteProperty(data, key);
-        });
-      } else {
-        (function () {
-          // A list of fields that the API may return as {} but need to be set
-          // to undefined. Remove this when API is fixed
-          var nullableFields = ['brand', 'creator'];
-          nullableFields.forEach(function (field) {
-            if (data[field] && !Object.keys(data[field]).length) {
-              Reflect.deleteProperty(data, field);
-            }
-          });
-
-          _this.extractRelationships(data);
-          var store = get(_this, 'store');
-          var type = store.modelFor(typeKey);
-          if (!data.links) {
-            data.links = {};
-          }
-
-          type.eachRelationship(function (name, relationship) {
-            // If relationship is defined as a child...
-            if (relationship.options.child) {
-              // ...use `url` property to fetch children
-              if (relationship.options.url) {
-                data.links[name] = relationship.options.url;
-                /// ...or in its absence use default path for relationship's model
-              } else {
-                  var childAdapter = store.adapterFor(relationship.type);
-                  data.links[name] = childAdapter.pathForType(relationship.type);
-                }
-            }
-          });
-
-          Reflect.deleteProperty(data, 'resource_type');
-        })();
-      }
-
-      return data;
-    },
-
-    /**
-     * Extract top-level "data" containing a single primary data
-     *
-     * @param {Object[]} data - data
-     * @param {Object[]} payload - payload
-     */
-    extractArrayData: function extractArrayData(data, payload) {
-      var _this2 = this;
-
-      data.forEach(function (item) {
-        return _this2.extractItem(item, payload.resource);
+      Object.keys(payload.resources || {}).forEach(function (modelType) {
+        payload[pluralize(modelType)] = Object.values(payload.resources[modelType]);
       });
-      payload[payload.resource] = data;
-    },
 
-    /**
-     * Extract top-level "included" containing associated objects
-     *
-     * @param {Object} sideloaded - sideloaded
-     * @return {Object} An object with the normalized sideloaded records with pluralized keys
-     */
-    extractSideloaded: function extractSideloaded(sideloaded) {
-      var _this3 = this;
-
-      var models = {};
-
-      _npmLodash['default'].each(sideloaded, function (resources, type) {
-        var collectionName = pluralize(type);
-        models[collectionName] = [];
-        _npmLodash['default'].each(resources, function (resource) {
-          // TODO remove || type — this is a temporary fix
-          type = resource.resource_type || type;
-          models[collectionName].push(_this3.extractItem(resource, type));
-        });
-      });
-      return models;
-    },
-
-    extractMeta: function extractMeta(store, typeClass, payload) {
-      if (!payload.meta) {
-        payload.meta = {};
-      }
-      if (typeof payload.total_count !== 'undefined') {
-        payload.meta.total = payload.total_count;
-        Reflect.deleteProperty(payload, 'total_count');
-      }
-      if (typeof payload.next_url !== 'undefined') {
-        payload.meta.next = payload.next_url;
-        Reflect.deleteProperty(payload, 'next_url');
-      }
-      if (typeof payload.offset !== 'undefined') {
-        payload.meta.offset = payload.offset;
-        Reflect.deleteProperty(payload, 'offset');
-      }
-      if (typeof payload.limit !== 'undefined') {
-        payload.meta.limit = payload.limit;
-        Reflect.deleteProperty(payload, 'limit');
-      }
-      this._super.apply(this, arguments);
-    },
-
-    extractFindHasMany: function extractFindHasMany() {
-      return this._super.apply(this, arguments);
-    },
-
-    extractRelationships: function extractRelationships(resource) {
-      var _this4 = this;
-
-      _npmLodash['default'].each(resource, function (value, key) {
-        if (value && value.id && value.resource_type) {
-          if (_this4._hasModelFor(value.resource_type)) {
-            resource[key] = {
-              id: value.id,
-              type: value.resource_type
-            };
-          } else {
-            Reflect.deleteProperty(resource, key);
-          }
-        } else if (_npmLodash['default'].isArray(value)) {
-          resource[key] = value.map(function (v) {
-            if (v.id && v.resource_type) {
-              if (_this4._hasModelFor(v.resource_type)) {
-                return {
-                  id: v.id,
-                  type: v.resource_type
-                };
-              } else {
-                return null;
+      Reflect.deleteProperty(payload, 'resources');
+      Reflect.deleteProperty(payload, 'data');
+      Object.keys(payload).forEach(function (key) {
+        var value = payload[key];
+        if (Array.isArray(value)) {
+          value.forEach(function (resource) {
+            if (resource.hasOwnProperty('resource_type')) {
+              if (resource.hasOwnProperty('type')) {
+                resource[resource.resource_type + '_type'] = resource.type;
               }
-            } else {
-              return v;
+              resource.type = resource.resource_type;
+              Reflect.deleteProperty(resource, 'resource_type');
             }
-          }).compact();
+          });
         }
       });
-    },
-
-    extractErrors: function extractErrors(store, typeClass, payload, id) {
-      var _this5 = this;
-
-      var errorCodes = ['FIELD_REQUIRED', 'FIELD_DUPLICATE', 'FIELD_EMPTY', 'FIELD_INVALID'];
-
-      var errorMessages = _npmLodash['default'].zipObject(errorCodes.map(function (error) {
-        return [error, 'generic.error.' + error.toLowerCase()];
-      }));
-
-      var isValidationError = function isValidationError(error) {
-        return errorCodes.includes(error.code);
-      };
-
-      var messageForError = function messageForError(error) {
-        return _this5.get('intlService').findTranslationByKey(errorMessages[error.code]);
-      };
-
-      if (payload && typeof payload === 'object' && payload.errors) {
-        var _ret2 = (function () {
-          var errors = {};
-          payload.errors.forEach(function (error) {
-            if (isValidationError(error)) {
-              errors[error.parameter] = errors[error.parameter] || [];
-              errors[error.parameter].push(messageForError(error));
-            }
-          });
-          _this5.normalizeErrors(typeClass, errors);
-          return {
-            v: errors
-          };
-        })();
-
-        if (typeof _ret2 === 'object') return _ret2.v;
-      } else {
-        return payload;
+      var hasMeta = false;
+      var meta = ['total_count', 'offset', 'next_url', 'limit'].reduce(function (meta, attrName) {
+        if (payload.hasOwnProperty(attrName)) {
+          meta[attrName] = payload[attrName];
+          Reflect.deleteProperty(payload, attrName);
+          hasMeta = true;
+        }
+        return meta;
+      }, {});
+      if (hasMeta) {
+        payload.meta = meta;
       }
+      return this._super.apply(this, arguments);
     },
 
     keyForAttribute: function keyForAttribute(key /*, method*/) {
       return _ember['default'].String.underscore(key);
     },
 
+    extractRelationships: function extractRelationships(modelClass, resourceHash) {
+      modelClass.eachRelationship(function (name, relationship) {
+        var underscoredName = underscore(name);
+        if (resourceHash[underscoredName]) {
+          if (relationship.kind === 'belongsTo') {
+            var data = resourceHash[underscoredName];
+            if (!data.hasOwnProperty('id') || !data.hasOwnProperty('type') || Object.keys(data).length !== 2) {
+              resourceHash[underscoredName] = { id: data.id, type: data.resource_type };
+            }
+          } else {
+            // has many
+            resourceHash[underscoredName].forEach(function (entry) {
+              entry.type = entry.resource_type;
+              Reflect.deleteProperty(entry, 'resource_type');
+            });
+          }
+        }
+      });
+      return this._super.apply(this, arguments);
+    },
+
+    extractMeta: function extractMeta(store, typeClass, payload) {
+      if (payload.meta) {
+        if (typeof payload.meta.total_count !== 'undefined') {
+          payload.meta.total = payload.meta.total_count;
+          Reflect.deleteProperty(payload.meta, 'total_count');
+        }
+        if (typeof payload.meta.next_url !== 'undefined') {
+          payload.meta.next = payload.meta.next_url;
+          Reflect.deleteProperty(payload.meta, 'next_url');
+        }
+        if (typeof payload.meta.offset !== 'undefined') {
+          payload.meta.offset = payload.meta.offset;
+          Reflect.deleteProperty(payload.meta, 'offset');
+        }
+        if (typeof payload.meta.limit !== 'undefined') {
+          payload.meta.limit = payload.meta.limit;
+          Reflect.deleteProperty(payload.meta, 'limit');
+        }
+      }
+      return this._super.apply(this, arguments);
+    },
+
     keyForRelationship: function keyForRelationship(key, relationship, method) {
       if (!method || method === 'serialize') {
-        return _ember['default'].String.underscore(key) + (relationship === 'belongsTo' ? '_id' : '');
+        return underscore(key) + (relationship === 'belongsTo' ? '_id' : '');
       } else {
-        return _ember['default'].String.underscore(key);
+        return underscore(key);
       }
     },
 
@@ -61653,17 +61320,58 @@ define('frontend-cp/serializers/application', ['exports', 'ember', 'ember-data',
       merge(hash, this.serialize(snapshot, options));
     },
 
-    _hasModelFor: function _hasModelFor(type) {
-      var hasModelForType = this.get('store')._hasModelFor(type);
+    serialize: function serialize(snapshot, options) {
+      var json = this._super.apply(this, arguments);
+      var customTypePropertyName = underscore(snapshot.modelName) + '_type';
 
-      if (!hasModelForType) {
-        warn('Encountered a record of type \'' + type + '\' in the payload, but no corresponding model was found.');
+      if (json.hasOwnProperty(customTypePropertyName)) {
+        json.type = json[customTypePropertyName];
+        Reflect.deleteProperty(json, customTypePropertyName);
       }
+      return json;
+    },
 
-      return hasModelForType;
+    extractErrors: function extractErrors(store, typeClass, payload, id) {
+      var _this = this;
+
+      var messageForError = function messageForError(e) {
+        return _this.get('intlService').findTranslationByKey(errorMessages[e.code]);
+      };
+      if (payload && typeof payload === 'object' && payload.errors) {
+        var _ret = (function () {
+          var errors = {};
+          payload.errors.forEach(function (error) {
+            if (isValidationError(error)) {
+              errors[error.parameter] = errors[error.parameter] || [];
+              errors[error.parameter].push(messageForError(error));
+            }
+          });
+          _this.normalizeErrors(typeClass, errors);
+          return {
+            v: errors
+          };
+        })();
+
+        if (typeof _ret === 'object') return _ret.v;
+      } else {
+        return payload;
+      }
+    },
+
+    /*
+    This method removes from the `resources` key in the payload any model
+    we want to ignore.
+    */
+    removeBacklistedSideloadedResources: function removeBacklistedSideloadedResources(resources) {
+      if (!resources) {
+        return;
+      }
+      Reflect.deleteProperty(resources, 'user_minimal');
+      Reflect.deleteProperty(resources, 'team_minimal');
     }
   });
 });
+/*eslint-disable camelcase */
 define('frontend-cp/serializers/avatar', ['exports', 'frontend-cp/serializers/application'], function (exports, _frontendCpSerializersApplication) {
   exports['default'] = _frontendCpSerializersApplication['default'].extend({
     attrs: {
@@ -61693,20 +61401,45 @@ define('frontend-cp/serializers/case-field-type', ['exports', 'ember-data'], fun
 define('frontend-cp/serializers/case-field-value', ['exports', 'frontend-cp/serializers/application'], function (exports, _frontendCpSerializersApplication) {
   exports['default'] = _frontendCpSerializersApplication['default'].extend({
     attrs: {
-      fieldFragment: { key: 'field' }
+      field_fragment: { key: 'field' }
     }
   });
 });
+/*eslint-disable camelcase */
 define('frontend-cp/serializers/case-field', ['exports', 'frontend-cp/serializers/application', 'ember-data'], function (exports, _frontendCpSerializersApplication, _emberData) {
   exports['default'] = _frontendCpSerializersApplication['default'].extend(_emberData['default'].EmbeddedRecordsMixin, {
     attrs: {
-      fieldType: { key: 'type' },
       customerTitles: { embedded: 'always' },
       descriptions: { embedded: 'always' },
       options: { embedded: 'always' }
+    },
+
+    extractAttributes: function extractAttributes(modelClass, resourceHash) {
+      if (resourceHash.case_field_type) {
+        resourceHash.field_type = resourceHash.case_field_type;
+        Reflect.deleteProperty(resourceHash, 'case_field_type');
+      }
+      return this._super.apply(this, arguments);
+    },
+
+    serialize: function serialize(snapshot, options) {
+      var payload = this._super.apply(this, arguments);
+      payload.type = payload.field_type;
+      Reflect.deleteProperty(payload, 'field_type');
+      return payload;
+    },
+
+    extractRelationships: function extractRelationships(modelClass, resourceHash) {
+      resourceHash.links = {
+        priorities: '/api/v1/cases/priorities',
+        statuses: '/api/v1/cases/statuses',
+        types: '/api/v1/cases/types'
+      };
+      return this._super.apply(this, arguments);
     }
   });
 });
+/*eslint-disable camelcase */
 define('frontend-cp/serializers/case-form', ['exports', 'ember', 'frontend-cp/serializers/application'], function (exports, _ember, _frontendCpSerializersApplication) {
   exports['default'] = _frontendCpSerializersApplication['default'].extend({
     keyForRelationship: function keyForRelationship(key, relationship, method) {
@@ -61730,9 +61463,7 @@ define('frontend-cp/serializers/case-form', ['exports', 'ember', 'frontend-cp/se
        * Pull case field ids, ordered by sort order as a comma separated list
        */
       json.case_field_ids = snapshot.hasMany('fields') //eslint-disable-line camelcase
-      .sortBy('sortOrder').map(function (field) {
-        return field.get('id');
-      }).toString();
+      .sortBy('sortOrder').mapBy('id').join(',');
       return json;
     }
   });
@@ -61749,7 +61480,7 @@ define('frontend-cp/serializers/case-reply', ['exports', 'frontend-cp/serializer
 
     serialize: function serialize(snapshot, options) {
       var json = this._super(snapshot, options);
-      var form = snapshot.get('case.form');
+      var form = snapshot.belongsTo('case').belongsTo('form');
       json.field_values = this.serializeCustomFields(snapshot.attr('fieldValues'), form); //eslint-disable-line camelcase
       json.options.cc = snapshot.attr('options').get('cc') ? snapshot.attr('options').get('cc').toString() : '';
 
@@ -61768,8 +61499,12 @@ define('frontend-cp/serializers/case-reply', ['exports', 'frontend-cp/serializer
 });
 define('frontend-cp/serializers/case-status', ['exports', 'frontend-cp/serializers/application', 'ember'], function (exports, _frontendCpSerializersApplication, _ember) {
   exports['default'] = _frontendCpSerializersApplication['default'].extend({
-    attrs: {
-      statusType: { key: 'type' }
+    extractAttributes: function extractAttributes(modelClass, resourceHash) {
+      if (resourceHash.case_status_type) {
+        resourceHash.status_type = resourceHash.case_status_type;
+        Reflect.deleteProperty(resourceHash, 'case_status_type');
+      }
+      return this._super.apply(this, arguments);
     },
 
     serializeHasMany: function serializeHasMany(snapshot, json, relationship) {
@@ -61786,10 +61521,20 @@ define('frontend-cp/serializers/case-status', ['exports', 'frontend-cp/serialize
     }
   });
 });
+/*eslint-disable camelcase */
+define('frontend-cp/serializers/case-type', ['exports', 'frontend-cp/serializers/application'], function (exports, _frontendCpSerializersApplication) {
+  exports['default'] = _frontendCpSerializersApplication['default'].extend({
+    extractAttributes: function extractAttributes(modelClass, resourceHash) {
+      var attrs = this._super.apply(this, arguments);
+      attrs.type = resourceHash.case_type_type;
+      Reflect.deleteProperty(resourceHash, 'case_type_type');
+      return attrs;
+    }
+  });
+});
 define('frontend-cp/serializers/case', ['exports', 'frontend-cp/serializers/application', 'frontend-cp/mixins/custom-field-serialization'], function (exports, _frontendCpSerializersApplication, _frontendCpMixinsCustomFieldSerialization) {
   exports['default'] = _frontendCpSerializersApplication['default'].extend(_frontendCpMixinsCustomFieldSerialization['default'], {
     attrs: {
-      caseType: { key: 'type' },
       portal: { serialize: false },
       slaMetrics: { serialize: false },
       creationMode: { serialize: false },
@@ -61818,52 +61563,47 @@ define('frontend-cp/serializers/case', ['exports', 'frontend-cp/serializers/appl
       state: { serialize: false }
     },
 
-    _transformRecord: function _transformRecord(data) {
-      if (data.assignee) {
-        data.assigneeAgent = data.assignee.agent;
-        data.assigneeTeam = data.assignee.team;
+    extractAttributes: function extractAttributes(modelClass, resourceHash) {
+      if (resourceHash.brand && !Object.keys(resourceHash.brand).length) {
+        Reflect.deleteProperty(resourceHash, 'brand');
       }
-      Reflect.deleteProperty(data, 'assignee');
 
-      if (data.brand && !Object.keys(data.brand).length) {
-        Reflect.deleteProperty(data, 'brand');
-      }
+      return this._super.apply(this, arguments);
     },
 
-    extractArrayData: function extractArrayData(data, payload) {
-      var _this = this;
-
-      // TODO: remove this when API will fix response not to return empty objects
-      data.forEach(function (record) {
-        _this._transformRecord(record);
-      });
-
-      this._super.apply(this, arguments);
+    extractRelationships: function extractRelationships(modelClass, resourceHash) {
+      resourceHash.links = {
+        messages: 'messages',
+        posts: 'posts',
+        channels: 'channels',
+        activities: 'activities',
+        replyChannels: 'reply/channels',
+        tags: 'tags'
+      };
+      var agent = resourceHash.assignee && resourceHash.assignee.agent;
+      var team = resourceHash.assignee && resourceHash.assignee.team;
+      resourceHash.assignee_agent = agent && { id: agent.id, type: agent.resource_type };
+      resourceHash.assignee_team = team && { id: team.id, type: team.resource_type };
+      Reflect.deleteProperty(resourceHash, 'assignee');
+      return this._super.apply(this, arguments);
     },
 
-    extractSingleData: function extractSingleData(data, payload) {
-      this._transformRecord(data);
-
-      this._super.apply(this, arguments);
+    serializeHasMany: function serializeHasMany(snapshot, json, relationship) {
+      if (relationship.key === 'tags') {
+        json.tags = (snapshot.hasMany('tags') || []).mapBy('name').join(',');
+      } else {
+        this._super.apply(this, arguments);
+      }
     },
 
     serialize: function serialize(snapshot, options) {
       var json = this._super(snapshot, options);
-      json.field_values = this.serializeCustomFields(snapshot.attr('customFields'), snapshot.get('form')); //eslint-disable-line camelcase
+      json.field_values = this.serializeCustomFields(snapshot.attr('customFields'), snapshot.belongsTo('form')); //eslint-disable-line camelcase
       Reflect.deleteProperty(json, 'custom_fields');
 
-      json.type_id = json.type; // eslint-disable-line camelcase
+      json.type_id = json.case_type_id && parseInt(json.case_type_id, 10); // eslint-disable-line camelcase
+      Reflect.deleteProperty(json, 'case_type_id');
 
-      // api wait for type_id field
-      json.type_id = parseInt(json.type);
-      Reflect.deleteProperty(json, 'type');
-
-      // create comma separated list of tag names
-      if (snapshot.hasMany('tags')) {
-        json.tags = snapshot.hasMany('tags').map(function (tag) {
-          return tag.get('name');
-        }).join(',');
-      }
       return json;
     }
   });
@@ -61871,12 +61611,10 @@ define('frontend-cp/serializers/case', ['exports', 'frontend-cp/serializers/appl
 /* eslint-disable camelcase */
 define('frontend-cp/serializers/channel', ['exports', 'frontend-cp/serializers/application'], function (exports, _frontendCpSerializersApplication) {
   exports['default'] = _frontendCpSerializersApplication['default'].extend({
-    primaryKey: 'uuid',
-    attrs: {
-      channelType: { key: 'type' }
-    }
+    primaryKey: 'uuid'
   });
 });
+/*eslint-disable camelcase */
 define('frontend-cp/serializers/column', ['exports', 'frontend-cp/serializers/application'], function (exports, _frontendCpSerializersApplication) {
   exports['default'] = _frontendCpSerializersApplication['default'].extend({
     primaryKey: 'name'
@@ -61884,47 +61622,29 @@ define('frontend-cp/serializers/column', ['exports', 'frontend-cp/serializers/ap
 });
 define('frontend-cp/serializers/credential', ['exports', 'frontend-cp/serializers/application'], function (exports, _frontendCpSerializersApplication) {
   exports['default'] = _frontendCpSerializersApplication['default'].extend({
-
-    normalizePayload: function normalizePayload(payload) {
+    normalizeResponse: function normalizeResponse(store, primaryModelClass, payload, id, requestType) {
       payload.data.id = 1;
-      payload.data.resource_type = 'credential';
-
-      payload.data = [payload.data];
-      return this._super(payload);
+      return this._super(store, primaryModelClass, payload, id, requestType);
     }
-
   });
 });
 /* eslint-disable camelcase */
 define('frontend-cp/serializers/definition', ['exports', 'frontend-cp/serializers/application', 'npm:lodash'], function (exports, _frontendCpSerializersApplication, _npmLodash) {
   exports['default'] = _frontendCpSerializersApplication['default'].extend({
     primaryKey: 'field',
-    attrs: {
-      definitionType: { key: 'type' }
-    },
 
-    // Turning an object of type {key => value} into array [{id: key, value: value}]
-    extractItem: function extractItem(data) {
-      data = this._super.apply(this, arguments);
-      if (_npmLodash['default'].isArray(data.values)) {
-        data.values = _npmLodash['default'].map(data.values, function (val) {
-          return {
-            value: val,
-            string: val
-          };
-        });
-      } else {
-        data.values = _npmLodash['default'].map(data.values, function (val, id) {
-          return {
-            value: id,
-            string: val
-          };
-        });
-      }
-      return data;
+    extractAttributes: function extractAttributes(modelClass, resourceHash) {
+      resourceHash.values = _npmLodash['default'].map(resourceHash.values, function (val, id) {
+        return {
+          value: id,
+          string: val
+        };
+      });
+      return this._super.apply(this, arguments);
     }
   });
 });
+/*eslint-disable camelcase */
 define('frontend-cp/serializers/event', ['exports', 'frontend-cp/serializers/application'], function (exports, _frontendCpSerializersApplication) {
   exports['default'] = _frontendCpSerializersApplication['default'].extend({
     primaryKey: 'uuid'
@@ -61953,9 +61673,9 @@ define('frontend-cp/serializers/field-option', ['exports', 'frontend-cp/serializ
 });
 define('frontend-cp/serializers/identity-autocomplete-email', ['exports', 'frontend-cp/serializers/application'], function (exports, _frontendCpSerializersApplication) {
   exports['default'] = _frontendCpSerializersApplication['default'].extend({
-    normalizePayload: function normalizePayload(payload) {
+    normalizeResponse: function normalizeResponse(store, primaryModelClass, payload, id, requestType) {
       if (!payload.data) {
-        return this._super(payload);
+        return this._super.apply(this, arguments);
       }
 
       // set parent model for identity record
@@ -61969,32 +61689,26 @@ define('frontend-cp/serializers/identity-autocomplete-email', ['exports', 'front
           id: record.parent.id,
           resource_type: record.parent.resource_type
         };
+        record.id = id;
+        record.resource_type = 'identity_autocomplete_email';
       });
 
-      return this._super(payload);
-    },
-
-    extractArrayData: function extractArrayData(data, payload) {
-      var _this = this;
-
-      var resourceType = 'identity_autocomplete_email';
-
-      data.forEach(function (item) {
-        item.id = item.identity.id;
-        item.resource_type = resourceType;
-      });
-
-      data.forEach(function (item) {
-        return _this.extractItem(item, resourceType);
-      });
-      payload[resourceType] = data;
+      payload.identity_autocomplete_email = payload.data;
+      return this._super.apply(this, arguments);
     }
   });
 });
 /*eslint-disable camelcase */
 define('frontend-cp/serializers/locale', ['exports', 'frontend-cp/serializers/application'], function (exports, _frontendCpSerializersApplication) {
   exports['default'] = _frontendCpSerializersApplication['default'].extend({
-    primaryKey: 'locale'
+    primaryKey: 'locale',
+
+    extractRelationships: function extractRelationships(modelClass, resourceHash) {
+      resourceHash.links = {
+        strings: 'strings'
+      };
+      return this._super.apply(this, arguments);
+    }
   });
 });
 define('frontend-cp/serializers/macro-assignee', ['exports', 'frontend-cp/serializers/application'], function (exports, _frontendCpSerializersApplication) {
@@ -62007,48 +61721,33 @@ define('frontend-cp/serializers/macro-assignee', ['exports', 'frontend-cp/serial
 });
 define('frontend-cp/serializers/macro', ['exports', 'frontend-cp/serializers/application'], function (exports, _frontendCpSerializersApplication) {
   exports['default'] = _frontendCpSerializersApplication['default'].extend({
-    attrs: {
-      caseType: { key: 'type' }
-    },
+    extractAttributes: function extractAttributes(modelClass, resourceHash) {
+      if (resourceHash.assignee) {
+        resourceHash.assigneeAgent = resourceHash.assignee.agent;
+        resourceHash.assigneeTeam = resourceHash.assignee.team;
 
-    _transformRecord: function _transformRecord(data) {
-      if (data.assignee) {
-        data.assigneeAgent = data.assignee.agent;
-        data.assigneeTeam = data.assignee.team;
-
-        if (data.assignee.type) {
-          data.assigneeType = data.assignee.type;
+        if (resourceHash.assignee.type) {
+          resourceHash.assigneeType = resourceHash.assignee.type;
         }
+        Reflect.deleteProperty(resourceHash, 'assignee');
       }
-    },
 
-    extractArrayData: function extractArrayData(data, payload) {
-      var _this = this;
+      resourceHash.caseType = resourceHash.type;
+      Reflect.deleteProperty(resourceHash, 'type');
 
-      data.forEach(function (record) {
-        _this._transformRecord(record);
-      });
-
-      this._super.apply(this, arguments);
-    },
-
-    extractSingleData: function extractSingleData(data, payload) {
-      this._transformRecord(data);
-
-      this._super.apply(this, arguments);
+      return this._super.apply(this, arguments);
     },
 
     serialize: function serialize(snapshot, options) {
-      var json = this._super(snapshot, options);
-
+      var json = this._super.apply(this, arguments);
       if (!json.assignee_type) {
         Reflect.deleteProperty(json, 'assignee_type');
       }
 
-      if (snapshot.get('caseType')) {
-        json.type_id = snapshot.get('caseType.id'); // eslint-disable-line camelcase
+      var caseType = snapshot.belongsTo('caseType');
+      if (caseType) {
+        json.type_id = caseType.id; // eslint-disable-line camelcase
       }
-
       return json;
     }
   });
@@ -62068,18 +61767,7 @@ define('frontend-cp/serializers/note', ['exports', 'frontend-cp/serializers/appl
 });
 define('frontend-cp/serializers/oauth-link', ['exports', 'frontend-cp/serializers/application'], function (exports, _frontendCpSerializersApplication) {
   exports['default'] = _frontendCpSerializersApplication['default'].extend({
-    primaryKey: 'link',
-
-    /*
-     * This isn't a model in a traditional sense, the the model doesn't come with
-     * resource_type
-     *
-     * pull it from the payload instead
-     */
-    extractSingleData: function extractSingleData(data, payload) {
-      payload[payload.resource] = data;
-      this.extractItem(data, payload.resource);
-    }
+    primaryKey: 'link'
   });
 });
 define('frontend-cp/serializers/organization-field-type', ['exports', 'ember-data'], function (exports, _emberData) {
@@ -62088,29 +61776,45 @@ define('frontend-cp/serializers/organization-field-type', ['exports', 'ember-dat
 define('frontend-cp/serializers/organization-field-value', ['exports', 'frontend-cp/serializers/application'], function (exports, _frontendCpSerializersApplication) {
   exports['default'] = _frontendCpSerializersApplication['default'].extend({
     attrs: {
-      fieldFragment: { key: 'field' }
+      field_fragment: { key: 'field' }
     }
   });
 });
+/*eslint-disable camelcase */
 define('frontend-cp/serializers/organization-field', ['exports', 'frontend-cp/serializers/application', 'ember-data'], function (exports, _frontendCpSerializersApplication, _emberData) {
   exports['default'] = _frontendCpSerializersApplication['default'].extend(_emberData['default'].EmbeddedRecordsMixin, {
     attrs: {
-      fieldType: { key: 'type' },
       customerTitles: { embedded: 'always' },
       descriptions: { embedded: 'always' },
       options: { embedded: 'always' }
+    },
+
+    extractAttributes: function extractAttributes(modelClass, resourceHash) {
+      if (resourceHash.organization_field_type) {
+        resourceHash.field_type = resourceHash.organization_field_type;
+        Reflect.deleteProperty(resourceHash, 'organization_field_type');
+      }
+      return this._super.apply(this, arguments);
+    },
+
+    serialize: function serialize(snapshot, options) {
+      var payload = this._super.apply(this, arguments);
+      payload.type = payload.field_type;
+      Reflect.deleteProperty(payload, 'field_type');
+      return payload;
     }
   });
 });
-define('frontend-cp/serializers/organization-note', ['exports', 'frontend-cp/serializers/application', 'ember'], function (exports, _frontendCpSerializersApplication, _ember) {
+/*eslint-disable camelcase */
+define('frontend-cp/serializers/organization-note', ['exports', 'frontend-cp/serializers/application'], function (exports, _frontendCpSerializersApplication) {
   exports['default'] = _frontendCpSerializersApplication['default'].extend({
-    normalizePayload: function normalizePayload(payload) {
-      if (!payload.data || !_ember['default'].isArray(payload.data)) {
-        return this._super(payload);
+    normalizeResponse: function normalizeResponse(store, primaryModelClass, payload, id, requestType) {
+      if (!payload.data || !Array.isArray(payload.data)) {
+        return this._super.apply(this, arguments);
       }
 
       if (!payload.data[0]) {
-        return this._super(payload);
+        return this._super.apply(this, arguments);
       }
 
       payload.resources.post = [];
@@ -62133,7 +61837,7 @@ define('frontend-cp/serializers/organization-note', ['exports', 'frontend-cp/ser
         });
       });
 
-      return this._super(payload);
+      return this._super.apply(this, arguments);
     }
   });
 });
@@ -62145,32 +61849,47 @@ define('frontend-cp/serializers/organization', ['exports', 'frontend-cp/serializ
       phones: { serialize: false },
       twitter: { serialize: false },
       facebook: { serialize: false },
-      addresses: { serialize: false },
-      websites: { serialize: false },
       notes: { serialize: false },
       customFields: { serialize: false },
       createdAt: { serialize: false },
       updatedAt: { serialize: false }
     },
 
+    extractRelationships: function extractRelationships(modelClass, resourceHash) {
+      resourceHash.links = {
+        notes: 'notes'
+      };
+      return this._super.apply(this, arguments);
+    },
+
     serialize: function serialize(snapshot, options) {
-      var json = this._super(snapshot, options);
-      json.domains = snapshot.hasMany('domains').map(function (domain) {
-        return domain.get('domain');
-      }).uniq().toString();
-
-      json.tags = snapshot.hasMany('tags').getEach('name').toString();
+      var json = this._super.apply(this, arguments);
       json.field_values = this.serializeCustomFields(snapshot.attr('customFields')); //eslint-disable-line camelcase
-
       return json;
+    },
+
+    serializeHasMany: function serializeHasMany(snapshot, json, relationship) {
+      if (relationship.key === 'tags') {
+        json.tags = (snapshot.hasMany('tags') || []).getEach('name').toString();
+      } else if (relationship.key === 'domains') {
+        json.domains = (snapshot.hasMany('domains') || []).getEach('name').uniq().toString();
+      } else {
+        this._super.apply(this, arguments);
+      }
+    }
+  });
+});
+define('frontend-cp/serializers/plan', ['exports', 'frontend-cp/serializers/application'], function (exports, _frontendCpSerializersApplication) {
+  exports['default'] = _frontendCpSerializersApplication['default'].extend({
+    normalizeResponse: function normalizeResponse(store, primaryModelClass, payload, id, requestType) {
+      payload.data.id = 1;
+      return this._super.apply(this, arguments);
     }
   });
 });
 define('frontend-cp/serializers/predicate-collection', ['exports', 'frontend-cp/serializers/application'], function (exports, _frontendCpSerializersApplication) {
   exports['default'] = _frontendCpSerializersApplication['default'].extend({
-    attrs: {
-      id: { key: 'uuid' }
-    },
+    primaryKey: 'uuid',
 
     serialize: function serialize(snapshot) {
       // For some reason we don't need to submit either UUID or operator properties
@@ -62181,39 +61900,25 @@ define('frontend-cp/serializers/predicate-collection', ['exports', 'frontend-cp/
 });
 define('frontend-cp/serializers/relationship-fragment', ['exports', 'frontend-cp/serializers/application'], function (exports, _frontendCpSerializersApplication) {
   exports['default'] = _frontendCpSerializersApplication['default'].extend({
-    attrs: {
-      relationshipId: { key: 'id' },
-      relationshipType: { key: 'resource_type' }
+    extractAttributes: function extractAttributes(modelClass, resourceHash) {
+      resourceHash.relationship_id = resourceHash.id;
+      resourceHash.relationship_type = resourceHash.resource_type;
+      Reflect.deleteProperty(resourceHash, 'id');
+      Reflect.deleteProperty(resourceHash, 'resource_type');
+      return this._super.apply(this, arguments);
     }
   });
 });
+/* eslint-disable camelcase */
 define('frontend-cp/serializers/role', ['exports', 'frontend-cp/serializers/application'], function (exports, _frontendCpSerializersApplication) {
   exports['default'] = _frontendCpSerializersApplication['default'].extend({
-    attrs: {
-      roleType: { key: 'type' }
+    extractRelationships: function extractRelationships(modelClass, resourceHash) {
+      resourceHash.links = { permissions: 'permissions' };
+      return this._super.apply(this, arguments);
     }
   });
 });
-define('frontend-cp/serializers/search-result-group', ['exports', 'frontend-cp/serializers/application'], function (exports, _frontendCpSerializersApplication) {
-  exports['default'] = _frontendCpSerializersApplication['default'].extend({
-
-    primaryKey: 'resource',
-
-    normalizePayload: function normalizePayload(resource) {
-      if (resource.resource === 'object') {
-        resource.resource = 'search-result-group';
-      }
-
-      resource.data.forEach(function (dataItem) {
-        dataItem.results.forEach(function (result) {
-          Reflect.deleteProperty(result, 'data');
-        });
-      });
-
-      return this._super(resource);
-    }
-  });
-});
+/* eslint-disable camelcase */
 define('frontend-cp/serializers/search-result', ['exports', 'frontend-cp/serializers/application'], function (exports, _frontendCpSerializersApplication) {
   exports['default'] = _frontendCpSerializersApplication['default'].extend({
     attrs: {
@@ -62221,35 +61926,13 @@ define('frontend-cp/serializers/search-result', ['exports', 'frontend-cp/seriali
     }
   });
 });
-define('frontend-cp/serializers/tag', ['exports', 'frontend-cp/serializers/application'], function (exports, _frontendCpSerializersApplication) {
-  exports['default'] = _frontendCpSerializersApplication['default'].extend({
-    attrs: {
-      id: { key: 'name' }
-    }
-  });
-});
 define('frontend-cp/serializers/thumbnail', ['exports', 'frontend-cp/serializers/application'], function (exports, _frontendCpSerializersApplication) {
-  exports['default'] = _frontendCpSerializersApplication['default'].extend({
-    attrs: {
-      thumbnailType: { key: 'type' }
-    }
-  });
+  exports['default'] = _frontendCpSerializersApplication['default'].extend({});
 });
 define('frontend-cp/serializers/twitter-account-callback', ['exports', 'frontend-cp/serializers/application'], function (exports, _frontendCpSerializersApplication) {
   exports['default'] = _frontendCpSerializersApplication['default'].extend({
     attrs: {
       account: { serialize: false }
-    },
-
-    /*
-     * This isn't a model in a traditional sense, the the model doesn't come with
-     * resource_type
-     *
-     * pull it from the payload instead
-     */
-    extractSingleData: function extractSingleData(data, payload) {
-      payload[payload.resource] = data;
-      this.extractItem(data, payload.resource);
     }
   });
 });
@@ -62269,29 +61952,45 @@ define('frontend-cp/serializers/user-field-type', ['exports', 'ember-data'], fun
 define('frontend-cp/serializers/user-field-value', ['exports', 'frontend-cp/serializers/application'], function (exports, _frontendCpSerializersApplication) {
   exports['default'] = _frontendCpSerializersApplication['default'].extend({
     attrs: {
-      fieldFragment: { key: 'field' }
+      field_fragment: { key: 'field' }
     }
   });
 });
+/*eslint-disable camelcase */
 define('frontend-cp/serializers/user-field', ['exports', 'frontend-cp/serializers/application', 'ember-data'], function (exports, _frontendCpSerializersApplication, _emberData) {
   exports['default'] = _frontendCpSerializersApplication['default'].extend(_emberData['default'].EmbeddedRecordsMixin, {
     attrs: {
-      fieldType: { key: 'type' },
       customerTitles: { embedded: 'always' },
       descriptions: { embedded: 'always' },
       options: { embedded: 'always' }
+    },
+
+    extractAttributes: function extractAttributes(modelClass, resourceHash) {
+      if (resourceHash.user_field_type) {
+        resourceHash.field_type = resourceHash.user_field_type;
+        Reflect.deleteProperty(resourceHash, 'user_field_type');
+      }
+      return this._super.apply(this, arguments);
+    },
+
+    serialize: function serialize(snapshot, options) {
+      var payload = this._super.apply(this, arguments);
+      payload.type = payload.field_type;
+      Reflect.deleteProperty(payload, 'field_type');
+      return payload;
     }
   });
 });
-define('frontend-cp/serializers/user-note', ['exports', 'frontend-cp/serializers/application', 'ember'], function (exports, _frontendCpSerializersApplication, _ember) {
+/* eslint-disable camelcase */
+define('frontend-cp/serializers/user-note', ['exports', 'frontend-cp/serializers/application'], function (exports, _frontendCpSerializersApplication) {
   exports['default'] = _frontendCpSerializersApplication['default'].extend({
-    normalizePayload: function normalizePayload(payload) {
-      if (!payload.data || !_ember['default'].isArray(payload.data)) {
-        return this._super(payload);
+    normalizeResponse: function normalizeResponse(store, primaryModelClass, payload, id, requestType) {
+      if (!payload.data || !Array.isArray(payload.data)) {
+        return this._super.apply(this, arguments);
       }
 
       if (!payload.data[0]) {
-        return this._super(payload);
+        return this._super.apply(this, arguments);
       }
 
       payload.resources.post = [];
@@ -62314,21 +62013,27 @@ define('frontend-cp/serializers/user-note', ['exports', 'frontend-cp/serializers
         });
       });
 
-      return this._super(payload);
+      return this._super.apply(this, arguments);
     }
   });
 });
-/* eslint-disable camelcase */
+/*eslint-disable camelcase */
 define('frontend-cp/serializers/user', ['exports', 'frontend-cp/serializers/application', 'frontend-cp/mixins/custom-field-serialization'], function (exports, _frontendCpSerializersApplication, _frontendCpMixinsCustomFieldSerialization) {
+
+  function getPrimaryEmailAddress(snapshot) {
+    return snapshot.hasMany('emails').filter(function (identityEmail) {
+      return identityEmail.attr('isPrimary');
+    }).map(function (identityEmail) {
+      return identityEmail.attr('email');
+    })[0] || null;
+  }
+
   exports['default'] = _frontendCpSerializersApplication['default'].extend(_frontendCpMixinsCustomFieldSerialization['default'], {
     attrs: {
       avatar: { serialize: false },
-      emails: { serialize: false },
       phones: { serialize: false },
       twitter: { serialize: false },
       facebook: { serialize: false },
-      addresses: { serialize: false },
-      website: { serialize: false },
       customFields: { serialize: false },
       notes: { serialize: false },
       passwordUpdateAt: { serialize: false },
@@ -62340,45 +62045,43 @@ define('frontend-cp/serializers/user', ['exports', 'frontend-cp/serializers/appl
       teams: { serialize: false }
     },
 
-    serialize: function serialize(snapshot, options) {
-      var json = this._super(snapshot, options);
-      json.email = getPrimaryEmailAddress(snapshot);
-      json.field_values = this.serializeCustomFields(snapshot.attr('customFields')); //eslint-disable-line camelcase
+    extractRelationships: function extractRelationships(modelClass, resourceHash) {
+      resourceHash.links = {
+        notes: 'notes'
+      };
+      return this._super.apply(this, arguments);
+    },
 
-      if (Object.keys(json.field_values).length === 0) {
-        Reflect.deleteProperty(json, 'field_values');
+    serializeHasMany: function serializeHasMany(snapshot, json, relationship) {
+      if (relationship.key === 'teams') {
+        if (json.role_id !== '4') {
+          json.team_ids = (snapshot.hasMany('teams') || []).mapBy('id').join(',');
+        }
+      } else if (relationship.key === 'tags') {
+        json.tags = (snapshot.hasMany('tags') || []).mapBy('name').join(',');
+      } else if (relationship.key === 'emails') {
+        json.email = getPrimaryEmailAddress(snapshot);
+      } else {
+        this._super.apply(this, arguments);
       }
+    },
 
-      // create comma separated list of tag names
-      json.tags = snapshot.hasMany('tags').map(function (tag) {
-        return tag.get('name');
-      }).join(',');
-
-      // The API does not want team_ids if user is a customer...
-      if (json.role_id !== '4') {
-        json.team_ids = snapshot.hasMany('teams').map(function (team) {
-          return team.get('id');
-        }).join(',');
-      }
-
-      // Set default agent_case_access for non-CUSTOMER
-      if (json.role_id !== '4' && !json.agent_case_access) {
-        json.agent_case_access = 'INHERIT-FROM-ROLE';
-      }
-
-      // Set default organization_case_access for CUSTOMER
-      if (json.role_id === '4' && !json.organization_case_access) {
-        json.organization_case_access = 'REQUESTED';
-      }
-
-      return json;
-
-      function getPrimaryEmailAddress(snapshot) {
-        return snapshot.hasMany('emails').filter(function (identityEmail) {
-          return identityEmail.get('isPrimary');
-        }).map(function (identityEmail) {
-          return identityEmail.get('email');
-        })[0] || null;
+    serializeAttribute: function serializeAttribute(snapshot, json, key, attribute) {
+      if (key === 'agentCaseAccess') {
+        if (json.role_id !== '4' && !json.agent_case_access) {
+          json.agent_case_access = 'ALL';
+        }
+      } else if (key === 'organizationCaseAccess') {
+        if (json.role_id === '4' && !json.organization_case_access) {
+          json.organization_case_access = 'REQUESTED';
+        }
+      } else if (key === 'fieldValues') {
+        json.field_values = this.serializeCustomFields(snapshot.attr('customFields')); //eslint-disable-line camelcase
+        if (Object.keys(json.field_values).length === 0) {
+          Reflect.deleteProperty(json, 'field_values');
+        }
+      } else {
+        this._super.apply(this, arguments);
       }
     }
   });
@@ -62386,27 +62089,22 @@ define('frontend-cp/serializers/user', ['exports', 'frontend-cp/serializers/appl
 /* eslint-disable camelcase */
 define('frontend-cp/serializers/view', ['exports', 'ember-data', 'frontend-cp/serializers/application'], function (exports, _emberData, _frontendCpSerializersApplication) {
   exports['default'] = _frontendCpSerializersApplication['default'].extend(_emberData['default'].EmbeddedRecordsMixin, {
-
     attrs: {
       updatedAt: { serialize: false },
       createdAt: { serialize: false },
-      columns: { embedded: 'always' },
-      predicateCollections: { embedded: 'always' },
-      viewType: { key: 'type' }
+      columns: { serialize: 'ids', deserialize: 'records' },
+      predicateCollections: { serialize: 'records' }
     },
 
-    serialize: function serialize(snapshot, options) {
-      var json = this._super(snapshot, options);
-      json.columns = snapshot.hasMany('columns').map(function (column) {
-        return column.get('name');
-      });
-
-      if (snapshot.get('visibilityType') === 'TEAM') {
-        json.team_ids = snapshot.hasMany('visibilityToTeams').map(function (team) {
-          return team.get('id');
-        });
+    serializeHasMany: function serializeHasMany(snapshot, json, relationship) {
+      if (relationship.key === 'visibilityToTeams') {
+        if (snapshot.attr('visibilityType') !== 'TEAM') {
+          return;
+        }
+        json.team_ids = snapshot.hasMany('visibilityToTeams').mapBy('id');
+      } else {
+        this._super.apply(this, arguments);
       }
-      return json;
     }
   });
 });
@@ -65605,8 +65303,10 @@ define('frontend-cp/services/tags', ['exports', 'ember'], function (exports, _em
     store: _ember['default'].inject.service('store'),
 
     getTagByName: function getTagByName(tagName) {
-      var tag = this.get('store').peekRecord('tag', tagName);
-      return tag ? tag : this.get('store').createRecord('tag', { id: tagName });
+      var tag = this.get('store').peekAll('tag').find(function (tag) {
+        return tag.get('name') === tagName;
+      });
+      return tag ? tag : this.get('store').createRecord('tag', { name: tagName });
     },
 
     refreshTagsForCase: function refreshTagsForCase(updatedCase) {
@@ -65643,7 +65343,7 @@ define('frontend-cp/services/tags', ['exports', 'ember'], function (exports, _em
       }
 
       return tags.any(function (tag) {
-        return cachedTagNames.indexOf(tag.get('id')) === -1;
+        return cachedTagNames.indexOf(tag.get('name')) === -1;
       });
     }
 
@@ -81441,6 +81141,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+5b78e5c9"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+b00e49f0"});
 }
 /* jshint ignore:end */
