@@ -66203,6 +66203,7 @@ define('frontend-cp/session/admin/automation/businesshours/index/controller', ['
   exports['default'] = Controller.extend({
     store: _ember['default'].inject.service(),
     metrics: _ember['default'].inject.service(),
+    intl: _ember['default'].inject.service(),
 
     actions: {
       transitionToAddNewBusinessHour: function transitionToAddNewBusinessHour() {
@@ -66239,17 +66240,20 @@ define('frontend-cp/session/admin/automation/businesshours/index/controller', ['
           businessHour.rollbackAttributes();
         });
       },
-      deleteBusinessHour: function deleteBusinessHour(businessHour, event) {
-        event.stopPropagation();
-        businessHour.deleteRecord();
-        businessHour.save();
 
-        this.get('metrics').trackEvent({
-          event: 'Admin Business Hour Delete',
-          category: 'Admin Business Hours',
-          action: 'click',
-          label: 'delete'
-        });
+      deleteBusinessHour: function deleteBusinessHour(businessHour, e) {
+        e.stopPropagation();
+        if (confirm(this.get('intl').findTranslationByKey('generic.confirm.delete'))) {
+          businessHour.deleteRecord();
+          businessHour.save();
+
+          this.get('metrics').trackEvent({
+            event: 'Admin Business Hour Delete',
+            category: 'Admin Business Hours',
+            action: 'click',
+            label: 'delete'
+          });
+        }
       }
     }
   });
@@ -81437,6 +81441,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+07064b16"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+5b78e5c9"});
 }
 /* jshint ignore:end */
