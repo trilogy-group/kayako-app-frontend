@@ -76207,7 +76207,7 @@ define("frontend-cp/session/agent/cases/index/template", ["exports"], function (
               "column": 2
             },
             "end": {
-              "line": 14,
+              "line": 18,
               "column": 2
             }
           },
@@ -76220,7 +76220,14 @@ define("frontend-cp/session/agent/cases/index/template", ["exports"], function (
           var el0 = dom.createDocumentFragment();
           var el1 = dom.createTextNode("    ");
           dom.appendChild(el0, el1);
-          var el1 = dom.createComment("");
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1, "class", "ko-session-agent-cases-index__sidebar");
+          var el2 = dom.createTextNode("\n      ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n    ");
+          dom.appendChild(el1, el2);
           dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n");
           dom.appendChild(el0, el1);
@@ -76228,10 +76235,10 @@ define("frontend-cp/session/agent/cases/index/template", ["exports"], function (
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
           var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+          morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
           return morphs;
         },
-        statements: [["inline", "ko-sidebar", [], ["class", "ko-sidebar--no-border", "inboxView", ["subexpr", "@mut", [["get", "inboxView", ["loc", [null, [13, 57], [13, 66]]]]], [], []], "customViews", ["subexpr", "@mut", [["get", "model", ["loc", [null, [13, 79], [13, 84]]]]], [], []]], ["loc", [null, [13, 4], [13, 86]]]]],
+        statements: [["inline", "ko-sidebar", [], ["class", "ko-sidebar--no-border", "inboxView", ["subexpr", "@mut", [["get", "inboxView", ["loc", [null, [15, 18], [15, 27]]]]], [], []], "customViews", ["subexpr", "@mut", [["get", "model", ["loc", [null, [16, 20], [16, 25]]]]], [], []]], ["loc", [null, [14, 6], [16, 27]]]]],
         locals: [],
         templates: []
       };
@@ -76245,11 +76252,11 @@ define("frontend-cp/session/agent/cases/index/template", ["exports"], function (
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 22,
+                  "line": 26,
                   "column": 6
                 },
                 "end": {
-                  "line": 22,
+                  "line": 26,
                   "column": 45
                 }
               },
@@ -76276,11 +76283,11 @@ define("frontend-cp/session/agent/cases/index/template", ["exports"], function (
             "loc": {
               "source": null,
               "start": {
-                "line": 21,
+                "line": 25,
                 "column": 4
               },
               "end": {
-                "line": 23,
+                "line": 27,
                 "column": 4
               }
             },
@@ -76304,7 +76311,7 @@ define("frontend-cp/session/agent/cases/index/template", ["exports"], function (
             morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
             return morphs;
           },
-          statements: [["block", "link-to", [["subexpr", "query-params", [], ["page", ["get", "number", ["loc", [null, [22, 36], [22, 42]]]]], ["loc", [null, [22, 17], [22, 43]]]]], [], 0, null, ["loc", [null, [22, 6], [22, 57]]]]],
+          statements: [["block", "link-to", [["subexpr", "query-params", [], ["page", ["get", "number", ["loc", [null, [26, 36], [26, 42]]]]], ["loc", [null, [26, 17], [26, 43]]]]], [], 0, null, ["loc", [null, [26, 6], [26, 57]]]]],
           locals: ["number"],
           templates: [child0]
         };
@@ -76315,11 +76322,11 @@ define("frontend-cp/session/agent/cases/index/template", ["exports"], function (
           "loc": {
             "source": null,
             "start": {
-              "line": 20,
+              "line": 24,
               "column": 2
             },
             "end": {
-              "line": 24,
+              "line": 28,
               "column": 2
             }
           },
@@ -76341,7 +76348,7 @@ define("frontend-cp/session/agent/cases/index/template", ["exports"], function (
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [["block", "ko-pagination", [], ["currentPage", ["subexpr", "@mut", [["get", "childRoutePage", ["loc", [null, [21, 33], [21, 47]]]]], [], []], "loadingPage", ["subexpr", "@mut", [["get", "childRouteLoadingPage", ["loc", [null, [21, 60], [21, 81]]]]], [], []], "pageCount", ["subexpr", "@mut", [["get", "childRouteTotalPages", ["loc", [null, [21, 92], [21, 112]]]]], [], []]], 0, null, ["loc", [null, [21, 4], [23, 22]]]]],
+        statements: [["block", "ko-pagination", [], ["currentPage", ["subexpr", "@mut", [["get", "childRoutePage", ["loc", [null, [25, 33], [25, 47]]]]], [], []], "loadingPage", ["subexpr", "@mut", [["get", "childRouteLoadingPage", ["loc", [null, [25, 60], [25, 81]]]]], [], []], "pageCount", ["subexpr", "@mut", [["get", "childRouteTotalPages", ["loc", [null, [25, 92], [25, 112]]]]], [], []]], 0, null, ["loc", [null, [25, 4], [27, 22]]]]],
         locals: [],
         templates: [child0]
       };
@@ -76356,7 +76363,7 @@ define("frontend-cp/session/agent/cases/index/template", ["exports"], function (
             "column": 0
           },
           "end": {
-            "line": 27,
+            "line": 31,
             "column": 0
           }
         },
@@ -76410,7 +76417,7 @@ define("frontend-cp/session/agent/cases/index/template", ["exports"], function (
         morphs[2] = dom.createMorphAt(dom.childAt(element0, [5]), 1, 1);
         return morphs;
       },
-      statements: [["block", "if", [["get", "features.bulkUpdate", ["loc", [null, [2, 8], [2, 27]]]]], [], 0, 1, ["loc", [null, [2, 2], [14, 9]]]], ["content", "outlet", ["loc", [null, [16, 4], [16, 14]]]], ["block", "if", [["get", "showPagination", ["loc", [null, [20, 8], [20, 22]]]]], [], 2, null, ["loc", [null, [20, 2], [24, 9]]]]],
+      statements: [["block", "if", [["get", "features.bulkUpdate", ["loc", [null, [2, 8], [2, 27]]]]], [], 0, 1, ["loc", [null, [2, 2], [18, 9]]]], ["content", "outlet", ["loc", [null, [20, 4], [20, 14]]]], ["block", "if", [["get", "showPagination", ["loc", [null, [24, 8], [24, 22]]]]], [], 2, null, ["loc", [null, [24, 2], [28, 9]]]]],
       locals: [],
       templates: [child0, child1, child2]
     };
@@ -81425,6 +81432,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+c768a404"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+2d690046"});
 }
 /* jshint ignore:end */
