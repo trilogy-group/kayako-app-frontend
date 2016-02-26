@@ -8719,7 +8719,6 @@ define('frontend-cp/tests/helpers/start-app', ['exports', 'ember', 'frontend-cp/
 
   (0, _frontendCpTestsHelpersEmberPowerSelect['default'])();
 
-  _ember['default'].deprecate = function () {};
   _ember['default'].warn = function () {};
 
   function startApp(attrs) {

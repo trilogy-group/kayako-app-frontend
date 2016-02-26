@@ -117,6 +117,14 @@ define('frontend-cp/adapters/application', ['exports', 'ember', 'ember-data', 'n
 
     ajax: function ajax() {
       return this.handleErrors(this._super.apply(this, arguments));
+    },
+
+    shouldReloadAll: function shouldReloadAll() {
+      return true;
+    },
+
+    shouldBackgroundReloadRecord: function shouldBackgroundReloadRecord() {
+      return false;
     }
   });
 });
@@ -60094,14 +60102,14 @@ define('frontend-cp/models/macro', ['exports', 'ember-data', 'model-fragments'],
       } }),
 
     // Relationships
-    visibleToTeam: _emberData['default'].belongsTo('team'),
+    visibleToTeam: _emberData['default'].belongsTo('team', { async: true }),
     assigneeTeam: _emberData['default'].belongsTo('team', { async: false }),
     assigneeAgent: _emberData['default'].belongsTo('user', { async: false }),
-    priority: _emberData['default'].belongsTo('case-priority'),
-    status: _emberData['default'].belongsTo('case-status'),
+    priority: _emberData['default'].belongsTo('case-priority', { async: false }),
+    status: _emberData['default'].belongsTo('case-status', { async: false }),
     agent: _emberData['default'].belongsTo('user', { async: false }),
-    caseType: _emberData['default'].belongsTo('case-type'),
-    tags: _emberData['default'].hasMany('macro-tag'),
+    caseType: _emberData['default'].belongsTo('case-type', { async: false }),
+    tags: _emberData['default'].hasMany('macro-tag', { async: false }),
 
     // read only
     visibility: _modelFragments['default'].fragment('macro-visibility'),
@@ -61319,7 +61327,11 @@ define('frontend-cp/serializers/case-form', ['exports', 'ember', 'frontend-cp/se
        * Pull case field ids, ordered by sort order as a comma separated list
        */
       json.case_field_ids = snapshot.hasMany('fields') //eslint-disable-line camelcase
-      .sortBy('sortOrder').mapBy('id').join(',');
+      .sort(function (snapshotA, snapshotB) {
+        return snapshotA.attr('sortOrder') - snapshotB.attr('sortOrder');
+      }).map(function (e) {
+        return e.id;
+      }).join(',');
       return json;
     }
   });
@@ -61338,7 +61350,7 @@ define('frontend-cp/serializers/case-reply', ['exports', 'frontend-cp/serializer
       var json = this._super(snapshot, options);
       var form = snapshot.belongsTo('case').belongsTo('form');
       json.field_values = this.serializeCustomFields(snapshot.attr('fieldValues'), form); //eslint-disable-line camelcase
-      json.options.cc = snapshot.attr('options').get('cc') ? snapshot.attr('options').get('cc').toString() : '';
+      json.options.cc = snapshot.attr('options').attr('cc') || '';
 
       if (json.channel === 'NOTE') {
         Reflect.deleteProperty(json, 'options');
@@ -62198,7 +62210,7 @@ define('frontend-cp/services/case-tab', ['exports', 'ember', 'npm:lodash', 'fron
       var caseStatus = state.get('editedCase.status');
 
       if (!model.get('isNew') && caseStatus.get('statusType') === 'NEW') {
-        var statuses = this.get('store').all('case-status');
+        var statuses = this.get('store').peekAll('case-status');
         var pendingStatus = statuses.find(function (status) {
           return status.get('statusType') === 'OPEN';
         });
@@ -68849,7 +68861,7 @@ define('frontend-cp/session/admin/manage/macros/edit/controller', ['exports', 'e
           autodismiss: true
         });
 
-        this.transitionTo('session.admin.manage.macros.index');
+        this.transitionToRoute('session.admin.manage.macros.index');
       }
     }
   });
@@ -69308,7 +69320,7 @@ define('frontend-cp/session/admin/manage/macros/new/controller', ['exports', 'em
           autodismiss: true
         });
 
-        this.transitionTo('session.admin.manage.macros.index');
+        this.transitionToRoute('session.admin.manage.macros.index');
       }
     }
   });
@@ -81012,6 +81024,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+6bcb9caf"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+ec836417"});
 }
 /* jshint ignore:end */
