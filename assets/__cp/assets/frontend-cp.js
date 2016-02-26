@@ -9895,7 +9895,7 @@ define('frontend-cp/components/ko-admin/inline-locale-edit/component', ['exports
 
     getDefaultLocale: _ember['default'].on('didInitAttrs', function () {
       this.set('translationEditProxy', _ember['default'].Object.create({}));
-      this.set('defaultLocale', this.get('store').peekAll('locale').get('firstObject.id'));
+      this.set('defaultLocale', this.get('store').peekAll('locale').get('firstObject.locale'));
     }),
 
     isVisible: _ember['default'].computed('localeFields', function () {
@@ -55038,14 +55038,15 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
     this.passthrough('http://api.segment.io/**');
 
     // Endpoints
-    this.get('/api/v1/locales/en-us/strings', function (db) {
+    this.get('/api/v1/locales/1/strings', function (db) {
       return _frontendCpMirageFixturesEnUsStrings['default'][0];
     });
 
-    this.get('/api/v1/locales/en-us', function () {
+    this.get('/api/v1/locales/1', function () {
       return {
         status: 200,
         data: {
+          id: 1,
           locale: 'en-us',
           name: 'English (United States)',
           native_name: 'English (United States)',
@@ -55694,7 +55695,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
           brand: arrayToObjectWithNumberedKeys(db.brands),
           case_field: arrayToObjectWithNumberedKeys(db['case-fields']),
           field_option: arrayToObjectWithNumberedKeys(db['field-options']),
-          language: arrayToObjectWithNumberedKeys(db.languages)
+          locale: arrayToObjectWithNumberedKeys(db.locales)
         },
         status: 200,
         total_count: db['case-forms'].length
@@ -55802,7 +55803,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
         resource: 'case',
         resources: {
           business_hour: arrayToObjectWithNumberedKeys(db['business-hours']),
-          language: db.languages,
+          locale: db.locales,
           brand: arrayToObjectWithNumberedKeys(db.brands),
           mailbox: arrayToObjectWithNumberedKeys(db.mailboxes),
           channel: arrayToObjectWithNumberedKeys(db.channels),
@@ -55839,7 +55840,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
           identity_domain: arrayToObjectWithNumberedKeys(db['identity-domains']),
           identity_email: arrayToObjectWithNumberedKeys(db['identity-emails']),
           identity_phone: arrayToObjectWithNumberedKeys(db['identity-phones']),
-          language: arrayToObjectWithNumberedKeys(db.languages),
+          locale: arrayToObjectWithNumberedKeys(db.locales),
           mailbox: arrayToObjectWithNumberedKeys(db.mailboxes),
           message_recipient: arrayToObjectWithNumberedKeys(db['message-recipients']),
           organization: arrayToObjectWithNumberedKeys(db.organizations),
@@ -55922,7 +55923,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
         data: theCase,
         resource: 'case',
         resources: {
-          language: db.languages,
+          locale: db.locales,
           brand: arrayToObjectWithNumberedKeys(db.brands),
           business_hour: arrayToObjectWithNumberedKeys(db['business-hours']),
           mailbox: arrayToObjectWithNumberedKeys(db.mailboxes),
@@ -56023,7 +56024,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
           brand: arrayToObjectWithNumberedKeys(db.brands),
           facebook_account: arrayToObjectWithNumberedKeys(db['facebook-accounts']),
           facebook_page: arrayToObjectWithNumberedKeys(db['facebook-pages']),
-          language: db.languages,
+          locale: db.locales,
           mailbox: arrayToObjectWithNumberedKeys(db.mailboxes),
           twitter_account: arrayToObjectWithNumberedKeys(db['twitter-accounts'])
         },
@@ -57010,12 +57011,12 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
     });
     //Organisation Fields End
 
-    this.get('/api/v1/languages', function (db) {
+    this.get('/api/v1/locales', function (db) {
       return {
         status: 200,
-        data: db.languages,
-        resource: 'language',
-        total_count: db.languages.length
+        data: db.locales,
+        resource: 'locale',
+        total_count: db.locales.length
       };
     });
 
@@ -57204,7 +57205,7 @@ define('frontend-cp/mirage/factories/attachment', ['exports', 'ember-cli-mirage'
 define('frontend-cp/mirage/factories/brand', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     is_enabled: true,
-    language: {},
+    locale: {},
     name: 'Default',
     resource_type: 'brand',
     created_at: '2015-08-05T06:13:59Z',
@@ -57656,25 +57657,6 @@ define('frontend-cp/mirage/factories/identity-twitter', ['exports', 'ember-cli-m
   });
 });
 /*eslint-disable camelcase*/
-define('frontend-cp/mirage/factories/language', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
-  exports['default'] = _emberCliMirage['default'].Factory.extend({
-    locale: 'en-us',
-    flag_icon: null,
-    direction: 'LTR',
-    is_enabled: true,
-    is_default: false,
-    statistics: {
-      uptodate: 0,
-      outdated: 0,
-      missing: 0
-    },
-    created_at: '2015-07-09T15:36:10Z',
-    updated_at: '2015-07-09T15:36:10Z',
-    resource_type: 'language',
-    resource_url: 'http://novo/api/index.php?/v1/languages/1'
-  });
-});
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/limit', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     name: 'Collaborators',
@@ -57690,6 +57672,29 @@ define('frontend-cp/mirage/factories/locale-field', ['exports', 'ember-cli-mirag
     updated_at: _emberCliMirage.faker.date.recent,
     resource_type: 'locale_field',
     resource_url: 'https://brewfictus.kayako.com/api/v1/cases/fields/1/locales/2'
+  });
+});
+/*eslint-disable camelcase*/
+define('frontend-cp/mirage/factories/locale', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
+  exports['default'] = _emberCliMirage['default'].Factory.extend({
+    id: function id(i) {
+      return i + 1;
+    },
+    locale: 'en-us',
+    name: 'English',
+    native_name: 'English',
+    region: '',
+    nativeRegion: '',
+    script: '',
+    variant: '',
+    direction: 'LTR',
+    is_enabled: true,
+    is_public: true,
+    is_localised: true,
+    created_at: '2015-07-09T15:36:10Z',
+    updated_at: '2015-07-09T15:36:10Z',
+    resource_type: 'locale',
+    resource_url: 'http://novo/api/index.php?/v1/locales/1'
   });
 });
 /*eslint-disable camelcase*/
@@ -58600,17 +58605,19 @@ define('frontend-cp/mirage/scenarios/default', ['exports'], function (exports) {
     var sourceChannel = server.create('channel');
     var assigneeAgent = defaultUser;
     var assigneeTeam = teams[0];
-    var language = server.create('language', {
-      isDefault: true,
+    var locale = server.create('locale', {
+      id: 1,
       locale: 'en-us'
     });
-    server.create('language', {
+    server.create('locale', {
+      id: 2,
       locale: 'fr-ca'
     });
-    server.create('language', {
+    server.create('locale', {
+      id: 3,
       locale: 'de'
     });
-    var brand = server.create('brand', { language: language });
+    var brand = server.create('brand', { locale: locale });
     var statuses = server.createList('case-status', 5);
     var status = statuses[0];
     var priority = server.create('case-priority');
@@ -59394,7 +59401,7 @@ define('frontend-cp/models/brand', ['exports', 'ember-data'], function (exports,
   exports['default'] = _emberData['default'].Model.extend({
     name: _emberData['default'].attr('string'),
     url: _emberData['default'].attr('string'),
-    language: _emberData['default'].belongsTo('language', { async: false }),
+    locale: _emberData['default'].belongsTo('locale', { async: false }),
     isEnabled: _emberData['default'].attr('boolean')
   });
 });
@@ -59481,7 +59488,7 @@ define('frontend-cp/models/case-field', ['exports', 'ember', 'ember-data', 'fron
 
     customerTitle: _ember['default'].computed('customerTitles', {
       get: function get() {
-        var currentLocale = this.store.peekAll('locale').get('firstObject.id');
+        var currentLocale = this.store.peekAll('locale').get('firstObject.locale');
         var customerTitles = this.get('customerTitles');
 
         var customerTitleLocale = customerTitles.find(function (t) {
@@ -59495,7 +59502,7 @@ define('frontend-cp/models/case-field', ['exports', 'ember', 'ember-data', 'fron
         }
       },
       set: function set(key, translation) {
-        var currentLocale = this.store.peekAll('locale').get('firstObject.id');
+        var currentLocale = this.store.peekAll('locale').get('firstObject.locale');
         var customerTitles = this.get('customerTitles');
 
         var customerTitleLocale = customerTitles.find(function (t) {
@@ -59513,7 +59520,7 @@ define('frontend-cp/models/case-field', ['exports', 'ember', 'ember-data', 'fron
 
     description: _ember['default'].computed('descriptions', {
       get: function get() {
-        var currentLocale = this.store.peekAll('locale').get('firstObject.id');
+        var currentLocale = this.store.peekAll('locale').get('firstObject.locale');
         var descriptions = this.get('descriptions');
 
         var descriptionLocale = descriptions.find(function (d) {
@@ -59527,7 +59534,7 @@ define('frontend-cp/models/case-field', ['exports', 'ember', 'ember-data', 'fron
         }
       },
       set: function set(key, translation) {
-        var currentLocale = this.store.peekAll('locale').get('firstObject.id');
+        var currentLocale = this.store.peekAll('locale').get('firstObject.locale');
         var descriptions = this.get('descriptions');
 
         var descriptionLocale = descriptions.find(function (d) {
@@ -59846,6 +59853,28 @@ define('frontend-cp/models/column', ['exports', 'ember-data', 'ember'], function
     name: _ember['default'].computed.alias('id')
   });
 });
+define('frontend-cp/models/contact-address', ['exports', 'ember-data'], function (exports, _emberData) {
+  exports['default'] = _emberData['default'].Model.extend({
+    isPrimary: _emberData['default'].attr('boolean', { defaultValue: false }),
+    address1: _emberData['default'].attr('string'),
+    address2: _emberData['default'].attr('string'),
+    city: _emberData['default'].attr('string'),
+    state: _emberData['default'].attr('string'),
+    postalCode: _emberData['default'].attr('string'), // TODO maybe integer?
+    country: _emberData['default'].attr('string'), // TODO should be country code
+    type: _emberData['default'].attr('string', { defaultValue: 'OTHER' }),
+
+    parent: _emberData['default'].belongsTo('has-addresses', { async: true, polymorphic: true, parent: true })
+  });
+});
+define('frontend-cp/models/contact-website', ['exports', 'ember-data'], function (exports, _emberData) {
+  exports['default'] = _emberData['default'].Model.extend({
+    isPrimary: _emberData['default'].attr('boolean', { defaultValue: false }),
+    url: _emberData['default'].attr('string'),
+
+    parent: _emberData['default'].belongsTo('has-websites', { async: true, polymorphic: true, parent: true })
+  });
+});
 define('frontend-cp/models/credential', ['exports', 'ember-data'], function (exports, _emberData) {
   exports['default'] = _emberData['default'].Model.extend({
     realtimeAppKey: _emberData['default'].attr('string')
@@ -59948,7 +59977,7 @@ define('frontend-cp/models/field-option', ['exports', 'ember', 'ember-data', 'fr
 
     value: _ember['default'].computed('values', {
       get: function get() {
-        var currentLocale = this.store.peekAll('locale').get('firstObject.id');
+        var currentLocale = this.store.peekAll('locale').get('firstObject.locale');
         var values = this.get('values');
 
         var valueLocale = values.find(function (v) {
@@ -59962,7 +59991,7 @@ define('frontend-cp/models/field-option', ['exports', 'ember', 'ember-data', 'fr
         }
       },
       set: function set(key, translation) {
-        var currentLocale = this.store.peekAll('locale').get('firstObject.id');
+        var currentLocale = this.store.peekAll('locale').get('firstObject.locale');
         var values = this.get('values');
 
         var valueLocale = values.find(function (v) {
@@ -60115,24 +60144,6 @@ define('frontend-cp/models/identity', ['exports', 'ember', 'ember-data'], functi
     })
   });
 });
-define('frontend-cp/models/language-statistics', ['exports', 'ember-data', 'model-fragments'], function (exports, _emberData, _modelFragments) {
-  exports['default'] = _modelFragments['default'].Fragment.extend({
-    uptodate: _emberData['default'].attr('number'),
-    outdated: _emberData['default'].attr('number'),
-    missing: _emberData['default'].attr('number')
-  });
-});
-define('frontend-cp/models/language', ['exports', 'ember-data', 'model-fragments'], function (exports, _emberData, _modelFragments) {
-  exports['default'] = _emberData['default'].Model.extend({
-    locale: _emberData['default'].attr('string'),
-    flagIcon: _emberData['default'].attr('string'),
-    direction: _emberData['default'].attr('string'),
-    isEnabled: _emberData['default'].attr('boolean'),
-    statistics: _modelFragments['default'].fragment('language-statistics'),
-    createdAt: _emberData['default'].attr('date'),
-    updatedAt: _emberData['default'].attr('date')
-  });
-});
 define('frontend-cp/models/limit', ['exports', 'ember-data', 'model-fragments'], function (exports, _emberData, _modelFragments) {
   exports['default'] = _modelFragments['default'].Fragment.extend({
     name: _emberData['default'].attr('string'),
@@ -60162,6 +60173,7 @@ define('frontend-cp/models/locale-string', ['exports', 'ember-data'], function (
 });
 define('frontend-cp/models/locale', ['exports', 'ember-data'], function (exports, _emberData) {
   exports['default'] = _emberData['default'].Model.extend({
+    locale: _emberData['default'].attr('string'),
     name: _emberData['default'].attr('string'),
     nativeName: _emberData['default'].attr('string'),
     region: _emberData['default'].attr('string'),
@@ -60170,6 +60182,8 @@ define('frontend-cp/models/locale', ['exports', 'ember-data'], function (exports
     variant: _emberData['default'].attr('string'),
     direction: _emberData['default'].attr('string'),
     isEnabled: _emberData['default'].attr('boolean'),
+    isPublic: _emberData['default'].attr('boolean'),
+    isLocalised: _emberData['default'].attr('boolean'),
     createdAt: _emberData['default'].attr('date'),
     updatedAt: _emberData['default'].attr('date'),
 
@@ -60324,7 +60338,7 @@ define('frontend-cp/models/organization-field', ['exports', 'ember', 'ember-data
 
     customerTitle: _ember['default'].computed('customerTitles', {
       get: function get() {
-        var currentLocale = this.store.peekAll('locale').get('firstObject.id');
+        var currentLocale = this.store.peekAll('locale').get('firstObject.locale');
         var customerTitles = this.get('customerTitles');
 
         var customerTitleLocale = customerTitles.find(function (t) {
@@ -60338,7 +60352,7 @@ define('frontend-cp/models/organization-field', ['exports', 'ember', 'ember-data
         }
       },
       set: function set(key, translation) {
-        var currentLocale = this.store.peekAll('locale').get('firstObject.id');
+        var currentLocale = this.store.peekAll('locale').get('firstObject.locale');
         var customerTitles = this.get('customerTitles');
 
         var customerTitleLocale = customerTitles.find(function (t) {
@@ -60356,7 +60370,7 @@ define('frontend-cp/models/organization-field', ['exports', 'ember', 'ember-data
 
     description: _ember['default'].computed('descriptions', {
       get: function get() {
-        var currentLocale = this.store.peekAll('locale').get('firstObject.id');
+        var currentLocale = this.store.peekAll('locale').get('firstObject.locale');
         var descriptions = this.get('descriptions');
 
         var descriptionLocale = descriptions.find(function (d) {
@@ -60370,7 +60384,7 @@ define('frontend-cp/models/organization-field', ['exports', 'ember', 'ember-data
         }
       },
       set: function set(key, translation) {
-        var currentLocale = this.store.peekAll('locale').get('firstObject.id');
+        var currentLocale = this.store.peekAll('locale').get('firstObject.locale');
         var descriptions = this.get('descriptions');
 
         var descriptionLocale = descriptions.find(function (d) {
@@ -60729,7 +60743,7 @@ define('frontend-cp/models/user-field', ['exports', 'ember', 'ember-data', 'fron
 
     customerTitle: _ember['default'].computed('customerTitles', {
       get: function get() {
-        var currentLocale = this.store.peekAll('locale').get('firstObject.id');
+        var currentLocale = this.store.peekAll('locale').get('firstObject.locale');
         var customerTitles = this.get('customerTitles');
 
         var customerTitleLocale = customerTitles.find(function (t) {
@@ -60743,7 +60757,7 @@ define('frontend-cp/models/user-field', ['exports', 'ember', 'ember-data', 'fron
         }
       },
       set: function set(key, translation) {
-        var currentLocale = this.store.peekAll('locale').get('firstObject.id');
+        var currentLocale = this.store.peekAll('locale').get('firstObject.locale');
         var customerTitles = this.get('customerTitles');
 
         var customerTitleLocale = customerTitles.find(function (t) {
@@ -60761,7 +60775,7 @@ define('frontend-cp/models/user-field', ['exports', 'ember', 'ember-data', 'fron
 
     description: _ember['default'].computed('descriptions', {
       get: function get() {
-        var currentLocale = this.store.peekAll('locale').get('firstObject.id');
+        var currentLocale = this.store.peekAll('locale').get('firstObject.locale');
         var descriptions = this.get('descriptions');
 
         var descriptionLocale = descriptions.find(function (d) {
@@ -60775,7 +60789,7 @@ define('frontend-cp/models/user-field', ['exports', 'ember', 'ember-data', 'fron
         }
       },
       set: function set(key, translation) {
-        var currentLocale = this.store.peekAll('locale').get('firstObject.id');
+        var currentLocale = this.store.peekAll('locale').get('firstObject.locale');
         var descriptions = this.get('descriptions');
 
         var descriptionLocale = descriptions.find(function (d) {
@@ -61701,8 +61715,6 @@ define('frontend-cp/serializers/identity-autocomplete-email', ['exports', 'front
 /*eslint-disable camelcase */
 define('frontend-cp/serializers/locale', ['exports', 'frontend-cp/serializers/application'], function (exports, _frontendCpSerializersApplication) {
   exports['default'] = _frontendCpSerializersApplication['default'].extend({
-    primaryKey: 'locale',
-
     extractRelationships: function extractRelationships(modelClass, resourceHash) {
       resourceHash.links = {
         strings: 'strings'
@@ -63120,10 +63132,10 @@ define('frontend-cp/services/custom-fields/options', ['exports', 'ember'], funct
 
     create: function create() {
       var store = this.get('store');
-      var languages = store.peekAll('language');
+      var locales = store.peekAll('locale');
 
       var newFieldOption = store.createRecord('field-option');
-      languages.forEach(function (element) {
+      locales.forEach(function (element) {
         var localeField = store.createRecord('locale-field', {
           locale: element.get('locale')
         });
@@ -63270,17 +63282,17 @@ define('frontend-cp/services/custom-fields', ['exports', 'ember', 'npm:lodash'],
 
     create: function create(model) {
       var store = this.get('store');
-      var languages = store.peekAll('language');
+      var locales = store.peekAll('locale');
 
       model.set('is_system', false);
 
-      languages.forEach(function (element) {
+      locales.forEach(function (element) {
         var localeField = store.createRecord('locale-field', {
           locale: element.get('locale')
         });
         model.get('customerTitles').pushObject(localeField);
       });
-      languages.forEach(function (element) {
+      locales.forEach(function (element) {
         var localeField = store.createRecord('locale-field', {
           locale: element.get('locale')
         });
@@ -64114,7 +64126,7 @@ define('frontend-cp/services/local-store', ['exports', 'ember'], function (expor
 });
 define('frontend-cp/services/locale', ['exports', 'ember', 'moment', 'frontend-cp/config/environment'], function (exports, _ember, _moment, _frontendCpConfigEnvironment) {
 
-  var USER_LOCALE_KEY = 'user-locale';
+  var USER_LOCALE_KEY = 'user-locale-v2';
 
   exports['default'] = _ember['default'].Service.extend({
     store: _ember['default'].inject.service(),
@@ -64132,14 +64144,15 @@ define('frontend-cp/services/locale', ['exports', 'ember', 'moment', 'frontend-c
       var store = this.get('store');
       this.get('intl').set('adapterType', 'intl');
 
-      return store.findRecord('locale', this.getCurrentLocale())['catch'](function () {
-        // we persist default locale for store, to prevent
-        // next refresh from requesting wrong locale again
-        _this.persistLocaleToLocalStorage(_frontendCpConfigEnvironment['default'].defaultLocale);
+      return store.findAll('locale').then(function (locales) {
+        var currentLocale = _this.getCurrentLocale(locales);
 
-        return store.findRecord('locale', _frontendCpConfigEnvironment['default'].defaultLocale);
-      }).then(function (locale) {
-        return _this._populateTranslations(locale);
+        if (currentLocale) {
+          return _this._populateTranslations(currentLocale);
+        } else {
+          _this.persistLocaleToLocalStorage(_frontendCpConfigEnvironment['default'].defaultLocale);
+          return store.findRecord('locale', _frontendCpConfigEnvironment['default'].defaultLocale);
+        }
       });
     },
 
@@ -64152,28 +64165,44 @@ define('frontend-cp/services/locale', ['exports', 'ember', 'moment', 'frontend-c
       var intl = this.get('intl');
       var translations = {};
 
-      intl.createLocale(locale.id, {});
-      intl.setLocale(locale.id);
+      var localeCode = locale.get('locale');
 
-      _moment['default'].locale(locale.id);
+      intl.createLocale(localeCode, {});
+      intl.setLocale(localeCode);
+
+      _moment['default'].locale(localeCode);
 
       return this._requestLocaleStrings(locale.id).then(function (strings) {
         strings.data.forEach(function (string) {
           translations[string.id] = string.value;
         });
-        intl.addTranslations(locale.id, translations);
+        intl.addTranslations(localeCode, translations);
       });
     },
 
-    getCurrentLocale: function getCurrentLocale() {
+    getCurrentLocale: function getCurrentLocale(locales) {
+      var _this2 = this;
+
       var userLocale = this.get('userLocale');
 
       if (!userLocale) {
-        var localLocale = this.getLocalLocale();
-        return localLocale ? localLocale : _frontendCpConfigEnvironment['default'].defaultLocale;
+        var _ret = (function () {
+          var localLocale = _this2.getLocalLocale();
+          var currentLocale = localLocale ? localLocale : _frontendCpConfigEnvironment['default'].defaultLocale;
+
+          return {
+            v: locales.toArray().find(function (locale) {
+              return String(locale.get('locale')) === String(currentLocale) || String(locale.get('id')) === String(currentLocale);
+            })
+          };
+        })();
+
+        if (typeof _ret === 'object') return _ret.v;
       }
 
-      return userLocale;
+      return locales.toArray().find(function (locale) {
+        return String(locale.get('locale')) === String(userLocale) || String(locale.get('id')) === String(userLocale);
+      });
     },
 
     getLocalLocale: function getLocalLocale() {
@@ -73817,7 +73846,7 @@ define('frontend-cp/session/admin/route', ['exports', 'ember'], function (export
         this.transitionTo('session.agent');
       }
       var store = this.get('store');
-      return store.findAll('language');
+      return store.findAll('locale');
     }),
 
     activate: _ember['default'].on('activate', function () {
@@ -81141,6 +81170,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+b00e49f0"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+6fa99264"});
 }
 /* jshint ignore:end */

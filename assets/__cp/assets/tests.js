@@ -3,6 +3,10 @@ define('frontend-cp/tests/acceptance/admin/automation/businesshours/edit-test', 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/automation/businesshours Edit', {
     beforeEach: function beforeEach() {
       /*eslint-disable camelcase*/
+      server.create('locale', {
+        id: 1,
+        locale: 'en-us'
+      });
       server.create('plan', { limits: [], features: [] });
       var adminRole = server.create('role', { type: 'ADMIN' });
       var agent = server.create('user', { role: adminRole });
@@ -76,6 +80,10 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/delete-test', ['ex
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/manage/case fields/delete', {
     beforeEach: function beforeEach() {
       /*eslint-disable camelcase*/
+      server.create('locale', {
+        id: 1,
+        locale: 'en-us'
+      });
       var customerTitleLocaleField = server.create('locale-field', {
         locale: 'en-us'
       });
@@ -162,6 +170,10 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/manage/case fields/edit', {
     beforeEach: function beforeEach() {
       /*eslint-disable camelcase*/
+      server.create('locale', {
+        id: 1,
+        locale: 'en-us'
+      });
       var textCustomerTitleLocaleField = server.create('locale-field', {
         locale: 'en-us'
       });
@@ -1043,6 +1055,10 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-statuses-te
     beforeEach: function beforeEach() {
       this.application = (0, _frontendCpTestsHelpersStartApp['default'])();
 
+      server.create('locale', {
+        id: 1,
+        locale: 'en-us'
+      });
       var role = server.create('role', { type: 'ADMIN' });
       var agent = server.create('user', { role: role });
       var session = server.create('session', { user: agent });
@@ -1241,11 +1257,10 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/manage/case fields/new', {
     beforeEach: function beforeEach() {
-      server.create('language', {
-        locale: 'en-us',
-        isDefault: true
+      server.create('locale', {
+        id: 1,
+        locale: 'en-us'
       });
-
       var adminRole = server.create('role', { type: 'ADMIN' });
       var agent = server.create('user', { role: adminRole });
       var session = server.create('session', { user: agent });
@@ -1730,6 +1745,10 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/reorder-test', ['e
     beforeEach: function beforeEach() {
       this.application = (0, _frontendCpTestsHelpersStartApp['default'])();
       /*eslint-disable camelcase*/
+      server.create('locale', {
+        id: 1,
+        locale: 'en-us'
+      });
       var radioOption1LocaleField = server.create('locale-field', {
         locale: 'en-us', translation: option1Title
       });
@@ -2103,7 +2122,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/reorder-test', ['e
 define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'npm:lodash'], function (exports, _frontendCpTestsHelpersQunit, _npmLodash) {
 
   var brand = undefined,
-      language = undefined,
+      locale = undefined,
       originalConfirm = undefined;
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | Admin | Manage | Case Forms', {
     beforeEach: function beforeEach() {
@@ -2111,8 +2130,8 @@ define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['exports', 
       var user = server.create('user', { emails: emails, role: server.create('role') });
       var session = server.create('session', { user: user });
       server.create('plan', { limits: [], features: [] });
-      language = server.create('language');
-      brand = server.create('brand', { language: language });
+      locale = server.create('locale');
+      brand = server.create('brand', { locale: locale });
       originalConfirm = window.confirm;
       login(session.id);
     },
@@ -2422,9 +2441,8 @@ define('frontend-cp/tests/acceptance/admin/manage/macros/new-test', ['exports', 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/manage/macros/new', {
     beforeEach: function beforeEach() {
       /*eslint-disable camelcase, quote-props*/
-      server.create('language', {
-        locale: 'en-us',
-        isDefault: true
+      server.create('locale', {
+        locale: 'en-us'
       });
 
       var businesshour = server.create('business-hour', { title: 'Default Business Hours' });
@@ -2534,9 +2552,8 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/manage/views/new', {
     beforeEach: function beforeEach() {
       /*eslint-disable camelcase, quote-props*/
-      server.create('language', {
-        locale: 'en-us',
-        isDefault: true
+      server.create('locale', {
+        locale: 'en-us'
       });
 
       server.create('column', { name: 'caseid' });
@@ -3134,6 +3151,10 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/delete-tes
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/people/organization fields/delete', {
     beforeEach: function beforeEach() {
       /*eslint-disable camelcase*/
+      server.create('locale', {
+        id: 1,
+        locale: 'en-us'
+      });
       var customerTitleLocaleField = server.create('locale-field', {
         locale: 'en-us'
       });
@@ -3217,6 +3238,10 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/people/organization fields/edit', {
     beforeEach: function beforeEach() {
       /*eslint-disable camelcase*/
+      server.create('locale', {
+        id: 1,
+        locale: 'en-us'
+      });
       var textCustomerTitleLocaleField = server.create('locale-field', {
         locale: 'en-us'
       });
@@ -3951,9 +3976,9 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/people/organization fields/new', {
     beforeEach: function beforeEach() {
-      server.create('language', {
-        locale: 'en-us',
-        isDefault: true
+      server.create('locale', {
+        id: 1,
+        locale: 'en-us'
       });
       var adminRole = server.create('role', { type: 'ADMIN' });
       var agent = server.create('user', { role: adminRole });
@@ -4438,6 +4463,10 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/reorder-te
     beforeEach: function beforeEach() {
       this.application = (0, _frontendCpTestsHelpersStartApp['default'])();
       /*eslint-disable camelcase*/
+      server.create('locale', {
+        id: 1,
+        locale: 'en-us'
+      });
       var radioOption1LocaleField = server.create('locale-field', {
         locale: 'en-us', translation: option1Title
       });
@@ -4790,7 +4819,7 @@ define('frontend-cp/tests/acceptance/admin/people/teams-forms-test', ['exports',
 
       server.create('plan', { limits: [], features: [] });
 
-      server.create('brand', { language: server.create('language') });
+      server.create('brand', { locale: server.create('locale') });
 
       login(session.id);
       originalConfirm = window.confirm;
@@ -4836,6 +4865,10 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/delete-test', ['ex
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/people/user fields/delete', {
     beforeEach: function beforeEach() {
       /*eslint-disable camelcase*/
+      server.create('locale', {
+        id: 1,
+        locale: 'en-us'
+      });
       var customerTitleLocaleField = server.create('locale-field', {
         locale: 'en-us'
       });
@@ -4919,6 +4952,10 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/people/user fields/edit', {
     beforeEach: function beforeEach() {
       /*eslint-disable camelcase*/
+      server.create('locale', {
+        id: 1,
+        locale: 'en-us'
+      });
       var textCustomerTitleLocaleField = server.create('locale-field', {
         locale: 'en-us'
       });
@@ -5678,9 +5715,9 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/people/user fields/new', {
     beforeEach: function beforeEach() {
-      server.create('language', {
-        locale: 'en-us',
-        isDefault: true
+      server.create('locale', {
+        id: 1,
+        locale: 'en-us'
       });
       var adminRole = server.create('role', { type: 'ADMIN' });
       var agent = server.create('user', { role: adminRole });
@@ -6165,6 +6202,10 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/reorder-test', ['e
     beforeEach: function beforeEach() {
       this.application = (0, _frontendCpTestsHelpersStartApp['default'])();
       /*eslint-disable camelcase*/
+      server.create('locale', {
+        id: 1,
+        locale: 'en-us'
+      });
       var radioOption1LocaleField = server.create('locale-field', {
         locale: 'en-us', translation: option1Title
       });
@@ -6499,8 +6540,8 @@ define('frontend-cp/tests/acceptance/agent/cases/create-test', ['exports', 'fron
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | Case | Create case', {
     beforeEach: function beforeEach() {
-      var language = server.create('language');
-      var brand = server.create('brand', { language: language });
+      var locale = server.create('locale');
+      var brand = server.create('brand', { locale: locale });
       var caseFields = server.createList('case-field', 4);
       var mailbox = server.create('mailbox', { brand: brand });
       server.create('channel', { account: { id: mailbox.id, resource_type: 'mailbox' } });
@@ -6819,8 +6860,8 @@ define('frontend-cp/tests/acceptance/agent/cases/timeline-test', ['exports', 'fr
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | Case | Timeline', {
     beforeEach: function beforeEach() {
-      var language = server.create('language');
-      var brand = server.create('brand', { language: language });
+      var locale = server.create('locale');
+      var brand = server.create('brand', { locale: locale });
       var caseFields = server.createList('case-field', 4);
       var mailbox = server.create('mailbox', { brand: brand });
       var sourceChannel = server.create('channel', { uuid: 1, account: mailbox });
@@ -7046,8 +7087,8 @@ define("frontend-cp/tests/acceptance/agent/macros/select-macro-test", ["exports"
 //
 // app('Acceptance | Macro | Select macro', {
 //   beforeEach() {
-//     const language = server.create('language');
-//     const brand = server.create('brand', { language });
+//     const locale = server.create('locale');
+//     const brand = server.create('brand', { locale });
 //     const caseFields = server.createList('case-field', 4);
 //     const mailbox = server.create('mailbox', { brand });
 //     const sourceChannel = server.create('channel', { uuid: 1, account: mailbox });
@@ -7151,6 +7192,10 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
   var originalConfirm = undefined;
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | Manage Email Identities', {
     beforeEach: function beforeEach() {
+      server.create('locale', {
+        id: 1,
+        locale: 'en-us'
+      });
       var emails = [server.create('identity-email', { email: 'first@example.com', is_primary: true, is_validated: true }), server.create('identity-email', { email: 'second@example.com', is_primary: false, is_validated: true }), server.create('identity-email', { email: 'third@example.com', is_primary: false, is_validated: false })];
       var user = server.create('user', { emails: emails, role: server.create('role') });
       var session = server.create('session', { user: user });
@@ -7248,6 +7293,10 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | Manage Twitter Identities', {
     beforeEach: function beforeEach() {
+      server.create('locale', {
+        id: 1,
+        locale: 'en-us'
+      });
       var twitter = [server.create('identity-twitter', { screen_name: '@first', is_primary: true, is_validated: true }), server.create('identity-twitter', { screen_name: '@second', is_primary: false, is_validated: true }), server.create('identity-twitter', { screen_name: '@third', is_primary: false, is_validated: false })];
       var user = server.create('user', { twitter: twitter, role: server.create('role') });
       var session = server.create('session', { user: user });
@@ -7310,6 +7359,10 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | Manage Facebook Identities', {
     beforeEach: function beforeEach() {
+      server.create('locale', {
+        id: 1,
+        locale: 'en-us'
+      });
       var facebook = [server.create('identity-facebook', { user_name: 'Mike', is_primary: true, is_validated: true }), server.create('identity-facebook', { user_name: 'Mary', is_primary: false, is_validated: true }), server.create('identity-facebook', { user_name: 'John', is_primary: false, is_validated: false })];
       var user = server.create('user', { facebook: facebook, role: server.create('role') });
       var session = server.create('session', { user: user });
@@ -7358,6 +7411,10 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | Manage Phone Identities', {
     beforeEach: function beforeEach() {
+      server.create('locale', {
+        id: 1,
+        locale: 'en-us'
+      });
       var phones = [server.create('identity-phone', { number: '+44 1111 111111', is_primary: true, is_validated: true }), server.create('identity-phone', { number: '+44 2222 222222', is_primary: false, is_validated: true }), server.create('identity-phone', { number: '+44 3333 333333', is_primary: false, is_validated: false })];
       var user = server.create('user', { phones: phones, role: server.create('role') });
       var session = server.create('session', { user: user });
@@ -7423,8 +7480,8 @@ define('frontend-cp/tests/acceptance/agent/organisations/create-test', ['exports
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | Organisation | Create organisation', {
     beforeEach: function beforeEach() {
-      var language = server.create('language');
-      var brand = server.create('brand', { language: language });
+      var locale = server.create('locale');
+      var brand = server.create('brand', { locale: locale });
       var caseFields = server.createList('case-field', 4);
       var mailbox = server.create('mailbox', { brand: brand });
       server.create('channel', { account: { id: mailbox.id, resource_type: 'mailbox' } });
@@ -7730,8 +7787,8 @@ define('frontend-cp/tests/acceptance/agent/users/create-test', ['exports', 'fron
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | User | Create user', {
     beforeEach: function beforeEach() {
-      var language = server.create('language');
-      var brand = server.create('brand', { language: language });
+      var locale = server.create('locale');
+      var brand = server.create('brand', { locale: locale });
       var caseFields = server.createList('case-field', 4);
       var mailbox = server.create('mailbox', { brand: brand });
       server.create('channel', { account: { id: mailbox.id, resource_type: 'mailbox' } });
@@ -7792,8 +7849,8 @@ define('frontend-cp/tests/acceptance/suspended-messages-test', ['exports', 'fron
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | suspended messages', {
     beforeEach: function beforeEach() {
-      var language = server.create('language');
-      var brand = server.create('brand', { language: language });
+      var locale = server.create('locale');
+      var brand = server.create('brand', { locale: locale });
       var caseFields = server.createList('case-field', 4);
       var mailbox = server.create('mailbox', { brand: brand });
       server.create('channel', { account: { id: mailbox.id, resource_type: 'mailbox' } });
@@ -13011,7 +13068,7 @@ define('frontend-cp/tests/unit/components/ko-toggle/component-test', ['exports',
 define('frontend-cp/tests/unit/services/custom-fields/options-test', ['exports', 'ember', 'ember-qunit'], function (exports, _ember, _emberQunit) {
 
   (0, _emberQunit.moduleFor)('service:custom-fields/options', 'Unit | Service | custom-fields/options', {
-    needs: ['model:user-field', 'model:field-option', 'model:field', 'model:language', 'model:locale', 'model:locale-field', 'model:case-priority', 'model:case-status', 'model:case-type']
+    needs: ['model:user-field', 'model:field-option', 'model:field', 'model:locale', 'model:locale', 'model:locale-field', 'model:case-priority', 'model:case-status', 'model:case-type']
   });
 
   (0, _emberQunit.test)('it can save options', function (assert) {
@@ -13492,7 +13549,7 @@ define('frontend-cp/tests/unit/services/custom-fields/options-test', ['exports',
 define('frontend-cp/tests/unit/services/custom-fields-test', ['exports', 'ember', 'ember-qunit'], function (exports, _ember, _emberQunit) {
 
   (0, _emberQunit.moduleFor)('service:custom-fields', 'Unit | Service | custom-fields', {
-    needs: ['model:user-field', 'model:field-option', 'model:field', 'model:locale', 'model:locale-field', 'model:language', 'service:custom-fields/types', 'service:custom-fields/options', 'service:intl', 'service:notification', 'ember-intl@adapter:-intl-adapter', 'adapter:application', 'service:session', 'service:error-handler', 'service:error-handler/notification-strategy'],
+    needs: ['model:user-field', 'model:field-option', 'model:field', 'model:locale', 'model:locale-field', 'model:locale-string', 'service:custom-fields/types', 'service:custom-fields/options', 'service:intl', 'service:notification', 'ember-intl@adapter:-intl-adapter', 'adapter:application', 'service:session', 'service:error-handler', 'service:error-handler/notification-strategy'],
     beforeEach: function beforeEach() {
       var intl = this.container.lookup('service:intl');
       var localeId = 'en-test';
@@ -13558,15 +13615,15 @@ define('frontend-cp/tests/unit/services/custom-fields-test', ['exports', 'ember'
     });
 
     _ember['default'].run(function () {
-      store.createRecord('language', {
+      store.createRecord('locale', {
         locale: 'en-us'
       });
 
-      store.createRecord('language', {
+      store.createRecord('locale', {
         locale: 'fr'
       });
 
-      store.createRecord('language', {
+      store.createRecord('locale', {
         locale: 'de'
       });
     });
