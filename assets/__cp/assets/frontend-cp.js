@@ -44917,9 +44917,10 @@ define('frontend-cp/components/ko-table/row/component', ['exports', 'ember'], fu
     },
 
     // Event handlers
-    click: function click() {
+    click: function click(event) {
       if (this.get('clickable')) {
-        this.attrs.onClick(this.get('rowContext'));
+        var hasModifier = event.metaKey || event.ctrlKey || event.shiftKey;
+        this.attrs.onClick(this.get('rowContext'), hasModifier);
       }
     },
 
@@ -47932,7 +47933,7 @@ define('frontend-cp/components/ko-universal-search/component', ['exports', 'embe
         this.set('isMouseHighlight', true);
       },
 
-      selectHighlightedResult: function selectHighlightedResult() {
+      selectHighlightedResult: function selectHighlightedResult(hasModifier) {
         var result = this.get('highlightedResult');
 
         if (result) {
@@ -47942,17 +47943,20 @@ define('frontend-cp/components/ko-universal-search/component', ['exports', 'embe
             action: 'click',
             label: result.resource
           });
-          this.send('clearSearch');
+
+          if (!hasModifier) {
+            this.send('clearSearch');
+          }
 
           switch (result.resource) {
             case 'user':
-              this.attrs.onLoadSearchRoute('/agent/users/', result.id);
+              this.attrs.onLoadSearchRoute('session.agent.users.user', result.title, result.id, hasModifier);
               break;
             case 'case':
-              this.attrs.onLoadSearchRoute('/agent/cases/', result.id);
+              this.attrs.onLoadSearchRoute('session.agent.cases.case', result.title, result.id, hasModifier);
               break;
             case 'organization':
-              this.attrs.onLoadSearchRoute('/agent/organisations/', result.id);
+              this.attrs.onLoadSearchRoute('session.agent.organisations.organisation', result.title, result.id, hasModifier);
               break;
             default:
               break;
@@ -48049,9 +48053,12 @@ define('frontend-cp/components/ko-universal-search/result/component', ['exports'
       this.attrs.onHighlight(this.get('result'));
     }),
 
-    click: function click() {
-      this.attrs.onSelectHighlightedResult();
-      this.attrs.onStopSearch();
+    click: function click(event) {
+      var hasModifier = event.metaKey || event.ctrlKey || event.shiftKey;
+      this.attrs.onSelectHighlightedResult(hasModifier);
+      if (!hasModifier) {
+        this.attrs.onStopSearch();
+      }
     }
 
   });
@@ -65080,6 +65087,52 @@ define('frontend-cp/services/tab-store', ['exports', 'ember', 'frontend-cp/confi
       return tab;
     },
 
+    createTab: function createTab(routeName, label, model) {
+      var dynamicSegments = [model];
+      var basePath = this.get('routing').generateURL(routeName, dynamicSegments);
+      var tabs = this.get('tabs');
+
+      var _iteratorNormalCompletion2 = true;
+      var _didIteratorError2 = false;
+      var _iteratorError2 = undefined;
+
+      try {
+        for (var _iterator2 = tabs[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+          var _tab2 = _step2.value;
+
+          if (_tab2.basePath === basePath) {
+            return _tab2;
+          }
+        }
+      } catch (err) {
+        _didIteratorError2 = true;
+        _iteratorError2 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion2 && _iterator2['return']) {
+            _iterator2['return']();
+          }
+        } finally {
+          if (_didIteratorError2) {
+            throw _iteratorError2;
+          }
+        }
+      }
+
+      var tab = {
+        queryParams: {},
+        nonPersistedState: {},
+        state: {},
+        basePath: basePath,
+        routeName: routeName,
+        label: label,
+        dynamicSegments: dynamicSegments
+      };
+      this.get('tabs').addObject(tab);
+      run.debounce(this, 'persistTabs', 100);
+      return tab;
+    },
+
     getTab: function getTab(basePath) {
       return this.get('tabs').findBy('basePath', basePath);
     },
@@ -76022,6 +76075,7 @@ define('frontend-cp/session/agent/cases/index/view/controller', ['exports', 'emb
     metrics: _ember['default'].inject.service(),
 
     parentController: _ember['default'].inject.controller('session.agent.cases.index'),
+    tabStore: _ember['default'].inject.service(),
 
     isPollingEnabled: true,
 
@@ -76031,8 +76085,13 @@ define('frontend-cp/session/agent/cases/index/view/controller', ['exports', 'emb
 
     // Actions
     actions: {
-      transitionToCase: function transitionToCase(caseContext) {
-        this.transitionToRoute('session.agent.cases.case', caseContext);
+      transitionToCase: function transitionToCase(caseContext, hasModifier) {
+        var route = 'session.agent.cases.case';
+        if (hasModifier) {
+          this.get('tabStore').createTab(route, caseContext.get('subject'), caseContext);
+        } else {
+          this.transitionToRoute(route, caseContext);
+        }
       },
 
       sortCaseList: function sortCaseList(column, order) {
@@ -77322,6 +77381,7 @@ define('frontend-cp/session/controller', ['exports', 'ember'], function (exports
     searchResults: null,
     isSearching: false,
     hideSessionWidgets: false,
+    hasModifier: false,
 
     /**
      * Add an event listener which will be automatically removed once this controller is destroyed
@@ -77367,9 +77427,12 @@ define('frontend-cp/session/controller', ['exports', 'ember'], function (exports
         this.set('hideSessionWidgets', isSearching);
       },
 
-      loadSearchRoute: function loadSearchRoute(baseURL, targetObjectId) {
-        /* this has to be built as a URL - we have a searchResult object, not a user/case object */
-        this.transitionToRoute(baseURL + targetObjectId);
+      loadSearchRoute: function loadSearchRoute(routeName, label, targetObjectId, hasModifier) {
+        if (hasModifier) {
+          this.get('tabStore').createTab(routeName, label, targetObjectId);
+        } else {
+          this.transitionToRoute(routeName, targetObjectId);
+        }
       },
 
       close: function close(tab, e) {
@@ -81024,6 +81087,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+6b4a586c"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+0b9044ae"});
 }
 /* jshint ignore:end */

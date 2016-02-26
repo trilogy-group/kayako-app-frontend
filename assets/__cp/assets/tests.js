@@ -6668,6 +6668,27 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
     });
   });
 
+  (0, _frontendCpTestsHelpersQunit.test)('Meta click opens in new tab', function (assert) {
+    assert.expect(4);
+    visit('/agent');
+    visit('/agent/cases');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/agent/cases/view/1');
+      assert.equal(find('.nav-tabs__item').length, 0);
+      triggerEvent('.ko-cases-list__row:first-child', 'click', { metaKey: true });
+    });
+
+    andThen(function () {
+      assert.equal(find('.nav-tabs__item').length, 1);
+      triggerEvent('.ko-cases-list__row:first-child', 'click', { metaKey: true });
+    });
+
+    andThen(function () {
+      assert.equal(find('.nav-tabs__item').length, 1);
+    });
+  });
+
   (0, _frontendCpTestsHelpersQunit.test)('Disabled views are not displayed', function (assert) {
     assert.expect(3);
 
