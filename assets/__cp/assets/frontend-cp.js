@@ -57586,6 +57586,7 @@ define('frontend-cp/mirage/factories/macro', ['exports', 'ember-cli-mirage'], fu
     last_used_at: null,
     created_at: null,
     updated_at: null,
+    type: null,
     resource_type: 'macro',
     resource_url: 'http://support.kayakodev.net/api/v1/cases/macros/499'
   });
@@ -60065,21 +60066,6 @@ define('frontend-cp/models/location', ['exports', 'ember-data'], function (expor
     isp: _emberData['default'].attr('string')
   });
 });
-define('frontend-cp/models/macro-assignee', ['exports', 'ember', 'ember-data', 'model-fragments'], function (exports, _ember, _emberData, _modelFragments) {
-  exports['default'] = _modelFragments['default'].Fragment.extend({
-    type: _emberData['default'].attr('string'), //UNASSIGNED, CURRENT_AGENT, TEAM, AGENT
-
-    teamFragment: _modelFragments['default'].fragment('relationship-fragment'),
-    team: _ember['default'].computed('teamFragment.relationshipId', function () {
-      return this.store.peekRecord('team', this.get('teamFragment.relationshipId'));
-    }),
-
-    agentFragment: _modelFragments['default'].fragment('relationship-fragment'),
-    agent: _ember['default'].computed('agentFragment.relationshipId', function () {
-      return this.store.peekRecord('user', this.get('agentFragment.relationshipId'));
-    })
-  });
-});
 define('frontend-cp/models/macro-tag', ['exports', 'ember-data'], function (exports, _emberData) {
   exports['default'] = _emberData['default'].Model.extend({
     name: _emberData['default'].attr('string'),
@@ -60119,8 +60105,7 @@ define('frontend-cp/models/macro', ['exports', 'ember-data', 'model-fragments'],
     tags: _emberData['default'].hasMany('macro-tag', { async: false }),
 
     // read only
-    visibility: _modelFragments['default'].fragment('macro-visibility'),
-    assignee: _modelFragments['default'].fragment('macro-assignee')
+    visibility: _modelFragments['default'].fragment('macro-visibility')
   });
 });
 define('frontend-cp/models/mailbox', ['exports', 'ember-data', 'frontend-cp/models/account'], function (exports, _emberData, _frontendCpModelsAccount) {
@@ -61584,30 +61569,29 @@ define('frontend-cp/serializers/locale', ['exports', 'frontend-cp/serializers/ap
     }
   });
 });
-define('frontend-cp/serializers/macro-assignee', ['exports', 'frontend-cp/serializers/application'], function (exports, _frontendCpSerializersApplication) {
-  exports['default'] = _frontendCpSerializersApplication['default'].extend({
-    attrs: {
-      teamFragment: { key: 'team' },
-      agentFragment: { key: 'agent' }
-    }
-  });
-});
 define('frontend-cp/serializers/macro', ['exports', 'frontend-cp/serializers/application'], function (exports, _frontendCpSerializersApplication) {
   exports['default'] = _frontendCpSerializersApplication['default'].extend({
+    extractRelationships: function extractRelationships(modelClass, resourceHash) {
+      var agent = resourceHash.assignee && resourceHash.assignee.agent;
+      var team = resourceHash.assignee && resourceHash.assignee.team;
+      var caseType = resourceHash.macro_type;
+      if (agent) {
+        resourceHash.assignee_agent = { id: agent.id, type: agent.resource_type }; // eslint-disable-line camelcase
+      }
+      if (team) {
+        resourceHash.assignee_team = { id: team.id, type: team.resource_type }; // eslint-disable-line camelcase
+      }
+      if (caseType) {
+        resourceHash.case_type = { id: caseType.id, type: caseType.resource_type }; // eslint-disable-line camelcase
+      }
+      Reflect.deleteProperty(resourceHash, 'type');
+      return this._super.apply(this, arguments);
+    },
+
     extractAttributes: function extractAttributes(modelClass, resourceHash) {
       if (resourceHash.assignee) {
-        resourceHash.assigneeAgent = resourceHash.assignee.agent;
-        resourceHash.assigneeTeam = resourceHash.assignee.team;
-
-        if (resourceHash.assignee.type) {
-          resourceHash.assigneeType = resourceHash.assignee.type;
-        }
-        Reflect.deleteProperty(resourceHash, 'assignee');
+        resourceHash.assignee_type = resourceHash.assignee.type; // eslint-disable-line camelcase
       }
-
-      resourceHash.caseType = resourceHash.type;
-      Reflect.deleteProperty(resourceHash, 'type');
-
       return this._super.apply(this, arguments);
     },
 
@@ -81087,6 +81071,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+0b9044ae"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+e45ed447"});
 }
 /* jshint ignore:end */
