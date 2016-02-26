@@ -6973,7 +6973,7 @@ define('frontend-cp/tests/acceptance/agent/cases/timeline-test', ['exports', 'fr
 
     andThen(function () {
       var postId = find('.ko-feed_item--post:first').attr('data-id');
-      assert.ok(window.open.calledWithMatch('/case/display/render/' + targetCase.id + '/' + postId));
+      assert.ok(window.open.calledWithMatch('/agent/case/display/original/' + targetCase.id + '/' + postId));
       window.open.restore();
     });
   });
