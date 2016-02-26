@@ -6805,8 +6805,8 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
     });
   });
 
-  (0, _frontendCpTestsHelpersQunit.test)('Bulk sidebar cancel button shows the views sidebar and removes all selections', function (assert) {
-    assert.expect(4);
+  (0, _frontendCpTestsHelpersQunit.test)('Bulk sidebar cancel button shows returns the screen to its pre-selection state', function (assert) {
+    assert.expect(6);
 
     visit('/agent/cases/view/1');
 
@@ -6820,11 +6820,13 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
 
     andThen(function () {
       assert.equal(find('.ko-bulk-sidebar__title').text().trim(), 'Update Cases');
+      assert.equal(find('button:contains("Trash cases")').length, 1);
       click('button[name=cancel]');
     });
 
     andThen(function () {
       assert.equal(find('.sidebar__first-item').text().trim(), 'Inbox');
+      assert.equal(find('button:contains("Trash cases")').length, 0);
       assert.equal(find('.ko-checkbox__checkbox').attr('aria-checked'), 'false');
     });
   });

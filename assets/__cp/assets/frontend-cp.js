@@ -25056,12 +25056,11 @@ define('frontend-cp/components/ko-cases-list/component', ['exports', 'ember'], f
   function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
 
   exports['default'] = _ember['default'].Component.extend({
-    // Params
+    // Attrs
     cases: [],
     onCaseListSort: null,
     columns: [],
     trashable: false,
-
     selectedCaseIds: null,
 
     bulkService: _ember['default'].inject.service('case-bulk-update'),
@@ -25069,6 +25068,20 @@ define('frontend-cp/components/ko-cases-list/component', ['exports', 'ember'], f
     notification: _ember['default'].inject.service(),
     isUpdatingCases: false,
 
+    //State
+    isSomeChecked: false,
+
+    //Lifecycle Hooks
+    setIsSomeChecked: _ember['default'].on('didReceiveAttrs', function (_ref) {
+      var oldAttrs = _ref.oldAttrs;
+      var newAttrs = _ref.newAttrs;
+
+      if (newAttrs) {
+        this.set('isSomeChecked', newAttrs.selectedCaseIds.value.length > 0);
+      }
+    }),
+
+    //CP's
     columnList: _ember['default'].computed('columns.[]', function () {
       return [_ember['default'].Object.create({ id: 'avatar', name: 'avatar' })].concat(_toConsumableArray(this.get('columns').toArray()));
     }),
@@ -81143,6 +81156,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+2d398be7"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+bcbe9dbe"});
 }
 /* jshint ignore:end */
