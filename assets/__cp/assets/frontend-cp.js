@@ -75338,7 +75338,7 @@ define("frontend-cp/session/agent/cases/index/suspended-messages/template", ["ex
             dom.insertBoundary(fragment, null);
             return morphs;
           },
-          statements: [["block", "ko-table/column", [], ["class", "ko-cases-list__table-column", "column", "from"], 0, null, ["loc", [null, [16, 6], [18, 26]]]], ["block", "ko-table/column", [], ["class", "ko-cases-list__table-column", "column", "subject"], 1, null, ["loc", [null, [19, 6], [21, 26]]]], ["block", "ko-table/column", [], ["class", "ko-cases-list__table-column", "column", "createdAt"], 2, null, ["loc", [null, [22, 6], [24, 26]]]], ["block", "ko-table/column", [], ["class", "ko-cases-list__table-column", "column", "suspensionCode"], 3, null, ["loc", [null, [25, 6], [27, 26]]]]],
+          statements: [["block", "ko-table/column", [], ["class", "ko-cases-list__table-column ko-table__header--defualt-width", "column", "from"], 0, null, ["loc", [null, [16, 6], [18, 26]]]], ["block", "ko-table/column", [], ["class", "ko-cases-list__table-column", "column", "subject"], 1, null, ["loc", [null, [19, 6], [21, 26]]]], ["block", "ko-table/column", [], ["class", "ko-cases-list__table-column ko-table__header--defualt-width", "column", "createdAt"], 2, null, ["loc", [null, [22, 6], [24, 26]]]], ["block", "ko-table/column", [], ["class", "ko-cases-list__table-column ko-table__header--defualt-width", "column", "suspensionCode"], 3, null, ["loc", [null, [25, 6], [27, 26]]]]],
           locals: [],
           templates: [child0, child1, child2, child3]
         };
@@ -75370,7 +75370,10 @@ define("frontend-cp/session/agent/cases/index/suspended-messages/template", ["ex
                   var el0 = dom.createDocumentFragment();
                   var el1 = dom.createTextNode("            ");
                   dom.appendChild(el0, el1);
-                  var el1 = dom.createComment("");
+                  var el1 = dom.createElement("div");
+                  dom.setAttribute(el1, "class", "ko-table_cell--ellipsis");
+                  var el2 = dom.createComment("");
+                  dom.appendChild(el1, el2);
                   dom.appendChild(el0, el1);
                   var el1 = dom.createTextNode("\n");
                   dom.appendChild(el0, el1);
@@ -75378,10 +75381,10 @@ define("frontend-cp/session/agent/cases/index/suspended-messages/template", ["ex
                 },
                 buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
                   var morphs = new Array(1);
-                  morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+                  morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 0, 0);
                   return morphs;
                 },
-                statements: [["content", "mail.from", ["loc", [null, [33, 12], [33, 25]]]]],
+                statements: [["content", "mail.from", ["loc", [null, [33, 49], [33, 62]]]]],
                 locals: [],
                 templates: []
               };
@@ -75410,7 +75413,10 @@ define("frontend-cp/session/agent/cases/index/suspended-messages/template", ["ex
                   var el0 = dom.createDocumentFragment();
                   var el1 = dom.createTextNode("            ");
                   dom.appendChild(el0, el1);
-                  var el1 = dom.createComment("");
+                  var el1 = dom.createElement("div");
+                  dom.setAttribute(el1, "class", "ko-table_cell--ellipsis");
+                  var el2 = dom.createComment("");
+                  dom.appendChild(el1, el2);
                   dom.appendChild(el0, el1);
                   var el1 = dom.createTextNode("\n");
                   dom.appendChild(el0, el1);
@@ -75418,10 +75424,10 @@ define("frontend-cp/session/agent/cases/index/suspended-messages/template", ["ex
                 },
                 buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
                   var morphs = new Array(1);
-                  morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+                  morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 0, 0);
                   return morphs;
                 },
-                statements: [["content", "mail.subject", ["loc", [null, [36, 12], [36, 28]]]]],
+                statements: [["content", "mail.subject", ["loc", [null, [36, 49], [36, 65]]]]],
                 locals: [],
                 templates: []
               };
@@ -75450,7 +75456,10 @@ define("frontend-cp/session/agent/cases/index/suspended-messages/template", ["ex
                   var el0 = dom.createDocumentFragment();
                   var el1 = dom.createTextNode("            ");
                   dom.appendChild(el0, el1);
-                  var el1 = dom.createComment("");
+                  var el1 = dom.createElement("div");
+                  dom.setAttribute(el1, "class", "ko-table_cell--ellipsis");
+                  var el2 = dom.createComment("");
+                  dom.appendChild(el1, el2);
                   dom.appendChild(el0, el1);
                   var el1 = dom.createTextNode("\n");
                   dom.appendChild(el0, el1);
@@ -75458,10 +75467,10 @@ define("frontend-cp/session/agent/cases/index/suspended-messages/template", ["ex
                 },
                 buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
                   var morphs = new Array(1);
-                  morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+                  morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 0, 0);
                   return morphs;
                 },
-                statements: [["inline", "moment-from-now", [["get", "mail.createdAt", ["loc", [null, [39, 30], [39, 44]]]]], [], ["loc", [null, [39, 12], [39, 46]]]]],
+                statements: [["inline", "moment-from-now", [["get", "mail.createdAt", ["loc", [null, [39, 67], [39, 81]]]]], [], ["loc", [null, [39, 49], [39, 83]]]]],
                 locals: [],
                 templates: []
               };
@@ -75490,7 +75499,10 @@ define("frontend-cp/session/agent/cases/index/suspended-messages/template", ["ex
                   var el0 = dom.createDocumentFragment();
                   var el1 = dom.createTextNode("            ");
                   dom.appendChild(el0, el1);
-                  var el1 = dom.createComment("");
+                  var el1 = dom.createElement("div");
+                  dom.setAttribute(el1, "class", "ko-table_cell--ellipsis");
+                  var el2 = dom.createComment("");
+                  dom.appendChild(el1, el2);
                   dom.appendChild(el0, el1);
                   var el1 = dom.createTextNode("\n");
                   dom.appendChild(el0, el1);
@@ -75498,10 +75510,10 @@ define("frontend-cp/session/agent/cases/index/suspended-messages/template", ["ex
                 },
                 buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
                   var morphs = new Array(1);
-                  morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+                  morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 0, 0);
                   return morphs;
                 },
-                statements: [["content", "mail.suspensionCode", ["loc", [null, [42, 12], [42, 35]]]]],
+                statements: [["content", "mail.suspensionCode", ["loc", [null, [42, 49], [42, 72]]]]],
                 locals: [],
                 templates: []
               };
@@ -81172,6 +81184,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+8ffd4984"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+43ed6531"});
 }
 /* jshint ignore:end */
