@@ -55844,9 +55844,15 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
 
     this.put('/api/v1/cases/:id', function (db, req) {
       var body = JSON.parse(req.requestBody);
+      var tags = String(body.tags).split(',');
+      Reflect.deleteProperty(body, 'tags');
+      tags.forEach(function (tag) {
+        if (!db.tags.where({ name: tag })[0]) {
+          db.tags.insert({ name: tag });
+        }
+      });
       var targetCase = db.cases.update(req.params.id, body);
       Reflect.deleteProperty(targetCase, 'reply_channels');
-      body.tags = String(body.tags).split(',');
       return {
         status: 200,
         resource: 'case',
@@ -57345,7 +57351,6 @@ define('frontend-cp/mirage/factories/case', ['exports', 'ember-cli-mirage'], fun
     type: null,
     sla: null,
     sla_metrics: [],
-    tags: [],
     custom_fields: [],
     followers: [],
     metadata: {},
@@ -61535,7 +61540,9 @@ define('frontend-cp/serializers/case', ['exports', 'frontend-cp/serializers/appl
 
     serializeHasMany: function serializeHasMany(snapshot, json, relationship) {
       if (relationship.key === 'tags') {
-        json.tags = (snapshot.hasMany('tags') || []).mapBy('name').join(',');
+        json.tags = (snapshot.hasMany('tags') || []).map(function (snapshot) {
+          return snapshot.attr('name');
+        }).join(',');
       } else {
         this._super.apply(this, arguments);
       }
@@ -61812,9 +61819,13 @@ define('frontend-cp/serializers/organization', ['exports', 'frontend-cp/serializ
 
     serializeHasMany: function serializeHasMany(snapshot, json, relationship) {
       if (relationship.key === 'tags') {
-        json.tags = (snapshot.hasMany('tags') || []).getEach('name').toString();
+        json.tags = (snapshot.hasMany('tags') || []).map(function (snapshot) {
+          return snapshot.attr('name');
+        }).toString();
       } else if (relationship.key === 'domains') {
-        json.domains = (snapshot.hasMany('domains') || []).getEach('name').uniq().toString();
+        json.domains = (snapshot.hasMany('domains') || []).map(function (snapshot) {
+          return snapshot.attr('name');
+        }).uniq().toString();
       } else {
         this._super.apply(this, arguments);
       }
@@ -61997,10 +62008,14 @@ define('frontend-cp/serializers/user', ['exports', 'frontend-cp/serializers/appl
     serializeHasMany: function serializeHasMany(snapshot, json, relationship) {
       if (relationship.key === 'teams') {
         if (json.role_id !== '4') {
-          json.team_ids = (snapshot.hasMany('teams') || []).mapBy('id').join(',');
+          json.team_ids = (snapshot.hasMany('teams') || []).map(function (snapshot) {
+            return snapshot.id;
+          }).join(',');
         }
       } else if (relationship.key === 'tags') {
-        json.tags = (snapshot.hasMany('tags') || []).mapBy('name').join(',');
+        json.tags = (snapshot.hasMany('tags') || []).map(function (snapshot) {
+          return snapshot.attr('name');
+        }).join(',');
       } else if (relationship.key === 'emails') {
         json.email = getPrimaryEmailAddress(snapshot);
       } else {
@@ -81156,6 +81171,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+bcbe9dbe"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+12e0829b"});
 }
 /* jshint ignore:end */
