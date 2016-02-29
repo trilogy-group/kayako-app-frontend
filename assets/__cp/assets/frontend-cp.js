@@ -59062,12 +59062,13 @@ define('frontend-cp/mixins/custom-field-serialization', ['exports', 'ember'], fu
       }
 
       customFields.forEach(function (customField) {
-        if (!form || formFields.indexOf(customField.get('field.key')) > -1) {
+        var key = customField.record.get('field.key');
+        if (!form || formFields.indexOf(key) > -1) {
           // For some reason its possible for the API to get to a state where
           // the resources of the /api/v1/users contains user_fields that aren't
           // present in /api/v1/users/fields, in that case field.key is undefined
-          if (customField.get('field.key')) {
-            fieldValues[customField.get('field.key')] = customField.get('value');
+          if (key) {
+            fieldValues[key] = customField.attr('value');
           } else {
             /*eslint-disable no-console */
             if (console && console.warn) {
@@ -81171,6 +81172,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+12e0829b"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+8ffd4984"});
 }
 /* jshint ignore:end */
