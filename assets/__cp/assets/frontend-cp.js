@@ -27997,6 +27997,8 @@ define('frontend-cp/components/ko-datepicker/component', ['exports', 'ember', 'n
       while (date.isBefore(end, 'day') || date.isSame(end, 'day')) {
         dates.push({
           date: date.date(),
+          month: date.month(),
+          year: date.year(),
           currentMonth: date.month() === this.get('month'),
           today: this.get('today').isSame(date, 'day'),
           selected: date.isSame(this.get('momentDate'), 'day')
@@ -28049,8 +28051,8 @@ define('frontend-cp/components/ko-datepicker/component', ['exports', 'ember', 'n
 
       selectDate: function selectDate(date) {
         this.setDate((0, _moment['default'])({
-          year: this.get('year'),
-          month: this.get('month'),
+          year: date.year,
+          month: date.month,
           day: date.date
         }));
       },
@@ -81185,6 +81187,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+09e48726"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+682437eb"});
 }
 /* jshint ignore:end */
