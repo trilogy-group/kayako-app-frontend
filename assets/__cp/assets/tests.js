@@ -11495,9 +11495,9 @@ define('frontend-cp/tests/pages/admin/custom-fields-index', ['exports', 'fronten
   exports['default'] = _frontendCpTestsPageObject['default'].create({
     list: {
       clickFieldWithTitle: clickOnText('.ko-reorderable-list-item'),
-      clickDisabledFieldWithTitle: clickOnText('div[class*="ko-simple-list--row"]'),
+      clickDisabledFieldWithTitle: clickOnText('div[class*="ko-simple-list_row"]'),
       clickDeleteOnFieldWithTitle: function clickDeleteOnFieldWithTitle(fieldTitle) {
-        click('div[class*="ko-simple-list--row"]:contains(' + fieldTitle + ') a:contains(Delete)');
+        click('div[class*="ko-simple-list_row"]:contains(' + fieldTitle + ') a:contains(Delete)');
       },
       existFieldWithTitle: function existFieldWithTitle(text) {
         return $('span:contains("' + text + '")').length > 0;

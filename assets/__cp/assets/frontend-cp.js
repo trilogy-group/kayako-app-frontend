@@ -9065,7 +9065,7 @@ define("frontend-cp/components/ko-admin/case-forms/edit/template", ["exports"], 
 });
 define('frontend-cp/components/ko-admin/forms/group/component', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = _ember['default'].Component.extend({
-    classNames: ['form-section']
+    classNames: ['form-section', 'ko-admin-forms-group']
   });
 });
 define("frontend-cp/components/ko-admin/forms/group/template", ["exports"], function (exports) {
@@ -9897,6 +9897,7 @@ define('frontend-cp/components/ko-admin/inline-locale-edit/component', ['exports
 
     // HTML
     tagName: 'div',
+    classNames: ['ko-admin_inline-locale-edit'],
     classNameBindings: ['isTextArea:ko-admin_inline-locale-edit--text-area'],
 
     store: _ember['default'].inject.service(),
@@ -10913,7 +10914,8 @@ define("frontend-cp/components/ko-admin/macros/action/remove-tags/template", ["e
 define('frontend-cp/components/ko-admin/macros/action/reply-contents/component', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = _ember['default'].Component.extend({
     action: null,
-    macro: _ember['default'].computed.readOnly('action.macro')
+    macro: _ember['default'].computed.readOnly('action.macro'),
+    classNames: ['ko-admin_macros_action_reply-contents']
   });
 });
 define("frontend-cp/components/ko-admin/macros/action/reply-contents/template", ["exports"], function (exports) {
@@ -12570,7 +12572,10 @@ define('frontend-cp/components/ko-admin/page-footer/component', ['exports', 'emb
     buttonText: null,
     cancelButtonText: 'Cancel',
     onCancel: null,
-    onSave: null
+    onSave: null,
+
+    // HTML
+    classNames: ['ko-admin_page-footer']
   });
 });
 define("frontend-cp/components/ko-admin/page-footer/template", ["exports"], function (exports) {
@@ -12622,6 +12627,9 @@ define('frontend-cp/components/ko-admin/page-header/component', ['exports', 'emb
     cancelButtonText: 'Cancel',
     onCancel: null,
     onSave: null,
+
+    // HTML
+    classNames: ['ko-admin_page-header'],
 
     titleTrail: _ember['default'].computed('title', function () {
       var title = this.get('title');
@@ -12857,7 +12865,18 @@ define("frontend-cp/components/ko-admin/page-header/template", ["exports"], func
   })());
 });
 define('frontend-cp/components/ko-admin/sidebar/component', ['exports', 'ember'], function (exports, _ember) {
-  exports['default'] = _ember['default'].Component.extend({});
+  exports['default'] = _ember['default'].Component.extend({
+    // HTML
+    classNameBindings: ['styles.sidebar']
+  });
+});
+define("frontend-cp/components/ko-admin/sidebar/styles", ["exports"], function (exports) {
+  exports["default"] = {
+    "sidebar": "_sidebar_1a61wp",
+    "group": "_group_1a61wp",
+    "header": "_header_1a61wp",
+    "item": "_item_1a61wp"
+  };
 });
 define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function (exports) {
   exports["default"] = Ember.HTMLBars.template((function () {
@@ -12926,11 +12945,9 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
           var el1 = dom.createTextNode("  ");
           dom.appendChild(el0, el1);
           var el1 = dom.createElement("div");
-          dom.setAttribute(el1, "class", "ko-admin_sidebar__group");
           var el2 = dom.createTextNode("\n    ");
           dom.appendChild(el1, el2);
           var el2 = dom.createElement("p");
-          dom.setAttribute(el2, "class", "ko-admin_sidebar__header");
           var el3 = dom.createTextNode("\n      ");
           dom.appendChild(el2, el3);
           var el3 = dom.createComment("");
@@ -12950,13 +12967,16 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
           return el0;
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var element1 = dom.childAt(fragment, [1]);
-          var morphs = new Array(2);
-          morphs[0] = dom.createMorphAt(dom.childAt(element1, [1]), 1, 1);
-          morphs[1] = dom.createMorphAt(element1, 3, 3);
+          var element2 = dom.childAt(fragment, [1]);
+          var element3 = dom.childAt(element2, [1]);
+          var morphs = new Array(4);
+          morphs[0] = dom.createAttrMorph(element2, 'class');
+          morphs[1] = dom.createAttrMorph(element3, 'class');
+          morphs[2] = dom.createMorphAt(element3, 1, 1);
+          morphs[3] = dom.createMorphAt(element2, 3, 3);
           return morphs;
         },
-        statements: [["inline", "t", ["admin.navigation.channels"], [], ["loc", [null, [4, 6], [4, 39]]]], ["block", "link-to", ["session.admin.channels.twitter"], ["class", "ko-admin_sidebar__item"], 0, null, ["loc", [null, [7, 4], [9, 16]]]]],
+        statements: [["attribute", "class", ["get", "styles.group", ["loc", [null, [2, 15], [2, 27]]]]], ["attribute", "class", ["get", "styles.header", ["loc", [null, [3, 15], [3, 28]]]]], ["inline", "t", ["admin.navigation.channels"], [], ["loc", [null, [4, 6], [4, 39]]]], ["block", "link-to", ["session.admin.channels.twitter"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [7, 54], [7, 65]]]]], [], []]], 0, null, ["loc", [null, [7, 4], [9, 16]]]]],
         locals: [],
         templates: [child0]
       };
@@ -13304,11 +13324,9 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
         buildFragment: function buildFragment(dom) {
           var el0 = dom.createDocumentFragment();
           var el1 = dom.createElement("div");
-          dom.setAttribute(el1, "class", "ko-admin_sidebar__group");
           var el2 = dom.createTextNode("\n  ");
           dom.appendChild(el1, el2);
           var el2 = dom.createElement("p");
-          dom.setAttribute(el2, "class", "ko-admin_sidebar__header");
           var el3 = dom.createTextNode("\n    ");
           dom.appendChild(el2, el3);
           var el3 = dom.createComment("");
@@ -13327,12 +13345,15 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
           var element0 = dom.childAt(fragment, [0]);
-          var morphs = new Array(2);
-          morphs[0] = dom.createMorphAt(dom.childAt(element0, [1]), 1, 1);
-          morphs[1] = dom.createMorphAt(element0, 3, 3);
+          var element1 = dom.childAt(element0, [1]);
+          var morphs = new Array(4);
+          morphs[0] = dom.createAttrMorph(element0, 'class');
+          morphs[1] = dom.createAttrMorph(element1, 'class');
+          morphs[2] = dom.createMorphAt(element1, 1, 1);
+          morphs[3] = dom.createMorphAt(element0, 3, 3);
           return morphs;
         },
-        statements: [["inline", "t", ["admin.navigation.automation"], [], ["loc", [null, [55, 4], [55, 39]]]], ["block", "link-to", ["session.admin.automation.businesshours"], ["class", "ko-admin_sidebar__item"], 0, null, ["loc", [null, [57, 2], [59, 14]]]]],
+        statements: [["attribute", "class", ["get", "styles.group", ["loc", [null, [53, 13], [53, 25]]]]], ["attribute", "class", ["get", "styles.header", ["loc", [null, [54, 13], [54, 26]]]]], ["inline", "t", ["admin.navigation.automation"], [], ["loc", [null, [55, 4], [55, 39]]]], ["block", "link-to", ["session.admin.automation.businesshours"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [57, 60], [57, 71]]]]], [], []]], 0, null, ["loc", [null, [57, 2], [59, 14]]]]],
         locals: [],
         templates: [child0]
       };
@@ -13363,11 +13384,9 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
         var el1 = dom.createElement("div");
-        dom.setAttribute(el1, "class", "ko-admin_sidebar__group");
         var el2 = dom.createTextNode("\n  ");
         dom.appendChild(el1, el2);
         var el2 = dom.createElement("p");
-        dom.setAttribute(el2, "class", "ko-admin_sidebar__header");
         var el3 = dom.createTextNode("\n    ");
         dom.appendChild(el2, el3);
         var el3 = dom.createComment("");
@@ -13395,11 +13414,9 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
         var el1 = dom.createTextNode("\n\n\n");
         dom.appendChild(el0, el1);
         var el1 = dom.createElement("div");
-        dom.setAttribute(el1, "class", "ko-admin_sidebar__group");
         var el2 = dom.createTextNode("\n  ");
         dom.appendChild(el1, el2);
         var el2 = dom.createElement("p");
-        dom.setAttribute(el2, "class", "ko-admin_sidebar__header");
         var el3 = dom.createTextNode("\n    ");
         dom.appendChild(el2, el3);
         var el3 = dom.createComment("");
@@ -13427,25 +13444,31 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var element2 = dom.childAt(fragment, [2]);
-        var element3 = dom.childAt(fragment, [4]);
-        var morphs = new Array(11);
+        var element4 = dom.childAt(fragment, [2]);
+        var element5 = dom.childAt(element4, [1]);
+        var element6 = dom.childAt(fragment, [4]);
+        var element7 = dom.childAt(element6, [1]);
+        var morphs = new Array(15);
         morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-        morphs[1] = dom.createMorphAt(dom.childAt(element2, [1]), 1, 1);
-        morphs[2] = dom.createMorphAt(element2, 3, 3);
-        morphs[3] = dom.createMorphAt(element2, 5, 5);
-        morphs[4] = dom.createMorphAt(element2, 7, 7);
-        morphs[5] = dom.createMorphAt(element2, 9, 9);
-        morphs[6] = dom.createMorphAt(dom.childAt(element3, [1]), 1, 1);
-        morphs[7] = dom.createMorphAt(element3, 3, 3);
-        morphs[8] = dom.createMorphAt(element3, 5, 5);
-        morphs[9] = dom.createMorphAt(element3, 7, 7);
-        morphs[10] = dom.createMorphAt(fragment, 6, 6, contextualElement);
+        morphs[1] = dom.createAttrMorph(element4, 'class');
+        morphs[2] = dom.createAttrMorph(element5, 'class');
+        morphs[3] = dom.createMorphAt(element5, 1, 1);
+        morphs[4] = dom.createMorphAt(element4, 3, 3);
+        morphs[5] = dom.createMorphAt(element4, 5, 5);
+        morphs[6] = dom.createMorphAt(element4, 7, 7);
+        morphs[7] = dom.createMorphAt(element4, 9, 9);
+        morphs[8] = dom.createAttrMorph(element6, 'class');
+        morphs[9] = dom.createAttrMorph(element7, 'class');
+        morphs[10] = dom.createMorphAt(element7, 1, 1);
+        morphs[11] = dom.createMorphAt(element6, 3, 3);
+        morphs[12] = dom.createMorphAt(element6, 5, 5);
+        morphs[13] = dom.createMorphAt(element6, 7, 7);
+        morphs[14] = dom.createMorphAt(fragment, 6, 6, contextualElement);
         dom.insertBoundary(fragment, 0);
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["block", "if", [["get", "features.adminTwitter", ["loc", [null, [1, 6], [1, 27]]]]], [], 0, null, ["loc", [null, [1, 0], [11, 7]]]], ["inline", "t", ["admin.navigation.manage"], [], ["loc", [null, [15, 4], [15, 35]]]], ["block", "link-to", ["session.admin.manage.views"], ["class", "ko-admin_sidebar__item"], 1, null, ["loc", [null, [17, 2], [19, 14]]]], ["block", "link-to", ["session.admin.manage.case-fields"], ["class", "ko-admin_sidebar__item"], 2, null, ["loc", [null, [21, 2], [23, 14]]]], ["block", "link-to", ["session.admin.manage.case-forms"], ["class", "ko-admin_sidebar__item"], 3, null, ["loc", [null, [25, 2], [27, 14]]]], ["block", "link-to", ["session.admin.manage.macros"], ["class", "t-naked-link ko-admin_sidebar__item"], 4, null, ["loc", [null, [29, 2], [31, 14]]]], ["inline", "t", ["admin.navigation.people"], [], ["loc", [null, [37, 4], [37, 35]]]], ["block", "link-to", ["session.admin.people.teams"], ["class", "ko-admin_sidebar__item"], 5, null, ["loc", [null, [39, 2], [41, 14]]]], ["block", "link-to", ["session.admin.people.user-fields"], ["class", "ko-admin_sidebar__item"], 6, null, ["loc", [null, [43, 2], [45, 14]]]], ["block", "link-to", ["session.admin.people.organization-fields"], ["class", "ko-admin_sidebar__item"], 7, null, ["loc", [null, [47, 2], [49, 14]]]], ["block", "if", [["get", "features.adminBusinessHours", ["loc", [null, [52, 6], [52, 33]]]]], [], 8, null, ["loc", [null, [52, 0], [61, 7]]]]],
+      statements: [["block", "if", [["get", "features.adminTwitter", ["loc", [null, [1, 6], [1, 27]]]]], [], 0, null, ["loc", [null, [1, 0], [11, 7]]]], ["attribute", "class", ["get", "styles.group", ["loc", [null, [13, 13], [13, 25]]]]], ["attribute", "class", ["get", "styles.header", ["loc", [null, [14, 13], [14, 26]]]]], ["inline", "t", ["admin.navigation.manage"], [], ["loc", [null, [15, 4], [15, 35]]]], ["block", "link-to", ["session.admin.manage.views"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [17, 48], [17, 59]]]]], [], []]], 1, null, ["loc", [null, [17, 2], [19, 14]]]], ["block", "link-to", ["session.admin.manage.case-fields"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [21, 54], [21, 65]]]]], [], []]], 2, null, ["loc", [null, [21, 2], [23, 14]]]], ["block", "link-to", ["session.admin.manage.case-forms"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [25, 53], [25, 64]]]]], [], []]], 3, null, ["loc", [null, [25, 2], [27, 14]]]], ["block", "link-to", ["session.admin.manage.macros"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [29, 49], [29, 60]]]]], [], []]], 4, null, ["loc", [null, [29, 2], [31, 14]]]], ["attribute", "class", ["get", "styles.group", ["loc", [null, [35, 13], [35, 25]]]]], ["attribute", "class", ["get", "styles.header", ["loc", [null, [36, 13], [36, 26]]]]], ["inline", "t", ["admin.navigation.people"], [], ["loc", [null, [37, 4], [37, 35]]]], ["block", "link-to", ["session.admin.people.teams"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [39, 48], [39, 59]]]]], [], []]], 5, null, ["loc", [null, [39, 2], [41, 14]]]], ["block", "link-to", ["session.admin.people.user-fields"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [43, 54], [43, 65]]]]], [], []]], 6, null, ["loc", [null, [43, 2], [45, 14]]]], ["block", "link-to", ["session.admin.people.organization-fields"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [47, 62], [47, 73]]]]], [], []]], 7, null, ["loc", [null, [47, 2], [49, 14]]]], ["block", "if", [["get", "features.adminBusinessHours", ["loc", [null, [52, 6], [52, 33]]]]], [], 8, null, ["loc", [null, [52, 0], [61, 7]]]]],
       locals: [],
       templates: [child0, child1, child2, child3, child4, child5, child6, child7, child8]
     };
@@ -15215,6 +15238,9 @@ define('frontend-cp/components/ko-admin/views/edit/columns/component', ['exports
     intlService: _ember['default'].inject.service('intl'),
     availableColumns: [],
 
+    // HTML
+    classNames: ['ko-views-column'],
+
     initAvailableColumns: _ember['default'].on('init', function () {
       var _this = this;
 
@@ -15902,7 +15928,7 @@ define("frontend-cp/components/ko-admin/views/edit/template", ["exports"], funct
               morphs[5] = dom.createMorphAt(fragment, 11, 11, contextualElement);
               return morphs;
             },
-            statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [30, 6], [30, 87]]]], ["inline", "ko-radio", [], ["class", ["subexpr", "qa-cls", [" qa-just-myself"], [], ["loc", [null, [31, 23], [31, 49]]]], "label", ["subexpr", "t", ["admin.views.radio.label.me"], [], ["loc", [null, [31, 56], [31, 88]]]], "checked", ["subexpr", "@mut", [["get", "sharedWithSelf", ["loc", [null, [31, 97], [31, 111]]]]], [], []], "onRadio", "setViewSharingSelf", "disabled", ["subexpr", "@mut", [["get", "isSubmitting", ["loc", [null, [31, 150], [31, 162]]]]], [], []]], ["loc", [null, [31, 6], [31, 164]]]], ["inline", "ko-radio", [], ["class", ["subexpr", "qa-cls", [" qa-every-agent"], [], ["loc", [null, [32, 23], [32, 49]]]], "label", ["subexpr", "t", ["admin.views.radio.label.all"], [], ["loc", [null, [32, 56], [32, 89]]]], "checked", ["subexpr", "@mut", [["get", "sharedWithAll", ["loc", [null, [32, 98], [32, 111]]]]], [], []], "onRadio", "setViewSharingAll", "disabled", ["subexpr", "@mut", [["get", "isSubmitting", ["loc", [null, [32, 149], [32, 161]]]]], [], []]], ["loc", [null, [32, 6], [32, 163]]]], ["inline", "ko-radio", [], ["class", ["subexpr", "qa-cls", [" qa-specific-team"], [], ["loc", [null, [35, 25], [35, 53]]]], "label", ["subexpr", "t", ["admin.views.radio.label.specific"], [], ["loc", [null, [35, 60], [35, 98]]]], "checked", ["subexpr", "@mut", [["get", "sharedWithTeam", ["loc", [null, [35, 107], [35, 121]]]]], [], []], "onRadio", "setViewSharingTeam", "disabled", ["subexpr", "@mut", [["get", "isSubmitting", ["loc", [null, [35, 160], [35, 172]]]]], [], []]], ["loc", [null, [35, 8], [35, 174]]]], ["block", "power-select-multiple", [], ["searchEnabled", false, "class", "ember-power-select-wrapper--ko ember-power-select-wrapper--size-medium ko-admin_views_edit_team-selector ko-admin_views_edit_select", "placeholder", ["subexpr", "t", ["generic.select_placeholder"], [], ["loc", [null, [41, 22], [41, 54]]]], "options", ["subexpr", "@mut", [["get", "teams", ["loc", [null, [42, 18], [42, 23]]]]], [], []], "selected", ["subexpr", "@mut", [["get", "selectedTeams", ["loc", [null, [43, 19], [43, 32]]]]], [], []], "searchField", "title", "onchange", ["subexpr", "action", ["selectTeam"], [], ["loc", [null, [45, 19], [45, 40]]]]], 1, null, ["loc", [null, [38, 8], [47, 34]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "currentView.errors.visibilityType", ["loc", [null, [49, 36], [49, 69]]]]], [], []]], ["loc", [null, [49, 6], [49, 71]]]]],
+            statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [30, 6], [30, 87]]]], ["inline", "ko-radio", [], ["class", ["subexpr", "qa-cls", [" qa-just-myself"], [], ["loc", [null, [31, 23], [31, 49]]]], "label", ["subexpr", "t", ["admin.views.radio.label.me"], [], ["loc", [null, [31, 56], [31, 88]]]], "checked", ["subexpr", "@mut", [["get", "sharedWithSelf", ["loc", [null, [31, 97], [31, 111]]]]], [], []], "onRadio", "setViewSharingSelf", "disabled", ["subexpr", "@mut", [["get", "isSubmitting", ["loc", [null, [31, 150], [31, 162]]]]], [], []]], ["loc", [null, [31, 6], [31, 164]]]], ["inline", "ko-radio", [], ["class", ["subexpr", "qa-cls", [" qa-every-agent"], [], ["loc", [null, [32, 23], [32, 49]]]], "label", ["subexpr", "t", ["admin.views.radio.label.all"], [], ["loc", [null, [32, 56], [32, 89]]]], "checked", ["subexpr", "@mut", [["get", "sharedWithAll", ["loc", [null, [32, 98], [32, 111]]]]], [], []], "onRadio", "setViewSharingAll", "disabled", ["subexpr", "@mut", [["get", "isSubmitting", ["loc", [null, [32, 149], [32, 161]]]]], [], []]], ["loc", [null, [32, 6], [32, 163]]]], ["inline", "ko-radio", [], ["class", ["subexpr", "qa-cls", [" qa-specific-team"], [], ["loc", [null, [35, 25], [35, 53]]]], "label", ["subexpr", "t", ["admin.views.radio.label.specific"], [], ["loc", [null, [35, 60], [35, 98]]]], "checked", ["subexpr", "@mut", [["get", "sharedWithTeam", ["loc", [null, [35, 107], [35, 121]]]]], [], []], "onRadio", "setViewSharingTeam", "disabled", ["subexpr", "@mut", [["get", "isSubmitting", ["loc", [null, [35, 160], [35, 172]]]]], [], []]], ["loc", [null, [35, 8], [35, 174]]]], ["block", "power-select-multiple", [], ["searchEnabled", false, "class", "ember-power-select-wrapper--ko", "placeholder", ["subexpr", "t", ["generic.select_placeholder"], [], ["loc", [null, [41, 22], [41, 54]]]], "options", ["subexpr", "@mut", [["get", "teams", ["loc", [null, [42, 18], [42, 23]]]]], [], []], "selected", ["subexpr", "@mut", [["get", "selectedTeams", ["loc", [null, [43, 19], [43, 32]]]]], [], []], "searchField", "title", "onchange", ["subexpr", "action", ["selectTeam"], [], ["loc", [null, [45, 19], [45, 40]]]]], 1, null, ["loc", [null, [38, 8], [47, 34]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "currentView.errors.visibilityType", ["loc", [null, [49, 36], [49, 69]]]]], [], []]], ["loc", [null, [49, 6], [49, 71]]]]],
             locals: [],
             templates: [child0, child1]
           };
@@ -16774,6 +16800,7 @@ define("frontend-cp/components/ko-admin-card-team/template", ["exports"], functi
 });
 define('frontend-cp/components/ko-admin-card-user/component', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = _ember['default'].Component.extend({
+    classNames: ['ko-admin-card-user'],
     userSelectedAction: null,
     isSelected: false,
     actions: {
@@ -16962,7 +16989,7 @@ define("frontend-cp/components/ko-admin-card-user/template", ["exports"], functi
 });
 define('frontend-cp/components/ko-admin-selectable-card/component', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = _ember['default'].Component.extend({
-
+    classNames: ['ko-admin-selectable-card'],
     onSelectedAction: null,
     isActive: true,
     isSelected: false,
@@ -17048,7 +17075,7 @@ define('frontend-cp/components/ko-agent-dropdown/component', ['exports', 'ember'
     notification: inject.service(),
     intl: inject.service(),
     routing: inject.service('-routing'),
-    classNames: ['u-inline-block'],
+    classNames: ['u-inline-block', 'ko-agent-dropdown'],
     transitionToRouteAction: 'transitionToRoute',
     navItems: [{ name: 'case', text: 'Case', path: null, icon: _frontendCpConfigEnvironment['default'].assetRoot + '/images/icons/case.svg' }, { name: 'user', text: 'User', path: null, icon: _frontendCpConfigEnvironment['default'].assetRoot + '/images/icons/user.svg' }, { name: 'organization', text: 'Organization', path: null, icon: _frontendCpConfigEnvironment['default'].assetRoot + '/images/icons/organization.svg' }],
 
@@ -17109,6 +17136,9 @@ define('frontend-cp/components/ko-agent-dropdown/create-case/component', ['expor
     metrics: _ember['default'].inject.service(),
     fields: null,
     filteredUsers: null,
+
+    // HTML
+    classNames: ['ko-agent-dropdown_create-case'],
 
     // Lifecycle hooks
     init: function init() {
@@ -17522,7 +17552,7 @@ define("frontend-cp/components/ko-agent-dropdown/create-case/template", ["export
             },
             "end": {
               "line": 26,
-              "column": 80
+              "column": 34
             }
           },
           "moduleName": "frontend-cp/components/ko-agent-dropdown/create-case/template.hbs"
@@ -17543,7 +17573,7 @@ define("frontend-cp/components/ko-agent-dropdown/create-case/template", ["export
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [["inline", "ko-loader", [], ["class", "ko-agent-dropdown-create-case__loader"], ["loc", [null, [26, 21], [26, 80]]]]],
+        statements: [["content", "ko-loader", ["loc", [null, [26, 21], [26, 34]]]]],
         locals: [],
         templates: []
       };
@@ -17671,7 +17701,7 @@ define("frontend-cp/components/ko-agent-dropdown/create-case/template", ["export
         morphs[8] = dom.createMorphAt(element5, 1, 1);
         return morphs;
       },
-      statements: [["inline", "t", ["generic.create_case_panel.title"], [], ["loc", [null, [2, 39], [2, 78]]]], ["block", "ko-form/field", [], ["field", ["subexpr", "@mut", [["get", "fields.requester", ["loc", [null, [7, 27], [7, 43]]]]], [], []]], 0, null, ["loc", [null, [7, 4], [25, 22]]]], ["block", "if", [["get", "isLoading", ["loc", [null, [26, 10], [26, 19]]]]], [], 1, null, ["loc", [null, [26, 4], [26, 87]]]], ["inline", "t", ["generic.create_case_panel.info"], [], ["loc", [null, [28, 39], [28, 77]]]], ["attribute", "onclick", ["get", "onCancel", ["loc", [null, [31, 77], [31, 85]]]]], ["inline", "t", ["generic.cancel"], [], ["loc", [null, [32, 10], [32, 32]]]], ["attribute", "disabled", ["subexpr", "not", [["get", "fields.requester.value.id", ["loc", [null, [34, 76], [34, 101]]]]], [], ["loc", [null, [34, 70], [34, 103]]]]], ["attribute", "onclick", ["subexpr", "action", ["submit"], [], ["loc", [null, [34, 112], [34, 131]]]]], ["inline", "t", ["generic.next"], [], ["loc", [null, [35, 10], [35, 30]]]]],
+      statements: [["inline", "t", ["generic.create_case_panel.title"], [], ["loc", [null, [2, 39], [2, 78]]]], ["block", "ko-form/field", [], ["field", ["subexpr", "@mut", [["get", "fields.requester", ["loc", [null, [7, 27], [7, 43]]]]], [], []]], 0, null, ["loc", [null, [7, 4], [25, 22]]]], ["block", "if", [["get", "isLoading", ["loc", [null, [26, 10], [26, 19]]]]], [], 1, null, ["loc", [null, [26, 4], [26, 41]]]], ["inline", "t", ["generic.create_case_panel.info"], [], ["loc", [null, [28, 39], [28, 77]]]], ["attribute", "onclick", ["get", "onCancel", ["loc", [null, [31, 77], [31, 85]]]]], ["inline", "t", ["generic.cancel"], [], ["loc", [null, [32, 10], [32, 32]]]], ["attribute", "disabled", ["subexpr", "not", [["get", "fields.requester.value.id", ["loc", [null, [34, 76], [34, 101]]]]], [], ["loc", [null, [34, 70], [34, 103]]]]], ["attribute", "onclick", ["subexpr", "action", ["submit"], [], ["loc", [null, [34, 112], [34, 131]]]]], ["inline", "t", ["generic.next"], [], ["loc", [null, [35, 10], [35, 30]]]]],
       locals: [],
       templates: [child0, child1]
     };
@@ -18932,26 +18962,30 @@ define("frontend-cp/components/ko-agent-dropdown/template", ["exports"], functio
 });
 define('frontend-cp/components/ko-avatar/component', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = _ember['default'].Component.extend({
-    classNames: ['ko-avatar'],
+    classNameBindings: ['styles.avatar'],
     avatar: null,
-    size: 'normal', // [small | normal | medium | large]
+    size: 'normal', // [small | medium | large]
 
-    avatarSizeCls: _ember['default'].computed('size', function () {
+    avatarSizeClass: _ember['default'].computed('size', function () {
       switch (this.get('size')) {
         case 'small':
-          return 'ko-avatar__image--small';
+          return this.get('styles.sizeSmall');
         case 'medium':
-          return 'ko-avatar__image--medium';
+          return this.get('styles.sizeMedium');
         case 'large':
-          return 'ko-avatar__image--large';
+          return this.get('styles.sizeLarge');
       }
-    }),
-
-    // will be used flip between avatar / gravatar etc when we need that functionality!
-    imageURL: _ember['default'].computed('avatar', function () {
-      return this.get('avatar');
     })
   });
+});
+define("frontend-cp/components/ko-avatar/styles", ["exports"], function (exports) {
+  exports["default"] = {
+    "avatar": "_avatar_6hgxvb",
+    "image": "_image_6hgxvb",
+    "sizeSmall": "_sizeSmall_6hgxvb",
+    "sizeMedium": "_sizeMedium_6hgxvb",
+    "sizeLarge": "_sizeLarge_6hgxvb"
+  };
 });
 define("frontend-cp/components/ko-avatar/template", ["exports"], function (exports) {
   exports["default"] = Ember.HTMLBars.template((function () {
@@ -18990,7 +19024,7 @@ define("frontend-cp/components/ko-avatar/template", ["exports"], function (expor
         morphs[1] = dom.createAttrMorph(element0, 'src');
         return morphs;
       },
-      statements: [["attribute", "class", ["concat", ["ko-avatar__image ", ["get", "avatarSizeCls", ["loc", [null, [1, 31], [1, 44]]]]]]], ["attribute", "src", ["concat", [["get", "imageURL", ["loc", [null, [1, 55], [1, 63]]]]]]]],
+      statements: [["attribute", "class", ["concat", [["get", "styles.image", ["loc", [null, [1, 14], [1, 26]]]], " ", ["get", "avatarSizeClass", ["loc", [null, [1, 31], [1, 46]]]]]]], ["attribute", "src", ["concat", [["get", "avatar", ["loc", [null, [1, 57], [1, 63]]]]]]]],
       locals: [],
       templates: []
     };
@@ -19586,6 +19620,9 @@ define('frontend-cp/components/ko-bulk-sidebar/component', ['exports', 'ember', 
     isCasePriorityEdited: false,
     isTagsFieldEdited: false,
 
+    // HTML
+    classNames: ['ko-bulk-sidebar'],
+
     //Serivces
     store: _ember['default'].inject.service(),
     intl: _ember['default'].inject.service('intl'),
@@ -20138,7 +20175,10 @@ define('frontend-cp/components/ko-case/sla-sidebar/component', ['exports', 'embe
   exports['default'] = _ember['default'].Component.extend({
     //Params
     sla: null,
-    slaMetrics: null
+    slaMetrics: null,
+
+    // HTML
+    classNames: ['ko-case_sla-sidebar']
   });
 });
 define('frontend-cp/components/ko-case/sla-sidebar/metric/component', ['exports', 'ember'], function (exports, _ember) {
@@ -20469,7 +20509,7 @@ define("frontend-cp/components/ko-case/sla-sidebar/template", ["exports"], funct
         var el1 = dom.createTextNode("\n\n");
         dom.appendChild(el0, el1);
         var el1 = dom.createElement("table");
-        dom.setAttribute(el1, "class", "ko-case_sla-sidebar");
+        dom.setAttribute(el1, "class", "ko-case_sla-sidebar__table");
         var el2 = dom.createTextNode("\n");
         dom.appendChild(el1, el2);
         var el2 = dom.createComment("");
@@ -21257,6 +21297,9 @@ define('frontend-cp/components/ko-case-content/dropdown/component', ['exports', 
     value: null,
 
     contentStyle: null,
+
+    // HTML
+    classNames: ['ko-case-content_dropdown'],
 
     currentValueLabel: _ember['default'].computed('value', 'options', function () {
       var content = this.get('value');
@@ -25071,6 +25114,9 @@ define('frontend-cp/components/ko-cases-list/component', ['exports', 'ember'], f
     //State
     isSomeChecked: false,
 
+    // HTML
+    classNames: ['ko-cases-list'],
+
     //Lifecycle Hooks
     setIsSomeChecked: _ember['default'].on('didReceiveAttrs', function (_ref) {
       var oldAttrs = _ref.oldAttrs;
@@ -26934,6 +26980,9 @@ define('frontend-cp/components/ko-channel-selector/component', ['exports', 'embe
   exports['default'] = _ember['default'].Component.extend({
     tabId: null,
 
+    // HTML
+    classNames: ['ko-channel-selector'],
+
     disabled: _ember['default'].computed('channel.channelType', function () {
       return this.get('channel.channelType') === 'NOTE';
     }),
@@ -27954,6 +28003,7 @@ define('frontend-cp/components/ko-datepicker/component', ['exports', 'ember', 'n
     // HTML
     attributeBindings: ['tabindex'],
     tabindex: '-1',
+    classNames: ['ko-datepicker'],
 
     onDateParamChange: _ember['default'].on('init', _ember['default'].observer('momentDate', function () {
       this.set('shownDate', (0, _moment['default'])(this.get('momentDate').isValid() ? this.get('momentDate') : this.get('today')).toDate());
@@ -28746,7 +28796,10 @@ define("frontend-cp/components/ko-dropdown/basic-drill-down/template", ["exports
   })());
 });
 define('frontend-cp/components/ko-dropdown/container/button/component', ['exports', 'ember'], function (exports, _ember) {
-  exports['default'] = _ember['default'].Component.extend({});
+  exports['default'] = _ember['default'].Component.extend({
+    // HTML
+    classNames: ['ko-dropdown_container_button']
+  });
 });
 define("frontend-cp/components/ko-dropdown/container/button/template", ["exports"], function (exports) {
   exports["default"] = Ember.HTMLBars.template((function () {
@@ -29551,7 +29604,10 @@ define('frontend-cp/components/ko-dropdown/select/button/component', ['exports',
   exports['default'] = _ember['default'].Component.extend({
     //Params:
     label: '',
-    displayIcon: true
+    displayIcon: true,
+
+    // HTML
+    classNames: ['ko-dropdown_select_button']
   });
 });
 define("frontend-cp/components/ko-dropdown/select/button/template", ["exports"], function (exports) {
@@ -29777,7 +29833,10 @@ define("frontend-cp/components/ko-editable-text/template", ["exports"], function
 });
 define('frontend-cp/components/ko-editor-modal/component', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = _ember['default'].Component.extend({
-    title: null
+    title: null,
+
+    // HTML
+    classNames: ['ko-editor-modal']
   });
 });
 define("frontend-cp/components/ko-editor-modal/template", ["exports"], function (exports) {
@@ -30725,7 +30784,7 @@ define("frontend-cp/components/ko-feed/item/template", ["exports"], function (ex
 define('frontend-cp/components/ko-feedback/component', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = _ember['default'].Component.extend({
     tagName: 'div',
-    classNames: ['ko-info-bar_item', 'ko-info-bar_item--no-hover', 'u-no-bottom-border'],
+    classNames: ['ko-feedback', 'ko-info-bar_item', 'ko-info-bar_item--no-hover', 'u-no-bottom-border'],
     classNameBindings: ['separator::ko-info-bar_item--no-separator'],
     separator: false
   });
@@ -31599,8 +31658,15 @@ define("frontend-cp/components/ko-file-upload/upload-item/template", ["exports"]
 define('frontend-cp/components/ko-flag/component', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = _ember['default'].Component.extend({
     // HTML
-    classNames: ['ko-flag']
+    classNameBindings: ['styles.flag']
   });
+});
+define("frontend-cp/components/ko-flag/styles", ["exports"], function (exports) {
+  exports["default"] = {
+    "flag": "_flag_ild85m",
+    "image": "_image_ild85m",
+    "body": "_body_ild85m"
+  };
 });
 define("frontend-cp/components/ko-flag/template", ["exports"], function (exports) {
   exports["default"] = Ember.HTMLBars.template((function () {
@@ -31626,14 +31692,12 @@ define("frontend-cp/components/ko-flag/template", ["exports"], function (exports
       buildFragment: function buildFragment(dom) {
         var el0 = dom.createDocumentFragment();
         var el1 = dom.createElement("div");
-        dom.setAttribute(el1, "class", "ko-flag__img");
         var el2 = dom.createComment("");
         dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
         var el1 = dom.createElement("div");
-        dom.setAttribute(el1, "class", "ko-flag__body");
         var el2 = dom.createComment("");
         dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
@@ -31642,12 +31706,16 @@ define("frontend-cp/components/ko-flag/template", ["exports"], function (exports
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var morphs = new Array(2);
-        morphs[0] = dom.createMorphAt(dom.childAt(fragment, [0]), 0, 0);
-        morphs[1] = dom.createMorphAt(dom.childAt(fragment, [2]), 0, 0);
+        var element0 = dom.childAt(fragment, [0]);
+        var element1 = dom.childAt(fragment, [2]);
+        var morphs = new Array(4);
+        morphs[0] = dom.createAttrMorph(element0, 'class');
+        morphs[1] = dom.createMorphAt(element0, 0, 0);
+        morphs[2] = dom.createAttrMorph(element1, 'class');
+        morphs[3] = dom.createMorphAt(element1, 0, 0);
         return morphs;
       },
-      statements: [["content", "yield", ["loc", [null, [1, 26], [1, 35]]]], ["inline", "yield", [], ["to", "inverse"], ["loc", [null, [2, 27], [2, 49]]]]],
+      statements: [["attribute", "class", ["concat", [["get", "styles.image", ["loc", [null, [1, 14], [1, 26]]]]]]], ["content", "yield", ["loc", [null, [1, 30], [1, 39]]]], ["attribute", "class", ["concat", [["get", "styles.body", ["loc", [null, [2, 14], [2, 25]]]]]]], ["inline", "yield", [], ["to", "inverse"], ["loc", [null, [2, 29], [2, 51]]]]],
       locals: [],
       templates: []
     };
@@ -31694,7 +31762,10 @@ define("frontend-cp/components/ko-form/buttons/template", ["exports"], function 
           var el0 = dom.createDocumentFragment();
           var el1 = dom.createTextNode("      ");
           dom.appendChild(el0, el1);
-          var el1 = dom.createComment("");
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1, "class", "ko-form_buttons__loader");
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
           dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n");
           dom.appendChild(el0, el1);
@@ -31702,10 +31773,10 @@ define("frontend-cp/components/ko-form/buttons/template", ["exports"], function 
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
           var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+          morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 0, 0);
           return morphs;
         },
-        statements: [["inline", "ko-loader", [], ["class", "ko-form_buttons__loader"], ["loc", [null, [4, 6], [4, 51]]]]],
+        statements: [["content", "ko-loader", ["loc", [null, [4, 43], [4, 56]]]]],
         locals: [],
         templates: []
       };
@@ -32027,6 +32098,8 @@ define('frontend-cp/components/ko-form/field/component', ['exports', 'ember'], f
     field: null,
     nogap: false,
 
+    // HTML
+    classNames: ['ko-form_field'],
     classNameBindings: ['nogap::ko-form_field--gap'],
 
     tagName: 'label',
@@ -32144,7 +32217,9 @@ define("frontend-cp/components/ko-form/field/errors/template", ["exports"], func
 });
 define('frontend-cp/components/ko-form/field/help/component', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = _ember['default'].Component.extend({
-    tagName: 'p'
+    // HTML
+    tagName: 'p',
+    classNames: ['ko-form_field_help']
   });
 });
 define("frontend-cp/components/ko-form/field/help/template", ["exports"], function (exports) {
@@ -32188,7 +32263,11 @@ define("frontend-cp/components/ko-form/field/help/template", ["exports"], functi
   })());
 });
 define('frontend-cp/components/ko-form/field/label/component', ['exports', 'ember'], function (exports, _ember) {
-  exports['default'] = _ember['default'].Component.extend({});
+  exports['default'] = _ember['default'].Component.extend({
+    // HTML
+    tagName: 'p',
+    classNames: ['ko-form_field_label']
+  });
 });
 define("frontend-cp/components/ko-form/field/label/template", ["exports"], function (exports) {
   exports["default"] = Ember.HTMLBars.template((function () {
@@ -35064,7 +35143,7 @@ define("frontend-cp/components/ko-identities/template", ["exports"], function (e
 define('frontend-cp/components/ko-info-bar/component', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = _ember['default'].Component.extend({
     tagName: 'div',
-    classNames: ['list-bare']
+    classNames: ['info-bar', 'list-bare']
   });
 });
 define('frontend-cp/components/ko-info-bar/field/cascadingselect/component', ['exports', 'ember', 'npm:lodash'], function (exports, _ember, _npmLodash) {
@@ -35315,7 +35394,7 @@ define('frontend-cp/components/ko-info-bar/field/date/component', ['exports', 'e
 
     // HTML
     tagName: 'div',
-    classNames: ['ko-info-bar_item'],
+    classNames: ['ko-info-bar_field_date', 'ko-info-bar_item'],
     classNameBindings: ['isEdited:ko-info-bar_item--edited', 'isPusherEdited:ko-info-bar_item--pusher-edited', 'isErrored:ko-info-bar_item--error', 'isCalendarShown:ko-info-bar_item--active', 'isDisabled:ko-info-bar_item--disabled'],
     attributeBindings: ['role'],
     role: 'menuitem',
@@ -35634,7 +35713,7 @@ define('frontend-cp/components/ko-info-bar/field/drill-down/trigger/component', 
     select: null,
 
     // HTML
-    classNames: ['ko-info-bar_item'],
+    classNames: ['ko-info-bar_field_drill-down', 'ko-info-bar_item'],
     classNameBindings: ['extra.isEdited:ko-info-bar_item--edited', 'extra.isPusherEdited:ko-info-bar_item--pusher-edited', 'extra.isErrored:ko-info-bar_item--error', 'select.isOpen:ko-info-bar_item--active'],
 
     didUpdateAttrs: function didUpdateAttrs(_ref) {
@@ -35923,7 +36002,7 @@ define('frontend-cp/components/ko-info-bar/field/multiline-text/component', ['ex
     isActive: false,
 
     tagName: 'div',
-    classNames: ['ko-info-bar_item'],
+    classNames: ['ko-info-bar_multiline-text', 'ko-info-bar_item'],
     classNameBindings: ['isEdited:ko-info-bar_item--edited', 'isPusherEdited:ko-info-bar_item--pusher-edited', 'isErrored:ko-info-bar_item--error', 'isActive:ko-info-bar_item--active', 'isDisabled:ko-info-bar_item--disabled'],
 
     click: function click() {
@@ -36194,7 +36273,7 @@ define('frontend-cp/components/ko-info-bar/field/search/component', ['exports', 
 
     // HTML
     tagName: 'div',
-    classNames: ['ko-info-bar_item'],
+    classNames: ['ko-info-bar_field_search', 'ko-info-bar_item'],
     classNameBindings: ['isEdited:ko-info-bar_item--edited', 'isPusherEdited:ko-info-bar_item--pusher-edited', 'isErrored:ko-info-bar_item--error', 'isDropdownShown:ko-info-bar_item--active', 'isDisabled:ko-info-bar_item--disabled'],
     attributeBindings: ['role'],
     role: 'menuitem',
@@ -36633,6 +36712,7 @@ define('frontend-cp/components/ko-info-bar/field/select/component', ['exports', 
     tagName: 'div',
     attributeBindings: ['role'],
     role: 'menuitem',
+    classNames: ['ko-info-bar_field_select'],
 
     // CPs
     normalizedOptions: computed('hasEmptyOption', 'labelPath', 'options.[]', function () {
@@ -36787,7 +36867,7 @@ define('frontend-cp/components/ko-info-bar/field/select/trigger/component', ['ex
     select: null,
 
     // HTML
-    classNames: ['ko-info-bar_item'],
+    classNames: ['ko-info-bar_field_select_trigger', 'ko-info-bar_item'],
     classNameBindings: ['extra.isEdited:ko-info-bar_item--edited', 'extra.isPusherEdited:ko-info-bar_item--pusher-edited', 'extra.isErrored:ko-info-bar_item--error', 'select.isOpen:ko-info-bar_item--active'],
 
     didUpdateAttrs: function didUpdateAttrs(_ref) {
@@ -36974,7 +37054,7 @@ define('frontend-cp/components/ko-info-bar/field/tags/component', ['exports', 'e
     forceLowerCase: null,
 
     tagName: 'div',
-    classNames: ['ko-info-bar_item'],
+    classNames: ['ko-info-bar_field_tags', 'ko-info-bar_item'],
     classNameBindings: ['isEdited:ko-info-bar_item--edited', 'isPusherEdited:ko-info-bar_item--pusher-edited', 'isErrored:ko-info-bar_item--error', 'isDisabled:ko-info-bar_item--disabled']
   });
 });
@@ -37040,7 +37120,7 @@ define('frontend-cp/components/ko-info-bar/field/text/component', ['exports', 'e
     isActive: false,
 
     tagName: 'div',
-    classNames: ['ko-info-bar_item'],
+    classNames: ['ko-info-bar_field_text', 'ko-info-bar_item'],
     classNameBindings: ['isEdited:ko-info-bar_item--edited', 'isPusherEdited:ko-info-bar_item--pusher-edited', 'isErrored:ko-info-bar_item--error', 'isActive:ko-info-bar_item--active', 'isDisabled:ko-info-bar_item--disabled'],
 
     click: function click() {
@@ -37226,6 +37306,7 @@ define("frontend-cp/components/ko-info-bar/item/template", ["exports"], function
 define('frontend-cp/components/ko-info-bar/metadata/component', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = _ember['default'].Component.extend({
     tagName: 'div',
+    classNames: ['ko-info-bar_metadata'],
     classNameBindings: ['separator::ko-info-bar_item--no-separator'],
     separator: false
   });
@@ -37881,7 +37962,10 @@ define("frontend-cp/components/ko-modal/template", ["exports"], function (export
   })());
 });
 define('frontend-cp/components/ko-notification-badge/component', ['exports', 'ember'], function (exports, _ember) {
-  exports['default'] = _ember['default'].Component.extend({});
+  exports['default'] = _ember['default'].Component.extend({
+    // HTML
+    classNames: ['ko-notification-badge']
+  });
 });
 define("frontend-cp/components/ko-notification-badge/template", ["exports"], function (exports) {
   exports["default"] = Ember.HTMLBars.template((function () {
@@ -37928,6 +38012,8 @@ define('frontend-cp/components/ko-organisation-action-menu/component', ['exports
     organisation: null,
     canDelete: false,
 
+    // HTML
+    classNames: ['ko-organisation-action-menu'],
     classNameBindings: ['hasNoOptions:u-hidden'],
 
     sessionService: _ember['default'].inject.service('session'),
@@ -39590,6 +39676,9 @@ define('frontend-cp/components/ko-pagination/component', ['exports', 'ember'], f
     loadingPage: null,
     pageCount: 1,
 
+    // HTML
+    classNames: ['ko-pagination'],
+
     previousPage: _ember['default'].computed('currentPage', function () {
       return this.get('currentPage') - 1;
     }),
@@ -40613,6 +40702,9 @@ define('frontend-cp/components/ko-predicate-builder/rule/component', ['exports',
     onRuleDeletion: null,
     rule: null,
     currentUserString: 'current user',
+
+    // HTML
+    classNames: ['ko-predicate-builder_rule'],
 
     definition: computed('definitions.@each.id', 'rule.field', function () {
       return this.get('definitions').findBy('id', this.get('rule.field'));
@@ -41740,6 +41832,9 @@ define('frontend-cp/components/ko-radio/component', ['exports', 'ember', 'fronte
     large: false,
 
     checked: false,
+
+    // HTML
+    classNames: ['ko-radio'],
     ariaLive: 'assertive',
     tabindex: 0,
     label: '',
@@ -42614,6 +42709,9 @@ define('frontend-cp/components/ko-session-widgets/component', ['exports', 'ember
     routing: service('-routing'),
     permissions: service('permissions'),
 
+    // HTML
+    classNames: ['ko-session-widgets'],
+
     // CPs
     user: computed.readOnly('session.user'),
     isAdmin: computed('session.permissions', function () {
@@ -42713,7 +42811,7 @@ define("frontend-cp/components/ko-session-widgets/template", ["exports"], functi
           var el1 = dom.createTextNode("  ");
           dom.appendChild(el0, el1);
           var el1 = dom.createElement("ul");
-          dom.setAttribute(el1, "class", "ko-dropdown_list ko-dropdown-container-content");
+          dom.setAttribute(el1, "class", "ko-dropdown-container-content");
           var el2 = dom.createTextNode("\n    ");
           dom.appendChild(el1, el2);
           var el2 = dom.createElement("li");
@@ -42788,7 +42886,10 @@ define("frontend-cp/components/ko-session-widgets/template", ["exports"], functi
           var el0 = dom.createDocumentFragment();
           var el1 = dom.createTextNode("  ");
           dom.appendChild(el0, el1);
-          var el1 = dom.createComment("");
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1, "class", "ko-session-widgets__avatar-container");
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
           dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n  ");
           dom.appendChild(el0, el1);
@@ -42808,11 +42909,11 @@ define("frontend-cp/components/ko-session-widgets/template", ["exports"], functi
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
           var morphs = new Array(2);
-          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+          morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 0, 0);
           morphs[1] = dom.createMorphAt(dom.childAt(fragment, [3]), 0, 0);
           return morphs;
         },
-        statements: [["inline", "ko-avatar", [], ["avatar", ["subexpr", "@mut", [["get", "user.avatar", ["loc", [null, [18, 21], [18, 32]]]]], [], []]], ["loc", [null, [18, 2], [18, 34]]]], ["content", "user.fullName", ["loc", [null, [19, 41], [19, 58]]]]],
+        statements: [["inline", "ko-avatar", [], ["avatar", ["subexpr", "@mut", [["get", "user.avatar", ["loc", [null, [18, 71], [18, 82]]]]], [], []]], ["loc", [null, [18, 52], [18, 84]]]], ["content", "user.fullName", ["loc", [null, [19, 41], [19, 58]]]]],
         locals: [],
         templates: []
       };
@@ -42900,6 +43001,9 @@ define("frontend-cp/components/ko-session-widgets/template", ["exports"], functi
 });
 define('frontend-cp/components/ko-sidebar/component', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = _ember['default'].Component.extend({
+    // HTML
+    classNames: ['ko-sidebar'],
+
     filteredViews: _ember['default'].computed('customViews', function () {
       return this.get('customViews').filter(function (view) {
         return view.get('viewType') !== 'TRASH';
@@ -43324,7 +43428,10 @@ define("frontend-cp/components/ko-sidebar/template", ["exports"], function (expo
   })());
 });
 define('frontend-cp/components/ko-simple-box-row/component', ['exports', 'ember'], function (exports, _ember) {
-  exports['default'] = _ember['default'].Component.extend({});
+  exports['default'] = _ember['default'].Component.extend({
+    // HTML
+    classNames: ['ko-simple-box-row']
+  });
 });
 define("frontend-cp/components/ko-simple-box-row/template", ["exports"], function (exports) {
   exports["default"] = Ember.HTMLBars.template((function () {
@@ -43505,7 +43612,10 @@ define("frontend-cp/components/ko-simple-list/cell/template", ["exports"], funct
   })());
 });
 define('frontend-cp/components/ko-simple-list/component', ['exports', 'ember'], function (exports, _ember) {
-  exports['default'] = _ember['default'].Component.extend({});
+  exports['default'] = _ember['default'].Component.extend({
+    // HTML
+    classNames: ['ko-simple-list']
+  });
 });
 define('frontend-cp/components/ko-simple-list/row/component', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = _ember['default'].Component.extend({
@@ -43513,6 +43623,7 @@ define('frontend-cp/components/ko-simple-list/row/component', ['exports', 'ember
     onClick: null,
 
     // HTML
+    classNames: ['ko-simple-list_row'],
     classNameBindings: ['onClick:ko-simple-list--actionable'],
 
     click: function click(e) {
@@ -43969,7 +44080,7 @@ define('frontend-cp/components/ko-stateful-button/component', ['exports', 'ember
     isLoading: false,
 
     tagName: 'button',
-    classNames: ['button', 'button--highlight'],
+    classNames: ['ko-stateful-button', 'button', 'button--highlight'],
     classNameBindings: ['isActive'],
     attributeBindings: ['disabled'],
 
@@ -44487,6 +44598,8 @@ define("frontend-cp/components/ko-table/body/template", ["exports"], function (e
 define('frontend-cp/components/ko-table/cell/component', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = _ember['default'].Component.extend({
     tagName: 'td',
+    classNames: ['ko-table_cell'],
+
     click: function click(event) {
       if (this.attrs.onClick) {
         event.preventDefault();
@@ -44764,6 +44877,7 @@ define('frontend-cp/components/ko-table/component', ['exports', 'ember'], functi
   var computed = _ember['default'].computed;
   exports['default'] = _ember['default'].Component.extend({
     tagName: 'table',
+    classNames: ['ko-table'],
     rows: [],
     onSelectionChange: null,
 
@@ -44833,6 +44947,7 @@ define('frontend-cp/components/ko-table/component', ['exports', 'ember'], functi
 define('frontend-cp/components/ko-table/header/component', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = _ember['default'].Component.extend({
     tagName: 'thead',
+    classNames: ['ko-table__header'],
     selectable: _ember['default'].computed.readOnly('parentView.selectable'),
 
     actions: {
@@ -44975,6 +45090,7 @@ define("frontend-cp/components/ko-table/header/template", ["exports"], function 
 define('frontend-cp/components/ko-table/row/component', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = _ember['default'].Component.extend({
     tagName: 'tr',
+    classNames: ['ko-table_row'],
     rowContext: null,
     clickable: false,
 
@@ -45207,6 +45323,7 @@ define('frontend-cp/components/ko-tags/component', ['exports', 'ember', 'fronten
     isDisabled: false,
 
     // HTML
+    classNames: ['ko-tags'],
     classNameBindings: ['showDropdown:active', 'isDisabled:disabled'],
     attributeBindings: ['tabindex', 'role'],
     tabindex: null,
@@ -45679,7 +45796,7 @@ define("frontend-cp/components/ko-tags/template", ["exports"], function (exports
       buildFragment: function buildFragment(dom) {
         var el0 = dom.createDocumentFragment();
         var el1 = dom.createElement("ul");
-        dom.setAttribute(el1, "class", "ko-tags");
+        dom.setAttribute(el1, "class", "ko-tags__root");
         dom.setAttribute(el1, "role", "menu");
         var el2 = dom.createTextNode("\n");
         dom.appendChild(el1, el2);
@@ -45712,6 +45829,9 @@ define("frontend-cp/components/ko-tags/template", ["exports"], function (exports
 define('frontend-cp/components/ko-tags-input/component', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = _ember['default'].Component.extend({
     selectedTags: [],
+
+    // HTML
+    classNames: ['ko-tags-input'],
 
     actions: {
       onTagAddition: function onTagAddition(tag) {
@@ -45808,6 +45928,7 @@ define('frontend-cp/components/ko-text-editor/component', ['exports', 'ember', '
     tagDictionary: null,
 
     // HTML
+    classNames: ['ko-text-editor'],
     classNameBindings: ['isErrored'],
 
     onFocusStateChange: function onFocusStateChange() {},
@@ -47571,6 +47692,9 @@ define('frontend-cp/components/ko-toast/component', ['exports', 'ember', 'fronte
     autodismiss: false,
     isClosing: false,
 
+    // HTML
+    classNames: ['ko-toast'],
+
     animateIn: _ember['default'].on('willInsertElement', function () {
       var $componentElement = this.$();
       animate($componentElement, 'ko-toast--add');
@@ -47931,6 +48055,9 @@ define('frontend-cp/components/ko-universal-search/component', ['exports', 'embe
     isLatestSearchPending: false,
     isMouseHighlight: true,
 
+    // HTML
+    classNames: ['ko-universal-search'],
+
     // Services
     universalSearchService: _ember['default'].inject.service('suggestion/universal'),
     store: _ember['default'].inject.service(),
@@ -48094,6 +48221,9 @@ define('frontend-cp/components/ko-universal-search/entry/component', ['exports',
     onHighlightPreviousResult: null,
     onStopSearch: null,
 
+    // HTML
+    classNames: ['ko-universal-search_entry'],
+
     keyDown: function keyDown(e) {
       switch (e.keyCode) {
         case _frontendCpLibKeycodes.down:
@@ -48130,6 +48260,7 @@ define('frontend-cp/components/ko-universal-search/result/component', ['exports'
     onStopSearch: null,
 
     tagName: 'li',
+    classNames: ['ko-universal-search_result'],
     classNameBindings: ['isHighlighted:is-active'],
 
     iconClass: _ember['default'].computed('result', function () {
@@ -52368,6 +52499,20 @@ define('frontend-cp/initializers/ember-cli-mirage', ['exports', 'ember-cli-mirag
 
     return usingInDev || usingInTest;
   }
+});
+define('frontend-cp/initializers/ember-css-modules', ['exports', 'ember-css-modules/initializers/ember-css-modules'], function (exports, _emberCssModulesInitializersEmberCssModules) {
+  Object.defineProperty(exports, 'default', {
+    enumerable: true,
+    get: function get() {
+      return _emberCssModulesInitializersEmberCssModules['default'];
+    }
+  });
+  Object.defineProperty(exports, 'initialize', {
+    enumerable: true,
+    get: function get() {
+      return _emberCssModulesInitializersEmberCssModules.initialize;
+    }
+  });
 });
 define('frontend-cp/initializers/ember-feature-flags', ['exports', 'frontend-cp/config/environment', 'frontend-cp/features/-main'], function (exports, _frontendCpConfigEnvironment, _frontendCpFeaturesMain) {
   exports.initialize = initialize;
@@ -79069,6 +79214,1442 @@ define("frontend-cp/session/test/entry/template", ["exports"], function (exports
     };
   })());
 });
+define("frontend-cp/styles/application/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "application__notifications": "_application__notifications_n7hqf2"
+  };
+});
+define("frontend-cp/styles/components/ko-admin/businesshours/edit/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-admin_businesshours__grid-title": "_ko-admin_businesshours__grid-title_pzxwew",
+    "ko-admin_businesshours__add-holiday": "_ko-admin_businesshours__add-holiday_pzxwew"
+  };
+});
+define("frontend-cp/styles/components/ko-admin/case-fields/edit/options/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-reorderable-crud-list-actions": "_ko-reorderable-crud-list-actions_1cgwmd",
+    "ko-reorderable-crud-list-item": "_ko-reorderable-crud-list-item_1cgwmd",
+    "ko-reorderable-crud-list-item__values": "_ko-reorderable-crud-list-item__values_1cgwmd",
+    "ko-admin_case-fields_edit_options__actions": "_ko-admin_case-fields_edit_options__actions_1cgwmd"
+  };
+});
+define("frontend-cp/styles/components/ko-admin/case-fields/edit/priorities/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "priorities__add-priority-message": "_priorities__add-priority-message_1314wl"
+  };
+});
+define("frontend-cp/styles/components/ko-admin/case-fields/edit/statuses/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "statuses__add-status-message": "_statuses__add-status-message_67mbzc",
+    "statuses__is-sla-active": "_statuses__is-sla-active_67mbzc"
+  };
+});
+define("frontend-cp/styles/components/ko-admin/case-fields/edit/types/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-admin_case-fields_edit_types__add-type-message": "_ko-admin_case-fields_edit_types__add-type-message_44dfk1",
+    "types__add-type-message": "_types__add-type-message_44dfk1"
+  };
+});
+define("frontend-cp/styles/components/ko-admin/case-fields/select-type/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-admin_case-fields_select-type": "_ko-admin_case-fields_select-type_15cvki",
+    "ko-admin_case-fields_select-type__icon": "_ko-admin_case-fields_select-type__icon_15cvki",
+    "ko-admin_case-fields_select-type__action": "_ko-admin_case-fields_select-type__action_15cvki"
+  };
+});
+define("frontend-cp/styles/components/ko-admin/case-fields/type-icon/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-admin_case-fields_type-icon": "_ko-admin_case-fields_type-icon_12943e",
+    "TEXT": "_TEXT_12943e"
+  };
+});
+define("frontend-cp/styles/components/ko-admin/case-forms/edit/fields/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-admin_case-forms_edit_fields__action": "_ko-admin_case-forms_edit_fields__action_6e3p4f"
+  };
+});
+define("frontend-cp/styles/components/ko-admin/forms/group/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-admin-forms-group": "_ko-admin-forms-group_1n25yf",
+    "ko-admin-form-group__legend": "_ko-admin-form-group__legend_1n25yf"
+  };
+});
+define("frontend-cp/styles/components/ko-admin/holidays/edit/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-admin_holidays_edit": "_ko-admin_holidays_edit_1o8til",
+    "ko-admin_holidays_edit__title": "_ko-admin_holidays_edit__title_1o8til",
+    "error": "_error_1o8til"
+  };
+});
+define("frontend-cp/styles/components/ko-admin/inline-locale-edit/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-admin_inline-locale-edit": "_ko-admin_inline-locale-edit_e0royr",
+    "ko-admin_inline-locale-edit--text-area": "_ko-admin_inline-locale-edit--text-area_e0royr",
+    "ko-admin_inline-locale-edit__container": "_ko-admin_inline-locale-edit__container_e0royr",
+    "ko-admin_inline-locale-edit__modal-button": "_ko-admin_inline-locale-edit__modal-button_e0royr",
+    "ko-admin_inline-locale-edit__modal-button--is-edited": "_ko-admin_inline-locale-edit__modal-button--is-edited_e0royr",
+    "ko-admin_inline-locale-edit__text": "_ko-admin_inline-locale-edit__text_e0royr",
+    "ko-admin_inline-locale-edit__popover": "_ko-admin_inline-locale-edit__popover_e0royr"
+  };
+});
+define("frontend-cp/styles/components/ko-admin/macros/action/reply-contents/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-admin_macros_action_reply-contents": "_ko-admin_macros_action_reply-contents_1gluzt",
+    "ko-admin-macros-action": "_ko-admin-macros-action_1gluzt",
+    "ko-admin-macros-action__content": "_ko-admin-macros-action__content_1gluzt",
+    "ko-admin-macros-action__form": "_ko-admin-macros-action__form_1gluzt",
+    "ko-admin-macros-action__label": "_ko-admin-macros-action__label_1gluzt",
+    "ko-admin-macros-action-reply-contents__textarea": "_ko-admin-macros-action-reply-contents__textarea_1gluzt"
+  };
+});
+define("frontend-cp/styles/components/ko-admin/macros/action/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-admin-macros-action": "_ko-admin-macros-action_kgw3la",
+    "ko-admin-macros-action__remove": "_ko-admin-macros-action__remove_kgw3la",
+    "ember-power-select": "_ember-power-select_kgw3la",
+    "ember-power-select-trigger": "_ember-power-select-trigger_kgw3la",
+    "ko-admin-macros-action__content": "_ko-admin-macros-action__content_kgw3la",
+    "ko-admin-macros-action__form": "_ko-admin-macros-action__form_kgw3la",
+    "ko-admin-macros-action__types": "_ko-admin-macros-action__types_kgw3la",
+    "ko-admin-macros-action__label": "_ko-admin-macros-action__label_kgw3la"
+  };
+});
+define("frontend-cp/styles/components/ko-admin/macros/edit/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-admin_macros_edit__team-selector": "_ko-admin_macros_edit__team-selector_1ky7hn",
+    "ko-admin_macros_edit__actions-selector": "_ko-admin_macros_edit__actions-selector_1ky7hn"
+  };
+});
+define("frontend-cp/styles/components/ko-admin/page-container/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-session-admin-index": "_ko-session-admin-index_xkbmuf",
+    "ko-session-admin-index__sidebar": "_ko-session-admin-index__sidebar_xkbmuf",
+    "ko-session-admin-index__pagination": "_ko-session-admin-index__pagination_xkbmuf",
+    "ko-session-admin-index__content": "_ko-session-admin-index__content_xkbmuf",
+    "ko-admin-content": "_ko-admin-content_xkbmuf"
+  };
+});
+define("frontend-cp/styles/components/ko-admin/page-footer/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-admin_page-footer": "_ko-admin_page-footer_1qh3np"
+  };
+});
+define("frontend-cp/styles/components/ko-admin/page-header/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-admin_page-header": "_ko-admin_page-header_1hjhif",
+    "ko-admin-header": "_ko-admin-header_1hjhif",
+    "ko-admin-header__title": "_ko-admin-header__title_1hjhif",
+    "ko-admin-header__spacer": "_ko-admin-header__spacer_1hjhif",
+    "ko-admin-header__content": "_ko-admin-header__content_1hjhif"
+  };
+});
+define("frontend-cp/styles/components/ko-admin/team/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-admin-card-user--small": "_ko-admin-card-user--small_1czwjf",
+    "ko-admin-card-user__loader": "_ko-admin-card-user__loader_1czwjf",
+    "ko-admin_team__businesshours": "_ko-admin_team__businesshours_1czwjf"
+  };
+});
+define("frontend-cp/styles/components/ko-admin/views/edit/columns/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-views-column": "_ko-views-column_1mjmbn",
+    "ko-views-column__item": "_ko-views-column__item_1mjmbn",
+    "ko-views-column__action": "_ko-views-column__action_1mjmbn",
+    "ko-views-column__content": "_ko-views-column__content_1mjmbn"
+  };
+});
+define("frontend-cp/styles/components/ko-admin/views/edit/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-admin_views_edit_predicate-header": "_ko-admin_views_edit_predicate-header_yj3brn",
+    "ko-admin_views_edit_team-selector": "_ko-admin_views_edit_team-selector_yj3brn",
+    "ember-power-select-trigger": "_ember-power-select-trigger_yj3brn",
+    "ember-power-select-multiple-option": "_ember-power-select-multiple-option_yj3brn",
+    "ember-power-select-trigger-multiple-input": "_ember-power-select-trigger-multiple-input_yj3brn"
+  };
+});
+define("frontend-cp/styles/components/ko-admin-card-team/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-admin-card-team": "_ko-admin-card-team_u3jlk",
+    "ko-admin-card-team__header": "_ko-admin-card-team__header_u3jlk",
+    "ko-admin-card-team__title": "_ko-admin-card-team__title_u3jlk",
+    "ko-admin-card-team__content": "_ko-admin-card-team__content_u3jlk",
+    "ko-admin-card-team-members": "_ko-admin-card-team-members_u3jlk",
+    "ko-admin-card-team-members__item": "_ko-admin-card-team-members__item_u3jlk"
+  };
+});
+define("frontend-cp/styles/components/ko-admin-card-user/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-admin-card-user": "_ko-admin-card-user_1yd5lj"
+  };
+});
+define("frontend-cp/styles/components/ko-admin-selectable-card/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-admin-selectable-card": "_ko-admin-selectable-card_1vtqol",
+    "ko-admin-selectable-card--selected": "_ko-admin-selectable-card--selected_1vtqol",
+    "ko-admin-selectable-card__content": "_ko-admin-selectable-card__content_1vtqol",
+    "ko-admin-selectable-card__checkbox": "_ko-admin-selectable-card__checkbox_1vtqol"
+  };
+});
+define("frontend-cp/styles/components/ko-agent-dropdown/create-case/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-agent-dropdown_create-case": "_ko-agent-dropdown_create-case_1tb74d",
+    "rotating": "_rotating_1tb74d",
+    "ember-power-select-typeahead": "_ember-power-select-typeahead_1tb74d",
+    "ember-power-select-trigger": "_ember-power-select-trigger_1tb74d",
+    "ember-power-select-typeahead-input": "_ember-power-select-typeahead-input_1tb74d",
+    "ember-power-select-typeahead-loading-indicator": "_ember-power-select-typeahead-loading-indicator_1tb74d",
+    "ko-agent-dropdown-create-case__dropdown-user": "_ko-agent-dropdown-create-case__dropdown-user_1tb74d",
+    "ko-agent-dropdown-create-case__dropdown-user-image": "_ko-agent-dropdown-create-case__dropdown-user-image_1tb74d",
+    "ember-power-select-option": "_ember-power-select-option_1tb74d",
+    "t-caption": "_t-caption_1tb74d"
+  };
+});
+define("frontend-cp/styles/components/ko-agent-dropdown/create-organisation/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-agent-dropdown-create-organisation__tags-input": "_ko-agent-dropdown-create-organisation__tags-input_gmvf8l"
+  };
+});
+define("frontend-cp/styles/components/ko-agent-dropdown/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-agent-dropdown": "_ko-agent-dropdown_1ht47t",
+    "ko-agent-dropdown__icon-square": "_ko-agent-dropdown__icon-square_1ht47t",
+    "ko-agent-dropdown__add-icon": "_ko-agent-dropdown__add-icon_1ht47t",
+    "ko-agent-dropdown__trigger": "_ko-agent-dropdown__trigger_1ht47t",
+    "ko-agent-dropdown__drop": "_ko-agent-dropdown__drop_1ht47t",
+    "ko-agent-dropdown__nav-items": "_ko-agent-dropdown__nav-items_1ht47t",
+    "ko-agent-dropdown__nav-item": "_ko-agent-dropdown__nav-item_1ht47t",
+    "ko-agent-dropdown__nav-item-img": "_ko-agent-dropdown__nav-item-img_1ht47t",
+    "ko-agent-dropdown__header": "_ko-agent-dropdown__header_1ht47t",
+    "ko-agent-dropdown__title": "_ko-agent-dropdown__title_1ht47t",
+    "ko-agent-dropdown__footer": "_ko-agent-dropdown__footer_1ht47t"
+  };
+});
+define("frontend-cp/styles/components/ko-breadcrumbs/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "breadcrumbs": "_breadcrumbs_1k9qaa",
+    "breadcrumbs__item": "_breadcrumbs__item_1k9qaa",
+    "active": "_active_1k9qaa",
+    "breadcrumbs__action": "_breadcrumbs__action_1k9qaa"
+  };
+});
+define("frontend-cp/styles/components/ko-bulk-sidebar/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-bulk-sidebar": "_ko-bulk-sidebar_1pja0w",
+    "ko-bulk-sidebar__title": "_ko-bulk-sidebar__title_1pja0w",
+    "fields": "_fields_1pja0w",
+    "ko-bulk-sidebar__button-bar": "_ko-bulk-sidebar__button-bar_1pja0w"
+  };
+});
+define("frontend-cp/styles/components/ko-case/macro-selector/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-case_macro-selector": "_ko-case_macro-selector_1mxml5",
+    "ember-power-select-dropdown": "_ember-power-select-dropdown_1mxml5",
+    "ember-basic-dropdown-content": "_ember-basic-dropdown-content_1mxml5",
+    "ember-power-select-search": "_ember-power-select-search_1mxml5"
+  };
+});
+define("frontend-cp/styles/components/ko-case/sla-sidebar/metric/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-case_sla-sidebar__label": "_ko-case_sla-sidebar__label_vm7dkn",
+    "ko-case_sla-sidebar__data": "_ko-case_sla-sidebar__data_vm7dkn",
+    "ko-case_sla-sidebar__data--good": "_ko-case_sla-sidebar__data--good_vm7dkn",
+    "ko-case_sla-sidebar__data--bad": "_ko-case_sla-sidebar__data--bad_vm7dkn",
+    "ko-case_sla-sidebar__data--warning": "_ko-case_sla-sidebar__data--warning_vm7dkn",
+    "ko-case_sla-sidebar__data--open": "_ko-case_sla-sidebar__data--open_vm7dkn"
+  };
+});
+define("frontend-cp/styles/components/ko-case/sla-sidebar/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-case_sla-sidebar": "_ko-case_sla-sidebar_ce7lq4",
+    "ko-case_sla-sidebar__table": "_ko-case_sla-sidebar__table_ce7lq4"
+  };
+});
+define("frontend-cp/styles/components/ko-case-action-menu/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-case-action-menu__dropdown": "_ko-case-action-menu__dropdown_zuq3yf",
+    "button--dropdown": "_button--dropdown_zuq3yf",
+    "ember-basic-dropdown-trigger": "_ember-basic-dropdown-trigger_zuq3yf",
+    "ember-basic-dropdown-content": "_ember-basic-dropdown-content_zuq3yf"
+  };
+});
+define("frontend-cp/styles/components/ko-case-content/dropdown/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-case-content_dropdown": "_ko-case-content_dropdown_1qalsl",
+    "ko-case-content_dropdown__label": "_ko-case-content_dropdown__label_1qalsl",
+    "ko-case-content_dropdown__current-value": "_ko-case-content_dropdown__current-value_1qalsl"
+  };
+});
+define("frontend-cp/styles/components/ko-case-content/field/forms/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-case-content_field_forms": "_ko-case-content_field_forms_188lxp"
+  };
+});
+define("frontend-cp/styles/components/ko-case-content/field/post/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-text-editor--note": "_ko-text-editor--note_1dzldt",
+    "ko-text-editor__dropzone-and-editor-container": "_ko-text-editor__dropzone-and-editor-container_1dzldt",
+    "ko-text-editor--reply": "_ko-text-editor--reply_1dzldt",
+    "text-editor--small": "_text-editor--small_1dzldt",
+    "ko-case-content_field_post--note-reminder": "_ko-case-content_field_post--note-reminder_1dzldt",
+    "ko-case-content_field_post--twitter-message": "_ko-case-content_field_post--twitter-message_1dzldt",
+    "ko-case-content_field_post__icon": "_ko-case-content_field_post__icon_1dzldt",
+    "ko-case-content_field_post__tooltip": "_ko-case-content_field_post__tooltip_1dzldt",
+    "ko-case-content_field_post--editor-overlay": "_ko-case-content_field_post--editor-overlay_1dzldt",
+    "arrow": "_arrow_1dzldt"
+  };
+});
+define("frontend-cp/styles/components/ko-cases-list/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-cases-list": "_ko-cases-list_fyrf4m",
+    "ko-cases-list__title": "_ko-cases-list__title_fyrf4m",
+    "ko-cases-list__table-th": "_ko-cases-list__table-th_fyrf4m",
+    "ko-cases-list__header--id": "_ko-cases-list__header--id_fyrf4m",
+    "ko-cases-list__header--avatar": "_ko-cases-list__header--avatar_fyrf4m",
+    "ko-cases-list__header--caseid": "_ko-cases-list__header--caseid_fyrf4m",
+    "ko-cases-list__header--casestatusid": "_ko-cases-list__header--casestatusid_fyrf4m",
+    "ko-cases-list__header--casepriorityid": "_ko-cases-list__header--casepriorityid_fyrf4m",
+    "ko-cases-list__header--brandid": "_ko-cases-list__header--brandid_fyrf4m",
+    "ko-cases-list__header--casetypeid": "_ko-cases-list__header--casetypeid_fyrf4m",
+    "ko-cases-list__header--assigneeagentid": "_ko-cases-list__header--assigneeagentid_fyrf4m",
+    "ko-cases-list__header--assigneeteamid": "_ko-cases-list__header--assigneeteamid_fyrf4m",
+    "ko-cases-list__header--requesterid": "_ko-cases-list__header--requesterid_fyrf4m",
+    "ko-cases-list__header--channeltype": "_ko-cases-list__header--channeltype_fyrf4m",
+    "ko-cases-list__header--createdat": "_ko-cases-list__header--createdat_fyrf4m",
+    "ko-cases-list__header--updatedat": "_ko-cases-list__header--updatedat_fyrf4m",
+    "ko-cases-list__header--lastcompletedat": "_ko-cases-list__header--lastcompletedat_fyrf4m",
+    "ko-cases-list__header--last-update": "_ko-cases-list__header--last-update_fyrf4m",
+    "ko-cases-list__header--last-update-by-a-user": "_ko-cases-list__header--last-update-by-a-user_fyrf4m",
+    "ko-cases-list__header--last-update-by-requester": "_ko-cases-list__header--last-update-by-requester_fyrf4m",
+    "ko-cases-list__header--last-update-by-assignee": "_ko-cases-list__header--last-update-by-assignee_fyrf4m",
+    "ko-cases-list__header--oldest-update-by-requester": "_ko-cases-list__header--oldest-update-by-requester_fyrf4m",
+    "ko-cases-list__header--sla-name": "_ko-cases-list__header--sla-name_fyrf4m",
+    "ko-cases-list__row": "_ko-cases-list__row_fyrf4m",
+    "ko-cases-list__row--trashed": "_ko-cases-list__row--trashed_fyrf4m",
+    "ko-cases-list__action-button": "_ko-cases-list__action-button_fyrf4m"
+  };
+});
+define("frontend-cp/styles/components/ko-center/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-center": "_ko-center_hiyad",
+    "ko-center__contents": "_ko-center__contents_hiyad"
+  };
+});
+define("frontend-cp/styles/components/ko-channel-selector/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-channel-selector": "_ko-channel-selector_1dyy4h",
+    "ember-power-select": "_ember-power-select_1dyy4h",
+    "ember-power-select-trigger": "_ember-power-select-trigger_1dyy4h",
+    "ember-power-select-dropdown": "_ember-power-select-dropdown_1dyy4h",
+    "ember-power-select-option": "_ember-power-select-option_1dyy4h",
+    "opened": "_opened_1dyy4h",
+    "ember-basic-dropdown-trigger": "_ember-basic-dropdown-trigger_1dyy4h"
+  };
+});
+define("frontend-cp/styles/components/ko-checkbox/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-checkbox": "_ko-checkbox_19ae5q",
+    "t-caption": "_t-caption_19ae5q",
+    "ko-checkbox__checkbox": "_ko-checkbox__checkbox_19ae5q",
+    "ko-checkbox__checkbox--large": "_ko-checkbox__checkbox--large_19ae5q",
+    "ko-checkbox__checkbox--disabled": "_ko-checkbox__checkbox--disabled_19ae5q",
+    "ko-checkbox__tick": "_ko-checkbox__tick_19ae5q",
+    "ko-checkbox__tick--large": "_ko-checkbox__tick--large_19ae5q",
+    "ko-checkbox__label": "_ko-checkbox__label_19ae5q",
+    "ko-checkbox__label--disabled": "_ko-checkbox__label--disabled_19ae5q"
+  };
+});
+define("frontend-cp/styles/components/ko-context-modal/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-context-modal__dropdown": "_ko-context-modal__dropdown_xzrcp3",
+    "ko-context-modal__container": "_ko-context-modal__container_xzrcp3",
+    "ko-context-modal__action": "_ko-context-modal__action_xzrcp3",
+    "ko-context-modal__content": "_ko-context-modal__content_xzrcp3",
+    "ko-context-modal__header": "_ko-context-modal__header_xzrcp3",
+    "ko-context-modal-list": "_ko-context-modal-list_xzrcp3",
+    "ko-context-modal-list__item": "_ko-context-modal-list__item_xzrcp3",
+    "is-active": "_is-active_xzrcp3",
+    "ko-context-modal-list__image": "_ko-context-modal-list__image_xzrcp3"
+  };
+});
+define("frontend-cp/styles/components/ko-date-select/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-date-select__content": "_ko-date-select__content_mru0y7",
+    "ember-basic-dropdown--above": "_ember-basic-dropdown--above_mru0y7",
+    "ko-date-select__trigger": "_ko-date-select__trigger_mru0y7",
+    "ko-date-select__trigger-icon": "_ko-date-select__trigger-icon_mru0y7",
+    "ko-date-select__dropdown": "_ko-date-select__dropdown_mru0y7"
+  };
+});
+define("frontend-cp/styles/components/ko-datepicker/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-datepicker": "_ko-datepicker_pcdglo"
+  };
+});
+define("frontend-cp/styles/components/ko-draggable-dropzone/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-draggable-dropzone": "_ko-draggable-dropzone_1et6d3",
+    "ko-draggable-dropzone__border": "_ko-draggable-dropzone__border_1et6d3"
+  };
+});
+define("frontend-cp/styles/components/ko-dropdown/container/button/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-dropdown_container_button": "_ko-dropdown_container_button_1t1wgx"
+  };
+});
+define("frontend-cp/styles/components/ko-dropdown/container/content/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-dropdown-container-content": "_ko-dropdown-container-content_1j2cbw"
+  };
+});
+define("frontend-cp/styles/components/ko-dropdown/container/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-dropdown-container": "_ko-dropdown-container_1y6hvv",
+    "ko-dropdown__item-chevron": "_ko-dropdown__item-chevron_1y6hvv",
+    "focused": "_focused_1y6hvv"
+  };
+});
+define("frontend-cp/styles/components/ko-dropdown/drill-down/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-dropdown_drill-down": "_ko-dropdown_drill-down_14yn5c",
+    "ember-power-select-trigger": "_ember-power-select-trigger_14yn5c",
+    "ember-power-select-dropdown": "_ember-power-select-dropdown_14yn5c",
+    "i-chevron-large-left": "_i-chevron-large-left_14yn5c",
+    "i-chevron-large-right": "_i-chevron-large-right_14yn5c",
+    "ember-power-select-option": "_ember-power-select-option_14yn5c"
+  };
+});
+define("frontend-cp/styles/components/ko-dropdown/list/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-dropdown_list": "_ko-dropdown_list_t78gyw",
+    "ko-dropdown_list__item": "_ko-dropdown_list__item_t78gyw",
+    "t-caption": "_t-caption_t78gyw"
+  };
+});
+define("frontend-cp/styles/components/ko-dropdown/select/button/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-dropdown_select_button": "_ko-dropdown_select_button_debhsr",
+    "ko-dropdown-select__icon": "_ko-dropdown-select__icon_debhsr"
+  };
+});
+define("frontend-cp/styles/components/ko-editable-text/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "editable-text": "_editable-text_1y120m",
+    "error": "_error_1y120m",
+    "editable-text__input-field": "_editable-text__input-field_1y120m",
+    "editable-text__input": "_editable-text__input_1y120m",
+    "editable-text__text": "_editable-text__text_1y120m",
+    "editable-text__pencil": "_editable-text__pencil_1y120m",
+    "editable-text__text--pusher-edited": "_editable-text__text--pusher-edited_1y120m",
+    "editable-text__text--edited": "_editable-text__text--edited_1y120m",
+    "editable-text__text--disabled": "_editable-text__text--disabled_1y120m",
+    "editable-text--empty": "_editable-text--empty_1y120m"
+  };
+});
+define("frontend-cp/styles/components/ko-editor-modal/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-editor-modal": "_ko-editor-modal_bkeaop",
+    "ko-editor-modal__modal": "_ko-editor-modal__modal_bkeaop",
+    "ko-editor-modal__title": "_ko-editor-modal__title_bkeaop",
+    "ko-editor-modal__overlay": "_ko-editor-modal__overlay_bkeaop",
+    "ko-editor-modal__cancel": "_ko-editor-modal__cancel_bkeaop",
+    "text-area--clean": "_text-area--clean_bkeaop",
+    "box": "_box_bkeaop",
+    "ko-editor-modal__submit-message": "_ko-editor-modal__submit-message_bkeaop"
+  };
+});
+define("frontend-cp/styles/components/ko-feed/activity/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-feed_activity": "_ko-feed_activity_l78mv2",
+    "ko-feed_activity__border": "_ko-feed_activity__border_l78mv2",
+    "ko-feed_activity__contents": "_ko-feed_activity__contents_l78mv2",
+    "ko-feed_activity__summary": "_ko-feed_activity__summary_l78mv2"
+  };
+});
+define("frontend-cp/styles/components/ko-feed/item/menu/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-feed_item_menu": "_ko-feed_item_menu_ab8cm2",
+    "ko-feed-item_menu__item": "_ko-feed-item_menu__item_ab8cm2"
+  };
+});
+define("frontend-cp/styles/components/ko-feed/item/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-feed_item": "_ko-feed_item_w4pl52",
+    "ko-feed_item__image": "_ko-feed_item__image_w4pl52",
+    "ko-feed_item__border": "_ko-feed_item__border_w4pl52",
+    "ko-feed_item--note": "_ko-feed_item--note_w4pl52",
+    "ko-feed_item--post": "_ko-feed_item--post_w4pl52",
+    "ko-feed_item__title": "_ko-feed_item__title_w4pl52",
+    "ko-feed_item__title--small": "_ko-feed_item__title--small_w4pl52",
+    "ko-feed_item__time-ago": "_ko-feed_item__time-ago_w4pl52",
+    "ko-feed_item__details": "_ko-feed_item__details_w4pl52",
+    "ko-feed_item__attachment": "_ko-feed_item__attachment_w4pl52",
+    "ko-feed_item__attachment-name": "_ko-feed_item__attachment-name_w4pl52",
+    "ko-feed_item__attachment-size": "_ko-feed_item__attachment-size_w4pl52",
+    "ko-feed_item__content": "_ko-feed_item__content_w4pl52",
+    "ko-feed_item__cc": "_ko-feed_item__cc_w4pl52",
+    "ko-feed_item__cc--collapsed": "_ko-feed_item__cc--collapsed_w4pl52"
+  };
+});
+define("frontend-cp/styles/components/ko-feedback/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-feedback": "_ko-feedback_1ohn3d",
+    "ko-feedback__metric": "_ko-feedback__metric_1ohn3d",
+    "ko-feedback__caption": "_ko-feedback__caption_1ohn3d"
+  };
+});
+define("frontend-cp/styles/components/ko-file-upload/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-file-upload": "_ko-file-upload_1uhufc"
+  };
+});
+define("frontend-cp/styles/components/ko-file-upload/upload-item/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "upload-item": "_upload-item_elc0de",
+    "upload-item__action": "_upload-item__action_elc0de",
+    "upload-item__name": "_upload-item__name_elc0de",
+    "upload-item__size": "_upload-item__size_elc0de"
+  };
+});
+define("frontend-cp/styles/components/ko-form/buttons/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-form_buttons__loader": "_ko-form_buttons__loader_jj4znm"
+  };
+});
+define("frontend-cp/styles/components/ko-form/field/errors/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-form_field_errors__error": "_ko-form_field_errors__error_gg68ht"
+  };
+});
+define("frontend-cp/styles/components/ko-form/field/help/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-form_field_help": "_ko-form_field_help_w062ez"
+  };
+});
+define("frontend-cp/styles/components/ko-form/field/label/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-form_field_label": "_ko-form_field_label_1h5inq"
+  };
+});
+define("frontend-cp/styles/components/ko-form/field/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-form_field": "_ko-form_field_t1sw1x",
+    "ko-form_field--gap": "_ko-form_field--gap_t1sw1x",
+    "ko-form_field__error": "_ko-form_field__error_t1sw1x"
+  };
+});
+define("frontend-cp/styles/components/ko-grid-picker/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-grid-picker": "_ko-grid-picker_1vjl2v",
+    "ko-grid-picker__cell": "_ko-grid-picker__cell_1vjl2v",
+    "selected": "_selected_1vjl2v",
+    "ko-grid-picker__row": "_ko-grid-picker__row_1vjl2v",
+    "ko-grid-picker__legend": "_ko-grid-picker__legend_1vjl2v",
+    "ko-grid-picker__legend-cell": "_ko-grid-picker__legend-cell_1vjl2v"
+  };
+});
+define("frontend-cp/styles/components/ko-identities/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-identities": "_ko-identities_hpf52m",
+    "ko-identities__list": "_ko-identities__list_hpf52m",
+    "ko-dropdown_list__item-wrapper": "_ko-dropdown_list__item-wrapper_hpf52m",
+    "ko-identities__list-item": "_ko-identities__list-item_hpf52m",
+    "identities-dropdown_item": "_identities-dropdown_item_hpf52m",
+    "i-caution": "_i-caution_hpf52m",
+    "ko-identities__create-dropdown": "_ko-identities__create-dropdown_hpf52m",
+    "ember-basic-dropdown-content": "_ember-basic-dropdown-content_hpf52m",
+    "ember-basic-dropdown-trigger": "_ember-basic-dropdown-trigger_hpf52m",
+    "ember-basic-dropdown": "_ember-basic-dropdown_hpf52m",
+    "i-chevron-large-down": "_i-chevron-large-down_hpf52m"
+  };
+});
+define("frontend-cp/styles/components/ko-info-bar/field/checkbox/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {};
+});
+define("frontend-cp/styles/components/ko-info-bar/field/date/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-info-bar_field_date": "_ko-info-bar_field_date_ids8q",
+    "ko-info-bar_field_date__icon": "_ko-info-bar_field_date__icon_ids8q",
+    "ko-info-bar_field_date__focus": "_ko-info-bar_field_date__focus_ids8q"
+  };
+});
+define("frontend-cp/styles/components/ko-info-bar/field/drill-down/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-info-bar_field_drill-down": "_ko-info-bar_field_drill-down_1b2912",
+    "ember-power-select-dropdown": "_ember-power-select-dropdown_1b2912"
+  };
+});
+define("frontend-cp/styles/components/ko-info-bar/field/drill-down/trigger/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-info-bar_field_drill-down": "_ko-info-bar_field_drill-down_1dzxr5",
+    "ko-info-bar_field_drill-down_trigger__input": "_ko-info-bar_field_drill-down_trigger__input_1dzxr5",
+    "ko-info-bar_field_drill-down__placeholder": "_ko-info-bar_field_drill-down__placeholder_1dzxr5",
+    "ko-info-bar_field_drill-down_trigger__icon": "_ko-info-bar_field_drill-down_trigger__icon_1dzxr5"
+  };
+});
+define("frontend-cp/styles/components/ko-info-bar/field/file/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-field-file__input": "_ko-field-file__input_1hl0qz"
+  };
+});
+define("frontend-cp/styles/components/ko-info-bar/field/multiline-text/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-info-bar_multiline-text": "_ko-info-bar_multiline-text_or0o9l",
+    "ko-field-text__multiline-text": "_ko-field-text__multiline-text_or0o9l"
+  };
+});
+define("frontend-cp/styles/components/ko-info-bar/field/search/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-info-bar_field_search": "_ko-info-bar_field_search_1nnfhh",
+    "ko-info-bar_field_search__loader-icon": "_ko-info-bar_field_search__loader-icon_1nnfhh",
+    "ko-info-bar_field_search__icon": "_ko-info-bar_field_search__icon_1nnfhh",
+    "dropdown": "_dropdown_1nnfhh",
+    "dropdown-menu__item": "_dropdown-menu__item_1nnfhh",
+    "dropdown-menu": "_dropdown-menu_1nnfhh",
+    "ko-info-bar_field_search__input": "_ko-info-bar_field_search__input_1nnfhh"
+  };
+});
+define("frontend-cp/styles/components/ko-info-bar/field/select/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-info-bar_field_select": "_ko-info-bar_field_select_e9vorq",
+    "ko-info-bar_item--active": "_ko-info-bar_item--active_e9vorq",
+    "ember-power-select-trigger": "_ember-power-select-trigger_e9vorq",
+    "ember-power-select-dropdown": "_ember-power-select-dropdown_e9vorq",
+    "ember-power-select-option": "_ember-power-select-option_e9vorq",
+    "ko-info-bar_field_select__arrow": "_ko-info-bar_field_select__arrow_e9vorq",
+    "ko-info-bar_field_select__arrow-inset": "_ko-info-bar_field_select__arrow-inset_e9vorq"
+  };
+});
+define("frontend-cp/styles/components/ko-info-bar/field/select/trigger/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-info-bar_field_select_trigger": "_ko-info-bar_field_select_trigger_18ckof",
+    "ko-info-bar_field_select_trigger-input": "_ko-info-bar_field_select_trigger-input_18ckof",
+    "ko-info-bar_field_select__placeholder": "_ko-info-bar_field_select__placeholder_18ckof",
+    "ko-info-bar_field_select__icon": "_ko-info-bar_field_select__icon_18ckof"
+  };
+});
+define("frontend-cp/styles/components/ko-info-bar/field/tags/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-info-bar_field_tags": "_ko-info-bar_field_tags_kda81b"
+  };
+});
+define("frontend-cp/styles/components/ko-info-bar/field/text/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-info-bar_field_text": "_ko-info-bar_field_text_1qitd3",
+    "ko-field-text__input": "_ko-field-text__input_1qitd3"
+  };
+});
+define("frontend-cp/styles/components/ko-info-bar/item/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-info-bar_item": "_ko-info-bar_item_a3c0ye",
+    "ko-info-bar_item--no-hover": "_ko-info-bar_item--no-hover_a3c0ye",
+    "ko-info-bar_item--no-separator": "_ko-info-bar_item--no-separator_a3c0ye",
+    "ko-info-bar_item--active": "_ko-info-bar_item--active_a3c0ye",
+    "ember-power-select-dropdown": "_ember-power-select-dropdown_a3c0ye",
+    "ko-info-bar_item--edited": "_ko-info-bar_item--edited_a3c0ye",
+    "ko-info-bar_item--pusher-edited": "_ko-info-bar_item--pusher-edited_a3c0ye",
+    "ko-info-bar_item--error": "_ko-info-bar_item--error_a3c0ye",
+    "ko-info-bar_item--disabled": "_ko-info-bar_item--disabled_a3c0ye",
+    "ko-info-bar_item__header": "_ko-info-bar_item__header_a3c0ye",
+    "ko-info-bar_item__content": "_ko-info-bar_item__content_a3c0ye",
+    "is-sticky": "_is-sticky_a3c0ye"
+  };
+});
+define("frontend-cp/styles/components/ko-info-bar/metadata/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-info-bar_metadata": "_ko-info-bar_metadata_1nyhck"
+  };
+});
+define("frontend-cp/styles/components/ko-info-bar/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "info-bar": "_info-bar_1ylhd6",
+    "sticky": "_sticky_1ylhd6",
+    "info-bar__heading": "_info-bar__heading_1ylhd6"
+  };
+});
+define("frontend-cp/styles/components/ko-layout/advanced/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-layout_advanced": "_ko-layout_advanced_106wmq",
+    "ko-layout_advanced__heading": "_ko-layout_advanced__heading_106wmq",
+    "ko-layout_advanced__content": "_ko-layout_advanced__content_106wmq",
+    "ko-layout_advanced__main": "_ko-layout_advanced__main_106wmq",
+    "ko-layout_advanced__sidebar": "_ko-layout_advanced__sidebar_106wmq",
+    "ko-layout_advanced__reply-area": "_ko-layout_advanced__reply-area_106wmq",
+    "ko-layout_advanced__timeline-area": "_ko-layout_advanced__timeline-area_106wmq",
+    "ko-layout_advanced_heading": "_ko-layout_advanced_heading_106wmq",
+    "ko-layout_advanced_heading__left": "_ko-layout_advanced_heading__left_106wmq",
+    "ko-layout_advanced_heading__right": "_ko-layout_advanced_heading__right_106wmq",
+    "ko-layout_advanced_section": "_ko-layout_advanced_section_106wmq",
+    "ko-layout_advanced_section__image": "_ko-layout_advanced_section__image_106wmq",
+    "ko-layout_advanced_section__img": "_ko-layout_advanced_section__img_106wmq",
+    "ko-layout_advanced_section__body": "_ko-layout_advanced_section__body_106wmq",
+    "ko-layout_advanced_section__subject": "_ko-layout_advanced_section__subject_106wmq",
+    "ko-layout_advanced_section__subtitle": "_ko-layout_advanced_section__subtitle_106wmq",
+    "ko-layout_advanced_editor": "_ko-layout_advanced_editor_106wmq",
+    "ko-layout_advanced_editor__placeholder": "_ko-layout_advanced_editor__placeholder_106wmq",
+    "ko-layout_advanced_editor__action": "_ko-layout_advanced_editor__action_106wmq",
+    "ko-layout_advanced__button-loading": "_ko-layout_advanced__button-loading_106wmq",
+    "ko-layout_advanced__editor-overlay": "_ko-layout_advanced__editor-overlay_106wmq",
+    "ko-layout_advanced__note-reminder": "_ko-layout_advanced__note-reminder_106wmq",
+    "ko-layout_advanced_editable-text--readonly": "_ko-layout_advanced_editable-text--readonly_106wmq",
+    "editable-text__text--disabled": "_editable-text__text--disabled_106wmq",
+    "ko-layout_advanced--is-new": "_ko-layout_advanced--is-new_106wmq",
+    "ko-text-editor--reply": "_ko-text-editor--reply_106wmq",
+    "ko-text-editor--note": "_ko-text-editor--note_106wmq"
+  };
+});
+define("frontend-cp/styles/components/ko-loader/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-loader": "_ko-loader_125ert",
+    "ko-loader__item": "_ko-loader__item_125ert",
+    "ko-loader__state1": "_ko-loader__state1_125ert",
+    "ko-loader__state2": "_ko-loader__state2_125ert",
+    "ko-loader__state3": "_ko-loader__state3_125ert",
+    "ko-loader--large": "_ko-loader--large_125ert"
+  };
+});
+define("frontend-cp/styles/components/ko-modal/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-modal__overlay": "_ko-modal__overlay_15c5qc",
+    "ko-modal__content": "_ko-modal__content_15c5qc",
+    "ko-modal__content__main": "_ko-modal__content__main_15c5qc",
+    "ko-modal__content__header": "_ko-modal__content__header_15c5qc",
+    "ko-modal__content__footer": "_ko-modal__content__footer_15c5qc"
+  };
+});
+define("frontend-cp/styles/components/ko-notification-badge/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-notification-badge": "_ko-notification-badge_1xy6ry"
+  };
+});
+define("frontend-cp/styles/components/ko-organisation-action-menu/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-organisation-action-menu": "_ko-organisation-action-menu_15xj0c",
+    "ko-dropdown-select__content": "_ko-dropdown-select__content_15xj0c",
+    "menu-active": "_menu-active_15xj0c",
+    "button--dropdown": "_button--dropdown_15xj0c"
+  };
+});
+define("frontend-cp/styles/components/ko-pagination/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-pagination": "_ko-pagination_1qbale",
+    "ko-pagination__container": "_ko-pagination__container_1qbale",
+    "ko-pagination__pageNumber": "_ko-pagination__pageNumber_1qbale",
+    "ko-pagination__pageCount": "_ko-pagination__pageCount_1qbale",
+    "ko-pagination__first": "_ko-pagination__first_1qbale",
+    "ko-pagination__last": "_ko-pagination__last_1qbale",
+    "ko-pagination__next": "_ko-pagination__next_1qbale",
+    "ko-pagination__previous": "_ko-pagination__previous_1qbale",
+    "ko-pagination__first--available": "_ko-pagination__first--available_1qbale",
+    "ko-pagination__last--available": "_ko-pagination__last--available_1qbale",
+    "ko-pagination__previous--available": "_ko-pagination__previous--available_1qbale",
+    "ko-pagination__next--available": "_ko-pagination__next--available_1qbale"
+  };
+});
+define("frontend-cp/styles/components/ko-people-popover/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-people-popover__input-error": "_ko-people-popover__input-error_19i5a0",
+    "ko-people-popover__selected-list": "_ko-people-popover__selected-list_19i5a0",
+    "ko-people-popover__selected-list-item": "_ko-people-popover__selected-list-item_19i5a0",
+    "ko-people-popover__cross": "_ko-people-popover__cross_19i5a0",
+    "ko-people-popover__caption": "_ko-people-popover__caption_19i5a0",
+    "ko-people-popover__org-caption": "_ko-people-popover__org-caption_19i5a0",
+    "ko-people-popover__email-caption": "_ko-people-popover__email-caption_19i5a0",
+    "ko-people-popover__filtered-list": "_ko-people-popover__filtered-list_19i5a0",
+    "ko-people-popover__filtered-list-item": "_ko-people-popover__filtered-list-item_19i5a0",
+    "ko-people-popover__not-found": "_ko-people-popover__not-found_19i5a0",
+    "ko-people-popover__image": "_ko-people-popover__image_19i5a0",
+    "ko-people-popover__input": "_ko-people-popover__input_19i5a0",
+    "ko-people-popover__button-space": "_ko-people-popover__button-space_19i5a0",
+    "ko-people-popover__button": "_ko-people-popover__button_19i5a0",
+    "ko-people-popover__subtitle": "_ko-people-popover__subtitle_19i5a0",
+    "ko-people-popover__loader-block": "_ko-people-popover__loader-block_19i5a0",
+    "ko-people-popover__loader": "_ko-people-popover__loader_19i5a0",
+    "ko-people-popover__selected-item-name": "_ko-people-popover__selected-item-name_19i5a0"
+  };
+});
+define("frontend-cp/styles/components/ko-predicate-builder/rule/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-predicate-builder_rule": "_ko-predicate-builder_rule_1bzmu0",
+    "ko-predicate-builder_rule__remove": "_ko-predicate-builder_rule__remove_1bzmu0",
+    "ko-predicate-builder_rule__label": "_ko-predicate-builder_rule__label_1bzmu0",
+    "ko-predicate-builder__tags-input": "_ko-predicate-builder__tags-input_1bzmu0",
+    "ko-tags": "_ko-tags_1bzmu0",
+    "ko-tags__input": "_ko-tags__input_1bzmu0",
+    "ko-tags__item": "_ko-tags__item_1bzmu0",
+    "ko-tags__action": "_ko-tags__action_1bzmu0",
+    "ko-predicate-builder_rule__item": "_ko-predicate-builder_rule__item_1bzmu0",
+    "ko-predicate-builder_rule__input": "_ko-predicate-builder_rule__input_1bzmu0",
+    "ko-predicate-builder_rule__actions": "_ko-predicate-builder_rule__actions_1bzmu0"
+  };
+});
+define("frontend-cp/styles/components/ko-predicate-builder/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-predicate-builder": "_ko-predicate-builder_sjf0gb",
+    "ko-predicate-builder__label": "_ko-predicate-builder__label_sjf0gb",
+    "ko-predicate-builder__remove": "_ko-predicate-builder__remove_sjf0gb",
+    "ko-predicate-builder__add": "_ko-predicate-builder__add_sjf0gb",
+    "ko-predicate-builder__new": "_ko-predicate-builder__new_sjf0gb"
+  };
+});
+define("frontend-cp/styles/components/ko-radio/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-radio": "_ko-radio_1xo6ef",
+    "ko-radio__container": "_ko-radio__container_1xo6ef",
+    "ko-radio__radio": "_ko-radio__radio_1xo6ef",
+    "ko-radio__label": "_ko-radio__label_1xo6ef"
+  };
+});
+define("frontend-cp/styles/components/ko-recent-cases/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-recent-cases": "_ko-recent-cases_12fzrz",
+    "ko-recent-cases__heading": "_ko-recent-cases__heading_12fzrz",
+    "ko-recent-cases__item": "_ko-recent-cases__item_12fzrz",
+    "ko-recent-case__missing": "_ko-recent-case__missing_12fzrz"
+  };
+});
+define("frontend-cp/styles/components/ko-reorderable-crud-list/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-reorderable-crud-list__item": "_ko-reorderable-crud-list__item_15wmaj",
+    "ko-reorderable-crud-list-actions": "_ko-reorderable-crud-list-actions_15wmaj",
+    "ko-reorderable-crud-list-actions__item": "_ko-reorderable-crud-list-actions__item_15wmaj"
+  };
+});
+define("frontend-cp/styles/components/ko-reorderable-list/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-reorderable-list": "_ko-reorderable-list_ol7rc2",
+    "ko-reorderable-list-item": "_ko-reorderable-list-item_ol7rc2",
+    "sortable-item": "_sortable-item_ol7rc2",
+    "is-dragging": "_is-dragging_ol7rc2",
+    "ko-reorderable-list_item_handle": "_ko-reorderable-list_item_handle_ol7rc2",
+    "ember-testing": "_ember-testing_ol7rc2"
+  };
+});
+define("frontend-cp/styles/components/ko-select/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-select": "_ko-select_1wbafr",
+    "ko-select--medium": "_ko-select--medium_1wbafr",
+    "ko-select__select": "_ko-select__select_1wbafr",
+    "ember-basic-dropdown-trigger": "_ember-basic-dropdown-trigger_1wbafr",
+    "ember-power-select-placeholder": "_ember-power-select-placeholder_1wbafr",
+    "ember-power-select-dropdown": "_ember-power-select-dropdown_1wbafr",
+    "ember-power-select-options": "_ember-power-select-options_1wbafr",
+    "ember-power-select-option": "_ember-power-select-option_1wbafr",
+    "ember-power-select-status-icon": "_ember-power-select-status-icon_1wbafr",
+    "ko-select__select-trigger": "_ko-select__select-trigger_1wbafr"
+  };
+});
+define("frontend-cp/styles/components/ko-session-widgets/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-session-widgets": "_ko-session-widgets_1qt7sd",
+    "ember-basic-dropdown-trigger": "_ember-basic-dropdown-trigger_1qt7sd",
+    "ember-basic-dropdown-content": "_ember-basic-dropdown-content_1qt7sd",
+    "i-chevron-large-down": "_i-chevron-large-down_1qt7sd",
+    "ko-session-widgets__avatar-container": "_ko-session-widgets__avatar-container_1qt7sd",
+    "ko-session-widget_user-name": "_ko-session-widget_user-name_1qt7sd",
+    "ko-session-widgets_user-dropdown": "_ko-session-widgets_user-dropdown_1qt7sd"
+  };
+});
+define("frontend-cp/styles/components/ko-sidebar/item/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "sidebar__title": "_sidebar__title_wnofvy"
+  };
+});
+define("frontend-cp/styles/components/ko-sidebar/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-sidebar": "_ko-sidebar_215wyc",
+    "ko-sidebar--no-border": "_ko-sidebar--no-border_215wyc",
+    "sidebar__link": "_sidebar__link_215wyc",
+    "disabled": "_disabled_215wyc",
+    "sidebar__value": "_sidebar__value_215wyc",
+    "active": "_active_215wyc",
+    "ember-transitioning-out": "_ember-transitioning-out_215wyc",
+    "ember-transitioning-in": "_ember-transitioning-in_215wyc",
+    "sidebar__icon": "_sidebar__icon_215wyc",
+    "sidebar__title": "_sidebar__title_215wyc",
+    "sidebar__separator": "_sidebar__separator_215wyc",
+    "sidebar__first-item": "_sidebar__first-item_215wyc"
+  };
+});
+define("frontend-cp/styles/components/ko-simple-box-row/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-simple-box-row": "_ko-simple-box-row_me48y7"
+  };
+});
+define("frontend-cp/styles/components/ko-simple-list/cell/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-simple-list_cell": "_ko-simple-list_cell_ivy246"
+  };
+});
+define("frontend-cp/styles/components/ko-simple-list/row/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-simple-list_row": "_ko-simple-list_row_115cpi",
+    "ko-simple-list__actions": "_ko-simple-list__actions_115cpi",
+    "ko-simple-list--actionable": "_ko-simple-list--actionable_115cpi"
+  };
+});
+define("frontend-cp/styles/components/ko-simple-list/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-simple-list": "_ko-simple-list_14gd1b",
+    "ko-simple-list__header": "_ko-simple-list__header_14gd1b"
+  };
+});
+define("frontend-cp/styles/components/ko-sla/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-sla": "_ko-sla_1cdyjx",
+    "ko-sla--good": "_ko-sla--good_1cdyjx",
+    "ko-sla--bad": "_ko-sla--bad_1cdyjx",
+    "ko-sla--warning": "_ko-sla--warning_1cdyjx",
+    "ko-sla__i": "_ko-sla__i_1cdyjx",
+    "ko-sla__metric": "_ko-sla__metric_1cdyjx",
+    "ko-sla--open": "_ko-sla--open_1cdyjx",
+    "ko-sla__container": "_ko-sla__container_1cdyjx",
+    "ko-sla__icon": "_ko-sla__icon_1cdyjx"
+  };
+});
+define("frontend-cp/styles/components/ko-stateful-button/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-stateful-button": "_ko-stateful-button_1v8se3",
+    "ko-stateful-button__button-text": "_ko-stateful-button__button-text_1v8se3",
+    "ko-stateful-button__button-text--hover": "_ko-stateful-button__button-text--hover_1v8se3",
+    "is-active": "_is-active_1v8se3",
+    "ko-stateful-button__button-loading": "_ko-stateful-button__button-loading_1v8se3"
+  };
+});
+define("frontend-cp/styles/components/ko-suggest/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-suggest__input": "_ko-suggest__input_17joqv"
+  };
+});
+define("frontend-cp/styles/components/ko-table/cell/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-table_cell": "_ko-table_cell_1i3e8u",
+    "ko-table_cell--ellipsis": "_ko-table_cell--ellipsis_1i3e8u"
+  };
+});
+define("frontend-cp/styles/components/ko-table/column/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-table_column": "_ko-table_column_15kgnn",
+    "ko-table_column--wrapper": "_ko-table_column--wrapper_15kgnn",
+    "ko-table_column--selected": "_ko-table_column--selected_15kgnn"
+  };
+});
+define("frontend-cp/styles/components/ko-table/header/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-table__header": "_ko-table__header_eydoog",
+    "ko-table__header__column--selectable": "_ko-table__header__column--selectable_eydoog",
+    "ko-table__header__column--avatar": "_ko-table__header__column--avatar_eydoog"
+  };
+});
+define("frontend-cp/styles/components/ko-table/row/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-table_row": "_ko-table_row_1bj5cb",
+    "selected": "_selected_1bj5cb"
+  };
+});
+define("frontend-cp/styles/components/ko-table/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-table": "_ko-table_158vw0",
+    "ko-table__header__column--selectable": "_ko-table__header__column--selectable_158vw0",
+    "ko-table__header--defualt-width": "_ko-table__header--defualt-width_158vw0"
+  };
+});
+define("frontend-cp/styles/components/ko-tags/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-tags": "_ko-tags_1h65cq",
+    "ko-tags__root": "_ko-tags__root_1h65cq",
+    "dropdown-menu": "_dropdown-menu_1h65cq",
+    "ko-tags__item": "_ko-tags__item_1h65cq",
+    "ko-tags__item--new": "_ko-tags__item--new_1h65cq",
+    "ko-tags__item--pusher": "_ko-tags__item--pusher_1h65cq",
+    "ko-tags__item--disabled": "_ko-tags__item--disabled_1h65cq",
+    "ko-tags__input": "_ko-tags__input_1h65cq",
+    "ko-tags__action": "_ko-tags__action_1h65cq",
+    "ko-tags__new": "_ko-tags__new_1h65cq",
+    "ko-tags__new-label": "_ko-tags__new-label_1h65cq"
+  };
+});
+define("frontend-cp/styles/components/ko-tags-input/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-tags-input": "_ko-tags-input_8yhgkk",
+    "ko-tags": "_ko-tags_8yhgkk",
+    "ko-tags__input": "_ko-tags__input_8yhgkk",
+    "ko-tags__item": "_ko-tags__item_8yhgkk",
+    "ko-tags__title": "_ko-tags__title_8yhgkk",
+    "ko-tags__action": "_ko-tags__action_8yhgkk"
+  };
+});
+define("frontend-cp/styles/components/ko-text-editor/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-text-editor": "_ko-text-editor_1mxvia",
+    "is-errored": "_is-errored_1mxvia",
+    "ko-text-editor__placeholder": "_ko-text-editor__placeholder_1mxvia",
+    "ko-text-editor-header": "_ko-text-editor-header_1mxvia",
+    "ko-text-editor-header-group": "_ko-text-editor-header-group_1mxvia",
+    "ember-power-select-trigger": "_ember-power-select-trigger_1mxvia",
+    "ember-power-select": "_ember-power-select_1mxvia",
+    "ko-text-editor-header-group--single": "_ko-text-editor-header-group--single_1mxvia",
+    "ko-text-editor-header__spacer": "_ko-text-editor-header__spacer_1mxvia",
+    "ko-text-editor-header-group__item": "_ko-text-editor-header-group__item_1mxvia",
+    "ko-text-editor-header-group__item--single": "_ko-text-editor-header-group__item--single_1mxvia",
+    "ko-text-editor__right-group": "_ko-text-editor__right-group_1mxvia",
+    "ko-text-editor__right-group-item": "_ko-text-editor__right-group-item_1mxvia",
+    "ko-text-editor__right-group-item-icon": "_ko-text-editor__right-group-item-icon_1mxvia",
+    "ko-text-editor-header-group__item-text": "_ko-text-editor-header-group__item-text_1mxvia",
+    "ko-text-editor-header-group__users-item--active": "_ko-text-editor-header-group__users-item--active_1mxvia",
+    "ko-dropdown-container": "_ko-dropdown-container_1mxvia",
+    "ko-text-editor__dropzone-and-editor-container": "_ko-text-editor__dropzone-and-editor-container_1mxvia",
+    "ko-text-editor__dropzone-and-editor-container--small": "_ko-text-editor__dropzone-and-editor-container--small_1mxvia",
+    "ko-text-editor__image-upload": "_ko-text-editor__image-upload_1mxvia",
+    "ko-text-editor__file-upload": "_ko-text-editor__file-upload_1mxvia",
+    "ko-text-editor__text-area": "_ko-text-editor__text-area_1mxvia",
+    "text-area--clean": "_text-area--clean_1mxvia",
+    "ql-editor": "_ql-editor_1mxvia",
+    "ko-text-editor__text-area--small": "_ko-text-editor__text-area--small_1mxvia",
+    "ko-text-editor-header-group__item--active": "_ko-text-editor-header-group__item--active_1mxvia",
+    "ql-image-tooltip": "_ql-image-tooltip_1mxvia",
+    "input": "_input_1mxvia",
+    "preview": "_preview_1mxvia",
+    "ql-link-tooltip": "_ql-link-tooltip_1mxvia",
+    "done": "_done_1mxvia",
+    "change": "_change_1mxvia",
+    "editing": "_editing_1mxvia",
+    "url": "_url_1mxvia",
+    "remove": "_remove_1mxvia",
+    "ql-multi-cursor": "_ql-multi-cursor_1mxvia",
+    "cursor": "_cursor_1mxvia",
+    "cursor-flag": "_cursor-flag_1mxvia",
+    "cursor-name": "_cursor-name_1mxvia",
+    "cursor-caret": "_cursor-caret_1mxvia",
+    "hidden": "_hidden_1mxvia",
+    "top": "_top_1mxvia",
+    "right": "_right_1mxvia",
+    "ql-paste-manager": "_ql-paste-manager_1mxvia",
+    "ql-toolbar": "_ql-toolbar_1mxvia",
+    "ql-tooltip": "_ql-tooltip_1mxvia",
+    "ql-container": "_ql-container_1mxvia",
+    "ql-ie-9": "_ql-ie-9_1mxvia",
+    "ql-ie-10": "_ql-ie-10_1mxvia",
+    "ql-snow": "_ql-snow_1mxvia",
+    "insert": "_insert_1mxvia",
+    "cursor-triangle": "_cursor-triangle_1mxvia",
+    "left": "_left_1mxvia",
+    "bottom": "_bottom_1mxvia",
+    "ql-format-group": "_ql-format-group_1mxvia",
+    "ql-format-separator": "_ql-format-separator_1mxvia",
+    "ql-format-button": "_ql-format-button_1mxvia",
+    "ql-picker": "_ql-picker_1mxvia",
+    "ql-picker-label": "_ql-picker-label_1mxvia",
+    "ql-active": "_ql-active_1mxvia",
+    "ql-picker-options": "_ql-picker-options_1mxvia",
+    "ql-picker-item": "_ql-picker-item_1mxvia",
+    "ql-selected": "_ql-selected_1mxvia",
+    "ql-expanded": "_ql-expanded_1mxvia",
+    "ql-color-picker": "_ql-color-picker_1mxvia",
+    "ql-primary-color": "_ql-primary-color_1mxvia",
+    "ql-font": "_ql-font_1mxvia",
+    "ql-size": "_ql-size_1mxvia",
+    "ql-align": "_ql-align_1mxvia",
+    "ios": "_ios_1mxvia",
+    "ql-bold": "_ql-bold_1mxvia",
+    "ql-italic": "_ql-italic_1mxvia",
+    "ql-link": "_ql-link_1mxvia",
+    "ql-image": "_ql-image_1mxvia",
+    "ql-attachment": "_ql-attachment_1mxvia",
+    "ql-cc": "_ql-cc_1mxvia",
+    "ql-billing": "_ql-billing_1mxvia",
+    "ql-list": "_ql-list_1mxvia",
+    "ql-bullet": "_ql-bullet_1mxvia",
+    "ql-authorship": "_ql-authorship_1mxvia"
+  };
+});
+define("frontend-cp/styles/components/ko-timeline/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-timeline__dropdowns": "_ko-timeline__dropdowns_plxxgl",
+    "ko-timeline__sort": "_ko-timeline__sort_plxxgl",
+    "ko-timeline__filter": "_ko-timeline__filter_plxxgl",
+    "ko-timeline__loader": "_ko-timeline__loader_plxxgl",
+    "ko-timeline__feed": "_ko-timeline__feed_plxxgl"
+  };
+});
+define("frontend-cp/styles/components/ko-toast/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-toast": "_ko-toast_1708i8",
+    "ko-toast__container": "_ko-toast__container_1708i8",
+    "ko-toast__container--dismissable": "_ko-toast__container--dismissable_1708i8",
+    "ko-toast__container--multiline": "_ko-toast__container--multiline_1708i8",
+    "ko-toast__container--error": "_ko-toast__container--error_1708i8",
+    "ko-toast__container--warning": "_ko-toast__container--warning_1708i8",
+    "ko-toast__container--info": "_ko-toast__container--info_1708i8",
+    "ko-toast__container--success": "_ko-toast__container--success_1708i8",
+    "ko-toast--add": "_ko-toast--add_1708i8",
+    "ko-toast--add-active": "_ko-toast--add-active_1708i8",
+    "ko-toast--remove": "_ko-toast--remove_1708i8",
+    "ko-toast--remove-active": "_ko-toast--remove-active_1708i8",
+    "ko-toast__close": "_ko-toast__close_1708i8",
+    "ko-toast__icon": "_ko-toast__icon_1708i8",
+    "ko-toast__title": "_ko-toast__title_1708i8",
+    "ko-toast__body": "_ko-toast__body_1708i8"
+  };
+});
+define("frontend-cp/styles/components/ko-toggle/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-toggle__container": "_ko-toggle__container_1rik4f",
+    "ko-toggle__toggle": "_ko-toggle__toggle_1rik4f",
+    "ko-toggle__toggle--activated": "_ko-toggle__toggle--activated_1rik4f",
+    "ko-toggle__toggle--micro": "_ko-toggle__toggle--micro_1rik4f",
+    "ko-toggle__label": "_ko-toggle__label_1rik4f"
+  };
+});
+define("frontend-cp/styles/components/ko-universal-search/entry/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-universal-search_entry": "_ko-universal-search_entry_17tgd8"
+  };
+});
+define("frontend-cp/styles/components/ko-universal-search/result/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-universal-search_result": "_ko-universal-search_result_1ti20m",
+    "is-active": "_is-active_1ti20m",
+    "universal-search_result__icon": "_universal-search_result__icon_1ti20m",
+    "universal-search_result__action": "_universal-search_result__action_1ti20m",
+    "universal-search_result__content": "_universal-search_result__content_1ti20m"
+  };
+});
+define("frontend-cp/styles/components/ko-universal-search/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-universal-search": "_ko-universal-search_3orawg",
+    "ko-universal-search__overlay": "_ko-universal-search__overlay_3orawg",
+    "ko-universal-search__loader": "_ko-universal-search__loader_3orawg",
+    "universal-search__action": "_universal-search__action_3orawg",
+    "universal-search__icon": "_universal-search__icon_3orawg",
+    "universal-search__input": "_universal-search__input_3orawg",
+    "universal-search__content": "_universal-search__content_3orawg",
+    "universal-search__results": "_universal-search__results_3orawg",
+    "universal-search__preview": "_universal-search__preview_3orawg"
+  };
+});
+define("frontend-cp/styles/components/ko-user-action-menu/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-user-action-menu__dropdown": "_ko-user-action-menu__dropdown_168lze",
+    "button--dropdown": "_button--dropdown_168lze",
+    "ember-basic-dropdown-trigger": "_ember-basic-dropdown-trigger_168lze",
+    "ember-basic-dropdown-content": "_ember-basic-dropdown-content_168lze"
+  };
+});
+define("frontend-cp/styles/login/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "login": "_login_rpo5s7",
+    "login__box": "_login__box_rpo5s7",
+    "login__header": "_login__header_rpo5s7",
+    "login__header--reset": "_login__header--reset_rpo5s7",
+    "login__image": "_login__image_rpo5s7",
+    "login__input": "_login__input_rpo5s7",
+    "login__actions": "_login__actions_rpo5s7",
+    "login-form": "_login-form_rpo5s7",
+    "login-form__mask": "_login-form__mask_rpo5s7",
+    "login-form__content": "_login-form__content_rpo5s7",
+    "login-form__fields-container-top": "_login-form__fields-container-top_rpo5s7",
+    "login-form__fields-container-bottom": "_login-form__fields-container-bottom_rpo5s7",
+    "login-form__wrapper": "_login-form__wrapper_rpo5s7",
+    "login-form__container": "_login-form__container_rpo5s7",
+    "u-slide": "_u-slide_rpo5s7",
+    "login-form__form": "_login-form__form_rpo5s7",
+    "login-form__reset-form": "_login-form__reset-form_rpo5s7",
+    "session__notifications": "_session__notifications_rpo5s7",
+    "login-form__content--animate": "_login-form__content--animate_rpo5s7",
+    "login-form__content-down": "_login-form__content-down_rpo5s7"
+  };
+});
+define("frontend-cp/styles/session/admin/manage/case-fields/index/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-admin_case-fields_select-type__icon": "_ko-admin_case-fields_select-type__icon_10dyfz"
+  };
+});
+define("frontend-cp/styles/session/admin/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {};
+});
+define("frontend-cp/styles/session/agent/cases/index/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-session-agent-cases-index": "_ko-session-agent-cases-index_153d84",
+    "ko-session-agent-cases-index__sidebar": "_ko-session-agent-cases-index__sidebar_153d84",
+    "liquid-child": "_liquid-child_153d84",
+    "ko-session-agent-cases-index__content": "_ko-session-agent-cases-index__content_153d84",
+    "ko-session-agent-cases-index__pagination": "_ko-session-agent-cases-index__pagination_153d84",
+    "suspended-messages-section__delete-all": "_suspended-messages-section__delete-all_153d84",
+    "suspended-message-modal__header-text": "_suspended-message-modal__header-text_153d84",
+    "suspended-message-modal__footer": "_suspended-message-modal__footer_153d84",
+    "suspended-message-modal__button": "_suspended-message-modal__button_153d84",
+    "suspended-message-modal__table": "_suspended-message-modal__table_153d84",
+    "suspended-message-modal__text": "_suspended-message-modal__text_153d84"
+  };
+});
+define("frontend-cp/styles/session/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "session_outlet-container": "_session_outlet-container_qkvl5m"
+  };
+});
+define("frontend-cp/styles/styles/_base.scss", ["exports"], function (exports) {
+  exports["default"] = {};
+});
+define("frontend-cp/styles/styles/app/styles/app.scss", ["exports"], function (exports) {
+  exports["default"] = {};
+});
+define("frontend-cp/styles/styles/app.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ember-power-select-search": "_ember-power-select-search_1exswg"
+  };
+});
+define("frontend-cp/styles/styles/development/_environment.scss", ["exports"], function (exports) {
+  exports["default"] = {};
+});
+define("frontend-cp/styles/styles/elements/_button.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "button": "_button_1cebuu",
+    "disabled": "_disabled_1cebuu",
+    "button--default": "_button--default_1cebuu",
+    "button--action": "_button--action_1cebuu",
+    "button--primary": "_button--primary_1cebuu",
+    "button--highlight": "_button--highlight_1cebuu",
+    "button--alert": "_button--alert_1cebuu",
+    "button--twitter": "_button--twitter_1cebuu",
+    "button--facebook": "_button--facebook_1cebuu",
+    "button-split": "_button-split_1cebuu",
+    "button-split__action": "_button-split__action_1cebuu",
+    "button-group": "_button-group_1cebuu",
+    "button-group__item": "_button-group__item_1cebuu",
+    "is-active": "_is-active_1cebuu",
+    "button-naked": "_button-naked_1cebuu"
+  };
+});
+define("frontend-cp/styles/styles/elements/ember-cli-sticky.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "sticky": "_sticky_2s141u"
+  };
+});
+define("frontend-cp/styles/styles/elements/ember-power-select.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ember-power-select-wrapper--ko": "_ember-power-select-wrapper--ko_smjy6k",
+    "ember-basic-dropdown-trigger": "_ember-basic-dropdown-trigger_smjy6k",
+    "ember-power-select-placeholder": "_ember-power-select-placeholder_smjy6k",
+    "ember-power-select-dropdown": "_ember-power-select-dropdown_smjy6k",
+    "ember-basic-dropdown-content": "_ember-basic-dropdown-content_smjy6k",
+    "ember-power-select-options": "_ember-power-select-options_smjy6k",
+    "ember-power-select-status-icon": "_ember-power-select-status-icon_smjy6k",
+    "ember-power-select-wrapper--size-medium": "_ember-power-select-wrapper--size-medium_smjy6k",
+    "ember-power-select": "_ember-power-select_smjy6k"
+  };
+});
+define("frontend-cp/styles/styles/elements/form/_input.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "error": "_error_1i0qz1",
+    "has-icon": "_has-icon_1i0qz1"
+  };
+});
+define("frontend-cp/styles/styles/elements/form/_text-area.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "text-area": "_text-area_7nmsg7",
+    "text-area--clean": "_text-area--clean_7nmsg7",
+    "text-area__counter": "_text-area__counter_7nmsg7"
+  };
+});
+define("frontend-cp/styles/styles/elements/form/_text.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "input": "_input_18gogp",
+    "input-text": "_input-text_18gogp",
+    "input-text-area-wrapper": "_input-text-area-wrapper_18gogp",
+    "input-text--alone": "_input-text--alone_18gogp",
+    "input-text--full": "_input-text--full_18gogp"
+  };
+});
+define("frontend-cp/styles/styles/modules/_header.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "header": "_header_44so2q",
+    "header__title": "_header__title_44so2q",
+    "header__subtitle": "_header__subtitle_44so2q",
+    "header__image": "_header__image_44so2q"
+  };
+});
+define("frontend-cp/styles/styles/modules/_nav.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "nav": "_nav_nh8uec",
+    "nav--disabled": "_nav--disabled_nh8uec",
+    "nav__items": "_nav__items_nh8uec",
+    "nav__item": "_nav__item_nh8uec",
+    "active": "_active_nh8uec",
+    "nav__image": "_nav__image_nh8uec",
+    "nav-main": "_nav-main_nh8uec",
+    "nav-main__item": "_nav-main__item_nh8uec",
+    "nav-secondary": "_nav-secondary_nh8uec",
+    "nav-secondary__container": "_nav-secondary__container_nh8uec",
+    "nav-secondary__content": "_nav-secondary__content_nh8uec",
+    "nav-secondary__sidebar": "_nav-secondary__sidebar_nh8uec",
+    "nav-secondary__sidebar--hidden": "_nav-secondary__sidebar--hidden_nh8uec",
+    "nav-tabs": "_nav-tabs_nh8uec",
+    "nav-tabs__item": "_nav-tabs__item_nh8uec",
+    "nav-tabs__label": "_nav-tabs__label_nh8uec",
+    "nav-tabs__close": "_nav-tabs__close_nh8uec"
+  };
+});
+define("frontend-cp/styles/styles/objects/_arrow.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "arrow": "_arrow_vj61kb"
+  };
+});
+define("frontend-cp/styles/styles/objects/_box.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "box": "_box_1x8p61",
+    "box-container": "_box-container_1x8p61"
+  };
+});
+define("frontend-cp/styles/styles/objects/_content.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "content__main": "_content__main_w59yez"
+  };
+});
+define("frontend-cp/styles/styles/objects/_dropdown-menu.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "dropdown": "_dropdown_1ufeus",
+    "dropdown-menu": "_dropdown-menu_1ufeus",
+    "dropdown-menu__item": "_dropdown-menu__item_1ufeus"
+  };
+});
+define("frontend-cp/styles/styles/objects/_headings.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "heading": "_heading_3vr1qh",
+    "subheading": "_subheading_3vr1qh"
+  };
+});
+define("frontend-cp/styles/styles/partials/_animation.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "a-error": "_a-error_etnxia",
+    "a-success": "_a-success_etnxia",
+    "a-fade-in-out": "_a-fade-in-out_etnxia"
+  };
+});
+define("frontend-cp/styles/styles/partials/_container.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "container": "_container_11roft"
+  };
+});
+define("frontend-cp/styles/styles/partials/_cursors.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "u-pointer": "_u-pointer_4u5bn1"
+  };
+});
+define("frontend-cp/styles/styles/partials/_flipper.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "flip-container": "_flip-container_1om6bi",
+    "flip": "_flip_1om6bi",
+    "flipper": "_flipper_1om6bi",
+    "front": "_front_1om6bi",
+    "back": "_back_1om6bi"
+  };
+});
+define("frontend-cp/styles/styles/partials/_icon.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "i-after": "_i-after_11qqbb",
+    "i-center": "_i-center_11qqbb",
+    "i-inherit-lh": "_i-inherit-lh_11qqbb",
+    "i-color-grey": "_i-color-grey_11qqbb",
+    "i-color-grey--dark": "_i-color-grey--dark_11qqbb",
+    "i-color-grey--light": "_i-color-grey--light_11qqbb",
+    "i-size-18": "_i-size-18_11qqbb",
+    "i-size-20": "_i-size-20_11qqbb",
+    "i-size-14": "_i-size-14_11qqbb",
+    "i-size-11": "_i-size-11_11qqbb",
+    "i-danger-solid": "_i-danger-solid_11qqbb",
+    "i-png-TEXT": "_i-png-TEXT_11qqbb",
+    "i-png-TEXTAREA": "_i-png-TEXTAREA_11qqbb",
+    "i-png-RADIO": "_i-png-RADIO_11qqbb",
+    "i-png-SELECT": "_i-png-SELECT_11qqbb",
+    "i-png-CHECKBOX": "_i-png-CHECKBOX_11qqbb",
+    "i-png-NUMERIC": "_i-png-NUMERIC_11qqbb",
+    "i-png-DECIMAL": "_i-png-DECIMAL_11qqbb",
+    "i-png-FILE": "_i-png-FILE_11qqbb",
+    "i-png-YESNO": "_i-png-YESNO_11qqbb",
+    "i-png-CASCADINGSELECT": "_i-png-CASCADINGSELECT_11qqbb",
+    "i-png-DATE": "_i-png-DATE_11qqbb",
+    "i-png-REGEX": "_i-png-REGEX_11qqbb",
+    "i-png-flag-": "_i-png-flag-_11qqbb"
+  };
+});
+define("frontend-cp/styles/styles/partials/_overlay.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "overlay": "_overlay_rrm7ta"
+  };
+});
+define("frontend-cp/styles/styles/partials/_typography.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "t-caption": "_t-caption_1kzg80",
+    "is-active": "_is-active_1kzg80",
+    "typography": "_typography_1kzg80"
+  };
+});
+define("frontend-cp/styles/styles/production/_environment.scss", ["exports"], function (exports) {
+  exports["default"] = {};
+});
+define("frontend-cp/styles/styles/settings/_brand.scss", ["exports"], function (exports) {
+  exports["default"] = {};
+});
+define("frontend-cp/styles/styles/settings/_colors.scss", ["exports"], function (exports) {
+  exports["default"] = {};
+});
+define("frontend-cp/styles/styles/settings/_defaults.scss", ["exports"], function (exports) {
+  exports["default"] = {};
+});
+define("frontend-cp/styles/styles/settings/_layout.scss", ["exports"], function (exports) {
+  exports["default"] = {};
+});
+define("frontend-cp/styles/styles/settings/_spacing.scss", ["exports"], function (exports) {
+  exports["default"] = {};
+});
+define("frontend-cp/styles/styles/settings/_tables.scss", ["exports"], function (exports) {
+  exports["default"] = {};
+});
+define("frontend-cp/styles/styles/settings/_typography.scss", ["exports"], function (exports) {
+  exports["default"] = {};
+});
+define("frontend-cp/styles/styles/settings/_z-index.scss", ["exports"], function (exports) {
+  exports["default"] = {};
+});
+define("frontend-cp/styles/styles/utilities/_indicators.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "u-typing": "_u-typing_zi3c2o",
+    "u-typing__item": "_u-typing__item_zi3c2o",
+    "u-is-typing": "_u-is-typing_zi3c2o",
+    "u-was-typing": "_u-was-typing_zi3c2o",
+    "u-is-inactive": "_u-is-inactive_zi3c2o"
+  };
+});
+define("frontend-cp/styles/styles/utilities/_layout.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "u-inline-block": "_u-inline-block_gluyug",
+    "u-hidden": "_u-hidden_gluyug",
+    "u-invisible": "_u-invisible_gluyug",
+    "u-visible": "_u-visible_gluyug",
+    "u-disable-link": "_u-disable-link_gluyug",
+    "u-no-bottom-border": "_u-no-bottom-border_gluyug",
+    "u-pos-rel": "_u-pos-rel_gluyug",
+    "u-pos-abs": "_u-pos-abs_gluyug",
+    "u-v-center": "_u-v-center_gluyug",
+    "u-h-center": "_u-h-center_gluyug",
+    "u-center": "_u-center_gluyug",
+    "u-v-align": "_u-v-align_gluyug",
+    "u-v-align-top": "_u-v-align-top_gluyug",
+    "u-reset-lh": "_u-reset-lh_gluyug",
+    "u-inherit-lh": "_u-inherit-lh_gluyug",
+    "u-overflow-scroll": "_u-overflow-scroll_gluyug"
+  };
+});
+define("frontend-cp/styles/styles/utilities/_typography.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "t-": "_t-_121pt9",
+    "t-small": "_t-small_121pt9",
+    "t-base": "_t-base_121pt9",
+    "t-naked-link": "_t-naked-link_121pt9",
+    "t-bold": "_t-bold_121pt9",
+    "t-italic": "_t-italic_121pt9"
+  };
+});
 define("frontend-cp/templates/components/liquid-bind", ["exports"], function (exports) {
   exports["default"] = Ember.HTMLBars.template((function () {
     var child0 = (function () {
@@ -81187,6 +82768,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+682437eb"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+6135908d"});
 }
 /* jshint ignore:end */
