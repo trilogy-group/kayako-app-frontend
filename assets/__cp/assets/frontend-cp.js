@@ -61434,7 +61434,7 @@ define('frontend-cp/serializers/case-reply', ['exports', 'frontend-cp/serializer
       var json = this._super(snapshot, options);
       var form = snapshot.belongsTo('case').belongsTo('form');
       json.field_values = this.serializeCustomFields(snapshot.attr('fieldValues'), form); //eslint-disable-line camelcase
-      json.options.cc = snapshot.attr('options').attr('cc') || '';
+      json.options.cc = snapshot.attr('options').attr('cc').toString();
 
       if (json.channel === 'NOTE') {
         Reflect.deleteProperty(json, 'options');
@@ -81185,6 +81185,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+8db291ea"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+7fb793e4"});
 }
 /* jshint ignore:end */
