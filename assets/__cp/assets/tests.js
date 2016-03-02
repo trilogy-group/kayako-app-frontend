@@ -8472,16 +8472,6 @@ define('frontend-cp/tests/helpers/fill-in-rich-text-editor', ['exports', 'ember'
     editor.setHTML(html);
   });
 });
-define('frontend-cp/tests/helpers/format-message', ['exports', 'ember'], function (exports, _ember) {
-  var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
-
-  exports['default'] = _ember['default'].Helper.helper(function (_ref) {
-    var _ref2 = _slicedToArray(_ref, 1);
-
-    var value = _ref2[0];
-    return 'MESSAGE %' + value + '%';
-  });
-});
 define('frontend-cp/tests/helpers/login', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = _ember['default'].Test.registerAsyncHelper('login', function (app) {
     var sessionId = arguments.length <= 1 || arguments[1] === undefined ? '1' : arguments[1];
@@ -8585,7 +8575,7 @@ define('frontend-cp/tests/helpers/native-focus', ['exports', 'ember'], function 
     }
   };
 });
-define('frontend-cp/tests/helpers/qunit', ['exports', 'ember', 'qunit', 'ember-qunit/qunit-module', 'ember-test-helpers', 'ember-qunit/test', 'frontend-cp/tests/helpers/start-app', 'frontend-cp/tests/helpers/format-message', 'ember-truth-helpers/helpers/and', 'ember-truth-helpers/helpers/equal', 'ember-truth-helpers/helpers/not', 'ember-truth-helpers/helpers/or', 'ember-truth-helpers/utils/register-helper', 'ember-get-helper/helpers/get-glimmer', 'ember-get-helper/utils/register-helper', 'frontend-cp/tests/assertions/properties-equal'], function (exports, _ember, _qunit, _emberQunitQunitModule, _emberTestHelpers, _emberQunitTest, _frontendCpTestsHelpersStartApp, _frontendCpTestsHelpersFormatMessage, _emberTruthHelpersHelpersAnd, _emberTruthHelpersHelpersEqual, _emberTruthHelpersHelpersNot, _emberTruthHelpersHelpersOr, _emberTruthHelpersUtilsRegisterHelper, _emberGetHelperHelpersGetGlimmer, _emberGetHelperUtilsRegisterHelper, _frontendCpTestsAssertionsPropertiesEqual) {
+define('frontend-cp/tests/helpers/qunit', ['exports', 'ember', 'qunit', 'ember-qunit/qunit-module', 'ember-test-helpers', 'ember-qunit/test', 'frontend-cp/tests/helpers/start-app', 'ember-truth-helpers/helpers/and', 'ember-truth-helpers/helpers/equal', 'ember-truth-helpers/helpers/not', 'ember-truth-helpers/helpers/or', 'ember-truth-helpers/utils/register-helper', 'frontend-cp/tests/assertions/properties-equal'], function (exports, _ember, _qunit, _emberQunitQunitModule, _emberTestHelpers, _emberQunitTest, _frontendCpTestsHelpersStartApp, _emberTruthHelpersHelpersAnd, _emberTruthHelpersHelpersEqual, _emberTruthHelpersHelpersNot, _emberTruthHelpersHelpersOr, _emberTruthHelpersUtilsRegisterHelper, _frontendCpTestsAssertionsPropertiesEqual) {
   exports.createModule = createModule;
   exports.moduleForComponent = moduleForComponent;
   exports.moduleForModel = moduleForModel;
@@ -8598,14 +8588,10 @@ define('frontend-cp/tests/helpers/qunit', ['exports', 'ember', 'qunit', 'ember-q
     var actualCallbacks = callbacks || (typeof description === 'object' ? description : {});
     var beforeCallback = actualCallbacks.setup || actualCallbacks.beforeEach;
     actualCallbacks['beforeEach' in actualCallbacks ? 'beforeEach' : 'setup'] = function () {
-      _ember['default'].HTMLBars._registerHelper('t', _frontendCpTestsHelpersFormatMessage['default']);
-
       (0, _emberTruthHelpersUtilsRegisterHelper.registerHelper)('and', _emberTruthHelpersHelpersAnd.andHelper);
       (0, _emberTruthHelpersUtilsRegisterHelper.registerHelper)('eq', _emberTruthHelpersHelpersEqual.equalHelper);
       (0, _emberTruthHelpersUtilsRegisterHelper.registerHelper)('not', _emberTruthHelpersHelpersNot.notHelper);
       (0, _emberTruthHelpersUtilsRegisterHelper.registerHelper)('or', _emberTruthHelpersHelpersOr.orHelper);
-
-      (0, _emberGetHelperUtilsRegisterHelper.registerHelper)('get', _emberGetHelperHelpersGetGlimmer['default']);
 
       if (beforeCallback) {
         Reflect.apply(beforeCallback, this, arguments);
@@ -8777,8 +8763,7 @@ define('frontend-cp/tests/helpers/use-default-scenario', ['exports', 'ember', 'f
 define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-organisation/component-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'ember', 'sinon'], function (exports, _frontendCpTestsHelpersQunit, _ember, _sinon) {
 
   (0, _frontendCpTestsHelpersQunit.moduleForComponent)('ko-agent-dropdown/create-organisation', 'Integration | Component | ko agent dropdown/create organisation', {
-    integration: true,
-    beforeEach: function beforeEach() {}
+    integration: true
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('it renders', function (assert) {
@@ -8787,7 +8772,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-organi
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@1.13.13',
+          'revision': 'Ember@2.0.3',
           'loc': {
             'source': null,
             'start': {
@@ -8838,7 +8823,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-organi
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@1.13.13',
+          'revision': 'Ember@2.0.3',
           'loc': {
             'source': null,
             'start': {
@@ -8895,8 +8880,8 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
       initLocale(intlService, 'en-test', ['generic.validation_errors', 'generic.create_user_panel.name_required', 'generic.create_user_panel.email_required', 'generic.create_user_panel.email_invalid']);
 
       var mockStore = createMockStore();
-      this.container.unregister('service:store');
-      this.container.register('service:store', mockStore, { instantiate: false });
+      this.registry.unregister('service:store');
+      this.registry.register('service:store', mockStore, { instantiate: false });
 
       function initLocale(intl, localeId, keys) {
         var payload = keys.reduce(function (data, key) {
@@ -8916,7 +8901,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@1.13.13',
+          'revision': 'Ember@2.0.3',
           'loc': {
             'source': null,
             'start': {
@@ -8965,18 +8950,18 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
     var $nameLabelElement = $nameInputElement.closest('label');
     var $emailLabelElement = $emailInputElement.closest('label');
 
-    assert.equal($nameLabelElement.text().trim(), 'MESSAGE %generic.create_user_panel.name_label%');
+    assert.equal($nameLabelElement.text().trim(), 'Name label');
     assert.equal($nameInputElement.val(), '');
     assert.equal($nameInputElement.prop('placeholder'), '');
 
-    assert.equal($emailLabelElement.text().trim(), 'MESSAGE %generic.create_user_panel.email_label%');
+    assert.equal($emailLabelElement.text().trim(), 'Email label');
     assert.equal($emailInputElement.val(), '');
     assert.equal($nameInputElement.prop('placeholder'), '');
 
-    assert.equal($submitButtonElement.text().trim(), 'MESSAGE %generic.create_user_panel.submit%');
-    assert.equal($cancelButtonElement.text().trim(), 'MESSAGE %generic.cancel%');
+    assert.equal($submitButtonElement.text().trim(), 'Submit');
+    assert.equal($cancelButtonElement.text().trim(), 'Cancel');
 
-    assert.equal($infoElement.text().trim(), 'MESSAGE %generic.create_user_panel.info%');
+    assert.equal($infoElement.text().trim(), 'Info');
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('it validates the form fields before allowing submit', function (assert) {
@@ -8985,7 +8970,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@1.13.13',
+          'revision': 'Ember@2.0.3',
           'loc': {
             'source': null,
             'start': {
@@ -9121,7 +9106,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@1.13.13',
+          'revision': 'Ember@2.0.3',
           'loc': {
             'source': null,
             'start': {
@@ -9239,7 +9224,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@1.13.13',
+          'revision': 'Ember@2.0.3',
           'loc': {
             'source': null,
             'start': {
@@ -9355,7 +9340,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/component-test', ['
     this.render(Ember.HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@1.13.13',
+          'revision': 'Ember@2.0.3',
           'loc': {
             'source': null,
             'start': {
@@ -9410,8 +9395,8 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
 
   (0, _emberQunit.moduleForComponent)('ko-info-bar/field/drill-down', 'Integration | Component | ko-info-bar/field/drill-down', {
     integration: true,
-    setup: function setup() {
-      this.container.optionsForType('sanitizer', { instantiate: false });
+    beforeEach: function beforeEach() {
+      this.registry.optionsForType('sanitizer', { instantiate: false });
       this.set('options', defaultOptions);
     }
   });
@@ -9424,7 +9409,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@1.13.13',
+          'revision': 'Ember@2.0.3',
           'loc': {
             'source': null,
             'start': {
@@ -9479,7 +9464,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@1.13.13',
+          'revision': 'Ember@2.0.3',
           'loc': {
             'source': null,
             'start': {
@@ -9545,7 +9530,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@1.13.13',
+          'revision': 'Ember@2.0.3',
           'loc': {
             'source': null,
             'start': {
@@ -9610,7 +9595,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@1.13.13',
+          'revision': 'Ember@2.0.3',
           'loc': {
             'source': null,
             'start': {
@@ -9681,7 +9666,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@1.13.13',
+          'revision': 'Ember@2.0.3',
           'loc': {
             'source': null,
             'start': {
@@ -9747,7 +9732,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@1.13.13',
+          'revision': 'Ember@2.0.3',
           'loc': {
             'source': null,
             'start': {
@@ -9811,7 +9796,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@1.13.13',
+          'revision': 'Ember@2.0.3',
           'loc': {
             'source': null,
             'start': {
@@ -9891,7 +9876,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/multiline-tex
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@1.13.13',
+          'revision': 'Ember@2.0.3',
           'loc': {
             'source': null,
             'start': {
@@ -9940,7 +9925,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/multiline-tex
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@1.13.13',
+          'revision': 'Ember@2.0.3',
           'loc': {
             'source': null,
             'start': {
@@ -9988,8 +9973,8 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/select/compon
 
   (0, _frontendCpTestsHelpersQunit.moduleForComponent)('ko-info-bar/field/select', 'Integration | Component | ko-info-bar/field/select', {
     integration: true,
-    setup: function setup() {
-      this.container.optionsForType('sanitizer', { instantiate: false });
+    beforeEach: function beforeEach() {
+      this.registry.optionsForType('sanitizer', { instantiate: false });
     }
   });
 
@@ -10005,7 +9990,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/select/compon
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@1.13.13',
+          'revision': 'Ember@2.0.3',
           'loc': {
             'source': null,
             'start': {
@@ -10060,7 +10045,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/select/compon
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@1.13.13',
+          'revision': 'Ember@2.0.3',
           'loc': {
             'source': null,
             'start': {
@@ -10118,7 +10103,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/select/compon
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@1.13.13',
+          'revision': 'Ember@2.0.3',
           'loc': {
             'source': null,
             'start': {
@@ -10179,7 +10164,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/tags/componen
     this.render(Ember.HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@1.13.13',
+          'revision': 'Ember@2.0.3',
           'loc': {
             'source': null,
             'start': {
@@ -10236,7 +10221,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/text/componen
     this.render(Ember.HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@1.13.13',
+          'revision': 'Ember@2.0.3',
           'loc': {
             'source': null,
             'start': {
@@ -10287,7 +10272,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/text/componen
     this.render(Ember.HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@1.13.13',
+          'revision': 'Ember@2.0.3',
           'loc': {
             'source': null,
             'start': {
@@ -11520,26 +11505,6 @@ define('frontend-cp/tests/test-helper', ['exports', 'frontend-cp/tests/helpers/r
 
   (0, _emberQunit.setResolver)(_frontendCpTestsHelpersResolver['default']);
 });
-define('frontend-cp/tests/unit/components/ko-admin-card-team/component-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
-
-  (0, _frontendCpTestsHelpersQunit.moduleForComponent)('ko-admin-card-team', {
-    needs: ['component:ko-admin-selectable-card', 'component:ko-avatar', 'service:metrics', 'helper:and', 'helper:qa-cls']
-  });
-
-  (0, _frontendCpTestsHelpersQunit.test)('it renders a member', function (assert) {
-    var team = {
-      memberCount: 3
-    };
-
-    var component = this.subject();
-    component.set('team', team);
-
-    this.render();
-
-    assert.equal(component._state, 'inDOM');
-    assert.equal(3, this.$('.qa-admin-card-team__member-count').text());
-  });
-});
 define('frontend-cp/tests/unit/components/ko-admin-selectable-card/component-test', ['exports', 'ember', 'frontend-cp/tests/helpers/qunit'], function (exports, _ember, _frontendCpTestsHelpersQunit) {
 
   var component = undefined;
@@ -12037,7 +12002,7 @@ define('frontend-cp/tests/unit/components/ko-people-popover/component-test', ['e
   var debounce = _ember['default'].run.debounce;
 
   (0, _frontendCpTestsHelpersQunit.moduleForComponent)('ko-people-popover', {
-    needs: ['component:ko-checkbox', 'component:ko-avatar', 'component:ko-loader', 'component:ko-flag'],
+    needs: ['component:ko-checkbox', 'component:ko-avatar', 'component:ko-loader', 'component:ko-flag', 'helper:t', 'service:intl', 'ember-intl@adapter:-intl-adapter'],
     beforeEach: function beforeEach() {
       component = this.subject();
       _ember['default'].run.debounce = function () {
@@ -12607,7 +12572,7 @@ define('frontend-cp/tests/unit/components/ko-tags/component-test', ['exports', '
       });
 
       component.set('selectedTags', []);
-      component.set('newTagText', 'MESSAGE %cases.newtag%');
+      component.set('newTagText', 'New Tag');
       component.set('tags', ['dog', 'pig', 'moose', 'duck', 'donkey', 'dave', 'don', 'derek']);
     },
     teardown: function teardown() {}
@@ -13252,12 +13217,13 @@ define('frontend-cp/tests/unit/services/custom-fields/options-test', ['exports',
 
     var option = undefined;
     _ember['default'].run(function () {
-      option = store.push('field-option', {
+      option = store.push({
         id: 1,
         sortOrder: 1,
         value: 'option1',
-        tag: 'value1'
-      }, true);
+        tag: 'value1',
+        type: 'field-option'
+      });
     });
 
     assert.equal(option.get('markedForDeletion'), false);
@@ -13282,24 +13248,27 @@ define('frontend-cp/tests/unit/services/custom-fields/options-test', ['exports',
         option2 = undefined,
         option3 = undefined;
     _ember['default'].run(function () {
-      option1 = store.push('field-option', {
+      option1 = store.push({
         id: 1,
         sortOrder: 1,
         value: 'option1',
-        tag: 'value1'
-      }, true);
-      option2 = store.push('field-option', {
+        tag: 'value1',
+        type: 'field-option'
+      });
+      option2 = store.push({
         id: 2,
         sortOrder: 2,
         value: 'option2',
-        tag: 'value2'
-      }, true);
-      option3 = store.push('field-option', {
+        tag: 'value2',
+        type: 'field-option'
+      });
+      option3 = store.push({
         id: 3,
         sortOrder: 3,
         value: 'option3',
-        tag: 'value3'
-      }, true);
+        tag: 'value3',
+        type: 'field-option'
+      });
     });
 
     var sequence = 0;
@@ -13356,12 +13325,13 @@ define('frontend-cp/tests/unit/services/custom-fields/options-test', ['exports',
 
     var option = undefined;
     _ember['default'].run(function () {
-      option = store.push('field-option', {
+      option = store.push({
         id: 1,
         sortOrder: 1,
         value: 'option1',
-        tag: 'value1'
-      }, true);
+        tag: 'value1',
+        type: 'field-option'
+      });
     });
 
     assert.equal(option.get('isDeleted'), false);
@@ -13413,17 +13383,19 @@ define('frontend-cp/tests/unit/services/custom-fields/options-test', ['exports',
     var locale = undefined;
     var option = undefined;
     _ember['default'].run(function () {
-      locale = store.push('locale-field', {
+      locale = store.push({
         id: 1,
         locale: 'en-us',
-        translation: 'translated text'
+        translation: 'translated text',
+        type: 'locale-field'
       });
-      option = store.push('field-option', {
+      option = store.push({
         id: 1,
         sortOrder: 1,
         value: 'option1',
-        tag: 'value1'
-      }, true);
+        tag: 'value1',
+        type: 'field-option'
+      });
       option.get('values').pushObject(locale);
     });
 
@@ -13441,131 +13413,6 @@ define('frontend-cp/tests/unit/services/custom-fields/options-test', ['exports',
 
     service.rollbackAttributes([]);
     service.rollbackAttributes([option]);
-  });
-
-  (0, _emberQunit.test)('it can save fields by different type', function (assert) {
-    assert.expect(20);
-
-    var service = this.subject();
-    var store = this.container.lookup('service:store');
-
-    var types = {};
-
-    store.reopen({
-      peekAll: function peekAll(type) {
-        return types[type];
-      }
-    });
-
-    _ember['default'].run(function () {
-      types['case-priority'] = [store.push('case-priority', {
-        id: 1,
-        label: 'priority',
-        level: 1
-      }, true)];
-      types['case-status'] = [store.push('case-status', {
-        id: 1,
-        label: 'status',
-        level: 1,
-        statusType: 'CUSTOM'
-      }, true)];
-      types['case-type'] = [store.push('case-type', {
-        id: 1,
-        label: 'type',
-        level: 1
-      }, true)];
-    });
-
-    var promises = [];
-    var prioritySequence = 0;
-    var statusSequence = 0;
-    var typeSequence = 0;
-
-    types['case-priority'][0].reopen({
-      save: function save() {
-        prioritySequence++;
-
-        return new _ember['default'].RSVP.Promise(function (resolve) {
-          resolve();
-        });
-      }
-    });
-
-    types['case-status'][0].reopen({
-      save: function save() {
-        statusSequence++;
-
-        return new _ember['default'].RSVP.Promise(function (resolve) {
-          resolve();
-        });
-      }
-    });
-
-    types['case-type'][0].reopen({
-      save: function save() {
-        typeSequence++;
-
-        return new _ember['default'].RSVP.Promise(function (resolve) {
-          resolve();
-        });
-      }
-    });
-
-    _ember['default'].run(function () {
-      promises = service.saveByFieldType('case-', 'PRIORITY');
-    });
-
-    assert.equal(prioritySequence, 1, 'PRIORITY: prioritySequence to be 1');
-    assert.equal(statusSequence, 0, 'PRIORITY: statusSequence to be 0');
-    assert.equal(typeSequence, 0, 'PRIORITY: typeSequence to be 0');
-    assert.equal(promises.length, 1, 'PRIORITY: promises.length to be 1');
-
-    prioritySequence = 0;
-
-    _ember['default'].run(function () {
-      promises = service.saveByFieldType('case-', 'STATUS');
-    });
-
-    assert.equal(prioritySequence, 0, 'STATUS: prioritySequence to be 0');
-    assert.equal(statusSequence, 1, 'STATUS: statusSequence to be 1');
-    assert.equal(typeSequence, 0, 'STATUS: typeSequence to be 0');
-    assert.equal(promises.length, 1, 'STATUS: promises.length to be 1');
-
-    statusSequence = 0;
-
-    _ember['default'].run(function () {
-      types['case-type'][0].set('id', 1);
-      promises = service.saveByFieldType('case-', 'TYPE');
-    });
-
-    assert.equal(prioritySequence, 0, 'TYPE: prioritySequence to be 0');
-    assert.equal(statusSequence, 0, 'TYPE: statusSequence to be 0');
-    assert.equal(typeSequence, 1, 'TYPE: typeSequence to be 1');
-    assert.equal(promises.length, 1, 'TYPE: promises.length to be 1');
-
-    typeSequence = 0;
-
-    _ember['default'].run(function () {
-      // do not save case-status if its not 'CUSTOM' type
-      types['case-status'][0].set('statusType', 'NOT-CUSTOM');
-      promises = service.saveByFieldType('case-', 'STATUS');
-    });
-
-    assert.equal(prioritySequence, 0, 'STATUS (NOT CUSTOM): prioritySequence to be 0');
-    assert.equal(statusSequence, 0, 'STATUS (NOT CUSTOM): statusSequence to be 0');
-    assert.equal(typeSequence, 0, 'STATUS (NOT CUSTOM): typeSequence to be 0');
-    assert.equal(promises.length, 0, 'STATUS (NOT CUSTOM): promises.length to be 0');
-
-    _ember['default'].run(function () {
-      // do not save case-type if it is NOT a system field with id 1|2|3|4
-      types['case-type'][0].set('id', 50);
-      promises = service.saveByFieldType('case-', 'TYPE');
-    });
-
-    assert.equal(prioritySequence, 0, 'TYPE (NOT SYSTEM): prioritySequence to be 0');
-    assert.equal(statusSequence, 0, 'TYPE (NOT SYSTEM): statusSequence to be 0');
-    assert.equal(typeSequence, 1, 'TYPE (NOT SYSTEM): typeSequence to be 0');
-    assert.equal(promises.length, 1, 'TYPE (NOT SYSTEM): promises.length to be 0');
   });
 });
 define('frontend-cp/tests/unit/services/custom-fields-test', ['exports', 'ember', 'ember-qunit'], function (exports, _ember, _emberQunit) {
@@ -13606,18 +13453,21 @@ define('frontend-cp/tests/unit/services/custom-fields-test', ['exports', 'ember'
   (0, _emberQunit.test)('it renders correct title breadcrumbs for existed record', function (assert) {
     assert.expect(1);
 
-    var service = this.subject();
     var store = this.container.lookup('service:store');
 
     var model = undefined;
     _ember['default'].run(function () {
-      model = store.push('user-field', {
+      model = store.push({
         id: 1,
-        title: 'Test Select',
-        fieldType: 'SELECT',
-        options: []
-      }, true);
+        type: 'user-field',
+        attributes: {
+          title: 'Test Select',
+          fieldType: 'SELECT',
+          options: []
+        }
+      });
     });
+    var service = this.subject();
 
     assert.equal('admin.userfields / Test Select', service.getTitleBreadcrumbs(model));
   });
