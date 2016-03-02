@@ -59897,6 +59897,24 @@ define('frontend-cp/models/channel', ['exports', 'ember-data', 'ember'], functio
     })
   });
 });
+define('frontend-cp/models/chat-message', ['exports', 'ember-data', 'frontend-cp/models/postable'], function (exports, _emberData, _frontendCpModelsPostable) {
+  exports['default'] = _frontendCpModelsPostable['default'].extend({
+    uuid: _emberData['default'].attr('string'),
+    type: _emberData['default'].attr('string'),
+    text: _emberData['default'].attr('string'),
+    event: _emberData['default'].attr('string'),
+
+    // Relations
+    'case': _emberData['default'].belongsTo('case', { async: true }),
+    from: _emberData['default'].belongsTo('user-minimal', { async: false }),
+    attachments: _emberData['default'].hasMany('attachment', { async: false }),
+
+    createdAt: _emberData['default'].attr('date'),
+    updatedAt: _emberData['default'].attr('date'),
+
+    postType: 'chat'
+  });
+});
 define('frontend-cp/models/chat', ['exports', 'ember-data', 'frontend-cp/models/account'], function (exports, _emberData, _frontendCpModelsAccount) {
   exports['default'] = _frontendCpModelsAccount['default'].extend({
     agent: _emberData['default'].belongsTo('user', { async: true }),
@@ -82781,6 +82799,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+2b317179"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+670ad8b6"});
 }
 /* jshint ignore:end */
