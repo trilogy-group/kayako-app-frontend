@@ -4797,6 +4797,256 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/reorder-te
     });
   });
 });
+define('frontend-cp/tests/acceptance/admin/people/roles/form-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
+
+  (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/people/roles form', {
+    beforeEach: function beforeEach() {
+      server.create('locale', {
+        locale: 'en-us',
+        isDefault: true
+      });
+
+      server.create('plan', {
+        limits: [],
+        features: []
+      });
+
+      server.create('role', {
+        id: 6,
+        type: 'COLLABORATOR',
+        title: 'Existing Role',
+        is_system: false
+      });
+
+      var adminRole = server.create('role', { type: 'ADMIN' });
+      var agent = server.create('user', { role: adminRole });
+      var session = server.create('session', { user: agent });
+      login(session.id);
+    },
+
+    afterEach: function afterEach() {
+      logout();
+    }
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('creating a new role', function (assert) {
+    visit('/admin/people/roles');
+    click('.ko-admin-header button:contains("Add New Role")');
+    fillIn('input[name="title"]', 'Custom Role');
+    selectChoose('.qa-ko-admin_roles_form__role-type', 'Collaborator');
+    selectChoose('.qa-ko-admin_roles_form__agent-case-access-type', 'Assigned to agent');
+    click('.ko-checkbox:contains("Create new cases") .ko-checkbox__checkbox');
+    click('.ko-checkbox:contains("Accept new chat requests and invitations") .ko-checkbox__checkbox');
+    click('.ko-checkbox:contains("Create users and organizations") .ko-checkbox__checkbox');
+    click('.ko-checkbox:contains("Manage the Help Center") .ko-checkbox__checkbox');
+
+    andThen(function () {
+      assert.equal(find('.ko-admin-form-group__legend:contains("User administration")').length, 0);
+      assert.equal(find('.ko-admin-form-group__legend:contains("System administration")').length, 0);
+    });
+
+    click('button:contains("Save")');
+    click('.qa-ko-admin_roles__list-item:contains("Custom Role") .qa-ko-admin_roles_list-item__edit');
+
+    andThen(function () {
+      findWithAssert('.ko-checkbox:contains("Create new cases") .ko-checkbox__checkbox[aria-checked=false]');
+      findWithAssert('.ko-checkbox:contains("Accept new chat requests and invitations") .ko-checkbox__checkbox[aria-checked=false]');
+      findWithAssert('.ko-checkbox:contains("Create users and organizations") .ko-checkbox__checkbox[aria-checked=false]');
+      findWithAssert('.ko-checkbox:contains("Manage the Help Center") .ko-checkbox__checkbox[aria-checked=false]');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('creating a new admin role', function (assert) {
+    assert.expect(0);
+    visit('/admin/people/roles');
+    click('.ko-admin-header button:contains("Add New Role")');
+    fillIn('input[name="title"]', 'Custom Role');
+    selectChoose('.qa-ko-admin_roles_form__role-type', 'Administrator');
+    selectChoose('.qa-ko-admin_roles_form__agent-case-access-type', 'Assigned to agent');
+    click('.ko-checkbox:contains("Create new cases") .ko-checkbox__checkbox');
+    click('.ko-checkbox:contains("Accept new chat requests and invitations") .ko-checkbox__checkbox');
+    click('.ko-checkbox:contains("Create users and organizations") .ko-checkbox__checkbox');
+    click('.ko-checkbox:contains("Manage the Help Center") .ko-checkbox__checkbox');
+    click('.ko-checkbox:contains("Manage teams") .ko-checkbox__checkbox');
+    click('.ko-checkbox:contains("Manage apps and integrations") .ko-checkbox__checkbox');
+    click('button:contains("Save")');
+    click('.qa-ko-admin_roles__list-item:contains("Custom Role") .qa-ko-admin_roles_list-item__edit');
+
+    andThen(function () {
+      findWithAssert('.ko-checkbox:contains("Create new cases") .ko-checkbox__checkbox[aria-checked=false]');
+      findWithAssert('.ko-checkbox:contains("Accept new chat requests and invitations") .ko-checkbox__checkbox[aria-checked=false]');
+      findWithAssert('.ko-checkbox:contains("Create users and organizations") .ko-checkbox__checkbox[aria-checked=false]');
+      findWithAssert('.ko-checkbox:contains("Manage the Help Center") .ko-checkbox__checkbox[aria-checked=false]');
+      findWithAssert('.ko-checkbox:contains("Manage teams") .ko-checkbox__checkbox[aria-checked=false]');
+      findWithAssert('.ko-checkbox:contains("Manage apps and integrations") .ko-checkbox__checkbox[aria-checked=false]');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('editing a role', function (assert) {
+    visit('/admin/people/roles');
+    click('.qa-ko-admin_roles__list-item:contains("Existing Role") .qa-ko-admin_roles_list-item__edit');
+
+    fillIn('input[name="title"]', 'Edited Role');
+    selectChoose('.qa-ko-admin_roles_form__agent-case-access-type', 'Assigned to agent');
+    click('.ko-checkbox:contains("Create new cases") .ko-checkbox__checkbox');
+    click('.ko-checkbox:contains("Accept new chat requests and invitations") .ko-checkbox__checkbox');
+    click('.ko-checkbox:contains("Create users and organizations") .ko-checkbox__checkbox');
+    click('.ko-checkbox:contains("Manage the Help Center") .ko-checkbox__checkbox');
+
+    andThen(function () {
+      assert.equal(find('.ko-admin-form-group__legend:contains("User administration")').length, 0);
+      assert.equal(find('.ko-admin-form-group__legend:contains("System administration")').length, 0);
+    });
+
+    click('button:contains("Save")');
+    click('.qa-ko-admin_roles__list-item:contains("Edited Role") .qa-ko-admin_roles_list-item__edit');
+
+    andThen(function () {
+      findWithAssert('.ko-checkbox:contains("Create new cases") .ko-checkbox__checkbox[aria-checked=true]');
+      findWithAssert('.ko-checkbox:contains("Accept new chat requests and invitations") .ko-checkbox__checkbox[aria-checked=true]');
+      findWithAssert('.ko-checkbox:contains("Create users and organizations") .ko-checkbox__checkbox[aria-checked=true]');
+      findWithAssert('.ko-checkbox:contains("Manage the Help Center") .ko-checkbox__checkbox[aria-checked=true]');
+    });
+  });
+});
+/*eslint-disable camelcase */
+define('frontend-cp/tests/acceptance/admin/people/roles/index-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
+
+  (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/people/roles index', {
+    beforeEach: function beforeEach() {
+      server.create('locale', {
+        locale: 'en-us',
+        isDefault: true
+      });
+
+      server.create('plan', {
+        limits: [],
+        features: []
+      });
+
+      server.create('role', {
+        id: 2,
+        type: 'AGENT',
+        title: 'Agent'
+      });
+
+      server.create('role', {
+        id: 3,
+        type: 'COLLABORATOR',
+        title: 'Collaborator'
+      });
+
+      server.create('role', {
+        id: 4,
+        type: 'CUSTOMER',
+        title: 'Customer'
+      });
+
+      server.create('role', {
+        id: 5,
+        type: 'OWNER',
+        title: 'Owner'
+      });
+
+      server.create('role', {
+        id: 6,
+        type: 'CUSTOMER',
+        title: 'Custom Role',
+        is_system: false
+      });
+
+      var adminRole = server.create('role', {
+        id: 1,
+        type: 'ADMIN',
+        title: 'Administrator'
+      });
+
+      var agent = server.create('user', { role: adminRole });
+      var session = server.create('session', { user: agent });
+      login(session.id);
+    },
+
+    afterEach: function afterEach() {
+      logout();
+    }
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('reading the roles list', function (assert) {
+    visit('/admin/people/roles');
+
+    andThen(function () {
+      var textFor = function textFor(item, elementClass) {
+        var element = $(item).find('.qa-ko-admin_roles_list-item__' + elementClass);
+        return element.length > 0 ? element.text().trim() : null;
+      };
+
+      var rows = find('.qa-ko-admin_roles__list-item').toArray().map(function (item) {
+        return {
+          title: textFor(item, 'title'),
+          caption: textFor(item, 'title-caption'),
+          label: textFor(item, 'label'),
+          editLink: textFor(item, 'edit'),
+          deleteLink: textFor(item, 'delete')
+        };
+      });
+
+      assert.deepEqual(rows, [{
+        title: 'Administrator',
+        caption: '(System)',
+        label: 'Administrator',
+        editLink: 'Edit',
+        deleteLink: null
+      }, {
+        title: 'Agent',
+        caption: '(System)',
+        label: 'Agent',
+        editLink: 'Edit',
+        deleteLink: null
+      }, {
+        title: 'Collaborator',
+        caption: '(System)',
+        label: 'Collaborator',
+        editLink: null,
+        deleteLink: null
+      }, {
+        title: 'Custom Role',
+        caption: null,
+        label: 'Customer',
+        editLink: 'Edit',
+        deleteLink: 'Delete'
+      }, {
+        title: 'Customer',
+        caption: '(System)',
+        label: 'Customer',
+        editLink: null,
+        deleteLink: null
+      }, {
+        title: 'Owner',
+        caption: '(System)',
+        label: 'Owner',
+        editLink: null,
+        deleteLink: null
+      }]);
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('deleting a role', function (assert) {
+    visit('/admin/people/roles');
+
+    andThen(function () {
+      assert.equal(find('.qa-ko-admin_roles_list-item__title:contains("Custom Role")').length, 1);
+    });
+
+    confirming(true, function () {
+      click('.qa-ko-admin_roles_list-item__delete:first');
+    });
+
+    andThen(function () {
+      assert.equal(find('.qa-ko-admin_roles_list-item__title:contains("Custom Role")').length, 0);
+    });
+  });
+});
+/*eslint-disable camelcase */
 define('frontend-cp/tests/acceptance/admin/people/teams-forms-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
 
   var originalConfirm = undefined;

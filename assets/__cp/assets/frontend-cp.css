@@ -3526,6 +3526,17 @@ a {
   margin: 13.5px 0 36px 0;
   line-height: 27px; }
 
+.help-link {
+  color: inherit;
+  font-weight: 400;
+  text-decoration: underline; }
+
+.action::after {
+  content: ' | '; }
+
+.action:last-child::after {
+  content: ''; }
+
 .ko-admin-card-user--small {
   margin: 0px -1px; }
 
@@ -7495,6 +7506,19 @@ label {
   right: 0;
   top: 31px;
   z-index: 30; }
+
+/* styles for frontend-cp/components/ko-admin/roles/form/styles.css */
+._help-link_1nljr2 {
+  color: inherit;
+  font-weight: 400;
+  text-decoration: underline; }
+
+/* styles for frontend-cp/components/ko-admin/roles/list-item/styles.css */
+._action_1ubcxi::after {
+  content: ' | '; }
+
+._action_1ubcxi:last-child::after {
+  content: ''; }
 
 /* styles for frontend-cp/components/ko-admin/sidebar/styles.css */
 ._sidebar_1a61wp {

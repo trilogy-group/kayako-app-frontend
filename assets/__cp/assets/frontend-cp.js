@@ -12864,6 +12864,1537 @@ define("frontend-cp/components/ko-admin/page-header/template", ["exports"], func
     };
   })());
 });
+define('frontend-cp/components/ko-admin/roles/form/component', ['exports', 'ember', 'npm:lodash'], function (exports, _ember, _npmLodash) {
+  var computed = _ember['default'].computed;
+  var inject = _ember['default'].inject;
+
+  var Permission = _ember['default'].Object.extend({
+    context: null,
+    name: null,
+    values: null,
+    hasHelpText: false,
+    role: computed.readOnly('context.role'),
+
+    translationKey: computed('name', function () {
+      return _ember['default'].String.underscore(this.get('name'));
+    }),
+
+    isEnabled: computed('values.[]', 'role.permissions.@each.value', function () {
+      var _this = this;
+
+      return this.get('values').every(function (name) {
+        var permission = _this.get('role.permissions').findBy('name', name);
+        return !!permission && permission.get('value');
+      });
+    })
+  });
+
+  var PermissionGroup = _ember['default'].Object.extend({
+    context: null,
+    name: null,
+    isAvailable: true,
+    permissions: null,
+    role: computed.readOnly('context.role'),
+
+    translationKey: computed('name', function () {
+      return _ember['default'].String.underscore(this.get('name'));
+    })
+  });
+
+  var AdminPermissionGroup = PermissionGroup.extend({
+    isAvailable: computed('role.roleType', function () {
+      return ['ADMIN', 'OWNER'].contains(this.get('role.roleType'));
+    })
+  });
+
+  exports['default'] = _ember['default'].Component.extend({
+    notification: inject.service(),
+    intl: inject.service(),
+    roles: inject.service(),
+    role: null,
+    availablePermissionGroups: computed.filterBy('permissionGroups', 'isAvailable'),
+
+    initializePermissions: _ember['default'].on('init', function () {
+      if (!this.get('role.isNew')) {
+        return;
+      }
+
+      _npmLodash['default'].flatMap(this.get('permissionGroups'), function (group) {
+        return group.get('permissions');
+      }).forEach(function (permission) {
+        permission.set('isEnabled', true);
+      });
+    }),
+
+    roleType: computed('role.roleType', 'roles.allTypes', function () {
+      return this.get('roles.allTypes').findBy('id', this.get('role.roleType'));
+    }),
+
+    agentCaseAccessType: computed('role.agentCaseAccess', 'roles.availableAgentCaseAccessTypes', function () {
+      return this.get('roles.availableAgentCaseAccessTypes').findBy('id', this.get('role.agentCaseAccess'));
+    }),
+
+    permissionGroups: computed(function () {
+      var _this2 = this;
+
+      var permissionGroup = function permissionGroup(name) {
+        for (var _len = arguments.length, params = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+          params[_key - 1] = arguments[_key];
+        }
+
+        return PermissionGroup.create.apply(PermissionGroup, [{ context: _this2, name: name }].concat(params));
+      };
+
+      var permission = function permission(name) {
+        for (var _len2 = arguments.length, params = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+          params[_key2 - 1] = arguments[_key2];
+        }
+
+        return Permission.create.apply(Permission, [{ context: _this2, name: name }].concat(params));
+      };
+
+      var adminPermissionGroup = function adminPermissionGroup(name) {
+        for (var _len3 = arguments.length, params = Array(_len3 > 1 ? _len3 - 1 : 0), _key3 = 1; _key3 < _len3; _key3++) {
+          params[_key3 - 1] = arguments[_key3];
+        }
+
+        return AdminPermissionGroup.create.apply(AdminPermissionGroup, [{ context: _this2, name: name }].concat(params));
+      };
+
+      return [permissionGroup('cases', {
+        permissions: [permission('cases-create', { values: ['case.create'] }), permission('cases-reply', {
+          values: ['case.view', 'case.reply', 'case.reply.create']
+        }), permission('cases-add-notes', { values: ['note.create'] }), permission('cases-update', {
+          hasHelpText: true,
+          values: ['case.update']
+        }), permission('cases-split-and-merge', {
+          hasHelpText: true,
+          values: ['case.merge', 'case.merge.create', 'case.split', 'case.split.create']
+        }), permission('cases-trash', {
+          hasHelpText: true,
+          values: ['case.trash']
+        })]
+      }), permissionGroup('chats', {
+        permissions: [permission('chats-accept', {
+          hasHelpText: true,
+          values: ['chat.manage', 'chat.observe', 'chat.transfer']
+        })]
+      }), permissionGroup('users-and-orgs', {
+        permissions: [permission('users-and-orgs-create', {
+          values: ['user.create', 'organization.create']
+        }), permission('users-and-orgs-update', {
+          hasHelpText: true,
+          values: ['user.update', 'organization.update']
+        }), permission('users-and-orgs-delete', {
+          hasHelpText: true,
+          values: ['user.delete', 'organization.delete']
+        })]
+      }), permissionGroup('help-center', {
+        permissions: [permission('help-center-manage', {
+          hasHelpText: true,
+          values: ['help_center.manage']
+        }), permission('help-center-manage-articles', {
+          hasHelpText: true,
+          values: ['help_center.articles.manage']
+        }), permission('help-center-publish-articles', {
+          hasHelpText: true,
+          values: ['help_center.publish']
+        })]
+      }), adminPermissionGroup('user-administration', {
+        permissions: [permission('teams-manage', {
+          hasHelpText: true,
+          values: ['team.create', 'team.delete', 'team.update', 'team.view']
+        }), permission('roles-and-permissions-manage', {
+          hasHelpText: true,
+          values: ['role.create', 'role.delete', 'role.permission.update', 'role.update', 'role.view']
+        })]
+      }), adminPermissionGroup('system-administration', {
+        permissions: [permission('apps-manage', { values: ['apps.manage'] }), permission('endpoints-manage', { values: ['endpoints.manage'] }), permission('channels-manage', {
+          hasHelpText: true,
+          values: ['channels.manage']
+        }), permission('brands-manage', {
+          values: ['brand.create', 'brand.delete', 'brand.update', 'brand.view']
+        }), permission('case-views-manage', {
+          values: ['case.view.manage', 'case.view.view']
+        }), permission('case-macros-manage', {
+          values: ['macro.create', 'macro.delete', 'macro.update', 'macro.view']
+        }), permission('business-rules-manage', {
+          hasHelpText: true,
+          values: ['automations.manage']
+        }), permission('slas-and-business-hours-manage', {
+          hasHelpText: true,
+          values: ['sla.manage', 'businesshour.manage']
+        }), permission('case-fields-manage', {
+          hasHelpText: true,
+          values: ['case.field.manage', 'case.field.reorder', 'case.field.value.view', 'case.field.view']
+        }), permission('users-and-organization-fields-manage', {
+          hasHelpText: true,
+          values: ['organization.field.manage', 'user.field.manage']
+        }), permission('settings-manage', {
+          hasHelpText: true,
+          values: ['setting.update', 'setting.view']
+        })]
+      })];
+    }),
+
+    actions: {
+      save: function save() {
+        var _this3 = this;
+
+        return this.get('role').save().then(function (role) {
+          var adapter = _this3.container.lookup('adapter:application');
+
+          var permissions = _this3.get('availablePermissionGroups').reduce(function (memo, permissionGroup) {
+            permissionGroup.get('permissions').forEach(function (permission) {
+              permission.get('values').forEach(function (name) {
+                memo[name] = permission.get('isEnabled') ? 1 : 0;
+              });
+            });
+
+            return memo;
+          }, {});
+
+          return adapter.ajax(adapter.namespace + '/roles/' + role.get('id') + '/permissions', 'PUT', { data: { permission: permissions } }).then(function () {
+            return role.get('permissions').reload();
+          });
+        });
+      },
+
+      success: function success() {
+        this.get('notification').add({
+          type: 'success',
+          title: this.get('intl').findTranslationByKey('generic.changes_saved'),
+          autodismiss: true
+        });
+
+        if (this.attrs.onSave) {
+          this.attrs.onSave();
+        }
+      },
+
+      cancel: function cancel() {
+        if (this.attrs.onCancel) {
+          this.attrs.onCancel();
+        }
+      },
+
+      selectRoleType: function selectRoleType(roleType) {
+        this.set('role.roleType', roleType.get('id'));
+      },
+
+      selectAgentCaseAccessType: function selectAgentCaseAccessType(agentCaseAccessType) {
+        this.set('role.agentCaseAccess', agentCaseAccessType.get('id'));
+      }
+    }
+  });
+});
+define("frontend-cp/components/ko-admin/roles/form/styles", ["exports"], function (exports) {
+  exports["default"] = {
+    "help-link": "_help-link_1nljr2"
+  };
+});
+define("frontend-cp/components/ko-admin/roles/form/template", ["exports"], function (exports) {
+  exports["default"] = Ember.HTMLBars.template((function () {
+    var child0 = (function () {
+      var child0 = (function () {
+        var child0 = (function () {
+          var child0 = (function () {
+            return {
+              meta: {
+                "revision": "Ember@2.0.3",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 12,
+                    "column": 6
+                  },
+                  "end": {
+                    "line": 12,
+                    "column": 72
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-admin/roles/form/template.hbs"
+              },
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var morphs = new Array(1);
+                morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+                dom.insertBoundary(fragment, 0);
+                dom.insertBoundary(fragment, null);
+                return morphs;
+              },
+              statements: [["inline", "t", ["admin.roles.form.title_field_label"], [], ["loc", [null, [12, 30], [12, 72]]]]],
+              locals: [],
+              templates: []
+            };
+          })();
+          return {
+            meta: {
+              "revision": "Ember@2.0.3",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 11,
+                  "column": 4
+                },
+                "end": {
+                  "line": 15,
+                  "column": 4
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-admin/roles/form/template.hbs"
+            },
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode("      ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n      ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n      ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(3);
+              morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+              morphs[1] = dom.createMorphAt(fragment, 3, 3, contextualElement);
+              morphs[2] = dom.createMorphAt(fragment, 5, 5, contextualElement);
+              return morphs;
+            },
+            statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [12, 6], [12, 96]]]], ["inline", "input", [], ["type", "text", "class", "input-text", "name", "title", "value", ["subexpr", "@mut", [["get", "role.title", ["loc", [null, [13, 64], [13, 74]]]]], [], []]], ["loc", [null, [13, 6], [13, 76]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "role.errors.title", ["loc", [null, [14, 36], [14, 53]]]]], [], []]], ["loc", [null, [14, 6], [14, 55]]]]],
+            locals: [],
+            templates: [child0]
+          };
+        })();
+        var child1 = (function () {
+          var child0 = (function () {
+            return {
+              meta: {
+                "revision": "Ember@2.0.3",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 18,
+                    "column": 6
+                  },
+                  "end": {
+                    "line": 18,
+                    "column": 76
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-admin/roles/form/template.hbs"
+              },
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var morphs = new Array(1);
+                morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+                dom.insertBoundary(fragment, 0);
+                dom.insertBoundary(fragment, null);
+                return morphs;
+              },
+              statements: [["inline", "t", ["admin.roles.form.role_type_field_label"], [], ["loc", [null, [18, 30], [18, 76]]]]],
+              locals: [],
+              templates: []
+            };
+          })();
+          var child1 = (function () {
+            return {
+              meta: {
+                "revision": "Ember@2.0.3",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 20,
+                    "column": 6
+                  },
+                  "end": {
+                    "line": 31,
+                    "column": 6
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-admin/roles/form/template.hbs"
+              },
+              arity: 1,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createTextNode("          ");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var morphs = new Array(1);
+                morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+                return morphs;
+              },
+              statements: [["content", "roleType.label", ["loc", [null, [30, 10], [30, 28]]]]],
+              locals: ["roleType"],
+              templates: []
+            };
+          })();
+          var child2 = (function () {
+            return {
+              meta: {
+                "revision": "Ember@2.0.3",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 35,
+                    "column": 6
+                  },
+                  "end": {
+                    "line": 40,
+                    "column": 6
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-admin/roles/form/template.hbs"
+              },
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createTextNode("        ");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n\n        ");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createElement("a");
+                dom.setAttribute(el1, "href", "");
+                var el2 = dom.createTextNode("\n          ");
+                dom.appendChild(el1, el2);
+                var el2 = dom.createComment("");
+                dom.appendChild(el1, el2);
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode(".\n");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var element0 = dom.childAt(fragment, [3]);
+                var morphs = new Array(3);
+                morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+                morphs[1] = dom.createAttrMorph(element0, 'class');
+                morphs[2] = dom.createMorphAt(element0, 1, 1);
+                return morphs;
+              },
+              statements: [["inline", "format-html-message", ["admin.roles.form.role_type_field_help"], [], ["loc", [null, [36, 8], [36, 71]]]], ["attribute", "class", ["get", "styles.help-link", ["loc", [null, [38, 24], [38, 40]]]]], ["inline", "t", ["admin.roles.form.role_type_field_help_link"], [], ["loc", [null, [39, 10], [39, 60]]]]],
+              locals: [],
+              templates: []
+            };
+          })();
+          return {
+            meta: {
+              "revision": "Ember@2.0.3",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 17,
+                  "column": 4
+                },
+                "end": {
+                  "line": 41,
+                  "column": 4
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-admin/roles/form/template.hbs"
+            },
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode("      ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n\n");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n      ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n\n");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(4);
+              morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+              morphs[1] = dom.createMorphAt(fragment, 3, 3, contextualElement);
+              morphs[2] = dom.createMorphAt(fragment, 5, 5, contextualElement);
+              morphs[3] = dom.createMorphAt(fragment, 7, 7, contextualElement);
+              dom.insertBoundary(fragment, null);
+              return morphs;
+            },
+            statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [18, 6], [18, 100]]]], ["block", "power-select", [], ["searchEnabled", false, "class", ["subexpr", "concat", ["ember-power-select-wrapper--ko ember-power-select-wrapper--size-medium", ["subexpr", "qa-cls", [" qa-ko-admin_roles_form__role-type"], [], ["loc", [null, [24, 10], [24, 55]]]]], [], ["loc", [null, [22, 14], [24, 56]]]], "placeholder", ["subexpr", "t", ["generic.select_placeholder"], [], ["loc", [null, [25, 20], [25, 52]]]], "options", ["subexpr", "@mut", [["get", "roles.availableTypes", ["loc", [null, [26, 16], [26, 36]]]]], [], []], "selected", ["subexpr", "@mut", [["get", "roleType", ["loc", [null, [27, 17], [27, 25]]]]], [], []], "disabled", ["subexpr", "not", [["get", "role.isNew", ["loc", [null, [28, 22], [28, 32]]]]], [], ["loc", [null, [28, 17], [28, 33]]]], "onchange", ["subexpr", "action", ["selectRoleType"], [], ["loc", [null, [29, 17], [29, 42]]]]], 1, null, ["loc", [null, [20, 6], [31, 23]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "role.errors.roleType", ["loc", [null, [33, 36], [33, 56]]]]], [], []]], ["loc", [null, [33, 6], [33, 58]]]], ["block", "ko-form/field/help", [], [], 2, null, ["loc", [null, [35, 6], [40, 29]]]]],
+            locals: [],
+            templates: [child0, child1, child2]
+          };
+        })();
+        return {
+          meta: {
+            "revision": "Ember@2.0.3",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 10,
+                "column": 2
+              },
+              "end": {
+                "line": 42,
+                "column": 2
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-admin/roles/form/template.hbs"
+          },
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(2);
+            morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+            morphs[1] = dom.createMorphAt(fragment, 2, 2, contextualElement);
+            dom.insertBoundary(fragment, 0);
+            dom.insertBoundary(fragment, null);
+            return morphs;
+          },
+          statements: [["block", "ko-form/field", [], [], 0, null, ["loc", [null, [11, 4], [15, 22]]]], ["block", "ko-form/field", [], [], 1, null, ["loc", [null, [17, 4], [41, 22]]]]],
+          locals: [],
+          templates: [child0, child1]
+        };
+      })();
+      var child1 = (function () {
+        var child0 = (function () {
+          var child0 = (function () {
+            var child0 = (function () {
+              var child0 = (function () {
+                return {
+                  meta: {
+                    "revision": "Ember@2.0.3",
+                    "loc": {
+                      "source": null,
+                      "start": {
+                        "line": 48,
+                        "column": 10
+                      },
+                      "end": {
+                        "line": 48,
+                        "column": 88
+                      }
+                    },
+                    "moduleName": "frontend-cp/components/ko-admin/roles/form/template.hbs"
+                  },
+                  arity: 0,
+                  cachedFragment: null,
+                  hasRendered: false,
+                  buildFragment: function buildFragment(dom) {
+                    var el0 = dom.createDocumentFragment();
+                    var el1 = dom.createComment("");
+                    dom.appendChild(el0, el1);
+                    return el0;
+                  },
+                  buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                    var morphs = new Array(1);
+                    morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+                    dom.insertBoundary(fragment, 0);
+                    dom.insertBoundary(fragment, null);
+                    return morphs;
+                  },
+                  statements: [["inline", "t", ["admin.roles.form.agent_case_access_field_label"], [], ["loc", [null, [48, 34], [48, 88]]]]],
+                  locals: [],
+                  templates: []
+                };
+              })();
+              var child1 = (function () {
+                return {
+                  meta: {
+                    "revision": "Ember@2.0.3",
+                    "loc": {
+                      "source": null,
+                      "start": {
+                        "line": 50,
+                        "column": 10
+                      },
+                      "end": {
+                        "line": 60,
+                        "column": 10
+                      }
+                    },
+                    "moduleName": "frontend-cp/components/ko-admin/roles/form/template.hbs"
+                  },
+                  arity: 1,
+                  cachedFragment: null,
+                  hasRendered: false,
+                  buildFragment: function buildFragment(dom) {
+                    var el0 = dom.createDocumentFragment();
+                    var el1 = dom.createTextNode("              ");
+                    dom.appendChild(el0, el1);
+                    var el1 = dom.createComment("");
+                    dom.appendChild(el0, el1);
+                    var el1 = dom.createTextNode("\n");
+                    dom.appendChild(el0, el1);
+                    return el0;
+                  },
+                  buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                    var morphs = new Array(1);
+                    morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+                    return morphs;
+                  },
+                  statements: [["content", "agentCaseAccessType.label", ["loc", [null, [59, 14], [59, 43]]]]],
+                  locals: ["agentCaseAccessType"],
+                  templates: []
+                };
+              })();
+              var child2 = (function () {
+                return {
+                  meta: {
+                    "revision": "Ember@2.0.3",
+                    "loc": {
+                      "source": null,
+                      "start": {
+                        "line": 62,
+                        "column": 10
+                      },
+                      "end": {
+                        "line": 62,
+                        "column": 86
+                      }
+                    },
+                    "moduleName": "frontend-cp/components/ko-admin/roles/form/template.hbs"
+                  },
+                  arity: 0,
+                  cachedFragment: null,
+                  hasRendered: false,
+                  buildFragment: function buildFragment(dom) {
+                    var el0 = dom.createDocumentFragment();
+                    var el1 = dom.createComment("");
+                    dom.appendChild(el0, el1);
+                    return el0;
+                  },
+                  buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                    var morphs = new Array(1);
+                    morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+                    dom.insertBoundary(fragment, 0);
+                    dom.insertBoundary(fragment, null);
+                    return morphs;
+                  },
+                  statements: [["inline", "t", ["admin.roles.form.agent_case_access_field_help"], [], ["loc", [null, [62, 33], [62, 86]]]]],
+                  locals: [],
+                  templates: []
+                };
+              })();
+              return {
+                meta: {
+                  "revision": "Ember@2.0.3",
+                  "loc": {
+                    "source": null,
+                    "start": {
+                      "line": 47,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 64,
+                      "column": 8
+                    }
+                  },
+                  "moduleName": "frontend-cp/components/ko-admin/roles/form/template.hbs"
+                },
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                  var el0 = dom.createDocumentFragment();
+                  var el1 = dom.createTextNode("          ");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createComment("");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createTextNode("\n\n");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createComment("");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createTextNode("\n          ");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createComment("");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createTextNode("\n          ");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createComment("");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createTextNode("\n");
+                  dom.appendChild(el0, el1);
+                  return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                  var morphs = new Array(4);
+                  morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+                  morphs[1] = dom.createMorphAt(fragment, 3, 3, contextualElement);
+                  morphs[2] = dom.createMorphAt(fragment, 5, 5, contextualElement);
+                  morphs[3] = dom.createMorphAt(fragment, 7, 7, contextualElement);
+                  return morphs;
+                },
+                statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [48, 10], [48, 112]]]], ["block", "power-select", [], ["searchEnabled", false, "class", ["subexpr", "concat", ["ember-power-select-wrapper--ko ember-power-select-wrapper--size-medium", ["subexpr", "qa-cls", [" qa-ko-admin_roles_form__agent-case-access-type"], [], ["loc", [null, [54, 14], [54, 72]]]]], [], ["loc", [null, [52, 18], [54, 73]]]], "placeholder", ["subexpr", "t", ["generic.select_placeholder"], [], ["loc", [null, [55, 24], [55, 56]]]], "options", ["subexpr", "@mut", [["get", "roles.availableAgentCaseAccessTypes", ["loc", [null, [56, 20], [56, 55]]]]], [], []], "selected", ["subexpr", "@mut", [["get", "agentCaseAccessType", ["loc", [null, [57, 21], [57, 40]]]]], [], []], "onchange", ["subexpr", "action", ["selectAgentCaseAccessType"], [], ["loc", [null, [58, 21], [58, 57]]]]], 1, null, ["loc", [null, [50, 10], [60, 27]]]], ["block", "ko-form/field/help", [], [], 2, null, ["loc", [null, [62, 10], [62, 109]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "role.errors.agentCaseAccess", ["loc", [null, [63, 40], [63, 67]]]]], [], []]], ["loc", [null, [63, 10], [63, 69]]]]],
+                locals: [],
+                templates: [child0, child1, child2]
+              };
+            })();
+            return {
+              meta: {
+                "revision": "Ember@2.0.3",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 46,
+                    "column": 6
+                  },
+                  "end": {
+                    "line": 65,
+                    "column": 6
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-admin/roles/form/template.hbs"
+              },
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var morphs = new Array(1);
+                morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+                dom.insertBoundary(fragment, 0);
+                dom.insertBoundary(fragment, null);
+                return morphs;
+              },
+              statements: [["block", "ko-form/field", [], [], 0, null, ["loc", [null, [47, 8], [64, 26]]]]],
+              locals: [],
+              templates: [child0]
+            };
+          })();
+          var child1 = (function () {
+            var child0 = (function () {
+              var child0 = (function () {
+                var child0 = (function () {
+                  return {
+                    meta: {
+                      "revision": "Ember@2.0.3",
+                      "loc": {
+                        "source": null,
+                        "start": {
+                          "line": 74,
+                          "column": 12
+                        },
+                        "end": {
+                          "line": 76,
+                          "column": 12
+                        }
+                      },
+                      "moduleName": "frontend-cp/components/ko-admin/roles/form/template.hbs"
+                    },
+                    arity: 0,
+                    cachedFragment: null,
+                    hasRendered: false,
+                    buildFragment: function buildFragment(dom) {
+                      var el0 = dom.createDocumentFragment();
+                      var el1 = dom.createTextNode("              ");
+                      dom.appendChild(el0, el1);
+                      var el1 = dom.createComment("");
+                      dom.appendChild(el0, el1);
+                      var el1 = dom.createTextNode("\n");
+                      dom.appendChild(el0, el1);
+                      return el0;
+                    },
+                    buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                      var morphs = new Array(1);
+                      morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+                      return morphs;
+                    },
+                    statements: [["inline", "t", [["subexpr", "concat", ["admin.roles.form.", ["get", "permission.translationKey", ["loc", [null, [75, 46], [75, 71]]]], "_permission_help"], [], ["loc", [null, [75, 18], [75, 91]]]]], [], ["loc", [null, [75, 14], [75, 93]]]]],
+                    locals: [],
+                    templates: []
+                  };
+                })();
+                return {
+                  meta: {
+                    "revision": "Ember@2.0.3",
+                    "loc": {
+                      "source": null,
+                      "start": {
+                        "line": 73,
+                        "column": 10
+                      },
+                      "end": {
+                        "line": 77,
+                        "column": 10
+                      }
+                    },
+                    "moduleName": "frontend-cp/components/ko-admin/roles/form/template.hbs"
+                  },
+                  arity: 0,
+                  cachedFragment: null,
+                  hasRendered: false,
+                  buildFragment: function buildFragment(dom) {
+                    var el0 = dom.createDocumentFragment();
+                    var el1 = dom.createComment("");
+                    dom.appendChild(el0, el1);
+                    return el0;
+                  },
+                  buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                    var morphs = new Array(1);
+                    morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+                    dom.insertBoundary(fragment, 0);
+                    dom.insertBoundary(fragment, null);
+                    return morphs;
+                  },
+                  statements: [["block", "ko-form/field/help", [], [], 0, null, ["loc", [null, [74, 12], [76, 35]]]]],
+                  locals: [],
+                  templates: [child0]
+                };
+              })();
+              return {
+                meta: {
+                  "revision": "Ember@2.0.3",
+                  "loc": {
+                    "source": null,
+                    "start": {
+                      "line": 68,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 78,
+                      "column": 8
+                    }
+                  },
+                  "moduleName": "frontend-cp/components/ko-admin/roles/form/template.hbs"
+                },
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                  var el0 = dom.createDocumentFragment();
+                  var el1 = dom.createTextNode("          ");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createComment("");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createTextNode("\n\n");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createComment("");
+                  dom.appendChild(el0, el1);
+                  return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                  var morphs = new Array(2);
+                  morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+                  morphs[1] = dom.createMorphAt(fragment, 3, 3, contextualElement);
+                  dom.insertBoundary(fragment, null);
+                  return morphs;
+                },
+                statements: [["inline", "ko-checkbox", [], ["label", ["subexpr", "t", [["subexpr", "concat", ["admin.roles.form.", ["get", "permission.translationKey", ["loc", [null, [70, 49], [70, 74]]]], "_permission_label"], [], ["loc", [null, [70, 21], [70, 95]]]]], [], ["loc", [null, [70, 18], [70, 96]]]], "checked", ["subexpr", "@mut", [["get", "permission.isEnabled", ["loc", [null, [71, 20], [71, 40]]]]], [], []]], ["loc", [null, [69, 10], [71, 42]]]], ["block", "if", [["get", "permission.hasHelpText", ["loc", [null, [73, 16], [73, 38]]]]], [], 0, null, ["loc", [null, [73, 10], [77, 17]]]]],
+                locals: [],
+                templates: [child0]
+              };
+            })();
+            return {
+              meta: {
+                "revision": "Ember@2.0.3",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 67,
+                    "column": 6
+                  },
+                  "end": {
+                    "line": 79,
+                    "column": 6
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-admin/roles/form/template.hbs"
+              },
+              arity: 1,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var morphs = new Array(1);
+                morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+                dom.insertBoundary(fragment, 0);
+                dom.insertBoundary(fragment, null);
+                return morphs;
+              },
+              statements: [["block", "ko-form/field", [], [], 0, null, ["loc", [null, [68, 8], [78, 26]]]]],
+              locals: ["permission"],
+              templates: [child0]
+            };
+          })();
+          return {
+            meta: {
+              "revision": "Ember@2.0.3",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 45,
+                  "column": 4
+                },
+                "end": {
+                  "line": 80,
+                  "column": 4
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-admin/roles/form/template.hbs"
+            },
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(2);
+              morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+              morphs[1] = dom.createMorphAt(fragment, 2, 2, contextualElement);
+              dom.insertBoundary(fragment, 0);
+              dom.insertBoundary(fragment, null);
+              return morphs;
+            },
+            statements: [["block", "if", [["subexpr", "eq", [["get", "permissionGroup.name", ["loc", [null, [46, 16], [46, 36]]]], "cases"], [], ["loc", [null, [46, 12], [46, 45]]]]], [], 0, null, ["loc", [null, [46, 6], [65, 13]]]], ["block", "each", [["get", "permissionGroup.permissions", ["loc", [null, [67, 14], [67, 41]]]]], [], 1, null, ["loc", [null, [67, 6], [79, 15]]]]],
+            locals: [],
+            templates: [child0, child1]
+          };
+        })();
+        return {
+          meta: {
+            "revision": "Ember@2.0.3",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 44,
+                "column": 2
+              },
+              "end": {
+                "line": 81,
+                "column": 2
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-admin/roles/form/template.hbs"
+          },
+          arity: 1,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+            dom.insertBoundary(fragment, 0);
+            dom.insertBoundary(fragment, null);
+            return morphs;
+          },
+          statements: [["block", "ko-admin/forms/group", [], ["legend", ["subexpr", "t", [["subexpr", "concat", ["admin.roles.form.", ["get", "permissionGroup.translationKey", ["loc", [null, [45, 66], [45, 96]]]], "_group_legend"], [], ["loc", [null, [45, 38], [45, 113]]]]], [], ["loc", [null, [45, 35], [45, 114]]]]], 0, null, ["loc", [null, [45, 4], [80, 29]]]]],
+          locals: ["permissionGroup"],
+          templates: [child0]
+        };
+      })();
+      return {
+        meta: {
+          "revision": "Ember@2.0.3",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 1,
+              "column": 0
+            },
+            "end": {
+              "line": 84,
+              "column": 0
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-admin/roles/form/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n\n");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(4);
+          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+          morphs[1] = dom.createMorphAt(fragment, 3, 3, contextualElement);
+          morphs[2] = dom.createMorphAt(fragment, 5, 5, contextualElement);
+          morphs[3] = dom.createMorphAt(fragment, 7, 7, contextualElement);
+          return morphs;
+        },
+        statements: [["inline", "ko-admin/page-header", [], ["title", ["subexpr", "concat", [["subexpr", "t", ["admin.roles"], [], ["loc", [null, [5, 18], [5, 35]]]], " / ", ["subexpr", "if", [["get", "role.isNew", ["loc", [null, [6, 14], [6, 24]]]], ["subexpr", "t", ["admin.roles.form.new_title"], [], ["loc", [null, [6, 25], [6, 57]]]], ["get", "role.title", ["loc", [null, [6, 58], [6, 68]]]]], [], ["loc", [null, [6, 10], [6, 69]]]]], [], ["loc", [null, [5, 10], [6, 70]]]], "buttonText", ["subexpr", "t", ["generic.save"], [], ["loc", [null, [7, 15], [7, 33]]]], "onCancel", ["subexpr", "@mut", [["get", "attrs.onCancel", ["loc", [null, [8, 13], [8, 27]]]]], [], []]], ["loc", [null, [4, 2], [8, 29]]]], ["block", "ko-admin/forms/group", [], ["legend", ["subexpr", "t", ["admin.roles.form.details_group_legend"], [], ["loc", [null, [10, 33], [10, 76]]]]], 0, null, ["loc", [null, [10, 2], [42, 27]]]], ["block", "each", [["get", "availablePermissionGroups", ["loc", [null, [44, 10], [44, 35]]]]], [], 1, null, ["loc", [null, [44, 2], [81, 11]]]], ["inline", "ko-admin/page-footer", [], ["buttonText", ["subexpr", "t", ["generic.save"], [], ["loc", [null, [83, 36], [83, 54]]]], "onCancel", ["subexpr", "action", ["cancel"], [], ["loc", [null, [83, 64], [83, 81]]]]], ["loc", [null, [83, 2], [83, 83]]]]],
+        locals: [],
+        templates: [child0, child1]
+      };
+    })();
+    return {
+      meta: {
+        "revision": "Ember@2.0.3",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 85,
+            "column": 0
+          }
+        },
+        "moduleName": "frontend-cp/components/ko-admin/roles/form/template.hbs"
+      },
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var morphs = new Array(1);
+        morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+        dom.insertBoundary(fragment, 0);
+        dom.insertBoundary(fragment, null);
+        return morphs;
+      },
+      statements: [["block", "ko-form", [], ["onSubmit", ["subexpr", "action", ["save"], [], ["loc", [null, [2, 11], [2, 26]]]], "onSuccess", ["subexpr", "action", ["success"], [], ["loc", [null, [3, 12], [3, 30]]]]], 0, null, ["loc", [null, [1, 0], [84, 12]]]]],
+      locals: [],
+      templates: [child0]
+    };
+  })());
+});
+define('frontend-cp/components/ko-admin/roles/list-item/component', ['exports', 'ember'], function (exports, _ember) {
+  var computed = _ember['default'].computed;
+  var inject = _ember['default'].inject;
+  exports['default'] = _ember['default'].Component.extend({
+    notification: inject.service(),
+    intl: inject.service(),
+    roles: inject.service(),
+    role: null,
+    canDelete: computed.not('role.isSystem'),
+
+    canEdit: computed('role.roleType', 'role.isSystem', 'roles.editableSystemTypes', function () {
+      return !this.get('role.isSystem') || this.get('roles.editableSystemTypes').findBy('id', this.get('role.roleType'));
+    }),
+
+    roleType: computed('role.roleType', function () {
+      return this.get('roles.allTypes').findBy('id', this.get('role.roleType'));
+    }),
+
+    actions: {
+      edit: function edit(role, event) {
+        event.stopPropagation();
+
+        if (this.attrs.onEdit) {
+          this.attrs.onEdit(role);
+        }
+      },
+
+      'delete': function _delete(role, event) {
+        var _this = this;
+
+        event.stopPropagation();
+
+        if (confirm(this.get('intl').findTranslationByKey('generic.confirm.delete'))) {
+          role.destroyRecord().then(function () {
+            _this.get('notification').success(_this.get('intl').findTranslationByKey('admin.roles.index.deletion_successful_notification'));
+          });
+        }
+      }
+    }
+  });
+});
+define("frontend-cp/components/ko-admin/roles/list-item/styles", ["exports"], function (exports) {
+  exports["default"] = {
+    "action": "_action_1ubcxi"
+  };
+});
+define("frontend-cp/components/ko-admin/roles/list-item/template", ["exports"], function (exports) {
+  exports["default"] = Ember.HTMLBars.template((function () {
+    var child0 = (function () {
+      var child0 = (function () {
+        var child0 = (function () {
+          return {
+            meta: {
+              "revision": "Ember@2.0.3",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 8,
+                  "column": 6
+                },
+                "end": {
+                  "line": 12,
+                  "column": 6
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-admin/roles/list-item/template.hbs"
+            },
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode("        ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createElement("span");
+              var el2 = dom.createTextNode("\n          (System)\n        ");
+              dom.appendChild(el1, el2);
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var element5 = dom.childAt(fragment, [1]);
+              var morphs = new Array(1);
+              morphs[0] = dom.createAttrMorph(element5, 'class');
+              return morphs;
+            },
+            statements: [["attribute", "class", ["concat", ["t-caption ", ["subexpr", "qa-cls", ["qa-ko-admin_roles_list-item__title-caption"], [], ["loc", [null, [9, 31], [9, 86]]]]]]]],
+            locals: [],
+            templates: []
+          };
+        })();
+        return {
+          meta: {
+            "revision": "Ember@2.0.3",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 2,
+                "column": 2
+              },
+              "end": {
+                "line": 14,
+                "column": 2
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-admin/roles/list-item/template.hbs"
+          },
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("    ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("div");
+            var el2 = dom.createTextNode("\n      ");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createElement("span");
+            var el3 = dom.createTextNode("\n        ");
+            dom.appendChild(el2, el3);
+            var el3 = dom.createComment("");
+            dom.appendChild(el2, el3);
+            var el3 = dom.createTextNode("\n      ");
+            dom.appendChild(el2, el3);
+            dom.appendChild(el1, el2);
+            var el2 = dom.createTextNode("\n\n");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createComment("");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createTextNode("    ");
+            dom.appendChild(el1, el2);
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var element6 = dom.childAt(fragment, [1]);
+            var element7 = dom.childAt(element6, [1]);
+            var morphs = new Array(3);
+            morphs[0] = dom.createAttrMorph(element7, 'class');
+            morphs[1] = dom.createMorphAt(element7, 1, 1);
+            morphs[2] = dom.createMorphAt(element6, 3, 3);
+            return morphs;
+          },
+          statements: [["attribute", "class", ["concat", ["t-bold ", ["subexpr", "qa-cls", ["qa-ko-admin_roles_list-item__title"], [], ["loc", [null, [4, 26], [4, 73]]]]]]], ["content", "role.title", ["loc", [null, [5, 8], [5, 22]]]], ["block", "if", [["get", "role.isSystem", ["loc", [null, [8, 12], [8, 25]]]]], [], 0, null, ["loc", [null, [8, 6], [12, 13]]]]],
+          locals: [],
+          templates: [child0]
+        };
+      })();
+      var child1 = (function () {
+        return {
+          meta: {
+            "revision": "Ember@2.0.3",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 16,
+                "column": 2
+              },
+              "end": {
+                "line": 20,
+                "column": 2
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-admin/roles/list-item/template.hbs"
+          },
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("    ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("span");
+            var el2 = dom.createTextNode("\n      ");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createComment("");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createTextNode("\n    ");
+            dom.appendChild(el1, el2);
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var element4 = dom.childAt(fragment, [1]);
+            var morphs = new Array(2);
+            morphs[0] = dom.createAttrMorph(element4, 'class');
+            morphs[1] = dom.createMorphAt(element4, 1, 1);
+            return morphs;
+          },
+          statements: [["attribute", "class", ["concat", ["t-caption ", ["subexpr", "qa-cls", ["qa-ko-admin_roles_list-item__label"], [], ["loc", [null, [17, 27], [17, 74]]]]]]], ["content", "roleType.label", ["loc", [null, [18, 6], [18, 24]]]]],
+          locals: [],
+          templates: []
+        };
+      })();
+      var child2 = (function () {
+        var child0 = (function () {
+          return {
+            meta: {
+              "revision": "Ember@2.0.3",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 23,
+                  "column": 4
+                },
+                "end": {
+                  "line": 30,
+                  "column": 4
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-admin/roles/list-item/template.hbs"
+            },
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode("      ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createElement("span");
+              var el2 = dom.createTextNode("\n        ");
+              dom.appendChild(el1, el2);
+              var el2 = dom.createElement("a");
+              var el3 = dom.createTextNode("\n          ");
+              dom.appendChild(el2, el3);
+              var el3 = dom.createComment("");
+              dom.appendChild(el2, el3);
+              var el3 = dom.createTextNode("\n        ");
+              dom.appendChild(el2, el3);
+              dom.appendChild(el1, el2);
+              var el2 = dom.createTextNode("\n      ");
+              dom.appendChild(el1, el2);
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var element2 = dom.childAt(fragment, [1]);
+              var element3 = dom.childAt(element2, [1]);
+              var morphs = new Array(4);
+              morphs[0] = dom.createAttrMorph(element2, 'class');
+              morphs[1] = dom.createAttrMorph(element3, 'onclick');
+              morphs[2] = dom.createAttrMorph(element3, 'class');
+              morphs[3] = dom.createMorphAt(element3, 1, 1);
+              return morphs;
+            },
+            statements: [["attribute", "class", ["get", "styles.action", ["loc", [null, [24, 20], [24, 33]]]]], ["attribute", "onclick", ["subexpr", "action", ["edit", ["get", "role", ["loc", [null, [25, 35], [25, 39]]]]], [], ["loc", [null, [25, 19], [25, 41]]]]], ["attribute", "class", ["subexpr", "qa-cls", ["qa-ko-admin_roles_list-item__edit"], [], ["loc", [null, [26, 17], [26, 63]]]]], ["inline", "t", ["generic.edit"], [], ["loc", [null, [27, 10], [27, 30]]]]],
+            locals: [],
+            templates: []
+          };
+        })();
+        var child1 = (function () {
+          return {
+            meta: {
+              "revision": "Ember@2.0.3",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 32,
+                  "column": 4
+                },
+                "end": {
+                  "line": 39,
+                  "column": 4
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-admin/roles/list-item/template.hbs"
+            },
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode("      ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createElement("span");
+              var el2 = dom.createTextNode("\n        ");
+              dom.appendChild(el1, el2);
+              var el2 = dom.createElement("a");
+              var el3 = dom.createTextNode("\n          ");
+              dom.appendChild(el2, el3);
+              var el3 = dom.createComment("");
+              dom.appendChild(el2, el3);
+              var el3 = dom.createTextNode("\n        ");
+              dom.appendChild(el2, el3);
+              dom.appendChild(el1, el2);
+              var el2 = dom.createTextNode("\n      ");
+              dom.appendChild(el1, el2);
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var element0 = dom.childAt(fragment, [1]);
+              var element1 = dom.childAt(element0, [1]);
+              var morphs = new Array(4);
+              morphs[0] = dom.createAttrMorph(element0, 'class');
+              morphs[1] = dom.createAttrMorph(element1, 'onclick');
+              morphs[2] = dom.createAttrMorph(element1, 'class');
+              morphs[3] = dom.createMorphAt(element1, 1, 1);
+              return morphs;
+            },
+            statements: [["attribute", "class", ["get", "styles.action", ["loc", [null, [33, 20], [33, 33]]]]], ["attribute", "onclick", ["subexpr", "action", ["delete", ["get", "role", ["loc", [null, [34, 37], [34, 41]]]]], [], ["loc", [null, [34, 19], [34, 43]]]]], ["attribute", "class", ["subexpr", "qa-cls", ["qa-ko-admin_roles_list-item__delete"], [], ["loc", [null, [35, 17], [35, 65]]]]], ["inline", "t", ["generic.delete"], [], ["loc", [null, [36, 10], [36, 32]]]]],
+            locals: [],
+            templates: []
+          };
+        })();
+        return {
+          meta: {
+            "revision": "Ember@2.0.3",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 22,
+                "column": 2
+              },
+              "end": {
+                "line": 40,
+                "column": 2
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-admin/roles/list-item/template.hbs"
+          },
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(2);
+            morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+            morphs[1] = dom.createMorphAt(fragment, 2, 2, contextualElement);
+            dom.insertBoundary(fragment, 0);
+            dom.insertBoundary(fragment, null);
+            return morphs;
+          },
+          statements: [["block", "if", [["get", "canEdit", ["loc", [null, [23, 10], [23, 17]]]]], [], 0, null, ["loc", [null, [23, 4], [30, 11]]]], ["block", "if", [["get", "canDelete", ["loc", [null, [32, 10], [32, 19]]]]], [], 1, null, ["loc", [null, [32, 4], [39, 11]]]]],
+          locals: [],
+          templates: [child0, child1]
+        };
+      })();
+      return {
+        meta: {
+          "revision": "Ember@2.0.3",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 1,
+              "column": 0
+            },
+            "end": {
+              "line": 41,
+              "column": 0
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-admin/roles/list-item/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(3);
+          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+          morphs[1] = dom.createMorphAt(fragment, 2, 2, contextualElement);
+          morphs[2] = dom.createMorphAt(fragment, 4, 4, contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [["block", "ko-simple-list/cell", [], [], 0, null, ["loc", [null, [2, 2], [14, 26]]]], ["block", "ko-simple-list/cell", [], [], 1, null, ["loc", [null, [16, 2], [20, 26]]]], ["block", "ko-simple-list/actions", [], [], 2, null, ["loc", [null, [22, 2], [40, 29]]]]],
+        locals: [],
+        templates: [child0, child1, child2]
+      };
+    })();
+    return {
+      meta: {
+        "revision": "Ember@2.0.3",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 42,
+            "column": 0
+          }
+        },
+        "moduleName": "frontend-cp/components/ko-admin/roles/list-item/template.hbs"
+      },
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var morphs = new Array(1);
+        morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+        dom.insertBoundary(fragment, 0);
+        dom.insertBoundary(fragment, null);
+        return morphs;
+      },
+      statements: [["block", "ko-simple-list/row", [], ["onClick", ["subexpr", "if", [["get", "canEdit", ["loc", [null, [1, 34], [1, 41]]]], ["subexpr", "action", ["edit", ["get", "role", ["loc", [null, [1, 57], [1, 61]]]]], [], ["loc", [null, [1, 42], [1, 62]]]]], [], ["loc", [null, [1, 30], [1, 63]]]]], 0, null, ["loc", [null, [1, 0], [41, 23]]]]],
+      locals: [],
+      templates: [child0]
+    };
+  })());
+});
 define('frontend-cp/components/ko-admin/sidebar/component', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = _ember['default'].Component.extend({
     // HTML
@@ -13222,6 +14753,46 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
       };
     })();
     var child7 = (function () {
+      var child0 = (function () {
+        return {
+          meta: {
+            "revision": "Ember@2.0.3",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 48,
+                "column": 4
+              },
+              "end": {
+                "line": 50,
+                "column": 4
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-admin/sidebar/template.hbs"
+          },
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("      ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+            return morphs;
+          },
+          statements: [["inline", "t", ["admin.roles"], [], ["loc", [null, [49, 6], [49, 25]]]]],
+          locals: [],
+          templates: []
+        };
+      })();
       return {
         meta: {
           "revision": "Ember@2.0.3",
@@ -13232,7 +14803,45 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
               "column": 2
             },
             "end": {
-              "line": 49,
+              "line": 51,
+              "column": 2
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-admin/sidebar/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [["block", "link-to", ["session.admin.people.roles"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [48, 50], [48, 61]]]]], [], []]], 0, null, ["loc", [null, [48, 4], [50, 16]]]]],
+        locals: [],
+        templates: [child0]
+      };
+    })();
+    var child8 = (function () {
+      return {
+        meta: {
+          "revision": "Ember@2.0.3",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 53,
+              "column": 2
+            },
+            "end": {
+              "line": 55,
               "column": 2
             }
           },
@@ -13256,12 +14865,12 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [["inline", "t", ["admin.organizationfields"], [], ["loc", [null, [48, 4], [48, 36]]]]],
+        statements: [["inline", "t", ["admin.organizationfields"], [], ["loc", [null, [54, 4], [54, 36]]]]],
         locals: [],
         templates: []
       };
     })();
-    var child8 = (function () {
+    var child9 = (function () {
       var child0 = (function () {
         return {
           meta: {
@@ -13269,11 +14878,11 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
             "loc": {
               "source": null,
               "start": {
-                "line": 57,
+                "line": 63,
                 "column": 2
               },
               "end": {
-                "line": 59,
+                "line": 65,
                 "column": 2
               }
             },
@@ -13297,7 +14906,7 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
             morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
             return morphs;
           },
-          statements: [["inline", "t", ["admin.businesshours"], [], ["loc", [null, [58, 4], [58, 31]]]]],
+          statements: [["inline", "t", ["admin.businesshours"], [], ["loc", [null, [64, 4], [64, 31]]]]],
           locals: [],
           templates: []
         };
@@ -13308,11 +14917,11 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
           "loc": {
             "source": null,
             "start": {
-              "line": 52,
+              "line": 58,
               "column": 0
             },
             "end": {
-              "line": 61,
+              "line": 67,
               "column": 0
             }
           },
@@ -13353,7 +14962,7 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
           morphs[3] = dom.createMorphAt(element0, 3, 3);
           return morphs;
         },
-        statements: [["attribute", "class", ["get", "styles.group", ["loc", [null, [53, 13], [53, 25]]]]], ["attribute", "class", ["get", "styles.header", ["loc", [null, [54, 13], [54, 26]]]]], ["inline", "t", ["admin.navigation.automation"], [], ["loc", [null, [55, 4], [55, 39]]]], ["block", "link-to", ["session.admin.automation.businesshours"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [57, 60], [57, 71]]]]], [], []]], 0, null, ["loc", [null, [57, 2], [59, 14]]]]],
+        statements: [["attribute", "class", ["get", "styles.group", ["loc", [null, [59, 13], [59, 25]]]]], ["attribute", "class", ["get", "styles.header", ["loc", [null, [60, 13], [60, 26]]]]], ["inline", "t", ["admin.navigation.automation"], [], ["loc", [null, [61, 4], [61, 39]]]], ["block", "link-to", ["session.admin.automation.businesshours"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [63, 60], [63, 71]]]]], [], []]], 0, null, ["loc", [null, [63, 2], [65, 14]]]]],
         locals: [],
         templates: [child0]
       };
@@ -13368,7 +14977,7 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
             "column": 0
           },
           "end": {
-            "line": 62,
+            "line": 68,
             "column": 0
           }
         },
@@ -13436,6 +15045,10 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
         dom.appendChild(el1, el2);
         var el2 = dom.createComment("");
         dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n\n");
         dom.appendChild(el0, el1);
@@ -13448,7 +15061,7 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
         var element5 = dom.childAt(element4, [1]);
         var element6 = dom.childAt(fragment, [4]);
         var element7 = dom.childAt(element6, [1]);
-        var morphs = new Array(15);
+        var morphs = new Array(16);
         morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
         morphs[1] = dom.createAttrMorph(element4, 'class');
         morphs[2] = dom.createAttrMorph(element5, 'class');
@@ -13463,14 +15076,15 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
         morphs[11] = dom.createMorphAt(element6, 3, 3);
         morphs[12] = dom.createMorphAt(element6, 5, 5);
         morphs[13] = dom.createMorphAt(element6, 7, 7);
-        morphs[14] = dom.createMorphAt(fragment, 6, 6, contextualElement);
+        morphs[14] = dom.createMorphAt(element6, 9, 9);
+        morphs[15] = dom.createMorphAt(fragment, 6, 6, contextualElement);
         dom.insertBoundary(fragment, 0);
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["block", "if", [["get", "features.adminTwitter", ["loc", [null, [1, 6], [1, 27]]]]], [], 0, null, ["loc", [null, [1, 0], [11, 7]]]], ["attribute", "class", ["get", "styles.group", ["loc", [null, [13, 13], [13, 25]]]]], ["attribute", "class", ["get", "styles.header", ["loc", [null, [14, 13], [14, 26]]]]], ["inline", "t", ["admin.navigation.manage"], [], ["loc", [null, [15, 4], [15, 35]]]], ["block", "link-to", ["session.admin.manage.views"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [17, 48], [17, 59]]]]], [], []]], 1, null, ["loc", [null, [17, 2], [19, 14]]]], ["block", "link-to", ["session.admin.manage.case-fields"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [21, 54], [21, 65]]]]], [], []]], 2, null, ["loc", [null, [21, 2], [23, 14]]]], ["block", "link-to", ["session.admin.manage.case-forms"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [25, 53], [25, 64]]]]], [], []]], 3, null, ["loc", [null, [25, 2], [27, 14]]]], ["block", "link-to", ["session.admin.manage.macros"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [29, 49], [29, 60]]]]], [], []]], 4, null, ["loc", [null, [29, 2], [31, 14]]]], ["attribute", "class", ["get", "styles.group", ["loc", [null, [35, 13], [35, 25]]]]], ["attribute", "class", ["get", "styles.header", ["loc", [null, [36, 13], [36, 26]]]]], ["inline", "t", ["admin.navigation.people"], [], ["loc", [null, [37, 4], [37, 35]]]], ["block", "link-to", ["session.admin.people.teams"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [39, 48], [39, 59]]]]], [], []]], 5, null, ["loc", [null, [39, 2], [41, 14]]]], ["block", "link-to", ["session.admin.people.user-fields"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [43, 54], [43, 65]]]]], [], []]], 6, null, ["loc", [null, [43, 2], [45, 14]]]], ["block", "link-to", ["session.admin.people.organization-fields"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [47, 62], [47, 73]]]]], [], []]], 7, null, ["loc", [null, [47, 2], [49, 14]]]], ["block", "if", [["get", "features.adminBusinessHours", ["loc", [null, [52, 6], [52, 33]]]]], [], 8, null, ["loc", [null, [52, 0], [61, 7]]]]],
+      statements: [["block", "if", [["get", "features.adminTwitter", ["loc", [null, [1, 6], [1, 27]]]]], [], 0, null, ["loc", [null, [1, 0], [11, 7]]]], ["attribute", "class", ["get", "styles.group", ["loc", [null, [13, 13], [13, 25]]]]], ["attribute", "class", ["get", "styles.header", ["loc", [null, [14, 13], [14, 26]]]]], ["inline", "t", ["admin.navigation.manage"], [], ["loc", [null, [15, 4], [15, 35]]]], ["block", "link-to", ["session.admin.manage.views"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [17, 48], [17, 59]]]]], [], []]], 1, null, ["loc", [null, [17, 2], [19, 14]]]], ["block", "link-to", ["session.admin.manage.case-fields"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [21, 54], [21, 65]]]]], [], []]], 2, null, ["loc", [null, [21, 2], [23, 14]]]], ["block", "link-to", ["session.admin.manage.case-forms"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [25, 53], [25, 64]]]]], [], []]], 3, null, ["loc", [null, [25, 2], [27, 14]]]], ["block", "link-to", ["session.admin.manage.macros"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [29, 49], [29, 60]]]]], [], []]], 4, null, ["loc", [null, [29, 2], [31, 14]]]], ["attribute", "class", ["get", "styles.group", ["loc", [null, [35, 13], [35, 25]]]]], ["attribute", "class", ["get", "styles.header", ["loc", [null, [36, 13], [36, 26]]]]], ["inline", "t", ["admin.navigation.people"], [], ["loc", [null, [37, 4], [37, 35]]]], ["block", "link-to", ["session.admin.people.teams"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [39, 48], [39, 59]]]]], [], []]], 5, null, ["loc", [null, [39, 2], [41, 14]]]], ["block", "link-to", ["session.admin.people.user-fields"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [43, 54], [43, 65]]]]], [], []]], 6, null, ["loc", [null, [43, 2], [45, 14]]]], ["block", "if", [["get", "features.roles", ["loc", [null, [47, 8], [47, 22]]]]], [], 7, null, ["loc", [null, [47, 2], [51, 9]]]], ["block", "link-to", ["session.admin.people.organization-fields"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [53, 62], [53, 73]]]]], [], []]], 8, null, ["loc", [null, [53, 2], [55, 14]]]], ["block", "if", [["get", "features.adminBusinessHours", ["loc", [null, [58, 6], [58, 33]]]]], [], 9, null, ["loc", [null, [58, 0], [67, 7]]]]],
       locals: [],
-      templates: [child0, child1, child2, child3, child4, child5, child6, child7, child8]
+      templates: [child0, child1, child2, child3, child4, child5, child6, child7, child8, child9]
     };
   })());
 });
@@ -35273,7 +36887,7 @@ define('frontend-cp/components/ko-info-bar/field/checkbox/component', ['exports'
     classNameBindings: ['isEdited:ko-info-bar_item--edited', 'isPusherEdited:ko-info-bar_item--pusher-edited', 'isErrored:ko-info-bar_item--error', 'isDisabled:ko-info-bar_item--disabled'],
 
     isChecked: function isChecked(value, id) {
-      return _npmLodash['default'].contains(valueToArray(value), id.toString());
+      return valueToArray(value).contains(id.toString());
     },
 
     actions: {
@@ -53089,6 +54703,10 @@ define("frontend-cp/locales/en-us/admin", ["exports"], function (exports) {
     "teams.info.title": "Team members",
     "teams.info.content": "Click on agents from the list below to add or remove from the team",
 
+    "roles": "Roles and permissions",
+    "roles.index.add_new_button": "Add New Role",
+    "roles.index.deletion_successful_notification": "Role deleted successfully",
+
     "fields.type.field_options.add_option": "Add an option",
     "fields.type.field_options.missing_options": "Please provide at least one option",
     "fields.new.heading": "New",
@@ -53329,7 +54947,6 @@ define("frontend-cp/locales/en-us/admin", ["exports"], function (exports) {
     "predicate_builder.operators.date_before_or_on": "date before or on",
     "predicate_builder.operators.date_is": "date is",
     "predicate_builder.operators.date_is_not": "date is not",
-
     "macros": "Macros",
     "macros.usage_count": "Used {count, plural, =1 {1 time} other {# times}}",
     "macros.last_used_at": "Last used at {date}",
@@ -53358,7 +54975,73 @@ define("frontend-cp/locales/en-us/admin", ["exports"], function (exports) {
     "macros.actions.priority.decrease_one_level": "Decrease One",
     "macros.actions.status.label": "Status",
     "macros.actions.assignee.label": "Assignee",
-    "macros.errors.actions.required": "Please add at least one action"
+    "macros.errors.actions.required": "Please add at least one action",
+    "roles.type.admin": "Administrator",
+    "roles.type.agent": "Agent",
+    "roles.type.collaborator": "Collaborator",
+    "roles.type.customer": "Customer",
+    "roles.type.owner": "Owner",
+    "roles.agent_case_access_type.self": "Assigned to agent",
+    "roles.agent_case_access_type.teams": "Assigned to agent's teams",
+    "roles.agent_case_access_type.all": "All",
+    "roles.form.new_title": "New",
+    "roles.form.role_type_field_help": "Some permissions are enforced by Kayako and are non-configurable. These permissions depend on the <strong>role type</strong> selected here. For example, an 'Admin' role type will grant access to the admin area (and will enable some Admin-specific permissions below).",
+    "roles.form.role_type_field_help_link": "Find out more about roles",
+    "roles.form.title_field_label": "Role name",
+    "roles.form.role_type_field_label": "Role type",
+    "roles.form.details_group_legend": "Role details",
+    "roles.form.cases_group_legend": "Cases",
+    "roles.form.chats_group_legend": "Chat",
+    "roles.form.help_center_group_legend": "Help Center",
+    "roles.form.user_administration_group_legend": "User administration",
+    "roles.form.system_administration_group_legend": "System administration",
+    "roles.form.agent_case_access_field_label": "Cases this agent can access",
+    "roles.form.agent_case_access_field_help": "This permission can be overridden per-agent, by editing an agent's profile.",
+    "roles.form.cases_create_permission_label": "Create new cases",
+    "roles.form.cases_reply_permission_label": "Reply to cases",
+    "roles.form.cases_add_notes_permission_label": "Add private notes to cases",
+    "roles.form.cases_update_permission_label": "Update case properties",
+    "roles.form.cases_update_permission_help": "Allows this agent to update the properties of a case, such as change the assignee and change custom case field values.",
+    "roles.form.cases_split_and_merge_permission_label": "Split and merge cases",
+    "roles.form.cases_split_and_merge_permission_help": "Allows this agent to split cases into new cases, and merge two existing cases into one.",
+    "roles.form.cases_trash_permission_label": "Delete cases",
+    "roles.form.cases_trash_permission_help": "Allow this agent to delete cases (which moves them to Trash) and individual case replies and notes.",
+    "roles.form.chats_accept_permission_label": "Accept new chat requests and invitations",
+    "roles.form.chats_accept_permission_help": "Enables the agent to sign in to live chat and make themselves available to accept new chat requests and transfer invitations.",
+    "roles.form.users_and_orgs_group_legend": "Users and organizations",
+    "roles.form.users_and_orgs_create_permission_label": "Create users and organizations",
+    "roles.form.users_and_orgs_update_permission_label": "Update users and organizations",
+    "roles.form.users_and_orgs_update_permission_help": "Allows an agent to update user profiles (such as their name, identities and the values of custom user fields). Regardless of this permission, agents can update their own profile.",
+    "roles.form.users_and_orgs_delete_permission_label": "Delete users and organizations",
+    "roles.form.users_and_orgs_delete_permission_help": "Allows this agent to delete other users. Regardless of this setting, only admin type users can delete other agents and admins, and agent type users can only delete customers.",
+    "roles.form.help_center_manage_permission_label": "Manage the Help Center",
+    "roles.form.help_center_manage_permission_help": "Allows the agent to manage the structure of the Help Center, including creating and editing categories, sections and permissions. Note that only admin type users with the 'Manage channels' permission are able to change the configuration and look and feel of the Help Center.",
+    "roles.form.help_center_manage_articles_permission_label": "Create and edit articles",
+    "roles.form.help_center_manage_articles_permission_help": "Allows the agent to create and edit articles in the Help Center. Note: that Collaborators cannot create or edit Help Center content.",
+    "roles.form.help_center_publish_articles_permission_label": "Publish articles",
+    "roles.form.help_center_publish_articles_permission_help": "Allows the agent to publish Help Center articles (by changing the status of a Help Center article to Published). Note: Collaborators cannot create or edit Help Center content.",
+    "roles.form.teams_manage_permission_label": "Manage teams",
+    "roles.form.teams_manage_permission_help": "Allows this admin to manage teams and organize other agents into teams.",
+    "roles.form.roles_and_permissions_manage_permission_label": "Manage roles and permissions",
+    "roles.form.roles_and_permissions_manage_permission_help": "Allows this admin to manage roles and permissions.",
+    "roles.form.apps_manage_permission_label": "Manage apps and integrations",
+    "roles.form.endpoints_manage_permission_label": "Manage Endpoints",
+    "roles.form.channels_manage_permission_label": "Manage channels",
+    "roles.form.channels_manage_permission_help": "Allows this admin to manage channels and related settings, such as adding new Mailboxes, the look and feel of the Help Center, connecting new Twitter accounts and API keys.",
+    "roles.form.brands_manage_permission_label": "Manage Brands",
+    "roles.form.case_views_manage_permission_label": "Manage case views",
+    "roles.form.case_macros_manage_permission_label": "Manage case macros",
+    "roles.form.business_rules_manage_permission_label": "Manage business rules",
+    "roles.form.business_rules_manage_permission_help": "Allows this admin to manage case trigger rules and case monitor rules.",
+    "roles.form.slas_and_business_hours_manage_permission_label": "Manage SLAs and business hours",
+    "roles.form.slas_and_business_hours_manage_permission_help": "Allows this admin to manage SLAs and business hours.",
+    "roles.form.case_fields_manage_permission_label": "Manage case fields",
+    "roles.form.case_fields_manage_permission_help": "Allows this admin to create, update and delete custom case fields, and customize system case fields (such as priority, status and type).",
+    "roles.form.users_and_organization_fields_manage_permission_label": "Manage custom user and organization fields",
+    "roles.form.users_and_organization_fields_manage_permission_help": "Allows this admin to create, update and delete custom user and organization profile fields.",
+    "roles.form.settings_manage_permission_label": "Manage system configuration",
+    "roles.form.settings_manage_permission_help": "Allows the admin to manage system settings and configuration, such as security settings, authentication options and blacklists."
+
   };
 });
 define("frontend-cp/locales/en-us/cases", ["exports"], function (exports) {
@@ -55294,10 +56977,67 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
+    this.post('/api/v1/roles', function (db, req) {
+      var data = JSON.parse(req.requestBody);
+      var role = db.roles.insert(data);
+
+      role = db.roles.update(role.id, {
+        id: role.id + 5, // first 5 ids are reserved for system roles
+        resource_type: 'role'
+      });
+
+      Reflect.deleteProperty(role, 'permissions');
+
+      return new _emberCliMirage['default'].Response(201, {}, {
+        status: 201,
+        data: role,
+        resource: role.resource_type
+      });
+    });
+
+    this.put('/api/v1/roles/:id', function (db, req) {
+      var data = JSON.parse(req.requestBody);
+      data.resource_type = 'role';
+      var role = db.roles.update(parseInt(req.params.id, 10), data);
+      Reflect.deleteProperty(role, 'permissions');
+
+      return new _emberCliMirage['default'].Response(200, {}, {
+        status: 200,
+        data: role,
+        resource: role.resource_type
+      });
+    });
+
+    this['delete']('/api/v1/roles/:id', function (db, req) {
+      db.roles.remove(parseInt(req.params.id, 10));
+
+      return new _emberCliMirage['default'].Response(200, {}, {
+        status: 200
+      });
+    });
+
+    this.put('/api/v1/roles/:id/permissions', function (db, req) {
+      var data = JSON.parse(req.requestBody);
+      var role = db.roles.find(parseInt(req.params.id, 10));
+
+      db.permissions.clear();
+
+      Object.keys(data.permission).forEach(function (name) {
+        db.permissions.insert({ name: name, role: role, value: data.permission[name] === 1 });
+      });
+
+      return new _emberCliMirage['default'].Response(200, {}, {
+        status: 200
+      });
+    });
+
     this.get('/api/v1/roles/:id', function (db, request) {
+      var role = db.roles.find(request.params.id);
+      Reflect.deleteProperty(role, 'permissions');
+
       return {
         status: 200,
-        data: db.roles.find(request.params.id),
+        data: role,
         resource: 'role'
       };
     });
@@ -57991,7 +59731,8 @@ define('frontend-cp/mirage/factories/role', ['exports', 'ember-cli-mirage'], fun
     created_at: '2015-07-23T12:09:20Z',
     updated_at: '2015-07-23T12:09:20Z',
     resource_type: 'role',
-    resource_url: 'http://novo/api/index.php?/v1/roles/1'
+    resource_url: 'http://novo/api/index.php?/v1/roles/1',
+    is_system: true
   });
 });
 /*eslint-disable camelcase*/
@@ -59206,29 +60947,11 @@ define('frontend-cp/mixins/custom-field-serialization', ['exports', 'ember'], fu
   });
 });
 define('frontend-cp/mixins/dirty-aware/controller', ['exports', 'ember'], function (exports, _ember) {
-  var isPresent = _ember['default'].isPresent;
   exports['default'] = _ember['default'].Mixin.create({
     routeNameOnCancel: null,
 
     actions: {
       cancel: function cancel() {
-        var model = this.get('model');
-
-        if (model.get('hasDirtyAttributes') && isPresent(Object.keys(model.changedAttributes()))) {
-          var intl = this.container.lookup('service:intl');
-          var message = intl.findTranslationByKey('generic.confirm.lose_changes');
-
-          if (confirm(message)) {
-            if (model.get('isNew')) {
-              model.destroyRecord();
-            } else {
-              model.rollbackAttributes();
-            }
-          } else {
-            return;
-          }
-        }
-
         this.transitionToRoute(this.get('routeNameOnCancel'));
       }
     }
@@ -59237,6 +60960,14 @@ define('frontend-cp/mixins/dirty-aware/controller', ['exports', 'ember'], functi
 define('frontend-cp/mixins/dirty-aware/route', ['exports', 'ember'], function (exports, _ember) {
   var isPresent = _ember['default'].isPresent;
   exports['default'] = _ember['default'].Mixin.create({
+    rollbackChanges: function rollbackChanges(model) {
+      if (model.get('isNew')) {
+        model.unloadRecord();
+      } else {
+        model.rollbackAttributes();
+      }
+    },
+
     actions: {
       willTransition: function willTransition(transition) {
         var model = this.controller.get('model');
@@ -59247,10 +60978,12 @@ define('frontend-cp/mixins/dirty-aware/route', ['exports', 'ember'], function (e
           var shouldRollBackModel = confirm(translatedConfirmationMessage);
 
           if (shouldRollBackModel) {
-            model.rollbackAttributes();
+            this.rollbackChanges(model);
           } else {
             transition.abort();
           }
+        } else if (model.get('isNew')) {
+          model.unloadRecord();
         }
       }
     }
@@ -60610,8 +62343,10 @@ define('frontend-cp/models/relationship-fragment', ['exports', 'ember-data', 'mo
 define('frontend-cp/models/role', ['exports', 'ember-data'], function (exports, _emberData) {
   exports['default'] = _emberData['default'].Model.extend({
     title: _emberData['default'].attr('string'),
-    roleType: _emberData['default'].attr('string'),
-    permissions: _emberData['default'].hasMany('permission', { async: true })
+    roleType: _emberData['default'].attr('string', { defaultValue: 'AGENT' }),
+    agentCaseAccess: _emberData['default'].attr('string', { defaultValue: 'ALL' }),
+    permissions: _emberData['default'].hasMany('permission', { async: true }),
+    isSystem: _emberData['default'].attr('boolean')
   });
 });
 define('frontend-cp/models/search-result', ['exports', 'ember-data', 'model-fragments'], function (exports, _emberData, _modelFragments) {
@@ -61183,6 +62918,11 @@ define('frontend-cp/router', ['exports', 'ember', 'frontend-cp/config/environmen
             this.route('select-type', { path: '/select-type' });
             this.route('new', { path: '/new/:type' });
             this.route('edit', { path: '/:organization_field_id' });
+          });
+
+          this.route('roles', function () {
+            this.route('new', { path: '/new' });
+            this.route('edit', { path: '/:role_id' });
           });
         });
 
@@ -64800,6 +66540,51 @@ define('frontend-cp/services/pusher', ['exports', 'ember', 'frontend-cp/config/e
   });
 });
 /* global Pusher */
+define('frontend-cp/services/roles', ['exports', 'ember'], function (exports, _ember) {
+  var inject = _ember['default'].inject;
+  var computed = _ember['default'].computed;
+  exports['default'] = _ember['default'].Service.extend({
+    intl: inject.service(),
+
+    editableSystemTypes: computed('allTypes', function () {
+      var _this = this;
+
+      return ['ADMIN', 'AGENT'].map(function (typeId) {
+        return _this.get('allTypes').findBy('id', typeId);
+      });
+    }),
+
+    allTypes: computed('intl.locale', function () {
+      var _this2 = this;
+
+      return ['ADMIN', 'AGENT', 'COLLABORATOR', 'CUSTOMER', 'OWNER'].map(function (typeId) {
+        return _ember['default'].Object.create({
+          id: typeId,
+
+          label: _this2.get('intl').findTranslationByKey('admin.roles.type.' + typeId.toLowerCase())
+        });
+      });
+    }),
+
+    availableTypes: computed('allTypes', function () {
+      return this.get('allTypes').filter(function (type) {
+        return ['ADMIN', 'AGENT', 'COLLABORATOR'].contains(type.get('id'));
+      });
+    }),
+
+    availableAgentCaseAccessTypes: computed('intl.locale', function () {
+      var _this3 = this;
+
+      return ['ALL', 'TEAMS', 'SELF'].map(function (agentCaseAccessTypeId) {
+        return _ember['default'].Object.create({
+          id: agentCaseAccessTypeId,
+
+          label: _this3.get('intl').findTranslationByKey('admin.roles.agent_case_access_type.' + agentCaseAccessTypeId.toLowerCase())
+        });
+      });
+    })
+  });
+});
 define('frontend-cp/services/sections-history', ['exports', 'ember', 'ember-data'], function (exports, _ember, _emberData) {
   exports['default'] = _ember['default'].Service.extend({
     history: {
@@ -72411,6 +74196,227 @@ define("frontend-cp/session/admin/people/organization-fields/select-type/templat
       templates: []
     };
   })());
+});
+define('frontend-cp/session/admin/people/roles/edit/route', ['exports', 'frontend-cp/session/admin/people/roles/form/route'], function (exports, _frontendCpSessionAdminPeopleRolesFormRoute) {
+  exports['default'] = _frontendCpSessionAdminPeopleRolesFormRoute['default'].extend({
+    model: function model(params) {
+      return this.store.findRecord('role', params.role_id);
+    }
+  });
+});
+define('frontend-cp/session/admin/people/roles/form/controller', ['exports', 'ember', 'frontend-cp/mixins/dirty-aware/controller'], function (exports, _ember, _frontendCpMixinsDirtyAwareController) {
+  var inject = _ember['default'].inject;
+  exports['default'] = _ember['default'].Controller.extend(_frontendCpMixinsDirtyAwareController['default'], {
+    intl: inject.service(),
+    routeNameOnCancel: 'session.admin.people.roles.index',
+
+    actions: {
+      transitionToIndex: function transitionToIndex() {
+        this.transitionToRoute('session.admin.people.roles.index');
+      }
+    }
+  });
+});
+define('frontend-cp/session/admin/people/roles/form/route', ['exports', 'ember', 'frontend-cp/mixins/remember-route', 'frontend-cp/mixins/dirty-aware/route'], function (exports, _ember, _frontendCpMixinsRememberRoute, _frontendCpMixinsDirtyAwareRoute) {
+  exports['default'] = _ember['default'].Route.extend(_frontendCpMixinsDirtyAwareRoute['default'], _frontendCpMixinsRememberRoute['default'], {
+    controllerName: 'session.admin.people.roles.form',
+    templateName: 'session.admin.people.roles.form'
+  });
+});
+define("frontend-cp/session/admin/people/roles/form/template", ["exports"], function (exports) {
+  exports["default"] = Ember.HTMLBars.template((function () {
+    return {
+      meta: {
+        "revision": "Ember@2.0.3",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 5,
+            "column": 0
+          }
+        },
+        "moduleName": "frontend-cp/session/admin/people/roles/form/template.hbs"
+      },
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var morphs = new Array(1);
+        morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+        dom.insertBoundary(fragment, 0);
+        return morphs;
+      },
+      statements: [["inline", "ko-admin/roles/form", [], ["role", ["subexpr", "@mut", [["get", "model", ["loc", [null, [2, 7], [2, 12]]]]], [], []], "onSave", ["subexpr", "action", ["transitionToIndex"], [], ["loc", [null, [3, 9], [3, 37]]]], "onCancel", ["subexpr", "action", ["cancel"], [], ["loc", [null, [4, 11], [4, 28]]]]], ["loc", [null, [1, 0], [4, 30]]]]],
+      locals: [],
+      templates: []
+    };
+  })());
+});
+define('frontend-cp/session/admin/people/roles/index/controller', ['exports', 'ember'], function (exports, _ember) {
+  var computed = _ember['default'].computed;
+  exports['default'] = _ember['default'].Controller.extend({
+    arrangedModel: computed.sort('model', 'modelSorting'),
+    modelSorting: ['title'],
+
+    actions: {
+      transitionToNew: function transitionToNew() {
+        this.transitionToRoute('session.admin.people.roles.new');
+      },
+
+      transitionToEdit: function transitionToEdit(role) {
+        this.transitionToRoute('session.admin.people.roles.edit', role.get('id'));
+      }
+    }
+  });
+});
+define('frontend-cp/session/admin/people/roles/index/route', ['exports', 'ember', 'frontend-cp/mixins/remember-route'], function (exports, _ember, _frontendCpMixinsRememberRoute) {
+  exports['default'] = _ember['default'].Route.extend(_frontendCpMixinsRememberRoute['default'], {
+    model: function model() {
+      return this.store.findAll('role');
+    }
+  });
+});
+define("frontend-cp/session/admin/people/roles/index/template", ["exports"], function (exports) {
+  exports["default"] = Ember.HTMLBars.template((function () {
+    var child0 = (function () {
+      var child0 = (function () {
+        return {
+          meta: {
+            "revision": "Ember@2.0.3",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 7,
+                "column": 2
+              },
+              "end": {
+                "line": 12,
+                "column": 2
+              }
+            },
+            "moduleName": "frontend-cp/session/admin/people/roles/index/template.hbs"
+          },
+          arity: 1,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("    ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+            return morphs;
+          },
+          statements: [["inline", "ko-admin/roles/list-item", [], ["class", ["subexpr", "qa-cls", ["qa-ko-admin_roles__list-item"], [], ["loc", [null, [9, 12], [9, 51]]]], "role", ["subexpr", "@mut", [["get", "role", ["loc", [null, [10, 11], [10, 15]]]]], [], []], "onEdit", ["subexpr", "action", ["transitionToEdit"], [], ["loc", [null, [11, 13], [11, 40]]]]], ["loc", [null, [8, 4], [11, 42]]]]],
+          locals: ["role"],
+          templates: []
+        };
+      })();
+      return {
+        meta: {
+          "revision": "Ember@2.0.3",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 6,
+              "column": 0
+            },
+            "end": {
+              "line": 13,
+              "column": 0
+            }
+          },
+          "moduleName": "frontend-cp/session/admin/people/roles/index/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [["block", "each", [["get", "arrangedModel", ["loc", [null, [7, 10], [7, 23]]]]], [], 0, null, ["loc", [null, [7, 2], [12, 11]]]]],
+        locals: [],
+        templates: [child0]
+      };
+    })();
+    return {
+      meta: {
+        "revision": "Ember@2.0.3",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 14,
+            "column": 0
+          }
+        },
+        "moduleName": "frontend-cp/session/admin/people/roles/index/template.hbs"
+      },
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var morphs = new Array(2);
+        morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+        morphs[1] = dom.createMorphAt(fragment, 2, 2, contextualElement);
+        dom.insertBoundary(fragment, 0);
+        dom.insertBoundary(fragment, null);
+        return morphs;
+      },
+      statements: [["inline", "ko-admin/page-header", [], ["title", ["subexpr", "t", ["admin.roles"], [], ["loc", [null, [2, 8], [2, 25]]]], "buttonText", ["subexpr", "t", ["admin.roles.index.add_new_button"], [], ["loc", [null, [3, 13], [3, 51]]]], "onSave", ["subexpr", "action", ["transitionToNew"], [], ["loc", [null, [4, 9], [4, 35]]]]], ["loc", [null, [1, 0], [4, 37]]]], ["block", "ko-simple-list", [], [], 0, null, ["loc", [null, [6, 0], [13, 19]]]]],
+      locals: [],
+      templates: [child0]
+    };
+  })());
+});
+define('frontend-cp/session/admin/people/roles/new/route', ['exports', 'frontend-cp/session/admin/people/roles/form/route'], function (exports, _frontendCpSessionAdminPeopleRolesFormRoute) {
+  exports['default'] = _frontendCpSessionAdminPeopleRolesFormRoute['default'].extend({
+    model: function model() {
+      return this.store.createRecord('role');
+    }
+  });
 });
 define('frontend-cp/session/admin/people/teams/edit/route', ['exports', 'ember', 'frontend-cp/mixins/remember-route'], function (exports, _ember, _frontendCpMixinsRememberRoute) {
   var Route = _ember['default'].Route;
@@ -82798,6 +84804,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+dd432ae4"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+2f5ee096"});
 }
 /* jshint ignore:end */
