@@ -946,7 +946,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-priorities-
   (0, _qunit.module)('Acceptance | admin/manage/cases/priorities', {
     beforeEach: function beforeEach() {
       this.application = (0, _frontendCpTestsHelpersStartApp['default'])();
-
+      server.create('locale');
       var role = server.create('role', { type: 'ADMIN' });
       var agent = server.create('user', { role: role });
       var session = server.create('session', { user: agent });
@@ -1169,6 +1169,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-types-test'
     beforeEach: function beforeEach() {
       this.application = (0, _frontendCpTestsHelpersStartApp['default'])();
 
+      server.create('locale');
       var role = server.create('role', { type: 'ADMIN' });
       var agent = server.create('user', { role: role });
       var session = server.create('session', { user: agent });
@@ -9013,7 +9014,11 @@ define('frontend-cp/tests/helpers/use-default-scenario', ['exports', 'ember', 'f
 define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-organisation/component-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'ember', 'sinon'], function (exports, _frontendCpTestsHelpersQunit, _ember, _sinon) {
 
   (0, _frontendCpTestsHelpersQunit.moduleForComponent)('ko-agent-dropdown/create-organisation', 'Integration | Component | ko agent dropdown/create organisation', {
-    integration: true
+    integration: true,
+    beforeEach: function beforeEach() {
+      var intl = this.container.lookup('service:intl');
+      intl.setLocale('en-us');
+    }
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('it renders', function (assert) {
@@ -9126,22 +9131,30 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
     integration: true,
     beforeEach: function beforeEach() {
       var intlService = this.container.lookup('service:intl');
-
-      initLocale(intlService, 'en-test', ['generic.validation_errors', 'generic.create_user_panel.name_required', 'generic.create_user_panel.email_required', 'generic.create_user_panel.email_invalid']);
+      intlService.setLocale('en-us');
+      intlService.addTranslations('en-us', {
+        frontend: {
+          api: {
+            generic: {
+              validation_errors: 'validation_errors',
+              cancel: 'Cancel',
+              create_user_panel: {
+                name_label: 'Name label',
+                email_label: 'Email label',
+                submit: 'Submit',
+                info: 'Info',
+                name_required: 'name_required',
+                email_required: 'email_required',
+                email_invalid: 'email_invalid'
+              }
+            }
+          }
+        }
+      });
 
       var mockStore = createMockStore();
       this.registry.unregister('service:store');
       this.registry.register('service:store', mockStore, { instantiate: false });
-
-      function initLocale(intl, localeId, keys) {
-        var payload = keys.reduce(function (data, key) {
-          data['frontend.api.' + key] = key;
-          return data;
-        }, {});
-        intl.setLocale(localeId);
-        intl.createLocale(localeId, {});
-        intl.addTranslations(localeId, payload);
-      }
     }
   });
 
@@ -9296,7 +9309,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
       fillIn($emailInputElement, 'tim.kendrick@kayako');
     });
     emailErrors = getFieldErrors($formElement, 'email');
-    assert.deepEqual(emailErrors, ['generic.create_user_panel.email_invalid']);
+    assert.deepEqual(emailErrors, ['email_invalid']);
 
     _ember['default'].run(function () {
       fillIn($nameInputElement, 'Tim Kendrick');
@@ -9575,10 +9588,15 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
     return store;
   }
 });
+/* eslint-disable camelcase */
 define('frontend-cp/tests/integration/components/ko-info-bar/component-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {
 
   (0, _emberQunit.moduleForComponent)('ko-info-bar', 'Integration | Component | ko info bar', {
-    integration: true
+    integration: true,
+    beforeEach: function beforeEach() {
+      var intl = this.container.lookup('service:intl');
+      intl.setLocale('en-us');
+    }
   });
 
   (0, _emberQunit.test)('it renders', function (assert) {
@@ -9646,6 +9664,8 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
   (0, _emberQunit.moduleForComponent)('ko-info-bar/field/drill-down', 'Integration | Component | ko-info-bar/field/drill-down', {
     integration: true,
     beforeEach: function beforeEach() {
+      var intl = this.container.lookup('service:intl');
+      intl.setLocale('en-us');
       this.registry.optionsForType('sanitizer', { instantiate: false });
       this.set('options', defaultOptions);
     }
@@ -10115,7 +10135,9 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/multiline-tex
 
   (0, _emberQunit.moduleForComponent)('ko-info-bar/field/multiline-text', 'Integration | Component | ko info bar field multiline text', {
     integration: true,
-    setup: function setup() {
+    beforeEach: function beforeEach() {
+      var intl = this.container.lookup('service:intl');
+      intl.setLocale('en-us');
       this.set('textAreaFieldValue', textAreaFieldValue);
     }
   });
@@ -10224,6 +10246,8 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/select/compon
   (0, _frontendCpTestsHelpersQunit.moduleForComponent)('ko-info-bar/field/select', 'Integration | Component | ko-info-bar/field/select', {
     integration: true,
     beforeEach: function beforeEach() {
+      var intl = this.container.lookup('service:intl');
+      intl.setLocale('en-us');
       this.registry.optionsForType('sanitizer', { instantiate: false });
     }
   });
@@ -10405,7 +10429,10 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/tags/componen
 
   (0, _emberQunit.moduleForComponent)('ko-info-bar/field/tags', 'Integration | Component | ko info bar field tags', {
     integration: true,
-    setup: function setup() {}
+    beforeEach: function beforeEach() {
+      var intl = this.container.lookup('service:intl');
+      intl.setLocale('en-us');
+    }
   });
 
   (0, _emberQunit.test)('renders with title', function (assert) {
@@ -10460,7 +10487,9 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/text/componen
 
   (0, _frontendCpTestsHelpersQunit.moduleForComponent)('ko-info-bar/field/text', 'Integration | Component | ko info bar field text', {
     integration: true,
-    setup: function setup() {
+    beforeEach: function beforeEach() {
+      var intl = this.container.lookup('service:intl');
+      intl.setLocale('en-us');
       this.set('textFieldValue', textFieldValue);
     }
   });
@@ -12252,8 +12281,20 @@ define('frontend-cp/tests/unit/components/ko-people-popover/component-test', ['e
   var debounce = _ember['default'].run.debounce;
 
   (0, _frontendCpTestsHelpersQunit.moduleForComponent)('ko-people-popover', {
-    needs: ['component:ko-checkbox', 'component:ko-avatar', 'component:ko-loader', 'component:ko-flag', 'helper:t', 'service:intl', 'ember-intl@adapter:-intl-adapter'],
+    needs: ['component:ko-checkbox', 'component:ko-avatar', 'component:ko-loader', 'component:ko-flag', 'helper:t', 'service:intl', 'ember-intl@adapter:default', 'ember-intl@formatter:format-message'],
     beforeEach: function beforeEach() {
+      var intl = this.container.lookup('service:intl');
+      intl.setLocale('en-us');
+      intl.addTranslations('en-us', {
+        frontend: {
+          api: {
+            generic: {
+              add: 'Add'
+            }
+          }
+        }
+      });
+
       component = this.subject();
       _ember['default'].run.debounce = function () {
         _ember['default'].run.apply(_ember['default'], arguments);
@@ -13668,18 +13709,28 @@ define('frontend-cp/tests/unit/services/custom-fields/options-test', ['exports',
 define('frontend-cp/tests/unit/services/custom-fields-test', ['exports', 'ember', 'ember-qunit'], function (exports, _ember, _emberQunit) {
 
   (0, _emberQunit.moduleFor)('service:custom-fields', 'Unit | Service | custom-fields', {
-    needs: ['model:user-field', 'model:field-option', 'model:field', 'model:locale', 'model:locale-field', 'model:locale-string', 'service:custom-fields/types', 'service:custom-fields/options', 'service:intl', 'service:notification', 'ember-intl@adapter:-intl-adapter', 'adapter:application', 'service:session', 'service:error-handler', 'service:error-handler/notification-strategy'],
+    needs: ['model:user-field', 'model:field-option', 'model:field', 'model:locale', 'model:locale-field', 'model:locale-string', 'service:custom-fields/types', 'service:custom-fields/options', 'service:intl', 'service:notification', 'ember-intl@adapter:default', 'adapter:application', 'service:session', 'service:error-handler', 'service:error-handler/notification-strategy'],
     beforeEach: function beforeEach() {
       var intl = this.container.lookup('service:intl');
-      var localeId = 'en-test';
-      var keys = ['admin.userfields', 'admin.fields.new.heading', 'admin.fields.edit.heading', 'admin.casefields.type.dropdown.name', 'admin.fields.type.field_options.missing_options'];
 
-      intl.setLocale(localeId);
-      intl.createLocale(localeId, {});
-      intl.addTranslations(localeId, keys.reduce(function (payload, key) {
-        payload['frontend.api.' + key] = key;
-        return payload;
-      }, {}));
+      intl.setLocale('en-us');
+      intl.addTranslations('en-us', {
+        frontend: {
+          api: {
+            admin: {
+              userfields: { title: 'userfields' },
+              fields: {
+                'new': { heading: 'New field' },
+                edit: { heading: 'Edit field' },
+                type: { field_options: { missing_options: 'missing_options' } }
+              },
+              casefields: {
+                type: { dropdown: { name: 'Dropdown' } }
+              }
+            }
+          }
+        }
+      });
     }
   });
 
@@ -13697,7 +13748,7 @@ define('frontend-cp/tests/unit/services/custom-fields-test', ['exports', 'ember'
       });
     });
 
-    assert.equal('admin.userfields / admin.casefields.type.dropdown.name / admin.fields.new.heading', service.getTitleBreadcrumbs(model));
+    assert.equal(service.getTitleBreadcrumbs(model), 'userfields / Dropdown / New field');
   });
 
   (0, _emberQunit.test)('it renders correct title breadcrumbs for existed record', function (assert) {
@@ -13719,7 +13770,7 @@ define('frontend-cp/tests/unit/services/custom-fields-test', ['exports', 'ember'
     });
     var service = this.subject();
 
-    assert.equal('admin.userfields / Test Select', service.getTitleBreadcrumbs(model));
+    assert.equal(service.getTitleBreadcrumbs(model), 'userfields / Test Select');
   });
 
   (0, _emberQunit.test)('it creates new records through create method', function (assert) {
@@ -13861,18 +13912,23 @@ define('frontend-cp/tests/unit/services/custom-fields-test', ['exports', 'ember'
 define('frontend-cp/tests/unit/services/error-handler-test', ['exports', 'ember', 'ember-qunit', 'frontend-cp/services/session'], function (exports, _ember, _emberQunit, _frontendCpServicesSession) {
 
   (0, _emberQunit.moduleFor)('service:error-handler', 'Unit | Service | error-handler', {
-    needs: ['service:error-handler/session-loading-failed-strategy', 'service:error-handler/notification-strategy', 'service:error-handler/permissions-denied-strategy', 'service:error-handler/resource-not-found-strategy', 'service:error-handler/credential-expired-strategy', 'service:error-handler/generic-strategy', 'service:intl', 'service:notification', 'service:plan', 'service:localStore', 'service:session', 'service:tabStore', 'service:locale', 'ember-intl@adapter:-intl-adapter'],
+    needs: ['service:error-handler/session-loading-failed-strategy', 'service:error-handler/notification-strategy', 'service:error-handler/permissions-denied-strategy', 'service:error-handler/resource-not-found-strategy', 'service:error-handler/credential-expired-strategy', 'service:error-handler/generic-strategy', 'service:intl', 'service:notification', 'service:plan', 'service:localStore', 'service:session', 'service:tabStore', 'service:locale', 'ember-intl@adapter:default'],
     beforeEach: function beforeEach() {
       var intl = this.container.lookup('service:intl');
-      var localeId = 'en-test';
-      var keys = ['generic.user_logged_out', 'generic.session_expired', 'generic.generic_error', 'generic.resource_not_found', 'generic.user_credential_expired'];
-
-      intl.setLocale(localeId);
-      intl.createLocale(localeId, {});
-      intl.addTranslations(localeId, keys.reduce(function (payload, key) {
-        payload['frontend.api.' + key] = key;
-        return payload;
-      }, {}));
+      intl.setLocale('en-us');
+      intl.addTranslations('en-us', {
+        frontend: {
+          api: {
+            generic: {
+              user_logged_out: 'user_logged_out',
+              session_expired: 'session_expired',
+              generic_error: 'generic_error',
+              resource_not_found: 'resource_not_found',
+              user_credential_expired: 'user_credential_expired'
+            }
+          }
+        }
+      });
     }
   });
 
@@ -13935,8 +13991,8 @@ define('frontend-cp/tests/unit/services/error-handler-test', ['exports', 'ember'
       strategies.SESSION_LOADING_FAILED.get('notification').reopen({
         add: function add(object) {
           assert.equal('error', object.type);
-          assert.equal('generic.user_logged_out', object.title);
-          assert.equal('generic.session_expired', object.body);
+          assert.equal('user_logged_out', object.title);
+          assert.equal('session_expired', object.body);
           assert.equal(true, object.autodismiss);
         }
       });
@@ -14028,7 +14084,7 @@ define('frontend-cp/tests/unit/services/error-handler-test', ['exports', 'ember'
       strategies.RESOURCE_NOT_FOUND.get('notification').reopen({
         add: function add(object) {
           assert.equal('error', object.type);
-          assert.equal('generic.resource_not_found', object.title);
+          assert.equal('resource_not_found', object.title);
           assert.equal(true, object.autodismiss);
           assert.equal(true, object.dismissable);
         }
@@ -14065,7 +14121,7 @@ define('frontend-cp/tests/unit/services/error-handler-test', ['exports', 'ember'
       strategies.CREDENTIAL_EXPIRED.get('notification').reopen({
         add: function add(object) {
           assert.equal('error', object.type);
-          assert.equal('generic.user_credential_expired', object.title);
+          assert.equal('user_credential_expired', object.title);
           assert.equal(true, object.autodismiss);
           assert.equal(true, object.dismissable);
         }
@@ -14102,7 +14158,7 @@ define('frontend-cp/tests/unit/services/error-handler-test', ['exports', 'ember'
       strategies._GENERIC.get('notification').reopen({
         add: function add(object) {
           assert.equal('error', object.type);
-          assert.equal('generic.generic_error', object.title);
+          assert.equal('generic_error', object.title);
           assert.equal(true, object.autodismiss);
           assert.equal(true, object.dismissable);
         }

@@ -1249,7 +1249,7 @@ define("frontend-cp/components/ko-admin/businesshours/edit/template", ["exports"
             dom.insertBoundary(fragment, null);
             return morphs;
           },
-          statements: [["inline", "t", ["admin.businesshours"], [], ["loc", [null, [24, 8], [24, 35]]]], ["inline", "t", ["admin.businesshours.info"], [], ["loc", [null, [25, 7], [25, 39]]]], ["block", "ko-grid-picker", [], ["initialGrid", ["subexpr", "@mut", [["get", "businessHourGrid", ["loc", [null, [28, 18], [28, 34]]]]], [], []], "legend", ["subexpr", "@mut", [["get", "hoursLegend", ["loc", [null, [29, 13], [29, 24]]]]], [], []], "onRangeSelect", ["subexpr", "action", ["businessHourRangeSelect"], [], ["loc", [null, [30, 20], [30, 54]]]]], 0, null, ["loc", [null, [27, 4], [37, 23]]]]],
+          statements: [["inline", "t", ["admin.businesshours.title"], [], ["loc", [null, [24, 8], [24, 41]]]], ["inline", "t", ["admin.businesshours.info"], [], ["loc", [null, [25, 7], [25, 39]]]], ["block", "ko-grid-picker", [], ["initialGrid", ["subexpr", "@mut", [["get", "businessHourGrid", ["loc", [null, [28, 18], [28, 34]]]]], [], []], "legend", ["subexpr", "@mut", [["get", "hoursLegend", ["loc", [null, [29, 13], [29, 24]]]]], [], []], "onRangeSelect", ["subexpr", "action", ["businessHourRangeSelect"], [], ["loc", [null, [30, 20], [30, 54]]]]], 0, null, ["loc", [null, [27, 4], [37, 23]]]]],
           locals: [],
           templates: [child0]
         };
@@ -1562,7 +1562,7 @@ define("frontend-cp/components/ko-admin/businesshours/edit/template", ["exports"
             morphs[3] = dom.createMorphAt(fragment, 7, 7, contextualElement);
             return morphs;
           },
-          statements: [["inline", "t", ["admin.businesshours.holidays"], [], ["loc", [null, [41, 8], [41, 44]]]], ["inline", "t", ["admin.businesshours.holidays.info"], [], ["loc", [null, [42, 7], [42, 48]]]], ["block", "ko-simple-list", [], [], 0, null, ["loc", [null, [44, 4], [60, 23]]]], ["block", "if", [["subexpr", "not", [["get", "newHoliday", ["loc", [null, [62, 15], [62, 25]]]]], [], ["loc", [null, [62, 10], [62, 26]]]]], [], 1, null, ["loc", [null, [62, 4], [70, 11]]]]],
+          statements: [["inline", "t", ["admin.businesshours.holidays.title"], [], ["loc", [null, [41, 8], [41, 50]]]], ["inline", "t", ["admin.businesshours.holidays.info"], [], ["loc", [null, [42, 7], [42, 48]]]], ["block", "ko-simple-list", [], [], 0, null, ["loc", [null, [44, 4], [60, 23]]]], ["block", "if", [["subexpr", "not", [["get", "newHoliday", ["loc", [null, [62, 15], [62, 25]]]]], [], ["loc", [null, [62, 10], [62, 26]]]]], [], 1, null, ["loc", [null, [62, 4], [70, 11]]]]],
           locals: [],
           templates: [child0, child1]
         };
@@ -13910,7 +13910,7 @@ define("frontend-cp/components/ko-admin/roles/form/template", ["exports"], funct
           morphs[3] = dom.createMorphAt(fragment, 7, 7, contextualElement);
           return morphs;
         },
-        statements: [["inline", "ko-admin/page-header", [], ["title", ["subexpr", "concat", [["subexpr", "t", ["admin.roles"], [], ["loc", [null, [5, 18], [5, 35]]]], " / ", ["subexpr", "if", [["get", "role.isNew", ["loc", [null, [6, 14], [6, 24]]]], ["subexpr", "t", ["admin.roles.form.new_title"], [], ["loc", [null, [6, 25], [6, 57]]]], ["get", "role.title", ["loc", [null, [6, 58], [6, 68]]]]], [], ["loc", [null, [6, 10], [6, 69]]]]], [], ["loc", [null, [5, 10], [6, 70]]]], "buttonText", ["subexpr", "t", ["generic.save"], [], ["loc", [null, [7, 15], [7, 33]]]], "onCancel", ["subexpr", "@mut", [["get", "attrs.onCancel", ["loc", [null, [8, 13], [8, 27]]]]], [], []]], ["loc", [null, [4, 2], [8, 29]]]], ["block", "ko-admin/forms/group", [], ["legend", ["subexpr", "t", ["admin.roles.form.details_group_legend"], [], ["loc", [null, [10, 33], [10, 76]]]]], 0, null, ["loc", [null, [10, 2], [42, 27]]]], ["block", "each", [["get", "availablePermissionGroups", ["loc", [null, [44, 10], [44, 35]]]]], [], 1, null, ["loc", [null, [44, 2], [81, 11]]]], ["inline", "ko-admin/page-footer", [], ["buttonText", ["subexpr", "t", ["generic.save"], [], ["loc", [null, [83, 36], [83, 54]]]], "onCancel", ["subexpr", "action", ["cancel"], [], ["loc", [null, [83, 64], [83, 81]]]]], ["loc", [null, [83, 2], [83, 83]]]]],
+        statements: [["inline", "ko-admin/page-header", [], ["title", ["subexpr", "concat", [["subexpr", "t", ["admin.roles.title"], [], ["loc", [null, [5, 18], [5, 41]]]], " / ", ["subexpr", "if", [["get", "role.isNew", ["loc", [null, [6, 14], [6, 24]]]], ["subexpr", "t", ["admin.roles.form.new_title"], [], ["loc", [null, [6, 25], [6, 57]]]], ["get", "role.title", ["loc", [null, [6, 58], [6, 68]]]]], [], ["loc", [null, [6, 10], [6, 69]]]]], [], ["loc", [null, [5, 10], [6, 70]]]], "buttonText", ["subexpr", "t", ["generic.save"], [], ["loc", [null, [7, 15], [7, 33]]]], "onCancel", ["subexpr", "@mut", [["get", "attrs.onCancel", ["loc", [null, [8, 13], [8, 27]]]]], [], []]], ["loc", [null, [4, 2], [8, 29]]]], ["block", "ko-admin/forms/group", [], ["legend", ["subexpr", "t", ["admin.roles.form.details_group_legend"], [], ["loc", [null, [10, 33], [10, 76]]]]], 0, null, ["loc", [null, [10, 2], [42, 27]]]], ["block", "each", [["get", "availablePermissionGroups", ["loc", [null, [44, 10], [44, 35]]]]], [], 1, null, ["loc", [null, [44, 2], [81, 11]]]], ["inline", "ko-admin/page-footer", [], ["buttonText", ["subexpr", "t", ["generic.save"], [], ["loc", [null, [83, 36], [83, 54]]]], "onCancel", ["subexpr", "action", ["cancel"], [], ["loc", [null, [83, 64], [83, 81]]]]], ["loc", [null, [83, 2], [83, 83]]]]],
         locals: [],
         templates: [child0, child1]
       };
@@ -14447,7 +14447,7 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
             morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
             return morphs;
           },
-          statements: [["inline", "t", ["admin.twitter"], [], ["loc", [null, [8, 6], [8, 27]]]]],
+          statements: [["inline", "t", ["admin.twitter.title"], [], ["loc", [null, [8, 6], [8, 33]]]]],
           locals: [],
           templates: []
         };
@@ -14547,7 +14547,7 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [["inline", "t", ["admin.views"], [], ["loc", [null, [18, 4], [18, 23]]]]],
+        statements: [["inline", "t", ["admin.views.title"], [], ["loc", [null, [18, 4], [18, 29]]]]],
         locals: [],
         templates: []
       };
@@ -14587,7 +14587,7 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [["inline", "t", ["admin.casefields"], [], ["loc", [null, [22, 4], [22, 28]]]]],
+        statements: [["inline", "t", ["admin.casefields.title"], [], ["loc", [null, [22, 4], [22, 34]]]]],
         locals: [],
         templates: []
       };
@@ -14627,7 +14627,7 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [["inline", "t", ["admin.caseforms"], [], ["loc", [null, [26, 4], [26, 27]]]]],
+        statements: [["inline", "t", ["admin.caseforms.title"], [], ["loc", [null, [26, 4], [26, 33]]]]],
         locals: [],
         templates: []
       };
@@ -14667,7 +14667,7 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [["inline", "t", ["admin.macros"], [], ["loc", [null, [30, 4], [30, 24]]]]],
+        statements: [["inline", "t", ["admin.macros.title"], [], ["loc", [null, [30, 4], [30, 30]]]]],
         locals: [],
         templates: []
       };
@@ -14707,7 +14707,7 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [["inline", "t", ["admin.teams"], [], ["loc", [null, [40, 4], [40, 23]]]]],
+        statements: [["inline", "t", ["admin.teams.title"], [], ["loc", [null, [40, 4], [40, 29]]]]],
         locals: [],
         templates: []
       };
@@ -14747,7 +14747,7 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [["inline", "t", ["admin.userfields"], [], ["loc", [null, [44, 4], [44, 28]]]]],
+        statements: [["inline", "t", ["admin.userfields.title"], [], ["loc", [null, [44, 4], [44, 34]]]]],
         locals: [],
         templates: []
       };
@@ -14788,7 +14788,7 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
             morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
             return morphs;
           },
-          statements: [["inline", "t", ["admin.roles"], [], ["loc", [null, [49, 6], [49, 25]]]]],
+          statements: [["inline", "t", ["admin.roles.title"], [], ["loc", [null, [49, 6], [49, 31]]]]],
           locals: [],
           templates: []
         };
@@ -14865,7 +14865,7 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [["inline", "t", ["admin.organizationfields"], [], ["loc", [null, [54, 4], [54, 36]]]]],
+        statements: [["inline", "t", ["admin.organizationfields.title"], [], ["loc", [null, [54, 4], [54, 42]]]]],
         locals: [],
         templates: []
       };
@@ -14906,7 +14906,7 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
             morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
             return morphs;
           },
-          statements: [["inline", "t", ["admin.businesshours"], [], ["loc", [null, [64, 4], [64, 31]]]]],
+          statements: [["inline", "t", ["admin.businesshours.title"], [], ["loc", [null, [64, 4], [64, 37]]]]],
           locals: [],
           templates: []
         };
@@ -15396,7 +15396,7 @@ define("frontend-cp/components/ko-admin/team/template", ["exports"], function (e
                 },
                 "end": {
                   "line": 19,
-                  "column": 57
+                  "column": 63
                 }
               },
               "moduleName": "frontend-cp/components/ko-admin/team/template.hbs"
@@ -15417,7 +15417,7 @@ define("frontend-cp/components/ko-admin/team/template", ["exports"], function (e
               dom.insertBoundary(fragment, null);
               return morphs;
             },
-            statements: [["inline", "t", ["admin.businesshours"], [], ["loc", [null, [19, 30], [19, 57]]]]],
+            statements: [["inline", "t", ["admin.businesshours.title"], [], ["loc", [null, [19, 30], [19, 63]]]]],
             locals: [],
             templates: []
           };
@@ -15518,7 +15518,7 @@ define("frontend-cp/components/ko-admin/team/template", ["exports"], function (e
             dom.insertBoundary(fragment, 0);
             return morphs;
           },
-          statements: [["block", "ko-form/field", [], [], 0, null, ["loc", [null, [12, 4], [15, 22]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "team.errors.title", ["loc", [null, [16, 34], [16, 51]]]]], [], []]], ["loc", [null, [16, 4], [16, 53]]]], ["block", "ko-form/field/label", [], [], 1, null, ["loc", [null, [19, 6], [19, 81]]]], ["block", "power-select", [], ["class", ["subexpr", "concat", ["ember-power-select-wrapper--ko ember-power-select-wrapper--height-medium", ["subexpr", "qa-cls", [" qa-proposition--property"], [], ["loc", [null, [21, 97], [21, 133]]]]], [], ["loc", [null, [21, 14], [21, 134]]]], "selected", ["subexpr", "@mut", [["get", "selectedBusinessHour", ["loc", [null, [22, 17], [22, 37]]]]], [], []], "searchField", "title", "options", ["subexpr", "@mut", [["get", "businessHours", ["loc", [null, [24, 16], [24, 29]]]]], [], []], "disabled", ["subexpr", "@mut", [["get", "isSubmitting", ["loc", [null, [25, 17], [25, 29]]]]], [], []], "onchange", ["subexpr", "action", ["selectBusinessHours"], [], ["loc", [null, [26, 17], [26, 47]]]]], 2, null, ["loc", [null, [20, 6], [28, 23]]]]],
+          statements: [["block", "ko-form/field", [], [], 0, null, ["loc", [null, [12, 4], [15, 22]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "team.errors.title", ["loc", [null, [16, 34], [16, 51]]]]], [], []]], ["loc", [null, [16, 4], [16, 53]]]], ["block", "ko-form/field/label", [], [], 1, null, ["loc", [null, [19, 6], [19, 87]]]], ["block", "power-select", [], ["class", ["subexpr", "concat", ["ember-power-select-wrapper--ko ember-power-select-wrapper--height-medium", ["subexpr", "qa-cls", [" qa-proposition--property"], [], ["loc", [null, [21, 97], [21, 133]]]]], [], ["loc", [null, [21, 14], [21, 134]]]], "selected", ["subexpr", "@mut", [["get", "selectedBusinessHour", ["loc", [null, [22, 17], [22, 37]]]]], [], []], "searchField", "title", "options", ["subexpr", "@mut", [["get", "businessHours", ["loc", [null, [24, 16], [24, 29]]]]], [], []], "disabled", ["subexpr", "@mut", [["get", "isSubmitting", ["loc", [null, [25, 17], [25, 29]]]]], [], []], "onchange", ["subexpr", "action", ["selectBusinessHours"], [], ["loc", [null, [26, 17], [26, 47]]]]], 2, null, ["loc", [null, [20, 6], [28, 23]]]]],
           locals: [],
           templates: [child0, child1, child2]
         };
@@ -22229,7 +22229,7 @@ define("frontend-cp/components/ko-case-action-menu/template", ["exports"], funct
             morphs[1] = dom.createMorphAt(element0, 1, 1);
             return morphs;
           },
-          statements: [["attribute", "onclick", ["subexpr", "action", [["get", "onTrashCase", ["loc", [null, [6, 54], [6, 65]]]]], [], ["loc", [null, [6, 45], [6, 67]]]]], ["inline", "t", ["cases.trash"], [], ["loc", [null, [7, 4], [7, 23]]]]],
+          statements: [["attribute", "onclick", ["subexpr", "action", [["get", "onTrashCase", ["loc", [null, [6, 54], [6, 65]]]]], [], ["loc", [null, [6, 45], [6, 67]]]]], ["inline", "t", ["cases.trash.title"], [], ["loc", [null, [7, 4], [7, 29]]]]],
           locals: [],
           templates: []
         };
@@ -54118,8 +54118,10 @@ define('frontend-cp/initializers/ember-css-modules', ['exports', 'ember-css-modu
 define('frontend-cp/initializers/ember-feature-flags', ['exports', 'frontend-cp/config/environment', 'frontend-cp/features/-main'], function (exports, _frontendCpConfigEnvironment, _frontendCpFeaturesMain) {
   exports.initialize = initialize;
 
-  function initialize(registry, application) {
+  function initialize() {
+    var application = arguments[1] || arguments[0];
     var serviceName = _frontendCpConfigEnvironment['default'].featureFlagsService || 'features';
+
     application.register('features:-main', _frontendCpFeaturesMain['default']);
     application.inject('route', serviceName, 'features:-main');
     application.inject('controller', serviceName, 'features:-main');
@@ -54172,7 +54174,7 @@ define('frontend-cp/initializers/intl', ['exports', 'ember-intl/models/translati
     //TODO: talk to Kirill about how and why the frontendcp.universal is managed, if at all?
     //ANSWER: frontendcp (now frontend) is novo's app name, universal (api) is novo's portal. they are static and will rarely change.
     getValue: function getValue(key) {
-      return this['frontend.api.' + key];
+      return this.get('frontend.api.' + key);
     }
   });
 
@@ -54268,7 +54270,7 @@ define('frontend-cp/initializers/truth-helpers', ['exports', 'ember', 'ember-tru
     initialize: initialize
   };
 });
-define('frontend-cp/instance-initializers/ember-intl', ['exports', 'ember-intl/utils/add-locale-data', 'frontend-cp/config/environment'], function (exports, _emberIntlUtilsAddLocaleData, _frontendCpConfigEnvironment) {
+define('frontend-cp/instance-initializers/ember-intl', ['exports', 'frontend-cp/config/environment'], function (exports, _frontendCpConfigEnvironment) {
   exports.instanceInitializer = instanceInitializer;
 
   function filterBy(env, type) {
@@ -54282,13 +54284,13 @@ define('frontend-cp/instance-initializers/ember-intl', ['exports', 'ember-intl/u
     var service = container.lookup('service:intl');
 
     filterBy(_frontendCpConfigEnvironment['default'], 'cldrs').forEach(function (key) {
-      (0, _emberIntlUtilsAddLocaleData['default'])(require(key, null, null, true)['default']);
+      service.addLocaleData(require(key, null, null, true)['default']);
     });
 
     filterBy(_frontendCpConfigEnvironment['default'], 'translations').forEach(function (key) {
       var localeSplit = key.split('\/');
-      var locale = localeSplit[localeSplit.length - 1];
-      service.createLocale(locale, require(key, null, null, true)['default']);
+      var localeName = localeSplit[localeSplit.length - 1];
+      service.addTranslations(localeName, require(key, null, null, true)['default']);
     });
   }
 
@@ -54646,9 +54648,8 @@ define("frontend-cp/locales/en-us/admin", ["exports"], function (exports) {
     "apps": "Apps",
     "endpoints": "Endpoints",
 
-    "views": "Views",
+    "views.title": "Views",
     "views.buttons.add_new": "Add new",
-    "views.description": "Ipsum locum dorum somethinum",
     "views.heading.edit": "Case Views / Edit",
     "views.heading.new": "Case Views / New",
     "views.heading.view_details": "View details",
@@ -54674,9 +54675,9 @@ define("frontend-cp/locales/en-us/admin", ["exports"], function (exports) {
     "views.disabled.message": "View disabled successfully",
     "views.deleted.message": "View deleted successfully",
 
-    "businesshours": "Business hours",
+    "businesshours.title": "Business hours",
     "businesshours.info": "Click and drag to toggle your hours",
-    "businesshours.holidays": "Holidays",
+    "businesshours.holidays.title": "Holidays",
     "businesshours.holidays.info": "What will your hours be on holidays?",
     "businesshours.headings.index": "Business hours",
     "businesshours.buttons.add": "Add New",
@@ -54688,7 +54689,7 @@ define("frontend-cp/locales/en-us/admin", ["exports"], function (exports) {
     "businesshours.holidays.addaholiday": "Add a Holiday",
     "businesshours.holidays.saveholiday": "Save Holiday",
 
-    "teams": "Teams",
+    "teams.title": "Teams",
     "teams.agent": "{numAgents, plural, =1 {agent} other {agents}}",
     "teams.headings.index": "Teams",
     "teams.headings.edit": "Teams / {title}",
@@ -54703,7 +54704,7 @@ define("frontend-cp/locales/en-us/admin", ["exports"], function (exports) {
     "teams.info.title": "Team members",
     "teams.info.content": "Click on agents from the list below to add or remove from the team",
 
-    "roles": "Roles and permissions",
+    "roles.title": "Roles and permissions",
     "roles.index.add_new_button": "Add New Role",
     "roles.index.deletion_successful_notification": "Role deleted successfully",
 
@@ -54713,13 +54714,13 @@ define("frontend-cp/locales/en-us/admin", ["exports"], function (exports) {
     "fields.edit.heading": "Edit",
     "fields.add_new_field": "Add New Field",
 
-    "organizationfields": "Organization Fields",
+    "organizationfields.title": "Organization Fields",
     "organizationfields.new.heading": "Organization Fields / New",
     "organizationfields.enabled.success_message": "Organization field enabled successfully",
     "organizationfields.disabled.success_message": "Organization field disabled successfully",
     "organizationfields.delete.success_message": "Organization field deleted successfully",
 
-    "userfields": "User Fields",
+    "userfields.title": "User Fields",
     "userfields.buttons.add_new_userfield": "Add New Field",
     "userfields.type.text.name": "Text",
     "userfields.type.text.description": "Capture a small amount of text using a single line text field.",
@@ -54758,7 +54759,7 @@ define("frontend-cp/locales/en-us/admin", ["exports"], function (exports) {
     "userfields.disabled.success_message": "User field disabled successfully",
     "userfields.delete.success_message": "User field deleted successfully",
 
-    "caseforms": "Case Forms",
+    "caseforms.title": "Case Forms",
     "caseforms.buttons.add_new_caseform": "Add new form",
     "caseforms.headings.enabled_fields": "Enabled Fields",
     "caseforms.headings.disabled_fields": "Disabled Fields",
@@ -54780,7 +54781,7 @@ define("frontend-cp/locales/en-us/admin", ["exports"], function (exports) {
     "caseforms.edit.description_on.is_enabled": "Form is enabled",
     "caseforms.edit.description_off.is_enabled": "Form is disabled",
 
-    "casefields": "Case Fields",
+    "casefields.title": "Case Fields",
     "casefields.headings.enabled_fields": "Enabled Fields",
     "casefields.headings.disabled_fields": "Disabled Fields",
     "casefields.edit.heading.priorities": "Priorities",
@@ -54821,7 +54822,6 @@ define("frontend-cp/locales/en-us/admin", ["exports"], function (exports) {
     "casefields.buttons.complete_locale_edit": "Done",
     "casefields.description": "Lorem ipsum dolor sit amet, diam appetere facilisis at pri, his vocibus iudicabit te. Te decore feugiat necessitatibus nec, id eos fugit dicunt. Vis ei ubique blandit, in vidit maiestatis disputationi vix, essent perpetua interesset ei mea. Et mea ubique feugait, ne nam unum clita, no his indoctum conclusionemque. Ad pri aperiri definitionem, nec ei dictas blandit.",
     "casefields.new.heading": "Case Fields / New",
-    "casefields.edit.heading": "Case Fields / Edit",
     "casefields.type.cascadingselect.name": "Cascading select",
     "casefields.type.cascadingselect.description": "Allow users to drill down through categories to organize a lot of select options.",
     "casefields.edit.label.field_options": "The drop-down field will contain the options specified below.",
@@ -54884,7 +54884,7 @@ define("frontend-cp/locales/en-us/admin", ["exports"], function (exports) {
     "casefields.edit.statuses.label.is_sla_active": "SLA timers active",
     "casefields.edit.statuses.label.is_sla_inactive": "SLA timers inactive",
 
-    "twitter": "Twitter",
+    "twitter.title": "Twitter",
     "twitter.description": "Your Twitter accounts are blah. Organize agents into teams for blah. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Vestibulum id ligula porta felis euismod semper. Aenean lacinia bibendum nulla sed.",
     "twitter.headings.index": "Twitter",
     "twitter.edit.heading": "Twitter / @{screenName}",
@@ -54947,7 +54947,7 @@ define("frontend-cp/locales/en-us/admin", ["exports"], function (exports) {
     "predicate_builder.operators.date_before_or_on": "date before or on",
     "predicate_builder.operators.date_is": "date is",
     "predicate_builder.operators.date_is_not": "date is not",
-    "macros": "Macros",
+    "macros.title": "Macros",
     "macros.usage_count": "Used {count, plural, =1 {1 time} other {# times}}",
     "macros.last_used_at": "Last used at {date}",
     "macros.new.heading": "Macros / New",
@@ -55059,7 +55059,6 @@ define("frontend-cp/locales/en-us/cases", ["exports"], function (exports) {
     "contents.placeholder": "Detail the case here...",
     "notes.placeholder": "Type a note...",
     "linkedCasesInline": "Link a case",
-    "assignee": "Assignee",
     "assignee.agent": "Assigned agent",
     "assignee.team": "Assigned team",
     "rating": "Rating",
@@ -55095,7 +55094,7 @@ define("frontend-cp/locales/en-us/cases", ["exports"], function (exports) {
     "reply-twitter-message": "Send reply as link to the Help Center.",
     "reply-twitter-tooltip": "Kayako will send a public Tweet to the requester containing a link to this conversation on the Help Center.",
     "resolution-at": "Resolution at",
-    "cases": "Cases",
+    "title": "Cases",
     "due": "Due",
     "lastreplier": "Last replier",
     "lastupdated": "Last updated {time}",
@@ -55130,7 +55129,7 @@ define("frontend-cp/locales/en-us/cases", ["exports"], function (exports) {
     "new_case_subject_placeholder": "Click to set a subject...",
     "new_case_tab_placeholder": "New Case",
 
-    "trash": "Trash case",
+    "trash.title": "Trash case",
     "trashcases": "Trash cases",
     "untrash": "Untrash",
     "trashed": "Trashed",
@@ -55213,7 +55212,6 @@ define("frontend-cp/locales/en-us/generic", ["exports"], function (exports) {
     "paginatorof": "of {number, number}",
     "popover.next": "next",
     "popover.previous": "previous",
-    "search": "Search helpdesk...",
     "texteditor.attachment": "Attachment",
     "texteditor.authorship": "Authorship",
     "texteditor.cc": "CC",
@@ -65367,11 +65365,11 @@ define('frontend-cp/services/custom-fields', ['exports', 'ember', 'npm:lodash'],
 
     _getTranslationPrefix: function _getTranslationPrefix(typeKey) {
       if (typeKey === 'case-field') {
-        return 'admin.casefields';
+        return 'admin.casefields.title';
       } else if (typeKey === 'user-field') {
-        return 'admin.userfields';
+        return 'admin.userfields.title';
       } else if (typeKey === 'organization-field') {
-        return 'admin.organizationfields';
+        return 'admin.organizationfields.title';
       }
     },
 
@@ -66020,7 +66018,6 @@ define('frontend-cp/services/locale', ['exports', 'ember', 'moment', 'frontend-c
 
     _populateTranslations: function _populateTranslations(locale) {
       var intl = this.get('intl');
-      var translations = {};
 
       var localeCode = locale.get('locale');
 
@@ -66030,9 +66027,22 @@ define('frontend-cp/services/locale', ['exports', 'ember', 'moment', 'frontend-c
       _moment['default'].locale(localeCode);
 
       return this._requestLocaleStrings(locale.id).then(function (strings) {
-        strings.data.forEach(function (string) {
-          translations[string.id] = string.value;
-        });
+        // Converts a collection of translations like `"a.b.c": "hello"` to `{ a: { b: { c: "Hello" } } }`
+        // as it is the format expected by ember-intl since 2.0.0
+        var translations = strings.data.reduce(function (accum, translation) {
+          var parts = translation.id.split('.');
+          var key = parts[parts.length - 1];
+          var lastObject = accum[parts[0]] = accum[parts[0]] || {};
+          parts.slice(1, -1).forEach(function (part) {
+            if (!lastObject[part]) {
+              lastObject[part] = {};
+            }
+            lastObject = lastObject[part];
+          });
+          lastObject[key] = translation.value;
+          return accum;
+        }, {});
+
         intl.addTranslations(localeCode, translations);
       });
     },
@@ -69630,7 +69640,7 @@ define("frontend-cp/session/admin/manage/case-fields/index/template", ["exports"
         dom.insertBoundary(fragment, 0);
         return morphs;
       },
-      statements: [["inline", "ko-admin/page-header", [], ["title", ["subexpr", "t", ["admin.casefields"], [], ["loc", [null, [2, 8], [2, 30]]]], "buttonText", ["subexpr", "t", ["admin.casefields.buttons.add_new_casefield"], [], ["loc", [null, [3, 13], [3, 61]]]], "onSave", ["subexpr", "action", ["transitionToNewCaseFieldRoute"], [], ["loc", [null, [4, 9], [4, 49]]]]], ["loc", [null, [1, 0], [5, 2]]]], ["inline", "ko-admin/case-fields/index", [], ["model", ["subexpr", "@mut", [["get", "model", ["loc", [null, [7, 35], [7, 40]]]]], [], []]], ["loc", [null, [7, 0], [7, 42]]]]],
+      statements: [["inline", "ko-admin/page-header", [], ["title", ["subexpr", "t", ["admin.casefields.title"], [], ["loc", [null, [2, 8], [2, 36]]]], "buttonText", ["subexpr", "t", ["admin.casefields.buttons.add_new_casefield"], [], ["loc", [null, [3, 13], [3, 61]]]], "onSave", ["subexpr", "action", ["transitionToNewCaseFieldRoute"], [], ["loc", [null, [4, 9], [4, 49]]]]], ["loc", [null, [1, 0], [5, 2]]]], ["inline", "ko-admin/case-fields/index", [], ["model", ["subexpr", "@mut", [["get", "model", ["loc", [null, [7, 35], [7, 40]]]]], [], []]], ["loc", [null, [7, 0], [7, 42]]]]],
       locals: [],
       templates: []
     };
@@ -70780,7 +70790,7 @@ define("frontend-cp/session/admin/manage/case-forms/index/template", ["exports"]
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["inline", "ko-admin/page-header", [], ["title", ["subexpr", "t", ["admin.caseforms"], [], ["loc", [null, [2, 8], [2, 29]]]], "buttonText", ["subexpr", "t", ["admin.caseforms.buttons.add_new_caseform"], [], ["loc", [null, [3, 13], [3, 59]]]], "buttonClass", ["subexpr", "qa-cls", ["qa-admin_case-forms__new-button"], [], ["loc", [null, [4, 14], [4, 56]]]], "cancelButtonClass", ["subexpr", "qa-cls", ["qa-admin_case-forms__cancel-button"], [], ["loc", [null, [5, 20], [5, 65]]]], "onSave", ["subexpr", "action", ["transitionToNewCaseFormRoute"], [], ["loc", [null, [6, 9], [6, 48]]]]], ["loc", [null, [1, 0], [7, 2]]]], ["block", "ko-simple-list", [], ["class", ["subexpr", "qa-cls", ["qa-admin_case-forms__enabled-list"], [], ["loc", [null, [9, 24], [9, 68]]]]], 0, null, ["loc", [null, [9, 0], [34, 19]]]], ["block", "if", [["get", "disabledForms", ["loc", [null, [37, 6], [37, 19]]]]], [], 1, null, ["loc", [null, [37, 0], [53, 7]]]]],
+      statements: [["inline", "ko-admin/page-header", [], ["title", ["subexpr", "t", ["admin.caseforms.title"], [], ["loc", [null, [2, 8], [2, 35]]]], "buttonText", ["subexpr", "t", ["admin.caseforms.buttons.add_new_caseform"], [], ["loc", [null, [3, 13], [3, 59]]]], "buttonClass", ["subexpr", "qa-cls", ["qa-admin_case-forms__new-button"], [], ["loc", [null, [4, 14], [4, 56]]]], "cancelButtonClass", ["subexpr", "qa-cls", ["qa-admin_case-forms__cancel-button"], [], ["loc", [null, [5, 20], [5, 65]]]], "onSave", ["subexpr", "action", ["transitionToNewCaseFormRoute"], [], ["loc", [null, [6, 9], [6, 48]]]]], ["loc", [null, [1, 0], [7, 2]]]], ["block", "ko-simple-list", [], ["class", ["subexpr", "qa-cls", ["qa-admin_case-forms__enabled-list"], [], ["loc", [null, [9, 24], [9, 68]]]]], 0, null, ["loc", [null, [9, 0], [34, 19]]]], ["block", "if", [["get", "disabledForms", ["loc", [null, [37, 6], [37, 19]]]]], [], 1, null, ["loc", [null, [37, 0], [53, 7]]]]],
       locals: [],
       templates: [child0, child1]
     };
@@ -71394,7 +71404,7 @@ define("frontend-cp/session/admin/manage/macros/index/template", ["exports"], fu
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["inline", "ko-admin/page-header", [], ["title", ["subexpr", "t", ["admin.macros"], [], ["loc", [null, [2, 8], [2, 26]]]], "buttonText", ["subexpr", "t", ["admin.macros.buttons.add_new_macro"], [], ["loc", [null, [3, 13], [3, 53]]]], "buttonClass", ["subexpr", "qa-cls", ["qa-admin_macros__new-button"], [], ["loc", [null, [4, 14], [4, 52]]]], "cancelButtonClass", ["subexpr", "qa-cls", ["qa-admin_macros__cancel-button"], [], ["loc", [null, [5, 20], [5, 61]]]], "onSave", ["subexpr", "action", ["transitionToNewMacroRoute"], [], ["loc", [null, [6, 9], [6, 45]]]]], ["loc", [null, [1, 0], [7, 2]]]], ["block", "ko-simple-list", [], ["class", ["subexpr", "qa-cls", ["qa-admin_macros__enabled-list"], [], ["loc", [null, [9, 24], [9, 64]]]]], 0, null, ["loc", [null, [9, 0], [30, 19]]]]],
+      statements: [["inline", "ko-admin/page-header", [], ["title", ["subexpr", "t", ["admin.macros.title"], [], ["loc", [null, [2, 8], [2, 32]]]], "buttonText", ["subexpr", "t", ["admin.macros.buttons.add_new_macro"], [], ["loc", [null, [3, 13], [3, 53]]]], "buttonClass", ["subexpr", "qa-cls", ["qa-admin_macros__new-button"], [], ["loc", [null, [4, 14], [4, 52]]]], "cancelButtonClass", ["subexpr", "qa-cls", ["qa-admin_macros__cancel-button"], [], ["loc", [null, [5, 20], [5, 61]]]], "onSave", ["subexpr", "action", ["transitionToNewMacroRoute"], [], ["loc", [null, [6, 9], [6, 45]]]]], ["loc", [null, [1, 0], [7, 2]]]], ["block", "ko-simple-list", [], ["class", ["subexpr", "qa-cls", ["qa-admin_macros__enabled-list"], [], ["loc", [null, [9, 24], [9, 64]]]]], 0, null, ["loc", [null, [9, 0], [30, 19]]]]],
       locals: [],
       templates: [child0]
     };
@@ -72831,7 +72841,7 @@ define("frontend-cp/session/admin/manage/views/index/template", ["exports"], fun
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["inline", "ko-admin/page-header", [], ["title", ["subexpr", "t", ["admin.views"], [], ["loc", [null, [1, 29], [1, 46]]]], "buttonText", ["subexpr", "t", ["admin.views.buttons.add_new"], [], ["loc", [null, [1, 58], [1, 91]]]], "onSave", ["subexpr", "action", ["transitionToNewViewRoute"], [], ["loc", [null, [1, 99], [1, 134]]]]], ["loc", [null, [1, 0], [1, 136]]]], ["block", "ko-simple-list", [], [], 0, null, ["loc", [null, [3, 0], [74, 19]]]], ["block", "if", [["get", "disabledViews.length", ["loc", [null, [76, 6], [76, 26]]]]], [], 1, null, ["loc", [null, [76, 0], [96, 7]]]]],
+      statements: [["inline", "ko-admin/page-header", [], ["title", ["subexpr", "t", ["admin.views.title"], [], ["loc", [null, [1, 29], [1, 52]]]], "buttonText", ["subexpr", "t", ["admin.views.buttons.add_new"], [], ["loc", [null, [1, 64], [1, 97]]]], "onSave", ["subexpr", "action", ["transitionToNewViewRoute"], [], ["loc", [null, [1, 105], [1, 140]]]]], ["loc", [null, [1, 0], [1, 142]]]], ["block", "ko-simple-list", [], [], 0, null, ["loc", [null, [3, 0], [74, 19]]]], ["block", "if", [["get", "disabledViews.length", ["loc", [null, [76, 6], [76, 26]]]]], [], 1, null, ["loc", [null, [76, 0], [96, 7]]]]],
       locals: [],
       templates: [child0, child1]
     };
@@ -73937,7 +73947,7 @@ define("frontend-cp/session/admin/people/organization-fields/index/template", ["
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["inline", "ko-admin/page-header", [], ["title", ["subexpr", "t", ["admin.organizationfields"], [], ["loc", [null, [1, 29], [1, 59]]]], "buttonText", ["subexpr", "t", ["admin.fields.add_new_field"], [], ["loc", [null, [1, 71], [1, 103]]]], "onSave", ["subexpr", "action", ["transitionToNewFieldRoute"], [], ["loc", [null, [1, 111], [1, 147]]]]], ["loc", [null, [1, 0], [1, 149]]]], ["block", "ko-simple-list", [], [], 0, null, ["loc", [null, [3, 0], [27, 19]]]], ["block", "if", [["get", "disabledfields.length", ["loc", [null, [29, 6], [29, 27]]]]], [], 1, null, ["loc", [null, [29, 0], [54, 7]]]]],
+      statements: [["inline", "ko-admin/page-header", [], ["title", ["subexpr", "t", ["admin.organizationfields.title"], [], ["loc", [null, [1, 29], [1, 65]]]], "buttonText", ["subexpr", "t", ["admin.fields.add_new_field"], [], ["loc", [null, [1, 77], [1, 109]]]], "onSave", ["subexpr", "action", ["transitionToNewFieldRoute"], [], ["loc", [null, [1, 117], [1, 153]]]]], ["loc", [null, [1, 0], [1, 155]]]], ["block", "ko-simple-list", [], [], 0, null, ["loc", [null, [3, 0], [27, 19]]]], ["block", "if", [["get", "disabledfields.length", ["loc", [null, [29, 6], [29, 27]]]]], [], 1, null, ["loc", [null, [29, 0], [54, 7]]]]],
       locals: [],
       templates: [child0, child1]
     };
@@ -74398,7 +74408,7 @@ define("frontend-cp/session/admin/people/roles/index/template", ["exports"], fun
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["inline", "ko-admin/page-header", [], ["title", ["subexpr", "t", ["admin.roles"], [], ["loc", [null, [2, 8], [2, 25]]]], "buttonText", ["subexpr", "t", ["admin.roles.index.add_new_button"], [], ["loc", [null, [3, 13], [3, 51]]]], "onSave", ["subexpr", "action", ["transitionToNew"], [], ["loc", [null, [4, 9], [4, 35]]]]], ["loc", [null, [1, 0], [4, 37]]]], ["block", "ko-simple-list", [], [], 0, null, ["loc", [null, [6, 0], [13, 19]]]]],
+      statements: [["inline", "ko-admin/page-header", [], ["title", ["subexpr", "t", ["admin.roles.title"], [], ["loc", [null, [2, 8], [2, 31]]]], "buttonText", ["subexpr", "t", ["admin.roles.index.add_new_button"], [], ["loc", [null, [3, 13], [3, 51]]]], "onSave", ["subexpr", "action", ["transitionToNew"], [], ["loc", [null, [4, 9], [4, 35]]]]], ["loc", [null, [1, 0], [4, 37]]]], ["block", "ko-simple-list", [], [], 0, null, ["loc", [null, [6, 0], [13, 19]]]]],
       locals: [],
       templates: [child0]
     };
@@ -79912,7 +79922,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [["block", "link-to", ["session.agent.cases.index.view", ["get", "tabStore.casesViewId", ["loc", [null, [8, 56], [8, 76]]]]], ["title", ["subexpr", "t", ["cases.cases"], [], ["loc", [null, [8, 83], [8, 100]]]], "class", "nav-main__item i-inbox"], 0, null, ["loc", [null, [8, 12], [8, 145]]]]],
+        statements: [["block", "link-to", ["session.agent.cases.index.view", ["get", "tabStore.casesViewId", ["loc", [null, [8, 56], [8, 76]]]]], ["title", ["subexpr", "t", ["cases.title"], [], ["loc", [null, [8, 83], [8, 100]]]], "class", "nav-main__item i-inbox"], 0, null, ["loc", [null, [8, 12], [8, 145]]]]],
         locals: [],
         templates: [child0]
       };
@@ -79984,7 +79994,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [["block", "link-to", ["session.agent.cases.index"], ["title", ["subexpr", "t", ["cases.cases"], [], ["loc", [null, [10, 57], [10, 74]]]], "class", "nav-main__item i-inbox"], 0, null, ["loc", [null, [10, 12], [10, 119]]]]],
+        statements: [["block", "link-to", ["session.agent.cases.index"], ["title", ["subexpr", "t", ["cases.title"], [], ["loc", [null, [10, 57], [10, 74]]]], "class", "nav-main__item i-inbox"], 0, null, ["loc", [null, [10, 12], [10, 119]]]]],
         locals: [],
         templates: [child0]
       };
@@ -84687,6 +84697,16 @@ define("frontend-cp/utils/format-validations", ["exports"], function (exports) {
     return TWITTER_REGEX.test(email);
   }
 });
+define('frontend-cp/utils/intl/missing-message', ['exports', 'ember'], function (exports, _ember) {
+  exports['default'] = missingMessage;
+  var logger = _ember['default'].Logger;
+
+  function missingMessage(key, locales) {
+    logger.warn('translation: \'' + key + '\' on locale: \'' + locales.join(', ') + '\' was not found.');
+
+    return 'Missing translation: ' + key;
+  }
+});
 define('frontend-cp/utils/object-transforms', ['exports', 'ember-metrics/utils/object-transforms'], function (exports, _emberMetricsUtilsObjectTransforms) {
   Object.defineProperty(exports, 'default', {
     enumerable: true,
@@ -84797,6 +84817,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+fe66a27e"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+da467a74"});
 }
 /* jshint ignore:end */
