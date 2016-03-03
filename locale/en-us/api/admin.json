@@ -9,9 +9,8 @@
   "apps": "Apps",
   "endpoints": "Endpoints",
 
-  "views": "Views",
+  "views.title": "Views",
   "views.buttons.add_new": "Add new",
-  "views.description": "Ipsum locum dorum somethinum",
   "views.heading.edit": "Case Views / Edit",
   "views.heading.new": "Case Views / New",
   "views.heading.view_details": "View details",
@@ -37,9 +36,9 @@
   "views.disabled.message": "View disabled successfully",
   "views.deleted.message": "View deleted successfully",
 
-  "businesshours": "Business hours",
+  "businesshours.title": "Business hours",
   "businesshours.info": "Click and drag to toggle your hours",
-  "businesshours.holidays": "Holidays",
+  "businesshours.holidays.title": "Holidays",
   "businesshours.holidays.info": "What will your hours be on holidays?",
   "businesshours.headings.index": "Business hours",
   "businesshours.buttons.add": "Add New",
@@ -51,7 +50,7 @@
   "businesshours.holidays.addaholiday": "Add a Holiday",
   "businesshours.holidays.saveholiday": "Save Holiday",
 
-  "teams": "Teams",
+  "teams.title": "Teams",
   "teams.agent": "{numAgents, plural, =1 {agent} other {agents}}",
   "teams.headings.index": "Teams",
   "teams.headings.edit": "Teams / {title}",
@@ -66,7 +65,7 @@
   "teams.info.title": "Team members",
   "teams.info.content": "Click on agents from the list below to add or remove from the team",
 
-  "roles": "Roles and permissions",
+  "roles.title": "Roles and permissions",
   "roles.index.add_new_button": "Add New Role",
   "roles.index.deletion_successful_notification": "Role deleted successfully",
 
@@ -76,13 +75,13 @@
   "fields.edit.heading": "Edit",
   "fields.add_new_field": "Add New Field",
 
-  "organizationfields": "Organization Fields",
+  "organizationfields.title": "Organization Fields",
   "organizationfields.new.heading": "Organization Fields / New",
   "organizationfields.enabled.success_message": "Organization field enabled successfully",
   "organizationfields.disabled.success_message": "Organization field disabled successfully",
   "organizationfields.delete.success_message": "Organization field deleted successfully",
 
-  "userfields": "User Fields",
+  "userfields.title": "User Fields",
   "userfields.buttons.add_new_userfield": "Add New Field",
   "userfields.type.text.name": "Text",
   "userfields.type.text.description": "Capture a small amount of text using a single line text field.",
@@ -121,7 +120,7 @@
   "userfields.disabled.success_message": "User field disabled successfully",
   "userfields.delete.success_message": "User field deleted successfully",
 
-  "caseforms": "Case Forms",
+  "caseforms.title": "Case Forms",
   "caseforms.buttons.add_new_caseform": "Add new form",
   "caseforms.headings.enabled_fields": "Enabled Fields",
   "caseforms.headings.disabled_fields": "Disabled Fields",
@@ -143,7 +142,7 @@
   "caseforms.edit.description_on.is_enabled": "Form is enabled",
   "caseforms.edit.description_off.is_enabled": "Form is disabled",
 
-  "casefields": "Case Fields",
+  "casefields.title": "Case Fields",
   "casefields.headings.enabled_fields": "Enabled Fields",
   "casefields.headings.disabled_fields": "Disabled Fields",
   "casefields.edit.heading.priorities": "Priorities",
@@ -184,7 +183,6 @@
   "casefields.buttons.complete_locale_edit": "Done",
   "casefields.description": "Lorem ipsum dolor sit amet, diam appetere facilisis at pri, his vocibus iudicabit te. Te decore feugiat necessitatibus nec, id eos fugit dicunt. Vis ei ubique blandit, in vidit maiestatis disputationi vix, essent perpetua interesset ei mea. Et mea ubique feugait, ne nam unum clita, no his indoctum conclusionemque. Ad pri aperiri definitionem, nec ei dictas blandit.",
   "casefields.new.heading": "Case Fields / New",
-  "casefields.edit.heading": "Case Fields / Edit",
   "casefields.type.cascadingselect.name": "Cascading select",
   "casefields.type.cascadingselect.description": "Allow users to drill down through categories to organize a lot of select options.",
   "casefields.edit.label.field_options": "The drop-down field will contain the options specified below.",
@@ -247,7 +245,7 @@
   "casefields.edit.statuses.label.is_sla_active": "SLA timers active",
   "casefields.edit.statuses.label.is_sla_inactive": "SLA timers inactive",
 
-  "twitter": "Twitter",
+  "twitter.title": "Twitter",
   "twitter.description": "Your Twitter accounts are blah. Organize agents into teams for blah. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Vestibulum id ligula porta felis euismod semper. Aenean lacinia bibendum nulla sed.",
   "twitter.headings.index": "Twitter",
   "twitter.edit.heading": "Twitter / @{screenName}",
@@ -310,7 +308,7 @@
   "predicate_builder.operators.date_before_or_on": "date before or on",
   "predicate_builder.operators.date_is": "date is",
   "predicate_builder.operators.date_is_not": "date is not",
-  "macros": "Macros",
+  "macros.title": "Macros",
   "macros.usage_count": "Used {count, plural, =1 {1 time} other {# times}}",
   "macros.last_used_at": "Last used at {date}",
   "macros.new.heading": "Macros / New",
