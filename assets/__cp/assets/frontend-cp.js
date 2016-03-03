@@ -66030,16 +66030,24 @@ define('frontend-cp/services/locale', ['exports', 'ember', 'moment', 'frontend-c
         // Converts a collection of translations like `"a.b.c": "hello"` to `{ a: { b: { c: "Hello" } } }`
         // as it is the format expected by ember-intl since 2.0.0
         var translations = strings.data.reduce(function (accum, translation) {
-          var parts = translation.id.split('.');
-          var key = parts[parts.length - 1];
-          var lastObject = accum[parts[0]] = accum[parts[0]] || {};
-          parts.slice(1, -1).forEach(function (part) {
-            if (!lastObject[part]) {
-              lastObject[part] = {};
-            }
-            lastObject = lastObject[part];
-          });
-          lastObject[key] = translation.value;
+          if (translation.id.slice(0, 13) === 'frontend.api.') {
+            (function () {
+              var parts = translation.id.split('.');
+              var key = parts[parts.length - 1];
+              var lastObject = accum[parts[0]] = accum[parts[0]] || {};
+              try {
+                parts.slice(1, -1).forEach(function (part) {
+                  if (!lastObject[part]) {
+                    lastObject[part] = {};
+                  }
+                  lastObject = lastObject[part];
+                });
+                lastObject[key] = translation.value;
+              } catch (e) {
+                window.console.warn('Error converting translations: ' + e.message);
+              }
+            })();
+          }
           return accum;
         }, {});
 
@@ -66053,7 +66061,7 @@ define('frontend-cp/services/locale', ['exports', 'ember', 'moment', 'frontend-c
       var userLocale = this.get('userLocale');
 
       if (!userLocale) {
-        var _ret = (function () {
+        var _ret2 = (function () {
           var localLocale = _this2.getLocalLocale();
           var currentLocale = localLocale ? localLocale : _frontendCpConfigEnvironment['default'].defaultLocale;
 
@@ -66064,7 +66072,7 @@ define('frontend-cp/services/locale', ['exports', 'ember', 'moment', 'frontend-c
           };
         })();
 
-        if (typeof _ret === 'object') return _ret.v;
+        if (typeof _ret2 === 'object') return _ret2.v;
       }
 
       return locales.toArray().find(function (locale) {
@@ -84817,6 +84825,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+da467a74"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+7c8c9e4f"});
 }
 /* jshint ignore:end */
