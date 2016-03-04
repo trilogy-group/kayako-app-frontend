@@ -12862,7 +12862,7 @@ define('frontend-cp/tests/unit/components/ko-tags/component-test', ['exports', '
         }
       });
 
-      component.set('selectedTags', []);
+      component.set('values', []);
       component.set('newTagText', 'New Tag');
       component.set('tags', ['dog', 'pig', 'moose', 'duck', 'donkey', 'dave', 'don', 'derek']);
     },
@@ -12901,13 +12901,7 @@ define('frontend-cp/tests/unit/components/ko-tags/component-test', ['exports', '
 
     this.render();
 
-    var targetObject = {
-      externalTagSuggestion: function externalTagSuggestion() {}
-    };
-
     _ember['default'].run(function () {
-      component.set('onTagSuggestion', 'externalTagSuggestion');
-      component.set('targetObject', targetObject);
       component.set('searchTerm', 'dog');
       _this2.$('input').trigger(new $.Event('keyup', { keyCode: _frontendCpLibKeycodes.g }));
     });
@@ -12920,22 +12914,14 @@ define('frontend-cp/tests/unit/components/ko-tags/component-test', ['exports', '
     assert.expect(2);
 
     this.render();
-
-    var targetObject = {
-      externalAction: function externalAction(tagToRemove) {
-        assert.deepEqual(tagToRemove.get('name'), 'dog', 'external action was called');
-      },
-      externalTagSuggestion: function externalTagSuggestion() {}
-    };
-
-    component.set('onTagRemoval', 'externalAction');
-    component.set('targetObject', targetObject);
+    component.set('attrs.onTagRemoval', function (tagToRemove) {
+      assert.deepEqual(tagToRemove.get('name'), 'dog', 'external action was called');
+    });
 
     _ember['default'].run(function () {
-      component.set('onTagSuggestion', 'externalTagSuggestion');
       var newTag = new _ember['default'].Object();
       newTag.set('name', 'dog');
-      component.get('selectedTags').pushObject(newTag);
+      component.get('values').pushObject(newTag);
     });
 
     assert.equal($.trim(component.$(firstSelectedTagText).text()), 'dog', 'selected tags');
@@ -12950,17 +12936,11 @@ define('frontend-cp/tests/unit/components/ko-tags/component-test', ['exports', '
 
     this.render();
 
-    var targetObject = {
-      externalTagSelectionChangeAction: function externalTagSelectionChangeAction(newTag) {
-        assert.deepEqual(newTag, 'dog', 'external tag selection change action was called');
-      }
-    };
-
-    component.set('onTagAddition', 'externalTagSelectionChangeAction');
-    component.set('targetObject', targetObject);
+    component.set('attrs.onTagAddition', function (newTag) {
+      assert.deepEqual(newTag, 'dog', 'external tag selection change action was called');
+    });
 
     _ember['default'].run(function () {
-      component.set('onTagSuggestion', 'externalTagSelectionChangeAction');
       component.set('searchTerm', 'dog');
       _this3.$('input').trigger(new $.Event('keyup', { keyCode: _frontendCpLibKeycodes.g }));
     });
@@ -12979,17 +12959,11 @@ define('frontend-cp/tests/unit/components/ko-tags/component-test', ['exports', '
 
     this.render();
 
-    var targetObject = {
-      externalTagAdditionAction: function externalTagAdditionAction(tags) {
-        assert.deepEqual(tags, 'qwerty', 'external tag addition action was called');
-      }
-    };
-
-    component.set('onTagAddition', 'externalTagAdditionAction');
-    component.set('targetObject', targetObject);
+    component.set('attrs.onTagAddition', function (tags) {
+      assert.deepEqual(tags, 'qwerty', 'external tag addition action was called');
+    });
 
     _ember['default'].run(function () {
-      component.set('onTagSuggestion', 'externalTagAdditionAction');
       component.set('tags', '');
       component.set('suggestedTags', []);
       component.set('searchTerm', 'qwerty');
@@ -13008,15 +12982,9 @@ define('frontend-cp/tests/unit/components/ko-tags/component-test', ['exports', '
     assert.expect(1);
 
     this.render();
-
-    var targetObject = {
-      externalTagAdditionAction: function externalTagAdditionAction(tags) {
-        assert.deepEqual(tags, 'qwerty', 'external tag addition action was called');
-      }
-    };
-
-    component.set('onTagAddition', 'externalTagAdditionAction');
-    component.set('targetObject', targetObject);
+    component.set('attrs.onTagAddition', function (tags) {
+      assert.deepEqual(tags, 'qwerty', 'external tag addition action was called');
+    });
 
     _ember['default'].run(function () {
       component.set('tags', '');
@@ -13033,14 +13001,9 @@ define('frontend-cp/tests/unit/components/ko-tags/component-test', ['exports', '
 
     this.render();
 
-    var targetObject = {
-      externalTagAdditionAction: function externalTagAdditionAction(tags) {
-        assert.deepEqual(tags, 'qwerty', 'external tag addition action was called');
-      }
-    };
-
-    component.set('onTagAddition', 'externalTagAdditionAction');
-    component.set('targetObject', targetObject);
+    component.set('attrs.onTagAddition', function (tags) {
+      assert.deepEqual(tags, 'qwerty', 'external tag addition action was called');
+    });
 
     _ember['default'].run(function () {
       component.set('tags', '');
@@ -13057,14 +13020,9 @@ define('frontend-cp/tests/unit/components/ko-tags/component-test', ['exports', '
 
     this.render();
 
-    var targetObject = {
-      externalTagAdditionAction: function externalTagAdditionAction(tags) {
-        assert.deepEqual(tags, 'qwerty', 'external tag addition action was called');
-      }
-    };
-
-    component.set('onTagAddition', 'externalTagAdditionAction');
-    component.set('targetObject', targetObject);
+    component.set('attrs.onTagAddition', function (tags) {
+      assert.deepEqual(tags, 'qwerty', 'external tag addition action was called');
+    });
 
     _ember['default'].run(function () {
       component.set('tags', '');
@@ -13079,22 +13037,16 @@ define('frontend-cp/tests/unit/components/ko-tags/component-test', ['exports', '
 
     this.render();
 
-    var targetObject = {
-      externalAction: function externalAction(tagToRemove) {
-        // this should never run
-        assert.ok(true);
-      },
-      externalTagSuggestion: function externalTagSuggestion() {}
-    };
-
-    component.set('onTagRemoval', 'externalAction');
-    component.set('targetObject', targetObject);
+    component.set('attrs.onTagRemoval', function (tagToRemove) {
+      // this should never run
+      assert.ok(true);
+    });
 
     _ember['default'].run(function () {
       var newTag = new _ember['default'].Object();
       newTag.set('name', 'dog');
       component.set('isDisabled', true);
-      component.get('selectedTags').pushObject(newTag);
+      component.get('values').pushObject(newTag);
     });
 
     this.$(firstSelectedTag + ' ' + deleteTag).click();
@@ -14249,57 +14201,6 @@ define('frontend-cp/tests/unit/services/plan-test', ['exports', 'ember-qunit', '
       assert.equal(service.limitFor('agents'), 2);
       assert.equal(service.has('agents'), true);
     });
-  });
-});
-define('frontend-cp/tests/unit/utils/exclusion-test', ['exports', 'ember', 'qunit', 'ember-qunit', 'frontend-cp/utils/exclusion'], function (exports, _ember, _qunit, _emberQunit, _frontendCpUtilsExclusion) {
-
-  (0, _qunit.module)('Unit | Utils | exclusion');
-
-  (0, _emberQunit.test)('it excludes same records when they are strings', function (assert) {
-    assert.expect(1);
-
-    var data = [_ember['default'].Object.create({ name: 'maintenance' }), _ember['default'].Object.create({ name: 'rejected' }), _ember['default'].Object.create({ name: 'approved' }), _ember['default'].Object.create({ name: 'hello-kitty' })];
-    var exclusions = ['hello-kitty'];
-
-    var excluded = (0, _frontendCpUtilsExclusion.exclude)(data, exclusions);
-
-    excluded = excluded.map(function (record) {
-      return record.get('name');
-    });
-
-    assert.deepEqual(excluded, ['maintenance', 'rejected', 'approved']);
-  });
-
-  (0, _emberQunit.test)('it excludes same records when they are emails', function (assert) {
-    assert.expect(1);
-
-    var data = [_ember['default'].Object.create({ name: 'demo@demo.com' }), _ember['default'].Object.create({ name: 'demo.demo@demo.com' }), _ember['default'].Object.create({ name: 'any.random.email+demo@demo.com' })];
-    var exclusions = ['any.random.email+demo@demo.com'];
-
-    var excluded = (0, _frontendCpUtilsExclusion.exclude)(data, exclusions);
-
-    excluded = excluded.map(function (record) {
-      return record.get('name');
-    });
-
-    assert.deepEqual(excluded, ['demo@demo.com', 'demo.demo@demo.com']);
-  });
-
-  (0, _emberQunit.test)('it do not fail if data or exclusions are null or empty', function (assert) {
-    assert.expect(3);
-
-    var data = [_ember['default'].Object.create({ name: 'maintenance' }), _ember['default'].Object.create({ name: 'rejected' }), _ember['default'].Object.create({ name: 'approved' })];
-
-    assert.deepEqual((0, _frontendCpUtilsExclusion.exclude)(data, null).map(function (record) {
-      return record.get('name');
-    }), ['maintenance', 'rejected', 'approved']);
-
-    assert.deepEqual((0, _frontendCpUtilsExclusion.exclude)(null, null).map(function (record) {
-      return record.get('name');
-    }), []);
-    assert.deepEqual((0, _frontendCpUtilsExclusion.exclude)(null, ['approved']).map(function (record) {
-      return record.get('name');
-    }), []);
   });
 });
 define('frontend-cp/tests/unit/utils/promise-queue-test', ['exports', 'ember', 'qunit', 'ember-qunit', 'frontend-cp/utils/promise-queue'], function (exports, _ember, _qunit, _emberQunit, _frontendCpUtilsPromiseQueue) {
