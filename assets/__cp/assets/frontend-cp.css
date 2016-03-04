@@ -7412,25 +7412,42 @@ label {
   position: relative; }
 
 .universal-search__content {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
   min-width: 500px;
+  max-width: calc(100vw - 88px);
   position: relative;
   top: 2px;
-  background: #FFFFFF; }
-
-.universal-search__results {
-  max-height: 450px;
-  overflow: auto;
-  width: 100%;
+  background: #FFFFFF;
   border-left: 1px solid #CFD4D8;
   border-bottom: 1px solid #CFD4D8;
   border-right: 1px solid #CFD4D8; }
 
-.universal-search__preview {
+.universal-search__results {
+  max-height: 450px;
+  overflow: auto;
   width: 50%;
-  display: table-cell;
-  padding: 0 18px 18px 18px;
-  border-right: 1px solid #CFD4D8;
-  border-bottom: 1px solid #CFD4D8; }
+  border-right: 1px solid #CFD4D8; }
+
+.ko-universal-search__no-preview {
+  width: 50%;
+  color: #838D94;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  padding: 36px;
+  margin: 0; }
 
 .ko-universal-search_entry {
   width: 90%;
@@ -7442,6 +7459,38 @@ label {
   line-height: 40px;
   outline: none;
   border: none; }
+
+.ko-universal-search_preview {
+  width: 50%;
+  height: 450px;
+  padding: 36px; }
+  .ko-universal-search_preview .ko-universal-search_preview__title {
+    margin-left: 9px;
+    max-width: 80%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; }
+  .ko-universal-search_preview .ko-universal-search_preview__metadata {
+    margin-top: 18px;
+    color: #838D94; }
+  .ko-universal-search_preview .ko-universal-search_preview__header {
+    margin-bottom: 18px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex; }
+  .ko-universal-search_preview .ko-universal-search_preview__section {
+    margin-bottom: 18px; }
+    .ko-universal-search_preview .ko-universal-search_preview__section .heading {
+      color: #838D94;
+      margin-bottom: 13.5px; }
+  .ko-universal-search_preview .ko-universal-search_preview__snippet {
+    height: 160px;
+    overflow-y: auto;
+    overflow-x: hidden; }
+    .ko-universal-search_preview .ko-universal-search_preview__snippet em {
+      font-style: normal;
+      font-weight: bold; }
 
 .ko-universal-search_result {
   position: relative;

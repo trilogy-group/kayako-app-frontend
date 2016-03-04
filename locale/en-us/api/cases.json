@@ -81,6 +81,9 @@
   "new_case": "New case",
   "new_case_subject_placeholder": "Click to set a subject...",
   "new_case_tab_placeholder": "New Case",
+  "currentlyassignedto": "Currently assigned to",
+  "assignedtoagentteam": "{agent} in {team}",
+  "assignedtonobody": "nobody",
 
   "trash.title": "Trash case",
   "trashcases": "Trash cases",
