@@ -58,8 +58,11 @@
   "select_placeholder": "Select...",
   "search_result_select_instruction": "Press enter",
   "search.no_results": "No results found",
+  "search.no_preview": "Mouse over a search result to see a preview.",
   "search.start_typing_to_search": "Start typing to search",
   "search.searching": "Searching...",
+  "search.matchingsnippet": "Matching text",
+  "search.nosnippet": "Sorry, we don’t have a preview for this result.",
   "shared_with": "Shared with",
 
   "sort.ASC": "Ascending",

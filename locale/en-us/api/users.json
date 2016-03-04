@@ -51,5 +51,7 @@
   "no_feedback_available": "No feedback is available from this user",
   "no_recent_cases": "No recent cases from this user",
   "update_signature": "Proceed",
-  "signaturemessage": "Please press \"Submit\" on the next page for this to take effect"
+  "signaturemessage": "Please press \"Submit\" on the next page for this to take effect",
+
+  "userid": "User ID"
 }

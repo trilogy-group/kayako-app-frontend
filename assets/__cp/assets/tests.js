@@ -6903,19 +6903,19 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
 
     andThen(function () {
       assert.equal(currentURL(), '/agent/cases/view/1');
-      assert.equal(find('tbody tr').length, 6);
-      assert.equal($('tbody tr:first td:nth-child(3)').text().trim(), '1');
+      assert.equal(find('tbody tr').length, 10);
+      assert.equal(find('tbody tr:first td:nth-child(3)').text().trim(), '1');
       click('thead th:nth-child(3)');
     });
 
     andThen(function () {
-      assert.ok($('thead th:nth-child(3) span:last').hasClass('i-chevron-small-up'));
+      assert.ok(find('thead th:nth-child(3) span:last').hasClass('i-chevron-small-up'));
       click('thead th:nth-child(3)');
     });
 
     andThen(function () {
-      assert.ok($('thead th:nth-child(3) span:last').hasClass('i-chevron-small-down'));
-      assert.equal($('tbody tr:first td:nth-child(3)').text().trim(), '6');
+      assert.ok(find('thead th:nth-child(3) span:last').hasClass('i-chevron-small-down'));
+      assert.equal(find('tbody tr:first td:nth-child(3)').text().trim(), '10');
     });
   });
 

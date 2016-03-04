@@ -49741,6 +49741,9 @@ define('frontend-cp/components/ko-universal-search/component', ['exports', 'embe
 
         _this.set('isLatestSearchPending', false);
         _this.set('searchResults', results);
+
+        Reflect.deleteProperty(response, 'data');
+        _this.get('store').pushPayload(response);
       }, function () {
         _this.set('isLatestSearchPending', false);
       });
@@ -49861,6 +49864,646 @@ define('frontend-cp/components/ko-universal-search/entry/component', ['exports',
       }
     }
   });
+});
+define('frontend-cp/components/ko-universal-search/preview/component', ['exports', 'ember', 'frontend-cp/config/environment'], function (exports, _ember, _frontendCpConfigEnvironment) {
+  exports['default'] = _ember['default'].Component.extend({
+    tagName: '',
+
+    store: _ember['default'].inject.service(),
+
+    // Attributes
+    previewResult: null,
+
+    isCase: _ember['default'].computed.equal('previewResult.resource', 'case'),
+    isUser: _ember['default'].computed.equal('previewResult.resource', 'user'),
+    isOrganization: _ember['default'].computed.equal('previewResult.resource', 'organization'),
+
+    previewModel: _ember['default'].computed('previewResult.id', function () {
+      var id = this.get('previewResult.id');
+      var type = this.get('previewResult.resource');
+      if (type) {
+        return this.get('store').peekRecord(type, id);
+      }
+    }),
+
+    previewAvatar: _ember['default'].computed('previewModel', function () {
+      var model = this.get('previewModel');
+      if (model) {
+        switch (this.get('previewResult.resource')) {
+          case 'case':
+            return model.get('requester.avatar');
+          case 'user':
+            return model.get('avatar');
+          case 'organization':
+            return _frontendCpConfigEnvironment['default'].assetRoot + '/images/icons/organization.svg';
+        }
+      }
+    }),
+
+    formattedSnippet: _ember['default'].computed('previewResult.snippet', function () {
+      if (this.get('previewResult.snippet')) {
+        return this.get('previewResult.snippet').trim().split('\n').join('<br />');
+      } else {
+        return '';
+      }
+    })
+  });
+});
+define("frontend-cp/components/ko-universal-search/preview/template", ["exports"], function (exports) {
+  exports["default"] = Ember.HTMLBars.template((function () {
+    var child0 = (function () {
+      var child0 = (function () {
+        var child0 = (function () {
+          return {
+            meta: {
+              "revision": "Ember@2.0.3",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 25,
+                  "column": 8
+                },
+                "end": {
+                  "line": 29,
+                  "column": 8
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-universal-search/preview/template.hbs"
+            },
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode("          ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(1);
+              morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+              return morphs;
+            },
+            statements: [["inline", "t", ["cases.assignedtoagentteam"], ["agent", ["subexpr", "@mut", [["get", "previewModel.assigneeAgent.fullName", ["loc", [null, [27, 18], [27, 53]]]]], [], []], "team", ["subexpr", "@mut", [["get", "previewModel.assigneeTeam.title", ["loc", [null, [28, 17], [28, 48]]]]], [], []]], ["loc", [null, [26, 10], [28, 50]]]]],
+            locals: [],
+            templates: []
+          };
+        })();
+        var child1 = (function () {
+          return {
+            meta: {
+              "revision": "Ember@2.0.3",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 29,
+                  "column": 8
+                },
+                "end": {
+                  "line": 31,
+                  "column": 8
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-universal-search/preview/template.hbs"
+            },
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode("          ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(1);
+              morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+              return morphs;
+            },
+            statements: [["content", "previewModel.assigneeTeam.title", ["loc", [null, [30, 10], [30, 45]]]]],
+            locals: [],
+            templates: []
+          };
+        })();
+        return {
+          meta: {
+            "revision": "Ember@2.0.3",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 24,
+                "column": 6
+              },
+              "end": {
+                "line": 32,
+                "column": 6
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-universal-search/preview/template.hbs"
+          },
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+            dom.insertBoundary(fragment, 0);
+            dom.insertBoundary(fragment, null);
+            return morphs;
+          },
+          statements: [["block", "if", [["get", "previewModel.assigneeAgent", ["loc", [null, [25, 14], [25, 40]]]]], [], 0, 1, ["loc", [null, [25, 8], [31, 15]]]]],
+          locals: [],
+          templates: [child0, child1]
+        };
+      })();
+      var child1 = (function () {
+        return {
+          meta: {
+            "revision": "Ember@2.0.3",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 32,
+                "column": 6
+              },
+              "end": {
+                "line": 34,
+                "column": 6
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-universal-search/preview/template.hbs"
+          },
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("        ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+            return morphs;
+          },
+          statements: [["inline", "t", ["cases.assignedtonobody"], [], ["loc", [null, [33, 8], [33, 38]]]]],
+          locals: [],
+          templates: []
+        };
+      })();
+      return {
+        meta: {
+          "revision": "Ember@2.0.3",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 7,
+              "column": 2
+            },
+            "end": {
+              "line": 37,
+              "column": 2
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-universal-search/preview/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("    ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1, "class", "ko-universal-search_preview__metadata");
+          var el2 = dom.createTextNode("\n      ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode(" ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode(" |\n      ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("strong");
+          var el3 = dom.createComment("");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n      ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n    ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n    ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1, "class", "ko-universal-search_preview__metadata");
+          var el2 = dom.createTextNode("\n      ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode(" \n      ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("strong");
+          var el3 = dom.createComment("");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n      via\n      ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("strong");
+          var el3 = dom.createTextNode("\n        ");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createComment("");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createTextNode("\n      ");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n    ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n    ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1, "class", "ko-universal-search_preview__metadata");
+          var el2 = dom.createTextNode("\n      ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n      ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("strong");
+          var el3 = dom.createTextNode("\n");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createComment("");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createTextNode("      ");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n    ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var element2 = dom.childAt(fragment, [1]);
+          var element3 = dom.childAt(fragment, [3]);
+          var element4 = dom.childAt(fragment, [5]);
+          var morphs = new Array(9);
+          morphs[0] = dom.createMorphAt(element2, 1, 1);
+          morphs[1] = dom.createMorphAt(element2, 3, 3);
+          morphs[2] = dom.createMorphAt(dom.childAt(element2, [5]), 0, 0);
+          morphs[3] = dom.createMorphAt(element2, 7, 7);
+          morphs[4] = dom.createMorphAt(element3, 1, 1);
+          morphs[5] = dom.createMorphAt(dom.childAt(element3, [3]), 0, 0);
+          morphs[6] = dom.createMorphAt(dom.childAt(element3, [5]), 1, 1);
+          morphs[7] = dom.createMorphAt(element4, 1, 1);
+          morphs[8] = dom.createMorphAt(dom.childAt(element4, [3]), 1, 1);
+          return morphs;
+        },
+        statements: [["inline", "t", ["cases.ticketid"], [], ["loc", [null, [9, 6], [9, 28]]]], ["content", "previewModel.id", ["loc", [null, [9, 29], [9, 48]]]], ["content", "previewModel.status.label", ["loc", [null, [10, 14], [10, 43]]]], ["inline", "t", ["cases.lastupdated"], ["time", ["subexpr", "moment-from-now", [["get", "previewModel.updatedAt", ["loc", [null, [11, 52], [11, 74]]]]], [], ["loc", [null, [11, 35], [11, 75]]]]], ["loc", [null, [11, 6], [11, 77]]]], ["inline", "t", ["cases.created"], [], ["loc", [null, [14, 6], [14, 27]]]], ["inline", "format-date", [["get", "previewModel.createdAt", ["loc", [null, [15, 28], [15, 50]]]]], ["format", "full"], ["loc", [null, [15, 14], [15, 66]]]], ["inline", "t", [["subexpr", "concat", ["cases.channelType.", ["get", "previewModel.sourceChannel.channelType", ["loc", [null, [18, 41], [18, 79]]]]], [], ["loc", [null, [18, 12], [18, 80]]]]], [], ["loc", [null, [18, 8], [18, 82]]]], ["inline", "t", ["cases.currentlyassignedto"], [], ["loc", [null, [22, 6], [22, 39]]]], ["block", "if", [["get", "previewModel.assigneeTeam", ["loc", [null, [24, 12], [24, 37]]]]], [], 0, 1, ["loc", [null, [24, 6], [34, 13]]]]],
+        locals: [],
+        templates: [child0, child1]
+      };
+    })();
+    var child1 = (function () {
+      return {
+        meta: {
+          "revision": "Ember@2.0.3",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 39,
+              "column": 2
+            },
+            "end": {
+              "line": 44,
+              "column": 2
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-universal-search/preview/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("    ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1, "class", "ko-universal-search_preview__metadata");
+          var el2 = dom.createTextNode("\n      ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode(" ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode(" |\n      ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n    ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var element1 = dom.childAt(fragment, [1]);
+          var morphs = new Array(3);
+          morphs[0] = dom.createMorphAt(element1, 1, 1);
+          morphs[1] = dom.createMorphAt(element1, 3, 3);
+          morphs[2] = dom.createMorphAt(element1, 5, 5);
+          return morphs;
+        },
+        statements: [["inline", "t", ["users.userid"], [], ["loc", [null, [41, 6], [41, 26]]]], ["content", "previewModel.id", ["loc", [null, [41, 27], [41, 46]]]], ["inline", "t", ["cases.lastupdated"], ["time", ["subexpr", "moment-from-now", [["get", "previewModel.updatedAt", ["loc", [null, [42, 52], [42, 74]]]]], [], ["loc", [null, [42, 35], [42, 75]]]]], ["loc", [null, [42, 6], [42, 77]]]]],
+        locals: [],
+        templates: []
+      };
+    })();
+    var child2 = (function () {
+      return {
+        meta: {
+          "revision": "Ember@2.0.3",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 46,
+              "column": 2
+            },
+            "end": {
+              "line": 51,
+              "column": 2
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-universal-search/preview/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("    ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1, "class", "ko-universal-search_preview__metadata");
+          var el2 = dom.createTextNode("\n      ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode(" ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode(" |\n      ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n    ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var element0 = dom.childAt(fragment, [1]);
+          var morphs = new Array(3);
+          morphs[0] = dom.createMorphAt(element0, 1, 1);
+          morphs[1] = dom.createMorphAt(element0, 3, 3);
+          morphs[2] = dom.createMorphAt(element0, 5, 5);
+          return morphs;
+        },
+        statements: [["inline", "t", ["organizations.organizationid"], [], ["loc", [null, [48, 6], [48, 42]]]], ["content", "previewModel.id", ["loc", [null, [48, 43], [48, 62]]]], ["inline", "t", ["cases.lastupdated"], ["time", ["subexpr", "moment-from-now", [["get", "previewModel.updatedAt", ["loc", [null, [49, 52], [49, 74]]]]], [], ["loc", [null, [49, 35], [49, 75]]]]], ["loc", [null, [49, 6], [49, 77]]]]],
+        locals: [],
+        templates: []
+      };
+    })();
+    var child3 = (function () {
+      return {
+        meta: {
+          "revision": "Ember@2.0.3",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 59,
+              "column": 6
+            },
+            "end": {
+              "line": 61,
+              "column": 6
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-universal-search/preview/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("        ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createUnsafeMorphAt(fragment, 1, 1, contextualElement);
+          return morphs;
+        },
+        statements: [["content", "formattedSnippet", ["loc", [null, [60, 8], [60, 30]]]]],
+        locals: [],
+        templates: []
+      };
+    })();
+    var child4 = (function () {
+      return {
+        meta: {
+          "revision": "Ember@2.0.3",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 61,
+              "column": 6
+            },
+            "end": {
+              "line": 63,
+              "column": 6
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-universal-search/preview/template.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("        ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+          return morphs;
+        },
+        statements: [["inline", "t", ["generic.search.nosnippet"], [], ["loc", [null, [62, 8], [62, 40]]]]],
+        locals: [],
+        templates: []
+      };
+    })();
+    return {
+      meta: {
+        "revision": "Ember@2.0.3",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 67,
+            "column": 0
+          }
+        },
+        "moduleName": "frontend-cp/components/ko-universal-search/preview/template.hbs"
+      },
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1, "class", "ko-universal-search_preview");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2, "class", "ko-universal-search_preview__header");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("img");
+        dom.setAttribute(el3, "alt", "");
+        dom.setAttribute(el3, "class", "ko-layout_advanced_section__img");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("h3");
+        dom.setAttribute(el3, "class", "ko-universal-search_preview__title");
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2, "class", "ko-universal-search_preview__section");
+        var el3 = dom.createTextNode("\n");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2, "class", "ko-universal-search_preview__section");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("h5");
+        dom.setAttribute(el3, "class", "heading heading--capitalized");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3, "class", "ko-universal-search_preview__snippet");
+        var el4 = dom.createTextNode("\n");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var element5 = dom.childAt(fragment, [0]);
+        var element6 = dom.childAt(element5, [1]);
+        var element7 = dom.childAt(element6, [1]);
+        var element8 = dom.childAt(element5, [3]);
+        var element9 = dom.childAt(element5, [5]);
+        var morphs = new Array(7);
+        morphs[0] = dom.createAttrMorph(element7, 'src');
+        morphs[1] = dom.createMorphAt(dom.childAt(element6, [3]), 0, 0);
+        morphs[2] = dom.createMorphAt(element8, 1, 1);
+        morphs[3] = dom.createMorphAt(element8, 3, 3);
+        morphs[4] = dom.createMorphAt(element8, 5, 5);
+        morphs[5] = dom.createMorphAt(dom.childAt(element9, [1]), 1, 1);
+        morphs[6] = dom.createMorphAt(dom.childAt(element9, [3]), 1, 1);
+        return morphs;
+      },
+      statements: [["attribute", "src", ["concat", [["get", "previewAvatar", ["loc", [null, [3, 16], [3, 29]]]]]]], ["content", "previewResult.title", ["loc", [null, [4, 51], [4, 74]]]], ["block", "if", [["get", "isCase", ["loc", [null, [7, 8], [7, 14]]]]], [], 0, null, ["loc", [null, [7, 2], [37, 9]]]], ["block", "if", [["get", "isUser", ["loc", [null, [39, 8], [39, 14]]]]], [], 1, null, ["loc", [null, [39, 2], [44, 9]]]], ["block", "if", [["get", "isOrganization", ["loc", [null, [46, 8], [46, 22]]]]], [], 2, null, ["loc", [null, [46, 2], [51, 9]]]], ["inline", "t", ["generic.search.matchingsnippet"], [], ["loc", [null, [56, 6], [56, 44]]]], ["block", "if", [["get", "formattedSnippet", ["loc", [null, [59, 12], [59, 28]]]]], [], 3, 4, ["loc", [null, [59, 6], [63, 13]]]]],
+      locals: [],
+      templates: [child0, child1, child2, child3, child4]
+    };
+  })());
 });
 define('frontend-cp/components/ko-universal-search/result/component', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = _ember['default'].Component.extend({
@@ -49987,9 +50630,9 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
           return el0;
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var element1 = dom.childAt(fragment, [0]);
+          var element2 = dom.childAt(fragment, [0]);
           var morphs = new Array(1);
-          morphs[0] = dom.createAttrMorph(element1, 'onclick');
+          morphs[0] = dom.createAttrMorph(element2, 'onclick');
           return morphs;
         },
         statements: [["attribute", "onclick", ["subexpr", "action", ["clearSearch"], [], ["loc", [null, [3, 12], [3, 36]]]]]],
@@ -50111,9 +50754,9 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
           return el0;
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var element0 = dom.childAt(fragment, [1]);
+          var element1 = dom.childAt(fragment, [1]);
           var morphs = new Array(1);
-          morphs[0] = dom.createAttrMorph(element0, 'onclick');
+          morphs[0] = dom.createAttrMorph(element1, 'onclick');
           return morphs;
         },
         statements: [["attribute", "onclick", ["subexpr", "action", ["clearSearch"], [], ["loc", [null, [24, 50], [24, 74]]]]]],
@@ -50374,6 +51017,169 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
           templates: [child0]
         };
       })();
+      var child2 = (function () {
+        var child0 = (function () {
+          return {
+            meta: {
+              "revision": "Ember@2.0.3",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 57,
+                  "column": 4
+                },
+                "end": {
+                  "line": 61,
+                  "column": 4
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-universal-search/template.hbs"
+            },
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode("      ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(1);
+              morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+              return morphs;
+            },
+            statements: [["inline", "ko-universal-search/preview", [], ["previewResult", ["subexpr", "@mut", [["get", "highlightedResult", ["loc", [null, [59, 22], [59, 39]]]]], [], []]], ["loc", [null, [58, 6], [60, 8]]]]],
+            locals: [],
+            templates: []
+          };
+        })();
+        var child1 = (function () {
+          var child0 = (function () {
+            return {
+              meta: {
+                "revision": "Ember@2.0.3",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 62,
+                    "column": 6
+                  },
+                  "end": {
+                    "line": 66,
+                    "column": 6
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-universal-search/template.hbs"
+              },
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createTextNode("      ");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createElement("h5");
+                dom.setAttribute(el1, "class", "ko-universal-search__no-preview");
+                var el2 = dom.createTextNode("\n        ");
+                dom.appendChild(el1, el2);
+                var el2 = dom.createComment("");
+                dom.appendChild(el1, el2);
+                var el2 = dom.createTextNode("\n      ");
+                dom.appendChild(el1, el2);
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var morphs = new Array(1);
+                morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
+                return morphs;
+              },
+              statements: [["inline", "t", ["generic.search.no_preview"], [], ["loc", [null, [64, 8], [64, 41]]]]],
+              locals: [],
+              templates: []
+            };
+          })();
+          return {
+            meta: {
+              "revision": "Ember@2.0.3",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 61,
+                  "column": 4
+                },
+                "end": {
+                  "line": 67,
+                  "column": 4
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-universal-search/template.hbs"
+            },
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(1);
+              morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+              dom.insertBoundary(fragment, 0);
+              dom.insertBoundary(fragment, null);
+              return morphs;
+            },
+            statements: [["block", "if", [["subexpr", "not", [["get", "isLatestSearchPending", ["loc", [null, [62, 17], [62, 38]]]]], [], ["loc", [null, [62, 12], [62, 39]]]]], [], 0, null, ["loc", [null, [62, 6], [66, 13]]]]],
+            locals: [],
+            templates: [child0]
+          };
+        })();
+        return {
+          meta: {
+            "revision": "Ember@2.0.3",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 56,
+                "column": 2
+              },
+              "end": {
+                "line": 68,
+                "column": 2
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-universal-search/template.hbs"
+          },
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+            dom.insertBoundary(fragment, 0);
+            dom.insertBoundary(fragment, null);
+            return morphs;
+          },
+          statements: [["block", "if", [["get", "highlightedResult", ["loc", [null, [57, 10], [57, 27]]]]], [], 0, 1, ["loc", [null, [57, 4], [67, 11]]]]],
+          locals: [],
+          templates: [child0, child1]
+        };
+      })();
       return {
         meta: {
           "revision": "Ember@2.0.3",
@@ -50384,7 +51190,7 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
               "column": 0
             },
             "end": {
-              "line": 76,
+              "line": 70,
               "column": 0
             }
           },
@@ -50410,19 +51216,23 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
           dom.appendChild(el1, el2);
           var el2 = dom.createTextNode("\n");
           dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
           dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n");
           dom.appendChild(el0, el1);
           return el0;
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(dom.childAt(fragment, [0, 1]), 1, 1);
+          var element0 = dom.childAt(fragment, [0]);
+          var morphs = new Array(2);
+          morphs[0] = dom.createMorphAt(dom.childAt(element0, [1]), 1, 1);
+          morphs[1] = dom.createMorphAt(element0, 3, 3);
           return morphs;
         },
-        statements: [["block", "each", [["get", "searchResults", ["loc", [null, [31, 12], [31, 25]]]]], [], 0, 1, ["loc", [null, [31, 4], [54, 13]]]]],
+        statements: [["block", "each", [["get", "searchResults", ["loc", [null, [31, 12], [31, 25]]]]], [], 0, 1, ["loc", [null, [31, 4], [54, 13]]]], ["block", "if", [["get", "searchResults.length", ["loc", [null, [56, 8], [56, 28]]]]], [], 2, null, ["loc", [null, [56, 2], [68, 9]]]]],
         locals: [],
-        templates: [child0, child1]
+        templates: [child0, child1, child2]
       };
     })();
     return {
@@ -50435,7 +51245,7 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
             "column": 0
           },
           "end": {
-            "line": 77,
+            "line": 71,
             "column": 0
           }
         },
@@ -50479,18 +51289,18 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var element2 = dom.childAt(fragment, [2]);
+        var element3 = dom.childAt(fragment, [2]);
         var morphs = new Array(5);
         morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-        morphs[1] = dom.createMorphAt(dom.childAt(element2, [1]), 1, 1);
-        morphs[2] = dom.createMorphAt(element2, 3, 3);
-        morphs[3] = dom.createMorphAt(element2, 5, 5);
+        morphs[1] = dom.createMorphAt(dom.childAt(element3, [1]), 1, 1);
+        morphs[2] = dom.createMorphAt(element3, 3, 3);
+        morphs[3] = dom.createMorphAt(element3, 5, 5);
         morphs[4] = dom.createMorphAt(fragment, 4, 4, contextualElement);
         dom.insertBoundary(fragment, 0);
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["block", "if", [["get", "searchQuery", ["loc", [null, [1, 6], [1, 17]]]]], [], 0, null, ["loc", [null, [1, 0], [4, 7]]]], ["block", "if", [["get", "isSearchLoading", ["loc", [null, [8, 10], [8, 25]]]]], [], 1, 2, ["loc", [null, [8, 4], [12, 11]]]], ["inline", "ko-universal-search/entry", [], ["type", "text", "onSelectHighlightedResult", ["subexpr", "action", ["selectHighlightedResult"], [], ["loc", [null, [16, 30], [16, 64]]]], "onHighlightNextResult", ["subexpr", "action", ["highlightNextResult"], [], ["loc", [null, [17, 26], [17, 56]]]], "onHighlightPreviousResult", ["subexpr", "action", ["highlightPreviousResult"], [], ["loc", [null, [18, 30], [18, 64]]]], "onStopSearch", ["subexpr", "action", ["clearSearch"], [], ["loc", [null, [19, 17], [19, 39]]]], "value", ["subexpr", "@mut", [["get", "searchQuery", ["loc", [null, [20, 10], [20, 21]]]]], [], []], "placeholder", ["subexpr", "t", ["search.placeholder"], [], ["loc", [null, [21, 16], [21, 40]]]]], ["loc", [null, [15, 2], [21, 42]]]], ["block", "if", [["get", "searchQuery", ["loc", [null, [23, 8], [23, 19]]]]], [], 3, null, ["loc", [null, [23, 2], [25, 9]]]], ["block", "if", [["get", "searchQuery", ["loc", [null, [28, 6], [28, 17]]]]], [], 4, null, ["loc", [null, [28, 0], [76, 7]]]]],
+      statements: [["block", "if", [["get", "searchQuery", ["loc", [null, [1, 6], [1, 17]]]]], [], 0, null, ["loc", [null, [1, 0], [4, 7]]]], ["block", "if", [["get", "isSearchLoading", ["loc", [null, [8, 10], [8, 25]]]]], [], 1, 2, ["loc", [null, [8, 4], [12, 11]]]], ["inline", "ko-universal-search/entry", [], ["type", "text", "onSelectHighlightedResult", ["subexpr", "action", ["selectHighlightedResult"], [], ["loc", [null, [16, 30], [16, 64]]]], "onHighlightNextResult", ["subexpr", "action", ["highlightNextResult"], [], ["loc", [null, [17, 26], [17, 56]]]], "onHighlightPreviousResult", ["subexpr", "action", ["highlightPreviousResult"], [], ["loc", [null, [18, 30], [18, 64]]]], "onStopSearch", ["subexpr", "action", ["clearSearch"], [], ["loc", [null, [19, 17], [19, 39]]]], "value", ["subexpr", "@mut", [["get", "searchQuery", ["loc", [null, [20, 10], [20, 21]]]]], [], []], "placeholder", ["subexpr", "t", ["search.placeholder"], [], ["loc", [null, [21, 16], [21, 40]]]]], ["loc", [null, [15, 2], [21, 42]]]], ["block", "if", [["get", "searchQuery", ["loc", [null, [23, 8], [23, 19]]]]], [], 3, null, ["loc", [null, [23, 2], [25, 9]]]], ["block", "if", [["get", "searchQuery", ["loc", [null, [28, 6], [28, 17]]]]], [], 4, null, ["loc", [null, [28, 0], [70, 7]]]]],
       locals: [],
       templates: [child0, child1, child2, child3, child4]
     };
@@ -55128,6 +55938,9 @@ define("frontend-cp/locales/en-us/cases", ["exports"], function (exports) {
     "new_case": "New case",
     "new_case_subject_placeholder": "Click to set a subject...",
     "new_case_tab_placeholder": "New Case",
+    "currentlyassignedto": "Currently assigned to",
+    "assignedtoagentteam": "{agent} in {team}",
+    "assignedtonobody": "nobody",
 
     "trash.title": "Trash case",
     "trashcases": "Trash cases",
@@ -55254,8 +56067,11 @@ define("frontend-cp/locales/en-us/generic", ["exports"], function (exports) {
     "select_placeholder": "Select...",
     "search_result_select_instruction": "Press enter",
     "search.no_results": "No results found",
+    "search.no_preview": "Mouse over a search result to see a preview.",
     "search.start_typing_to_search": "Start typing to search",
     "search.searching": "Searching...",
+    "search.matchingsnippet": "Matching text",
+    "search.nosnippet": "Sorry, we don’t have a preview for this result.",
     "shared_with": "Shared with",
 
     "sort.ASC": "Ascending",
@@ -55374,7 +56190,8 @@ define("frontend-cp/locales/en-us/organisation", ["exports"], function (exports)
     "organisation.updated": "Organisation Updated",
     "infobar.cases.shared.true": "Can see each others' cases",
     "infobar.cases.shared.false": "Cannot see each others' cases",
-    "infobar.accesslevel": "Case access"
+    "infobar.accesslevel": "Case access",
+    "organizatonid": "Organization ID"
   };
 });
 define("frontend-cp/locales/en-us/search", ["exports"], function (exports) {
@@ -55438,7 +56255,9 @@ define("frontend-cp/locales/en-us/users", ["exports"], function (exports) {
     "no_feedback_available": "No feedback is available from this user",
     "no_recent_cases": "No recent cases from this user",
     "update_signature": "Proceed",
-    "signaturemessage": "Please press \"Submit\" on the next page for this to take effect"
+    "signaturemessage": "Please press \"Submit\" on the next page for this to take effect",
+
+    "userid": "User ID"
   };
 });
 define('frontend-cp/login/admin/route', ['exports', 'ember'], function (exports, _ember) {
@@ -58134,6 +58953,9 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       var cases = db.cases.filter(function (c) {
         return c.subject.toLowerCase().indexOf(queryString) > -1;
       });
+      var orgs = db.organizations.filter(function (o) {
+        return o.name.toLowerCase().indexOf(queryString) > -1;
+      });
 
       var userResults = users.map(function (u) {
         return {
@@ -58141,7 +58963,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
           title: u.full_name,
           relevance: 0.089531735,
           resource: 'user',
-          snippet: u.full_name.replace(request.queryParams.query, '<em>' + request.queryParams.query + '</em>')
+          snippet: u.full_name.replace(new RegExp(queryString, 'gi'), '<em>' + request.queryParams.query + '</em>')
         };
       });
 
@@ -58150,7 +58972,24 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
           id: c.id,
           title: c.subject,
           relevance: 0.089531735,
-          resource: 'case'
+          resource: 'case',
+          snippet: c.subject.replace(new RegExp(queryString, 'gi'), '<em>' + request.queryParams.query + '</em>')
+        };
+      });
+
+      if (caseResults.length) {
+        var snippet = 'Installation Service: Test <em>Ers</em> Client ID: 45077\nFullname: Test <em>Ers</em>\nEmail: leocash@optonline.net. Test <em>Ers</em>';
+        caseResults[0].snippet = snippet;
+        caseResults[0].title = 'Good Morning, One of my colleagues sent a request in yesterday ERS-588-22741, i needed to clarify the specifics of what we are looking to do as I think there was a misunderstanding.';
+      }
+
+      var orgResults = orgs.map(function (o) {
+        return {
+          id: o.id,
+          title: o.name,
+          relevance: 0.089531735,
+          resource: 'organization',
+          snippet: o.name.replace(new RegExp(queryString, 'gi'), '<em>' + request.queryParams.query + '</em>')
         };
       });
 
@@ -58164,8 +59003,18 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
           results: userResults,
           resource: 'user',
           total_count: userResults.length
+        }, {
+          results: orgResults,
+          resource: 'organization',
+          total_count: orgResults.length
         }],
         resource: 'object',
+        resources: {
+          'case': cases,
+          user: users,
+          channel: db.channels,
+          team: db.teams
+        },
         total_count: caseResults.length + userResults.length
       };
     });
@@ -59198,7 +60047,7 @@ define('frontend-cp/mirage/factories/case', ['exports', 'ember-cli-mirage'], fun
     requester: {},
     creator: {},
     identity: {},
-    assignee: null,
+    assignee: { team: { id: 1, resource_type: 'team' } },
     brand: null,
     status: {},
     priority: null,
@@ -60439,8 +61288,10 @@ define('frontend-cp/mirage/scenarios/default', ['exports'], function (exports) {
       requester: defaultUser,
       creator: defaultUser,
       identity: identityEmail,
-      assignee_agent: assigneeAgent,
-      assignee_team: assigneeTeam,
+      assignee: {
+        agent: { id: 1, resource_type: 'user' },
+        team: { id: 1, resource_type: 'team' }
+      },
       brand: brand,
       status: status,
       priority: priority,
@@ -60461,8 +61312,10 @@ define('frontend-cp/mirage/scenarios/default', ['exports'], function (exports) {
       requester: defaultUser,
       creator: defaultUser,
       identity: identityEmail,
-      assignee_agent: assigneeAgent,
-      assignee_team: assigneeTeam,
+      assignee: {
+        agent: assigneeAgent,
+        team: assigneeTeam
+      },
       brand: brand,
       status: statuses[3],
       priority: priority,
@@ -60476,13 +61329,15 @@ define('frontend-cp/mirage/scenarios/default', ['exports'], function (exports) {
       last_replier_identity: identityEmail
     });
 
-    server.createList('case', 1, {
+    server.createList('case', 5, {
       source_channel: null,
       requester: defaultUser,
       creator: defaultUser,
       identity: identityEmail,
-      assignee_agent: assigneeAgent,
-      assignee_team: assigneeTeam,
+      assignee: {
+        agent: assigneeAgent,
+        team: assigneeTeam
+      },
       brand: brand,
       status: status,
       priority: priority,
@@ -63084,6 +63939,12 @@ define('frontend-cp/serializers/application', ['exports', 'ember', 'ember-data',
         payload.meta = meta;
       }
       return this._super.apply(this, arguments);
+    },
+
+    pushPayload: function pushPayload(store, payload) {
+      this.normalizeResponse(store, null, payload);
+      // normalizeResponse has modified payload!
+      return this._super(store, payload);
     },
 
     keyForAttribute: function keyForAttribute(key /*, method*/) {
@@ -82352,6 +83213,17 @@ define("frontend-cp/styles/components/ko-universal-search/entry/styles.scss", ["
     "ko-universal-search_entry": "_ko-universal-search_entry_17tgd8"
   };
 });
+define("frontend-cp/styles/components/ko-universal-search/preview/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-universal-search_preview": "_ko-universal-search_preview_1xalpo",
+    "ko-universal-search_preview__title": "_ko-universal-search_preview__title_1xalpo",
+    "ko-universal-search_preview__metadata": "_ko-universal-search_preview__metadata_1xalpo",
+    "ko-universal-search_preview__header": "_ko-universal-search_preview__header_1xalpo",
+    "ko-universal-search_preview__section": "_ko-universal-search_preview__section_1xalpo",
+    "heading": "_heading_1xalpo",
+    "ko-universal-search_preview__snippet": "_ko-universal-search_preview__snippet_1xalpo"
+  };
+});
 define("frontend-cp/styles/components/ko-universal-search/result/styles.scss", ["exports"], function (exports) {
   exports["default"] = {
     "ko-universal-search_result": "_ko-universal-search_result_1ti20m",
@@ -82371,7 +83243,7 @@ define("frontend-cp/styles/components/ko-universal-search/styles.scss", ["export
     "universal-search__input": "_universal-search__input_3orawg",
     "universal-search__content": "_universal-search__content_3orawg",
     "universal-search__results": "_universal-search__results_3orawg",
-    "universal-search__preview": "_universal-search__preview_3orawg"
+    "ko-universal-search__no-preview": "_ko-universal-search__no-preview_3orawg"
   };
 });
 define("frontend-cp/styles/components/ko-user-action-menu/styles.scss", ["exports"], function (exports) {
@@ -84825,6 +85697,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+7c8c9e4f"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+aa2ed0ea"});
 }
 /* jshint ignore:end */
