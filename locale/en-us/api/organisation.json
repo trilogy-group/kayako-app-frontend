@@ -7,5 +7,5 @@
   "infobar.cases.shared.true": "Can see each others' cases",
   "infobar.cases.shared.false": "Cannot see each others' cases",
   "infobar.accesslevel": "Case access",
-  "organizatonid": "Organization ID"
+  "organizationid": "Organization ID"
 }

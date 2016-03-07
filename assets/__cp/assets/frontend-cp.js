@@ -50275,7 +50275,7 @@ define("frontend-cp/components/ko-universal-search/preview/template", ["exports"
           morphs[2] = dom.createMorphAt(element0, 5, 5);
           return morphs;
         },
-        statements: [["inline", "t", ["organizations.organizationid"], [], ["loc", [null, [48, 6], [48, 42]]]], ["content", "previewModel.id", ["loc", [null, [48, 43], [48, 62]]]], ["inline", "t", ["cases.lastupdated"], ["time", ["subexpr", "moment-from-now", [["get", "previewModel.updatedAt", ["loc", [null, [49, 52], [49, 74]]]]], [], ["loc", [null, [49, 35], [49, 75]]]]], ["loc", [null, [49, 6], [49, 77]]]]],
+        statements: [["inline", "t", ["organisation.organizationid"], [], ["loc", [null, [48, 6], [48, 41]]]], ["content", "previewModel.id", ["loc", [null, [48, 42], [48, 61]]]], ["inline", "t", ["cases.lastupdated"], ["time", ["subexpr", "moment-from-now", [["get", "previewModel.updatedAt", ["loc", [null, [49, 52], [49, 74]]]]], [], ["loc", [null, [49, 35], [49, 75]]]]], ["loc", [null, [49, 6], [49, 77]]]]],
         locals: [],
         templates: []
       };
@@ -56178,7 +56178,7 @@ define("frontend-cp/locales/en-us/organisation", ["exports"], function (exports)
     "infobar.cases.shared.true": "Can see each others' cases",
     "infobar.cases.shared.false": "Cannot see each others' cases",
     "infobar.accesslevel": "Case access",
-    "organizatonid": "Organization ID"
+    "organizationid": "Organization ID"
   };
 });
 define("frontend-cp/locales/en-us/search", ["exports"], function (exports) {
@@ -85672,6 +85672,6 @@ catch(err) {
 
 /* jshint ignore:start */
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+50a3bf02"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+bd1f04a6"});
 }
 /* jshint ignore:end */
