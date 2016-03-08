@@ -8715,6 +8715,7 @@ define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'ember'], fun
     });
   };
 });
+define('frontend-cp/tests/helpers/ember-sortable/test-helpers', ['exports', 'ember-sortable/helpers/drag', 'ember-sortable/helpers/reorder'], function (exports, _emberSortableHelpersDrag, _emberSortableHelpersReorder) {});
 define('frontend-cp/tests/helpers/fill-in-rich-text-editor', ['exports', 'ember', 'npm:quill'], function (exports, _ember, _npmQuill) {
   exports['default'] = _ember['default'].Test.registerAsyncHelper('fillInRichTextEditor', function (app, html) {
     var editor = _npmQuill['default'].editors.find(function (ed) {
@@ -8758,11 +8759,11 @@ define('frontend-cp/tests/helpers/module-for-acceptance', ['exports', 'qunit', '
       },
 
       afterEach: function afterEach() {
-        (0, _frontendCpTestsHelpersDestroyApp['default'])(this.application);
-
         if (options.afterEach) {
           Reflect.apply(options.afterEach, this, arguments);
         }
+
+        (0, _frontendCpTestsHelpersDestroyApp['default'])(this.application);
       }
     });
   };
@@ -8979,8 +8980,6 @@ define('frontend-cp/tests/helpers/start-app', ['exports', 'ember', 'frontend-cp/
 
   (0, _frontendCpTestsHelpersEmberPowerSelect['default'])();
 
-  _ember['default'].warn = function () {};
-
   function startApp(attrs) {
     var application = undefined;
 
@@ -9012,11 +9011,12 @@ define('frontend-cp/tests/helpers/use-default-scenario', ['exports', 'ember', 'f
   });
 });
 define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-organisation/component-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'ember', 'sinon'], function (exports, _frontendCpTestsHelpersQunit, _ember, _sinon) {
+  var getOwner = _ember['default'].getOwner;
 
   (0, _frontendCpTestsHelpersQunit.moduleForComponent)('ko-agent-dropdown/create-organisation', 'Integration | Component | ko agent dropdown/create organisation', {
     integration: true,
     beforeEach: function beforeEach() {
-      var intl = this.container.lookup('service:intl');
+      var intl = getOwner(this).lookup('service:intl');
       intl.setLocale('en-us');
     }
   });
@@ -9027,7 +9027,11 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-organi
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@2.0.3',
+          'fragmentReason': {
+            'name': 'missing-wrapper',
+            'problems': ['wrong-type']
+          },
+          'revision': 'Ember@2.4.1',
           'loc': {
             'source': null,
             'start': {
@@ -9040,6 +9044,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-organi
             }
           }
         },
+        isEmpty: false,
         arity: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -9078,7 +9083,11 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-organi
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@2.0.3',
+          'fragmentReason': {
+            'name': 'missing-wrapper',
+            'problems': ['wrong-type']
+          },
+          'revision': 'Ember@2.4.1',
           'loc': {
             'source': null,
             'start': {
@@ -9091,6 +9100,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-organi
             }
           }
         },
+        isEmpty: false,
         arity: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -9126,11 +9136,12 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-organi
   }
 });
 define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/component-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'ember', 'sinon'], function (exports, _frontendCpTestsHelpersQunit, _ember, _sinon) {
+  var getOwner = _ember['default'].getOwner;
 
   (0, _frontendCpTestsHelpersQunit.moduleForComponent)('ko-agent-dropdown/create-user', 'Integration | Component | ko agent dropdown/create user', {
     integration: true,
     beforeEach: function beforeEach() {
-      var intlService = this.container.lookup('service:intl');
+      var intlService = getOwner(this).lookup('service:intl');
       intlService.setLocale('en-us');
       intlService.addTranslations('en-us', {
         frontend: {
@@ -9164,7 +9175,11 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@2.0.3',
+          'fragmentReason': {
+            'name': 'missing-wrapper',
+            'problems': ['wrong-type']
+          },
+          'revision': 'Ember@2.4.1',
           'loc': {
             'source': null,
             'start': {
@@ -9177,6 +9192,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
             }
           }
         },
+        isEmpty: false,
         arity: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -9233,7 +9249,11 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@2.0.3',
+          'fragmentReason': {
+            'name': 'missing-wrapper',
+            'problems': ['wrong-type']
+          },
+          'revision': 'Ember@2.4.1',
           'loc': {
             'source': null,
             'start': {
@@ -9246,6 +9266,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
             }
           }
         },
+        isEmpty: false,
         arity: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -9369,7 +9390,11 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@2.0.3',
+          'fragmentReason': {
+            'name': 'missing-wrapper',
+            'problems': ['wrong-type']
+          },
+          'revision': 'Ember@2.4.1',
           'loc': {
             'source': null,
             'start': {
@@ -9382,6 +9407,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
             }
           }
         },
+        isEmpty: false,
         arity: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -9443,7 +9469,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
       assert.equal($cancelButtonElement.length, 1);
       assert.equal($loaderElement.length, 0);
 
-      var mockStore = _this.container.lookup('service:store');
+      var mockStore = getOwner(_this).lookup('service:store');
       assert.ok(mockStore.createRecord.calledTwice);
       assert.ok(mockStore.createRecord.calledWith('identity-email', {
         isPrimary: true,
@@ -9487,7 +9513,11 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@2.0.3',
+          'fragmentReason': {
+            'name': 'missing-wrapper',
+            'problems': ['wrong-type']
+          },
+          'revision': 'Ember@2.4.1',
           'loc': {
             'source': null,
             'start': {
@@ -9500,6 +9530,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
             }
           }
         },
+        isEmpty: false,
         arity: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -9589,12 +9620,13 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
   }
 });
 /* eslint-disable camelcase */
-define('frontend-cp/tests/integration/components/ko-info-bar/component-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {
+define('frontend-cp/tests/integration/components/ko-info-bar/component-test', ['exports', 'ember', 'ember-qunit'], function (exports, _ember, _emberQunit) {
+  var getOwner = _ember['default'].getOwner;
 
   (0, _emberQunit.moduleForComponent)('ko-info-bar', 'Integration | Component | ko info bar', {
     integration: true,
     beforeEach: function beforeEach() {
-      var intl = this.container.lookup('service:intl');
+      var intl = getOwner(this).lookup('service:intl');
       intl.setLocale('en-us');
     }
   });
@@ -9605,10 +9637,14 @@ define('frontend-cp/tests/integration/components/ko-info-bar/component-test', ['
     // Set any properties with this.set('myProperty', 'value');
     // Handle any actions with this.on('myAction', function(val) { ... });
 
-    this.render(Ember.HTMLBars.template((function () {
+    this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@2.0.3',
+          'fragmentReason': {
+            'name': 'missing-wrapper',
+            'problems': ['wrong-type']
+          },
+          'revision': 'Ember@2.4.1',
           'loc': {
             'source': null,
             'start': {
@@ -9621,6 +9657,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/component-test', ['
             }
           }
         },
+        isEmpty: false,
         arity: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -9647,6 +9684,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/component-test', ['
   });
 });
 define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/component-test', ['exports', 'ember', 'ember-qunit', 'frontend-cp/lib/keycodes', 'frontend-cp/tests/helpers/ember-power-select'], function (exports, _ember, _emberQunit, _frontendCpLibKeycodes, _frontendCpTestsHelpersEmberPowerSelect) {
+  var getOwner = _ember['default'].getOwner;
 
   var trigger = '.ember-power-select-trigger';
   var searchField = trigger + ' input:visible';
@@ -9664,7 +9702,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
   (0, _emberQunit.moduleForComponent)('ko-info-bar/field/drill-down', 'Integration | Component | ko-info-bar/field/drill-down', {
     integration: true,
     beforeEach: function beforeEach() {
-      var intl = this.container.lookup('service:intl');
+      var intl = getOwner(this).lookup('service:intl');
       intl.setLocale('en-us');
       this.registry.optionsForType('sanitizer', { instantiate: false });
       this.set('options', defaultOptions);
@@ -9679,7 +9717,11 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@2.0.3',
+          'fragmentReason': {
+            'name': 'missing-wrapper',
+            'problems': ['wrong-type']
+          },
+          'revision': 'Ember@2.4.1',
           'loc': {
             'source': null,
             'start': {
@@ -9692,6 +9734,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
             }
           }
         },
+        isEmpty: false,
         arity: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -9734,7 +9777,11 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@2.0.3',
+          'fragmentReason': {
+            'name': 'missing-wrapper',
+            'problems': ['wrong-type']
+          },
+          'revision': 'Ember@2.4.1',
           'loc': {
             'source': null,
             'start': {
@@ -9747,6 +9794,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
             }
           }
         },
+        isEmpty: false,
         arity: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -9800,7 +9848,11 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@2.0.3',
+          'fragmentReason': {
+            'name': 'missing-wrapper',
+            'problems': ['wrong-type']
+          },
+          'revision': 'Ember@2.4.1',
           'loc': {
             'source': null,
             'start': {
@@ -9813,6 +9865,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
             }
           }
         },
+        isEmpty: false,
         arity: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -9865,7 +9918,11 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@2.0.3',
+          'fragmentReason': {
+            'name': 'missing-wrapper',
+            'problems': ['wrong-type']
+          },
+          'revision': 'Ember@2.4.1',
           'loc': {
             'source': null,
             'start': {
@@ -9878,6 +9935,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
             }
           }
         },
+        isEmpty: false,
         arity: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -9936,7 +9994,11 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@2.0.3',
+          'fragmentReason': {
+            'name': 'missing-wrapper',
+            'problems': ['wrong-type']
+          },
+          'revision': 'Ember@2.4.1',
           'loc': {
             'source': null,
             'start': {
@@ -9949,6 +10011,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
             }
           }
         },
+        isEmpty: false,
         arity: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -10002,7 +10065,11 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@2.0.3',
+          'fragmentReason': {
+            'name': 'missing-wrapper',
+            'problems': ['wrong-type']
+          },
+          'revision': 'Ember@2.4.1',
           'loc': {
             'source': null,
             'start': {
@@ -10015,6 +10082,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
             }
           }
         },
+        isEmpty: false,
         arity: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -10066,7 +10134,11 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@2.0.3',
+          'fragmentReason': {
+            'name': 'missing-wrapper',
+            'problems': ['wrong-type']
+          },
+          'revision': 'Ember@2.4.1',
           'loc': {
             'source': null,
             'start': {
@@ -10079,6 +10151,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
             }
           }
         },
+        isEmpty: false,
         arity: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -10127,6 +10200,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
   });
 });
 define('frontend-cp/tests/integration/components/ko-info-bar/field/multiline-text/component-test', ['exports', 'ember', 'ember-qunit'], function (exports, _ember, _emberQunit) {
+  var getOwner = _ember['default'].getOwner;
 
   var title = 'span:first';
   var valueClass = 'textarea';
@@ -10136,7 +10210,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/multiline-tex
   (0, _emberQunit.moduleForComponent)('ko-info-bar/field/multiline-text', 'Integration | Component | ko info bar field multiline text', {
     integration: true,
     beforeEach: function beforeEach() {
-      var intl = this.container.lookup('service:intl');
+      var intl = getOwner(this).lookup('service:intl');
       intl.setLocale('en-us');
       this.set('textAreaFieldValue', textAreaFieldValue);
     }
@@ -10144,11 +10218,15 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/multiline-tex
 
   (0, _emberQunit.test)('renders with title and value populated', function (assert) {
     assert.expect(2);
-
+    this.onValueChange = function () {};
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@2.0.3',
+          'fragmentReason': {
+            'name': 'missing-wrapper',
+            'problems': ['wrong-type']
+          },
+          'revision': 'Ember@2.4.1',
           'loc': {
             'source': null,
             'start': {
@@ -10156,11 +10234,12 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/multiline-tex
               'column': 0
             },
             'end': {
-              'line': 4,
+              'line': 5,
               'column': 4
             }
           }
         },
+        isEmpty: false,
         arity: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -10177,7 +10256,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/multiline-tex
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [['inline', 'ko-info-bar/field/multiline-text', [], ['title', 'Some other field', 'value', ['subexpr', '@mut', [['get', 'textAreaFieldValue', ['loc', [null, [3, 10], [3, 28]]]]], [], []]], ['loc', [null, [1, 0], [4, 4]]]]],
+        statements: [['inline', 'ko-info-bar/field/multiline-text', [], ['title', 'Some other field', 'value', ['subexpr', '@mut', [['get', 'textAreaFieldValue', ['loc', [null, [3, 10], [3, 28]]]]], [], []], 'onValueChange', ['subexpr', '@mut', [['get', 'onValueChange', ['loc', [null, [4, 18], [4, 31]]]]], [], []]], ['loc', [null, [1, 0], [5, 4]]]]],
         locals: [],
         templates: []
       };
@@ -10197,7 +10276,11 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/multiline-tex
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@2.0.3',
+          'fragmentReason': {
+            'name': 'missing-wrapper',
+            'problems': ['wrong-type']
+          },
+          'revision': 'Ember@2.4.1',
           'loc': {
             'source': null,
             'start': {
@@ -10210,6 +10293,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/multiline-tex
             }
           }
         },
+        isEmpty: false,
         arity: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -10242,11 +10326,12 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/multiline-tex
   });
 });
 define('frontend-cp/tests/integration/components/ko-info-bar/field/select/component-test', ['exports', 'ember', 'frontend-cp/tests/helpers/qunit'], function (exports, _ember, _frontendCpTestsHelpersQunit) {
+  var getOwner = _ember['default'].getOwner;
 
   (0, _frontendCpTestsHelpersQunit.moduleForComponent)('ko-info-bar/field/select', 'Integration | Component | ko-info-bar/field/select', {
     integration: true,
     beforeEach: function beforeEach() {
-      var intl = this.container.lookup('service:intl');
+      var intl = getOwner(this).lookup('service:intl');
       intl.setLocale('en-us');
       this.registry.optionsForType('sanitizer', { instantiate: false });
     }
@@ -10264,7 +10349,11 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/select/compon
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@2.0.3',
+          'fragmentReason': {
+            'name': 'missing-wrapper',
+            'problems': ['wrong-type']
+          },
+          'revision': 'Ember@2.4.1',
           'loc': {
             'source': null,
             'start': {
@@ -10277,6 +10366,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/select/compon
             }
           }
         },
+        isEmpty: false,
         arity: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -10319,7 +10409,11 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/select/compon
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@2.0.3',
+          'fragmentReason': {
+            'name': 'missing-wrapper',
+            'problems': ['wrong-type']
+          },
+          'revision': 'Ember@2.4.1',
           'loc': {
             'source': null,
             'start': {
@@ -10332,6 +10426,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/select/compon
             }
           }
         },
+        isEmpty: false,
         arity: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -10377,7 +10472,11 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/select/compon
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@2.0.3',
+          'fragmentReason': {
+            'name': 'missing-wrapper',
+            'problems': ['wrong-type']
+          },
+          'revision': 'Ember@2.4.1',
           'loc': {
             'source': null,
             'start': {
@@ -10390,6 +10489,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/select/compon
             }
           }
         },
+        isEmpty: false,
         arity: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -10423,14 +10523,15 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/select/compon
     });
   });
 });
-define('frontend-cp/tests/integration/components/ko-info-bar/field/tags/component-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {
+define('frontend-cp/tests/integration/components/ko-info-bar/field/tags/component-test', ['exports', 'ember', 'ember-qunit'], function (exports, _ember, _emberQunit) {
+  var getOwner = _ember['default'].getOwner;
 
   var title = 'span:first';
 
   (0, _emberQunit.moduleForComponent)('ko-info-bar/field/tags', 'Integration | Component | ko info bar field tags', {
     integration: true,
     beforeEach: function beforeEach() {
-      var intl = this.container.lookup('service:intl');
+      var intl = getOwner(this).lookup('service:intl');
       intl.setLocale('en-us');
     }
   });
@@ -10438,10 +10539,14 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/tags/componen
   (0, _emberQunit.test)('renders with title', function (assert) {
     assert.expect(1);
 
-    this.render(Ember.HTMLBars.template((function () {
+    this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@2.0.3',
+          'fragmentReason': {
+            'name': 'missing-wrapper',
+            'problems': ['wrong-type']
+          },
+          'revision': 'Ember@2.4.1',
           'loc': {
             'source': null,
             'start': {
@@ -10454,6 +10559,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/tags/componen
             }
           }
         },
+        isEmpty: false,
         arity: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -10479,7 +10585,8 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/tags/componen
     assert.equal(this.$(title).text(), 'Some other field');
   });
 });
-define('frontend-cp/tests/integration/components/ko-info-bar/field/text/component-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
+define('frontend-cp/tests/integration/components/ko-info-bar/field/text/component-test', ['exports', 'ember', 'frontend-cp/tests/helpers/qunit'], function (exports, _ember, _frontendCpTestsHelpersQunit) {
+  var getOwner = _ember['default'].getOwner;
 
   var title = 'span:first';
   var valueClass = 'input';
@@ -10488,7 +10595,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/text/componen
   (0, _frontendCpTestsHelpersQunit.moduleForComponent)('ko-info-bar/field/text', 'Integration | Component | ko info bar field text', {
     integration: true,
     beforeEach: function beforeEach() {
-      var intl = this.container.lookup('service:intl');
+      var intl = getOwner(this).lookup('service:intl');
       intl.setLocale('en-us');
       this.set('textFieldValue', textFieldValue);
     }
@@ -10496,11 +10603,15 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/text/componen
 
   (0, _frontendCpTestsHelpersQunit.test)('renders with title and value populated', function (assert) {
     assert.expect(2);
-
-    this.render(Ember.HTMLBars.template((function () {
+    this.onValueChange = function () {};
+    this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@2.0.3',
+          'fragmentReason': {
+            'name': 'missing-wrapper',
+            'problems': ['wrong-type']
+          },
+          'revision': 'Ember@2.4.1',
           'loc': {
             'source': null,
             'start': {
@@ -10508,11 +10619,12 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/text/componen
               'column': 0
             },
             'end': {
-              'line': 6,
+              'line': 7,
               'column': 2
             }
           }
         },
+        isEmpty: false,
         arity: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -10531,7 +10643,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/text/componen
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [['inline', 'ko-info-bar/field/text', [], ['title', 'Some other field', 'value', ['subexpr', '@mut', [['get', 'textFieldValue', ['loc', [null, [4, 12], [4, 26]]]]], [], []]], ['loc', [null, [2, 4], [5, 6]]]]],
+        statements: [['inline', 'ko-info-bar/field/text', [], ['title', 'Some other field', 'value', ['subexpr', '@mut', [['get', 'textFieldValue', ['loc', [null, [4, 12], [4, 26]]]]], [], []], 'onValueChange', ['subexpr', '@mut', [['get', 'onValueChange', ['loc', [null, [5, 20], [5, 33]]]]], [], []]], ['loc', [null, [2, 4], [6, 6]]]]],
         locals: [],
         templates: []
       };
@@ -10548,10 +10660,14 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/text/componen
       return assert.deepEqual(value, 'Khaleesi');
     });
 
-    this.render(Ember.HTMLBars.template((function () {
+    this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'revision': 'Ember@2.0.3',
+          'fragmentReason': {
+            'name': 'missing-wrapper',
+            'problems': ['wrong-type']
+          },
+          'revision': 'Ember@2.4.1',
           'loc': {
             'source': null,
             'start': {
@@ -10564,6 +10680,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/text/componen
             }
           }
         },
+        isEmpty: false,
         arity: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -12273,6 +12390,7 @@ define('frontend-cp/tests/unit/components/ko-info-bar/field/checkbox/component-t
   });
 });
 define('frontend-cp/tests/unit/components/ko-people-popover/component-test', ['exports', 'ember', 'frontend-cp/tests/helpers/qunit'], function (exports, _ember, _frontendCpTestsHelpersQunit) {
+  var getOwner = _ember['default'].getOwner;
 
   var component = undefined;
   var firstListItem = '.ko-people-popover__filtered-list-item:first';
@@ -12283,7 +12401,7 @@ define('frontend-cp/tests/unit/components/ko-people-popover/component-test', ['e
   (0, _frontendCpTestsHelpersQunit.moduleForComponent)('ko-people-popover', {
     needs: ['component:ko-checkbox', 'component:ko-avatar', 'component:ko-loader', 'component:ko-flag', 'helper:t', 'service:intl', 'ember-intl@adapter:default', 'ember-intl@formatter:format-message'],
     beforeEach: function beforeEach() {
-      var intl = this.container.lookup('service:intl');
+      var intl = getOwner(this).lookup('service:intl');
       intl.setLocale('en-us');
       intl.addTranslations('en-us', {
         frontend: {
@@ -13296,6 +13414,7 @@ define('frontend-cp/tests/unit/components/ko-toggle/component-test', ['exports',
   });
 });
 define('frontend-cp/tests/unit/services/custom-fields/options-test', ['exports', 'ember', 'ember-qunit'], function (exports, _ember, _emberQunit) {
+  var getOwner = _ember['default'].getOwner;
 
   (0, _emberQunit.moduleFor)('service:custom-fields/options', 'Unit | Service | custom-fields/options', {
     needs: ['model:user-field', 'model:field-option', 'model:field', 'model:locale', 'model:locale', 'model:locale-field', 'model:case-priority', 'model:case-status', 'model:case-type']
@@ -13305,7 +13424,7 @@ define('frontend-cp/tests/unit/services/custom-fields/options-test', ['exports',
     assert.expect(4);
 
     var service = this.subject();
-    var store = this.container.lookup('service:store');
+    var store = getOwner(this).lookup('service:store');
 
     var option1 = undefined,
         option2 = undefined,
@@ -13402,7 +13521,7 @@ define('frontend-cp/tests/unit/services/custom-fields/options-test', ['exports',
     assert.expect(2);
 
     var service = this.subject();
-    var store = this.container.lookup('service:store');
+    var store = getOwner(this).lookup('service:store');
 
     var option1 = undefined,
         option2 = undefined,
@@ -13428,7 +13547,7 @@ define('frontend-cp/tests/unit/services/custom-fields/options-test', ['exports',
     assert.expect(3);
 
     var service = this.subject();
-    var store = this.container.lookup('service:store');
+    var store = getOwner(this).lookup('service:store');
 
     service.set('optionsToBeDeleted', []);
 
@@ -13454,18 +13573,22 @@ define('frontend-cp/tests/unit/services/custom-fields/options-test', ['exports',
     assert.expect(3);
 
     var service = this.subject();
-    var store = this.container.lookup('service:store');
+    var store = getOwner(this).lookup('service:store');
 
     service.set('optionsToBeDeleted', []);
 
     var option = undefined;
     _ember['default'].run(function () {
       option = store.push({
-        id: 1,
-        sortOrder: 1,
-        value: 'option1',
-        tag: 'value1',
-        type: 'field-option'
+        data: {
+          id: 1,
+          type: 'field-option',
+          attributes: {
+            sortOrder: 1,
+            value: 'option1',
+            tag: 'value1'
+          }
+        }
       });
     });
 
@@ -13483,7 +13606,7 @@ define('frontend-cp/tests/unit/services/custom-fields/options-test', ['exports',
     assert.expect(8);
 
     var service = this.subject();
-    var store = this.container.lookup('service:store');
+    var store = getOwner(this).lookup('service:store');
 
     service.set('optionsToBeDeleted', []);
 
@@ -13492,25 +13615,37 @@ define('frontend-cp/tests/unit/services/custom-fields/options-test', ['exports',
         option3 = undefined;
     _ember['default'].run(function () {
       option1 = store.push({
-        id: 1,
-        sortOrder: 1,
-        value: 'option1',
-        tag: 'value1',
-        type: 'field-option'
+        data: {
+          id: 1,
+          type: 'field-option',
+          attributes: {
+            sortOrder: 1,
+            value: 'option1',
+            tag: 'value1'
+          }
+        }
       });
       option2 = store.push({
-        id: 2,
-        sortOrder: 2,
-        value: 'option2',
-        tag: 'value2',
-        type: 'field-option'
+        data: {
+          id: 2,
+          type: 'field-option',
+          attributes: {
+            sortOrder: 2,
+            value: 'option2',
+            tag: 'value2'
+          }
+        }
       });
       option3 = store.push({
-        id: 3,
-        sortOrder: 3,
-        value: 'option3',
-        tag: 'value3',
-        type: 'field-option'
+        data: {
+          id: 3,
+          type: 'field-option',
+          attributes: {
+            sortOrder: 3,
+            value: 'option3',
+            tag: 'value3'
+          }
+        }
       });
     });
 
@@ -13562,18 +13697,22 @@ define('frontend-cp/tests/unit/services/custom-fields/options-test', ['exports',
     assert.expect(6);
 
     var service = this.subject();
-    var store = this.container.lookup('service:store');
+    var store = getOwner(this).lookup('service:store');
 
     service.set('optionsToBeDeleted', []);
 
     var option = undefined;
     _ember['default'].run(function () {
       option = store.push({
-        id: 1,
-        sortOrder: 1,
-        value: 'option1',
-        tag: 'value1',
-        type: 'field-option'
+        data: {
+          id: 1,
+          type: 'field-option',
+          attributes: {
+            sortOrder: 1,
+            value: 'option1',
+            tag: 'value1'
+          }
+        }
       });
     });
 
@@ -13621,23 +13760,31 @@ define('frontend-cp/tests/unit/services/custom-fields/options-test', ['exports',
     assert.expect(2);
 
     var service = this.subject();
-    var store = this.container.lookup('service:store');
+    var store = getOwner(this).lookup('service:store');
 
     var locale = undefined;
     var option = undefined;
     _ember['default'].run(function () {
       locale = store.push({
-        id: 1,
-        locale: 'en-us',
-        translation: 'translated text',
-        type: 'locale-field'
+        data: {
+          id: 1,
+          type: 'locale-field',
+          attributes: {
+            locale: 'en-us',
+            translation: 'translated text'
+          }
+        }
       });
       option = store.push({
-        id: 1,
-        sortOrder: 1,
-        value: 'option1',
-        tag: 'value1',
-        type: 'field-option'
+        data: {
+          id: 1,
+          type: 'field-option',
+          attributes: {
+            sortOrder: 1,
+            value: 'option1',
+            tag: 'value1'
+          }
+        }
       });
       option.get('values').pushObject(locale);
     });
@@ -13659,11 +13806,12 @@ define('frontend-cp/tests/unit/services/custom-fields/options-test', ['exports',
   });
 });
 define('frontend-cp/tests/unit/services/custom-fields-test', ['exports', 'ember', 'ember-qunit'], function (exports, _ember, _emberQunit) {
+  var getOwner = _ember['default'].getOwner;
 
   (0, _emberQunit.moduleFor)('service:custom-fields', 'Unit | Service | custom-fields', {
     needs: ['model:user-field', 'model:field-option', 'model:field', 'model:locale', 'model:locale-field', 'model:locale-string', 'service:custom-fields/types', 'service:custom-fields/options', 'service:intl', 'service:notification', 'ember-intl@adapter:default', 'adapter:application', 'service:session', 'service:error-handler', 'service:error-handler/notification-strategy'],
     beforeEach: function beforeEach() {
-      var intl = this.container.lookup('service:intl');
+      var intl = getOwner(this).lookup('service:intl');
 
       intl.setLocale('en-us');
       intl.addTranslations('en-us', {
@@ -13690,7 +13838,7 @@ define('frontend-cp/tests/unit/services/custom-fields-test', ['exports', 'ember'
     assert.expect(1);
 
     var service = this.subject();
-    var store = this.container.lookup('service:store');
+    var store = getOwner(this).lookup('service:store');
 
     var model = undefined;
     _ember['default'].run(function () {
@@ -13706,17 +13854,19 @@ define('frontend-cp/tests/unit/services/custom-fields-test', ['exports', 'ember'
   (0, _emberQunit.test)('it renders correct title breadcrumbs for existed record', function (assert) {
     assert.expect(1);
 
-    var store = this.container.lookup('service:store');
+    var store = getOwner(this).lookup('service:store');
 
     var model = undefined;
     _ember['default'].run(function () {
       model = store.push({
-        id: 1,
-        type: 'user-field',
-        attributes: {
-          title: 'Test Select',
-          fieldType: 'SELECT',
-          options: []
+        data: {
+          id: 1,
+          type: 'user-field',
+          attributes: {
+            title: 'Test Select',
+            fieldType: 'SELECT',
+            options: []
+          }
         }
       });
     });
@@ -13729,7 +13879,7 @@ define('frontend-cp/tests/unit/services/custom-fields-test', ['exports', 'ember'
     assert.expect(4);
 
     var service = this.subject();
-    var store = this.container.lookup('service:store');
+    var store = getOwner(this).lookup('service:store');
 
     var userField = undefined;
     _ember['default'].run(function () {
@@ -13768,7 +13918,7 @@ define('frontend-cp/tests/unit/services/custom-fields-test', ['exports', 'ember'
     assert.expect(1);
 
     var service = this.subject();
-    var store = this.container.lookup('service:store');
+    var store = getOwner(this).lookup('service:store');
 
     service.reopen({
       save: function save(model) {
@@ -13791,7 +13941,7 @@ define('frontend-cp/tests/unit/services/custom-fields-test', ['exports', 'ember'
     assert.expect(2);
 
     var service = this.subject();
-    var store = this.container.lookup('service:store');
+    var store = getOwner(this).lookup('service:store');
 
     var userField = undefined;
     var fieldOption = undefined;
@@ -13829,7 +13979,7 @@ define('frontend-cp/tests/unit/services/custom-fields-test', ['exports', 'ember'
     assert.expect(3);
 
     var service = this.subject();
-    var store = this.container.lookup('service:store');
+    var store = getOwner(this).lookup('service:store');
 
     var model = undefined;
 
@@ -13862,11 +14012,12 @@ define('frontend-cp/tests/unit/services/custom-fields-test', ['exports', 'ember'
 });
 /* eslint-disable camelcase */
 define('frontend-cp/tests/unit/services/error-handler-test', ['exports', 'ember', 'ember-qunit', 'frontend-cp/services/session'], function (exports, _ember, _emberQunit, _frontendCpServicesSession) {
+  var getOwner = _ember['default'].getOwner;
 
   (0, _emberQunit.moduleFor)('service:error-handler', 'Unit | Service | error-handler', {
     needs: ['service:error-handler/session-loading-failed-strategy', 'service:error-handler/notification-strategy', 'service:error-handler/permissions-denied-strategy', 'service:error-handler/resource-not-found-strategy', 'service:error-handler/credential-expired-strategy', 'service:error-handler/generic-strategy', 'service:intl', 'service:notification', 'service:plan', 'service:localStore', 'service:session', 'service:tabStore', 'service:locale', 'ember-intl@adapter:default'],
     beforeEach: function beforeEach() {
-      var intl = this.container.lookup('service:intl');
+      var intl = getOwner(this).lookup('service:intl');
       intl.setLocale('en-us');
       intl.addTranslations('en-us', {
         frontend: {
@@ -14123,14 +14274,15 @@ define('frontend-cp/tests/unit/services/error-handler-test', ['exports', 'ember'
   });
 });
 /* eslint-disable camelcase, no-empty */
-define('frontend-cp/tests/unit/services/plan-test', ['exports', 'ember-qunit', 'frontend-cp/tests/helpers/setup-mirage-for-integration'], function (exports, _emberQunit, _frontendCpTestsHelpersSetupMirageForIntegration) {
+define('frontend-cp/tests/unit/services/plan-test', ['exports', 'ember', 'ember-qunit', 'frontend-cp/tests/helpers/setup-mirage-for-integration'], function (exports, _ember, _emberQunit, _frontendCpTestsHelpersSetupMirageForIntegration) {
+  var getOwner = _ember['default'].getOwner;
 
   (0, _emberQunit.moduleFor)('service:plan', 'Unit | Service | plan', {
     integration: true,
 
     setup: function setup() {
       /* eslint-disable no-undef, camelcase */
-      (0, _frontendCpTestsHelpersSetupMirageForIntegration['default'])(this.container);
+      (0, _frontendCpTestsHelpersSetupMirageForIntegration['default'])(getOwner(this));
       var limit = server.create('limit', {
         name: 'collaborators',
         limit: 10
@@ -14153,7 +14305,7 @@ define('frontend-cp/tests/unit/services/plan-test', ['exports', 'ember-qunit', '
   (0, _emberQunit.test)('it should return the limit for the name requested', function (assert) {
     assert.expect(1);
 
-    var service = this.container.lookup('service:plan');
+    var service = getOwner(this).lookup('service:plan');
     service.fetchPlan().then(function () {
       assert.equal(service.limitFor('collaborators'), 10);
     });
@@ -14162,7 +14314,7 @@ define('frontend-cp/tests/unit/services/plan-test', ['exports', 'ember-qunit', '
   (0, _emberQunit.test)('it should return true if the name of the feature is present', function (assert) {
     assert.expect(1);
 
-    var service = this.container.lookup('service:plan');
+    var service = getOwner(this).lookup('service:plan');
     service.fetchPlan().then(function () {
       assert.equal(service.has('collaborators'), true);
     });
@@ -14171,7 +14323,7 @@ define('frontend-cp/tests/unit/services/plan-test', ['exports', 'ember-qunit', '
   (0, _emberQunit.test)('it will fetch from the server and update', function (assert) {
     assert.expect(5);
 
-    var service = this.container.lookup('service:plan');
+    var service = getOwner(this).lookup('service:plan');
     service.fetchPlan().then(function () {
       assert.equal(service.limitFor('collaborators'), 10);
       assert.equal(service.has('collaborators'), true);

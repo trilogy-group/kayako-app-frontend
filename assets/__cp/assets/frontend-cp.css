@@ -6,9 +6,6 @@
     Color settings and variables
    ========================================================================= */
 /*
-    Table variables
-   ========================================================================= */
-/*
 	Brand configuration
    ========================================================================== */
 .text-area:focus, .text-area--clean:focus, .input-text:focus, .ko-case_macro-selector .ember-power-select-search input:focus, .input-text--alone:focus, .input-text--full:focus, .login__input:focus, .ko-agent-dropdown__nav-item:focus, .ko-checkbox__checkbox:focus, .ko-dropdown_container_button:focus, .ko-dropdown_select_button:focus, .ko-radio__container:focus, .ko-tags__item:focus, .ko-toggle__container:focus {
@@ -3130,7 +3127,8 @@ a {
   -webkit-box-flex: 1;
   -webkit-flex: 1;
       -ms-flex: 1;
-          flex: 1; }
+          flex: 1;
+  overflow: scroll; }
 
 .ko-session-agent-cases-index__pagination {
   height: 220px;
@@ -3972,40 +3970,6 @@ a {
 .ko-cases-list__table-th {
   font-weight: 600;
   color: #5F6C73; }
-
-.ko-cases-list__header--id {
-  min-width: 60px; }
-
-.ko-cases-list__header--avatar {
-  width: 60px; }
-  .ko-cases-list__header--avatar:first-child {
-    width: 78px; }
-
-.ko-cases-list__header--caseid {
-  width: 70px; }
-
-.ko-cases-list__header--casestatusid,
-.ko-cases-list__header--casepriorityid,
-.ko-cases-list__header--brandid {
-  width: 100px;
-  overflow: hidden; }
-
-.ko-cases-list__header--casetypeid,
-.ko-cases-list__header--assigneeagentid,
-.ko-cases-list__header--assigneeteamid,
-.ko-cases-list__header--requesterid,
-.ko-cases-list__header--channeltype,
-.ko-cases-list__header--createdat,
-.ko-cases-list__header--updatedat,
-.ko-cases-list__header--lastcompletedat,
-.ko-cases-list__header--last-update,
-.ko-cases-list__header--last-update-by-a-user,
-.ko-cases-list__header--last-update-by-requester,
-.ko-cases-list__header--last-update-by-assignee,
-.ko-cases-list__header--oldest-update-by-requester,
-.ko-cases-list__header--sla-name {
-  width: 150px;
-  overflow: hidden; }
 
 .ko-cases-list__row.ko-cases-list__row--trashed {
   color: #838D94; }
@@ -6323,9 +6287,8 @@ label {
 .ko-table__header__column--selectable {
   width: 60px; }
 
-.ko-table__header--defualt-width {
-  width: 150px;
-  overflow: hidden; }
+.ko-table--unselectable .ko-table_cell:first-of-type {
+  padding-left: 0; }
 
 .ko-table_cell {
   padding: 5px 17px 5px 0; }
