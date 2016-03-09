@@ -57341,7 +57341,9 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember', 
       },
 
       addTeam: function addTeam(teamName) {
-        var team = this.get('teamRecords').findBy('title', teamName);
+        var team = this.get('teamRecords').find(function (team) {
+          return team.get('title').toLowerCase() === teamName.toLowerCase();
+        });
         if (team) {
           this.get('editedTeams').pushObject({
             id: team.get('id'),
