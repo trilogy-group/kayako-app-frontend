@@ -9326,9 +9326,9 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
     emailErrors = getFieldErrors($formElement, 'email');
     assert.deepEqual(nameErrors, []);
     assert.deepEqual(emailErrors, []);
-
     _ember['default'].run(function () {
       fillIn($emailInputElement, 'tim.kendrick@kayako');
+      $emailInputElement[0].dispatchEvent(new Event('input'));
     });
     emailErrors = getFieldErrors($formElement, 'email');
     assert.deepEqual(emailErrors, ['email_invalid']);
@@ -9336,6 +9336,8 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
     _ember['default'].run(function () {
       fillIn($nameInputElement, 'Tim Kendrick');
       fillIn($emailInputElement, 'tim.kendrick@kayako.com');
+      $nameInputElement[0].dispatchEvent(new Event('input'));
+      $emailInputElement[0].dispatchEvent(new Event('input'));
     });
     nameErrors = getFieldErrors($formElement, 'full_name');
     emailErrors = getFieldErrors($formElement, 'email');
@@ -9344,6 +9346,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
 
     _ember['default'].run(function () {
       fillIn($nameInputElement, '');
+      $nameInputElement[0].dispatchEvent(new Event('input'));
     });
     nameErrors = getFieldErrors($formElement, 'full_name');
     emailErrors = getFieldErrors($formElement, 'email');
@@ -9352,6 +9355,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
 
     _ember['default'].run(function () {
       fillIn($nameInputElement, 'Tim Kendrick');
+      $nameInputElement[0].dispatchEvent(new Event('input'));
     });
     nameErrors = getFieldErrors($formElement, 'full_name');
     emailErrors = getFieldErrors($formElement, 'email');
@@ -9360,6 +9364,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
 
     _ember['default'].run(function () {
       fillIn($emailInputElement, '');
+      $emailInputElement[0].dispatchEvent(new Event('input'));
     });
     nameErrors = getFieldErrors($formElement, 'full_name');
     emailErrors = getFieldErrors($formElement, 'email');
@@ -9368,6 +9373,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
 
     _ember['default'].run(function () {
       fillIn($emailInputElement, 'tim.kendrick@kayako.com');
+      $emailInputElement[0].dispatchEvent(new Event('input'));
     });
     nameErrors = getFieldErrors($formElement, 'full_name');
     emailErrors = getFieldErrors($formElement, 'email');
@@ -9444,9 +9450,9 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
 
     fillIn($nameInputElement, 'Tim Kendrick');
     fillIn($emailInputElement, 'tim.kendrick@kayako.com');
-
+    $nameInputElement[0].dispatchEvent(new Event('input'));
+    $emailInputElement[0].dispatchEvent(new Event('input'));
     _ember['default'].run(function () {
-
       $formElement.submit();
     });
 

@@ -1104,7 +1104,7 @@ define("frontend-cp/components/ko-admin/businesshours/edit/template", ["exports"
                   "column": 4
                 },
                 "end": {
-                  "line": 20,
+                  "line": 19,
                   "column": 4
                 }
               },
@@ -1122,7 +1122,10 @@ define("frontend-cp/components/ko-admin/businesshours/edit/template", ["exports"
               dom.appendChild(el0, el1);
               var el1 = dom.createTextNode("\n      ");
               dom.appendChild(el0, el1);
-              var el1 = dom.createComment("");
+              var el1 = dom.createElement("input");
+              dom.setAttribute(el1, "type", "text");
+              dom.setAttribute(el1, "name", "title");
+              dom.setAttribute(el1, "class", "input input-text");
               dom.appendChild(el0, el1);
               var el1 = dom.createTextNode("\n      ");
               dom.appendChild(el0, el1);
@@ -1133,13 +1136,16 @@ define("frontend-cp/components/ko-admin/businesshours/edit/template", ["exports"
               return el0;
             },
             buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-              var morphs = new Array(3);
+              var element1 = dom.childAt(fragment, [3]);
+              var morphs = new Array(5);
               morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
-              morphs[1] = dom.createMorphAt(fragment, 3, 3, contextualElement);
-              morphs[2] = dom.createMorphAt(fragment, 5, 5, contextualElement);
+              morphs[1] = dom.createAttrMorph(element1, 'value');
+              morphs[2] = dom.createAttrMorph(element1, 'oninput');
+              morphs[3] = dom.createAttrMorph(element1, 'disabled');
+              morphs[4] = dom.createMorphAt(fragment, 5, 5, contextualElement);
               return morphs;
             },
-            statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [13, 6], [13, 93]]]], ["inline", "input", [], ["class", "input input-text", "name", "title", "type", "text", "value", ["subexpr", "@mut", [["get", "model.title", ["loc", [null, [17, 14], [17, 25]]]]], [], []], "disabled", ["subexpr", "@mut", [["get", "isSubmitting", ["loc", [null, [18, 17], [18, 29]]]]], [], []]], ["loc", [null, [14, 6], [18, 31]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "model.errors.title", ["loc", [null, [19, 36], [19, 54]]]]], [], []]], ["loc", [null, [19, 6], [19, 56]]]]],
+            statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [13, 6], [13, 93]]]], ["attribute", "value", ["get", "model.title", ["loc", [null, [15, 16], [15, 27]]]]], ["attribute", "oninput", ["subexpr", "action", [["subexpr", "mut", [["get", "model.title", ["loc", [null, [16, 30], [16, 41]]]]], [], ["loc", [null, [16, 25], [16, 42]]]]], ["value", "target.value"], ["loc", [null, [16, 16], [16, 65]]]]], ["attribute", "disabled", ["get", "isSubmitting", ["loc", [null, [17, 19], [17, 31]]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "model.errors.title", ["loc", [null, [18, 36], [18, 54]]]]], [], []]], ["loc", [null, [18, 6], [18, 56]]]]],
             locals: [],
             templates: [child0]
           };
@@ -1155,7 +1161,7 @@ define("frontend-cp/components/ko-admin/businesshours/edit/template", ["exports"
                 "column": 2
               },
               "end": {
-                "line": 21,
+                "line": 20,
                 "column": 2
               }
             },
@@ -1178,7 +1184,7 @@ define("frontend-cp/components/ko-admin/businesshours/edit/template", ["exports"
             dom.insertBoundary(fragment, null);
             return morphs;
           },
-          statements: [["block", "ko-form/field", [], [], 0, null, ["loc", [null, [12, 4], [20, 22]]]]],
+          statements: [["block", "ko-form/field", [], [], 0, null, ["loc", [null, [12, 4], [19, 22]]]]],
           locals: [],
           templates: [child0]
         };
@@ -1193,11 +1199,11 @@ define("frontend-cp/components/ko-admin/businesshours/edit/template", ["exports"
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 32,
+                    "line": 31,
                     "column": 6
                   },
                   "end": {
-                    "line": 36,
+                    "line": 35,
                     "column": 6
                   }
                 },
@@ -1229,7 +1235,7 @@ define("frontend-cp/components/ko-admin/businesshours/edit/template", ["exports"
                 morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
                 return morphs;
               },
-              statements: [["content", "title", ["loc", [null, [34, 10], [34, 19]]]]],
+              statements: [["content", "title", ["loc", [null, [33, 10], [33, 19]]]]],
               locals: ["title"],
               templates: []
             };
@@ -1241,11 +1247,11 @@ define("frontend-cp/components/ko-admin/businesshours/edit/template", ["exports"
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 27,
+                  "line": 26,
                   "column": 4
                 },
                 "end": {
-                  "line": 37,
+                  "line": 36,
                   "column": 4
                 }
               },
@@ -1268,7 +1274,7 @@ define("frontend-cp/components/ko-admin/businesshours/edit/template", ["exports"
               dom.insertBoundary(fragment, null);
               return morphs;
             },
-            statements: [["block", "each", [["get", "titles", ["loc", [null, [32, 14], [32, 20]]]]], [], 0, null, ["loc", [null, [32, 6], [36, 15]]]]],
+            statements: [["block", "each", [["get", "titles", ["loc", [null, [31, 14], [31, 20]]]]], [], 0, null, ["loc", [null, [31, 6], [35, 15]]]]],
             locals: [],
             templates: [child0]
           };
@@ -1280,11 +1286,11 @@ define("frontend-cp/components/ko-admin/businesshours/edit/template", ["exports"
             "loc": {
               "source": null,
               "start": {
-                "line": 23,
+                "line": 22,
                 "column": 2
               },
               "end": {
-                "line": 38,
+                "line": 37,
                 "column": 2
               }
             },
@@ -1322,7 +1328,7 @@ define("frontend-cp/components/ko-admin/businesshours/edit/template", ["exports"
             dom.insertBoundary(fragment, null);
             return morphs;
           },
-          statements: [["inline", "t", ["admin.businesshours.title"], [], ["loc", [null, [24, 8], [24, 41]]]], ["inline", "t", ["admin.businesshours.info"], [], ["loc", [null, [25, 7], [25, 39]]]], ["block", "ko-grid-picker", [], ["initialGrid", ["subexpr", "@mut", [["get", "businessHourGrid", ["loc", [null, [28, 18], [28, 34]]]]], [], []], "legend", ["subexpr", "@mut", [["get", "hoursLegend", ["loc", [null, [29, 13], [29, 24]]]]], [], []], "onRangeSelect", ["subexpr", "action", ["businessHourRangeSelect"], [], ["loc", [null, [30, 20], [30, 54]]]]], 0, null, ["loc", [null, [27, 4], [37, 23]]]]],
+          statements: [["inline", "t", ["admin.businesshours.title"], [], ["loc", [null, [23, 8], [23, 41]]]], ["inline", "t", ["admin.businesshours.info"], [], ["loc", [null, [24, 7], [24, 39]]]], ["block", "ko-grid-picker", [], ["initialGrid", ["subexpr", "@mut", [["get", "businessHourGrid", ["loc", [null, [27, 18], [27, 34]]]]], [], []], "legend", ["subexpr", "@mut", [["get", "hoursLegend", ["loc", [null, [28, 13], [28, 24]]]]], [], []], "onRangeSelect", ["subexpr", "action", ["businessHourRangeSelect"], [], ["loc", [null, [29, 20], [29, 54]]]]], 0, null, ["loc", [null, [26, 4], [36, 23]]]]],
           locals: [],
           templates: [child0]
         };
@@ -1337,11 +1343,11 @@ define("frontend-cp/components/ko-admin/businesshours/edit/template", ["exports"
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 45,
+                    "line": 44,
                     "column": 6
                   },
                   "end": {
-                    "line": 49,
+                    "line": 48,
                     "column": 6
                   }
                 },
@@ -1366,7 +1372,7 @@ define("frontend-cp/components/ko-admin/businesshours/edit/template", ["exports"
                 morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
                 return morphs;
               },
-              statements: [["inline", "ko-admin/holidays/row", [], ["model", ["subexpr", "@mut", [["get", "holiday", ["loc", [null, [47, 16], [47, 23]]]]], [], []], "onHolidayDelete", ["subexpr", "action", ["deleteHoliday"], [], ["loc", [null, [48, 26], [48, 50]]]]], ["loc", [null, [46, 8], [48, 52]]]]],
+              statements: [["inline", "ko-admin/holidays/row", [], ["model", ["subexpr", "@mut", [["get", "holiday", ["loc", [null, [46, 16], [46, 23]]]]], [], []], "onHolidayDelete", ["subexpr", "action", ["deleteHoliday"], [], ["loc", [null, [47, 26], [47, 50]]]]], ["loc", [null, [45, 8], [47, 52]]]]],
               locals: ["holiday"],
               templates: []
             };
@@ -1381,11 +1387,11 @@ define("frontend-cp/components/ko-admin/businesshours/edit/template", ["exports"
                     "loc": {
                       "source": null,
                       "start": {
-                        "line": 52,
+                        "line": 51,
                         "column": 8
                       },
                       "end": {
-                        "line": 57,
+                        "line": 56,
                         "column": 8
                       }
                     },
@@ -1410,7 +1416,7 @@ define("frontend-cp/components/ko-admin/businesshours/edit/template", ["exports"
                     morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
                     return morphs;
                   },
-                  statements: [["inline", "ko-admin/holidays/edit", [], ["model", ["subexpr", "@mut", [["get", "newHoliday", ["loc", [null, [54, 18], [54, 28]]]]], [], []], "onSave", ["subexpr", "action", ["addHoliday"], [], ["loc", [null, [55, 19], [55, 40]]]], "onCancel", ["subexpr", "action", ["cancelAddingHoliday"], [], ["loc", [null, [56, 21], [56, 51]]]]], ["loc", [null, [53, 10], [56, 53]]]]],
+                  statements: [["inline", "ko-admin/holidays/edit", [], ["model", ["subexpr", "@mut", [["get", "newHoliday", ["loc", [null, [53, 18], [53, 28]]]]], [], []], "onSave", ["subexpr", "action", ["addHoliday"], [], ["loc", [null, [54, 19], [54, 40]]]], "onCancel", ["subexpr", "action", ["cancelAddingHoliday"], [], ["loc", [null, [55, 21], [55, 51]]]]], ["loc", [null, [52, 10], [55, 53]]]]],
                   locals: [],
                   templates: []
                 };
@@ -1422,11 +1428,11 @@ define("frontend-cp/components/ko-admin/businesshours/edit/template", ["exports"
                   "loc": {
                     "source": null,
                     "start": {
-                      "line": 51,
+                      "line": 50,
                       "column": 6
                     },
                     "end": {
-                      "line": 58,
+                      "line": 57,
                       "column": 6
                     }
                   },
@@ -1449,7 +1455,7 @@ define("frontend-cp/components/ko-admin/businesshours/edit/template", ["exports"
                   dom.insertBoundary(fragment, null);
                   return morphs;
                 },
-                statements: [["block", "ko-simple-list/cell", [], [], 0, null, ["loc", [null, [52, 8], [57, 32]]]]],
+                statements: [["block", "ko-simple-list/cell", [], [], 0, null, ["loc", [null, [51, 8], [56, 32]]]]],
                 locals: [],
                 templates: [child0]
               };
@@ -1461,11 +1467,11 @@ define("frontend-cp/components/ko-admin/businesshours/edit/template", ["exports"
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 50,
+                    "line": 49,
                     "column": 6
                   },
                   "end": {
-                    "line": 59,
+                    "line": 58,
                     "column": 6
                   }
                 },
@@ -1488,7 +1494,7 @@ define("frontend-cp/components/ko-admin/businesshours/edit/template", ["exports"
                 dom.insertBoundary(fragment, null);
                 return morphs;
               },
-              statements: [["block", "ko-simple-list/row", [], [], 0, null, ["loc", [null, [51, 6], [58, 29]]]]],
+              statements: [["block", "ko-simple-list/row", [], [], 0, null, ["loc", [null, [50, 6], [57, 29]]]]],
               locals: [],
               templates: [child0]
             };
@@ -1500,11 +1506,11 @@ define("frontend-cp/components/ko-admin/businesshours/edit/template", ["exports"
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 44,
+                  "line": 43,
                   "column": 4
                 },
                 "end": {
-                  "line": 60,
+                  "line": 59,
                   "column": 4
                 }
               },
@@ -1530,7 +1536,7 @@ define("frontend-cp/components/ko-admin/businesshours/edit/template", ["exports"
               dom.insertBoundary(fragment, null);
               return morphs;
             },
-            statements: [["block", "each", [["get", "model.holidays", ["loc", [null, [45, 14], [45, 28]]]]], [], 0, null, ["loc", [null, [45, 6], [49, 15]]]], ["block", "if", [["get", "newHoliday", ["loc", [null, [50, 12], [50, 22]]]]], [], 1, null, ["loc", [null, [50, 6], [59, 13]]]]],
+            statements: [["block", "each", [["get", "model.holidays", ["loc", [null, [44, 14], [44, 28]]]]], [], 0, null, ["loc", [null, [44, 6], [48, 15]]]], ["block", "if", [["get", "newHoliday", ["loc", [null, [49, 12], [49, 22]]]]], [], 1, null, ["loc", [null, [49, 6], [58, 13]]]]],
             locals: [],
             templates: [child0, child1]
           };
@@ -1543,11 +1549,11 @@ define("frontend-cp/components/ko-admin/businesshours/edit/template", ["exports"
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 62,
+                  "line": 61,
                   "column": 4
                 },
                 "end": {
-                  "line": 70,
+                  "line": 69,
                   "column": 4
                 }
               },
@@ -1589,7 +1595,7 @@ define("frontend-cp/components/ko-admin/businesshours/edit/template", ["exports"
               morphs[1] = dom.createMorphAt(element0, 1, 1);
               return morphs;
             },
-            statements: [["attribute", "onclick", ["subexpr", "action", ["showHolidayForm"], [], ["loc", [null, [65, 17], [65, 45]]]]], ["inline", "t", ["admin.businesshours.holidays.addaholiday"], [], ["loc", [null, [67, 10], [67, 58]]]]],
+            statements: [["attribute", "onclick", ["subexpr", "action", ["showHolidayForm"], [], ["loc", [null, [64, 17], [64, 45]]]]], ["inline", "t", ["admin.businesshours.holidays.addaholiday"], [], ["loc", [null, [66, 10], [66, 58]]]]],
             locals: [],
             templates: []
           };
@@ -1601,11 +1607,11 @@ define("frontend-cp/components/ko-admin/businesshours/edit/template", ["exports"
             "loc": {
               "source": null,
               "start": {
-                "line": 40,
+                "line": 39,
                 "column": 2
               },
               "end": {
-                "line": 72,
+                "line": 71,
                 "column": 2
               }
             },
@@ -1649,7 +1655,7 @@ define("frontend-cp/components/ko-admin/businesshours/edit/template", ["exports"
             morphs[3] = dom.createMorphAt(fragment, 7, 7, contextualElement);
             return morphs;
           },
-          statements: [["inline", "t", ["admin.businesshours.holidays.title"], [], ["loc", [null, [41, 8], [41, 50]]]], ["inline", "t", ["admin.businesshours.holidays.info"], [], ["loc", [null, [42, 7], [42, 48]]]], ["block", "ko-simple-list", [], [], 0, null, ["loc", [null, [44, 4], [60, 23]]]], ["block", "if", [["subexpr", "not", [["get", "newHoliday", ["loc", [null, [62, 15], [62, 25]]]]], [], ["loc", [null, [62, 10], [62, 26]]]]], [], 1, null, ["loc", [null, [62, 4], [70, 11]]]]],
+          statements: [["inline", "t", ["admin.businesshours.holidays.title"], [], ["loc", [null, [40, 8], [40, 50]]]], ["inline", "t", ["admin.businesshours.holidays.info"], [], ["loc", [null, [41, 7], [41, 48]]]], ["block", "ko-simple-list", [], [], 0, null, ["loc", [null, [43, 4], [59, 23]]]], ["block", "if", [["subexpr", "not", [["get", "newHoliday", ["loc", [null, [61, 15], [61, 25]]]]], [], ["loc", [null, [61, 10], [61, 26]]]]], [], 1, null, ["loc", [null, [61, 4], [69, 11]]]]],
           locals: [],
           templates: [child0, child1]
         };
@@ -1668,7 +1674,7 @@ define("frontend-cp/components/ko-admin/businesshours/edit/template", ["exports"
               "column": 0
             },
             "end": {
-              "line": 74,
+              "line": 73,
               "column": 0
             }
           },
@@ -1713,7 +1719,7 @@ define("frontend-cp/components/ko-admin/businesshours/edit/template", ["exports"
           morphs[4] = dom.createMorphAt(fragment, 9, 9, contextualElement);
           return morphs;
         },
-        statements: [["inline", "ko-admin/page-header", [], ["title", ["subexpr", "@mut", [["get", "title", ["loc", [null, [7, 10], [7, 15]]]]], [], []], "onCancel", ["subexpr", "@mut", [["get", "onCancel", ["loc", [null, [8, 13], [8, 21]]]]], [], []], "buttonText", ["subexpr", "t", ["generic.save"], [], ["loc", [null, [9, 15], [9, 33]]]]], ["loc", [null, [6, 2], [9, 35]]]], ["block", "ko-admin/forms/group", [], ["legend", ["subexpr", "t", ["admin.businesshours.heading.details"], [], ["loc", [null, [11, 33], [11, 74]]]]], 0, null, ["loc", [null, [11, 2], [21, 27]]]], ["block", "ko-admin/forms/group", [], [], 1, null, ["loc", [null, [23, 2], [38, 27]]]], ["block", "ko-admin/forms/group", [], [], 2, null, ["loc", [null, [40, 2], [72, 27]]]], ["inline", "ko-admin/page-footer", [], ["buttonText", ["subexpr", "t", ["generic.save"], [], ["loc", [null, [73, 36], [73, 54]]]], "onCancel", ["subexpr", "@mut", [["get", "onCancel", ["loc", [null, [73, 64], [73, 72]]]]], [], []]], ["loc", [null, [73, 2], [73, 74]]]]],
+        statements: [["inline", "ko-admin/page-header", [], ["title", ["subexpr", "@mut", [["get", "title", ["loc", [null, [7, 10], [7, 15]]]]], [], []], "onCancel", ["subexpr", "@mut", [["get", "onCancel", ["loc", [null, [8, 13], [8, 21]]]]], [], []], "buttonText", ["subexpr", "t", ["generic.save"], [], ["loc", [null, [9, 15], [9, 33]]]]], ["loc", [null, [6, 2], [9, 35]]]], ["block", "ko-admin/forms/group", [], ["legend", ["subexpr", "t", ["admin.businesshours.heading.details"], [], ["loc", [null, [11, 33], [11, 74]]]]], 0, null, ["loc", [null, [11, 2], [20, 27]]]], ["block", "ko-admin/forms/group", [], [], 1, null, ["loc", [null, [22, 2], [37, 27]]]], ["block", "ko-admin/forms/group", [], [], 2, null, ["loc", [null, [39, 2], [71, 27]]]], ["inline", "ko-admin/page-footer", [], ["buttonText", ["subexpr", "t", ["generic.save"], [], ["loc", [null, [72, 36], [72, 54]]]], "onCancel", ["subexpr", "@mut", [["get", "onCancel", ["loc", [null, [72, 64], [72, 72]]]]], [], []]], ["loc", [null, [72, 2], [72, 74]]]]],
         locals: ["_", "isSubmitting"],
         templates: [child0, child1, child2]
       };
@@ -1732,7 +1738,7 @@ define("frontend-cp/components/ko-admin/businesshours/edit/template", ["exports"
             "column": 0
           },
           "end": {
-            "line": 75,
+            "line": 74,
             "column": 0
           }
         },
@@ -1755,7 +1761,7 @@ define("frontend-cp/components/ko-admin/businesshours/edit/template", ["exports"
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["block", "ko-form", [], ["onSubmit", ["subexpr", "action", ["save"], [], ["loc", [null, [2, 11], [2, 26]]]], "onSuccess", ["subexpr", "@mut", [["get", "onSuccess", ["loc", [null, [3, 12], [3, 21]]]]], [], []]], 0, null, ["loc", [null, [1, 0], [74, 12]]]]],
+      statements: [["block", "ko-form", [], ["onSubmit", ["subexpr", "action", ["save"], [], ["loc", [null, [2, 11], [2, 26]]]], "onSuccess", ["subexpr", "@mut", [["get", "onSuccess", ["loc", [null, [3, 12], [3, 21]]]]], [], []]], 0, null, ["loc", [null, [1, 0], [73, 12]]]]],
       locals: [],
       templates: [child0]
     };
@@ -1949,7 +1955,9 @@ define("frontend-cp/components/ko-admin/case-fields/edit/options/template", ["ex
           dom.setAttribute(el1, "class", "ko-reorderable-crud-list-item__values");
           var el2 = dom.createTextNode("\n    ");
           dom.appendChild(el1, el2);
-          var el2 = dom.createComment("");
+          var el2 = dom.createElement("input");
+          dom.setAttribute(el2, "type", "text");
+          dom.setAttribute(el2, "class", "input-text");
           dom.appendChild(el1, el2);
           var el2 = dom.createTextNode("\n    ");
           dom.appendChild(el1, el2);
@@ -1968,7 +1976,9 @@ define("frontend-cp/components/ko-admin/case-fields/edit/options/template", ["ex
           dom.setAttribute(el1, "class", "ko-reorderable-crud-list-item__values");
           var el2 = dom.createTextNode("\n    ");
           dom.appendChild(el1, el2);
-          var el2 = dom.createComment("");
+          var el2 = dom.createElement("input");
+          dom.setAttribute(el2, "type", "text");
+          dom.setAttribute(el2, "class", "input-text");
           dom.appendChild(el1, el2);
           var el2 = dom.createTextNode("\n    ");
           dom.appendChild(el1, el2);
@@ -1983,16 +1993,22 @@ define("frontend-cp/components/ko-admin/case-fields/edit/options/template", ["ex
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
           var element0 = dom.childAt(fragment, [1]);
-          var element1 = dom.childAt(fragment, [5]);
-          var morphs = new Array(5);
-          morphs[0] = dom.createMorphAt(element0, 1, 1);
-          morphs[1] = dom.createMorphAt(element0, 3, 3);
-          morphs[2] = dom.createMorphAt(fragment, 3, 3, contextualElement);
-          morphs[3] = dom.createMorphAt(element1, 1, 1);
-          morphs[4] = dom.createMorphAt(element1, 3, 3);
+          var element1 = dom.childAt(element0, [1]);
+          var element2 = dom.childAt(fragment, [5]);
+          var element3 = dom.childAt(element2, [1]);
+          var morphs = new Array(9);
+          morphs[0] = dom.createAttrMorph(element1, 'value');
+          morphs[1] = dom.createAttrMorph(element1, 'oninput');
+          morphs[2] = dom.createAttrMorph(element1, 'placeholder');
+          morphs[3] = dom.createMorphAt(element0, 3, 3);
+          morphs[4] = dom.createMorphAt(fragment, 3, 3, contextualElement);
+          morphs[5] = dom.createAttrMorph(element3, 'value');
+          morphs[6] = dom.createAttrMorph(element3, 'oninput');
+          morphs[7] = dom.createAttrMorph(element3, 'placeholder');
+          morphs[8] = dom.createMorphAt(element2, 3, 3);
           return morphs;
         },
-        statements: [["inline", "input", [], ["type", "text", "class", "input-text", "value", ["subexpr", "@mut", [["get", "option.value", ["loc", [null, [8, 49], [8, 61]]]]], [], []], "placeholder", ["subexpr", "t", ["admin.casefields.type.checkbox.field_options.title"], [], ["loc", [null, [8, 74], [8, 130]]]]], ["loc", [null, [8, 4], [8, 132]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "option.errors.value", ["loc", [null, [9, 34], [9, 53]]]]], [], []]], ["loc", [null, [9, 4], [9, 55]]]], ["inline", "ko-admin/inline-locale-edit", [], ["class", "ko-reorderable-crud-list-item__values", "localeFields", ["subexpr", "@mut", [["get", "option.values", ["loc", [null, [11, 91], [11, 104]]]]], [], []], "field", "label"], ["loc", [null, [11, 2], [11, 120]]]], ["inline", "input", [], ["type", "text", "class", "input-text", "value", ["subexpr", "@mut", [["get", "option.tag", ["loc", [null, [13, 49], [13, 59]]]]], [], []], "placeholder", ["subexpr", "t", ["admin.casefields.type.checkbox.field_options.tag"], [], ["loc", [null, [13, 72], [13, 126]]]]], ["loc", [null, [13, 4], [13, 128]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "option.errors.tag", ["loc", [null, [14, 34], [14, 51]]]]], [], []]], ["loc", [null, [14, 4], [14, 53]]]]],
+        statements: [["attribute", "value", ["get", "option.value", ["loc", [null, [8, 50], [8, 62]]]]], ["attribute", "oninput", ["subexpr", "action", [["subexpr", "mut", [["get", "option.value", ["loc", [null, [8, 87], [8, 99]]]]], [], ["loc", [null, [8, 82], [8, 100]]]]], ["value", "target.value"], ["loc", [null, [8, 73], [8, 123]]]]], ["attribute", "placeholder", ["subexpr", "t", ["admin.casefields.type.checkbox.field_options.title"], [], ["loc", [null, [8, 136], [8, 194]]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "option.errors.value", ["loc", [null, [9, 34], [9, 53]]]]], [], []]], ["loc", [null, [9, 4], [9, 55]]]], ["inline", "ko-admin/inline-locale-edit", [], ["class", "ko-reorderable-crud-list-item__values", "localeFields", ["subexpr", "@mut", [["get", "option.values", ["loc", [null, [11, 91], [11, 104]]]]], [], []], "field", "label"], ["loc", [null, [11, 2], [11, 120]]]], ["attribute", "value", ["get", "option.tag", ["loc", [null, [13, 50], [13, 60]]]]], ["attribute", "oninput", ["subexpr", "action", [["subexpr", "mut", [["get", "option.tag", ["loc", [null, [13, 85], [13, 95]]]]], [], ["loc", [null, [13, 80], [13, 96]]]]], ["value", "target.value"], ["loc", [null, [13, 71], [13, 119]]]]], ["attribute", "placeholder", ["subexpr", "t", ["admin.casefields.type.checkbox.field_options.tag"], [], ["loc", [null, [13, 132], [13, 188]]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "option.errors.tag", ["loc", [null, [14, 34], [14, 51]]]]], [], []]], ["loc", [null, [14, 4], [14, 53]]]]],
         locals: ["option"],
         templates: []
       };
@@ -2190,18 +2206,23 @@ define("frontend-cp/components/ko-admin/case-fields/edit/priorities/template", [
                   var el0 = dom.createDocumentFragment();
                   var el1 = dom.createTextNode("          ");
                   dom.appendChild(el0, el1);
-                  var el1 = dom.createComment("");
+                  var el1 = dom.createElement("input");
+                  dom.setAttribute(el1, "type", "text");
+                  dom.setAttribute(el1, "class", "input input-text qa-custom-priority-label-input");
+                  dom.setAttribute(el1, "autofocus", "true");
                   dom.appendChild(el0, el1);
                   var el1 = dom.createTextNode("\n");
                   dom.appendChild(el0, el1);
                   return el0;
                 },
                 buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-                  var morphs = new Array(1);
-                  morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+                  var element4 = dom.childAt(fragment, [1]);
+                  var morphs = new Array(2);
+                  morphs[0] = dom.createAttrMorph(element4, 'value');
+                  morphs[1] = dom.createAttrMorph(element4, 'oninput');
                   return morphs;
                 },
-                statements: [["inline", "input", [], ["type", "text", "class", "input input-text qa-custom-priority-label-input", "autofocus", true, "value", ["subexpr", "@mut", [["get", "priority.label", ["loc", [null, [12, 107], [12, 121]]]]], [], []]], ["loc", [null, [12, 10], [12, 123]]]]],
+                statements: [["attribute", "value", ["get", "priority.label", ["loc", [null, [12, 108], [12, 122]]]]], ["attribute", "oninput", ["subexpr", "action", [["subexpr", "mut", [["get", "priority.label", ["loc", [null, [12, 147], [12, 161]]]]], [], ["loc", [null, [12, 142], [12, 162]]]]], ["value", "target.value"], ["loc", [null, [12, 133], [12, 185]]]]]],
                 locals: [],
                 templates: []
               };
@@ -2591,13 +2612,13 @@ define("frontend-cp/components/ko-admin/case-fields/edit/priorities/template", [
           return el0;
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var element4 = dom.childAt(fragment, [7]);
+          var element5 = dom.childAt(fragment, [7]);
           var morphs = new Array(5);
           morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 0, 0);
           morphs[1] = dom.createMorphAt(fragment, 3, 3, contextualElement);
           morphs[2] = dom.createMorphAt(fragment, 5, 5, contextualElement);
-          morphs[3] = dom.createAttrMorph(element4, 'onclick');
-          morphs[4] = dom.createMorphAt(element4, 1, 1);
+          morphs[3] = dom.createAttrMorph(element5, 'onclick');
+          morphs[4] = dom.createMorphAt(element5, 1, 1);
           return morphs;
         },
         statements: [["inline", "t", ["admin.casefields.edit.heading.priorities"], [], ["loc", [null, [2, 46], [2, 94]]]], ["block", "ko-form/field/help", [], [], 0, null, ["loc", [null, [4, 2], [6, 25]]]], ["block", "ko-reorderable-list", [], ["onReorder", ["subexpr", "action", ["reorderList"], [], ["loc", [null, [8, 35], [8, 57]]]], "items", ["subexpr", "@mut", [["get", "priorities", ["loc", [null, [8, 64], [8, 74]]]]], [], []]], 1, null, ["loc", [null, [8, 2], [28, 26]]]], ["attribute", "onclick", ["subexpr", "action", ["createPriority"], [], ["loc", [null, [30, 110], [30, 137]]]]], ["inline", "t", ["admin.casefields.edit.add_new_priority"], [], ["loc", [null, [31, 4], [31, 50]]]]],
@@ -2723,7 +2744,10 @@ define("frontend-cp/components/ko-admin/case-fields/edit/regex/template", ["expo
             var el0 = dom.createDocumentFragment();
             var el1 = dom.createTextNode("    ");
             dom.appendChild(el0, el1);
-            var el1 = dom.createComment("");
+            var el1 = dom.createElement("input");
+            dom.setAttribute(el1, "type", "text");
+            dom.setAttribute(el1, "class", "input input-text");
+            dom.setAttribute(el1, "name", "regex");
             dom.appendChild(el0, el1);
             var el1 = dom.createTextNode("\n    ");
             dom.appendChild(el0, el1);
@@ -2734,12 +2758,14 @@ define("frontend-cp/components/ko-admin/case-fields/edit/regex/template", ["expo
             return el0;
           },
           buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-            var morphs = new Array(2);
-            morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
-            morphs[1] = dom.createMorphAt(fragment, 3, 3, contextualElement);
+            var element0 = dom.childAt(fragment, [1]);
+            var morphs = new Array(3);
+            morphs[0] = dom.createAttrMorph(element0, 'value');
+            morphs[1] = dom.createAttrMorph(element0, 'oninput');
+            morphs[2] = dom.createMorphAt(fragment, 3, 3, contextualElement);
             return morphs;
           },
-          statements: [["inline", "input", [], ["class", "input input-text", "name", "regex", "type", "text", "value", ["subexpr", "@mut", [["get", "caseField.regularExpression", ["loc", [null, [3, 68], [3, 95]]]]], [], []]], ["loc", [null, [3, 4], [3, 97]]]], ["block", "ko-form/field/help", [], [], 0, null, ["loc", [null, [4, 4], [4, 85]]]]],
+          statements: [["attribute", "value", ["get", "caseField.regularExpression", ["loc", [null, [3, 69], [3, 96]]]]], ["attribute", "oninput", ["subexpr", "action", [["subexpr", "mut", [["get", "caseField.regularExpression", ["loc", [null, [3, 121], [3, 148]]]]], [], ["loc", [null, [3, 116], [3, 149]]]]], ["value", "target.value"], ["loc", [null, [3, 107], [3, 172]]]]], ["block", "ko-form/field/help", [], [], 0, null, ["loc", [null, [4, 4], [4, 85]]]]],
           locals: [],
           templates: [child0]
         };
@@ -3226,18 +3252,23 @@ define("frontend-cp/components/ko-admin/case-fields/edit/statuses/template", ["e
                     var el0 = dom.createDocumentFragment();
                     var el1 = dom.createTextNode("            ");
                     dom.appendChild(el0, el1);
-                    var el1 = dom.createComment("");
+                    var el1 = dom.createElement("input");
+                    dom.setAttribute(el1, "type", "text");
+                    dom.setAttribute(el1, "class", "input input-text qa-custom-status-label-input");
+                    dom.setAttribute(el1, "autofocus", "true");
                     dom.appendChild(el0, el1);
                     var el1 = dom.createTextNode("\n");
                     dom.appendChild(el0, el1);
                     return el0;
                   },
                   buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-                    var morphs = new Array(1);
-                    morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+                    var element4 = dom.childAt(fragment, [1]);
+                    var morphs = new Array(2);
+                    morphs[0] = dom.createAttrMorph(element4, 'value');
+                    morphs[1] = dom.createAttrMorph(element4, 'oninput');
                     return morphs;
                   },
-                  statements: [["inline", "input", [], ["type", "text", "class", "input input-text qa-custom-status-label-input", "autofocus", true, "value", ["subexpr", "@mut", [["get", "status.label", ["loc", [null, [29, 107], [29, 119]]]]], [], []]], ["loc", [null, [29, 12], [29, 121]]]]],
+                  statements: [["attribute", "value", ["get", "status.label", ["loc", [null, [29, 108], [29, 120]]]]], ["attribute", "oninput", ["subexpr", "action", [["subexpr", "mut", [["get", "status.label", ["loc", [null, [29, 145], [29, 157]]]]], [], ["loc", [null, [29, 140], [29, 158]]]]], ["value", "target.value"], ["loc", [null, [29, 131], [29, 181]]]]]],
                   locals: [],
                   templates: []
                 };
@@ -3915,7 +3946,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/statuses/template", ["e
           return el0;
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var element4 = dom.childAt(fragment, [13]);
+          var element5 = dom.childAt(fragment, [13]);
           var morphs = new Array(8);
           morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 0, 0);
           morphs[1] = dom.createMorphAt(fragment, 3, 3, contextualElement);
@@ -3923,8 +3954,8 @@ define("frontend-cp/components/ko-admin/case-fields/edit/statuses/template", ["e
           morphs[3] = dom.createMorphAt(fragment, 7, 7, contextualElement);
           morphs[4] = dom.createMorphAt(fragment, 9, 9, contextualElement);
           morphs[5] = dom.createMorphAt(fragment, 11, 11, contextualElement);
-          morphs[6] = dom.createAttrMorph(element4, 'onclick');
-          morphs[7] = dom.createMorphAt(element4, 1, 1);
+          morphs[6] = dom.createAttrMorph(element5, 'onclick');
+          morphs[7] = dom.createMorphAt(element5, 1, 1);
           return morphs;
         },
         statements: [["inline", "t", ["admin.casefields.edit.heading.statuses"], [], ["loc", [null, [2, 46], [2, 92]]]], ["block", "ko-form/field/help", [], [], 0, null, ["loc", [null, [4, 2], [6, 25]]]], ["block", "ko-form/field/help", [], [], 1, null, ["loc", [null, [8, 2], [10, 25]]]], ["block", "each", [["get", "openStatuses", ["loc", [null, [12, 10], [12, 22]]]]], [], 2, null, ["loc", [null, [12, 2], [22, 11]]]], ["block", "if", [["get", "customStatuses.length", ["loc", [null, [24, 8], [24, 29]]]]], [], 3, null, ["loc", [null, [24, 2], [59, 9]]]], ["block", "each", [["get", "closedStatuses", ["loc", [null, [61, 10], [61, 24]]]]], [], 4, null, ["loc", [null, [61, 2], [67, 11]]]], ["attribute", "onclick", ["subexpr", "action", ["createStatus"], [], ["loc", [null, [69, 106], [69, 131]]]]], ["inline", "t", ["admin.casefields.edit.add_new_status"], [], ["loc", [null, [70, 4], [70, 48]]]]],
@@ -4090,7 +4121,10 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
                 dom.appendChild(el0, el1);
                 var el1 = dom.createTextNode("\n        ");
                 dom.appendChild(el0, el1);
-                var el1 = dom.createComment("");
+                var el1 = dom.createElement("input");
+                dom.setAttribute(el1, "type", "text");
+                dom.setAttribute(el1, "name", "title");
+                dom.setAttribute(el1, "class", "input-text u-1/1");
                 dom.appendChild(el0, el1);
                 var el1 = dom.createTextNode("\n        ");
                 dom.appendChild(el0, el1);
@@ -4105,14 +4139,17 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
                 return el0;
               },
               buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-                var morphs = new Array(4);
+                var element5 = dom.childAt(fragment, [3]);
+                var morphs = new Array(6);
                 morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
-                morphs[1] = dom.createMorphAt(fragment, 3, 3, contextualElement);
-                morphs[2] = dom.createMorphAt(fragment, 5, 5, contextualElement);
-                morphs[3] = dom.createMorphAt(fragment, 7, 7, contextualElement);
+                morphs[1] = dom.createAttrMorph(element5, 'value');
+                morphs[2] = dom.createAttrMorph(element5, 'oninput');
+                morphs[3] = dom.createAttrMorph(element5, 'disabled');
+                morphs[4] = dom.createMorphAt(fragment, 5, 5, contextualElement);
+                morphs[5] = dom.createMorphAt(fragment, 7, 7, contextualElement);
                 return morphs;
               },
-              statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [15, 8], [15, 103]]]], ["inline", "input", [], ["type", "text", "class", "input-text u-1/1", "name", "title", "value", ["subexpr", "@mut", [["get", "caseField.title", ["loc", [null, [16, 72], [16, 87]]]]], [], []], "disabled", ["subexpr", "or", [["subexpr", "ko-helper", [["get", "disabledString", ["loc", [null, [16, 112], [16, 126]]]], ["get", "isTitleEditable", ["loc", [null, [16, 127], [16, 142]]]]], [], ["loc", [null, [16, 101], [16, 143]]]], ["get", "isSubmitting", ["loc", [null, [16, 144], [16, 156]]]]], [], ["loc", [null, [16, 97], [16, 157]]]]], ["loc", [null, [16, 8], [16, 159]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "caseField.errors.title", ["loc", [null, [17, 38], [17, 60]]]]], [], []]], ["loc", [null, [17, 8], [17, 62]]]], ["block", "ko-form/field/help", [], [], 1, null, ["loc", [null, [18, 8], [18, 100]]]]],
+              statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [15, 8], [15, 103]]]], ["attribute", "value", ["get", "caseField.title", ["loc", [null, [16, 73], [16, 88]]]]], ["attribute", "oninput", ["subexpr", "action", [["subexpr", "mut", [["get", "caseField.title", ["loc", [null, [16, 113], [16, 128]]]]], [], ["loc", [null, [16, 108], [16, 129]]]]], ["value", "target.value"], ["loc", [null, [16, 99], [16, 152]]]]], ["attribute", "disabled", ["subexpr", "or", [["subexpr", "ko-helper", [["get", "disabledString", ["loc", [null, [16, 178], [16, 192]]]], ["get", "isTitleEditable", ["loc", [null, [16, 193], [16, 208]]]]], [], ["loc", [null, [16, 167], [16, 209]]]], ["get", "isSubmitting", ["loc", [null, [16, 210], [16, 222]]]]], [], ["loc", [null, [16, 162], [16, 224]]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "caseField.errors.title", ["loc", [null, [17, 38], [17, 60]]]]], [], []]], ["loc", [null, [17, 8], [17, 62]]]], ["block", "ko-form/field/help", [], [], 1, null, ["loc", [null, [18, 8], [18, 100]]]]],
               locals: [],
               templates: [child0, child1]
             };
@@ -4585,7 +4622,10 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
                 dom.appendChild(el0, el1);
                 var el1 = dom.createTextNode("\n        ");
                 dom.appendChild(el0, el1);
-                var el1 = dom.createComment("");
+                var el1 = dom.createElement("input");
+                dom.setAttribute(el1, "type", "text");
+                dom.setAttribute(el1, "name", "customerTitle");
+                dom.setAttribute(el1, "class", "input input-text");
                 dom.appendChild(el0, el1);
                 var el1 = dom.createTextNode("\n        ");
                 dom.appendChild(el0, el1);
@@ -4600,14 +4640,17 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
                 return el0;
               },
               buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-                var morphs = new Array(4);
+                var element4 = dom.childAt(fragment, [3]);
+                var morphs = new Array(6);
                 morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
-                morphs[1] = dom.createMorphAt(fragment, 3, 3, contextualElement);
-                morphs[2] = dom.createMorphAt(fragment, 5, 5, contextualElement);
-                morphs[3] = dom.createMorphAt(fragment, 7, 7, contextualElement);
+                morphs[1] = dom.createAttrMorph(element4, 'value');
+                morphs[2] = dom.createAttrMorph(element4, 'oninput');
+                morphs[3] = dom.createAttrMorph(element4, 'disabled');
+                morphs[4] = dom.createMorphAt(fragment, 5, 5, contextualElement);
+                morphs[5] = dom.createMorphAt(fragment, 7, 7, contextualElement);
                 return morphs;
               },
-              statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [62, 8], [62, 112]]]], ["inline", "input", [], ["class", "input input-text", "name", "customerTitle", "type", "text", "value", ["subexpr", "@mut", [["get", "caseField.customerTitle", ["loc", [null, [63, 80], [63, 103]]]]], [], []], "disabled", ["subexpr", "or", [["subexpr", "ko-helper", [["get", "disabledString", ["loc", [null, [63, 128], [63, 142]]]], ["get", "isCustomerFieldTitleEditable", ["loc", [null, [63, 143], [63, 171]]]]], [], ["loc", [null, [63, 117], [63, 172]]]], ["get", "isSubmitting", ["loc", [null, [63, 173], [63, 185]]]]], [], ["loc", [null, [63, 113], [63, 186]]]]], ["loc", [null, [63, 8], [63, 188]]]], ["inline", "ko-admin/inline-locale-edit", [], ["localeFields", ["subexpr", "@mut", [["get", "caseField.customerTitles", ["loc", [null, [64, 51], [64, 75]]]]], [], []], "field", "title"], ["loc", [null, [64, 8], [64, 91]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "caseField.errors.customerTitle", ["loc", [null, [65, 38], [65, 68]]]]], [], []]], ["loc", [null, [65, 8], [65, 70]]]]],
+              statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [62, 8], [62, 112]]]], ["attribute", "value", ["get", "caseField.customerTitle", ["loc", [null, [63, 81], [63, 104]]]]], ["attribute", "oninput", ["subexpr", "action", [["subexpr", "mut", [["get", "caseField.customerTitle", ["loc", [null, [63, 129], [63, 152]]]]], [], ["loc", [null, [63, 124], [63, 153]]]]], ["value", "target.value"], ["loc", [null, [63, 115], [63, 176]]]]], ["attribute", "disabled", ["subexpr", "or", [["subexpr", "ko-helper", [["get", "disabledString", ["loc", [null, [63, 202], [63, 216]]]], ["get", "isCustomerFieldTitleEditable", ["loc", [null, [63, 217], [63, 245]]]]], [], ["loc", [null, [63, 191], [63, 246]]]], ["get", "isSubmitting", ["loc", [null, [63, 247], [63, 259]]]]], [], ["loc", [null, [63, 186], [63, 261]]]]], ["inline", "ko-admin/inline-locale-edit", [], ["localeFields", ["subexpr", "@mut", [["get", "caseField.customerTitles", ["loc", [null, [64, 51], [64, 75]]]]], [], []], "field", "title"], ["loc", [null, [64, 8], [64, 91]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "caseField.errors.customerTitle", ["loc", [null, [65, 38], [65, 68]]]]], [], []]], ["loc", [null, [65, 8], [65, 70]]]]],
               locals: [],
               templates: [child0]
             };
@@ -4727,7 +4770,9 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
                   dom.setAttribute(el1, "class", "input input-text-area-wrapper");
                   var el2 = dom.createTextNode("\n            ");
                   dom.appendChild(el1, el2);
-                  var el2 = dom.createComment("");
+                  var el2 = dom.createElement("textarea");
+                  dom.setAttribute(el2, "name", "description");
+                  dom.setAttribute(el2, "class", "input-text");
                   dom.appendChild(el1, el2);
                   var el2 = dom.createTextNode("\n            ");
                   dom.appendChild(el1, el2);
@@ -4749,16 +4794,19 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
                   return el0;
                 },
                 buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-                  var element1 = dom.childAt(fragment, [3]);
-                  var morphs = new Array(5);
+                  var element2 = dom.childAt(fragment, [3]);
+                  var element3 = dom.childAt(element2, [1]);
+                  var morphs = new Array(7);
                   morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
-                  morphs[1] = dom.createMorphAt(element1, 1, 1);
-                  morphs[2] = dom.createMorphAt(element1, 3, 3);
-                  morphs[3] = dom.createMorphAt(fragment, 5, 5, contextualElement);
-                  morphs[4] = dom.createMorphAt(fragment, 7, 7, contextualElement);
+                  morphs[1] = dom.createAttrMorph(element3, 'value');
+                  morphs[2] = dom.createAttrMorph(element3, 'oninput');
+                  morphs[3] = dom.createAttrMorph(element3, 'disabled');
+                  morphs[4] = dom.createMorphAt(element2, 3, 3);
+                  morphs[5] = dom.createMorphAt(fragment, 5, 5, contextualElement);
+                  morphs[6] = dom.createMorphAt(fragment, 7, 7, contextualElement);
                   return morphs;
                 },
-                statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [70, 10], [70, 120]]]], ["inline", "textarea", [], ["class", "input-text", "name", "description", "type", "text", "value", ["subexpr", "@mut", [["get", "caseField.description", ["loc", [null, [72, 79], [72, 100]]]]], [], []], "disabled", ["subexpr", "@mut", [["get", "isSubmitting", ["loc", [null, [72, 110], [72, 122]]]]], [], []]], ["loc", [null, [72, 12], [72, 124]]]], ["inline", "ko-admin/inline-locale-edit", [], ["localeFields", ["subexpr", "@mut", [["get", "caseField.descriptions", ["loc", [null, [74, 27], [74, 49]]]]], [], []], "field", "description", "inputType", "textArea"], ["loc", [null, [73, 12], [76, 36]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "caseField.errors.description", ["loc", [null, [78, 40], [78, 68]]]]], [], []]], ["loc", [null, [78, 10], [78, 70]]]], ["block", "ko-form/field/help", [], [], 1, null, ["loc", [null, [79, 10], [79, 102]]]]],
+                statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [70, 10], [70, 120]]]], ["attribute", "value", ["get", "caseField.description", ["loc", [null, [72, 68], [72, 89]]]]], ["attribute", "oninput", ["subexpr", "action", [["subexpr", "mut", [["get", "caseField.description", ["loc", [null, [72, 114], [72, 135]]]]], [], ["loc", [null, [72, 109], [72, 136]]]]], ["value", "target.value"], ["loc", [null, [72, 100], [72, 159]]]]], ["attribute", "disabled", ["get", "isSubmitting", ["loc", [null, [72, 171], [72, 183]]]]], ["inline", "ko-admin/inline-locale-edit", [], ["localeFields", ["subexpr", "@mut", [["get", "caseField.descriptions", ["loc", [null, [74, 27], [74, 49]]]]], [], []], "field", "description", "inputType", "textArea"], ["loc", [null, [73, 12], [76, 36]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "caseField.errors.description", ["loc", [null, [78, 40], [78, 68]]]]], [], []]], ["loc", [null, [78, 10], [78, 70]]]], ["block", "ko-form/field/help", [], [], 1, null, ["loc", [null, [79, 10], [79, 102]]]]],
                 locals: [],
                 templates: [child0, child1]
               };
@@ -5331,10 +5379,10 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
                 return el0;
               },
               buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-                var element0 = dom.childAt(fragment, [1]);
+                var element1 = dom.childAt(fragment, [1]);
                 var morphs = new Array(2);
-                morphs[0] = dom.createAttrMorph(element0, 'onclick');
-                morphs[1] = dom.createMorphAt(element0, 1, 1);
+                morphs[0] = dom.createAttrMorph(element1, 'onclick');
+                morphs[1] = dom.createMorphAt(element1, 1, 1);
                 return morphs;
               },
               statements: [["attribute", "onclick", ["get", "onOptionAddition", ["loc", [null, [121, 21], [121, 37]]]]], ["inline", "t", ["admin.fields.type.field_options.add_option"], [], ["loc", [null, [122, 10], [122, 60]]]]],
@@ -5611,11 +5659,11 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
                       "loc": {
                         "source": null,
                         "start": {
-                          "line": 155,
+                          "line": 151,
                           "column": 12
                         },
                         "end": {
-                          "line": 155,
+                          "line": 151,
                           "column": 77
                         }
                       },
@@ -5638,7 +5686,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
                       dom.insertBoundary(fragment, null);
                       return morphs;
                     },
-                    statements: [["inline", "t", ["admin.casefields.edit.help.api_key"], [], ["loc", [null, [155, 35], [155, 77]]]]],
+                    statements: [["inline", "t", ["admin.casefields.edit.help.api_key"], [], ["loc", [null, [151, 35], [151, 77]]]]],
                     locals: [],
                     templates: []
                   };
@@ -5654,7 +5702,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
                         "column": 10
                       },
                       "end": {
-                        "line": 156,
+                        "line": 152,
                         "column": 10
                       }
                     },
@@ -5672,7 +5720,9 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
                     dom.appendChild(el0, el1);
                     var el1 = dom.createTextNode("\n            ");
                     dom.appendChild(el0, el1);
-                    var el1 = dom.createComment("");
+                    var el1 = dom.createElement("input");
+                    dom.setAttribute(el1, "type", "text");
+                    dom.setAttribute(el1, "disabled", "");
                     dom.appendChild(el0, el1);
                     var el1 = dom.createTextNode("\n            ");
                     dom.appendChild(el0, el1);
@@ -5687,14 +5737,16 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
                     return el0;
                   },
                   buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-                    var morphs = new Array(4);
+                    var element0 = dom.childAt(fragment, [3]);
+                    var morphs = new Array(5);
                     morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
-                    morphs[1] = dom.createMorphAt(fragment, 3, 3, contextualElement);
-                    morphs[2] = dom.createMorphAt(fragment, 5, 5, contextualElement);
-                    morphs[3] = dom.createMorphAt(fragment, 7, 7, contextualElement);
+                    morphs[1] = dom.createAttrMorph(element0, 'class');
+                    morphs[2] = dom.createAttrMorph(element0, 'value');
+                    morphs[3] = dom.createMorphAt(fragment, 5, 5, contextualElement);
+                    morphs[4] = dom.createMorphAt(fragment, 7, 7, contextualElement);
                     return morphs;
                   },
-                  statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [148, 12], [148, 103]]]], ["inline", "input", [], ["class", ["subexpr", "concat", ["input-text", ["subexpr", "qa-cls", [" qa-admin_case-fields_edit__api-key"], [], ["loc", [null, [150, 41], [150, 87]]]]], [], ["loc", [null, [150, 20], [150, 88]]]], "type", "text", "value", ["subexpr", "@mut", [["get", "caseField.key", ["loc", [null, [152, 20], [152, 33]]]]], [], []], "disabled", true], ["loc", [null, [149, 12], [153, 29]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "caseField.errors.key", ["loc", [null, [154, 42], [154, 62]]]]], [], []]], ["loc", [null, [154, 12], [154, 64]]]], ["block", "ko-form/field/help", [], [], 1, null, ["loc", [null, [155, 12], [155, 100]]]]],
+                  statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [148, 12], [148, 103]]]], ["attribute", "class", ["concat", ["input-text ", ["subexpr", "qa-cls", ["qa-admin_case-fields_edit__api-key"], [], ["loc", [null, [149, 49], [149, 96]]]]]]], ["attribute", "value", ["get", "caseField.key", ["loc", [null, [149, 106], [149, 119]]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "caseField.errors.key", ["loc", [null, [150, 42], [150, 62]]]]], [], []]], ["loc", [null, [150, 12], [150, 64]]]], ["block", "ko-form/field/help", [], [], 1, null, ["loc", [null, [151, 12], [151, 100]]]]],
                   locals: [],
                   templates: [child0, child1]
                 };
@@ -5710,7 +5762,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
                       "column": 8
                     },
                     "end": {
-                      "line": 157,
+                      "line": 153,
                       "column": 8
                     }
                   },
@@ -5734,7 +5786,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
                   dom.insertBoundary(fragment, null);
                   return morphs;
                 },
-                statements: [["block", "ko-form/field", [], [], 0, null, ["loc", [null, [147, 10], [156, 28]]]]],
+                statements: [["block", "ko-form/field", [], [], 0, null, ["loc", [null, [147, 10], [152, 28]]]]],
                 locals: [],
                 templates: [child0]
               };
@@ -5750,7 +5802,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
                     "column": 6
                   },
                   "end": {
-                    "line": 159,
+                    "line": 155,
                     "column": 6
                   }
                 },
@@ -5780,7 +5832,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
                 morphs[1] = dom.createMorphAt(fragment, 3, 3, contextualElement);
                 return morphs;
               },
-              statements: [["block", "if", [["get", "isStatusKeyAvailable", ["loc", [null, [133, 14], [133, 34]]]]], [], 0, null, ["loc", [null, [133, 8], [142, 15]]]], ["block", "if", [["subexpr", "not", [["get", "isApiFieldKeyAvailable", ["loc", [null, [144, 19], [144, 41]]]]], [], ["loc", [null, [144, 14], [144, 42]]]]], [], 1, null, ["loc", [null, [144, 8], [157, 15]]]]],
+              statements: [["block", "if", [["get", "isStatusKeyAvailable", ["loc", [null, [133, 14], [133, 34]]]]], [], 0, null, ["loc", [null, [133, 8], [142, 15]]]], ["block", "if", [["subexpr", "not", [["get", "isApiFieldKeyAvailable", ["loc", [null, [144, 19], [144, 41]]]]], [], ["loc", [null, [144, 14], [144, 42]]]]], [], 1, null, ["loc", [null, [144, 8], [153, 15]]]]],
               locals: [],
               templates: [child0, child1]
             };
@@ -5796,7 +5848,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
                   "column": 4
                 },
                 "end": {
-                  "line": 160,
+                  "line": 156,
                   "column": 4
                 }
               },
@@ -5819,7 +5871,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
               dom.insertBoundary(fragment, null);
               return morphs;
             },
-            statements: [["block", "ko-admin/forms/group", [], ["legend", ["subexpr", "t", ["admin.casefields.edit.heading.field_settings"], [], ["loc", [null, [131, 37], [131, 87]]]]], 0, null, ["loc", [null, [131, 6], [159, 31]]]]],
+            statements: [["block", "ko-admin/forms/group", [], ["legend", ["subexpr", "t", ["admin.casefields.edit.heading.field_settings"], [], ["loc", [null, [131, 37], [131, 87]]]]], 0, null, ["loc", [null, [131, 6], [155, 31]]]]],
             locals: [],
             templates: [child0]
           };
@@ -5835,7 +5887,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
                 "column": 2
               },
               "end": {
-                "line": 161,
+                "line": 157,
                 "column": 2
               }
             },
@@ -5858,7 +5910,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
             dom.insertBoundary(fragment, null);
             return morphs;
           },
-          statements: [["block", "if", [["get", "isStatusOrApiFieldAvailable", ["loc", [null, [130, 10], [130, 37]]]]], [], 0, null, ["loc", [null, [130, 4], [160, 11]]]]],
+          statements: [["block", "if", [["get", "isStatusOrApiFieldAvailable", ["loc", [null, [130, 10], [130, 37]]]]], [], 0, null, ["loc", [null, [130, 4], [156, 11]]]]],
           locals: [],
           templates: [child0]
         };
@@ -5877,7 +5929,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
               "column": 0
             },
             "end": {
-              "line": 164,
+              "line": 160,
               "column": 0
             }
           },
@@ -5932,7 +5984,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
           morphs[6] = dom.createMorphAt(fragment, 13, 13, contextualElement);
           return morphs;
         },
-        statements: [["inline", "ko-admin/page-header", [], ["title", ["subexpr", "@mut", [["get", "title", ["loc", [null, [7, 12], [7, 17]]]]], [], []], "buttonText", ["subexpr", "t", ["generic.save"], [], ["loc", [null, [8, 17], [8, 35]]]], "onCancel", ["subexpr", "@mut", [["get", "onCancel", ["loc", [null, [9, 15], [9, 23]]]]], [], []]], ["loc", [null, [6, 2], [10, 4]]]], ["block", "if", [["subexpr", "not", [["subexpr", "eq", [["get", "caseField.fieldType", ["loc", [null, [12, 17], [12, 36]]]], "MESSAGE"], [], ["loc", [null, [12, 13], [12, 47]]]]], [], ["loc", [null, [12, 8], [12, 48]]]]], [], 0, null, ["loc", [null, [12, 2], [46, 9]]]], ["block", "ko-admin/forms/group", [], ["legend", ["subexpr", "t", ["admin.casefields.edit.heading.customer_settings"], [], ["loc", [null, [48, 33], [48, 86]]]]], 1, null, ["loc", [null, [48, 2], [108, 27]]]], ["block", "if", [["subexpr", "ko-helper", [["get", "getAdminComponentForFieldType", ["loc", [null, [110, 19], [110, 48]]]], ["get", "caseField.fieldType", ["loc", [null, [110, 49], [110, 68]]]]], [], ["loc", [null, [110, 8], [110, 69]]]]], [], 2, null, ["loc", [null, [110, 2], [112, 9]]]], ["block", "if", [["get", "caseField.isChoiceField", ["loc", [null, [114, 8], [114, 31]]]]], [], 3, null, ["loc", [null, [114, 2], [126, 9]]]], ["block", "if", [["subexpr", "not", [["get", "caseField.isSystem", ["loc", [null, [129, 13], [129, 31]]]]], [], ["loc", [null, [129, 8], [129, 32]]]]], [], 4, null, ["loc", [null, [129, 2], [161, 9]]]], ["inline", "ko-admin/page-footer", [], ["buttonText", ["subexpr", "t", ["generic.save"], [], ["loc", [null, [163, 36], [163, 54]]]], "onCancel", ["subexpr", "@mut", [["get", "onCancel", ["loc", [null, [163, 64], [163, 72]]]]], [], []]], ["loc", [null, [163, 2], [163, 74]]]]],
+        statements: [["inline", "ko-admin/page-header", [], ["title", ["subexpr", "@mut", [["get", "title", ["loc", [null, [7, 12], [7, 17]]]]], [], []], "buttonText", ["subexpr", "t", ["generic.save"], [], ["loc", [null, [8, 17], [8, 35]]]], "onCancel", ["subexpr", "@mut", [["get", "onCancel", ["loc", [null, [9, 15], [9, 23]]]]], [], []]], ["loc", [null, [6, 2], [10, 4]]]], ["block", "if", [["subexpr", "not", [["subexpr", "eq", [["get", "caseField.fieldType", ["loc", [null, [12, 17], [12, 36]]]], "MESSAGE"], [], ["loc", [null, [12, 13], [12, 47]]]]], [], ["loc", [null, [12, 8], [12, 48]]]]], [], 0, null, ["loc", [null, [12, 2], [46, 9]]]], ["block", "ko-admin/forms/group", [], ["legend", ["subexpr", "t", ["admin.casefields.edit.heading.customer_settings"], [], ["loc", [null, [48, 33], [48, 86]]]]], 1, null, ["loc", [null, [48, 2], [108, 27]]]], ["block", "if", [["subexpr", "ko-helper", [["get", "getAdminComponentForFieldType", ["loc", [null, [110, 19], [110, 48]]]], ["get", "caseField.fieldType", ["loc", [null, [110, 49], [110, 68]]]]], [], ["loc", [null, [110, 8], [110, 69]]]]], [], 2, null, ["loc", [null, [110, 2], [112, 9]]]], ["block", "if", [["get", "caseField.isChoiceField", ["loc", [null, [114, 8], [114, 31]]]]], [], 3, null, ["loc", [null, [114, 2], [126, 9]]]], ["block", "if", [["subexpr", "not", [["get", "caseField.isSystem", ["loc", [null, [129, 13], [129, 31]]]]], [], ["loc", [null, [129, 8], [129, 32]]]]], [], 4, null, ["loc", [null, [129, 2], [157, 9]]]], ["inline", "ko-admin/page-footer", [], ["buttonText", ["subexpr", "t", ["generic.save"], [], ["loc", [null, [159, 36], [159, 54]]]], "onCancel", ["subexpr", "@mut", [["get", "onCancel", ["loc", [null, [159, 64], [159, 72]]]]], [], []]], ["loc", [null, [159, 2], [159, 74]]]]],
         locals: ["_", "isSubmitting"],
         templates: [child0, child1, child2, child3, child4]
       };
@@ -5951,7 +6003,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
             "column": 0
           },
           "end": {
-            "line": 165,
+            "line": 161,
             "column": 0
           }
         },
@@ -5974,7 +6026,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["block", "ko-form", [], ["onSubmit", ["subexpr", "@mut", [["get", "onSave", ["loc", [null, [2, 11], [2, 17]]]]], [], []], "onSuccess", ["subexpr", "@mut", [["get", "onSuccess", ["loc", [null, [3, 12], [3, 21]]]]], [], []]], 0, null, ["loc", [null, [1, 0], [164, 12]]]]],
+      statements: [["block", "ko-form", [], ["onSubmit", ["subexpr", "@mut", [["get", "onSave", ["loc", [null, [2, 11], [2, 17]]]]], [], []], "onSuccess", ["subexpr", "@mut", [["get", "onSuccess", ["loc", [null, [3, 12], [3, 21]]]]], [], []]], 0, null, ["loc", [null, [1, 0], [160, 12]]]]],
       locals: [],
       templates: [child0]
     };
@@ -6259,18 +6311,23 @@ define("frontend-cp/components/ko-admin/case-fields/edit/types/template", ["expo
                   var el0 = dom.createDocumentFragment();
                   var el1 = dom.createTextNode("            ");
                   dom.appendChild(el0, el1);
-                  var el1 = dom.createComment("");
+                  var el1 = dom.createElement("input");
+                  dom.setAttribute(el1, "type", "text");
+                  dom.setAttribute(el1, "class", "input input-text qa-custom-type-label-input");
+                  dom.setAttribute(el1, "autofocus", "true");
                   dom.appendChild(el0, el1);
                   var el1 = dom.createTextNode("\n");
                   dom.appendChild(el0, el1);
                   return el0;
                 },
                 buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-                  var morphs = new Array(1);
-                  morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+                  var element4 = dom.childAt(fragment, [1]);
+                  var morphs = new Array(2);
+                  morphs[0] = dom.createAttrMorph(element4, 'value');
+                  morphs[1] = dom.createAttrMorph(element4, 'oninput');
                   return morphs;
                 },
-                statements: [["inline", "input", [], ["type", "text", "class", "input input-text qa-custom-type-label-input", "autofocus", true, "value", ["subexpr", "@mut", [["get", "type.label", ["loc", [null, [20, 105], [20, 115]]]]], [], []]], ["loc", [null, [20, 12], [20, 117]]]]],
+                statements: [["attribute", "value", ["get", "type.label", ["loc", [null, [20, 106], [20, 116]]]]], ["attribute", "oninput", ["subexpr", "action", [["subexpr", "mut", [["get", "type.label", ["loc", [null, [20, 141], [20, 151]]]]], [], ["loc", [null, [20, 136], [20, 152]]]]], ["value", "target.value"], ["loc", [null, [20, 127], [20, 175]]]]]],
                 locals: [],
                 templates: []
               };
@@ -6664,14 +6721,14 @@ define("frontend-cp/components/ko-admin/case-fields/edit/types/template", ["expo
           return el0;
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var element4 = dom.childAt(fragment, [9]);
+          var element5 = dom.childAt(fragment, [9]);
           var morphs = new Array(6);
           morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 0, 0);
           morphs[1] = dom.createMorphAt(fragment, 3, 3, contextualElement);
           morphs[2] = dom.createMorphAt(fragment, 5, 5, contextualElement);
           morphs[3] = dom.createMorphAt(fragment, 7, 7, contextualElement);
-          morphs[4] = dom.createAttrMorph(element4, 'onclick');
-          morphs[5] = dom.createMorphAt(element4, 1, 1);
+          morphs[4] = dom.createAttrMorph(element5, 'onclick');
+          morphs[5] = dom.createMorphAt(element5, 1, 1);
           return morphs;
         },
         statements: [["inline", "t", ["admin.casefields.edit.heading.types"], [], ["loc", [null, [2, 46], [2, 89]]]], ["block", "ko-form/field/help", [], [], 0, null, ["loc", [null, [4, 2], [6, 25]]]], ["block", "each", [["get", "systemTypes", ["loc", [null, [8, 10], [8, 21]]]]], [], 1, null, ["loc", [null, [8, 2], [14, 11]]]], ["block", "each", [["get", "customTypes", ["loc", [null, [16, 10], [16, 21]]]]], [], 2, null, ["loc", [null, [16, 2], [36, 11]]]], ["attribute", "onclick", ["subexpr", "action", ["createType"], [], ["loc", [null, [38, 101], [38, 124]]]]], ["inline", "t", ["admin.casefields.edit.add_new_type"], [], ["loc", [null, [39, 4], [39, 46]]]]],
@@ -8821,7 +8878,8 @@ define("frontend-cp/components/ko-admin/case-forms/edit/template", ["exports"], 
               dom.appendChild(el0, el1);
               var el1 = dom.createTextNode("\n      ");
               dom.appendChild(el0, el1);
-              var el1 = dom.createComment("");
+              var el1 = dom.createElement("input");
+              dom.setAttribute(el1, "type", "text");
               dom.appendChild(el0, el1);
               var el1 = dom.createTextNode("\n      ");
               dom.appendChild(el0, el1);
@@ -8832,13 +8890,17 @@ define("frontend-cp/components/ko-admin/case-forms/edit/template", ["exports"], 
               return el0;
             },
             buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-              var morphs = new Array(3);
+              var element2 = dom.childAt(fragment, [3]);
+              var morphs = new Array(6);
               morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
-              morphs[1] = dom.createMorphAt(fragment, 3, 3, contextualElement);
-              morphs[2] = dom.createMorphAt(fragment, 5, 5, contextualElement);
+              morphs[1] = dom.createAttrMorph(element2, 'class');
+              morphs[2] = dom.createAttrMorph(element2, 'value');
+              morphs[3] = dom.createAttrMorph(element2, 'oninput');
+              morphs[4] = dom.createAttrMorph(element2, 'disabled');
+              morphs[5] = dom.createMorphAt(fragment, 5, 5, contextualElement);
               return morphs;
             },
-            statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [16, 6], [16, 95]]]], ["inline", "input", [], ["class", ["subexpr", "concat", ["input input-text", ["subexpr", "qa-cls", [" qa-admin_case-forms_edit__title-input"], [], ["loc", [null, [17, 47], [17, 96]]]]], [], ["loc", [null, [17, 20], [17, 97]]]], "type", "text", "value", ["subexpr", "@mut", [["get", "caseForm.title", ["loc", [null, [17, 116], [17, 130]]]]], [], []], "disabled", ["subexpr", "@mut", [["get", "isSubmitting", ["loc", [null, [17, 140], [17, 152]]]]], [], []]], ["loc", [null, [17, 6], [17, 154]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "caseForm.errors.title", ["loc", [null, [18, 36], [18, 57]]]]], [], []]], ["loc", [null, [18, 6], [18, 59]]]]],
+            statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [16, 6], [16, 95]]]], ["attribute", "class", ["concat", ["input input-text ", ["subexpr", "qa-cls", ["qa-admin_case-forms_edit__title-input"], [], ["loc", [null, [17, 49], [17, 99]]]]]]], ["attribute", "value", ["get", "caseForm.title", ["loc", [null, [17, 109], [17, 123]]]]], ["attribute", "oninput", ["subexpr", "action", [["subexpr", "mut", [["get", "caseForm.title", ["loc", [null, [17, 148], [17, 162]]]]], [], ["loc", [null, [17, 143], [17, 163]]]]], ["value", "target.value"], ["loc", [null, [17, 134], [17, 186]]]]], ["attribute", "disabled", ["get", "isSubmitting", ["loc", [null, [17, 198], [17, 210]]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "caseForm.errors.title", ["loc", [null, [18, 36], [18, 57]]]]], [], []]], ["loc", [null, [18, 6], [18, 59]]]]],
             locals: [],
             templates: [child0]
           };
@@ -9138,7 +9200,8 @@ define("frontend-cp/components/ko-admin/case-forms/edit/template", ["exports"], 
                 dom.appendChild(el0, el1);
                 var el1 = dom.createTextNode("\n        ");
                 dom.appendChild(el0, el1);
-                var el1 = dom.createComment("");
+                var el1 = dom.createElement("input");
+                dom.setAttribute(el1, "type", "text");
                 dom.appendChild(el0, el1);
                 var el1 = dom.createTextNode("\n        ");
                 dom.appendChild(el0, el1);
@@ -9149,13 +9212,17 @@ define("frontend-cp/components/ko-admin/case-forms/edit/template", ["exports"], 
                 return el0;
               },
               buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-                var morphs = new Array(3);
+                var element1 = dom.childAt(fragment, [3]);
+                var morphs = new Array(6);
                 morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
-                morphs[1] = dom.createMorphAt(fragment, 3, 3, contextualElement);
-                morphs[2] = dom.createMorphAt(fragment, 5, 5, contextualElement);
+                morphs[1] = dom.createAttrMorph(element1, 'class');
+                morphs[2] = dom.createAttrMorph(element1, 'value');
+                morphs[3] = dom.createAttrMorph(element1, 'oninput');
+                morphs[4] = dom.createAttrMorph(element1, 'disabled');
+                morphs[5] = dom.createMorphAt(fragment, 5, 5, contextualElement);
                 return morphs;
               },
-              statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [48, 8], [48, 105]]]], ["inline", "input", [], ["class", ["subexpr", "concat", ["input input-text", ["subexpr", "qa-cls", [" qa-admin_case-forms__customer-title"], [], ["loc", [null, [49, 49], [49, 96]]]]], [], ["loc", [null, [49, 22], [49, 97]]]], "type", "text", "value", ["subexpr", "@mut", [["get", "caseForm.customerTitle", ["loc", [null, [49, 116], [49, 138]]]]], [], []], "disabled", ["subexpr", "@mut", [["get", "isSubmitting", ["loc", [null, [49, 148], [49, 160]]]]], [], []]], ["loc", [null, [49, 8], [49, 162]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "caseForm.errors.customerTitle", ["loc", [null, [50, 38], [50, 67]]]]], [], []]], ["loc", [null, [50, 8], [50, 69]]]]],
+              statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [48, 8], [48, 105]]]], ["attribute", "class", ["concat", ["input input-text ", ["subexpr", "qa-cls", ["qa-admin_case-forms__customer-title"], [], ["loc", [null, [49, 51], [49, 99]]]]]]], ["attribute", "value", ["get", "caseForm.customerTitle", ["loc", [null, [49, 109], [49, 131]]]]], ["attribute", "oninput", ["subexpr", "action", [["subexpr", "mut", [["get", "caseForm.customerTitle", ["loc", [null, [49, 156], [49, 178]]]]], [], ["loc", [null, [49, 151], [49, 179]]]]], ["value", "target.value"], ["loc", [null, [49, 142], [49, 202]]]]], ["attribute", "disabled", ["get", "isSubmitting", ["loc", [null, [49, 214], [49, 226]]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "caseForm.errors.customerTitle", ["loc", [null, [50, 38], [50, 67]]]]], [], []]], ["loc", [null, [50, 8], [50, 69]]]]],
               locals: [],
               templates: [child0]
             };
@@ -9230,7 +9297,7 @@ define("frontend-cp/components/ko-admin/case-forms/edit/template", ["exports"], 
                 dom.appendChild(el0, el1);
                 var el1 = dom.createTextNode("\n        ");
                 dom.appendChild(el0, el1);
-                var el1 = dom.createComment("");
+                var el1 = dom.createElement("textarea");
                 dom.appendChild(el0, el1);
                 var el1 = dom.createTextNode("\n        ");
                 dom.appendChild(el0, el1);
@@ -9241,13 +9308,17 @@ define("frontend-cp/components/ko-admin/case-forms/edit/template", ["exports"], 
                 return el0;
               },
               buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-                var morphs = new Array(3);
+                var element0 = dom.childAt(fragment, [3]);
+                var morphs = new Array(6);
                 morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
-                morphs[1] = dom.createMorphAt(fragment, 3, 3, contextualElement);
-                morphs[2] = dom.createMorphAt(fragment, 5, 5, contextualElement);
+                morphs[1] = dom.createAttrMorph(element0, 'class');
+                morphs[2] = dom.createAttrMorph(element0, 'value');
+                morphs[3] = dom.createAttrMorph(element0, 'oninput');
+                morphs[4] = dom.createAttrMorph(element0, 'disabled');
+                morphs[5] = dom.createMorphAt(fragment, 5, 5, contextualElement);
                 return morphs;
               },
-              statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [54, 8], [54, 111]]]], ["inline", "textarea", [], ["class", ["subexpr", "concat", ["input input-text", ["subexpr", "qa-cls", [" qa-admin_case-forms__customer-description"], [], ["loc", [null, [55, 52], [55, 105]]]]], [], ["loc", [null, [55, 25], [55, 106]]]], "value", ["subexpr", "@mut", [["get", "caseForm.description", ["loc", [null, [55, 113], [55, 133]]]]], [], []], "disabled", ["subexpr", "@mut", [["get", "isSubmitting", ["loc", [null, [55, 143], [55, 155]]]]], [], []]], ["loc", [null, [55, 8], [55, 157]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "caseForm.errors.description", ["loc", [null, [56, 38], [56, 65]]]]], [], []]], ["loc", [null, [56, 8], [56, 67]]]]],
+              statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [54, 8], [54, 111]]]], ["attribute", "class", ["concat", ["input input-text ", ["subexpr", "qa-cls", ["qa-admin_case-forms__customer-description"], [], ["loc", [null, [55, 42], [55, 96]]]]]]], ["attribute", "value", ["get", "caseForm.description", ["loc", [null, [55, 106], [55, 126]]]]], ["attribute", "oninput", ["subexpr", "action", [["subexpr", "mut", [["get", "caseForm.description", ["loc", [null, [55, 151], [55, 171]]]]], [], ["loc", [null, [55, 146], [55, 172]]]]], ["value", "target.value"], ["loc", [null, [55, 137], [55, 195]]]]], ["attribute", "disabled", ["get", "isSubmitting", ["loc", [null, [55, 207], [55, 219]]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "caseForm.errors.description", ["loc", [null, [56, 38], [56, 65]]]]], [], []]], ["loc", [null, [56, 8], [56, 67]]]]],
               locals: [],
               templates: [child0]
             };
@@ -9821,7 +9892,7 @@ define("frontend-cp/components/ko-admin/holidays/edit/template", ["exports"], fu
               "column": 0
             },
             "end": {
-              "line": 9,
+              "line": 8,
               "column": 0
             }
           },
@@ -9839,7 +9910,10 @@ define("frontend-cp/components/ko-admin/holidays/edit/template", ["exports"], fu
           dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n  ");
           dom.appendChild(el0, el1);
-          var el1 = dom.createComment("");
+          var el1 = dom.createElement("input");
+          dom.setAttribute(el1, "type", "text");
+          dom.setAttribute(el1, "name", "title");
+          dom.setAttribute(el1, "class", "input input-text");
           dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n  ");
           dom.appendChild(el0, el1);
@@ -9850,13 +9924,16 @@ define("frontend-cp/components/ko-admin/holidays/edit/template", ["exports"], fu
           return el0;
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(3);
+          var element1 = dom.childAt(fragment, [3]);
+          var morphs = new Array(5);
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
-          morphs[1] = dom.createMorphAt(fragment, 3, 3, contextualElement);
-          morphs[2] = dom.createMorphAt(fragment, 5, 5, contextualElement);
+          morphs[1] = dom.createAttrMorph(element1, 'value');
+          morphs[2] = dom.createAttrMorph(element1, 'oninput');
+          morphs[3] = dom.createAttrMorph(element1, 'disabled');
+          morphs[4] = dom.createMorphAt(fragment, 5, 5, contextualElement);
           return morphs;
         },
-        statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [2, 2], [2, 98]]]], ["inline", "input", [], ["class", "input input-text", "name", "title", "type", "text", "value", ["subexpr", "@mut", [["get", "model.title", ["loc", [null, [6, 10], [6, 21]]]]], [], []], "disabled", ["subexpr", "@mut", [["get", "isSubmitting", ["loc", [null, [7, 13], [7, 25]]]]], [], []]], ["loc", [null, [3, 2], [7, 27]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "model.errors.title", ["loc", [null, [8, 32], [8, 50]]]]], [], []]], ["loc", [null, [8, 2], [8, 52]]]]],
+        statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [2, 2], [2, 98]]]], ["attribute", "value", ["get", "model.title", ["loc", [null, [4, 12], [4, 23]]]]], ["attribute", "oninput", ["subexpr", "action", [["subexpr", "mut", [["get", "model.title", ["loc", [null, [5, 26], [5, 37]]]]], [], ["loc", [null, [5, 21], [5, 38]]]]], ["value", "target.value"], ["loc", [null, [5, 12], [5, 61]]]]], ["attribute", "disabled", ["get", "isSubmitting", ["loc", [null, [6, 15], [6, 27]]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "model.errors.title", ["loc", [null, [7, 32], [7, 50]]]]], [], []]], ["loc", [null, [7, 2], [7, 52]]]]],
         locals: [],
         templates: [child0]
       };
@@ -9869,11 +9946,11 @@ define("frontend-cp/components/ko-admin/holidays/edit/template", ["exports"], fu
           "loc": {
             "source": null,
             "start": {
-              "line": 11,
+              "line": 10,
               "column": 0
             },
             "end": {
-              "line": 22,
+              "line": 21,
               "column": 0
             }
           },
@@ -9904,7 +9981,7 @@ define("frontend-cp/components/ko-admin/holidays/edit/template", ["exports"], fu
           morphs[1] = dom.createMorphAt(element0, 1, 1);
           return morphs;
         },
-        statements: [["attribute", "class", ["concat", ["ko-admin_holidays_edit__title ", ["subexpr", "if", [["get", "model.errors.date", ["loc", [null, [16, 47], [16, 64]]]], "error"], [], ["loc", [null, [16, 42], [16, 74]]]]]]], ["inline", "ko-date-select", [], ["value", ["subexpr", "@mut", [["get", "holidayDate", ["loc", [null, [18, 12], [18, 23]]]]], [], []], "placeholder", "Add date", "onChange", ["subexpr", "action", ["selectHolidayDate"], [], ["loc", [null, [20, 15], [20, 43]]]]], ["loc", [null, [17, 4], [20, 45]]]]],
+        statements: [["attribute", "class", ["concat", ["ko-admin_holidays_edit__title ", ["subexpr", "if", [["get", "model.errors.date", ["loc", [null, [15, 47], [15, 64]]]], "error"], [], ["loc", [null, [15, 42], [15, 74]]]]]]], ["inline", "ko-date-select", [], ["value", ["subexpr", "@mut", [["get", "holidayDate", ["loc", [null, [17, 12], [17, 23]]]]], [], []], "placeholder", "Add date", "onChange", ["subexpr", "action", ["selectHolidayDate"], [], ["loc", [null, [19, 15], [19, 43]]]]], ["loc", [null, [16, 4], [19, 45]]]]],
         locals: [],
         templates: []
       };
@@ -9923,7 +10000,7 @@ define("frontend-cp/components/ko-admin/holidays/edit/template", ["exports"], fu
             "column": 0
           },
           "end": {
-            "line": 36,
+            "line": 35,
             "column": 0
           }
         },
@@ -9977,21 +10054,21 @@ define("frontend-cp/components/ko-admin/holidays/edit/template", ["exports"], fu
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var element1 = dom.childAt(fragment, [4]);
-        var element2 = dom.childAt(element1, [1]);
-        var element3 = dom.childAt(element1, [3]);
+        var element2 = dom.childAt(fragment, [4]);
+        var element3 = dom.childAt(element2, [1]);
+        var element4 = dom.childAt(element2, [3]);
         var morphs = new Array(7);
         morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
         morphs[1] = dom.createMorphAt(fragment, 2, 2, contextualElement);
-        morphs[2] = dom.createAttrMorph(element1, 'class');
-        morphs[3] = dom.createAttrMorph(element2, 'onclick');
-        morphs[4] = dom.createMorphAt(element2, 1, 1);
-        morphs[5] = dom.createAttrMorph(element3, 'onclick');
-        morphs[6] = dom.createMorphAt(element3, 1, 1);
+        morphs[2] = dom.createAttrMorph(element2, 'class');
+        morphs[3] = dom.createAttrMorph(element3, 'onclick');
+        morphs[4] = dom.createMorphAt(element3, 1, 1);
+        morphs[5] = dom.createAttrMorph(element4, 'onclick');
+        morphs[6] = dom.createMorphAt(element4, 1, 1);
         dom.insertBoundary(fragment, 0);
         return morphs;
       },
-      statements: [["block", "ko-form/field", [], [], 0, null, ["loc", [null, [1, 0], [9, 18]]]], ["block", "ko-grid-picker", [], ["initialGrid", ["subexpr", "@mut", [["get", "holidayGrid", ["loc", [null, [12, 14], [12, 25]]]]], [], []], "legend", ["subexpr", "@mut", [["get", "hoursLegend", ["loc", [null, [13, 9], [13, 20]]]]], [], []], "onRangeSelect", ["subexpr", "action", ["selectRange"], [], ["loc", [null, [14, 16], [14, 38]]]]], 1, null, ["loc", [null, [11, 0], [22, 19]]]], ["attribute", "class", ["concat", [["subexpr", "qa-cls", ["ko-admin_holidays_edit__buttons"], [], ["loc", [null, [24, 12], [24, 56]]]]]]], ["attribute", "onclick", ["subexpr", "action", ["save"], [], ["loc", [null, [26, 11], [26, 28]]]]], ["inline", "t", ["admin.businesshours.holidays.saveholiday"], [], ["loc", [null, [28, 4], [28, 52]]]], ["attribute", "onclick", ["subexpr", "action", ["cancelEditing"], [], ["loc", [null, [32, 26], [32, 52]]]]], ["inline", "t", ["generic.cancel"], [], ["loc", [null, [33, 4], [33, 26]]]]],
+      statements: [["block", "ko-form/field", [], [], 0, null, ["loc", [null, [1, 0], [8, 18]]]], ["block", "ko-grid-picker", [], ["initialGrid", ["subexpr", "@mut", [["get", "holidayGrid", ["loc", [null, [11, 14], [11, 25]]]]], [], []], "legend", ["subexpr", "@mut", [["get", "hoursLegend", ["loc", [null, [12, 9], [12, 20]]]]], [], []], "onRangeSelect", ["subexpr", "action", ["selectRange"], [], ["loc", [null, [13, 16], [13, 38]]]]], 1, null, ["loc", [null, [10, 0], [21, 19]]]], ["attribute", "class", ["concat", [["subexpr", "qa-cls", ["ko-admin_holidays_edit__buttons"], [], ["loc", [null, [23, 12], [23, 56]]]]]]], ["attribute", "onclick", ["subexpr", "action", ["save"], [], ["loc", [null, [25, 11], [25, 28]]]]], ["inline", "t", ["admin.businesshours.holidays.saveholiday"], [], ["loc", [null, [27, 4], [27, 52]]]], ["attribute", "onclick", ["subexpr", "action", ["cancelEditing"], [], ["loc", [null, [31, 26], [31, 52]]]]], ["inline", "t", ["generic.cancel"], [], ["loc", [null, [32, 4], [32, 26]]]]],
       locals: [],
       templates: [child0, child1]
     };
@@ -10491,12 +10568,12 @@ define("frontend-cp/components/ko-admin/inline-locale-edit/template", ["exports"
             return el0;
           },
           buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-            var element3 = dom.childAt(fragment, [1]);
-            var element4 = dom.childAt(element3, [1]);
+            var element5 = dom.childAt(fragment, [1]);
+            var element6 = dom.childAt(element5, [1]);
             var morphs = new Array(3);
-            morphs[0] = dom.createAttrMorph(element3, 'class');
-            morphs[1] = dom.createAttrMorph(element4, 'class');
-            morphs[2] = dom.createMorphAt(element4, 0, 0);
+            morphs[0] = dom.createAttrMorph(element5, 'class');
+            morphs[1] = dom.createAttrMorph(element6, 'class');
+            morphs[2] = dom.createMorphAt(element6, 0, 0);
             return morphs;
           },
           statements: [["attribute", "class", ["concat", ["ko-admin_inline-locale-edit__modal-button ", ["subexpr", "if", [["get", "isEdited", ["loc", [null, [4, 66], [4, 74]]]], "ko-admin_inline-locale-edit__modal-button--is-edited"], [], ["loc", [null, [4, 61], [4, 131]]]]]]], ["attribute", "class", ["concat", [["subexpr", "locale-flag", [["get", "defaultLocale", ["loc", [null, [5, 35], [5, 48]]]]], [], ["loc", [null, [5, 21], [5, 50]]]]]]], ["content", "defaultLocale", ["loc", [null, [5, 52], [5, 69]]]]],
@@ -10532,18 +10609,22 @@ define("frontend-cp/components/ko-admin/inline-locale-edit/template", ["exports"
                 var el0 = dom.createDocumentFragment();
                 var el1 = dom.createTextNode("            ");
                 dom.appendChild(el0, el1);
-                var el1 = dom.createComment("");
+                var el1 = dom.createElement("input");
+                dom.setAttribute(el1, "type", "text");
+                dom.setAttribute(el1, "class", "ko-admin_inline-locale-edit__text input input-text input-text--full");
                 dom.appendChild(el0, el1);
                 var el1 = dom.createTextNode("\n");
                 dom.appendChild(el0, el1);
                 return el0;
               },
               buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-                var morphs = new Array(1);
-                morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+                var element1 = dom.childAt(fragment, [1]);
+                var morphs = new Array(2);
+                morphs[0] = dom.createAttrMorph(element1, 'value');
+                morphs[1] = dom.createAttrMorph(element1, 'oninput');
                 return morphs;
               },
-              statements: [["inline", "input", [], ["type", "text", "class", "ko-admin_inline-locale-edit__text input input-text input-text--full", "value", ["subexpr", "@mut", [["get", "localeField.translation", ["loc", [null, [13, 114], [13, 137]]]]], [], []]], ["loc", [null, [13, 12], [13, 139]]]]],
+              statements: [["attribute", "value", ["get", "localeField.translation", ["loc", [null, [13, 115], [13, 138]]]]], ["attribute", "oninput", ["subexpr", "action", [["subexpr", "mut", [["get", "localeField.translation", ["loc", [null, [13, 163], [13, 186]]]]], [], ["loc", [null, [13, 158], [13, 187]]]]], ["value", "target.value"], ["loc", [null, [13, 149], [13, 210]]]]]],
               locals: [],
               templates: []
             };
@@ -10574,18 +10655,21 @@ define("frontend-cp/components/ko-admin/inline-locale-edit/template", ["exports"
                 var el0 = dom.createDocumentFragment();
                 var el1 = dom.createTextNode("            ");
                 dom.appendChild(el0, el1);
-                var el1 = dom.createComment("");
+                var el1 = dom.createElement("textarea");
+                dom.setAttribute(el1, "class", "ko-admin_inline-locale-edit__text input-text input-text--full");
                 dom.appendChild(el0, el1);
                 var el1 = dom.createTextNode("\n");
                 dom.appendChild(el0, el1);
                 return el0;
               },
               buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-                var morphs = new Array(1);
-                morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+                var element0 = dom.childAt(fragment, [1]);
+                var morphs = new Array(2);
+                morphs[0] = dom.createAttrMorph(element0, 'value');
+                morphs[1] = dom.createAttrMorph(element0, 'oninput');
                 return morphs;
               },
-              statements: [["inline", "textarea", [], ["type", "text", "class", "ko-admin_inline-locale-edit__text input-text input-text--full", "value", ["subexpr", "@mut", [["get", "localeField.translation", ["loc", [null, [16, 111], [16, 134]]]]], [], []]], ["loc", [null, [16, 12], [16, 136]]]]],
+              statements: [["attribute", "value", ["get", "localeField.translation", ["loc", [null, [16, 100], [16, 123]]]]], ["attribute", "oninput", ["subexpr", "action", [["subexpr", "mut", [["get", "localeField.translation", ["loc", [null, [16, 148], [16, 171]]]]], [], ["loc", [null, [16, 143], [16, 172]]]]], ["value", "target.value"], ["loc", [null, [16, 134], [16, 195]]]]]],
               locals: [],
               templates: []
             };
@@ -10628,10 +10712,10 @@ define("frontend-cp/components/ko-admin/inline-locale-edit/template", ["exports"
               return el0;
             },
             buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-              var element0 = dom.childAt(fragment, [1]);
+              var element2 = dom.childAt(fragment, [1]);
               var morphs = new Array(4);
-              morphs[0] = dom.createAttrMorph(element0, 'class');
-              morphs[1] = dom.createMorphAt(element0, 0, 0);
+              morphs[0] = dom.createAttrMorph(element2, 'class');
+              morphs[1] = dom.createMorphAt(element2, 0, 0);
               morphs[2] = dom.createMorphAt(fragment, 3, 3, contextualElement);
               morphs[3] = dom.createMorphAt(fragment, 4, 4, contextualElement);
               dom.insertBoundary(fragment, null);
@@ -10699,12 +10783,12 @@ define("frontend-cp/components/ko-admin/inline-locale-edit/template", ["exports"
             return el0;
           },
           buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-            var element1 = dom.childAt(fragment, [1]);
-            var element2 = dom.childAt(element1, [3, 1]);
+            var element3 = dom.childAt(fragment, [1]);
+            var element4 = dom.childAt(element3, [3, 1]);
             var morphs = new Array(3);
-            morphs[0] = dom.createMorphAt(element1, 1, 1);
-            morphs[1] = dom.createAttrMorph(element2, 'onClick');
-            morphs[2] = dom.createMorphAt(element2, 1, 1);
+            morphs[0] = dom.createMorphAt(element3, 1, 1);
+            morphs[1] = dom.createAttrMorph(element4, 'onClick');
+            morphs[2] = dom.createMorphAt(element4, 1, 1);
             return morphs;
           },
           statements: [["block", "each", [["get", "translationsForField", ["loc", [null, [10, 16], [10, 36]]]]], [], 0, null, ["loc", [null, [10, 8], [18, 17]]]], ["attribute", "onClick", ["get", "translationEditProxy.close", ["loc", [null, [21, 90], [21, 116]]]]], ["inline", "t", ["admin.casefields.buttons.complete_locale_edit"], [], ["loc", [null, [22, 12], [22, 65]]]]],
@@ -11497,8 +11581,7 @@ define("frontend-cp/components/ko-admin/macros/action/reply-contents/template", 
       return {
         meta: {
           "fragmentReason": {
-            "name": "missing-wrapper",
-            "problems": ["wrong-type"]
+            "name": "triple-curlies"
           },
           "revision": "Ember@2.4.1",
           "loc": {
@@ -11522,18 +11605,21 @@ define("frontend-cp/components/ko-admin/macros/action/reply-contents/template", 
           var el0 = dom.createDocumentFragment();
           var el1 = dom.createTextNode("  ");
           dom.appendChild(el0, el1);
-          var el1 = dom.createComment("");
+          var el1 = dom.createElement("textarea");
+          dom.setAttribute(el1, "class", "input-text ko-admin-macros-action-reply-contents__textarea");
           dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n");
           dom.appendChild(el0, el1);
           return el0;
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+          var element0 = dom.childAt(fragment, [1]);
+          var morphs = new Array(2);
+          morphs[0] = dom.createAttrMorph(element0, 'value');
+          morphs[1] = dom.createAttrMorph(element0, 'oninput');
           return morphs;
         },
-        statements: [["inline", "textarea", [], ["class", "input-text ko-admin-macros-action-reply-contents__textarea", "value", ["subexpr", "@mut", [["get", "macro.replyContents", ["loc", [null, [4, 10], [4, 29]]]]], [], []]], ["loc", [null, [2, 2], [4, 31]]]]],
+        statements: [["attribute", "value", ["get", "macro.replyContents", ["loc", [null, [3, 12], [3, 31]]]]], ["attribute", "oninput", ["subexpr", "action", [["subexpr", "mut", [["get", "macro.replyContents", ["loc", [null, [4, 26], [4, 45]]]]], [], ["loc", [null, [4, 21], [4, 46]]]]], ["value", "target.value"], ["loc", [null, [4, 12], [4, 69]]]]]],
         locals: [],
         templates: []
       };
@@ -12529,7 +12615,8 @@ define("frontend-cp/components/ko-admin/macros/edit/template", ["exports"], func
               dom.appendChild(el0, el1);
               var el1 = dom.createTextNode("\n      ");
               dom.appendChild(el0, el1);
-              var el1 = dom.createComment("");
+              var el1 = dom.createElement("input");
+              dom.setAttribute(el1, "type", "text");
               dom.appendChild(el0, el1);
               var el1 = dom.createTextNode("\n      ");
               dom.appendChild(el0, el1);
@@ -12540,13 +12627,17 @@ define("frontend-cp/components/ko-admin/macros/edit/template", ["exports"], func
               return el0;
             },
             buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-              var morphs = new Array(3);
+              var element1 = dom.childAt(fragment, [3]);
+              var morphs = new Array(6);
               morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
-              morphs[1] = dom.createMorphAt(fragment, 3, 3, contextualElement);
-              morphs[2] = dom.createMorphAt(fragment, 5, 5, contextualElement);
+              morphs[1] = dom.createAttrMorph(element1, 'class');
+              morphs[2] = dom.createAttrMorph(element1, 'value');
+              morphs[3] = dom.createAttrMorph(element1, 'oninput');
+              morphs[4] = dom.createAttrMorph(element1, 'disabled');
+              morphs[5] = dom.createMorphAt(fragment, 5, 5, contextualElement);
               return morphs;
             },
-            statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [15, 6], [15, 86]]]], ["inline", "input", [], ["class", ["subexpr", "concat", ["input input-text", ["subexpr", "qa-cls", [" qa-admin_macros_edit__title-input"], [], ["loc", [null, [16, 47], [16, 92]]]]], [], ["loc", [null, [16, 20], [16, 93]]]], "type", "text", "value", ["subexpr", "@mut", [["get", "macro.title", ["loc", [null, [16, 112], [16, 123]]]]], [], []], "disabled", ["subexpr", "@mut", [["get", "isSubmitting", ["loc", [null, [16, 133], [16, 145]]]]], [], []]], ["loc", [null, [16, 6], [16, 147]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "macro.errors.title", ["loc", [null, [17, 36], [17, 54]]]]], [], []]], ["loc", [null, [17, 6], [17, 56]]]]],
+            statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [15, 6], [15, 86]]]], ["attribute", "class", ["concat", ["input input-text ", ["subexpr", "qa-cls", ["qa-admin_macros_edit__title-input"], [], ["loc", [null, [16, 49], [16, 95]]]]]]], ["attribute", "value", ["get", "macro.title", ["loc", [null, [16, 105], [16, 116]]]]], ["attribute", "oninput", ["subexpr", "action", [["subexpr", "mut", [["get", "macro.title", ["loc", [null, [16, 141], [16, 152]]]]], [], ["loc", [null, [16, 136], [16, 153]]]]], ["value", "target.value"], ["loc", [null, [16, 127], [16, 176]]]]], ["attribute", "disabled", ["get", "isSubmitting", ["loc", [null, [16, 188], [16, 200]]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "macro.errors.title", ["loc", [null, [17, 36], [17, 54]]]]], [], []]], ["loc", [null, [17, 6], [17, 56]]]]],
             locals: [],
             templates: [child0]
           };
@@ -13851,7 +13942,10 @@ define("frontend-cp/components/ko-admin/roles/form/template", ["exports"], funct
               dom.appendChild(el0, el1);
               var el1 = dom.createTextNode("\n      ");
               dom.appendChild(el0, el1);
-              var el1 = dom.createComment("");
+              var el1 = dom.createElement("input");
+              dom.setAttribute(el1, "type", "text");
+              dom.setAttribute(el1, "class", "input-text");
+              dom.setAttribute(el1, "name", "title");
               dom.appendChild(el0, el1);
               var el1 = dom.createTextNode("\n      ");
               dom.appendChild(el0, el1);
@@ -13862,13 +13956,15 @@ define("frontend-cp/components/ko-admin/roles/form/template", ["exports"], funct
               return el0;
             },
             buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-              var morphs = new Array(3);
+              var element1 = dom.childAt(fragment, [3]);
+              var morphs = new Array(4);
               morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
-              morphs[1] = dom.createMorphAt(fragment, 3, 3, contextualElement);
-              morphs[2] = dom.createMorphAt(fragment, 5, 5, contextualElement);
+              morphs[1] = dom.createAttrMorph(element1, 'value');
+              morphs[2] = dom.createAttrMorph(element1, 'oninput');
+              morphs[3] = dom.createMorphAt(fragment, 5, 5, contextualElement);
               return morphs;
             },
-            statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [12, 6], [12, 96]]]], ["inline", "input", [], ["type", "text", "class", "input-text", "name", "title", "value", ["subexpr", "@mut", [["get", "role.title", ["loc", [null, [13, 64], [13, 74]]]]], [], []]], ["loc", [null, [13, 6], [13, 76]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "role.errors.title", ["loc", [null, [14, 36], [14, 53]]]]], [], []]], ["loc", [null, [14, 6], [14, 55]]]]],
+            statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [12, 6], [12, 96]]]], ["attribute", "value", ["get", "role.title", ["loc", [null, [13, 65], [13, 75]]]]], ["attribute", "oninput", ["subexpr", "action", [["subexpr", "mut", [["get", "role.title", ["loc", [null, [13, 100], [13, 110]]]]], [], ["loc", [null, [13, 95], [13, 111]]]]], ["value", "target.value"], ["loc", [null, [13, 86], [13, 134]]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "role.errors.title", ["loc", [null, [14, 36], [14, 53]]]]], [], []]], ["loc", [null, [14, 6], [14, 55]]]]],
             locals: [],
             templates: [child0]
           };
@@ -18582,19 +18678,24 @@ define("frontend-cp/components/ko-admin/team/template", ["exports"], function (e
               dom.appendChild(el0, el1);
               var el1 = dom.createTextNode("\n      ");
               dom.appendChild(el0, el1);
-              var el1 = dom.createComment("");
+              var el1 = dom.createElement("input");
+              dom.setAttribute(el1, "type", "text");
+              dom.setAttribute(el1, "class", "input-text qa-ko-admin_team__input-title");
               dom.appendChild(el0, el1);
               var el1 = dom.createTextNode("\n");
               dom.appendChild(el0, el1);
               return el0;
             },
             buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-              var morphs = new Array(2);
+              var element1 = dom.childAt(fragment, [3]);
+              var morphs = new Array(4);
               morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
-              morphs[1] = dom.createMorphAt(fragment, 3, 3, contextualElement);
+              morphs[1] = dom.createAttrMorph(element1, 'value');
+              morphs[2] = dom.createAttrMorph(element1, 'oninput');
+              morphs[3] = dom.createAttrMorph(element1, 'disabled');
               return morphs;
             },
-            statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [13, 6], [13, 90]]]], ["inline", "input", [], ["class", "input-text qa-ko-admin_team__input-title", "type", "text", "value", ["subexpr", "@mut", [["get", "team.title", ["loc", [null, [14, 81], [14, 91]]]]], [], []], "disabled", ["subexpr", "@mut", [["get", "isSubmitting", ["loc", [null, [14, 101], [14, 113]]]]], [], []]], ["loc", [null, [14, 6], [14, 115]]]]],
+            statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [13, 6], [13, 90]]]], ["attribute", "value", ["get", "team.title", ["loc", [null, [14, 82], [14, 92]]]]], ["attribute", "oninput", ["subexpr", "action", [["subexpr", "mut", [["get", "team.title", ["loc", [null, [14, 117], [14, 127]]]]], [], ["loc", [null, [14, 112], [14, 128]]]]], ["value", "target.value"], ["loc", [null, [14, 103], [14, 151]]]]], ["attribute", "disabled", ["get", "isSubmitting", ["loc", [null, [14, 163], [14, 175]]]]]],
             locals: [],
             templates: [child0]
           };
@@ -18730,12 +18831,12 @@ define("frontend-cp/components/ko-admin/team/template", ["exports"], function (e
             return el0;
           },
           buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-            var element1 = dom.childAt(fragment, [4]);
+            var element2 = dom.childAt(fragment, [4]);
             var morphs = new Array(4);
             morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
             morphs[1] = dom.createMorphAt(fragment, 2, 2, contextualElement);
-            morphs[2] = dom.createMorphAt(element1, 1, 1);
-            morphs[3] = dom.createMorphAt(element1, 3, 3);
+            morphs[2] = dom.createMorphAt(element2, 1, 1);
+            morphs[3] = dom.createMorphAt(element2, 3, 3);
             dom.insertBoundary(fragment, 0);
             return morphs;
           },
@@ -19132,7 +19233,9 @@ define("frontend-cp/components/ko-admin/team/template", ["exports"], function (e
           dom.setAttribute(el3, "class", "input--search t-right");
           var el4 = dom.createTextNode("\n        ");
           dom.appendChild(el3, el4);
-          var el4 = dom.createComment("");
+          var el4 = dom.createElement("input");
+          dom.setAttribute(el4, "type", "text");
+          dom.setAttribute(el4, "class", "input-text input-text--search");
           dom.appendChild(el3, el4);
           var el4 = dom.createTextNode("\n        ");
           dom.appendChild(el3, el4);
@@ -19166,19 +19269,22 @@ define("frontend-cp/components/ko-admin/team/template", ["exports"], function (e
           return el0;
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var element2 = dom.childAt(fragment, [5]);
-          var morphs = new Array(7);
+          var element3 = dom.childAt(fragment, [5]);
+          var element4 = dom.childAt(fragment, [7, 1, 1, 1]);
+          var morphs = new Array(9);
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           morphs[1] = dom.createMorphAt(fragment, 3, 3, contextualElement);
-          morphs[2] = dom.createMorphAt(dom.childAt(element2, [1]), 0, 0);
-          morphs[3] = dom.createMorphAt(dom.childAt(element2, [3]), 0, 0);
-          morphs[4] = dom.createMorphAt(dom.childAt(fragment, [7, 1, 1]), 1, 1);
-          morphs[5] = dom.createMorphAt(dom.childAt(fragment, [9]), 1, 1);
-          morphs[6] = dom.createMorphAt(fragment, 11, 11, contextualElement);
+          morphs[2] = dom.createMorphAt(dom.childAt(element3, [1]), 0, 0);
+          morphs[3] = dom.createMorphAt(dom.childAt(element3, [3]), 0, 0);
+          morphs[4] = dom.createAttrMorph(element4, 'value');
+          morphs[5] = dom.createAttrMorph(element4, 'oninput');
+          morphs[6] = dom.createAttrMorph(element4, 'placeholder');
+          morphs[7] = dom.createMorphAt(dom.childAt(fragment, [9]), 1, 1);
+          morphs[8] = dom.createMorphAt(fragment, 11, 11, contextualElement);
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [["inline", "ko-admin/page-header", [], ["title", ["subexpr", "@mut", [["get", "title", ["loc", [null, [6, 10], [6, 15]]]]], [], []], "onCancel", ["subexpr", "@mut", [["get", "onCancel", ["loc", [null, [7, 13], [7, 21]]]]], [], []], "buttonText", ["subexpr", "t", ["generic.save"], [], ["loc", [null, [8, 15], [8, 33]]]]], ["loc", [null, [5, 2], [9, 4]]]], ["block", "ko-admin/forms/group", [], ["legend", ["subexpr", "t", ["admin.teams.legend.edit.details"], [], ["loc", [null, [11, 33], [11, 70]]]]], 0, null, ["loc", [null, [11, 2], [30, 27]]]], ["inline", "t", ["admin.teams.info.title"], [], ["loc", [null, [33, 8], [33, 38]]]], ["inline", "t", ["admin.teams.info.content"], [], ["loc", [null, [34, 7], [34, 39]]]], ["inline", "input", [], ["class", "input-text input-text--search", "type", "text", "value", ["subexpr", "@mut", [["get", "filter", ["loc", [null, [40, 72], [40, 78]]]]], [], []], "placeholder", ["subexpr", "t", ["admin.teams.labels.filter_agents"], [], ["loc", [null, [40, 91], [40, 129]]]]], ["loc", [null, [40, 8], [40, 131]]]], ["block", "if", [["get", "isMembersLoading", ["loc", [null, [47, 10], [47, 26]]]]], [], 1, 2, ["loc", [null, [47, 4], [70, 11]]]], ["block", "if", [["get", "team.id", ["loc", [null, [73, 8], [73, 15]]]]], [], 3, null, ["loc", [null, [73, 2], [77, 9]]]]],
+        statements: [["inline", "ko-admin/page-header", [], ["title", ["subexpr", "@mut", [["get", "title", ["loc", [null, [6, 10], [6, 15]]]]], [], []], "onCancel", ["subexpr", "@mut", [["get", "onCancel", ["loc", [null, [7, 13], [7, 21]]]]], [], []], "buttonText", ["subexpr", "t", ["generic.save"], [], ["loc", [null, [8, 15], [8, 33]]]]], ["loc", [null, [5, 2], [9, 4]]]], ["block", "ko-admin/forms/group", [], ["legend", ["subexpr", "t", ["admin.teams.legend.edit.details"], [], ["loc", [null, [11, 33], [11, 70]]]]], 0, null, ["loc", [null, [11, 2], [30, 27]]]], ["inline", "t", ["admin.teams.info.title"], [], ["loc", [null, [33, 8], [33, 38]]]], ["inline", "t", ["admin.teams.info.content"], [], ["loc", [null, [34, 7], [34, 39]]]], ["attribute", "value", ["get", "filter", ["loc", [null, [40, 73], [40, 79]]]]], ["attribute", "oninput", ["subexpr", "action", [["subexpr", "mut", [["get", "filter", ["loc", [null, [40, 104], [40, 110]]]]], [], ["loc", [null, [40, 99], [40, 111]]]]], ["value", "target.value"], ["loc", [null, [40, 90], [40, 134]]]]], ["attribute", "placeholder", ["subexpr", "t", ["admin.teams.labels.filter_agents"], [], ["loc", [null, [40, 147], [40, 187]]]]], ["block", "if", [["get", "isMembersLoading", ["loc", [null, [47, 10], [47, 26]]]]], [], 1, 2, ["loc", [null, [47, 4], [70, 11]]]], ["block", "if", [["get", "team.id", ["loc", [null, [73, 8], [73, 15]]]]], [], 3, null, ["loc", [null, [73, 2], [77, 9]]]]],
         locals: ["_", "isSubmitting"],
         templates: [child0, child1, child2, child3]
       };
@@ -20592,7 +20698,10 @@ define("frontend-cp/components/ko-admin/views/edit/template", ["exports"], funct
               dom.appendChild(el0, el1);
               var el1 = dom.createTextNode("\n      ");
               dom.appendChild(el0, el1);
-              var el1 = dom.createComment("");
+              var el1 = dom.createElement("input");
+              dom.setAttribute(el1, "type", "text");
+              dom.setAttribute(el1, "class", "input input-text");
+              dom.setAttribute(el1, "name", "title");
               dom.appendChild(el0, el1);
               var el1 = dom.createTextNode("\n      ");
               dom.appendChild(el0, el1);
@@ -20603,13 +20712,16 @@ define("frontend-cp/components/ko-admin/views/edit/template", ["exports"], funct
               return el0;
             },
             buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-              var morphs = new Array(3);
+              var element2 = dom.childAt(fragment, [3]);
+              var morphs = new Array(5);
               morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
-              morphs[1] = dom.createMorphAt(fragment, 3, 3, contextualElement);
-              morphs[2] = dom.createMorphAt(fragment, 5, 5, contextualElement);
+              morphs[1] = dom.createAttrMorph(element2, 'value');
+              morphs[2] = dom.createAttrMorph(element2, 'oninput');
+              morphs[3] = dom.createAttrMorph(element2, 'disabled');
+              morphs[4] = dom.createMorphAt(fragment, 5, 5, contextualElement);
               return morphs;
             },
-            statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [14, 6], [14, 90]]]], ["inline", "input", [], ["class", "input input-text", "name", "title", "type", "text", "value", ["subexpr", "@mut", [["get", "currentView.title", ["loc", [null, [15, 70], [15, 87]]]]], [], []], "disabled", ["subexpr", "@mut", [["get", "isSubmitting", ["loc", [null, [15, 97], [15, 109]]]]], [], []]], ["loc", [null, [15, 6], [15, 111]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "currentView.errors.title", ["loc", [null, [16, 36], [16, 60]]]]], [], []]], ["loc", [null, [16, 6], [16, 62]]]]],
+            statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [14, 6], [14, 90]]]], ["attribute", "value", ["get", "currentView.title", ["loc", [null, [15, 71], [15, 88]]]]], ["attribute", "oninput", ["subexpr", "action", [["subexpr", "mut", [["get", "currentView.title", ["loc", [null, [15, 113], [15, 130]]]]], [], ["loc", [null, [15, 108], [15, 131]]]]], ["value", "target.value"], ["loc", [null, [15, 99], [15, 154]]]]], ["attribute", "disabled", ["get", "isSubmitting", ["loc", [null, [15, 166], [15, 178]]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "currentView.errors.title", ["loc", [null, [16, 36], [16, 60]]]]], [], []]], ["loc", [null, [16, 6], [16, 62]]]]],
             locals: [],
             templates: [child0]
           };
@@ -22945,7 +23057,10 @@ define("frontend-cp/components/ko-agent-dropdown/create-organisation/template", 
             dom.appendChild(el0, el1);
             var el1 = dom.createTextNode("\n      ");
             dom.appendChild(el0, el1);
-            var el1 = dom.createComment("");
+            var el1 = dom.createElement("input");
+            dom.setAttribute(el1, "type", "text");
+            dom.setAttribute(el1, "class", "ko-agent-dropdown-create-organisation__name input-text u-1/1");
+            dom.setAttribute(el1, "name", "name");
             dom.appendChild(el0, el1);
             var el1 = dom.createTextNode("\n      ");
             dom.appendChild(el0, el1);
@@ -22956,13 +23071,16 @@ define("frontend-cp/components/ko-agent-dropdown/create-organisation/template", 
             return el0;
           },
           buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-            var morphs = new Array(3);
+            var element0 = dom.childAt(fragment, [3]);
+            var morphs = new Array(5);
             morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
-            morphs[1] = dom.createMorphAt(fragment, 3, 3, contextualElement);
-            morphs[2] = dom.createMorphAt(fragment, 5, 5, contextualElement);
+            morphs[1] = dom.createAttrMorph(element0, 'value');
+            morphs[2] = dom.createAttrMorph(element0, 'oninput');
+            morphs[3] = dom.createAttrMorph(element0, 'disabled');
+            morphs[4] = dom.createMorphAt(fragment, 5, 5, contextualElement);
             return morphs;
           },
-          statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [13, 6], [13, 106]]]], ["inline", "input", [], ["type", "text", "class", "ko-agent-dropdown-create-organisation__name input-text u-1/1", "name", "name", "value", ["subexpr", "@mut", [["get", "organization.name", ["loc", [null, [14, 113], [14, 130]]]]], [], []], "disabled", ["subexpr", "@mut", [["get", "isSubmitting", ["loc", [null, [14, 140], [14, 152]]]]], [], []]], ["loc", [null, [14, 6], [14, 154]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "organization.errors.name", ["loc", [null, [15, 36], [15, 60]]]]], [], []]], ["loc", [null, [15, 6], [15, 62]]]]],
+          statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [13, 6], [13, 106]]]], ["attribute", "value", ["get", "organization.name", ["loc", [null, [14, 114], [14, 131]]]]], ["attribute", "oninput", ["subexpr", "action", [["subexpr", "mut", [["get", "organization.name", ["loc", [null, [14, 156], [14, 173]]]]], [], ["loc", [null, [14, 151], [14, 174]]]]], ["value", "target.value"], ["loc", [null, [14, 142], [14, 197]]]]], ["attribute", "disabled", ["get", "isSubmitting", ["loc", [null, [14, 209], [14, 221]]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "organization.errors.name", ["loc", [null, [15, 36], [15, 60]]]]], [], []]], ["loc", [null, [15, 6], [15, 62]]]]],
           locals: [],
           templates: [child0]
         };
@@ -23356,7 +23474,7 @@ define("frontend-cp/components/ko-agent-dropdown/create-user/template", ["export
                 "column": 4
               },
               "end": {
-                "line": 15,
+                "line": 20,
                 "column": 4
               }
             },
@@ -23374,19 +23492,26 @@ define("frontend-cp/components/ko-agent-dropdown/create-user/template", ["export
             dom.appendChild(el0, el1);
             var el1 = dom.createTextNode("\n      ");
             dom.appendChild(el0, el1);
-            var el1 = dom.createComment("");
+            var el1 = dom.createElement("input");
+            dom.setAttribute(el1, "type", "text");
+            dom.setAttribute(el1, "tabindex", "1");
+            dom.setAttribute(el1, "class", "ko-agent-dropdown-create-user__first-name input-text u-1/1");
+            dom.setAttribute(el1, "name", "full_name");
             dom.appendChild(el0, el1);
             var el1 = dom.createTextNode("\n");
             dom.appendChild(el0, el1);
             return el0;
           },
           buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-            var morphs = new Array(2);
+            var element1 = dom.childAt(fragment, [3]);
+            var morphs = new Array(4);
             morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
-            morphs[1] = dom.createMorphAt(fragment, 3, 3, contextualElement);
+            morphs[1] = dom.createAttrMorph(element1, 'value');
+            morphs[2] = dom.createAttrMorph(element1, 'oninput');
+            morphs[3] = dom.createAttrMorph(element1, 'disabled');
             return morphs;
           },
-          statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [13, 6], [13, 98]]]], ["inline", "input", [], ["type", "text", "tabindex", 1, "class", "ko-agent-dropdown-create-user__first-name input-text u-1/1", "name", "full_name", "value", ["subexpr", "@mut", [["get", "fields.full_name.value", ["loc", [null, [14, 127], [14, 149]]]]], [], []], "disabled", ["subexpr", "@mut", [["get", "isSubmitting", ["loc", [null, [14, 159], [14, 171]]]]], [], []]], ["loc", [null, [14, 6], [14, 173]]]]],
+          statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [13, 6], [13, 98]]]], ["attribute", "value", ["get", "fields.full_name.value", ["loc", [null, [17, 16], [17, 38]]]]], ["attribute", "oninput", ["subexpr", "action", [["subexpr", "mut", [["get", "fields.full_name.value", ["loc", [null, [18, 30], [18, 52]]]]], [], ["loc", [null, [18, 25], [18, 53]]]]], ["value", "target.value"], ["loc", [null, [18, 16], [18, 76]]]]], ["attribute", "disabled", ["get", "isSubmitting", ["loc", [null, [19, 19], [19, 31]]]]]],
           locals: [],
           templates: [child0]
         };
@@ -23400,11 +23525,11 @@ define("frontend-cp/components/ko-agent-dropdown/create-user/template", ["export
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 18,
+                  "line": 23,
                   "column": 6
                 },
                 "end": {
-                  "line": 18,
+                  "line": 23,
                   "column": 75
                 }
               },
@@ -23427,7 +23552,7 @@ define("frontend-cp/components/ko-agent-dropdown/create-user/template", ["export
               dom.insertBoundary(fragment, null);
               return morphs;
             },
-            statements: [["inline", "t", ["generic.create_user_panel.email_label"], [], ["loc", [null, [18, 30], [18, 75]]]]],
+            statements: [["inline", "t", ["generic.create_user_panel.email_label"], [], ["loc", [null, [23, 30], [23, 75]]]]],
             locals: [],
             templates: []
           };
@@ -23439,11 +23564,11 @@ define("frontend-cp/components/ko-agent-dropdown/create-user/template", ["export
             "loc": {
               "source": null,
               "start": {
-                "line": 17,
+                "line": 22,
                 "column": 4
               },
               "end": {
-                "line": 20,
+                "line": 28,
                 "column": 4
               }
             },
@@ -23461,19 +23586,26 @@ define("frontend-cp/components/ko-agent-dropdown/create-user/template", ["export
             dom.appendChild(el0, el1);
             var el1 = dom.createTextNode("\n      ");
             dom.appendChild(el0, el1);
-            var el1 = dom.createComment("");
+            var el1 = dom.createElement("input");
+            dom.setAttribute(el1, "type", "text");
+            dom.setAttribute(el1, "tabindex", "2");
+            dom.setAttribute(el1, "class", "input-text u-1/1");
+            dom.setAttribute(el1, "name", "email");
             dom.appendChild(el0, el1);
             var el1 = dom.createTextNode("\n");
             dom.appendChild(el0, el1);
             return el0;
           },
           buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-            var morphs = new Array(2);
+            var element0 = dom.childAt(fragment, [3]);
+            var morphs = new Array(4);
             morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
-            morphs[1] = dom.createMorphAt(fragment, 3, 3, contextualElement);
+            morphs[1] = dom.createAttrMorph(element0, 'value');
+            morphs[2] = dom.createAttrMorph(element0, 'oninput');
+            morphs[3] = dom.createAttrMorph(element0, 'disabled');
             return morphs;
           },
-          statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [18, 6], [18, 99]]]], ["inline", "input", [], ["type", "text", "tabindex", 2, "class", "input-text u-1/1", "name", "email", "value", ["subexpr", "@mut", [["get", "fields.email.value", ["loc", [null, [19, 81], [19, 99]]]]], [], []], "disabled", ["subexpr", "@mut", [["get", "isSubmitting", ["loc", [null, [19, 109], [19, 121]]]]], [], []]], ["loc", [null, [19, 6], [19, 123]]]]],
+          statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [23, 6], [23, 99]]]], ["attribute", "value", ["get", "fields.email.value", ["loc", [null, [25, 16], [25, 34]]]]], ["attribute", "oninput", ["subexpr", "action", [["subexpr", "mut", [["get", "fields.email.value", ["loc", [null, [26, 30], [26, 48]]]]], [], ["loc", [null, [26, 25], [26, 49]]]]], ["value", "target.value"], ["loc", [null, [26, 16], [26, 72]]]]], ["attribute", "disabled", ["get", "isSubmitting", ["loc", [null, [27, 19], [27, 31]]]]]],
           locals: [],
           templates: [child0]
         };
@@ -23489,7 +23621,7 @@ define("frontend-cp/components/ko-agent-dropdown/create-user/template", ["export
               "column": 2
             },
             "end": {
-              "line": 27,
+              "line": 35,
               "column": 2
             }
           },
@@ -23531,7 +23663,7 @@ define("frontend-cp/components/ko-agent-dropdown/create-user/template", ["export
           dom.insertBoundary(fragment, 0);
           return morphs;
         },
-        statements: [["block", "ko-form/field", [], ["field", ["subexpr", "@mut", [["get", "fields.full_name", ["loc", [null, [12, 27], [12, 43]]]]], [], []]], 0, null, ["loc", [null, [12, 4], [15, 22]]]], ["block", "ko-form/field", [], ["field", ["subexpr", "@mut", [["get", "fields.email", ["loc", [null, [17, 27], [17, 39]]]]], [], []]], 1, null, ["loc", [null, [17, 4], [20, 22]]]], ["inline", "t", ["generic.create_user_panel.info"], [], ["loc", [null, [22, 41], [22, 79]]]], ["inline", "ko-form/buttons", [], ["onCancel", ["subexpr", "@mut", [["get", "onCancel", ["loc", [null, [24, 15], [24, 23]]]]], [], []], "submitLabel", ["subexpr", "t", ["generic.create_user_panel.submit"], [], ["loc", [null, [25, 18], [25, 56]]]], "cancelLabel", ["subexpr", "t", ["generic.cancel"], [], ["loc", [null, [26, 18], [26, 38]]]]], ["loc", [null, [23, 4], [26, 40]]]]],
+        statements: [["block", "ko-form/field", [], ["field", ["subexpr", "@mut", [["get", "fields.full_name", ["loc", [null, [12, 27], [12, 43]]]]], [], []]], 0, null, ["loc", [null, [12, 4], [20, 22]]]], ["block", "ko-form/field", [], ["field", ["subexpr", "@mut", [["get", "fields.email", ["loc", [null, [22, 27], [22, 39]]]]], [], []]], 1, null, ["loc", [null, [22, 4], [28, 22]]]], ["inline", "t", ["generic.create_user_panel.info"], [], ["loc", [null, [30, 41], [30, 79]]]], ["inline", "ko-form/buttons", [], ["onCancel", ["subexpr", "@mut", [["get", "onCancel", ["loc", [null, [32, 15], [32, 23]]]]], [], []], "submitLabel", ["subexpr", "t", ["generic.create_user_panel.submit"], [], ["loc", [null, [33, 18], [33, 56]]]], "cancelLabel", ["subexpr", "t", ["generic.cancel"], [], ["loc", [null, [34, 18], [34, 38]]]]], ["loc", [null, [31, 4], [34, 40]]]]],
         locals: ["_", "isSubmitting"],
         templates: [child0, child1]
       };
@@ -23550,7 +23682,7 @@ define("frontend-cp/components/ko-agent-dropdown/create-user/template", ["export
             "column": 0
           },
           "end": {
-            "line": 29,
+            "line": 37,
             "column": 0
           }
         },
@@ -23593,7 +23725,7 @@ define("frontend-cp/components/ko-agent-dropdown/create-user/template", ["export
         morphs[1] = dom.createMorphAt(dom.childAt(fragment, [2]), 1, 1);
         return morphs;
       },
-      statements: [["inline", "t", ["generic.create_user_panel.title"], [], ["loc", [null, [2, 39], [2, 78]]]], ["block", "ko-form", [], ["fields", ["subexpr", "@mut", [["get", "fields", ["loc", [null, [7, 11], [7, 17]]]]], [], []], "onSubmit", ["subexpr", "action", ["submit"], [], ["loc", [null, [8, 13], [8, 30]]]], "onSuccess", ["subexpr", "@mut", [["get", "onCreate", ["loc", [null, [9, 14], [9, 22]]]]], [], []], "onError", ["subexpr", "action", ["onError"], [], ["loc", [null, [10, 12], [10, 30]]]]], 0, null, ["loc", [null, [6, 2], [27, 14]]]]],
+      statements: [["inline", "t", ["generic.create_user_panel.title"], [], ["loc", [null, [2, 39], [2, 78]]]], ["block", "ko-form", [], ["fields", ["subexpr", "@mut", [["get", "fields", ["loc", [null, [7, 11], [7, 17]]]]], [], []], "onSubmit", ["subexpr", "action", ["submit"], [], ["loc", [null, [8, 13], [8, 30]]]], "onSuccess", ["subexpr", "@mut", [["get", "onCreate", ["loc", [null, [9, 14], [9, 22]]]]], [], []], "onError", ["subexpr", "action", ["onError"], [], ["loc", [null, [10, 12], [10, 30]]]]], 0, null, ["loc", [null, [6, 2], [35, 14]]]]],
       locals: [],
       templates: [child0]
     };
@@ -39051,7 +39183,7 @@ define("frontend-cp/components/ko-identities/form/template", ["exports"], functi
         meta: {
           "fragmentReason": {
             "name": "missing-wrapper",
-            "problems": ["wrong-type", "multiple-nodes"]
+            "problems": ["multiple-nodes", "wrong-type"]
           },
           "revision": "Ember@2.4.1",
           "loc": {
@@ -39061,7 +39193,7 @@ define("frontend-cp/components/ko-identities/form/template", ["exports"], functi
               "column": 0
             },
             "end": {
-              "line": 13,
+              "line": 17,
               "column": 0
             }
           },
@@ -39075,7 +39207,8 @@ define("frontend-cp/components/ko-identities/form/template", ["exports"], functi
           var el0 = dom.createDocumentFragment();
           var el1 = dom.createTextNode("  ");
           dom.appendChild(el0, el1);
-          var el1 = dom.createComment("");
+          var el1 = dom.createElement("input");
+          dom.setAttribute(el1, "class", "input-text--full");
           dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n  ");
           dom.appendChild(el0, el1);
@@ -39121,21 +39254,26 @@ define("frontend-cp/components/ko-identities/form/template", ["exports"], functi
           return el0;
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var element0 = dom.childAt(fragment, [5]);
-          var element1 = dom.childAt(element0, [1]);
-          var element2 = dom.childAt(element0, [5]);
-          var morphs = new Array(8);
-          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
-          morphs[1] = dom.createMorphAt(fragment, 3, 3, contextualElement);
-          morphs[2] = dom.createAttrMorph(element1, 'disabled');
-          morphs[3] = dom.createMorphAt(element1, 1, 1);
-          morphs[4] = dom.createMorphAt(element0, 3, 3);
-          morphs[5] = dom.createAttrMorph(element2, 'onclick');
+          var element0 = dom.childAt(fragment, [1]);
+          var element1 = dom.childAt(fragment, [5]);
+          var element2 = dom.childAt(element1, [1]);
+          var element3 = dom.childAt(element1, [5]);
+          var morphs = new Array(12);
+          morphs[0] = dom.createAttrMorph(element0, 'type');
+          morphs[1] = dom.createAttrMorph(element0, 'value');
+          morphs[2] = dom.createAttrMorph(element0, 'oninput');
+          morphs[3] = dom.createAttrMorph(element0, 'placeholder');
+          morphs[4] = dom.createAttrMorph(element0, 'disabled');
+          morphs[5] = dom.createMorphAt(fragment, 3, 3, contextualElement);
           morphs[6] = dom.createAttrMorph(element2, 'disabled');
           morphs[7] = dom.createMorphAt(element2, 1, 1);
+          morphs[8] = dom.createMorphAt(element1, 3, 3);
+          morphs[9] = dom.createAttrMorph(element3, 'onclick');
+          morphs[10] = dom.createAttrMorph(element3, 'disabled');
+          morphs[11] = dom.createMorphAt(element3, 1, 1);
           return morphs;
         },
-        statements: [["inline", "input", [], ["type", ["subexpr", "@mut", [["get", "inputType", ["loc", [null, [2, 15], [2, 24]]]]], [], []], "value", ["subexpr", "@mut", [["get", "mainField", ["loc", [null, [2, 31], [2, 40]]]]], [], []], "placeholder", ["subexpr", "t", [["get", "placeholder", ["loc", [null, [2, 56], [2, 67]]]]], [], ["loc", [null, [2, 53], [2, 68]]]], "disabled", ["subexpr", "@mut", [["get", "identity.isSaving", ["loc", [null, [2, 78], [2, 95]]]]], [], []], "class", "input-text--full"], ["loc", [null, [2, 2], [2, 122]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "identity.errors", ["loc", [null, [3, 32], [3, 47]]]]], [], []]], ["loc", [null, [3, 2], [3, 49]]]], ["attribute", "disabled", ["get", "isDisabled", ["loc", [null, [5, 68], [5, 78]]]]], ["inline", "t", ["generic.save"], [], ["loc", [null, [6, 6], [6, 26]]]], ["inline", "t", ["generic.or"], [], ["loc", [null, [8, 4], [8, 22]]]], ["attribute", "onclick", ["subexpr", "action", ["cancel"], [], ["loc", [null, [9, 34], [9, 53]]]]], ["attribute", "disabled", ["get", "isDisabled", ["loc", [null, [9, 92], [9, 102]]]]], ["inline", "t", ["generic.cancel"], [], ["loc", [null, [10, 6], [10, 28]]]]],
+        statements: [["attribute", "type", ["get", "inputType", ["loc", [null, [2, 16], [2, 25]]]]], ["attribute", "value", ["get", "mainField", ["loc", [null, [3, 12], [3, 21]]]]], ["attribute", "oninput", ["subexpr", "action", [["subexpr", "mut", [["get", "mainField", ["loc", [null, [4, 26], [4, 35]]]]], [], ["loc", [null, [4, 21], [4, 36]]]]], ["value", "target.value"], ["loc", [null, [4, 12], [4, 59]]]]], ["attribute", "placeholder", ["concat", [["subexpr", "t", [["get", "placeholder", ["loc", [null, [5, 21], [5, 32]]]]], [], ["loc", [null, [5, 17], [5, 34]]]]]]], ["attribute", "disabled", ["get", "identity.isSaving", ["loc", [null, [6, 15], [6, 32]]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "identity.errors", ["loc", [null, [7, 32], [7, 47]]]]], [], []]], ["loc", [null, [7, 2], [7, 49]]]], ["attribute", "disabled", ["get", "isDisabled", ["loc", [null, [9, 68], [9, 78]]]]], ["inline", "t", ["generic.save"], [], ["loc", [null, [10, 6], [10, 26]]]], ["inline", "t", ["generic.or"], [], ["loc", [null, [12, 4], [12, 22]]]], ["attribute", "onclick", ["subexpr", "action", ["cancel"], [], ["loc", [null, [13, 34], [13, 53]]]]], ["attribute", "disabled", ["get", "isDisabled", ["loc", [null, [13, 92], [13, 102]]]]], ["inline", "t", ["generic.cancel"], [], ["loc", [null, [14, 6], [14, 28]]]]],
         locals: ["_", "isDisabled"],
         templates: []
       };
@@ -39154,7 +39292,7 @@ define("frontend-cp/components/ko-identities/form/template", ["exports"], functi
             "column": 0
           },
           "end": {
-            "line": 15,
+            "line": 19,
             "column": 0
           }
         },
@@ -39178,7 +39316,7 @@ define("frontend-cp/components/ko-identities/form/template", ["exports"], functi
         dom.insertBoundary(fragment, 0);
         return morphs;
       },
-      statements: [["block", "ko-form", [], ["onSubmit", ["subexpr", "action", ["save"], [], ["loc", [null, [1, 20], [1, 35]]]]], 0, null, ["loc", [null, [1, 0], [13, 12]]]]],
+      statements: [["block", "ko-form", [], ["onSubmit", ["subexpr", "action", ["save"], [], ["loc", [null, [1, 20], [1, 35]]]]], 0, null, ["loc", [null, [1, 0], [17, 12]]]]],
       locals: [],
       templates: [child0]
     };
@@ -43951,7 +44089,7 @@ define("frontend-cp/components/ko-login-otp/template", ["exports"], function (ex
             "column": 0
           },
           "end": {
-            "line": 7,
+            "line": 8,
             "column": 0
           }
         },
@@ -43965,9 +44103,12 @@ define("frontend-cp/components/ko-login-otp/template", ["exports"], function (ex
         var el0 = dom.createDocumentFragment();
         var el1 = dom.createElement("div");
         dom.setAttribute(el1, "class", "otp-form login-form__wrapper js-otp-form");
-        var el2 = dom.createTextNode("\n    ");
+        var el2 = dom.createTextNode("\n  ");
         dom.appendChild(el1, el2);
-        var el2 = dom.createComment("");
+        var el2 = dom.createElement("input");
+        dom.setAttribute(el2, "type", "text");
+        dom.setAttribute(el2, "name", "otp-code");
+        dom.setAttribute(el2, "class", "login__input u-intimate");
         dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n");
         dom.appendChild(el1, el2);
@@ -43977,11 +44118,15 @@ define("frontend-cp/components/ko-login-otp/template", ["exports"], function (ex
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var morphs = new Array(1);
-        morphs[0] = dom.createMorphAt(dom.childAt(fragment, [0]), 1, 1);
+        var element0 = dom.childAt(fragment, [0, 1]);
+        var morphs = new Array(4);
+        morphs[0] = dom.createAttrMorph(element0, 'placeholder');
+        morphs[1] = dom.createAttrMorph(element0, 'value');
+        morphs[2] = dom.createAttrMorph(element0, 'oninput');
+        morphs[3] = dom.createAttrMorph(element0, 'disabled');
         return morphs;
       },
-      statements: [["inline", "input", [], ["type", "text", "value", ["subexpr", "@mut", [["get", "otp", ["loc", [null, [2, 30], [2, 33]]]]], [], []], "name", "otp-code", "class", "login__input u-intimate", "placeholder", ["subexpr", "t", ["login.verificationcode"], [], ["loc", [null, [4, 18], [4, 46]]]], "disabled", ["subexpr", "@mut", [["get", "isLoading", ["loc", [null, [5, 15], [5, 24]]]]], [], []]], ["loc", [null, [2, 4], [5, 26]]]]],
+      statements: [["attribute", "placeholder", ["subexpr", "t", ["login.verificationcode"], [], ["loc", [null, [3, 16], [3, 46]]]]], ["attribute", "value", ["get", "otp", ["loc", [null, [4, 12], [4, 15]]]]], ["attribute", "oninput", ["subexpr", "action", [["subexpr", "mut", [["get", "otp", ["loc", [null, [5, 26], [5, 29]]]]], [], ["loc", [null, [5, 21], [5, 30]]]]], ["value", "target.value"], ["loc", [null, [5, 12], [5, 53]]]]], ["attribute", "disabled", ["get", "isLoading", ["loc", [null, [6, 15], [6, 24]]]]]],
       locals: [],
       templates: []
     };
@@ -44005,7 +44150,7 @@ define("frontend-cp/components/ko-login-password/template", ["exports"], functio
             "column": 0
           },
           "end": {
-            "line": 4,
+            "line": 12,
             "column": 6
           }
         },
@@ -44019,13 +44164,20 @@ define("frontend-cp/components/ko-login-password/template", ["exports"], functio
         var el0 = dom.createDocumentFragment();
         var el1 = dom.createElement("div");
         dom.setAttribute(el1, "class", "login-form__wrapper");
-        var el2 = dom.createTextNode("\n    ");
+        var el2 = dom.createTextNode("\n  ");
         dom.appendChild(el1, el2);
-        var el2 = dom.createComment("");
+        var el2 = dom.createElement("input");
+        dom.setAttribute(el2, "type", "email");
+        dom.setAttribute(el2, "name", "email");
+        dom.setAttribute(el2, "autofocus", "");
+        dom.setAttribute(el2, "class", "login__input");
         dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n    ");
+        var el2 = dom.createTextNode("\n  ");
         dom.appendChild(el1, el2);
-        var el2 = dom.createComment("");
+        var el2 = dom.createElement("input");
+        dom.setAttribute(el2, "type", "password");
+        dom.setAttribute(el2, "name", "password");
+        dom.setAttribute(el2, "class", "login__input");
         dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n");
         dom.appendChild(el1, el2);
@@ -44034,12 +44186,20 @@ define("frontend-cp/components/ko-login-password/template", ["exports"], functio
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
         var element0 = dom.childAt(fragment, [0]);
-        var morphs = new Array(2);
-        morphs[0] = dom.createMorphAt(element0, 1, 1);
-        morphs[1] = dom.createMorphAt(element0, 3, 3);
+        var element1 = dom.childAt(element0, [1]);
+        var element2 = dom.childAt(element0, [3]);
+        var morphs = new Array(8);
+        morphs[0] = dom.createAttrMorph(element1, 'placeholder');
+        morphs[1] = dom.createAttrMorph(element1, 'value');
+        morphs[2] = dom.createAttrMorph(element1, 'oninput');
+        morphs[3] = dom.createAttrMorph(element1, 'disabled');
+        morphs[4] = dom.createAttrMorph(element2, 'placeholder');
+        morphs[5] = dom.createAttrMorph(element2, 'value');
+        morphs[6] = dom.createAttrMorph(element2, 'oninput');
+        morphs[7] = dom.createAttrMorph(element2, 'disabled');
         return morphs;
       },
-      statements: [["inline", "input", [], ["type", "email", "value", ["subexpr", "@mut", [["get", "model.email", ["loc", [null, [2, 31], [2, 42]]]]], [], []], "name", "email", "autofocus", "autofocus", "class", "login__input", "placeholder", ["subexpr", "t", ["login.email"], [], ["loc", [null, [2, 111], [2, 128]]]], "disabled", ["subexpr", "@mut", [["get", "isLoading", ["loc", [null, [2, 138], [2, 147]]]]], [], []]], ["loc", [null, [2, 4], [2, 149]]]], ["inline", "input", [], ["type", "password", "value", ["subexpr", "@mut", [["get", "model.password", ["loc", [null, [3, 34], [3, 48]]]]], [], []], "name", "password", "class", "login__input", "placeholder", ["subexpr", "t", ["login.password"], [], ["loc", [null, [3, 98], [3, 118]]]], "disabled", ["subexpr", "@mut", [["get", "isLoading", ["loc", [null, [3, 128], [3, 137]]]]], [], []]], ["loc", [null, [3, 4], [3, 139]]]]],
+      statements: [["attribute", "placeholder", ["subexpr", "t", ["login.email"], [], ["loc", [null, [3, 16], [3, 35]]]]], ["attribute", "value", ["get", "model.email", ["loc", [null, [4, 12], [4, 23]]]]], ["attribute", "oninput", ["subexpr", "action", [["subexpr", "mut", [["get", "model.email", ["loc", [null, [5, 26], [5, 37]]]]], [], ["loc", [null, [5, 21], [5, 38]]]]], ["value", "target.value"], ["loc", [null, [5, 12], [5, 61]]]]], ["attribute", "disabled", ["get", "isLoading", ["loc", [null, [6, 15], [6, 24]]]]], ["attribute", "placeholder", ["subexpr", "t", ["login.password"], [], ["loc", [null, [8, 16], [8, 38]]]]], ["attribute", "value", ["get", "model.password", ["loc", [null, [9, 12], [9, 26]]]]], ["attribute", "oninput", ["subexpr", "action", [["subexpr", "mut", [["get", "model.password", ["loc", [null, [10, 26], [10, 40]]]]], [], ["loc", [null, [10, 21], [10, 41]]]]], ["value", "target.value"], ["loc", [null, [10, 12], [10, 64]]]]], ["attribute", "disabled", ["get", "isLoading", ["loc", [null, [11, 15], [11, 24]]]]]],
       locals: [],
       templates: []
     };
@@ -44063,7 +44223,7 @@ define("frontend-cp/components/ko-login-reset/template", ["exports"], function (
             "column": 0
           },
           "end": {
-            "line": 5,
+            "line": 13,
             "column": 0
           }
         },
@@ -44077,13 +44237,19 @@ define("frontend-cp/components/ko-login-reset/template", ["exports"], function (
         var el0 = dom.createDocumentFragment();
         var el1 = dom.createElement("div");
         dom.setAttribute(el1, "class", "reset-password-form login-form__wrapper");
-        var el2 = dom.createTextNode("\n    ");
+        var el2 = dom.createTextNode("\n  ");
         dom.appendChild(el1, el2);
-        var el2 = dom.createComment("");
+        var el2 = dom.createElement("input");
+        dom.setAttribute(el2, "type", "password");
+        dom.setAttribute(el2, "name", "reset-password");
+        dom.setAttribute(el2, "class", "login__input");
         dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n    ");
+        var el2 = dom.createTextNode("\n  ");
         dom.appendChild(el1, el2);
-        var el2 = dom.createComment("");
+        var el2 = dom.createElement("input");
+        dom.setAttribute(el2, "type", "password");
+        dom.setAttribute(el2, "name", "reset-password-2");
+        dom.setAttribute(el2, "class", "login__input u-intimate");
         dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n");
         dom.appendChild(el1, el2);
@@ -44094,12 +44260,20 @@ define("frontend-cp/components/ko-login-reset/template", ["exports"], function (
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
         var element0 = dom.childAt(fragment, [0]);
-        var morphs = new Array(2);
-        morphs[0] = dom.createMorphAt(element0, 1, 1);
-        morphs[1] = dom.createMorphAt(element0, 3, 3);
+        var element1 = dom.childAt(element0, [1]);
+        var element2 = dom.childAt(element0, [3]);
+        var morphs = new Array(8);
+        morphs[0] = dom.createAttrMorph(element1, 'placeholder');
+        morphs[1] = dom.createAttrMorph(element1, 'value');
+        morphs[2] = dom.createAttrMorph(element1, 'oninput');
+        morphs[3] = dom.createAttrMorph(element1, 'disabled');
+        morphs[4] = dom.createAttrMorph(element2, 'placeholder');
+        morphs[5] = dom.createAttrMorph(element2, 'value');
+        morphs[6] = dom.createAttrMorph(element2, 'oninput');
+        morphs[7] = dom.createAttrMorph(element2, 'disabled');
         return morphs;
       },
-      statements: [["inline", "input", [], ["type", "password", "value", ["subexpr", "@mut", [["get", "newPassword1", ["loc", [null, [2, 34], [2, 46]]]]], [], []], "name", "reset-password", "class", "login__input", "placeholder", ["subexpr", "t", ["login.newpassword"], [], ["loc", [null, [2, 102], [2, 125]]]], "disabled", ["subexpr", "@mut", [["get", "isLoading", ["loc", [null, [2, 135], [2, 144]]]]], [], []]], ["loc", [null, [2, 4], [2, 146]]]], ["inline", "input", [], ["type", "password", "value", ["subexpr", "@mut", [["get", "newPassword2", ["loc", [null, [3, 34], [3, 46]]]]], [], []], "name", "reset-password-2", "class", "login__input u-intimate", "placeholder", ["subexpr", "t", ["login.repeatpassword"], [], ["loc", [null, [3, 115], [3, 141]]]], "disabled", ["subexpr", "@mut", [["get", "isLoading", ["loc", [null, [3, 151], [3, 160]]]]], [], []]], ["loc", [null, [3, 4], [3, 162]]]]],
+      statements: [["attribute", "placeholder", ["subexpr", "t", ["login.newpassword"], [], ["loc", [null, [3, 16], [3, 41]]]]], ["attribute", "value", ["get", "newPassword1", ["loc", [null, [4, 12], [4, 24]]]]], ["attribute", "oninput", ["subexpr", "action", [["subexpr", "mut", [["get", "newPassword1", ["loc", [null, [5, 26], [5, 38]]]]], [], ["loc", [null, [5, 21], [5, 39]]]]], ["value", "target.value"], ["loc", [null, [5, 12], [5, 62]]]]], ["attribute", "disabled", ["get", "isLoading", ["loc", [null, [6, 15], [6, 24]]]]], ["attribute", "placeholder", ["subexpr", "t", ["login.repeatpassword"], [], ["loc", [null, [8, 16], [8, 44]]]]], ["attribute", "value", ["get", "newPassword2", ["loc", [null, [9, 12], [9, 24]]]]], ["attribute", "oninput", ["subexpr", "action", [["subexpr", "mut", [["get", "newPassword2", ["loc", [null, [10, 26], [10, 38]]]]], [], ["loc", [null, [10, 21], [10, 39]]]]], ["value", "target.value"], ["loc", [null, [10, 12], [10, 62]]]]], ["attribute", "disabled", ["get", "isLoading", ["loc", [null, [11, 15], [11, 24]]]]]],
       locals: [],
       templates: []
     };
@@ -46244,11 +46418,11 @@ define("frontend-cp/components/ko-people-popover/template", ["exports"], functio
           "loc": {
             "source": null,
             "start": {
-              "line": 16,
+              "line": 15,
               "column": 2
             },
             "end": {
-              "line": 18,
+              "line": 17,
               "column": 2
             }
           },
@@ -46276,7 +46450,7 @@ define("frontend-cp/components/ko-people-popover/template", ["exports"], functio
           morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 0, 0);
           return morphs;
         },
-        statements: [["content", "emailErrorText", ["loc", [null, [17, 48], [17, 66]]]]],
+        statements: [["content", "emailErrorText", ["loc", [null, [16, 48], [16, 66]]]]],
         locals: [],
         templates: []
       };
@@ -46290,11 +46464,11 @@ define("frontend-cp/components/ko-people-popover/template", ["exports"], functio
             "loc": {
               "source": null,
               "start": {
-                "line": 23,
+                "line": 22,
                 "column": 4
               },
               "end": {
-                "line": 32,
+                "line": 31,
                 "column": 4
               }
             },
@@ -46349,7 +46523,7 @@ define("frontend-cp/components/ko-people-popover/template", ["exports"], functio
             morphs[1] = dom.createAttrMorph(element3, 'onclick');
             return morphs;
           },
-          statements: [["content", "email", ["loc", [null, [27, 12], [27, 21]]]], ["attribute", "onclick", ["subexpr", "action", [["get", "onPersonRemove", ["loc", [null, [29, 96], [29, 110]]]], ["get", "email", ["loc", [null, [29, 111], [29, 116]]]]], [], ["loc", [null, [29, 87], [29, 118]]]]]],
+          statements: [["content", "email", ["loc", [null, [26, 12], [26, 21]]]], ["attribute", "onclick", ["subexpr", "action", [["get", "onPersonRemove", ["loc", [null, [28, 96], [28, 110]]]], ["get", "email", ["loc", [null, [28, 111], [28, 116]]]]], [], ["loc", [null, [28, 87], [28, 118]]]]]],
           locals: ["email"],
           templates: []
         };
@@ -46361,11 +46535,11 @@ define("frontend-cp/components/ko-people-popover/template", ["exports"], functio
           "loc": {
             "source": null,
             "start": {
-              "line": 21,
+              "line": 20,
               "column": 0
             },
             "end": {
-              "line": 34,
+              "line": 33,
               "column": 0
             }
           },
@@ -46397,7 +46571,7 @@ define("frontend-cp/components/ko-people-popover/template", ["exports"], functio
           morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
           return morphs;
         },
-        statements: [["block", "each", [["get", "selectedPeople", ["loc", [null, [23, 12], [23, 26]]]]], [], 0, null, ["loc", [null, [23, 4], [32, 13]]]]],
+        statements: [["block", "each", [["get", "selectedPeople", ["loc", [null, [22, 12], [22, 26]]]]], [], 0, null, ["loc", [null, [22, 4], [31, 13]]]]],
         locals: [],
         templates: [child0]
       };
@@ -46410,11 +46584,11 @@ define("frontend-cp/components/ko-people-popover/template", ["exports"], functio
           "loc": {
             "source": null,
             "start": {
-              "line": 36,
+              "line": 35,
               "column": 0
             },
             "end": {
-              "line": 40,
+              "line": 39,
               "column": 0
             }
           },
@@ -46446,7 +46620,7 @@ define("frontend-cp/components/ko-people-popover/template", ["exports"], functio
           morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
           return morphs;
         },
-        statements: [["inline", "ko-loader", [], ["class", "ko-people-popover__loader"], ["loc", [null, [38, 4], [38, 51]]]]],
+        statements: [["inline", "ko-loader", [], ["class", "ko-people-popover__loader"], ["loc", [null, [37, 4], [37, 51]]]]],
         locals: [],
         templates: []
       };
@@ -46462,11 +46636,11 @@ define("frontend-cp/components/ko-people-popover/template", ["exports"], functio
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 48,
+                    "line": 47,
                     "column": 12
                   },
                   "end": {
-                    "line": 50,
+                    "line": 49,
                     "column": 12
                   }
                 },
@@ -46491,7 +46665,7 @@ define("frontend-cp/components/ko-people-popover/template", ["exports"], functio
                 morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
                 return morphs;
               },
-              statements: [["inline", "ko-avatar", [], ["size", "large", "class", "ko-people-popover__image", "avatar", ["subexpr", "@mut", [["get", "person.user.avatar", ["loc", [null, [49, 79], [49, 97]]]]], [], []]], ["loc", [null, [49, 14], [49, 99]]]]],
+              statements: [["inline", "ko-avatar", [], ["size", "large", "class", "ko-people-popover__image", "avatar", ["subexpr", "@mut", [["get", "person.user.avatar", ["loc", [null, [48, 79], [48, 97]]]]], [], []]], ["loc", [null, [48, 14], [48, 99]]]]],
               locals: [],
               templates: []
             };
@@ -46505,11 +46679,11 @@ define("frontend-cp/components/ko-people-popover/template", ["exports"], functio
                   "loc": {
                     "source": null,
                     "start": {
-                      "line": 54,
+                      "line": 53,
                       "column": 18
                     },
                     "end": {
-                      "line": 56,
+                      "line": 55,
                       "column": 18
                     }
                   },
@@ -46534,7 +46708,7 @@ define("frontend-cp/components/ko-people-popover/template", ["exports"], functio
                   morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
                   return morphs;
                 },
-                statements: [["content", "person.user.organization.name", ["loc", [null, [55, 22], [55, 55]]]]],
+                statements: [["content", "person.user.organization.name", ["loc", [null, [54, 22], [54, 55]]]]],
                 locals: [],
                 templates: []
               };
@@ -46546,11 +46720,11 @@ define("frontend-cp/components/ko-people-popover/template", ["exports"], functio
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 50,
+                    "line": 49,
                     "column": 12
                   },
                   "end": {
-                    "line": 60,
+                    "line": 59,
                     "column": 12
                   }
                 },
@@ -46605,7 +46779,7 @@ define("frontend-cp/components/ko-people-popover/template", ["exports"], functio
                 morphs[2] = dom.createMorphAt(dom.childAt(element0, [3]), 0, 0);
                 return morphs;
               },
-              statements: [["content", "person.user.fullName", ["loc", [null, [51, 22], [51, 46]]]], ["block", "if", [["get", "person.user.organization.name", ["loc", [null, [54, 24], [54, 53]]]]], [], 0, null, ["loc", [null, [54, 18], [56, 25]]]], ["content", "person.email", ["loc", [null, [58, 63], [58, 79]]]]],
+              statements: [["content", "person.user.fullName", ["loc", [null, [50, 22], [50, 46]]]], ["block", "if", [["get", "person.user.organization.name", ["loc", [null, [53, 24], [53, 53]]]]], [], 0, null, ["loc", [null, [53, 18], [55, 25]]]], ["content", "person.email", ["loc", [null, [57, 63], [57, 79]]]]],
               locals: [],
               templates: [child0]
             };
@@ -46617,11 +46791,11 @@ define("frontend-cp/components/ko-people-popover/template", ["exports"], functio
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 44,
+                  "line": 43,
                   "column": 8
                 },
                 "end": {
-                  "line": 62,
+                  "line": 61,
                   "column": 8
                 }
               },
@@ -46656,7 +46830,7 @@ define("frontend-cp/components/ko-people-popover/template", ["exports"], functio
               morphs[2] = dom.createMorphAt(element1, 1, 1);
               return morphs;
             },
-            statements: [["attribute", "onclick", ["subexpr", "action", ["addPersonFromSuggestion", ["get", "person", ["loc", [null, [45, 57], [45, 63]]]]], [], ["loc", [null, [45, 22], [45, 65]]]]], ["attribute", "tabindex", ["concat", [["get", "index", ["loc", [null, [46, 26], [46, 31]]]]]]], ["block", "ko-flag", [], [], 0, 1, ["loc", [null, [48, 12], [60, 24]]]]],
+            statements: [["attribute", "onclick", ["subexpr", "action", ["addPersonFromSuggestion", ["get", "person", ["loc", [null, [44, 57], [44, 63]]]]], [], ["loc", [null, [44, 22], [44, 65]]]]], ["attribute", "tabindex", ["concat", [["get", "index", ["loc", [null, [45, 26], [45, 31]]]]]]], ["block", "ko-flag", [], [], 0, 1, ["loc", [null, [47, 12], [59, 24]]]]],
             locals: ["person", "index"],
             templates: [child0, child1]
           };
@@ -46668,11 +46842,11 @@ define("frontend-cp/components/ko-people-popover/template", ["exports"], functio
             "loc": {
               "source": null,
               "start": {
-                "line": 41,
+                "line": 40,
                 "column": 2
               },
               "end": {
-                "line": 65,
+                "line": 64,
                 "column": 2
               }
             },
@@ -46712,7 +46886,7 @@ define("frontend-cp/components/ko-people-popover/template", ["exports"], functio
             morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1, 1]), 1, 1);
             return morphs;
           },
-          statements: [["block", "each", [["get", "suggestedPeople", ["loc", [null, [44, 16], [44, 31]]]]], [], 0, null, ["loc", [null, [44, 8], [62, 17]]]]],
+          statements: [["block", "each", [["get", "suggestedPeople", ["loc", [null, [43, 16], [43, 31]]]]], [], 0, null, ["loc", [null, [43, 8], [61, 17]]]]],
           locals: [],
           templates: [child0]
         };
@@ -46726,11 +46900,11 @@ define("frontend-cp/components/ko-people-popover/template", ["exports"], functio
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 68,
+                  "line": 67,
                   "column": 4
                 },
                 "end": {
-                  "line": 72,
+                  "line": 71,
                   "column": 4
                 }
               },
@@ -46762,7 +46936,7 @@ define("frontend-cp/components/ko-people-popover/template", ["exports"], functio
               morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
               return morphs;
             },
-            statements: [["content", "filterNotFoundText", ["loc", [null, [70, 8], [70, 30]]]]],
+            statements: [["content", "filterNotFoundText", ["loc", [null, [69, 8], [69, 30]]]]],
             locals: [],
             templates: []
           };
@@ -46774,11 +46948,11 @@ define("frontend-cp/components/ko-people-popover/template", ["exports"], functio
             "loc": {
               "source": null,
               "start": {
-                "line": 67,
+                "line": 66,
                 "column": 2
               },
               "end": {
-                "line": 73,
+                "line": 72,
                 "column": 2
               }
             },
@@ -46801,7 +46975,7 @@ define("frontend-cp/components/ko-people-popover/template", ["exports"], functio
             dom.insertBoundary(fragment, null);
             return morphs;
           },
-          statements: [["block", "unless", [["get", "suggestedPeople", ["loc", [null, [68, 14], [68, 29]]]]], [], 0, null, ["loc", [null, [68, 4], [72, 15]]]]],
+          statements: [["block", "unless", [["get", "suggestedPeople", ["loc", [null, [67, 14], [67, 29]]]]], [], 0, null, ["loc", [null, [67, 4], [71, 15]]]]],
           locals: [],
           templates: [child0]
         };
@@ -46814,11 +46988,11 @@ define("frontend-cp/components/ko-people-popover/template", ["exports"], functio
             "loc": {
               "source": null,
               "start": {
-                "line": 73,
+                "line": 72,
                 "column": 2
               },
               "end": {
-                "line": 77,
+                "line": 76,
                 "column": 2
               }
             },
@@ -46850,7 +47024,7 @@ define("frontend-cp/components/ko-people-popover/template", ["exports"], functio
             morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
             return morphs;
           },
-          statements: [["content", "helpText", ["loc", [null, [75, 6], [75, 18]]]]],
+          statements: [["content", "helpText", ["loc", [null, [74, 6], [74, 18]]]]],
           locals: [],
           templates: []
         };
@@ -46862,11 +47036,11 @@ define("frontend-cp/components/ko-people-popover/template", ["exports"], functio
           "loc": {
             "source": null,
             "start": {
-              "line": 40,
+              "line": 39,
               "column": 0
             },
             "end": {
-              "line": 78,
+              "line": 77,
               "column": 0
             }
           },
@@ -46894,7 +47068,7 @@ define("frontend-cp/components/ko-people-popover/template", ["exports"], functio
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [["block", "if", [["get", "searchAttempt", ["loc", [null, [41, 8], [41, 21]]]]], [], 0, null, ["loc", [null, [41, 2], [65, 9]]]], ["block", "if", [["get", "searchAttempt", ["loc", [null, [67, 8], [67, 21]]]]], [], 1, 2, ["loc", [null, [67, 2], [77, 9]]]]],
+        statements: [["block", "if", [["get", "searchAttempt", ["loc", [null, [40, 8], [40, 21]]]]], [], 0, null, ["loc", [null, [40, 2], [64, 9]]]], ["block", "if", [["get", "searchAttempt", ["loc", [null, [66, 8], [66, 21]]]]], [], 1, 2, ["loc", [null, [66, 2], [76, 9]]]]],
         locals: [],
         templates: [child0, child1, child2]
       };
@@ -46913,7 +47087,7 @@ define("frontend-cp/components/ko-people-popover/template", ["exports"], functio
             "column": 0
           },
           "end": {
-            "line": 79,
+            "line": 78,
             "column": 0
           }
         },
@@ -46931,9 +47105,11 @@ define("frontend-cp/components/ko-people-popover/template", ["exports"], functio
         dom.appendChild(el1, el2);
         var el2 = dom.createElement("div");
         dom.setAttribute(el2, "class", "input i--search-small");
-        var el3 = dom.createTextNode("\n      ");
+        var el3 = dom.createTextNode("\n    ");
         dom.appendChild(el2, el3);
-        var el3 = dom.createComment("");
+        var el3 = dom.createElement("input");
+        dom.setAttribute(el3, "type", "text");
+        dom.setAttribute(el3, "class", "ko-people-popover__input input-text u-1/1");
         dom.appendChild(el2, el3);
         var el3 = dom.createComment("\n    ");
         dom.appendChild(el2, el3);
@@ -46975,18 +47151,21 @@ define("frontend-cp/components/ko-people-popover/template", ["exports"], functio
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
         var element4 = dom.childAt(fragment, [0]);
         var element5 = dom.childAt(element4, [1]);
-        var element6 = dom.childAt(element5, [4, 1]);
-        var morphs = new Array(6);
-        morphs[0] = dom.createMorphAt(element5, 1, 1);
-        morphs[1] = dom.createAttrMorph(element6, 'onclick');
-        morphs[2] = dom.createMorphAt(element6, 0, 0);
-        morphs[3] = dom.createMorphAt(element4, 3, 3);
-        morphs[4] = dom.createMorphAt(fragment, 2, 2, contextualElement);
-        morphs[5] = dom.createMorphAt(fragment, 4, 4, contextualElement);
+        var element6 = dom.childAt(element5, [1]);
+        var element7 = dom.childAt(element5, [4, 1]);
+        var morphs = new Array(8);
+        morphs[0] = dom.createAttrMorph(element6, 'placeholder');
+        morphs[1] = dom.createAttrMorph(element6, 'value');
+        morphs[2] = dom.createAttrMorph(element6, 'oninput');
+        morphs[3] = dom.createAttrMorph(element7, 'onclick');
+        morphs[4] = dom.createMorphAt(element7, 0, 0);
+        morphs[5] = dom.createMorphAt(element4, 3, 3);
+        morphs[6] = dom.createMorphAt(fragment, 2, 2, contextualElement);
+        morphs[7] = dom.createMorphAt(fragment, 4, 4, contextualElement);
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["inline", "input", [], ["class", "ko-people-popover__input input-text u-1/1", "type", "text", "placeholder", ["subexpr", "@mut", [["get", "inputPlaceholderText", ["loc", [null, [5, 18], [5, 38]]]]], [], []], "value", ["subexpr", "@mut", [["get", "searchTerm", ["loc", [null, [6, 12], [6, 22]]]]], [], []]], ["loc", [null, [3, 6], [7, 8]]]], ["attribute", "onclick", ["subexpr", "action", ["addPerson", ["get", "searchTerm", ["loc", [null, [10, 57], [10, 67]]]]], [], ["loc", [null, [10, 36], [10, 69]]]]], ["inline", "t", ["generic.add"], [], ["loc", [null, [11, 65], [11, 84]]]], ["block", "if", [["get", "searchTermEmailNotValid", ["loc", [null, [16, 8], [16, 31]]]]], [], 0, null, ["loc", [null, [16, 2], [18, 9]]]], ["block", "if", [["get", "selectedPeople", ["loc", [null, [21, 6], [21, 20]]]]], [], 1, null, ["loc", [null, [21, 0], [34, 7]]]], ["block", "if", [["get", "isLoading", ["loc", [null, [36, 6], [36, 15]]]]], [], 2, 3, ["loc", [null, [36, 0], [78, 7]]]]],
+      statements: [["attribute", "placeholder", ["get", "inputPlaceholderText", ["loc", [null, [4, 20], [4, 40]]]]], ["attribute", "value", ["get", "searchTerm", ["loc", [null, [5, 14], [5, 24]]]]], ["attribute", "oninput", ["subexpr", "action", [["subexpr", "mut", [["get", "searchTerm", ["loc", [null, [6, 28], [6, 38]]]]], [], ["loc", [null, [6, 23], [6, 39]]]]], ["value", "target.value"], ["loc", [null, [6, 14], [6, 62]]]]], ["attribute", "onclick", ["subexpr", "action", ["addPerson", ["get", "searchTerm", ["loc", [null, [9, 57], [9, 67]]]]], [], ["loc", [null, [9, 36], [9, 69]]]]], ["inline", "t", ["generic.add"], [], ["loc", [null, [10, 65], [10, 84]]]], ["block", "if", [["get", "searchTermEmailNotValid", ["loc", [null, [15, 8], [15, 31]]]]], [], 0, null, ["loc", [null, [15, 2], [17, 9]]]], ["block", "if", [["get", "selectedPeople", ["loc", [null, [20, 6], [20, 20]]]]], [], 1, null, ["loc", [null, [20, 0], [33, 7]]]], ["block", "if", [["get", "isLoading", ["loc", [null, [35, 6], [35, 15]]]]], [], 2, 3, ["loc", [null, [35, 0], [77, 7]]]]],
       locals: [],
       templates: [child0, child1, child2, child3]
     };
@@ -47640,18 +47819,22 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
                   var el0 = dom.createDocumentFragment();
                   var el1 = dom.createTextNode("      ");
                   dom.appendChild(el0, el1);
-                  var el1 = dom.createComment("");
+                  var el1 = dom.createElement("input");
+                  dom.setAttribute(el1, "type", "text");
+                  dom.setAttribute(el1, "class", "ko-predicate-builder_rule__input input-text");
                   dom.appendChild(el0, el1);
                   var el1 = dom.createTextNode("\n    ");
                   dom.appendChild(el0, el1);
                   return el0;
                 },
                 buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-                  var morphs = new Array(1);
-                  morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+                  var element1 = dom.childAt(fragment, [1]);
+                  var morphs = new Array(2);
+                  morphs[0] = dom.createAttrMorph(element1, 'value');
+                  morphs[1] = dom.createAttrMorph(element1, 'oninput');
                   return morphs;
                 },
-                statements: [["inline", "input", [], ["type", "text", "class", "ko-predicate-builder_rule__input input-text", "value", ["subexpr", "@mut", [["get", "rule.value", ["loc", [null, [66, 84], [66, 94]]]]], [], []]], ["loc", [null, [66, 6], [66, 96]]]]],
+                statements: [["attribute", "value", ["get", "rule.value", ["loc", [null, [66, 85], [66, 95]]]]], ["attribute", "oninput", ["subexpr", "action", [["subexpr", "mut", [["get", "rule.value", ["loc", [null, [66, 120], [66, 130]]]]], [], ["loc", [null, [66, 115], [66, 131]]]]], ["value", "target.value"], ["loc", [null, [66, 106], [66, 154]]]]]],
                 locals: [],
                 templates: []
               };
@@ -47954,13 +48137,13 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var element1 = dom.childAt(fragment, [2]);
+        var element2 = dom.childAt(fragment, [2]);
         var morphs = new Array(5);
         morphs[0] = dom.createMorphAt(dom.childAt(fragment, [0]), 1, 1);
-        morphs[1] = dom.createMorphAt(dom.childAt(element1, [1]), 1, 1);
-        morphs[2] = dom.createMorphAt(dom.childAt(element1, [3]), 1, 1);
-        morphs[3] = dom.createMorphAt(dom.childAt(element1, [5]), 1, 1);
-        morphs[4] = dom.createMorphAt(dom.childAt(element1, [7]), 1, 1);
+        morphs[1] = dom.createMorphAt(dom.childAt(element2, [1]), 1, 1);
+        morphs[2] = dom.createMorphAt(dom.childAt(element2, [3]), 1, 1);
+        morphs[3] = dom.createMorphAt(dom.childAt(element2, [5]), 1, 1);
+        morphs[4] = dom.createMorphAt(dom.childAt(element2, [7]), 1, 1);
         return morphs;
       },
       statements: [["inline", "t", ["generic.or"], [], ["loc", [null, [2, 2], [2, 20]]]], ["block", "ko-select", [], ["class", ["subexpr", "qa-cls", ["qa-proposition--column"], [], ["loc", [null, [8, 12], [8, 45]]]], "selected", ["subexpr", "@mut", [["get", "definition", ["loc", [null, [9, 15], [9, 25]]]]], [], []], "options", ["subexpr", "@mut", [["get", "definitions", ["loc", [null, [10, 14], [10, 25]]]]], [], []], "onChange", ["subexpr", "action", ["selectDefinition"], [], ["loc", [null, [11, 15], [11, 42]]]]], 0, null, ["loc", [null, [7, 4], [14, 18]]]], ["block", "ko-select", [], ["class", ["subexpr", "qa-cls", ["qa-proposition--operator"], [], ["loc", [null, [18, 12], [18, 47]]]], "selected", ["subexpr", "@mut", [["get", "rule.operator", ["loc", [null, [19, 15], [19, 28]]]]], [], []], "options", ["subexpr", "@mut", [["get", "definition.operators", ["loc", [null, [20, 14], [20, 34]]]]], [], []], "onChange", ["subexpr", "action", [["subexpr", "mut", [["get", "rule.operator", ["loc", [null, [21, 28], [21, 41]]]]], [], ["loc", [null, [21, 23], [21, 42]]]]], [], ["loc", [null, [21, 15], [21, 43]]]]], 1, null, ["loc", [null, [17, 4], [24, 18]]]], ["block", "if", [["subexpr", "eq", [["get", "definitionInputType", ["loc", [null, [27, 14], [27, 33]]]], "multiple"], [], ["loc", [null, [27, 10], [27, 45]]]]], [], 2, 3, ["loc", [null, [27, 4], [67, 11]]]], ["block", "if", [["get", "canDeleteRule", ["loc", [null, [70, 12], [70, 25]]]]], [], 4, null, ["loc", [null, [70, 6], [74, 13]]]]],
@@ -50822,18 +51005,22 @@ define("frontend-cp/components/ko-suggest/template", ["exports"], function (expo
               var el0 = dom.createDocumentFragment();
               var el1 = dom.createTextNode("      ");
               dom.appendChild(el0, el1);
-              var el1 = dom.createComment("");
+              var el1 = dom.createElement("input");
+              dom.setAttribute(el1, "type", "text");
+              dom.setAttribute(el1, "class", "input-text ko-suggest__input");
               dom.appendChild(el0, el1);
               var el1 = dom.createTextNode("\n");
               dom.appendChild(el0, el1);
               return el0;
             },
             buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-              var morphs = new Array(1);
-              morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+              var element0 = dom.childAt(fragment, [1]);
+              var morphs = new Array(2);
+              morphs[0] = dom.createAttrMorph(element0, 'value');
+              morphs[1] = dom.createAttrMorph(element0, 'oninput');
               return morphs;
             },
-            statements: [["inline", "input", [], ["type", "text", "value", ["subexpr", "@mut", [["get", "searchTerm", ["loc", [null, [5, 32], [5, 42]]]]], [], []], "class", "input-text ko-suggest__input"], ["loc", [null, [5, 6], [5, 81]]]]],
+            statements: [["attribute", "value", ["get", "searchTerm", ["loc", [null, [5, 70], [5, 80]]]]], ["attribute", "oninput", ["subexpr", "action", [["subexpr", "mut", [["get", "searchTerm", ["loc", [null, [5, 105], [5, 115]]]]], [], ["loc", [null, [5, 100], [5, 116]]]]], ["value", "target.value"], ["loc", [null, [5, 91], [5, 139]]]]]],
             locals: [],
             templates: []
           };
@@ -57698,11 +57885,11 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
               return el0;
             },
             buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-              var element12 = dom.childAt(fragment, [1]);
+              var element13 = dom.childAt(fragment, [1]);
               var morphs = new Array(3);
-              morphs[0] = dom.createAttrMorph(element12, 'class');
-              morphs[1] = dom.createAttrMorph(element12, 'onclick');
-              morphs[2] = dom.createMorphAt(element12, 1, 1);
+              morphs[0] = dom.createAttrMorph(element13, 'class');
+              morphs[1] = dom.createAttrMorph(element13, 'onclick');
+              morphs[2] = dom.createMorphAt(element13, 1, 1);
               return morphs;
             },
             statements: [["attribute", "class", ["concat", ["button button--primary u-1/1 ", ["subexpr", "if", [["get", "submitDisabled", ["loc", [null, [4, 69], [4, 83]]]], "disabled"], [], ["loc", [null, [4, 64], [4, 96]]]]]]], ["attribute", "onclick", ["subexpr", "action", ["submit"], [], ["loc", [null, [4, 106], [4, 125]]]]], ["block", "if", [["get", "isSaving", ["loc", [null, [5, 14], [5, 22]]]]], [], 0, 1, ["loc", [null, [5, 8], [9, 15]]]]],
@@ -58237,20 +58424,20 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
             return el0;
           },
           buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-            var element6 = dom.childAt(fragment, [1]);
-            var element7 = dom.childAt(element6, [1, 1]);
+            var element7 = dom.childAt(fragment, [1]);
             var element8 = dom.childAt(element7, [1, 1]);
-            var element9 = dom.childAt(element7, [3]);
-            var element10 = dom.childAt(element9, [3]);
-            var element11 = dom.childAt(element6, [3, 1]);
+            var element9 = dom.childAt(element8, [1, 1]);
+            var element10 = dom.childAt(element8, [3]);
+            var element11 = dom.childAt(element10, [3]);
+            var element12 = dom.childAt(element7, [3, 1]);
             var morphs = new Array(7);
-            morphs[0] = dom.createAttrMorph(element8, 'src');
-            morphs[1] = dom.createMorphAt(dom.childAt(element9, [1]), 1, 1);
-            morphs[2] = dom.createMorphAt(element10, 1, 1);
-            morphs[3] = dom.createMorphAt(element10, 3, 3);
-            morphs[4] = dom.createMorphAt(dom.childAt(element11, [1]), 1, 1);
-            morphs[5] = dom.createMorphAt(dom.childAt(element11, [3]), 1, 1);
-            morphs[6] = dom.createMorphAt(dom.childAt(element11, [5]), 1, 1);
+            morphs[0] = dom.createAttrMorph(element9, 'src');
+            morphs[1] = dom.createMorphAt(dom.childAt(element10, [1]), 1, 1);
+            morphs[2] = dom.createMorphAt(element11, 1, 1);
+            morphs[3] = dom.createMorphAt(element11, 3, 3);
+            morphs[4] = dom.createMorphAt(dom.childAt(element12, [1]), 1, 1);
+            morphs[5] = dom.createMorphAt(dom.childAt(element12, [3]), 1, 1);
+            morphs[6] = dom.createMorphAt(dom.childAt(element12, [5]), 1, 1);
             return morphs;
           },
           statements: [["attribute", "src", ["concat", [["get", "model.avatar", ["loc", [null, [136, 24], [136, 36]]]]]]], ["inline", "ko-editable-text", [], ["class", "ko-layout_advanced_editable-text--readonly", "value", ["subexpr", "@mut", [["get", "model.fullName", ["loc", [null, [140, 90], [140, 104]]]]], [], []], "isDisabled", true], ["loc", [null, [140, 14], [140, 122]]]], ["content", "updatedDate.title", ["loc", [null, [144, 14], [144, 35]]]], ["inline", "ko-datetime-format", [["get", "updatedDate.value", ["loc", [null, [144, 57], [144, 74]]]]], [], ["loc", [null, [144, 36], [144, 76]]]], ["inline", "ko-stateful-button", [], ["activeText", ["subexpr", "t", ["users.button.following.active.text"], [], ["loc", [null, [153, 25], [153, 65]]]], "activeHoverText", ["subexpr", "t", ["users.button.following.active.hovertext"], [], ["loc", [null, [154, 30], [154, 75]]]], "inactiveText", ["subexpr", "t", ["users.button.following.inactive.text"], [], ["loc", [null, [155, 27], [155, 69]]]], "inactiveHoverText", ["subexpr", "t", ["users.button.following.inactive.hovertext"], [], ["loc", [null, [156, 32], [156, 79]]]], "isActive", false, "isLoading", ["subexpr", "@mut", [["get", "isFollowingSaving", ["loc", [null, [158, 24], [158, 41]]]]], [], []], "isEnabled", ["subexpr", "@mut", [["get", "canFollowUser", ["loc", [null, [159, 24], [159, 37]]]]], [], []]], ["loc", [null, [152, 12], [159, 39]]]], ["inline", "ko-stateful-button", [], ["activeText", ["subexpr", "t", ["users.button.user.enabled.text"], [], ["loc", [null, [163, 25], [163, 61]]]], "activeHoverText", ["subexpr", "t", ["users.button.user.enabled.hovertext"], [], ["loc", [null, [164, 30], [164, 71]]]], "inactiveText", ["subexpr", "t", ["users.button.user.disabled.text"], [], ["loc", [null, [165, 27], [165, 64]]]], "inactiveHoverText", ["subexpr", "t", ["users.button.user.disabled.hovertext"], [], ["loc", [null, [166, 32], [166, 74]]]], "isActive", ["subexpr", "@mut", [["get", "model.isEnabled", ["loc", [null, [167, 23], [167, 38]]]]], [], []], "isEnabled", ["subexpr", "@mut", [["get", "canModifyUserState", ["loc", [null, [168, 24], [168, 42]]]]], [], []], "isLoading", ["subexpr", "@mut", [["get", "isStateSaving", ["loc", [null, [169, 24], [169, 37]]]]], [], []], "onClick", "toggleUserState"], ["loc", [null, [162, 12], [170, 41]]]], ["inline", "ko-user-action-menu", [], ["permissions", ["subexpr", "@mut", [["get", "sessionService.permissions", ["loc", [null, [174, 26], [174, 52]]]]], [], []], "userRoleType", ["subexpr", "@mut", [["get", "model.role.roleType", ["loc", [null, [175, 27], [175, 46]]]]], [], []], "userModel", ["subexpr", "@mut", [["get", "model", ["loc", [null, [176, 24], [176, 29]]]]], [], []], "onCreateNewCase", ["subexpr", "action", [["get", "onCreateNewCase", ["loc", [null, [177, 38], [177, 53]]]], ["get", "model", ["loc", [null, [177, 54], [177, 59]]]]], [], ["loc", [null, [177, 30], [177, 60]]]]], ["loc", [null, [173, 12], [178, 14]]]]],
@@ -58508,13 +58695,13 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
                 return el0;
               },
               buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-                var element4 = dom.childAt(fragment, [1]);
-                var element5 = dom.childAt(element4, [3]);
+                var element5 = dom.childAt(fragment, [1]);
+                var element6 = dom.childAt(element5, [3]);
                 var morphs = new Array(4);
-                morphs[0] = dom.createElementMorph(element4);
-                morphs[1] = dom.createMorphAt(element4, 1, 1);
-                morphs[2] = dom.createElementMorph(element5);
-                morphs[3] = dom.createMorphAt(element5, 0, 0);
+                morphs[0] = dom.createElementMorph(element5);
+                morphs[1] = dom.createMorphAt(element5, 1, 1);
+                morphs[2] = dom.createElementMorph(element6);
+                morphs[3] = dom.createMorphAt(element6, 0, 0);
                 return morphs;
               },
               statements: [["element", "action", ["beginReply"], [], ["loc", [null, [226, 13], [226, 36]]]], ["inline", "t", ["generic.reply.click_to_leave_a"], [], ["loc", [null, [227, 10], [227, 48]]]], ["element", "action", ["beginReply"], [], ["loc", [null, [227, 97], [227, 120]]]], ["inline", "t", ["generic.reply.note"], [], ["loc", [null, [227, 121], [227, 147]]]]],
@@ -58731,7 +58918,8 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
             var el0 = dom.createDocumentFragment();
             var el1 = dom.createTextNode("    ");
             dom.appendChild(el0, el1);
-            var el1 = dom.createComment("");
+            var el1 = dom.createElement("textarea");
+            dom.setAttribute(el1, "class", "text-area--clean");
             dom.appendChild(el0, el1);
             var el1 = dom.createTextNode("\n    ");
             dom.appendChild(el0, el1);
@@ -58785,20 +58973,22 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
             return el0;
           },
           buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-            var element0 = dom.childAt(fragment, [3]);
-            var element1 = dom.childAt(element0, [3]);
-            var element2 = dom.childAt(element1, [1]);
-            var element3 = dom.childAt(element1, [3]);
-            var morphs = new Array(6);
-            morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
-            morphs[1] = dom.createMorphAt(dom.childAt(element0, [1]), 1, 1);
-            morphs[2] = dom.createAttrMorph(element2, 'onclick');
-            morphs[3] = dom.createMorphAt(element2, 1, 1);
-            morphs[4] = dom.createAttrMorph(element3, 'onclick');
-            morphs[5] = dom.createMorphAt(element3, 1, 1);
+            var element0 = dom.childAt(fragment, [1]);
+            var element1 = dom.childAt(fragment, [3]);
+            var element2 = dom.childAt(element1, [3]);
+            var element3 = dom.childAt(element2, [1]);
+            var element4 = dom.childAt(element2, [3]);
+            var morphs = new Array(7);
+            morphs[0] = dom.createAttrMorph(element0, 'value');
+            morphs[1] = dom.createAttrMorph(element0, 'oninput');
+            morphs[2] = dom.createMorphAt(dom.childAt(element1, [1]), 1, 1);
+            morphs[3] = dom.createAttrMorph(element3, 'onclick');
+            morphs[4] = dom.createMorphAt(element3, 1, 1);
+            morphs[5] = dom.createAttrMorph(element4, 'onclick');
+            morphs[6] = dom.createMorphAt(element4, 1, 1);
             return morphs;
           },
-          statements: [["inline", "textarea", [], ["value", ["subexpr", "@mut", [["get", "editingSignature", ["loc", [null, [246, 21], [246, 37]]]]], [], []], "class", "text-area--clean"], ["loc", [null, [246, 4], [246, 64]]]], ["inline", "t", ["users.signaturemessage"], [], ["loc", [null, [249, 8], [249, 38]]]], ["attribute", "onclick", ["subexpr", "action", ["closeSignatureModal"], [], ["loc", [null, [252, 19], [252, 51]]]]], ["inline", "t", ["generic.cancel"], [], ["loc", [null, [253, 10], [253, 32]]]], ["attribute", "onclick", ["subexpr", "action", ["updateSignature"], [], ["loc", [null, [255, 55], [255, 83]]]]], ["inline", "t", ["users.update_signature"], [], ["loc", [null, [256, 10], [256, 40]]]]],
+          statements: [["attribute", "value", ["get", "editingSignature", ["loc", [null, [246, 47], [246, 63]]]]], ["attribute", "oninput", ["subexpr", "action", [["subexpr", "mut", [["get", "editingSignature", ["loc", [null, [246, 88], [246, 104]]]]], [], ["loc", [null, [246, 83], [246, 105]]]]], ["value", "target.value"], ["loc", [null, [246, 74], [246, 128]]]]], ["inline", "t", ["users.signaturemessage"], [], ["loc", [null, [249, 8], [249, 38]]]], ["attribute", "onclick", ["subexpr", "action", ["closeSignatureModal"], [], ["loc", [null, [252, 19], [252, 51]]]]], ["inline", "t", ["generic.cancel"], [], ["loc", [null, [253, 10], [253, 32]]]], ["attribute", "onclick", ["subexpr", "action", ["updateSignature"], [], ["loc", [null, [255, 55], [255, 83]]]]], ["inline", "t", ["users.update_signature"], [], ["loc", [null, [256, 10], [256, 40]]]]],
           locals: [],
           templates: []
         };
@@ -62328,7 +62518,7 @@ define("frontend-cp/login/template", ["exports"], function (exports) {
               "column": 10
             },
             "end": {
-              "line": 41,
+              "line": 45,
               "column": 10
             }
           },
@@ -62346,7 +62536,10 @@ define("frontend-cp/login/template", ["exports"], function (exports) {
           dom.setAttribute(el1, "class", "login-form__wrapper");
           var el2 = dom.createTextNode("\n            ");
           dom.appendChild(el1, el2);
-          var el2 = dom.createComment("");
+          var el2 = dom.createElement("input");
+          dom.setAttribute(el2, "type", "email");
+          dom.setAttribute(el2, "name", "forgot-password");
+          dom.setAttribute(el2, "class", "login__input login__input--alone");
           dom.appendChild(el1, el2);
           var el2 = dom.createTextNode("\n          ");
           dom.appendChild(el1, el2);
@@ -62371,14 +62564,18 @@ define("frontend-cp/login/template", ["exports"], function (exports) {
           return el0;
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var element1 = dom.childAt(fragment, [3, 1]);
-          var morphs = new Array(3);
-          morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
-          morphs[1] = dom.createAttrMorph(element1, 'disabled');
-          morphs[2] = dom.createMorphAt(element1, 0, 0);
+          var element1 = dom.childAt(fragment, [1, 1]);
+          var element2 = dom.childAt(fragment, [3, 1]);
+          var morphs = new Array(6);
+          morphs[0] = dom.createAttrMorph(element1, 'placeholder');
+          morphs[1] = dom.createAttrMorph(element1, 'value');
+          morphs[2] = dom.createAttrMorph(element1, 'oninput');
+          morphs[3] = dom.createAttrMorph(element1, 'disabled');
+          morphs[4] = dom.createAttrMorph(element2, 'disabled');
+          morphs[5] = dom.createMorphAt(element2, 0, 0);
           return morphs;
         },
-        statements: [["inline", "input", [], ["type", "email", "value", ["subexpr", "@mut", [["get", "model.email", ["loc", [null, [35, 39], [35, 50]]]]], [], []], "name", "forgot-password", "class", "login__input login__input--alone", "placeholder", ["subexpr", "t", ["login.email"], [], ["loc", [null, [35, 127], [35, 144]]]], "disabled", ["subexpr", "@mut", [["get", "isLoading", ["loc", [null, [35, 154], [35, 163]]]]], [], []]], ["loc", [null, [35, 12], [35, 165]]]], ["attribute", "disabled", ["get", "isLoading", ["loc", [null, [39, 87], [39, 96]]]]], ["inline", "t", ["login.resetpassword"], [], ["loc", [null, [39, 99], [39, 126]]]]],
+        statements: [["attribute", "placeholder", ["subexpr", "t", ["login.email"], [], ["loc", [null, [36, 26], [36, 45]]]]], ["attribute", "value", ["get", "model.email", ["loc", [null, [37, 22], [37, 33]]]]], ["attribute", "oninput", ["subexpr", "action", [["subexpr", "mut", [["get", "model.email", ["loc", [null, [38, 36], [38, 47]]]]], [], ["loc", [null, [38, 31], [38, 48]]]]], ["value", "target.value"], ["loc", [null, [38, 22], [38, 71]]]]], ["attribute", "disabled", ["get", "isLoading", ["loc", [null, [39, 25], [39, 34]]]]], ["attribute", "disabled", ["get", "isLoading", ["loc", [null, [43, 87], [43, 96]]]]], ["inline", "t", ["login.resetpassword"], [], ["loc", [null, [43, 99], [43, 126]]]]],
         locals: [],
         templates: []
       };
@@ -62392,11 +62589,11 @@ define("frontend-cp/login/template", ["exports"], function (exports) {
             "loc": {
               "source": null,
               "start": {
-                "line": 51,
+                "line": 55,
                 "column": 12
               },
               "end": {
-                "line": 53,
+                "line": 57,
                 "column": 12
               }
             },
@@ -62421,7 +62618,7 @@ define("frontend-cp/login/template", ["exports"], function (exports) {
             morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
             return morphs;
           },
-          statements: [["content", "message", ["loc", [null, [52, 12], [52, 23]]]]],
+          statements: [["content", "message", ["loc", [null, [56, 12], [56, 23]]]]],
           locals: ["message"],
           templates: []
         };
@@ -62433,11 +62630,11 @@ define("frontend-cp/login/template", ["exports"], function (exports) {
           "loc": {
             "source": null,
             "start": {
-              "line": 49,
+              "line": 53,
               "column": 10
             },
             "end": {
-              "line": 54,
+              "line": 58,
               "column": 10
             }
           },
@@ -62467,7 +62664,7 @@ define("frontend-cp/login/template", ["exports"], function (exports) {
           morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
           return morphs;
         },
-        statements: [["block", "each", [["get", "errorMessages", ["loc", [null, [51, 20], [51, 33]]]]], [], 0, null, ["loc", [null, [51, 12], [53, 21]]]]],
+        statements: [["block", "each", [["get", "errorMessages", ["loc", [null, [55, 20], [55, 33]]]]], [], 0, null, ["loc", [null, [55, 12], [57, 21]]]]],
         locals: [],
         templates: [child0]
       };
@@ -62480,11 +62677,11 @@ define("frontend-cp/login/template", ["exports"], function (exports) {
           "loc": {
             "source": null,
             "start": {
-              "line": 58,
+              "line": 62,
               "column": 16
             },
             "end": {
-              "line": 60,
+              "line": 64,
               "column": 16
             }
           },
@@ -62509,7 +62706,7 @@ define("frontend-cp/login/template", ["exports"], function (exports) {
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [["inline", "component", [["get", "topFormSet", ["loc", [null, [59, 28], [59, 38]]]]], ["model", ["subexpr", "@mut", [["get", "model", ["loc", [null, [59, 45], [59, 50]]]]], [], []], "isLoading", ["subexpr", "@mut", [["get", "isLoading", ["loc", [null, [59, 61], [59, 70]]]]], [], []], "otp", ["subexpr", "@mut", [["get", "otp", ["loc", [null, [59, 75], [59, 78]]]]], [], []], "newPassword1", ["subexpr", "@mut", [["get", "newPassword1", ["loc", [null, [59, 92], [59, 104]]]]], [], []], "newPassword2", ["subexpr", "@mut", [["get", "newPassword2", ["loc", [null, [59, 118], [59, 130]]]]], [], []]], ["loc", [null, [59, 16], [59, 132]]]]],
+        statements: [["inline", "component", [["get", "topFormSet", ["loc", [null, [63, 28], [63, 38]]]]], ["model", ["subexpr", "@mut", [["get", "model", ["loc", [null, [63, 45], [63, 50]]]]], [], []], "isLoading", ["subexpr", "@mut", [["get", "isLoading", ["loc", [null, [63, 61], [63, 70]]]]], [], []], "otp", ["subexpr", "@mut", [["get", "otp", ["loc", [null, [63, 75], [63, 78]]]]], [], []], "newPassword1", ["subexpr", "@mut", [["get", "newPassword1", ["loc", [null, [63, 92], [63, 104]]]]], [], []], "newPassword2", ["subexpr", "@mut", [["get", "newPassword2", ["loc", [null, [63, 118], [63, 130]]]]], [], []]], ["loc", [null, [63, 16], [63, 132]]]]],
         locals: [],
         templates: []
       };
@@ -62522,11 +62719,11 @@ define("frontend-cp/login/template", ["exports"], function (exports) {
           "loc": {
             "source": null,
             "start": {
-              "line": 63,
+              "line": 67,
               "column": 16
             },
             "end": {
-              "line": 65,
+              "line": 69,
               "column": 16
             }
           },
@@ -62551,7 +62748,7 @@ define("frontend-cp/login/template", ["exports"], function (exports) {
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [["inline", "component", [["get", "bottomFormSet", ["loc", [null, [64, 28], [64, 41]]]]], ["model", ["subexpr", "@mut", [["get", "model", ["loc", [null, [64, 48], [64, 53]]]]], [], []], "isLoading", ["subexpr", "@mut", [["get", "isLoading", ["loc", [null, [64, 64], [64, 73]]]]], [], []], "otp", ["subexpr", "@mut", [["get", "otp", ["loc", [null, [64, 78], [64, 81]]]]], [], []], "newPassword1", ["subexpr", "@mut", [["get", "newPassword1", ["loc", [null, [64, 95], [64, 107]]]]], [], []], "newPassword2", ["subexpr", "@mut", [["get", "newPassword2", ["loc", [null, [64, 121], [64, 133]]]]], [], []]], ["loc", [null, [64, 16], [64, 135]]]]],
+        statements: [["inline", "component", [["get", "bottomFormSet", ["loc", [null, [68, 28], [68, 41]]]]], ["model", ["subexpr", "@mut", [["get", "model", ["loc", [null, [68, 48], [68, 53]]]]], [], []], "isLoading", ["subexpr", "@mut", [["get", "isLoading", ["loc", [null, [68, 64], [68, 73]]]]], [], []], "otp", ["subexpr", "@mut", [["get", "otp", ["loc", [null, [68, 78], [68, 81]]]]], [], []], "newPassword1", ["subexpr", "@mut", [["get", "newPassword1", ["loc", [null, [68, 95], [68, 107]]]]], [], []], "newPassword2", ["subexpr", "@mut", [["get", "newPassword2", ["loc", [null, [68, 121], [68, 133]]]]], [], []]], ["loc", [null, [68, 16], [68, 135]]]]],
         locals: [],
         templates: []
       };
@@ -62564,11 +62761,11 @@ define("frontend-cp/login/template", ["exports"], function (exports) {
           "loc": {
             "source": null,
             "start": {
-              "line": 73,
+              "line": 77,
               "column": 10
             },
             "end": {
-              "line": 77,
+              "line": 81,
               "column": 10
             }
           },
@@ -62605,7 +62802,7 @@ define("frontend-cp/login/template", ["exports"], function (exports) {
           morphs[2] = dom.createMorphAt(element0, 0, 0);
           return morphs;
         },
-        statements: [["attribute", "class", ["concat", ["js-slide ", ["subexpr", "if", [["get", "isLoading", ["loc", [null, [75, 36], [75, 45]]]], "u-disable-link"], [], ["loc", [null, [75, 31], [75, 64]]]]]]], ["attribute", "onclick", ["subexpr", "action", ["gotoForgotPassword"], [], ["loc", [null, [75, 74], [75, 105]]]]], ["inline", "t", ["login.forgot"], [], ["loc", [null, [75, 106], [75, 126]]]]],
+        statements: [["attribute", "class", ["concat", ["js-slide ", ["subexpr", "if", [["get", "isLoading", ["loc", [null, [79, 36], [79, 45]]]], "u-disable-link"], [], ["loc", [null, [79, 31], [79, 64]]]]]]], ["attribute", "onclick", ["subexpr", "action", ["gotoForgotPassword"], [], ["loc", [null, [79, 74], [79, 105]]]]], ["inline", "t", ["login.forgot"], [], ["loc", [null, [79, 106], [79, 126]]]]],
         locals: [],
         templates: []
       };
@@ -62623,7 +62820,7 @@ define("frontend-cp/login/template", ["exports"], function (exports) {
             "column": 0
           },
           "end": {
-            "line": 83,
+            "line": 87,
             "column": 0
           }
         },
@@ -62813,42 +63010,42 @@ define("frontend-cp/login/template", ["exports"], function (exports) {
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var element2 = dom.childAt(fragment, [0, 1]);
-        var element3 = dom.childAt(element2, [1]);
+        var element3 = dom.childAt(fragment, [0, 1]);
         var element4 = dom.childAt(element3, [1]);
-        var element5 = dom.childAt(element4, [1, 1]);
-        var element6 = dom.childAt(element4, [3, 1]);
-        var element7 = dom.childAt(element2, [3, 1]);
-        var element8 = dom.childAt(element7, [1]);
-        var element9 = dom.childAt(element8, [9, 1]);
-        var element10 = dom.childAt(element7, [3]);
-        var element11 = dom.childAt(element10, [5, 1]);
-        var element12 = dom.childAt(element10, [7, 1]);
+        var element5 = dom.childAt(element4, [1]);
+        var element6 = dom.childAt(element5, [1, 1]);
+        var element7 = dom.childAt(element5, [3, 1]);
+        var element8 = dom.childAt(element3, [3, 1]);
+        var element9 = dom.childAt(element8, [1]);
+        var element10 = dom.childAt(element9, [9, 1]);
+        var element11 = dom.childAt(element8, [3]);
+        var element12 = dom.childAt(element11, [5, 1]);
+        var element13 = dom.childAt(element11, [7, 1]);
         var morphs = new Array(21);
-        morphs[0] = dom.createAttrMorph(element3, 'class');
-        morphs[1] = dom.createAttrMorph(element5, 'style');
-        morphs[2] = dom.createAttrMorph(element6, 'style');
-        morphs[3] = dom.createAttrMorph(element7, 'class');
-        morphs[4] = dom.createAttrMorph(element8, 'onsubmit');
-        morphs[5] = dom.createMorphAt(dom.childAt(element8, [1]), 0, 0);
-        morphs[6] = dom.createMorphAt(element8, 3, 3);
-        morphs[7] = dom.createMorphAt(element8, 5, 5);
-        morphs[8] = dom.createMorphAt(element8, 7, 7);
-        morphs[9] = dom.createAttrMorph(element9, 'class');
-        morphs[10] = dom.createAttrMorph(element9, 'onclick');
-        morphs[11] = dom.createMorphAt(element9, 0, 0);
-        morphs[12] = dom.createAttrMorph(element10, 'onsubmit');
-        morphs[13] = dom.createMorphAt(dom.childAt(element10, [1]), 0, 0);
-        morphs[14] = dom.createMorphAt(element10, 3, 3);
-        morphs[15] = dom.createAttrMorph(element11, 'class');
-        morphs[16] = dom.createMorphAt(dom.childAt(element11, [1]), 1, 1);
-        morphs[17] = dom.createMorphAt(dom.childAt(element11, [3]), 1, 1);
-        morphs[18] = dom.createAttrMorph(element12, 'disabled');
-        morphs[19] = dom.createMorphAt(element12, 0, 0);
-        morphs[20] = dom.createMorphAt(element10, 9, 9);
+        morphs[0] = dom.createAttrMorph(element4, 'class');
+        morphs[1] = dom.createAttrMorph(element6, 'style');
+        morphs[2] = dom.createAttrMorph(element7, 'style');
+        morphs[3] = dom.createAttrMorph(element8, 'class');
+        morphs[4] = dom.createAttrMorph(element9, 'onsubmit');
+        morphs[5] = dom.createMorphAt(dom.childAt(element9, [1]), 0, 0);
+        morphs[6] = dom.createMorphAt(element9, 3, 3);
+        morphs[7] = dom.createMorphAt(element9, 5, 5);
+        morphs[8] = dom.createMorphAt(element9, 7, 7);
+        morphs[9] = dom.createAttrMorph(element10, 'class');
+        morphs[10] = dom.createAttrMorph(element10, 'onclick');
+        morphs[11] = dom.createMorphAt(element10, 0, 0);
+        morphs[12] = dom.createAttrMorph(element11, 'onsubmit');
+        morphs[13] = dom.createMorphAt(dom.childAt(element11, [1]), 0, 0);
+        morphs[14] = dom.createMorphAt(element11, 3, 3);
+        morphs[15] = dom.createAttrMorph(element12, 'class');
+        morphs[16] = dom.createMorphAt(dom.childAt(element12, [1]), 1, 1);
+        morphs[17] = dom.createMorphAt(dom.childAt(element12, [3]), 1, 1);
+        morphs[18] = dom.createAttrMorph(element13, 'disabled');
+        morphs[19] = dom.createMorphAt(element13, 0, 0);
+        morphs[20] = dom.createMorphAt(element11, 9, 9);
         return morphs;
       },
-      statements: [["attribute", "class", ["concat", ["flip-container ", ["subexpr", "if", [["get", "flipAvatar", ["loc", [null, [3, 36], [3, 46]]]], "flip"], [], ["loc", [null, [3, 31], [3, 55]]]], " ", ["subexpr", "if", [["get", "isLoading", ["loc", [null, [3, 61], [3, 70]]]], "a-success"], [], ["loc", [null, [3, 56], [3, 84]]]], " ", ["subexpr", "if", [["get", "isError", ["loc", [null, [3, 90], [3, 97]]]], "a-error"], [], ["loc", [null, [3, 85], [3, 109]]]]]]], ["attribute", "style", ["get", "loginFrontImageStyle", ["loc", [null, [6, 44], [6, 64]]]]], ["attribute", "style", ["get", "loginBackImageStyle", ["loc", [null, [9, 44], [9, 63]]]]], ["attribute", "class", ["concat", ["login-form__container ", ["subexpr", "if", [["get", "isLogin", ["loc", [null, [15, 45], [15, 52]]]], "u-slide"], [], ["loc", [null, [15, 40], [15, 64]]]]]]], ["attribute", "onsubmit", ["subexpr", "action", ["sendForgotPasswordEmail"], [], ["loc", [null, [16, 54], [16, 90]]]]], ["inline", "t", ["login.resetpassword"], [], ["loc", [null, [17, 66], [17, 93]]]], ["block", "if", [["get", "isForgotPasswordEmailSent", ["loc", [null, [19, 16], [19, 41]]]]], [], 0, null, ["loc", [null, [19, 10], [23, 17]]]], ["block", "if", [["get", "hasErrorMessages", ["loc", [null, [25, 16], [25, 32]]]]], [], 1, null, ["loc", [null, [25, 10], [31, 17]]]], ["block", "if", [["subexpr", "not", [["get", "isForgotPasswordEmailSent", ["loc", [null, [33, 21], [33, 46]]]]], [], ["loc", [null, [33, 16], [33, 47]]]]], [], 2, null, ["loc", [null, [33, 10], [41, 17]]]], ["attribute", "class", ["concat", ["js-slide ", ["subexpr", "if", [["get", "isLoading", ["loc", [null, [44, 36], [44, 45]]]], "u-disable-link"], [], ["loc", [null, [44, 31], [44, 64]]]]]]], ["attribute", "onclick", ["subexpr", "action", ["gotoLogin"], [], ["loc", [null, [44, 74], [44, 96]]]]], ["inline", "t", ["login.back"], [], ["loc", [null, [44, 97], [44, 115]]]], ["attribute", "onsubmit", ["subexpr", "action", ["login"], [], ["loc", [null, [47, 51], [47, 69]]]]], ["inline", "t", ["login.welcome"], [], ["loc", [null, [48, 45], [48, 66]]]], ["block", "if", [["get", "hasErrorMessages", ["loc", [null, [49, 16], [49, 32]]]]], [], 3, null, ["loc", [null, [49, 10], [54, 17]]]], ["attribute", "class", ["concat", ["login-form__content ", ["subexpr", "if", [["get", "isAnimatingContent", ["loc", [null, [56, 49], [56, 67]]]], "login-form__content--animate"], [], ["loc", [null, [56, 44], [56, 100]]]], " ", ["subexpr", "if", [["get", "isContentDown", ["loc", [null, [56, 106], [56, 119]]]], "login-form__content-down"], [], ["loc", [null, [56, 101], [56, 148]]]]]]], ["block", "if", [["get", "topFormSet", ["loc", [null, [58, 22], [58, 32]]]]], [], 4, null, ["loc", [null, [58, 16], [60, 23]]]], ["block", "if", [["get", "bottomFormSet", ["loc", [null, [63, 22], [63, 35]]]]], [], 5, null, ["loc", [null, [63, 16], [65, 23]]]], ["attribute", "disabled", ["get", "loginButtonDisabled", ["loc", [null, [71, 87], [71, 106]]]]], ["content", "actionButtonText", ["loc", [null, [71, 109], [71, 129]]]], ["block", "if", [["subexpr", "not", [["subexpr", "eq", [["get", "currentState", ["loc", [null, [73, 25], [73, 37]]]], "login.resetPassword.input"], [], ["loc", [null, [73, 21], [73, 66]]]]], [], ["loc", [null, [73, 16], [73, 67]]]]], [], 6, null, ["loc", [null, [73, 10], [77, 17]]]]],
+      statements: [["attribute", "class", ["concat", ["flip-container ", ["subexpr", "if", [["get", "flipAvatar", ["loc", [null, [3, 36], [3, 46]]]], "flip"], [], ["loc", [null, [3, 31], [3, 55]]]], " ", ["subexpr", "if", [["get", "isLoading", ["loc", [null, [3, 61], [3, 70]]]], "a-success"], [], ["loc", [null, [3, 56], [3, 84]]]], " ", ["subexpr", "if", [["get", "isError", ["loc", [null, [3, 90], [3, 97]]]], "a-error"], [], ["loc", [null, [3, 85], [3, 109]]]]]]], ["attribute", "style", ["get", "loginFrontImageStyle", ["loc", [null, [6, 44], [6, 64]]]]], ["attribute", "style", ["get", "loginBackImageStyle", ["loc", [null, [9, 44], [9, 63]]]]], ["attribute", "class", ["concat", ["login-form__container ", ["subexpr", "if", [["get", "isLogin", ["loc", [null, [15, 45], [15, 52]]]], "u-slide"], [], ["loc", [null, [15, 40], [15, 64]]]]]]], ["attribute", "onsubmit", ["subexpr", "action", ["sendForgotPasswordEmail"], [], ["loc", [null, [16, 54], [16, 90]]]]], ["inline", "t", ["login.resetpassword"], [], ["loc", [null, [17, 66], [17, 93]]]], ["block", "if", [["get", "isForgotPasswordEmailSent", ["loc", [null, [19, 16], [19, 41]]]]], [], 0, null, ["loc", [null, [19, 10], [23, 17]]]], ["block", "if", [["get", "hasErrorMessages", ["loc", [null, [25, 16], [25, 32]]]]], [], 1, null, ["loc", [null, [25, 10], [31, 17]]]], ["block", "if", [["subexpr", "not", [["get", "isForgotPasswordEmailSent", ["loc", [null, [33, 21], [33, 46]]]]], [], ["loc", [null, [33, 16], [33, 47]]]]], [], 2, null, ["loc", [null, [33, 10], [45, 17]]]], ["attribute", "class", ["concat", ["js-slide ", ["subexpr", "if", [["get", "isLoading", ["loc", [null, [48, 36], [48, 45]]]], "u-disable-link"], [], ["loc", [null, [48, 31], [48, 64]]]]]]], ["attribute", "onclick", ["subexpr", "action", ["gotoLogin"], [], ["loc", [null, [48, 74], [48, 96]]]]], ["inline", "t", ["login.back"], [], ["loc", [null, [48, 97], [48, 115]]]], ["attribute", "onsubmit", ["subexpr", "action", ["login"], [], ["loc", [null, [51, 51], [51, 69]]]]], ["inline", "t", ["login.welcome"], [], ["loc", [null, [52, 45], [52, 66]]]], ["block", "if", [["get", "hasErrorMessages", ["loc", [null, [53, 16], [53, 32]]]]], [], 3, null, ["loc", [null, [53, 10], [58, 17]]]], ["attribute", "class", ["concat", ["login-form__content ", ["subexpr", "if", [["get", "isAnimatingContent", ["loc", [null, [60, 49], [60, 67]]]], "login-form__content--animate"], [], ["loc", [null, [60, 44], [60, 100]]]], " ", ["subexpr", "if", [["get", "isContentDown", ["loc", [null, [60, 106], [60, 119]]]], "login-form__content-down"], [], ["loc", [null, [60, 101], [60, 148]]]]]]], ["block", "if", [["get", "topFormSet", ["loc", [null, [62, 22], [62, 32]]]]], [], 4, null, ["loc", [null, [62, 16], [64, 23]]]], ["block", "if", [["get", "bottomFormSet", ["loc", [null, [67, 22], [67, 35]]]]], [], 5, null, ["loc", [null, [67, 16], [69, 23]]]], ["attribute", "disabled", ["get", "loginButtonDisabled", ["loc", [null, [75, 87], [75, 106]]]]], ["content", "actionButtonText", ["loc", [null, [75, 109], [75, 129]]]], ["block", "if", [["subexpr", "not", [["subexpr", "eq", [["get", "currentState", ["loc", [null, [77, 25], [77, 37]]]], "login.resetPassword.input"], [], ["loc", [null, [77, 21], [77, 66]]]]], [], ["loc", [null, [77, 16], [77, 67]]]]], [], 6, null, ["loc", [null, [77, 10], [81, 17]]]]],
       locals: [],
       templates: [child0, child1, child2, child3, child4, child5, child6]
     };
@@ -81634,11 +81831,11 @@ define("frontend-cp/session/admin/people/teams/index/template", ["exports"], fun
           "loc": {
             "source": null,
             "start": {
-              "line": 18,
+              "line": 21,
               "column": 2
             },
             "end": {
-              "line": 18,
+              "line": 21,
               "column": 107
             }
           },
@@ -81662,7 +81859,7 @@ define("frontend-cp/session/admin/people/teams/index/template", ["exports"], fun
           morphs[0] = dom.createMorphAt(dom.childAt(fragment, [0]), 0, 0);
           return morphs;
         },
-        statements: [["inline", "ko-admin-card-team", [], ["team", ["subexpr", "@mut", [["get", "team", ["loc", [null, [18, 95], [18, 99]]]]], [], []]], ["loc", [null, [18, 69], [18, 101]]]]],
+        statements: [["inline", "ko-admin-card-team", [], ["team", ["subexpr", "@mut", [["get", "team", ["loc", [null, [21, 95], [21, 99]]]]], [], []]], ["loc", [null, [21, 69], [21, 101]]]]],
         locals: ["team"],
         templates: []
       };
@@ -81681,7 +81878,7 @@ define("frontend-cp/session/admin/people/teams/index/template", ["exports"], fun
             "column": 0
           },
           "end": {
-            "line": 20,
+            "line": 23,
             "column": 0
           }
         },
@@ -81709,7 +81906,9 @@ define("frontend-cp/session/admin/people/teams/index/template", ["exports"], fun
         dom.setAttribute(el3, "class", "input--search t-right");
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
-        var el4 = dom.createComment("");
+        var el4 = dom.createElement("input");
+        dom.setAttribute(el4, "type", "text");
+        dom.setAttribute(el4, "class", "input-text input-text--search");
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
@@ -81741,14 +81940,17 @@ define("frontend-cp/session/admin/people/teams/index/template", ["exports"], fun
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var morphs = new Array(3);
+        var element0 = dom.childAt(fragment, [2, 1, 1, 1]);
+        var morphs = new Array(5);
         morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-        morphs[1] = dom.createMorphAt(dom.childAt(fragment, [2, 1, 1]), 1, 1);
-        morphs[2] = dom.createMorphAt(dom.childAt(fragment, [4]), 1, 1);
+        morphs[1] = dom.createAttrMorph(element0, 'value');
+        morphs[2] = dom.createAttrMorph(element0, 'oninput');
+        morphs[3] = dom.createAttrMorph(element0, 'placeholder');
+        morphs[4] = dom.createMorphAt(dom.childAt(fragment, [4]), 1, 1);
         dom.insertBoundary(fragment, 0);
         return morphs;
       },
-      statements: [["inline", "ko-admin/page-header", [], ["title", ["subexpr", "t", ["admin.teams.headings.index"], [], ["loc", [null, [2, 8], [2, 40]]]], "buttonText", ["subexpr", "t", ["admin.teams.buttons.add"], [], ["loc", [null, [3, 13], [3, 42]]]], "onSave", ["subexpr", "action", ["transitionToAddNewTeam"], [], ["loc", [null, [4, 9], [4, 42]]]]], ["loc", [null, [1, 0], [5, 2]]]], ["inline", "input", [], ["class", "input-text input-text--search", "type", "text", "value", ["subexpr", "@mut", [["get", "filter", ["loc", [null, [10, 70], [10, 76]]]]], [], []], "placeholder", ["subexpr", "t", ["admin.teams.labels.filter_teams"], [], ["loc", [null, [10, 89], [10, 126]]]]], ["loc", [null, [10, 6], [10, 128]]]], ["block", "each", [["get", "filteredResults", ["loc", [null, [18, 10], [18, 25]]]]], [], 0, null, ["loc", [null, [18, 2], [18, 116]]]]],
+      statements: [["inline", "ko-admin/page-header", [], ["title", ["subexpr", "t", ["admin.teams.headings.index"], [], ["loc", [null, [2, 8], [2, 40]]]], "buttonText", ["subexpr", "t", ["admin.teams.buttons.add"], [], ["loc", [null, [3, 13], [3, 42]]]], "onSave", ["subexpr", "action", ["transitionToAddNewTeam"], [], ["loc", [null, [4, 9], [4, 42]]]]], ["loc", [null, [1, 0], [5, 2]]]], ["attribute", "value", ["get", "filter", ["loc", [null, [11, 16], [11, 22]]]]], ["attribute", "oninput", ["subexpr", "action", [["subexpr", "mut", [["get", "filter", ["loc", [null, [12, 30], [12, 36]]]]], [], ["loc", [null, [12, 25], [12, 37]]]]], ["value", "target.value"], ["loc", [null, [12, 16], [12, 60]]]]], ["attribute", "placeholder", ["subexpr", "t", ["admin.teams.labels.filter_teams"], [], ["loc", [null, [13, 20], [13, 59]]]]], ["block", "each", [["get", "filteredResults", ["loc", [null, [21, 10], [21, 25]]]]], [], 0, null, ["loc", [null, [21, 2], [21, 116]]]]],
       locals: [],
       templates: [child0]
     };
@@ -92392,7 +92594,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+53a2094b"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+351d45b4"});
 }
 
 /* jshint ignore:end */
