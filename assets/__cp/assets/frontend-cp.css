@@ -7572,6 +7572,43 @@ label {
   ._item_1a61wp\--is-disabled {
     color: rgba(0, 0, 0, 0.3); }
 
+/* styles for frontend-cp/components/ko-admin/sla/edit/operational-hours/styles.css */
+._operationalHours_19ecaq {
+  width: 160px; }
+
+/* styles for frontend-cp/components/ko-admin/sla/edit/target/styles.css */
+._target_1dxwja {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex; }
+
+._text_1dxwja {
+  width: 50px;
+  margin-right: 10px; }
+
+._unit_1dxwja {
+  width: 100px; }
+
+/* styles for frontend-cp/components/ko-admin/sla/edit/targets/styles.css */
+._row_1k3wmo {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 48px;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center; }
+
+._column_1k3wmo {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 25%; }
+
 /* styles for frontend-cp/components/ko-avatar/styles.css */
 ._avatar_6hgxvb {
   -webkit-flex-shrink: 0;
