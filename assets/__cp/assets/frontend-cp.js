@@ -70398,6 +70398,7 @@ define('frontend-cp/services/case-tab', ['exports', 'ember', 'npm:lodash', 'fron
   exports['default'] = _ember['default'].Service.extend({
     intl: _ember['default'].inject.service(),
     metrics: _ember['default'].inject.service(),
+    macro: _ember['default'].inject.service(),
     timeline: _ember['default'].inject.service('timeline'),
     store: _ember['default'].inject.service(),
     tabStore: _ember['default'].inject.service(),
@@ -70723,6 +70724,8 @@ define('frontend-cp/services/case-tab', ['exports', 'ember', 'npm:lodash', 'fron
         action: 'click',
         label: 'macro dropdown'
       });
+
+      this.get('macro').trackUsage(macro.get('id'));
     },
 
     addTag: function addTag(tabId, model, tagName) {
@@ -72340,7 +72343,7 @@ define('frontend-cp/services/locale', ['exports', 'ember', 'moment', 'frontend-c
     }
   });
 });
-define('frontend-cp/services/macro-fetcher', ['exports', 'ember'], function (exports, _ember) {
+define('frontend-cp/services/macro', ['exports', 'ember'], function (exports, _ember) {
 
   var OFFSET = 0;
   var LIMIT = 250;
@@ -72366,6 +72369,12 @@ define('frontend-cp/services/macro-fetcher', ['exports', 'ember'], function (exp
       this.set('hasRequestedMacros', true);
 
       this._fetchMacroRange(OFFSET, LIMIT);
+    },
+
+    trackUsage: function trackUsage(id) {
+      var adapter = this.container.lookup('adapter:application');
+      var url = adapter.namespace + '/cases/macros/' + id + '/used';
+      return adapter.ajax(url, 'PUT');
     },
 
     _fetchMacroRange: function _fetchMacroRange(offset, limit) {
@@ -77986,7 +77995,7 @@ define("frontend-cp/session/admin/manage/macros/index/template", ["exports"], fu
                 var el1 = dom.createTextNode("          ");
                 dom.appendChild(el0, el1);
                 var el1 = dom.createElement("span");
-                dom.setAttribute(el1, "class", "t-bold qa-admin_macros__title");
+                dom.setAttribute(el1, "class", "t-bold ko-admin_macros__title");
                 var el2 = dom.createComment("");
                 dom.appendChild(el1, el2);
                 dom.appendChild(el0, el1);
@@ -77995,11 +78004,13 @@ define("frontend-cp/session/admin/manage/macros/index/template", ["exports"], fu
                 return el0;
               },
               buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-                var morphs = new Array(1);
-                morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 0, 0);
+                var element4 = dom.childAt(fragment, [1]);
+                var morphs = new Array(2);
+                morphs[0] = dom.createAttrMorph(element4, 'title');
+                morphs[1] = dom.createMorphAt(element4, 0, 0);
                 return morphs;
               },
-              statements: [["content", "macro.title", ["loc", [null, [13, 54], [13, 69]]]]],
+              statements: [["attribute", "title", ["concat", [["get", "macro.title", ["loc", [null, [13, 63], [13, 74]]]]]]], ["content", "macro.title", ["loc", [null, [13, 78], [13, 93]]]]],
               locals: [],
               templates: []
             };
@@ -78014,11 +78025,11 @@ define("frontend-cp/session/admin/manage/macros/index/template", ["exports"], fu
                     "source": null,
                     "start": {
                       "line": 18,
-                      "column": 8
+                      "column": 10
                     },
                     "end": {
-                      "line": 20,
-                      "column": 8
+                      "line": 18,
+                      "column": 109
                     }
                   },
                   "moduleName": "frontend-cp/session/admin/manage/macros/index/template.hbs"
@@ -78029,24 +78040,19 @@ define("frontend-cp/session/admin/manage/macros/index/template", ["exports"], fu
                 hasRendered: false,
                 buildFragment: function buildFragment(dom) {
                   var el0 = dom.createDocumentFragment();
-                  var el1 = dom.createTextNode("          ");
+                  var el1 = dom.createTextNode(", ");
                   dom.appendChild(el0, el1);
-                  var el1 = dom.createElement("span");
-                  var el2 = dom.createTextNode(", ");
-                  dom.appendChild(el1, el2);
-                  var el2 = dom.createComment("");
-                  dom.appendChild(el1, el2);
-                  dom.appendChild(el0, el1);
-                  var el1 = dom.createTextNode("\n");
+                  var el1 = dom.createComment("");
                   dom.appendChild(el0, el1);
                   return el0;
                 },
                 buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
                   var morphs = new Array(1);
-                  morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
+                  morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+                  dom.insertBoundary(fragment, null);
                   return morphs;
                 },
-                statements: [["inline", "t", ["admin.macros.last_used_at"], ["date", ["subexpr", "moment-from-now", [["get", "macro.lastUsedAt", ["loc", [null, [19, 72], [19, 88]]]]], [], ["loc", [null, [19, 55], [19, 89]]]]], ["loc", [null, [19, 18], [19, 91]]]]],
+                statements: [["inline", "t", ["admin.macros.last_used_at"], ["date", ["subexpr", "moment-from-now", [["get", "macro.lastUsedAt", ["loc", [null, [18, 90], [18, 106]]]]], [], ["loc", [null, [18, 73], [18, 107]]]]], ["loc", [null, [18, 36], [18, 109]]]]],
                 locals: [],
                 templates: []
               };
@@ -78062,7 +78068,7 @@ define("frontend-cp/session/admin/manage/macros/index/template", ["exports"], fu
                     "column": 6
                   },
                   "end": {
-                    "line": 21,
+                    "line": 20,
                     "column": 6
                   }
                 },
@@ -78078,23 +78084,29 @@ define("frontend-cp/session/admin/manage/macros/index/template", ["exports"], fu
                 dom.appendChild(el0, el1);
                 var el1 = dom.createElement("span");
                 dom.setAttribute(el1, "class", "t-caption");
+                var el2 = dom.createTextNode("\n          ");
+                dom.appendChild(el1, el2);
                 var el2 = dom.createComment("");
                 dom.appendChild(el1, el2);
+                var el2 = dom.createTextNode("\n          ");
+                dom.appendChild(el1, el2);
+                var el2 = dom.createComment("");
+                dom.appendChild(el1, el2);
+                var el2 = dom.createTextNode("\n        ");
+                dom.appendChild(el1, el2);
                 dom.appendChild(el0, el1);
-                var el1 = dom.createTextNode("\n\n");
-                dom.appendChild(el0, el1);
-                var el1 = dom.createComment("");
+                var el1 = dom.createTextNode("\n");
                 dom.appendChild(el0, el1);
                 return el0;
               },
               buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var element3 = dom.childAt(fragment, [1]);
                 var morphs = new Array(2);
-                morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 0, 0);
-                morphs[1] = dom.createMorphAt(fragment, 3, 3, contextualElement);
-                dom.insertBoundary(fragment, null);
+                morphs[0] = dom.createMorphAt(element3, 1, 1);
+                morphs[1] = dom.createMorphAt(element3, 3, 3);
                 return morphs;
               },
-              statements: [["inline", "t", ["admin.macros.usage_count"], ["count", ["subexpr", "@mut", [["get", "macro.usageCount", ["loc", [null, [16, 69], [16, 85]]]]], [], []]], ["loc", [null, [16, 32], [16, 87]]]], ["block", "if", [["get", "macro.lastUsedAt", ["loc", [null, [18, 14], [18, 30]]]]], [], 0, null, ["loc", [null, [18, 8], [20, 15]]]]],
+              statements: [["inline", "t", ["admin.macros.usage_count"], ["count", ["subexpr", "@mut", [["get", "macro.usageCount", ["loc", [null, [17, 47], [17, 63]]]]], [], []]], ["loc", [null, [17, 10], [17, 65]]]], ["block", "if", [["get", "macro.lastUsedAt", ["loc", [null, [18, 16], [18, 32]]]]], [], 0, null, ["loc", [null, [18, 10], [18, 116]]]]],
               locals: [],
               templates: [child0]
             };
@@ -78107,11 +78119,11 @@ define("frontend-cp/session/admin/manage/macros/index/template", ["exports"], fu
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 22,
+                    "line": 21,
                     "column": 6
                   },
                   "end": {
-                    "line": 27,
+                    "line": 26,
                     "column": 6
                   }
                 },
@@ -78157,7 +78169,7 @@ define("frontend-cp/session/admin/manage/macros/index/template", ["exports"], fu
                 morphs[3] = dom.createMorphAt(element2, 0, 0);
                 return morphs;
               },
-              statements: [["attribute", "onclick", ["subexpr", "action", ["editMacro", ["get", "macro", ["loc", [null, [24, 42], [24, 47]]]]], [], ["loc", [null, [24, 21], [24, 49]]]]], ["inline", "t", ["generic.edit"], [], ["loc", [null, [24, 50], [24, 70]]]], ["attribute", "onclick", ["subexpr", "action", ["deleteMacro", ["get", "macro", ["loc", [null, [25, 46], [25, 51]]]]], [], ["loc", [null, [25, 23], [25, 53]]]]], ["inline", "t", ["generic.delete"], [], ["loc", [null, [25, 54], [25, 76]]]]],
+              statements: [["attribute", "onclick", ["subexpr", "action", ["editMacro", ["get", "macro", ["loc", [null, [23, 42], [23, 47]]]]], [], ["loc", [null, [23, 21], [23, 49]]]]], ["inline", "t", ["generic.edit"], [], ["loc", [null, [23, 50], [23, 70]]]], ["attribute", "onclick", ["subexpr", "action", ["deleteMacro", ["get", "macro", ["loc", [null, [24, 46], [24, 51]]]]], [], ["loc", [null, [24, 23], [24, 53]]]]], ["inline", "t", ["generic.delete"], [], ["loc", [null, [24, 54], [24, 76]]]]],
               locals: [],
               templates: []
             };
@@ -78173,7 +78185,7 @@ define("frontend-cp/session/admin/manage/macros/index/template", ["exports"], fu
                   "column": 4
                 },
                 "end": {
-                  "line": 28,
+                  "line": 27,
                   "column": 4
                 }
               },
@@ -78202,7 +78214,7 @@ define("frontend-cp/session/admin/manage/macros/index/template", ["exports"], fu
               dom.insertBoundary(fragment, null);
               return morphs;
             },
-            statements: [["block", "ko-simple-list/cell", [], [], 0, null, ["loc", [null, [12, 6], [14, 30]]]], ["block", "ko-simple-list/cell", [], [], 1, null, ["loc", [null, [15, 6], [21, 30]]]], ["block", "ko-simple-list/cell", [], [], 2, null, ["loc", [null, [22, 6], [27, 30]]]]],
+            statements: [["block", "ko-simple-list/cell", [], [], 0, null, ["loc", [null, [12, 6], [14, 30]]]], ["block", "ko-simple-list/cell", [], [], 1, null, ["loc", [null, [15, 6], [20, 30]]]], ["block", "ko-simple-list/cell", [], [], 2, null, ["loc", [null, [21, 6], [26, 30]]]]],
             locals: [],
             templates: [child0, child1, child2]
           };
@@ -78218,7 +78230,7 @@ define("frontend-cp/session/admin/manage/macros/index/template", ["exports"], fu
                 "column": 2
               },
               "end": {
-                "line": 29,
+                "line": 28,
                 "column": 2
               }
             },
@@ -78241,7 +78253,7 @@ define("frontend-cp/session/admin/manage/macros/index/template", ["exports"], fu
             dom.insertBoundary(fragment, null);
             return morphs;
           },
-          statements: [["block", "ko-simple-list/row", [], ["onClick", ["subexpr", "action", ["editMacro", ["get", "macro", ["loc", [null, [11, 54], [11, 59]]]]], [], ["loc", [null, [11, 34], [11, 60]]]], "content", ["subexpr", "@mut", [["get", "macro", ["loc", [null, [11, 69], [11, 74]]]]], [], []]], 0, null, ["loc", [null, [11, 4], [28, 27]]]]],
+          statements: [["block", "ko-simple-list/row", [], ["onClick", ["subexpr", "action", ["editMacro", ["get", "macro", ["loc", [null, [11, 54], [11, 59]]]]], [], ["loc", [null, [11, 34], [11, 60]]]], "content", ["subexpr", "@mut", [["get", "macro", ["loc", [null, [11, 69], [11, 74]]]]], [], []]], 0, null, ["loc", [null, [11, 4], [27, 27]]]]],
           locals: ["macro"],
           templates: [child0]
         };
@@ -78257,7 +78269,7 @@ define("frontend-cp/session/admin/manage/macros/index/template", ["exports"], fu
               "column": 0
             },
             "end": {
-              "line": 30,
+              "line": 29,
               "column": 0
             }
           },
@@ -78280,7 +78292,7 @@ define("frontend-cp/session/admin/manage/macros/index/template", ["exports"], fu
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [["block", "each", [["get", "model", ["loc", [null, [10, 10], [10, 15]]]]], [], 0, null, ["loc", [null, [10, 2], [29, 11]]]]],
+        statements: [["block", "each", [["get", "model", ["loc", [null, [10, 10], [10, 15]]]]], [], 0, null, ["loc", [null, [10, 2], [28, 11]]]]],
         locals: [],
         templates: [child0]
       };
@@ -78299,7 +78311,7 @@ define("frontend-cp/session/admin/manage/macros/index/template", ["exports"], fu
             "column": 0
           },
           "end": {
-            "line": 31,
+            "line": 30,
             "column": 0
           }
         },
@@ -78327,7 +78339,7 @@ define("frontend-cp/session/admin/manage/macros/index/template", ["exports"], fu
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["inline", "ko-admin/page-header", [], ["title", ["subexpr", "t", ["admin.macros.title"], [], ["loc", [null, [2, 8], [2, 32]]]], "buttonText", ["subexpr", "t", ["admin.macros.buttons.add_new_macro"], [], ["loc", [null, [3, 13], [3, 53]]]], "buttonClass", ["subexpr", "qa-cls", ["qa-admin_macros__new-button"], [], ["loc", [null, [4, 14], [4, 52]]]], "cancelButtonClass", ["subexpr", "qa-cls", ["qa-admin_macros__cancel-button"], [], ["loc", [null, [5, 20], [5, 61]]]], "onSave", ["subexpr", "action", ["transitionToNewMacroRoute"], [], ["loc", [null, [6, 9], [6, 45]]]]], ["loc", [null, [1, 0], [7, 2]]]], ["block", "ko-simple-list", [], ["class", ["subexpr", "qa-cls", ["qa-admin_macros__enabled-list"], [], ["loc", [null, [9, 24], [9, 64]]]]], 0, null, ["loc", [null, [9, 0], [30, 19]]]]],
+      statements: [["inline", "ko-admin/page-header", [], ["title", ["subexpr", "t", ["admin.macros.title"], [], ["loc", [null, [2, 8], [2, 32]]]], "buttonText", ["subexpr", "t", ["admin.macros.buttons.add_new_macro"], [], ["loc", [null, [3, 13], [3, 53]]]], "buttonClass", ["subexpr", "qa-cls", ["qa-admin_macros__new-button"], [], ["loc", [null, [4, 14], [4, 52]]]], "cancelButtonClass", ["subexpr", "qa-cls", ["qa-admin_macros__cancel-button"], [], ["loc", [null, [5, 20], [5, 61]]]], "onSave", ["subexpr", "action", ["transitionToNewMacroRoute"], [], ["loc", [null, [6, 9], [6, 45]]]]], ["loc", [null, [1, 0], [7, 2]]]], ["block", "ko-simple-list", [], ["class", ["subexpr", "qa-cls", ["qa-admin_macros__enabled-list"], [], ["loc", [null, [9, 24], [9, 64]]]]], 0, null, ["loc", [null, [9, 0], [29, 19]]]]],
       locals: [],
       templates: [child0]
     };
@@ -86550,7 +86562,7 @@ define('frontend-cp/session/agent/route', ['exports', 'ember'], function (export
   exports['default'] = _ember['default'].Route.extend({
     active: false,
 
-    macroFetcher: _ember['default'].inject.service('macro-fetcher'),
+    macro: _ember['default'].inject.service('macro'),
 
     activate: _ember['default'].on('activate', function () {
       this.set('active', true);
@@ -86561,7 +86573,7 @@ define('frontend-cp/session/agent/route', ['exports', 'ember'], function (export
     }),
 
     afterModel: function afterModel() {
-      this.get('macroFetcher').fetchMacros();
+      this.get('macro').fetchMacros();
       return this._super.apply(this, arguments);
     }
   });
@@ -89787,6 +89799,11 @@ define("frontend-cp/styles/session/admin/manage/case-fields/index/styles.scss", 
     "ko-admin_case-fields_select-type__icon": "_ko-admin_case-fields_select-type__icon_10dyfz"
   };
 });
+define("frontend-cp/styles/session/admin/manage/macros/index/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-admin_macros__title": "_ko-admin_macros__title_jd5ukr"
+  };
+});
 define("frontend-cp/styles/session/admin/styles.scss", ["exports"], function (exports) {
   exports["default"] = {};
 });
@@ -92373,7 +92390,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+fc1fa7e9"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+19208e3e"});
 }
 
 /* jshint ignore:end */

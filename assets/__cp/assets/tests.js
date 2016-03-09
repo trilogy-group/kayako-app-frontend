@@ -2523,10 +2523,10 @@ define('frontend-cp/tests/acceptance/admin/manage/macros/new-test', ['exports', 
     click('.qa-admin_macros_edit__submit-button');
 
     andThen(function () {
-      assert.equal(find('.qa-admin_macros__title:contains("New Macro")').length, 1);
+      assert.equal(find('.ko-admin_macros__title:contains("New Macro")').length, 1);
     });
 
-    click('.qa-admin_macros__title:contains("New Macro")');
+    click('.ko-admin_macros__title:contains("New Macro")');
 
     andThen(function () {
       assert.equal(find('.qa-admin_macros_edit__title-input').val(), 'New Macro');
