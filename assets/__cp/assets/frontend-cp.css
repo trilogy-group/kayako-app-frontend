@@ -3092,6 +3092,12 @@ a {
   border-radius: 2px;
   padding: 0px; }
 
+.ko-admin_macros__title {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 350px; }
+
 .ko-session-agent-cases-index {
   margin: 40px 45px;
   display: -webkit-box;
