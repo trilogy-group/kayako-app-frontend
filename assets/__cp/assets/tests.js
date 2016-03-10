@@ -6904,7 +6904,7 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
 
     andThen(function () {
       assert.equal(currentURL(), '/agent/cases/view/1');
-      assert.equal(find('tbody tr').length, 10);
+      assert.equal(find('tbody tr').length, 20);
       assert.equal(find('tbody tr:first td:nth-child(3)').text().trim(), '1');
       click('thead th:nth-child(3)');
     });
@@ -6916,7 +6916,7 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
 
     andThen(function () {
       assert.ok(find('thead th:nth-child(3) span:last').hasClass('i-chevron-small-down'));
-      assert.equal(find('tbody tr:first td:nth-child(3)').text().trim(), '10');
+      assert.equal(find('tbody tr:first td:nth-child(3)').text().trim(), '55');
     });
   });
 
@@ -7856,6 +7856,97 @@ define('frontend-cp/tests/acceptance/agent/organisations/create-test', ['exports
   //});
 });
 /* eslint-disable camelcase, new-cap */
+define('frontend-cp/tests/acceptance/agent/search/search-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/lib/keycodes'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpLibKeycodes) {
+
+  (0, _frontendCpTestsHelpersQunit.app)('Acceptance | Case | Search', {
+    beforeEach: function beforeEach() {
+      useDefaultScenario();
+      login();
+    },
+
+    afterEach: function afterEach() {
+      logout();
+    }
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('Search case returns result', function (assert) {
+    visit('/agent/search/ERS%20Audit%207');
+
+    andThen(function () {
+      assert.equal(find('.ko-table_row').length, 1);
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('Searching opens in new tab', function (assert) {
+    var term = 'ERS';
+    visit('/agent/search/' + term);
+
+    andThen(function () {
+      assert.equal(find('.nav-tabs__label').text(), '"' + term + '"');
+      assert.equal(find('.ko-universal-search_entry').val(), term);
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('Advanced search reuses tab', function (assert) {
+    var term1 = 'ERS';
+    var term2 = 'murray';
+    visit('/agent/search/' + term1);
+
+    andThen(function () {
+      assert.equal(find('.nav-tabs__label').length, 1);
+      assert.equal(find('.nav-tabs__label').text().trim(), '"' + term1 + '"');
+    });
+
+    andThen(function () {
+      fillIn('.ko-universal-search_entry', term2);
+      keyEvent('.ko-universal-search_entry', 'keydown', _frontendCpLibKeycodes.enter);
+    });
+
+    andThen(function () {
+      assert.equal(find('.nav-tabs__label').length, 1);
+      assert.equal(find('.nav-tabs__label').text().trim(), '"' + term2 + '"');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('Change search result group', function (assert) {
+    var term1 = 'Murray';
+    visit('/agent/search/' + term1);
+
+    andThen(function () {
+      assert.equal(find('.ko-table_row').length, 0);
+      click(find('.sidebar__link')[1]);
+    });
+
+    andThen(function () {
+      assert.equal(find('.ko-table_row').length, 20);
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('Multiple searches in multiple tabs', function (assert) {
+    var term1 = 'Murray';
+    var term2 = 'ERS';
+    visit('/agent/search/' + term1);
+
+    andThen(function () {
+      assert.equal(find('.nav-tabs__label').length, 1);
+      assert.equal(find('.nav-tabs .active').text().trim(), '"' + term1 + '"');
+    });
+
+    andThen(function () {
+      visit('/agent');
+    });
+
+    andThen(function () {
+      visit('/agent/search/' + term2);
+    });
+
+    andThen(function () {
+      assert.equal(find('.nav-tabs__label').length, 2);
+      assert.equal(find('.nav-tabs .active').text().trim(), '"' + term2 + '"');
+    });
+  });
+});
+/* eslint-disable camelcase */
 define('frontend-cp/tests/acceptance/agent/tabs/tabs-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/tests/fixtures/location/mock-location'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpTestsFixturesLocationMockLocation) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | Tabs', {

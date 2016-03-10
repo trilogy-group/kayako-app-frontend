@@ -24848,6 +24848,778 @@ define("frontend-cp/components/ko-admin-selectable-card/template", ["exports"], 
     };
   })());
 });
+define('frontend-cp/components/ko-advanced-search/component', ['exports', 'ember', 'frontend-cp/config/environment'], function (exports, _ember, _frontendCpConfigEnvironment) {
+
+  var columns = {
+    'case': ['id', 'subject', 'priority.label', 'status.label', 'assigneeAgent.fullName'],
+    user: ['id', 'fullName', 'primaryEmail.email', 'organization.name', 'lastActivityAt'],
+    organization: ['id', 'name', 'updatedAt']
+  };
+
+  exports['default'] = _ember['default'].Component.extend({
+    resultGroup: null,
+    searchResults: null,
+    searchTerm: null,
+
+    columnList: _ember['default'].computed('resultGroup', function () {
+      return columns[this.get('resultGroup')];
+    }),
+
+    isDate: function isDate(column) {
+      return column === 'updatedAt' || column === 'lastActivityAt';
+    },
+
+    maxWidthForColumn: function maxWidthForColumn(column) {
+      if (column === 'subject' || column === 'fullName' || column === 'name') {
+        return null;
+      } else {
+        return 150;
+      }
+    },
+
+    minWidthForColumn: function minWidthForColumn(column) {
+      if (column === 'subject' || column === 'fullName' || column === 'name') {
+        return 200;
+      } else {
+        return 60;
+      }
+    },
+
+    avatarForRow: function avatarForRow(result, resultGroup) {
+      if (result) {
+        switch (resultGroup) {
+          case 'case':
+            return result.get('requester.avatar');
+          case 'user':
+            return result.get('avatar');
+          case 'organization':
+            return _frontendCpConfigEnvironment['default'].assetRoot + '/images/icons/organization.svg';
+        }
+      }
+    },
+
+    actions: {
+      openSearchResult: function openSearchResult(resultGroup, result, hasModifier) {
+        switch (resultGroup) {
+          case 'user':
+            this.attrs.onLoadSearchRoute('session.agent.users.user', result.get('fullName'), result.id, hasModifier);
+            break;
+          case 'case':
+            this.attrs.onLoadSearchRoute('session.agent.cases.case', result.get('subject'), result.id, hasModifier);
+            break;
+          case 'organization':
+            this.attrs.onLoadSearchRoute('session.agent.organisations.organisation', result.get('name'), result.id, hasModifier);
+            break;
+        }
+      }
+    }
+  });
+});
+define("frontend-cp/components/ko-advanced-search/template", ["exports"], function (exports) {
+  exports["default"] = Ember.HTMLBars.template((function () {
+    var child0 = (function () {
+      var child0 = (function () {
+        var child0 = (function () {
+          var child0 = (function () {
+            return {
+              meta: {
+                "fragmentReason": false,
+                "revision": "Ember@2.4.1",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 11,
+                    "column": 6
+                  },
+                  "end": {
+                    "line": 11,
+                    "column": 51
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-advanced-search/template.hbs"
+              },
+              isEmpty: false,
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createTextNode(" ");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes() {
+                return [];
+              },
+              statements: [],
+              locals: [],
+              templates: []
+            };
+          })();
+          var child1 = (function () {
+            var child0 = (function () {
+              return {
+                meta: {
+                  "fragmentReason": false,
+                  "revision": "Ember@2.4.1",
+                  "loc": {
+                    "source": null,
+                    "start": {
+                      "line": 13,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 18,
+                      "column": 8
+                    }
+                  },
+                  "moduleName": "frontend-cp/components/ko-advanced-search/template.hbs"
+                },
+                isEmpty: false,
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                  var el0 = dom.createDocumentFragment();
+                  var el1 = dom.createTextNode("          ");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createElement("span");
+                  var el2 = dom.createComment("");
+                  dom.appendChild(el1, el2);
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createTextNode("\n");
+                  dom.appendChild(el0, el1);
+                  return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                  var morphs = new Array(1);
+                  morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 0, 0);
+                  return morphs;
+                },
+                statements: [["inline", "t", [["subexpr", "concat", ["search.", ["get", "resultGroup", ["loc", [null, [17, 38], [17, 49]]]], ".", ["get", "column", ["loc", [null, [17, 54], [17, 60]]]]], [], ["loc", [null, [17, 20], [17, 61]]]]], [], ["loc", [null, [17, 16], [17, 63]]]]],
+                locals: [],
+                templates: []
+              };
+            })();
+            return {
+              meta: {
+                "fragmentReason": false,
+                "revision": "Ember@2.4.1",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 12,
+                    "column": 6
+                  },
+                  "end": {
+                    "line": 19,
+                    "column": 6
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-advanced-search/template.hbs"
+              },
+              isEmpty: false,
+              arity: 1,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var morphs = new Array(1);
+                morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+                dom.insertBoundary(fragment, 0);
+                dom.insertBoundary(fragment, null);
+                return morphs;
+              },
+              statements: [["block", "ko-table/column", [], ["minWidth", ["subexpr", "ko-helper", [["get", "minWidthForColumn", ["loc", [null, [14, 30], [14, 47]]]], ["get", "column", ["loc", [null, [14, 48], [14, 54]]]]], [], ["loc", [null, [14, 19], [14, 55]]]], "maxWidth", ["subexpr", "ko-helper", [["get", "maxWidthForColumn", ["loc", [null, [15, 30], [15, 47]]]], ["get", "column", ["loc", [null, [15, 48], [15, 54]]]]], [], ["loc", [null, [15, 19], [15, 55]]]], "column", ["subexpr", "@mut", [["get", "column", ["loc", [null, [16, 17], [16, 23]]]]], [], []]], 0, null, ["loc", [null, [13, 8], [18, 28]]]]],
+              locals: ["column"],
+              templates: [child0]
+            };
+          })();
+          return {
+            meta: {
+              "fragmentReason": false,
+              "revision": "Ember@2.4.1",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 10,
+                  "column": 4
+                },
+                "end": {
+                  "line": 20,
+                  "column": 4
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-advanced-search/template.hbs"
+            },
+            isEmpty: false,
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode("      ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(2);
+              morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+              morphs[1] = dom.createMorphAt(fragment, 3, 3, contextualElement);
+              dom.insertBoundary(fragment, null);
+              return morphs;
+            },
+            statements: [["block", "ko-table/column", [], ["minWidth", 60, "maxWidth", 60], 0, null, ["loc", [null, [11, 6], [11, 71]]]], ["block", "each", [["get", "columnList", ["loc", [null, [12, 14], [12, 24]]]]], [], 1, null, ["loc", [null, [12, 6], [19, 15]]]]],
+            locals: [],
+            templates: [child0, child1]
+          };
+        })();
+        var child1 = (function () {
+          var child0 = (function () {
+            var child0 = (function () {
+              var child0 = (function () {
+                return {
+                  meta: {
+                    "fragmentReason": false,
+                    "revision": "Ember@2.4.1",
+                    "loc": {
+                      "source": null,
+                      "start": {
+                        "line": 28,
+                        "column": 10
+                      },
+                      "end": {
+                        "line": 31,
+                        "column": 10
+                      }
+                    },
+                    "moduleName": "frontend-cp/components/ko-advanced-search/template.hbs"
+                  },
+                  isEmpty: false,
+                  arity: 0,
+                  cachedFragment: null,
+                  hasRendered: false,
+                  buildFragment: function buildFragment(dom) {
+                    var el0 = dom.createDocumentFragment();
+                    var el1 = dom.createTextNode("            ");
+                    dom.appendChild(el0, el1);
+                    var el1 = dom.createComment("");
+                    dom.appendChild(el0, el1);
+                    var el1 = dom.createTextNode("\n");
+                    dom.appendChild(el0, el1);
+                    return el0;
+                  },
+                  buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                    var morphs = new Array(1);
+                    morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+                    return morphs;
+                  },
+                  statements: [["inline", "ko-avatar", [], ["class", "u-mr-", "avatar", ["subexpr", "ko-helper", [["get", "avatarForRow", ["loc", [null, [30, 32], [30, 44]]]], ["get", "result", ["loc", [null, [30, 45], [30, 51]]]], ["get", "resultGroup", ["loc", [null, [30, 52], [30, 63]]]]], [], ["loc", [null, [30, 21], [30, 64]]]]], ["loc", [null, [29, 12], [30, 66]]]]],
+                  locals: [],
+                  templates: []
+                };
+              })();
+              var child1 = (function () {
+                var child0 = (function () {
+                  var child0 = (function () {
+                    return {
+                      meta: {
+                        "fragmentReason": false,
+                        "revision": "Ember@2.4.1",
+                        "loc": {
+                          "source": null,
+                          "start": {
+                            "line": 35,
+                            "column": 16
+                          },
+                          "end": {
+                            "line": 37,
+                            "column": 16
+                          }
+                        },
+                        "moduleName": "frontend-cp/components/ko-advanced-search/template.hbs"
+                      },
+                      isEmpty: false,
+                      arity: 0,
+                      cachedFragment: null,
+                      hasRendered: false,
+                      buildFragment: function buildFragment(dom) {
+                        var el0 = dom.createDocumentFragment();
+                        var el1 = dom.createTextNode("                  ");
+                        dom.appendChild(el0, el1);
+                        var el1 = dom.createComment("");
+                        dom.appendChild(el0, el1);
+                        var el1 = dom.createTextNode("\n");
+                        dom.appendChild(el0, el1);
+                        return el0;
+                      },
+                      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                        var morphs = new Array(1);
+                        morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+                        return morphs;
+                      },
+                      statements: [["inline", "moment-from-now", [["subexpr", "get", [["get", "result", ["loc", [null, [36, 41], [36, 47]]]], ["get", "column", ["loc", [null, [36, 48], [36, 54]]]]], [], ["loc", [null, [36, 36], [36, 55]]]]], [], ["loc", [null, [36, 18], [36, 57]]]]],
+                      locals: [],
+                      templates: []
+                    };
+                  })();
+                  var child1 = (function () {
+                    return {
+                      meta: {
+                        "fragmentReason": false,
+                        "revision": "Ember@2.4.1",
+                        "loc": {
+                          "source": null,
+                          "start": {
+                            "line": 37,
+                            "column": 16
+                          },
+                          "end": {
+                            "line": 39,
+                            "column": 16
+                          }
+                        },
+                        "moduleName": "frontend-cp/components/ko-advanced-search/template.hbs"
+                      },
+                      isEmpty: false,
+                      arity: 0,
+                      cachedFragment: null,
+                      hasRendered: false,
+                      buildFragment: function buildFragment(dom) {
+                        var el0 = dom.createDocumentFragment();
+                        var el1 = dom.createTextNode("                  ");
+                        dom.appendChild(el0, el1);
+                        var el1 = dom.createComment("");
+                        dom.appendChild(el0, el1);
+                        var el1 = dom.createTextNode("\n");
+                        dom.appendChild(el0, el1);
+                        return el0;
+                      },
+                      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                        var morphs = new Array(1);
+                        morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+                        return morphs;
+                      },
+                      statements: [["inline", "get", [["get", "result", ["loc", [null, [38, 24], [38, 30]]]], ["get", "column", ["loc", [null, [38, 31], [38, 37]]]]], [], ["loc", [null, [38, 18], [38, 39]]]]],
+                      locals: [],
+                      templates: []
+                    };
+                  })();
+                  return {
+                    meta: {
+                      "fragmentReason": false,
+                      "revision": "Ember@2.4.1",
+                      "loc": {
+                        "source": null,
+                        "start": {
+                          "line": 33,
+                          "column": 12
+                        },
+                        "end": {
+                          "line": 41,
+                          "column": 12
+                        }
+                      },
+                      "moduleName": "frontend-cp/components/ko-advanced-search/template.hbs"
+                    },
+                    isEmpty: false,
+                    arity: 0,
+                    cachedFragment: null,
+                    hasRendered: false,
+                    buildFragment: function buildFragment(dom) {
+                      var el0 = dom.createDocumentFragment();
+                      var el1 = dom.createTextNode("              ");
+                      dom.appendChild(el0, el1);
+                      var el1 = dom.createElement("div");
+                      dom.setAttribute(el1, "class", "ko-table_cell--ellipsis");
+                      var el2 = dom.createTextNode("\n");
+                      dom.appendChild(el1, el2);
+                      var el2 = dom.createComment("");
+                      dom.appendChild(el1, el2);
+                      var el2 = dom.createTextNode("              ");
+                      dom.appendChild(el1, el2);
+                      dom.appendChild(el0, el1);
+                      var el1 = dom.createTextNode("\n");
+                      dom.appendChild(el0, el1);
+                      return el0;
+                    },
+                    buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                      var morphs = new Array(1);
+                      morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
+                      return morphs;
+                    },
+                    statements: [["block", "if", [["subexpr", "ko-helper", [["get", "isDate", ["loc", [null, [35, 33], [35, 39]]]], ["get", "column", ["loc", [null, [35, 40], [35, 46]]]]], [], ["loc", [null, [35, 22], [35, 47]]]]], [], 0, 1, ["loc", [null, [35, 16], [39, 23]]]]],
+                    locals: [],
+                    templates: [child0, child1]
+                  };
+                })();
+                return {
+                  meta: {
+                    "fragmentReason": false,
+                    "revision": "Ember@2.4.1",
+                    "loc": {
+                      "source": null,
+                      "start": {
+                        "line": 32,
+                        "column": 10
+                      },
+                      "end": {
+                        "line": 42,
+                        "column": 10
+                      }
+                    },
+                    "moduleName": "frontend-cp/components/ko-advanced-search/template.hbs"
+                  },
+                  isEmpty: false,
+                  arity: 1,
+                  cachedFragment: null,
+                  hasRendered: false,
+                  buildFragment: function buildFragment(dom) {
+                    var el0 = dom.createDocumentFragment();
+                    var el1 = dom.createComment("");
+                    dom.appendChild(el0, el1);
+                    return el0;
+                  },
+                  buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                    var morphs = new Array(1);
+                    morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+                    dom.insertBoundary(fragment, 0);
+                    dom.insertBoundary(fragment, null);
+                    return morphs;
+                  },
+                  statements: [["block", "ko-table/cell", [], [], 0, null, ["loc", [null, [33, 12], [41, 30]]]]],
+                  locals: ["column"],
+                  templates: [child0]
+                };
+              })();
+              return {
+                meta: {
+                  "fragmentReason": false,
+                  "revision": "Ember@2.4.1",
+                  "loc": {
+                    "source": null,
+                    "start": {
+                      "line": 23,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 43,
+                      "column": 8
+                    }
+                  },
+                  "moduleName": "frontend-cp/components/ko-advanced-search/template.hbs"
+                },
+                isEmpty: false,
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                  var el0 = dom.createDocumentFragment();
+                  var el1 = dom.createComment("");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createComment("");
+                  dom.appendChild(el0, el1);
+                  return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                  var morphs = new Array(2);
+                  morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+                  morphs[1] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+                  dom.insertBoundary(fragment, 0);
+                  dom.insertBoundary(fragment, null);
+                  return morphs;
+                },
+                statements: [["block", "ko-table/cell", [], [], 0, null, ["loc", [null, [28, 10], [31, 28]]]], ["block", "each", [["get", "columnList", ["loc", [null, [32, 18], [32, 28]]]]], [], 1, null, ["loc", [null, [32, 10], [42, 19]]]]],
+                locals: [],
+                templates: [child0, child1]
+              };
+            })();
+            return {
+              meta: {
+                "fragmentReason": false,
+                "revision": "Ember@2.4.1",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 22,
+                    "column": 6
+                  },
+                  "end": {
+                    "line": 44,
+                    "column": 6
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-advanced-search/template.hbs"
+              },
+              isEmpty: false,
+              arity: 1,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var morphs = new Array(1);
+                morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+                dom.insertBoundary(fragment, 0);
+                dom.insertBoundary(fragment, null);
+                return morphs;
+              },
+              statements: [["block", "ko-table/row", [], ["table", ["subexpr", "@mut", [["get", "table", ["loc", [null, [24, 16], [24, 21]]]]], [], []], "clickable", true, "rowContext", ["subexpr", "@mut", [["get", "result", ["loc", [null, [26, 21], [26, 27]]]]], [], []], "onClick", ["subexpr", "action", ["openSearchResult", ["get", "resultGroup", ["loc", [null, [27, 45], [27, 56]]]]], [], ["loc", [null, [27, 18], [27, 57]]]]], 0, null, ["loc", [null, [23, 8], [43, 25]]]]],
+              locals: ["result"],
+              templates: [child0]
+            };
+          })();
+          var child1 = (function () {
+            return {
+              meta: {
+                "fragmentReason": false,
+                "revision": "Ember@2.4.1",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 44,
+                    "column": 6
+                  },
+                  "end": {
+                    "line": 48,
+                    "column": 6
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-advanced-search/template.hbs"
+              },
+              isEmpty: false,
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createTextNode("      ");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createElement("div");
+                dom.setAttribute(el1, "class", "u-mt");
+                var el2 = dom.createTextNode("\n        ");
+                dom.appendChild(el1, el2);
+                var el2 = dom.createComment("");
+                dom.appendChild(el1, el2);
+                var el2 = dom.createTextNode("\n      ");
+                dom.appendChild(el1, el2);
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var morphs = new Array(1);
+                morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
+                return morphs;
+              },
+              statements: [["inline", "t", [["subexpr", "concat", ["search.", ["get", "resultGroup", ["loc", [null, [46, 30], [46, 41]]]], ".notfound"], [], ["loc", [null, [46, 12], [46, 54]]]]], [], ["loc", [null, [46, 8], [46, 56]]]]],
+              locals: [],
+              templates: []
+            };
+          })();
+          return {
+            meta: {
+              "fragmentReason": false,
+              "revision": "Ember@2.4.1",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 21,
+                  "column": 4
+                },
+                "end": {
+                  "line": 49,
+                  "column": 4
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-advanced-search/template.hbs"
+            },
+            isEmpty: false,
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(1);
+              morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+              dom.insertBoundary(fragment, 0);
+              dom.insertBoundary(fragment, null);
+              return morphs;
+            },
+            statements: [["block", "each", [["get", "searchResults", ["loc", [null, [22, 14], [22, 27]]]]], [], 0, 1, ["loc", [null, [22, 6], [48, 15]]]]],
+            locals: [],
+            templates: [child0, child1]
+          };
+        })();
+        return {
+          meta: {
+            "fragmentReason": false,
+            "revision": "Ember@2.4.1",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 9,
+                "column": 2
+              },
+              "end": {
+                "line": 50,
+                "column": 2
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-advanced-search/template.hbs"
+          },
+          isEmpty: false,
+          arity: 1,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(2);
+            morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+            morphs[1] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+            dom.insertBoundary(fragment, 0);
+            dom.insertBoundary(fragment, null);
+            return morphs;
+          },
+          statements: [["block", "ko-table/header", [], [], 0, null, ["loc", [null, [10, 4], [20, 24]]]], ["block", "ko-table/body", [], [], 1, null, ["loc", [null, [21, 4], [49, 22]]]]],
+          locals: ["table"],
+          templates: [child0, child1]
+        };
+      })();
+      return {
+        meta: {
+          "fragmentReason": false,
+          "revision": "Ember@2.4.1",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 8,
+              "column": 2
+            },
+            "end": {
+              "line": 51,
+              "column": 2
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-advanced-search/template.hbs"
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [["block", "ko-table", [], [], 0, null, ["loc", [null, [9, 2], [50, 15]]]]],
+        locals: [],
+        templates: [child0]
+      };
+    })();
+    return {
+      meta: {
+        "fragmentReason": {
+          "name": "triple-curlies"
+        },
+        "revision": "Ember@2.4.1",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 53,
+            "column": 0
+          }
+        },
+        "moduleName": "frontend-cp/components/ko-advanced-search/template.hbs"
+      },
+      isEmpty: false,
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1, "class", "ko-advanced-search");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2, "class", "ko-cases-list__title");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("h4");
+        dom.setAttribute(el3, "class", "ko-cases-list__heading");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var element0 = dom.childAt(fragment, [0]);
+        var morphs = new Array(2);
+        morphs[0] = dom.createMorphAt(dom.childAt(element0, [1, 1]), 1, 1);
+        morphs[1] = dom.createMorphAt(element0, 3, 3);
+        return morphs;
+      },
+      statements: [["inline", "t", ["search.searchresults"], ["term", ["subexpr", "@mut", [["get", "searchTerm", ["loc", [null, [4, 38], [4, 48]]]]], [], []]], ["loc", [null, [4, 6], [4, 50]]]], ["block", "if", [["get", "resultGroup", ["loc", [null, [8, 8], [8, 19]]]]], [], 0, null, ["loc", [null, [8, 2], [51, 9]]]]],
+      locals: [],
+      templates: [child0]
+    };
+  })());
+});
 define('frontend-cp/components/ko-agent-dropdown/component', ['exports', 'ember', 'frontend-cp/config/environment'], function (exports, _ember, _frontendCpConfigEnvironment) {
   var inject = _ember['default'].inject;
   var Component = _ember['default'].Component;
@@ -25284,7 +26056,7 @@ define("frontend-cp/components/ko-agent-dropdown/create-case/template", ["export
             morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
             return morphs;
           },
-          statements: [["inline", "t", ["generic.search.no_results"], [], ["loc", [null, [22, 10], [22, 43]]]]],
+          statements: [["inline", "t", ["search.no_results"], [], ["loc", [null, [22, 10], [22, 35]]]]],
           locals: [],
           templates: []
         };
@@ -51821,6 +52593,319 @@ define("frontend-cp/components/ko-reorderable-list/template", ["exports"], funct
     };
   })());
 });
+define('frontend-cp/components/ko-search-sidebar/component', ['exports', 'ember'], function (exports, _ember) {
+  exports['default'] = _ember['default'].Component.extend({
+    tagName: '',
+    resultGroup: null,
+    totalCounts: null,
+
+    actions: {
+      selectItem: function selectItem(item) {
+        this.attrs.onSelect(item);
+      }
+    }
+  });
+});
+define('frontend-cp/components/ko-search-sidebar/item/component', ['exports', 'ember'], function (exports, _ember) {
+  exports['default'] = _ember['default'].Component.extend({
+    isActive: false,
+    item: null,
+
+    click: function click() {
+      this.attrs.onClick();
+    }
+  });
+});
+define("frontend-cp/components/ko-search-sidebar/item/template", ["exports"], function (exports) {
+  exports["default"] = Ember.HTMLBars.template((function () {
+    var child0 = (function () {
+      return {
+        meta: {
+          "fragmentReason": false,
+          "revision": "Ember@2.4.1",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 3,
+              "column": 2
+            },
+            "end": {
+              "line": 7,
+              "column": 2
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-search-sidebar/item/template.hbs"
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("span");
+          dom.setAttribute(el1, "class", "sidebar__value");
+          var el2 = dom.createTextNode("\n    ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n  ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
+          return morphs;
+        },
+        statements: [["content", "count", ["loc", [null, [5, 4], [5, 13]]]]],
+        locals: [],
+        templates: []
+      };
+    })();
+    return {
+      meta: {
+        "fragmentReason": {
+          "name": "triple-curlies"
+        },
+        "revision": "Ember@2.4.1",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 9,
+            "column": 0
+          }
+        },
+        "moduleName": "frontend-cp/components/ko-search-sidebar/item/template.hbs"
+      },
+      isEmpty: false,
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("a");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var element0 = dom.childAt(fragment, [0]);
+        var morphs = new Array(3);
+        morphs[0] = dom.createAttrMorph(element0, 'class');
+        morphs[1] = dom.createMorphAt(element0, 1, 1);
+        morphs[2] = dom.createMorphAt(element0, 3, 3);
+        return morphs;
+      },
+      statements: [["attribute", "class", ["concat", ["sidebar__link t-naked-link ", ["subexpr", "if", [["get", "isActive", ["loc", [null, [1, 42], [1, 50]]]], "active"], [], ["loc", [null, [1, 37], [1, 61]]]]]]], ["content", "yield", ["loc", [null, [2, 2], [2, 11]]]], ["block", "if", [["get", "count", ["loc", [null, [3, 8], [3, 13]]]]], [], 0, null, ["loc", [null, [3, 2], [7, 9]]]]],
+      locals: [],
+      templates: [child0]
+    };
+  })());
+});
+define("frontend-cp/components/ko-search-sidebar/template", ["exports"], function (exports) {
+  exports["default"] = Ember.HTMLBars.template((function () {
+    var child0 = (function () {
+      return {
+        meta: {
+          "fragmentReason": false,
+          "revision": "Ember@2.4.1",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 2,
+              "column": 2
+            },
+            "end": {
+              "line": 7,
+              "column": 2
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-search-sidebar/template.hbs"
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("    ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+          return morphs;
+        },
+        statements: [["inline", "t", ["cases.title"], [], ["loc", [null, [6, 4], [6, 23]]]]],
+        locals: [],
+        templates: []
+      };
+    })();
+    var child1 = (function () {
+      return {
+        meta: {
+          "fragmentReason": false,
+          "revision": "Ember@2.4.1",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 9,
+              "column": 2
+            },
+            "end": {
+              "line": 14,
+              "column": 2
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-search-sidebar/template.hbs"
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("    ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+          return morphs;
+        },
+        statements: [["inline", "t", ["users.users"], [], ["loc", [null, [13, 4], [13, 23]]]]],
+        locals: [],
+        templates: []
+      };
+    })();
+    var child2 = (function () {
+      return {
+        meta: {
+          "fragmentReason": false,
+          "revision": "Ember@2.4.1",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 16,
+              "column": 2
+            },
+            "end": {
+              "line": 21,
+              "column": 2
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-search-sidebar/template.hbs"
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("    ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+          return morphs;
+        },
+        statements: [["inline", "t", ["organisation.organizations"], [], ["loc", [null, [20, 4], [20, 38]]]]],
+        locals: [],
+        templates: []
+      };
+    })();
+    return {
+      meta: {
+        "fragmentReason": {
+          "name": "triple-curlies"
+        },
+        "revision": "Ember@2.4.1",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 23,
+            "column": 0
+          }
+        },
+        "moduleName": "frontend-cp/components/ko-search-sidebar/template.hbs"
+      },
+      isEmpty: false,
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1, "class", "ko-search-sidebar");
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var element0 = dom.childAt(fragment, [0]);
+        var morphs = new Array(3);
+        morphs[0] = dom.createMorphAt(element0, 1, 1);
+        morphs[1] = dom.createMorphAt(element0, 3, 3);
+        morphs[2] = dom.createMorphAt(element0, 5, 5);
+        return morphs;
+      },
+      statements: [["block", "ko-search-sidebar/item", [], ["count", ["subexpr", "@mut", [["get", "totalCounts.case", ["loc", [null, [3, 10], [3, 26]]]]], [], []], "isActive", ["subexpr", "eq", [["get", "resultGroup", ["loc", [null, [4, 17], [4, 28]]]], "case"], [], ["loc", [null, [4, 13], [4, 36]]]], "onClick", ["subexpr", "action", ["selectItem", "case"], [], ["loc", [null, [5, 12], [5, 40]]]]], 0, null, ["loc", [null, [2, 2], [7, 29]]]], ["block", "ko-search-sidebar/item", [], ["count", ["subexpr", "@mut", [["get", "totalCounts.user", ["loc", [null, [10, 10], [10, 26]]]]], [], []], "isActive", ["subexpr", "eq", [["get", "resultGroup", ["loc", [null, [11, 17], [11, 28]]]], "user"], [], ["loc", [null, [11, 13], [11, 36]]]], "onClick", ["subexpr", "action", ["selectItem", "user"], [], ["loc", [null, [12, 12], [12, 40]]]]], 1, null, ["loc", [null, [9, 2], [14, 29]]]], ["block", "ko-search-sidebar/item", [], ["count", ["subexpr", "@mut", [["get", "totalCounts.organization", ["loc", [null, [17, 10], [17, 34]]]]], [], []], "isActive", ["subexpr", "eq", [["get", "resultGroup", ["loc", [null, [18, 17], [18, 28]]]], "organization"], [], ["loc", [null, [18, 13], [18, 44]]]], "onClick", ["subexpr", "action", ["selectItem", "organization"], [], ["loc", [null, [19, 12], [19, 48]]]]], 2, null, ["loc", [null, [16, 2], [21, 29]]]]],
+      locals: [],
+      templates: [child0, child1, child2]
+    };
+  })());
+});
 define('frontend-cp/components/ko-select/component', ['exports', 'ember'], function (exports, _ember) {
   var Component = _ember['default'].Component;
   var computed = _ember['default'].computed;
@@ -57628,6 +58713,7 @@ define('frontend-cp/components/ko-universal-search/component', ['exports', 'embe
 
     // Services
     universalSearchService: _ember['default'].inject.service('suggestion/universal'),
+    intl: _ember['default'].inject.service(),
     store: _ember['default'].inject.service(),
     metrics: _ember['default'].inject.service(),
 
@@ -57645,13 +58731,23 @@ define('frontend-cp/components/ko-universal-search/component', ['exports', 'embe
     isSearchLoading: _ember['default'].computed.and('searchQuery', 'isLatestSearchPending'),
 
     flattenedResults: _ember['default'].computed('searchResults', function () {
-      return this.get('searchResults').reduce(function (results, searchResultGroup) {
-        searchResultGroup.results.forEach(function (result) {
-          results.pushObject(result);
-        });
+      if (this.get('searchResults')) {
+        var flattened = this.get('searchResults').reduce(function (results, searchResultGroup) {
+          searchResultGroup.results.forEach(function (result) {
+            results.pushObject(result);
+          });
 
-        return results;
-      }, []);
+          return results;
+        }, []);
+
+        if (flattened.length && this.features.get('advancedSearch')) {
+          flattened.pushObject({
+            seeMore: true,
+            title: this.get('intl').findTranslationByKey('search.seemore')
+          });
+        }
+        return flattened;
+      }
     }),
 
     adjustScroll: function adjustScroll(highlightIndex) {
@@ -57722,6 +58818,11 @@ define('frontend-cp/components/ko-universal-search/component', ['exports', 'embe
         var result = this.get('highlightedResult');
 
         if (result) {
+          if (result.seeMore) {
+            this.attrs.onSeeMore();
+            this.send('clearSearch');
+          }
+
           this.get('metrics').trackEvent({
             event: 'Sitewide Search Record Clicked',
             category: 'Sitewide Search',
@@ -57809,8 +58910,13 @@ define('frontend-cp/components/ko-universal-search/entry/component', ['exports',
           }
         case _frontendCpLibKeycodes.enter:
           {
-            this.attrs.onSelectHighlightedResult();
-            return false;
+            if (this.attrs.onSubmitSearch) {
+              this.attrs.onSubmitSearch();
+              return false;
+            } else {
+              this.attrs.onSelectHighlightedResult();
+              return false;
+            }
           }
         case _frontendCpLibKeycodes.escape:
           {
@@ -58282,11 +59388,11 @@ define("frontend-cp/components/ko-universal-search/preview/template", ["exports"
           "loc": {
             "source": null,
             "start": {
-              "line": 59,
+              "line": 58,
               "column": 6
             },
             "end": {
-              "line": 61,
+              "line": 60,
               "column": 6
             }
           },
@@ -58311,7 +59417,7 @@ define("frontend-cp/components/ko-universal-search/preview/template", ["exports"
           morphs[0] = dom.createUnsafeMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [["content", "formattedSnippet", ["loc", [null, [60, 8], [60, 30]]]]],
+        statements: [["content", "formattedSnippet", ["loc", [null, [59, 8], [59, 30]]]]],
         locals: [],
         templates: []
       };
@@ -58324,11 +59430,11 @@ define("frontend-cp/components/ko-universal-search/preview/template", ["exports"
           "loc": {
             "source": null,
             "start": {
-              "line": 61,
+              "line": 60,
               "column": 6
             },
             "end": {
-              "line": 63,
+              "line": 62,
               "column": 6
             }
           },
@@ -58353,7 +59459,7 @@ define("frontend-cp/components/ko-universal-search/preview/template", ["exports"
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [["inline", "t", ["generic.search.nosnippet"], [], ["loc", [null, [62, 8], [62, 40]]]]],
+        statements: [["inline", "t", ["search.nosnippet"], [], ["loc", [null, [61, 8], [61, 32]]]]],
         locals: [],
         templates: []
       };
@@ -58371,7 +59477,7 @@ define("frontend-cp/components/ko-universal-search/preview/template", ["exports"
             "column": 0
           },
           "end": {
-            "line": 67,
+            "line": 66,
             "column": 0
           }
         },
@@ -58424,7 +59530,7 @@ define("frontend-cp/components/ko-universal-search/preview/template", ["exports"
         var el3 = dom.createTextNode("  ");
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n\n  ");
+        var el2 = dom.createTextNode("\n  ");
         dom.appendChild(el1, el2);
         var el2 = dom.createElement("div");
         dom.setAttribute(el2, "class", "ko-universal-search_preview__section");
@@ -58476,7 +59582,7 @@ define("frontend-cp/components/ko-universal-search/preview/template", ["exports"
         morphs[6] = dom.createMorphAt(dom.childAt(element9, [3]), 1, 1);
         return morphs;
       },
-      statements: [["attribute", "src", ["concat", [["get", "previewAvatar", ["loc", [null, [3, 16], [3, 29]]]]]]], ["content", "previewResult.title", ["loc", [null, [4, 51], [4, 74]]]], ["block", "if", [["get", "isCase", ["loc", [null, [7, 8], [7, 14]]]]], [], 0, null, ["loc", [null, [7, 2], [37, 9]]]], ["block", "if", [["get", "isUser", ["loc", [null, [39, 8], [39, 14]]]]], [], 1, null, ["loc", [null, [39, 2], [44, 9]]]], ["block", "if", [["get", "isOrganization", ["loc", [null, [46, 8], [46, 22]]]]], [], 2, null, ["loc", [null, [46, 2], [51, 9]]]], ["inline", "t", ["generic.search.matchingsnippet"], [], ["loc", [null, [56, 6], [56, 44]]]], ["block", "if", [["get", "formattedSnippet", ["loc", [null, [59, 12], [59, 28]]]]], [], 3, 4, ["loc", [null, [59, 6], [63, 13]]]]],
+      statements: [["attribute", "src", ["concat", [["get", "previewAvatar", ["loc", [null, [3, 16], [3, 29]]]]]]], ["content", "previewResult.title", ["loc", [null, [4, 51], [4, 74]]]], ["block", "if", [["get", "isCase", ["loc", [null, [7, 8], [7, 14]]]]], [], 0, null, ["loc", [null, [7, 2], [37, 9]]]], ["block", "if", [["get", "isUser", ["loc", [null, [39, 8], [39, 14]]]]], [], 1, null, ["loc", [null, [39, 2], [44, 9]]]], ["block", "if", [["get", "isOrganization", ["loc", [null, [46, 8], [46, 22]]]]], [], 2, null, ["loc", [null, [46, 2], [51, 9]]]], ["inline", "t", ["search.matchingsnippet"], [], ["loc", [null, [55, 6], [55, 36]]]], ["block", "if", [["get", "formattedSnippet", ["loc", [null, [58, 12], [58, 28]]]]], [], 3, 4, ["loc", [null, [58, 6], [62, 13]]]]],
       locals: [],
       templates: [child0, child1, child2, child3, child4]
     };
@@ -58758,48 +59864,6 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
     })();
     var child4 = (function () {
       var child0 = (function () {
-        var child0 = (function () {
-          return {
-            meta: {
-              "fragmentReason": false,
-              "revision": "Ember@2.4.1",
-              "loc": {
-                "source": null,
-                "start": {
-                  "line": 33,
-                  "column": 6
-                },
-                "end": {
-                  "line": 41,
-                  "column": 6
-                }
-              },
-              "moduleName": "frontend-cp/components/ko-universal-search/template.hbs"
-            },
-            isEmpty: false,
-            arity: 1,
-            cachedFragment: null,
-            hasRendered: false,
-            buildFragment: function buildFragment(dom) {
-              var el0 = dom.createDocumentFragment();
-              var el1 = dom.createTextNode("      ");
-              dom.appendChild(el0, el1);
-              var el1 = dom.createComment("");
-              dom.appendChild(el0, el1);
-              var el1 = dom.createTextNode("\n");
-              dom.appendChild(el0, el1);
-              return el0;
-            },
-            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-              var morphs = new Array(1);
-              morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
-              return morphs;
-            },
-            statements: [["inline", "ko-universal-search/result", [], ["result", ["subexpr", "@mut", [["get", "result", ["loc", [null, [35, 15], [35, 21]]]]], [], []], "isHighlighted", ["subexpr", "eq", [["get", "result", ["loc", [null, [36, 26], [36, 32]]]], ["get", "highlightedResult", ["loc", [null, [36, 33], [36, 50]]]]], [], ["loc", [null, [36, 22], [36, 51]]]], "onHighlight", ["subexpr", "action", ["highlightResult"], [], ["loc", [null, [37, 20], [37, 46]]]], "onSelectHighlightedResult", ["subexpr", "action", ["selectHighlightedResult"], [], ["loc", [null, [38, 34], [38, 68]]]], "onStopSearch", ["subexpr", "action", ["clearSearch"], [], ["loc", [null, [39, 21], [39, 43]]]]], ["loc", [null, [34, 6], [40, 8]]]]],
-            locals: ["result"],
-            templates: []
-          };
-        })();
         return {
           meta: {
             "fragmentReason": false,
@@ -58807,11 +59871,11 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
             "loc": {
               "source": null,
               "start": {
-                "line": 31,
+                "line": 32,
                 "column": 4
               },
               "end": {
-                "line": 44,
+                "line": 41,
                 "column": 4
               }
             },
@@ -58823,29 +59887,22 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
           hasRendered: false,
           buildFragment: function buildFragment(dom) {
             var el0 = dom.createDocumentFragment();
-            var el1 = dom.createTextNode("    ");
+            var el1 = dom.createTextNode("      ");
             dom.appendChild(el0, el1);
-            var el1 = dom.createElement("ul");
-            dom.setAttribute(el1, "class", "list-bare");
-            var el2 = dom.createTextNode("\n");
-            dom.appendChild(el1, el2);
-            var el2 = dom.createComment("");
-            dom.appendChild(el1, el2);
-            var el2 = dom.createTextNode("    ");
-            dom.appendChild(el1, el2);
+            var el1 = dom.createComment("");
             dom.appendChild(el0, el1);
-            var el1 = dom.createTextNode("\n\n");
+            var el1 = dom.createTextNode("\n");
             dom.appendChild(el0, el1);
             return el0;
           },
           buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
             var morphs = new Array(1);
-            morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
+            morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
             return morphs;
           },
-          statements: [["block", "each", [["get", "resultsGroup.results", ["loc", [null, [33, 14], [33, 34]]]]], [], 0, null, ["loc", [null, [33, 6], [41, 15]]]]],
-          locals: ["resultsGroup"],
-          templates: [child0]
+          statements: [["inline", "ko-universal-search/result", [], ["result", ["subexpr", "@mut", [["get", "result", ["loc", [null, [34, 15], [34, 21]]]]], [], []], "class", ["subexpr", "if", [["get", "result.seeMore", ["loc", [null, [35, 18], [35, 32]]]], "ko-universal-search_result__see-more"], [], ["loc", [null, [35, 14], [35, 72]]]], "isHighlighted", ["subexpr", "eq", [["get", "result", ["loc", [null, [36, 26], [36, 32]]]], ["get", "highlightedResult", ["loc", [null, [36, 33], [36, 50]]]]], [], ["loc", [null, [36, 22], [36, 51]]]], "onHighlight", ["subexpr", "action", ["highlightResult"], [], ["loc", [null, [37, 20], [37, 46]]]], "onSelectHighlightedResult", ["subexpr", "action", ["selectHighlightedResult"], [], ["loc", [null, [38, 34], [38, 68]]]], "onStopSearch", ["subexpr", "action", ["clearSearch"], [], ["loc", [null, [39, 21], [39, 43]]]]], ["loc", [null, [33, 6], [40, 8]]]]],
+          locals: ["result"],
+          templates: []
         };
       })();
       var child1 = (function () {
@@ -58858,12 +59915,12 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 47,
-                    "column": 8
+                    "line": 44,
+                    "column": 10
                   },
                   "end": {
-                    "line": 49,
-                    "column": 8
+                    "line": 46,
+                    "column": 10
                   }
                 },
                 "moduleName": "frontend-cp/components/ko-universal-search/template.hbs"
@@ -58874,7 +59931,7 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
               hasRendered: false,
               buildFragment: function buildFragment(dom) {
                 var el0 = dom.createDocumentFragment();
-                var el1 = dom.createTextNode("          ");
+                var el1 = dom.createTextNode("            ");
                 dom.appendChild(el0, el1);
                 var el1 = dom.createComment("");
                 dom.appendChild(el0, el1);
@@ -58887,7 +59944,7 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
                 morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
                 return morphs;
               },
-              statements: [["inline", "t", ["search.searching"], [], ["loc", [null, [48, 10], [48, 34]]]]],
+              statements: [["inline", "t", ["search.searching"], [], ["loc", [null, [45, 12], [45, 36]]]]],
               locals: [],
               templates: []
             };
@@ -58900,12 +59957,12 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 49,
-                    "column": 8
+                    "line": 46,
+                    "column": 10
                   },
                   "end": {
-                    "line": 51,
-                    "column": 8
+                    "line": 48,
+                    "column": 10
                   }
                 },
                 "moduleName": "frontend-cp/components/ko-universal-search/template.hbs"
@@ -58916,7 +59973,7 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
               hasRendered: false,
               buildFragment: function buildFragment(dom) {
                 var el0 = dom.createDocumentFragment();
-                var el1 = dom.createTextNode("          ");
+                var el1 = dom.createTextNode("            ");
                 dom.appendChild(el0, el1);
                 var el1 = dom.createComment("");
                 dom.appendChild(el0, el1);
@@ -58929,7 +59986,7 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
                 morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
                 return morphs;
               },
-              statements: [["inline", "t", ["search.no-results"], [], ["loc", [null, [50, 10], [50, 35]]]]],
+              statements: [["inline", "t", ["search.noresults"], [], ["loc", [null, [47, 12], [47, 36]]]]],
               locals: [],
               templates: []
             };
@@ -58941,12 +59998,12 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 45,
-                  "column": 4
+                  "line": 42,
+                  "column": 6
                 },
                 "end": {
-                  "line": 53,
-                  "column": 4
+                  "line": 50,
+                  "column": 6
                 }
               },
               "moduleName": "frontend-cp/components/ko-universal-search/template.hbs"
@@ -58957,7 +60014,7 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
             hasRendered: false,
             buildFragment: function buildFragment(dom) {
               var el0 = dom.createDocumentFragment();
-              var el1 = dom.createTextNode("      ");
+              var el1 = dom.createTextNode("        ");
               dom.appendChild(el0, el1);
               var el1 = dom.createElement("p");
               dom.setAttribute(el1, "class", "u-p");
@@ -58965,7 +60022,7 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
               dom.appendChild(el1, el2);
               var el2 = dom.createComment("");
               dom.appendChild(el1, el2);
-              var el2 = dom.createTextNode("      ");
+              var el2 = dom.createTextNode("        ");
               dom.appendChild(el1, el2);
               dom.appendChild(el0, el1);
               var el1 = dom.createTextNode("\n");
@@ -58977,7 +60034,7 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
               morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
               return morphs;
             },
-            statements: [["block", "if", [["get", "isLatestSearchPending", ["loc", [null, [47, 14], [47, 35]]]]], [], 0, 1, ["loc", [null, [47, 8], [51, 15]]]]],
+            statements: [["block", "if", [["get", "isLatestSearchPending", ["loc", [null, [44, 16], [44, 37]]]]], [], 0, 1, ["loc", [null, [44, 10], [48, 17]]]]],
             locals: [],
             templates: [child0, child1]
           };
@@ -58989,11 +60046,11 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
             "loc": {
               "source": null,
               "start": {
-                "line": 44,
+                "line": 41,
                 "column": 4
               },
               "end": {
-                "line": 54,
+                "line": 51,
                 "column": 4
               }
             },
@@ -59016,7 +60073,7 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
             dom.insertBoundary(fragment, null);
             return morphs;
           },
-          statements: [["block", "if", [["get", "isSearching", ["loc", [null, [45, 10], [45, 21]]]]], [], 0, null, ["loc", [null, [45, 4], [53, 11]]]]],
+          statements: [["block", "if", [["get", "isSearching", ["loc", [null, [42, 12], [42, 23]]]]], [], 0, null, ["loc", [null, [42, 6], [50, 13]]]]],
           locals: [],
           templates: [child0]
         };
@@ -59030,11 +60087,11 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 57,
+                  "line": 56,
                   "column": 4
                 },
                 "end": {
-                  "line": 61,
+                  "line": 60,
                   "column": 4
                 }
               },
@@ -59059,7 +60116,7 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
               morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
               return morphs;
             },
-            statements: [["inline", "ko-universal-search/preview", [], ["previewResult", ["subexpr", "@mut", [["get", "highlightedResult", ["loc", [null, [59, 22], [59, 39]]]]], [], []]], ["loc", [null, [58, 6], [60, 8]]]]],
+            statements: [["inline", "ko-universal-search/preview", [], ["previewResult", ["subexpr", "@mut", [["get", "highlightedResult", ["loc", [null, [58, 22], [58, 39]]]]], [], []]], ["loc", [null, [57, 6], [59, 8]]]]],
             locals: [],
             templates: []
           };
@@ -59073,11 +60130,11 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 62,
+                    "line": 61,
                     "column": 6
                   },
                   "end": {
-                    "line": 66,
+                    "line": 65,
                     "column": 6
                   }
                 },
@@ -59109,7 +60166,7 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
                 morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
                 return morphs;
               },
-              statements: [["inline", "t", ["generic.search.no_preview"], [], ["loc", [null, [64, 8], [64, 41]]]]],
+              statements: [["inline", "t", ["search.nopreview"], [], ["loc", [null, [63, 8], [63, 32]]]]],
               locals: [],
               templates: []
             };
@@ -59121,11 +60178,11 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 61,
+                  "line": 60,
                   "column": 4
                 },
                 "end": {
-                  "line": 67,
+                  "line": 66,
                   "column": 4
                 }
               },
@@ -59148,7 +60205,7 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
               dom.insertBoundary(fragment, null);
               return morphs;
             },
-            statements: [["block", "if", [["subexpr", "not", [["get", "isLatestSearchPending", ["loc", [null, [62, 17], [62, 38]]]]], [], ["loc", [null, [62, 12], [62, 39]]]]], [], 0, null, ["loc", [null, [62, 6], [66, 13]]]]],
+            statements: [["block", "if", [["subexpr", "not", [["get", "isLatestSearchPending", ["loc", [null, [61, 17], [61, 38]]]]], [], ["loc", [null, [61, 12], [61, 39]]]]], [], 0, null, ["loc", [null, [61, 6], [65, 13]]]]],
             locals: [],
             templates: [child0]
           };
@@ -59160,11 +60217,11 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
             "loc": {
               "source": null,
               "start": {
-                "line": 56,
+                "line": 55,
                 "column": 2
               },
               "end": {
-                "line": 68,
+                "line": 67,
                 "column": 2
               }
             },
@@ -59187,9 +60244,58 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
             dom.insertBoundary(fragment, null);
             return morphs;
           },
-          statements: [["block", "if", [["get", "highlightedResult", ["loc", [null, [57, 10], [57, 27]]]]], [], 0, 1, ["loc", [null, [57, 4], [67, 11]]]]],
+          statements: [["block", "if", [["subexpr", "and", [["get", "highlightedResult", ["loc", [null, [56, 15], [56, 32]]]], ["subexpr", "not", [["get", "highlightedResult.seeMore", ["loc", [null, [56, 38], [56, 63]]]]], [], ["loc", [null, [56, 33], [56, 64]]]]], [], ["loc", [null, [56, 10], [56, 65]]]]], [], 0, 1, ["loc", [null, [56, 4], [66, 11]]]]],
           locals: [],
           templates: [child0, child1]
+        };
+      })();
+      var child3 = (function () {
+        return {
+          meta: {
+            "fragmentReason": false,
+            "revision": "Ember@2.4.1",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 67,
+                "column": 2
+              },
+              "end": {
+                "line": 71,
+                "column": 2
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-universal-search/template.hbs"
+          },
+          isEmpty: false,
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("    ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("h5");
+            dom.setAttribute(el1, "class", "ko-universal-search__no-preview");
+            var el2 = dom.createTextNode("\n      ");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createComment("");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createTextNode("\n    ");
+            dom.appendChild(el1, el2);
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
+            return morphs;
+          },
+          statements: [["inline", "t", ["search.nopreview"], [], ["loc", [null, [69, 6], [69, 30]]]]],
+          locals: [],
+          templates: []
         };
       })();
       return {
@@ -59203,7 +60309,7 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
               "column": 0
             },
             "end": {
-              "line": 70,
+              "line": 73,
               "column": 0
             }
           },
@@ -59221,11 +60327,18 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
           dom.appendChild(el1, el2);
           var el2 = dom.createElement("div");
           dom.setAttribute(el2, "class", "universal-search__results");
-          var el3 = dom.createTextNode("\n");
+          var el3 = dom.createTextNode("\n    ");
           dom.appendChild(el2, el3);
-          var el3 = dom.createComment("");
+          var el3 = dom.createElement("ul");
+          dom.setAttribute(el3, "class", "list-bare ko-universal-search__list");
+          var el4 = dom.createTextNode("\n");
+          dom.appendChild(el3, el4);
+          var el4 = dom.createComment("");
+          dom.appendChild(el3, el4);
+          var el4 = dom.createTextNode("    ");
+          dom.appendChild(el3, el4);
           dom.appendChild(el2, el3);
-          var el3 = dom.createTextNode("  ");
+          var el3 = dom.createTextNode("\n\n  ");
           dom.appendChild(el2, el3);
           dom.appendChild(el1, el2);
           var el2 = dom.createTextNode("\n");
@@ -59240,13 +60353,13 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
           var element0 = dom.childAt(fragment, [0]);
           var morphs = new Array(2);
-          morphs[0] = dom.createMorphAt(dom.childAt(element0, [1]), 1, 1);
+          morphs[0] = dom.createMorphAt(dom.childAt(element0, [1, 1]), 1, 1);
           morphs[1] = dom.createMorphAt(element0, 3, 3);
           return morphs;
         },
-        statements: [["block", "each", [["get", "searchResults", ["loc", [null, [31, 12], [31, 25]]]]], [], 0, 1, ["loc", [null, [31, 4], [54, 13]]]], ["block", "if", [["get", "searchResults.length", ["loc", [null, [56, 8], [56, 28]]]]], [], 2, null, ["loc", [null, [56, 2], [68, 9]]]]],
+        statements: [["block", "each", [["get", "flattenedResults", ["loc", [null, [32, 12], [32, 28]]]]], [], 0, 1, ["loc", [null, [32, 4], [51, 13]]]], ["block", "if", [["get", "searchResults.length", ["loc", [null, [55, 8], [55, 28]]]]], [], 2, 3, ["loc", [null, [55, 2], [71, 9]]]]],
         locals: [],
-        templates: [child0, child1, child2]
+        templates: [child0, child1, child2, child3]
       };
     })();
     return {
@@ -59263,7 +60376,7 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
             "column": 0
           },
           "end": {
-            "line": 71,
+            "line": 74,
             "column": 0
           }
         },
@@ -59319,7 +60432,7 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["block", "if", [["get", "searchQuery", ["loc", [null, [1, 6], [1, 17]]]]], [], 0, null, ["loc", [null, [1, 0], [4, 7]]]], ["block", "if", [["get", "isSearchLoading", ["loc", [null, [8, 10], [8, 25]]]]], [], 1, 2, ["loc", [null, [8, 4], [12, 11]]]], ["inline", "ko-universal-search/entry", [], ["type", "text", "onSelectHighlightedResult", ["subexpr", "action", ["selectHighlightedResult"], [], ["loc", [null, [16, 30], [16, 64]]]], "onHighlightNextResult", ["subexpr", "action", ["highlightNextResult"], [], ["loc", [null, [17, 26], [17, 56]]]], "onHighlightPreviousResult", ["subexpr", "action", ["highlightPreviousResult"], [], ["loc", [null, [18, 30], [18, 64]]]], "onStopSearch", ["subexpr", "action", ["clearSearch"], [], ["loc", [null, [19, 17], [19, 39]]]], "value", ["subexpr", "@mut", [["get", "searchQuery", ["loc", [null, [20, 10], [20, 21]]]]], [], []], "placeholder", ["subexpr", "t", ["search.placeholder"], [], ["loc", [null, [21, 16], [21, 40]]]]], ["loc", [null, [15, 2], [21, 42]]]], ["block", "if", [["get", "searchQuery", ["loc", [null, [23, 8], [23, 19]]]]], [], 3, null, ["loc", [null, [23, 2], [25, 9]]]], ["block", "if", [["get", "searchQuery", ["loc", [null, [28, 6], [28, 17]]]]], [], 4, null, ["loc", [null, [28, 0], [70, 7]]]]],
+      statements: [["block", "if", [["get", "searchQuery", ["loc", [null, [1, 6], [1, 17]]]]], [], 0, null, ["loc", [null, [1, 0], [4, 7]]]], ["block", "if", [["get", "isSearchLoading", ["loc", [null, [8, 10], [8, 25]]]]], [], 1, 2, ["loc", [null, [8, 4], [12, 11]]]], ["inline", "ko-universal-search/entry", [], ["type", "text", "onSelectHighlightedResult", ["subexpr", "action", ["selectHighlightedResult"], [], ["loc", [null, [16, 30], [16, 64]]]], "onHighlightNextResult", ["subexpr", "action", ["highlightNextResult"], [], ["loc", [null, [17, 26], [17, 56]]]], "onHighlightPreviousResult", ["subexpr", "action", ["highlightPreviousResult"], [], ["loc", [null, [18, 30], [18, 64]]]], "onStopSearch", ["subexpr", "action", ["clearSearch"], [], ["loc", [null, [19, 17], [19, 39]]]], "value", ["subexpr", "@mut", [["get", "searchQuery", ["loc", [null, [20, 10], [20, 21]]]]], [], []], "placeholder", ["subexpr", "t", ["search.placeholder"], [], ["loc", [null, [21, 16], [21, 40]]]]], ["loc", [null, [15, 2], [21, 42]]]], ["block", "if", [["get", "searchQuery", ["loc", [null, [23, 8], [23, 19]]]]], [], 3, null, ["loc", [null, [23, 2], [25, 9]]]], ["block", "if", [["get", "searchQuery", ["loc", [null, [28, 6], [28, 17]]]]], [], 4, null, ["loc", [null, [28, 0], [73, 7]]]]],
       locals: [],
       templates: [child0, child1, child2, child3, child4]
     };
@@ -60924,7 +62037,7 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
             morphs[11] = dom.createMorphAt(fragment, 23, 23, contextualElement);
             return morphs;
           },
-          statements: [["inline", "ko-info-bar/field/select", [], ["value", ["subexpr", "@mut", [["get", "model.role", ["loc", [null, [16, 12], [16, 22]]]]], [], []], "options", ["subexpr", "@mut", [["get", "roles", ["loc", [null, [17, 14], [17, 19]]]]], [], []], "title", ["subexpr", "t", ["users.infobar.role"], [], ["loc", [null, [18, 12], [18, 36]]]], "isEdited", ["subexpr", "@mut", [["get", "isRoleEdited", ["loc", [null, [19, 15], [19, 27]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "errorMap.role_id", ["loc", [null, [20, 16], [20, 32]]]]], [], []], "isDisabled", ["subexpr", "not", [["get", "canChangeRolePermission", ["loc", [null, [21, 22], [21, 45]]]]], [], ["loc", [null, [21, 17], [21, 46]]]], "onValueChange", ["subexpr", "action", ["roleSelect"], [], ["loc", [null, [22, 20], [22, 41]]]], "labelPath", "title", "hasEmptyOption", false], ["loc", [null, [15, 4], [25, 6]]]], ["block", "if", [["get", "canChangeAgentAccessPermission", ["loc", [null, [27, 10], [27, 40]]]]], [], 0, null, ["loc", [null, [27, 4], [39, 11]]]], ["block", "if", [["get", "canChangeOrganizationAccessPermission", ["loc", [null, [41, 10], [41, 47]]]]], [], 1, null, ["loc", [null, [41, 4], [53, 11]]]], ["inline", "ko-info-bar/field/select", [], ["value", ["subexpr", "@mut", [["get", "model.organization.content", ["loc", [null, [56, 12], [56, 38]]]]], [], []], "options", ["subexpr", "@mut", [["get", "organizations", ["loc", [null, [57, 14], [57, 27]]]]], [], []], "title", ["subexpr", "t", ["users.infobar.organization"], [], ["loc", [null, [58, 12], [58, 44]]]], "search", ["subexpr", "action", ["searchOrganization"], [], ["loc", [null, [59, 13], [59, 42]]]], "inputPlaceholder", ["subexpr", "t", ["generic.search.start_typing_to_search"], [], ["loc", [null, [60, 23], [60, 66]]]], "loadingMessage", ["subexpr", "t", ["generic.search.searching"], [], ["loc", [null, [61, 21], [61, 51]]]], "isEdited", ["subexpr", "@mut", [["get", "isOrganisationEdited", ["loc", [null, [62, 15], [62, 35]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "errorMap.organization_id", ["loc", [null, [63, 16], [63, 40]]]]], [], []], "onValueChange", ["subexpr", "action", ["organizationSelect"], [], ["loc", [null, [64, 20], [64, 49]]]], "labelPath", "name"], ["loc", [null, [55, 4], [66, 6]]]], ["inline", "ko-user-content/field/timezone-select", [], ["timezone", ["subexpr", "@mut", [["get", "model.timeZone", ["loc", [null, [69, 15], [69, 29]]]]], [], []], "isEdited", ["subexpr", "@mut", [["get", "isTimezoneEdited", ["loc", [null, [70, 15], [70, 31]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "errorMap.time_zone", ["loc", [null, [71, 16], [71, 34]]]]], [], []], "onChangeTimezone", ["subexpr", "action", ["timezoneSelect"], [], ["loc", [null, [72, 23], [72, 48]]]]], ["loc", [null, [68, 4], [73, 6]]]], ["block", "if", [["get", "canViewUserTeamPermission", ["loc", [null, [75, 10], [75, 35]]]]], [], 2, null, ["loc", [null, [75, 4], [90, 11]]]], ["inline", "ko-info-bar/field/tags", [], ["title", ["subexpr", "t", ["users.tags"], [], ["loc", [null, [93, 12], [93, 28]]]], "isEdited", ["subexpr", "@mut", [["get", "isTagsFieldEdited", ["loc", [null, [94, 15], [94, 32]]]]], [], []], "values", ["subexpr", "@mut", [["get", "editedTags", ["loc", [null, [95, 13], [95, 23]]]]], [], []], "suggestedTags", ["subexpr", "@mut", [["get", "suggestedTags", ["loc", [null, [96, 20], [96, 33]]]]], [], []], "newTagText", ["subexpr", "t", ["users.newtag"], [], ["loc", [null, [97, 17], [97, 35]]]], "addTagText", ["subexpr", "t", ["users.addtag"], [], ["loc", [null, [98, 17], [98, 35]]]], "onTagAddition", ["subexpr", "action", ["addTag"], [], ["loc", [null, [99, 20], [99, 37]]]], "onTagRemoval", ["subexpr", "action", ["removeTag"], [], ["loc", [null, [100, 19], [100, 39]]]], "onTagSuggestion", ["subexpr", "action", ["suggestTags"], [], ["loc", [null, [101, 22], [101, 44]]]]], ["loc", [null, [92, 4], [102, 6]]]], ["block", "each", [["get", "customFields", ["loc", [null, [104, 12], [104, 24]]]]], [], 3, null, ["loc", [null, [104, 4], [120, 13]]]], ["inline", "ko-identities", [], ["parent", ["subexpr", "@mut", [["get", "model", ["loc", [null, [122, 27], [122, 32]]]]], [], []], "separator", false], ["loc", [null, [122, 4], [122, 50]]]], ["inline", "ko-info-bar/metadata", [], ["rows", ["subexpr", "@mut", [["get", "userDates", ["loc", [null, [124, 32], [124, 41]]]]], [], []], "separator", false], ["loc", [null, [124, 4], [124, 59]]]], ["inline", "ko-recent-cases", [], ["title", ["subexpr", "t", ["users.recent_cases"], [], ["loc", [null, [126, 28], [126, 52]]]], "cases", ["subexpr", "@mut", [["get", "model.recentCases", ["loc", [null, [126, 59], [126, 76]]]]], [], []], "separator", false], ["loc", [null, [126, 4], [126, 94]]]], ["inline", "ko-feedback", [], ["title", ["subexpr", "t", ["users.recent_feedback"], [], ["loc", [null, [128, 24], [128, 51]]]], "feedback", ["subexpr", "@mut", [["get", "recentFeedback", ["loc", [null, [128, 61], [128, 75]]]]], [], []], "separator", false], ["loc", [null, [128, 4], [128, 93]]]]],
+          statements: [["inline", "ko-info-bar/field/select", [], ["value", ["subexpr", "@mut", [["get", "model.role", ["loc", [null, [16, 12], [16, 22]]]]], [], []], "options", ["subexpr", "@mut", [["get", "roles", ["loc", [null, [17, 14], [17, 19]]]]], [], []], "title", ["subexpr", "t", ["users.infobar.role"], [], ["loc", [null, [18, 12], [18, 36]]]], "isEdited", ["subexpr", "@mut", [["get", "isRoleEdited", ["loc", [null, [19, 15], [19, 27]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "errorMap.role_id", ["loc", [null, [20, 16], [20, 32]]]]], [], []], "isDisabled", ["subexpr", "not", [["get", "canChangeRolePermission", ["loc", [null, [21, 22], [21, 45]]]]], [], ["loc", [null, [21, 17], [21, 46]]]], "onValueChange", ["subexpr", "action", ["roleSelect"], [], ["loc", [null, [22, 20], [22, 41]]]], "labelPath", "title", "hasEmptyOption", false], ["loc", [null, [15, 4], [25, 6]]]], ["block", "if", [["get", "canChangeAgentAccessPermission", ["loc", [null, [27, 10], [27, 40]]]]], [], 0, null, ["loc", [null, [27, 4], [39, 11]]]], ["block", "if", [["get", "canChangeOrganizationAccessPermission", ["loc", [null, [41, 10], [41, 47]]]]], [], 1, null, ["loc", [null, [41, 4], [53, 11]]]], ["inline", "ko-info-bar/field/select", [], ["value", ["subexpr", "@mut", [["get", "model.organization.content", ["loc", [null, [56, 12], [56, 38]]]]], [], []], "options", ["subexpr", "@mut", [["get", "organizations", ["loc", [null, [57, 14], [57, 27]]]]], [], []], "title", ["subexpr", "t", ["users.infobar.organization"], [], ["loc", [null, [58, 12], [58, 44]]]], "search", ["subexpr", "action", ["searchOrganization"], [], ["loc", [null, [59, 13], [59, 42]]]], "inputPlaceholder", ["subexpr", "t", ["search.start_typing_to_search"], [], ["loc", [null, [60, 23], [60, 58]]]], "loadingMessage", ["subexpr", "t", ["search.searching"], [], ["loc", [null, [61, 21], [61, 43]]]], "isEdited", ["subexpr", "@mut", [["get", "isOrganisationEdited", ["loc", [null, [62, 15], [62, 35]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "errorMap.organization_id", ["loc", [null, [63, 16], [63, 40]]]]], [], []], "onValueChange", ["subexpr", "action", ["organizationSelect"], [], ["loc", [null, [64, 20], [64, 49]]]], "labelPath", "name"], ["loc", [null, [55, 4], [66, 6]]]], ["inline", "ko-user-content/field/timezone-select", [], ["timezone", ["subexpr", "@mut", [["get", "model.timeZone", ["loc", [null, [69, 15], [69, 29]]]]], [], []], "isEdited", ["subexpr", "@mut", [["get", "isTimezoneEdited", ["loc", [null, [70, 15], [70, 31]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "errorMap.time_zone", ["loc", [null, [71, 16], [71, 34]]]]], [], []], "onChangeTimezone", ["subexpr", "action", ["timezoneSelect"], [], ["loc", [null, [72, 23], [72, 48]]]]], ["loc", [null, [68, 4], [73, 6]]]], ["block", "if", [["get", "canViewUserTeamPermission", ["loc", [null, [75, 10], [75, 35]]]]], [], 2, null, ["loc", [null, [75, 4], [90, 11]]]], ["inline", "ko-info-bar/field/tags", [], ["title", ["subexpr", "t", ["users.tags"], [], ["loc", [null, [93, 12], [93, 28]]]], "isEdited", ["subexpr", "@mut", [["get", "isTagsFieldEdited", ["loc", [null, [94, 15], [94, 32]]]]], [], []], "values", ["subexpr", "@mut", [["get", "editedTags", ["loc", [null, [95, 13], [95, 23]]]]], [], []], "suggestedTags", ["subexpr", "@mut", [["get", "suggestedTags", ["loc", [null, [96, 20], [96, 33]]]]], [], []], "newTagText", ["subexpr", "t", ["users.newtag"], [], ["loc", [null, [97, 17], [97, 35]]]], "addTagText", ["subexpr", "t", ["users.addtag"], [], ["loc", [null, [98, 17], [98, 35]]]], "onTagAddition", ["subexpr", "action", ["addTag"], [], ["loc", [null, [99, 20], [99, 37]]]], "onTagRemoval", ["subexpr", "action", ["removeTag"], [], ["loc", [null, [100, 19], [100, 39]]]], "onTagSuggestion", ["subexpr", "action", ["suggestTags"], [], ["loc", [null, [101, 22], [101, 44]]]]], ["loc", [null, [92, 4], [102, 6]]]], ["block", "each", [["get", "customFields", ["loc", [null, [104, 12], [104, 24]]]]], [], 3, null, ["loc", [null, [104, 4], [120, 13]]]], ["inline", "ko-identities", [], ["parent", ["subexpr", "@mut", [["get", "model", ["loc", [null, [122, 27], [122, 32]]]]], [], []], "separator", false], ["loc", [null, [122, 4], [122, 50]]]], ["inline", "ko-info-bar/metadata", [], ["rows", ["subexpr", "@mut", [["get", "userDates", ["loc", [null, [124, 32], [124, 41]]]]], [], []], "separator", false], ["loc", [null, [124, 4], [124, 59]]]], ["inline", "ko-recent-cases", [], ["title", ["subexpr", "t", ["users.recent_cases"], [], ["loc", [null, [126, 28], [126, 52]]]], "cases", ["subexpr", "@mut", [["get", "model.recentCases", ["loc", [null, [126, 59], [126, 76]]]]], [], []], "separator", false], ["loc", [null, [126, 4], [126, 94]]]], ["inline", "ko-feedback", [], ["title", ["subexpr", "t", ["users.recent_feedback"], [], ["loc", [null, [128, 24], [128, 51]]]], "feedback", ["subexpr", "@mut", [["get", "recentFeedback", ["loc", [null, [128, 61], [128, 75]]]]], [], []], "separator", false], ["loc", [null, [128, 4], [128, 93]]]]],
           locals: [],
           templates: [child0, child1, child2, child3]
         };
@@ -64277,12 +65390,6 @@ define("frontend-cp/locales/en-us/generic", ["exports"], function (exports) {
     "SLA": "SLA",
     "select_placeholder": "Select...",
     "search_result_select_instruction": "Press enter",
-    "search.no_results": "No results found",
-    "search.no_preview": "Mouse over a search result to see a preview.",
-    "search.start_typing_to_search": "Start typing to search",
-    "search.searching": "Searching...",
-    "search.matchingsnippet": "Matching text",
-    "search.nosnippet": "Sorry, we don’t have a preview for this result.",
     "shared_with": "Shared with",
 
     "sort.ASC": "Ascending",
@@ -64395,6 +65502,7 @@ define("frontend-cp/locales/en-us/login", ["exports"], function (exports) {
 define("frontend-cp/locales/en-us/organisation", ["exports"], function (exports) {
   exports["default"] = {
     "domains": "Email domains",
+    "organizations": "Organizations",
     "new_organisation_placeholder": "Click to add a name",
     "delete_organisation": "Delete organisation",
     "organisation.created": "Organisation Created",
@@ -64407,9 +65515,38 @@ define("frontend-cp/locales/en-us/organisation", ["exports"], function (exports)
 });
 define("frontend-cp/locales/en-us/search", ["exports"], function (exports) {
   exports["default"] = {
-    "no-results": "No results found",
+    "noresults": "No results found",
     "searching": "Searching...",
-    "placeholder": "Search..."
+    "placeholder": "Search...",
+
+    "nopreview": "Mouse over a search result to see a preview.",
+    "start_typing_to_search": "Start typing to search",
+    "searching": "Searching...",
+
+    "matchingsnippet": "Matching text",
+    "nosnippet": "Sorry, we don’t have a preview for this result.",
+
+    "searchresults": "Search results for \"{term}\"",
+    "seemore": "See more",
+
+    "case.id": "Case ID",
+    "case.subject": "Subject",
+    "case.priority.label": "Priority",
+    "case.status.label": "Status",
+    "case.assigneeAgent.fullName": "Assigned agent",
+    "case.notfound": "There are no cases here.",
+
+    "user.id": "User ID",
+    "user.fullName": "Subject",
+    "user.primaryEmail.email": "Primary email",
+    "user.organization.name": "Organization",
+    "user.lastActivityAt": "Last seen",
+    "user.notfound": "There are no users here.",
+
+    "organization.id": "Org ID",
+    "organization.name": "Name",
+    "organization.updatedAt": "Last updated",
+    "organization.notfound": "There are no organizations here."
   };
 });
 define("frontend-cp/locales/en-us/users", ["exports"], function (exports) {
@@ -67185,6 +68322,8 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
 
     this.get('/api/v1/search', function (db, request) {
       var queryString = request.queryParams.query.toLowerCase();
+      var offset = parseInt(request.queryParams.offset, 10) || 0;
+      var limit = parseInt(request.queryParams.limit, 10) || 30;
       var users = db.users.filter(function (u) {
         return u.full_name.toLowerCase().indexOf(queryString) > -1;
       });
@@ -67195,7 +68334,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
         return o.name.toLowerCase().indexOf(queryString) > -1;
       });
 
-      var userResults = users.map(function (u) {
+      var userResults = users.slice(offset, limit + offset).map(function (u) {
         return {
           id: u.id,
           title: u.full_name,
@@ -67205,7 +68344,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
         };
       });
 
-      var caseResults = cases.map(function (c) {
+      var caseResults = cases.slice(offset, limit + offset).map(function (c) {
         return {
           id: c.id,
           title: c.subject,
@@ -67221,7 +68360,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
         caseResults[0].title = 'Good Morning, One of my colleagues sent a request in yesterday ERS-588-22741, i needed to clarify the specifics of what we are looking to do as I think there was a misunderstanding.';
       }
 
-      var orgResults = orgs.map(function (o) {
+      var orgResults = orgs.slice(offset, limit + offset).map(function (o) {
         return {
           id: o.id,
           title: o.name,
@@ -67236,22 +68375,23 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
         data: [{
           results: caseResults,
           resource: 'case',
-          total_count: caseResults.length
+          total_count: cases.length
         }, {
           results: userResults,
           resource: 'user',
-          total_count: userResults.length
+          total_count: users.length
         }, {
           results: orgResults,
           resource: 'organization',
-          total_count: orgResults.length
+          total_count: orgs.length
         }],
         resource: 'object',
         resources: {
           'case': cases,
           user: users,
           channel: db.channels,
-          team: db.teams
+          team: db.teams,
+          organization: orgs
         },
         total_count: caseResults.length + userResults.length
       };
@@ -68747,7 +69887,9 @@ define('frontend-cp/mirage/factories/organization-field', ['exports', 'ember-cli
 /*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/organization', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
-    name: 'Brew',
+    name: function name() {
+      return _emberCliMirage.faker.company.companyName() + ' ' + _emberCliMirage.faker.company.companySuffix();
+    },
     is_shared: false,
     domains: [],
     phone: [],
@@ -68979,7 +70121,7 @@ define('frontend-cp/mirage/factories/user', ['exports', 'ember-cli-mirage'], fun
     access_level: null,
     password_updated_at: '2015-07-23T12:09:20Z',
     avatar_updated_at: null,
-    activity_at: '2015-07-23T16:32:01Z',
+    last_activity_at: '2015-07-23T16:32:01Z',
     visited_at: '2015-07-23T16:32:01Z',
     created_at: '2015-07-23T12:09:20Z',
     updated_at: '2015-07-23T16:32:01Z',
@@ -69586,7 +70728,7 @@ define('frontend-cp/mirage/scenarios/default', ['exports'], function (exports) {
       last_replier_identity: identityEmail
     });
 
-    server.createList('case', 5, {
+    server.createList('case', 50, {
       source_channel: null,
       requester: defaultUser,
       creator: defaultUser,
@@ -69634,6 +70776,8 @@ define('frontend-cp/mirage/scenarios/default', ['exports'], function (exports) {
       domains: [identityDomain],
       metadata: metadata
     });
+
+    server.createList('organization', 10);
 
     server.createList('identity-email', 10);
     server.createList('case-priority', 3);
@@ -71812,6 +72956,7 @@ define('frontend-cp/models/user', ['exports', 'ember-data', 'model-fragments', '
     visitedAt: _emberData['default'].attr('date'),
     createdAt: _emberData['default'].attr('date'),
     updatedAt: _emberData['default'].attr('date'),
+    lastActivityAt: _emberData['default'].attr('date'),
 
     agentCaseAccess: _emberData['default'].attr('string', { defaultValue: 'ALL' }),
     organizationCaseAccess: _emberData['default'].attr('string', { defaultValue: 'REQUESTED' }),
@@ -71997,6 +73142,8 @@ define('frontend-cp/router', ['exports', 'ember', 'frontend-cp/config/environmen
       });
 
       this.route('agent', function () {
+        this.route('search', { path: '/search/:term' });
+
         this.route('cases', { path: '/cases' }, function () {
           this.route('new', { path: '/new/:timestamp' }, function () {
             this.route('user');
@@ -76431,11 +77578,16 @@ define('frontend-cp/services/suggestion/universal', ['exports', 'ember', 'fronte
     },
 
     search: function search(searchTerm) {
+      var offset = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
+      var limit = arguments.length <= 2 || arguments[2] === undefined ? 30 : arguments[2];
+
       var adapter = getOwner(this).lookup('adapter:application');
       var url = adapter.namespace + '/search';
       var options = {
         data: {
-          query: searchTerm
+          query: searchTerm,
+          offset: offset,
+          limit: limit
         }
       };
       var promise = adapter.ajax(url, 'GET', options);
@@ -76640,7 +77792,7 @@ define('frontend-cp/services/tab-store', ['exports', 'ember', 'frontend-cp/confi
       // The dynamic segments are wrong. It should include all the dynamic segments
       // of all parent routes, not only the ones of this one.
       var dynamicSegments = transition.intent.contexts;
-      if (!dynamicSegments) {
+      if (!dynamicSegments || !dynamicSegments.length) {
         dynamicSegments = Object.keys(transition.params).reduce(function (ary, k) {
           var params = transition.params[k];
           if (Object.keys(params).length > 0) {
@@ -90081,6 +91233,95 @@ define("frontend-cp/session/agent/cases/new/user/template", ["exports"], functio
     };
   })());
 });
+define("frontend-cp/session/agent/loading/template", ["exports"], function (exports) {
+  exports["default"] = Ember.HTMLBars.template((function () {
+    var child0 = (function () {
+      return {
+        meta: {
+          "fragmentReason": {
+            "name": "missing-wrapper",
+            "problems": ["wrong-type"]
+          },
+          "revision": "Ember@2.4.1",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 1,
+              "column": 0
+            },
+            "end": {
+              "line": 1,
+              "column": 38
+            }
+          },
+          "moduleName": "frontend-cp/session/agent/loading/template.hbs"
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [["inline", "ko-loader", [], ["large", true], ["loc", [null, [1, 14], [1, 38]]]]],
+        locals: [],
+        templates: []
+      };
+    })();
+    return {
+      meta: {
+        "fragmentReason": {
+          "name": "missing-wrapper",
+          "problems": ["wrong-type"]
+        },
+        "revision": "Ember@2.4.1",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 0
+          }
+        },
+        "moduleName": "frontend-cp/session/agent/loading/template.hbs"
+      },
+      isEmpty: false,
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var morphs = new Array(1);
+        morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+        dom.insertBoundary(fragment, 0);
+        return morphs;
+      },
+      statements: [["block", "ko-center", [], [], 0, null, ["loc", [null, [1, 0], [1, 52]]]]],
+      locals: [],
+      templates: [child0]
+    };
+  })());
+});
 define('frontend-cp/session/agent/organisations/organisation/controller', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = _ember['default'].Controller.extend({
 
@@ -90270,6 +91511,332 @@ define('frontend-cp/session/agent/route', ['exports', 'ember'], function (export
       return this._super.apply(this, arguments);
     }
   });
+});
+define('frontend-cp/session/agent/search/controller', ['exports', 'ember'], function (exports, _ember) {
+  var _slice = Array.prototype.slice;
+  exports['default'] = _ember['default'].Controller.extend({
+    queryParams: ['group', 'page'],
+    searchTerm: _ember['default'].computed.alias('model.searchTerm'),
+
+    actions: {
+      showResultGroup: function showResultGroup(group) {
+        this.transitionToRoute('session.agent.search', {
+          queryParams: {
+            page: 1,
+            group: group
+          }
+        });
+      },
+
+      loadSearchRoute: function loadSearchRoute() {
+        this.send.apply(this, ['openSearchResult'].concat(_slice.call(arguments)));
+      }
+    }
+  });
+});
+define('frontend-cp/session/agent/search/route', ['exports', 'ember', 'frontend-cp/routes/abstract/tabbed-route', 'frontend-cp/config/environment'], function (exports, _ember, _frontendCpRoutesAbstractTabbedRoute, _frontendCpConfigEnvironment) {
+
+  var pageLimit = _frontendCpConfigEnvironment['default'].casesPageSize;
+
+  // This route does a few complex things:
+  // * Runs a search based on query params, removes data and pushes resources to store
+  // * If search originates from a search page, we don't open a new tab but resuse the existing one
+  // * transitionTabPath records the path of the tab which will be updated if resusing
+  // * afterModel updates the tab or opens a new one depending on transitionTabPath value
+
+  exports['default'] = _frontendCpRoutesAbstractTabbedRoute['default'].extend({
+    universalSearchService: _ember['default'].inject.service('suggestion/universal'),
+
+    previousKey: null,
+    previousResults: null,
+
+    transitionTabPath: null,
+
+    queryParams: {
+      group: { refreshModel: true },
+      page: { refreshModel: true }
+    },
+
+    model: function model(_ref) {
+      var _this = this;
+
+      var term = _ref.term;
+      var group = _ref.group;
+      var page = _ref.page;
+
+      var searchService = this.get('universalSearchService');
+      var currentPage = parseInt(page, 10) || 1;
+      var offset = pageLimit * currentPage - pageLimit;
+      var resultGroup = group || 'case';
+      var cacheKey = term + '|' + offset;
+
+      if (this.get('previousKey') === cacheKey && this.get('previousResults')) {
+        return this._setSearchResult(this.get('previousResults'), resultGroup, currentPage, term);
+      }
+
+      var promise = searchService.search(term, offset, pageLimit);
+      return promise.then(function (response) {
+        var results = response.data;
+        Reflect.deleteProperty(response, 'data');
+        _this.store.pushPayload(response);
+
+        _this.set('previousResults', results);
+        _this.set('previousKey', cacheKey);
+        return _this._setSearchResult(results, resultGroup, currentPage, term);
+      });
+    },
+
+    _setSearchResult: function _setSearchResult(results, resultGroup, currentPage, term) {
+      var _this2 = this;
+
+      var groupResults = results.findBy('resource', resultGroup);
+      var result = _ember['default'].Object.create({});
+
+      if (groupResults && groupResults.results) {
+        result.set('searchResults', groupResults.results.map(function (res) {
+          return _this2.store.peekRecord(resultGroup, res.id);
+        }));
+        result.set('totalPages', Math.ceil(groupResults.total_count / pageLimit)); // eslint-disable-line camelcase
+      }
+
+      result.setProperties({
+        searchTerm: term,
+        currentPage: currentPage,
+        resultGroup: resultGroup
+      });
+
+      var totalCounts = _ember['default'].Object.create({});
+      results.forEach(function (res) {
+        totalCounts.set(res.resource, res.total_count); // eslint-disable-line camelcase
+      });
+      result.set('totalCounts', totalCounts);
+
+      return result;
+    },
+
+    afterModel: function afterModel(model, transition) {
+      var label = '"' + model.get('searchTerm') + '"';
+      var tabStore = this.get('tabStore');
+      var state = tabStore.decomposeTransition(transition);
+
+      if (this.get('transitionTabPath') && !tabStore.getTab(state.basePath)) {
+        var tab = tabStore.getTab(this.get('transitionTabPath'));
+        state.label = label;
+        tabStore.update(tab, state);
+        tabStore.set('activeTab', tab);
+      } else {
+        this.get('tabStore').open(transition, label);
+      }
+
+      this.set('transitionTabPath', null);
+    },
+
+    actions: {
+      willTransition: function willTransition(transition) {
+        var tabStore = this.get('tabStore');
+        var activeTab = tabStore.get('activeTab');
+
+        // If we are transitioning to another search page, record the current tab
+        // basePath so we can update the correct tab in `afterModel`
+        if (activeTab && transition.targetName === 'session.agent.search') {
+          this.set('transitionTabPath', activeTab.basePath);
+        } else {
+          this.send('setAdvancedSearch', false);
+          this.send('setSearchTerm', null);
+          this.set('transitionTabPath', null);
+        }
+      },
+
+      didTransition: function didTransition() {
+        // Tell parent route that we're in advanced mode
+        this.send('setAdvancedSearch', true);
+        this.send('setSearchTerm', this.controller.get('searchTerm'));
+      }
+    }
+  });
+});
+define("frontend-cp/session/agent/search/template", ["exports"], function (exports) {
+  exports["default"] = Ember.HTMLBars.template((function () {
+    var child0 = (function () {
+      var child0 = (function () {
+        var child0 = (function () {
+          return {
+            meta: {
+              "fragmentReason": false,
+              "revision": "Ember@2.4.1",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 20,
+                  "column": 4
+                },
+                "end": {
+                  "line": 20,
+                  "column": 43
+                }
+              },
+              "moduleName": "frontend-cp/session/agent/search/template.hbs"
+            },
+            isEmpty: true,
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes() {
+              return [];
+            },
+            statements: [],
+            locals: [],
+            templates: []
+          };
+        })();
+        return {
+          meta: {
+            "fragmentReason": false,
+            "revision": "Ember@2.4.1",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 16,
+                "column": 2
+              },
+              "end": {
+                "line": 21,
+                "column": 2
+              }
+            },
+            "moduleName": "frontend-cp/session/agent/search/template.hbs"
+          },
+          isEmpty: false,
+          arity: 1,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("    ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+            return morphs;
+          },
+          statements: [["block", "link-to", [["subexpr", "query-params", [], ["page", ["get", "number", ["loc", [null, [20, 34], [20, 40]]]]], ["loc", [null, [20, 15], [20, 41]]]]], [], 0, null, ["loc", [null, [20, 4], [20, 55]]]]],
+          locals: ["number"],
+          templates: [child0]
+        };
+      })();
+      return {
+        meta: {
+          "fragmentReason": false,
+          "revision": "Ember@2.4.1",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 14,
+              "column": 0
+            },
+            "end": {
+              "line": 23,
+              "column": 0
+            }
+          },
+          "moduleName": "frontend-cp/session/agent/search/template.hbs"
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1, "class", "ko-session-agent-cases-index__pagination");
+          var el2 = dom.createTextNode("\n");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(dom.childAt(fragment, [0]), 1, 1);
+          return morphs;
+        },
+        statements: [["block", "ko-pagination", [], ["currentPage", ["subexpr", "@mut", [["get", "model.currentPage", ["loc", [null, [17, 16], [17, 33]]]]], [], []], "loadingPage", false, "pageCount", ["subexpr", "@mut", [["get", "model.totalPages", ["loc", [null, [19, 14], [19, 30]]]]], [], []]], 0, null, ["loc", [null, [16, 2], [21, 20]]]]],
+        locals: [],
+        templates: [child0]
+      };
+    })();
+    return {
+      meta: {
+        "fragmentReason": {
+          "name": "missing-wrapper",
+          "problems": ["multiple-nodes", "wrong-type"]
+        },
+        "revision": "Ember@2.4.1",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 24,
+            "column": 0
+          }
+        },
+        "moduleName": "frontend-cp/session/agent/search/template.hbs"
+      },
+      isEmpty: false,
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1, "class", "ko-session-agent-cases-index");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var element0 = dom.childAt(fragment, [0]);
+        var morphs = new Array(3);
+        morphs[0] = dom.createMorphAt(element0, 1, 1);
+        morphs[1] = dom.createMorphAt(element0, 3, 3);
+        morphs[2] = dom.createMorphAt(fragment, 2, 2, contextualElement);
+        dom.insertBoundary(fragment, null);
+        return morphs;
+      },
+      statements: [["inline", "ko-search-sidebar", [], ["resultGroup", ["subexpr", "@mut", [["get", "model.resultGroup", ["loc", [null, [3, 15], [3, 32]]]]], [], []], "totalCounts", ["subexpr", "@mut", [["get", "model.totalCounts", ["loc", [null, [4, 15], [4, 32]]]]], [], []], "onSelect", ["subexpr", "action", ["showResultGroup"], [], ["loc", [null, [5, 12], [5, 38]]]]], ["loc", [null, [2, 2], [5, 40]]]], ["inline", "ko-advanced-search", [], ["onLoadSearchRoute", ["subexpr", "action", ["loadSearchRoute"], [], ["loc", [null, [8, 22], [8, 48]]]], "searchTerm", ["subexpr", "@mut", [["get", "searchTerm", ["loc", [null, [9, 15], [9, 25]]]]], [], []], "searchResults", ["subexpr", "@mut", [["get", "model.searchResults", ["loc", [null, [10, 18], [10, 37]]]]], [], []], "resultGroup", ["subexpr", "@mut", [["get", "model.resultGroup", ["loc", [null, [11, 16], [11, 33]]]]], [], []]], ["loc", [null, [7, 2], [11, 35]]]], ["block", "if", [["get", "model.searchResults", ["loc", [null, [14, 6], [14, 25]]]]], [], 0, null, ["loc", [null, [14, 0], [23, 7]]]]],
+      locals: [],
+      templates: [child0]
+    };
+  })());
 });
 define('frontend-cp/session/agent/users/index/route', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = _ember['default'].Route.extend({
@@ -90675,6 +92242,7 @@ define("frontend-cp/session/agent/users/user/template", ["exports"], function (e
   })());
 });
 define('frontend-cp/session/controller', ['exports', 'ember'], function (exports, _ember) {
+  var _slice = Array.prototype.slice;
   var Controller = _ember['default'].Controller;
   var service = _ember['default'].inject.service;
   exports['default'] = Controller.extend({
@@ -90683,9 +92251,12 @@ define('frontend-cp/session/controller', ['exports', 'ember'], function (exports
     sectionsHistory: service(),
     session: service(),
     searchResults: null,
+    searchTerm: null,
     isSearching: false,
     hideSessionWidgets: false,
-    hasModifier: false,
+    isAdvancedSearch: false,
+
+    openInNewTab: true,
 
     /**
      * Add an event listener which will be automatically removed once this controller is destroyed
@@ -90731,12 +92302,12 @@ define('frontend-cp/session/controller', ['exports', 'ember'], function (exports
         this.set('hideSessionWidgets', isSearching);
       },
 
+      seeMore: function seeMore() {
+        this.transitionToRoute('session.agent.search', this.get('searchTerm'));
+      },
+
       loadSearchRoute: function loadSearchRoute(routeName, label, targetObjectId, hasModifier) {
-        if (hasModifier) {
-          this.get('tabStore').createTab(routeName, label, targetObjectId);
-        } else {
-          this.transitionToRoute(routeName, targetObjectId);
-        }
+        this.send.apply(this, ['openSearchResult'].concat(_slice.call(arguments)));
       },
 
       close: function close(tab, e) {
@@ -90815,8 +92386,8 @@ define("frontend-cp/session/loading/template", ["exports"], function (exports) {
             "column": 0
           },
           "end": {
-            "line": 1,
-            "column": 52
+            "line": 2,
+            "column": 0
           }
         },
         "moduleName": "frontend-cp/session/loading/template.hbs"
@@ -90829,13 +92400,14 @@ define("frontend-cp/session/loading/template", ["exports"], function (exports) {
         var el0 = dom.createDocumentFragment();
         var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
         var morphs = new Array(1);
         morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
         dom.insertBoundary(fragment, 0);
-        dom.insertBoundary(fragment, null);
         return morphs;
       },
       statements: [["block", "ko-center", [], [], 0, null, ["loc", [null, [1, 0], [1, 52]]]]],
@@ -90848,6 +92420,9 @@ define('frontend-cp/session/route', ['exports', 'ember'], function (exports, _em
   exports['default'] = _ember['default'].Route.extend({
     sessionService: _ember['default'].inject.service('session'),
     analyticsService: _ember['default'].inject.service('analytics'),
+    tabStore: _ember['default'].inject.service(),
+
+    isAdvancedSearch: false,
 
     beforeModel: function beforeModel(transition) {
       var _this = this;
@@ -90860,9 +92435,26 @@ define('frontend-cp/session/route', ['exports', 'ember'], function (exports, _em
     },
 
     actions: {
-      willTransition: function willTransition() {
+      willTransition: function willTransition(transition) {
         this.controller.set('searchResults', null);
-        this.controller.set('searchQuery', null);
+        this.controller.set('searchTerm', null);
+        this.send('setAdvancedSearch', transition.targetName === 'session.agent.search');
+      },
+
+      openSearchResult: function openSearchResult(routeName, label, targetObjectId, hasModifier) {
+        if (hasModifier) {
+          this.get('tabStore').createTab(routeName, label, targetObjectId);
+        } else {
+          this.transitionTo(routeName, targetObjectId);
+        }
+      },
+
+      setAdvancedSearch: function setAdvancedSearch(isAdvancedSearch) {
+        this.controller.set('isAdvancedSearch', isAdvancedSearch);
+      },
+
+      setSearchTerm: function setSearchTerm(searchTerm) {
+        this.controller.set('searchTerm', searchTerm);
       },
 
       transitionToRoute: function transitionToRoute() {
@@ -90872,6 +92464,7 @@ define('frontend-cp/session/route', ['exports', 'ember'], function (exports, _em
   });
 });
 /**
+    result.set('totalPages', Math.ceil(groupResults.total_count / pageLimit)); // eslint-disable-line camelcase
  * SessionRoute
  *
  * This route is resposible for checking the session exists for all its
@@ -92081,11 +93674,74 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
           "loc": {
             "source": null,
             "start": {
-              "line": 77,
+              "line": 70,
               "column": 12
             },
             "end": {
-              "line": 79,
+              "line": 82,
+              "column": 12
+            }
+          },
+          "moduleName": "frontend-cp/session/template.hbs"
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("              ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1, "class", "universal-search__input");
+          var el2 = dom.createTextNode("\n                ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("div");
+          dom.setAttribute(el2, "class", "universal-search__icon");
+          var el3 = dom.createTextNode("\n                  ");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createElement("span");
+          dom.setAttribute(el3, "class", "i-search i-size-18 i-color-grey--dark u-inherit-lh");
+          var el4 = dom.createTextNode("\n                  ");
+          dom.appendChild(el3, el4);
+          dom.appendChild(el2, el3);
+          var el3 = dom.createTextNode("\n                ");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n                ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n              ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 3, 3);
+          return morphs;
+        },
+        statements: [["inline", "ko-universal-search/entry", [], ["type", "text", "value", ["subexpr", "@mut", [["get", "searchTerm", ["loc", [null, [78, 24], [78, 34]]]]], [], []], "onSubmitSearch", ["subexpr", "action", ["seeMore"], [], ["loc", [null, [79, 33], [79, 51]]]], "placeholder", ["subexpr", "t", ["search.placeholder"], [], ["loc", [null, [80, 30], [80, 54]]]]], ["loc", [null, [76, 16], [80, 56]]]]],
+        locals: [],
+        templates: []
+      };
+    })();
+    var child6 = (function () {
+      return {
+        meta: {
+          "fragmentReason": false,
+          "revision": "Ember@2.4.1",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 82,
+              "column": 12
+            },
+            "end": {
+              "line": 89,
               "column": 12
             }
           },
@@ -92110,7 +93766,49 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [["content", "ko-session-widgets", ["loc", [null, [78, 14], [78, 36]]]]],
+        statements: [["inline", "ko-universal-search", [], ["searchResults", ["subexpr", "@mut", [["get", "searchResults", ["loc", [null, [84, 30], [84, 43]]]]], [], []], "searchQuery", ["subexpr", "@mut", [["get", "searchTerm", ["loc", [null, [85, 28], [85, 38]]]]], [], []], "onSeeMore", ["subexpr", "action", ["seeMore"], [], ["loc", [null, [86, 26], [86, 44]]]], "onLoadSearchRoute", ["subexpr", "action", ["loadSearchRoute"], [], ["loc", [null, [87, 34], [87, 60]]]], "onSearchChanged", ["subexpr", "action", ["searchingChanged"], [], ["loc", [null, [88, 32], [88, 59]]]]], ["loc", [null, [83, 14], [88, 61]]]]],
+        locals: [],
+        templates: []
+      };
+    })();
+    var child7 = (function () {
+      return {
+        meta: {
+          "fragmentReason": false,
+          "revision": "Ember@2.4.1",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 92,
+              "column": 12
+            },
+            "end": {
+              "line": 94,
+              "column": 12
+            }
+          },
+          "moduleName": "frontend-cp/session/template.hbs"
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("              ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+          return morphs;
+        },
+        statements: [["content", "ko-session-widgets", ["loc", [null, [93, 14], [93, 36]]]]],
         locals: [],
         templates: []
       };
@@ -92129,7 +93827,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
             "column": 0
           },
           "end": {
-            "line": 89,
+            "line": 104,
             "column": 0
           }
         },
@@ -92218,11 +93916,11 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
         dom.appendChild(el5, el6);
         var el6 = dom.createElement("div");
         dom.setAttribute(el6, "class", "nav-secondary__content");
-        var el7 = dom.createTextNode("\n            ");
+        var el7 = dom.createTextNode("\n");
         dom.appendChild(el6, el7);
         var el7 = dom.createComment("");
         dom.appendChild(el6, el7);
-        var el7 = dom.createTextNode("\n          ");
+        var el7 = dom.createTextNode("          ");
         dom.appendChild(el6, el7);
         dom.appendChild(el5, el6);
         var el6 = dom.createTextNode("\n          ");
@@ -92284,9 +93982,9 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
         morphs[9] = dom.createMorphAt(dom.childAt(fragment, [2]), 1, 1);
         return morphs;
       },
-      statements: [["attribute", "class", ["concat", ["nav ", ["subexpr", "if", [["subexpr", "not", [["get", "tabStore.isEnabled", ["loc", [null, [2, 28], [2, 46]]]]], [], ["loc", [null, [2, 23], [2, 47]]]], "nav--disabled"], [], ["loc", [null, [2, 18], [2, 65]]]]]]], ["block", "if", [["get", "tabStore.casesViewId", ["loc", [null, [7, 16], [7, 36]]]]], [], 0, 1, ["loc", [null, [7, 10], [11, 17]]]], ["block", "if", [["subexpr", "or", [["subexpr", "eq", [["get", "session.user.role.roleType", ["loc", [null, [12, 24], [12, 50]]]], "ADMIN"], [], ["loc", [null, [12, 20], [12, 59]]]], ["subexpr", "eq", [["get", "session.user.role.roleType", ["loc", [null, [12, 64], [12, 90]]]], "OWNER"], [], ["loc", [null, [12, 60], [12, 99]]]]], [], ["loc", [null, [12, 16], [12, 100]]]]], [], 2, null, ["loc", [null, [12, 10], [18, 17]]]], ["block", "if", [["get", "features.userTab", ["loc", [null, [19, 16], [19, 32]]]]], [], 3, null, ["loc", [null, [19, 10], [21, 17]]]], ["block", "each", [["get", "tabStore.tabs", ["loc", [null, [26, 18], [26, 31]]]]], [], 4, null, ["loc", [null, [26, 10], [61, 19]]]], ["content", "ko-agent-dropdown", ["loc", [null, [64, 6], [64, 27]]]], ["inline", "ko-universal-search", [], ["searchResults", ["subexpr", "@mut", [["get", "searchResults", ["loc", [null, [71, 28], [71, 41]]]]], [], []], "searchQuery", ["subexpr", "@mut", [["get", "searchQuery", ["loc", [null, [72, 26], [72, 37]]]]], [], []], "onLoadSearchRoute", ["subexpr", "action", ["loadSearchRoute"], [], ["loc", [null, [73, 32], [73, 58]]]], "onSearchChanged", ["subexpr", "action", ["searchingChanged"], [], ["loc", [null, [74, 30], [74, 57]]]]], ["loc", [null, [70, 12], [74, 59]]]], ["attribute", "class", ["concat", ["nav-secondary__sidebar ", ["subexpr", "if", [["get", "hideSessionWidgets", ["loc", [null, [76, 50], [76, 68]]]], "nav-secondary__sidebar--hidden"], [], ["loc", [null, [76, 45], [76, 103]]]]]]], ["block", "unless", [["get", "hideSessionWidgets", ["loc", [null, [77, 22], [77, 40]]]]], [], 5, null, ["loc", [null, [77, 12], [79, 23]]]], ["content", "outlet", ["loc", [null, [87, 2], [87, 12]]]]],
+      statements: [["attribute", "class", ["concat", ["nav ", ["subexpr", "if", [["subexpr", "not", [["get", "tabStore.isEnabled", ["loc", [null, [2, 28], [2, 46]]]]], [], ["loc", [null, [2, 23], [2, 47]]]], "nav--disabled"], [], ["loc", [null, [2, 18], [2, 65]]]]]]], ["block", "if", [["get", "tabStore.casesViewId", ["loc", [null, [7, 16], [7, 36]]]]], [], 0, 1, ["loc", [null, [7, 10], [11, 17]]]], ["block", "if", [["subexpr", "or", [["subexpr", "eq", [["get", "session.user.role.roleType", ["loc", [null, [12, 24], [12, 50]]]], "ADMIN"], [], ["loc", [null, [12, 20], [12, 59]]]], ["subexpr", "eq", [["get", "session.user.role.roleType", ["loc", [null, [12, 64], [12, 90]]]], "OWNER"], [], ["loc", [null, [12, 60], [12, 99]]]]], [], ["loc", [null, [12, 16], [12, 100]]]]], [], 2, null, ["loc", [null, [12, 10], [18, 17]]]], ["block", "if", [["get", "features.userTab", ["loc", [null, [19, 16], [19, 32]]]]], [], 3, null, ["loc", [null, [19, 10], [21, 17]]]], ["block", "each", [["get", "tabStore.tabs", ["loc", [null, [26, 18], [26, 31]]]]], [], 4, null, ["loc", [null, [26, 10], [61, 19]]]], ["content", "ko-agent-dropdown", ["loc", [null, [64, 6], [64, 27]]]], ["block", "if", [["get", "isAdvancedSearch", ["loc", [null, [70, 18], [70, 34]]]]], [], 5, 6, ["loc", [null, [70, 12], [89, 19]]]], ["attribute", "class", ["concat", ["nav-secondary__sidebar ", ["subexpr", "if", [["get", "hideSessionWidgets", ["loc", [null, [91, 50], [91, 68]]]], "nav-secondary__sidebar--hidden"], [], ["loc", [null, [91, 45], [91, 103]]]]]]], ["block", "unless", [["get", "hideSessionWidgets", ["loc", [null, [92, 22], [92, 40]]]]], [], 7, null, ["loc", [null, [92, 12], [94, 23]]]], ["content", "outlet", ["loc", [null, [102, 2], [102, 12]]]]],
       locals: [],
-      templates: [child0, child1, child2, child3, child4, child5]
+      templates: [child0, child1, child2, child3, child4, child5, child6, child7]
     };
   })());
 });
@@ -92546,6 +94244,11 @@ define("frontend-cp/styles/components/ko-admin-selectable-card/styles.scss", ["e
     "ko-admin-selectable-card--selected": "_ko-admin-selectable-card--selected_1vtqol",
     "ko-admin-selectable-card__content": "_ko-admin-selectable-card__content_1vtqol",
     "ko-admin-selectable-card__checkbox": "_ko-admin-selectable-card__checkbox_1vtqol"
+  };
+});
+define("frontend-cp/styles/components/ko-advanced-search/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-advanced-search": "_ko-advanced-search_1sd8iu"
   };
 });
 define("frontend-cp/styles/components/ko-agent-dropdown/create-case/styles.scss", ["exports"], function (exports) {
@@ -93162,6 +94865,11 @@ define("frontend-cp/styles/components/ko-reorderable-list/styles.scss", ["export
     "ember-testing": "_ember-testing_ol7rc2"
   };
 });
+define("frontend-cp/styles/components/ko-search-sidebar/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-search-sidebar": "_ko-search-sidebar_1dt0fg"
+  };
+});
 define("frontend-cp/styles/components/ko-select/styles.scss", ["exports"], function (exports) {
   exports["default"] = {
     "ko-select": "_ko-select_1wbafr",
@@ -93461,6 +95169,7 @@ define("frontend-cp/styles/components/ko-universal-search/result/styles.scss", [
     "is-active": "_is-active_1ti20m",
     "universal-search_result__icon": "_universal-search_result__icon_1ti20m",
     "universal-search_result__action": "_universal-search_result__action_1ti20m",
+    "ko-universal-search_result__see-more": "_ko-universal-search_result__see-more_1ti20m",
     "universal-search_result__content": "_universal-search_result__content_1ti20m"
   };
 });
@@ -93474,7 +95183,8 @@ define("frontend-cp/styles/components/ko-universal-search/styles.scss", ["export
     "universal-search__input": "_universal-search__input_3orawg",
     "universal-search__content": "_universal-search__content_3orawg",
     "universal-search__results": "_universal-search__results_3orawg",
-    "ko-universal-search__no-preview": "_ko-universal-search__no-preview_3orawg"
+    "ko-universal-search__no-preview": "_ko-universal-search__no-preview_3orawg",
+    "ko-universal-search__list": "_ko-universal-search__list_3orawg"
   };
 });
 define("frontend-cp/styles/components/ko-user-action-menu/styles.scss", ["exports"], function (exports) {
@@ -96109,7 +97819,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+50168e53"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+0273a678"});
 }
 
 /* jshint ignore:end */
