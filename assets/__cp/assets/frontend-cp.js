@@ -959,6 +959,2522 @@ define('frontend-cp/components/ember-wormhole', ['exports', 'ember-wormhole/comp
     }
   });
 });
+define('frontend-cp/components/ko-admin/apps/endpoints/edit/component', ['exports', 'ember'], function (exports, _ember) {
+  exports['default'] = _ember['default'].Component.extend({
+    store: _ember['default'].inject.service('store'),
+
+    onSuccess: function onSuccess() {},
+    onCancel: function onCancel() {},
+    onSave: function onSave() {},
+
+    model: null,
+
+    requestMethod: { id: 'GET' },
+    requestContentType: { id: 'JSON' },
+
+    webhookUrl: null,
+    webhookUseHttpAuth: false,
+    webhookUsername: null,
+    webhookPassword: null,
+
+    emailDestination: null,
+    emailSubject: null,
+
+    slackUrl: null,
+    slackChannel: null,
+
+    requestMethods: _ember['default'].computed(function () {
+      return [{ id: 'GET' }, { id: 'POST' }, { id: 'PUT' }, { id: 'PATCH' }, { id: 'DELETE' }];
+    }),
+
+    requestContentTypes: _ember['default'].computed(function () {
+      return [{ id: 'FORM' }, { id: 'XML' }, { id: 'JSON' }];
+    }),
+
+    showContentType: _ember['default'].computed('model.requestMethod', function () {
+      return ['POST', 'PUT', 'PATCH'].indexOf(this.get('model.requestMethod.id')) > -1;
+    }),
+
+    actions: {
+      setRequestMethod: function setRequestMethod(method) {
+        this.set('model.requestMethod', method);
+      },
+
+      setRequestContentType: function setRequestContentType(type) {
+        this.set('model.requestContentType', type);
+      },
+
+      save: function save() {
+        var store = this.get('store');
+        var model = this.get('model');
+        var attributes = {};
+
+        if (model.get('fieldType') === 'EMAIL') {
+          attributes = {
+            address: model.get('emailDestination'),
+            subject: model.get('emailSubject')
+          };
+        } else if (model.get('fieldType') === 'SLACK') {
+          attributes = {
+            webhook_url: model.get('slackUrl'),
+            channel: model.get('slackChannel').replace('#', '')
+          };
+        } else if (model.get('fieldType') === 'HTTP') {
+          attributes = {
+            url: model.get('webhookUrl'),
+            method: model.get('requestMethod.id'),
+            content_type: model.get('requestContentType.id'),
+            use_auth: model.get('webhookUseHttpAuth'),
+            auth_username: model.get('webhookUsername'),
+            auth_password: model.get('webhookPassword')
+          };
+        }
+
+        var attributesFragments = [];
+        Object.keys(attributes).forEach(function (key) {
+          attributesFragments.push(store.createFragment('endpoint-attribute', {
+            name: key,
+            value: attributes[key]
+          }));
+        });
+        model.set('attributes', attributesFragments);
+
+        return this.onSave(model);
+      }
+    }
+  });
+});
+define("frontend-cp/components/ko-admin/apps/endpoints/edit/template", ["exports"], function (exports) {
+  exports["default"] = Ember.HTMLBars.template((function () {
+    var child0 = (function () {
+      var child0 = (function () {
+        var child0 = (function () {
+          var child0 = (function () {
+            return {
+              meta: {
+                "fragmentReason": false,
+                "revision": "Ember@2.4.1",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 14,
+                    "column": 6
+                  },
+                  "end": {
+                    "line": 16,
+                    "column": 6
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-admin/apps/endpoints/edit/template.hbs"
+              },
+              isEmpty: false,
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createTextNode("        ");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var morphs = new Array(1);
+                morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+                return morphs;
+              },
+              statements: [["inline", "t", ["admin.apps.endpoints.form.title"], [], ["loc", [null, [15, 8], [15, 47]]]]],
+              locals: [],
+              templates: []
+            };
+          })();
+          return {
+            meta: {
+              "fragmentReason": false,
+              "revision": "Ember@2.4.1",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 13,
+                  "column": 4
+                },
+                "end": {
+                  "line": 21,
+                  "column": 4
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-admin/apps/endpoints/edit/template.hbs"
+            },
+            isEmpty: false,
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n      ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n\n      ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(3);
+              morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+              morphs[1] = dom.createMorphAt(fragment, 2, 2, contextualElement);
+              morphs[2] = dom.createMorphAt(fragment, 4, 4, contextualElement);
+              dom.insertBoundary(fragment, 0);
+              return morphs;
+            },
+            statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [14, 6], [16, 30]]]], ["inline", "input", [], ["type", "text", "class", "input-text u-1/1", "name", "title", "value", ["subexpr", "@mut", [["get", "model.title", ["loc", [null, [18, 70], [18, 81]]]]], [], []]], ["loc", [null, [18, 6], [18, 83]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "model.errors.title", ["loc", [null, [20, 36], [20, 54]]]]], [], []]], ["loc", [null, [20, 6], [20, 56]]]]],
+            locals: [],
+            templates: [child0]
+          };
+        })();
+        return {
+          meta: {
+            "fragmentReason": false,
+            "revision": "Ember@2.4.1",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 12,
+                "column": 2
+              },
+              "end": {
+                "line": 22,
+                "column": 2
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-admin/apps/endpoints/edit/template.hbs"
+          },
+          isEmpty: false,
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+            dom.insertBoundary(fragment, 0);
+            dom.insertBoundary(fragment, null);
+            return morphs;
+          },
+          statements: [["block", "ko-form/field", [], [], 0, null, ["loc", [null, [13, 4], [21, 22]]]]],
+          locals: [],
+          templates: [child0]
+        };
+      })();
+      var child1 = (function () {
+        var child0 = (function () {
+          var child0 = (function () {
+            var child0 = (function () {
+              return {
+                meta: {
+                  "fragmentReason": false,
+                  "revision": "Ember@2.4.1",
+                  "loc": {
+                    "source": null,
+                    "start": {
+                      "line": 27,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 29,
+                      "column": 8
+                    }
+                  },
+                  "moduleName": "frontend-cp/components/ko-admin/apps/endpoints/edit/template.hbs"
+                },
+                isEmpty: false,
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                  var el0 = dom.createDocumentFragment();
+                  var el1 = dom.createTextNode("          ");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createComment("");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createTextNode("\n");
+                  dom.appendChild(el0, el1);
+                  return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                  var morphs = new Array(1);
+                  morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+                  return morphs;
+                },
+                statements: [["inline", "t", ["admin.apps.endpoints.form.email.destination"], [], ["loc", [null, [28, 10], [28, 61]]]]],
+                locals: [],
+                templates: []
+              };
+            })();
+            return {
+              meta: {
+                "fragmentReason": false,
+                "revision": "Ember@2.4.1",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 26,
+                    "column": 6
+                  },
+                  "end": {
+                    "line": 34,
+                    "column": 6
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-admin/apps/endpoints/edit/template.hbs"
+              },
+              isEmpty: false,
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n        ");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n\n        ");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var morphs = new Array(3);
+                morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+                morphs[1] = dom.createMorphAt(fragment, 2, 2, contextualElement);
+                morphs[2] = dom.createMorphAt(fragment, 4, 4, contextualElement);
+                dom.insertBoundary(fragment, 0);
+                return morphs;
+              },
+              statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [27, 8], [29, 32]]]], ["inline", "input", [], ["type", "email", "class", "input-text u-1/1", "name", "email_destination", "value", ["subexpr", "@mut", [["get", "model.emailDestination", ["loc", [null, [31, 85], [31, 107]]]]], [], []]], ["loc", [null, [31, 8], [31, 109]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "model.errors.emailDestination", ["loc", [null, [33, 38], [33, 67]]]]], [], []]], ["loc", [null, [33, 8], [33, 69]]]]],
+              locals: [],
+              templates: [child0]
+            };
+          })();
+          var child1 = (function () {
+            var child0 = (function () {
+              return {
+                meta: {
+                  "fragmentReason": false,
+                  "revision": "Ember@2.4.1",
+                  "loc": {
+                    "source": null,
+                    "start": {
+                      "line": 37,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 39,
+                      "column": 8
+                    }
+                  },
+                  "moduleName": "frontend-cp/components/ko-admin/apps/endpoints/edit/template.hbs"
+                },
+                isEmpty: false,
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                  var el0 = dom.createDocumentFragment();
+                  var el1 = dom.createTextNode("          ");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createComment("");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createTextNode("\n");
+                  dom.appendChild(el0, el1);
+                  return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                  var morphs = new Array(1);
+                  morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+                  return morphs;
+                },
+                statements: [["inline", "t", ["admin.apps.endpoints.form.email.subject"], [], ["loc", [null, [38, 10], [38, 57]]]]],
+                locals: [],
+                templates: []
+              };
+            })();
+            return {
+              meta: {
+                "fragmentReason": false,
+                "revision": "Ember@2.4.1",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 36,
+                    "column": 6
+                  },
+                  "end": {
+                    "line": 44,
+                    "column": 6
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-admin/apps/endpoints/edit/template.hbs"
+              },
+              isEmpty: false,
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n        ");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n\n        ");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var morphs = new Array(3);
+                morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+                morphs[1] = dom.createMorphAt(fragment, 2, 2, contextualElement);
+                morphs[2] = dom.createMorphAt(fragment, 4, 4, contextualElement);
+                dom.insertBoundary(fragment, 0);
+                return morphs;
+              },
+              statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [37, 8], [39, 32]]]], ["inline", "input", [], ["type", "text", "class", "input-text u-1/1", "name", "email_subject", "value", ["subexpr", "@mut", [["get", "model.emailSubject", ["loc", [null, [41, 80], [41, 98]]]]], [], []]], ["loc", [null, [41, 8], [41, 100]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "model.errors.emailSubject", ["loc", [null, [43, 38], [43, 63]]]]], [], []]], ["loc", [null, [43, 8], [43, 65]]]]],
+              locals: [],
+              templates: [child0]
+            };
+          })();
+          return {
+            meta: {
+              "fragmentReason": false,
+              "revision": "Ember@2.4.1",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 25,
+                  "column": 4
+                },
+                "end": {
+                  "line": 45,
+                  "column": 4
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-admin/apps/endpoints/edit/template.hbs"
+            },
+            isEmpty: false,
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(2);
+              morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+              morphs[1] = dom.createMorphAt(fragment, 2, 2, contextualElement);
+              dom.insertBoundary(fragment, 0);
+              dom.insertBoundary(fragment, null);
+              return morphs;
+            },
+            statements: [["block", "ko-form/field", [], [], 0, null, ["loc", [null, [26, 6], [34, 24]]]], ["block", "ko-form/field", [], [], 1, null, ["loc", [null, [36, 6], [44, 24]]]]],
+            locals: [],
+            templates: [child0, child1]
+          };
+        })();
+        return {
+          meta: {
+            "fragmentReason": false,
+            "revision": "Ember@2.4.1",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 24,
+                "column": 2
+              },
+              "end": {
+                "line": 46,
+                "column": 2
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-admin/apps/endpoints/edit/template.hbs"
+          },
+          isEmpty: false,
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+            dom.insertBoundary(fragment, 0);
+            dom.insertBoundary(fragment, null);
+            return morphs;
+          },
+          statements: [["block", "ko-admin/forms/group", [], ["legend", ["subexpr", "t", ["admin.apps.endpoints.types.email.title"], [], ["loc", [null, [25, 35], [25, 79]]]]], 0, null, ["loc", [null, [25, 4], [45, 29]]]]],
+          locals: [],
+          templates: [child0]
+        };
+      })();
+      var child2 = (function () {
+        var child0 = (function () {
+          var child0 = (function () {
+            var child0 = (function () {
+              return {
+                meta: {
+                  "fragmentReason": false,
+                  "revision": "Ember@2.4.1",
+                  "loc": {
+                    "source": null,
+                    "start": {
+                      "line": 51,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 53,
+                      "column": 8
+                    }
+                  },
+                  "moduleName": "frontend-cp/components/ko-admin/apps/endpoints/edit/template.hbs"
+                },
+                isEmpty: false,
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                  var el0 = dom.createDocumentFragment();
+                  var el1 = dom.createTextNode("          ");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createComment("");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createTextNode("\n");
+                  dom.appendChild(el0, el1);
+                  return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                  var morphs = new Array(1);
+                  morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+                  return morphs;
+                },
+                statements: [["inline", "t", ["admin.apps.endpoints.form.slack.title"], [], ["loc", [null, [52, 10], [52, 55]]]]],
+                locals: [],
+                templates: []
+              };
+            })();
+            return {
+              meta: {
+                "fragmentReason": false,
+                "revision": "Ember@2.4.1",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 50,
+                    "column": 6
+                  },
+                  "end": {
+                    "line": 56,
+                    "column": 6
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-admin/apps/endpoints/edit/template.hbs"
+              },
+              isEmpty: false,
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n        ");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var morphs = new Array(2);
+                morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+                morphs[1] = dom.createMorphAt(fragment, 2, 2, contextualElement);
+                dom.insertBoundary(fragment, 0);
+                return morphs;
+              },
+              statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [51, 8], [53, 32]]]], ["inline", "input", [], ["type", "text", "class", "input-text u-1/1", "name", "slack_title", "value", ["subexpr", "@mut", [["get", "model.slackUrl", ["loc", [null, [55, 78], [55, 92]]]]], [], []]], ["loc", [null, [55, 8], [55, 94]]]]],
+              locals: [],
+              templates: [child0]
+            };
+          })();
+          var child1 = (function () {
+            return {
+              meta: {
+                "fragmentReason": false,
+                "revision": "Ember@2.4.1",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 58,
+                    "column": 6
+                  },
+                  "end": {
+                    "line": 60,
+                    "column": 6
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-admin/apps/endpoints/edit/template.hbs"
+              },
+              isEmpty: false,
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createTextNode("        ");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var morphs = new Array(1);
+                morphs[0] = dom.createUnsafeMorphAt(fragment, 1, 1, contextualElement);
+                return morphs;
+              },
+              statements: [["inline", "t", ["admin.apps.endpoints.form.slack.description"], [], ["loc", [null, [59, 8], [59, 61]]]]],
+              locals: [],
+              templates: []
+            };
+          })();
+          var child2 = (function () {
+            var child0 = (function () {
+              return {
+                meta: {
+                  "fragmentReason": false,
+                  "revision": "Ember@2.4.1",
+                  "loc": {
+                    "source": null,
+                    "start": {
+                      "line": 63,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 65,
+                      "column": 8
+                    }
+                  },
+                  "moduleName": "frontend-cp/components/ko-admin/apps/endpoints/edit/template.hbs"
+                },
+                isEmpty: false,
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                  var el0 = dom.createDocumentFragment();
+                  var el1 = dom.createTextNode("          ");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createComment("");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createTextNode("\n");
+                  dom.appendChild(el0, el1);
+                  return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                  var morphs = new Array(1);
+                  morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+                  return morphs;
+                },
+                statements: [["inline", "t", ["admin.apps.endpoints.form.slack.channel"], [], ["loc", [null, [64, 10], [64, 57]]]]],
+                locals: [],
+                templates: []
+              };
+            })();
+            return {
+              meta: {
+                "fragmentReason": false,
+                "revision": "Ember@2.4.1",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 62,
+                    "column": 6
+                  },
+                  "end": {
+                    "line": 68,
+                    "column": 6
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-admin/apps/endpoints/edit/template.hbs"
+              },
+              isEmpty: false,
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n        ");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var morphs = new Array(2);
+                morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+                morphs[1] = dom.createMorphAt(fragment, 2, 2, contextualElement);
+                dom.insertBoundary(fragment, 0);
+                return morphs;
+              },
+              statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [63, 8], [65, 32]]]], ["inline", "input", [], ["type", "text", "class", "input-text u-1/1", "name", "slack_channel", "value", ["subexpr", "@mut", [["get", "model.slackChannel", ["loc", [null, [67, 80], [67, 98]]]]], [], []]], ["loc", [null, [67, 8], [67, 100]]]]],
+              locals: [],
+              templates: [child0]
+            };
+          })();
+          return {
+            meta: {
+              "fragmentReason": false,
+              "revision": "Ember@2.4.1",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 49,
+                  "column": 4
+                },
+                "end": {
+                  "line": 69,
+                  "column": 4
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-admin/apps/endpoints/edit/template.hbs"
+            },
+            isEmpty: false,
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(3);
+              morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+              morphs[1] = dom.createMorphAt(fragment, 2, 2, contextualElement);
+              morphs[2] = dom.createMorphAt(fragment, 4, 4, contextualElement);
+              dom.insertBoundary(fragment, 0);
+              dom.insertBoundary(fragment, null);
+              return morphs;
+            },
+            statements: [["block", "ko-form/field", [], [], 0, null, ["loc", [null, [50, 6], [56, 24]]]], ["block", "ko-form/field/help", [], [], 1, null, ["loc", [null, [58, 6], [60, 29]]]], ["block", "ko-form/field", [], [], 2, null, ["loc", [null, [62, 6], [68, 24]]]]],
+            locals: [],
+            templates: [child0, child1, child2]
+          };
+        })();
+        return {
+          meta: {
+            "fragmentReason": false,
+            "revision": "Ember@2.4.1",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 48,
+                "column": 2
+              },
+              "end": {
+                "line": 70,
+                "column": 2
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-admin/apps/endpoints/edit/template.hbs"
+          },
+          isEmpty: false,
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+            dom.insertBoundary(fragment, 0);
+            dom.insertBoundary(fragment, null);
+            return morphs;
+          },
+          statements: [["block", "ko-admin/forms/group", [], ["legend", ["subexpr", "t", ["admin.apps.endpoints.types.slack.title"], [], ["loc", [null, [49, 35], [49, 79]]]]], 0, null, ["loc", [null, [49, 4], [69, 29]]]]],
+          locals: [],
+          templates: [child0]
+        };
+      })();
+      var child3 = (function () {
+        var child0 = (function () {
+          var child0 = (function () {
+            var child0 = (function () {
+              return {
+                meta: {
+                  "fragmentReason": false,
+                  "revision": "Ember@2.4.1",
+                  "loc": {
+                    "source": null,
+                    "start": {
+                      "line": 75,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 77,
+                      "column": 8
+                    }
+                  },
+                  "moduleName": "frontend-cp/components/ko-admin/apps/endpoints/edit/template.hbs"
+                },
+                isEmpty: false,
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                  var el0 = dom.createDocumentFragment();
+                  var el1 = dom.createTextNode("          ");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createComment("");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createTextNode("\n");
+                  dom.appendChild(el0, el1);
+                  return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                  var morphs = new Array(1);
+                  morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+                  return morphs;
+                },
+                statements: [["inline", "t", ["admin.apps.endpoints.form.webhook.payload_url.title"], [], ["loc", [null, [76, 10], [76, 69]]]]],
+                locals: [],
+                templates: []
+              };
+            })();
+            var child1 = (function () {
+              return {
+                meta: {
+                  "fragmentReason": false,
+                  "revision": "Ember@2.4.1",
+                  "loc": {
+                    "source": null,
+                    "start": {
+                      "line": 81,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 83,
+                      "column": 8
+                    }
+                  },
+                  "moduleName": "frontend-cp/components/ko-admin/apps/endpoints/edit/template.hbs"
+                },
+                isEmpty: false,
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                  var el0 = dom.createDocumentFragment();
+                  var el1 = dom.createTextNode("          ");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createComment("");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createTextNode("\n");
+                  dom.appendChild(el0, el1);
+                  return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                  var morphs = new Array(1);
+                  morphs[0] = dom.createUnsafeMorphAt(fragment, 1, 1, contextualElement);
+                  return morphs;
+                },
+                statements: [["inline", "t", ["admin.apps.endpoints.form.webhook.payload_url.description"], [], ["loc", [null, [82, 10], [82, 77]]]]],
+                locals: [],
+                templates: []
+              };
+            })();
+            return {
+              meta: {
+                "fragmentReason": false,
+                "revision": "Ember@2.4.1",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 74,
+                    "column": 6
+                  },
+                  "end": {
+                    "line": 84,
+                    "column": 6
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-admin/apps/endpoints/edit/template.hbs"
+              },
+              isEmpty: false,
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n        ");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n\n");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var morphs = new Array(3);
+                morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+                morphs[1] = dom.createMorphAt(fragment, 2, 2, contextualElement);
+                morphs[2] = dom.createMorphAt(fragment, 4, 4, contextualElement);
+                dom.insertBoundary(fragment, 0);
+                dom.insertBoundary(fragment, null);
+                return morphs;
+              },
+              statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [75, 8], [77, 32]]]], ["inline", "input", [], ["type", "text", "class", "input-text u-1/1", "name", "webhook_url", "value", ["subexpr", "@mut", [["get", "model.webhookUrl", ["loc", [null, [79, 78], [79, 94]]]]], [], []]], ["loc", [null, [79, 8], [79, 96]]]], ["block", "ko-form/field/help", [], [], 1, null, ["loc", [null, [81, 8], [83, 31]]]]],
+              locals: [],
+              templates: [child0, child1]
+            };
+          })();
+          var child1 = (function () {
+            var child0 = (function () {
+              return {
+                meta: {
+                  "fragmentReason": false,
+                  "revision": "Ember@2.4.1",
+                  "loc": {
+                    "source": null,
+                    "start": {
+                      "line": 89,
+                      "column": 12
+                    },
+                    "end": {
+                      "line": 91,
+                      "column": 12
+                    }
+                  },
+                  "moduleName": "frontend-cp/components/ko-admin/apps/endpoints/edit/template.hbs"
+                },
+                isEmpty: false,
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                  var el0 = dom.createDocumentFragment();
+                  var el1 = dom.createTextNode("              ");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createComment("");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createTextNode("\n");
+                  dom.appendChild(el0, el1);
+                  return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                  var morphs = new Array(1);
+                  morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+                  return morphs;
+                },
+                statements: [["inline", "t", ["admin.apps.endpoints.form.webhook.request_method.title"], [], ["loc", [null, [90, 14], [90, 76]]]]],
+                locals: [],
+                templates: []
+              };
+            })();
+            var child1 = (function () {
+              return {
+                meta: {
+                  "fragmentReason": false,
+                  "revision": "Ember@2.4.1",
+                  "loc": {
+                    "source": null,
+                    "start": {
+                      "line": 93,
+                      "column": 12
+                    },
+                    "end": {
+                      "line": 100,
+                      "column": 12
+                    }
+                  },
+                  "moduleName": "frontend-cp/components/ko-admin/apps/endpoints/edit/template.hbs"
+                },
+                isEmpty: false,
+                arity: 1,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                  var el0 = dom.createDocumentFragment();
+                  var el1 = dom.createTextNode("              ");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createComment("");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createTextNode("\n");
+                  dom.appendChild(el0, el1);
+                  return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                  var morphs = new Array(1);
+                  morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+                  return morphs;
+                },
+                statements: [["content", "option.id", ["loc", [null, [99, 14], [99, 27]]]]],
+                locals: ["option"],
+                templates: []
+              };
+            })();
+            return {
+              meta: {
+                "fragmentReason": false,
+                "revision": "Ember@2.4.1",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 88,
+                    "column": 10
+                  },
+                  "end": {
+                    "line": 102,
+                    "column": 10
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-admin/apps/endpoints/edit/template.hbs"
+              },
+              isEmpty: false,
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var morphs = new Array(2);
+                morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+                morphs[1] = dom.createMorphAt(fragment, 2, 2, contextualElement);
+                dom.insertBoundary(fragment, 0);
+                return morphs;
+              },
+              statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [89, 12], [91, 36]]]], ["block", "ko-select", [], ["class", "ko-admin_apps_endpoints_edit__select", "selected", ["subexpr", "@mut", [["get", "model.requestMethod", ["loc", [null, [95, 21], [95, 40]]]]], [], []], "options", ["subexpr", "@mut", [["get", "requestMethods", ["loc", [null, [96, 20], [96, 34]]]]], [], []], "onChange", ["subexpr", "action", ["setRequestMethod"], [], ["loc", [null, [97, 21], [97, 48]]]]], 1, null, ["loc", [null, [93, 12], [100, 26]]]]],
+              locals: [],
+              templates: [child0, child1]
+            };
+          })();
+          var child2 = (function () {
+            var child0 = (function () {
+              var child0 = (function () {
+                return {
+                  meta: {
+                    "fragmentReason": false,
+                    "revision": "Ember@2.4.1",
+                    "loc": {
+                      "source": null,
+                      "start": {
+                        "line": 107,
+                        "column": 14
+                      },
+                      "end": {
+                        "line": 109,
+                        "column": 14
+                      }
+                    },
+                    "moduleName": "frontend-cp/components/ko-admin/apps/endpoints/edit/template.hbs"
+                  },
+                  isEmpty: false,
+                  arity: 0,
+                  cachedFragment: null,
+                  hasRendered: false,
+                  buildFragment: function buildFragment(dom) {
+                    var el0 = dom.createDocumentFragment();
+                    var el1 = dom.createTextNode("                ");
+                    dom.appendChild(el0, el1);
+                    var el1 = dom.createComment("");
+                    dom.appendChild(el0, el1);
+                    var el1 = dom.createTextNode("\n");
+                    dom.appendChild(el0, el1);
+                    return el0;
+                  },
+                  buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                    var morphs = new Array(1);
+                    morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+                    return morphs;
+                  },
+                  statements: [["inline", "t", ["admin.apps.endpoints.form.webhook.request_method.content_type"], [], ["loc", [null, [108, 16], [108, 85]]]]],
+                  locals: [],
+                  templates: []
+                };
+              })();
+              var child1 = (function () {
+                return {
+                  meta: {
+                    "fragmentReason": false,
+                    "revision": "Ember@2.4.1",
+                    "loc": {
+                      "source": null,
+                      "start": {
+                        "line": 111,
+                        "column": 14
+                      },
+                      "end": {
+                        "line": 118,
+                        "column": 14
+                      }
+                    },
+                    "moduleName": "frontend-cp/components/ko-admin/apps/endpoints/edit/template.hbs"
+                  },
+                  isEmpty: false,
+                  arity: 1,
+                  cachedFragment: null,
+                  hasRendered: false,
+                  buildFragment: function buildFragment(dom) {
+                    var el0 = dom.createDocumentFragment();
+                    var el1 = dom.createTextNode("                ");
+                    dom.appendChild(el0, el1);
+                    var el1 = dom.createComment("");
+                    dom.appendChild(el0, el1);
+                    var el1 = dom.createTextNode("\n");
+                    dom.appendChild(el0, el1);
+                    return el0;
+                  },
+                  buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                    var morphs = new Array(1);
+                    morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+                    return morphs;
+                  },
+                  statements: [["content", "option.id", ["loc", [null, [117, 16], [117, 29]]]]],
+                  locals: ["option"],
+                  templates: []
+                };
+              })();
+              return {
+                meta: {
+                  "fragmentReason": false,
+                  "revision": "Ember@2.4.1",
+                  "loc": {
+                    "source": null,
+                    "start": {
+                      "line": 106,
+                      "column": 12
+                    },
+                    "end": {
+                      "line": 119,
+                      "column": 12
+                    }
+                  },
+                  "moduleName": "frontend-cp/components/ko-admin/apps/endpoints/edit/template.hbs"
+                },
+                isEmpty: false,
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                  var el0 = dom.createDocumentFragment();
+                  var el1 = dom.createComment("");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createTextNode("\n");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createComment("");
+                  dom.appendChild(el0, el1);
+                  return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                  var morphs = new Array(2);
+                  morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+                  morphs[1] = dom.createMorphAt(fragment, 2, 2, contextualElement);
+                  dom.insertBoundary(fragment, 0);
+                  dom.insertBoundary(fragment, null);
+                  return morphs;
+                },
+                statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [107, 14], [109, 38]]]], ["block", "ko-select", [], ["class", "ko-admin_apps_endpoints_edit__select", "selected", ["subexpr", "@mut", [["get", "model.requestContentType", ["loc", [null, [113, 23], [113, 47]]]]], [], []], "options", ["subexpr", "@mut", [["get", "requestContentTypes", ["loc", [null, [114, 22], [114, 41]]]]], [], []], "onChange", ["subexpr", "action", ["setRequestContentType"], [], ["loc", [null, [115, 23], [115, 55]]]]], 1, null, ["loc", [null, [111, 14], [118, 28]]]]],
+                locals: [],
+                templates: [child0, child1]
+              };
+            })();
+            return {
+              meta: {
+                "fragmentReason": false,
+                "revision": "Ember@2.4.1",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 104,
+                    "column": 8
+                  },
+                  "end": {
+                    "line": 121,
+                    "column": 8
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-admin/apps/endpoints/edit/template.hbs"
+              },
+              isEmpty: false,
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createTextNode("          ");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createElement("div");
+                dom.setAttribute(el1, "style", "width: 150px;");
+                var el2 = dom.createTextNode("\n");
+                dom.appendChild(el1, el2);
+                var el2 = dom.createComment("");
+                dom.appendChild(el1, el2);
+                var el2 = dom.createTextNode("          ");
+                dom.appendChild(el1, el2);
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var morphs = new Array(1);
+                morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
+                return morphs;
+              },
+              statements: [["block", "ko-form/field", [], [], 0, null, ["loc", [null, [106, 12], [119, 30]]]]],
+              locals: [],
+              templates: [child0]
+            };
+          })();
+          var child3 = (function () {
+            return {
+              meta: {
+                "fragmentReason": false,
+                "revision": "Ember@2.4.1",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 124,
+                    "column": 6
+                  },
+                  "end": {
+                    "line": 129,
+                    "column": 6
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-admin/apps/endpoints/edit/template.hbs"
+              },
+              isEmpty: false,
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createTextNode("        ");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var morphs = new Array(1);
+                morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+                return morphs;
+              },
+              statements: [["inline", "ko-checkbox", [], ["label", ["subexpr", "t", ["admin.apps.endpoints.form.webhook.http_auth.title"], [], ["loc", [null, [126, 16], [126, 71]]]], "checked", ["subexpr", "@mut", [["get", "model.webhookUseHttpAuth", ["loc", [null, [127, 18], [127, 42]]]]], [], []]], ["loc", [null, [125, 8], [128, 10]]]]],
+              locals: [],
+              templates: []
+            };
+          })();
+          var child4 = (function () {
+            var child0 = (function () {
+              var child0 = (function () {
+                return {
+                  meta: {
+                    "fragmentReason": false,
+                    "revision": "Ember@2.4.1",
+                    "loc": {
+                      "source": null,
+                      "start": {
+                        "line": 133,
+                        "column": 10
+                      },
+                      "end": {
+                        "line": 135,
+                        "column": 10
+                      }
+                    },
+                    "moduleName": "frontend-cp/components/ko-admin/apps/endpoints/edit/template.hbs"
+                  },
+                  isEmpty: false,
+                  arity: 0,
+                  cachedFragment: null,
+                  hasRendered: false,
+                  buildFragment: function buildFragment(dom) {
+                    var el0 = dom.createDocumentFragment();
+                    var el1 = dom.createTextNode("            ");
+                    dom.appendChild(el0, el1);
+                    var el1 = dom.createComment("");
+                    dom.appendChild(el0, el1);
+                    var el1 = dom.createTextNode("\n");
+                    dom.appendChild(el0, el1);
+                    return el0;
+                  },
+                  buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                    var morphs = new Array(1);
+                    morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+                    return morphs;
+                  },
+                  statements: [["inline", "t", ["admin.apps.endpoints.form.webhook.http_auth.username"], [], ["loc", [null, [134, 12], [134, 72]]]]],
+                  locals: [],
+                  templates: []
+                };
+              })();
+              return {
+                meta: {
+                  "fragmentReason": false,
+                  "revision": "Ember@2.4.1",
+                  "loc": {
+                    "source": null,
+                    "start": {
+                      "line": 132,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 138,
+                      "column": 8
+                    }
+                  },
+                  "moduleName": "frontend-cp/components/ko-admin/apps/endpoints/edit/template.hbs"
+                },
+                isEmpty: false,
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                  var el0 = dom.createDocumentFragment();
+                  var el1 = dom.createComment("");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createTextNode("\n          ");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createComment("");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createTextNode("\n");
+                  dom.appendChild(el0, el1);
+                  return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                  var morphs = new Array(2);
+                  morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+                  morphs[1] = dom.createMorphAt(fragment, 2, 2, contextualElement);
+                  dom.insertBoundary(fragment, 0);
+                  return morphs;
+                },
+                statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [133, 10], [135, 34]]]], ["inline", "input", [], ["type", "text", "class", "input-text u-1/1", "name", "webhook_http_auth_username", "value", ["subexpr", "@mut", [["get", "model.webhookUsername", ["loc", [null, [137, 95], [137, 116]]]]], [], []]], ["loc", [null, [137, 10], [137, 118]]]]],
+                locals: [],
+                templates: [child0]
+              };
+            })();
+            var child1 = (function () {
+              var child0 = (function () {
+                return {
+                  meta: {
+                    "fragmentReason": false,
+                    "revision": "Ember@2.4.1",
+                    "loc": {
+                      "source": null,
+                      "start": {
+                        "line": 141,
+                        "column": 10
+                      },
+                      "end": {
+                        "line": 143,
+                        "column": 10
+                      }
+                    },
+                    "moduleName": "frontend-cp/components/ko-admin/apps/endpoints/edit/template.hbs"
+                  },
+                  isEmpty: false,
+                  arity: 0,
+                  cachedFragment: null,
+                  hasRendered: false,
+                  buildFragment: function buildFragment(dom) {
+                    var el0 = dom.createDocumentFragment();
+                    var el1 = dom.createTextNode("            ");
+                    dom.appendChild(el0, el1);
+                    var el1 = dom.createComment("");
+                    dom.appendChild(el0, el1);
+                    var el1 = dom.createTextNode("\n");
+                    dom.appendChild(el0, el1);
+                    return el0;
+                  },
+                  buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                    var morphs = new Array(1);
+                    morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+                    return morphs;
+                  },
+                  statements: [["inline", "t", ["admin.apps.endpoints.form.webhook.http_auth.password"], [], ["loc", [null, [142, 12], [142, 72]]]]],
+                  locals: [],
+                  templates: []
+                };
+              })();
+              return {
+                meta: {
+                  "fragmentReason": false,
+                  "revision": "Ember@2.4.1",
+                  "loc": {
+                    "source": null,
+                    "start": {
+                      "line": 140,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 146,
+                      "column": 8
+                    }
+                  },
+                  "moduleName": "frontend-cp/components/ko-admin/apps/endpoints/edit/template.hbs"
+                },
+                isEmpty: false,
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                  var el0 = dom.createDocumentFragment();
+                  var el1 = dom.createComment("");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createTextNode("\n          ");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createComment("");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createTextNode("\n");
+                  dom.appendChild(el0, el1);
+                  return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                  var morphs = new Array(2);
+                  morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+                  morphs[1] = dom.createMorphAt(fragment, 2, 2, contextualElement);
+                  dom.insertBoundary(fragment, 0);
+                  return morphs;
+                },
+                statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [141, 10], [143, 34]]]], ["inline", "input", [], ["type", "password", "class", "input-text u-1/1", "name", "webhook_http_auth_password", "value", ["subexpr", "@mut", [["get", "model.webhookPassword", ["loc", [null, [145, 99], [145, 120]]]]], [], []]], ["loc", [null, [145, 10], [145, 122]]]]],
+                locals: [],
+                templates: [child0]
+              };
+            })();
+            return {
+              meta: {
+                "fragmentReason": false,
+                "revision": "Ember@2.4.1",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 131,
+                    "column": 6
+                  },
+                  "end": {
+                    "line": 147,
+                    "column": 6
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-admin/apps/endpoints/edit/template.hbs"
+              },
+              isEmpty: false,
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var morphs = new Array(2);
+                morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+                morphs[1] = dom.createMorphAt(fragment, 2, 2, contextualElement);
+                dom.insertBoundary(fragment, 0);
+                dom.insertBoundary(fragment, null);
+                return morphs;
+              },
+              statements: [["block", "ko-form/field", [], [], 0, null, ["loc", [null, [132, 8], [138, 26]]]], ["block", "ko-form/field", [], [], 1, null, ["loc", [null, [140, 8], [146, 26]]]]],
+              locals: [],
+              templates: [child0, child1]
+            };
+          })();
+          return {
+            meta: {
+              "fragmentReason": false,
+              "revision": "Ember@2.4.1",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 73,
+                  "column": 4
+                },
+                "end": {
+                  "line": 149,
+                  "column": 4
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-admin/apps/endpoints/edit/template.hbs"
+            },
+            isEmpty: false,
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n      ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createElement("div");
+              dom.setAttribute(el1, "style", "display: flex;");
+              var el2 = dom.createTextNode("\n        ");
+              dom.appendChild(el1, el2);
+              var el2 = dom.createElement("div");
+              dom.setAttribute(el2, "style", "width: 150px;");
+              var el3 = dom.createTextNode("\n");
+              dom.appendChild(el2, el3);
+              var el3 = dom.createComment("");
+              dom.appendChild(el2, el3);
+              var el3 = dom.createTextNode("        ");
+              dom.appendChild(el2, el3);
+              dom.appendChild(el1, el2);
+              var el2 = dom.createTextNode("\n");
+              dom.appendChild(el1, el2);
+              var el2 = dom.createComment("");
+              dom.appendChild(el1, el2);
+              var el2 = dom.createTextNode("      ");
+              dom.appendChild(el1, el2);
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n\n");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var element0 = dom.childAt(fragment, [2]);
+              var morphs = new Array(5);
+              morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+              morphs[1] = dom.createMorphAt(dom.childAt(element0, [1]), 1, 1);
+              morphs[2] = dom.createMorphAt(element0, 3, 3);
+              morphs[3] = dom.createMorphAt(fragment, 4, 4, contextualElement);
+              morphs[4] = dom.createMorphAt(fragment, 6, 6, contextualElement);
+              dom.insertBoundary(fragment, 0);
+              return morphs;
+            },
+            statements: [["block", "ko-form/field", [], [], 0, null, ["loc", [null, [74, 6], [84, 24]]]], ["block", "ko-form/field", [], [], 1, null, ["loc", [null, [88, 10], [102, 28]]]], ["block", "if", [["get", "showContentType", ["loc", [null, [104, 14], [104, 29]]]]], [], 2, null, ["loc", [null, [104, 8], [121, 15]]]], ["block", "ko-form/field", [], ["class", "ko-admin_apps_endpoints_edit__checkbox"], 3, null, ["loc", [null, [124, 6], [129, 24]]]], ["block", "if", [["get", "model.webhookUseHttpAuth", ["loc", [null, [131, 12], [131, 36]]]]], [], 4, null, ["loc", [null, [131, 6], [147, 13]]]]],
+            locals: [],
+            templates: [child0, child1, child2, child3, child4]
+          };
+        })();
+        return {
+          meta: {
+            "fragmentReason": false,
+            "revision": "Ember@2.4.1",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 72,
+                "column": 2
+              },
+              "end": {
+                "line": 150,
+                "column": 2
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-admin/apps/endpoints/edit/template.hbs"
+          },
+          isEmpty: false,
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+            dom.insertBoundary(fragment, 0);
+            dom.insertBoundary(fragment, null);
+            return morphs;
+          },
+          statements: [["block", "ko-admin/forms/group", [], ["legend", ["subexpr", "t", ["admin.apps.endpoints.form.webhook.title"], [], ["loc", [null, [73, 35], [73, 80]]]]], 0, null, ["loc", [null, [73, 4], [149, 29]]]]],
+          locals: [],
+          templates: [child0]
+        };
+      })();
+      return {
+        meta: {
+          "fragmentReason": {
+            "name": "missing-wrapper",
+            "problems": ["wrong-type", "multiple-nodes"]
+          },
+          "revision": "Ember@2.4.1",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 1,
+              "column": 0
+            },
+            "end": {
+              "line": 153,
+              "column": 0
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-admin/apps/endpoints/edit/template.hbs"
+        },
+        isEmpty: false,
+        arity: 2,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n\n");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(6);
+          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+          morphs[1] = dom.createMorphAt(fragment, 3, 3, contextualElement);
+          morphs[2] = dom.createMorphAt(fragment, 5, 5, contextualElement);
+          morphs[3] = dom.createMorphAt(fragment, 7, 7, contextualElement);
+          morphs[4] = dom.createMorphAt(fragment, 9, 9, contextualElement);
+          morphs[5] = dom.createMorphAt(fragment, 11, 11, contextualElement);
+          return morphs;
+        },
+        statements: [["inline", "ko-admin/page-header", [], ["title", ["subexpr", "@mut", [["get", "title", ["loc", [null, [7, 8], [7, 13]]]]], [], []], "buttonText", ["subexpr", "t", ["generic.save"], [], ["loc", [null, [8, 13], [8, 31]]]], "onCancel", ["subexpr", "@mut", [["get", "onCancel", ["loc", [null, [9, 11], [9, 19]]]]], [], []]], ["loc", [null, [6, 2], [10, 4]]]], ["block", "ko-admin/forms/group", [], ["legend", ["subexpr", "t", ["admin.apps.endpoints.title-singular"], [], ["loc", [null, [12, 33], [12, 74]]]]], 0, null, ["loc", [null, [12, 2], [22, 27]]]], ["block", "if", [["subexpr", "eq", [["get", "model.fieldType", ["loc", [null, [24, 12], [24, 27]]]], "EMAIL"], [], ["loc", [null, [24, 8], [24, 36]]]]], [], 1, null, ["loc", [null, [24, 2], [46, 9]]]], ["block", "if", [["subexpr", "eq", [["get", "model.fieldType", ["loc", [null, [48, 12], [48, 27]]]], "SLACK"], [], ["loc", [null, [48, 8], [48, 36]]]]], [], 2, null, ["loc", [null, [48, 2], [70, 9]]]], ["block", "if", [["subexpr", "eq", [["get", "model.fieldType", ["loc", [null, [72, 12], [72, 27]]]], "HTTP"], [], ["loc", [null, [72, 8], [72, 35]]]]], [], 3, null, ["loc", [null, [72, 2], [150, 9]]]], ["inline", "ko-admin/page-footer", [], ["buttonText", ["subexpr", "t", ["generic.save"], [], ["loc", [null, [152, 36], [152, 54]]]], "onCancel", ["subexpr", "@mut", [["get", "onCancel", ["loc", [null, [152, 64], [152, 72]]]]], [], []]], ["loc", [null, [152, 2], [152, 74]]]]],
+        locals: ["_", "isSubmitting"],
+        templates: [child0, child1, child2, child3]
+      };
+    })();
+    return {
+      meta: {
+        "fragmentReason": {
+          "name": "missing-wrapper",
+          "problems": ["wrong-type"]
+        },
+        "revision": "Ember@2.4.1",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 153,
+            "column": 12
+          }
+        },
+        "moduleName": "frontend-cp/components/ko-admin/apps/endpoints/edit/template.hbs"
+      },
+      isEmpty: false,
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var morphs = new Array(1);
+        morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+        dom.insertBoundary(fragment, 0);
+        dom.insertBoundary(fragment, null);
+        return morphs;
+      },
+      statements: [["block", "ko-form", [], ["onSubmit", ["subexpr", "action", ["save"], [], ["loc", [null, [2, 9], [2, 24]]]], "onSuccess", ["subexpr", "@mut", [["get", "onSuccess", ["loc", [null, [3, 10], [3, 19]]]]], [], []]], 0, null, ["loc", [null, [1, 0], [153, 12]]]]],
+      locals: [],
+      templates: [child0]
+    };
+  })());
+});
+define('frontend-cp/components/ko-admin/apps/endpoints/list-row/component', ['exports', 'ember'], function (exports, _ember) {
+  exports['default'] = _ember['default'].Component.extend({
+    tagName: ''
+  });
+});
+define("frontend-cp/components/ko-admin/apps/endpoints/list-row/template", ["exports"], function (exports) {
+  exports["default"] = Ember.HTMLBars.template((function () {
+    var child0 = (function () {
+      var child0 = (function () {
+        var child0 = (function () {
+          return {
+            meta: {
+              "fragmentReason": false,
+              "revision": "Ember@2.4.1",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 4,
+                  "column": 6
+                },
+                "end": {
+                  "line": 6,
+                  "column": 6
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-admin/apps/endpoints/list-row/template.hbs"
+            },
+            isEmpty: false,
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode("        ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createElement("div");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var element6 = dom.childAt(fragment, [1]);
+              var morphs = new Array(1);
+              morphs[0] = dom.createAttrMorph(element6, 'class');
+              return morphs;
+            },
+            statements: [["attribute", "class", ["concat", ["ko-admin_apps_endpoints_select-type__icon i-png-endpoint-", ["get", "endpoint.fieldType", ["loc", [null, [5, 79], [5, 97]]]]]]]],
+            locals: [],
+            templates: []
+          };
+        })();
+        var child1 = (function () {
+          var child0 = (function () {
+            return {
+              meta: {
+                "fragmentReason": false,
+                "revision": "Ember@2.4.1",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 11,
+                    "column": 10
+                  },
+                  "end": {
+                    "line": 20,
+                    "column": 10
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-admin/apps/endpoints/list-row/template.hbs"
+              },
+              isEmpty: false,
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createTextNode("            -\n\n            ");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createElement("div");
+                dom.setAttribute(el1, "class", "ko-admin_apps_endpoints_list-row__warning");
+                var el2 = dom.createTextNode("\n              ");
+                dom.appendChild(el1, el2);
+                var el2 = dom.createElement("div");
+                dom.setAttribute(el2, "class", "i-png-endpoint-warning");
+                dom.appendChild(el1, el2);
+                var el2 = dom.createTextNode("\n              ");
+                dom.appendChild(el1, el2);
+                var el2 = dom.createElement("div");
+                var el3 = dom.createTextNode("\n                ");
+                dom.appendChild(el2, el3);
+                var el3 = dom.createComment("");
+                dom.appendChild(el2, el3);
+                var el3 = dom.createTextNode(" ");
+                dom.appendChild(el2, el3);
+                var el3 = dom.createComment("");
+                dom.appendChild(el2, el3);
+                var el3 = dom.createTextNode("\n              ");
+                dom.appendChild(el2, el3);
+                dom.appendChild(el1, el2);
+                var el2 = dom.createTextNode("\n            ");
+                dom.appendChild(el1, el2);
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var element4 = dom.childAt(fragment, [1, 3]);
+                var morphs = new Array(2);
+                morphs[0] = dom.createMorphAt(element4, 1, 1);
+                morphs[1] = dom.createMorphAt(element4, 3, 3);
+                return morphs;
+              },
+              statements: [["content", "endpoint.lastAttemptMessage", ["loc", [null, [17, 16], [17, 47]]]], ["inline", "t", ["admin.apps.endpoints.list.problem_reaching"], [], ["loc", [null, [17, 48], [17, 98]]]]],
+              locals: [],
+              templates: []
+            };
+          })();
+          var child1 = (function () {
+            var child0 = (function () {
+              return {
+                meta: {
+                  "fragmentReason": false,
+                  "revision": "Ember@2.4.1",
+                  "loc": {
+                    "source": null,
+                    "start": {
+                      "line": 21,
+                      "column": 12
+                    },
+                    "end": {
+                      "line": 25,
+                      "column": 12
+                    }
+                  },
+                  "moduleName": "frontend-cp/components/ko-admin/apps/endpoints/list-row/template.hbs"
+                },
+                isEmpty: false,
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                  var el0 = dom.createDocumentFragment();
+                  var el1 = dom.createTextNode("              ");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createElement("div");
+                  dom.setAttribute(el1, "class", "ko-admin_apps_endpoints_list-row__last-attempt");
+                  var el2 = dom.createTextNode("\n                ");
+                  dom.appendChild(el1, el2);
+                  var el2 = dom.createComment("");
+                  dom.appendChild(el1, el2);
+                  var el2 = dom.createTextNode("\n              ");
+                  dom.appendChild(el1, el2);
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createTextNode("\n");
+                  dom.appendChild(el0, el1);
+                  return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                  var morphs = new Array(1);
+                  morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
+                  return morphs;
+                },
+                statements: [["inline", "moment", [["get", "endpoint.lastAttemptAt", ["loc", [null, [23, 25], [23, 47]]]]], [], ["loc", [null, [23, 16], [23, 49]]]]],
+                locals: [],
+                templates: []
+              };
+            })();
+            return {
+              meta: {
+                "fragmentReason": false,
+                "revision": "Ember@2.4.1",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 20,
+                    "column": 10
+                  },
+                  "end": {
+                    "line": 26,
+                    "column": 10
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-admin/apps/endpoints/list-row/template.hbs"
+              },
+              isEmpty: false,
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var morphs = new Array(1);
+                morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+                dom.insertBoundary(fragment, 0);
+                dom.insertBoundary(fragment, null);
+                return morphs;
+              },
+              statements: [["block", "if", [["get", "endpoint.lastAttemptAt", ["loc", [null, [21, 18], [21, 40]]]]], [], 0, null, ["loc", [null, [21, 12], [25, 19]]]]],
+              locals: [],
+              templates: [child0]
+            };
+          })();
+          return {
+            meta: {
+              "fragmentReason": false,
+              "revision": "Ember@2.4.1",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 6,
+                  "column": 6
+                },
+                "end": {
+                  "line": 28,
+                  "column": 6
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-admin/apps/endpoints/list-row/template.hbs"
+            },
+            isEmpty: false,
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode("        ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createElement("p");
+              dom.setAttribute(el1, "class", "t-bold u-mb--");
+              var el2 = dom.createComment("");
+              dom.appendChild(el1, el2);
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n        ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createElement("p");
+              dom.setAttribute(el1, "class", "ko-admin_apps_endpoints_list-row__description t-caption");
+              var el2 = dom.createTextNode("\n          ");
+              dom.appendChild(el1, el2);
+              var el2 = dom.createComment("");
+              dom.appendChild(el1, el2);
+              var el2 = dom.createTextNode("\n\n");
+              dom.appendChild(el1, el2);
+              var el2 = dom.createComment("");
+              dom.appendChild(el1, el2);
+              var el2 = dom.createTextNode("        ");
+              dom.appendChild(el1, el2);
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var element5 = dom.childAt(fragment, [3]);
+              var morphs = new Array(3);
+              morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 0, 0);
+              morphs[1] = dom.createMorphAt(element5, 1, 1);
+              morphs[2] = dom.createMorphAt(element5, 3, 3);
+              return morphs;
+            },
+            statements: [["content", "endpoint.title", ["loc", [null, [7, 33], [7, 51]]]], ["inline", "t", [["subexpr", "concat", ["admin.apps.endpoints.list.", ["get", "endpoint.fieldType", ["loc", [null, [9, 51], [9, 69]]]], ".description"], [], ["loc", [null, [9, 14], [9, 85]]]]], [], ["loc", [null, [9, 10], [9, 87]]]], ["block", "if", [["subexpr", "eq", [["get", "endpoint.lastAttemptResult", ["loc", [null, [11, 20], [11, 46]]]], "FAILURE"], [], ["loc", [null, [11, 16], [11, 57]]]]], [], 0, 1, ["loc", [null, [11, 10], [26, 17]]]]],
+            locals: [],
+            templates: [child0, child1]
+          };
+        })();
+        return {
+          meta: {
+            "fragmentReason": false,
+            "revision": "Ember@2.4.1",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 2,
+                "column": 2
+              },
+              "end": {
+                "line": 30,
+                "column": 2
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-admin/apps/endpoints/list-row/template.hbs"
+          },
+          isEmpty: false,
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("    ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("div");
+            dom.setAttribute(el1, "class", "ko-admin_apps_endpoints_select-type");
+            var el2 = dom.createTextNode("\n");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createComment("");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createTextNode("    ");
+            dom.appendChild(el1, el2);
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var element7 = dom.childAt(fragment, [1]);
+            var morphs = new Array(2);
+            morphs[0] = dom.createAttrMorph(element7, 'onclick');
+            morphs[1] = dom.createMorphAt(element7, 1, 1);
+            return morphs;
+          },
+          statements: [["attribute", "onclick", ["subexpr", "action", [["get", "onClick", ["loc", [null, [3, 70], [3, 77]]]]], [], ["loc", [null, [3, 61], [3, 79]]]]], ["block", "ko-flag", [], [], 0, 1, ["loc", [null, [4, 6], [28, 18]]]]],
+          locals: [],
+          templates: [child0, child1]
+        };
+      })();
+      var child1 = (function () {
+        var child0 = (function () {
+          return {
+            meta: {
+              "fragmentReason": false,
+              "revision": "Ember@2.4.1",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 34,
+                  "column": 4
+                },
+                "end": {
+                  "line": 36,
+                  "column": 4
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-admin/apps/endpoints/list-row/template.hbs"
+            },
+            isEmpty: false,
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode("      ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createElement("a");
+              var el2 = dom.createComment("");
+              dom.appendChild(el1, el2);
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode(" |\n");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var element1 = dom.childAt(fragment, [1]);
+              var morphs = new Array(2);
+              morphs[0] = dom.createAttrMorph(element1, 'onclick');
+              morphs[1] = dom.createMorphAt(element1, 0, 0);
+              return morphs;
+            },
+            statements: [["attribute", "onclick", ["subexpr", "action", [["get", "toggleEnabledStatus", ["loc", [null, [35, 26], [35, 45]]]]], [], ["loc", [null, [35, 17], [35, 47]]]]], ["inline", "t", ["generic.disable"], [], ["loc", [null, [35, 48], [35, 71]]]]],
+            locals: [],
+            templates: []
+          };
+        })();
+        var child1 = (function () {
+          return {
+            meta: {
+              "fragmentReason": false,
+              "revision": "Ember@2.4.1",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 36,
+                  "column": 4
+                },
+                "end": {
+                  "line": 38,
+                  "column": 4
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-admin/apps/endpoints/list-row/template.hbs"
+            },
+            isEmpty: false,
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode("      ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createElement("a");
+              var el2 = dom.createComment("");
+              dom.appendChild(el1, el2);
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode(" |\n");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var element0 = dom.childAt(fragment, [1]);
+              var morphs = new Array(2);
+              morphs[0] = dom.createAttrMorph(element0, 'onclick');
+              morphs[1] = dom.createMorphAt(element0, 0, 0);
+              return morphs;
+            },
+            statements: [["attribute", "onclick", ["subexpr", "action", [["get", "toggleEnabledStatus", ["loc", [null, [37, 26], [37, 45]]]]], [], ["loc", [null, [37, 17], [37, 47]]]]], ["inline", "t", ["generic.enable"], [], ["loc", [null, [37, 48], [37, 70]]]]],
+            locals: [],
+            templates: []
+          };
+        })();
+        return {
+          meta: {
+            "fragmentReason": false,
+            "revision": "Ember@2.4.1",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 32,
+                "column": 2
+              },
+              "end": {
+                "line": 40,
+                "column": 2
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-admin/apps/endpoints/list-row/template.hbs"
+          },
+          isEmpty: false,
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("    ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("a");
+            var el2 = dom.createComment("");
+            dom.appendChild(el1, el2);
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode(" |\n");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("    ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("a");
+            var el2 = dom.createComment("");
+            dom.appendChild(el1, el2);
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var element2 = dom.childAt(fragment, [1]);
+            var element3 = dom.childAt(fragment, [5]);
+            var morphs = new Array(5);
+            morphs[0] = dom.createAttrMorph(element2, 'onclick');
+            morphs[1] = dom.createMorphAt(element2, 0, 0);
+            morphs[2] = dom.createMorphAt(fragment, 3, 3, contextualElement);
+            morphs[3] = dom.createAttrMorph(element3, 'onclick');
+            morphs[4] = dom.createMorphAt(element3, 0, 0);
+            return morphs;
+          },
+          statements: [["attribute", "onclick", ["subexpr", "action", [["get", "onClick", ["loc", [null, [33, 24], [33, 31]]]]], [], ["loc", [null, [33, 15], [33, 33]]]]], ["inline", "t", ["generic.edit"], [], ["loc", [null, [33, 34], [33, 54]]]], ["block", "if", [["get", "endpoint.isEnabled", ["loc", [null, [34, 10], [34, 28]]]]], [], 0, 1, ["loc", [null, [34, 4], [38, 11]]]], ["attribute", "onclick", ["subexpr", "action", [["get", "deleteEndpoint", ["loc", [null, [39, 24], [39, 38]]]]], [], ["loc", [null, [39, 15], [39, 40]]]]], ["inline", "t", ["generic.delete"], [], ["loc", [null, [39, 41], [39, 63]]]]],
+          locals: [],
+          templates: [child0, child1]
+        };
+      })();
+      return {
+        meta: {
+          "fragmentReason": {
+            "name": "missing-wrapper",
+            "problems": ["wrong-type", "multiple-nodes"]
+          },
+          "revision": "Ember@2.4.1",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 1,
+              "column": 0
+            },
+            "end": {
+              "line": 41,
+              "column": 0
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-admin/apps/endpoints/list-row/template.hbs"
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(2);
+          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+          morphs[1] = dom.createMorphAt(fragment, 2, 2, contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [["block", "ko-simple-list/cell", [], ["class", ["subexpr", "if", [["get", "isDisabled", ["loc", [null, [2, 35], [2, 45]]]], "ko-admin_apps_endpoints_list-row__cell--disabled"], [], ["loc", [null, [2, 31], [2, 97]]]]], 0, null, ["loc", [null, [2, 2], [30, 26]]]], ["block", "ko-simple-list/actions", [], [], 1, null, ["loc", [null, [32, 2], [40, 29]]]]],
+        locals: [],
+        templates: [child0, child1]
+      };
+    })();
+    return {
+      meta: {
+        "fragmentReason": {
+          "name": "missing-wrapper",
+          "problems": ["wrong-type"]
+        },
+        "revision": "Ember@2.4.1",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 41,
+            "column": 23
+          }
+        },
+        "moduleName": "frontend-cp/components/ko-admin/apps/endpoints/list-row/template.hbs"
+      },
+      isEmpty: false,
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var morphs = new Array(1);
+        morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+        dom.insertBoundary(fragment, 0);
+        dom.insertBoundary(fragment, null);
+        return morphs;
+      },
+      statements: [["block", "ko-simple-list/row", [], ["onClick", ["subexpr", "@mut", [["get", "onClick", ["loc", [null, [1, 30], [1, 37]]]]], [], []]], 0, null, ["loc", [null, [1, 0], [41, 23]]]]],
+      locals: [],
+      templates: [child0]
+    };
+  })());
+});
+define('frontend-cp/components/ko-admin/apps/endpoints/select-type/component', ['exports', 'ember'], function (exports, _ember) {
+  var Component = _ember['default'].Component;
+  var inject = _ember['default'].inject;
+  exports['default'] = Component.extend({
+    endpoints: inject.service(),
+
+    onTypeSelect: function onTypeSelect() {},
+
+    actions: {
+      selectType: function selectType(type) {
+        this.attrs.onTypeSelect(type);
+      }
+    }
+  });
+});
+define("frontend-cp/components/ko-admin/apps/endpoints/select-type/template", ["exports"], function (exports) {
+  exports["default"] = Ember.HTMLBars.template((function () {
+    var child0 = (function () {
+      var child0 = (function () {
+        return {
+          meta: {
+            "fragmentReason": false,
+            "revision": "Ember@2.4.1",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 3,
+                "column": 4
+              },
+              "end": {
+                "line": 5,
+                "column": 4
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-admin/apps/endpoints/select-type/template.hbs"
+          },
+          isEmpty: false,
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("      ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("div");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var element0 = dom.childAt(fragment, [1]);
+            var morphs = new Array(1);
+            morphs[0] = dom.createAttrMorph(element0, 'class');
+            return morphs;
+          },
+          statements: [["attribute", "class", ["concat", ["ko-admin_apps_endpoints_select-type__icon i-png-endpoint-", ["get", "type.name", ["loc", [null, [4, 77], [4, 86]]]]]]]],
+          locals: [],
+          templates: []
+        };
+      })();
+      var child1 = (function () {
+        return {
+          meta: {
+            "fragmentReason": false,
+            "revision": "Ember@2.4.1",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 5,
+                "column": 4
+              },
+              "end": {
+                "line": 8,
+                "column": 4
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-admin/apps/endpoints/select-type/template.hbs"
+          },
+          isEmpty: false,
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("      ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("p");
+            dom.setAttribute(el1, "class", "t-bold u-mb--");
+            var el2 = dom.createComment("");
+            dom.appendChild(el1, el2);
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n      ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("p");
+            dom.setAttribute(el1, "class", "t-caption");
+            var el2 = dom.createComment("");
+            dom.appendChild(el1, el2);
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(2);
+            morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 0, 0);
+            morphs[1] = dom.createMorphAt(dom.childAt(fragment, [3]), 0, 0);
+            return morphs;
+          },
+          statements: [["inline", "t", [["get", "type.titleKey", ["loc", [null, [6, 35], [6, 48]]]]], [], ["loc", [null, [6, 31], [6, 50]]]], ["inline", "t", [["get", "type.descriptionKey", ["loc", [null, [7, 31], [7, 50]]]]], [], ["loc", [null, [7, 27], [7, 52]]]]],
+          locals: [],
+          templates: []
+        };
+      })();
+      return {
+        meta: {
+          "fragmentReason": {
+            "name": "triple-curlies"
+          },
+          "revision": "Ember@2.4.1",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 1,
+              "column": 0
+            },
+            "end": {
+              "line": 13,
+              "column": 0
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-admin/apps/endpoints/select-type/template.hbs"
+        },
+        isEmpty: false,
+        arity: 1,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1, "class", "ko-admin_apps_endpoints_select-type");
+          var el2 = dom.createTextNode("\n");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("    ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("div");
+          dom.setAttribute(el2, "class", "ko-admin_endpoints_select-type__action");
+          var el3 = dom.createTextNode("\n      ");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createElement("span");
+          dom.setAttribute(el3, "class", "i-chevron-large-right i-color-grey");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createTextNode("\n    ");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n  ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var element1 = dom.childAt(fragment, [1]);
+          var morphs = new Array(2);
+          morphs[0] = dom.createAttrMorph(element1, 'onclick');
+          morphs[1] = dom.createMorphAt(element1, 1, 1);
+          return morphs;
+        },
+        statements: [["attribute", "onclick", ["subexpr", "action", ["selectType", ["get", "type.name", ["loc", [null, [2, 81], [2, 90]]]]], [], ["loc", [null, [2, 59], [2, 92]]]]], ["block", "ko-flag", [], [], 0, 1, ["loc", [null, [3, 4], [8, 16]]]]],
+        locals: ["type"],
+        templates: [child0, child1]
+      };
+    })();
+    return {
+      meta: {
+        "fragmentReason": {
+          "name": "missing-wrapper",
+          "problems": ["wrong-type"]
+        },
+        "revision": "Ember@2.4.1",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 13,
+            "column": 9
+          }
+        },
+        "moduleName": "frontend-cp/components/ko-admin/apps/endpoints/select-type/template.hbs"
+      },
+      isEmpty: false,
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var morphs = new Array(1);
+        morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+        dom.insertBoundary(fragment, 0);
+        dom.insertBoundary(fragment, null);
+        return morphs;
+      },
+      statements: [["block", "each", [["get", "endpoints.types", ["loc", [null, [1, 8], [1, 23]]]]], [], 0, null, ["loc", [null, [1, 0], [13, 9]]]]],
+      locals: [],
+      templates: [child0]
+    };
+  })());
+});
 define('frontend-cp/components/ko-admin/businesshours/edit/component', ['exports', 'ember', 'npm:lodash', 'moment'], function (exports, _ember, _npmLodash, _moment) {
 
   // Weekday codes that match with model.zones keys in order matching moment.weekdays()
@@ -15297,7 +17813,7 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
             morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
             return morphs;
           },
-          statements: [["inline", "t", ["admin.twitter.title"], [], ["loc", [null, [8, 6], [8, 33]]]]],
+          statements: [["inline", "t", ["admin.apps.endpoints.title"], [], ["loc", [null, [8, 6], [8, 40]]]]],
           locals: [],
           templates: []
         };
@@ -15350,6 +17866,111 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
           return el0;
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var element2 = dom.childAt(fragment, [1]);
+          var element3 = dom.childAt(element2, [1]);
+          var morphs = new Array(4);
+          morphs[0] = dom.createAttrMorph(element2, 'class');
+          morphs[1] = dom.createAttrMorph(element3, 'class');
+          morphs[2] = dom.createMorphAt(element3, 1, 1);
+          morphs[3] = dom.createMorphAt(element2, 3, 3);
+          return morphs;
+        },
+        statements: [["attribute", "class", ["get", "styles.group", ["loc", [null, [2, 15], [2, 27]]]]], ["attribute", "class", ["get", "styles.header", ["loc", [null, [3, 15], [3, 28]]]]], ["inline", "t", ["admin.navigation.apps"], [], ["loc", [null, [4, 6], [4, 35]]]], ["block", "link-to", ["session.admin.apps.endpoints"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [7, 52], [7, 63]]]]], [], []]], 0, null, ["loc", [null, [7, 4], [9, 16]]]]],
+        locals: [],
+        templates: [child0]
+      };
+    })();
+    var child1 = (function () {
+      var child0 = (function () {
+        return {
+          meta: {
+            "fragmentReason": false,
+            "revision": "Ember@2.4.1",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 19,
+                "column": 4
+              },
+              "end": {
+                "line": 21,
+                "column": 4
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-admin/sidebar/template.hbs"
+          },
+          isEmpty: false,
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("      ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+            return morphs;
+          },
+          statements: [["inline", "t", ["admin.twitter.title"], [], ["loc", [null, [20, 6], [20, 33]]]]],
+          locals: [],
+          templates: []
+        };
+      })();
+      return {
+        meta: {
+          "fragmentReason": false,
+          "revision": "Ember@2.4.1",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 13,
+              "column": 0
+            },
+            "end": {
+              "line": 23,
+              "column": 0
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-admin/sidebar/template.hbs"
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          var el2 = dom.createTextNode("\n    ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("p");
+          var el3 = dom.createTextNode("\n      ");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createComment("");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createTextNode("\n    ");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n\n");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("  ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
           var element0 = dom.childAt(fragment, [1]);
           var element1 = dom.childAt(element0, [1]);
           var morphs = new Array(4);
@@ -15359,138 +17980,12 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
           morphs[3] = dom.createMorphAt(element0, 3, 3);
           return morphs;
         },
-        statements: [["attribute", "class", ["get", "styles.group", ["loc", [null, [2, 15], [2, 27]]]]], ["attribute", "class", ["get", "styles.header", ["loc", [null, [3, 15], [3, 28]]]]], ["inline", "t", ["admin.navigation.channels"], [], ["loc", [null, [4, 6], [4, 39]]]], ["block", "link-to", ["session.admin.channels.twitter"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [7, 54], [7, 65]]]]], [], []]], 0, null, ["loc", [null, [7, 4], [9, 16]]]]],
+        statements: [["attribute", "class", ["get", "styles.group", ["loc", [null, [14, 15], [14, 27]]]]], ["attribute", "class", ["get", "styles.header", ["loc", [null, [15, 15], [15, 28]]]]], ["inline", "t", ["admin.navigation.channels"], [], ["loc", [null, [16, 6], [16, 39]]]], ["block", "link-to", ["session.admin.channels.twitter"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [19, 54], [19, 65]]]]], [], []]], 0, null, ["loc", [null, [19, 4], [21, 16]]]]],
         locals: [],
         templates: [child0]
       };
     })();
-    var child1 = (function () {
-      return {
-        meta: {
-          "fragmentReason": false,
-          "revision": "Ember@2.4.1",
-          "loc": {
-            "source": null,
-            "start": {
-              "line": 17,
-              "column": 2
-            },
-            "end": {
-              "line": 19,
-              "column": 2
-            }
-          },
-          "moduleName": "frontend-cp/components/ko-admin/sidebar/template.hbs"
-        },
-        isEmpty: false,
-        arity: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("    ");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createComment("");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n");
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
-          return morphs;
-        },
-        statements: [["inline", "t", ["admin.views.title"], [], ["loc", [null, [18, 4], [18, 29]]]]],
-        locals: [],
-        templates: []
-      };
-    })();
     var child2 = (function () {
-      return {
-        meta: {
-          "fragmentReason": false,
-          "revision": "Ember@2.4.1",
-          "loc": {
-            "source": null,
-            "start": {
-              "line": 21,
-              "column": 2
-            },
-            "end": {
-              "line": 23,
-              "column": 2
-            }
-          },
-          "moduleName": "frontend-cp/components/ko-admin/sidebar/template.hbs"
-        },
-        isEmpty: false,
-        arity: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("    ");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createComment("");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n");
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
-          return morphs;
-        },
-        statements: [["inline", "t", ["admin.casefields.title"], [], ["loc", [null, [22, 4], [22, 34]]]]],
-        locals: [],
-        templates: []
-      };
-    })();
-    var child3 = (function () {
-      return {
-        meta: {
-          "fragmentReason": false,
-          "revision": "Ember@2.4.1",
-          "loc": {
-            "source": null,
-            "start": {
-              "line": 25,
-              "column": 2
-            },
-            "end": {
-              "line": 27,
-              "column": 2
-            }
-          },
-          "moduleName": "frontend-cp/components/ko-admin/sidebar/template.hbs"
-        },
-        isEmpty: false,
-        arity: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("    ");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createComment("");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n");
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
-          return morphs;
-        },
-        statements: [["inline", "t", ["admin.caseforms.title"], [], ["loc", [null, [26, 4], [26, 33]]]]],
-        locals: [],
-        templates: []
-      };
-    })();
-    var child4 = (function () {
       return {
         meta: {
           "fragmentReason": false,
@@ -15527,7 +18022,91 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [["inline", "t", ["admin.macros.title"], [], ["loc", [null, [30, 4], [30, 30]]]]],
+        statements: [["inline", "t", ["admin.views.title"], [], ["loc", [null, [30, 4], [30, 29]]]]],
+        locals: [],
+        templates: []
+      };
+    })();
+    var child3 = (function () {
+      return {
+        meta: {
+          "fragmentReason": false,
+          "revision": "Ember@2.4.1",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 33,
+              "column": 2
+            },
+            "end": {
+              "line": 35,
+              "column": 2
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-admin/sidebar/template.hbs"
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("    ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+          return morphs;
+        },
+        statements: [["inline", "t", ["admin.casefields.title"], [], ["loc", [null, [34, 4], [34, 34]]]]],
+        locals: [],
+        templates: []
+      };
+    })();
+    var child4 = (function () {
+      return {
+        meta: {
+          "fragmentReason": false,
+          "revision": "Ember@2.4.1",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 37,
+              "column": 2
+            },
+            "end": {
+              "line": 39,
+              "column": 2
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-admin/sidebar/template.hbs"
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("    ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+          return morphs;
+        },
+        statements: [["inline", "t", ["admin.caseforms.title"], [], ["loc", [null, [38, 4], [38, 33]]]]],
         locals: [],
         templates: []
       };
@@ -15540,11 +18119,11 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
           "loc": {
             "source": null,
             "start": {
-              "line": 39,
+              "line": 41,
               "column": 2
             },
             "end": {
-              "line": 41,
+              "line": 43,
               "column": 2
             }
           },
@@ -15569,7 +18148,7 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [["inline", "t", ["admin.teams.title"], [], ["loc", [null, [40, 4], [40, 29]]]]],
+        statements: [["inline", "t", ["admin.macros.title"], [], ["loc", [null, [42, 4], [42, 30]]]]],
         locals: [],
         templates: []
       };
@@ -15582,11 +18161,11 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
           "loc": {
             "source": null,
             "start": {
-              "line": 43,
+              "line": 51,
               "column": 2
             },
             "end": {
-              "line": 45,
+              "line": 53,
               "column": 2
             }
           },
@@ -15611,54 +18190,12 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [["inline", "t", ["admin.userfields.title"], [], ["loc", [null, [44, 4], [44, 34]]]]],
+        statements: [["inline", "t", ["admin.teams.title"], [], ["loc", [null, [52, 4], [52, 29]]]]],
         locals: [],
         templates: []
       };
     })();
     var child7 = (function () {
-      var child0 = (function () {
-        return {
-          meta: {
-            "fragmentReason": false,
-            "revision": "Ember@2.4.1",
-            "loc": {
-              "source": null,
-              "start": {
-                "line": 48,
-                "column": 4
-              },
-              "end": {
-                "line": 50,
-                "column": 4
-              }
-            },
-            "moduleName": "frontend-cp/components/ko-admin/sidebar/template.hbs"
-          },
-          isEmpty: false,
-          arity: 0,
-          cachedFragment: null,
-          hasRendered: false,
-          buildFragment: function buildFragment(dom) {
-            var el0 = dom.createDocumentFragment();
-            var el1 = dom.createTextNode("      ");
-            dom.appendChild(el0, el1);
-            var el1 = dom.createComment("");
-            dom.appendChild(el0, el1);
-            var el1 = dom.createTextNode("\n");
-            dom.appendChild(el0, el1);
-            return el0;
-          },
-          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-            var morphs = new Array(1);
-            morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
-            return morphs;
-          },
-          statements: [["inline", "t", ["admin.roles.title"], [], ["loc", [null, [49, 6], [49, 31]]]]],
-          locals: [],
-          templates: []
-        };
-      })();
       return {
         meta: {
           "fragmentReason": false,
@@ -15666,51 +18203,11 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
           "loc": {
             "source": null,
             "start": {
-              "line": 47,
-              "column": 2
-            },
-            "end": {
-              "line": 51,
-              "column": 2
-            }
-          },
-          "moduleName": "frontend-cp/components/ko-admin/sidebar/template.hbs"
-        },
-        isEmpty: false,
-        arity: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createComment("");
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-          dom.insertBoundary(fragment, 0);
-          dom.insertBoundary(fragment, null);
-          return morphs;
-        },
-        statements: [["block", "link-to", ["session.admin.people.roles"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [48, 50], [48, 61]]]]], [], []]], 0, null, ["loc", [null, [48, 4], [50, 16]]]]],
-        locals: [],
-        templates: [child0]
-      };
-    })();
-    var child8 = (function () {
-      return {
-        meta: {
-          "fragmentReason": false,
-          "revision": "Ember@2.4.1",
-          "loc": {
-            "source": null,
-            "start": {
-              "line": 53,
-              "column": 2
-            },
-            "end": {
               "line": 55,
+              "column": 2
+            },
+            "end": {
+              "line": 57,
               "column": 2
             }
           },
@@ -15735,12 +18232,12 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [["inline", "t", ["admin.organizationfields.title"], [], ["loc", [null, [54, 4], [54, 42]]]]],
+        statements: [["inline", "t", ["admin.userfields.title"], [], ["loc", [null, [56, 4], [56, 34]]]]],
         locals: [],
         templates: []
       };
     })();
-    var child9 = (function () {
+    var child8 = (function () {
       var child0 = (function () {
         return {
           meta: {
@@ -15749,11 +18246,11 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
             "loc": {
               "source": null,
               "start": {
-                "line": 63,
+                "line": 60,
                 "column": 4
               },
               "end": {
-                "line": 65,
+                "line": 62,
                 "column": 4
               }
             },
@@ -15778,7 +18275,7 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
             morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
             return morphs;
           },
-          statements: [["inline", "t", ["admin.sla.title"], [], ["loc", [null, [64, 6], [64, 29]]]]],
+          statements: [["inline", "t", ["admin.roles.title"], [], ["loc", [null, [61, 6], [61, 31]]]]],
           locals: [],
           templates: []
         };
@@ -15790,11 +18287,11 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
           "loc": {
             "source": null,
             "start": {
-              "line": 62,
+              "line": 59,
               "column": 2
             },
             "end": {
-              "line": 66,
+              "line": 63,
               "column": 2
             }
           },
@@ -15817,9 +18314,51 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [["block", "link-to", ["session.admin.automation.sla"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [63, 52], [63, 63]]]]], [], []]], 0, null, ["loc", [null, [63, 4], [65, 16]]]]],
+        statements: [["block", "link-to", ["session.admin.people.roles"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [60, 50], [60, 61]]]]], [], []]], 0, null, ["loc", [null, [60, 4], [62, 16]]]]],
         locals: [],
         templates: [child0]
+      };
+    })();
+    var child9 = (function () {
+      return {
+        meta: {
+          "fragmentReason": false,
+          "revision": "Ember@2.4.1",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 65,
+              "column": 2
+            },
+            "end": {
+              "line": 67,
+              "column": 2
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-admin/sidebar/template.hbs"
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("    ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+          return morphs;
+        },
+        statements: [["inline", "t", ["admin.organizationfields.title"], [], ["loc", [null, [66, 4], [66, 42]]]]],
+        locals: [],
+        templates: []
       };
     })();
     var child10 = (function () {
@@ -15831,11 +18370,11 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
             "loc": {
               "source": null,
               "start": {
-                "line": 69,
+                "line": 75,
                 "column": 4
               },
               "end": {
-                "line": 71,
+                "line": 77,
                 "column": 4
               }
             },
@@ -15860,7 +18399,7 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
             morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
             return morphs;
           },
-          statements: [["inline", "t", ["admin.businesshours.title"], [], ["loc", [null, [70, 6], [70, 39]]]]],
+          statements: [["inline", "t", ["admin.sla.title"], [], ["loc", [null, [76, 6], [76, 29]]]]],
           locals: [],
           templates: []
         };
@@ -15872,11 +18411,11 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
           "loc": {
             "source": null,
             "start": {
-              "line": 68,
+              "line": 74,
               "column": 2
             },
             "end": {
-              "line": 72,
+              "line": 78,
               "column": 2
             }
           },
@@ -15899,7 +18438,89 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [["block", "link-to", ["session.admin.automation.businesshours"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [69, 62], [69, 73]]]]], [], []]], 0, null, ["loc", [null, [69, 4], [71, 16]]]]],
+        statements: [["block", "link-to", ["session.admin.automation.sla"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [75, 52], [75, 63]]]]], [], []]], 0, null, ["loc", [null, [75, 4], [77, 16]]]]],
+        locals: [],
+        templates: [child0]
+      };
+    })();
+    var child11 = (function () {
+      var child0 = (function () {
+        return {
+          meta: {
+            "fragmentReason": false,
+            "revision": "Ember@2.4.1",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 81,
+                "column": 4
+              },
+              "end": {
+                "line": 83,
+                "column": 4
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-admin/sidebar/template.hbs"
+          },
+          isEmpty: false,
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("      ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+            return morphs;
+          },
+          statements: [["inline", "t", ["admin.businesshours.title"], [], ["loc", [null, [82, 6], [82, 39]]]]],
+          locals: [],
+          templates: []
+        };
+      })();
+      return {
+        meta: {
+          "fragmentReason": false,
+          "revision": "Ember@2.4.1",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 80,
+              "column": 2
+            },
+            "end": {
+              "line": 84,
+              "column": 2
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-admin/sidebar/template.hbs"
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [["block", "link-to", ["session.admin.automation.businesshours"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [81, 62], [81, 73]]]]], [], []]], 0, null, ["loc", [null, [81, 4], [83, 16]]]]],
         locals: [],
         templates: [child0]
       };
@@ -15918,7 +18539,7 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
             "column": 0
           },
           "end": {
-            "line": 74,
+            "line": 86,
             "column": 0
           }
         },
@@ -15930,6 +18551,10 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
       hasRendered: false,
       buildFragment: function buildFragment(dom) {
         var el0 = dom.createDocumentFragment();
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
         var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
@@ -16019,39 +18644,40 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var element2 = dom.childAt(fragment, [2]);
-        var element3 = dom.childAt(element2, [1]);
         var element4 = dom.childAt(fragment, [4]);
         var element5 = dom.childAt(element4, [1]);
         var element6 = dom.childAt(fragment, [6]);
         var element7 = dom.childAt(element6, [1]);
-        var morphs = new Array(20);
+        var element8 = dom.childAt(fragment, [8]);
+        var element9 = dom.childAt(element8, [1]);
+        var morphs = new Array(21);
         morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-        morphs[1] = dom.createAttrMorph(element2, 'class');
-        morphs[2] = dom.createAttrMorph(element3, 'class');
-        morphs[3] = dom.createMorphAt(element3, 1, 1);
-        morphs[4] = dom.createMorphAt(element2, 3, 3);
-        morphs[5] = dom.createMorphAt(element2, 5, 5);
-        morphs[6] = dom.createMorphAt(element2, 7, 7);
-        morphs[7] = dom.createMorphAt(element2, 9, 9);
-        morphs[8] = dom.createAttrMorph(element4, 'class');
-        morphs[9] = dom.createAttrMorph(element5, 'class');
-        morphs[10] = dom.createMorphAt(element5, 1, 1);
-        morphs[11] = dom.createMorphAt(element4, 3, 3);
-        morphs[12] = dom.createMorphAt(element4, 5, 5);
-        morphs[13] = dom.createMorphAt(element4, 7, 7);
-        morphs[14] = dom.createMorphAt(element4, 9, 9);
-        morphs[15] = dom.createAttrMorph(element6, 'class');
-        morphs[16] = dom.createAttrMorph(element7, 'class');
-        morphs[17] = dom.createMorphAt(element7, 1, 1);
-        morphs[18] = dom.createMorphAt(element6, 3, 3);
-        morphs[19] = dom.createMorphAt(element6, 5, 5);
+        morphs[1] = dom.createMorphAt(fragment, 2, 2, contextualElement);
+        morphs[2] = dom.createAttrMorph(element4, 'class');
+        morphs[3] = dom.createAttrMorph(element5, 'class');
+        morphs[4] = dom.createMorphAt(element5, 1, 1);
+        morphs[5] = dom.createMorphAt(element4, 3, 3);
+        morphs[6] = dom.createMorphAt(element4, 5, 5);
+        morphs[7] = dom.createMorphAt(element4, 7, 7);
+        morphs[8] = dom.createMorphAt(element4, 9, 9);
+        morphs[9] = dom.createAttrMorph(element6, 'class');
+        morphs[10] = dom.createAttrMorph(element7, 'class');
+        morphs[11] = dom.createMorphAt(element7, 1, 1);
+        morphs[12] = dom.createMorphAt(element6, 3, 3);
+        morphs[13] = dom.createMorphAt(element6, 5, 5);
+        morphs[14] = dom.createMorphAt(element6, 7, 7);
+        morphs[15] = dom.createMorphAt(element6, 9, 9);
+        morphs[16] = dom.createAttrMorph(element8, 'class');
+        morphs[17] = dom.createAttrMorph(element9, 'class');
+        morphs[18] = dom.createMorphAt(element9, 1, 1);
+        morphs[19] = dom.createMorphAt(element8, 3, 3);
+        morphs[20] = dom.createMorphAt(element8, 5, 5);
         dom.insertBoundary(fragment, 0);
         return morphs;
       },
-      statements: [["block", "if", [["get", "features.adminTwitter", ["loc", [null, [1, 6], [1, 27]]]]], [], 0, null, ["loc", [null, [1, 0], [11, 7]]]], ["attribute", "class", ["get", "styles.group", ["loc", [null, [13, 13], [13, 25]]]]], ["attribute", "class", ["get", "styles.header", ["loc", [null, [14, 13], [14, 26]]]]], ["inline", "t", ["admin.navigation.manage"], [], ["loc", [null, [15, 4], [15, 35]]]], ["block", "link-to", ["session.admin.manage.views"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [17, 48], [17, 59]]]]], [], []]], 1, null, ["loc", [null, [17, 2], [19, 14]]]], ["block", "link-to", ["session.admin.manage.case-fields"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [21, 54], [21, 65]]]]], [], []]], 2, null, ["loc", [null, [21, 2], [23, 14]]]], ["block", "link-to", ["session.admin.manage.case-forms"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [25, 53], [25, 64]]]]], [], []]], 3, null, ["loc", [null, [25, 2], [27, 14]]]], ["block", "link-to", ["session.admin.manage.macros"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [29, 49], [29, 60]]]]], [], []]], 4, null, ["loc", [null, [29, 2], [31, 14]]]], ["attribute", "class", ["get", "styles.group", ["loc", [null, [35, 13], [35, 25]]]]], ["attribute", "class", ["get", "styles.header", ["loc", [null, [36, 13], [36, 26]]]]], ["inline", "t", ["admin.navigation.people"], [], ["loc", [null, [37, 4], [37, 35]]]], ["block", "link-to", ["session.admin.people.teams"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [39, 48], [39, 59]]]]], [], []]], 5, null, ["loc", [null, [39, 2], [41, 14]]]], ["block", "link-to", ["session.admin.people.user-fields"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [43, 54], [43, 65]]]]], [], []]], 6, null, ["loc", [null, [43, 2], [45, 14]]]], ["block", "if", [["get", "features.roles", ["loc", [null, [47, 8], [47, 22]]]]], [], 7, null, ["loc", [null, [47, 2], [51, 9]]]], ["block", "link-to", ["session.admin.people.organization-fields"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [53, 62], [53, 73]]]]], [], []]], 8, null, ["loc", [null, [53, 2], [55, 14]]]], ["attribute", "class", ["get", "styles.group", ["loc", [null, [58, 13], [58, 25]]]]], ["attribute", "class", ["get", "styles.header", ["loc", [null, [59, 13], [59, 26]]]]], ["inline", "t", ["admin.navigation.automation"], [], ["loc", [null, [60, 4], [60, 39]]]], ["block", "if", [["get", "features.adminSlas", ["loc", [null, [62, 8], [62, 26]]]]], [], 9, null, ["loc", [null, [62, 2], [66, 9]]]], ["block", "if", [["get", "features.adminBusinessHours", ["loc", [null, [68, 8], [68, 35]]]]], [], 10, null, ["loc", [null, [68, 2], [72, 9]]]]],
+      statements: [["block", "if", [["get", "features.adminAppsEndpoints", ["loc", [null, [1, 6], [1, 33]]]]], [], 0, null, ["loc", [null, [1, 0], [11, 7]]]], ["block", "if", [["get", "features.adminTwitter", ["loc", [null, [13, 6], [13, 27]]]]], [], 1, null, ["loc", [null, [13, 0], [23, 7]]]], ["attribute", "class", ["get", "styles.group", ["loc", [null, [25, 13], [25, 25]]]]], ["attribute", "class", ["get", "styles.header", ["loc", [null, [26, 13], [26, 26]]]]], ["inline", "t", ["admin.navigation.manage"], [], ["loc", [null, [27, 4], [27, 35]]]], ["block", "link-to", ["session.admin.manage.views"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [29, 48], [29, 59]]]]], [], []]], 2, null, ["loc", [null, [29, 2], [31, 14]]]], ["block", "link-to", ["session.admin.manage.case-fields"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [33, 54], [33, 65]]]]], [], []]], 3, null, ["loc", [null, [33, 2], [35, 14]]]], ["block", "link-to", ["session.admin.manage.case-forms"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [37, 53], [37, 64]]]]], [], []]], 4, null, ["loc", [null, [37, 2], [39, 14]]]], ["block", "link-to", ["session.admin.manage.macros"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [41, 49], [41, 60]]]]], [], []]], 5, null, ["loc", [null, [41, 2], [43, 14]]]], ["attribute", "class", ["get", "styles.group", ["loc", [null, [47, 13], [47, 25]]]]], ["attribute", "class", ["get", "styles.header", ["loc", [null, [48, 13], [48, 26]]]]], ["inline", "t", ["admin.navigation.people"], [], ["loc", [null, [49, 4], [49, 35]]]], ["block", "link-to", ["session.admin.people.teams"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [51, 48], [51, 59]]]]], [], []]], 6, null, ["loc", [null, [51, 2], [53, 14]]]], ["block", "link-to", ["session.admin.people.user-fields"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [55, 54], [55, 65]]]]], [], []]], 7, null, ["loc", [null, [55, 2], [57, 14]]]], ["block", "if", [["get", "features.roles", ["loc", [null, [59, 8], [59, 22]]]]], [], 8, null, ["loc", [null, [59, 2], [63, 9]]]], ["block", "link-to", ["session.admin.people.organization-fields"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [65, 62], [65, 73]]]]], [], []]], 9, null, ["loc", [null, [65, 2], [67, 14]]]], ["attribute", "class", ["get", "styles.group", ["loc", [null, [70, 13], [70, 25]]]]], ["attribute", "class", ["get", "styles.header", ["loc", [null, [71, 13], [71, 26]]]]], ["inline", "t", ["admin.navigation.automation"], [], ["loc", [null, [72, 4], [72, 39]]]], ["block", "if", [["get", "features.adminSlas", ["loc", [null, [74, 8], [74, 26]]]]], [], 10, null, ["loc", [null, [74, 2], [78, 9]]]], ["block", "if", [["get", "features.adminBusinessHours", ["loc", [null, [80, 8], [80, 35]]]]], [], 11, null, ["loc", [null, [80, 2], [84, 9]]]]],
       locals: [],
-      templates: [child0, child1, child2, child3, child4, child5, child6, child7, child8, child9, child10]
+      templates: [child0, child1, child2, child3, child4, child5, child6, child7, child8, child9, child10, child11]
     };
   })());
 });
@@ -60978,8 +63604,40 @@ define("frontend-cp/locales/en-us/admin", ["exports"], function (exports) {
     "navigation.automation": "Automation",
 
     "administration": "Administration",
-    "apps": "Apps",
-    "endpoints": "Endpoints",
+    "apps.title": "Apps",
+    "apps.endpoints.title": "Endpoints",
+    "apps.endpoints.title-singular": "Endpoint",
+    "apps.endpoints.buttons.add": "Add New",
+    "apps.endpoints.headings.new": "New",
+    "apps.endpoints.headings.edit": "Edit",
+    "apps.endpoints.types.email.title": "Email",
+    "apps.endpoints.types.email.description": "Send an email to any email address",
+    "apps.endpoints.types.slack.title": "Slack",
+    "apps.endpoints.types.slack.description": "Post updates to a Slack channel as a message",
+    "apps.endpoints.types.webhook.title": "Webhook (HTTP request)",
+    "apps.endpoints.types.webhook.description": "Send a HTTP request to a custom URL with a payload",
+
+    "apps.endpoints.form.title": "Title",
+    "apps.endpoints.list.problem_reaching": "Problem reaching endpoint",
+    "apps.endpoints.list.EMAIL.description": "Email",
+    "apps.endpoints.list.HTTP.description": "HTTP Webhook",
+    "apps.endpoints.list.SLACK.description": "HTTP Webhook",
+    "apps.endpoints.list.last_triggered": "last triggered {date}",
+    "apps.endpoints.list.http.title": "Title",
+    "apps.endpoints.list.http.description": "Title",
+    "apps.endpoints.form.email.destination": "Destination email address",
+    "apps.endpoints.form.email.subject": "Email Subject",
+    "apps.endpoints.form.slack.title": "Slack Webhook URL",
+    "apps.endpoints.form.slack.channel": "Slack Webhook Channel",
+    "apps.endpoints.form.slack.description": "Don't have one? Create one here: <a target=\"_blank\" href=\"http://my.slack.com/services/new/incoming-webhook/\">http://my.slack.com/services/new/incoming-webhook/</a>",
+    "apps.endpoints.form.webhook.title": "HTTP Request",
+    "apps.endpoints.form.webhook.payload_url.title": "Payload URL",
+    "apps.endpoints.form.webhook.payload_url.description": "Enter the URL to which the HTTP request will be made",
+    "apps.endpoints.form.webhook.request_method.title": "Request Method",
+    "apps.endpoints.form.webhook.request_method.content_type": "Request Content Type",
+    "apps.endpoints.form.webhook.http_auth.title": "Use HTTP Authentication",
+    "apps.endpoints.form.webhook.http_auth.username": "Username",
+    "apps.endpoints.form.webhook.http_auth.password": "Password",
 
     "views.title": "Views",
     "views.buttons.add_new": "Add new",
@@ -68237,6 +70895,38 @@ define('frontend-cp/models/definition', ['exports', 'ember-data', 'model-fragmen
     values: _modelFragments['default'].fragmentArray('definition-value-fragment')
   });
 });
+define('frontend-cp/models/endpoint-attribute', ['exports', 'ember-data', 'model-fragments'], function (exports, _emberData, _modelFragments) {
+  var attr = _emberData['default'].attr;
+  exports['default'] = _modelFragments['default'].Fragment.extend({
+    name: attr('string'),
+    value: attr('string')
+  });
+});
+define('frontend-cp/models/endpoint', ['exports', 'ember-data', 'model-fragments', 'frontend-cp/mixins/change-aware-model'], function (exports, _emberData, _modelFragments, _frontendCpMixinsChangeAwareModel) {
+  var Model = _emberData['default'].Model;
+  var attr = _emberData['default'].attr;
+  exports['default'] = Model.extend(_frontendCpMixinsChangeAwareModel['default'], {
+    title: attr('string'),
+    fieldType: attr('string'),
+    attributes: _modelFragments['default'].fragmentArray('endpoint-attribute', { defaultValue: [] }),
+    isEnabled: attr('boolean', { defaultValue: true }),
+    lastAttemptResult: attr('string'),
+    lastAttemptMessage: attr('string'),
+    lastAttemptAt: attr('date'),
+
+    requestMethod: attr(),
+    requestContentType: attr(),
+
+    webhookUrl: attr('string'),
+    webhookUseHttpAuth: attr('string'),
+    webhookUsername: attr('string'),
+    webhookPassword: attr('string'),
+    emailDestination: attr('string'),
+    emailSubject: attr('string'),
+    slackUrl: attr('string'),
+    slackChannel: attr('string')
+  });
+});
 define('frontend-cp/models/event', ['exports', 'ember-data'], function (exports, _emberData) {
   exports['default'] = _emberData['default'].Model.extend({
     subject: _emberData['default'].attr('string'),
@@ -69394,6 +72084,14 @@ define('frontend-cp/router', ['exports', 'ember', 'frontend-cp/config/environmen
           });
         });
 
+        this.route('apps', function () {
+          this.route('endpoints', function () {
+            this.route('select-type', { path: '/select-type' });
+            this.route('new', { path: '/new/:type' });
+            this.route('edit', { path: '/:endpoint_id' });
+          });
+        });
+
         this.route('channels', function () {
           this.route('twitter', function () {
             this.route('edit', { path: '/:account_id' });
@@ -69929,6 +72627,76 @@ define('frontend-cp/serializers/definition', ['exports', 'frontend-cp/serializer
         };
       });
       return this._super.apply(this, arguments);
+    }
+  });
+});
+/*eslint-disable camelcase */
+define('frontend-cp/serializers/endpoint', ['exports', 'frontend-cp/serializers/application'], function (exports, _frontendCpSerializersApplication) {
+  exports['default'] = _frontendCpSerializersApplication['default'].extend({
+    extractAttributes: function extractAttributes(modelClass, resourceHash) {
+      if (resourceHash.type) {
+        resourceHash.field_type = resourceHash.endpoint_type;
+        Reflect.deleteProperty(resourceHash, 'endpoint_type');
+      }
+
+      // This helps for change aware model to function properly
+      resourceHash.attributes.forEach(function (attribute) {
+        var value = attribute.value;
+
+        switch (attribute.name) {
+          case 'address':
+            resourceHash.email_destination = value;
+            break;
+          case 'subject':
+            resourceHash.email_subject = value;
+            break;
+          case 'channel':
+            resourceHash.slack_channel = value;
+            break;
+          case 'webhook_url':
+            resourceHash.slack_url = value;
+            break;
+          case 'url':
+            resourceHash.webhook_url = value;
+            break;
+          case 'method':
+            resourceHash.request_method = { id: value };
+            break;
+          case 'content_type':
+            resourceHash.request_content_type = { id: value };
+            break;
+          case 'use_auth':
+            resourceHash.webhook_use_http_auth = value;
+            break;
+          case 'auth_username':
+            resourceHash.webhook_username = value;
+            break;
+          case 'auth_password':
+            resourceHash.webhook_password = value;
+            break;
+        }
+      });
+
+      return this._super.apply(this, arguments);
+    },
+
+    serialize: function serialize(snapshot, options) {
+      var payload = this._super.apply(this, arguments);
+
+      payload.type = payload.field_type;
+
+      var attributes = {};
+      if (payload.attributes) {
+        payload.attributes.forEach(function (attribute) {
+          attributes[attribute.name] = attribute.value;
+        });
+      }
+
+      payload.attributes = attributes;
+
+      Reflect.deleteProperty(payload, 'field_type');
+
+      return payload;
     }
   });
 });
@@ -71856,6 +74624,83 @@ define('frontend-cp/services/custom-fields', ['exports', 'ember', 'npm:lodash'],
 
     _getTranslation: function _getTranslation(key) {
       return this.get('intl').findTranslationByKey(key);
+    }
+  });
+});
+define('frontend-cp/services/endpoints', ['exports', 'ember'], function (exports, _ember) {
+  var Service = _ember['default'].Service;
+  var inject = _ember['default'].inject;
+  exports['default'] = Service.extend({
+    types: _ember['default'].computed(function () {
+      return [{
+        name: 'EMAIL',
+        titleKey: 'admin.apps.endpoints.types.email.title',
+        descriptionKey: 'admin.apps.endpoints.types.email.description'
+      }, {
+        name: 'SLACK',
+        titleKey: 'admin.apps.endpoints.types.slack.title',
+        descriptionKey: 'admin.apps.endpoints.types.slack.description'
+      }, {
+        name: 'HTTP',
+        titleKey: 'admin.apps.endpoints.types.webhook.title',
+        descriptionKey: 'admin.apps.endpoints.types.webhook.description'
+      }];
+    }),
+
+    intl: inject.service(),
+
+    getTitleBreadcrumbs: function getTitleBreadcrumbs(model) {
+      var title = [];
+      var type = this.getTypeByName(model.get('fieldType'));
+      var stateModifier = model.get('isNew') ? 'new' : 'edit';
+
+      title.push(this._t('admin.apps.endpoints.title'));
+
+      if (model.get('title')) {
+        title.push(model.get('title'));
+      } else {
+        title.push(this._t(type.titleKey));
+        title.push(this._t('admin.apps.endpoints.headings.' + stateModifier));
+      }
+
+      return title.join(' / ');
+    },
+
+    validateTransition: function validateTransition(controller, transition) {
+      var changedAttributes = controller.getChangedAttributes();
+      var onlyFieldTypeChanged = Object.keys(changedAttributes).length === 1 && changedAttributes.fieldType;
+
+      if (!onlyFieldTypeChanged) {
+        if (controller.userHasChangedModel()) {
+          if (confirm(this._t('generic.confirm.lose_changes'))) {
+            // eslint-disable-line
+            controller.send('rollBackModel');
+            return true;
+          } else {
+            transition.abort();
+            return false;
+          }
+        }
+      }
+
+      // edge case - we created an empty model, so don't ask
+      // a user to to confirm anything here; it's empty, so
+      // just delete it
+      if (controller.get('model.isNew')) {
+        controller.send('rollBackModel');
+      }
+    },
+
+    _t: function _t(key) {
+      return this.get('intl').findTranslationByKey(key);
+    },
+
+    getTypeByName: function getTypeByName(name) {
+      var matched = this.get('types').filter(function (record) {
+        return record.name === name;
+      });
+
+      return matched.length ? matched[0] : {};
     }
   });
 });
@@ -74494,6 +77339,652 @@ define('frontend-cp/services/virtual-model', ['exports', 'ember', 'npm:lodash'],
       }
     }
   });
+});
+define('frontend-cp/session/admin/apps/endpoints/edit/route', ['exports', 'ember', 'frontend-cp/mixins/remember-route'], function (exports, _ember, _frontendCpMixinsRememberRoute) {
+  var Route = _ember['default'].Route;
+  var inject = _ember['default'].inject;
+  exports['default'] = Route.extend(_frontendCpMixinsRememberRoute['default'], {
+    controllerName: 'session.admin.apps.endpoints.new',
+
+    endpoints: inject.service(),
+
+    model: function model(params) {
+      return this.store.findRecord('endpoint', params.endpoint_id);
+    },
+
+    actions: {
+      willTransition: function willTransition(transition) {
+        this.get('endpoints').validateTransition(this.controller, transition);
+      }
+    }
+  });
+});
+define("frontend-cp/session/admin/apps/endpoints/edit/template", ["exports"], function (exports) {
+  exports["default"] = Ember.HTMLBars.template((function () {
+    return {
+      meta: {
+        "fragmentReason": {
+          "name": "missing-wrapper",
+          "problems": ["wrong-type"]
+        },
+        "revision": "Ember@2.4.1",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 8,
+            "column": 0
+          }
+        },
+        "moduleName": "frontend-cp/session/admin/apps/endpoints/edit/template.hbs"
+      },
+      isEmpty: false,
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var morphs = new Array(1);
+        morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+        dom.insertBoundary(fragment, 0);
+        return morphs;
+      },
+      statements: [["inline", "ko-admin/apps/endpoints/edit", [], ["title", ["subexpr", "@mut", [["get", "title", ["loc", [null, [2, 8], [2, 13]]]]], [], []], "model", ["subexpr", "@mut", [["get", "model", ["loc", [null, [3, 8], [3, 13]]]]], [], []], "onCancel", ["subexpr", "action", ["canceled"], [], ["loc", [null, [4, 11], [4, 30]]]], "onSave", ["subexpr", "action", ["saved"], [], ["loc", [null, [5, 9], [5, 25]]]], "onSuccess", ["subexpr", "action", ["created"], [], ["loc", [null, [6, 12], [6, 30]]]]], ["loc", [null, [1, 0], [7, 2]]]]],
+      locals: [],
+      templates: []
+    };
+  })());
+});
+define('frontend-cp/session/admin/apps/endpoints/index/controller', ['exports', 'ember'], function (exports, _ember) {
+  var Controller = _ember['default'].Controller;
+  exports['default'] = Controller.extend({
+    store: _ember['default'].inject.service(),
+    metrics: _ember['default'].inject.service(),
+    intl: _ember['default'].inject.service(),
+
+    enabledEndpoints: _ember['default'].computed('model.[]', 'model.@each.isEnabled', function () {
+      return this.get('model').filter(function (endpoint) {
+        return endpoint.get('isEnabled');
+      });
+    }),
+
+    disabledEndpoints: _ember['default'].computed('model.[]', 'model.@each.isEnabled', function () {
+      return this.get('model').filter(function (endpoint) {
+        return !endpoint.get('isEnabled');
+      });
+    }),
+
+    actions: {
+      transitionToSelectType: function transitionToSelectType() {
+        this.transitionToRoute('session.admin.apps.endpoints.select-type');
+      },
+      editEndpoint: function editEndpoint(endpoint) {
+        this.transitionToRoute('session.admin.apps.endpoints.edit', endpoint);
+      },
+
+      toggleEnabledStatus: function toggleEnabledStatus(endpoint, e) {
+        e.stopPropagation();
+        endpoint.toggleProperty('isEnabled');
+        endpoint.save();
+
+        this.get('metrics').trackEvent({
+          event: 'Admin Endpoint State Changed',
+          category: 'Admin Endpoints',
+          action: endpoint.get('isEnabled') ? 'enabled' : 'disabled',
+          label: 'state button'
+        });
+      },
+
+      deleteEndpoint: function deleteEndpoint(endpoint, e) {
+        e.stopPropagation();
+        if (confirm(this.get('intl').findTranslationByKey('generic.confirm.delete'))) {
+          endpoint.deleteRecord();
+          endpoint.save();
+
+          this.get('metrics').trackEvent({
+            event: 'Admin Endpoint Delete',
+            category: 'Admin Endpoints',
+            action: 'click',
+            label: 'delete'
+          });
+        }
+      }
+    }
+  });
+});
+define('frontend-cp/session/admin/apps/endpoints/index/route', ['exports', 'ember', 'frontend-cp/mixins/remember-route'], function (exports, _ember, _frontendCpMixinsRememberRoute) {
+  var Route = _ember['default'].Route;
+  var inject = _ember['default'].inject;
+  exports['default'] = Route.extend(_frontendCpMixinsRememberRoute['default'], {
+    store: inject.service(),
+
+    model: function model() {
+      return this.get('store').query('endpoint', { limit: 1000 });
+    }
+  });
+});
+define("frontend-cp/session/admin/apps/endpoints/index/template", ["exports"], function (exports) {
+  exports["default"] = Ember.HTMLBars.template((function () {
+    var child0 = (function () {
+      var child0 = (function () {
+        return {
+          meta: {
+            "fragmentReason": false,
+            "revision": "Ember@2.4.1",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 11,
+                "column": 2
+              },
+              "end": {
+                "line": 18,
+                "column": 2
+              }
+            },
+            "moduleName": "frontend-cp/session/admin/apps/endpoints/index/template.hbs"
+          },
+          isEmpty: false,
+          arity: 1,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("    ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+            return morphs;
+          },
+          statements: [["inline", "ko-admin/apps/endpoints/list-row", [], ["endpoint", ["subexpr", "@mut", [["get", "endpoint", ["loc", [null, [13, 15], [13, 23]]]]], [], []], "toggleEnabledStatus", ["subexpr", "action", ["toggleEnabledStatus", ["get", "endpoint", ["loc", [null, [14, 56], [14, 64]]]]], [], ["loc", [null, [14, 26], [14, 65]]]], "deleteEndpoint", ["subexpr", "action", ["deleteEndpoint", ["get", "endpoint", ["loc", [null, [15, 46], [15, 54]]]]], [], ["loc", [null, [15, 21], [15, 55]]]], "onClick", ["subexpr", "action", ["editEndpoint", ["get", "endpoint", ["loc", [null, [16, 37], [16, 45]]]]], [], ["loc", [null, [16, 14], [16, 46]]]]], ["loc", [null, [12, 4], [17, 6]]]]],
+          locals: ["endpoint"],
+          templates: []
+        };
+      })();
+      return {
+        meta: {
+          "fragmentReason": false,
+          "revision": "Ember@2.4.1",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 7,
+              "column": 0
+            },
+            "end": {
+              "line": 19,
+              "column": 0
+            }
+          },
+          "moduleName": "frontend-cp/session/admin/apps/endpoints/index/template.hbs"
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1, "class", "ko-simple-list__header");
+          var el2 = dom.createTextNode("\n    ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n  ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(2);
+          morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
+          morphs[1] = dom.createMorphAt(fragment, 3, 3, contextualElement);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [["inline", "t", ["generic.enabled"], [], ["loc", [null, [9, 4], [9, 27]]]], ["block", "each", [["get", "enabledEndpoints", ["loc", [null, [11, 10], [11, 26]]]]], [], 0, null, ["loc", [null, [11, 2], [18, 11]]]]],
+        locals: [],
+        templates: [child0]
+      };
+    })();
+    var child1 = (function () {
+      var child0 = (function () {
+        var child0 = (function () {
+          return {
+            meta: {
+              "fragmentReason": false,
+              "revision": "Ember@2.4.1",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 26,
+                  "column": 4
+                },
+                "end": {
+                  "line": 34,
+                  "column": 4
+                }
+              },
+              "moduleName": "frontend-cp/session/admin/apps/endpoints/index/template.hbs"
+            },
+            isEmpty: false,
+            arity: 1,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode("      ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(1);
+              morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+              return morphs;
+            },
+            statements: [["inline", "ko-admin/apps/endpoints/list-row", [], ["isDisabled", true, "endpoint", ["subexpr", "@mut", [["get", "endpoint", ["loc", [null, [29, 17], [29, 25]]]]], [], []], "toggleEnabledStatus", ["subexpr", "action", ["toggleEnabledStatus", ["get", "endpoint", ["loc", [null, [30, 58], [30, 66]]]]], [], ["loc", [null, [30, 28], [30, 67]]]], "deleteEndpoint", ["subexpr", "action", ["deleteEndpoint", ["get", "endpoint", ["loc", [null, [31, 48], [31, 56]]]]], [], ["loc", [null, [31, 23], [31, 57]]]], "onClick", ["subexpr", "action", ["editEndpoint", ["get", "endpoint", ["loc", [null, [32, 39], [32, 47]]]]], [], ["loc", [null, [32, 16], [32, 48]]]]], ["loc", [null, [27, 6], [33, 10]]]]],
+            locals: ["endpoint"],
+            templates: []
+          };
+        })();
+        return {
+          meta: {
+            "fragmentReason": false,
+            "revision": "Ember@2.4.1",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 22,
+                "column": 2
+              },
+              "end": {
+                "line": 35,
+                "column": 2
+              }
+            },
+            "moduleName": "frontend-cp/session/admin/apps/endpoints/index/template.hbs"
+          },
+          isEmpty: false,
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("    ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("div");
+            dom.setAttribute(el1, "class", "ko-simple-list__header");
+            var el2 = dom.createTextNode("\n      ");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createComment("");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createTextNode("\n    ");
+            dom.appendChild(el1, el2);
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(2);
+            morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
+            morphs[1] = dom.createMorphAt(fragment, 3, 3, contextualElement);
+            dom.insertBoundary(fragment, null);
+            return morphs;
+          },
+          statements: [["inline", "t", ["generic.disabled"], [], ["loc", [null, [24, 6], [24, 30]]]], ["block", "each", [["get", "disabledEndpoints", ["loc", [null, [26, 12], [26, 29]]]]], [], 0, null, ["loc", [null, [26, 4], [34, 13]]]]],
+          locals: [],
+          templates: [child0]
+        };
+      })();
+      return {
+        meta: {
+          "fragmentReason": false,
+          "revision": "Ember@2.4.1",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 21,
+              "column": 0
+            },
+            "end": {
+              "line": 36,
+              "column": 0
+            }
+          },
+          "moduleName": "frontend-cp/session/admin/apps/endpoints/index/template.hbs"
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [["block", "ko-simple-list", [], [], 0, null, ["loc", [null, [22, 2], [35, 21]]]]],
+        locals: [],
+        templates: [child0]
+      };
+    })();
+    return {
+      meta: {
+        "fragmentReason": {
+          "name": "missing-wrapper",
+          "problems": ["wrong-type", "multiple-nodes"]
+        },
+        "revision": "Ember@2.4.1",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 37,
+            "column": 0
+          }
+        },
+        "moduleName": "frontend-cp/session/admin/apps/endpoints/index/template.hbs"
+      },
+      isEmpty: false,
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var morphs = new Array(3);
+        morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+        morphs[1] = dom.createMorphAt(fragment, 2, 2, contextualElement);
+        morphs[2] = dom.createMorphAt(fragment, 4, 4, contextualElement);
+        dom.insertBoundary(fragment, 0);
+        dom.insertBoundary(fragment, null);
+        return morphs;
+      },
+      statements: [["inline", "ko-admin/page-header", [], ["title", ["subexpr", "t", ["admin.apps.endpoints.title"], [], ["loc", [null, [2, 8], [2, 40]]]], "buttonText", ["subexpr", "t", ["admin.apps.endpoints.buttons.add"], [], ["loc", [null, [3, 13], [3, 51]]]], "onSave", ["subexpr", "action", ["transitionToSelectType"], [], ["loc", [null, [4, 9], [4, 42]]]]], ["loc", [null, [1, 0], [5, 2]]]], ["block", "ko-simple-list", [], [], 0, null, ["loc", [null, [7, 0], [19, 19]]]], ["block", "if", [["get", "disabledEndpoints.length", ["loc", [null, [21, 6], [21, 30]]]]], [], 1, null, ["loc", [null, [21, 0], [36, 7]]]]],
+      locals: [],
+      templates: [child0, child1]
+    };
+  })());
+});
+define('frontend-cp/session/admin/apps/endpoints/new/controller', ['exports', 'ember'], function (exports, _ember) {
+  exports['default'] = _ember['default'].Controller.extend({
+    notification: _ember['default'].inject.service('notification'),
+    intl: _ember['default'].inject.service('intl'),
+    metrics: _ember['default'].inject.service(),
+    endpoints: _ember['default'].inject.service(),
+
+    title: _ember['default'].computed('model', function () {
+      return this.get('endpoints').getTitleBreadcrumbs(this.get('model'));
+    }),
+
+    getChangedAttributes: function getChangedAttributes() {
+      return this.get('model').changedAttributes();
+    },
+
+    userHasChangedModel: function userHasChangedModel() {
+      return this.get('model').hasDirtyChanges();
+    },
+
+    successAction: function successAction() {
+      this.get('notification').add({
+        type: 'success',
+        title: this.get('intl').findTranslationByKey('generic.changes_saved'),
+        autodismiss: true
+      });
+
+      this.transitionToRoute('session.admin.apps.endpoints.index');
+    },
+
+    actions: {
+      rollBackModel: function rollBackModel() {
+        this.get('model').rollbackAttributes();
+      },
+
+      canceled: function canceled() {
+        this.get('metrics').trackEvent({
+          event: 'Admin Endpoints Edit Canceled',
+          category: 'Admin Endpoints',
+          action: 'click',
+          label: 'cancel button'
+        });
+
+        this.transitionToRoute('session.admin.apps.endpoints.index');
+      },
+
+      created: function created() {
+        this.get('metrics').trackEvent({
+          event: 'Admin Endpoint Created',
+          category: 'Admin Endpoints',
+          action: 'click',
+          label: 'save button'
+        });
+
+        this.successAction();
+      },
+
+      saved: function saved(model) {
+        var _this = this;
+
+        return model.save().then(function (response) {
+          _this.get('metrics').trackEvent({
+            event: 'Admin Endpoint Updated',
+            category: 'Admin Endpoints',
+            action: 'click',
+            label: 'save button'
+          });
+
+          return response;
+        });
+      }
+    }
+  });
+});
+define('frontend-cp/session/admin/apps/endpoints/new/route', ['exports', 'ember', 'frontend-cp/mixins/remember-route'], function (exports, _ember, _frontendCpMixinsRememberRoute) {
+  var Route = _ember['default'].Route;
+  var inject = _ember['default'].inject;
+  exports['default'] = Route.extend(_frontendCpMixinsRememberRoute['default'], {
+    endpoints: inject.service(),
+
+    model: function model(params) {
+      return this.store.createRecord('endpoint', { fieldType: params.type });
+    },
+
+    actions: {
+      willTransition: function willTransition(transition) {
+        this.get('endpoints').validateTransition(this.controller, transition);
+      }
+    }
+  });
+});
+define("frontend-cp/session/admin/apps/endpoints/new/template", ["exports"], function (exports) {
+  exports["default"] = Ember.HTMLBars.template((function () {
+    return {
+      meta: {
+        "fragmentReason": {
+          "name": "missing-wrapper",
+          "problems": ["wrong-type"]
+        },
+        "revision": "Ember@2.4.1",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 8,
+            "column": 0
+          }
+        },
+        "moduleName": "frontend-cp/session/admin/apps/endpoints/new/template.hbs"
+      },
+      isEmpty: false,
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var morphs = new Array(1);
+        morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+        dom.insertBoundary(fragment, 0);
+        return morphs;
+      },
+      statements: [["inline", "ko-admin/apps/endpoints/edit", [], ["title", ["subexpr", "@mut", [["get", "title", ["loc", [null, [2, 8], [2, 13]]]]], [], []], "model", ["subexpr", "@mut", [["get", "model", ["loc", [null, [3, 8], [3, 13]]]]], [], []], "onCancel", ["subexpr", "action", ["canceled"], [], ["loc", [null, [4, 11], [4, 30]]]], "onSave", ["subexpr", "action", ["saved"], [], ["loc", [null, [5, 9], [5, 25]]]], "onSuccess", ["subexpr", "action", ["created"], [], ["loc", [null, [6, 12], [6, 30]]]]], ["loc", [null, [1, 0], [7, 2]]]]],
+      locals: [],
+      templates: []
+    };
+  })());
+});
+define('frontend-cp/session/admin/apps/endpoints/select-type/controller', ['exports', 'ember'], function (exports, _ember) {
+  exports['default'] = _ember['default'].Controller.extend({
+    metrics: _ember['default'].inject.service(),
+    intl: _ember['default'].inject.service(),
+    endpoints: _ember['default'].inject.service(),
+
+    _t: function _t(key) {
+      return this.get('intl').findTranslationByKey(key);
+    },
+
+    title: _ember['default'].computed(function () {
+      var breadcrumbs = [this._t('admin.apps.endpoints.title'), this._t('admin.apps.endpoints.headings.new')];
+
+      return breadcrumbs.join(' / ');
+    }),
+
+    actions: {
+      setType: function setType(type) {
+        this.transitionToRoute('session.admin.apps.endpoints.new', type);
+      },
+
+      canceled: function canceled() {
+        this.get('metrics').trackEvent({
+          event: 'Admin App Endpoints Canceled',
+          category: 'Admin Endpoints',
+          action: 'click',
+          label: 'select-type cancel button'
+        });
+
+        this.transitionToRoute('session.admin.apps.endpoints.index');
+      }
+    }
+  });
+});
+define('frontend-cp/session/admin/apps/endpoints/select-type/route', ['exports', 'ember', 'frontend-cp/mixins/remember-route'], function (exports, _ember, _frontendCpMixinsRememberRoute) {
+  exports['default'] = _ember['default'].Route.extend(_frontendCpMixinsRememberRoute['default']);
+});
+define("frontend-cp/session/admin/apps/endpoints/select-type/template", ["exports"], function (exports) {
+  exports["default"] = Ember.HTMLBars.template((function () {
+    return {
+      meta: {
+        "fragmentReason": {
+          "name": "missing-wrapper",
+          "problems": ["wrong-type", "multiple-nodes"]
+        },
+        "revision": "Ember@2.4.1",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 5,
+            "column": 53
+          }
+        },
+        "moduleName": "frontend-cp/session/admin/apps/endpoints/select-type/template.hbs"
+      },
+      isEmpty: false,
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var morphs = new Array(3);
+        morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+        morphs[1] = dom.createMorphAt(fragment, 2, 2, contextualElement);
+        morphs[2] = dom.createMorphAt(fragment, 4, 4, contextualElement);
+        dom.insertBoundary(fragment, 0);
+        dom.insertBoundary(fragment, null);
+        return morphs;
+      },
+      statements: [["inline", "ko-admin/page-header", [], ["title", ["subexpr", "@mut", [["get", "title", ["loc", [null, [1, 29], [1, 34]]]]], [], []], "onCancel", ["subexpr", "action", ["canceled"], [], ["loc", [null, [1, 44], [1, 63]]]]], ["loc", [null, [1, 0], [1, 65]]]], ["inline", "ko-admin/apps/endpoints/select-type", [], ["onTypeSelect", ["subexpr", "action", ["setType"], [], ["loc", [null, [3, 51], [3, 69]]]]], ["loc", [null, [3, 0], [3, 71]]]], ["inline", "ko-admin/page-footer", [], ["onCancel", ["subexpr", "action", ["canceled"], [], ["loc", [null, [5, 32], [5, 51]]]]], ["loc", [null, [5, 0], [5, 53]]]]],
+      locals: [],
+      templates: []
+    };
+  })());
 });
 define('frontend-cp/session/admin/automation/businesshours/edit/route', ['exports', 'ember'], function (exports, _ember) {
   var Route = _ember['default'].Route;
@@ -88864,6 +92355,28 @@ define("frontend-cp/styles/application/styles.scss", ["exports"], function (expo
     "application__notifications": "_application__notifications_n7hqf2"
   };
 });
+define("frontend-cp/styles/components/ko-admin/apps/endpoints/edit/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-admin_apps_endpoints_edit__select": "_ko-admin_apps_endpoints_edit__select_8zie00",
+    "ko-admin_apps_endpoints_edit__checkbox": "_ko-admin_apps_endpoints_edit__checkbox_8zie00"
+  };
+});
+define("frontend-cp/styles/components/ko-admin/apps/endpoints/list-row/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-admin_apps_endpoints_list-row__cell--disabled": "_ko-admin_apps_endpoints_list-row__cell--disabled_hts22h",
+    "ko-admin_apps_endpoints_list-row__warning": "_ko-admin_apps_endpoints_list-row__warning_hts22h",
+    "ko-admin_apps_endpoints_select-type": "_ko-admin_apps_endpoints_select-type_hts22h",
+    "ko-admin_apps_endpoints_select-type__icon": "_ko-admin_apps_endpoints_select-type__icon_hts22h",
+    "ko-admin_apps_endpoints_list-row__description": "_ko-admin_apps_endpoints_list-row__description_hts22h",
+    "ko-admin_apps_endpoints_list-row__last-attempt": "_ko-admin_apps_endpoints_list-row__last-attempt_hts22h",
+    "i-png-endpoint-warning": "_i-png-endpoint-warning_hts22h"
+  };
+});
+define("frontend-cp/styles/components/ko-admin/apps/endpoints/select-type/styles.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-admin_endpoints_select-type__action": "_ko-admin_endpoints_select-type__action_3qmawx"
+  };
+});
 define("frontend-cp/styles/components/ko-admin/businesshours/edit/styles.scss", ["exports"], function (exports) {
   exports["default"] = {
     "ko-admin_businesshours__grid-title": "_ko-admin_businesshours__grid-title_pzxwew",
@@ -90211,6 +93724,10 @@ define("frontend-cp/styles/styles/partials/_icon.scss", ["exports"], function (e
     "i-png-CASCADINGSELECT": "_i-png-CASCADINGSELECT_11qqbb",
     "i-png-DATE": "_i-png-DATE_11qqbb",
     "i-png-REGEX": "_i-png-REGEX_11qqbb",
+    "i-png-endpoint-EMAIL": "_i-png-endpoint-EMAIL_11qqbb",
+    "i-png-endpoint-SLACK": "_i-png-endpoint-SLACK_11qqbb",
+    "i-png-endpoint-HTTP": "_i-png-endpoint-HTTP_11qqbb",
+    "i-png-endpoint-warning": "_i-png-endpoint-warning_11qqbb",
     "i-png-flag-": "_i-png-flag-_11qqbb"
   };
 });
@@ -92592,7 +96109,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+b9fbaf8c"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+50168e53"});
 }
 
 /* jshint ignore:end */
