@@ -36379,7 +36379,7 @@ define("frontend-cp/components/ko-feed/item/template", ["exports"], function (ex
             morphs[1] = dom.createMorphAt(element4, 2, 2);
             return morphs;
           },
-          statements: [["attribute", "title", ["get", "event.original.mailbox.address", ["loc", [null, [21, 20], [21, 50]]]]], ["content", "event.identity.email", ["loc", [null, [21, 66], [21, 90]]]]],
+          statements: [["attribute", "title", ["get", "event.original.mailbox.address", ["loc", [null, [21, 20], [21, 50]]]]], ["content", "event.original.mailbox.address", ["loc", [null, [21, 66], [21, 100]]]]],
           locals: [],
           templates: []
         };
@@ -92594,7 +92594,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+351d45b4"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+0640f32c"});
 }
 
 /* jshint ignore:end */
