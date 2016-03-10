@@ -57,7 +57,7 @@
 .u-pos-abs {
   position: absolute; }
 
-.i-after[class*="i-"]:before, .input--search > [class*="i-"]:before, .nav-tabs__close, .ko-admin_case-fields_select-type__action > [class*="i-"]:before, .ko-case_macro-selector .ember-power-select-search::before, .ko-dropdown-select__icon, .editable-text > [class*="i-"]:before, .ko-predicate-builder__tags-input .ko-tags__action, .ko-predicate-builder_rule__label, .ko-predicate-builder_rule__remove, .ko-reorderable-list .ko-reorderable-list_item_handle[class*="i-"]:before, .sidebar__value, .ko-simple-list [class*="ko-reorderable-list_item_handle"][class*="i-"]:before, .universal-search_result__action,
+.i-after[class*="i-"]:before, .input--search > [class*="i-"]:before, .nav-tabs__close, .ko-admin_case-fields_select-type__action > [class*="i-"]:before, .ko-admin_endpoints_select-type__action > [class*="i-"]:before, .ko-case_macro-selector .ember-power-select-search::before, .ko-dropdown-select__icon, .editable-text > [class*="i-"]:before, .ko-predicate-builder__tags-input .ko-tags__action, .ko-predicate-builder_rule__label, .ko-predicate-builder_rule__remove, .ko-reorderable-list .ko-reorderable-list_item_handle[class*="i-"]:before, .sidebar__value, .ko-simple-list [class*="ko-reorderable-list_item_handle"][class*="i-"]:before, .universal-search_result__action,
 .u-v-center {
   position: absolute;
   top: 50%;
@@ -310,6 +310,21 @@
 
 .i-png-REGEX {
   background-image: url("/__apps/frontend/assets/__cp/images/icons/regex.png"); }
+
+.i-png-endpoint-EMAIL {
+  background-size: 90%;
+  background-image: url("/__apps/frontend/assets/__cp/images/icons/endpoints/email.png"); }
+
+.i-png-endpoint-SLACK {
+  background-size: 90%;
+  background-image: url("/__apps/frontend/assets/__cp/images/icons/endpoints/slack.png"); }
+
+.i-png-endpoint-HTTP {
+  background-size: 90%;
+  background-image: url("/__apps/frontend/assets/__cp/images/icons/endpoints/webhook.png"); }
+
+.i-png-endpoint-warning {
+  background-image: url("/__apps/frontend/assets/__cp/images/icons/endpoints/warning.png"); }
 
 /* ==========================================================================
    	Flag icons from http://famfamfam.com/lab/icons/flags/
@@ -3730,6 +3745,54 @@ a {
   border-radius: 2px;
   border: 1px solid #D1D5D7;
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.05); }
+
+.ko-admin_apps_endpoints_edit__select {
+  width: 100px;
+  margin-right: 20px; }
+
+.ko-admin_apps_endpoints_edit__checkbox {
+  margin-top: 13.5px; }
+
+.ko-admin_endpoints_select-type__action > [class*="i-"]:before {
+  right: 0; }
+
+.ko-admin_apps_endpoints_list-row__cell--disabled {
+  opacity: 0.6; }
+
+.ko-admin_apps_endpoints_list-row__warning {
+  color: #E86048; }
+
+.ko-admin_apps_endpoints_select-type {
+  position: relative;
+  padding: 13.5px 0;
+  border-bottom: 1px solid #EBEEF0;
+  cursor: pointer; }
+
+.ko-admin_apps_endpoints_select-type__icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 2px; }
+
+.ko-admin_apps_endpoints_list-row__description {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex; }
+
+.ko-admin_apps_endpoints_list-row__last-attempt {
+  margin-left: 20px; }
+
+.ko-admin_apps_endpoints_list-row__warning {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  margin-left: 5px; }
+  .ko-admin_apps_endpoints_list-row__warning .i-png-endpoint-warning {
+    width: 18px;
+    height: 16px;
+    background-size: auto;
+    margin-right: 5px; }
 
 .breadcrumbs {
   border-bottom: 1px solid #D1D5D7; }
