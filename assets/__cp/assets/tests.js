@@ -6881,7 +6881,7 @@ define('frontend-cp/tests/acceptance/agent/cases/create-test', ['exports', 'fron
   });
 });
 /* eslint-disable camelcase, new-cap */
-define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
+define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'ember'], function (exports, _frontendCpTestsHelpersQunit, _ember) {
 
   var originalConfirm = window.confirm;
 
@@ -7105,6 +7105,47 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
     andThen(function () {
       assert.equal(find('.sidebar__first-item').text().trim(), 'Inbox');
       assert.equal(find('.ko-checkbox__checkbox').attr('aria-checked'), 'false');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('After a bulk update has been performed the values should be cleared before a subsequent update is attempted', function (assert) {
+    assert.expect(7);
+
+    visit('/agent/cases/view/1');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/agent/cases/view/1');
+    });
+
+    andThen(function () {
+      click('thead .ko-checkbox__checkbox:first');
+    });
+
+    andThen(function () {
+      assert.equal(find('.ko-bulk-sidebar__title').text().trim(), 'Update Cases');
+      selectChoose('.fields div:nth-child(2) .ember-power-select', 'Open');
+      selectChoose('.fields div:nth-child(3) .ember-power-select', 'Question');
+      selectChoose('.fields div:nth-child(4) .ember-power-select', 'Low');
+      _ember['default'].$('.fields div:nth-child(5) input').val('tag test');
+      _ember['default'].$('.fields div:nth-child(5) input').trigger('input');
+    });
+
+    andThen(function () {
+      click('button[name=update-cases]');
+    });
+
+    andThen(function () {
+      click('thead .ko-checkbox__checkbox:first');
+    });
+
+    andThen(function () {
+      var _this2 = this;
+
+      assert.equal(find('.ko-info-bar_field_drill-down__placeholder').text(), 'No Changes');
+      find('.ko-info-bar_field_select__placeholder').each(function (index, placeholder) {
+        assert.equal(_this2.$(placeholder).text(), 'No Changes');
+      });
+      assert.equal(find('.fields div:nth-child(5) ul').text().trim(), '');
     });
   });
 
@@ -13151,9 +13192,8 @@ define('frontend-cp/tests/unit/components/ko-tags/component-test', ['exports', '
 
     _ember['default'].run(function () {
       component.set('tags', '');
-      component.set('searchTerm', 'qwerty');
-      _this7.$('input').trigger(new $.Event('keyup', { keyCode: _frontendCpLibKeycodes.y }));
-      _this7.$('input').trigger(new $.Event('keydown', { keyCode: _frontendCpLibKeycodes.space }));
+      _this7.$('input').val('qwerty ');
+      _this7.$('input').trigger('input');
     });
   });
 

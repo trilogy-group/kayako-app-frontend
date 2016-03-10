@@ -24931,6 +24931,12 @@ define('frontend-cp/components/ko-bulk-sidebar/component', ['exports', 'ember', 
     notification: _ember['default'].inject.service(),
 
     //Initializers
+    resetState: _ember['default'].on('init', function () {
+      this._super.apply(this, arguments);
+
+      this.set('tags', []);
+    }),
+
     fetchReferenceData: _ember['default'].on('init', function () {
       this._super.apply(this, arguments);
       var store = this.get('store');
@@ -25326,7 +25332,7 @@ define("frontend-cp/components/ko-bulk-sidebar/template", ["exports"], function 
         morphs[9] = dom.createMorphAt(element3, 1, 1);
         return morphs;
       },
-      statements: [["inline", "ko-case-content/field/assignee", [], ["team", ["subexpr", "@mut", [["get", "assigneeTeam", ["loc", [null, [6, 9], [6, 21]]]]], [], []], "agent", ["subexpr", "@mut", [["get", "assigneeAgent", ["loc", [null, [7, 10], [7, 23]]]]], [], []], "field", ["subexpr", "@mut", [["get", "assigneeField", ["loc", [null, [8, 10], [8, 23]]]]], [], []], "onValueChange", ["subexpr", "action", ["setAssignee"], [], ["loc", [null, [9, 18], [9, 40]]]], "isEdited", ["subexpr", "@mut", [["get", "isAssigneeEdited", ["loc", [null, [10, 13], [10, 29]]]]], [], []], "emptyLabel", ["subexpr", "t", ["generic.no_changes"], [], ["loc", [null, [11, 15], [11, 39]]]], "hasEmptyOption", true], ["loc", [null, [5, 2], [13, 4]]]], ["inline", "ko-info-bar/field/select", [], ["title", "Status", "options", ["subexpr", "@mut", [["get", "bulkCaseStatuses", ["loc", [null, [17, 12], [17, 28]]]]], [], []], "value", ["subexpr", "@mut", [["get", "caseStatus", ["loc", [null, [18, 10], [18, 20]]]]], [], []], "isEdited", ["subexpr", "@mut", [["get", "isCaseStatusEdited", ["loc", [null, [19, 13], [19, 31]]]]], [], []], "onValueChange", ["subexpr", "action", ["setCaseStatus"], [], ["loc", [null, [20, 18], [20, 42]]]], "labelPath", "label", "hasEmptyOption", false], ["loc", [null, [15, 2], [23, 4]]]], ["inline", "ko-info-bar/field/select", [], ["title", "Type", "options", ["subexpr", "@mut", [["get", "bulkCaseTypes", ["loc", [null, [27, 12], [27, 25]]]]], [], []], "value", ["subexpr", "@mut", [["get", "caseType", ["loc", [null, [28, 10], [28, 18]]]]], [], []], "isEdited", ["subexpr", "@mut", [["get", "isCaseTypeEdited", ["loc", [null, [29, 13], [29, 29]]]]], [], []], "onValueChange", ["subexpr", "action", ["setCaseType"], [], ["loc", [null, [30, 18], [30, 40]]]], "labelPath", "label", "hasEmptyOption", false], ["loc", [null, [25, 2], [33, 4]]]], ["inline", "ko-info-bar/field/select", [], ["title", "Priority", "options", ["subexpr", "@mut", [["get", "bulkCasePriorities", ["loc", [null, [37, 12], [37, 30]]]]], [], []], "value", ["subexpr", "@mut", [["get", "casePriority", ["loc", [null, [38, 10], [38, 22]]]]], [], []], "isEdited", ["subexpr", "@mut", [["get", "isCasePriorityEdited", ["loc", [null, [39, 13], [39, 33]]]]], [], []], "onValueChange", ["subexpr", "action", ["setCasePriority"], [], ["loc", [null, [40, 18], [40, 44]]]], "labelPath", "label", "hasEmptyOption", false], ["loc", [null, [35, 2], [43, 4]]]], ["inline", "ko-info-bar/field/tags", [], ["title", ["subexpr", "t", ["cases.tags"], [], ["loc", [null, [46, 10], [46, 26]]]], "isEdited", ["subexpr", "@mut", [["get", "isTagsFieldEdited", ["loc", [null, [47, 13], [47, 30]]]]], [], []], "selectedTags", ["subexpr", "@mut", [["get", "tags", ["loc", [null, [48, 17], [48, 21]]]]], [], []], "suggestedTags", ["subexpr", "@mut", [["get", "suggestedTags", ["loc", [null, [49, 18], [49, 31]]]]], [], []], "onTagAddition", ["subexpr", "action", ["addTag"], [], ["loc", [null, [50, 18], [50, 35]]]], "onTagRemoval", ["subexpr", "action", ["removeTag"], [], ["loc", [null, [51, 17], [51, 37]]]], "onTagSuggestion", ["subexpr", "action", ["suggestTags"], [], ["loc", [null, [52, 20], [52, 42]]]], "newTagText", ["subexpr", "t", ["cases.newtag"], [], ["loc", [null, [53, 15], [53, 33]]]], "addTagText", ["subexpr", "t", ["cases.addtag"], [], ["loc", [null, [54, 15], [54, 33]]]]], ["loc", [null, [45, 2], [55, 4]]]], ["attribute", "onclick", ["subexpr", "action", ["cancel"], [], ["loc", [null, [58, 69], [58, 88]]]]], ["inline", "t", ["generic.cancel"], [], ["loc", [null, [59, 4], [59, 26]]]], ["attribute", "class", ["concat", ["button button--primary ", ["subexpr", "if", [["subexpr", "not", [["get", "isEdited", ["loc", [null, [61, 64], [61, 72]]]]], [], ["loc", [null, [61, 59], [61, 73]]]], "disabled"], [], ["loc", [null, [61, 54], [61, 86]]]]]]], ["attribute", "onclick", ["subexpr", "action", ["submit"], [], ["loc", [null, [61, 116], [61, 135]]]]], ["block", "if", [["get", "isSaving", ["loc", [null, [62, 10], [62, 18]]]]], [], 0, 1, ["loc", [null, [62, 4], [66, 11]]]]],
+      statements: [["inline", "ko-case-content/field/assignee", [], ["team", ["subexpr", "@mut", [["get", "assigneeTeam", ["loc", [null, [6, 9], [6, 21]]]]], [], []], "agent", ["subexpr", "@mut", [["get", "assigneeAgent", ["loc", [null, [7, 10], [7, 23]]]]], [], []], "field", ["subexpr", "@mut", [["get", "assigneeField", ["loc", [null, [8, 10], [8, 23]]]]], [], []], "onValueChange", ["subexpr", "action", ["setAssignee"], [], ["loc", [null, [9, 18], [9, 40]]]], "isEdited", ["subexpr", "@mut", [["get", "isAssigneeEdited", ["loc", [null, [10, 13], [10, 29]]]]], [], []], "emptyLabel", ["subexpr", "t", ["generic.no_changes"], [], ["loc", [null, [11, 15], [11, 39]]]], "hasEmptyOption", true], ["loc", [null, [5, 2], [13, 4]]]], ["inline", "ko-info-bar/field/select", [], ["title", "Status", "options", ["subexpr", "@mut", [["get", "bulkCaseStatuses", ["loc", [null, [17, 12], [17, 28]]]]], [], []], "value", ["subexpr", "@mut", [["get", "caseStatus", ["loc", [null, [18, 10], [18, 20]]]]], [], []], "isEdited", ["subexpr", "@mut", [["get", "isCaseStatusEdited", ["loc", [null, [19, 13], [19, 31]]]]], [], []], "onValueChange", ["subexpr", "action", ["setCaseStatus"], [], ["loc", [null, [20, 18], [20, 42]]]], "labelPath", "label", "hasEmptyOption", false], ["loc", [null, [15, 2], [23, 4]]]], ["inline", "ko-info-bar/field/select", [], ["title", "Type", "options", ["subexpr", "@mut", [["get", "bulkCaseTypes", ["loc", [null, [27, 12], [27, 25]]]]], [], []], "value", ["subexpr", "@mut", [["get", "caseType", ["loc", [null, [28, 10], [28, 18]]]]], [], []], "isEdited", ["subexpr", "@mut", [["get", "isCaseTypeEdited", ["loc", [null, [29, 13], [29, 29]]]]], [], []], "onValueChange", ["subexpr", "action", ["setCaseType"], [], ["loc", [null, [30, 18], [30, 40]]]], "labelPath", "label", "hasEmptyOption", false], ["loc", [null, [25, 2], [33, 4]]]], ["inline", "ko-info-bar/field/select", [], ["title", "Priority", "options", ["subexpr", "@mut", [["get", "bulkCasePriorities", ["loc", [null, [37, 12], [37, 30]]]]], [], []], "value", ["subexpr", "@mut", [["get", "casePriority", ["loc", [null, [38, 10], [38, 22]]]]], [], []], "isEdited", ["subexpr", "@mut", [["get", "isCasePriorityEdited", ["loc", [null, [39, 13], [39, 33]]]]], [], []], "onValueChange", ["subexpr", "action", ["setCasePriority"], [], ["loc", [null, [40, 18], [40, 44]]]], "labelPath", "label", "hasEmptyOption", false], ["loc", [null, [35, 2], [43, 4]]]], ["inline", "ko-info-bar/field/tags", [], ["title", ["subexpr", "t", ["cases.tags"], [], ["loc", [null, [46, 10], [46, 26]]]], "isEdited", ["subexpr", "@mut", [["get", "isTagsFieldEdited", ["loc", [null, [47, 13], [47, 30]]]]], [], []], "values", ["subexpr", "@mut", [["get", "tags", ["loc", [null, [48, 11], [48, 15]]]]], [], []], "suggestedTags", ["subexpr", "@mut", [["get", "suggestedTags", ["loc", [null, [49, 18], [49, 31]]]]], [], []], "onTagAddition", ["subexpr", "action", ["addTag"], [], ["loc", [null, [50, 18], [50, 35]]]], "onTagRemoval", ["subexpr", "action", ["removeTag"], [], ["loc", [null, [51, 17], [51, 37]]]], "onTagSuggestion", ["subexpr", "action", ["suggestTags"], [], ["loc", [null, [52, 20], [52, 42]]]], "newTagText", ["subexpr", "t", ["cases.newtag"], [], ["loc", [null, [53, 15], [53, 33]]]], "addTagText", ["subexpr", "t", ["cases.addtag"], [], ["loc", [null, [54, 15], [54, 33]]]]], ["loc", [null, [45, 2], [55, 4]]]], ["attribute", "onclick", ["subexpr", "action", ["cancel"], [], ["loc", [null, [58, 69], [58, 88]]]]], ["inline", "t", ["generic.cancel"], [], ["loc", [null, [59, 4], [59, 26]]]], ["attribute", "class", ["concat", ["button button--primary ", ["subexpr", "if", [["subexpr", "not", [["get", "isEdited", ["loc", [null, [61, 64], [61, 72]]]]], [], ["loc", [null, [61, 59], [61, 73]]]], "disabled"], [], ["loc", [null, [61, 54], [61, 86]]]]]]], ["attribute", "onclick", ["subexpr", "action", ["submit"], [], ["loc", [null, [61, 116], [61, 135]]]]], ["block", "if", [["get", "isSaving", ["loc", [null, [62, 10], [62, 18]]]]], [], 0, 1, ["loc", [null, [62, 4], [66, 11]]]]],
       locals: [],
       templates: [child0, child1]
     };
@@ -52274,13 +52280,6 @@ define('frontend-cp/components/ko-tags/component', ['exports', 'ember', 'fronten
               break;
             }
 
-          case _frontendCpLibKeycodes.space:
-            {
-              var searchTerm = this.get('searchTerm');
-              this.send('addTag', searchTerm);
-              return false;
-            }
-
           case _frontendCpLibKeycodes.enter:
             {
               var searchTerm = this.get('searchTerm');
@@ -52313,6 +52312,29 @@ define('frontend-cp/components/ko-tags/component', ['exports', 'ember', 'fronten
         if (e.keyCode !== _frontendCpLibKeycodes.up && e.keyCode !== _frontendCpLibKeycodes.down && e.keyCode !== _frontendCpLibKeycodes.enter && e.keyCode !== _frontendCpLibKeycodes.space && e.keyCode !== _frontendCpLibKeycodes.tab) {
           this.updateSuggestions();
           this.set('showDropdown', true);
+        }
+      },
+
+      handleInput: function handleInput(inputValue) {
+        var _this = this;
+
+        this.set('searchTerm', inputValue);
+        if (inputValue.trimLeft().includes(' ')) {
+          var tags = inputValue.trimLeft().split(' ');
+
+          tags.forEach(function (value) {
+            _ember['default'].run.scheduleOnce('afterRender', _this, function () {
+              //Scheduled after the input value has been updated. Required because if text with a space is
+              //copied and pasted the search term is set to '' before the input has drawn so the binding
+              //doesn't fire because it registers the value as already being '' but then input value updates
+              //with the pasted string. Leaving the pasted text in the input and the pasted content converted
+              //into tags.
+              _this.send('addTag', value);
+            });
+          });
+
+          //must be null not empty string otherwise it won't detect changes when a string with spaces is pasted
+          //this.set('searchTerm', null);
         }
       },
 
@@ -52507,7 +52529,7 @@ define("frontend-cp/components/ko-tags/template", ["exports"], function (exports
           morphs[4] = dom.createAttrMorph(element2, 'oninput');
           return morphs;
         },
-        statements: [["attribute", "placeholder", ["get", "addTagText", ["loc", [null, [18, 18], [18, 28]]]]], ["attribute", "value", ["get", "searchTerm", ["loc", [null, [19, 12], [19, 22]]]]], ["attribute", "onkeydown", ["subexpr", "action", ["keyDown"], [], ["loc", [null, [22, 14], [22, 34]]]]], ["attribute", "onkeyup", ["subexpr", "action", ["keyUp"], [], ["loc", [null, [23, 12], [23, 30]]]]], ["attribute", "oninput", ["subexpr", "action", [["subexpr", "mut", [["get", "searchTerm", ["loc", [null, [24, 26], [24, 36]]]]], [], ["loc", [null, [24, 21], [24, 37]]]]], ["value", "target.value"], ["loc", [null, [24, 12], [24, 60]]]]]],
+        statements: [["attribute", "placeholder", ["get", "addTagText", ["loc", [null, [18, 18], [18, 28]]]]], ["attribute", "value", ["get", "searchTerm", ["loc", [null, [19, 12], [19, 22]]]]], ["attribute", "onkeydown", ["subexpr", "action", ["keyDown"], [], ["loc", [null, [22, 14], [22, 34]]]]], ["attribute", "onkeyup", ["subexpr", "action", ["keyUp"], [], ["loc", [null, [23, 12], [23, 30]]]]], ["attribute", "oninput", ["subexpr", "action", ["handleInput"], ["value", "target.value"], ["loc", [null, [24, 12], [24, 57]]]]]],
         locals: [],
         templates: []
       };
@@ -92570,7 +92592,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+86400590"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+b9fbaf8c"});
 }
 
 /* jshint ignore:end */
