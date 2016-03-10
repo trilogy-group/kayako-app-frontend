@@ -7107,11 +7107,11 @@ define("frontend-cp/components/ko-admin/case-fields/index/template", ["exports"]
               buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
                 var element8 = dom.childAt(fragment, [1]);
                 var morphs = new Array(2);
-                morphs[0] = dom.createAttrMorph(element8, 'onclick');
+                morphs[0] = dom.createAttrMorph(element8, 'href');
                 morphs[1] = dom.createMorphAt(element8, 0, 0);
                 return morphs;
               },
-              statements: [["attribute", "onclick", ["subexpr", "action", ["editField", ["get", "systemfield", ["loc", [null, [20, 40], [20, 51]]]]], [], ["loc", [null, [20, 19], [20, 53]]]]], ["inline", "t", ["generic.edit"], [], ["loc", [null, [20, 54], [20, 74]]]]],
+              statements: [["attribute", "href", ["concat", [["subexpr", "href-to", ["session.admin.manage.case-fields.edit", ["get", "systemfield", ["loc", [null, [20, 67], [20, 78]]]]], [], ["loc", [null, [20, 17], [20, 80]]]]]]], ["inline", "t", ["generic.edit"], [], ["loc", [null, [20, 82], [20, 102]]]]],
               locals: [],
               templates: []
             };
@@ -7426,7 +7426,7 @@ define("frontend-cp/components/ko-admin/case-fields/index/template", ["exports"]
                 var element5 = dom.childAt(fragment, [3]);
                 var element6 = dom.childAt(fragment, [5]);
                 var morphs = new Array(6);
-                morphs[0] = dom.createAttrMorph(element4, 'onclick');
+                morphs[0] = dom.createAttrMorph(element4, 'href');
                 morphs[1] = dom.createMorphAt(element4, 0, 0);
                 morphs[2] = dom.createAttrMorph(element5, 'onclick');
                 morphs[3] = dom.createMorphAt(element5, 0, 0);
@@ -7434,7 +7434,7 @@ define("frontend-cp/components/ko-admin/case-fields/index/template", ["exports"]
                 morphs[5] = dom.createMorphAt(element6, 0, 0);
                 return morphs;
               },
-              statements: [["attribute", "onclick", ["subexpr", "action", ["editField", ["get", "customfield", ["loc", [null, [38, 40], [38, 51]]]]], [], ["loc", [null, [38, 19], [38, 53]]]]], ["inline", "t", ["generic.edit"], [], ["loc", [null, [38, 54], [38, 74]]]], ["attribute", "onclick", ["subexpr", "action", ["toggleEnabledStatus", ["get", "customfield", ["loc", [null, [39, 50], [39, 61]]]]], [], ["loc", [null, [39, 19], [39, 63]]]]], ["inline", "t", ["generic.disable"], [], ["loc", [null, [39, 64], [39, 87]]]], ["attribute", "onclick", ["subexpr", "action", ["showDeleteConfirmation", ["get", "customfield", ["loc", [null, [40, 53], [40, 64]]]]], [], ["loc", [null, [40, 19], [40, 66]]]]], ["inline", "t", ["generic.delete"], [], ["loc", [null, [40, 67], [40, 89]]]]],
+              statements: [["attribute", "href", ["concat", [["subexpr", "href-to", ["session.admin.manage.case-fields.edit", ["get", "customfield", ["loc", [null, [38, 67], [38, 78]]]]], [], ["loc", [null, [38, 17], [38, 80]]]]]]], ["inline", "t", ["generic.edit"], [], ["loc", [null, [38, 82], [38, 102]]]], ["attribute", "onclick", ["subexpr", "action", ["toggleEnabledStatus", ["get", "customfield", ["loc", [null, [39, 50], [39, 61]]]]], [], ["loc", [null, [39, 19], [39, 63]]]]], ["inline", "t", ["generic.disable"], [], ["loc", [null, [39, 64], [39, 87]]]], ["attribute", "onclick", ["subexpr", "action", ["showDeleteConfirmation", ["get", "customfield", ["loc", [null, [40, 53], [40, 64]]]]], [], ["loc", [null, [40, 19], [40, 66]]]]], ["inline", "t", ["generic.delete"], [], ["loc", [null, [40, 67], [40, 89]]]]],
               locals: [],
               templates: []
             };
@@ -7811,7 +7811,7 @@ define("frontend-cp/components/ko-admin/case-fields/index/template", ["exports"]
                   var element1 = dom.childAt(fragment, [3]);
                   var element2 = dom.childAt(fragment, [5]);
                   var morphs = new Array(6);
-                  morphs[0] = dom.createAttrMorph(element0, 'onclick');
+                  morphs[0] = dom.createAttrMorph(element0, 'href');
                   morphs[1] = dom.createMorphAt(element0, 0, 0);
                   morphs[2] = dom.createAttrMorph(element1, 'onclick');
                   morphs[3] = dom.createMorphAt(element1, 0, 0);
@@ -7819,7 +7819,7 @@ define("frontend-cp/components/ko-admin/case-fields/index/template", ["exports"]
                   morphs[5] = dom.createMorphAt(element2, 0, 0);
                   return morphs;
                 },
-                statements: [["attribute", "onclick", ["subexpr", "action", ["editField", ["get", "disabledfield", ["loc", [null, [64, 42], [64, 55]]]]], [], ["loc", [null, [64, 21], [64, 57]]]]], ["inline", "t", ["generic.edit"], [], ["loc", [null, [64, 58], [64, 78]]]], ["attribute", "onclick", ["subexpr", "action", ["toggleEnabledStatus", ["get", "disabledfield", ["loc", [null, [65, 52], [65, 65]]]]], [], ["loc", [null, [65, 21], [65, 67]]]]], ["inline", "t", ["generic.enable"], [], ["loc", [null, [65, 68], [65, 90]]]], ["attribute", "onclick", ["subexpr", "action", ["showDeleteConfirmation", ["get", "disabledfield", ["loc", [null, [66, 55], [66, 68]]]]], [], ["loc", [null, [66, 21], [66, 70]]]]], ["inline", "t", ["generic.delete"], [], ["loc", [null, [66, 71], [66, 93]]]]],
+                statements: [["attribute", "href", ["concat", [["subexpr", "href-to", ["session.admin.manage.case-fields.edit", ["get", "disabledfield", ["loc", [null, [64, 69], [64, 82]]]]], [], ["loc", [null, [64, 19], [64, 84]]]]]]], ["inline", "t", ["generic.edit"], [], ["loc", [null, [64, 86], [64, 106]]]], ["attribute", "onclick", ["subexpr", "action", ["toggleEnabledStatus", ["get", "disabledfield", ["loc", [null, [65, 52], [65, 65]]]]], [], ["loc", [null, [65, 21], [65, 67]]]]], ["inline", "t", ["generic.enable"], [], ["loc", [null, [65, 68], [65, 90]]]], ["attribute", "onclick", ["subexpr", "action", ["showDeleteConfirmation", ["get", "disabledfield", ["loc", [null, [66, 55], [66, 68]]]]], [], ["loc", [null, [66, 21], [66, 70]]]]], ["inline", "t", ["generic.delete"], [], ["loc", [null, [66, 71], [66, 93]]]]],
                 locals: [],
                 templates: []
               };
@@ -59988,6 +59988,20 @@ define('frontend-cp/helpers/hash-to-query-params', ['exports', 'ember'], functio
     }
   });
 });
+define('frontend-cp/helpers/href-to', ['exports', 'ember-href-to/helpers/href-to'], function (exports, _emberHrefToHelpersHrefTo) {
+  Object.defineProperty(exports, 'default', {
+    enumerable: true,
+    get: function get() {
+      return _emberHrefToHelpersHrefTo['default'];
+    }
+  });
+  Object.defineProperty(exports, 'hrefTo', {
+    enumerable: true,
+    get: function get() {
+      return _emberHrefToHelpersHrefTo.hrefTo;
+    }
+  });
+});
 define('frontend-cp/helpers/intl-get', ['exports', 'ember-intl/helpers/intl-get'], function (exports, _emberIntlHelpersIntlGet) {
   /**
    * Copyright 2015, Yahoo! Inc.
@@ -84326,46 +84340,6 @@ define("frontend-cp/session/agent/cases/index/suspended-messages/show/template",
           templates: [child0, child1]
         };
       })();
-      var child2 = (function () {
-        return {
-          meta: {
-            "fragmentReason": false,
-            "revision": "Ember@2.4.1",
-            "loc": {
-              "source": null,
-              "start": {
-                "line": 50,
-                "column": 4
-              },
-              "end": {
-                "line": 50,
-                "column": 108
-              }
-            },
-            "moduleName": "frontend-cp/session/agent/cases/index/suspended-messages/show/template.hbs"
-          },
-          isEmpty: false,
-          arity: 0,
-          cachedFragment: null,
-          hasRendered: false,
-          buildFragment: function buildFragment(dom) {
-            var el0 = dom.createDocumentFragment();
-            var el1 = dom.createComment("");
-            dom.appendChild(el0, el1);
-            return el0;
-          },
-          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-            var morphs = new Array(1);
-            morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-            dom.insertBoundary(fragment, 0);
-            dom.insertBoundary(fragment, null);
-            return morphs;
-          },
-          statements: [["inline", "t", ["cases.suspendedMessage.actions.cancel"], [], ["loc", [null, [50, 63], [50, 108]]]]],
-          locals: [],
-          templates: []
-        };
-      })();
       return {
         meta: {
           "fragmentReason": {
@@ -84380,7 +84354,7 @@ define("frontend-cp/session/agent/cases/index/suspended-messages/show/template",
               "column": 0
             },
             "end": {
-              "line": 54,
+              "line": 50,
               "column": 0
             }
           },
@@ -84563,9 +84537,7 @@ define("frontend-cp/session/agent/cases/index/suspended-messages/show/template",
           var el4 = dom.createTextNode("\n      ");
           dom.appendChild(el3, el4);
           dom.appendChild(el2, el3);
-          var el3 = dom.createTextNode("\n");
-          dom.appendChild(el2, el3);
-          var el3 = dom.createTextNode("    ");
+          var el3 = dom.createTextNode("\n    ");
           dom.appendChild(el2, el3);
           dom.appendChild(el1, el2);
           var el2 = dom.createTextNode("\n  ");
@@ -84577,7 +84549,9 @@ define("frontend-cp/session/agent/cases/index/suspended-messages/show/template",
           dom.setAttribute(el1, "class", "ko-modal__content__footer suspended-message-modal__footer");
           var el2 = dom.createTextNode("\n    ");
           dom.appendChild(el1, el2);
-          var el2 = dom.createComment("");
+          var el2 = dom.createElement("a");
+          var el3 = dom.createComment("");
+          dom.appendChild(el2, el3);
           dom.appendChild(el1, el2);
           var el2 = dom.createTextNode("\n    ");
           dom.appendChild(el1, el2);
@@ -84609,9 +84583,10 @@ define("frontend-cp/session/agent/cases/index/suspended-messages/show/template",
           var element5 = dom.childAt(element0, [9]);
           var element6 = dom.childAt(element0, [11]);
           var element7 = dom.childAt(fragment, [5]);
-          var element8 = dom.childAt(element7, [3]);
-          var element9 = dom.childAt(element7, [5]);
-          var morphs = new Array(18);
+          var element8 = dom.childAt(element7, [1]);
+          var element9 = dom.childAt(element7, [3]);
+          var element10 = dom.childAt(element7, [5]);
+          var morphs = new Array(19);
           morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1, 1]), 0, 0);
           morphs[1] = dom.createMorphAt(dom.childAt(element1, [1, 0]), 0, 0);
           morphs[2] = dom.createMorphAt(dom.childAt(element1, [3]), 0, 0);
@@ -84625,16 +84600,17 @@ define("frontend-cp/session/agent/cases/index/suspended-messages/show/template",
           morphs[10] = dom.createMorphAt(dom.childAt(element5, [3]), 0, 0);
           morphs[11] = dom.createMorphAt(dom.childAt(element6, [1, 0]), 0, 0);
           morphs[12] = dom.createMorphAt(dom.childAt(element6, [3, 1]), 1, 1);
-          morphs[13] = dom.createMorphAt(element7, 1, 1);
-          morphs[14] = dom.createElementMorph(element8);
-          morphs[15] = dom.createMorphAt(element8, 0, 0);
-          morphs[16] = dom.createElementMorph(element9);
-          morphs[17] = dom.createMorphAt(element9, 0, 0);
+          morphs[13] = dom.createAttrMorph(element8, 'href');
+          morphs[14] = dom.createMorphAt(element8, 0, 0);
+          morphs[15] = dom.createElementMorph(element9);
+          morphs[16] = dom.createMorphAt(element9, 0, 0);
+          morphs[17] = dom.createElementMorph(element10);
+          morphs[18] = dom.createMorphAt(element10, 0, 0);
           return morphs;
         },
-        statements: [["inline", "t", ["cases.suspendedMessage.title"], [], ["loc", [null, [3, 54], [3, 90]]]], ["inline", "t", ["cases.suspendedMessage.table.from"], [], ["loc", [null, [8, 20], [8, 61]]]], ["content", "model.from", ["loc", [null, [9, 12], [9, 26]]]], ["inline", "t", ["cases.suspendedMessage.table.subject"], [], ["loc", [null, [12, 20], [12, 64]]]], ["content", "model.subject", ["loc", [null, [13, 12], [13, 29]]]], ["inline", "t", ["cases.suspendedMessage.table.suspensionCode"], [], ["loc", [null, [16, 20], [16, 71]]]], ["content", "model.suspensionCode", ["loc", [null, [17, 12], [17, 36]]]], ["inline", "t", ["cases.suspendedMessage.table.createdAt"], [], ["loc", [null, [20, 20], [20, 66]]]], ["content", "model.createdAt", ["loc", [null, [21, 12], [21, 31]]]], ["inline", "t", ["cases.suspendedMessage.table.to"], [], ["loc", [null, [24, 20], [24, 59]]]], ["content", "model.to", ["loc", [null, [25, 12], [25, 24]]]], ["inline", "t", ["cases.suspendedMessage.table.text"], [], ["loc", [null, [28, 20], [28, 61]]]], ["block", "if", [["get", "model.text", ["loc", [null, [31, 18], [31, 28]]]]], [], 0, 1, ["loc", [null, [31, 12], [39, 19]]]], ["block", "link-to", ["session.agent.cases.index.suspended-messages"], [], 2, null, ["loc", [null, [50, 4], [50, 120]]]], ["element", "action", ["permanentlyDelete"], [], ["loc", [null, [51, 73], [51, 103]]]], ["inline", "t", ["cases.suspendedMessage.actions.permanentlyDelete"], [], ["loc", [null, [51, 104], [51, 160]]]], ["element", "action", ["allowThrough"], [], ["loc", [null, [52, 75], [52, 100]]]], ["inline", "t", ["cases.suspendedMessage.actions.allowThrough"], [], ["loc", [null, [52, 101], [52, 152]]]]],
+        statements: [["inline", "t", ["cases.suspendedMessage.title"], [], ["loc", [null, [3, 54], [3, 90]]]], ["inline", "t", ["cases.suspendedMessage.table.from"], [], ["loc", [null, [8, 20], [8, 61]]]], ["content", "model.from", ["loc", [null, [9, 12], [9, 26]]]], ["inline", "t", ["cases.suspendedMessage.table.subject"], [], ["loc", [null, [12, 20], [12, 64]]]], ["content", "model.subject", ["loc", [null, [13, 12], [13, 29]]]], ["inline", "t", ["cases.suspendedMessage.table.suspensionCode"], [], ["loc", [null, [16, 20], [16, 71]]]], ["content", "model.suspensionCode", ["loc", [null, [17, 12], [17, 36]]]], ["inline", "t", ["cases.suspendedMessage.table.createdAt"], [], ["loc", [null, [20, 20], [20, 66]]]], ["content", "model.createdAt", ["loc", [null, [21, 12], [21, 31]]]], ["inline", "t", ["cases.suspendedMessage.table.to"], [], ["loc", [null, [24, 20], [24, 59]]]], ["content", "model.to", ["loc", [null, [25, 12], [25, 24]]]], ["inline", "t", ["cases.suspendedMessage.table.text"], [], ["loc", [null, [28, 20], [28, 61]]]], ["block", "if", [["get", "model.text", ["loc", [null, [31, 18], [31, 28]]]]], [], 0, 1, ["loc", [null, [31, 12], [39, 19]]]], ["attribute", "href", ["concat", [["subexpr", "href-to", ["session.agent.cases.index.suspended-messages.index"], [], ["loc", [null, [46, 13], [46, 77]]]]]]], ["inline", "t", ["cases.suspendedMessage.actions.cancel"], [], ["loc", [null, [46, 79], [46, 124]]]], ["element", "action", ["permanentlyDelete"], [], ["loc", [null, [47, 73], [47, 103]]]], ["inline", "t", ["cases.suspendedMessage.actions.permanentlyDelete"], [], ["loc", [null, [47, 104], [47, 160]]]], ["element", "action", ["allowThrough"], [], ["loc", [null, [48, 75], [48, 100]]]], ["inline", "t", ["cases.suspendedMessage.actions.allowThrough"], [], ["loc", [null, [48, 101], [48, 152]]]]],
         locals: [],
-        templates: [child0, child1, child2]
+        templates: [child0, child1]
       };
     })();
     return {
@@ -84651,7 +84627,7 @@ define("frontend-cp/session/agent/cases/index/suspended-messages/show/template",
             "column": 0
           },
           "end": {
-            "line": 54,
+            "line": 50,
             "column": 13
           }
         },
@@ -84674,7 +84650,7 @@ define("frontend-cp/session/agent/cases/index/suspended-messages/show/template",
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["block", "ko-modal", [], ["class", "suspended-message-modal"], 0, null, ["loc", [null, [1, 0], [54, 13]]]]],
+      statements: [["block", "ko-modal", [], ["class", "suspended-message-modal"], 0, null, ["loc", [null, [1, 0], [50, 13]]]]],
       locals: [],
       templates: [child0]
     };
@@ -92594,7 +92570,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+0640f32c"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+86400590"});
 }
 
 /* jshint ignore:end */

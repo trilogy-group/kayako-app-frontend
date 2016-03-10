@@ -8192,7 +8192,7 @@ define('frontend-cp/tests/acceptance/suspended-messages-test', ['exports', 'fron
       assert.equal(currentURL(), '/agent/cases/suspended-messages/3');
       assert.equal($('.suspended-message-modal').length, 1, 'A modal opened with the message clicked');
       assert.equal($('.suspended-message-modal__table-row:eq(0) td:eq(1)').text().trim(), 'client2@example.com', 'The data seems correct');
-      click('a:contains("Cancel")');
+      nativeClick('a:contains("Cancel")');
     });
 
     andThen(function () {
