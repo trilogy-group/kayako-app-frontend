@@ -1,5 +1,34 @@
 {
-  "no-results": "No results found",
+  "noresults": "No results found",
   "searching": "Searching...",
-  "placeholder": "Search..."
+  "placeholder": "Search...",
+
+  "nopreview": "Mouse over a search result to see a preview.",
+  "start_typing_to_search": "Start typing to search",
+  "searching": "Searching...",
+
+  "matchingsnippet": "Matching text",
+  "nosnippet": "Sorry, we don’t have a preview for this result.",
+
+  "searchresults": "Search results for \"{term}\"",
+  "seemore": "See more",
+
+  "case.id": "Case ID",
+  "case.subject": "Subject",
+  "case.priority.label": "Priority",
+  "case.status.label": "Status",
+  "case.assigneeAgent.fullName": "Assigned agent",
+  "case.notfound": "There are no cases here.",
+
+  "user.id": "User ID",
+  "user.fullName": "Subject",
+  "user.primaryEmail.email": "Primary email",
+  "user.organization.name": "Organization",
+  "user.lastActivityAt": "Last seen",
+  "user.notfound": "There are no users here.",
+
+  "organization.id": "Org ID",
+  "organization.name": "Name",
+  "organization.updatedAt": "Last updated",
+  "organization.notfound": "There are no organizations here."
 }
