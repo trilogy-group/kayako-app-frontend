@@ -74907,26 +74907,24 @@ define('frontend-cp/services/api-adapter', ['exports', 'ember'], function (expor
     store: service('store'),
 
     trashCase: function trashCase(caseId) {
-      var _this = this;
-
-      var adapter = getOwner(this).lookup('adapter:case');
-      var url = adapter.namespace + '/cases/' + caseId + '/trash';
-      return adapter.ajax(url, 'put').then(function (response) {
-        var store = _this.get('store');
-        var state = response.data.state;
-        store.update('case', { id: caseId, state: state });
-      });
+      return this._updateCaseState(caseId, '/cases/' + caseId + '/trash');
     },
 
     restoreCase: function restoreCase(caseId) {
-      var _this2 = this;
+      return this._updateCaseState(caseId, '/cases/' + caseId + '/restore');
+    },
+
+    _updateCaseState: function _updateCaseState(caseId, path) {
+      var _this = this;
 
       var adapter = getOwner(this).lookup('adapter:case');
-      var url = adapter.namespace + '/cases/' + caseId + '/restore';
+      var url = adapter.namespace + path;
       return adapter.ajax(url, 'put').then(function (response) {
-        var store = _this2.get('store');
-        var state = response.data.state;
-        store.update('case', { id: caseId, state: state });
+        _this.get('store').pushPayload('case', {
+          id: caseId,
+          type: 'case',
+          attributes: { state: response.data.state }
+        });
       });
     }
   });
@@ -99788,7 +99786,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+99f28643"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+53b02a37"});
 }
 
 /* jshint ignore:end */
