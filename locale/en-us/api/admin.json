@@ -464,5 +464,20 @@
   "sla.edit.operational_hours.title": "Operational hours",
   "sla.edit.operational_hours.business_hours": "Business hours",
   "sla.edit.operational_hours.calendar_hours": "Calendar hours",
-  "sla.edit.note": "When cases are set to certain statuses, SLA timers may pause (for example, while you are waiting to hear back from the customer). This behaviour can be configured under status settings."
+  "sla.edit.note": "When cases are set to certain statuses, SLA timers may pause (for example, while you are waiting to hear back from the customer). This behaviour can be configured under status settings.",
+
+  "facebook.headings.index": "Facebook",
+  "facebook.buttons.create_account": "Connect a new page",
+  "facebook.deleted.message": "Facebook account deleted successfully",
+  "facebook.connection_lost": "connection lost",
+  "facebook.reconnect": "Reconnect",
+  "facebook.edit.heading": "Facebook / {title}",
+  "facebook.heading.page_settings": "What to capture",
+  "facebook.label.route_messages": "Messages",
+  "facebook.help.route_messages": "Capturing Facebook messages",
+  "facebook.label.route_posts": "Posts and Comments",
+  "facebook.help.route_posts": "Capturing customer posts and comments",
+  "facebook.no_pages": "No pages found",
+  "facebook.see_facebook_account": "Don't see your Facebook page?",
+  "facebook.connect_facebook_account": "Connect your Facebook account"
 }
