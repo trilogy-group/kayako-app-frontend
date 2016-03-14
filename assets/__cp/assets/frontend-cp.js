@@ -83831,10 +83831,10 @@ define("frontend-cp/session/admin/manage/case-forms/index/template", ["exports"]
                 return el0;
               },
               buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-                var element5 = dom.childAt(fragment, [1]);
+                var element7 = dom.childAt(fragment, [1]);
                 var morphs = new Array(2);
-                morphs[0] = dom.createMorphAt(dom.childAt(element5, [1]), 0, 0);
-                morphs[1] = dom.createMorphAt(element5, 2, 2);
+                morphs[0] = dom.createMorphAt(dom.childAt(element7, [1]), 0, 0);
+                morphs[1] = dom.createMorphAt(element7, 2, 2);
                 return morphs;
               },
               statements: [["content", "form.title", ["loc", [null, [17, 31], [17, 45]]]], ["block", "if", [["get", "form.isDefault", ["loc", [null, [17, 58], [17, 72]]]]], [], 0, null, ["loc", [null, [17, 52], [17, 138]]]]],
@@ -83878,10 +83878,10 @@ define("frontend-cp/session/admin/manage/case-forms/index/template", ["exports"]
                   return el0;
                 },
                 buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-                  var element3 = dom.childAt(fragment, [1]);
+                  var element5 = dom.childAt(fragment, [1]);
                   var morphs = new Array(2);
-                  morphs[0] = dom.createAttrMorph(element3, 'onclick');
-                  morphs[1] = dom.createMorphAt(element3, 0, 0);
+                  morphs[0] = dom.createAttrMorph(element5, 'onclick');
+                  morphs[1] = dom.createMorphAt(element5, 0, 0);
                   return morphs;
                 },
                 statements: [["attribute", "onclick", ["subexpr", "action", ["toggleEnabledStatus", ["get", "form", ["loc", [null, [23, 54], [23, 58]]]]], [], ["loc", [null, [23, 23], [23, 60]]]]], ["inline", "t", ["generic.disable"], [], ["loc", [null, [23, 61], [23, 84]]]]],
@@ -83924,10 +83924,10 @@ define("frontend-cp/session/admin/manage/case-forms/index/template", ["exports"]
                   return el0;
                 },
                 buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-                  var element2 = dom.childAt(fragment, [1]);
+                  var element4 = dom.childAt(fragment, [1]);
                   var morphs = new Array(2);
-                  morphs[0] = dom.createAttrMorph(element2, 'onclick');
-                  morphs[1] = dom.createMorphAt(element2, 0, 0);
+                  morphs[0] = dom.createAttrMorph(element4, 'onclick');
+                  morphs[1] = dom.createMorphAt(element4, 0, 0);
                   return morphs;
                 },
                 statements: [["attribute", "onclick", ["subexpr", "action", ["makeDefault", ["get", "form", ["loc", [null, [26, 46], [26, 50]]]]], [], ["loc", [null, [26, 23], [26, 52]]]]], ["inline", "t", ["generic.make_default"], [], ["loc", [null, [26, 53], [26, 81]]]]],
@@ -83970,10 +83970,10 @@ define("frontend-cp/session/admin/manage/case-forms/index/template", ["exports"]
                   return el0;
                 },
                 buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-                  var element1 = dom.childAt(fragment, [1]);
+                  var element3 = dom.childAt(fragment, [1]);
                   var morphs = new Array(2);
-                  morphs[0] = dom.createAttrMorph(element1, 'onclick');
-                  morphs[1] = dom.createMorphAt(element1, 0, 0);
+                  morphs[0] = dom.createAttrMorph(element3, 'onclick');
+                  morphs[1] = dom.createMorphAt(element3, 0, 0);
                   return morphs;
                 },
                 statements: [["attribute", "onclick", ["subexpr", "action", ["showDeleteConfirmation", ["get", "form", ["loc", [null, [29, 57], [29, 61]]]]], [], ["loc", [null, [29, 23], [29, 63]]]]], ["inline", "t", ["generic.delete"], [], ["loc", [null, [29, 64], [29, 86]]]]],
@@ -84021,10 +84021,10 @@ define("frontend-cp/session/admin/manage/case-forms/index/template", ["exports"]
                 return el0;
               },
               buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-                var element4 = dom.childAt(fragment, [1]);
+                var element6 = dom.childAt(fragment, [1]);
                 var morphs = new Array(5);
-                morphs[0] = dom.createAttrMorph(element4, 'onclick');
-                morphs[1] = dom.createMorphAt(element4, 0, 0);
+                morphs[0] = dom.createAttrMorph(element6, 'onclick');
+                morphs[1] = dom.createMorphAt(element6, 0, 0);
                 morphs[2] = dom.createMorphAt(fragment, 3, 3, contextualElement);
                 morphs[3] = dom.createMorphAt(fragment, 4, 4, contextualElement);
                 morphs[4] = dom.createMorphAt(fragment, 5, 5, contextualElement);
@@ -84219,6 +84219,52 @@ define("frontend-cp/session/admin/manage/case-forms/index/template", ["exports"]
               };
             })();
             var child1 = (function () {
+              var child0 = (function () {
+                return {
+                  meta: {
+                    "fragmentReason": false,
+                    "revision": "Ember@2.4.1",
+                    "loc": {
+                      "source": null,
+                      "start": {
+                        "line": 50,
+                        "column": 8
+                      },
+                      "end": {
+                        "line": 52,
+                        "column": 8
+                      }
+                    },
+                    "moduleName": "frontend-cp/session/admin/manage/case-forms/index/template.hbs"
+                  },
+                  isEmpty: false,
+                  arity: 0,
+                  cachedFragment: null,
+                  hasRendered: false,
+                  buildFragment: function buildFragment(dom) {
+                    var el0 = dom.createDocumentFragment();
+                    var el1 = dom.createTextNode("          | ");
+                    dom.appendChild(el0, el1);
+                    var el1 = dom.createElement("a");
+                    var el2 = dom.createComment("");
+                    dom.appendChild(el1, el2);
+                    dom.appendChild(el0, el1);
+                    var el1 = dom.createTextNode("\n");
+                    dom.appendChild(el0, el1);
+                    return el0;
+                  },
+                  buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                    var element0 = dom.childAt(fragment, [1]);
+                    var morphs = new Array(2);
+                    morphs[0] = dom.createAttrMorph(element0, 'onclick');
+                    morphs[1] = dom.createMorphAt(element0, 0, 0);
+                    return morphs;
+                  },
+                  statements: [["attribute", "onclick", ["subexpr", "action", ["showDeleteConfirmation", ["get", "form", ["loc", [null, [51, 57], [51, 61]]]]], [], ["loc", [null, [51, 23], [51, 63]]]]], ["inline", "t", ["generic.delete"], [], ["loc", [null, [51, 64], [51, 86]]]]],
+                  locals: [],
+                  templates: []
+                };
+              })();
               return {
                 meta: {
                   "fragmentReason": false,
@@ -84230,7 +84276,7 @@ define("frontend-cp/session/admin/manage/case-forms/index/template", ["exports"]
                       "column": 6
                     },
                     "end": {
-                      "line": 49,
+                      "line": 53,
                       "column": 6
                     }
                   },
@@ -84248,20 +84294,33 @@ define("frontend-cp/session/admin/manage/case-forms/index/template", ["exports"]
                   var el2 = dom.createComment("");
                   dom.appendChild(el1, el2);
                   dom.appendChild(el0, el1);
+                  var el1 = dom.createTextNode(" |\n        ");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createElement("a");
+                  var el2 = dom.createComment("");
+                  dom.appendChild(el1, el2);
+                  dom.appendChild(el0, el1);
                   var el1 = dom.createTextNode("\n");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createComment("");
                   dom.appendChild(el0, el1);
                   return el0;
                 },
                 buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-                  var element0 = dom.childAt(fragment, [1]);
-                  var morphs = new Array(2);
-                  morphs[0] = dom.createAttrMorph(element0, 'onclick');
-                  morphs[1] = dom.createMorphAt(element0, 0, 0);
+                  var element1 = dom.childAt(fragment, [1]);
+                  var element2 = dom.childAt(fragment, [3]);
+                  var morphs = new Array(5);
+                  morphs[0] = dom.createAttrMorph(element1, 'onclick');
+                  morphs[1] = dom.createMorphAt(element1, 0, 0);
+                  morphs[2] = dom.createAttrMorph(element2, 'onclick');
+                  morphs[3] = dom.createMorphAt(element2, 0, 0);
+                  morphs[4] = dom.createMorphAt(fragment, 5, 5, contextualElement);
+                  dom.insertBoundary(fragment, null);
                   return morphs;
                 },
-                statements: [["attribute", "onclick", ["subexpr", "action", ["toggleEnabledStatus", ["get", "form", ["loc", [null, [48, 50], [48, 54]]]]], [], ["loc", [null, [48, 19], [48, 56]]]]], ["inline", "t", ["generic.enable"], [], ["loc", [null, [48, 57], [48, 79]]]]],
+                statements: [["attribute", "onclick", ["subexpr", "action", ["editForm", ["get", "form", ["loc", [null, [48, 39], [48, 43]]]]], [], ["loc", [null, [48, 19], [48, 45]]]]], ["inline", "t", ["generic.edit"], [], ["loc", [null, [48, 46], [48, 66]]]], ["attribute", "onclick", ["subexpr", "action", ["toggleEnabledStatus", ["get", "form", ["loc", [null, [49, 50], [49, 54]]]]], [], ["loc", [null, [49, 19], [49, 56]]]]], ["inline", "t", ["generic.enable"], [], ["loc", [null, [49, 57], [49, 79]]]], ["block", "if", [["get", "form.canBeDeleted", ["loc", [null, [50, 14], [50, 31]]]]], [], 0, null, ["loc", [null, [50, 8], [52, 15]]]]],
                 locals: [],
-                templates: []
+                templates: [child0]
               };
             })();
             return {
@@ -84275,7 +84334,7 @@ define("frontend-cp/session/admin/manage/case-forms/index/template", ["exports"]
                     "column": 4
                   },
                   "end": {
-                    "line": 50,
+                    "line": 54,
                     "column": 4
                   }
                 },
@@ -84301,7 +84360,7 @@ define("frontend-cp/session/admin/manage/case-forms/index/template", ["exports"]
                 dom.insertBoundary(fragment, null);
                 return morphs;
               },
-              statements: [["block", "ko-simple-list/cell", [], [], 0, null, ["loc", [null, [44, 6], [46, 30]]]], ["block", "ko-simple-list/actions", [], [], 1, null, ["loc", [null, [47, 6], [49, 33]]]]],
+              statements: [["block", "ko-simple-list/cell", [], [], 0, null, ["loc", [null, [44, 6], [46, 30]]]], ["block", "ko-simple-list/actions", [], [], 1, null, ["loc", [null, [47, 6], [53, 33]]]]],
               locals: [],
               templates: [child0, child1]
             };
@@ -84317,7 +84376,7 @@ define("frontend-cp/session/admin/manage/case-forms/index/template", ["exports"]
                   "column": 2
                 },
                 "end": {
-                  "line": 51,
+                  "line": 55,
                   "column": 2
                 }
               },
@@ -84340,7 +84399,7 @@ define("frontend-cp/session/admin/manage/case-forms/index/template", ["exports"]
               dom.insertBoundary(fragment, null);
               return morphs;
             },
-            statements: [["block", "ko-simple-list/row", [], ["class", ["subexpr", "qa-cls", [" qa-admin_case-forms__list-row"], [], ["loc", [null, [43, 32], [43, 73]]]]], 0, null, ["loc", [null, [43, 4], [50, 27]]]]],
+            statements: [["block", "ko-simple-list/row", [], ["class", ["subexpr", "qa-cls", [" qa-admin_case-forms__list-row"], [], ["loc", [null, [43, 32], [43, 73]]]]], 0, null, ["loc", [null, [43, 4], [54, 27]]]]],
             locals: ["form"],
             templates: [child0]
           };
@@ -84356,7 +84415,7 @@ define("frontend-cp/session/admin/manage/case-forms/index/template", ["exports"]
                 "column": 0
               },
               "end": {
-                "line": 52,
+                "line": 56,
                 "column": 0
               }
             },
@@ -84392,7 +84451,7 @@ define("frontend-cp/session/admin/manage/case-forms/index/template", ["exports"]
             dom.insertBoundary(fragment, null);
             return morphs;
           },
-          statements: [["inline", "t", ["generic.disabled"], [], ["loc", [null, [40, 4], [40, 28]]]], ["block", "each", [["get", "disabledForms", ["loc", [null, [42, 10], [42, 23]]]]], [], 0, null, ["loc", [null, [42, 2], [51, 11]]]]],
+          statements: [["inline", "t", ["generic.disabled"], [], ["loc", [null, [40, 4], [40, 28]]]], ["block", "each", [["get", "disabledForms", ["loc", [null, [42, 10], [42, 23]]]]], [], 0, null, ["loc", [null, [42, 2], [55, 11]]]]],
           locals: [],
           templates: [child0]
         };
@@ -84408,7 +84467,7 @@ define("frontend-cp/session/admin/manage/case-forms/index/template", ["exports"]
               "column": 0
             },
             "end": {
-              "line": 53,
+              "line": 57,
               "column": 0
             }
           },
@@ -84431,7 +84490,7 @@ define("frontend-cp/session/admin/manage/case-forms/index/template", ["exports"]
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [["block", "ko-simple-list", [], ["class", ["subexpr", "qa-cls", ["qa-admin_case-forms__disabled-list"], [], ["loc", [null, [38, 24], [38, 69]]]]], 0, null, ["loc", [null, [38, 0], [52, 19]]]]],
+        statements: [["block", "ko-simple-list", [], ["class", ["subexpr", "qa-cls", ["qa-admin_case-forms__disabled-list"], [], ["loc", [null, [38, 24], [38, 69]]]]], 0, null, ["loc", [null, [38, 0], [56, 19]]]]],
         locals: [],
         templates: [child0]
       };
@@ -84450,7 +84509,7 @@ define("frontend-cp/session/admin/manage/case-forms/index/template", ["exports"]
             "column": 0
           },
           "end": {
-            "line": 54,
+            "line": 58,
             "column": 0
           }
         },
@@ -84483,7 +84542,7 @@ define("frontend-cp/session/admin/manage/case-forms/index/template", ["exports"]
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["inline", "ko-admin/page-header", [], ["title", ["subexpr", "t", ["admin.caseforms.title"], [], ["loc", [null, [2, 8], [2, 35]]]], "buttonText", ["subexpr", "t", ["admin.caseforms.buttons.add_new_caseform"], [], ["loc", [null, [3, 13], [3, 59]]]], "buttonClass", ["subexpr", "qa-cls", ["qa-admin_case-forms__new-button"], [], ["loc", [null, [4, 14], [4, 56]]]], "cancelButtonClass", ["subexpr", "qa-cls", ["qa-admin_case-forms__cancel-button"], [], ["loc", [null, [5, 20], [5, 65]]]], "onSave", ["subexpr", "action", ["transitionToNewCaseFormRoute"], [], ["loc", [null, [6, 9], [6, 48]]]]], ["loc", [null, [1, 0], [7, 2]]]], ["block", "ko-simple-list", [], ["class", ["subexpr", "qa-cls", ["qa-admin_case-forms__enabled-list"], [], ["loc", [null, [9, 24], [9, 68]]]]], 0, null, ["loc", [null, [9, 0], [34, 19]]]], ["block", "if", [["get", "disabledForms", ["loc", [null, [37, 6], [37, 19]]]]], [], 1, null, ["loc", [null, [37, 0], [53, 7]]]]],
+      statements: [["inline", "ko-admin/page-header", [], ["title", ["subexpr", "t", ["admin.caseforms.title"], [], ["loc", [null, [2, 8], [2, 35]]]], "buttonText", ["subexpr", "t", ["admin.caseforms.buttons.add_new_caseform"], [], ["loc", [null, [3, 13], [3, 59]]]], "buttonClass", ["subexpr", "qa-cls", ["qa-admin_case-forms__new-button"], [], ["loc", [null, [4, 14], [4, 56]]]], "cancelButtonClass", ["subexpr", "qa-cls", ["qa-admin_case-forms__cancel-button"], [], ["loc", [null, [5, 20], [5, 65]]]], "onSave", ["subexpr", "action", ["transitionToNewCaseFormRoute"], [], ["loc", [null, [6, 9], [6, 48]]]]], ["loc", [null, [1, 0], [7, 2]]]], ["block", "ko-simple-list", [], ["class", ["subexpr", "qa-cls", ["qa-admin_case-forms__enabled-list"], [], ["loc", [null, [9, 24], [9, 68]]]]], 0, null, ["loc", [null, [9, 0], [34, 19]]]], ["block", "if", [["get", "disabledForms", ["loc", [null, [37, 6], [37, 19]]]]], [], 1, null, ["loc", [null, [37, 0], [57, 7]]]]],
       locals: [],
       templates: [child0, child1]
     };
@@ -85469,10 +85528,10 @@ define("frontend-cp/session/admin/manage/views/index/template", ["exports"], fun
               return el0;
             },
             buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-              var element12 = dom.childAt(fragment, [1]);
+              var element13 = dom.childAt(fragment, [1]);
               var morphs = new Array(2);
-              morphs[0] = dom.createMorphAt(dom.childAt(element12, [1]), 0, 0);
-              morphs[1] = dom.createMorphAt(dom.childAt(element12, [3]), 0, 0);
+              morphs[0] = dom.createMorphAt(dom.childAt(element13, [1]), 0, 0);
+              morphs[1] = dom.createMorphAt(dom.childAt(element13, [3]), 0, 0);
               return morphs;
             },
             statements: [["content", "inboxView.title", ["loc", [null, [11, 29], [11, 48]]]], ["inline", "t", ["admin.caseforms.label.system"], [], ["loc", [null, [12, 32], [12, 68]]]]],
@@ -85524,10 +85583,10 @@ define("frontend-cp/session/admin/manage/views/index/template", ["exports"], fun
               return el0;
             },
             buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-              var element11 = dom.childAt(fragment, [1]);
+              var element12 = dom.childAt(fragment, [1]);
               var morphs = new Array(2);
-              morphs[0] = dom.createMorphAt(element11, 1, 1);
-              morphs[1] = dom.createMorphAt(element11, 3, 3);
+              morphs[0] = dom.createMorphAt(element12, 1, 1);
+              morphs[1] = dom.createMorphAt(element12, 3, 3);
               return morphs;
             },
             statements: [["inline", "t", ["generic.shared_with"], [], ["loc", [null, [17, 8], [17, 35]]]], ["content", "inboxView.visibilityString", ["loc", [null, [17, 36], [17, 66]]]]],
@@ -85678,10 +85737,10 @@ define("frontend-cp/session/admin/manage/views/index/template", ["exports"], fun
                 return el0;
               },
               buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-                var element10 = dom.childAt(fragment, [1]);
+                var element11 = dom.childAt(fragment, [1]);
                 var morphs = new Array(2);
-                morphs[0] = dom.createMorphAt(element10, 1, 1);
-                morphs[1] = dom.createMorphAt(element10, 3, 3);
+                morphs[0] = dom.createMorphAt(element11, 1, 1);
+                morphs[1] = dom.createMorphAt(element11, 3, 3);
                 return morphs;
               },
               statements: [["inline", "t", ["generic.shared_with"], [], ["loc", [null, [32, 10], [32, 37]]]], ["content", "enabledView.visibilityString", ["loc", [null, [32, 38], [32, 70]]]]],
@@ -85750,16 +85809,16 @@ define("frontend-cp/session/admin/manage/views/index/template", ["exports"], fun
                 return el0;
               },
               buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-                var element7 = dom.childAt(fragment, [1]);
-                var element8 = dom.childAt(fragment, [5]);
-                var element9 = dom.childAt(fragment, [9]);
+                var element8 = dom.childAt(fragment, [1]);
+                var element9 = dom.childAt(fragment, [5]);
+                var element10 = dom.childAt(fragment, [9]);
                 var morphs = new Array(6);
-                morphs[0] = dom.createAttrMorph(element7, 'onclick');
-                morphs[1] = dom.createMorphAt(element7, 0, 0);
-                morphs[2] = dom.createAttrMorph(element8, 'onclick');
-                morphs[3] = dom.createMorphAt(element8, 0, 0);
-                morphs[4] = dom.createAttrMorph(element9, 'onclick');
-                morphs[5] = dom.createMorphAt(element9, 0, 0);
+                morphs[0] = dom.createAttrMorph(element8, 'onclick');
+                morphs[1] = dom.createMorphAt(element8, 0, 0);
+                morphs[2] = dom.createAttrMorph(element9, 'onclick');
+                morphs[3] = dom.createMorphAt(element9, 0, 0);
+                morphs[4] = dom.createAttrMorph(element10, 'onclick');
+                morphs[5] = dom.createMorphAt(element10, 0, 0);
                 return morphs;
               },
               statements: [["attribute", "onclick", ["subexpr", "action", ["editView", ["get", "enabledView", ["loc", [null, [36, 39], [36, 50]]]]], [], ["loc", [null, [36, 19], [36, 52]]]]], ["inline", "t", ["generic.edit"], [], ["loc", [null, [36, 53], [36, 73]]]], ["attribute", "onclick", ["subexpr", "action", ["toggleEnabledStatus", ["get", "enabledView", ["loc", [null, [38, 50], [38, 61]]]]], [], ["loc", [null, [38, 19], [38, 63]]]]], ["inline", "t", ["generic.disable"], [], ["loc", [null, [38, 64], [38, 87]]]], ["attribute", "onclick", ["subexpr", "action", ["showDeleteConfirmation", ["get", "enabledView", ["loc", [null, [40, 53], [40, 64]]]]], [], ["loc", [null, [40, 19], [40, 67]]]]], ["inline", "t", ["generic.delete"], [], ["loc", [null, [40, 68], [40, 90]]]]],
@@ -85901,10 +85960,10 @@ define("frontend-cp/session/admin/manage/views/index/template", ["exports"], fun
               return el0;
             },
             buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-              var element6 = dom.childAt(fragment, [1]);
+              var element7 = dom.childAt(fragment, [1]);
               var morphs = new Array(2);
-              morphs[0] = dom.createMorphAt(dom.childAt(element6, [1]), 0, 0);
-              morphs[1] = dom.createMorphAt(dom.childAt(element6, [3]), 0, 0);
+              morphs[0] = dom.createMorphAt(dom.childAt(element7, [1]), 0, 0);
+              morphs[1] = dom.createMorphAt(dom.childAt(element7, [3]), 0, 0);
               return morphs;
             },
             statements: [["inline", "t", ["cases.suspendedMessages.title"], [], ["loc", [null, [48, 29], [48, 66]]]], ["inline", "t", ["admin.caseforms.label.system"], [], ["loc", [null, [49, 32], [49, 68]]]]],
@@ -85956,10 +86015,10 @@ define("frontend-cp/session/admin/manage/views/index/template", ["exports"], fun
               return el0;
             },
             buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-              var element5 = dom.childAt(fragment, [1]);
+              var element6 = dom.childAt(fragment, [1]);
               var morphs = new Array(2);
-              morphs[0] = dom.createMorphAt(element5, 1, 1);
-              morphs[1] = dom.createMorphAt(element5, 3, 3);
+              morphs[0] = dom.createMorphAt(element6, 1, 1);
+              morphs[1] = dom.createMorphAt(element6, 3, 3);
               return morphs;
             },
             statements: [["inline", "t", ["generic.shared_with"], [], ["loc", [null, [54, 8], [54, 35]]]], ["content", "trashView.visibilityString", ["loc", [null, [54, 36], [54, 66]]]]],
@@ -86065,10 +86124,10 @@ define("frontend-cp/session/admin/manage/views/index/template", ["exports"], fun
               return el0;
             },
             buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-              var element4 = dom.childAt(fragment, [1]);
+              var element5 = dom.childAt(fragment, [1]);
               var morphs = new Array(2);
-              morphs[0] = dom.createMorphAt(dom.childAt(element4, [1]), 0, 0);
-              morphs[1] = dom.createMorphAt(dom.childAt(element4, [3]), 0, 0);
+              morphs[0] = dom.createMorphAt(dom.childAt(element5, [1]), 0, 0);
+              morphs[1] = dom.createMorphAt(dom.childAt(element5, [3]), 0, 0);
               return morphs;
             },
             statements: [["content", "trashView.title", ["loc", [null, [63, 29], [63, 48]]]], ["inline", "t", ["admin.caseforms.label.system"], [], ["loc", [null, [64, 32], [64, 68]]]]],
@@ -86120,10 +86179,10 @@ define("frontend-cp/session/admin/manage/views/index/template", ["exports"], fun
               return el0;
             },
             buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-              var element3 = dom.childAt(fragment, [1]);
+              var element4 = dom.childAt(fragment, [1]);
               var morphs = new Array(2);
-              morphs[0] = dom.createMorphAt(element3, 1, 1);
-              morphs[1] = dom.createMorphAt(element3, 3, 3);
+              morphs[0] = dom.createMorphAt(element4, 1, 1);
+              morphs[1] = dom.createMorphAt(element4, 3, 3);
               return morphs;
             },
             statements: [["inline", "t", ["generic.shared_with"], [], ["loc", [null, [69, 8], [69, 35]]]], ["content", "trashView.visibilityString", ["loc", [null, [69, 36], [69, 66]]]]],
@@ -86335,10 +86394,10 @@ define("frontend-cp/session/admin/manage/views/index/template", ["exports"], fun
                   return el0;
                 },
                 buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-                  var element2 = dom.childAt(fragment, [1]);
+                  var element3 = dom.childAt(fragment, [1]);
                   var morphs = new Array(2);
-                  morphs[0] = dom.createMorphAt(element2, 0, 0);
-                  morphs[1] = dom.createMorphAt(element2, 2, 2);
+                  morphs[0] = dom.createMorphAt(element3, 0, 0);
+                  morphs[1] = dom.createMorphAt(element3, 2, 2);
                   return morphs;
                 },
                 statements: [["inline", "t", ["generic.shared_with"], [], ["loc", [null, [87, 32], [87, 59]]]], ["content", "disabledView.visibilityString", ["loc", [null, [87, 60], [87, 93]]]]],
@@ -86358,7 +86417,7 @@ define("frontend-cp/session/admin/manage/views/index/template", ["exports"], fun
                       "column": 6
                     },
                     "end": {
-                      "line": 92,
+                      "line": 94,
                       "column": 6
                     }
                   },
@@ -86371,6 +86430,19 @@ define("frontend-cp/session/admin/manage/views/index/template", ["exports"], fun
                 buildFragment: function buildFragment(dom) {
                   var el0 = dom.createDocumentFragment();
                   var el1 = dom.createTextNode("        ");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createElement("a");
+                  var el2 = dom.createComment("");
+                  dom.appendChild(el1, el2);
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createTextNode("\n        ");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createElement("span");
+                  dom.setAttribute(el1, "class", "t-caption");
+                  var el2 = dom.createTextNode("|");
+                  dom.appendChild(el1, el2);
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createTextNode("\n        ");
                   dom.appendChild(el0, el1);
                   var el1 = dom.createElement("a");
                   var el2 = dom.createComment("");
@@ -86396,14 +86468,17 @@ define("frontend-cp/session/admin/manage/views/index/template", ["exports"], fun
                 buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
                   var element0 = dom.childAt(fragment, [1]);
                   var element1 = dom.childAt(fragment, [5]);
-                  var morphs = new Array(4);
+                  var element2 = dom.childAt(fragment, [9]);
+                  var morphs = new Array(6);
                   morphs[0] = dom.createAttrMorph(element0, 'onclick');
                   morphs[1] = dom.createMorphAt(element0, 0, 0);
                   morphs[2] = dom.createAttrMorph(element1, 'onclick');
                   morphs[3] = dom.createMorphAt(element1, 0, 0);
+                  morphs[4] = dom.createAttrMorph(element2, 'onclick');
+                  morphs[5] = dom.createMorphAt(element2, 0, 0);
                   return morphs;
                 },
-                statements: [["attribute", "onclick", ["subexpr", "action", ["toggleEnabledStatus", ["get", "disabledView", ["loc", [null, [90, 50], [90, 62]]]]], [], ["loc", [null, [90, 19], [90, 64]]]]], ["inline", "t", ["generic.enable"], [], ["loc", [null, [90, 65], [90, 87]]]], ["attribute", "onclick", ["subexpr", "action", ["showDeleteConfirmation", ["get", "disabledView", ["loc", [null, [91, 86], [91, 98]]]]], [], ["loc", [null, [91, 52], [91, 100]]]]], ["inline", "t", ["generic.delete"], [], ["loc", [null, [91, 101], [91, 123]]]]],
+                statements: [["attribute", "onclick", ["subexpr", "action", ["editView", ["get", "disabledView", ["loc", [null, [90, 39], [90, 51]]]]], [], ["loc", [null, [90, 19], [90, 53]]]]], ["inline", "t", ["generic.edit"], [], ["loc", [null, [90, 54], [90, 74]]]], ["attribute", "onclick", ["subexpr", "action", ["toggleEnabledStatus", ["get", "disabledView", ["loc", [null, [92, 50], [92, 62]]]]], [], ["loc", [null, [92, 19], [92, 64]]]]], ["inline", "t", ["generic.enable"], [], ["loc", [null, [92, 65], [92, 87]]]], ["attribute", "onclick", ["subexpr", "action", ["showDeleteConfirmation", ["get", "disabledView", ["loc", [null, [93, 86], [93, 98]]]]], [], ["loc", [null, [93, 52], [93, 100]]]]], ["inline", "t", ["generic.delete"], [], ["loc", [null, [93, 101], [93, 123]]]]],
                 locals: [],
                 templates: []
               };
@@ -86419,7 +86494,7 @@ define("frontend-cp/session/admin/manage/views/index/template", ["exports"], fun
                     "column": 6
                   },
                   "end": {
-                    "line": 93,
+                    "line": 95,
                     "column": 6
                   }
                 },
@@ -86448,7 +86523,7 @@ define("frontend-cp/session/admin/manage/views/index/template", ["exports"], fun
                 dom.insertBoundary(fragment, null);
                 return morphs;
               },
-              statements: [["block", "ko-simple-list/cell", [], [], 0, null, ["loc", [null, [83, 6], [85, 30]]]], ["block", "ko-simple-list/cell", [], [], 1, null, ["loc", [null, [86, 6], [88, 30]]]], ["block", "ko-simple-list/actions", [], [], 2, null, ["loc", [null, [89, 6], [92, 33]]]]],
+              statements: [["block", "ko-simple-list/cell", [], [], 0, null, ["loc", [null, [83, 6], [85, 30]]]], ["block", "ko-simple-list/cell", [], [], 1, null, ["loc", [null, [86, 6], [88, 30]]]], ["block", "ko-simple-list/actions", [], [], 2, null, ["loc", [null, [89, 6], [94, 33]]]]],
               locals: [],
               templates: [child0, child1, child2]
             };
@@ -86464,7 +86539,7 @@ define("frontend-cp/session/admin/manage/views/index/template", ["exports"], fun
                   "column": 4
                 },
                 "end": {
-                  "line": 94,
+                  "line": 96,
                   "column": 4
                 }
               },
@@ -86487,7 +86562,7 @@ define("frontend-cp/session/admin/manage/views/index/template", ["exports"], fun
               dom.insertBoundary(fragment, null);
               return morphs;
             },
-            statements: [["block", "ko-simple-list/row", [], ["class", ["subexpr", "qa-cls", ["qa-view-list-inactive--title"], [], ["loc", [null, [82, 34], [82, 73]]]]], 0, null, ["loc", [null, [82, 6], [93, 29]]]]],
+            statements: [["block", "ko-simple-list/row", [], ["class", ["subexpr", "qa-cls", ["qa-view-list-inactive--title"], [], ["loc", [null, [82, 34], [82, 73]]]]], 0, null, ["loc", [null, [82, 6], [95, 29]]]]],
             locals: ["disabledView"],
             templates: [child0]
           };
@@ -86503,7 +86578,7 @@ define("frontend-cp/session/admin/manage/views/index/template", ["exports"], fun
                 "column": 2
               },
               "end": {
-                "line": 95,
+                "line": 97,
                 "column": 2
               }
             },
@@ -86539,7 +86614,7 @@ define("frontend-cp/session/admin/manage/views/index/template", ["exports"], fun
             dom.insertBoundary(fragment, null);
             return morphs;
           },
-          statements: [["inline", "t", ["generic.disabled"], [], ["loc", [null, [79, 6], [79, 30]]]], ["block", "each", [["get", "disabledViews", ["loc", [null, [81, 12], [81, 25]]]]], [], 0, null, ["loc", [null, [81, 4], [94, 13]]]]],
+          statements: [["inline", "t", ["generic.disabled"], [], ["loc", [null, [79, 6], [79, 30]]]], ["block", "each", [["get", "disabledViews", ["loc", [null, [81, 12], [81, 25]]]]], [], 0, null, ["loc", [null, [81, 4], [96, 13]]]]],
           locals: [],
           templates: [child0]
         };
@@ -86555,7 +86630,7 @@ define("frontend-cp/session/admin/manage/views/index/template", ["exports"], fun
               "column": 0
             },
             "end": {
-              "line": 96,
+              "line": 98,
               "column": 0
             }
           },
@@ -86578,7 +86653,7 @@ define("frontend-cp/session/admin/manage/views/index/template", ["exports"], fun
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [["block", "ko-simple-list", [], [], 0, null, ["loc", [null, [77, 2], [95, 21]]]]],
+        statements: [["block", "ko-simple-list", [], [], 0, null, ["loc", [null, [77, 2], [97, 21]]]]],
         locals: [],
         templates: [child0]
       };
@@ -86597,7 +86672,7 @@ define("frontend-cp/session/admin/manage/views/index/template", ["exports"], fun
             "column": 0
           },
           "end": {
-            "line": 97,
+            "line": 99,
             "column": 0
           }
         },
@@ -86630,7 +86705,7 @@ define("frontend-cp/session/admin/manage/views/index/template", ["exports"], fun
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["inline", "ko-admin/page-header", [], ["title", ["subexpr", "t", ["admin.views.title"], [], ["loc", [null, [1, 29], [1, 52]]]], "buttonText", ["subexpr", "t", ["admin.views.buttons.add_new"], [], ["loc", [null, [1, 64], [1, 97]]]], "onSave", ["subexpr", "action", ["transitionToNewViewRoute"], [], ["loc", [null, [1, 105], [1, 140]]]]], ["loc", [null, [1, 0], [1, 142]]]], ["block", "ko-simple-list", [], [], 0, null, ["loc", [null, [3, 0], [74, 19]]]], ["block", "if", [["get", "disabledViews.length", ["loc", [null, [76, 6], [76, 26]]]]], [], 1, null, ["loc", [null, [76, 0], [96, 7]]]]],
+      statements: [["inline", "ko-admin/page-header", [], ["title", ["subexpr", "t", ["admin.views.title"], [], ["loc", [null, [1, 29], [1, 52]]]], "buttonText", ["subexpr", "t", ["admin.views.buttons.add_new"], [], ["loc", [null, [1, 64], [1, 97]]]], "onSave", ["subexpr", "action", ["transitionToNewViewRoute"], [], ["loc", [null, [1, 105], [1, 140]]]]], ["loc", [null, [1, 0], [1, 142]]]], ["block", "ko-simple-list", [], [], 0, null, ["loc", [null, [3, 0], [74, 19]]]], ["block", "if", [["get", "disabledViews.length", ["loc", [null, [76, 6], [76, 26]]]]], [], 1, null, ["loc", [null, [76, 0], [98, 7]]]]],
       locals: [],
       templates: [child0, child1]
     };
@@ -99732,7 +99807,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+5d2b808c"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+1ef71d40"});
 }
 
 /* jshint ignore:end */
