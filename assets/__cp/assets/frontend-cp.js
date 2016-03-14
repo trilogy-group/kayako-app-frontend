@@ -82138,9 +82138,9 @@ define('frontend-cp/session/admin/channels/twitter/callback/route', ['exports', 
             autodismiss: true
           });
 
-          _this.transitionToRoute('session.admin.channels.twitter.index');
+          _this.transitionTo('session.admin.channels.twitter.index');
         })['catch'](function () {
-          _this.transitionToRoute('session.admin.channels.twitter.index');
+          _this.transitionTo('session.admin.channels.twitter.index');
         });
       }
     }
@@ -83117,7 +83117,7 @@ define('frontend-cp/session/admin/channels/twitter/reauthorize/route', ['exports
             autodismiss: true
           });
         })['finally'](function () {
-          _this.transitionToRoute('session.admin.channels.twitter.index');
+          _this.transitionTo('session.admin.channels.twitter.index');
         });
       }
     }
@@ -99788,7 +99788,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+77019d52"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+99f28643"});
 }
 
 /* jshint ignore:end */
