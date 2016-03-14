@@ -310,10 +310,30 @@ define('frontend-cp/adapters/event', ['exports', 'ember', 'frontend-cp/adapters/
     }
   });
 });
+define('frontend-cp/adapters/facebook-account-callback', ['exports', 'frontend-cp/adapters/application'], function (exports, _frontendCpAdaptersApplication) {
+  exports['default'] = _frontendCpAdaptersApplication['default'].extend({
+    urlForQueryRecord: function urlForQueryRecord(query) {
+      if (query.callback.match('callback')) {
+        return this.buildURL() + '/facebook/account/callback';
+      } else if (query.callback.match('reauthorize')) {
+        return this.buildURL() + '/facebook/account/reauthorize';
+      } else {
+        throw new Error('You have to specify a callback type');
+      }
+    }
+  });
+});
 define('frontend-cp/adapters/facebook-account', ['exports', 'frontend-cp/adapters/application'], function (exports, _frontendCpAdaptersApplication) {
   exports['default'] = _frontendCpAdaptersApplication['default'].extend({
     pathForType: function pathForType() {
       return 'facebook/accounts';
+    }
+  });
+});
+define('frontend-cp/adapters/facebook-page', ['exports', 'frontend-cp/adapters/application'], function (exports, _frontendCpAdaptersApplication) {
+  exports['default'] = _frontendCpAdaptersApplication['default'].extend({
+    pathForType: function pathForType() {
+      return 'facebook/pages';
     }
   });
 });
@@ -418,8 +438,14 @@ define('frontend-cp/adapters/metric', ['exports', 'frontend-cp/adapters/applicat
 });
 define('frontend-cp/adapters/oauth-link', ['exports', 'frontend-cp/adapters/application'], function (exports, _frontendCpAdaptersApplication) {
   exports['default'] = _frontendCpAdaptersApplication['default'].extend({
-    pathForType: function pathForType() {
-      return 'twitter/account/link.json';
+    urlForQueryRecord: function urlForQueryRecord(query) {
+      if (query.callback.match('twitter')) {
+        return this.buildURL() + '/twitter/account/link';
+      } else if (query.callback.match('facebook')) {
+        return this.buildURL() + '/facebook/account/link';
+      } else {
+        throw new Error('You have to specify a query type');
+      }
     }
   });
 });
@@ -10865,7 +10891,6 @@ define('frontend-cp/components/ko-admin/case-forms/edit/component', ['exports', 
     }
   });
 });
-/*eslint-disable camelcase */
 define('frontend-cp/components/ko-admin/case-forms/edit/fields/component', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = _ember['default'].Component.extend({
     //Params
@@ -12111,6 +12136,343 @@ define("frontend-cp/components/ko-admin/case-forms/edit/template", ["exports"], 
         return morphs;
       },
       statements: [["block", "ko-form", [], ["fields", ["subexpr", "@mut", [["get", "fields", ["loc", [null, [2, 9], [2, 15]]]]], [], []], "onSubmit", ["subexpr", "action", ["saveField"], [], ["loc", [null, [3, 11], [3, 31]]]], "onSuccess", ["subexpr", "@mut", [["get", "onSuccess", ["loc", [null, [4, 12], [4, 21]]]]], [], []]], 0, null, ["loc", [null, [1, 0], [77, 12]]]]],
+      locals: [],
+      templates: [child0]
+    };
+  })());
+});
+define('frontend-cp/components/ko-admin/facebook/edit/component', ['exports', 'ember'], function (exports, _ember) {
+  exports['default'] = _ember['default'].Component.extend({
+    page: null,
+    onCancel: null,
+    onSave: null,
+    onSuccess: null
+  });
+});
+define("frontend-cp/components/ko-admin/facebook/edit/template", ["exports"], function (exports) {
+  exports["default"] = Ember.HTMLBars.template((function () {
+    var child0 = (function () {
+      var child0 = (function () {
+        var child0 = (function () {
+          var child0 = (function () {
+            return {
+              meta: {
+                "fragmentReason": false,
+                "revision": "Ember@2.4.1",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 13,
+                    "column": 6
+                  },
+                  "end": {
+                    "line": 13,
+                    "column": 73
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-admin/facebook/edit/template.hbs"
+              },
+              isEmpty: false,
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var morphs = new Array(1);
+                morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+                dom.insertBoundary(fragment, 0);
+                dom.insertBoundary(fragment, null);
+                return morphs;
+              },
+              statements: [["inline", "t", ["admin.facebook.label.route_messages"], [], ["loc", [null, [13, 30], [13, 73]]]]],
+              locals: [],
+              templates: []
+            };
+          })();
+          return {
+            meta: {
+              "fragmentReason": false,
+              "revision": "Ember@2.4.1",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 12,
+                  "column": 4
+                },
+                "end": {
+                  "line": 21,
+                  "column": 4
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-admin/facebook/edit/template.hbs"
+            },
+            isEmpty: false,
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode("      ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n\n      ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n\n      ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(3);
+              morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+              morphs[1] = dom.createMorphAt(fragment, 3, 3, contextualElement);
+              morphs[2] = dom.createMorphAt(fragment, 5, 5, contextualElement);
+              return morphs;
+            },
+            statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [13, 6], [13, 97]]]], ["inline", "ko-toggle", [], ["label", ["subexpr", "t", ["admin.facebook.help.route_messages"], [], ["loc", [null, [16, 14], [16, 54]]]], "activated", ["subexpr", "@mut", [["get", "page.routeMessages", ["loc", [null, [17, 18], [17, 36]]]]], [], []], "class", "qa-admin-facebook-page__route-messages"], ["loc", [null, [15, 6], [18, 56]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "page.errors.routeMessages", ["loc", [null, [20, 36], [20, 61]]]]], [], []]], ["loc", [null, [20, 6], [20, 63]]]]],
+            locals: [],
+            templates: [child0]
+          };
+        })();
+        var child1 = (function () {
+          var child0 = (function () {
+            return {
+              meta: {
+                "fragmentReason": false,
+                "revision": "Ember@2.4.1",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 24,
+                    "column": 6
+                  },
+                  "end": {
+                    "line": 24,
+                    "column": 70
+                  }
+                },
+                "moduleName": "frontend-cp/components/ko-admin/facebook/edit/template.hbs"
+              },
+              isEmpty: false,
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var morphs = new Array(1);
+                morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+                dom.insertBoundary(fragment, 0);
+                dom.insertBoundary(fragment, null);
+                return morphs;
+              },
+              statements: [["inline", "t", ["admin.facebook.label.route_posts"], [], ["loc", [null, [24, 30], [24, 70]]]]],
+              locals: [],
+              templates: []
+            };
+          })();
+          return {
+            meta: {
+              "fragmentReason": false,
+              "revision": "Ember@2.4.1",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 23,
+                  "column": 4
+                },
+                "end": {
+                  "line": 31,
+                  "column": 4
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-admin/facebook/edit/template.hbs"
+            },
+            isEmpty: false,
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode("      ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n\n      ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n\n      ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(3);
+              morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+              morphs[1] = dom.createMorphAt(fragment, 3, 3, contextualElement);
+              morphs[2] = dom.createMorphAt(fragment, 5, 5, contextualElement);
+              return morphs;
+            },
+            statements: [["block", "ko-form/field/label", [], [], 0, null, ["loc", [null, [24, 6], [24, 94]]]], ["inline", "ko-toggle", [], ["label", ["subexpr", "t", ["admin.facebook.help.route_posts"], [], ["loc", [null, [27, 14], [27, 51]]]], "activated", ["subexpr", "@mut", [["get", "page.routePosts", ["loc", [null, [28, 18], [28, 33]]]]], [], []]], ["loc", [null, [26, 6], [28, 35]]]], ["inline", "ko-form/field/errors", [], ["errors", ["subexpr", "@mut", [["get", "page.errors.routePosts", ["loc", [null, [30, 36], [30, 58]]]]], [], []]], ["loc", [null, [30, 6], [30, 60]]]]],
+            locals: [],
+            templates: [child0]
+          };
+        })();
+        return {
+          meta: {
+            "fragmentReason": false,
+            "revision": "Ember@2.4.1",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 11,
+                "column": 2
+              },
+              "end": {
+                "line": 32,
+                "column": 2
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-admin/facebook/edit/template.hbs"
+          },
+          isEmpty: false,
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(2);
+            morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+            morphs[1] = dom.createMorphAt(fragment, 2, 2, contextualElement);
+            dom.insertBoundary(fragment, 0);
+            dom.insertBoundary(fragment, null);
+            return morphs;
+          },
+          statements: [["block", "ko-form/field", [], [], 0, null, ["loc", [null, [12, 4], [21, 22]]]], ["block", "ko-form/field", [], [], 1, null, ["loc", [null, [23, 4], [31, 22]]]]],
+          locals: [],
+          templates: [child0, child1]
+        };
+      })();
+      return {
+        meta: {
+          "fragmentReason": {
+            "name": "missing-wrapper",
+            "problems": ["wrong-type", "multiple-nodes"]
+          },
+          "revision": "Ember@2.4.1",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 1,
+              "column": 0
+            },
+            "end": {
+              "line": 37,
+              "column": 0
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-admin/facebook/edit/template.hbs"
+        },
+        isEmpty: false,
+        arity: 2,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n\n");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(3);
+          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+          morphs[1] = dom.createMorphAt(fragment, 3, 3, contextualElement);
+          morphs[2] = dom.createMorphAt(fragment, 5, 5, contextualElement);
+          return morphs;
+        },
+        statements: [["inline", "ko-admin/page-header", [], ["title", ["subexpr", "t", ["admin.facebook.edit.heading"], ["title", ["get", "page.title", ["loc", [null, [6, 49], [6, 59]]]]], ["loc", [null, [6, 10], [6, 60]]]], "onCancel", ["subexpr", "@mut", [["get", "onCancel", ["loc", [null, [7, 13], [7, 21]]]]], [], []], "buttonText", ["subexpr", "t", ["generic.save"], [], ["loc", [null, [8, 15], [8, 33]]]], "pageCopy", null], ["loc", [null, [5, 2], [9, 19]]]], ["block", "ko-admin/forms/group", [], ["legend", ["subexpr", "t", ["admin.facebook.heading.page_settings"], [], ["loc", [null, [11, 33], [11, 75]]]]], 0, null, ["loc", [null, [11, 2], [32, 27]]]], ["inline", "ko-admin/page-footer", [], ["onCancel", ["subexpr", "@mut", [["get", "onCancel", ["loc", [null, [35, 13], [35, 21]]]]], [], []], "buttonText", ["subexpr", "t", ["generic.save"], [], ["loc", [null, [36, 15], [36, 33]]]]], ["loc", [null, [34, 2], [36, 35]]]]],
+        locals: ["_", "isSubmitting"],
+        templates: [child0]
+      };
+    })();
+    return {
+      meta: {
+        "fragmentReason": {
+          "name": "missing-wrapper",
+          "problems": ["wrong-type"]
+        },
+        "revision": "Ember@2.4.1",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 38,
+            "column": 0
+          }
+        },
+        "moduleName": "frontend-cp/components/ko-admin/facebook/edit/template.hbs"
+      },
+      isEmpty: false,
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var morphs = new Array(1);
+        morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+        dom.insertBoundary(fragment, 0);
+        dom.insertBoundary(fragment, null);
+        return morphs;
+      },
+      statements: [["block", "ko-form", [], ["onSubmit", ["subexpr", "@mut", [["get", "onSave", ["loc", [null, [2, 11], [2, 17]]]]], [], []], "onSuccess", ["subexpr", "@mut", [["get", "onSuccess", ["loc", [null, [3, 12], [3, 21]]]]], [], []]], 0, null, ["loc", [null, [1, 0], [37, 12]]]]],
       locals: [],
       templates: [child0]
     };
@@ -17882,6 +18244,48 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
     })();
     var child1 = (function () {
       var child0 = (function () {
+        var child0 = (function () {
+          return {
+            meta: {
+              "fragmentReason": false,
+              "revision": "Ember@2.4.1",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 20,
+                  "column": 6
+                },
+                "end": {
+                  "line": 22,
+                  "column": 6
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-admin/sidebar/template.hbs"
+            },
+            isEmpty: false,
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode("        ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(1);
+              morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+              return morphs;
+            },
+            statements: [["inline", "t", ["admin.twitter.title"], [], ["loc", [null, [21, 8], [21, 35]]]]],
+            locals: [],
+            templates: []
+          };
+        })();
         return {
           meta: {
             "fragmentReason": false,
@@ -17893,7 +18297,7 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
                 "column": 4
               },
               "end": {
-                "line": 21,
+                "line": 23,
                 "column": 4
               }
             },
@@ -17905,22 +18309,102 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
           hasRendered: false,
           buildFragment: function buildFragment(dom) {
             var el0 = dom.createDocumentFragment();
-            var el1 = dom.createTextNode("      ");
-            dom.appendChild(el0, el1);
             var el1 = dom.createComment("");
-            dom.appendChild(el0, el1);
-            var el1 = dom.createTextNode("\n");
             dom.appendChild(el0, el1);
             return el0;
           },
           buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
             var morphs = new Array(1);
-            morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+            morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+            dom.insertBoundary(fragment, 0);
+            dom.insertBoundary(fragment, null);
             return morphs;
           },
-          statements: [["inline", "t", ["admin.twitter.title"], [], ["loc", [null, [20, 6], [20, 33]]]]],
+          statements: [["block", "link-to", ["session.admin.channels.twitter"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [20, 56], [20, 67]]]]], [], []]], 0, null, ["loc", [null, [20, 6], [22, 18]]]]],
           locals: [],
-          templates: []
+          templates: [child0]
+        };
+      })();
+      var child1 = (function () {
+        var child0 = (function () {
+          return {
+            meta: {
+              "fragmentReason": false,
+              "revision": "Ember@2.4.1",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 26,
+                  "column": 6
+                },
+                "end": {
+                  "line": 28,
+                  "column": 6
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-admin/sidebar/template.hbs"
+            },
+            isEmpty: false,
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode("        ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(1);
+              morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+              return morphs;
+            },
+            statements: [["inline", "t", ["admin.facebook.headings.index"], [], ["loc", [null, [27, 8], [27, 45]]]]],
+            locals: [],
+            templates: []
+          };
+        })();
+        return {
+          meta: {
+            "fragmentReason": false,
+            "revision": "Ember@2.4.1",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 25,
+                "column": 4
+              },
+              "end": {
+                "line": 29,
+                "column": 4
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-admin/sidebar/template.hbs"
+          },
+          isEmpty: false,
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+            dom.insertBoundary(fragment, 0);
+            dom.insertBoundary(fragment, null);
+            return morphs;
+          },
+          statements: [["block", "link-to", ["session.admin.channels.facebook"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [26, 57], [26, 68]]]]], [], []]], 0, null, ["loc", [null, [26, 6], [28, 18]]]]],
+          locals: [],
+          templates: [child0]
         };
       })();
       return {
@@ -17934,7 +18418,7 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
               "column": 0
             },
             "end": {
-              "line": 23,
+              "line": 31,
               "column": 0
             }
           },
@@ -17963,6 +18447,10 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
           dom.appendChild(el1, el2);
           var el2 = dom.createComment("");
           dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
           var el2 = dom.createTextNode("  ");
           dom.appendChild(el1, el2);
           dom.appendChild(el0, el1);
@@ -17973,103 +18461,20 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
           var element0 = dom.childAt(fragment, [1]);
           var element1 = dom.childAt(element0, [1]);
-          var morphs = new Array(4);
+          var morphs = new Array(5);
           morphs[0] = dom.createAttrMorph(element0, 'class');
           morphs[1] = dom.createAttrMorph(element1, 'class');
           morphs[2] = dom.createMorphAt(element1, 1, 1);
           morphs[3] = dom.createMorphAt(element0, 3, 3);
+          morphs[4] = dom.createMorphAt(element0, 5, 5);
           return morphs;
         },
-        statements: [["attribute", "class", ["get", "styles.group", ["loc", [null, [14, 15], [14, 27]]]]], ["attribute", "class", ["get", "styles.header", ["loc", [null, [15, 15], [15, 28]]]]], ["inline", "t", ["admin.navigation.channels"], [], ["loc", [null, [16, 6], [16, 39]]]], ["block", "link-to", ["session.admin.channels.twitter"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [19, 54], [19, 65]]]]], [], []]], 0, null, ["loc", [null, [19, 4], [21, 16]]]]],
+        statements: [["attribute", "class", ["get", "styles.group", ["loc", [null, [14, 15], [14, 27]]]]], ["attribute", "class", ["get", "styles.header", ["loc", [null, [15, 15], [15, 28]]]]], ["inline", "t", ["admin.navigation.channels"], [], ["loc", [null, [16, 6], [16, 39]]]], ["block", "if", [["get", "features.adminTwitter", ["loc", [null, [19, 10], [19, 31]]]]], [], 0, null, ["loc", [null, [19, 4], [23, 11]]]], ["block", "if", [["get", "features.adminFacebook", ["loc", [null, [25, 10], [25, 32]]]]], [], 1, null, ["loc", [null, [25, 4], [29, 11]]]]],
         locals: [],
-        templates: [child0]
+        templates: [child0, child1]
       };
     })();
     var child2 = (function () {
-      return {
-        meta: {
-          "fragmentReason": false,
-          "revision": "Ember@2.4.1",
-          "loc": {
-            "source": null,
-            "start": {
-              "line": 29,
-              "column": 2
-            },
-            "end": {
-              "line": 31,
-              "column": 2
-            }
-          },
-          "moduleName": "frontend-cp/components/ko-admin/sidebar/template.hbs"
-        },
-        isEmpty: false,
-        arity: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("    ");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createComment("");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n");
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
-          return morphs;
-        },
-        statements: [["inline", "t", ["admin.views.title"], [], ["loc", [null, [30, 4], [30, 29]]]]],
-        locals: [],
-        templates: []
-      };
-    })();
-    var child3 = (function () {
-      return {
-        meta: {
-          "fragmentReason": false,
-          "revision": "Ember@2.4.1",
-          "loc": {
-            "source": null,
-            "start": {
-              "line": 33,
-              "column": 2
-            },
-            "end": {
-              "line": 35,
-              "column": 2
-            }
-          },
-          "moduleName": "frontend-cp/components/ko-admin/sidebar/template.hbs"
-        },
-        isEmpty: false,
-        arity: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("    ");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createComment("");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n");
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
-          return morphs;
-        },
-        statements: [["inline", "t", ["admin.casefields.title"], [], ["loc", [null, [34, 4], [34, 34]]]]],
-        locals: [],
-        templates: []
-      };
-    })();
-    var child4 = (function () {
       return {
         meta: {
           "fragmentReason": false,
@@ -18106,12 +18511,12 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [["inline", "t", ["admin.caseforms.title"], [], ["loc", [null, [38, 4], [38, 33]]]]],
+        statements: [["inline", "t", ["admin.views.title"], [], ["loc", [null, [38, 4], [38, 29]]]]],
         locals: [],
         templates: []
       };
     })();
-    var child5 = (function () {
+    var child3 = (function () {
       return {
         meta: {
           "fragmentReason": false,
@@ -18148,7 +18553,91 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [["inline", "t", ["admin.macros.title"], [], ["loc", [null, [42, 4], [42, 30]]]]],
+        statements: [["inline", "t", ["admin.casefields.title"], [], ["loc", [null, [42, 4], [42, 34]]]]],
+        locals: [],
+        templates: []
+      };
+    })();
+    var child4 = (function () {
+      return {
+        meta: {
+          "fragmentReason": false,
+          "revision": "Ember@2.4.1",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 45,
+              "column": 2
+            },
+            "end": {
+              "line": 47,
+              "column": 2
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-admin/sidebar/template.hbs"
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("    ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+          return morphs;
+        },
+        statements: [["inline", "t", ["admin.caseforms.title"], [], ["loc", [null, [46, 4], [46, 33]]]]],
+        locals: [],
+        templates: []
+      };
+    })();
+    var child5 = (function () {
+      return {
+        meta: {
+          "fragmentReason": false,
+          "revision": "Ember@2.4.1",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 49,
+              "column": 2
+            },
+            "end": {
+              "line": 51,
+              "column": 2
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-admin/sidebar/template.hbs"
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("    ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+          return morphs;
+        },
+        statements: [["inline", "t", ["admin.macros.title"], [], ["loc", [null, [50, 4], [50, 30]]]]],
         locals: [],
         templates: []
       };
@@ -18161,11 +18650,11 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
           "loc": {
             "source": null,
             "start": {
-              "line": 51,
+              "line": 59,
               "column": 2
             },
             "end": {
-              "line": 53,
+              "line": 61,
               "column": 2
             }
           },
@@ -18190,7 +18679,7 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [["inline", "t", ["admin.teams.title"], [], ["loc", [null, [52, 4], [52, 29]]]]],
+        statements: [["inline", "t", ["admin.teams.title"], [], ["loc", [null, [60, 4], [60, 29]]]]],
         locals: [],
         templates: []
       };
@@ -18203,11 +18692,11 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
           "loc": {
             "source": null,
             "start": {
-              "line": 55,
+              "line": 63,
               "column": 2
             },
             "end": {
-              "line": 57,
+              "line": 65,
               "column": 2
             }
           },
@@ -18232,7 +18721,7 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [["inline", "t", ["admin.userfields.title"], [], ["loc", [null, [56, 4], [56, 34]]]]],
+        statements: [["inline", "t", ["admin.userfields.title"], [], ["loc", [null, [64, 4], [64, 34]]]]],
         locals: [],
         templates: []
       };
@@ -18246,11 +18735,11 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
             "loc": {
               "source": null,
               "start": {
-                "line": 60,
+                "line": 68,
                 "column": 4
               },
               "end": {
-                "line": 62,
+                "line": 70,
                 "column": 4
               }
             },
@@ -18275,7 +18764,7 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
             morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
             return morphs;
           },
-          statements: [["inline", "t", ["admin.roles.title"], [], ["loc", [null, [61, 6], [61, 31]]]]],
+          statements: [["inline", "t", ["admin.roles.title"], [], ["loc", [null, [69, 6], [69, 31]]]]],
           locals: [],
           templates: []
         };
@@ -18287,11 +18776,11 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
           "loc": {
             "source": null,
             "start": {
-              "line": 59,
+              "line": 67,
               "column": 2
             },
             "end": {
-              "line": 63,
+              "line": 71,
               "column": 2
             }
           },
@@ -18314,7 +18803,7 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [["block", "link-to", ["session.admin.people.roles"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [60, 50], [60, 61]]]]], [], []]], 0, null, ["loc", [null, [60, 4], [62, 16]]]]],
+        statements: [["block", "link-to", ["session.admin.people.roles"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [68, 50], [68, 61]]]]], [], []]], 0, null, ["loc", [null, [68, 4], [70, 16]]]]],
         locals: [],
         templates: [child0]
       };
@@ -18327,11 +18816,11 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
           "loc": {
             "source": null,
             "start": {
-              "line": 65,
+              "line": 73,
               "column": 2
             },
             "end": {
-              "line": 67,
+              "line": 75,
               "column": 2
             }
           },
@@ -18356,7 +18845,7 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [["inline", "t", ["admin.organizationfields.title"], [], ["loc", [null, [66, 4], [66, 42]]]]],
+        statements: [["inline", "t", ["admin.organizationfields.title"], [], ["loc", [null, [74, 4], [74, 42]]]]],
         locals: [],
         templates: []
       };
@@ -18370,11 +18859,11 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
             "loc": {
               "source": null,
               "start": {
-                "line": 75,
+                "line": 83,
                 "column": 4
               },
               "end": {
-                "line": 77,
+                "line": 85,
                 "column": 4
               }
             },
@@ -18399,7 +18888,7 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
             morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
             return morphs;
           },
-          statements: [["inline", "t", ["admin.sla.title"], [], ["loc", [null, [76, 6], [76, 29]]]]],
+          statements: [["inline", "t", ["admin.sla.title"], [], ["loc", [null, [84, 6], [84, 29]]]]],
           locals: [],
           templates: []
         };
@@ -18411,11 +18900,11 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
           "loc": {
             "source": null,
             "start": {
-              "line": 74,
+              "line": 82,
               "column": 2
             },
             "end": {
-              "line": 78,
+              "line": 86,
               "column": 2
             }
           },
@@ -18438,7 +18927,7 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [["block", "link-to", ["session.admin.automation.sla"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [75, 52], [75, 63]]]]], [], []]], 0, null, ["loc", [null, [75, 4], [77, 16]]]]],
+        statements: [["block", "link-to", ["session.admin.automation.sla"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [83, 52], [83, 63]]]]], [], []]], 0, null, ["loc", [null, [83, 4], [85, 16]]]]],
         locals: [],
         templates: [child0]
       };
@@ -18452,11 +18941,11 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
             "loc": {
               "source": null,
               "start": {
-                "line": 81,
+                "line": 89,
                 "column": 4
               },
               "end": {
-                "line": 83,
+                "line": 91,
                 "column": 4
               }
             },
@@ -18481,7 +18970,7 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
             morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
             return morphs;
           },
-          statements: [["inline", "t", ["admin.businesshours.title"], [], ["loc", [null, [82, 6], [82, 39]]]]],
+          statements: [["inline", "t", ["admin.businesshours.title"], [], ["loc", [null, [90, 6], [90, 39]]]]],
           locals: [],
           templates: []
         };
@@ -18493,11 +18982,11 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
           "loc": {
             "source": null,
             "start": {
-              "line": 80,
+              "line": 88,
               "column": 2
             },
             "end": {
-              "line": 84,
+              "line": 92,
               "column": 2
             }
           },
@@ -18520,7 +19009,7 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [["block", "link-to", ["session.admin.automation.businesshours"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [81, 62], [81, 73]]]]], [], []]], 0, null, ["loc", [null, [81, 4], [83, 16]]]]],
+        statements: [["block", "link-to", ["session.admin.automation.businesshours"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [89, 62], [89, 73]]]]], [], []]], 0, null, ["loc", [null, [89, 4], [91, 16]]]]],
         locals: [],
         templates: [child0]
       };
@@ -18539,7 +19028,7 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
             "column": 0
           },
           "end": {
-            "line": 86,
+            "line": 94,
             "column": 0
           }
         },
@@ -18675,7 +19164,7 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
         dom.insertBoundary(fragment, 0);
         return morphs;
       },
-      statements: [["block", "if", [["get", "features.adminAppsEndpoints", ["loc", [null, [1, 6], [1, 33]]]]], [], 0, null, ["loc", [null, [1, 0], [11, 7]]]], ["block", "if", [["get", "features.adminTwitter", ["loc", [null, [13, 6], [13, 27]]]]], [], 1, null, ["loc", [null, [13, 0], [23, 7]]]], ["attribute", "class", ["get", "styles.group", ["loc", [null, [25, 13], [25, 25]]]]], ["attribute", "class", ["get", "styles.header", ["loc", [null, [26, 13], [26, 26]]]]], ["inline", "t", ["admin.navigation.manage"], [], ["loc", [null, [27, 4], [27, 35]]]], ["block", "link-to", ["session.admin.manage.views"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [29, 48], [29, 59]]]]], [], []]], 2, null, ["loc", [null, [29, 2], [31, 14]]]], ["block", "link-to", ["session.admin.manage.case-fields"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [33, 54], [33, 65]]]]], [], []]], 3, null, ["loc", [null, [33, 2], [35, 14]]]], ["block", "link-to", ["session.admin.manage.case-forms"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [37, 53], [37, 64]]]]], [], []]], 4, null, ["loc", [null, [37, 2], [39, 14]]]], ["block", "link-to", ["session.admin.manage.macros"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [41, 49], [41, 60]]]]], [], []]], 5, null, ["loc", [null, [41, 2], [43, 14]]]], ["attribute", "class", ["get", "styles.group", ["loc", [null, [47, 13], [47, 25]]]]], ["attribute", "class", ["get", "styles.header", ["loc", [null, [48, 13], [48, 26]]]]], ["inline", "t", ["admin.navigation.people"], [], ["loc", [null, [49, 4], [49, 35]]]], ["block", "link-to", ["session.admin.people.teams"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [51, 48], [51, 59]]]]], [], []]], 6, null, ["loc", [null, [51, 2], [53, 14]]]], ["block", "link-to", ["session.admin.people.user-fields"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [55, 54], [55, 65]]]]], [], []]], 7, null, ["loc", [null, [55, 2], [57, 14]]]], ["block", "if", [["get", "features.roles", ["loc", [null, [59, 8], [59, 22]]]]], [], 8, null, ["loc", [null, [59, 2], [63, 9]]]], ["block", "link-to", ["session.admin.people.organization-fields"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [65, 62], [65, 73]]]]], [], []]], 9, null, ["loc", [null, [65, 2], [67, 14]]]], ["attribute", "class", ["get", "styles.group", ["loc", [null, [70, 13], [70, 25]]]]], ["attribute", "class", ["get", "styles.header", ["loc", [null, [71, 13], [71, 26]]]]], ["inline", "t", ["admin.navigation.automation"], [], ["loc", [null, [72, 4], [72, 39]]]], ["block", "if", [["get", "features.adminSlas", ["loc", [null, [74, 8], [74, 26]]]]], [], 10, null, ["loc", [null, [74, 2], [78, 9]]]], ["block", "if", [["get", "features.adminBusinessHours", ["loc", [null, [80, 8], [80, 35]]]]], [], 11, null, ["loc", [null, [80, 2], [84, 9]]]]],
+      statements: [["block", "if", [["get", "features.adminAppsEndpoints", ["loc", [null, [1, 6], [1, 33]]]]], [], 0, null, ["loc", [null, [1, 0], [11, 7]]]], ["block", "if", [["subexpr", "or", [["get", "features.adminTwitter", ["loc", [null, [13, 10], [13, 31]]]], ["get", "features.adminFacebook", ["loc", [null, [13, 32], [13, 54]]]]], [], ["loc", [null, [13, 6], [13, 55]]]]], [], 1, null, ["loc", [null, [13, 0], [31, 7]]]], ["attribute", "class", ["get", "styles.group", ["loc", [null, [33, 13], [33, 25]]]]], ["attribute", "class", ["get", "styles.header", ["loc", [null, [34, 13], [34, 26]]]]], ["inline", "t", ["admin.navigation.manage"], [], ["loc", [null, [35, 4], [35, 35]]]], ["block", "link-to", ["session.admin.manage.views"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [37, 48], [37, 59]]]]], [], []]], 2, null, ["loc", [null, [37, 2], [39, 14]]]], ["block", "link-to", ["session.admin.manage.case-fields"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [41, 54], [41, 65]]]]], [], []]], 3, null, ["loc", [null, [41, 2], [43, 14]]]], ["block", "link-to", ["session.admin.manage.case-forms"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [45, 53], [45, 64]]]]], [], []]], 4, null, ["loc", [null, [45, 2], [47, 14]]]], ["block", "link-to", ["session.admin.manage.macros"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [49, 49], [49, 60]]]]], [], []]], 5, null, ["loc", [null, [49, 2], [51, 14]]]], ["attribute", "class", ["get", "styles.group", ["loc", [null, [55, 13], [55, 25]]]]], ["attribute", "class", ["get", "styles.header", ["loc", [null, [56, 13], [56, 26]]]]], ["inline", "t", ["admin.navigation.people"], [], ["loc", [null, [57, 4], [57, 35]]]], ["block", "link-to", ["session.admin.people.teams"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [59, 48], [59, 59]]]]], [], []]], 6, null, ["loc", [null, [59, 2], [61, 14]]]], ["block", "link-to", ["session.admin.people.user-fields"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [63, 54], [63, 65]]]]], [], []]], 7, null, ["loc", [null, [63, 2], [65, 14]]]], ["block", "if", [["get", "features.roles", ["loc", [null, [67, 8], [67, 22]]]]], [], 8, null, ["loc", [null, [67, 2], [71, 9]]]], ["block", "link-to", ["session.admin.people.organization-fields"], ["class", ["subexpr", "@mut", [["get", "styles.item", ["loc", [null, [73, 62], [73, 73]]]]], [], []]], 9, null, ["loc", [null, [73, 2], [75, 14]]]], ["attribute", "class", ["get", "styles.group", ["loc", [null, [78, 13], [78, 25]]]]], ["attribute", "class", ["get", "styles.header", ["loc", [null, [79, 13], [79, 26]]]]], ["inline", "t", ["admin.navigation.automation"], [], ["loc", [null, [80, 4], [80, 39]]]], ["block", "if", [["get", "features.adminSlas", ["loc", [null, [82, 8], [82, 26]]]]], [], 10, null, ["loc", [null, [82, 2], [86, 9]]]], ["block", "if", [["get", "features.adminBusinessHours", ["loc", [null, [88, 8], [88, 35]]]]], [], 11, null, ["loc", [null, [88, 2], [92, 9]]]]],
       locals: [],
       templates: [child0, child1, child2, child3, child4, child5, child6, child7, child8, child9, child10, child11]
     };
@@ -21229,7 +21718,6 @@ define('frontend-cp/components/ko-admin/team/component', ['exports', 'ember'], f
     }
   });
 });
-/*eslint-disable camelcase */
 define("frontend-cp/components/ko-admin/team/template", ["exports"], function (exports) {
   exports["default"] = Ember.HTMLBars.template((function () {
     var child0 = (function () {
@@ -23249,7 +23737,6 @@ define('frontend-cp/components/ko-admin/views/edit/component', ['exports', 'embe
     }
   });
 });
-/*eslint-disable camelcase */
 define("frontend-cp/components/ko-admin/views/edit/template", ["exports"], function (exports) {
   exports["default"] = Ember.HTMLBars.template((function () {
     var child0 = (function () {
@@ -25772,7 +26259,6 @@ define('frontend-cp/components/ko-agent-dropdown/create-case/component', ['expor
     }
   });
 });
-/*eslint-disable camelcase */
 define("frontend-cp/components/ko-agent-dropdown/create-case/template", ["exports"], function (exports) {
   exports["default"] = Ember.HTMLBars.template((function () {
     var child0 = (function () {
@@ -26816,7 +27302,6 @@ define('frontend-cp/components/ko-agent-dropdown/create-user/component', ['expor
     }
   });
 });
-/* eslint-disable camelcase */
 define("frontend-cp/components/ko-agent-dropdown/create-user/template", ["exports"], function (exports) {
   exports["default"] = Ember.HTMLBars.template((function () {
     var child0 = (function () {
@@ -42488,7 +42973,6 @@ define('frontend-cp/components/ko-identities/component', ['exports', 'ember'], f
     }
   });
 });
-/* eslint-disable camelcase */
 define('frontend-cp/components/ko-identities/form/component', ['exports', 'ember', 'frontend-cp/utils/format-validations'], function (exports, _ember, _frontendCpUtilsFormatValidations) {
   var computed = _ember['default'].computed;
   var isBlank = _ember['default'].isBlank;
@@ -63584,6 +64068,15 @@ define('frontend-cp/helpers/and', ['exports', 'ember', 'ember-truth-helpers/help
 
   exports['default'] = forExport;
 });
+define('frontend-cp/helpers/cancel-all', ['exports', 'ember', 'ember-concurrency/-helpers'], function (exports, _ember, _emberConcurrencyHelpers) {
+  exports.cancelHelper = cancelHelper;
+
+  function cancelHelper(args) {
+    return (0, _emberConcurrencyHelpers.taskHelperClosure)('cancel-all', 'cancelAll', args);
+  }
+
+  exports['default'] = _ember['default'].Helper.helper(cancelHelper);
+});
 define('frontend-cp/helpers/contains', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = _ember['default'].Helper.extend({
     compute: function compute(params, hash) {
@@ -64023,6 +64516,15 @@ define('frontend-cp/helpers/or', ['exports', 'ember', 'ember-truth-helpers/helpe
 
   exports['default'] = forExport;
 });
+define('frontend-cp/helpers/perform', ['exports', 'ember', 'ember-concurrency/-helpers'], function (exports, _ember, _emberConcurrencyHelpers) {
+  exports.performHelper = performHelper;
+
+  function performHelper(args) {
+    return (0, _emberConcurrencyHelpers.taskHelperClosure)('perform', 'perform', args);
+  }
+
+  exports['default'] = _ember['default'].Helper.helper(performHelper);
+});
 define('frontend-cp/helpers/pluralize', ['exports', 'ember-inflector/lib/helpers/pluralize'], function (exports, _emberInflectorLibHelpersPluralize) {
   exports['default'] = _emberInflectorLibHelpersPluralize['default'];
 });
@@ -64150,6 +64652,14 @@ define('frontend-cp/initializers/ember-cli-mirage', ['exports', 'ember-cli-mirag
     return usingInDev || usingInTest;
   }
 });
+define('frontend-cp/initializers/ember-concurrency', ['exports', 'ember-concurrency'], function (exports, _emberConcurrency) {
+  exports['default'] = {
+    name: 'ember-concurrency',
+    initialize: function initialize() {}
+  };
+});
+// This initializer exists only to make sure that the following
+// imports happen before the app boots.
 define('frontend-cp/initializers/ember-css-modules', ['exports', 'ember-css-modules/initializers/ember-css-modules'], function (exports, _emberCssModulesInitializersEmberCssModules) {
   Object.defineProperty(exports, 'default', {
     enumerable: true,
@@ -65185,7 +65695,22 @@ define("frontend-cp/locales/en-us/admin", ["exports"], function (exports) {
     "sla.edit.operational_hours.title": "Operational hours",
     "sla.edit.operational_hours.business_hours": "Business hours",
     "sla.edit.operational_hours.calendar_hours": "Calendar hours",
-    "sla.edit.note": "When cases are set to certain statuses, SLA timers may pause (for example, while you are waiting to hear back from the customer). This behaviour can be configured under status settings."
+    "sla.edit.note": "When cases are set to certain statuses, SLA timers may pause (for example, while you are waiting to hear back from the customer). This behaviour can be configured under status settings.",
+
+    "facebook.headings.index": "Facebook",
+    "facebook.buttons.create_account": "Connect a new page",
+    "facebook.deleted.message": "Facebook account deleted successfully",
+    "facebook.connection_lost": "connection lost",
+    "facebook.reconnect": "Reconnect",
+    "facebook.edit.heading": "Facebook / {title}",
+    "facebook.heading.page_settings": "What to capture",
+    "facebook.label.route_messages": "Messages",
+    "facebook.help.route_messages": "Capturing Facebook messages",
+    "facebook.label.route_posts": "Posts and Comments",
+    "facebook.help.route_posts": "Capturing customer posts and comments",
+    "facebook.no_pages": "No pages found",
+    "facebook.see_facebook_account": "Don't see your Facebook page?",
+    "facebook.connect_facebook_account": "Connect your Facebook account"
   };
 });
 define("frontend-cp/locales/en-us/cases", ["exports"], function (exports) {
@@ -66184,7 +66709,7 @@ define('frontend-cp/login/controller', ['exports', 'ember', 'frontend-cp/config/
     }
   });
 });
-/* eslint-disable no-console, camelcase */
+/* eslint-disable no-console */
 define('frontend-cp/login/index/route', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = _ember['default'].Route.extend({
     beforeModel: function beforeModel() {
@@ -69209,9 +69734,43 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
         resources: {}
       };
     });
+
+    this.get('/api/v1/facebook/pages', function (db) {
+      return {
+        status: 200,
+        data: db['facebook-pages'],
+        resource: 'facebook_page'
+      };
+    });
+
+    this.get('/api/v1/facebook/pages/:id', function (db, req) {
+      return {
+        status: 200,
+        data: db['facebook-pages'].find(req.params.id),
+        resource: 'facebook_page'
+      };
+    });
+
+    this.put('/api/v1/facebook/pages/:id', function (db, req) {
+      var attrs = JSON.parse(req.requestBody);
+      var page = db['facebook-pages'].update(req.params.id, attrs);
+
+      return {
+        status: 200,
+        data: page,
+        resource: 'facebook_page'
+      };
+    });
+
+    this['delete']('/api/v1/facebook/pages/:id', function (db, req) {
+      db['facebook-pages'].remove(req.params.id);
+
+      return {
+        status: 200
+      };
+    });
   };
 });
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/activity', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     actor: null,
@@ -69233,13 +69792,11 @@ define('frontend-cp/mirage/factories/activity', ['exports', 'ember-cli-mirage'],
     resource_type: 'activity'
   });
 });
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/assignee', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     team: {}
   });
 });
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/attachment', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     alt: null,
@@ -69262,7 +69819,6 @@ define('frontend-cp/mirage/factories/attachment', ['exports', 'ember-cli-mirage'
     width: 1220
   });
 });
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/brand', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     is_enabled: true,
@@ -69275,7 +69831,6 @@ define('frontend-cp/mirage/factories/brand', ['exports', 'ember-cli-mirage'], fu
     url: null
   });
 });
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/business-hour', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     title: 'Default Business Hours',
@@ -69295,7 +69850,6 @@ define('frontend-cp/mirage/factories/business-hour', ['exports', 'ember-cli-mira
     resource_url: 'http://novo/api/index.php?/v1/businesshours/1'
   });
 });
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/businesshours', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     title: _emberCliMirage.faker.list.cycle('Normal Guys', 'Tier 2', 'Support', 'Human Resources'),
@@ -69316,7 +69870,6 @@ define('frontend-cp/mirage/factories/businesshours', ['exports', 'ember-cli-mira
     resource_url: 'https://support.kayakostage.net/api/v1/businesshours/5'
   });
 });
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/case-field-value', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     field: {},
@@ -69324,7 +69877,6 @@ define('frontend-cp/mirage/factories/case-field-value', ['exports', 'ember-cli-m
     resource_type: 'case_field_value'
   });
 });
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/case-field', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     fielduuid: function fielduuid(i) {
@@ -69351,7 +69903,6 @@ define('frontend-cp/mirage/factories/case-field', ['exports', 'ember-cli-mirage'
     resource_url: 'http://novo/api/index.php?/v1/cases/fields/1'
   });
 });
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/case-form', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     title: 'Internet Related Issue',
@@ -69369,7 +69920,6 @@ define('frontend-cp/mirage/factories/case-form', ['exports', 'ember-cli-mirage']
     resource_url: 'http://novo/api/index.php?/v1/cases/forms/1'
   });
 });
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/case-message', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     uuid: function uuid(i) {
@@ -69402,7 +69952,6 @@ define('frontend-cp/mirage/factories/case-message', ['exports', 'ember-cli-mirag
     resource_type: 'case-message'
   });
 });
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/case-priority', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     label: _emberCliMirage.faker.list.cycle('Low', 'Normal', 'High', 'Urgent'),
@@ -69415,7 +69964,6 @@ define('frontend-cp/mirage/factories/case-priority', ['exports', 'ember-cli-mira
     resource_url: 'http://novo/api/index.php?/v1/cases/priorities/1'
   });
 });
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/case-sla-metric', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     title: _emberCliMirage.faker.list.cycle('FIRST_REPLY_TIME', 'RESOLUTION_TIME', 'NEXT_REPLY_TIME'),
@@ -69424,7 +69972,6 @@ define('frontend-cp/mirage/factories/case-sla-metric', ['exports', 'ember-cli-mi
     target_in_seconds: _emberCliMirage.faker.random.number
   });
 });
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/case-status', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     label: _emberCliMirage.faker.list.cycle('New', 'Open', 'Pending', 'Completed', 'Closed'),
@@ -69442,7 +69989,6 @@ define('frontend-cp/mirage/factories/case-status', ['exports', 'ember-cli-mirage
     }
   });
 });
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/case-type', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     label: _emberCliMirage.faker.list.cycle('Question', 'Task', 'Problem', 'Incident'),
@@ -69452,7 +69998,6 @@ define('frontend-cp/mirage/factories/case-type', ['exports', 'ember-cli-mirage']
     resource_url: 'http://novo/api/index.php?/v1/cases/types/1'
   });
 });
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/case', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     subject: function subject(i) {
@@ -69498,7 +70043,6 @@ define('frontend-cp/mirage/factories/case', ['exports', 'ember-cli-mirage'], fun
     resource_url: 'http://novo/api/index.php?/v1/cases/1'
   });
 });
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/channel', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     uuid: _emberCliMirage.faker.random.uuid,
@@ -69507,14 +70051,12 @@ define('frontend-cp/mirage/factories/channel', ['exports', 'ember-cli-mirage'], 
     resource_type: 'channel'
   });
 });
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/column', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     name: _emberCliMirage.faker.list.cycle('caseid', 'subject', 'casestatusid', 'assigneeteamid', 'requesterid', 'rating', 'sla', 'priority', 'last_replier', 'updatedat', 'lastcreatedat'),
     resource_type: 'column'
   });
 });
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/definition', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     field: _emberCliMirage.faker.list.cycle('cases.subject', 'cases.casestatusid', 'cases.casetypeid'),
@@ -69562,7 +70104,6 @@ define('frontend-cp/mirage/factories/definition', ['exports', 'ember-cli-mirage'
     resource_type: 'definition'
   });
 });
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/event', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     uuid: function uuid(i) {
@@ -69583,11 +70124,9 @@ define('frontend-cp/mirage/factories/event', ['exports', 'ember-cli-mirage'], fu
     created_at: _emberCliMirage.faker.date.recent
   });
 });
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/facebook-account', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     account_id: _emberCliMirage.faker.random.number,
-    is_enabled: true,
     resource_type: 'facebook_account',
     resource_url: 'http://novo/api/index.php?/v1/facebook/account/1',
     title: 'John Mathew',
@@ -69595,12 +70134,10 @@ define('frontend-cp/mirage/factories/facebook-account', ['exports', 'ember-cli-m
     updated_at: '2015-08-05T06:13:59Z'
   });
 });
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/facebook-page', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     uuid: 'fake-XXXX-default',
     is_enabled: true,
-    page_id: _emberCliMirage.faker.random.number,
     resource_type: 'facebook_page',
     resource_url: 'http://novo/api/index.php?/v1/facebook/page/1',
     route_messages: true,
@@ -69610,7 +70147,6 @@ define('frontend-cp/mirage/factories/facebook-page', ['exports', 'ember-cli-mira
     updated_at: '2015-08-05T06:13:59Z'
   });
 });
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/feature', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     code: _emberCliMirage.faker.random.number,
@@ -69618,7 +70154,6 @@ define('frontend-cp/mirage/factories/feature', ['exports', 'ember-cli-mirage'], 
     description: 'People who may log in as a team member'
   });
 });
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/field-option', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     fielduuid: _emberCliMirage.faker.list.cycle('fake-XXXX-1', 'fake-XXXX-2', 'fake-XXXX-3', 'fake-XXXX-4', 'fake-XXXX-5'),
@@ -69630,7 +70165,6 @@ define('frontend-cp/mirage/factories/field-option', ['exports', 'ember-cli-mirag
     resource_type: 'field_option'
   });
 });
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/identity-autocomplete-email', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     identity: {
@@ -69647,7 +70181,6 @@ define('frontend-cp/mirage/factories/identity-autocomplete-email', ['exports', '
     }
   });
 });
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/identity-domain', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     is_primary: true,
@@ -69659,7 +70192,6 @@ define('frontend-cp/mirage/factories/identity-domain', ['exports', 'ember-cli-mi
     resource_url: 'http://novo/api/index.php?/v1/identities/domains/1'
   });
 });
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/identity-email', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     is_primary: false,
@@ -69672,7 +70204,6 @@ define('frontend-cp/mirage/factories/identity-email', ['exports', 'ember-cli-mir
     resource_url: 'http://novo/api/index.php?/v1/identities/emails/1'
   });
 });
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/identity-facebook', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     facebook_id: _emberCliMirage.faker.random.number,
@@ -69692,7 +70223,6 @@ define('frontend-cp/mirage/factories/identity-facebook', ['exports', 'ember-cli-
     resource_type: 'identity_facebook'
   });
 });
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/identity-phone', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     created_at: '2015-08-27T11:02:47Z',
@@ -69707,7 +70237,6 @@ define('frontend-cp/mirage/factories/identity-phone', ['exports', 'ember-cli-mir
     updated_at: '2015-08-27T11:02:47Z'
   });
 });
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/identity-twitter', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     twitter_id: _emberCliMirage.faker.random.number,
@@ -69725,14 +70254,12 @@ define('frontend-cp/mirage/factories/identity-twitter', ['exports', 'ember-cli-m
     is_validated: true
   });
 });
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/limit', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     name: 'Collaborators',
     limit: _emberCliMirage.faker.random.number
   });
 });
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/locale-field', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     locale: _emberCliMirage.faker.list.cycle('en-us', 'de', 'en-gb'),
@@ -69743,7 +70270,6 @@ define('frontend-cp/mirage/factories/locale-field', ['exports', 'ember-cli-mirag
     resource_url: 'https://brewfictus.kayako.com/api/v1/cases/fields/1/locales/2'
   });
 });
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/locale', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     id: function id(i) {
@@ -69766,7 +70292,6 @@ define('frontend-cp/mirage/factories/locale', ['exports', 'ember-cli-mirage'], f
     resource_url: 'http://novo/api/index.php?/v1/locales/1'
   });
 });
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/macro-assignee', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     type: null,
@@ -69775,7 +70300,6 @@ define('frontend-cp/mirage/factories/macro-assignee', ['exports', 'ember-cli-mir
     resource_type: 'macro_assignee'
   });
 });
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/macro-visibility', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     type: 'ALL',
@@ -69783,7 +70307,6 @@ define('frontend-cp/mirage/factories/macro-visibility', ['exports', 'ember-cli-m
     resource_type: 'macro_visibility'
   });
 });
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/macro', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     title: '00 Support \\ 00 Welcome',
@@ -69803,7 +70326,6 @@ define('frontend-cp/mirage/factories/macro', ['exports', 'ember-cli-mirage'], fu
     resource_url: 'http://support.kayakodev.net/api/v1/cases/macros/499'
   });
 });
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/mail', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     from: _emberCliMirage.faker.internet.email,
@@ -69830,7 +70352,6 @@ define('frontend-cp/mirage/factories/mail', ['exports', 'ember-cli-mirage'], fun
     resource_type: 'mail'
   });
 });
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/mailbox', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     uuid: '02a60873-8118-453c-8258-8f44029e657d',
@@ -69852,7 +70373,6 @@ define('frontend-cp/mirage/factories/mailbox', ['exports', 'ember-cli-mirage'], 
     resource_url: 'http://novo/api/index.php?/v1/mailboxes/1'
   });
 });
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/message-recipient', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     identity: { id: 2, resource_type: 'identity_email' },
@@ -69861,7 +70381,6 @@ define('frontend-cp/mirage/factories/message-recipient', ['exports', 'ember-cli-
     type: 'TO'
   });
 });
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/metadata', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     custom: null,
@@ -69869,7 +70388,6 @@ define('frontend-cp/mirage/factories/metadata', ['exports', 'ember-cli-mirage'],
     resource_type: 'metadata'
   });
 });
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/organization-field', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     fielduuid: _emberCliMirage.faker.random.uuid,
@@ -69894,7 +70412,6 @@ define('frontend-cp/mirage/factories/organization-field', ['exports', 'ember-cli
     resource_url: 'http://novo/api/index.php?/v1/organization/fields/1'
   });
 });
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/organization', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     name: function name() {
@@ -69915,7 +70432,6 @@ define('frontend-cp/mirage/factories/organization', ['exports', 'ember-cli-mirag
     resource_url: 'http://novo/api/index.php?/v1/organizations/1'
   });
 });
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/permission', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     name: 'admin.random',
@@ -69923,7 +70439,6 @@ define('frontend-cp/mirage/factories/permission', ['exports', 'ember-cli-mirage'
     resource_type: 'permission'
   });
 });
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/plan', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     seat_count: 15,
@@ -69933,7 +70448,6 @@ define('frontend-cp/mirage/factories/plan', ['exports', 'ember-cli-mirage'], fun
     resource_type: 'plan'
   });
 });
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/post', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     attachments: [],
@@ -69956,14 +70470,12 @@ define('frontend-cp/mirage/factories/post', ['exports', 'ember-cli-mirage'], fun
     'case': null
   });
 });
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/predicate-collection', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     propositions: [],
     resource_type: 'predicate_collection'
   });
 });
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/proposition', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     field: 'cases.assigneeteamid',
@@ -69974,7 +70486,6 @@ define('frontend-cp/mirage/factories/proposition', ['exports', 'ember-cli-mirage
     }
   });
 });
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/role', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     title: 'Administrator',
@@ -69989,7 +70500,6 @@ define('frontend-cp/mirage/factories/role', ['exports', 'ember-cli-mirage'], fun
     is_system: true
   });
 });
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/session', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     id: 'pPW6tnOyJG6TmWCVea175d1bfc5dbf073a89ffeb6a2a198c61aae941Aqc7ahmzw8a',
@@ -70003,7 +70513,6 @@ define('frontend-cp/mirage/factories/session', ['exports', 'ember-cli-mirage'], 
     resource_type: 'session'
   });
 });
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/sla', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     title: 'Regular support and sales tickets',
@@ -70020,14 +70529,12 @@ define('frontend-cp/mirage/factories/sla', ['exports', 'ember-cli-mirage'], func
     resource_type: 'sla'
   });
 });
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/tag', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     name: _emberCliMirage.faker.list.cycle('solution', 'status'),
     resource_type: 'tag'
   });
 });
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/team', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     title: _emberCliMirage.faker.list.cycle('Sales', 'Support', 'Finance', 'Human Resources'),
@@ -70039,7 +70546,6 @@ define('frontend-cp/mirage/factories/team', ['exports', 'ember-cli-mirage'], fun
     resource_url: 'http://novo/api/index.php?/v1/teams/1'
   });
 });
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/twitter-account', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     account_id: '3155953718',
@@ -70057,13 +70563,11 @@ define('frontend-cp/mirage/factories/twitter-account', ['exports', 'ember-cli-mi
     uuid: 'b63e731d-c88d-4d4a-ab1c-566f5c9edf7d'
   });
 });
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/type', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     resource_type: 'case_type'
   });
 });
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/user-field-value', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     field: {
@@ -70074,7 +70578,6 @@ define('frontend-cp/mirage/factories/user-field-value', ['exports', 'ember-cli-m
     resource_type: 'user_field_value'
   });
 });
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/user-field', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     fielduuid: _emberCliMirage.faker.random.uuid,
@@ -70099,7 +70602,6 @@ define('frontend-cp/mirage/factories/user-field', ['exports', 'ember-cli-mirage'
     resource_url: 'http://novo/api/index.php?/v1/users/fields/1'
   });
 });
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/user', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     full_name: function full_name() {
@@ -70139,7 +70641,6 @@ define('frontend-cp/mirage/factories/user', ['exports', 'ember-cli-mirage'], fun
     resource_url: 'http://novo/api/index.php?/v1/users/1'
   });
 });
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/factories/view', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     agent: null,
@@ -70160,7 +70661,6 @@ define('frontend-cp/mirage/factories/view', ['exports', 'ember-cli-mirage'], fun
     visibility_type: 'ALL'
   });
 });
-/*eslint-disable camelcase*/
 define('frontend-cp/mirage/fixtures/en-us-strings', ['exports', 'npm:lodash', 'frontend-cp/locales/en-us/admin', 'frontend-cp/locales/en-us/cases', 'frontend-cp/locales/en-us/feed', 'frontend-cp/locales/en-us/generic', 'frontend-cp/locales/en-us/login', 'frontend-cp/locales/en-us/organisation', 'frontend-cp/locales/en-us/search', 'frontend-cp/locales/en-us/users'], function (exports, _npmLodash, _frontendCpLocalesEnUsAdmin, _frontendCpLocalesEnUsCases, _frontendCpLocalesEnUsFeed, _frontendCpLocalesEnUsGeneric, _frontendCpLocalesEnUsLogin, _frontendCpLocalesEnUsOrganisation, _frontendCpLocalesEnUsSearch, _frontendCpLocalesEnUsUsers) {
 
   var locales = {
@@ -70188,10 +70688,7 @@ define('frontend-cp/mirage/fixtures/en-us-strings', ['exports', 'npm:lodash', 'f
     resource: 'locale_string'
   }];
 });
-/* eslint-disable camelcase */
 define('frontend-cp/mirage/scenarios/default', ['exports'], function (exports) {
-  /*eslint-disable camelcase*/
-
   exports['default'] = function (server) {
     var businesshour = server.create('business-hour', { title: 'Default Business Hours' });
     var teams = server.createList('team', 4, { businesshour: businesshour });
@@ -70805,6 +71302,7 @@ define('frontend-cp/mirage/scenarios/default', ['exports'], function (exports) {
     server.create('twitter-account', {
       brand: brand
     });
+    server.create('facebook-page');
 
     // If possible this endpoint should implement pagination (plus limit) in order to behave
     // as it would in the real world app, to be able to use infinite scroll
@@ -72096,13 +72594,22 @@ define('frontend-cp/models/event', ['exports', 'ember-data'], function (exports,
     createdAt: _emberData['default'].attr('date')
   });
 });
+define('frontend-cp/models/facebook-account-callback', ['exports', 'ember-data'], function (exports, _emberData) {
+  exports['default'] = _emberData['default'].Model.extend({
+    code: _emberData['default'].attr('string'),
+    state: _emberData['default'].attr('string'),
+    callback: _emberData['default'].attr('string'),
+
+    account: _emberData['default'].belongsTo('facebook-account')
+  });
+});
 define('frontend-cp/models/facebook-account', ['exports', 'ember-data', 'frontend-cp/models/account'], function (exports, _emberData, _frontendCpModelsAccount) {
   exports['default'] = _frontendCpModelsAccount['default'].extend({
     accountId: _emberData['default'].attr('string'),
     title: _emberData['default'].attr('string'),
-    isEnabled: _emberData['default'].attr('boolean', { defaultValue: true }),
     createdAt: _emberData['default'].attr('date'),
-    updatedAt: _emberData['default'].attr('date')
+    updatedAt: _emberData['default'].attr('date'),
+    status: _emberData['default'].attr('string')
   });
 });
 define('frontend-cp/models/facebook-comment', ['exports', 'ember-data', 'frontend-cp/models/postable'], function (exports, _emberData, _frontendCpModelsPostable) {
@@ -72120,7 +72627,13 @@ define('frontend-cp/models/facebook-message', ['exports', 'ember-data', 'fronten
 define('frontend-cp/models/facebook-page', ['exports', 'ember-data', 'frontend-cp/models/account'], function (exports, _emberData, _frontendCpModelsAccount) {
   exports['default'] = _frontendCpModelsAccount['default'].extend({
     title: _emberData['default'].attr('string'),
-    account: _emberData['default'].belongsTo('facebook-account')
+    account: _emberData['default'].belongsTo('facebook-account'),
+    routePosts: _emberData['default'].attr('boolean'),
+    routeMessages: _emberData['default'].attr('boolean'),
+    isEnabled: _emberData['default'].attr('boolean'),
+    status: _emberData['default'].attr('string'),
+
+    'import': false
   });
 });
 define('frontend-cp/models/facebook-post', ['exports', 'ember-data', 'frontend-cp/models/postable'], function (exports, _emberData, _frontendCpModelsPostable) {
@@ -73252,8 +73765,14 @@ define('frontend-cp/router', ['exports', 'ember', 'frontend-cp/config/environmen
         this.route('channels', function () {
           this.route('twitter', function () {
             this.route('edit', { path: '/:account_id' });
-            this.route('link');
+            this.route('callback');
             this.route('reauthorize');
+          });
+
+          this.route('facebook', function () {
+            this.route('callback');
+            this.route('reauthorize');
+            this.route('edit', { path: '/:page_id' });
           });
         });
       });
@@ -73367,51 +73886,8 @@ define('frontend-cp/serializers/application', ['exports', 'ember', 'ember-data',
     intlService: inject.service('intl'),
 
     normalizeResponse: function normalizeResponse(store, primaryModelClass, payload, id, requestType) {
-      this.removeBacklistedSideloadedResources(payload.resources);
-      payload[pluralize(payload.resource)] = _ember['default'].makeArray(payload.data);
-      Reflect.deleteProperty(payload, 'status');
-      Reflect.deleteProperty(payload, 'resource');
-      Reflect.deleteProperty(payload, 'logs');
-
-      Object.keys(payload.resources || {}).forEach(function (modelType) {
-        payload[pluralize(modelType)] = Object.values(payload.resources[modelType]);
-      });
-
-      Reflect.deleteProperty(payload, 'resources');
-      Reflect.deleteProperty(payload, 'data');
-      Object.keys(payload).forEach(function (key) {
-        var value = payload[key];
-        if (Array.isArray(value)) {
-          value.forEach(function (resource) {
-            if (resource.hasOwnProperty('resource_type')) {
-              if (resource.hasOwnProperty('type')) {
-                resource[resource.resource_type + '_type'] = resource.type;
-              }
-              resource.type = resource.resource_type;
-              Reflect.deleteProperty(resource, 'resource_type');
-            }
-          });
-        }
-      });
-      var hasMeta = false;
-      var meta = ['total_count', 'offset', 'next_url', 'limit'].reduce(function (meta, attrName) {
-        if (payload.hasOwnProperty(attrName)) {
-          meta[attrName] = payload[attrName];
-          Reflect.deleteProperty(payload, attrName);
-          hasMeta = true;
-        }
-        return meta;
-      }, {});
-      if (hasMeta) {
-        payload.meta = meta;
-      }
+      payload = this._normalizePayload(payload);
       return this._super.apply(this, arguments);
-    },
-
-    pushPayload: function pushPayload(store, payload) {
-      this.normalizeResponse(store, null, payload);
-      // normalizeResponse has modified payload!
-      return this._super(store, payload);
     },
 
     keyForAttribute: function keyForAttribute(key /*, method*/) {
@@ -73514,10 +73990,56 @@ define('frontend-cp/serializers/application', ['exports', 'ember', 'ember-data',
       }
       Reflect.deleteProperty(resources, 'user_minimal');
       Reflect.deleteProperty(resources, 'team_minimal');
+    },
+
+    pushPayload: function pushPayload(store, payload) {
+      payload = this._normalizePayload(payload);
+      this._super(store, payload);
+    },
+
+    _normalizePayload: function _normalizePayload(payload) {
+      this.removeBacklistedSideloadedResources(payload.resources);
+      payload[pluralize(payload.resource)] = _ember['default'].makeArray(payload.data);
+      Reflect.deleteProperty(payload, 'status');
+      Reflect.deleteProperty(payload, 'resource');
+      Reflect.deleteProperty(payload, 'logs');
+
+      Object.keys(payload.resources || {}).forEach(function (modelType) {
+        payload[pluralize(modelType)] = Object.values(payload.resources[modelType]);
+      });
+
+      Reflect.deleteProperty(payload, 'resources');
+      Reflect.deleteProperty(payload, 'data');
+      Object.keys(payload).forEach(function (key) {
+        var value = payload[key];
+        if (Array.isArray(value)) {
+          value.forEach(function (resource) {
+            if (resource.hasOwnProperty('resource_type')) {
+              if (resource.hasOwnProperty('type')) {
+                resource[resource.resource_type + '_type'] = resource.type;
+              }
+              resource.type = resource.resource_type;
+              Reflect.deleteProperty(resource, 'resource_type');
+            }
+          });
+        }
+      });
+      var hasMeta = false;
+      var meta = ['total_count', 'offset', 'next_url', 'limit'].reduce(function (meta, attrName) {
+        if (payload.hasOwnProperty(attrName)) {
+          meta[attrName] = payload[attrName];
+          Reflect.deleteProperty(payload, attrName);
+          hasMeta = true;
+        }
+        return meta;
+      }, {});
+      if (hasMeta) {
+        payload.meta = meta;
+      }
+      return payload;
     }
   });
 });
-/*eslint-disable camelcase */
 define('frontend-cp/serializers/business-hour', ['exports', 'ember-data', 'frontend-cp/serializers/application'], function (exports, _emberData, _frontendCpSerializersApplication) {
   exports['default'] = _frontendCpSerializersApplication['default'].extend(_emberData['default'].EmbeddedRecordsMixin, {
     attrs: {
@@ -73542,7 +74064,6 @@ define('frontend-cp/serializers/case-field-value', ['exports', 'frontend-cp/seri
     }
   });
 });
-/*eslint-disable camelcase */
 define('frontend-cp/serializers/case-field', ['exports', 'frontend-cp/serializers/application', 'ember-data'], function (exports, _frontendCpSerializersApplication, _emberData) {
   exports['default'] = _frontendCpSerializersApplication['default'].extend(_emberData['default'].EmbeddedRecordsMixin, {
     attrs: {
@@ -73576,7 +74097,6 @@ define('frontend-cp/serializers/case-field', ['exports', 'frontend-cp/serializer
     }
   });
 });
-/*eslint-disable camelcase */
 define('frontend-cp/serializers/case-form', ['exports', 'ember', 'frontend-cp/serializers/application'], function (exports, _ember, _frontendCpSerializersApplication) {
   exports['default'] = _frontendCpSerializersApplication['default'].extend({
     keyForRelationship: function keyForRelationship(key, relationship, method) {
@@ -73599,8 +74119,7 @@ define('frontend-cp/serializers/case-form', ['exports', 'ember', 'frontend-cp/se
       /*
        * Pull case field ids, ordered by sort order as a comma separated list
        */
-      json.case_field_ids = snapshot.hasMany('fields') //eslint-disable-line camelcase
-      .sort(function (snapshotA, snapshotB) {
+      json.case_field_ids = snapshot.hasMany('fields').sort(function (snapshotA, snapshotB) {
         return snapshotA.attr('sortOrder') - snapshotB.attr('sortOrder');
       }).map(function (e) {
         return e.id;
@@ -73609,7 +74128,6 @@ define('frontend-cp/serializers/case-form', ['exports', 'ember', 'frontend-cp/se
     }
   });
 });
-/*eslint-disable camelcase */
 define('frontend-cp/serializers/case-reply', ['exports', 'frontend-cp/serializers/application', 'frontend-cp/mixins/custom-field-serialization'], function (exports, _frontendCpSerializersApplication, _frontendCpMixinsCustomFieldSerialization) {
   exports['default'] = _frontendCpSerializersApplication['default'].extend(_frontendCpMixinsCustomFieldSerialization['default'], {
     attrs: {
@@ -73622,7 +74140,7 @@ define('frontend-cp/serializers/case-reply', ['exports', 'frontend-cp/serializer
     serialize: function serialize(snapshot, options) {
       var json = this._super(snapshot, options);
       var form = snapshot.belongsTo('case').belongsTo('form');
-      json.field_values = this.serializeCustomFields(snapshot.attr('fieldValues'), form); //eslint-disable-line camelcase
+      json.field_values = this.serializeCustomFields(snapshot.attr('fieldValues'), form);
       json.options.cc = snapshot.attr('options').attr('cc').toString();
 
       if (json.channel === 'NOTE') {
@@ -73662,7 +74180,6 @@ define('frontend-cp/serializers/case-status', ['exports', 'frontend-cp/serialize
     }
   });
 });
-/*eslint-disable camelcase */
 define('frontend-cp/serializers/case-type', ['exports', 'frontend-cp/serializers/application'], function (exports, _frontendCpSerializersApplication) {
   exports['default'] = _frontendCpSerializersApplication['default'].extend({
     extractAttributes: function extractAttributes(modelClass, resourceHash) {
@@ -73741,23 +74258,21 @@ define('frontend-cp/serializers/case', ['exports', 'frontend-cp/serializers/appl
 
     serialize: function serialize(snapshot, options) {
       var json = this._super(snapshot, options);
-      json.field_values = this.serializeCustomFields(snapshot.attr('customFields'), snapshot.belongsTo('form')); //eslint-disable-line camelcase
+      json.field_values = this.serializeCustomFields(snapshot.attr('customFields'), snapshot.belongsTo('form'));
       Reflect.deleteProperty(json, 'custom_fields');
 
-      json.type_id = json.case_type_id && parseInt(json.case_type_id, 10); // eslint-disable-line camelcase
+      json.type_id = json.case_type_id && parseInt(json.case_type_id, 10);
       Reflect.deleteProperty(json, 'case_type_id');
 
       return json;
     }
   });
 });
-/* eslint-disable camelcase */
 define('frontend-cp/serializers/channel', ['exports', 'frontend-cp/serializers/application'], function (exports, _frontendCpSerializersApplication) {
   exports['default'] = _frontendCpSerializersApplication['default'].extend({
     primaryKey: 'uuid'
   });
 });
-/*eslint-disable camelcase */
 define('frontend-cp/serializers/column', ['exports', 'frontend-cp/serializers/application'], function (exports, _frontendCpSerializersApplication) {
   exports['default'] = _frontendCpSerializersApplication['default'].extend({
     primaryKey: 'name'
@@ -73771,7 +74286,6 @@ define('frontend-cp/serializers/credential', ['exports', 'frontend-cp/serializer
     }
   });
 });
-/* eslint-disable camelcase */
 define('frontend-cp/serializers/definition', ['exports', 'frontend-cp/serializers/application', 'npm:lodash'], function (exports, _frontendCpSerializersApplication, _npmLodash) {
   exports['default'] = _frontendCpSerializersApplication['default'].extend({
     primaryKey: 'field',
@@ -73787,7 +74301,6 @@ define('frontend-cp/serializers/definition', ['exports', 'frontend-cp/serializer
     }
   });
 });
-/*eslint-disable camelcase */
 define('frontend-cp/serializers/endpoint', ['exports', 'frontend-cp/serializers/application'], function (exports, _frontendCpSerializersApplication) {
   exports['default'] = _frontendCpSerializersApplication['default'].extend({
     extractAttributes: function extractAttributes(modelClass, resourceHash) {
@@ -73863,6 +74376,18 @@ define('frontend-cp/serializers/event', ['exports', 'frontend-cp/serializers/app
     primaryKey: 'uuid'
   });
 });
+define('frontend-cp/serializers/facebook-account-callback', ['exports', 'frontend-cp/serializers/application'], function (exports, _frontendCpSerializersApplication) {
+  exports['default'] = _frontendCpSerializersApplication['default'].extend({
+    attrs: {
+      account: { serialize: false }
+    },
+
+    normalizeResponse: function normalizeResponse(store, primaryModelClass, payload, id, requestType) {
+      payload.data.id = 1;
+      return this._super(store, primaryModelClass, payload, id, requestType);
+    }
+  });
+});
 define('frontend-cp/serializers/facebook-account', ['exports', 'frontend-cp/serializers/application'], function (exports, _frontendCpSerializersApplication) {
   exports['default'] = _frontendCpSerializersApplication['default'].extend({
     attrs: {
@@ -73911,7 +74436,6 @@ define('frontend-cp/serializers/identity-autocomplete-email', ['exports', 'front
     }
   });
 });
-/*eslint-disable camelcase */
 define('frontend-cp/serializers/locale', ['exports', 'frontend-cp/serializers/application'], function (exports, _frontendCpSerializersApplication) {
   exports['default'] = _frontendCpSerializersApplication['default'].extend({
     extractRelationships: function extractRelationships(modelClass, resourceHash) {
@@ -73929,13 +74453,13 @@ define('frontend-cp/serializers/macro', ['exports', 'frontend-cp/serializers/app
       var team = resourceHash.assignee && resourceHash.assignee.team;
       var caseType = resourceHash.macro_type;
       if (agent) {
-        resourceHash.assignee_agent = { id: agent.id, type: agent.resource_type }; // eslint-disable-line camelcase
+        resourceHash.assignee_agent = { id: agent.id, type: agent.resource_type };
       }
       if (team) {
-        resourceHash.assignee_team = { id: team.id, type: team.resource_type }; // eslint-disable-line camelcase
+        resourceHash.assignee_team = { id: team.id, type: team.resource_type };
       }
       if (caseType) {
-        resourceHash.case_type = { id: caseType.id, type: caseType.resource_type }; // eslint-disable-line camelcase
+        resourceHash.case_type = { id: caseType.id, type: caseType.resource_type };
       }
       Reflect.deleteProperty(resourceHash, 'type');
       return this._super.apply(this, arguments);
@@ -73943,7 +74467,7 @@ define('frontend-cp/serializers/macro', ['exports', 'frontend-cp/serializers/app
 
     extractAttributes: function extractAttributes(modelClass, resourceHash) {
       if (resourceHash.assignee) {
-        resourceHash.assignee_type = resourceHash.assignee.type; // eslint-disable-line camelcase
+        resourceHash.assignee_type = resourceHash.assignee.type;
       }
       return this._super.apply(this, arguments);
     },
@@ -73956,7 +74480,7 @@ define('frontend-cp/serializers/macro', ['exports', 'frontend-cp/serializers/app
 
       var caseType = snapshot.belongsTo('caseType');
       if (caseType) {
-        json.type_id = caseType.id; // eslint-disable-line camelcase
+        json.type_id = caseType.id;
       }
       return json;
     }
@@ -73992,7 +74516,6 @@ define('frontend-cp/serializers/organization-field-value', ['exports', 'frontend
     }
   });
 });
-/*eslint-disable camelcase */
 define('frontend-cp/serializers/organization-field', ['exports', 'frontend-cp/serializers/application', 'ember-data'], function (exports, _frontendCpSerializersApplication, _emberData) {
   exports['default'] = _frontendCpSerializersApplication['default'].extend(_emberData['default'].EmbeddedRecordsMixin, {
     attrs: {
@@ -74017,7 +74540,6 @@ define('frontend-cp/serializers/organization-field', ['exports', 'frontend-cp/se
     }
   });
 });
-/*eslint-disable camelcase */
 define('frontend-cp/serializers/organization-note', ['exports', 'frontend-cp/serializers/application'], function (exports, _frontendCpSerializersApplication) {
   exports['default'] = _frontendCpSerializersApplication['default'].extend({
     normalizeResponse: function normalizeResponse(store, primaryModelClass, payload, id, requestType) {
@@ -74062,7 +74584,6 @@ define('frontend-cp/serializers/organization-note', ['exports', 'frontend-cp/ser
     }
   });
 });
-/* eslint-disable camelcase */
 define('frontend-cp/serializers/organization', ['exports', 'frontend-cp/serializers/application', 'frontend-cp/mixins/custom-field-serialization'], function (exports, _frontendCpSerializersApplication, _frontendCpMixinsCustomFieldSerialization) {
   exports['default'] = _frontendCpSerializersApplication['default'].extend(_frontendCpMixinsCustomFieldSerialization['default'], {
     attrs: {
@@ -74085,7 +74606,7 @@ define('frontend-cp/serializers/organization', ['exports', 'frontend-cp/serializ
 
     serialize: function serialize(snapshot, options) {
       var json = this._super.apply(this, arguments);
-      json.field_values = this.serializeCustomFields(snapshot.attr('customFields')); //eslint-disable-line camelcase
+      json.field_values = this.serializeCustomFields(snapshot.attr('customFields'));
       return json;
     },
 
@@ -74138,7 +74659,6 @@ define('frontend-cp/serializers/rating', ['exports', 'frontend-cp/serializers/ap
     }
   });
 });
-/*eslint-disable camelcase */
 define('frontend-cp/serializers/relationship-fragment', ['exports', 'frontend-cp/serializers/application'], function (exports, _frontendCpSerializersApplication) {
   exports['default'] = _frontendCpSerializersApplication['default'].extend({
     extractAttributes: function extractAttributes(modelClass, resourceHash) {
@@ -74150,7 +74670,6 @@ define('frontend-cp/serializers/relationship-fragment', ['exports', 'frontend-cp
     }
   });
 });
-/* eslint-disable camelcase */
 define('frontend-cp/serializers/role', ['exports', 'frontend-cp/serializers/application'], function (exports, _frontendCpSerializersApplication) {
   exports['default'] = _frontendCpSerializersApplication['default'].extend({
     extractRelationships: function extractRelationships(modelClass, resourceHash) {
@@ -74159,7 +74678,6 @@ define('frontend-cp/serializers/role', ['exports', 'frontend-cp/serializers/appl
     }
   });
 });
-/* eslint-disable camelcase */
 define('frontend-cp/serializers/sla', ['exports', 'ember-data', 'frontend-cp/serializers/application'], function (exports, _emberData, _frontendCpSerializersApplication) {
   exports['default'] = _frontendCpSerializersApplication['default'].extend(_emberData['default'].EmbeddedRecordsMixin, {
     attrs: {
@@ -74179,6 +74697,11 @@ define('frontend-cp/serializers/twitter-account-callback', ['exports', 'frontend
   exports['default'] = _frontendCpSerializersApplication['default'].extend({
     attrs: {
       account: { serialize: false }
+    },
+
+    normalizeResponse: function normalizeResponse(store, primaryModelClass, payload, id, requestType) {
+      payload.data.id = 1;
+      return this._super(store, primaryModelClass, payload, id, requestType);
     }
   });
 });
@@ -74204,7 +74727,6 @@ define('frontend-cp/serializers/user-field-value', ['exports', 'frontend-cp/seri
     }
   });
 });
-/*eslint-disable camelcase */
 define('frontend-cp/serializers/user-field', ['exports', 'frontend-cp/serializers/application', 'ember-data'], function (exports, _frontendCpSerializersApplication, _emberData) {
   exports['default'] = _frontendCpSerializersApplication['default'].extend(_emberData['default'].EmbeddedRecordsMixin, {
     attrs: {
@@ -74229,7 +74751,6 @@ define('frontend-cp/serializers/user-field', ['exports', 'frontend-cp/serializer
     }
   });
 });
-/* eslint-disable camelcase */
 define('frontend-cp/serializers/user-note', ['exports', 'frontend-cp/serializers/application'], function (exports, _frontendCpSerializersApplication) {
   exports['default'] = _frontendCpSerializersApplication['default'].extend({
     normalizeResponse: function normalizeResponse(store, primaryModelClass, payload, id, requestType) {
@@ -74274,7 +74795,6 @@ define('frontend-cp/serializers/user-note', ['exports', 'frontend-cp/serializers
     }
   });
 });
-/*eslint-disable camelcase */
 define('frontend-cp/serializers/user', ['exports', 'frontend-cp/serializers/application', 'frontend-cp/mixins/custom-field-serialization'], function (exports, _frontendCpSerializersApplication, _frontendCpMixinsCustomFieldSerialization) {
 
   function getPrimaryEmailAddress(snapshot) {
@@ -74337,7 +74857,7 @@ define('frontend-cp/serializers/user', ['exports', 'frontend-cp/serializers/appl
           json.organization_case_access = 'REQUESTED';
         }
       } else if (key === 'fieldValues') {
-        json.field_values = this.serializeCustomFields(snapshot.attr('customFields')); //eslint-disable-line camelcase
+        json.field_values = this.serializeCustomFields(snapshot.attr('customFields'));
         if (Object.keys(json.field_values).length === 0) {
           Reflect.deleteProperty(json, 'field_values');
         }
@@ -74347,7 +74867,6 @@ define('frontend-cp/serializers/user', ['exports', 'frontend-cp/serializers/appl
     }
   });
 });
-/* eslint-disable camelcase */
 define('frontend-cp/serializers/view', ['exports', 'ember-data', 'frontend-cp/serializers/application'], function (exports, _emberData, _frontendCpSerializersApplication) {
   exports['default'] = _frontendCpSerializersApplication['default'].extend(_emberData['default'].EmbeddedRecordsMixin, {
     attrs: {
@@ -74369,7 +74888,6 @@ define('frontend-cp/serializers/view', ['exports', 'ember-data', 'frontend-cp/se
     }
   });
 });
-/* eslint-disable camelcase */
 define('frontend-cp/services/ajax', ['exports', 'ember-ajax/services/ajax'], function (exports, _emberAjaxServicesAjax) {
   Object.defineProperty(exports, 'default', {
     enumerable: true,
@@ -74459,7 +74977,6 @@ define('frontend-cp/services/case-bulk-update', ['exports', 'ember'], function (
           return resolve();
         });
       } else {
-        /*eslint-disable camelcase*/
         if (typeof options.assigneeTeam !== 'undefined') {
           payload.assignee_team_id = options.assigneeTeam.id;
         }
@@ -74488,7 +75005,6 @@ define('frontend-cp/services/case-bulk-update', ['exports', 'ember'], function (
             return tag.name;
           }).toString();
         }
-        /*eslint-enable camelcase*/
 
         return adapter.ajax(url, 'PUT', { data: payload });
       }
@@ -78330,10 +78846,10 @@ define('frontend-cp/services/timeline', ['exports', 'ember', 'npm:lodash'], func
       var cache = this._getCache(model);
       var params = { parent: model };
       if (beforeId !== null) {
-        params.before_id = beforeId; // eslint-disable-line camelcase
+        params.before_id = beforeId;
       }
       if (afterId !== null) {
-        params.after_id = afterId; // eslint-disable-line camelcase
+        params.after_id = afterId;
       }
 
       return this.get('store').query('post', params).then(function (newPosts) {
@@ -78351,7 +78867,6 @@ define('frontend-cp/services/timeline', ['exports', 'ember', 'npm:lodash'], func
     }
   });
 });
-/* eslint-disable camelcase */
 define('frontend-cp/services/url', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = _ember['default'].Service.extend({
     currentUrl: null
@@ -80187,6 +80702,1469 @@ define("frontend-cp/session/admin/automation/sla/new/template", ["exports"], fun
     };
   })());
 });
+define('frontend-cp/session/admin/channels/facebook/callback/route', ['exports', 'ember', 'frontend-cp/mixins/remember-route'], function (exports, _ember, _frontendCpMixinsRememberRoute) {
+  exports['default'] = _ember['default'].Route.extend(_frontendCpMixinsRememberRoute['default'], {
+    notification: _ember['default'].inject.service('notification'),
+    intl: _ember['default'].inject.service('intl'),
+
+    beforeModel: function beforeModel(transition) {
+      var _this = this;
+
+      var params = transition.queryParams;
+
+      if (params.code && params.state) {
+        this.store.queryRecord('facebook-account-callback', {
+          code: params.code,
+          state: params.state,
+          callback: '/admin/channels/facebook/callback'
+        }).then(function () {
+          _this.get('notification').add({
+            type: 'success',
+            title: _this.get('intl').findTranslationByKey('generic.changes_saved'),
+            autodismiss: true
+          });
+        })['finally'](function () {
+          _this.transitionTo('session.admin.channels.facebook.index');
+        });
+      }
+    }
+  });
+});
+define('frontend-cp/session/admin/channels/facebook/edit/controller', ['exports', 'ember', 'frontend-cp/mixins/dirty-aware/controller'], function (exports, _ember, _frontendCpMixinsDirtyAwareController) {
+  exports['default'] = _ember['default'].Controller.extend(_frontendCpMixinsDirtyAwareController['default'], {
+    notification: _ember['default'].inject.service('notification'),
+    intl: _ember['default'].inject.service('intl'),
+    routeNameOnCancel: 'session.admin.channels.facebook.index',
+
+    actions: {
+      savePage: function savePage() {
+        return this.get('model').save();
+      },
+
+      success: function success() {
+        this.get('notification').add({
+          type: 'success',
+          title: this.get('intl').findTranslationByKey('generic.changes_saved'),
+          autodismiss: true
+        });
+
+        this.transitionToRoute('session.admin.channels.facebook.index');
+      }
+    }
+  });
+});
+define('frontend-cp/session/admin/channels/facebook/edit/route', ['exports', 'ember', 'frontend-cp/mixins/remember-route', 'frontend-cp/mixins/dirty-aware/route'], function (exports, _ember, _frontendCpMixinsRememberRoute, _frontendCpMixinsDirtyAwareRoute) {
+  exports['default'] = _ember['default'].Route.extend(_frontendCpMixinsRememberRoute['default'], _frontendCpMixinsDirtyAwareRoute['default'], {
+    model: function model(params) {
+      return this.store.findRecord('facebook-page', params.page_id);
+    }
+  });
+});
+define("frontend-cp/session/admin/channels/facebook/edit/template", ["exports"], function (exports) {
+  exports["default"] = Ember.HTMLBars.template((function () {
+    return {
+      meta: {
+        "fragmentReason": {
+          "name": "missing-wrapper",
+          "problems": ["wrong-type"]
+        },
+        "revision": "Ember@2.4.1",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 6,
+            "column": 0
+          }
+        },
+        "moduleName": "frontend-cp/session/admin/channels/facebook/edit/template.hbs"
+      },
+      isEmpty: false,
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var morphs = new Array(1);
+        morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+        dom.insertBoundary(fragment, 0);
+        return morphs;
+      },
+      statements: [["inline", "ko-admin/facebook/edit", [], ["page", ["subexpr", "@mut", [["get", "model", ["loc", [null, [2, 7], [2, 12]]]]], [], []], "onCancel", ["subexpr", "action", ["cancel"], [], ["loc", [null, [3, 11], [3, 28]]]], "onSave", ["subexpr", "action", ["savePage"], [], ["loc", [null, [4, 9], [4, 28]]]], "onSuccess", ["subexpr", "action", ["success"], [], ["loc", [null, [5, 12], [5, 30]]]]], ["loc", [null, [1, 0], [5, 32]]]]],
+      locals: [],
+      templates: []
+    };
+  })());
+});
+define('frontend-cp/session/admin/channels/facebook/index/controller', ['exports', 'ember', 'ember-concurrency'], function (exports, _ember, _emberConcurrency) {
+  var inject = _ember['default'].inject;
+  var computed = _ember['default'].computed;
+  var Controller = _ember['default'].Controller;
+  exports['default'] = Controller.extend({
+    notifications: inject.service('notification'),
+    intl: inject.service(),
+    store: inject.service(),
+
+    addingPages: null,
+    availablePages: null,
+
+    enabledPages: computed.filterBy('model', 'isEnabled', true),
+    disabledPages: computed.filterBy('model', 'isEnabled', false),
+
+    fetchAvailablePages: (0, _emberConcurrency.task)(regeneratorRuntime.mark(function callee$0$0() {
+      return regeneratorRuntime.wrap(function callee$0$0$(context$1$0) {
+        var _this = this;
+
+        while (1) switch (context$1$0.prev = context$1$0.next) {
+          case 0:
+            context$1$0.next = 2;
+            return this.get('store').query('facebook-page', { state: 'AVAILABLE' }).then(function (pages) {
+              _this.set('availablePages', pages);
+            });
+
+          case 2:
+          case 'end':
+            return context$1$0.stop();
+        }
+      }, callee$0$0, this);
+    })).drop(),
+
+    actions: {
+      editPage: function editPage(page) {
+        this.transitionToRoute('session.admin.channels.facebook.edit', page);
+      },
+
+      redirectToFacebookAuthenticationForReauthorize: function redirectToFacebookAuthenticationForReauthorize(e) {
+        e.stopPropagation();
+
+        this.store.queryRecord('oauth-link', { callback: '/admin/channels/facebook/reauthorize' }).then(function (link) {
+          window.location.href = link.get('id');
+        });
+      },
+
+      redirectToFacebookAuthenticationEndpoint: function redirectToFacebookAuthenticationEndpoint(e) {
+        e.stopPropagation();
+
+        this.store.queryRecord('oauth-link', { callback: '/admin/channels/facebook/callback' }).then(function (link) {
+          window.location.href = link.get('id');
+        });
+      },
+
+      toggleEnabled: function toggleEnabled(page, e) {
+        e.stopPropagation();
+        page.toggleProperty('isEnabled');
+        page.save();
+      },
+
+      deletePage: function deletePage(page, e) {
+        var _this2 = this;
+
+        e.stopPropagation();
+
+        if (confirm(this.get('intl').findTranslationByKey('generic.confirm.delete'))) {
+          page.destroyRecord().then(function () {
+            _this2.get('notifications').success(_this2.get('intl').findTranslationByKey('admin.facebook.deleted.message'));
+          });
+        }
+      },
+
+      selectPagesToAdd: function selectPagesToAdd() {
+        this.set('addingPages', true);
+        this.get('fetchAvailablePages').perform();
+      },
+
+      importPages: function importPages() {
+        var _this3 = this;
+
+        var adapter = this.container.lookup('adapter:application');
+        var url = adapter.namespace + '/facebook/pages';
+
+        adapter.ajax(url, 'POST', {
+          data: {
+            page_ids: this.get('availablePages').filterBy('import', true).map(function (page) {
+              return page.get('id');
+            }).join(',')
+          }
+        }).then(function (pagesPayload) {
+          _this3.get('store').pushPayload(pagesPayload);
+
+          var pages = pagesPayload.facebook_pages.map(function (page) {
+            return _this3.get('store').peekRecord('facebook-page', page.id)._internalModel;
+          });
+
+          _this3.get('model').addObjects(pages);
+          _this3.set('addingPages', false);
+        });
+      }
+    }
+  });
+});
+define('frontend-cp/session/admin/channels/facebook/index/route', ['exports', 'ember', 'frontend-cp/mixins/remember-route'], function (exports, _ember, _frontendCpMixinsRememberRoute) {
+  exports['default'] = _ember['default'].Route.extend(_frontendCpMixinsRememberRoute['default'], {
+    model: function model() {
+      return this.store.query('facebook-page', { state: 'IMPORTED' });
+    }
+  });
+});
+define("frontend-cp/session/admin/channels/facebook/index/styles", ["exports"], function (exports) {
+  exports["default"] = {
+    "add-pages": "_add-pages_y8luwb",
+    "available-pages": "_available-pages_y8luwb",
+    "available-page": "_available-page_y8luwb",
+    "modal-title": "_modal-title_y8luwb",
+    "no-pages": "_no-pages_y8luwb",
+    "reconnect": "_reconnect_y8luwb"
+  };
+});
+define("frontend-cp/session/admin/channels/facebook/index/template", ["exports"], function (exports) {
+  exports["default"] = Ember.HTMLBars.template((function () {
+    var child0 = (function () {
+      var child0 = (function () {
+        var child0 = (function () {
+          var child0 = (function () {
+            return {
+              meta: {
+                "fragmentReason": false,
+                "revision": "Ember@2.4.1",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 15,
+                    "column": 10
+                  },
+                  "end": {
+                    "line": 17,
+                    "column": 10
+                  }
+                },
+                "moduleName": "frontend-cp/session/admin/channels/facebook/index/template.hbs"
+              },
+              isEmpty: false,
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createTextNode("            ");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var morphs = new Array(1);
+                morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+                return morphs;
+              },
+              statements: [["content", "ko-loader", ["loc", [null, [16, 12], [16, 25]]]]],
+              locals: [],
+              templates: []
+            };
+          })();
+          var child1 = (function () {
+            var child0 = (function () {
+              return {
+                meta: {
+                  "fragmentReason": false,
+                  "revision": "Ember@2.4.1",
+                  "loc": {
+                    "source": null,
+                    "start": {
+                      "line": 19,
+                      "column": 14
+                    },
+                    "end": {
+                      "line": 23,
+                      "column": 14
+                    }
+                  },
+                  "moduleName": "frontend-cp/session/admin/channels/facebook/index/template.hbs"
+                },
+                isEmpty: false,
+                arity: 1,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                  var el0 = dom.createDocumentFragment();
+                  var el1 = dom.createTextNode("                ");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createElement("li");
+                  var el2 = dom.createTextNode("\n                  ");
+                  dom.appendChild(el1, el2);
+                  var el2 = dom.createComment("");
+                  dom.appendChild(el1, el2);
+                  var el2 = dom.createTextNode("\n                ");
+                  dom.appendChild(el1, el2);
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createTextNode("\n");
+                  dom.appendChild(el0, el1);
+                  return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                  var element8 = dom.childAt(fragment, [1]);
+                  var morphs = new Array(2);
+                  morphs[0] = dom.createAttrMorph(element8, 'class');
+                  morphs[1] = dom.createMorphAt(element8, 1, 1);
+                  return morphs;
+                },
+                statements: [["attribute", "class", ["get", "styles.available-page", ["loc", [null, [20, 28], [20, 49]]]]], ["inline", "ko-checkbox", [], ["label", ["subexpr", "@mut", [["get", "page.title", ["loc", [null, [21, 38], [21, 48]]]]], [], []], "checked", ["subexpr", "@mut", [["get", "page.import", ["loc", [null, [21, 57], [21, 68]]]]], [], []]], ["loc", [null, [21, 18], [21, 70]]]]],
+                locals: ["page"],
+                templates: []
+              };
+            })();
+            var child1 = (function () {
+              return {
+                meta: {
+                  "fragmentReason": false,
+                  "revision": "Ember@2.4.1",
+                  "loc": {
+                    "source": null,
+                    "start": {
+                      "line": 23,
+                      "column": 14
+                    },
+                    "end": {
+                      "line": 25,
+                      "column": 14
+                    }
+                  },
+                  "moduleName": "frontend-cp/session/admin/channels/facebook/index/template.hbs"
+                },
+                isEmpty: false,
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                  var el0 = dom.createDocumentFragment();
+                  var el1 = dom.createTextNode("                ");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createElement("span");
+                  var el2 = dom.createComment("");
+                  dom.appendChild(el1, el2);
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createTextNode("\n");
+                  dom.appendChild(el0, el1);
+                  return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                  var element7 = dom.childAt(fragment, [1]);
+                  var morphs = new Array(2);
+                  morphs[0] = dom.createAttrMorph(element7, 'class');
+                  morphs[1] = dom.createMorphAt(element7, 0, 0);
+                  return morphs;
+                },
+                statements: [["attribute", "class", ["get", "styles.no-pages", ["loc", [null, [24, 30], [24, 45]]]]], ["inline", "t", ["admin.facebook.no_pages"], [], ["loc", [null, [24, 48], [24, 79]]]]],
+                locals: [],
+                templates: []
+              };
+            })();
+            return {
+              meta: {
+                "fragmentReason": false,
+                "revision": "Ember@2.4.1",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 17,
+                    "column": 10
+                  },
+                  "end": {
+                    "line": 27,
+                    "column": 10
+                  }
+                },
+                "moduleName": "frontend-cp/session/admin/channels/facebook/index/template.hbs"
+              },
+              isEmpty: false,
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createTextNode("            ");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createElement("ul");
+                var el2 = dom.createTextNode("\n");
+                dom.appendChild(el1, el2);
+                var el2 = dom.createComment("");
+                dom.appendChild(el1, el2);
+                var el2 = dom.createTextNode("            ");
+                dom.appendChild(el1, el2);
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var morphs = new Array(1);
+                morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
+                return morphs;
+              },
+              statements: [["block", "each", [["get", "availablePages", ["loc", [null, [19, 22], [19, 36]]]]], [], 0, 1, ["loc", [null, [19, 14], [25, 23]]]]],
+              locals: [],
+              templates: [child0, child1]
+            };
+          })();
+          return {
+            meta: {
+              "fragmentReason": false,
+              "revision": "Ember@2.4.1",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 14,
+                  "column": 8
+                },
+                "end": {
+                  "line": 28,
+                  "column": 8
+                }
+              },
+              "moduleName": "frontend-cp/session/admin/channels/facebook/index/template.hbs"
+            },
+            isEmpty: false,
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(1);
+              morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+              dom.insertBoundary(fragment, 0);
+              dom.insertBoundary(fragment, null);
+              return morphs;
+            },
+            statements: [["block", "if", [["get", "fetchAvailablePages.isRunning", ["loc", [null, [15, 16], [15, 45]]]]], [], 0, 1, ["loc", [null, [15, 10], [27, 17]]]]],
+            locals: [],
+            templates: [child0, child1]
+          };
+        })();
+        return {
+          meta: {
+            "fragmentReason": false,
+            "revision": "Ember@2.4.1",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 8,
+                "column": 2
+              },
+              "end": {
+                "line": 44,
+                "column": 2
+              }
+            },
+            "moduleName": "frontend-cp/session/admin/channels/facebook/index/template.hbs"
+          },
+          isEmpty: false,
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("    ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("div");
+            dom.setAttribute(el1, "class", "ko-modal__content__header");
+            var el2 = dom.createTextNode("\n      ");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createElement("div");
+            var el3 = dom.createTextNode("Add pages");
+            dom.appendChild(el2, el3);
+            dom.appendChild(el1, el2);
+            var el2 = dom.createTextNode("\n    ");
+            dom.appendChild(el1, el2);
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n    ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("div");
+            dom.setAttribute(el1, "class", "ko-modal__content__main");
+            var el2 = dom.createTextNode("\n      ");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createElement("div");
+            var el3 = dom.createTextNode("\n");
+            dom.appendChild(el2, el3);
+            var el3 = dom.createComment("");
+            dom.appendChild(el2, el3);
+            var el3 = dom.createTextNode("      ");
+            dom.appendChild(el2, el3);
+            dom.appendChild(el1, el2);
+            var el2 = dom.createTextNode("\n    ");
+            dom.appendChild(el1, el2);
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n    ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("div");
+            dom.setAttribute(el1, "class", "ko-modal__content__footer suspended-message-modal__footer");
+            var el2 = dom.createTextNode("\n      ");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createElement("div");
+            var el3 = dom.createTextNode("\n        ");
+            dom.appendChild(el2, el3);
+            var el3 = dom.createComment("");
+            dom.appendChild(el2, el3);
+            var el3 = dom.createTextNode(" ");
+            dom.appendChild(el2, el3);
+            var el3 = dom.createElement("a");
+            var el4 = dom.createComment("");
+            dom.appendChild(el3, el4);
+            dom.appendChild(el2, el3);
+            var el3 = dom.createTextNode("\n      ");
+            dom.appendChild(el2, el3);
+            dom.appendChild(el1, el2);
+            var el2 = dom.createTextNode("\n\n      ");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createElement("button");
+            dom.setAttribute(el2, "class", "button button--secondary");
+            var el3 = dom.createTextNode("\n        Cancel\n      ");
+            dom.appendChild(el2, el3);
+            dom.appendChild(el1, el2);
+            var el2 = dom.createTextNode("\n\n      ");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createElement("button");
+            dom.setAttribute(el2, "class", "button button--primary");
+            var el3 = dom.createTextNode("\n        Save\n      ");
+            dom.appendChild(el2, el3);
+            dom.appendChild(el1, el2);
+            var el2 = dom.createTextNode("\n    ");
+            dom.appendChild(el1, el2);
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var element9 = dom.childAt(fragment, [1, 1]);
+            var element10 = dom.childAt(fragment, [3, 1]);
+            var element11 = dom.childAt(fragment, [5]);
+            var element12 = dom.childAt(element11, [1]);
+            var element13 = dom.childAt(element12, [3]);
+            var element14 = dom.childAt(element11, [3]);
+            var element15 = dom.childAt(element11, [5]);
+            var morphs = new Array(9);
+            morphs[0] = dom.createAttrMorph(element9, 'class');
+            morphs[1] = dom.createAttrMorph(element10, 'class');
+            morphs[2] = dom.createMorphAt(element10, 1, 1);
+            morphs[3] = dom.createAttrMorph(element12, 'class');
+            morphs[4] = dom.createMorphAt(element12, 1, 1);
+            morphs[5] = dom.createAttrMorph(element13, 'onclick');
+            morphs[6] = dom.createMorphAt(element13, 0, 0);
+            morphs[7] = dom.createAttrMorph(element14, 'onclick');
+            morphs[8] = dom.createAttrMorph(element15, 'onclick');
+            return morphs;
+          },
+          statements: [["attribute", "class", ["get", "styles.modal-title", ["loc", [null, [10, 19], [10, 37]]]]], ["attribute", "class", ["get", "styles.available-pages", ["loc", [null, [13, 19], [13, 41]]]]], ["block", "liquid-spacer", [], [], 0, null, ["loc", [null, [14, 8], [28, 26]]]], ["attribute", "class", ["get", "styles.reconnect", ["loc", [null, [32, 19], [32, 35]]]]], ["inline", "t", ["admin.facebook.see_facebook_account"], [], ["loc", [null, [33, 8], [33, 51]]]], ["attribute", "onclick", ["subexpr", "action", ["redirectToFacebookAuthenticationEndpoint"], [], ["loc", [null, [33, 63], [33, 116]]]]], ["inline", "t", ["admin.facebook.connect_facebook_account"], [], ["loc", [null, [33, 117], [33, 164]]]], ["attribute", "onclick", ["subexpr", "action", [["subexpr", "mut", [["get", "addingPages", ["loc", [null, [36, 69], [36, 80]]]]], [], ["loc", [null, [36, 64], [36, 81]]]], null], [], ["loc", [null, [36, 55], [36, 88]]]]], ["attribute", "onclick", ["subexpr", "action", ["importPages"], [], ["loc", [null, [40, 53], [40, 77]]]]]],
+          locals: [],
+          templates: [child0]
+        };
+      })();
+      return {
+        meta: {
+          "fragmentReason": false,
+          "revision": "Ember@2.4.1",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 7,
+              "column": 0
+            },
+            "end": {
+              "line": 45,
+              "column": 0
+            }
+          },
+          "moduleName": "frontend-cp/session/admin/channels/facebook/index/template.hbs"
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [["block", "ko-modal", [], ["class", ["subexpr", "@mut", [["get", "styles.add-pages", ["loc", [null, [8, 20], [8, 36]]]]], [], []]], 0, null, ["loc", [null, [8, 2], [44, 15]]]]],
+        locals: [],
+        templates: [child0]
+      };
+    })();
+    var child1 = (function () {
+      var child0 = (function () {
+        var child0 = (function () {
+          var child0 = (function () {
+            var child0 = (function () {
+              return {
+                meta: {
+                  "fragmentReason": false,
+                  "revision": "Ember@2.4.1",
+                  "loc": {
+                    "source": null,
+                    "start": {
+                      "line": 58,
+                      "column": 10
+                    },
+                    "end": {
+                      "line": 60,
+                      "column": 10
+                    }
+                  },
+                  "moduleName": "frontend-cp/session/admin/channels/facebook/index/template.hbs"
+                },
+                isEmpty: false,
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                  var el0 = dom.createDocumentFragment();
+                  var el1 = dom.createTextNode("            ");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createElement("span");
+                  dom.setAttribute(el1, "class", "t-bad");
+                  var el2 = dom.createTextNode(" (");
+                  dom.appendChild(el1, el2);
+                  var el2 = dom.createComment("");
+                  dom.appendChild(el1, el2);
+                  var el2 = dom.createTextNode(")");
+                  dom.appendChild(el1, el2);
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createTextNode("\n");
+                  dom.appendChild(el0, el1);
+                  return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                  var morphs = new Array(1);
+                  morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
+                  return morphs;
+                },
+                statements: [["inline", "t", ["admin.facebook.connection_lost"], [], ["loc", [null, [59, 34], [59, 72]]]]],
+                locals: [],
+                templates: []
+              };
+            })();
+            return {
+              meta: {
+                "fragmentReason": false,
+                "revision": "Ember@2.4.1",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 54,
+                    "column": 6
+                  },
+                  "end": {
+                    "line": 62,
+                    "column": 6
+                  }
+                },
+                "moduleName": "frontend-cp/session/admin/channels/facebook/index/template.hbs"
+              },
+              isEmpty: false,
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createTextNode("        ");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createElement("div");
+                var el2 = dom.createTextNode("\n          ");
+                dom.appendChild(el1, el2);
+                var el2 = dom.createElement("span");
+                dom.setAttribute(el2, "class", "t-bold");
+                var el3 = dom.createComment("");
+                dom.appendChild(el2, el3);
+                dom.appendChild(el1, el2);
+                var el2 = dom.createTextNode("\n\n");
+                dom.appendChild(el1, el2);
+                var el2 = dom.createComment("");
+                dom.appendChild(el1, el2);
+                var el2 = dom.createTextNode("        ");
+                dom.appendChild(el1, el2);
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var element6 = dom.childAt(fragment, [1]);
+                var morphs = new Array(2);
+                morphs[0] = dom.createMorphAt(dom.childAt(element6, [1]), 0, 0);
+                morphs[1] = dom.createMorphAt(element6, 3, 3);
+                return morphs;
+              },
+              statements: [["content", "page.title", ["loc", [null, [56, 31], [56, 45]]]], ["block", "if", [["subexpr", "eq", [["get", "page.status", ["loc", [null, [58, 20], [58, 31]]]], "NOT_AUTHORIZED"], [], ["loc", [null, [58, 16], [58, 49]]]]], [], 0, null, ["loc", [null, [58, 10], [60, 17]]]]],
+              locals: [],
+              templates: [child0]
+            };
+          })();
+          var child1 = (function () {
+            var child0 = (function () {
+              return {
+                meta: {
+                  "fragmentReason": false,
+                  "revision": "Ember@2.4.1",
+                  "loc": {
+                    "source": null,
+                    "start": {
+                      "line": 65,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 67,
+                      "column": 8
+                    }
+                  },
+                  "moduleName": "frontend-cp/session/admin/channels/facebook/index/template.hbs"
+                },
+                isEmpty: false,
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                  var el0 = dom.createDocumentFragment();
+                  var el1 = dom.createTextNode("          ");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createElement("a");
+                  var el2 = dom.createComment("");
+                  dom.appendChild(el1, el2);
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createTextNode(" |\n");
+                  dom.appendChild(el0, el1);
+                  return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                  var element3 = dom.childAt(fragment, [1]);
+                  var morphs = new Array(2);
+                  morphs[0] = dom.createAttrMorph(element3, 'onclick');
+                  morphs[1] = dom.createMorphAt(element3, 0, 0);
+                  return morphs;
+                },
+                statements: [["attribute", "onclick", ["subexpr", "action", ["redirectToFacebookAuthenticationForReauthorize"], [], ["loc", [null, [66, 21], [66, 80]]]]], ["inline", "t", ["admin.facebook.reconnect"], [], ["loc", [null, [66, 81], [66, 113]]]]],
+                locals: [],
+                templates: []
+              };
+            })();
+            var child1 = (function () {
+              return {
+                meta: {
+                  "fragmentReason": false,
+                  "revision": "Ember@2.4.1",
+                  "loc": {
+                    "source": null,
+                    "start": {
+                      "line": 69,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 69,
+                      "column": 84
+                    }
+                  },
+                  "moduleName": "frontend-cp/session/admin/channels/facebook/index/template.hbs"
+                },
+                isEmpty: false,
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                  var el0 = dom.createDocumentFragment();
+                  var el1 = dom.createComment("");
+                  dom.appendChild(el0, el1);
+                  return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                  var morphs = new Array(1);
+                  morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+                  dom.insertBoundary(fragment, 0);
+                  dom.insertBoundary(fragment, null);
+                  return morphs;
+                },
+                statements: [["inline", "t", ["generic.edit"], [], ["loc", [null, [69, 64], [69, 84]]]]],
+                locals: [],
+                templates: []
+              };
+            })();
+            return {
+              meta: {
+                "fragmentReason": false,
+                "revision": "Ember@2.4.1",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 64,
+                    "column": 6
+                  },
+                  "end": {
+                    "line": 72,
+                    "column": 6
+                  }
+                },
+                "moduleName": "frontend-cp/session/admin/channels/facebook/index/template.hbs"
+              },
+              isEmpty: false,
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n        ");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode(" |\n        ");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createElement("a");
+                dom.setAttribute(el1, "class", "qa-admin-facebook-page__disable");
+                var el2 = dom.createComment("");
+                dom.appendChild(el1, el2);
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode(" |\n        ");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createElement("a");
+                dom.setAttribute(el1, "class", "qa-admin-facebook-page__delete");
+                var el2 = dom.createComment("");
+                dom.appendChild(el1, el2);
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var element4 = dom.childAt(fragment, [4]);
+                var element5 = dom.childAt(fragment, [6]);
+                var morphs = new Array(6);
+                morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+                morphs[1] = dom.createMorphAt(fragment, 2, 2, contextualElement);
+                morphs[2] = dom.createAttrMorph(element4, 'onclick');
+                morphs[3] = dom.createMorphAt(element4, 0, 0);
+                morphs[4] = dom.createAttrMorph(element5, 'onclick');
+                morphs[5] = dom.createMorphAt(element5, 0, 0);
+                dom.insertBoundary(fragment, 0);
+                return morphs;
+              },
+              statements: [["block", "if", [["subexpr", "eq", [["get", "page.status", ["loc", [null, [65, 18], [65, 29]]]], "NOT_AUTHORIZED"], [], ["loc", [null, [65, 14], [65, 47]]]]], [], 0, null, ["loc", [null, [65, 8], [67, 15]]]], ["block", "link-to", ["session.admin.channels.facebook.edit", ["get", "page", ["loc", [null, [69, 58], [69, 62]]]]], [], 1, null, ["loc", [null, [69, 8], [69, 96]]]], ["attribute", "onclick", ["subexpr", "action", ["toggleEnabled", ["get", "page", ["loc", [null, [70, 84], [70, 88]]]]], [], ["loc", [null, [70, 59], [70, 90]]]]], ["inline", "t", ["generic.disable"], [], ["loc", [null, [70, 91], [70, 114]]]], ["attribute", "onclick", ["subexpr", "action", ["deletePage", ["get", "page", ["loc", [null, [71, 80], [71, 84]]]]], [], ["loc", [null, [71, 58], [71, 86]]]]], ["inline", "t", ["generic.delete"], [], ["loc", [null, [71, 87], [71, 109]]]]],
+              locals: [],
+              templates: [child0, child1]
+            };
+          })();
+          return {
+            meta: {
+              "fragmentReason": false,
+              "revision": "Ember@2.4.1",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 53,
+                  "column": 4
+                },
+                "end": {
+                  "line": 73,
+                  "column": 4
+                }
+              },
+              "moduleName": "frontend-cp/session/admin/channels/facebook/index/template.hbs"
+            },
+            isEmpty: false,
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(2);
+              morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+              morphs[1] = dom.createMorphAt(fragment, 2, 2, contextualElement);
+              dom.insertBoundary(fragment, 0);
+              dom.insertBoundary(fragment, null);
+              return morphs;
+            },
+            statements: [["block", "ko-simple-list/cell", [], [], 0, null, ["loc", [null, [54, 6], [62, 30]]]], ["block", "ko-simple-list/actions", [], [], 1, null, ["loc", [null, [64, 6], [72, 33]]]]],
+            locals: [],
+            templates: [child0, child1]
+          };
+        })();
+        return {
+          meta: {
+            "fragmentReason": false,
+            "revision": "Ember@2.4.1",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 52,
+                "column": 2
+              },
+              "end": {
+                "line": 74,
+                "column": 2
+              }
+            },
+            "moduleName": "frontend-cp/session/admin/channels/facebook/index/template.hbs"
+          },
+          isEmpty: false,
+          arity: 1,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+            dom.insertBoundary(fragment, 0);
+            dom.insertBoundary(fragment, null);
+            return morphs;
+          },
+          statements: [["block", "ko-simple-list/row", [], ["onClick", ["subexpr", "action", ["editPage", ["get", "page", ["loc", [null, [53, 53], [53, 57]]]]], [], ["loc", [null, [53, 34], [53, 58]]]], "class", "qa-admin-facebook-page"], 0, null, ["loc", [null, [53, 4], [73, 27]]]]],
+          locals: ["page"],
+          templates: [child0]
+        };
+      })();
+      return {
+        meta: {
+          "fragmentReason": false,
+          "revision": "Ember@2.4.1",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 47,
+              "column": 0
+            },
+            "end": {
+              "line": 75,
+              "column": 0
+            }
+          },
+          "moduleName": "frontend-cp/session/admin/channels/facebook/index/template.hbs"
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1, "class", "ko-simple-list__header");
+          var el2 = dom.createTextNode("\n    ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n  ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n\n");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(2);
+          morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
+          morphs[1] = dom.createMorphAt(fragment, 3, 3, contextualElement);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [["inline", "t", ["generic.enabled"], [], ["loc", [null, [49, 4], [49, 27]]]], ["block", "each", [["get", "enabledPages", ["loc", [null, [52, 10], [52, 22]]]]], [], 0, null, ["loc", [null, [52, 2], [74, 11]]]]],
+        locals: [],
+        templates: [child0]
+      };
+    })();
+    var child2 = (function () {
+      var child0 = (function () {
+        var child0 = (function () {
+          var child0 = (function () {
+            var child0 = (function () {
+              var child0 = (function () {
+                return {
+                  meta: {
+                    "fragmentReason": false,
+                    "revision": "Ember@2.4.1",
+                    "loc": {
+                      "source": null,
+                      "start": {
+                        "line": 89,
+                        "column": 12
+                      },
+                      "end": {
+                        "line": 91,
+                        "column": 12
+                      }
+                    },
+                    "moduleName": "frontend-cp/session/admin/channels/facebook/index/template.hbs"
+                  },
+                  isEmpty: false,
+                  arity: 0,
+                  cachedFragment: null,
+                  hasRendered: false,
+                  buildFragment: function buildFragment(dom) {
+                    var el0 = dom.createDocumentFragment();
+                    var el1 = dom.createTextNode("              ");
+                    dom.appendChild(el0, el1);
+                    var el1 = dom.createElement("span");
+                    dom.setAttribute(el1, "class", "t-bad");
+                    var el2 = dom.createTextNode("(");
+                    dom.appendChild(el1, el2);
+                    var el2 = dom.createComment("");
+                    dom.appendChild(el1, el2);
+                    var el2 = dom.createTextNode(")");
+                    dom.appendChild(el1, el2);
+                    dom.appendChild(el0, el1);
+                    var el1 = dom.createTextNode("\n");
+                    dom.appendChild(el0, el1);
+                    return el0;
+                  },
+                  buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                    var morphs = new Array(1);
+                    morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
+                    return morphs;
+                  },
+                  statements: [["inline", "t", ["admin.facebook.connection_lost"], [], ["loc", [null, [90, 35], [90, 73]]]]],
+                  locals: [],
+                  templates: []
+                };
+              })();
+              return {
+                meta: {
+                  "fragmentReason": false,
+                  "revision": "Ember@2.4.1",
+                  "loc": {
+                    "source": null,
+                    "start": {
+                      "line": 85,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 93,
+                      "column": 8
+                    }
+                  },
+                  "moduleName": "frontend-cp/session/admin/channels/facebook/index/template.hbs"
+                },
+                isEmpty: false,
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                  var el0 = dom.createDocumentFragment();
+                  var el1 = dom.createTextNode("          ");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createElement("div");
+                  dom.setAttribute(el1, "class", "t-disabled");
+                  var el2 = dom.createTextNode("\n            ");
+                  dom.appendChild(el1, el2);
+                  var el2 = dom.createElement("span");
+                  dom.setAttribute(el2, "class", "t-bold");
+                  var el3 = dom.createComment("");
+                  dom.appendChild(el2, el3);
+                  dom.appendChild(el1, el2);
+                  var el2 = dom.createTextNode("\n\n");
+                  dom.appendChild(el1, el2);
+                  var el2 = dom.createComment("");
+                  dom.appendChild(el1, el2);
+                  var el2 = dom.createTextNode("          ");
+                  dom.appendChild(el1, el2);
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createTextNode("\n");
+                  dom.appendChild(el0, el1);
+                  return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                  var element2 = dom.childAt(fragment, [1]);
+                  var morphs = new Array(2);
+                  morphs[0] = dom.createMorphAt(dom.childAt(element2, [1]), 0, 0);
+                  morphs[1] = dom.createMorphAt(element2, 3, 3);
+                  return morphs;
+                },
+                statements: [["content", "page.title", ["loc", [null, [87, 33], [87, 47]]]], ["block", "if", [["subexpr", "eq", [["get", "page.status", ["loc", [null, [89, 22], [89, 33]]]], "NOT_AUTHORIZED"], [], ["loc", [null, [89, 18], [89, 51]]]]], [], 0, null, ["loc", [null, [89, 12], [91, 19]]]]],
+                locals: [],
+                templates: [child0]
+              };
+            })();
+            var child1 = (function () {
+              return {
+                meta: {
+                  "fragmentReason": false,
+                  "revision": "Ember@2.4.1",
+                  "loc": {
+                    "source": null,
+                    "start": {
+                      "line": 95,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 98,
+                      "column": 8
+                    }
+                  },
+                  "moduleName": "frontend-cp/session/admin/channels/facebook/index/template.hbs"
+                },
+                isEmpty: false,
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                  var el0 = dom.createDocumentFragment();
+                  var el1 = dom.createTextNode("          ");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createElement("a");
+                  var el2 = dom.createComment("");
+                  dom.appendChild(el1, el2);
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createTextNode(" |\n          ");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createElement("a");
+                  var el2 = dom.createComment("");
+                  dom.appendChild(el1, el2);
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createTextNode("\n");
+                  dom.appendChild(el0, el1);
+                  return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                  var element0 = dom.childAt(fragment, [1]);
+                  var element1 = dom.childAt(fragment, [3]);
+                  var morphs = new Array(4);
+                  morphs[0] = dom.createAttrMorph(element0, 'onclick');
+                  morphs[1] = dom.createMorphAt(element0, 0, 0);
+                  morphs[2] = dom.createAttrMorph(element1, 'onclick');
+                  morphs[3] = dom.createMorphAt(element1, 0, 0);
+                  return morphs;
+                },
+                statements: [["attribute", "onclick", ["subexpr", "action", ["toggleEnabled", ["get", "page", ["loc", [null, [96, 46], [96, 50]]]]], [], ["loc", [null, [96, 21], [96, 52]]]]], ["inline", "t", ["generic.enable"], [], ["loc", [null, [96, 53], [96, 75]]]], ["attribute", "onclick", ["subexpr", "action", ["deletePage", ["get", "page", ["loc", [null, [97, 43], [97, 47]]]]], [], ["loc", [null, [97, 21], [97, 49]]]]], ["inline", "t", ["generic.delete"], [], ["loc", [null, [97, 50], [97, 72]]]]],
+                locals: [],
+                templates: []
+              };
+            })();
+            return {
+              meta: {
+                "fragmentReason": false,
+                "revision": "Ember@2.4.1",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 84,
+                    "column": 6
+                  },
+                  "end": {
+                    "line": 99,
+                    "column": 6
+                  }
+                },
+                "moduleName": "frontend-cp/session/admin/channels/facebook/index/template.hbs"
+              },
+              isEmpty: false,
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var morphs = new Array(2);
+                morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+                morphs[1] = dom.createMorphAt(fragment, 2, 2, contextualElement);
+                dom.insertBoundary(fragment, 0);
+                dom.insertBoundary(fragment, null);
+                return morphs;
+              },
+              statements: [["block", "ko-simple-list/cell", [], [], 0, null, ["loc", [null, [85, 8], [93, 32]]]], ["block", "ko-simple-list/actions", [], [], 1, null, ["loc", [null, [95, 8], [98, 35]]]]],
+              locals: [],
+              templates: [child0, child1]
+            };
+          })();
+          return {
+            meta: {
+              "fragmentReason": false,
+              "revision": "Ember@2.4.1",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 83,
+                  "column": 4
+                },
+                "end": {
+                  "line": 100,
+                  "column": 4
+                }
+              },
+              "moduleName": "frontend-cp/session/admin/channels/facebook/index/template.hbs"
+            },
+            isEmpty: false,
+            arity: 1,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(1);
+              morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+              dom.insertBoundary(fragment, 0);
+              dom.insertBoundary(fragment, null);
+              return morphs;
+            },
+            statements: [["block", "ko-simple-list/row", [], [], 0, null, ["loc", [null, [84, 6], [99, 29]]]]],
+            locals: ["page"],
+            templates: [child0]
+          };
+        })();
+        return {
+          meta: {
+            "fragmentReason": false,
+            "revision": "Ember@2.4.1",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 78,
+                "column": 2
+              },
+              "end": {
+                "line": 101,
+                "column": 2
+              }
+            },
+            "moduleName": "frontend-cp/session/admin/channels/facebook/index/template.hbs"
+          },
+          isEmpty: false,
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("    ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("div");
+            dom.setAttribute(el1, "class", "ko-simple-list__header");
+            var el2 = dom.createTextNode("\n      ");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createComment("");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createTextNode("\n    ");
+            dom.appendChild(el1, el2);
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n\n");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(2);
+            morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
+            morphs[1] = dom.createMorphAt(fragment, 3, 3, contextualElement);
+            dom.insertBoundary(fragment, null);
+            return morphs;
+          },
+          statements: [["inline", "t", ["generic.disabled"], [], ["loc", [null, [80, 6], [80, 30]]]], ["block", "each", [["get", "disabledPages", ["loc", [null, [83, 12], [83, 25]]]]], [], 0, null, ["loc", [null, [83, 4], [100, 13]]]]],
+          locals: [],
+          templates: [child0]
+        };
+      })();
+      return {
+        meta: {
+          "fragmentReason": false,
+          "revision": "Ember@2.4.1",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 77,
+              "column": 0
+            },
+            "end": {
+              "line": 102,
+              "column": 0
+            }
+          },
+          "moduleName": "frontend-cp/session/admin/channels/facebook/index/template.hbs"
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [["block", "ko-simple-list", [], [], 0, null, ["loc", [null, [78, 2], [101, 21]]]]],
+        locals: [],
+        templates: [child0]
+      };
+    })();
+    return {
+      meta: {
+        "fragmentReason": {
+          "name": "missing-wrapper",
+          "problems": ["wrong-type", "multiple-nodes"]
+        },
+        "revision": "Ember@2.4.1",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 103,
+            "column": 0
+          }
+        },
+        "moduleName": "frontend-cp/session/admin/channels/facebook/index/template.hbs"
+      },
+      isEmpty: false,
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var morphs = new Array(4);
+        morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+        morphs[1] = dom.createMorphAt(fragment, 2, 2, contextualElement);
+        morphs[2] = dom.createMorphAt(fragment, 4, 4, contextualElement);
+        morphs[3] = dom.createMorphAt(fragment, 6, 6, contextualElement);
+        dom.insertBoundary(fragment, 0);
+        dom.insertBoundary(fragment, null);
+        return morphs;
+      },
+      statements: [["inline", "ko-admin/page-header", [], ["title", ["subexpr", "t", ["admin.facebook.headings.index"], [], ["loc", [null, [2, 8], [2, 43]]]], "buttonText", ["subexpr", "t", ["admin.facebook.buttons.create_account"], [], ["loc", [null, [3, 13], [3, 56]]]], "onSave", ["subexpr", "action", ["selectPagesToAdd"], [], ["loc", [null, [4, 9], [4, 36]]]]], ["loc", [null, [1, 0], [5, 2]]]], ["block", "if", [["get", "addingPages", ["loc", [null, [7, 6], [7, 17]]]]], [], 0, null, ["loc", [null, [7, 0], [45, 7]]]], ["block", "ko-simple-list", [], [], 1, null, ["loc", [null, [47, 0], [75, 19]]]], ["block", "if", [["get", "disabledPages.length", ["loc", [null, [77, 6], [77, 26]]]]], [], 2, null, ["loc", [null, [77, 0], [102, 7]]]]],
+      locals: [],
+      templates: [child0, child1, child2]
+    };
+  })());
+});
+define('frontend-cp/session/admin/channels/facebook/reauthorize/route', ['exports', 'ember', 'frontend-cp/mixins/remember-route'], function (exports, _ember, _frontendCpMixinsRememberRoute) {
+  exports['default'] = _ember['default'].Route.extend(_frontendCpMixinsRememberRoute['default'], {
+    notification: _ember['default'].inject.service('notification'),
+    intl: _ember['default'].inject.service('intl'),
+
+    beforeModel: function beforeModel(transition) {
+      var _this = this;
+
+      var params = transition.queryParams;
+
+      if (params.code && params.state) {
+        this.store.queryRecord('facebook-account-callback', {
+          code: params.code,
+          state: params.state,
+          callback: '/admin/channels/facebook/reauthorize'
+        }).then(function () {
+          _this.get('notification').add({
+            type: 'success',
+            title: _this.get('intl').findTranslationByKey('generic.changes_saved'),
+            autodismiss: true
+          });
+        })['finally'](function () {
+          _this.transitionTo('session.admin.channels.facebook.index');
+        });
+      }
+    }
+  });
+});
+define('frontend-cp/session/admin/channels/twitter/callback/route', ['exports', 'ember', 'frontend-cp/mixins/remember-route'], function (exports, _ember, _frontendCpMixinsRememberRoute) {
+  exports['default'] = _ember['default'].Route.extend(_frontendCpMixinsRememberRoute['default'], {
+    notification: _ember['default'].inject.service('notification'),
+    intl: _ember['default'].inject.service('intl'),
+
+    beforeModel: function beforeModel(transition) {
+      var _this = this;
+
+      var params = transition.queryParams;
+
+      if (params.oauth_token && params.oauth_verifier) {
+        this.store.createRecord('twitter-account-callback', {
+          oauthToken: params.oauth_token,
+          oauthVerifier: params.oauth_verifier
+        }).save().then(function () {
+          _this.get('notification').add({
+            type: 'success',
+            title: _this.get('intl').findTranslationByKey('generic.changes_saved'),
+            autodismiss: true
+          });
+
+          _this.transitionToRoute('session.admin.channels.twitter.index');
+        })['catch'](function () {
+          _this.transitionToRoute('session.admin.channels.twitter.index');
+        });
+      }
+    }
+  });
+});
 define('frontend-cp/session/admin/channels/twitter/edit/controller', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = _ember['default'].Controller.extend({
     notification: _ember['default'].inject.service('notification'),
@@ -80215,8 +82193,8 @@ define('frontend-cp/session/admin/channels/twitter/edit/controller', ['exports',
 });
 define('frontend-cp/session/admin/channels/twitter/edit/route', ['exports', 'ember', 'frontend-cp/mixins/remember-route'], function (exports, _ember, _frontendCpMixinsRememberRoute) {
   exports['default'] = _ember['default'].Route.extend(_frontendCpMixinsRememberRoute['default'], {
-
     intlService: _ember['default'].inject.service('intl'),
+
     model: function model(params) {
       return this.store.findRecord('twitter-account', params.account_id);
     },
@@ -80292,16 +82270,8 @@ define('frontend-cp/session/admin/channels/twitter/index/controller', ['exports'
     intl: inject.service('intl'),
     notifications: inject.service('notification'),
 
-    enabledAccounts: computed('model.@each.isEnabled', function () {
-      return this.get('model').filter(function (account) {
-        return account.get('isEnabled') === true;
-      });
-    }),
-    disabledAccounts: computed('model.@each.isEnabled', function () {
-      return this.get('model').filter(function (account) {
-        return account.get('isEnabled') !== true;
-      });
-    }),
+    enabledAccounts: computed.filterBy('model', 'isEnabled', true),
+    disabledAccounts: computed.filterBy('model', 'isEnabled', false),
 
     actions: {
       toggleEnabledProperty: function toggleEnabledProperty(account, e) {
@@ -80309,6 +82279,7 @@ define('frontend-cp/session/admin/channels/twitter/index/controller', ['exports'
         account.toggleProperty('isEnabled');
         account.save();
       },
+
       editAccount: function editAccount(account, event) {
         if (event && _ember['default'].$(event.target).hasClass('js-admin_channels_twitter__delete-button')) {
           return;
@@ -80326,9 +82297,11 @@ define('frontend-cp/session/admin/channels/twitter/index/controller', ['exports'
           });
         }
       },
+
       redirectToTwitterAuthenticationEndpoint: function redirectToTwitterAuthenticationEndpoint(e) {
         e.stopPropagation();
-        this.store.queryRecord('oauth-link', { callback: '/admin/channels/twitter/link' }).then(function (link) {
+
+        this.store.queryRecord('oauth-link', { callback: '/admin/channels/twitter/callback' }).then(function (link) {
           window.location.href = link.get('id');
         });
       },
@@ -80343,11 +82316,9 @@ define('frontend-cp/session/admin/channels/twitter/index/controller', ['exports'
 });
 define('frontend-cp/session/admin/channels/twitter/index/route', ['exports', 'ember', 'frontend-cp/mixins/remember-route'], function (exports, _ember, _frontendCpMixinsRememberRoute) {
   exports['default'] = _ember['default'].Route.extend(_frontendCpMixinsRememberRoute['default'], {
-
     model: function model() {
       return this.store.findAll('twitter-account');
     }
-
   });
 });
 define("frontend-cp/session/admin/channels/twitter/index/template", ["exports"], function (exports) {
@@ -81135,78 +83106,26 @@ define("frontend-cp/session/admin/channels/twitter/index/template", ["exports"],
     };
   })());
 });
-define('frontend-cp/session/admin/channels/twitter/link/controller', ['exports', 'ember'], function (exports, _ember) {
-  exports['default'] = _ember['default'].Controller.extend({
-    notification: _ember['default'].inject.service('notification'),
-    intl: _ember['default'].inject.service('intl'),
-
-    queryParams: ['oauth_token', 'oauth_verifier'],
-
-    oauth_token: null,
-    oauth_verifier: null,
-
-    updateBackendWithTwitterInfo: function updateBackendWithTwitterInfo() {
-      var _this = this;
-
-      if (this.get('oauth_token') && this.get('oauth_verifier')) {
-        this.store.createRecord('twitter-account-callback', {
-          oauthToken: this.get('oauth_token'),
-          oauthVerifier: this.get('oauth_verifier')
-        }).save().then(function () {
-          _this.get('notification').add({
-            type: 'success',
-            title: _this.get('intl').findTranslationByKey('generic.changes_saved'),
-            autodismiss: true
-          });
-
-          _this.transitionToRoute('session.admin.channels.twitter.index');
-        })['catch'](function () {
-          _this.transitionToRoute('session.admin.channels.twitter.index');
-        });
-      }
-    }
-
-  });
-});
-/* eslint-disable camelcase */
-define('frontend-cp/session/admin/channels/twitter/link/route', ['exports', 'ember', 'frontend-cp/mixins/remember-route'], function (exports, _ember, _frontendCpMixinsRememberRoute) {
-  exports['default'] = _ember['default'].Route.extend(_frontendCpMixinsRememberRoute['default'], {
-
-    setupController: function setupController() {
-      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-        args[_key] = arguments[_key];
-      }
-
-      this._super(args);
-      this.controller.updateBackendWithTwitterInfo();
-    }
-
-  });
-});
-define('frontend-cp/session/admin/channels/twitter/reauthorize/controller', ['exports', 'ember'], function (exports, _ember) {
+define('frontend-cp/session/admin/channels/twitter/reauthorize/route', ['exports', 'ember', 'frontend-cp/mixins/remember-route'], function (exports, _ember, _frontendCpMixinsRememberRoute) {
   var getOwner = _ember['default'].getOwner;
   var service = _ember['default'].inject.service;
-  exports['default'] = _ember['default'].Controller.extend({
+  exports['default'] = _ember['default'].Route.extend(_frontendCpMixinsRememberRoute['default'], {
     notification: service(),
     intl: service(),
 
-    queryParams: ['oauth_token', 'oauth_verifier'],
-
-    oauth_token: null,
-    oauth_verifier: null,
-
-    updateBackendWithTwitterInfo: function updateBackendWithTwitterInfo() {
+    beforeModel: function beforeModel(transition) {
       var _this = this;
+
+      var params = transition.queryParams;
 
       var adapter = getOwner(this).lookup('adapter:application');
       var url = adapter.namespace + '/twitter/account/reauthorize';
 
-      if (this.get('oauth_token') && this.get('oauth_verifier')) {
-
+      if (params.oauth_token && params.oauth_verifier) {
         var options = {
           data: {
-            oauthToken: this.get('oauth_token'),
-            oauthVerifier: this.get('oauth_verifier')
+            oauthToken: params.oauth_token,
+            oauthVerifier: params.oauth_verifier
           }
         };
 
@@ -81221,22 +83140,6 @@ define('frontend-cp/session/admin/channels/twitter/reauthorize/controller', ['ex
         });
       }
     }
-
-  });
-});
-/* eslint-disable camelcase */
-define('frontend-cp/session/admin/channels/twitter/reauthorize/route', ['exports', 'ember', 'frontend-cp/mixins/remember-route'], function (exports, _ember, _frontendCpMixinsRememberRoute) {
-  exports['default'] = _ember['default'].Route.extend(_frontendCpMixinsRememberRoute['default'], {
-
-    setupController: function setupController() {
-      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-        args[_key] = arguments[_key];
-      }
-
-      this._super(args);
-      this.controller.updateBackendWithTwitterInfo();
-    }
-
   });
 });
 define('frontend-cp/session/admin/manage/case-fields/edit/route', ['exports', 'ember', 'frontend-cp/mixins/remember-route'], function (exports, _ember, _frontendCpMixinsRememberRoute) {
@@ -81827,7 +83730,6 @@ define('frontend-cp/session/admin/manage/case-forms/index/controller', ['exports
     }
   });
 });
-/*eslint-disable camelcase */
 define('frontend-cp/session/admin/manage/case-forms/index/route', ['exports', 'ember', 'frontend-cp/mixins/remember-route'], function (exports, _ember, _frontendCpMixinsRememberRoute) {
   exports['default'] = _ember['default'].Route.extend(_frontendCpMixinsRememberRoute['default'], {
     model: function model() {
@@ -88547,7 +90449,6 @@ define('frontend-cp/session/agent/cases/case/user/controller', ['exports', 'embe
     }
   });
 });
-/*eslint-disable camelcase */
 define('frontend-cp/session/agent/cases/case/user/route', ['exports', 'ember', 'frontend-cp/routes/abstract/tabbed-route-child'], function (exports, _ember, _frontendCpRoutesAbstractTabbedRouteChild) {
   exports['default'] = _frontendCpRoutesAbstractTabbedRouteChild['default'].extend({
     storeCache: _ember['default'].inject.service('store-cache'),
@@ -88812,7 +90713,6 @@ define('frontend-cp/session/agent/cases/index/suspended-messages/route', ['expor
     }
   });
 });
-/*eslint-disable camelcase */
 define('frontend-cp/session/agent/cases/index/suspended-messages/show/route', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = _ember['default'].Route.extend({
     model: function model(_ref) {
@@ -90630,7 +92530,6 @@ define('frontend-cp/session/agent/cases/index/view/route', ['exports', 'ember', 
     }
   });
 });
-/*eslint-disable camelcase */
 define("frontend-cp/session/agent/cases/index/view/template", ["exports"], function (exports) {
   exports["default"] = Ember.HTMLBars.template((function () {
     return {
@@ -91117,7 +93016,6 @@ define('frontend-cp/session/agent/cases/new/route', ['exports', 'ember', 'fronte
     }
   });
 });
-/* eslint-disable camelcase */
 define("frontend-cp/session/agent/cases/new/template", ["exports"], function (exports) {
   exports["default"] = Ember.HTMLBars.template((function () {
     return {
@@ -91189,7 +93087,6 @@ define('frontend-cp/session/agent/cases/new/user/controller', ['exports', 'ember
     }
   });
 });
-/*eslint-disable camelcase */
 define('frontend-cp/session/agent/cases/new/user/route', ['exports', 'ember'], function (exports, _ember) {
   var get = _ember['default'].get;
   exports['default'] = _ember['default'].Route.extend({
@@ -92072,7 +93969,6 @@ define('frontend-cp/session/agent/users/user/index/controller', ['exports', 'emb
     }
   });
 });
-/*eslint-disable camelcase */
 define('frontend-cp/session/agent/users/user/index/route', ['exports', 'frontend-cp/routes/abstract/tabbed-route-child'], function (exports, _frontendCpRoutesAbstractTabbedRouteChild) {
   exports['default'] = _frontendCpRoutesAbstractTabbedRouteChild['default'].extend({});
 });
@@ -95529,7 +97425,8 @@ define("frontend-cp/styles/styles/utilities/_typography.scss", ["exports"], func
     "t-base": "_t-base_121pt9",
     "t-naked-link": "_t-naked-link_121pt9",
     "t-bold": "_t-bold_121pt9",
-    "t-italic": "_t-italic_121pt9"
+    "t-italic": "_t-italic_121pt9",
+    "t-disabled": "_t-disabled_121pt9"
   };
 });
 define("frontend-cp/templates/application", ["exports"], function (exports) {
@@ -97835,7 +99732,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+54fb8167"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+5d2b808c"});
 }
 
 /* jshint ignore:end */

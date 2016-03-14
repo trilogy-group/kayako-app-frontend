@@ -79,7 +79,6 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/delete-test', ['ex
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/manage/case fields/delete', {
     beforeEach: function beforeEach() {
-      /*eslint-disable camelcase*/
       server.create('locale', {
         id: 1,
         locale: 'en-us'
@@ -111,7 +110,6 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/delete-test', ['ex
         limits: [],
         features: []
       });
-      /*eslint-enable camelcase*/
       originalConfirm = window.confirm;
     },
 
@@ -169,7 +167,6 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/manage/case fields/edit', {
     beforeEach: function beforeEach() {
-      /*eslint-disable camelcase*/
       server.create('locale', {
         id: 1,
         locale: 'en-us'
@@ -464,7 +461,6 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
         limits: [],
         features: []
       });
-      /*eslint-enable camelcase*/
     },
 
     afterEach: function afterEach() {
@@ -1068,7 +1064,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-statuses-te
       server.create('case-field', {
         id: caseFieldId,
         title: 'Status',
-        is_system: true, // eslint-disable-line camelcase
+        is_system: true,
         type: 'STATUS'
       });
 
@@ -1076,9 +1072,9 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-statuses-te
         label: function label(i) {
           return 'Test Status ' + (i + 1);
         },
-        is_system: false, // eslint-disable-line camelcase
+        is_system: false,
         type: 'CUSTOM',
-        is_sla_active: false // eslint-disable-line camelcase
+        is_sla_active: false
       });
 
       server.create('plan', {
@@ -1179,7 +1175,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-types-test'
       server.create('case-field', {
         id: caseFieldId,
         title: 'Type',
-        is_system: true, // eslint-disable-line camelcase
+        is_system: true,
         type: 'TYPE'
       });
 
@@ -2436,7 +2432,77 @@ define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['exports', 
     });
   });
 });
-/* eslint-disable camelcase */
+define('frontend-cp/tests/acceptance/admin/manage/facebook/manage-pages-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
+
+  (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/manage/facebook/pages', {
+    beforeEach: function beforeEach() {
+      /*eslint-disable quote-props*/
+      server.create('locale', {
+        locale: 'en-us',
+        isDefault: true
+      });
+
+      var businesshour = server.create('business-hour', { title: 'Default Business Hours' });
+      var salesTeam = server.create('team', { title: 'Sales', businesshour: businesshour });
+      var agentRole = server.create('role', { type: 'AGENT' });
+
+      server.create('user', { teams: [salesTeam], role: agentRole, full_name: 'Leeroy Jenkins' });
+      server.create('case-status', { label: 'New' });
+      server.create('case-type', { label: 'Question' });
+      server.create('case-priority', { label: 'Low' });
+      server.create('facebook-page');
+
+      var adminRole = server.create('role', { type: 'ADMIN' });
+      var agent = server.create('user', { role: adminRole });
+      var session = server.create('session', { user: agent });
+
+      login(session.id);
+
+      server.create('plan', {
+        limits: [],
+        features: []
+      });
+      /*eslint-enable quote-props*/
+    },
+
+    afterEach: function afterEach() {
+      logout();
+    }
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('disabling a page', function (assert) {
+    visit('/admin/channels/facebook');
+    click('.qa-admin-facebook-page__disable');
+
+    andThen(function () {
+      assert.equal(find('.t-disabled').length, 1);
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('deleting a page', function (assert) {
+    visit('/admin/channels/facebook');
+
+    confirming(true, function () {
+      click('.qa-admin-facebook-page__delete');
+    });
+
+    andThen(function () {
+      assert.equal(find('.qa-admin-facebook-page').length, 0);
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('editing a page', function (assert) {
+    visit('/admin/channels/facebook');
+    click('.qa-admin-facebook-page');
+    click('.qa-admin-facebook-page__route-messages .ko-toggle__container');
+    click('button:contains("Save")');
+    click('.qa-admin-facebook-page');
+
+    andThen(function () {
+      assert.equal(find('.qa-admin-facebook-page__route-messages .ko-toggle__container--activated').length, 0);
+    });
+  });
+});
 define('frontend-cp/tests/acceptance/admin/manage/macros/new-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/manage/macros/new', {
@@ -2552,7 +2618,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/manage/views/new', {
     beforeEach: function beforeEach() {
-      /*eslint-disable camelcase, quote-props*/
+      /*eslint-disable quote-props*/
       server.create('locale', {
         locale: 'en-us'
       });
@@ -2751,7 +2817,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
         limits: [],
         features: []
       });
-      /*eslint-enable camelcase, quote-props*/
+      /*eslint-enable quote-props*/
     },
 
     afterEach: function afterEach() {
@@ -3152,7 +3218,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/delete-tes
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/people/organization fields/delete', {
     beforeEach: function beforeEach() {
-      /*eslint-disable camelcase*/
       server.create('locale', {
         id: 1,
         locale: 'en-us'
@@ -3183,7 +3248,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/delete-tes
         limits: [],
         features: []
       });
-      /*eslint-enable camelcase*/
       originalConfirm = window.confirm;
     },
 
@@ -4911,7 +4975,6 @@ define('frontend-cp/tests/acceptance/admin/people/roles/form-test', ['exports', 
     });
   });
 });
-/*eslint-disable camelcase */
 define('frontend-cp/tests/acceptance/admin/people/roles/index-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/people/roles index', {
@@ -5048,7 +5111,6 @@ define('frontend-cp/tests/acceptance/admin/people/roles/index-test', ['exports',
     });
   });
 });
-/*eslint-disable camelcase */
 define('frontend-cp/tests/acceptance/admin/people/teams-forms-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
 
   var originalConfirm = undefined;
@@ -5108,7 +5170,6 @@ define('frontend-cp/tests/acceptance/admin/people/teams-forms-test', ['exports',
     });
   });
 });
-/* eslint-disable camelcase */
 define('frontend-cp/tests/acceptance/admin/people/user-fields/delete-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/tests/pages/admin/custom-fields-index'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpTestsPagesAdminCustomFieldsIndex) {
 
   var originalConfirm = undefined;
@@ -5203,7 +5264,6 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/people/user fields/edit', {
     beforeEach: function beforeEach() {
-      /*eslint-disable camelcase*/
       server.create('locale', {
         id: 1,
         locale: 'en-us'
@@ -5486,7 +5546,6 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
         limits: [],
         features: []
       });
-      /*eslint-enable camelcase*/
     },
 
     afterEach: function afterEach() {
@@ -6453,7 +6512,6 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/reorder-test', ['e
   (0, _qunit.module)('Acceptance | admin/people/user fields/reorder', {
     beforeEach: function beforeEach() {
       this.application = (0, _frontendCpTestsHelpersStartApp['default'])();
-      /*eslint-disable camelcase*/
       server.create('locale', {
         id: 1,
         locale: 'en-us'
@@ -6603,7 +6661,6 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/reorder-test', ['e
         limits: [],
         features: []
       });
-      /*eslint-enable camelcase*/
     },
 
     afterEach: function afterEach() {
@@ -6880,7 +6937,7 @@ define('frontend-cp/tests/acceptance/agent/cases/create-test', ['exports', 'fron
     });
   });
 });
-/* eslint-disable camelcase, new-cap */
+/* eslint-disable new-cap */
 define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'ember'], function (exports, _frontendCpTestsHelpersQunit, _ember) {
 
   var originalConfirm = window.confirm;
@@ -7314,7 +7371,7 @@ define('frontend-cp/tests/acceptance/agent/cases/timeline-test', ['exports', 'fr
     });
   });
 });
-/* eslint-disable camelcase, new-cap */
+/* eslint-disable new-cap */
 define('frontend-cp/tests/acceptance/agent/cases/update-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | Case | Update', {
@@ -7394,7 +7451,7 @@ define('frontend-cp/tests/acceptance/agent/cases/user-test', ['exports', 'fronte
   });
 });
 define("frontend-cp/tests/acceptance/agent/macros/select-macro-test", ["exports"], function (exports) {});
-// /* eslint-disable camelcase, new-cap */
+// /* eslint-disable new-cap */
 //
 // import {
 //   app,
@@ -7791,7 +7848,6 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
     });
   });
 });
-/* eslint-disable camelcase */
 define('frontend-cp/tests/acceptance/agent/organisations/create-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | Organisation | Create organisation', {
@@ -8249,7 +8305,6 @@ define('frontend-cp/tests/acceptance/agent/users/create-test', ['exports', 'fron
     });
   });
 });
-/* eslint-disable camelcase, new-cap */
 define('frontend-cp/tests/acceptance/suspended-messages-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
 
   var originalConfirm = window.confirm;
@@ -14148,7 +14203,6 @@ define('frontend-cp/tests/unit/services/custom-fields-test', ['exports', 'ember'
     assert.equal(model.get('isEnabled'), false);
   });
 });
-/* eslint-disable camelcase */
 define('frontend-cp/tests/unit/services/error-handler-test', ['exports', 'ember', 'ember-qunit', 'frontend-cp/services/session'], function (exports, _ember, _emberQunit, _frontendCpServicesSession) {
   var getOwner = _ember['default'].getOwner;
 
@@ -14411,7 +14465,7 @@ define('frontend-cp/tests/unit/services/error-handler-test', ['exports', 'ember'
     } catch (e) {}
   });
 });
-/* eslint-disable camelcase, no-empty */
+/* eslint-disable no-empty */
 define('frontend-cp/tests/unit/services/plan-test', ['exports', 'ember', 'ember-qunit', 'frontend-cp/tests/helpers/setup-mirage-for-integration'], function (exports, _ember, _emberQunit, _frontendCpTestsHelpersSetupMirageForIntegration) {
   var getOwner = _ember['default'].getOwner;
 
