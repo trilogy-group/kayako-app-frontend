@@ -40786,7 +40786,7 @@ define("frontend-cp/components/ko-feedback/template", ["exports"], function (exp
             dom.insertBoundary(fragment, 0);
             return morphs;
           },
-          statements: [["block", "if", [["subexpr", "eq", [["get", "feedbackItem.score", ["loc", [null, [6, 16], [6, 34]]]], "GOOD"], [], ["loc", [null, [6, 12], [6, 42]]]]], [], 0, 1, ["loc", [null, [6, 6], [10, 13]]]], ["inline", "ago", [["get", "feedbackItem.createdAt", ["loc", [null, [11, 46], [11, 68]]]]], [], ["loc", [null, [11, 40], [11, 70]]]]],
+          statements: [["block", "if", [["subexpr", "eq", [["get", "feedbackItem.score", ["loc", [null, [6, 16], [6, 34]]]], "GOOD"], [], ["loc", [null, [6, 12], [6, 42]]]]], [], 0, 1, ["loc", [null, [6, 6], [10, 13]]]], ["inline", "moment-from-now", [["get", "feedbackItem.createdAt", ["loc", [null, [11, 58], [11, 80]]]]], [], ["loc", [null, [11, 40], [11, 82]]]]],
           locals: [],
           templates: [child0, child1]
         };
@@ -61411,8 +61411,8 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember', 
       var _this4 = this;
 
       this.get('store').query('rating', { user_id: this.get('model.id') }).then(function (ratings) {
-        return _this4.set('recentFeedback', ratings);
-      }); //eslint-disable-line camelcase
+        return _this4.set('recentFeedback', ratings.toArray().slice(0, 3));
+      });
     }),
 
     didReceiveAttrs: function didReceiveAttrs(_ref) {
@@ -68813,7 +68813,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       return {
         status: 200,
         data: [],
-        resource: 'macro',
+        resource: 'rating',
         total_count: 0
       };
     });
@@ -74637,25 +74637,6 @@ define('frontend-cp/serializers/predicate-collection', ['exports', 'ember-data',
   exports['default'] = _frontendCpSerializersApplication['default'].extend(_emberData['default'].EmbeddedRecordsMixin, {
     attrs: {
       propositions: { serialize: 'records' }
-    }
-  });
-});
-define('frontend-cp/serializers/rating', ['exports', 'frontend-cp/serializers/application'], function (exports, _frontendCpSerializersApplication) {
-  exports['default'] = _frontendCpSerializersApplication['default'].extend({
-    normalizeResponse: function normalizeResponse(store, primaryModelClass, payload, id, requestType) {
-      var originalData = payload.data;
-      payload.resources = payload.resources || {};
-      payload.resources.macros = payload.data.reduce(function (accum, macro) {
-        accum[macro.id] = macro;
-        return accum;
-      }, {});
-      payload.data = [];
-      payload.resource = 'rating';
-
-      if (!originalData[0]) {
-        return this._super.apply(this, arguments);
-      }
-      return this._super.apply(this, arguments);
     }
   });
 });
@@ -99807,7 +99788,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+1ef71d40"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+77019d52"});
 }
 
 /* jshint ignore:end */
