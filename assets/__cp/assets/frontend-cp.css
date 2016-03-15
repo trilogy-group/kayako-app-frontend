@@ -5218,6 +5218,59 @@ label {
   line-height: 1.5;
   bottom: 0; }
 
+.ko-update-log {
+  padding: 9px 18px;
+  border-bottom: 1px solid #D1D5D7; }
+
+.ko-update-log__box {
+  width: 8px;
+  background-color: #C2A8D0;
+  height: 8px;
+  margin-top: 5px; }
+
+.ko-update-log__close {
+  cursor: pointer;
+  width: 16px; }
+
+.ko-update-log__title {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between; }
+
+.ko-update-log__tooltip {
+  background: #40364D;
+  border-radius: 3px;
+  border: 1px solid #40364D;
+  color: white; }
+  .ko-update-log__tooltip .tooltipster-content {
+    font-size: 12px;
+    line-height: 12px; }
+
+.ko-update-log__log-item {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 9px; }
+
+.ko-update-log__name {
+  max-width: 50%;
+  padding-left: 4.5px; }
+  .ko-update-log__name .tooltipstered {
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #2D3138; }
+
+.ko-update-log__time {
+  padding-left: 4.5px; }
+
 .ko-layout_advanced {
   padding-left: 44px;
   padding-right: 44px;
