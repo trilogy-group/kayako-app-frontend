@@ -8,7 +8,7 @@
 /*
 	Brand configuration
    ========================================================================== */
-.text-area:focus, .text-area--clean:focus, .input-text:focus, .ko-case_macro-selector .ember-power-select-search input:focus, .input-text--alone:focus, .input-text--full:focus, .login__input:focus, .ko-agent-dropdown__nav-item:focus, .ko-checkbox__checkbox:focus, .ko-dropdown_container_button:focus, .ko-dropdown_select_button:focus, .ko-radio__container:focus, .ko-tags__item:focus, .ko-toggle__container:focus {
+.text-area:focus, .input-text:focus, .ko-case_macro-selector .ember-power-select-search input:focus, .input-text--alone:focus, .input-text--full:focus, .login__input:focus, .ko-agent-dropdown__nav-item:focus, .ko-checkbox__checkbox:focus, .ko-dropdown_container_button:focus, .ko-dropdown_select_button:focus, .ko-radio__container:focus, .ko-tags__item:focus, .ko-toggle__container:focus {
   outline: none;
   border-color: #4EAFCB;
   box-shadow: 0 0 4px 0 rgba(78, 174, 203, 0.65), inset 0 1px 1px 0 rgba(0, 0, 0, 0.08); }
@@ -2491,21 +2491,21 @@ a {
 	Base input styling and initial configuration. Types of input should be
 	separated out into their own file (text, text-area etc).
    ========================================================================== */
-.text-area, .text-area--clean, .input-text, .ko-case_macro-selector .ember-power-select-search input, .input-text--alone, .input-text--full, .login__input {
+.text-area, .input-text, .ko-case_macro-selector .ember-power-select-search input, .input-text--alone, .input-text--full, .login__input {
   padding: 4.5px 9px;
   margin-bottom: 9px;
   border-radius: 2px;
   border: 1px solid #D1D5D7;
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.05); }
-  .text-area:last-of-type, .text-area--clean:last-of-type, .input-text:last-of-type, .ko-case_macro-selector .ember-power-select-search input:last-of-type, .input-text--alone:last-of-type, .input-text--full:last-of-type, .login__input:last-of-type {
+  .text-area:last-of-type, .input-text:last-of-type, .ko-case_macro-selector .ember-power-select-search input:last-of-type, .input-text--alone:last-of-type, .input-text--full:last-of-type, .login__input:last-of-type {
     margin-bottom: 0; }
-  .error.text-area, .error.text-area--clean, .error.input-text, .ko-case_macro-selector .ember-power-select-search input.error, .error.input-text--alone, .error.input-text--full, .error.login__input {
+  .error.text-area, .error.input-text, .ko-case_macro-selector .ember-power-select-search input.error, .error.input-text--alone, .error.input-text--full, .error.login__input {
     border: 1px solid red; }
-  .text-area:disabled, .text-area--clean:disabled, .input-text:disabled, .ko-case_macro-selector .ember-power-select-search input:disabled, .input-text--alone:disabled, .input-text--full:disabled, .login__input:disabled {
+  .text-area:disabled, .input-text:disabled, .ko-case_macro-selector .ember-power-select-search input:disabled, .input-text--alone:disabled, .input-text--full:disabled, .login__input:disabled {
     background-color: #eeeeee;
     opacity: 0.8;
     color: #A1AAAF; }
-  .has-icon.text-area, .has-icon.text-area--clean, .has-icon.input-text, .ko-case_macro-selector .ember-power-select-search input.has-icon, .has-icon.input-text--alone, .has-icon.input-text--full, .has-icon.login__input {
+  .has-icon.text-area, .has-icon.input-text, .ko-case_macro-selector .ember-power-select-search input.has-icon, .has-icon.input-text--alone, .has-icon.input-text--full, .has-icon.login__input {
     padding-right: 27px; }
 
 /*
@@ -3874,29 +3874,6 @@ a {
       -ms-flex-pack: end;
           justify-content: flex-end; }
 
-.ko-case-action-menu__dropdown .button--dropdown {
-  height: 32px;
-  width: 32px;
-  padding: 0; }
-
-.ko-case-action-menu__dropdown .ember-basic-dropdown-trigger[aria-expanded="true"] .button--dropdown {
-  /* Allows menu button to overlap menu */
-  padding-bottom: 1px;
-  z-index: 60;
-  border-bottom: #FFFFFF;
-  border-radius: 2px 2px 0 0;
-  background-color: #FFFFFF;
-  background-image: none;
-  box-shadow: none; }
-
-.ko-case-action-menu__dropdown .ember-basic-dropdown-content {
-  border: 1px solid #d1d5d7;
-  width: 120px;
-  position: absolute;
-  right: 0;
-  top: 31px;
-  z-index: 30; }
-
 .ko-case-content_dropdown {
   display: inline-block; }
 
@@ -3922,8 +3899,52 @@ a {
 .ko-case-content_field_post--note-reminder {
   color: #838D94; }
 
-.ko-case-content_field_post--twitter-message {
-  color: #838D94; }
+.ko-case-content_field_post__twitter-message {
+  color: #838D94;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  position: relative;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  width: 100%; }
+  .ko-case-content_field_post__twitter-message .ko-select__select-dropdown {
+    width: 200px; }
+  .ko-case-content_field_post__twitter-message .ember-basic-dropdown-trigger {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center; }
+  .ko-case-content_field_post__twitter-message .ember-power-select-status-icon {
+    top: 2px; }
+
+.ko-case-content_field_post__twitter-reply-options {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-size: 13px; }
+
+.ko-case-content_field_post__twitter-reply-option-description {
+  margin-left: 10px; }
+
+.ko-case-content_field_post__char-limit--negative {
+  color: #E86048; }
 
 .ko-case-content_field_post__icon {
   display: inline-block;
@@ -3937,10 +3958,17 @@ a {
     color: #FFFFFF;
     width: 160px; }
 
-.ko-case-content_field_post--editor-overlay {
+.ko-case-content_field_post__editor-overlay {
   position: absolute;
-  bottom: 9px;
-  left: 18px;
+  height: 38px;
+  bottom: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  left: 15px;
+  padding-right: 36px;
+  width: 100%;
   font-size: 12px;
   font-size: 0.85714rem;
   line-height: 1.5; }
@@ -3964,6 +3992,32 @@ a {
     background: #40364D;
     border-top: 1px solid #40364D;
     border-left: 1px solid #40364D; }
+
+.ko-file-upload {
+  width: 100%;
+  padding: 13.5px;
+  border-bottom: 1px solid #CFD4D8; }
+
+.ko-case-contetn_file_upload_upload-item {
+  width: 100%;
+  padding-bottom: 9px; }
+  .ko-case-contetn_file_upload_upload-item:last-of-type {
+    padding-bottom: 0; }
+
+.ko-case-contetn_file_upload_upload-item__action {
+  padding-right: 4.5px;
+  cursor: pointer; }
+  .ko-case-contetn_file_upload_upload-item__action[class*="i-"]:before {
+    color: #A1AAAF; }
+
+.ko-case-contetn_file_upload_upload-item__name {
+  padding-right: 4.5px;
+  color: initial; }
+  .ko-case-contetn_file_upload_upload-item__name--is-progressing {
+    color: #838D94; }
+
+.ko-case-contetn_file_upload_upload-item__size {
+  color: #A1AAAF; }
 
 .ko-case_macro-selector {
   width: 100px; }
@@ -4078,6 +4132,29 @@ a {
 .ko-cases-list__action-button {
   height: 32px;
   min-width: 110px; }
+
+.ko-case-action-menu__dropdown .button--dropdown {
+  height: 32px;
+  width: 32px;
+  padding: 0; }
+
+.ko-case-action-menu__dropdown .ember-basic-dropdown-trigger[aria-expanded="true"] .button--dropdown {
+  /* Allows menu button to overlap menu */
+  padding-bottom: 1px;
+  z-index: 60;
+  border-bottom: #FFFFFF;
+  border-radius: 2px 2px 0 0;
+  background-color: #FFFFFF;
+  background-image: none;
+  box-shadow: none; }
+
+.ko-case-action-menu__dropdown .ember-basic-dropdown-content {
+  border: 1px solid #d1d5d7;
+  width: 120px;
+  position: absolute;
+  right: 0;
+  top: 31px;
+  z-index: 30; }
 
 .ko-center {
   z-index: 1200; }
@@ -4725,32 +4802,6 @@ a.ko-feed_item__title--small:hover {
   font-size: 12px;
   color: #2D3138;
   text-align: center; }
-
-.ko-file-upload {
-  width: 100%;
-  padding: 13.5px;
-  border-bottom: 1px solid #CFD4D8; }
-
-.upload-item {
-  width: 100%;
-  padding-bottom: 9px; }
-  .upload-item:last-of-type {
-    padding-bottom: 0; }
-
-.upload-item__action {
-  padding-right: 4.5px;
-  cursor: pointer; }
-  .upload-item__action[class*="i-"]:before {
-    color: #A1AAAF; }
-
-.upload-item__name {
-  padding-right: 4.5px;
-  color: initial; }
-  .upload-item__name--is-progressing {
-    color: #838D94; }
-
-.upload-item__size {
-  color: #A1AAAF; }
 
 .ko-form_buttons__loader {
   display: inline-block;
@@ -6741,6 +6792,11 @@ label {
   max-height: 320px;
   border-bottom: 1px solid #CFD4D8; }
 
+.ko-text-editor__dropzone-and-editor-container--social {
+  padding-bottom: 40px;
+  max-height: 320px;
+  border-bottom: 1px solid #CFD4D8; }
+
 .ko-text-editor__image-upload input {
   display: none; }
 
@@ -6757,6 +6813,9 @@ label {
     padding: 13.5px 0; }
 
 .ko-text-editor__text-area--small {
+  max-height: 280px; }
+
+.ko-text-editor__text-area--social {
   max-height: 280px; }
 
 .ko-text-editor-header-group__item--active {
@@ -7355,14 +7414,23 @@ label {
 
 .ko-timeline__dropdowns {
   padding: 9px 12px;
-  margin-left: 3px; }
+  margin-left: 3px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between; }
 
 .ko-timeline__sort {
   display: inline-block; }
 
 .ko-timeline__filter {
-  display: inline-block;
-  margin-left: 9px; }
+  display: inline-block; }
+  .ko-timeline__filter .ember-power-select-dropdown {
+    width: 150px; }
 
 .ko-timeline__loader {
   position: relative;
