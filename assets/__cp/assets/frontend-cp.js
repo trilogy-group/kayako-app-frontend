@@ -51815,6 +51815,135 @@ define('frontend-cp/components/ko-predicate-builder/rule/component', ['exports',
 define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"], function (exports) {
   exports["default"] = Ember.HTMLBars.template((function () {
     var child0 = (function () {
+      var child0 = (function () {
+        var child0 = (function () {
+          return {
+            meta: {
+              "fragmentReason": false,
+              "revision": "Ember@2.4.1",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 14,
+                  "column": 8
+                },
+                "end": {
+                  "line": 14,
+                  "column": 96
+                }
+              },
+              "moduleName": "frontend-cp/components/ko-predicate-builder/rule/template.hbs"
+            },
+            isEmpty: false,
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(1);
+              morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+              dom.insertBoundary(fragment, 0);
+              dom.insertBoundary(fragment, null);
+              return morphs;
+            },
+            statements: [["inline", "t", [["subexpr", "concat", ["admin.predicate_builder.group.", ["get", "definition.group", ["loc", [null, [14, 77], [14, 93]]]]], [], ["loc", [null, [14, 36], [14, 94]]]]], [], ["loc", [null, [14, 32], [14, 96]]]]],
+            locals: [],
+            templates: []
+          };
+        })();
+        return {
+          meta: {
+            "fragmentReason": false,
+            "revision": "Ember@2.4.1",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 13,
+                "column": 6
+              },
+              "end": {
+                "line": 15,
+                "column": 6
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-predicate-builder/rule/template.hbs"
+          },
+          isEmpty: false,
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("        ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode(" ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(2);
+            morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+            morphs[1] = dom.createMorphAt(fragment, 3, 3, contextualElement);
+            return morphs;
+          },
+          statements: [["block", "if", [["get", "definition.group", ["loc", [null, [14, 14], [14, 30]]]]], [], 0, null, ["loc", [null, [14, 8], [14, 103]]]], ["content", "definition.label", ["loc", [null, [14, 104], [14, 124]]]]],
+          locals: [],
+          templates: [child0]
+        };
+      })();
+      var child1 = (function () {
+        return {
+          meta: {
+            "fragmentReason": false,
+            "revision": "Ember@2.4.1",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 15,
+                "column": 6
+              },
+              "end": {
+                "line": 17,
+                "column": 6
+              }
+            },
+            "moduleName": "frontend-cp/components/ko-predicate-builder/rule/template.hbs"
+          },
+          isEmpty: false,
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("        ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+            return morphs;
+          },
+          statements: [["inline", "t", [["subexpr", "concat", ["admin.predicate_builder.", ["get", "definition.id", ["loc", [null, [16, 47], [16, 60]]]]], [], ["loc", [null, [16, 12], [16, 61]]]]], [], ["loc", [null, [16, 8], [16, 63]]]]],
+          locals: [],
+          templates: []
+        };
+      })();
       return {
         meta: {
           "fragmentReason": false,
@@ -51826,7 +51955,7 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
               "column": 4
             },
             "end": {
-              "line": 14,
+              "line": 18,
               "column": 4
             }
           },
@@ -51838,22 +51967,20 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
         hasRendered: false,
         buildFragment: function buildFragment(dom) {
           var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("      ");
-          dom.appendChild(el0, el1);
           var el1 = dom.createComment("");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n");
           dom.appendChild(el0, el1);
           return el0;
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
           var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [["inline", "t", [["subexpr", "concat", ["admin.predicate_builder.", ["get", "definition.id", ["loc", [null, [13, 45], [13, 58]]]]], [], ["loc", [null, [13, 10], [13, 59]]]]], [], ["loc", [null, [13, 6], [13, 61]]]]],
+        statements: [["block", "if", [["get", "definition.label", ["loc", [null, [13, 12], [13, 28]]]]], [], 0, 1, ["loc", [null, [13, 6], [17, 13]]]]],
         locals: ["definition"],
-        templates: []
+        templates: [child0, child1]
       };
     })();
     var child1 = (function () {
@@ -51864,11 +51991,11 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
           "loc": {
             "source": null,
             "start": {
-              "line": 17,
+              "line": 21,
               "column": 4
             },
             "end": {
-              "line": 24,
+              "line": 28,
               "column": 4
             }
           },
@@ -51893,7 +52020,7 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [["inline", "t", [["subexpr", "concat", ["admin.predicate_builder.operators.", ["subexpr", "or", [["get", "operator", ["loc", [null, [23, 59], [23, 67]]]], "none"], [], ["loc", [null, [23, 55], [23, 75]]]]], [], ["loc", [null, [23, 10], [23, 76]]]]], [], ["loc", [null, [23, 6], [23, 78]]]]],
+        statements: [["inline", "t", [["subexpr", "concat", ["admin.predicate_builder.operators.", ["subexpr", "or", [["get", "operator", ["loc", [null, [27, 59], [27, 67]]]], "none"], [], ["loc", [null, [27, 55], [27, 75]]]]], [], ["loc", [null, [27, 10], [27, 76]]]]], [], ["loc", [null, [27, 6], [27, 78]]]]],
         locals: ["operator"],
         templates: []
       };
@@ -51907,11 +52034,11 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
             "loc": {
               "source": null,
               "start": {
-                "line": 28,
+                "line": 32,
                 "column": 6
               },
               "end": {
-                "line": 37,
+                "line": 41,
                 "column": 6
               }
             },
@@ -51936,7 +52063,7 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
             morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
             return morphs;
           },
-          statements: [["content", "value.string", ["loc", [null, [36, 10], [36, 26]]]]],
+          statements: [["content", "value.string", ["loc", [null, [40, 10], [40, 26]]]]],
           locals: ["value"],
           templates: []
         };
@@ -51948,11 +52075,11 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
           "loc": {
             "source": null,
             "start": {
-              "line": 27,
+              "line": 31,
               "column": 4
             },
             "end": {
-              "line": 38,
+              "line": 42,
               "column": 4
             }
           },
@@ -51975,7 +52102,7 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [["block", "power-select-multiple", [], ["class", ["subexpr", "concat", ["ember-power-select-wrapper--ko ember-power-select-wrapper--height-medium", ["subexpr", "qa-cls", [" qa-proposition--property"], [], ["loc", [null, [29, 97], [29, 133]]]]], [], ["loc", [null, [29, 14], [29, 134]]]], "searchField", "string", "selected", ["subexpr", "@mut", [["get", "value", ["loc", [null, [31, 17], [31, 22]]]]], [], []], "options", ["subexpr", "@mut", [["get", "definition.values", ["loc", [null, [32, 16], [32, 33]]]]], [], []], "searchEnabled", true, "renderInPlace", true, "onchange", ["subexpr", "action", ["selectValue"], [], ["loc", [null, [35, 17], [35, 39]]]]], 0, null, ["loc", [null, [28, 6], [37, 32]]]]],
+        statements: [["block", "power-select-multiple", [], ["class", ["subexpr", "concat", ["ember-power-select-wrapper--ko ember-power-select-wrapper--height-medium", ["subexpr", "qa-cls", [" qa-proposition--property"], [], ["loc", [null, [33, 97], [33, 133]]]]], [], ["loc", [null, [33, 14], [33, 134]]]], "searchField", "string", "selected", ["subexpr", "@mut", [["get", "value", ["loc", [null, [35, 17], [35, 22]]]]], [], []], "options", ["subexpr", "@mut", [["get", "definition.values", ["loc", [null, [36, 16], [36, 33]]]]], [], []], "searchEnabled", true, "renderInPlace", true, "onchange", ["subexpr", "action", ["selectValue"], [], ["loc", [null, [39, 17], [39, 39]]]]], 0, null, ["loc", [null, [32, 6], [41, 32]]]]],
         locals: [],
         templates: [child0]
       };
@@ -51990,11 +52117,11 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 39,
+                  "line": 43,
                   "column": 6
                 },
                 "end": {
-                  "line": 47,
+                  "line": 51,
                   "column": 6
                 }
               },
@@ -52019,7 +52146,7 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
               morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
               return morphs;
             },
-            statements: [["inline", "get", [["get", "value", ["loc", [null, [46, 16], [46, 21]]]], ["get", "autocompleteOptionLabelPath", ["loc", [null, [46, 22], [46, 49]]]]], [], ["loc", [null, [46, 10], [46, 51]]]]],
+            statements: [["inline", "get", [["get", "value", ["loc", [null, [50, 16], [50, 21]]]], ["get", "autocompleteOptionLabelPath", ["loc", [null, [50, 22], [50, 49]]]]], [], ["loc", [null, [50, 10], [50, 51]]]]],
             locals: ["value"],
             templates: []
           };
@@ -52031,11 +52158,11 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
             "loc": {
               "source": null,
               "start": {
-                "line": 38,
+                "line": 42,
                 "column": 4
               },
               "end": {
-                "line": 48,
+                "line": 52,
                 "column": 4
               }
             },
@@ -52058,7 +52185,7 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
             dom.insertBoundary(fragment, null);
             return morphs;
           },
-          statements: [["block", "power-select", [], ["class", ["subexpr", "concat", ["ember-power-select-wrapper--ko ember-power-select-wrapper--height-medium", ["subexpr", "qa-cls", [" qa-proposition--property"], [], ["loc", [null, [40, 97], [40, 133]]]]], [], ["loc", [null, [40, 14], [40, 134]]]], "selected", ["subexpr", "@mut", [["get", "value", ["loc", [null, [41, 17], [41, 22]]]]], [], []], "searchEnabled", true, "renderInPlace", true, "search", ["subexpr", "action", ["searchAutocomplete"], [], ["loc", [null, [44, 15], [44, 44]]]], "onchange", ["subexpr", "action", ["selectAutocompleteValue"], [], ["loc", [null, [45, 17], [45, 51]]]]], 0, null, ["loc", [null, [39, 6], [47, 23]]]]],
+          statements: [["block", "power-select", [], ["class", ["subexpr", "concat", ["ember-power-select-wrapper--ko ember-power-select-wrapper--height-medium", ["subexpr", "qa-cls", [" qa-proposition--property"], [], ["loc", [null, [44, 97], [44, 133]]]]], [], ["loc", [null, [44, 14], [44, 134]]]], "selected", ["subexpr", "@mut", [["get", "value", ["loc", [null, [45, 17], [45, 22]]]]], [], []], "searchEnabled", true, "renderInPlace", true, "search", ["subexpr", "action", ["searchAutocomplete"], [], ["loc", [null, [48, 15], [48, 44]]]], "onchange", ["subexpr", "action", ["selectAutocompleteValue"], [], ["loc", [null, [49, 17], [49, 51]]]]], 0, null, ["loc", [null, [43, 6], [51, 23]]]]],
           locals: [],
           templates: [child0]
         };
@@ -52072,11 +52199,11 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 48,
+                  "line": 52,
                   "column": 4
                 },
                 "end": {
-                  "line": 52,
+                  "line": 56,
                   "column": 4
                 }
               },
@@ -52108,7 +52235,7 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
               morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
               return morphs;
             },
-            statements: [["inline", "ko-tags", [], ["values", ["subexpr", "@mut", [["get", "value", ["loc", [null, [50, 25], [50, 30]]]]], [], []], "onTagAddition", ["subexpr", "action", ["addTagToValue"], [], ["loc", [null, [50, 45], [50, 69]]]], "onTagRemoval", ["subexpr", "action", ["removeTagFromValue"], [], ["loc", [null, [50, 83], [50, 112]]]]], ["loc", [null, [50, 8], [50, 114]]]]],
+            statements: [["inline", "ko-tags", [], ["values", ["subexpr", "@mut", [["get", "value", ["loc", [null, [54, 25], [54, 30]]]]], [], []], "onTagAddition", ["subexpr", "action", ["addTagToValue"], [], ["loc", [null, [54, 45], [54, 69]]]], "onTagRemoval", ["subexpr", "action", ["removeTagFromValue"], [], ["loc", [null, [54, 83], [54, 112]]]]], ["loc", [null, [54, 8], [54, 114]]]]],
             locals: [],
             templates: []
           };
@@ -52123,11 +52250,11 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
                   "loc": {
                     "source": null,
                     "start": {
-                      "line": 53,
+                      "line": 57,
                       "column": 6
                     },
                     "end": {
-                      "line": 62,
+                      "line": 66,
                       "column": 6
                     }
                   },
@@ -52152,7 +52279,7 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
                   morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
                   return morphs;
                 },
-                statements: [["content", "value.string", ["loc", [null, [61, 10], [61, 26]]]]],
+                statements: [["content", "value.string", ["loc", [null, [65, 10], [65, 26]]]]],
                 locals: ["value"],
                 templates: []
               };
@@ -52164,11 +52291,11 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 52,
+                    "line": 56,
                     "column": 4
                   },
                   "end": {
-                    "line": 63,
+                    "line": 67,
                     "column": 4
                   }
                 },
@@ -52191,7 +52318,7 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
                 dom.insertBoundary(fragment, null);
                 return morphs;
               },
-              statements: [["block", "power-select", [], ["class", ["subexpr", "concat", ["ember-power-select-wrapper--ko ember-power-select-wrapper--height-medium", ["subexpr", "qa-cls", [" qa-proposition--property"], [], ["loc", [null, [54, 97], [54, 133]]]]], [], ["loc", [null, [54, 14], [54, 134]]]], "searchField", "string", "selected", ["subexpr", "@mut", [["get", "value", ["loc", [null, [56, 17], [56, 22]]]]], [], []], "options", ["subexpr", "@mut", [["get", "definition.values", ["loc", [null, [57, 16], [57, 33]]]]], [], []], "searchEnabled", true, "renderInPlace", true, "onchange", ["subexpr", "action", ["selectValue"], [], ["loc", [null, [60, 17], [60, 39]]]]], 0, null, ["loc", [null, [53, 6], [62, 23]]]]],
+              statements: [["block", "power-select", [], ["class", ["subexpr", "concat", ["ember-power-select-wrapper--ko ember-power-select-wrapper--height-medium", ["subexpr", "qa-cls", [" qa-proposition--property"], [], ["loc", [null, [58, 97], [58, 133]]]]], [], ["loc", [null, [58, 14], [58, 134]]]], "searchField", "string", "selected", ["subexpr", "@mut", [["get", "value", ["loc", [null, [60, 17], [60, 22]]]]], [], []], "options", ["subexpr", "@mut", [["get", "definition.values", ["loc", [null, [61, 16], [61, 33]]]]], [], []], "searchEnabled", true, "renderInPlace", true, "onchange", ["subexpr", "action", ["selectValue"], [], ["loc", [null, [64, 17], [64, 39]]]]], 0, null, ["loc", [null, [57, 6], [66, 23]]]]],
               locals: [],
               templates: [child0]
             };
@@ -52205,11 +52332,11 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
                   "loc": {
                     "source": null,
                     "start": {
-                      "line": 63,
+                      "line": 67,
                       "column": 4
                     },
                     "end": {
-                      "line": 65,
+                      "line": 69,
                       "column": 4
                     }
                   },
@@ -52234,7 +52361,7 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
                   morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
                   return morphs;
                 },
-                statements: [["inline", "ko-date-select", [], ["value", ["subexpr", "@mut", [["get", "rule.value", ["loc", [null, [64, 29], [64, 39]]]]], [], []], "onChange", ["subexpr", "action", [["subexpr", "mut", [["get", "rule.value", ["loc", [null, [64, 62], [64, 72]]]]], [], ["loc", [null, [64, 57], [64, 73]]]]], [], ["loc", [null, [64, 49], [64, 74]]]]], ["loc", [null, [64, 6], [64, 76]]]]],
+                statements: [["inline", "ko-date-select", [], ["value", ["subexpr", "@mut", [["get", "rule.value", ["loc", [null, [68, 29], [68, 39]]]]], [], []], "onChange", ["subexpr", "action", [["subexpr", "mut", [["get", "rule.value", ["loc", [null, [68, 62], [68, 72]]]]], [], ["loc", [null, [68, 57], [68, 73]]]]], [], ["loc", [null, [68, 49], [68, 74]]]]], ["loc", [null, [68, 6], [68, 76]]]]],
                 locals: [],
                 templates: []
               };
@@ -52247,11 +52374,11 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
                   "loc": {
                     "source": null,
                     "start": {
-                      "line": 65,
+                      "line": 69,
                       "column": 4
                     },
                     "end": {
-                      "line": 67,
+                      "line": 71,
                       "column": 4
                     }
                   },
@@ -52280,7 +52407,7 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
                   morphs[1] = dom.createAttrMorph(element1, 'oninput');
                   return morphs;
                 },
-                statements: [["attribute", "value", ["get", "rule.value", ["loc", [null, [66, 85], [66, 95]]]]], ["attribute", "oninput", ["subexpr", "action", [["subexpr", "mut", [["get", "rule.value", ["loc", [null, [66, 120], [66, 130]]]]], [], ["loc", [null, [66, 115], [66, 131]]]]], ["value", "target.value"], ["loc", [null, [66, 106], [66, 154]]]]]],
+                statements: [["attribute", "value", ["get", "rule.value", ["loc", [null, [70, 85], [70, 95]]]]], ["attribute", "oninput", ["subexpr", "action", [["subexpr", "mut", [["get", "rule.value", ["loc", [null, [70, 120], [70, 130]]]]], [], ["loc", [null, [70, 115], [70, 131]]]]], ["value", "target.value"], ["loc", [null, [70, 106], [70, 154]]]]]],
                 locals: [],
                 templates: []
               };
@@ -52292,11 +52419,11 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 63,
+                    "line": 67,
                     "column": 4
                   },
                   "end": {
-                    "line": 67,
+                    "line": 71,
                     "column": 4
                   }
                 },
@@ -52319,7 +52446,7 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
                 dom.insertBoundary(fragment, null);
                 return morphs;
               },
-              statements: [["block", "if", [["subexpr", "eq", [["get", "definitionInputType", ["loc", [null, [63, 18], [63, 37]]]], "date-absolute"], [], ["loc", [null, [63, 14], [63, 54]]]]], [], 0, 1, ["loc", [null, [63, 4], [67, 4]]]]],
+              statements: [["block", "if", [["subexpr", "eq", [["get", "definitionInputType", ["loc", [null, [67, 18], [67, 37]]]], "date-absolute"], [], ["loc", [null, [67, 14], [67, 54]]]]], [], 0, 1, ["loc", [null, [67, 4], [71, 4]]]]],
               locals: [],
               templates: [child0, child1]
             };
@@ -52331,11 +52458,11 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 52,
+                  "line": 56,
                   "column": 4
                 },
                 "end": {
-                  "line": 67,
+                  "line": 71,
                   "column": 4
                 }
               },
@@ -52358,7 +52485,7 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
               dom.insertBoundary(fragment, null);
               return morphs;
             },
-            statements: [["block", "if", [["subexpr", "eq", [["get", "definitionInputType", ["loc", [null, [52, 18], [52, 37]]]], "options"], [], ["loc", [null, [52, 14], [52, 48]]]]], [], 0, 1, ["loc", [null, [52, 4], [67, 4]]]]],
+            statements: [["block", "if", [["subexpr", "eq", [["get", "definitionInputType", ["loc", [null, [56, 18], [56, 37]]]], "options"], [], ["loc", [null, [56, 14], [56, 48]]]]], [], 0, 1, ["loc", [null, [56, 4], [71, 4]]]]],
             locals: [],
             templates: [child0, child1]
           };
@@ -52370,11 +52497,11 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
             "loc": {
               "source": null,
               "start": {
-                "line": 48,
+                "line": 52,
                 "column": 4
               },
               "end": {
-                "line": 67,
+                "line": 71,
                 "column": 4
               }
             },
@@ -52397,7 +52524,7 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
             dom.insertBoundary(fragment, null);
             return morphs;
           },
-          statements: [["block", "if", [["subexpr", "eq", [["get", "definitionInputType", ["loc", [null, [48, 18], [48, 37]]]], "tags"], [], ["loc", [null, [48, 14], [48, 45]]]]], [], 0, 1, ["loc", [null, [48, 4], [67, 4]]]]],
+          statements: [["block", "if", [["subexpr", "eq", [["get", "definitionInputType", ["loc", [null, [52, 18], [52, 37]]]], "tags"], [], ["loc", [null, [52, 14], [52, 45]]]]], [], 0, 1, ["loc", [null, [52, 4], [71, 4]]]]],
           locals: [],
           templates: [child0, child1]
         };
@@ -52409,11 +52536,11 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
           "loc": {
             "source": null,
             "start": {
-              "line": 38,
+              "line": 42,
               "column": 4
             },
             "end": {
-              "line": 67,
+              "line": 71,
               "column": 4
             }
           },
@@ -52436,7 +52563,7 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [["block", "if", [["subexpr", "eq", [["get", "definitionInputType", ["loc", [null, [38, 18], [38, 37]]]], "autocomplete"], [], ["loc", [null, [38, 14], [38, 53]]]]], [], 0, 1, ["loc", [null, [38, 4], [67, 4]]]]],
+        statements: [["block", "if", [["subexpr", "eq", [["get", "definitionInputType", ["loc", [null, [42, 18], [42, 37]]]], "autocomplete"], [], ["loc", [null, [42, 14], [42, 53]]]]], [], 0, 1, ["loc", [null, [42, 4], [71, 4]]]]],
         locals: [],
         templates: [child0, child1]
       };
@@ -52449,11 +52576,11 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
           "loc": {
             "source": null,
             "start": {
-              "line": 70,
+              "line": 74,
               "column": 6
             },
             "end": {
-              "line": 74,
+              "line": 78,
               "column": 6
             }
           },
@@ -52487,7 +52614,7 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
           morphs[0] = dom.createAttrMorph(element0, 'onclick');
           return morphs;
         },
-        statements: [["attribute", "onclick", ["subexpr", "action", [["get", "onRuleDeletion", ["loc", [null, [72, 76], [72, 90]]]], ["get", "rule", ["loc", [null, [72, 91], [72, 95]]]]], [], ["loc", [null, [72, 67], [72, 97]]]]]],
+        statements: [["attribute", "onclick", ["subexpr", "action", [["get", "onRuleDeletion", ["loc", [null, [76, 76], [76, 90]]]], ["get", "rule", ["loc", [null, [76, 91], [76, 95]]]]], [], ["loc", [null, [76, 67], [76, 97]]]]]],
         locals: [],
         templates: []
       };
@@ -52506,7 +52633,7 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
             "column": 0
           },
           "end": {
-            "line": 77,
+            "line": 81,
             "column": 0
           }
         },
@@ -52592,7 +52719,7 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
         morphs[4] = dom.createMorphAt(dom.childAt(element2, [7]), 1, 1);
         return morphs;
       },
-      statements: [["inline", "t", ["generic.or"], [], ["loc", [null, [2, 2], [2, 20]]]], ["block", "ko-select", [], ["class", ["subexpr", "qa-cls", ["qa-proposition--column"], [], ["loc", [null, [8, 12], [8, 45]]]], "selected", ["subexpr", "@mut", [["get", "definition", ["loc", [null, [9, 15], [9, 25]]]]], [], []], "options", ["subexpr", "@mut", [["get", "definitions", ["loc", [null, [10, 14], [10, 25]]]]], [], []], "onChange", ["subexpr", "action", ["selectDefinition"], [], ["loc", [null, [11, 15], [11, 42]]]]], 0, null, ["loc", [null, [7, 4], [14, 18]]]], ["block", "ko-select", [], ["class", ["subexpr", "qa-cls", ["qa-proposition--operator"], [], ["loc", [null, [18, 12], [18, 47]]]], "selected", ["subexpr", "@mut", [["get", "rule.operator", ["loc", [null, [19, 15], [19, 28]]]]], [], []], "options", ["subexpr", "@mut", [["get", "definition.operators", ["loc", [null, [20, 14], [20, 34]]]]], [], []], "onChange", ["subexpr", "action", [["subexpr", "mut", [["get", "rule.operator", ["loc", [null, [21, 28], [21, 41]]]]], [], ["loc", [null, [21, 23], [21, 42]]]]], [], ["loc", [null, [21, 15], [21, 43]]]]], 1, null, ["loc", [null, [17, 4], [24, 18]]]], ["block", "if", [["subexpr", "eq", [["get", "definitionInputType", ["loc", [null, [27, 14], [27, 33]]]], "multiple"], [], ["loc", [null, [27, 10], [27, 45]]]]], [], 2, 3, ["loc", [null, [27, 4], [67, 11]]]], ["block", "if", [["get", "canDeleteRule", ["loc", [null, [70, 12], [70, 25]]]]], [], 4, null, ["loc", [null, [70, 6], [74, 13]]]]],
+      statements: [["inline", "t", ["generic.or"], [], ["loc", [null, [2, 2], [2, 20]]]], ["block", "ko-select", [], ["class", ["subexpr", "qa-cls", ["qa-proposition--column"], [], ["loc", [null, [8, 12], [8, 45]]]], "selected", ["subexpr", "@mut", [["get", "definition", ["loc", [null, [9, 15], [9, 25]]]]], [], []], "options", ["subexpr", "@mut", [["get", "definitions", ["loc", [null, [10, 14], [10, 25]]]]], [], []], "onChange", ["subexpr", "action", ["selectDefinition"], [], ["loc", [null, [11, 15], [11, 42]]]]], 0, null, ["loc", [null, [7, 4], [18, 18]]]], ["block", "ko-select", [], ["class", ["subexpr", "qa-cls", ["qa-proposition--operator"], [], ["loc", [null, [22, 12], [22, 47]]]], "selected", ["subexpr", "@mut", [["get", "rule.operator", ["loc", [null, [23, 15], [23, 28]]]]], [], []], "options", ["subexpr", "@mut", [["get", "definition.operators", ["loc", [null, [24, 14], [24, 34]]]]], [], []], "onChange", ["subexpr", "action", [["subexpr", "mut", [["get", "rule.operator", ["loc", [null, [25, 28], [25, 41]]]]], [], ["loc", [null, [25, 23], [25, 42]]]]], [], ["loc", [null, [25, 15], [25, 43]]]]], 1, null, ["loc", [null, [21, 4], [28, 18]]]], ["block", "if", [["subexpr", "eq", [["get", "definitionInputType", ["loc", [null, [31, 14], [31, 33]]]], "multiple"], [], ["loc", [null, [31, 10], [31, 45]]]]], [], 2, 3, ["loc", [null, [31, 4], [71, 11]]]], ["block", "if", [["get", "canDeleteRule", ["loc", [null, [74, 12], [74, 25]]]]], [], 4, null, ["loc", [null, [74, 6], [78, 13]]]]],
       locals: [],
       templates: [child0, child1, child2, child3, child4]
     };
@@ -66155,6 +66282,10 @@ define("frontend-cp/locales/en-us/admin", ["exports"], function (exports) {
     "predicate_builder.operators.date_before_or_on": "date before or on",
     "predicate_builder.operators.date_is": "date is",
     "predicate_builder.operators.date_is_not": "date is not",
+    "predicate_builder.group.CASES": "Cases:",
+    "predicate_builder.group.REQUESTER": "Requester:",
+    "predicate_builder.group.ORGANIZATION": "Organization:",
+    "predicate_builder.group.SLA": "SLA:",
     "macros.title": "Macros",
     "macros.usage_count": "Used {count, plural, =1 {1 time} other {# times}}",
     "macros.last_used_at": "Last used at {date}",
@@ -70650,6 +70781,7 @@ define('frontend-cp/mirage/factories/column', ['exports', 'ember-cli-mirage'], f
 });
 define('frontend-cp/mirage/factories/definition', ['exports', 'ember-cli-mirage'], function (exports, _emberCliMirage) {
   exports['default'] = _emberCliMirage['default'].Factory.extend({
+    label: null,
     field: _emberCliMirage.faker.list.cycle('cases.subject', 'cases.casestatusid', 'cases.casetypeid'),
     type: function type(i) {
       if (this.field(i) === 'cases.subject') {
@@ -73131,6 +73263,8 @@ define('frontend-cp/models/definition-value-fragment', ['exports', 'ember-data',
 });
 define('frontend-cp/models/definition', ['exports', 'ember-data', 'model-fragments'], function (exports, _emberData, _modelFragments) {
   exports['default'] = _emberData['default'].Model.extend({
+    label: _emberData['default'].attr('string'),
+    group: _emberData['default'].attr('string'),
     definitionType: _emberData['default'].attr('string'),
     inputType: _emberData['default'].attr('string'),
     subType: _emberData['default'].attr('string'),
@@ -100562,7 +100696,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+e971bdfd"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+cbb33030"});
 }
 
 /* jshint ignore:end */

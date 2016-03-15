@@ -2645,6 +2645,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
       server.create('team', { title: 'Contractors', businesshour: businesshour });
 
       server.create('definition', {
+        label: 'Subject',
         field: 'cases.subject',
         type: 'STRING',
         sub_type: '',
@@ -2655,6 +2656,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
       });
 
       server.create('definition', {
+        label: null,
         field: 'cases.casestatusid',
         type: 'NUMERIC',
         sub_type: 'INTEGER',
@@ -2671,6 +2673,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
       });
 
       server.create('definition', {
+        label: null,
         field: 'cases.casetypeid',
         type: 'NUMERIC',
         sub_type: 'INTEGER',
@@ -2686,6 +2689,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
       });
 
       server.create('definition', {
+        label: null,
         field: 'cases.casepriorityid',
         type: 'NUMERIC',
         sub_type: 'INTEGER',
@@ -2701,6 +2705,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
       });
 
       server.create('definition', {
+        label: null,
         field: 'cases.state',
         type: 'NUMERIC',
         sub_type: 'INTEGER',
@@ -2715,6 +2720,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
       });
 
       server.create('definition', {
+        label: null,
         field: 'cases.brandid',
         type: 'NUMERIC',
         sub_type: 'INTEGER',
@@ -2727,6 +2733,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
       });
 
       server.create('definition', {
+        label: null,
         field: 'cases.assigneeteamid',
         type: 'NUMERIC',
         sub_type: 'INTEGER',
@@ -2745,6 +2752,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
       });
 
       server.create('definition', {
+        label: null,
         field: 'cases.assigneeagentid',
         type: 'NUMERIC',
         sub_type: 'INTEGER',
@@ -2755,6 +2763,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
       });
 
       server.create('definition', {
+        label: null,
         field: 'cases.requesterid',
         type: 'NUMERIC',
         sub_type: 'INTEGER',
@@ -2765,6 +2774,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
       });
 
       server.create('definition', {
+        label: null,
         field: 'tags.name',
         type: 'COLLECTION',
         sub_type: '',
@@ -2775,6 +2785,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
       });
 
       server.create('definition', {
+        label: null,
         field: 'users.organizationid',
         type: 'NUMERIC',
         sub_type: 'INTEGER',
@@ -2785,6 +2796,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
       });
 
       server.create('definition', {
+        label: null,
         field: 'followers.userid',
         type: 'NUMERIC',
         sub_type: 'INTEGER',
@@ -3178,7 +3190,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
 
       fillIn('input[name=title]', fieldTitle);
       click('.ko-radio__label:contains(Just myself)');
-      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Case: Subject');
+      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Cases: Subject');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'string contains');
       fillIn('.qa-predicate-builder--proposition:first input:last', rule1String);
       selectChoose('.qa-configure-column', 'Created at');
