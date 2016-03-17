@@ -66508,6 +66508,7 @@ define("frontend-cp/locales/en-us/cases", ["exports"], function (exports) {
     "applymacro": "Apply Macro",
     "applymacroplaceholder": "Type to search macros",
     "channelType.MAILBOX": "email",
+    "channelType.MAIL": "email",
     "channelType.TWITTER": "Twitter",
     "channelType.TWITTER_DM": "Twitter",
     "channelType.CHAT": "Chat",
@@ -70769,7 +70770,7 @@ define('frontend-cp/mirage/factories/channel', ['exports', 'ember-cli-mirage'], 
   exports['default'] = _emberCliMirage['default'].Factory.extend({
     uuid: _emberCliMirage.faker.random.uuid,
     account: null,
-    type: 'MAILBOX',
+    type: 'MAIL',
     resource_type: 'channel'
   });
 });
@@ -73136,7 +73137,7 @@ define('frontend-cp/models/channel', ['exports', 'ember-data', 'ember'], functio
     account: _emberData['default'].belongsTo('account', { polymorphic: true, async: false }),
 
     isChannelTypeMailbox: _ember['default'].computed('channelType', function () {
-      return this.get('channelType') === 'MAILBOX';
+      return ['MAILBOX', 'MAIL'].indexOf(this.get('channelType')) > -1;
     }),
 
     iconClass: _ember['default'].computed('channelType', function () {
@@ -73144,6 +73145,7 @@ define('frontend-cp/models/channel', ['exports', 'ember-data', 'ember'], functio
 
       switch (channelType) {
         case 'MAILBOX':
+        case 'MAIL':
           {
             return 'i-inbox';
           }
@@ -73162,6 +73164,7 @@ define('frontend-cp/models/channel', ['exports', 'ember-data', 'ember'], functio
       var channelType = this.get('channelType');
       switch (channelType) {
         case 'MAILBOX':
+        case 'MAIL':
           {
             return this.get('account.address');
           }
@@ -74906,7 +74909,7 @@ define('frontend-cp/serializers/case-reply', ['exports', 'frontend-cp/serializer
         Reflect.deleteProperty(json, 'options');
       }
 
-      if (json.channel_options && json.channel !== 'MAILBOX') {
+      if (json.channel_options && ['MAILBOX', 'MAIL'].indexOf(json.channel) === -1) {
         Reflect.deleteProperty(json.channel_options, 'cc');
       }
 
@@ -74918,6 +74921,7 @@ define('frontend-cp/serializers/case-reply', ['exports', 'frontend-cp/serializer
 
       switch (json.channel) {
         case 'MAILBOX':
+        case 'MAIL':
           ['type', 'color', 'send_link'].forEach(function (key) {
             Reflect.deleteProperty(json.channel_options, key);
           });
@@ -100706,7 +100710,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+2f66a046"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+ca22923e"});
 }
 
 /* jshint ignore:end */
