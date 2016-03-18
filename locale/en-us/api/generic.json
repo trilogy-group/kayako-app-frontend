@@ -58,6 +58,7 @@
   "select_placeholder": "Select...",
   "search_result_select_instruction": "Press enter",
   "shared_with": "Shared with",
+  "find_out_more": "Find out more",
 
   "sort.ASC": "Ascending",
   "sort.DESC": "Descending",
@@ -101,7 +102,7 @@
   "permissions_denied": "Sorry, you don't have access to perform this action. Please ask for permissions from an admin.",
   "user_credential_expired": "The credential (e.g. password) is valid but has expired",
   "resource_not_found": "Resource does not exist or has been removed",
-  "generic_error": "A problem occurred and your request wasn't processed",
+  "generic_error": "Oops, something went wrong",
 
   "create_case_panel.title": "Create a new case",
   "create_case_panel.requester_label": "Requester/Recipient",
