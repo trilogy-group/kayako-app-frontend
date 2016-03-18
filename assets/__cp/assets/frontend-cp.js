@@ -573,6 +573,14 @@ define('frontend-cp/adapters/session', ['exports', 'ember', 'frontend-cp/adapter
       return headers;
     }),
 
+    buildURL: function buildURL(modelName, id, snapshot, requestType, query) {
+      var url = this._buildURL(modelName, id);
+      if (requestType === 'deleteRecord') {
+        return url.substr(0, url.indexOf(id));
+      }
+      return url;
+    },
+
     // Methods
     pathForType: function pathForType() {
       return 'session';
@@ -818,7 +826,7 @@ define("frontend-cp/application/template", ["exports"], function (exports) {
               "column": 2
             },
             "end": {
-              "line": 13,
+              "line": 14,
               "column": 2
             }
           },
@@ -843,7 +851,7 @@ define("frontend-cp/application/template", ["exports"], function (exports) {
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [["inline", "ko-toast", [], ["type", ["subexpr", "@mut", [["get", "notification.type", ["loc", [null, [6, 9], [6, 26]]]]], [], []], "dismissable", ["subexpr", "@mut", [["get", "notification.dismissable", ["loc", [null, [7, 16], [7, 40]]]]], [], []], "autodismiss", ["subexpr", "@mut", [["get", "notification.autodismiss", ["loc", [null, [8, 16], [8, 40]]]]], [], []], "title", ["subexpr", "@mut", [["get", "notification.title", ["loc", [null, [9, 10], [9, 28]]]]], [], []], "body", ["subexpr", "@mut", [["get", "notification.body", ["loc", [null, [10, 9], [10, 26]]]]], [], []], "close", ["subexpr", "action", ["onNotificationClosed", ["get", "notification", ["loc", [null, [11, 41], [11, 53]]]]], [], ["loc", [null, [11, 10], [11, 54]]]]], ["loc", [null, [5, 4], [12, 6]]]]],
+        statements: [["inline", "ko-toast", [], ["type", ["subexpr", "@mut", [["get", "notification.type", ["loc", [null, [6, 9], [6, 26]]]]], [], []], "dismissable", ["subexpr", "@mut", [["get", "notification.dismissable", ["loc", [null, [7, 16], [7, 40]]]]], [], []], "autodismiss", ["subexpr", "@mut", [["get", "notification.autodismiss", ["loc", [null, [8, 16], [8, 40]]]]], [], []], "href", ["subexpr", "@mut", [["get", "notification.href", ["loc", [null, [9, 9], [9, 26]]]]], [], []], "title", ["subexpr", "@mut", [["get", "notification.title", ["loc", [null, [10, 10], [10, 28]]]]], [], []], "body", ["subexpr", "@mut", [["get", "notification.body", ["loc", [null, [11, 9], [11, 26]]]]], [], []], "close", ["subexpr", "action", ["onNotificationClosed", ["get", "notification", ["loc", [null, [12, 41], [12, 53]]]]], [], ["loc", [null, [12, 10], [12, 54]]]]], ["loc", [null, [5, 4], [13, 6]]]]],
         locals: ["notification"],
         templates: []
       };
@@ -862,7 +870,7 @@ define("frontend-cp/application/template", ["exports"], function (exports) {
             "column": 0
           },
           "end": {
-            "line": 14,
+            "line": 15,
             "column": 6
           }
         },
@@ -899,7 +907,7 @@ define("frontend-cp/application/template", ["exports"], function (exports) {
         dom.insertBoundary(fragment, 0);
         return morphs;
       },
-      statements: [["content", "outlet", ["loc", [null, [1, 0], [1, 10]]]], ["inline", "outlet", ["modals"], [], ["loc", [null, [2, 0], [2, 19]]]], ["block", "each", [["get", "notifications", ["loc", [null, [4, 10], [4, 23]]]]], [], 0, null, ["loc", [null, [4, 2], [13, 11]]]]],
+      statements: [["content", "outlet", ["loc", [null, [1, 0], [1, 10]]]], ["inline", "outlet", ["modals"], [], ["loc", [null, [2, 0], [2, 19]]]], ["block", "each", [["get", "notifications", ["loc", [null, [4, 10], [4, 23]]]]], [], 0, null, ["loc", [null, [4, 2], [14, 11]]]]],
       locals: [],
       templates: [child0]
     };
@@ -59500,6 +59508,7 @@ define('frontend-cp/components/ko-toast/component', ['exports', 'ember', 'fronte
     dismissable: false,
     autodismiss: false,
     isClosing: false,
+    href: null,
 
     // HTML
     classNames: ['ko-toast'],
@@ -59631,12 +59640,70 @@ define("frontend-cp/components/ko-toast/template", ["exports"], function (export
           return el0;
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var element0 = dom.childAt(fragment, [1]);
+          var element1 = dom.childAt(fragment, [1]);
           var morphs = new Array(1);
-          morphs[0] = dom.createAttrMorph(element0, 'onclick');
+          morphs[0] = dom.createAttrMorph(element1, 'onclick');
           return morphs;
         },
         statements: [["attribute", "onclick", ["subexpr", "action", ["onCloseClicked"], [], ["loc", [null, [3, 82], [3, 109]]]]]],
+        locals: [],
+        templates: []
+      };
+    })();
+    var child1 = (function () {
+      return {
+        meta: {
+          "fragmentReason": false,
+          "revision": "Ember@2.4.2",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 8,
+              "column": 4
+            },
+            "end": {
+              "line": 14,
+              "column": 4
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-toast/template.hbs"
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("    ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("p");
+          var el2 = dom.createTextNode("\n      ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("a");
+          dom.setAttribute(el2, "target", "_blank");
+          dom.setAttribute(el2, "class", "ko-toast__link");
+          var el3 = dom.createTextNode("\n        ");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createComment("");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createTextNode("\n      ");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n    ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var element0 = dom.childAt(fragment, [1, 1]);
+          var morphs = new Array(2);
+          morphs[0] = dom.createAttrMorph(element0, 'href');
+          morphs[1] = dom.createMorphAt(element0, 1, 1);
+          return morphs;
+        },
+        statements: [["attribute", "href", ["get", "href", ["loc", [null, [10, 16], [10, 20]]]]], ["inline", "t", ["generic.find_out_more"], [], ["loc", [null, [11, 8], [11, 37]]]]],
         locals: [],
         templates: []
       };
@@ -59654,7 +59721,7 @@ define("frontend-cp/components/ko-toast/template", ["exports"], function (export
             "column": 0
           },
           "end": {
-            "line": 8,
+            "line": 17,
             "column": 6
           }
         },
@@ -59679,7 +59746,15 @@ define("frontend-cp/components/ko-toast/template", ["exports"], function (export
         dom.appendChild(el1, el2);
         var el2 = dom.createElement("p");
         dom.setAttribute(el2, "class", "ko-toast__title");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
         var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("  ");
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n  ");
@@ -59695,19 +59770,21 @@ define("frontend-cp/components/ko-toast/template", ["exports"], function (export
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var element1 = dom.childAt(fragment, [0]);
-        var element2 = dom.childAt(element1, [3]);
-        var morphs = new Array(5);
-        morphs[0] = dom.createAttrMorph(element1, 'class');
-        morphs[1] = dom.createMorphAt(element1, 1, 1);
-        morphs[2] = dom.createAttrMorph(element2, 'class');
-        morphs[3] = dom.createMorphAt(dom.childAt(element1, [5]), 0, 0);
-        morphs[4] = dom.createMorphAt(dom.childAt(element1, [7]), 0, 0);
+        var element2 = dom.childAt(fragment, [0]);
+        var element3 = dom.childAt(element2, [3]);
+        var element4 = dom.childAt(element2, [5]);
+        var morphs = new Array(6);
+        morphs[0] = dom.createAttrMorph(element2, 'class');
+        morphs[1] = dom.createMorphAt(element2, 1, 1);
+        morphs[2] = dom.createAttrMorph(element3, 'class');
+        morphs[3] = dom.createMorphAt(element4, 1, 1);
+        morphs[4] = dom.createMorphAt(element4, 3, 3);
+        morphs[5] = dom.createMorphAt(dom.childAt(element2, [7]), 0, 0);
         return morphs;
       },
-      statements: [["attribute", "class", ["concat", ["ko-toast__container ko-toast__container--", ["get", "type", ["loc", [null, [1, 56], [1, 60]]]], ["subexpr", "if", [["get", "body", ["loc", [null, [1, 68], [1, 72]]]], " ko-toast__container--multiline"], [], ["loc", [null, [1, 63], [1, 108]]]], ["subexpr", "if", [["get", "dismissable", ["loc", [null, [1, 113], [1, 124]]]], " ko-toast__container--dismissable"], [], ["loc", [null, [1, 108], [1, 162]]]]]]], ["block", "if", [["get", "dismissable", ["loc", [null, [2, 8], [2, 19]]]]], [], 0, null, ["loc", [null, [2, 2], [4, 9]]]], ["attribute", "class", ["concat", ["ko-toast__icon ", ["get", "iconClass", ["loc", [null, [5, 33], [5, 42]]]]]]], ["content", "title", ["loc", [null, [6, 29], [6, 40]]]], ["content", "body", ["loc", [null, [7, 30], [7, 40]]]]],
+      statements: [["attribute", "class", ["concat", ["ko-toast__container ko-toast__container--", ["get", "type", ["loc", [null, [1, 56], [1, 60]]]], ["subexpr", "if", [["get", "body", ["loc", [null, [1, 68], [1, 72]]]], " ko-toast__container--multiline"], [], ["loc", [null, [1, 63], [1, 108]]]], ["subexpr", "if", [["get", "dismissable", ["loc", [null, [1, 113], [1, 124]]]], " ko-toast__container--dismissable"], [], ["loc", [null, [1, 108], [1, 162]]]]]]], ["block", "if", [["get", "dismissable", ["loc", [null, [2, 8], [2, 19]]]]], [], 0, null, ["loc", [null, [2, 2], [4, 9]]]], ["attribute", "class", ["concat", ["ko-toast__icon ", ["get", "iconClass", ["loc", [null, [5, 33], [5, 42]]]]]]], ["content", "title", ["loc", [null, [7, 4], [7, 15]]]], ["block", "if", [["get", "href", ["loc", [null, [8, 10], [8, 14]]]]], [], 1, null, ["loc", [null, [8, 4], [14, 11]]]], ["content", "body", ["loc", [null, [16, 30], [16, 40]]]]],
       locals: [],
-      templates: [child0]
+      templates: [child0, child1]
     };
   })());
 });
@@ -66648,6 +66725,7 @@ define("frontend-cp/locales/en-us/generic", ["exports"], function (exports) {
     "select_placeholder": "Select...",
     "search_result_select_instruction": "Press enter",
     "shared_with": "Shared with",
+    "find_out_more": "Find out more",
 
     "sort.ASC": "Ascending",
     "sort.DESC": "Descending",
@@ -66691,7 +66769,7 @@ define("frontend-cp/locales/en-us/generic", ["exports"], function (exports) {
     "permissions_denied": "Sorry, you don't have access to perform this action. Please ask for permissions from an admin.",
     "user_credential_expired": "The credential (e.g. password) is valid but has expired",
     "resource_not_found": "Resource does not exist or has been removed",
-    "generic_error": "A problem occurred and your request wasn't processed",
+    "generic_error": "Oops, something went wrong",
 
     "create_case_panel.title": "Create a new case",
     "create_case_panel.requester_label": "Requester/Recipient",
@@ -68741,6 +68819,12 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
           errors: [{
             code: 'OTP_EXPECTED',
             message: 'To complete logging in you need to provide the one-time password'
+          }],
+          notifications: [{
+            type: 'INFO',
+            message: 'Two-factor authentication is enabled for your account',
+            related_href: 'https://developer.kayakostage.net/api/v1/users/two_factor/',
+            sticky: true
           }],
           auth_token: 'PsAH0Jx27MrhLGiDelvlkGOo8olKL6AyEWdvwK665kjjxuUwMJun6ZyHZ9Z'
         };
@@ -77346,6 +77430,7 @@ define('frontend-cp/services/error-handler/notification-strategy', ['exports', '
           _this.get('notification').add({
             type: notification.type.toLowerCase(),
             title: notification.message,
+            href: notification.related_href,
             autodismiss: !notification.sticky,
             dismissable: true
           });
@@ -77517,20 +77602,22 @@ define('frontend-cp/services/error-handler', ['exports', 'ember'], function (exp
         return false;
       }
 
-      var strategies = this.get('strategies');
-
       if (error && error.errors) {
-        error.errors.forEach(function (record) {
-          var strategy = _this.getStrategy('_GENERIC');
+        var strategies = this.get('strategies');
+        var notifications = error.errors.filterBy('code', 'NOTIFICATION');
 
-          if (_this.hasStrategy(record.code)) {
-            strategy = _this.getStrategy(record.code);
+        if (notifications.length) {
+          this.processNotifications(notifications);
+          /*eslint-disable no-console */
+          error.errors.filter(function (error) {
+            return error.code !== 'NOTIFICATION';
+          }).forEach(function (err) {
+            return console.error(new Error(err.code + ': ' + err.message));
+          });
+          /*eslint-enable no-console */
+        } else {
+            this.processErrors(error.errors);
           }
-
-          if (strategy) {
-            strategy.accept(record);
-          }
-        });
 
         Object.keys(strategies).forEach(function (key) {
           _this.processStrategy(key);
@@ -77539,6 +77626,29 @@ define('frontend-cp/services/error-handler', ['exports', 'ember'], function (exp
 
       // we have to throw error to reject Promise
       throw error;
+    },
+
+    processNotifications: function processNotifications(notifications) {
+      var strategy = this.getStrategy('NOTIFICATION');
+      notifications.forEach(function (record) {
+        return strategy.accept(record);
+      });
+    },
+
+    processErrors: function processErrors(errors) {
+      var _this2 = this;
+
+      errors.forEach(function (record) {
+        var strategy = _this2.getStrategy('_GENERIC');
+
+        if (_this2.hasStrategy(record.code)) {
+          strategy = _this2.getStrategy(record.code);
+        }
+
+        if (strategy) {
+          strategy.accept(record);
+        }
+      });
     },
 
     hasStrategy: function hasStrategy(code) {
@@ -97979,6 +98089,7 @@ define("frontend-cp/styles/components/ko-toast/styles.scss", ["exports"], functi
     "ko-toast__close": "_ko-toast__close_1708i8",
     "ko-toast__icon": "_ko-toast__icon_1708i8",
     "ko-toast__title": "_ko-toast__title_1708i8",
+    "ko-toast__link": "_ko-toast__link_1708i8",
     "ko-toast__body": "_ko-toast__body_1708i8"
   };
 });
@@ -100710,7 +100821,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+ca22923e"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+61878967"});
 }
 
 /* jshint ignore:end */
