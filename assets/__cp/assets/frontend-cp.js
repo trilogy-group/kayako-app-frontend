@@ -75879,6 +75879,137 @@ define('frontend-cp/services/case-bulk-update', ['exports', 'ember'], function (
     }
   });
 });
+define('frontend-cp/services/case-list-tab', ['exports', 'ember', 'npm:lodash', 'frontend-cp/config/environment'], function (exports, _ember, _npmLodash, _frontendCpConfigEnvironment) {
+  var inject = _ember['default'].inject;
+  var RSVP = _ember['default'].RSVP;
+  var computed = _ember['default'].computed;
+  var Service = _ember['default'].Service;
+
+  var CASE_VIEW_LIMIT = _frontendCpConfigEnvironment['default'].APP.views.maxLimit;
+  var CASE_PAGE_SIZE = _frontendCpConfigEnvironment['default'].casesPageSize;
+
+  exports['default'] = Service.extend({
+    store: inject.service(),
+    pusher: inject.service(),
+    views: null,
+    previousViewId: null,
+    previousViewParams: null,
+    latestCases: null,
+    viewCounts: null,
+    forceNextLoad: false,
+
+    viewsCountPollingTimer: null,
+
+    getData: function getData() {
+      var _this = this;
+
+      var store = this.get('store');
+      var views = this.get('views');
+      var viewCounts = this.get('viewCounts');
+      var forceNextLoad = this.get('forceNextLoad');
+
+      if (!forceNextLoad && views) {
+        return RSVP.hash({
+          viewCounts: viewCounts,
+          views: views
+        });
+      }
+
+      return RSVP.hash({
+        views: store.query('view', { limit: CASE_VIEW_LIMIT }, { reload: true })
+      }).then(function (data) {
+        _this.setProperties(data);
+        return data;
+      });
+    },
+
+    updateViewCounts: function updateViewCounts() {
+      var _this2 = this;
+
+      this.get('store').findAll('view-count', { reload: true }).then(function (data) {
+        _this2.setProperties({ viewCounts: data });
+      });
+    },
+
+    refreshCases: function refreshCases(view, params) {
+      return this.get('store').query('case', {
+        limit: CASE_PAGE_SIZE,
+        parent: view,
+        offset: (parseInt(params.page, 10) - 1) * CASE_PAGE_SIZE,
+        order_by: params.orderBy,
+        order_by_column: params.orderByColumn
+      });
+    },
+
+    pollView: function pollView(views, params) {
+      var _this3 = this;
+
+      var view = views.findBy('id', params.view_id);
+
+      return this.refreshCases(view, params).then(function (cases) {
+        if (view) {
+          view.set('casesQuery', cases);
+        }
+
+        _this3.set('latestCases', cases);
+
+        return view;
+      });
+    },
+
+    isSameView: function isSameView(id, params) {
+      var previous = this.get('previousViewParams') || {};
+
+      var cloned = _npmLodash['default'].clone(params);
+      var previousCloned = _npmLodash['default'].clone(previous);
+
+      Reflect.deleteProperty(cloned, 'view_id');
+      Reflect.deleteProperty(previousCloned, 'view_id');
+
+      return this.get('previousViewId') === id && _npmLodash['default'].isEqual(previousCloned, cloned);
+    },
+
+    inboxView: computed('views', function () {
+      return this.get('views').findBy('isDefault');
+    }),
+
+    enabledCasesWithoutInbox: computed('views', 'inboxView', function () {
+      var _this4 = this;
+
+      return this.get('views').filter(function (v) {
+        return v.id !== _this4.get('inboxView').id && v.get('isEnabled');
+      });
+    }),
+
+    subscribeToViewCountUpdates: function subscribeToViewCountUpdates() {
+      var _this5 = this;
+
+      var viewCounts = this.get('viewCounts') || [];
+      var pusher = this.get('pusher');
+      viewCounts.forEach(function (viewCount) {
+        pusher.subscribeTo(viewCount.get('realtimeChannel'), 'CHANGE', _this5, _this5._updateCounterHandler);
+      });
+    },
+
+    unsubscribeToViewCountUpdates: function unsubscribeToViewCountUpdates() {
+      var viewCounts = this.get('viewCounts') || [];
+      var pusher = this.get('pusher');
+      viewCounts.forEach(function (viewCount) {
+        pusher.unsubscribeTo(viewCount.get('realtimeChannel'), 'CHANGE');
+      });
+    },
+
+    _updateCounterHandler: function _updateCounterHandler(data) {
+      this.get('store').push({
+        data: {
+          id: data.resource_id,
+          type: _ember['default'].String.dasherize(data.resource_type),
+          attributes: data.changed_properties
+        }
+      });
+    }
+  });
+});
 define('frontend-cp/services/case-tab', ['exports', 'ember', 'npm:lodash', 'frontend-cp/utils/object', 'frontend-cp/lib/upload-file'], function (exports, _ember, _npmLodash, _frontendCpUtilsObject, _frontendCpLibUploadFile) {
   function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
 
@@ -78728,8 +78859,12 @@ define('frontend-cp/services/session', ['exports', 'ember', 'frontend-cp/utils/b
         // We only do this when we have a transition, with a name that is not
         // the first in the sequence (e.g. a page refresh)
         if (transition && transition.targetName && transition.sequence) {
-          var path = transition.router.generate(transition.targetName);
-          redirect += '?redirectTo=' + path;
+          try {
+            var path = transition.router.generate(transition.targetName);
+            redirect += '?redirectTo=' + path;
+          } catch (e) {
+            redirect += '?redirectTo=' + location.pathname;
+          }
         } else {
           redirect += '?redirectTo=' + location.pathname;
         }
@@ -91525,8 +91660,14 @@ define("frontend-cp/session/agent/cases/case/user/template", ["exports"], functi
   })());
 });
 define('frontend-cp/session/agent/cases/index/controller', ['exports', 'ember'], function (exports, _ember) {
-  exports['default'] = _ember['default'].Controller.extend({
-    casesController: _ember['default'].inject.controller('session.agent.cases.index.view'),
+  var computed = _ember['default'].computed;
+  var Controller = _ember['default'].Controller;
+  var inject = _ember['default'].inject;
+  exports['default'] = Controller.extend({
+    caseListTab: inject.service('case-list-tab'),
+    casesController: inject.controller('session.agent.cases.index.view'),
+
+    inboxView: computed.readOnly('caseListTab.inboxView'),
 
     actions: {
       clearSelectedCaseIds: function clearSelectedCaseIds() {
@@ -91550,57 +91691,58 @@ define('frontend-cp/session/agent/cases/index/index/route', ['exports', 'ember']
   });
 });
 define('frontend-cp/session/agent/cases/index/route', ['exports', 'ember', 'frontend-cp/config/environment'], function (exports, _ember, _frontendCpConfigEnvironment) {
+  var Route = _ember['default'].Route;
+  var inject = _ember['default'].inject;
   var run = _ember['default'].run;
-  var RSVP = _ember['default'].RSVP;
 
-  var casePageLimit = _frontendCpConfigEnvironment['default'].casesPageSize;
-  var caseViewLimit = _frontendCpConfigEnvironment['default'].APP.views.maxLimit;
-  var viewsPollingInterval = _frontendCpConfigEnvironment['default'].APP.views.viewsPollingInterval * 1000;
-  var isViewsPollingEnabled = _frontendCpConfigEnvironment['default'].APP.views.isPollingEnabled;
+  var CASE_PAGE_LIMIT = _frontendCpConfigEnvironment['default'].casesPageSize;
+  var VIEWS_POLLING_ENABLED = _frontendCpConfigEnvironment['default'].APP.views.isPollingEnabled;
+  var VIEWS_POLLING_INTERVAL = _frontendCpConfigEnvironment['default'].APP.views.viewsPollingInterval * 1000;
 
-  exports['default'] = _ember['default'].Route.extend({
-    metrics: _ember['default'].inject.service(),
-    pusher: _ember['default'].inject.service(),
-    pollingCountsEnabled: false,
+  exports['default'] = Route.extend({
+    metrics: inject.service(),
+    caseListTab: inject.service('case-list-tab'),
+    viewsCountPollingTimer: null,
 
     model: function model() {
-      return RSVP.hash({
-        viewCounts: this.store.findAll('view-count', { reload: true }),
-        views: this.store.query('view', { limit: caseViewLimit }, { reload: true })
-      });
+      return this.get('caseListTab').getData();
     },
 
-    setupController: function setupController(controller, _ref) {
-      var views = _ref.views;
+    setupController: function setupController(controller) {
+      controller.setProperties({ childRoutePage: 1, showPagination: true });
 
-      var inbox = views.findBy('isDefault');
-      controller.setProperties({ inboxView: inbox, childRoutePage: 1, showPagination: true });
-      this._super(controller, views.filter(function (v) {
-        return v.id !== inbox.id && v.get('isEnabled');
-      }));
+      this._super(controller, this.get('caseListTab.enabledCasesWithoutInbox'));
     },
 
     activate: function activate() {
       this._super.apply(this, arguments);
-      if (isViewsPollingEnabled) {
-        this.viewsCountPollingTimer = run.later(this, this._pollCurrentViewCounts, viewsPollingInterval);
+
+      var caseListTab = this.get('caseListTab');
+
+      if (VIEWS_POLLING_ENABLED) {
+        this.viewsCountPollingTimer = run.later(this, this._pollCurrentViewCounts, VIEWS_POLLING_INTERVAL);
       }
-      this._subscribeToViewCountUpdates();
+
+      caseListTab.subscribeToViewCountUpdates();
+      caseListTab.updateViewCounts();
     },
 
     deactivate: function deactivate() {
       this._super.apply(this, arguments);
+
       if (this.viewsCountPollingTimer) {
         run.cancel(this.viewsCountPollingTimer);
       }
-      this._unsubscribeToViewCountUpdates();
+
+      this.get('caseListTab').unsubscribeToViewCountUpdates();
+    },
+
+    _pollCurrentViewCounts: function _pollCurrentViewCounts() {
+      this.model(this.paramsFor(this.routeName));
+      this.viewsCountPollingTimer = run.later(this, this._pollCurrentViewCounts, VIEWS_POLLING_INTERVAL);
     },
 
     actions: {
-      willTransition: function willTransition() {
-        this.set('pollingCountsEnabled', false);
-      },
-
       updatePagination: function updatePagination(params, meta) {
         this.get('metrics').trackEvent({
           event: 'Case View Page Changed',
@@ -91609,51 +91751,15 @@ define('frontend-cp/session/agent/cases/index/route', ['exports', 'ember', 'fron
           label: params.page
         });
 
-        this.controller.setProperties({
+        this.controllerFor('session.agent.cases.index').setProperties({
           childRoutePage: params.page,
-          childRouteTotalPages: Math.ceil(meta.total / casePageLimit)
+          childRouteTotalPages: Math.ceil(meta.total / CASE_PAGE_LIMIT)
         });
       },
 
       refreshCaseList: function refreshCaseList() {
         this.refresh();
       }
-    },
-
-    // Methods
-    _pollCurrentViewCounts: function _pollCurrentViewCounts() {
-      this.model(this.paramsFor(this.routeName));
-      this.viewsCountPollingTimer = run.later(this, this._pollCurrentViewCounts, viewsPollingInterval);
-    },
-
-    _subscribeToViewCountUpdates: function _subscribeToViewCountUpdates() {
-      var _this = this;
-
-      var viewCounts = this.store.peekAll('view-count');
-      var pusher = this.get('pusher');
-      viewCounts.forEach(function (viewCount) {
-        var realtimeChannel = viewCount.get('realtimeChannel');
-        pusher.subscribeTo(realtimeChannel, 'CHANGE', _this, _this._updateCounterHandler);
-      });
-    },
-
-    _unsubscribeToViewCountUpdates: function _unsubscribeToViewCountUpdates() {
-      var viewCounts = this.store.peekAll('view-count');
-      var pusher = this.get('pusher');
-      viewCounts.forEach(function (viewCount) {
-        var realtimeChannel = viewCount.get('realtimeChannel');
-        pusher.unsubscribeTo(realtimeChannel, 'CHANGE');
-      });
-    },
-
-    _updateCounterHandler: function _updateCounterHandler(data) {
-      this.store.push({
-        data: {
-          id: data.resource_id,
-          type: _ember['default'].String.dasherize(data.resource_type),
-          attributes: data.changed_properties
-        }
-      });
     }
   });
 });
@@ -93387,7 +93493,7 @@ define('frontend-cp/session/agent/cases/index/view/controller', ['exports', 'emb
     parentController: _ember['default'].inject.controller('session.agent.cases.index'),
     tabStore: _ember['default'].inject.service(),
 
-    isPollingEnabled: true,
+    isPollingEnabled: false,
 
     isTrash: _ember['default'].computed('activeView.viewType', function () {
       return this.get('activeView.viewType') === 'TRASH';
@@ -93435,12 +93541,14 @@ define('frontend-cp/session/agent/cases/index/view/controller', ['exports', 'emb
 define('frontend-cp/session/agent/cases/index/view/route', ['exports', 'ember', 'frontend-cp/config/environment'], function (exports, _ember, _frontendCpConfigEnvironment) {
   var run = _ember['default'].run;
 
-  var casesPollingInterval = _frontendCpConfigEnvironment['default'].APP.views.casesPollingInterval * 1000;
-  var isCasesPollingEnabled = _frontendCpConfigEnvironment['default'].APP.views.isPollingEnabled;
-  var limit = _frontendCpConfigEnvironment['default'].casesPageSize;
+  var CASE_POLLING_INTERVAL = _frontendCpConfigEnvironment['default'].APP.views.casesPollingInterval * 1000;
+  var CASE_POLLING_ENABLED = _frontendCpConfigEnvironment['default'].APP.views.isPollingEnabled;
 
   exports['default'] = _ember['default'].Route.extend({
     tabStore: _ember['default'].inject.service(),
+    caseListTab: _ember['default'].inject.service('case-list-tab'),
+
+    pollViewTimer: null,
 
     queryParams: {
       page: { refreshModel: true },
@@ -93461,12 +93569,14 @@ define('frontend-cp/session/agent/cases/index/view/route', ['exports', 'ember', 
 
     activate: function activate() {
       this._super.apply(this, arguments);
-      if (isCasesPollingEnabled) {
-        this.pollViewTimer = run.later(this, this._pollView, casesPollingInterval);
+
+      if (CASE_POLLING_ENABLED) {
+        this.controllerFor('session.agent.cases.index.view').set('isPollingEnabled', true);
+        this._pollView();
       }
     },
 
-    _initSelectedCaseIds: function _initSelectedCaseIds(cases) {
+    _initSelectedCaseIds: function _initSelectedCaseIds() {
       this.controller.setProperties({
         selectedCaseIds: []
       });
@@ -93474,36 +93584,49 @@ define('frontend-cp/session/agent/cases/index/view/route', ['exports', 'ember', 
 
     deactivate: function deactivate() {
       this._super.apply(this, arguments);
+
       if (this.pollViewTimer) {
         run.cancel(this.pollViewTimer);
+        this.controllerFor('session.agent.cases.index.view').set('isPollingEnabled', false);
       }
     },
 
     _pollView: function _pollView() {
       var _this = this;
 
-      if (this.controller.get('isPollingEnabled')) {
-        var _paramsFor = this.paramsFor(this.routeName);
-
-        var view_id = _paramsFor.view_id;
-
-        var view = this.modelFor('session.agent.cases.index').views.findBy('id', view_id);
-        this._refreshCases(view).then(function (cases) {
-          _this.controller.set('model', cases);
-          _this.send('updatePagination', _this.paramsFor(_this.routeName), cases.get('meta'));
-          _this.pollViewTimer = run.later(_this, _this._pollView, casesPollingInterval);
+      var controller = this.controllerFor('session.agent.cases.index.view');
+      if (controller.get('isPollingEnabled')) {
+        this.get('caseListTab').pollView(this.get('caseListTab.views'), this.paramsFor(this.routeName)).then(function (view) {
+          _this.setupController(controller, view);
         });
+        this.pollViewTimer = run.later(this, this._pollView, CASE_POLLING_INTERVAL);
       }
     },
 
     afterModel: function afterModel(view) {
       var _this2 = this;
 
+      var caseListTab = this.get('caseListTab');
+      var params = this.paramsFor(this.routeName);
+
       if (view) {
         this.get('tabStore').setCasesViewId(view.get('id'));
       }
-      return this._refreshCases(view).then(function (cases) {
+
+      if (caseListTab.isSameView(view.get('id'), params) && caseListTab.get('latestCases')) {
+        view.set('casesQuery', caseListTab.get('latestCases'));
+        run.cancel(this.pollViewTimer);
+        this._pollView();
+        return [];
+      }
+
+      caseListTab.set('previousViewId', view.get('id'));
+      caseListTab.set('previousViewParams', params);
+
+      return caseListTab.refreshCases(view, params).then(function (cases) {
         view.set('casesQuery', cases);
+        caseListTab.set('latestCases', cases);
+        return cases;
       }, function (error) {
         if (error.errors && error.errors.findBy('code', 'PERMISSIONS_DENIED')) {
           _this2.transitionTo('session.agent.cases.index');
@@ -93513,34 +93636,30 @@ define('frontend-cp/session/agent/cases/index/view/route', ['exports', 'ember', 
       });
     },
 
-    _refreshCases: function _refreshCases(view) {
-      var _paramsFor2 = this.paramsFor(this.routeName);
-
-      var orderBy = _paramsFor2.orderBy;
-      var orderByColumn = _paramsFor2.orderByColumn;
-      var _paramsFor2$page = _paramsFor2.page;
-      var page = _paramsFor2$page === undefined ? 1 : _paramsFor2$page;
-
-      return this.store.query('case', {
-        limit: limit,
-        parent: view,
-        offset: (parseInt(page, 10) - 1) * limit,
-        order_by: orderBy,
-        order_by_column: orderByColumn
-      });
-    },
-
     setupController: function setupController(controller, view) {
+      if (!view) {
+        return;
+      }
+
       var cases = view.get('casesQuery');
       this._super(controller, cases);
       controller.set('activeView', view);
-      this.send('updatePagination', this.paramsFor(this.routeName), cases.get('meta'));
+
+      try {
+        this.send('updatePagination', this.paramsFor(this.routeName), cases.get('meta'));
+      } catch (e) {
+        // if you switch fast enough between tabs, parent controller reference on the route
+        // changes. It’s possible that controller referenced can’t handle the action but if
+        // that’s the case it’s because we are transitioning to a route with a template which
+        // doesn’t require pagination.
+      }
+
       this._initSelectedCaseIds(cases);
     },
 
     actions: {
       clearSelectedCaseIds: function clearSelectedCaseIds() {
-        this._initSelectedCaseIds(this.controller.get('model'));
+        this._initSelectedCaseIds(this.controllerFor('session.agent.cases.index.view').get('model'));
       },
 
       reloadCases: function reloadCases() {
@@ -100821,7 +100940,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+61878967"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+3a625176"});
 }
 
 /* jshint ignore:end */

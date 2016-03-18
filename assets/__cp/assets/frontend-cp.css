@@ -3178,7 +3178,7 @@ a {
   -webkit-flex: 1;
       -ms-flex: 1;
           flex: 1;
-  overflow: scroll; }
+  overflow: auto; }
 
 .ko-session-agent-cases-index__pagination {
   height: 220px;
