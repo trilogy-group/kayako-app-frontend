@@ -49221,10 +49221,47 @@ define("frontend-cp/components/ko-modal/template", ["exports"], function (export
     };
   })());
 });
-define('frontend-cp/components/ko-notification-badge/component', ['exports', 'ember'], function (exports, _ember) {
+define('frontend-cp/components/ko-notification-badge/component', ['exports', 'ember', 'frontend-cp/config/environment'], function (exports, _ember, _frontendCpConfigEnvironment) {
   exports['default'] = _ember['default'].Component.extend({
-    // HTML
-    classNames: ['ko-notification-badge']
+    classNames: ['ko-notification-badge'],
+
+    didInsertElement: function didInsertElement() {
+      this._super.apply(this, arguments);
+
+      // Because headwayapp doesn't have any kind of API
+      // there is no way how to re-initialize it, after
+      // element was destroyed on the page. So when
+      // notification badge is hidden because of search bar
+      // we need to add it to the page again. And for it to
+      // work completely, we need to remove their special key
+      // HW_UID_<key> from window.
+
+      var scriptTags = document.getElementsByTagName('script');
+
+      Object.keys(window).forEach(function (key) {
+        if (key.match('HW_UID_')) {
+          Reflect.deleteProperty(window, key);
+        }
+      });
+
+      for (var i = 0, max = scriptTags.length; i < max; i++) {
+        if (scriptTags[i] && scriptTags[i].src.match('headwayapp')) {
+          scriptTags[i].parentNode.removeChild(scriptTags[i]);
+        }
+      }
+
+      window.HW_config = {
+        selector: '.ko-notification-badge',
+        account: _frontendCpConfigEnvironment['default'].headAwayApp.key
+      };
+
+      var uv = document.createElement('script');
+      uv.type = 'text/javascript';
+      uv.async = true;
+      uv.src = '//cdn.headwayapp.co/widget.js';
+      var s = scriptTags[0];
+      s.parentNode.insertBefore(uv, s);
+    }
   });
 });
 define("frontend-cp/components/ko-notification-badge/template", ["exports"], function (exports) {
@@ -49255,7 +49292,7 @@ define("frontend-cp/components/ko-notification-badge/template", ["exports"], fun
       buildFragment: function buildFragment(dom) {
         var el0 = dom.createDocumentFragment();
         var el1 = dom.createElement("span");
-        dom.setAttribute(el1, "class", "i-bell");
+        dom.setAttribute(el1, "class", "i-megaphone");
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
@@ -54858,11 +54895,11 @@ define("frontend-cp/components/ko-session-widgets/template", ["exports"], functi
           "loc": {
             "source": null,
             "start": {
-              "line": 22,
+              "line": 23,
               "column": 0
             },
             "end": {
-              "line": 24,
+              "line": 27,
               "column": 0
             }
           },
@@ -54874,9 +54911,14 @@ define("frontend-cp/components/ko-session-widgets/template", ["exports"], functi
         hasRendered: false,
         buildFragment: function buildFragment(dom) {
           var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("  ");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createComment("");
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1, "class", "ko-session-widgets__notification");
+          var el2 = dom.createTextNode("\n  ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n");
+          dom.appendChild(el1, el2);
           dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n");
           dom.appendChild(el0, el1);
@@ -54884,10 +54926,10 @@ define("frontend-cp/components/ko-session-widgets/template", ["exports"], functi
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
           var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+          morphs[0] = dom.createMorphAt(dom.childAt(fragment, [0]), 1, 1);
           return morphs;
         },
-        statements: [["content", "ko-notification-badge", ["loc", [null, [23, 2], [23, 27]]]]],
+        statements: [["content", "ko-notification-badge", ["loc", [null, [25, 2], [25, 27]]]]],
         locals: [],
         templates: []
       };
@@ -54906,7 +54948,7 @@ define("frontend-cp/components/ko-session-widgets/template", ["exports"], functi
             "column": 0
           },
           "end": {
-            "line": 25,
+            "line": 28,
             "column": 0
           }
         },
@@ -54920,6 +54962,8 @@ define("frontend-cp/components/ko-session-widgets/template", ["exports"], functi
         var el0 = dom.createDocumentFragment();
         var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
         var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
         return el0;
@@ -54927,12 +54971,12 @@ define("frontend-cp/components/ko-session-widgets/template", ["exports"], functi
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
         var morphs = new Array(2);
         morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-        morphs[1] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+        morphs[1] = dom.createMorphAt(fragment, 2, 2, contextualElement);
         dom.insertBoundary(fragment, 0);
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["block", "basic-dropdown", [], ["renderInPlace", true, "tabIndex", null, "class", "ko-session-widgets_user-dropdown ko-dropdown-container"], 0, 1, ["loc", [null, [1, 0], [21, 19]]]], ["block", "if", [["get", "features.notificationBadge", ["loc", [null, [22, 6], [22, 32]]]]], [], 2, null, ["loc", [null, [22, 0], [24, 7]]]]],
+      statements: [["block", "basic-dropdown", [], ["renderInPlace", true, "tabIndex", null, "class", "ko-session-widgets_user-dropdown ko-dropdown-container"], 0, 1, ["loc", [null, [1, 0], [21, 19]]]], ["block", "if", [["get", "features.notificationBadge", ["loc", [null, [23, 6], [23, 32]]]]], [], 2, null, ["loc", [null, [23, 0], [27, 7]]]]],
       locals: [],
       templates: [child0, child1, child2]
     };
@@ -66892,6 +66936,7 @@ define("frontend-cp/locales/en-us/admin", ["exports"], function (exports) {
     "predicate_builder.cases.casestatusid": "Case: Status",
     "predicate_builder.cases.casetypeid": "Case: Type",
     "predicate_builder.cases.channeltype": "Case: Channel Type",
+    "predicate_builder.cases.channel": "Case: Channel Type",
     "predicate_builder.cases.casepriorityid": "Case: Priority ID",
     "predicate_builder.cases.state": "Case: State",
     "predicate_builder.cases.brandid": "Case: Brand",
@@ -66913,7 +66958,9 @@ define("frontend-cp/locales/en-us/admin", ["exports"], function (exports) {
     "predicate_builder.operators.comparison_equalto": "is equal to",
     "predicate_builder.operators.comparison_not_equalto": "is not equal to",
     "predicate_builder.operators.comparison_lessthan": "is less than",
+    "predicate_builder.operators.comparison_lessthan_or_equalto": "is less than or equal to",
     "predicate_builder.operators.comparison_greaterthan": "is greater than",
+    "predicate_builder.operators.comparison_greaterthan_or_equalto": "is greater than or equal to",
     "predicate_builder.operators.collection_contains_insensitive": "string contains (case insensitive)",
     "predicate_builder.operators.collection_does_not_contain_insensitive": "string does not contain (case insensitive)",
     "predicate_builder.operators.collection_contains_any_insensitive": "string contains any (case insensitive)",
@@ -98511,7 +98558,10 @@ define("frontend-cp/styles/components/ko-modal/styles.scss", ["exports"], functi
 });
 define("frontend-cp/styles/components/ko-notification-badge/styles.scss", ["exports"], function (exports) {
   exports["default"] = {
-    "ko-notification-badge": "_ko-notification-badge_1xy6ry"
+    "ko-notification-badge": "_ko-notification-badge_1xy6ry",
+    "HW_badge_cont": "_HW_badge_cont_1xy6ry",
+    "HW_badge": "_HW_badge_1xy6ry",
+    "HW_softHidden": "_HW_softHidden_1xy6ry"
   };
 });
 define("frontend-cp/styles/components/ko-organisation-action-menu/styles.scss", ["exports"], function (exports) {
@@ -98644,7 +98694,8 @@ define("frontend-cp/styles/components/ko-session-widgets/styles.scss", ["exports
     "i-chevron-large-down": "_i-chevron-large-down_1qt7sd",
     "ko-session-widgets__avatar-container": "_ko-session-widgets__avatar-container_1qt7sd",
     "ko-session-widget_user-name": "_ko-session-widget_user-name_1qt7sd",
-    "ko-session-widgets_user-dropdown": "_ko-session-widgets_user-dropdown_1qt7sd"
+    "ko-session-widgets_user-dropdown": "_ko-session-widgets_user-dropdown_1qt7sd",
+    "ko-session-widgets__notification": "_ko-session-widgets__notification_1qt7sd"
   };
 });
 define("frontend-cp/styles/components/ko-sidebar/item/styles.scss", ["exports"], function (exports) {
@@ -101626,7 +101677,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"viewingUsersInactiveThreshold":300000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+66de62a6"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"viewingUsersInactiveThreshold":300000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+bfbfdd4c"});
 }
 
 /* jshint ignore:end */
