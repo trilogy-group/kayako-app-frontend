@@ -75053,13 +75053,14 @@ define('frontend-cp/models/view', ['exports', 'ember', 'ember-data', 'frontend-c
 
     visibilityString: _ember['default'].computed('visibilityType', 'visibilityToTeams', function () {
       var trans = 'admin.views.sharing.' + this.get('visibilityType');
-      var visibilityString = this.get('intl').findTranslationByKey(trans);
-      if (visibilityString) {
-        return visibilityString;
+
+      if (this.get('visibilityType') === 'TEAM') {
+        return this.get('visibilityToTeams').map(function (team) {
+          return team.get('title');
+        }).join(', ');
       }
-      return this.get('visibilityToTeams').map(function (team) {
-        return team.get('title');
-      }).join(', ');
+
+      return this.get('intl').findTranslationByKey(trans);
     })
   });
 });
@@ -101677,7 +101678,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"viewingUsersInactiveThreshold":300000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+1969983b"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"viewingUsersInactiveThreshold":300000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+ccceca3a"});
 }
 
 /* jshint ignore:end */
