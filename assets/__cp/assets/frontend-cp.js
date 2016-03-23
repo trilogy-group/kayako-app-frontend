@@ -28818,6 +28818,7 @@ define('frontend-cp/components/ko-bulk-sidebar/component', ['exports', 'ember', 
     isCaseTypeEdited: false,
     isCasePriorityEdited: false,
     isTagsFieldEdited: false,
+    isSaving: false,
 
     // HTML
     classNames: ['ko-bulk-sidebar'],
@@ -29004,6 +29005,8 @@ define('frontend-cp/components/ko-bulk-sidebar/component', ['exports', 'ember', 
           options.tags = this.get('tags');
         }
 
+        this.set('isSaving', true);
+
         bulkService.updateCases(this.get('selectedCaseIds'), options).then(function () {
           _this2.get('notification').add({
             type: 'success',
@@ -29011,8 +29014,10 @@ define('frontend-cp/components/ko-bulk-sidebar/component', ['exports', 'ember', 
             autodismiss: true
           });
 
+          _this2.set('isSaving', false);
           _this2.sendAction('onBulkUpdateCases');
         })['catch'](function (e) {
+          _this2.set('isSaving', false);
           _this2.get('notification').add({
             type: 'error',
             title: e.message,
@@ -29821,11 +29826,11 @@ define("frontend-cp/components/ko-case-action-menu/template", ["exports"], funct
             "loc": {
               "source": null,
               "start": {
-                "line": 5,
+                "line": 4,
                 "column": 2
               },
               "end": {
-                "line": 9,
+                "line": 8,
                 "column": 2
               }
             },
@@ -29859,7 +29864,7 @@ define("frontend-cp/components/ko-case-action-menu/template", ["exports"], funct
             morphs[1] = dom.createMorphAt(element0, 1, 1);
             return morphs;
           },
-          statements: [["attribute", "onclick", ["subexpr", "action", [["get", "onTrashCase", ["loc", [null, [6, 54], [6, 65]]]]], [], ["loc", [null, [6, 45], [6, 67]]]]], ["inline", "t", ["cases.trash.title"], [], ["loc", [null, [7, 4], [7, 29]]]]],
+          statements: [["attribute", "onclick", ["subexpr", "action", [["get", "onTrashCase", ["loc", [null, [5, 54], [5, 65]]]]], [], ["loc", [null, [5, 45], [5, 67]]]]], ["inline", "t", ["cases.trash.title"], [], ["loc", [null, [6, 4], [6, 29]]]]],
           locals: [],
           templates: []
         };
@@ -29878,7 +29883,7 @@ define("frontend-cp/components/ko-case-action-menu/template", ["exports"], funct
               "column": 0
             },
             "end": {
-              "line": 10,
+              "line": 9,
               "column": 0
             }
           },
@@ -29901,7 +29906,7 @@ define("frontend-cp/components/ko-case-action-menu/template", ["exports"], funct
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [["block", "if", [["get", "canTrashCase", ["loc", [null, [5, 8], [5, 20]]]]], [], 0, null, ["loc", [null, [5, 2], [9, 9]]]]],
+        statements: [["block", "if", [["get", "canTrashCase", ["loc", [null, [4, 8], [4, 20]]]]], [], 0, null, ["loc", [null, [4, 2], [8, 9]]]]],
         locals: ["dropdown"],
         templates: [child0]
       };
@@ -29914,11 +29919,11 @@ define("frontend-cp/components/ko-case-action-menu/template", ["exports"], funct
           "loc": {
             "source": null,
             "start": {
-              "line": 10,
+              "line": 9,
               "column": 0
             },
             "end": {
-              "line": 14,
+              "line": 13,
               "column": 0
             }
           },
@@ -29969,7 +29974,7 @@ define("frontend-cp/components/ko-case-action-menu/template", ["exports"], funct
             "column": 0
           },
           "end": {
-            "line": 15,
+            "line": 14,
             "column": 0
           }
         },
@@ -29992,7 +29997,7 @@ define("frontend-cp/components/ko-case-action-menu/template", ["exports"], funct
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["block", "basic-dropdown", [], ["renderInPlace", true, "horizontalPosition", "left", "class", "ko-case-action-menu__dropdown"], 0, 1, ["loc", [null, [1, 0], [14, 19]]]]],
+      statements: [["block", "basic-dropdown", [], ["renderInPlace", true, "class", "ko-case-action-menu__dropdown"], 0, 1, ["loc", [null, [1, 0], [13, 19]]]]],
       locals: [],
       templates: [child0, child1]
     };
@@ -62368,11 +62373,11 @@ define("frontend-cp/components/ko-user-action-menu/template", ["exports"], funct
             "loc": {
               "source": null,
               "start": {
-                "line": 9,
+                "line": 8,
                 "column": 2
               },
               "end": {
-                "line": 13,
+                "line": 12,
                 "column": 2
               }
             },
@@ -62406,7 +62411,7 @@ define("frontend-cp/components/ko-user-action-menu/template", ["exports"], funct
             morphs[1] = dom.createMorphAt(element2, 1, 1);
             return morphs;
           },
-          statements: [["attribute", "onclick", ["subexpr", "action", ["editSignature"], [], ["loc", [null, [10, 47], [10, 73]]]]], ["inline", "t", ["users.editsignature"], [], ["loc", [null, [11, 6], [11, 33]]]]],
+          statements: [["attribute", "onclick", ["subexpr", "action", ["editSignature"], [], ["loc", [null, [9, 47], [9, 73]]]]], ["inline", "t", ["users.editsignature"], [], ["loc", [null, [10, 6], [10, 33]]]]],
           locals: [],
           templates: []
         };
@@ -62419,11 +62424,11 @@ define("frontend-cp/components/ko-user-action-menu/template", ["exports"], funct
             "loc": {
               "source": null,
               "start": {
-                "line": 15,
+                "line": 14,
                 "column": 2
               },
               "end": {
-                "line": 19,
+                "line": 18,
                 "column": 2
               }
             },
@@ -62457,7 +62462,7 @@ define("frontend-cp/components/ko-user-action-menu/template", ["exports"], funct
             morphs[1] = dom.createMorphAt(element1, 1, 1);
             return morphs;
           },
-          statements: [["attribute", "onclick", ["subexpr", "action", ["changeUserPassword"], [], ["loc", [null, [16, 47], [16, 78]]]]], ["inline", "t", ["users.changepassword"], [], ["loc", [null, [17, 6], [17, 34]]]]],
+          statements: [["attribute", "onclick", ["subexpr", "action", ["changeUserPassword"], [], ["loc", [null, [15, 47], [15, 78]]]]], ["inline", "t", ["users.changepassword"], [], ["loc", [null, [16, 6], [16, 34]]]]],
           locals: [],
           templates: []
         };
@@ -62470,11 +62475,11 @@ define("frontend-cp/components/ko-user-action-menu/template", ["exports"], funct
             "loc": {
               "source": null,
               "start": {
-                "line": 21,
+                "line": 20,
                 "column": 2
               },
               "end": {
-                "line": 25,
+                "line": 24,
                 "column": 2
               }
             },
@@ -62508,7 +62513,7 @@ define("frontend-cp/components/ko-user-action-menu/template", ["exports"], funct
             morphs[1] = dom.createMorphAt(element0, 1, 1);
             return morphs;
           },
-          statements: [["attribute", "onclick", ["subexpr", "action", ["deleteUser"], [], ["loc", [null, [22, 47], [22, 70]]]]], ["inline", "t", ["users.deleteuser"], [], ["loc", [null, [23, 6], [23, 30]]]]],
+          statements: [["attribute", "onclick", ["subexpr", "action", ["deleteUser"], [], ["loc", [null, [21, 47], [21, 70]]]]], ["inline", "t", ["users.deleteuser"], [], ["loc", [null, [22, 6], [22, 30]]]]],
           locals: [],
           templates: []
         };
@@ -62527,7 +62532,7 @@ define("frontend-cp/components/ko-user-action-menu/template", ["exports"], funct
               "column": 0
             },
             "end": {
-              "line": 26,
+              "line": 25,
               "column": 0
             }
           },
@@ -62550,15 +62555,15 @@ define("frontend-cp/components/ko-user-action-menu/template", ["exports"], funct
           var el2 = dom.createTextNode("\n  ");
           dom.appendChild(el1, el2);
           dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n  \n");
+          var el1 = dom.createTextNode("\n\n");
           dom.appendChild(el0, el1);
           var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("  \n");
+          var el1 = dom.createTextNode("\n");
           dom.appendChild(el0, el1);
           var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("  \n");
+          var el1 = dom.createTextNode("\n");
           dom.appendChild(el0, el1);
           var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
@@ -62575,7 +62580,7 @@ define("frontend-cp/components/ko-user-action-menu/template", ["exports"], funct
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [["attribute", "onclick", ["subexpr", "action", [["get", "onCreateNewCase", ["loc", [null, [5, 54], [5, 69]]]]], [], ["loc", [null, [5, 45], [5, 71]]]]], ["inline", "t", ["users.create_new_case"], [], ["loc", [null, [6, 4], [6, 33]]]], ["block", "if", [["get", "hasChangeSignaturePermission", ["loc", [null, [9, 8], [9, 36]]]]], [], 0, null, ["loc", [null, [9, 2], [13, 9]]]], ["block", "if", [["get", "hasChangePasswordEmailPermission", ["loc", [null, [15, 8], [15, 40]]]]], [], 1, null, ["loc", [null, [15, 2], [19, 9]]]], ["block", "if", [["get", "hasDeletePermission", ["loc", [null, [21, 8], [21, 27]]]]], [], 2, null, ["loc", [null, [21, 2], [25, 9]]]]],
+        statements: [["attribute", "onclick", ["subexpr", "action", [["get", "onCreateNewCase", ["loc", [null, [4, 54], [4, 69]]]]], [], ["loc", [null, [4, 45], [4, 71]]]]], ["inline", "t", ["users.create_new_case"], [], ["loc", [null, [5, 4], [5, 33]]]], ["block", "if", [["get", "hasChangeSignaturePermission", ["loc", [null, [8, 8], [8, 36]]]]], [], 0, null, ["loc", [null, [8, 2], [12, 9]]]], ["block", "if", [["get", "hasChangePasswordEmailPermission", ["loc", [null, [14, 8], [14, 40]]]]], [], 1, null, ["loc", [null, [14, 2], [18, 9]]]], ["block", "if", [["get", "hasDeletePermission", ["loc", [null, [20, 8], [20, 27]]]]], [], 2, null, ["loc", [null, [20, 2], [24, 9]]]]],
         locals: ["dropdown"],
         templates: [child0, child1, child2]
       };
@@ -62588,11 +62593,11 @@ define("frontend-cp/components/ko-user-action-menu/template", ["exports"], funct
           "loc": {
             "source": null,
             "start": {
-              "line": 26,
+              "line": 25,
               "column": 0
             },
             "end": {
-              "line": 30,
+              "line": 29,
               "column": 0
             }
           },
@@ -62643,7 +62648,7 @@ define("frontend-cp/components/ko-user-action-menu/template", ["exports"], funct
             "column": 0
           },
           "end": {
-            "line": 31,
+            "line": 30,
             "column": 0
           }
         },
@@ -62666,7 +62671,7 @@ define("frontend-cp/components/ko-user-action-menu/template", ["exports"], funct
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["block", "basic-dropdown", [], ["renderInPlace", true, "horizontalPosition", "left", "class", "ko-user-action-menu__dropdown"], 0, 1, ["loc", [null, [1, 0], [30, 19]]]]],
+      statements: [["block", "basic-dropdown", [], ["renderInPlace", true, "class", "ko-user-action-menu__dropdown"], 0, 1, ["loc", [null, [1, 0], [29, 19]]]]],
       locals: [],
       templates: [child0, child1]
     };
@@ -76534,6 +76539,7 @@ define('frontend-cp/services/case-list-tab', ['exports', 'ember', 'npm:lodash', 
         views: store.query('view', { limit: CASE_VIEW_LIMIT }, { reload: true })
       }).then(function (data) {
         _this.setProperties(data);
+        _this.set('forceNextLoad', false);
         return data;
       });
     },
@@ -92454,6 +92460,8 @@ define('frontend-cp/session/agent/cases/index/route', ['exports', 'ember', 'fron
     },
 
     _pollCurrentViewCounts: function _pollCurrentViewCounts() {
+      this.get('caseListTab').set('forceNextLoad', true);
+
       this.model(this.paramsFor(this.routeName));
       this.viewsCountPollingTimer = run.later(this, this._pollCurrentViewCounts, VIEWS_POLLING_INTERVAL);
     },
@@ -92474,6 +92482,7 @@ define('frontend-cp/session/agent/cases/index/route', ['exports', 'ember', 'fron
       },
 
       refreshCaseList: function refreshCaseList() {
+        this.get('caseListTab').set('forceNextLoad', true);
         this.refresh();
       }
     }
@@ -94314,8 +94323,10 @@ define('frontend-cp/session/agent/cases/index/view/route', ['exports', 'ember', 
       if (controller.get('isPollingEnabled')) {
         this.get('caseListTab').pollView(this.get('caseListTab.views'), this.paramsFor(this.routeName)).then(function (view) {
           _this.setupController(controller, view);
+          if (!_ember['default'].testing) {
+            _this.pollViewTimer = run.later(_this, _this._pollView, CASE_POLLING_INTERVAL);
+          }
         });
-        this.pollViewTimer = run.later(this, this._pollView, CASE_POLLING_INTERVAL);
       }
     },
 
@@ -101678,7 +101689,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"viewingUsersInactiveThreshold":300000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+37bd8c0e"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"viewingUsersInactiveThreshold":300000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+b7bbbf51"});
 }
 
 /* jshint ignore:end */
