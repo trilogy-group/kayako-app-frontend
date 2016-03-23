@@ -147,5 +147,8 @@
   "reply.click_to_start": "Click to start a",
   "reply.or_leave_a": "or leave a",
   "reply.note": "Note",
-  "reply.reply": "Reply"
+  "reply.reply": "Reply",
+
+  "viewers.updating": "updating this case",
+  "viewers.viewing": "viewing this case"
 }
