@@ -76580,6 +76580,7 @@ define('frontend-cp/services/case-list-tab', ['exports', 'ember', 'npm:lodash', 
 
     isSameView: function isSameView(id, params) {
       var previous = this.get('previousViewParams') || {};
+      var latestCases = this.get('latestCases');
 
       var cloned = _npmLodash['default'].clone(params);
       var previousCloned = _npmLodash['default'].clone(previous);
@@ -76587,7 +76588,7 @@ define('frontend-cp/services/case-list-tab', ['exports', 'ember', 'npm:lodash', 
       Reflect.deleteProperty(cloned, 'view_id');
       Reflect.deleteProperty(previousCloned, 'view_id');
 
-      return this.get('previousViewId') === id && _npmLodash['default'].isEqual(previousCloned, cloned);
+      return this.get('previousViewId') === id && _npmLodash['default'].isEqual(previousCloned, cloned) && latestCases;
     },
 
     inboxView: computed('views', function () {
@@ -94340,7 +94341,7 @@ define('frontend-cp/session/agent/cases/index/view/route', ['exports', 'ember', 
         this.get('tabStore').setCasesViewId(view.get('id'));
       }
 
-      if (caseListTab.isSameView(view.get('id'), params) && caseListTab.get('latestCases')) {
+      if (caseListTab.isSameView(view.get('id'), params)) {
         view.set('casesQuery', caseListTab.get('latestCases'));
         run.cancel(this.pollViewTimer);
         this._pollView();
@@ -94390,6 +94391,9 @@ define('frontend-cp/session/agent/cases/index/view/route', ['exports', 'ember', 
       },
 
       reloadCases: function reloadCases() {
+        // reset latest cases to refresh case list view after Trashing a case
+        this.get('caseListTab').set('latestCases', null);
+
         this.refresh();
       }
     }
@@ -101689,7 +101693,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"viewingUsersInactiveThreshold":300000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+b7bbbf51"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"viewingUsersInactiveThreshold":300000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+271fdfae"});
 }
 
 /* jshint ignore:end */
