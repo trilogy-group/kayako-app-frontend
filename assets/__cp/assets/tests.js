@@ -6920,9 +6920,9 @@ define('frontend-cp/tests/acceptance/agent/cases/create-test', ['exports', 'fron
 
       assert.equal(find('.ko-layout_advanced__sidebar .list-bare .ko-info-bar_item:eq(1) input').val(), 'Barney Stinson', 'The recipient of the new case is Barney');
       assert.ok(find('.breadcrumbs .breadcrumbs__item:eq(0)').text().trim() === 'Barney Stinson' && find('.breadcrumbs .breadcrumbs__item:eq(1)').text().trim() === 'New case', 'Breadcrums are correct');
-      assert.equal(find('.nav-tabs__item').length, 1, 'There is only one tab');
-      assert.equal(find('.nav-tabs__item.active').length, 1, 'That tab is active');
-      assert.equal(find('.nav-tabs__item').text().trim(), 'New case', 'That tab belongs to the case being created');
+      assert.equal(find('.nav-primary__tab').length, 1, 'There is only one tab');
+      assert.equal(find('.nav-primary__tab.active').length, 1, 'That tab is active');
+      assert.equal(find('.nav-primary__tab').text().trim(), 'New case', 'That tab belongs to the case being created');
       nativeClick('.ko-layout_advanced_section__subject .editable-text__text');
       fillIn('.ko-layout_advanced_section__subject input', 'No internet');
       triggerEvent('.ko-layout_advanced_section__subject input', 'input');
@@ -6941,8 +6941,8 @@ define('frontend-cp/tests/acceptance/agent/cases/create-test', ['exports', 'fron
     andThen(function () {
       var status = find('.ko-info-bar_item__header:contains("Status")').next().val();
       assert.equal(status, 'Open', 'Status has updated to OPEN');
-      assert.equal(find('.nav-tabs__item').length, 1, 'There is only one tab');
-      assert.equal(find('.nav-tabs__item').text().trim(), 'No internet', 'That title of the tab has updated');
+      assert.equal(find('.nav-primary__tab').length, 1, 'There is only one tab');
+      assert.equal(find('.nav-primary__tab').text().trim(), 'No internet', 'That title of the tab has updated');
       assert.equal(currentURL(), '/agent/cases/123');
     });
   });
@@ -6994,17 +6994,17 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
 
     andThen(function () {
       assert.equal(currentURL(), '/agent/cases/view/1');
-      assert.equal(find('.nav-tabs__item').length, 0);
+      assert.equal(find('.nav-primary__tab').length, 0);
       triggerEvent('.ko-cases-list__row:first-child', 'click', { metaKey: true });
     });
 
     andThen(function () {
-      assert.equal(find('.nav-tabs__item').length, 1);
+      assert.equal(find('.nav-primary__tab').length, 1);
       triggerEvent('.ko-cases-list__row:first-child', 'click', { metaKey: true });
     });
 
     andThen(function () {
-      assert.equal(find('.nav-tabs__item').length, 1);
+      assert.equal(find('.nav-primary__tab').length, 1);
     });
   });
 
@@ -7948,7 +7948,7 @@ define('frontend-cp/tests/acceptance/agent/search/search-test', ['exports', 'fro
     visit('/agent/search/' + term);
 
     andThen(function () {
-      assert.equal(find('.nav-tabs__label').text(), '"' + term + '"');
+      assert.equal(find('.nav-primary__tab-label').text().trim(), '"' + term + '"');
       assert.equal(find('.ko-universal-search_entry').val(), term);
     });
   });
@@ -7959,8 +7959,8 @@ define('frontend-cp/tests/acceptance/agent/search/search-test', ['exports', 'fro
     visit('/agent/search/' + term1);
 
     andThen(function () {
-      assert.equal(find('.nav-tabs__label').length, 1);
-      assert.equal(find('.nav-tabs__label').text().trim(), '"' + term1 + '"');
+      assert.equal(find('.nav-primary__tab-label').length, 1);
+      assert.equal(find('.nav-primary__tab-label').text().trim(), '"' + term1 + '"');
     });
 
     andThen(function () {
@@ -7969,8 +7969,8 @@ define('frontend-cp/tests/acceptance/agent/search/search-test', ['exports', 'fro
     });
 
     andThen(function () {
-      assert.equal(find('.nav-tabs__label').length, 1);
-      assert.equal(find('.nav-tabs__label').text().trim(), '"' + term2 + '"');
+      assert.equal(find('.nav-primary__tab-label').length, 1);
+      assert.equal(find('.nav-primary__tab-label').text().trim(), '"' + term2 + '"');
     });
   });
 
@@ -7994,8 +7994,8 @@ define('frontend-cp/tests/acceptance/agent/search/search-test', ['exports', 'fro
     visit('/agent/search/' + term1);
 
     andThen(function () {
-      assert.equal(find('.nav-tabs__label').length, 1);
-      assert.equal(find('.nav-tabs .active').text().trim(), '"' + term1 + '"');
+      assert.equal(find('.nav-primary__tab-label').length, 1);
+      assert.equal(find('.nav-primary__tab .active').text().trim(), '"' + term1 + '"');
     });
 
     andThen(function () {
@@ -8007,8 +8007,8 @@ define('frontend-cp/tests/acceptance/agent/search/search-test', ['exports', 'fro
     });
 
     andThen(function () {
-      assert.equal(find('.nav-tabs__label').length, 2);
-      assert.equal(find('.nav-tabs .active').text().trim(), '"' + term2 + '"');
+      assert.equal(find('.nav-primary__tab-label').length, 2);
+      assert.equal(find('.nav-primary__tab .active').text().trim(), '"' + term2 + '"');
     });
   });
 });
@@ -8239,7 +8239,7 @@ define('frontend-cp/tests/acceptance/agent/tabs/tabs-test', ['exports', 'fronten
   });
 
   function getTabElements() {
-    return find('.nav-tabs__item');
+    return find('.nav-primary__tab');
   }
 
   function getActiveTabElement() {
@@ -8252,7 +8252,7 @@ define('frontend-cp/tests/acceptance/agent/tabs/tabs-test', ['exports', 'fronten
 
   function closeTab(tabElement) {
     andThen(function () {
-      $(tabElement).find('.nav-tabs__close').click();
+      $(tabElement).find('.nav-primary__tab-close').click();
     });
   }
 });
@@ -8305,13 +8305,13 @@ define('frontend-cp/tests/acceptance/agent/users/create-test', ['exports', 'fron
     andThen(function () {
       assert.equal(currentURL(), '/agent/users/2', 'We are in the show page of the created user');
 
-      assert.equal(find('.ko-agent-dropdown__drop').length, 0, false, '"+" Dropdown content should be hidden');
+      assert.equal(find('.ko-agent-dropdown .ember-basic-dropdown-trigger[aria-expanded="false"]').length, 1, '"+" Dropdown content should be hidden');
 
       assert.equal(find('.ko-layout_advanced_section__subject').text().trim(), 'Barney Stinson', 'The name of the user is vissible in the header');
-      assert.equal(find('.breadcrumbs .breadcrumbs__item:eq(0)').text().trim(), 'Barney Stinson', 'Breadcrums are correct');
-      assert.equal(find('.nav-tabs__item').length, 1, 'There is only one tab');
-      assert.equal(find('.nav-tabs__item.active').length, 1, 'That tab is active');
-      assert.equal(find('.nav-tabs__item').text().trim(), 'Barney Stinson', 'That tab belongs to the created user');
+      assert.equal(find('.breadcrumbs .breadcrumbs__item:eq(0)').text().trim(), 'Barney Stinson', 'Breadcrumbs are correct');
+      assert.equal(find('.nav-primary__tab').length, 1, 'There is only one tab');
+      assert.equal(find('.nav-primary__tab.active').length, 1, 'That tab is active');
+      assert.equal(find('.nav-primary__tab').text().trim(), 'Barney Stinson', 'That tab belongs to the created user');
     });
   });
 });

@@ -959,6 +959,9 @@ define("frontend-cp/cldrs/en", ["exports"], function (exports) {
           n100 = t0 && s[0].slice(-2);if (ord) return n10 == 1 && n100 != 11 ? "one" : n10 == 2 && n100 != 12 ? "two" : n10 == 3 && n100 != 13 ? "few" : "other";return n == 1 && v0 ? "one" : "other";
     }, "fields": { "year": { "displayName": "Year", "relative": { "0": "this year", "1": "next year", "-1": "last year" }, "relativeTime": { "future": { "one": "in {0} year", "other": "in {0} years" }, "past": { "one": "{0} year ago", "other": "{0} years ago" } } }, "month": { "displayName": "Month", "relative": { "0": "this month", "1": "next month", "-1": "last month" }, "relativeTime": { "future": { "one": "in {0} month", "other": "in {0} months" }, "past": { "one": "{0} month ago", "other": "{0} months ago" } } }, "day": { "displayName": "Day", "relative": { "0": "today", "1": "tomorrow", "-1": "yesterday" }, "relativeTime": { "future": { "one": "in {0} day", "other": "in {0} days" }, "past": { "one": "{0} day ago", "other": "{0} days ago" } } }, "hour": { "displayName": "Hour", "relativeTime": { "future": { "one": "in {0} hour", "other": "in {0} hours" }, "past": { "one": "{0} hour ago", "other": "{0} hours ago" } } }, "minute": { "displayName": "Minute", "relativeTime": { "future": { "one": "in {0} minute", "other": "in {0} minutes" }, "past": { "one": "{0} minute ago", "other": "{0} minutes ago" } } }, "second": { "displayName": "Second", "relative": { "0": "now" }, "relativeTime": { "future": { "one": "in {0} second", "other": "in {0} seconds" }, "past": { "one": "{0} second ago", "other": "{0} seconds ago" } } } } };
 });
+define('frontend-cp/components/active-link', ['exports', 'ember-cli-active-link-wrapper/components/active-link'], function (exports, _emberCliActiveLinkWrapperComponentsActiveLink) {
+  exports['default'] = _emberCliActiveLinkWrapperComponentsActiveLink['default'];
+});
 define('frontend-cp/components/app-version', ['exports', 'ember-cli-app-version/components/app-version', 'frontend-cp/config/environment'], function (exports, _emberCliAppVersionComponentsAppVersion, _frontendCpConfigEnvironment) {
 
   var name = _frontendCpConfigEnvironment['default'].APP.name;
@@ -26138,10 +26141,12 @@ define('frontend-cp/components/ko-agent-dropdown/component', ['exports', 'ember'
     actions: {
       reset: function reset() {
         this.set('selectedNavItem', null);
+        _ember['default'].run.cancel(this.get('closeDropdownTimer'));
       },
 
       onTabCreateComplete: function onTabCreateComplete(route, model) {
         this._createSuccessNotification(route);
+        _ember['default'].run.cancel(this.get('closeDropdownTimer'));
         this.get('routing').transitionTo(route, [model]);
       },
 
@@ -26151,7 +26156,20 @@ define('frontend-cp/components/ko-agent-dropdown/component', ['exports', 'ember'
         }
 
         this.sendAction.apply(this, ['transitionToRouteAction'].concat(rest));
+        _ember['default'].run.cancel(this.get('closeDropdownTimer'));
         dropdown.actions.close();
+      },
+
+      mouseEnter: function mouseEnter(dropdown) {
+        dropdown.actions.open();
+
+        _ember['default'].run.cancel(this.get('closeDropdownTimer'));
+      },
+
+      mouseLeave: function mouseLeave(dropdown) {
+        this.set('closeDropdownTimer', _ember['default'].run.later(function () {
+          dropdown.actions.close();
+        }, 750));
       }
     },
 
@@ -27642,11 +27660,11 @@ define("frontend-cp/components/ko-agent-dropdown/template", ["exports"], functio
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 3,
+                  "line": 9,
                   "column": 4
                 },
                 "end": {
-                  "line": 8,
+                  "line": 14,
                   "column": 4
                 }
               },
@@ -27671,7 +27689,7 @@ define("frontend-cp/components/ko-agent-dropdown/template", ["exports"], functio
               morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
               return morphs;
             },
-            statements: [["inline", "ko-agent-dropdown/create-user", [], ["dropdown", ["subexpr", "@mut", [["get", "dropdown", ["loc", [null, [5, 17], [5, 25]]]]], [], []], "onCreate", ["subexpr", "action", ["onTabCreateComplete", "session.agent.users.user"], [], ["loc", [null, [6, 17], [6, 74]]]], "onCancel", ["subexpr", "action", ["reset"], [], ["loc", [null, [7, 17], [7, 33]]]]], ["loc", [null, [4, 6], [7, 35]]]]],
+            statements: [["inline", "ko-agent-dropdown/create-user", [], ["dropdown", ["subexpr", "@mut", [["get", "dropdown", ["loc", [null, [11, 17], [11, 25]]]]], [], []], "onCreate", ["subexpr", "action", ["onTabCreateComplete", "session.agent.users.user"], [], ["loc", [null, [12, 17], [12, 74]]]], "onCancel", ["subexpr", "action", ["reset"], [], ["loc", [null, [13, 17], [13, 33]]]]], ["loc", [null, [10, 6], [13, 35]]]]],
             locals: [],
             templates: []
           };
@@ -27685,11 +27703,11 @@ define("frontend-cp/components/ko-agent-dropdown/template", ["exports"], functio
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 8,
+                    "line": 14,
                     "column": 4
                   },
                   "end": {
-                    "line": 12,
+                    "line": 18,
                     "column": 4
                   }
                 },
@@ -27714,7 +27732,7 @@ define("frontend-cp/components/ko-agent-dropdown/template", ["exports"], functio
                 morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
                 return morphs;
               },
-              statements: [["inline", "ko-agent-dropdown/create-case", [], ["onSubmit", ["subexpr", "action", ["transitionToRoute", ["get", "dropdown", ["loc", [null, [10, 45], [10, 53]]]]], [], ["loc", [null, [10, 17], [10, 54]]]], "onCancel", ["subexpr", "action", ["reset"], [], ["loc", [null, [11, 17], [11, 33]]]]], ["loc", [null, [9, 6], [11, 35]]]]],
+              statements: [["inline", "ko-agent-dropdown/create-case", [], ["onSubmit", ["subexpr", "action", ["transitionToRoute", ["get", "dropdown", ["loc", [null, [16, 45], [16, 53]]]]], [], ["loc", [null, [16, 17], [16, 54]]]], "onCancel", ["subexpr", "action", ["reset"], [], ["loc", [null, [17, 17], [17, 33]]]]], ["loc", [null, [15, 6], [17, 35]]]]],
               locals: [],
               templates: []
             };
@@ -27728,11 +27746,11 @@ define("frontend-cp/components/ko-agent-dropdown/template", ["exports"], functio
                   "loc": {
                     "source": null,
                     "start": {
-                      "line": 12,
+                      "line": 18,
                       "column": 4
                     },
                     "end": {
-                      "line": 17,
+                      "line": 23,
                       "column": 4
                     }
                   },
@@ -27757,7 +27775,7 @@ define("frontend-cp/components/ko-agent-dropdown/template", ["exports"], functio
                   morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
                   return morphs;
                 },
-                statements: [["inline", "ko-agent-dropdown/create-organisation", [], ["dropdown", ["subexpr", "@mut", [["get", "dropdown", ["loc", [null, [14, 17], [14, 25]]]]], [], []], "onCreate", ["subexpr", "action", ["onTabCreateComplete", "session.agent.organisations.organisation"], [], ["loc", [null, [15, 17], [15, 90]]]], "onCancel", ["subexpr", "action", ["reset"], [], ["loc", [null, [16, 17], [16, 33]]]]], ["loc", [null, [13, 6], [16, 35]]]]],
+                statements: [["inline", "ko-agent-dropdown/create-organisation", [], ["dropdown", ["subexpr", "@mut", [["get", "dropdown", ["loc", [null, [20, 17], [20, 25]]]]], [], []], "onCreate", ["subexpr", "action", ["onTabCreateComplete", "session.agent.organisations.organisation"], [], ["loc", [null, [21, 17], [21, 90]]]], "onCancel", ["subexpr", "action", ["reset"], [], ["loc", [null, [22, 17], [22, 33]]]]], ["loc", [null, [19, 6], [22, 35]]]]],
                 locals: [],
                 templates: []
               };
@@ -27769,11 +27787,11 @@ define("frontend-cp/components/ko-agent-dropdown/template", ["exports"], functio
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 12,
+                    "line": 18,
                     "column": 4
                   },
                   "end": {
-                    "line": 17,
+                    "line": 23,
                     "column": 4
                   }
                 },
@@ -27796,7 +27814,7 @@ define("frontend-cp/components/ko-agent-dropdown/template", ["exports"], functio
                 dom.insertBoundary(fragment, null);
                 return morphs;
               },
-              statements: [["block", "if", [["subexpr", "eq", [["get", "selectedNavItem.name", ["loc", [null, [12, 18], [12, 38]]]], "organization"], [], ["loc", [null, [12, 14], [12, 54]]]]], [], 0, null, ["loc", [null, [12, 4], [17, 4]]]]],
+              statements: [["block", "if", [["subexpr", "eq", [["get", "selectedNavItem.name", ["loc", [null, [18, 18], [18, 38]]]], "organization"], [], ["loc", [null, [18, 14], [18, 54]]]]], [], 0, null, ["loc", [null, [18, 4], [23, 4]]]]],
               locals: [],
               templates: [child0]
             };
@@ -27808,11 +27826,11 @@ define("frontend-cp/components/ko-agent-dropdown/template", ["exports"], functio
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 8,
+                  "line": 14,
                   "column": 4
                 },
                 "end": {
-                  "line": 17,
+                  "line": 23,
                   "column": 4
                 }
               },
@@ -27835,7 +27853,7 @@ define("frontend-cp/components/ko-agent-dropdown/template", ["exports"], functio
               dom.insertBoundary(fragment, null);
               return morphs;
             },
-            statements: [["block", "if", [["subexpr", "eq", [["get", "selectedNavItem.name", ["loc", [null, [8, 18], [8, 38]]]], "case"], [], ["loc", [null, [8, 14], [8, 46]]]]], [], 0, 1, ["loc", [null, [8, 4], [17, 4]]]]],
+            statements: [["block", "if", [["subexpr", "eq", [["get", "selectedNavItem.name", ["loc", [null, [14, 18], [14, 38]]]], "case"], [], ["loc", [null, [14, 14], [14, 46]]]]], [], 0, 1, ["loc", [null, [14, 4], [23, 4]]]]],
             locals: [],
             templates: [child0, child1]
           };
@@ -27847,11 +27865,11 @@ define("frontend-cp/components/ko-agent-dropdown/template", ["exports"], functio
             "loc": {
               "source": null,
               "start": {
-                "line": 2,
+                "line": 8,
                 "column": 2
               },
               "end": {
-                "line": 18,
+                "line": 24,
                 "column": 2
               }
             },
@@ -27874,7 +27892,7 @@ define("frontend-cp/components/ko-agent-dropdown/template", ["exports"], functio
             dom.insertBoundary(fragment, null);
             return morphs;
           },
-          statements: [["block", "if", [["subexpr", "eq", [["get", "selectedNavItem.name", ["loc", [null, [3, 14], [3, 34]]]], "user"], [], ["loc", [null, [3, 10], [3, 42]]]]], [], 0, 1, ["loc", [null, [3, 4], [17, 11]]]]],
+          statements: [["block", "if", [["subexpr", "eq", [["get", "selectedNavItem.name", ["loc", [null, [9, 14], [9, 34]]]], "user"], [], ["loc", [null, [9, 10], [9, 42]]]]], [], 0, 1, ["loc", [null, [9, 4], [23, 11]]]]],
           locals: [],
           templates: [child0, child1]
         };
@@ -27888,11 +27906,11 @@ define("frontend-cp/components/ko-agent-dropdown/template", ["exports"], functio
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 20,
+                  "line": 26,
                   "column": 6
                 },
                 "end": {
-                  "line": 25,
+                  "line": 31,
                   "column": 6
                 }
               },
@@ -27939,7 +27957,7 @@ define("frontend-cp/components/ko-agent-dropdown/template", ["exports"], functio
               morphs[2] = dom.createMorphAt(dom.childAt(element0, [3]), 0, 0);
               return morphs;
             },
-            statements: [["attribute", "onclick", ["subexpr", "action", [["subexpr", "mut", [["get", "selectedNavItem", ["loc", [null, [21, 101], [21, 116]]]]], [], ["loc", [null, [21, 96], [21, 117]]]], ["get", "navItem", ["loc", [null, [21, 118], [21, 125]]]]], [], ["loc", [null, [21, 87], [21, 127]]]]], ["attribute", "src", ["concat", [["get", "navItem.icon", ["loc", [null, [22, 85], [22, 97]]]]]]], ["content", "navItem.text", ["loc", [null, [23, 39], [23, 55]]]]],
+            statements: [["attribute", "onclick", ["subexpr", "action", [["subexpr", "mut", [["get", "selectedNavItem", ["loc", [null, [27, 101], [27, 116]]]]], [], ["loc", [null, [27, 96], [27, 117]]]], ["get", "navItem", ["loc", [null, [27, 118], [27, 125]]]]], [], ["loc", [null, [27, 87], [27, 127]]]]], ["attribute", "src", ["concat", [["get", "navItem.icon", ["loc", [null, [28, 85], [28, 97]]]]]]], ["content", "navItem.text", ["loc", [null, [29, 39], [29, 55]]]]],
             locals: ["navItem"],
             templates: []
           };
@@ -27951,11 +27969,11 @@ define("frontend-cp/components/ko-agent-dropdown/template", ["exports"], functio
             "loc": {
               "source": null,
               "start": {
-                "line": 18,
+                "line": 24,
                 "column": 2
               },
               "end": {
-                "line": 27,
+                "line": 33,
                 "column": 2
               }
             },
@@ -27967,7 +27985,7 @@ define("frontend-cp/components/ko-agent-dropdown/template", ["exports"], functio
           hasRendered: false,
           buildFragment: function buildFragment(dom) {
             var el0 = dom.createDocumentFragment();
-            var el1 = dom.createTextNode("    ");
+            var el1 = dom.createTextNode("  ");
             dom.appendChild(el0, el1);
             var el1 = dom.createElement("div");
             dom.setAttribute(el1, "class", "ko-agent-dropdown__nav-items box box--secondary");
@@ -27983,11 +28001,13 @@ define("frontend-cp/components/ko-agent-dropdown/template", ["exports"], functio
             return el0;
           },
           buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-            var morphs = new Array(1);
-            morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
+            var element2 = dom.childAt(fragment, [1]);
+            var morphs = new Array(2);
+            morphs[0] = dom.createAttrMorph(element2, 'onmouseenter');
+            morphs[1] = dom.createMorphAt(element2, 1, 1);
             return morphs;
           },
-          statements: [["block", "each", [["get", "navItems", ["loc", [null, [20, 14], [20, 22]]]]], [], 0, null, ["loc", [null, [20, 6], [25, 15]]]]],
+          statements: [["attribute", "onmouseenter", ["subexpr", "action", ["mouseEnter", ["get", "dropdown", ["loc", [null, [25, 98], [25, 106]]]]], [], ["loc", [null, [25, 76], [25, 108]]]]], ["block", "each", [["get", "navItems", ["loc", [null, [26, 14], [26, 22]]]]], [], 0, null, ["loc", [null, [26, 6], [31, 15]]]]],
           locals: [],
           templates: [child0]
         };
@@ -28006,7 +28026,7 @@ define("frontend-cp/components/ko-agent-dropdown/template", ["exports"], functio
               "column": 0
             },
             "end": {
-              "line": 28,
+              "line": 34,
               "column": 0
             }
           },
@@ -28029,7 +28049,7 @@ define("frontend-cp/components/ko-agent-dropdown/template", ["exports"], functio
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [["block", "if", [["get", "selectedNavItem", ["loc", [null, [2, 8], [2, 23]]]]], [], 0, 1, ["loc", [null, [2, 2], [27, 9]]]]],
+        statements: [["block", "liquid-if", [["get", "selectedNavItem", ["loc", [null, [8, 15], [8, 30]]]]], [], 0, 1, ["loc", [null, [8, 2], [33, 16]]]]],
         locals: ["dropdown"],
         templates: [child0, child1]
       };
@@ -28042,11 +28062,11 @@ define("frontend-cp/components/ko-agent-dropdown/template", ["exports"], functio
           "loc": {
             "source": null,
             "start": {
-              "line": 28,
+              "line": 34,
               "column": 0
             },
             "end": {
-              "line": 32,
+              "line": 38,
               "column": 0
             }
           },
@@ -28096,8 +28116,8 @@ define("frontend-cp/components/ko-agent-dropdown/template", ["exports"], functio
             "column": 0
           },
           "end": {
-            "line": 32,
-            "column": 19
+            "line": 39,
+            "column": 0
           }
         },
         "moduleName": "frontend-cp/components/ko-agent-dropdown/template.hbs"
@@ -28119,7 +28139,7 @@ define("frontend-cp/components/ko-agent-dropdown/template", ["exports"], functio
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["block", "basic-dropdown", [], ["renderInPlace", true, "dropdownClass", "ko-agent-dropdown__drop", "onClose", ["subexpr", "action", ["reset"], [], ["loc", [null, [1, 85], [1, 101]]]], "triggerClass", "ko-agent-dropdown__trigger"], 0, 1, ["loc", [null, [1, 0], [32, 19]]]]],
+      statements: [["block", "basic-dropdown", [], ["renderInPlace", true, "dropdownClass", ["subexpr", "concat", ["ko-agent-dropdown__drop ", ["subexpr", "if", [["get", "selectedNavItem", ["loc", [null, [3, 55], [3, 70]]]], "full-grown"], [], ["loc", [null, [3, 51], [3, 84]]]]], [], ["loc", [null, [3, 16], [3, 85]]]], "onMouseEnter", ["subexpr", "action", ["mouseEnter"], [], ["loc", [null, [4, 15], [4, 36]]]], "onMouseLeave", ["subexpr", "action", ["mouseLeave"], [], ["loc", [null, [5, 15], [5, 36]]]], "onClose", ["subexpr", "action", ["reset"], [], ["loc", [null, [6, 10], [6, 26]]]], "triggerClass", "ko-agent-dropdown__trigger"], 0, 1, ["loc", [null, [1, 0], [38, 19]]]]],
       locals: [],
       templates: [child0, child1]
     };
@@ -96268,12 +96288,12 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
             "loc": {
               "source": null,
               "start": {
-                "line": 8,
-                "column": 12
+                "line": 9,
+                "column": 10
               },
               "end": {
-                "line": 8,
-                "column": 133
+                "line": 9,
+                "column": 141
               }
             },
             "moduleName": "frontend-cp/session/template.hbs"
@@ -96301,12 +96321,12 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
           "loc": {
             "source": null,
             "start": {
-              "line": 7,
-              "column": 10
+              "line": 8,
+              "column": 8
             },
             "end": {
-              "line": 9,
-              "column": 10
+              "line": 10,
+              "column": 8
             }
           },
           "moduleName": "frontend-cp/session/template.hbs"
@@ -96317,7 +96337,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
         hasRendered: false,
         buildFragment: function buildFragment(dom) {
           var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("            ");
+          var el1 = dom.createTextNode("          ");
           dom.appendChild(el0, el1);
           var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
@@ -96330,7 +96350,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [["block", "link-to", ["session.agent.cases.index.view", ["get", "tabStore.casesViewId", ["loc", [null, [8, 56], [8, 76]]]]], ["title", ["subexpr", "t", ["cases.title"], [], ["loc", [null, [8, 83], [8, 100]]]], "class", "nav-main__item i-inbox"], 0, null, ["loc", [null, [8, 12], [8, 145]]]]],
+        statements: [["block", "link-to", ["session.agent.cases.index.view", ["get", "tabStore.casesViewId", ["loc", [null, [9, 54], [9, 74]]]]], ["title", ["subexpr", "t", ["cases.title"], [], ["loc", [null, [9, 81], [9, 98]]]], "class", "nav-primary__static-item i-inbox"], 0, null, ["loc", [null, [9, 10], [9, 153]]]]],
         locals: [],
         templates: [child0]
       };
@@ -96344,12 +96364,12 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
             "loc": {
               "source": null,
               "start": {
-                "line": 10,
-                "column": 12
+                "line": 11,
+                "column": 10
               },
               "end": {
-                "line": 10,
-                "column": 107
+                "line": 11,
+                "column": 115
               }
             },
             "moduleName": "frontend-cp/session/template.hbs"
@@ -96377,12 +96397,12 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
           "loc": {
             "source": null,
             "start": {
-              "line": 9,
-              "column": 10
+              "line": 10,
+              "column": 8
             },
             "end": {
-              "line": 11,
-              "column": 10
+              "line": 12,
+              "column": 8
             }
           },
           "moduleName": "frontend-cp/session/template.hbs"
@@ -96393,7 +96413,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
         hasRendered: false,
         buildFragment: function buildFragment(dom) {
           var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("            ");
+          var el1 = dom.createTextNode("          ");
           dom.appendChild(el0, el1);
           var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
@@ -96406,7 +96426,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [["block", "link-to", ["session.agent.cases.index"], ["title", ["subexpr", "t", ["cases.title"], [], ["loc", [null, [10, 57], [10, 74]]]], "class", "nav-main__item i-inbox"], 0, null, ["loc", [null, [10, 12], [10, 119]]]]],
+        statements: [["block", "link-to", ["session.agent.cases.index"], ["title", ["subexpr", "t", ["cases.title"], [], ["loc", [null, [11, 55], [11, 72]]]], "class", "nav-primary__static-item i-inbox"], 0, null, ["loc", [null, [11, 10], [11, 127]]]]],
         locals: [],
         templates: [child0]
       };
@@ -96421,12 +96441,12 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 14,
-                  "column": 14
+                  "line": 15,
+                  "column": 12
                 },
                 "end": {
-                  "line": 14,
-                  "column": 165
+                  "line": 15,
+                  "column": 173
                 }
               },
               "moduleName": "frontend-cp/session/template.hbs"
@@ -96454,12 +96474,12 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
             "loc": {
               "source": null,
               "start": {
-                "line": 13,
-                "column": 12
+                "line": 14,
+                "column": 10
               },
               "end": {
-                "line": 15,
-                "column": 12
+                "line": 16,
+                "column": 10
               }
             },
             "moduleName": "frontend-cp/session/template.hbs"
@@ -96470,7 +96490,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
           hasRendered: false,
           buildFragment: function buildFragment(dom) {
             var el0 = dom.createDocumentFragment();
-            var el1 = dom.createTextNode("              ");
+            var el1 = dom.createTextNode("            ");
             dom.appendChild(el0, el1);
             var el1 = dom.createComment("");
             dom.appendChild(el0, el1);
@@ -96483,7 +96503,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
             morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
             return morphs;
           },
-          statements: [["block", "link-to", [["get", "sectionsHistory.history.admin.routeName", ["loc", [null, [14, 25], [14, 64]]]], ["get", "sectionsHistory.history.admin.model", ["loc", [null, [14, 65], [14, 100]]]]], ["title", ["subexpr", "t", ["admin.administration"], [], ["loc", [null, [14, 107], [14, 133]]]], "class", "nav-main__item i-gear"], 0, null, ["loc", [null, [14, 14], [14, 177]]]]],
+          statements: [["block", "link-to", [["get", "sectionsHistory.history.admin.routeName", ["loc", [null, [15, 23], [15, 62]]]], ["get", "sectionsHistory.history.admin.model", ["loc", [null, [15, 63], [15, 98]]]]], ["title", ["subexpr", "t", ["admin.administration"], [], ["loc", [null, [15, 105], [15, 131]]]], "class", "nav-primary__static-item i-gear"], 0, null, ["loc", [null, [15, 12], [15, 185]]]]],
           locals: [],
           templates: [child0]
         };
@@ -96497,12 +96517,12 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 16,
-                  "column": 14
+                  "line": 17,
+                  "column": 12
                 },
                 "end": {
-                  "line": 16,
-                  "column": 129
+                  "line": 17,
+                  "column": 137
                 }
               },
               "moduleName": "frontend-cp/session/template.hbs"
@@ -96530,12 +96550,12 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
             "loc": {
               "source": null,
               "start": {
-                "line": 15,
-                "column": 12
+                "line": 16,
+                "column": 10
               },
               "end": {
-                "line": 17,
-                "column": 12
+                "line": 18,
+                "column": 10
               }
             },
             "moduleName": "frontend-cp/session/template.hbs"
@@ -96546,7 +96566,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
           hasRendered: false,
           buildFragment: function buildFragment(dom) {
             var el0 = dom.createDocumentFragment();
-            var el1 = dom.createTextNode("              ");
+            var el1 = dom.createTextNode("            ");
             dom.appendChild(el0, el1);
             var el1 = dom.createComment("");
             dom.appendChild(el0, el1);
@@ -96559,7 +96579,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
             morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
             return morphs;
           },
-          statements: [["block", "link-to", [["get", "sectionsHistory.history.admin.routeName", ["loc", [null, [16, 25], [16, 64]]]]], ["title", ["subexpr", "t", ["admin.administration"], [], ["loc", [null, [16, 71], [16, 97]]]], "class", "nav-main__item i-gear"], 0, null, ["loc", [null, [16, 14], [16, 141]]]]],
+          statements: [["block", "link-to", [["get", "sectionsHistory.history.admin.routeName", ["loc", [null, [17, 23], [17, 62]]]]], ["title", ["subexpr", "t", ["admin.administration"], [], ["loc", [null, [17, 69], [17, 95]]]], "class", "nav-primary__static-item i-gear"], 0, null, ["loc", [null, [17, 12], [17, 149]]]]],
           locals: [],
           templates: [child0]
         };
@@ -96571,12 +96591,12 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
           "loc": {
             "source": null,
             "start": {
-              "line": 12,
-              "column": 10
+              "line": 13,
+              "column": 8
             },
             "end": {
-              "line": 18,
-              "column": 10
+              "line": 19,
+              "column": 8
             }
           },
           "moduleName": "frontend-cp/session/template.hbs"
@@ -96598,7 +96618,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [["block", "if", [["get", "sectionsHistory.history.admin.model", ["loc", [null, [13, 18], [13, 53]]]]], [], 0, 1, ["loc", [null, [13, 12], [17, 19]]]]],
+        statements: [["block", "if", [["get", "sectionsHistory.history.admin.model", ["loc", [null, [14, 16], [14, 51]]]]], [], 0, 1, ["loc", [null, [14, 10], [18, 17]]]]],
         locals: [],
         templates: [child0, child1]
       };
@@ -96612,12 +96632,12 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
             "loc": {
               "source": null,
               "start": {
-                "line": 20,
-                "column": 12
+                "line": 21,
+                "column": 10
               },
               "end": {
-                "line": 20,
-                "column": 108
+                "line": 21,
+                "column": 116
               }
             },
             "moduleName": "frontend-cp/session/template.hbs"
@@ -96645,12 +96665,12 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
           "loc": {
             "source": null,
             "start": {
-              "line": 19,
-              "column": 10
+              "line": 20,
+              "column": 8
             },
             "end": {
-              "line": 21,
-              "column": 10
+              "line": 22,
+              "column": 8
             }
           },
           "moduleName": "frontend-cp/session/template.hbs"
@@ -96661,7 +96681,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
         hasRendered: false,
         buildFragment: function buildFragment(dom) {
           var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("            ");
+          var el1 = dom.createTextNode("          ");
           dom.appendChild(el0, el1);
           var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
@@ -96674,7 +96694,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [["block", "link-to", ["session.agent.users.index"], ["title", ["subexpr", "t", ["users.users"], [], ["loc", [null, [20, 57], [20, 74]]]], "class", "nav-main__item i-person"], 0, null, ["loc", [null, [20, 12], [20, 120]]]]],
+        statements: [["block", "link-to", ["session.agent.users.index"], ["title", ["subexpr", "t", ["users.users"], [], ["loc", [null, [21, 55], [21, 72]]]], "class", "nav-primary__static-item i-person"], 0, null, ["loc", [null, [21, 10], [21, 128]]]]],
         locals: [],
         templates: [child0]
       };
@@ -96683,6 +96703,48 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
       var child0 = (function () {
         var child0 = (function () {
           var child0 = (function () {
+            var child0 = (function () {
+              return {
+                meta: {
+                  "fragmentReason": false,
+                  "revision": "Ember@2.4.3",
+                  "loc": {
+                    "source": null,
+                    "start": {
+                      "line": 32,
+                      "column": 16
+                    },
+                    "end": {
+                      "line": 34,
+                      "column": 16
+                    }
+                  },
+                  "moduleName": "frontend-cp/session/template.hbs"
+                },
+                isEmpty: false,
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                  var el0 = dom.createDocumentFragment();
+                  var el1 = dom.createTextNode("                  ");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createComment("");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createTextNode("\n");
+                  dom.appendChild(el0, el1);
+                  return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                  var morphs = new Array(1);
+                  morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+                  return morphs;
+                },
+                statements: [["content", "tab.label", ["loc", [null, [33, 18], [33, 31]]]]],
+                locals: [],
+                templates: []
+              };
+            })();
             return {
               meta: {
                 "fragmentReason": false,
@@ -96690,12 +96752,12 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 34,
-                    "column": 16
+                    "line": 31,
+                    "column": 14
                   },
                   "end": {
                     "line": 36,
-                    "column": 16
+                    "column": 14
                   }
                 },
                 "moduleName": "frontend-cp/session/template.hbs"
@@ -96706,15 +96768,12 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
               hasRendered: false,
               buildFragment: function buildFragment(dom) {
                 var el0 = dom.createDocumentFragment();
-                var el1 = dom.createTextNode("                  ");
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("                ");
                 dom.appendChild(el0, el1);
                 var el1 = dom.createElement("div");
-                dom.setAttribute(el1, "class", "nav-tabs__label");
-                var el2 = dom.createComment("");
-                dom.appendChild(el1, el2);
-                dom.appendChild(el0, el1);
-                var el1 = dom.createElement("div");
-                dom.setAttribute(el1, "class", "nav-tabs__close");
+                dom.setAttribute(el1, "class", "nav-primary__tab-close");
                 var el2 = dom.createElement("span");
                 dom.setAttribute(el2, "class", "i-cross i-size-20 i-inherit-lh");
                 dom.appendChild(el1, el2);
@@ -96726,13 +96785,14 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
               buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
                 var element5 = dom.childAt(fragment, [2]);
                 var morphs = new Array(2);
-                morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 0, 0);
+                morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
                 morphs[1] = dom.createAttrMorph(element5, 'onclick');
+                dom.insertBoundary(fragment, 0);
                 return morphs;
               },
-              statements: [["content", "tab.label", ["loc", [null, [35, 47], [35, 60]]]], ["attribute", "onclick", ["subexpr", "action", ["close", ["get", "tab", ["loc", [null, [35, 120], [35, 123]]]]], [], ["loc", [null, [35, 103], [35, 125]]]]]],
+              statements: [["block", "link-to", [["get", "tab.routeName", ["loc", [null, [32, 27], [32, 40]]]], ["subexpr", "hash-to-query-params", [["get", "tab.queryParams", ["loc", [null, [32, 63], [32, 78]]]]], [], ["loc", [null, [32, 41], [32, 79]]]]], ["class", "nav-primary__tab-label"], 0, null, ["loc", [null, [32, 16], [34, 28]]]], ["attribute", "onclick", ["subexpr", "action", ["close", ["get", "tab", ["loc", [null, [35, 77], [35, 80]]]]], [], ["loc", [null, [35, 60], [35, 82]]]]]],
               locals: [],
-              templates: []
+              templates: [child0]
             };
           })();
           return {
@@ -96742,12 +96802,12 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 33,
-                  "column": 14
+                  "line": 30,
+                  "column": 12
                 },
                 "end": {
                   "line": 37,
-                  "column": 14
+                  "column": 12
                 }
               },
               "moduleName": "frontend-cp/session/template.hbs"
@@ -96769,7 +96829,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
               dom.insertBoundary(fragment, null);
               return morphs;
             },
-            statements: [["block", "link-to", [["get", "tab.routeName", ["loc", [null, [34, 27], [34, 40]]]], ["subexpr", "hash-to-query-params", [["get", "tab.queryParams", ["loc", [null, [34, 63], [34, 78]]]]], [], ["loc", [null, [34, 41], [34, 79]]]]], ["class", "nav-tabs__item"], 0, null, ["loc", [null, [34, 16], [36, 28]]]]],
+            statements: [["block", "active-link", [], ["tagName", "div", "class", "nav-primary__tab"], 0, null, ["loc", [null, [31, 14], [36, 30]]]]],
             locals: [],
             templates: [child0]
           };
@@ -96777,6 +96837,48 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
         var child1 = (function () {
           var child0 = (function () {
             var child0 = (function () {
+              var child0 = (function () {
+                return {
+                  meta: {
+                    "fragmentReason": false,
+                    "revision": "Ember@2.4.3",
+                    "loc": {
+                      "source": null,
+                      "start": {
+                        "line": 39,
+                        "column": 16
+                      },
+                      "end": {
+                        "line": 41,
+                        "column": 16
+                      }
+                    },
+                    "moduleName": "frontend-cp/session/template.hbs"
+                  },
+                  isEmpty: false,
+                  arity: 0,
+                  cachedFragment: null,
+                  hasRendered: false,
+                  buildFragment: function buildFragment(dom) {
+                    var el0 = dom.createDocumentFragment();
+                    var el1 = dom.createTextNode("                  ");
+                    dom.appendChild(el0, el1);
+                    var el1 = dom.createComment("");
+                    dom.appendChild(el0, el1);
+                    var el1 = dom.createTextNode("\n");
+                    dom.appendChild(el0, el1);
+                    return el0;
+                  },
+                  buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                    var morphs = new Array(1);
+                    morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+                    return morphs;
+                  },
+                  statements: [["content", "tab.label", ["loc", [null, [40, 18], [40, 31]]]]],
+                  locals: [],
+                  templates: []
+                };
+              })();
               return {
                 meta: {
                   "fragmentReason": false,
@@ -96785,11 +96887,11 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
                     "source": null,
                     "start": {
                       "line": 38,
-                      "column": 16
+                      "column": 14
                     },
                     "end": {
-                      "line": 40,
-                      "column": 16
+                      "line": 43,
+                      "column": 14
                     }
                   },
                   "moduleName": "frontend-cp/session/template.hbs"
@@ -96800,15 +96902,12 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
                 hasRendered: false,
                 buildFragment: function buildFragment(dom) {
                   var el0 = dom.createDocumentFragment();
-                  var el1 = dom.createTextNode("                  ");
+                  var el1 = dom.createComment("");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createTextNode("                ");
                   dom.appendChild(el0, el1);
                   var el1 = dom.createElement("div");
-                  dom.setAttribute(el1, "class", "nav-tabs__label");
-                  var el2 = dom.createComment("");
-                  dom.appendChild(el1, el2);
-                  dom.appendChild(el0, el1);
-                  var el1 = dom.createElement("div");
-                  dom.setAttribute(el1, "class", "nav-tabs__close");
+                  dom.setAttribute(el1, "class", "nav-primary__tab-close");
                   var el2 = dom.createElement("span");
                   dom.setAttribute(el2, "class", "i-cross i-size-20 i-inherit-lh");
                   dom.appendChild(el1, el2);
@@ -96820,13 +96919,14 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
                 buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
                   var element4 = dom.childAt(fragment, [2]);
                   var morphs = new Array(2);
-                  morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 0, 0);
+                  morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
                   morphs[1] = dom.createAttrMorph(element4, 'onclick');
+                  dom.insertBoundary(fragment, 0);
                   return morphs;
                 },
-                statements: [["content", "tab.label", ["loc", [null, [39, 47], [39, 60]]]], ["attribute", "onclick", ["subexpr", "action", ["close", ["get", "tab", ["loc", [null, [39, 120], [39, 123]]]]], [], ["loc", [null, [39, 103], [39, 125]]]]]],
+                statements: [["block", "link-to", [["get", "tab.routeName", ["loc", [null, [39, 27], [39, 40]]]], ["get", "tab.dynamicSegments.firstObject", ["loc", [null, [39, 41], [39, 72]]]], ["subexpr", "hash-to-query-params", [["get", "tab.queryParams", ["loc", [null, [39, 95], [39, 110]]]]], [], ["loc", [null, [39, 73], [39, 111]]]]], ["class", "nav-primary__tab-label"], 0, null, ["loc", [null, [39, 16], [41, 28]]]], ["attribute", "onclick", ["subexpr", "action", ["close", ["get", "tab", ["loc", [null, [42, 77], [42, 80]]]]], [], ["loc", [null, [42, 60], [42, 82]]]]]],
                 locals: [],
-                templates: []
+                templates: [child0]
               };
             })();
             return {
@@ -96837,11 +96937,11 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
                   "source": null,
                   "start": {
                     "line": 37,
-                    "column": 14
+                    "column": 12
                   },
                   "end": {
-                    "line": 41,
-                    "column": 14
+                    "line": 44,
+                    "column": 12
                   }
                 },
                 "moduleName": "frontend-cp/session/template.hbs"
@@ -96854,7 +96954,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
                 var el0 = dom.createDocumentFragment();
                 var el1 = dom.createComment("");
                 dom.appendChild(el0, el1);
-                var el1 = dom.createTextNode("              ");
+                var el1 = dom.createTextNode("            ");
                 dom.appendChild(el0, el1);
                 return el0;
               },
@@ -96864,13 +96964,55 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
                 dom.insertBoundary(fragment, 0);
                 return morphs;
               },
-              statements: [["block", "link-to", [["get", "tab.routeName", ["loc", [null, [38, 27], [38, 40]]]], ["get", "tab.dynamicSegments.firstObject", ["loc", [null, [38, 41], [38, 72]]]], ["subexpr", "hash-to-query-params", [["get", "tab.queryParams", ["loc", [null, [38, 95], [38, 110]]]]], [], ["loc", [null, [38, 73], [38, 111]]]]], ["class", "nav-tabs__item"], 0, null, ["loc", [null, [38, 16], [40, 28]]]]],
+              statements: [["block", "active-link", [], ["tagName", "div", "class", "nav-primary__tab"], 0, null, ["loc", [null, [38, 14], [43, 30]]]]],
               locals: [],
               templates: [child0]
             };
           })();
           var child1 = (function () {
             var child0 = (function () {
+              var child0 = (function () {
+                return {
+                  meta: {
+                    "fragmentReason": false,
+                    "revision": "Ember@2.4.3",
+                    "loc": {
+                      "source": null,
+                      "start": {
+                        "line": 46,
+                        "column": 16
+                      },
+                      "end": {
+                        "line": 48,
+                        "column": 16
+                      }
+                    },
+                    "moduleName": "frontend-cp/session/template.hbs"
+                  },
+                  isEmpty: false,
+                  arity: 0,
+                  cachedFragment: null,
+                  hasRendered: false,
+                  buildFragment: function buildFragment(dom) {
+                    var el0 = dom.createDocumentFragment();
+                    var el1 = dom.createTextNode("                  ");
+                    dom.appendChild(el0, el1);
+                    var el1 = dom.createComment("");
+                    dom.appendChild(el0, el1);
+                    var el1 = dom.createTextNode("\n");
+                    dom.appendChild(el0, el1);
+                    return el0;
+                  },
+                  buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                    var morphs = new Array(1);
+                    morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+                    return morphs;
+                  },
+                  statements: [["content", "tab.label", ["loc", [null, [47, 18], [47, 31]]]]],
+                  locals: [],
+                  templates: []
+                };
+              })();
               return {
                 meta: {
                   "fragmentReason": false,
@@ -96878,12 +97020,12 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
                   "loc": {
                     "source": null,
                     "start": {
-                      "line": 42,
-                      "column": 16
+                      "line": 45,
+                      "column": 14
                     },
                     "end": {
-                      "line": 44,
-                      "column": 16
+                      "line": 50,
+                      "column": 14
                     }
                   },
                   "moduleName": "frontend-cp/session/template.hbs"
@@ -96894,15 +97036,12 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
                 hasRendered: false,
                 buildFragment: function buildFragment(dom) {
                   var el0 = dom.createDocumentFragment();
-                  var el1 = dom.createTextNode("                  ");
+                  var el1 = dom.createComment("");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createTextNode("                ");
                   dom.appendChild(el0, el1);
                   var el1 = dom.createElement("div");
-                  dom.setAttribute(el1, "class", "nav-tabs__label");
-                  var el2 = dom.createComment("");
-                  dom.appendChild(el1, el2);
-                  dom.appendChild(el0, el1);
-                  var el1 = dom.createElement("div");
-                  dom.setAttribute(el1, "class", "nav-tabs__close");
+                  dom.setAttribute(el1, "class", "nav-primary__tab-close");
                   var el2 = dom.createElement("span");
                   dom.setAttribute(el2, "class", "i-cross i-size-20 i-inherit-lh");
                   dom.appendChild(el1, el2);
@@ -96914,13 +97053,14 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
                 buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
                   var element3 = dom.childAt(fragment, [2]);
                   var morphs = new Array(2);
-                  morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 0, 0);
+                  morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
                   morphs[1] = dom.createAttrMorph(element3, 'onclick');
+                  dom.insertBoundary(fragment, 0);
                   return morphs;
                 },
-                statements: [["content", "tab.label", ["loc", [null, [43, 47], [43, 60]]]], ["attribute", "onclick", ["subexpr", "action", ["close", ["get", "tab", ["loc", [null, [43, 120], [43, 123]]]]], [], ["loc", [null, [43, 103], [43, 125]]]]]],
+                statements: [["block", "link-to", [["get", "tab.routeName", ["loc", [null, [46, 27], [46, 40]]]], ["get", "tab.dynamicSegments.firstObject", ["loc", [null, [46, 41], [46, 72]]]], ["get", "tab.dynamicSegments.lastObject", ["loc", [null, [46, 73], [46, 103]]]], ["subexpr", "hash-to-query-params", [["get", "tab.queryParams", ["loc", [null, [46, 126], [46, 141]]]]], [], ["loc", [null, [46, 104], [46, 142]]]]], ["class", "nav-primary__tab-label"], 0, null, ["loc", [null, [46, 16], [48, 28]]]], ["attribute", "onclick", ["subexpr", "action", ["close", ["get", "tab", ["loc", [null, [49, 77], [49, 80]]]]], [], ["loc", [null, [49, 60], [49, 82]]]]]],
                 locals: [],
-                templates: []
+                templates: [child0]
               };
             })();
             return {
@@ -96930,12 +97070,12 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 41,
-                    "column": 14
+                    "line": 44,
+                    "column": 12
                   },
                   "end": {
-                    "line": 45,
-                    "column": 14
+                    "line": 51,
+                    "column": 12
                   }
                 },
                 "moduleName": "frontend-cp/session/template.hbs"
@@ -96952,7 +97092,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
                 dom.appendChild(el0, el1);
                 var el1 = dom.createComment("");
                 dom.appendChild(el0, el1);
-                var el1 = dom.createTextNode("              ");
+                var el1 = dom.createTextNode("            ");
                 dom.appendChild(el0, el1);
                 return el0;
               },
@@ -96961,7 +97101,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
                 morphs[0] = dom.createMorphAt(fragment, 2, 2, contextualElement);
                 return morphs;
               },
-              statements: [["block", "link-to", [["get", "tab.routeName", ["loc", [null, [42, 27], [42, 40]]]], ["get", "tab.dynamicSegments.firstObject", ["loc", [null, [42, 41], [42, 72]]]], ["get", "tab.dynamicSegments.lastObject", ["loc", [null, [42, 73], [42, 103]]]], ["subexpr", "hash-to-query-params", [["get", "tab.queryParams", ["loc", [null, [42, 126], [42, 141]]]]], [], ["loc", [null, [42, 104], [42, 142]]]]], ["class", "nav-tabs__item"], 0, null, ["loc", [null, [42, 16], [44, 28]]]]],
+              statements: [["block", "active-link", [], ["tagName", "div", "class", "nav-primary__tab"], 0, null, ["loc", [null, [45, 14], [50, 30]]]]],
               locals: [],
               templates: [child0]
             };
@@ -96974,11 +97114,11 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
                 "source": null,
                 "start": {
                   "line": 37,
-                  "column": 14
+                  "column": 12
                 },
                 "end": {
-                  "line": 45,
-                  "column": 14
+                  "line": 51,
+                  "column": 12
                 }
               },
               "moduleName": "frontend-cp/session/template.hbs"
@@ -97000,7 +97140,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
               dom.insertBoundary(fragment, null);
               return morphs;
             },
-            statements: [["block", "if", [["subexpr", "eq", [["get", "tab.dynamicSegments.length", ["loc", [null, [37, 28], [37, 54]]]], 1], [], ["loc", [null, [37, 24], [37, 57]]]]], [], 0, 1, ["loc", [null, [37, 14], [45, 14]]]]],
+            statements: [["block", "if", [["subexpr", "eq", [["get", "tab.dynamicSegments.length", ["loc", [null, [37, 26], [37, 52]]]], 1], [], ["loc", [null, [37, 22], [37, 55]]]]], [], 0, 1, ["loc", [null, [37, 12], [51, 12]]]]],
             locals: [],
             templates: [child0, child1]
           };
@@ -97012,12 +97152,12 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
             "loc": {
               "source": null,
               "start": {
-                "line": 27,
-                "column": 12
+                "line": 24,
+                "column": 10
               },
               "end": {
-                "line": 46,
-                "column": 12
+                "line": 52,
+                "column": 10
               }
             },
             "moduleName": "frontend-cp/session/template.hbs"
@@ -97039,7 +97179,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
             dom.insertBoundary(fragment, null);
             return morphs;
           },
-          statements: [["block", "if", [["subexpr", "eq", [["get", "tab.dynamicSegments.length", ["loc", [null, [33, 24], [33, 50]]]], 0], [], ["loc", [null, [33, 20], [33, 53]]]]], [], 0, 1, ["loc", [null, [33, 14], [45, 21]]]]],
+          statements: [["block", "if", [["subexpr", "eq", [["get", "tab.dynamicSegments.length", ["loc", [null, [30, 22], [30, 48]]]], 0], [], ["loc", [null, [30, 18], [30, 51]]]]], [], 0, 1, ["loc", [null, [30, 12], [51, 19]]]]],
           locals: [],
           templates: [child0, child1]
         };
@@ -97047,99 +97187,6 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
       var child1 = (function () {
         var child0 = (function () {
           var child0 = (function () {
-            return {
-              meta: {
-                "fragmentReason": false,
-                "revision": "Ember@2.4.3",
-                "loc": {
-                  "source": null,
-                  "start": {
-                    "line": 48,
-                    "column": 16
-                  },
-                  "end": {
-                    "line": 50,
-                    "column": 16
-                  }
-                },
-                "moduleName": "frontend-cp/session/template.hbs"
-              },
-              isEmpty: false,
-              arity: 0,
-              cachedFragment: null,
-              hasRendered: false,
-              buildFragment: function buildFragment(dom) {
-                var el0 = dom.createDocumentFragment();
-                var el1 = dom.createTextNode("                  ");
-                dom.appendChild(el0, el1);
-                var el1 = dom.createElement("div");
-                dom.setAttribute(el1, "class", "nav-tabs__label");
-                var el2 = dom.createComment("");
-                dom.appendChild(el1, el2);
-                dom.appendChild(el0, el1);
-                var el1 = dom.createElement("div");
-                dom.setAttribute(el1, "class", "nav-tabs__close");
-                var el2 = dom.createElement("span");
-                dom.setAttribute(el2, "class", "i-cross i-size-20 i-inherit-lh");
-                dom.appendChild(el1, el2);
-                dom.appendChild(el0, el1);
-                var el1 = dom.createTextNode("\n");
-                dom.appendChild(el0, el1);
-                return el0;
-              },
-              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-                var element2 = dom.childAt(fragment, [2]);
-                var morphs = new Array(2);
-                morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 0, 0);
-                morphs[1] = dom.createAttrMorph(element2, 'onclick');
-                return morphs;
-              },
-              statements: [["content", "tab.label", ["loc", [null, [49, 47], [49, 60]]]], ["attribute", "onclick", ["subexpr", "action", ["close", ["get", "tab", ["loc", [null, [49, 120], [49, 123]]]]], [], ["loc", [null, [49, 103], [49, 125]]]]]],
-              locals: [],
-              templates: []
-            };
-          })();
-          return {
-            meta: {
-              "fragmentReason": false,
-              "revision": "Ember@2.4.3",
-              "loc": {
-                "source": null,
-                "start": {
-                  "line": 47,
-                  "column": 14
-                },
-                "end": {
-                  "line": 51,
-                  "column": 14
-                }
-              },
-              "moduleName": "frontend-cp/session/template.hbs"
-            },
-            isEmpty: false,
-            arity: 0,
-            cachedFragment: null,
-            hasRendered: false,
-            buildFragment: function buildFragment(dom) {
-              var el0 = dom.createDocumentFragment();
-              var el1 = dom.createComment("");
-              dom.appendChild(el0, el1);
-              return el0;
-            },
-            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-              var morphs = new Array(1);
-              morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-              dom.insertBoundary(fragment, 0);
-              dom.insertBoundary(fragment, null);
-              return morphs;
-            },
-            statements: [["block", "link-to", [["get", "tab.routeName", ["loc", [null, [48, 27], [48, 40]]]]], ["class", "nav-tabs__item"], 0, null, ["loc", [null, [48, 16], [50, 28]]]]],
-            locals: [],
-            templates: [child0]
-          };
-        })();
-        var child1 = (function () {
-          var child0 = (function () {
             var child0 = (function () {
               return {
                 meta: {
@@ -97148,11 +97195,11 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
                   "loc": {
                     "source": null,
                     "start": {
-                      "line": 52,
+                      "line": 55,
                       "column": 16
                     },
                     "end": {
-                      "line": 54,
+                      "line": 57,
                       "column": 16
                     }
                   },
@@ -97166,29 +97213,18 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
                   var el0 = dom.createDocumentFragment();
                   var el1 = dom.createTextNode("                  ");
                   dom.appendChild(el0, el1);
-                  var el1 = dom.createElement("div");
-                  dom.setAttribute(el1, "class", "nav-tabs__label");
-                  var el2 = dom.createComment("");
-                  dom.appendChild(el1, el2);
-                  dom.appendChild(el0, el1);
-                  var el1 = dom.createElement("div");
-                  dom.setAttribute(el1, "class", "nav-tabs__close");
-                  var el2 = dom.createElement("span");
-                  dom.setAttribute(el2, "class", "i-cross i-size-20 i-inherit-lh");
-                  dom.appendChild(el1, el2);
+                  var el1 = dom.createComment("");
                   dom.appendChild(el0, el1);
                   var el1 = dom.createTextNode("\n");
                   dom.appendChild(el0, el1);
                   return el0;
                 },
                 buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-                  var element1 = dom.childAt(fragment, [2]);
-                  var morphs = new Array(2);
-                  morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 0, 0);
-                  morphs[1] = dom.createAttrMorph(element1, 'onclick');
+                  var morphs = new Array(1);
+                  morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
                   return morphs;
                 },
-                statements: [["content", "tab.label", ["loc", [null, [53, 47], [53, 60]]]], ["attribute", "onclick", ["subexpr", "action", ["close", ["get", "tab", ["loc", [null, [53, 120], [53, 123]]]]], [], ["loc", [null, [53, 103], [53, 125]]]]]],
+                statements: [["content", "tab.label", ["loc", [null, [56, 18], [56, 31]]]]],
                 locals: [],
                 templates: []
               };
@@ -97200,101 +97236,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 51,
-                    "column": 14
-                  },
-                  "end": {
-                    "line": 55,
-                    "column": 14
-                  }
-                },
-                "moduleName": "frontend-cp/session/template.hbs"
-              },
-              isEmpty: false,
-              arity: 0,
-              cachedFragment: null,
-              hasRendered: false,
-              buildFragment: function buildFragment(dom) {
-                var el0 = dom.createDocumentFragment();
-                var el1 = dom.createComment("");
-                dom.appendChild(el0, el1);
-                var el1 = dom.createTextNode("              ");
-                dom.appendChild(el0, el1);
-                return el0;
-              },
-              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-                var morphs = new Array(1);
-                morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-                dom.insertBoundary(fragment, 0);
-                return morphs;
-              },
-              statements: [["block", "link-to", [["get", "tab.routeName", ["loc", [null, [52, 27], [52, 40]]]], ["get", "tab.dynamicSegments.firstObject", ["loc", [null, [52, 41], [52, 72]]]]], ["class", "nav-tabs__item"], 0, null, ["loc", [null, [52, 16], [54, 28]]]]],
-              locals: [],
-              templates: [child0]
-            };
-          })();
-          var child1 = (function () {
-            var child0 = (function () {
-              return {
-                meta: {
-                  "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
-                  "loc": {
-                    "source": null,
-                    "start": {
-                      "line": 56,
-                      "column": 16
-                    },
-                    "end": {
-                      "line": 58,
-                      "column": 16
-                    }
-                  },
-                  "moduleName": "frontend-cp/session/template.hbs"
-                },
-                isEmpty: false,
-                arity: 0,
-                cachedFragment: null,
-                hasRendered: false,
-                buildFragment: function buildFragment(dom) {
-                  var el0 = dom.createDocumentFragment();
-                  var el1 = dom.createTextNode("                  ");
-                  dom.appendChild(el0, el1);
-                  var el1 = dom.createElement("div");
-                  dom.setAttribute(el1, "class", "nav-tabs__label");
-                  var el2 = dom.createComment("");
-                  dom.appendChild(el1, el2);
-                  dom.appendChild(el0, el1);
-                  var el1 = dom.createElement("div");
-                  dom.setAttribute(el1, "class", "nav-tabs__close");
-                  var el2 = dom.createElement("span");
-                  dom.setAttribute(el2, "class", "i-cross i-size-20 i-inherit-lh");
-                  dom.appendChild(el1, el2);
-                  dom.appendChild(el0, el1);
-                  var el1 = dom.createTextNode("\n");
-                  dom.appendChild(el0, el1);
-                  return el0;
-                },
-                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-                  var element0 = dom.childAt(fragment, [2]);
-                  var morphs = new Array(2);
-                  morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 0, 0);
-                  morphs[1] = dom.createAttrMorph(element0, 'onclick');
-                  return morphs;
-                },
-                statements: [["content", "tab.label", ["loc", [null, [57, 47], [57, 60]]]], ["attribute", "onclick", ["subexpr", "action", ["close", ["get", "tab", ["loc", [null, [57, 120], [57, 123]]]]], [], ["loc", [null, [57, 103], [57, 125]]]]]],
-                locals: [],
-                templates: []
-              };
-            })();
-            return {
-              meta: {
-                "fragmentReason": false,
-                "revision": "Ember@2.4.3",
-                "loc": {
-                  "source": null,
-                  "start": {
-                    "line": 55,
+                    "line": 54,
                     "column": 14
                   },
                   "end": {
@@ -97310,22 +97252,29 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
               hasRendered: false,
               buildFragment: function buildFragment(dom) {
                 var el0 = dom.createDocumentFragment();
-                var el1 = dom.createTextNode(" ");
-                dom.appendChild(el0, el1);
-                var el1 = dom.createTextNode("\n");
-                dom.appendChild(el0, el1);
                 var el1 = dom.createComment("");
                 dom.appendChild(el0, el1);
-                var el1 = dom.createTextNode("              ");
+                var el1 = dom.createTextNode("                ");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createElement("div");
+                dom.setAttribute(el1, "class", "nav-primary__tab-close");
+                var el2 = dom.createElement("span");
+                dom.setAttribute(el2, "class", "i-cross i-size-20 i-inherit-lh");
+                dom.appendChild(el1, el2);
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n");
                 dom.appendChild(el0, el1);
                 return el0;
               },
               buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-                var morphs = new Array(1);
-                morphs[0] = dom.createMorphAt(fragment, 2, 2, contextualElement);
+                var element2 = dom.childAt(fragment, [2]);
+                var morphs = new Array(2);
+                morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+                morphs[1] = dom.createAttrMorph(element2, 'onclick');
+                dom.insertBoundary(fragment, 0);
                 return morphs;
               },
-              statements: [["block", "link-to", [["get", "tab.routeName", ["loc", [null, [56, 27], [56, 40]]]], ["get", "tab.dynamicSegments.firstObject", ["loc", [null, [56, 41], [56, 72]]]], ["get", "tab.dynamicSegments.lastObject", ["loc", [null, [56, 73], [56, 103]]]]], ["class", "nav-tabs__item"], 0, null, ["loc", [null, [56, 16], [58, 28]]]]],
+              statements: [["block", "link-to", [["get", "tab.routeName", ["loc", [null, [55, 27], [55, 40]]]]], ["class", "nav-primary__tab-label"], 0, null, ["loc", [null, [55, 16], [57, 28]]]], ["attribute", "onclick", ["subexpr", "action", ["close", ["get", "tab", ["loc", [null, [58, 77], [58, 80]]]]], [], ["loc", [null, [58, 60], [58, 82]]]]]],
               locals: [],
               templates: [child0]
             };
@@ -97337,12 +97286,12 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 51,
-                  "column": 14
+                  "line": 53,
+                  "column": 12
                 },
                 "end": {
-                  "line": 59,
-                  "column": 14
+                  "line": 60,
+                  "column": 12
                 }
               },
               "moduleName": "frontend-cp/session/template.hbs"
@@ -97364,7 +97313,318 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
               dom.insertBoundary(fragment, null);
               return morphs;
             },
-            statements: [["block", "if", [["subexpr", "eq", [["get", "tab.dynamicSegments.length", ["loc", [null, [51, 28], [51, 54]]]], 1], [], ["loc", [null, [51, 24], [51, 57]]]]], [], 0, 1, ["loc", [null, [51, 14], [59, 14]]]]],
+            statements: [["block", "active-link", [], ["tagName", "div", "class", "nav-primary__tab"], 0, null, ["loc", [null, [54, 14], [59, 30]]]]],
+            locals: [],
+            templates: [child0]
+          };
+        })();
+        var child1 = (function () {
+          var child0 = (function () {
+            var child0 = (function () {
+              var child0 = (function () {
+                return {
+                  meta: {
+                    "fragmentReason": false,
+                    "revision": "Ember@2.4.3",
+                    "loc": {
+                      "source": null,
+                      "start": {
+                        "line": 62,
+                        "column": 16
+                      },
+                      "end": {
+                        "line": 64,
+                        "column": 16
+                      }
+                    },
+                    "moduleName": "frontend-cp/session/template.hbs"
+                  },
+                  isEmpty: false,
+                  arity: 0,
+                  cachedFragment: null,
+                  hasRendered: false,
+                  buildFragment: function buildFragment(dom) {
+                    var el0 = dom.createDocumentFragment();
+                    var el1 = dom.createTextNode("                  ");
+                    dom.appendChild(el0, el1);
+                    var el1 = dom.createComment("");
+                    dom.appendChild(el0, el1);
+                    var el1 = dom.createTextNode("\n");
+                    dom.appendChild(el0, el1);
+                    return el0;
+                  },
+                  buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                    var morphs = new Array(1);
+                    morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+                    return morphs;
+                  },
+                  statements: [["content", "tab.label", ["loc", [null, [63, 18], [63, 31]]]]],
+                  locals: [],
+                  templates: []
+                };
+              })();
+              return {
+                meta: {
+                  "fragmentReason": false,
+                  "revision": "Ember@2.4.3",
+                  "loc": {
+                    "source": null,
+                    "start": {
+                      "line": 61,
+                      "column": 14
+                    },
+                    "end": {
+                      "line": 66,
+                      "column": 14
+                    }
+                  },
+                  "moduleName": "frontend-cp/session/template.hbs"
+                },
+                isEmpty: false,
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                  var el0 = dom.createDocumentFragment();
+                  var el1 = dom.createComment("");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createTextNode("                ");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createElement("div");
+                  dom.setAttribute(el1, "class", "nav-primary__tab-close");
+                  var el2 = dom.createElement("span");
+                  dom.setAttribute(el2, "class", "i-cross i-size-20 i-inherit-lh");
+                  dom.appendChild(el1, el2);
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createTextNode("\n");
+                  dom.appendChild(el0, el1);
+                  return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                  var element1 = dom.childAt(fragment, [2]);
+                  var morphs = new Array(2);
+                  morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+                  morphs[1] = dom.createAttrMorph(element1, 'onclick');
+                  dom.insertBoundary(fragment, 0);
+                  return morphs;
+                },
+                statements: [["block", "link-to", [["get", "tab.routeName", ["loc", [null, [62, 27], [62, 40]]]], ["get", "tab.dynamicSegments.firstObject", ["loc", [null, [62, 41], [62, 72]]]]], ["class", "nav-primary__tab-label"], 0, null, ["loc", [null, [62, 16], [64, 28]]]], ["attribute", "onclick", ["subexpr", "action", ["close", ["get", "tab", ["loc", [null, [65, 77], [65, 80]]]]], [], ["loc", [null, [65, 60], [65, 82]]]]]],
+                locals: [],
+                templates: [child0]
+              };
+            })();
+            return {
+              meta: {
+                "fragmentReason": false,
+                "revision": "Ember@2.4.3",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 60,
+                    "column": 12
+                  },
+                  "end": {
+                    "line": 67,
+                    "column": 12
+                  }
+                },
+                "moduleName": "frontend-cp/session/template.hbs"
+              },
+              isEmpty: false,
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("            ");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var morphs = new Array(1);
+                morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+                dom.insertBoundary(fragment, 0);
+                return morphs;
+              },
+              statements: [["block", "active-link", [], ["tagName", "div", "class", "nav-primary__tab"], 0, null, ["loc", [null, [61, 14], [66, 30]]]]],
+              locals: [],
+              templates: [child0]
+            };
+          })();
+          var child1 = (function () {
+            var child0 = (function () {
+              var child0 = (function () {
+                return {
+                  meta: {
+                    "fragmentReason": false,
+                    "revision": "Ember@2.4.3",
+                    "loc": {
+                      "source": null,
+                      "start": {
+                        "line": 69,
+                        "column": 16
+                      },
+                      "end": {
+                        "line": 71,
+                        "column": 16
+                      }
+                    },
+                    "moduleName": "frontend-cp/session/template.hbs"
+                  },
+                  isEmpty: false,
+                  arity: 0,
+                  cachedFragment: null,
+                  hasRendered: false,
+                  buildFragment: function buildFragment(dom) {
+                    var el0 = dom.createDocumentFragment();
+                    var el1 = dom.createTextNode("                  ");
+                    dom.appendChild(el0, el1);
+                    var el1 = dom.createComment("");
+                    dom.appendChild(el0, el1);
+                    var el1 = dom.createTextNode("\n");
+                    dom.appendChild(el0, el1);
+                    return el0;
+                  },
+                  buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                    var morphs = new Array(1);
+                    morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+                    return morphs;
+                  },
+                  statements: [["content", "tab.label", ["loc", [null, [70, 18], [70, 31]]]]],
+                  locals: [],
+                  templates: []
+                };
+              })();
+              return {
+                meta: {
+                  "fragmentReason": false,
+                  "revision": "Ember@2.4.3",
+                  "loc": {
+                    "source": null,
+                    "start": {
+                      "line": 68,
+                      "column": 14
+                    },
+                    "end": {
+                      "line": 73,
+                      "column": 14
+                    }
+                  },
+                  "moduleName": "frontend-cp/session/template.hbs"
+                },
+                isEmpty: false,
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                  var el0 = dom.createDocumentFragment();
+                  var el1 = dom.createComment("");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createTextNode("                ");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createElement("div");
+                  dom.setAttribute(el1, "class", "nav-primary__tab-close");
+                  var el2 = dom.createElement("span");
+                  dom.setAttribute(el2, "class", "i-cross i-size-20 i-inherit-lh");
+                  dom.appendChild(el1, el2);
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createTextNode("\n");
+                  dom.appendChild(el0, el1);
+                  return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                  var element0 = dom.childAt(fragment, [2]);
+                  var morphs = new Array(2);
+                  morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+                  morphs[1] = dom.createAttrMorph(element0, 'onclick');
+                  dom.insertBoundary(fragment, 0);
+                  return morphs;
+                },
+                statements: [["block", "link-to", [["get", "tab.routeName", ["loc", [null, [69, 27], [69, 40]]]], ["get", "tab.dynamicSegments.firstObject", ["loc", [null, [69, 41], [69, 72]]]], ["get", "tab.dynamicSegments.lastObject", ["loc", [null, [69, 73], [69, 103]]]]], ["class", "nav-primary__tab-label"], 0, null, ["loc", [null, [69, 16], [71, 28]]]], ["attribute", "onclick", ["subexpr", "action", ["close", ["get", "tab", ["loc", [null, [72, 77], [72, 80]]]]], [], ["loc", [null, [72, 60], [72, 82]]]]]],
+                locals: [],
+                templates: [child0]
+              };
+            })();
+            return {
+              meta: {
+                "fragmentReason": false,
+                "revision": "Ember@2.4.3",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 67,
+                    "column": 12
+                  },
+                  "end": {
+                    "line": 74,
+                    "column": 12
+                  }
+                },
+                "moduleName": "frontend-cp/session/template.hbs"
+              },
+              isEmpty: false,
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createTextNode(" ");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createComment("");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("            ");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var morphs = new Array(1);
+                morphs[0] = dom.createMorphAt(fragment, 2, 2, contextualElement);
+                return morphs;
+              },
+              statements: [["block", "active-link", [], ["tagName", "div", "class", "nav-primary__tab"], 0, null, ["loc", [null, [68, 14], [73, 30]]]]],
+              locals: [],
+              templates: [child0]
+            };
+          })();
+          return {
+            meta: {
+              "fragmentReason": false,
+              "revision": "Ember@2.4.3",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 60,
+                  "column": 12
+                },
+                "end": {
+                  "line": 74,
+                  "column": 12
+                }
+              },
+              "moduleName": "frontend-cp/session/template.hbs"
+            },
+            isEmpty: false,
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(1);
+              morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+              dom.insertBoundary(fragment, 0);
+              dom.insertBoundary(fragment, null);
+              return morphs;
+            },
+            statements: [["block", "if", [["subexpr", "eq", [["get", "tab.dynamicSegments.length", ["loc", [null, [60, 26], [60, 52]]]], 1], [], ["loc", [null, [60, 22], [60, 55]]]]], [], 0, 1, ["loc", [null, [60, 12], [74, 12]]]]],
             locals: [],
             templates: [child0, child1]
           };
@@ -97376,12 +97636,12 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
             "loc": {
               "source": null,
               "start": {
-                "line": 46,
-                "column": 12
+                "line": 52,
+                "column": 10
               },
               "end": {
-                "line": 60,
-                "column": 12
+                "line": 75,
+                "column": 10
               }
             },
             "moduleName": "frontend-cp/session/template.hbs"
@@ -97403,7 +97663,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
             dom.insertBoundary(fragment, null);
             return morphs;
           },
-          statements: [["block", "if", [["subexpr", "eq", [["get", "tab.dynamicSegments.length", ["loc", [null, [47, 24], [47, 50]]]], 0], [], ["loc", [null, [47, 20], [47, 53]]]]], [], 0, 1, ["loc", [null, [47, 14], [59, 21]]]]],
+          statements: [["block", "if", [["subexpr", "eq", [["get", "tab.dynamicSegments.length", ["loc", [null, [53, 22], [53, 48]]]], 0], [], ["loc", [null, [53, 18], [53, 51]]]]], [], 0, 1, ["loc", [null, [53, 12], [74, 19]]]]],
           locals: [],
           templates: [child0, child1]
         };
@@ -97415,12 +97675,12 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
           "loc": {
             "source": null,
             "start": {
-              "line": 26,
-              "column": 10
+              "line": 23,
+              "column": 8
             },
             "end": {
-              "line": 61,
-              "column": 10
+              "line": 76,
+              "column": 8
             }
           },
           "moduleName": "frontend-cp/session/template.hbs"
@@ -97442,7 +97702,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [["block", "if", [["get", "tab.queryParams", ["loc", [null, [27, 18], [27, 33]]]]], [], 0, 1, ["loc", [null, [27, 12], [60, 19]]]]],
+        statements: [["block", "if", [["get", "tab.queryParams", ["loc", [null, [24, 16], [24, 31]]]]], [], 0, 1, ["loc", [null, [24, 10], [75, 17]]]]],
         locals: ["tab"],
         templates: [child0, child1]
       };
@@ -97455,11 +97715,11 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
           "loc": {
             "source": null,
             "start": {
-              "line": 70,
+              "line": 84,
               "column": 12
             },
             "end": {
-              "line": 82,
+              "line": 96,
               "column": 12
             }
           },
@@ -97505,7 +97765,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
           morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 3, 3);
           return morphs;
         },
-        statements: [["inline", "ko-universal-search/entry", [], ["type", "text", "value", ["subexpr", "@mut", [["get", "searchTerm", ["loc", [null, [78, 24], [78, 34]]]]], [], []], "onSubmitSearch", ["subexpr", "action", ["seeMore"], [], ["loc", [null, [79, 33], [79, 51]]]], "placeholder", ["subexpr", "t", ["search.placeholder"], [], ["loc", [null, [80, 30], [80, 54]]]]], ["loc", [null, [76, 16], [80, 56]]]]],
+        statements: [["inline", "ko-universal-search/entry", [], ["type", "text", "value", ["subexpr", "@mut", [["get", "searchTerm", ["loc", [null, [92, 24], [92, 34]]]]], [], []], "onSubmitSearch", ["subexpr", "action", ["seeMore"], [], ["loc", [null, [93, 33], [93, 51]]]], "placeholder", ["subexpr", "t", ["search.placeholder"], [], ["loc", [null, [94, 30], [94, 54]]]]], ["loc", [null, [90, 16], [94, 56]]]]],
         locals: [],
         templates: []
       };
@@ -97518,11 +97778,11 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
           "loc": {
             "source": null,
             "start": {
-              "line": 82,
+              "line": 96,
               "column": 12
             },
             "end": {
-              "line": 89,
+              "line": 103,
               "column": 12
             }
           },
@@ -97547,7 +97807,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [["inline", "ko-universal-search", [], ["searchResults", ["subexpr", "@mut", [["get", "searchResults", ["loc", [null, [84, 30], [84, 43]]]]], [], []], "searchQuery", ["subexpr", "@mut", [["get", "searchTerm", ["loc", [null, [85, 28], [85, 38]]]]], [], []], "onSeeMore", ["subexpr", "action", ["seeMore"], [], ["loc", [null, [86, 26], [86, 44]]]], "onLoadSearchRoute", ["subexpr", "action", ["loadSearchRoute"], [], ["loc", [null, [87, 34], [87, 60]]]], "onSearchChanged", ["subexpr", "action", ["searchingChanged"], [], ["loc", [null, [88, 32], [88, 59]]]]], ["loc", [null, [83, 14], [88, 61]]]]],
+        statements: [["inline", "ko-universal-search", [], ["searchResults", ["subexpr", "@mut", [["get", "searchResults", ["loc", [null, [98, 30], [98, 43]]]]], [], []], "searchQuery", ["subexpr", "@mut", [["get", "searchTerm", ["loc", [null, [99, 28], [99, 38]]]]], [], []], "onSeeMore", ["subexpr", "action", ["seeMore"], [], ["loc", [null, [100, 26], [100, 44]]]], "onLoadSearchRoute", ["subexpr", "action", ["loadSearchRoute"], [], ["loc", [null, [101, 34], [101, 60]]]], "onSearchChanged", ["subexpr", "action", ["searchingChanged"], [], ["loc", [null, [102, 32], [102, 59]]]]], ["loc", [null, [97, 14], [102, 61]]]]],
         locals: [],
         templates: []
       };
@@ -97560,11 +97820,11 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
           "loc": {
             "source": null,
             "start": {
-              "line": 92,
+              "line": 106,
               "column": 12
             },
             "end": {
-              "line": 94,
+              "line": 108,
               "column": 12
             }
           },
@@ -97589,7 +97849,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [["content", "ko-session-widgets", ["loc", [null, [93, 14], [93, 36]]]]],
+        statements: [["content", "ko-session-widgets", ["loc", [null, [107, 14], [107, 36]]]]],
         locals: [],
         templates: []
       };
@@ -97608,7 +97868,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
             "column": 0
           },
           "end": {
-            "line": 104,
+            "line": 118,
             "column": 0
           }
         },
@@ -97631,52 +97891,36 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
         dom.setAttribute(el3, "class", "container");
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
-        var el4 = dom.createElement("div");
-        dom.setAttribute(el4, "class", "nav__image");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createComment("\n   ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("div");
-        dom.setAttribute(el4, "class", "u-inline-block");
+        var el4 = dom.createElement("nav");
+        dom.setAttribute(el4, "class", "nav-primary");
         var el5 = dom.createTextNode("\n        ");
         dom.appendChild(el4, el5);
-        var el5 = dom.createElement("nav");
-        dom.setAttribute(el5, "class", "nav-main");
-        var el6 = dom.createTextNode("\n");
+        var el5 = dom.createElement("div");
+        dom.setAttribute(el5, "class", "nav-primary__logo");
+        var el6 = dom.createTextNode("\n          ");
         dom.appendChild(el5, el6);
-        var el6 = dom.createComment("");
+        var el6 = dom.createElement("div");
+        dom.setAttribute(el6, "class", "nav-primary__logo");
         dom.appendChild(el5, el6);
-        var el6 = dom.createComment("");
+        var el6 = dom.createTextNode("\n        ");
         dom.appendChild(el5, el6);
-        var el6 = dom.createComment("");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createTextNode("        ");
-        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createComment("");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createComment("");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createComment("");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createComment("");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createComment("");
         dom.appendChild(el4, el5);
         var el5 = dom.createTextNode("\n      ");
         dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createComment("\n   ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("div");
-        dom.setAttribute(el4, "class", "u-inline-block");
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("nav");
-        dom.setAttribute(el5, "class", "nav-tabs");
-        var el6 = dom.createTextNode("\n");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createComment("");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createTextNode("        ");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createComment("");
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
@@ -97746,24 +97990,23 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
         var element6 = dom.childAt(fragment, [0, 1]);
-        var element7 = dom.childAt(element6, [1]);
-        var element8 = dom.childAt(element7, [3, 1]);
-        var element9 = dom.childAt(element6, [3, 1, 1]);
-        var element10 = dom.childAt(element9, [3]);
+        var element7 = dom.childAt(element6, [1, 1]);
+        var element8 = dom.childAt(element6, [3, 1, 1]);
+        var element9 = dom.childAt(element8, [3]);
         var morphs = new Array(10);
         morphs[0] = dom.createAttrMorph(element6, 'class');
-        morphs[1] = dom.createMorphAt(element8, 1, 1);
-        morphs[2] = dom.createMorphAt(element8, 2, 2);
-        morphs[3] = dom.createMorphAt(element8, 3, 3);
-        morphs[4] = dom.createMorphAt(dom.childAt(element7, [5, 1]), 1, 1);
-        morphs[5] = dom.createMorphAt(element7, 7, 7);
-        morphs[6] = dom.createMorphAt(dom.childAt(element9, [1]), 1, 1);
-        morphs[7] = dom.createAttrMorph(element10, 'class');
-        morphs[8] = dom.createMorphAt(element10, 1, 1);
+        morphs[1] = dom.createMorphAt(element7, 3, 3);
+        morphs[2] = dom.createMorphAt(element7, 4, 4);
+        morphs[3] = dom.createMorphAt(element7, 5, 5);
+        morphs[4] = dom.createMorphAt(element7, 6, 6);
+        morphs[5] = dom.createMorphAt(element7, 8, 8);
+        morphs[6] = dom.createMorphAt(dom.childAt(element8, [1]), 1, 1);
+        morphs[7] = dom.createAttrMorph(element9, 'class');
+        morphs[8] = dom.createMorphAt(element9, 1, 1);
         morphs[9] = dom.createMorphAt(dom.childAt(fragment, [2]), 1, 1);
         return morphs;
       },
-      statements: [["attribute", "class", ["concat", ["nav ", ["subexpr", "if", [["subexpr", "not", [["get", "tabStore.isEnabled", ["loc", [null, [2, 28], [2, 46]]]]], [], ["loc", [null, [2, 23], [2, 47]]]], "nav--disabled"], [], ["loc", [null, [2, 18], [2, 65]]]]]]], ["block", "if", [["get", "tabStore.casesViewId", ["loc", [null, [7, 16], [7, 36]]]]], [], 0, 1, ["loc", [null, [7, 10], [11, 17]]]], ["block", "if", [["subexpr", "or", [["subexpr", "eq", [["get", "session.user.role.roleType", ["loc", [null, [12, 24], [12, 50]]]], "ADMIN"], [], ["loc", [null, [12, 20], [12, 59]]]], ["subexpr", "eq", [["get", "session.user.role.roleType", ["loc", [null, [12, 64], [12, 90]]]], "OWNER"], [], ["loc", [null, [12, 60], [12, 99]]]]], [], ["loc", [null, [12, 16], [12, 100]]]]], [], 2, null, ["loc", [null, [12, 10], [18, 17]]]], ["block", "if", [["get", "features.userTab", ["loc", [null, [19, 16], [19, 32]]]]], [], 3, null, ["loc", [null, [19, 10], [21, 17]]]], ["block", "each", [["get", "tabStore.tabs", ["loc", [null, [26, 18], [26, 31]]]]], [], 4, null, ["loc", [null, [26, 10], [61, 19]]]], ["content", "ko-agent-dropdown", ["loc", [null, [64, 6], [64, 27]]]], ["block", "if", [["get", "isAdvancedSearch", ["loc", [null, [70, 18], [70, 34]]]]], [], 5, 6, ["loc", [null, [70, 12], [89, 19]]]], ["attribute", "class", ["concat", ["nav-secondary__sidebar ", ["subexpr", "if", [["get", "hideSessionWidgets", ["loc", [null, [91, 50], [91, 68]]]], "nav-secondary__sidebar--hidden"], [], ["loc", [null, [91, 45], [91, 103]]]]]]], ["block", "unless", [["get", "hideSessionWidgets", ["loc", [null, [92, 22], [92, 40]]]]], [], 7, null, ["loc", [null, [92, 12], [94, 23]]]], ["content", "outlet", ["loc", [null, [102, 2], [102, 12]]]]],
+      statements: [["attribute", "class", ["concat", ["nav ", ["subexpr", "if", [["subexpr", "not", [["get", "tabStore.isEnabled", ["loc", [null, [2, 28], [2, 46]]]]], [], ["loc", [null, [2, 23], [2, 47]]]], "nav--disabled"], [], ["loc", [null, [2, 18], [2, 65]]]]]]], ["block", "if", [["get", "tabStore.casesViewId", ["loc", [null, [8, 14], [8, 34]]]]], [], 0, 1, ["loc", [null, [8, 8], [12, 15]]]], ["block", "if", [["subexpr", "or", [["subexpr", "eq", [["get", "session.user.role.roleType", ["loc", [null, [13, 22], [13, 48]]]], "ADMIN"], [], ["loc", [null, [13, 18], [13, 57]]]], ["subexpr", "eq", [["get", "session.user.role.roleType", ["loc", [null, [13, 62], [13, 88]]]], "OWNER"], [], ["loc", [null, [13, 58], [13, 97]]]]], [], ["loc", [null, [13, 14], [13, 98]]]]], [], 2, null, ["loc", [null, [13, 8], [19, 15]]]], ["block", "if", [["get", "features.userTab", ["loc", [null, [20, 14], [20, 30]]]]], [], 3, null, ["loc", [null, [20, 8], [22, 15]]]], ["block", "each", [["get", "tabStore.tabs", ["loc", [null, [23, 16], [23, 29]]]]], [], 4, null, ["loc", [null, [23, 8], [76, 17]]]], ["content", "ko-agent-dropdown", ["loc", [null, [77, 8], [77, 29]]]], ["block", "if", [["get", "isAdvancedSearch", ["loc", [null, [84, 18], [84, 34]]]]], [], 5, 6, ["loc", [null, [84, 12], [103, 19]]]], ["attribute", "class", ["concat", ["nav-secondary__sidebar ", ["subexpr", "if", [["get", "hideSessionWidgets", ["loc", [null, [105, 50], [105, 68]]]], "nav-secondary__sidebar--hidden"], [], ["loc", [null, [105, 45], [105, 103]]]]]]], ["block", "unless", [["get", "hideSessionWidgets", ["loc", [null, [106, 22], [106, 40]]]]], [], 7, null, ["loc", [null, [106, 12], [108, 23]]]], ["content", "outlet", ["loc", [null, [116, 2], [116, 12]]]]],
       locals: [],
       templates: [child0, child1, child2, child3, child4, child5, child6, child7]
     };
@@ -98057,7 +98300,13 @@ define("frontend-cp/styles/components/ko-agent-dropdown/styles.scss", ["exports"
     "ko-agent-dropdown__icon-square": "_ko-agent-dropdown__icon-square_1ht47t",
     "ko-agent-dropdown__add-icon": "_ko-agent-dropdown__add-icon_1ht47t",
     "ko-agent-dropdown__trigger": "_ko-agent-dropdown__trigger_1ht47t",
+    "roll": "_roll_1ht47t",
     "ko-agent-dropdown__drop": "_ko-agent-dropdown__drop_1ht47t",
+    "slide-in": "_slide-in_1ht47t",
+    "slide-in-big": "_slide-in-big_1ht47t",
+    "ember-basic-dropdown--transitioning-in": "_ember-basic-dropdown--transitioning-in_1ht47t",
+    "ember-basic-dropdown--transitioning-out": "_ember-basic-dropdown--transitioning-out_1ht47t",
+    "full-grown": "_full-grown_1ht47t",
     "ko-agent-dropdown__nav-items": "_ko-agent-dropdown__nav-items_1ht47t",
     "ko-agent-dropdown__nav-item": "_ko-agent-dropdown__nav-item_1ht47t",
     "ko-agent-dropdown__nav-item-img": "_ko-agent-dropdown__nav-item-img_1ht47t",
@@ -99164,21 +99413,18 @@ define("frontend-cp/styles/styles/modules/_nav.scss", ["exports"], function (exp
   exports["default"] = {
     "nav": "_nav_nh8uec",
     "nav--disabled": "_nav--disabled_nh8uec",
-    "nav__items": "_nav__items_nh8uec",
-    "nav__item": "_nav__item_nh8uec",
+    "nav-primary": "_nav-primary_nh8uec",
+    "nav-primary__logo": "_nav-primary__logo_nh8uec",
+    "nav-primary__static-item": "_nav-primary__static-item_nh8uec",
     "active": "_active_nh8uec",
-    "nav__image": "_nav__image_nh8uec",
-    "nav-main": "_nav-main_nh8uec",
-    "nav-main__item": "_nav-main__item_nh8uec",
+    "nav-primary__tab": "_nav-primary__tab_nh8uec",
+    "nav-primary__tab-close": "_nav-primary__tab-close_nh8uec",
+    "nav-primary__tab-label": "_nav-primary__tab-label_nh8uec",
     "nav-secondary": "_nav-secondary_nh8uec",
     "nav-secondary__container": "_nav-secondary__container_nh8uec",
     "nav-secondary__content": "_nav-secondary__content_nh8uec",
     "nav-secondary__sidebar": "_nav-secondary__sidebar_nh8uec",
-    "nav-secondary__sidebar--hidden": "_nav-secondary__sidebar--hidden_nh8uec",
-    "nav-tabs": "_nav-tabs_nh8uec",
-    "nav-tabs__item": "_nav-tabs__item_nh8uec",
-    "nav-tabs__label": "_nav-tabs__label_nh8uec",
-    "nav-tabs__close": "_nav-tabs__close_nh8uec"
+    "nav-secondary__sidebar--hidden": "_nav-secondary__sidebar--hidden_nh8uec"
   };
 });
 define("frontend-cp/styles/styles/objects/_arrow.scss", ["exports"], function (exports) {
@@ -101693,7 +101939,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"viewingUsersInactiveThreshold":300000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+271fdfae"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"viewingUsersInactiveThreshold":300000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+fd992a0d"});
 }
 
 /* jshint ignore:end */
