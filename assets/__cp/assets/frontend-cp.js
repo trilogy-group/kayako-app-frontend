@@ -74032,7 +74032,7 @@ define('frontend-cp/models/endpoint', ['exports', 'ember-data', 'model-fragments
     emailDestination: attr('string'),
     emailSubject: attr('string'),
     slackUrl: attr('string'),
-    slackChannel: attr('string')
+    slackChannel: attr('string', { defaultValue: '' })
   });
 });
 define('frontend-cp/models/event', ['exports', 'ember-data'], function (exports, _emberData) {
@@ -101939,7 +101939,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"viewingUsersInactiveThreshold":300000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+fd992a0d"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"viewingUsersInactiveThreshold":300000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+0f9475dc"});
 }
 
 /* jshint ignore:end */
