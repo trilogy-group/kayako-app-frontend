@@ -25357,14 +25357,14 @@ define("frontend-cp/components/ko-admin-selectable-card/template", ["exports"], 
 define('frontend-cp/components/ko-advanced-search/component', ['exports', 'ember', 'frontend-cp/config/environment'], function (exports, _ember, _frontendCpConfigEnvironment) {
 
   var columns = {
-    'case': ['id', 'subject', 'priority.label', 'status.label', 'assigneeAgent.fullName'],
-    user: ['id', 'fullName', 'primaryEmail.email', 'organization.name', 'lastActivityAt'],
-    organization: ['id', 'name', 'updatedAt']
+    CASES: ['id', 'subject', 'priority.label', 'status.label', 'assigneeAgent.fullName'],
+    USERS: ['id', 'fullName', 'primaryEmail.email', 'organization.name', 'lastActivityAt'],
+    ORGANIZATIONS: ['id', 'name', 'updatedAt']
   };
 
   exports['default'] = _ember['default'].Component.extend({
     resultGroup: null,
-    searchResults: null,
+    results: null,
     searchTerm: null,
 
     columnList: _ember['default'].computed('resultGroup', function () {
@@ -25394,11 +25394,11 @@ define('frontend-cp/components/ko-advanced-search/component', ['exports', 'ember
     avatarForRow: function avatarForRow(result, resultGroup) {
       if (result) {
         switch (resultGroup) {
-          case 'case':
+          case 'CASES':
             return result.get('requester.avatar');
-          case 'user':
+          case 'USERS':
             return result.get('avatar');
-          case 'organization':
+          case 'ORGANIZATIONS':
             return _frontendCpConfigEnvironment['default'].assetRoot + '/images/icons/organization.svg';
         }
       }
@@ -25407,13 +25407,13 @@ define('frontend-cp/components/ko-advanced-search/component', ['exports', 'ember
     actions: {
       openSearchResult: function openSearchResult(resultGroup, result, hasModifier) {
         switch (resultGroup) {
-          case 'user':
+          case 'USERS':
             this.attrs.onLoadSearchRoute('session.agent.users.user', result.get('fullName'), result.id, hasModifier);
             break;
-          case 'case':
+          case 'CASES':
             this.attrs.onLoadSearchRoute('session.agent.cases.case', result.get('subject'), result.id, hasModifier);
             break;
-          case 'organization':
+          case 'ORGANIZATIONS':
             this.attrs.onLoadSearchRoute('session.agent.organisations.organisation', result.get('name'), result.id, hasModifier);
             break;
         }
@@ -25973,7 +25973,7 @@ define("frontend-cp/components/ko-advanced-search/template", ["exports"], functi
               dom.insertBoundary(fragment, null);
               return morphs;
             },
-            statements: [["block", "each", [["get", "searchResults", ["loc", [null, [22, 14], [22, 27]]]]], [], 0, 1, ["loc", [null, [22, 6], [48, 15]]]]],
+            statements: [["block", "each", [["get", "results", ["loc", [null, [22, 14], [22, 21]]]]], [], 0, 1, ["loc", [null, [22, 6], [48, 15]]]]],
             locals: [],
             templates: [child0, child1]
           };
@@ -54566,7 +54566,7 @@ define("frontend-cp/components/ko-search-sidebar/template", ["exports"], functio
         morphs[2] = dom.createMorphAt(element0, 5, 5);
         return morphs;
       },
-      statements: [["block", "ko-search-sidebar/item", [], ["count", ["subexpr", "@mut", [["get", "totalCounts.case", ["loc", [null, [3, 10], [3, 26]]]]], [], []], "isActive", ["subexpr", "eq", [["get", "resultGroup", ["loc", [null, [4, 17], [4, 28]]]], "case"], [], ["loc", [null, [4, 13], [4, 36]]]], "onClick", ["subexpr", "action", ["selectItem", "case"], [], ["loc", [null, [5, 12], [5, 40]]]]], 0, null, ["loc", [null, [2, 2], [7, 29]]]], ["block", "ko-search-sidebar/item", [], ["count", ["subexpr", "@mut", [["get", "totalCounts.user", ["loc", [null, [10, 10], [10, 26]]]]], [], []], "isActive", ["subexpr", "eq", [["get", "resultGroup", ["loc", [null, [11, 17], [11, 28]]]], "user"], [], ["loc", [null, [11, 13], [11, 36]]]], "onClick", ["subexpr", "action", ["selectItem", "user"], [], ["loc", [null, [12, 12], [12, 40]]]]], 1, null, ["loc", [null, [9, 2], [14, 29]]]], ["block", "ko-search-sidebar/item", [], ["count", ["subexpr", "@mut", [["get", "totalCounts.organization", ["loc", [null, [17, 10], [17, 34]]]]], [], []], "isActive", ["subexpr", "eq", [["get", "resultGroup", ["loc", [null, [18, 17], [18, 28]]]], "organization"], [], ["loc", [null, [18, 13], [18, 44]]]], "onClick", ["subexpr", "action", ["selectItem", "organization"], [], ["loc", [null, [19, 12], [19, 48]]]]], 2, null, ["loc", [null, [16, 2], [21, 29]]]]],
+      statements: [["block", "ko-search-sidebar/item", [], ["count", ["subexpr", "@mut", [["get", "totalCounts.CASES", ["loc", [null, [3, 10], [3, 27]]]]], [], []], "isActive", ["subexpr", "eq", [["get", "resultGroup", ["loc", [null, [4, 17], [4, 28]]]], "CASES"], [], ["loc", [null, [4, 13], [4, 37]]]], "onClick", ["subexpr", "action", ["selectItem", "CASES"], [], ["loc", [null, [5, 12], [5, 41]]]]], 0, null, ["loc", [null, [2, 2], [7, 29]]]], ["block", "ko-search-sidebar/item", [], ["count", ["subexpr", "@mut", [["get", "totalCounts.USERS", ["loc", [null, [10, 10], [10, 27]]]]], [], []], "isActive", ["subexpr", "eq", [["get", "resultGroup", ["loc", [null, [11, 17], [11, 28]]]], "USERS"], [], ["loc", [null, [11, 13], [11, 37]]]], "onClick", ["subexpr", "action", ["selectItem", "USERS"], [], ["loc", [null, [12, 12], [12, 41]]]]], 1, null, ["loc", [null, [9, 2], [14, 29]]]], ["block", "ko-search-sidebar/item", [], ["count", ["subexpr", "@mut", [["get", "totalCounts.ORGANIZATIONS", ["loc", [null, [17, 10], [17, 35]]]]], [], []], "isActive", ["subexpr", "eq", [["get", "resultGroup", ["loc", [null, [18, 17], [18, 28]]]], "ORGANIZATIONS"], [], ["loc", [null, [18, 13], [18, 45]]]], "onClick", ["subexpr", "action", ["selectItem", "ORGANIZATIONS"], [], ["loc", [null, [19, 12], [19, 49]]]]], 2, null, ["loc", [null, [16, 2], [21, 29]]]]],
       locals: [],
       templates: [child0, child1, child2]
     };
@@ -60478,18 +60478,6 @@ define('frontend-cp/components/ko-universal-search/component', ['exports', 'embe
       };
     }),
 
-    flattenedResults: _ember['default'].computed('searchResults', function () {
-      if (this.get('searchResults')) {
-        return this.get('searchResults').reduce(function (results, searchResultGroup) {
-          searchResultGroup.results.forEach(function (result) {
-            results.pushObject(result);
-          });
-
-          return results;
-        }, []);
-      }
-    }),
-
     adjustScroll: function adjustScroll(highlightIndex) {
       var down = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
 
@@ -60592,7 +60580,7 @@ define('frontend-cp/components/ko-universal-search/component', ['exports', 'embe
 
       highlightNextResult: function highlightNextResult() {
         var currentlyHighlightedResult = this.get('highlightedResult');
-        var results = this.get('flattenedResults');
+        var results = this.get('searchResults');
 
         this.set('isMouseHighlight', false);
 
@@ -60610,7 +60598,7 @@ define('frontend-cp/components/ko-universal-search/component', ['exports', 'embe
 
       highlightPreviousResult: function highlightPreviousResult() {
         var currentlyHighlightedResult = this.get('highlightedResult');
-        var results = this.get('flattenedResults');
+        var results = this.get('searchResults');
         var currentIndex = results.indexOf(currentlyHighlightedResult);
 
         this.set('isMouseHighlight', false);
@@ -62244,7 +62232,7 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
           morphs[4] = dom.createMorphAt(element0, 3, 3);
           return morphs;
         },
-        statements: [["attribute", "class", ["concat", ["universal-search__results-list ", ["subexpr", "if", [["subexpr", "and", [["get", "flattenedResults", ["loc", [null, [31, 57], [31, 73]]]], ["subexpr", "lte", [["get", "flattenedResults.length", ["loc", [null, [31, 79], [31, 102]]]], 9], [], ["loc", [null, [31, 74], [31, 105]]]]], [], ["loc", [null, [31, 52], [31, 106]]]], "universal-search__results-list--inline"], [], ["loc", [null, [31, 47], [31, 149]]]]]]], ["block", "each", [["get", "flattenedResults", ["loc", [null, [33, 16], [33, 32]]]]], [], 0, 1, ["loc", [null, [33, 8], [52, 17]]]], ["block", "if", [["subexpr", "and", [["get", "flattenedResults", ["loc", [null, [54, 19], [54, 35]]]], ["subexpr", "lte", [["get", "flattenedResults.length", ["loc", [null, [54, 41], [54, 64]]]], 9], [], ["loc", [null, [54, 36], [54, 67]]]]], [], ["loc", [null, [54, 14], [54, 68]]]]], [], 2, null, ["loc", [null, [54, 8], [60, 15]]]], ["block", "if", [["subexpr", "and", [["get", "flattenedResults", ["loc", [null, [64, 15], [64, 31]]]], ["subexpr", "gt", [["get", "flattenedResults.length", ["loc", [null, [64, 36], [64, 59]]]], 9], [], ["loc", [null, [64, 32], [64, 62]]]]], [], ["loc", [null, [64, 10], [64, 63]]]]], [], 3, null, ["loc", [null, [64, 4], [71, 11]]]], ["block", "if", [["get", "searchResults.length", ["loc", [null, [74, 8], [74, 28]]]]], [], 4, 5, ["loc", [null, [74, 2], [90, 9]]]]],
+        statements: [["attribute", "class", ["concat", ["universal-search__results-list ", ["subexpr", "if", [["subexpr", "and", [["get", "searchResults", ["loc", [null, [31, 57], [31, 70]]]], ["subexpr", "lte", [["get", "searchResults.length", ["loc", [null, [31, 76], [31, 96]]]], 9], [], ["loc", [null, [31, 71], [31, 99]]]]], [], ["loc", [null, [31, 52], [31, 100]]]], "universal-search__results-list--inline"], [], ["loc", [null, [31, 47], [31, 143]]]]]]], ["block", "each", [["get", "searchResults", ["loc", [null, [33, 16], [33, 29]]]]], [], 0, 1, ["loc", [null, [33, 8], [52, 17]]]], ["block", "if", [["subexpr", "and", [["get", "searchResults", ["loc", [null, [54, 19], [54, 32]]]], ["subexpr", "lte", [["get", "searchResults.length", ["loc", [null, [54, 38], [54, 58]]]], 9], [], ["loc", [null, [54, 33], [54, 61]]]]], [], ["loc", [null, [54, 14], [54, 62]]]]], [], 2, null, ["loc", [null, [54, 8], [60, 15]]]], ["block", "if", [["subexpr", "and", [["get", "searchResults", ["loc", [null, [64, 15], [64, 28]]]], ["subexpr", "gt", [["get", "searchResults.length", ["loc", [null, [64, 33], [64, 53]]]], 9], [], ["loc", [null, [64, 29], [64, 56]]]]], [], ["loc", [null, [64, 10], [64, 57]]]]], [], 3, null, ["loc", [null, [64, 4], [71, 11]]]], ["block", "if", [["get", "searchResults.length", ["loc", [null, [74, 8], [74, 28]]]]], [], 4, 5, ["loc", [null, [74, 2], [90, 9]]]]],
         locals: [],
         templates: [child0, child1, child2, child3, child4, child5]
       };
@@ -67504,24 +67492,24 @@ define("frontend-cp/locales/en-us/search", ["exports"], function (exports) {
     "searchresults": "Search results for \"{term}\"",
     "seemore": "Advanced search",
 
-    "case.id": "Case ID",
-    "case.subject": "Subject",
-    "case.priority.label": "Priority",
-    "case.status.label": "Status",
-    "case.assigneeAgent.fullName": "Assigned agent",
-    "case.notfound": "There are no cases here.",
+    "CASES.id": "Case ID",
+    "CASES.subject": "Subject",
+    "CASES.priority.label": "Priority",
+    "CASES.status.label": "Status",
+    "CASES.assigneeAgent.fullName": "Assigned agent",
+    "CASES.notfound": "There are no cases here.",
 
-    "user.id": "User ID",
-    "user.fullName": "Subject",
-    "user.primaryEmail.email": "Primary email",
-    "user.organization.name": "Organization",
-    "user.lastActivityAt": "Last seen",
-    "user.notfound": "There are no users here.",
+    "USERS.id": "User ID",
+    "USERS.fullName": "Subject",
+    "USERS.primaryEmail.email": "Primary email",
+    "USERS.organization.name": "Organization",
+    "USERS.lastActivityAt": "Last seen",
+    "USERS.notfound": "There are no users here.",
 
-    "organization.id": "Org ID",
-    "organization.name": "Name",
-    "organization.updatedAt": "Last updated",
-    "organization.notfound": "There are no organizations here."
+    "ORGANIZATIONS.id": "Org ID",
+    "ORGANIZATIONS.name": "Name",
+    "ORGANIZATIONS.updatedAt": "Last updated",
+    "ORGANIZATIONS.notfound": "There are no organizations here."
   };
 });
 define("frontend-cp/locales/en-us/users", ["exports"], function (exports) {
@@ -70315,58 +70303,33 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
         return o.name.toLowerCase().indexOf(queryString) > -1;
       });
 
-      var userResults = users.slice(offset, limit + offset).map(function (u) {
-        return {
-          id: u.id,
-          title: u.full_name,
-          relevance: 0.089531735,
-          resource: 'user',
-          snippet: u.full_name.replace(new RegExp(queryString, 'gi'), '<em>' + request.queryParams.query + '</em>')
-        };
-      });
-
-      var caseResults = cases.slice(offset, limit + offset).map(function (c) {
-        return {
-          id: c.id,
-          title: c.subject,
-          relevance: 0.089531735,
-          resource: 'case',
-          snippet: c.subject.replace(new RegExp(queryString, 'gi'), '<em>' + request.queryParams.query + '</em>')
-        };
-      });
-
-      if (caseResults.length) {
-        var snippet = 'Installation Service: Test <em>Ers</em> Client ID: 45077\nFullname: Test <em>Ers</em>\nEmail: leocash@optonline.net. Test <em>Ers</em>';
-        caseResults[0].snippet = snippet;
-        caseResults[0].title = 'Good Morning, One of my colleagues sent a request in yesterday ERS-588-22741, i needed to clarify the specifics of what we are looking to do as I think there was a misunderstanding.';
+      var combined = undefined;
+      switch (request.queryParams.resources) {
+        case 'CASES':
+          combined = cases;break;
+        case 'USERS':
+          combined = users;break;
+        case 'ORGANIZATIONS':
+          combined = orgs;break;
+        default:
+          combined = cases.concat(users).concat(orgs);break;
       }
 
-      var orgResults = orgs.slice(offset, limit + offset).map(function (o) {
+      var results = combined.map(function (res) {
+        var title = res.subject || res.full_name || res.name;
         return {
-          id: o.id,
-          title: o.name,
-          relevance: 0.089531735,
-          resource: 'organization',
-          snippet: o.name.replace(new RegExp(queryString, 'gi'), '<em>' + request.queryParams.query + '</em>')
+          id: res.id,
+          title: title,
+          relevance: Math.random(),
+          resource: res.resource_type,
+          snippet: title.replace(new RegExp(queryString, 'gi'), '<em>' + request.queryParams.query + '</em>')
         };
-      });
+      }).sortBy('relevance');
 
       return {
         status: 200,
-        data: [{
-          results: caseResults,
-          resource: 'case',
-          total_count: cases.length
-        }, {
-          results: userResults,
-          resource: 'user',
-          total_count: users.length
-        }, {
-          results: orgResults,
-          resource: 'organization',
-          total_count: orgs.length
-        }],
-        resource: 'object',
+        data: results.slice(offset, limit + offset),
+        resource: 'result',
         resources: {
           'case': cases,
           user: users,
@@ -70374,7 +70337,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
           team: db.teams,
           organization: orgs
         },
-        total_count: caseResults.length + userResults.length
+        total_count: results.length
       };
     });
 
@@ -76398,6 +76361,65 @@ define('frontend-cp/serializers/view', ['exports', 'ember-data', 'frontend-cp/se
     }
   });
 });
+define('frontend-cp/services/advanced-search', ['exports', 'ember', 'npm:lodash'], function (exports, _ember, _npmLodash) {
+
+  var resultGroups = ['CASES', 'USERS', 'ORGANIZATIONS'];
+
+  exports['default'] = _ember['default'].Service.extend({
+    universalSearchService: _ember['default'].inject.service('suggestion/universal'),
+    store: _ember['default'].inject.service(),
+    cache: _ember['default'].Object.create({}),
+
+    search: function search(term, offset, pageLimit) {
+      var cacheKey = term + '|' + offset;
+      var cache = this.get('cache');
+
+      if (cache.get(cacheKey)) {
+        this._performSearch(term, offset, pageLimit);
+        return _ember['default'].RSVP.resolve(cache.get(cacheKey));
+      } else {
+        return this._performSearch(term, offset, pageLimit);
+      }
+    },
+
+    clearCache: function clearCache() {
+      this.set('cache', _ember['default'].Object.create({}));
+    },
+
+    _performSearch: function _performSearch(term, offset, pageLimit) {
+      var _this = this;
+
+      var cacheKey = term + '|' + offset;
+      var searchService = this.get('universalSearchService');
+      var promises = resultGroups.map(function (group) {
+        return searchService.search(term, offset, pageLimit, group);
+      });
+
+      return _ember['default'].RSVP.all(promises).then(function (responses) {
+        var results = _npmLodash['default'].zip(resultGroups, responses.getEach('data'), responses.getEach('total_count'));
+
+        responses.forEach(function (res) {
+          Reflect.deleteProperty(res, 'data');
+          _this.get('store').pushPayload(res);
+        });
+
+        // Turn group we want into models
+        var searchResults = _ember['default'].Object.create({});
+
+        results.forEach(function (res) {
+          searchResults.set(res[0], {
+            results: res[1],
+            total: res[2],
+            totalPages: Math.ceil(res[2] / pageLimit)
+          });
+        });
+
+        _this.get('cache').set(cacheKey, searchResults);
+        return searchResults;
+      });
+    }
+  });
+});
 define('frontend-cp/services/ajax', ['exports', 'ember-ajax/services/ajax'], function (exports, _emberAjaxServicesAjax) {
   Object.defineProperty(exports, 'default', {
     enumerable: true,
@@ -79924,6 +79946,7 @@ define('frontend-cp/services/suggestion/universal', ['exports', 'ember', 'fronte
     search: function search(searchTerm) {
       var offset = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
       var limit = arguments.length <= 2 || arguments[2] === undefined ? 30 : arguments[2];
+      var resources = arguments.length <= 3 || arguments[3] === undefined ? null : arguments[3];
 
       var adapter = getOwner(this).lookup('adapter:application');
       var url = adapter.namespace + '/search';
@@ -79931,7 +79954,8 @@ define('frontend-cp/services/suggestion/universal', ['exports', 'ember', 'fronte
         data: {
           query: searchTerm,
           offset: offset,
-          limit: limit
+          limit: limit,
+          resources: resources
         }
       };
       var promise = adapter.ajax(url, 'GET', options);
@@ -95311,8 +95335,34 @@ define('frontend-cp/session/agent/route', ['exports', 'ember'], function (export
 define('frontend-cp/session/agent/search/controller', ['exports', 'ember'], function (exports, _ember) {
   var _slice = Array.prototype.slice;
   exports['default'] = _ember['default'].Controller.extend({
+    store: _ember['default'].inject.service(),
+
     queryParams: ['group', 'page'],
     searchTerm: _ember['default'].computed.alias('model.searchTerm'),
+
+    totalCounts: _ember['default'].computed('model.results', function () {
+      var results = this.get('model.results');
+      var totalCounts = _ember['default'].Object.create({});
+
+      Object.keys(results).forEach(function (res) {
+        totalCounts.set(res, results.get(res).total);
+      });
+      return totalCounts;
+    }),
+
+    totalPages: _ember['default'].computed('model.results', 'group', function () {
+      var group = this.get('model.group');
+      return this.get('model.results').get(group).totalPages;
+    }),
+
+    searchResults: _ember['default'].computed('model.results', 'model.group', function () {
+      var store = this.get('store');
+      var group = this.get('model.group');
+      var results = this.get('model.results').get(group).results;
+      return results.map(function (res) {
+        return store.peekRecord(res.resource, res.id);
+      });
+    }),
 
     actions: {
       showResultGroup: function showResultGroup(group) {
@@ -95341,12 +95391,8 @@ define('frontend-cp/session/agent/search/route', ['exports', 'ember', 'frontend-
   // * afterModel updates the tab or opens a new one depending on transitionTabPath value
 
   exports['default'] = _frontendCpRoutesAbstractTabbedRoute['default'].extend({
-    universalSearchService: _ember['default'].inject.service('suggestion/universal'),
-
-    previousKey: null,
-    previousResults: null,
-
     transitionTabPath: null,
+    advancedSearch: _ember['default'].inject.service('advanced-search'),
 
     queryParams: {
       group: { refreshModel: true },
@@ -95354,60 +95400,22 @@ define('frontend-cp/session/agent/search/route', ['exports', 'ember', 'frontend-
     },
 
     model: function model(_ref) {
-      var _this = this;
-
       var term = _ref.term;
       var group = _ref.group;
       var page = _ref.page;
 
-      var searchService = this.get('universalSearchService');
       var currentPage = parseInt(page, 10) || 1;
       var offset = pageLimit * currentPage - pageLimit;
-      var resultGroup = group || 'case';
-      var cacheKey = term + '|' + offset;
+      var resultGroup = group || 'CASES';
 
-      if (this.get('previousKey') === cacheKey && this.get('previousResults')) {
-        return this._setSearchResult(this.get('previousResults'), resultGroup, currentPage, term);
-      }
-
-      var promise = searchService.search(term, offset, pageLimit);
-      return promise.then(function (response) {
-        var results = response.data;
-        Reflect.deleteProperty(response, 'data');
-        _this.store.pushPayload(response);
-
-        _this.set('previousResults', results);
-        _this.set('previousKey', cacheKey);
-        return _this._setSearchResult(results, resultGroup, currentPage, term);
+      return this.get('advancedSearch').search(term, offset, pageLimit).then(function (results) {
+        return _ember['default'].Object.create({
+          currentPage: currentPage,
+          group: resultGroup,
+          searchTerm: term,
+          results: results
+        });
       });
-    },
-
-    _setSearchResult: function _setSearchResult(results, resultGroup, currentPage, term) {
-      var _this2 = this;
-
-      var groupResults = results.findBy('resource', resultGroup);
-      var result = _ember['default'].Object.create({});
-
-      if (groupResults && groupResults.results) {
-        result.set('searchResults', groupResults.results.map(function (res) {
-          return _this2.store.peekRecord(resultGroup, res.id);
-        }));
-        result.set('totalPages', Math.ceil(groupResults.total_count / pageLimit)); // eslint-disable-line camelcase
-      }
-
-      result.setProperties({
-        searchTerm: term,
-        currentPage: currentPage,
-        resultGroup: resultGroup
-      });
-
-      var totalCounts = _ember['default'].Object.create({});
-      results.forEach(function (res) {
-        totalCounts.set(res.resource, res.total_count); // eslint-disable-line camelcase
-      });
-      result.set('totalCounts', totalCounts);
-
-      return result;
     },
 
     afterModel: function afterModel(model, transition) {
@@ -95569,7 +95577,7 @@ define("frontend-cp/session/agent/search/template", ["exports"], function (expor
           morphs[0] = dom.createMorphAt(dom.childAt(fragment, [0]), 1, 1);
           return morphs;
         },
-        statements: [["block", "ko-pagination", [], ["currentPage", ["subexpr", "@mut", [["get", "model.currentPage", ["loc", [null, [17, 16], [17, 33]]]]], [], []], "loadingPage", false, "pageCount", ["subexpr", "@mut", [["get", "model.totalPages", ["loc", [null, [19, 14], [19, 30]]]]], [], []]], 0, null, ["loc", [null, [16, 2], [21, 20]]]]],
+        statements: [["block", "ko-pagination", [], ["currentPage", ["subexpr", "@mut", [["get", "model.currentPage", ["loc", [null, [17, 16], [17, 33]]]]], [], []], "loadingPage", false, "pageCount", ["subexpr", "@mut", [["get", "totalPages", ["loc", [null, [19, 14], [19, 24]]]]], [], []]], 0, null, ["loc", [null, [16, 2], [21, 20]]]]],
         locals: [],
         templates: [child0]
       };
@@ -95628,7 +95636,7 @@ define("frontend-cp/session/agent/search/template", ["exports"], function (expor
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["inline", "ko-search-sidebar", [], ["resultGroup", ["subexpr", "@mut", [["get", "model.resultGroup", ["loc", [null, [3, 15], [3, 32]]]]], [], []], "totalCounts", ["subexpr", "@mut", [["get", "model.totalCounts", ["loc", [null, [4, 15], [4, 32]]]]], [], []], "onSelect", ["subexpr", "action", ["showResultGroup"], [], ["loc", [null, [5, 12], [5, 38]]]]], ["loc", [null, [2, 2], [5, 40]]]], ["inline", "ko-advanced-search", [], ["onLoadSearchRoute", ["subexpr", "action", ["loadSearchRoute"], [], ["loc", [null, [8, 22], [8, 48]]]], "searchTerm", ["subexpr", "@mut", [["get", "searchTerm", ["loc", [null, [9, 15], [9, 25]]]]], [], []], "searchResults", ["subexpr", "@mut", [["get", "model.searchResults", ["loc", [null, [10, 18], [10, 37]]]]], [], []], "resultGroup", ["subexpr", "@mut", [["get", "model.resultGroup", ["loc", [null, [11, 16], [11, 33]]]]], [], []]], ["loc", [null, [7, 2], [11, 35]]]], ["block", "if", [["get", "model.searchResults", ["loc", [null, [14, 6], [14, 25]]]]], [], 0, null, ["loc", [null, [14, 0], [23, 7]]]]],
+      statements: [["inline", "ko-search-sidebar", [], ["resultGroup", ["subexpr", "@mut", [["get", "model.group", ["loc", [null, [3, 15], [3, 26]]]]], [], []], "totalCounts", ["subexpr", "@mut", [["get", "totalCounts", ["loc", [null, [4, 15], [4, 26]]]]], [], []], "onSelect", ["subexpr", "action", ["showResultGroup"], [], ["loc", [null, [5, 12], [5, 38]]]]], ["loc", [null, [2, 2], [5, 40]]]], ["inline", "ko-advanced-search", [], ["onLoadSearchRoute", ["subexpr", "action", ["loadSearchRoute"], [], ["loc", [null, [8, 22], [8, 48]]]], "searchTerm", ["subexpr", "@mut", [["get", "searchTerm", ["loc", [null, [9, 15], [9, 25]]]]], [], []], "results", ["subexpr", "@mut", [["get", "searchResults", ["loc", [null, [10, 12], [10, 25]]]]], [], []], "resultGroup", ["subexpr", "@mut", [["get", "model.group", ["loc", [null, [11, 16], [11, 27]]]]], [], []]], ["loc", [null, [7, 2], [11, 29]]]], ["block", "if", [["get", "model.results", ["loc", [null, [14, 6], [14, 19]]]]], [], 0, null, ["loc", [null, [14, 0], [23, 7]]]]],
       locals: [],
       templates: [child0]
     };
@@ -101939,7 +101947,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"viewingUsersInactiveThreshold":300000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+0f9475dc"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"viewingUsersInactiveThreshold":300000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+439dbf73"});
 }
 
 /* jshint ignore:end */
