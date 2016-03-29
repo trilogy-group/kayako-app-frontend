@@ -913,30 +913,6 @@ define("frontend-cp/application/template", ["exports"], function (exports) {
     };
   })());
 });
-define('frontend-cp/blueprints/page-object-component', ['exports', 'ember-cli-page-object/blueprints/page-object-component'], function (exports, _emberCliPageObjectBlueprintsPageObjectComponent) {
-  Object.defineProperty(exports, 'default', {
-    enumerable: true,
-    get: function get() {
-      return _emberCliPageObjectBlueprintsPageObjectComponent['default'];
-    }
-  });
-});
-define('frontend-cp/blueprints/page-object-helper', ['exports', 'ember-cli-page-object/blueprints/page-object-helper'], function (exports, _emberCliPageObjectBlueprintsPageObjectHelper) {
-  Object.defineProperty(exports, 'default', {
-    enumerable: true,
-    get: function get() {
-      return _emberCliPageObjectBlueprintsPageObjectHelper['default'];
-    }
-  });
-});
-define('frontend-cp/blueprints/page-object', ['exports', 'ember-cli-page-object/blueprints/page-object'], function (exports, _emberCliPageObjectBlueprintsPageObject) {
-  Object.defineProperty(exports, 'default', {
-    enumerable: true,
-    get: function get() {
-      return _emberCliPageObjectBlueprintsPageObject['default'];
-    }
-  });
-});
 define("frontend-cp/cldrs/en-001", ["exports"], function (exports) {
   /*jslint eqeq: true*/
   exports["default"] = { "locale": "en-001", "parentLocale": "en" };
@@ -72160,7 +72136,7 @@ define('frontend-cp/models/case-field', ['exports', 'ember', 'ember-data', 'fron
           return null;
         }
       }
-    }),
+    }).volatile(),
 
     description: _ember['default'].computed('descriptions', {
       get: function get() {
@@ -72192,7 +72168,7 @@ define('frontend-cp/models/case-field', ['exports', 'ember', 'ember-data', 'fron
           return null;
         }
       }
-    })
+    }).volatile()
   });
 });
 define('frontend-cp/models/case-form', ['exports', 'ember-data', 'frontend-cp/mixins/change-aware-model', 'ember'], function (exports, _emberData, _frontendCpMixinsChangeAwareModel, _ember) {
@@ -73126,7 +73102,7 @@ define('frontend-cp/models/organization-field', ['exports', 'ember', 'ember-data
           return null;
         }
       }
-    }),
+    }).volatile(),
 
     description: _ember['default'].computed('descriptions', {
       get: function get() {
@@ -73158,7 +73134,7 @@ define('frontend-cp/models/organization-field', ['exports', 'ember', 'ember-data
           return null;
         }
       }
-    })
+    }).volatile()
   });
 });
 define('frontend-cp/models/organization-note', ['exports', 'ember-data', 'frontend-cp/models/postable', 'ember'], function (exports, _emberData, _frontendCpModelsPostable, _ember) {
@@ -73497,7 +73473,7 @@ define('frontend-cp/models/user-field', ['exports', 'ember', 'ember-data', 'fron
           return null;
         }
       }
-    }),
+    }).volatile(),
 
     description: _ember['default'].computed('descriptions', {
       get: function get() {
@@ -73529,7 +73505,7 @@ define('frontend-cp/models/user-field', ['exports', 'ember', 'ember-data', 'fron
           return null;
         }
       }
-    })
+    }).volatile()
   });
 });
 define('frontend-cp/models/user-minimal', ['exports', 'frontend-cp/models/user'], function (exports, _frontendCpModelsUser) {
@@ -76594,7 +76570,7 @@ define('frontend-cp/services/custom-fields', ['exports', 'ember', 'npm:lodash'],
         if (controller.userHasChangedModel()) {
           if (confirm(this._getTranslation('generic.confirm.lose_changes'))) {
             // eslint-disable-line
-            controller.send('rollBackModel');
+            this.rollback(controller.get('model'));
             return true;
           } else {
             transition.abort();
@@ -83823,10 +83799,6 @@ define('frontend-cp/session/admin/manage/case-fields/new/controller', ['exports'
     },
 
     actions: {
-      rollBackModel: function rollBackModel() {
-        this.get('customFields').rollback(this.get('model'));
-      },
-
       setCaseFieldType: function setCaseFieldType(caseFieldType) {
         this.set('model.fieldType', caseFieldType);
         this.set('canDisplaySelectTypeSection', false);
@@ -88401,10 +88373,6 @@ define('frontend-cp/session/admin/people/organization-fields/new/controller', ['
     },
 
     actions: {
-      rollBackModel: function rollBackModel() {
-        this.get('customFields').rollback(this.get('model'));
-      },
-
       setCaseFieldType: function setCaseFieldType(fieldType) {
         this.set('model.fieldType', fieldType);
         this.set('canDisplaySelectTypeSection', false);
@@ -90312,10 +90280,6 @@ define('frontend-cp/session/admin/people/user-fields/new/controller', ['exports'
     },
 
     actions: {
-      rollBackModel: function rollBackModel() {
-        this.get('customFields').rollback(this.get('model'));
-      },
-
       canceled: function canceled() {
         this.get('metrics').trackEvent({
           event: 'Admin User Field Edit Canceled',
@@ -100566,7 +100530,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"viewingUsersInactiveThreshold":300000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+c90471d7"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"viewingUsersInactiveThreshold":300000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+684aa591"});
 }
 
 /* jshint ignore:end */
