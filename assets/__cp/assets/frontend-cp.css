@@ -5551,6 +5551,7 @@ label {
 .ko-layout_advanced_section__img {
   height: 48px;
   width: 48px;
+  background-color: #CFD4D8;
   border-radius: 2px; }
 
 .ko-layout_advanced_section__body {
