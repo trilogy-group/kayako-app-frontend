@@ -29374,13 +29374,24 @@ define("frontend-cp/components/ko-case/macro-selector/template", ["exports"], fu
     };
   })());
 });
+define('frontend-cp/components/ko-case/macro-selector/trigger/component', ['exports', 'ember'], function (exports, _ember) {
+  exports['default'] = _ember['default'].Component.extend({
+    classNameBindings: ['styles.trigger']
+  });
+});
+define("frontend-cp/components/ko-case/macro-selector/trigger/styles", ["exports"], function (exports) {
+  exports["default"] = {
+    "trigger": "_trigger_6p3bsw",
+    "icon": "_icon_6p3bsw"
+  };
+});
 define("frontend-cp/components/ko-case/macro-selector/trigger/template", ["exports"], function (exports) {
   exports["default"] = Ember.HTMLBars.template((function () {
     return {
       meta: {
         "fragmentReason": {
           "name": "missing-wrapper",
-          "problems": ["wrong-type"]
+          "problems": ["wrong-type", "multiple-nodes"]
         },
         "revision": "Ember@2.4.3",
         "loc": {
@@ -29404,17 +29415,21 @@ define("frontend-cp/components/ko-case/macro-selector/trigger/template", ["expor
         var el0 = dom.createDocumentFragment();
         var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
+        var el1 = dom.createElement("span");
+        dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var morphs = new Array(1);
+        var element0 = dom.childAt(fragment, [1]);
+        var morphs = new Array(2);
         morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+        morphs[1] = dom.createAttrMorph(element0, 'class');
         dom.insertBoundary(fragment, 0);
         return morphs;
       },
-      statements: [["inline", "ko-dropdown/select/button", [], ["label", ["subexpr", "@mut", [["get", "extra.label", ["loc", [null, [1, 34], [1, 45]]]]], [], []]], ["loc", [null, [1, 0], [1, 47]]]]],
+      statements: [["content", "extra.label", ["loc", [null, [1, 0], [1, 15]]]], ["attribute", "class", ["concat", [["get", "styles.icon", ["loc", [null, [1, 30], [1, 41]]]], " i-select"]]]],
       locals: [],
       templates: []
     };
@@ -30664,313 +30679,6 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember'],
       }
     }
   });
-});
-define('frontend-cp/components/ko-case-content/dropdown/component', ['exports', 'ember'], function (exports, _ember) {
-  exports['default'] = _ember['default'].Component.extend({
-    //Params
-    label: '',
-    onChange: null,
-    options: null,
-    value: null,
-
-    contentStyle: null,
-
-    // HTML
-    classNames: ['ko-case-content_dropdown'],
-
-    currentValueLabel: _ember['default'].computed('value', 'options', function () {
-      var content = this.get('value');
-      var option = this.get('options').find(function (option) {
-        return option.content === content;
-      });
-      if (option) {
-        return option.label;
-      } else {
-        return '';
-      }
-    })
-  });
-});
-define("frontend-cp/components/ko-case-content/dropdown/template", ["exports"], function (exports) {
-  exports["default"] = Ember.HTMLBars.template((function () {
-    var child0 = (function () {
-      var child0 = (function () {
-        return {
-          meta: {
-            "fragmentReason": false,
-            "revision": "Ember@2.4.3",
-            "loc": {
-              "source": null,
-              "start": {
-                "line": 2,
-                "column": 2
-              },
-              "end": {
-                "line": 4,
-                "column": 2
-              }
-            },
-            "moduleName": "frontend-cp/components/ko-case-content/dropdown/template.hbs"
-          },
-          isEmpty: false,
-          arity: 0,
-          cachedFragment: null,
-          hasRendered: false,
-          buildFragment: function buildFragment(dom) {
-            var el0 = dom.createDocumentFragment();
-            var el1 = dom.createTextNode("    ");
-            dom.appendChild(el0, el1);
-            var el1 = dom.createElement("span");
-            dom.setAttribute(el1, "class", "ko-case-content_dropdown__label");
-            var el2 = dom.createComment("");
-            dom.appendChild(el1, el2);
-            var el2 = dom.createTextNode(": ");
-            dom.appendChild(el1, el2);
-            var el2 = dom.createElement("span");
-            dom.setAttribute(el2, "class", "ko-case-content_dropdown__current-value");
-            var el3 = dom.createComment("");
-            dom.appendChild(el2, el3);
-            dom.appendChild(el1, el2);
-            var el2 = dom.createTextNode(" ");
-            dom.appendChild(el1, el2);
-            var el2 = dom.createElement("span");
-            dom.setAttribute(el2, "class", "i-select");
-            dom.appendChild(el1, el2);
-            dom.appendChild(el0, el1);
-            var el1 = dom.createTextNode("\n");
-            dom.appendChild(el0, el1);
-            return el0;
-          },
-          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-            var element1 = dom.childAt(fragment, [1]);
-            var morphs = new Array(2);
-            morphs[0] = dom.createMorphAt(element1, 0, 0);
-            morphs[1] = dom.createMorphAt(dom.childAt(element1, [2]), 0, 0);
-            return morphs;
-          },
-          statements: [["content", "label", ["loc", [null, [3, 50], [3, 59]]]], ["content", "currentValueLabel", ["loc", [null, [3, 115], [3, 136]]]]],
-          locals: [],
-          templates: []
-        };
-      })();
-      var child1 = (function () {
-        var child0 = (function () {
-          var child0 = (function () {
-            return {
-              meta: {
-                "fragmentReason": false,
-                "revision": "Ember@2.4.3",
-                "loc": {
-                  "source": null,
-                  "start": {
-                    "line": 7,
-                    "column": 6
-                  },
-                  "end": {
-                    "line": 11,
-                    "column": 6
-                  }
-                },
-                "moduleName": "frontend-cp/components/ko-case-content/dropdown/template.hbs"
-              },
-              isEmpty: false,
-              arity: 1,
-              cachedFragment: null,
-              hasRendered: false,
-              buildFragment: function buildFragment(dom) {
-                var el0 = dom.createDocumentFragment();
-                var el1 = dom.createTextNode("        ");
-                dom.appendChild(el0, el1);
-                var el1 = dom.createElement("li");
-                dom.setAttribute(el1, "class", "ko-dropdown_list__item");
-                var el2 = dom.createTextNode("\n          ");
-                dom.appendChild(el1, el2);
-                var el2 = dom.createComment("");
-                dom.appendChild(el1, el2);
-                var el2 = dom.createTextNode("\n        ");
-                dom.appendChild(el1, el2);
-                dom.appendChild(el0, el1);
-                var el1 = dom.createTextNode("\n");
-                dom.appendChild(el0, el1);
-                return el0;
-              },
-              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-                var element0 = dom.childAt(fragment, [1]);
-                var morphs = new Array(2);
-                morphs[0] = dom.createAttrMorph(element0, 'onclick');
-                morphs[1] = dom.createMorphAt(element0, 1, 1);
-                return morphs;
-              },
-              statements: [["attribute", "onclick", ["subexpr", "action", [["get", "attrs.onChange", ["loc", [null, [8, 60], [8, 74]]]], ["get", "option.content", ["loc", [null, [8, 75], [8, 89]]]]], [], ["loc", [null, [8, 51], [8, 91]]]]], ["content", "option.label", ["loc", [null, [9, 10], [9, 26]]]]],
-              locals: ["option"],
-              templates: []
-            };
-          })();
-          return {
-            meta: {
-              "fragmentReason": false,
-              "revision": "Ember@2.4.3",
-              "loc": {
-                "source": null,
-                "start": {
-                  "line": 6,
-                  "column": 4
-                },
-                "end": {
-                  "line": 12,
-                  "column": 4
-                }
-              },
-              "moduleName": "frontend-cp/components/ko-case-content/dropdown/template.hbs"
-            },
-            isEmpty: false,
-            arity: 0,
-            cachedFragment: null,
-            hasRendered: false,
-            buildFragment: function buildFragment(dom) {
-              var el0 = dom.createDocumentFragment();
-              var el1 = dom.createComment("");
-              dom.appendChild(el0, el1);
-              return el0;
-            },
-            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-              var morphs = new Array(1);
-              morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-              dom.insertBoundary(fragment, 0);
-              dom.insertBoundary(fragment, null);
-              return morphs;
-            },
-            statements: [["block", "each", [["get", "options", ["loc", [null, [7, 14], [7, 21]]]]], [], 0, null, ["loc", [null, [7, 6], [11, 15]]]]],
-            locals: [],
-            templates: [child0]
-          };
-        })();
-        return {
-          meta: {
-            "fragmentReason": false,
-            "revision": "Ember@2.4.3",
-            "loc": {
-              "source": null,
-              "start": {
-                "line": 5,
-                "column": 2
-              },
-              "end": {
-                "line": 13,
-                "column": 2
-              }
-            },
-            "moduleName": "frontend-cp/components/ko-case-content/dropdown/template.hbs"
-          },
-          isEmpty: false,
-          arity: 0,
-          cachedFragment: null,
-          hasRendered: false,
-          buildFragment: function buildFragment(dom) {
-            var el0 = dom.createDocumentFragment();
-            var el1 = dom.createComment("");
-            dom.appendChild(el0, el1);
-            return el0;
-          },
-          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-            var morphs = new Array(1);
-            morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-            dom.insertBoundary(fragment, 0);
-            dom.insertBoundary(fragment, null);
-            return morphs;
-          },
-          statements: [["block", "ko-dropdown/list", [], [], 0, null, ["loc", [null, [6, 4], [12, 25]]]]],
-          locals: [],
-          templates: [child0]
-        };
-      })();
-      return {
-        meta: {
-          "fragmentReason": {
-            "name": "missing-wrapper",
-            "problems": ["wrong-type", "multiple-nodes"]
-          },
-          "revision": "Ember@2.4.3",
-          "loc": {
-            "source": null,
-            "start": {
-              "line": 1,
-              "column": 0
-            },
-            "end": {
-              "line": 14,
-              "column": 0
-            }
-          },
-          "moduleName": "frontend-cp/components/ko-case-content/dropdown/template.hbs"
-        },
-        isEmpty: false,
-        arity: 2,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createComment("");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createComment("");
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(2);
-          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-          morphs[1] = dom.createMorphAt(fragment, 1, 1, contextualElement);
-          dom.insertBoundary(fragment, 0);
-          dom.insertBoundary(fragment, null);
-          return morphs;
-        },
-        statements: [["block", "if", [["subexpr", "eq", [["get", "name", ["loc", [null, [2, 12], [2, 16]]]], "button"], [], ["loc", [null, [2, 8], [2, 26]]]]], [], 0, null, ["loc", [null, [2, 2], [4, 9]]]], ["block", "if", [["subexpr", "eq", [["get", "name", ["loc", [null, [5, 12], [5, 16]]]], "content"], [], ["loc", [null, [5, 8], [5, 27]]]]], [], 1, null, ["loc", [null, [5, 2], [13, 9]]]]],
-        locals: ["name", "dropdownContext"],
-        templates: [child0, child1]
-      };
-    })();
-    return {
-      meta: {
-        "fragmentReason": {
-          "name": "missing-wrapper",
-          "problems": ["wrong-type"]
-        },
-        "revision": "Ember@2.4.3",
-        "loc": {
-          "source": null,
-          "start": {
-            "line": 1,
-            "column": 0
-          },
-          "end": {
-            "line": 15,
-            "column": 0
-          }
-        },
-        "moduleName": "frontend-cp/components/ko-case-content/dropdown/template.hbs"
-      },
-      isEmpty: false,
-      arity: 0,
-      cachedFragment: null,
-      hasRendered: false,
-      buildFragment: function buildFragment(dom) {
-        var el0 = dom.createDocumentFragment();
-        var el1 = dom.createComment("");
-        dom.appendChild(el0, el1);
-        return el0;
-      },
-      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var morphs = new Array(1);
-        morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-        dom.insertBoundary(fragment, 0);
-        dom.insertBoundary(fragment, null);
-        return morphs;
-      },
-      statements: [["block", "ko-dropdown/container", [], ["hideOnClick", true, "hideOnChildFocus", true], 0, null, ["loc", [null, [1, 0], [14, 26]]]]],
-      locals: [],
-      templates: [child0]
-    };
-  })());
 });
 define('frontend-cp/components/ko-case-content/field/assignee/component', ['exports', 'ember'], function (exports, _ember) {
   var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
@@ -33582,7 +33290,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
             var el3 = dom.createTextNode("\n        ");
             dom.appendChild(el2, el3);
             var el3 = dom.createElement("ul");
-            dom.setAttribute(el3, "class", "list-inline t-right");
+            dom.setAttribute(el3, "class", "list-inline");
             var el4 = dom.createTextNode("\n");
             dom.appendChild(el3, el4);
             var el4 = dom.createComment("");
@@ -39458,412 +39166,6 @@ define("frontend-cp/components/ko-dropdown/basic-drill-down/template", ["exports
     };
   })());
 });
-define('frontend-cp/components/ko-dropdown/container/button/component', ['exports', 'ember'], function (exports, _ember) {
-  exports['default'] = _ember['default'].Component.extend({
-    // HTML
-    classNames: ['ko-dropdown_container_button']
-  });
-});
-define("frontend-cp/components/ko-dropdown/container/button/template", ["exports"], function (exports) {
-  exports["default"] = Ember.HTMLBars.template((function () {
-    return {
-      meta: {
-        "fragmentReason": {
-          "name": "missing-wrapper",
-          "problems": ["wrong-type"]
-        },
-        "revision": "Ember@2.4.3",
-        "loc": {
-          "source": null,
-          "start": {
-            "line": 1,
-            "column": 0
-          },
-          "end": {
-            "line": 2,
-            "column": 0
-          }
-        },
-        "moduleName": "frontend-cp/components/ko-dropdown/container/button/template.hbs"
-      },
-      isEmpty: false,
-      arity: 0,
-      cachedFragment: null,
-      hasRendered: false,
-      buildFragment: function buildFragment(dom) {
-        var el0 = dom.createDocumentFragment();
-        var el1 = dom.createComment("");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
-        dom.appendChild(el0, el1);
-        return el0;
-      },
-      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var morphs = new Array(1);
-        morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-        dom.insertBoundary(fragment, 0);
-        return morphs;
-      },
-      statements: [["content", "yield", ["loc", [null, [1, 0], [1, 9]]]]],
-      locals: [],
-      templates: []
-    };
-  })());
-});
-define('frontend-cp/components/ko-dropdown/container/component', ['exports', 'ember', 'jquery'], function (exports, _ember, _jquery) {
-  var Component = _ember['default'].Component;
-  var observer = _ember['default'].observer;
-  var run = _ember['default'].run;
-
-  /**
-   * Rules:
-   *   Always closes when you click outside of it
-   *   Always open while it or its children are focussed
-   *   hideOnChildFocus will unfocus children if a link
-   *
-   *   {{#ko-dropdown/container as |name dropdownContext|}}
-   *     {{#if (eq name 'button')}}
-   *       <div>Button</div>
-   *     {{/if}}
-   *     {{#if (eq name 'content')}}
-   *       Content
-   *       <button onclick={{action "hide" target=dropdownContext}}>hideme</button>
-   *     {{/if}}
-   *   {{/ko-dropdown/container}}
-   */
-
-  exports['default'] = Component.extend({
-    // Params
-    // Set to true if you include links in the content and you want to hide the dropdown when the links are clicked
-    hideOnChildFocus: null,
-    // Set to true if you want non link clicks to also hide the dropdown
-    hideOnClick: null,
-    //Allows components that need to signal when the dropdown should close
-    hideDropdown: null,
-    onFocusChanged: null,
-
-    tabindex: 0,
-    isFocussed: null,
-    attributeBindings: ['tabindex'],
-    classNames: ['ko-dropdown-container'],
-    classNameBindings: ['alignRight', 'isFocussed:focused'],
-
-    onHideDropdown: observer('hideDropdown', function () {
-      var hideDropdown = this.get('hideDropdown');
-      if (hideDropdown) {
-        this.send('onContentRequestClose');
-      }
-    }),
-
-    focusOut: function focusOut(event) {
-      var _this = this;
-
-      // Ignore focusOut events that are focusing on another item which is a child of this one
-      // Also ignore events where the button itself has been clicked on (event.relatedTarget === context.element)
-      if (event.relatedTarget === null || !_jquery['default'].contains(this.get('context.element'), event.relatedTarget) && this.get('context.element') !== event.relatedTarget) {
-        run.next(function () {
-          if (!_this.get('isDestroyed')) {
-            _this.set('isFocussed', false);
-            _this.sendAction('onFocusChanged', false);
-            _this.sendAction('onFocusOut');
-          }
-        });
-      }
-    },
-
-    focusIn: function focusIn() {
-      this.set('isFocussed', true);
-      this.sendAction('onFocusChanged', true);
-      this.sendAction('onFocusIn');
-    },
-
-    actions: {
-      onContentRequestClose: function onContentRequestClose() {
-        this.$().blur();
-        this.set('hideDropdown', false);
-      },
-
-      hide: function hide() {
-        this.get('contentComponent').send('hide');
-      }
-    }
-  });
-});
-define('frontend-cp/components/ko-dropdown/container/content/component', ['exports', 'ember'], function (exports, _ember) {
-  exports['default'] = _ember['default'].Component.extend({
-    // Params
-    // hideOnChildFocus is useful because links become focussed when clicked so you can
-    // hide the dropdown when someone clicks a link
-    hideOnChildFocus: null,
-    hideOnClick: null,
-    // registerAs allows this component to be registered with its parent so the parent can call actions on it
-    registerAs: null,
-
-    role: 'menu',
-    attributeBindings: ['role'],
-    isFocussed: false,
-    focussedObject: null,
-
-    classNames: ['ko-dropdown-container-content'],
-
-    registerOnParent: _ember['default'].on('init', function () {
-      this.set('registerAs', this);
-    }),
-
-    mouseUp: function mouseUp() {
-      if (this.get('hideOnChildFocus') || this.get('hideOnClick')) {
-        if (this.get('isFocussed') && this.get('focussedObject')) {
-          this.$(this.get('focussedObject')).blur();
-        } else if (this.get('hideOnClick')) {
-          this.sendAction('onClose');
-        }
-      }
-    },
-
-    focusOut: function focusOut() {
-      this.set('focussedObject', null);
-      this.set('isFocussed', false);
-    },
-
-    focusIn: function focusIn(event) {
-      this.set('focussedObject', event.target);
-      this.set('isFocussed', true);
-    },
-
-    actions: {
-      hide: function hide() {
-        if (this.get('isFocussed') && this.get('focussedObject')) {
-          this.$(this.get('focussedObject')).blur();
-        } else {
-          this.sendAction('onClose');
-        }
-      }
-    }
-  });
-});
-define("frontend-cp/components/ko-dropdown/container/content/template", ["exports"], function (exports) {
-  exports["default"] = Ember.HTMLBars.template((function () {
-    return {
-      meta: {
-        "fragmentReason": {
-          "name": "missing-wrapper",
-          "problems": ["wrong-type"]
-        },
-        "revision": "Ember@2.4.3",
-        "loc": {
-          "source": null,
-          "start": {
-            "line": 1,
-            "column": 0
-          },
-          "end": {
-            "line": 2,
-            "column": 0
-          }
-        },
-        "moduleName": "frontend-cp/components/ko-dropdown/container/content/template.hbs"
-      },
-      isEmpty: false,
-      arity: 0,
-      cachedFragment: null,
-      hasRendered: false,
-      buildFragment: function buildFragment(dom) {
-        var el0 = dom.createDocumentFragment();
-        var el1 = dom.createComment("");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
-        dom.appendChild(el0, el1);
-        return el0;
-      },
-      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var morphs = new Array(1);
-        morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-        dom.insertBoundary(fragment, 0);
-        return morphs;
-      },
-      statements: [["content", "yield", ["loc", [null, [1, 0], [1, 9]]]]],
-      locals: [],
-      templates: []
-    };
-  })());
-});
-define("frontend-cp/components/ko-dropdown/container/template", ["exports"], function (exports) {
-  exports["default"] = Ember.HTMLBars.template((function () {
-    var child0 = (function () {
-      return {
-        meta: {
-          "fragmentReason": {
-            "name": "missing-wrapper",
-            "problems": ["wrong-type"]
-          },
-          "revision": "Ember@2.4.3",
-          "loc": {
-            "source": null,
-            "start": {
-              "line": 1,
-              "column": 0
-            },
-            "end": {
-              "line": 3,
-              "column": 0
-            }
-          },
-          "moduleName": "frontend-cp/components/ko-dropdown/container/template.hbs"
-        },
-        isEmpty: false,
-        arity: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("  ");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createComment("");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n");
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
-          return morphs;
-        },
-        statements: [["inline", "yield", ["button", ["get", "this", ["loc", [null, [2, 19], [2, 23]]]]], [], ["loc", [null, [2, 2], [2, 25]]]]],
-        locals: [],
-        templates: []
-      };
-    })();
-    var child1 = (function () {
-      var child0 = (function () {
-        return {
-          meta: {
-            "fragmentReason": false,
-            "revision": "Ember@2.4.3",
-            "loc": {
-              "source": null,
-              "start": {
-                "line": 6,
-                "column": 2
-              },
-              "end": {
-                "line": 8,
-                "column": 2
-              }
-            },
-            "moduleName": "frontend-cp/components/ko-dropdown/container/template.hbs"
-          },
-          isEmpty: false,
-          arity: 0,
-          cachedFragment: null,
-          hasRendered: false,
-          buildFragment: function buildFragment(dom) {
-            var el0 = dom.createDocumentFragment();
-            var el1 = dom.createTextNode("    ");
-            dom.appendChild(el0, el1);
-            var el1 = dom.createComment("");
-            dom.appendChild(el0, el1);
-            var el1 = dom.createTextNode("\n");
-            dom.appendChild(el0, el1);
-            return el0;
-          },
-          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-            var morphs = new Array(1);
-            morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
-            return morphs;
-          },
-          statements: [["inline", "yield", ["content", ["get", "this", ["loc", [null, [7, 22], [7, 26]]]]], [], ["loc", [null, [7, 4], [7, 28]]]]],
-          locals: [],
-          templates: []
-        };
-      })();
-      return {
-        meta: {
-          "fragmentReason": false,
-          "revision": "Ember@2.4.3",
-          "loc": {
-            "source": null,
-            "start": {
-              "line": 5,
-              "column": 0
-            },
-            "end": {
-              "line": 9,
-              "column": 0
-            }
-          },
-          "moduleName": "frontend-cp/components/ko-dropdown/container/template.hbs"
-        },
-        isEmpty: false,
-        arity: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createComment("");
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-          dom.insertBoundary(fragment, 0);
-          dom.insertBoundary(fragment, null);
-          return morphs;
-        },
-        statements: [["block", "ko-dropdown/container/content", [], ["registerAs", ["subexpr", "@mut", [["get", "contentComponent", ["loc", [null, [6, 46], [6, 62]]]]], [], []], "hideOnChildFocus", ["subexpr", "@mut", [["get", "hideOnChildFocus", ["loc", [null, [6, 80], [6, 96]]]]], [], []], "hideOnClick", ["subexpr", "@mut", [["get", "hideOnClick", ["loc", [null, [6, 109], [6, 120]]]]], [], []], "onClose", "onContentRequestClose"], 0, null, ["loc", [null, [6, 2], [8, 36]]]]],
-        locals: [],
-        templates: [child0]
-      };
-    })();
-    return {
-      meta: {
-        "fragmentReason": {
-          "name": "missing-wrapper",
-          "problems": ["wrong-type", "multiple-nodes"]
-        },
-        "revision": "Ember@2.4.3",
-        "loc": {
-          "source": null,
-          "start": {
-            "line": 1,
-            "column": 0
-          },
-          "end": {
-            "line": 10,
-            "column": 0
-          }
-        },
-        "moduleName": "frontend-cp/components/ko-dropdown/container/template.hbs"
-      },
-      isEmpty: false,
-      arity: 0,
-      cachedFragment: null,
-      hasRendered: false,
-      buildFragment: function buildFragment(dom) {
-        var el0 = dom.createDocumentFragment();
-        var el1 = dom.createComment("");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createComment("");
-        dom.appendChild(el0, el1);
-        return el0;
-      },
-      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var morphs = new Array(2);
-        morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-        morphs[1] = dom.createMorphAt(fragment, 2, 2, contextualElement);
-        dom.insertBoundary(fragment, 0);
-        dom.insertBoundary(fragment, null);
-        return morphs;
-      },
-      statements: [["block", "ko-dropdown/container/button", [], [], 0, null, ["loc", [null, [1, 0], [3, 33]]]], ["block", "if", [["get", "isFocussed", ["loc", [null, [5, 6], [5, 16]]]]], [], 1, null, ["loc", [null, [5, 0], [9, 7]]]]],
-      locals: [],
-      templates: [child0, child1]
-    };
-  })());
-});
 define('frontend-cp/components/ko-dropdown/drill-down/component', ['exports', 'ember', 'npm:lodash', 'ember-sanitize/utils/sanitize'], function (exports, _ember, _npmLodash, _emberSanitizeUtilsSanitize) {
   var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -40228,174 +39530,6 @@ define("frontend-cp/components/ko-dropdown/drill-down/template", ["exports"], fu
         return morphs;
       },
       statements: [["block", "power-select", [], ["onchange", ["subexpr", "action", ["selectItem"], [], ["loc", [null, [2, 11], [2, 32]]]], "verticalPosition", "below", "options", ["subexpr", "@mut", [["get", "currentHierarchyLevel", ["loc", [null, [4, 10], [4, 31]]]]], [], []], "tabindex", "-1", "renderInPlace", true, "searchEnabled", ["subexpr", "@mut", [["get", "searchEnabled", ["loc", [null, [7, 16], [7, 29]]]]], [], []], "disabled", ["subexpr", "@mut", [["get", "isDisabled", ["loc", [null, [8, 11], [8, 21]]]]], [], []], "triggerComponent", ["subexpr", "@mut", [["get", "triggerComponent", ["loc", [null, [9, 19], [9, 35]]]]], [], []], "searchPlaceholder", ["subexpr", "@mut", [["get", "searchPlaceholder", ["loc", [null, [10, 20], [10, 37]]]]], [], []], "searchMessage", false, "search", ["subexpr", "action", ["search"], [], ["loc", [null, [12, 9], [12, 26]]]], "extra", ["subexpr", "@mut", [["get", "computedExtra", ["loc", [null, [13, 8], [13, 21]]]]], [], []], "closeOnSelect", false], 0, null, ["loc", [null, [1, 0], [23, 17]]]]],
-      locals: [],
-      templates: [child0]
-    };
-  })());
-});
-define('frontend-cp/components/ko-dropdown/list/component', ['exports', 'ember'], function (exports, _ember) {
-
-  // Although you can yield any content inside this component, ensure
-  // that the options have the class .ko-dropdown_list__item
-  //
-  // Example:
-  //
-  //  ```hbs
-  //  {{#ko-dropdown/list}}
-  //    {{each options as |option|}}
-  //      <li class="ko-dropdown_list__item" onclick={{action "myAction" option}}>
-  //        {{option}}
-  //      </li>
-  //    {{/each}}
-  //  {{/ko-dropdown/list}}
-  //  ```
-  exports['default'] = _ember['default'].Component.extend({
-    tagName: 'ul',
-    // Allow users of dropdown list to set style directly in template eg:
-    // {{#ko-dropdown/list style="width: 1000px;"}}
-    //    {{yield}}
-    // {{/ko-dropdown/list}}
-    attributeBindings: ['style'],
-
-    classNames: ['ko-dropdown_list']
-  });
-});
-define("frontend-cp/components/ko-dropdown/list/template", ["exports"], function (exports) {
-  exports["default"] = Ember.HTMLBars.template((function () {
-    return {
-      meta: {
-        "fragmentReason": {
-          "name": "missing-wrapper",
-          "problems": ["wrong-type"]
-        },
-        "revision": "Ember@2.4.3",
-        "loc": {
-          "source": null,
-          "start": {
-            "line": 1,
-            "column": 0
-          },
-          "end": {
-            "line": 2,
-            "column": 0
-          }
-        },
-        "moduleName": "frontend-cp/components/ko-dropdown/list/template.hbs"
-      },
-      isEmpty: false,
-      arity: 0,
-      cachedFragment: null,
-      hasRendered: false,
-      buildFragment: function buildFragment(dom) {
-        var el0 = dom.createDocumentFragment();
-        var el1 = dom.createComment("");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
-        dom.appendChild(el0, el1);
-        return el0;
-      },
-      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var morphs = new Array(1);
-        morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-        dom.insertBoundary(fragment, 0);
-        return morphs;
-      },
-      statements: [["content", "yield", ["loc", [null, [1, 0], [1, 9]]]]],
-      locals: [],
-      templates: []
-    };
-  })());
-});
-define('frontend-cp/components/ko-dropdown/select/button/component', ['exports', 'ember'], function (exports, _ember) {
-  exports['default'] = _ember['default'].Component.extend({
-    //Params:
-    label: '',
-    displayIcon: true,
-
-    // HTML
-    classNames: ['ko-dropdown_select_button']
-  });
-});
-define("frontend-cp/components/ko-dropdown/select/button/template", ["exports"], function (exports) {
-  exports["default"] = Ember.HTMLBars.template((function () {
-    var child0 = (function () {
-      return {
-        meta: {
-          "fragmentReason": false,
-          "revision": "Ember@2.4.3",
-          "loc": {
-            "source": null,
-            "start": {
-              "line": 1,
-              "column": 9
-            },
-            "end": {
-              "line": 1,
-              "column": 83
-            }
-          },
-          "moduleName": "frontend-cp/components/ko-dropdown/select/button/template.hbs"
-        },
-        isEmpty: false,
-        arity: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createElement("span");
-          dom.setAttribute(el1, "class", "ko-dropdown-select__icon i-select");
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes() {
-          return [];
-        },
-        statements: [],
-        locals: [],
-        templates: []
-      };
-    })();
-    return {
-      meta: {
-        "fragmentReason": {
-          "name": "missing-wrapper",
-          "problems": ["wrong-type", "multiple-nodes"]
-        },
-        "revision": "Ember@2.4.3",
-        "loc": {
-          "source": null,
-          "start": {
-            "line": 1,
-            "column": 0
-          },
-          "end": {
-            "line": 1,
-            "column": 90
-          }
-        },
-        "moduleName": "frontend-cp/components/ko-dropdown/select/button/template.hbs"
-      },
-      isEmpty: false,
-      arity: 0,
-      cachedFragment: null,
-      hasRendered: false,
-      buildFragment: function buildFragment(dom) {
-        var el0 = dom.createDocumentFragment();
-        var el1 = dom.createComment("");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createComment("");
-        dom.appendChild(el0, el1);
-        return el0;
-      },
-      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var morphs = new Array(2);
-        morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-        morphs[1] = dom.createMorphAt(fragment, 1, 1, contextualElement);
-        dom.insertBoundary(fragment, 0);
-        dom.insertBoundary(fragment, null);
-        return morphs;
-      },
-      statements: [["content", "label", ["loc", [null, [1, 0], [1, 9]]]], ["block", "if", [["get", "displayIcon", ["loc", [null, [1, 15], [1, 26]]]]], [], 0, null, ["loc", [null, [1, 9], [1, 90]]]]],
       locals: [],
       templates: [child0]
     };
@@ -43952,7 +43086,7 @@ define("frontend-cp/components/ko-identities/template", ["exports"], function (e
               var el2 = dom.createTextNode("\n                  ");
               dom.appendChild(el1, el2);
               var el2 = dom.createElement("div");
-              dom.setAttribute(el2, "class", "ko-dropdown__item-chevron i-chevron-large-down");
+              dom.setAttribute(el2, "class", "i-chevron-large-down");
               dom.appendChild(el1, el2);
               var el2 = dom.createTextNode("\n                ");
               dom.appendChild(el1, el2);
@@ -44019,7 +43153,7 @@ define("frontend-cp/components/ko-identities/template", ["exports"], function (e
             morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
             return morphs;
           },
-          statements: [["block", "basic-dropdown", [], ["renderInPlace", true, "class", "ko-dropdown-container"], 0, 1, ["loc", [null, [10, 14], [42, 33]]]]],
+          statements: [["block", "basic-dropdown", [], ["renderInPlace", true], 0, 1, ["loc", [null, [10, 14], [42, 33]]]]],
           locals: ["emailIdentity"],
           templates: [child0, child1]
         };
@@ -44327,7 +43461,7 @@ define("frontend-cp/components/ko-identities/template", ["exports"], function (e
               var el2 = dom.createTextNode("\n                    ");
               dom.appendChild(el1, el2);
               var el2 = dom.createElement("div");
-              dom.setAttribute(el2, "class", "ko-dropdown__item-chevron i-chevron-large-down");
+              dom.setAttribute(el2, "class", "i-chevron-large-down");
               dom.appendChild(el1, el2);
               var el2 = dom.createTextNode("\n                  ");
               dom.appendChild(el1, el2);
@@ -44392,7 +43526,7 @@ define("frontend-cp/components/ko-identities/template", ["exports"], function (e
             morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
             return morphs;
           },
-          statements: [["block", "basic-dropdown", [], ["renderInPlace", true, "class", "ko-dropdown-container"], 0, 1, ["loc", [null, [52, 14], [72, 33]]]]],
+          statements: [["block", "basic-dropdown", [], ["renderInPlace", true], 0, 1, ["loc", [null, [52, 14], [72, 33]]]]],
           locals: ["twitterIdentity"],
           templates: [child0, child1]
         };
@@ -44683,7 +43817,7 @@ define("frontend-cp/components/ko-identities/template", ["exports"], function (e
                 var el2 = dom.createTextNode("\n                    ");
                 dom.appendChild(el1, el2);
                 var el2 = dom.createElement("div");
-                dom.setAttribute(el2, "class", "ko-dropdown__item-chevron i-chevron-large-down");
+                dom.setAttribute(el2, "class", "i-chevron-large-down");
                 dom.appendChild(el1, el2);
                 var el2 = dom.createTextNode("\n                  ");
                 dom.appendChild(el1, el2);
@@ -44739,7 +43873,7 @@ define("frontend-cp/components/ko-identities/template", ["exports"], function (e
               dom.insertBoundary(fragment, null);
               return morphs;
             },
-            statements: [["block", "basic-dropdown", [], ["renderInPlace", true, "class", "ko-dropdown-container"], 0, 1, ["loc", [null, [83, 16], [100, 35]]]]],
+            statements: [["block", "basic-dropdown", [], ["renderInPlace", true], 0, 1, ["loc", [null, [83, 16], [100, 35]]]]],
             locals: [],
             templates: [child0, child1]
           };
@@ -45125,7 +44259,7 @@ define("frontend-cp/components/ko-identities/template", ["exports"], function (e
                 var el2 = dom.createTextNode("\n                    ");
                 dom.appendChild(el1, el2);
                 var el2 = dom.createElement("div");
-                dom.setAttribute(el2, "class", "ko-dropdown__item-chevron i-chevron-large-down");
+                dom.setAttribute(el2, "class", "i-chevron-large-down");
                 dom.appendChild(el1, el2);
                 var el2 = dom.createTextNode("\n                  ");
                 dom.appendChild(el1, el2);
@@ -45181,7 +44315,7 @@ define("frontend-cp/components/ko-identities/template", ["exports"], function (e
               dom.insertBoundary(fragment, null);
               return morphs;
             },
-            statements: [["block", "basic-dropdown", [], ["renderInPlace", true, "class", "ko-dropdown-container"], 0, 1, ["loc", [null, [114, 16], [131, 35]]]]],
+            statements: [["block", "basic-dropdown", [], ["renderInPlace", true], 0, 1, ["loc", [null, [114, 16], [131, 35]]]]],
             locals: [],
             templates: [child0, child1]
           };
@@ -45443,7 +44577,7 @@ define("frontend-cp/components/ko-identities/template", ["exports"], function (e
             var el3 = dom.createTextNode("\n              ");
             dom.appendChild(el2, el3);
             var el3 = dom.createElement("div");
-            dom.setAttribute(el3, "class", "ko-dropdown__item-chevron i-chevron-large-down");
+            dom.setAttribute(el3, "class", "i-chevron-large-down");
             dom.appendChild(el2, el3);
             var el3 = dom.createTextNode("\n            ");
             dom.appendChild(el2, el3);
@@ -45499,7 +44633,7 @@ define("frontend-cp/components/ko-identities/template", ["exports"], function (e
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [["block", "basic-dropdown", [], ["renderInPlace", true, "class", "ko-dropdown-container ko-identities__create-dropdown"], 0, 1, ["loc", [null, [140, 8], [151, 27]]]]],
+        statements: [["block", "basic-dropdown", [], ["renderInPlace", true, "class", "ko-identities__create-dropdown"], 0, 1, ["loc", [null, [140, 8], [151, 27]]]]],
         locals: [],
         templates: [child0, child1]
       };
@@ -49363,12 +48497,6 @@ define('frontend-cp/components/ko-organisation-action-menu/component', ['exports
             _this.get('closeTab')();
           });
         }
-      },
-      showMenu: function showMenu() {
-        this.set('menuActive', true);
-      },
-      hideMenu: function hideMenu() {
-        this.set('menuActive', false);
       }
     }
 
@@ -49385,12 +48513,12 @@ define("frontend-cp/components/ko-organisation-action-menu/template", ["exports"
             "loc": {
               "source": null,
               "start": {
-                "line": 8,
-                "column": 2
+                "line": 9,
+                "column": 4
               },
               "end": {
-                "line": 12,
-                "column": 2
+                "line": 13,
+                "column": 4
               }
             },
             "moduleName": "frontend-cp/components/ko-organisation-action-menu/template.hbs"
@@ -49403,13 +48531,11 @@ define("frontend-cp/components/ko-organisation-action-menu/template", ["exports"
             var el0 = dom.createDocumentFragment();
             var el1 = dom.createTextNode("      ");
             dom.appendChild(el0, el1);
-            var el1 = dom.createElement("button");
-            dom.setAttribute(el1, "type", "button");
-            dom.setAttribute(el1, "class", "button button--default button--dropdown");
-            var el2 = dom.createTextNode("\n          ");
+            var el1 = dom.createElement("li");
+            dom.setAttribute(el1, "class", "ko-dropdown_list__item");
+            var el2 = dom.createTextNode("\n        ");
             dom.appendChild(el1, el2);
-            var el2 = dom.createElement("i");
-            dom.setAttribute(el2, "class", "i-chevron-large-down");
+            var el2 = dom.createComment("");
             dom.appendChild(el1, el2);
             var el2 = dom.createTextNode("\n      ");
             dom.appendChild(el1, el2);
@@ -49418,245 +48544,104 @@ define("frontend-cp/components/ko-organisation-action-menu/template", ["exports"
             dom.appendChild(el0, el1);
             return el0;
           },
-          buildRenderNodes: function buildRenderNodes() {
-            return [];
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var element0 = dom.childAt(fragment, [1]);
+            var morphs = new Array(2);
+            morphs[0] = dom.createAttrMorph(element0, 'onclick');
+            morphs[1] = dom.createMorphAt(element0, 1, 1);
+            return morphs;
           },
-          statements: [],
+          statements: [["attribute", "onclick", ["subexpr", "action", ["deleteOrganisation"], [], ["loc", [null, [10, 49], [10, 80]]]]], ["inline", "t", ["organisation.delete_organisation"], [], ["loc", [null, [11, 8], [11, 48]]]]],
           locals: [],
           templates: []
         };
       })();
-      var child1 = (function () {
-        var child0 = (function () {
-          var child0 = (function () {
-            return {
-              meta: {
-                "fragmentReason": false,
-                "revision": "Ember@2.4.3",
-                "loc": {
-                  "source": null,
-                  "start": {
-                    "line": 15,
-                    "column": 6
-                  },
-                  "end": {
-                    "line": 19,
-                    "column": 6
-                  }
-                },
-                "moduleName": "frontend-cp/components/ko-organisation-action-menu/template.hbs"
-              },
-              isEmpty: false,
-              arity: 0,
-              cachedFragment: null,
-              hasRendered: false,
-              buildFragment: function buildFragment(dom) {
-                var el0 = dom.createDocumentFragment();
-                var el1 = dom.createTextNode("          ");
-                dom.appendChild(el0, el1);
-                var el1 = dom.createElement("li");
-                dom.setAttribute(el1, "class", "ko-dropdown_list__item");
-                var el2 = dom.createTextNode("\n            ");
-                dom.appendChild(el1, el2);
-                var el2 = dom.createComment("");
-                dom.appendChild(el1, el2);
-                var el2 = dom.createTextNode("\n          ");
-                dom.appendChild(el1, el2);
-                dom.appendChild(el0, el1);
-                var el1 = dom.createTextNode("\n");
-                dom.appendChild(el0, el1);
-                return el0;
-              },
-              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-                var element1 = dom.childAt(fragment, [1]);
-                var morphs = new Array(2);
-                morphs[0] = dom.createAttrMorph(element1, 'onclick');
-                morphs[1] = dom.createMorphAt(element1, 1, 1);
-                return morphs;
-              },
-              statements: [["attribute", "onclick", ["subexpr", "action", ["deleteOrganisation"], [], ["loc", [null, [16, 53], [16, 84]]]]], ["inline", "t", ["organisation.delete_organisation"], [], ["loc", [null, [17, 12], [17, 52]]]]],
-              locals: [],
-              templates: []
-            };
-          })();
-          var child1 = (function () {
-            return {
-              meta: {
-                "fragmentReason": false,
-                "revision": "Ember@2.4.3",
-                "loc": {
-                  "source": null,
-                  "start": {
-                    "line": 21,
-                    "column": 6
-                  },
-                  "end": {
-                    "line": 25,
-                    "column": 6
-                  }
-                },
-                "moduleName": "frontend-cp/components/ko-organisation-action-menu/template.hbs"
-              },
-              isEmpty: false,
-              arity: 0,
-              cachedFragment: null,
-              hasRendered: false,
-              buildFragment: function buildFragment(dom) {
-                var el0 = dom.createDocumentFragment();
-                var el1 = dom.createTextNode("          ");
-                dom.appendChild(el0, el1);
-                var el1 = dom.createElement("li");
-                dom.setAttribute(el1, "class", "ko-dropdown_list__item");
-                var el2 = dom.createTextNode("\n            ");
-                dom.appendChild(el1, el2);
-                var el2 = dom.createComment("");
-                dom.appendChild(el1, el2);
-                var el2 = dom.createTextNode("\n          ");
-                dom.appendChild(el1, el2);
-                dom.appendChild(el0, el1);
-                var el1 = dom.createTextNode("\n");
-                dom.appendChild(el0, el1);
-                return el0;
-              },
-              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-                var element0 = dom.childAt(fragment, [1]);
-                var morphs = new Array(2);
-                morphs[0] = dom.createAttrMorph(element0, 'onclick');
-                morphs[1] = dom.createMorphAt(element0, 1, 1);
-                return morphs;
-              },
-              statements: [["attribute", "onclick", ["subexpr", "action", ["changeUserPassword"], [], ["loc", [null, [22, 53], [22, 84]]]]], ["inline", "t", ["users.changepassword"], [], ["loc", [null, [23, 12], [23, 40]]]]],
-              locals: [],
-              templates: []
-            };
-          })();
-          return {
-            meta: {
-              "fragmentReason": false,
-              "revision": "Ember@2.4.3",
-              "loc": {
-                "source": null,
-                "start": {
-                  "line": 14,
-                  "column": 4
-                },
-                "end": {
-                  "line": 26,
-                  "column": 4
-                }
-              },
-              "moduleName": "frontend-cp/components/ko-organisation-action-menu/template.hbs"
-            },
-            isEmpty: false,
-            arity: 0,
-            cachedFragment: null,
-            hasRendered: false,
-            buildFragment: function buildFragment(dom) {
-              var el0 = dom.createDocumentFragment();
-              var el1 = dom.createComment("");
-              dom.appendChild(el0, el1);
-              var el1 = dom.createTextNode("\n");
-              dom.appendChild(el0, el1);
-              var el1 = dom.createComment("");
-              dom.appendChild(el0, el1);
-              return el0;
-            },
-            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-              var morphs = new Array(2);
-              morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-              morphs[1] = dom.createMorphAt(fragment, 2, 2, contextualElement);
-              dom.insertBoundary(fragment, 0);
-              dom.insertBoundary(fragment, null);
-              return morphs;
-            },
-            statements: [["block", "if", [["get", "hasDeleteOrganisationPermission", ["loc", [null, [15, 12], [15, 43]]]]], [], 0, null, ["loc", [null, [15, 6], [19, 13]]]], ["block", "if", [["get", "hasChangePasswordEmailPermission", ["loc", [null, [21, 12], [21, 44]]]]], [], 1, null, ["loc", [null, [21, 6], [25, 13]]]]],
-            locals: [],
-            templates: [child0, child1]
-          };
-        })();
-        return {
-          meta: {
-            "fragmentReason": false,
-            "revision": "Ember@2.4.3",
-            "loc": {
-              "source": null,
-              "start": {
-                "line": 13,
-                "column": 2
-              },
-              "end": {
-                "line": 27,
-                "column": 2
-              }
-            },
-            "moduleName": "frontend-cp/components/ko-organisation-action-menu/template.hbs"
-          },
-          isEmpty: false,
-          arity: 0,
-          cachedFragment: null,
-          hasRendered: false,
-          buildFragment: function buildFragment(dom) {
-            var el0 = dom.createDocumentFragment();
-            var el1 = dom.createComment("");
-            dom.appendChild(el0, el1);
-            return el0;
-          },
-          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-            var morphs = new Array(1);
-            morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-            dom.insertBoundary(fragment, 0);
-            dom.insertBoundary(fragment, null);
-            return morphs;
-          },
-          statements: [["block", "ko-dropdown/list", [], ["class", "ko-dropdown-select__content", "style", ["subexpr", "@mut", [["get", "contentStyle", ["loc", [null, [14, 66], [14, 78]]]]], [], []]], 0, null, ["loc", [null, [14, 4], [26, 25]]]]],
-          locals: [],
-          templates: [child0]
-        };
-      })();
       return {
         meta: {
-          "fragmentReason": {
-            "name": "missing-wrapper",
-            "problems": ["wrong-type", "multiple-nodes"]
-          },
+          "fragmentReason": false,
           "revision": "Ember@2.4.3",
           "loc": {
             "source": null,
             "start": {
-              "line": 1,
+              "line": 6,
               "column": 0
             },
             "end": {
-              "line": 28,
+              "line": 14,
               "column": 0
             }
           },
           "moduleName": "frontend-cp/components/ko-organisation-action-menu/template.hbs"
         },
         isEmpty: false,
-        arity: 2,
+        arity: 0,
         cachedFragment: null,
         hasRendered: false,
         buildFragment: function buildFragment(dom) {
           var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("\n");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createComment("");
-          dom.appendChild(el0, el1);
           var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
           return el0;
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(2);
-          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
-          morphs[1] = dom.createMorphAt(fragment, 2, 2, contextualElement);
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+          dom.insertBoundary(fragment, 0);
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [["block", "if", [["subexpr", "eq", [["get", "name", ["loc", [null, [8, 12], [8, 16]]]], "button"], [], ["loc", [null, [8, 8], [8, 26]]]]], [], 0, null, ["loc", [null, [8, 2], [12, 9]]]], ["block", "if", [["subexpr", "eq", [["get", "name", ["loc", [null, [13, 12], [13, 16]]]], "content"], [], ["loc", [null, [13, 8], [13, 27]]]]], [], 1, null, ["loc", [null, [13, 2], [27, 9]]]]],
-        locals: ["name", "dropdownContext"],
-        templates: [child0, child1]
+        statements: [["block", "if", [["get", "hasDeleteOrganisationPermission", ["loc", [null, [9, 10], [9, 41]]]]], [], 0, null, ["loc", [null, [9, 4], [13, 11]]]]],
+        locals: [],
+        templates: [child0]
+      };
+    })();
+    var child1 = (function () {
+      return {
+        meta: {
+          "fragmentReason": false,
+          "revision": "Ember@2.4.3",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 14,
+              "column": 0
+            },
+            "end": {
+              "line": 18,
+              "column": 0
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-organisation-action-menu/template.hbs"
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("button");
+          dom.setAttribute(el1, "type", "button");
+          dom.setAttribute(el1, "class", "button button--default button--dropdown");
+          var el2 = dom.createTextNode("\n    ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("i");
+          dom.setAttribute(el2, "class", "i-chevron-large-down");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n  ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes() {
+          return [];
+        },
+        statements: [],
+        locals: [],
+        templates: []
       };
     })();
     return {
@@ -49673,7 +48658,7 @@ define("frontend-cp/components/ko-organisation-action-menu/template", ["exports"
             "column": 0
           },
           "end": {
-            "line": 29,
+            "line": 19,
             "column": 0
           }
         },
@@ -49685,20 +48670,21 @@ define("frontend-cp/components/ko-organisation-action-menu/template", ["exports"
       hasRendered: false,
       buildFragment: function buildFragment(dom) {
         var el0 = dom.createDocumentFragment();
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
         var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
         var morphs = new Array(1);
-        morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-        dom.insertBoundary(fragment, 0);
+        morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["block", "ko-dropdown/container", [], ["alignRight", true, "onFocusOut", "hideMenu", "onFocusIn", "showMenu", "hideOnChildFocus", true, "hideOnClick", true], 0, null, ["loc", [null, [1, 0], [28, 26]]]]],
+      statements: [["block", "basic-dropdown", [], ["renderInPlace", true, "horizontalPosition", "right"], 0, 1, ["loc", [null, [6, 0], [18, 19]]]]],
       locals: [],
-      templates: [child0]
+      templates: [child0, child1]
     };
   })());
 });
@@ -50527,7 +49513,7 @@ define("frontend-cp/components/ko-organisation-content/template", ["exports"], f
             var el3 = dom.createTextNode("\n        ");
             dom.appendChild(el2, el3);
             var el3 = dom.createElement("ul");
-            dom.setAttribute(el3, "class", "list-inline t-right");
+            dom.setAttribute(el3, "class", "list-inline");
             var el4 = dom.createTextNode("\n          ");
             dom.appendChild(el3, el4);
             var el4 = dom.createElement("li");
@@ -54779,9 +53765,7 @@ define("frontend-cp/components/ko-session-widgets/template", ["exports"], functi
       })();
       return {
         meta: {
-          "fragmentReason": {
-            "name": "triple-curlies"
-          },
+          "fragmentReason": false,
           "revision": "Ember@2.4.3",
           "loc": {
             "source": null,
@@ -54805,7 +53789,6 @@ define("frontend-cp/components/ko-session-widgets/template", ["exports"], functi
           var el1 = dom.createTextNode("  ");
           dom.appendChild(el0, el1);
           var el1 = dom.createElement("ul");
-          dom.setAttribute(el1, "class", "ko-dropdown-container-content");
           var el2 = dom.createTextNode("\n    ");
           dom.appendChild(el1, el2);
           var el2 = dom.createElement("li");
@@ -56334,340 +55317,6 @@ define("frontend-cp/components/ko-stateful-button/template", ["exports"], functi
       statements: [["block", "if", [["get", "isLoading", ["loc", [null, [1, 6], [1, 15]]]]], [], 0, 1, ["loc", [null, [1, 0], [10, 7]]]]],
       locals: [],
       templates: [child0, child1]
-    };
-  })());
-});
-define('frontend-cp/components/ko-suggest/component', ['exports', 'ember'], function (exports, _ember) {
-  exports['default'] = _ember['default'].Component.extend({
-    //Params:
-    searchTerm: null,
-    isFocussed: false,
-    hideOnClick: true,
-    shouldAutoFocus: false,
-    displayIcon: true,
-
-    filterResults: _ember['default'].observer('searchTerm', function () {
-      this.sendAction('onSearchTermUpdated', this.get('searchTerm'));
-    }),
-
-    willRender: function willRender() {
-      if (this.get('shouldAutoFocus')) {
-        if (this.$('.ko-suggest__input')) {
-          this.set('isFocussed', true);
-          this.$('.ko-suggest__input').focus();
-        }
-      }
-    },
-
-    actions: {
-      onFocusChanged: function onFocusChanged(focusState) {
-        this.set('isFocussed', focusState);
-      }
-    }
-
-  });
-});
-define("frontend-cp/components/ko-suggest/template", ["exports"], function (exports) {
-  exports["default"] = Ember.HTMLBars.template((function () {
-    var child0 = (function () {
-      var child0 = (function () {
-        var child0 = (function () {
-          return {
-            meta: {
-              "fragmentReason": false,
-              "revision": "Ember@2.4.3",
-              "loc": {
-                "source": null,
-                "start": {
-                  "line": 4,
-                  "column": 4
-                },
-                "end": {
-                  "line": 6,
-                  "column": 4
-                }
-              },
-              "moduleName": "frontend-cp/components/ko-suggest/template.hbs"
-            },
-            isEmpty: false,
-            arity: 0,
-            cachedFragment: null,
-            hasRendered: false,
-            buildFragment: function buildFragment(dom) {
-              var el0 = dom.createDocumentFragment();
-              var el1 = dom.createTextNode("      ");
-              dom.appendChild(el0, el1);
-              var el1 = dom.createElement("input");
-              dom.setAttribute(el1, "type", "text");
-              dom.setAttribute(el1, "class", "input-text ko-suggest__input");
-              dom.appendChild(el0, el1);
-              var el1 = dom.createTextNode("\n");
-              dom.appendChild(el0, el1);
-              return el0;
-            },
-            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-              var element0 = dom.childAt(fragment, [1]);
-              var morphs = new Array(2);
-              morphs[0] = dom.createAttrMorph(element0, 'value');
-              morphs[1] = dom.createAttrMorph(element0, 'oninput');
-              return morphs;
-            },
-            statements: [["attribute", "value", ["get", "searchTerm", ["loc", [null, [5, 70], [5, 80]]]]], ["attribute", "oninput", ["subexpr", "action", [["subexpr", "mut", [["get", "searchTerm", ["loc", [null, [5, 105], [5, 115]]]]], [], ["loc", [null, [5, 100], [5, 116]]]]], ["value", "target.value"], ["loc", [null, [5, 91], [5, 139]]]]]],
-            locals: [],
-            templates: []
-          };
-        })();
-        var child1 = (function () {
-          return {
-            meta: {
-              "fragmentReason": false,
-              "revision": "Ember@2.4.3",
-              "loc": {
-                "source": null,
-                "start": {
-                  "line": 6,
-                  "column": 4
-                },
-                "end": {
-                  "line": 8,
-                  "column": 4
-                }
-              },
-              "moduleName": "frontend-cp/components/ko-suggest/template.hbs"
-            },
-            isEmpty: false,
-            arity: 0,
-            cachedFragment: null,
-            hasRendered: false,
-            buildFragment: function buildFragment(dom) {
-              var el0 = dom.createDocumentFragment();
-              var el1 = dom.createTextNode("      ");
-              dom.appendChild(el0, el1);
-              var el1 = dom.createComment("");
-              dom.appendChild(el0, el1);
-              var el1 = dom.createTextNode("\n");
-              dom.appendChild(el0, el1);
-              return el0;
-            },
-            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-              var morphs = new Array(1);
-              morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
-              return morphs;
-            },
-            statements: [["inline", "ko-dropdown/select/button", [], ["label", ["subexpr", "@mut", [["get", "selectedItem", ["loc", [null, [7, 40], [7, 52]]]]], [], []], "displayIcon", ["subexpr", "@mut", [["get", "displayIcon", ["loc", [null, [7, 65], [7, 76]]]]], [], []]], ["loc", [null, [7, 6], [7, 78]]]]],
-            locals: [],
-            templates: []
-          };
-        })();
-        return {
-          meta: {
-            "fragmentReason": false,
-            "revision": "Ember@2.4.3",
-            "loc": {
-              "source": null,
-              "start": {
-                "line": 2,
-                "column": 2
-              },
-              "end": {
-                "line": 9,
-                "column": 2
-              }
-            },
-            "moduleName": "frontend-cp/components/ko-suggest/template.hbs"
-          },
-          isEmpty: false,
-          arity: 0,
-          cachedFragment: null,
-          hasRendered: false,
-          buildFragment: function buildFragment(dom) {
-            var el0 = dom.createDocumentFragment();
-            var el1 = dom.createComment("");
-            dom.appendChild(el0, el1);
-            return el0;
-          },
-          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-            var morphs = new Array(1);
-            morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-            dom.insertBoundary(fragment, 0);
-            dom.insertBoundary(fragment, null);
-            return morphs;
-          },
-          statements: [["block", "if", [["subexpr", "or", [["get", "isFocussed", ["loc", [null, [4, 14], [4, 24]]]], ["subexpr", "not", [["get", "selectedItem", ["loc", [null, [4, 30], [4, 42]]]]], [], ["loc", [null, [4, 25], [4, 43]]]]], [], ["loc", [null, [4, 10], [4, 44]]]]], [], 0, 1, ["loc", [null, [4, 4], [8, 11]]]]],
-          locals: [],
-          templates: [child0, child1]
-        };
-      })();
-      var child1 = (function () {
-        var child0 = (function () {
-          return {
-            meta: {
-              "fragmentReason": false,
-              "revision": "Ember@2.4.3",
-              "loc": {
-                "source": null,
-                "start": {
-                  "line": 12,
-                  "column": 4
-                },
-                "end": {
-                  "line": 14,
-                  "column": 4
-                }
-              },
-              "moduleName": "frontend-cp/components/ko-suggest/template.hbs"
-            },
-            isEmpty: false,
-            arity: 0,
-            cachedFragment: null,
-            hasRendered: false,
-            buildFragment: function buildFragment(dom) {
-              var el0 = dom.createDocumentFragment();
-              var el1 = dom.createTextNode("      ");
-              dom.appendChild(el0, el1);
-              var el1 = dom.createComment("");
-              dom.appendChild(el0, el1);
-              var el1 = dom.createTextNode("\n");
-              dom.appendChild(el0, el1);
-              return el0;
-            },
-            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-              var morphs = new Array(1);
-              morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
-              return morphs;
-            },
-            statements: [["content", "yield", ["loc", [null, [13, 6], [13, 15]]]]],
-            locals: [],
-            templates: []
-          };
-        })();
-        return {
-          meta: {
-            "fragmentReason": false,
-            "revision": "Ember@2.4.3",
-            "loc": {
-              "source": null,
-              "start": {
-                "line": 11,
-                "column": 2
-              },
-              "end": {
-                "line": 15,
-                "column": 2
-              }
-            },
-            "moduleName": "frontend-cp/components/ko-suggest/template.hbs"
-          },
-          isEmpty: false,
-          arity: 0,
-          cachedFragment: null,
-          hasRendered: false,
-          buildFragment: function buildFragment(dom) {
-            var el0 = dom.createDocumentFragment();
-            var el1 = dom.createComment("");
-            dom.appendChild(el0, el1);
-            return el0;
-          },
-          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-            var morphs = new Array(1);
-            morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-            dom.insertBoundary(fragment, 0);
-            dom.insertBoundary(fragment, null);
-            return morphs;
-          },
-          statements: [["block", "ko-dropdown/list", [], ["class", "ko-dropdown-select__content", "style", ["subexpr", "@mut", [["get", "contentStyle", ["loc", [null, [12, 66], [12, 78]]]]], [], []]], 0, null, ["loc", [null, [12, 4], [14, 25]]]]],
-          locals: [],
-          templates: [child0]
-        };
-      })();
-      return {
-        meta: {
-          "fragmentReason": {
-            "name": "missing-wrapper",
-            "problems": ["wrong-type", "multiple-nodes"]
-          },
-          "revision": "Ember@2.4.3",
-          "loc": {
-            "source": null,
-            "start": {
-              "line": 1,
-              "column": 0
-            },
-            "end": {
-              "line": 17,
-              "column": 0
-            }
-          },
-          "moduleName": "frontend-cp/components/ko-suggest/template.hbs"
-        },
-        isEmpty: false,
-        arity: 2,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createComment("");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createComment("");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n");
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(2);
-          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-          morphs[1] = dom.createMorphAt(fragment, 2, 2, contextualElement);
-          dom.insertBoundary(fragment, 0);
-          return morphs;
-        },
-        statements: [["block", "if", [["subexpr", "eq", [["get", "name", ["loc", [null, [2, 12], [2, 16]]]], "button"], [], ["loc", [null, [2, 8], [2, 26]]]]], [], 0, null, ["loc", [null, [2, 2], [9, 9]]]], ["block", "if", [["subexpr", "eq", [["get", "name", ["loc", [null, [11, 12], [11, 16]]]], "content"], [], ["loc", [null, [11, 8], [11, 27]]]]], [], 1, null, ["loc", [null, [11, 2], [15, 9]]]]],
-        locals: ["name", "dropdownContext"],
-        templates: [child0, child1]
-      };
-    })();
-    return {
-      meta: {
-        "fragmentReason": {
-          "name": "missing-wrapper",
-          "problems": ["wrong-type"]
-        },
-        "revision": "Ember@2.4.3",
-        "loc": {
-          "source": null,
-          "start": {
-            "line": 1,
-            "column": 0
-          },
-          "end": {
-            "line": 18,
-            "column": 0
-          }
-        },
-        "moduleName": "frontend-cp/components/ko-suggest/template.hbs"
-      },
-      isEmpty: false,
-      arity: 0,
-      cachedFragment: null,
-      hasRendered: false,
-      buildFragment: function buildFragment(dom) {
-        var el0 = dom.createDocumentFragment();
-        var el1 = dom.createComment("");
-        dom.appendChild(el0, el1);
-        return el0;
-      },
-      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var morphs = new Array(1);
-        morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-        dom.insertBoundary(fragment, 0);
-        dom.insertBoundary(fragment, null);
-        return morphs;
-      },
-      statements: [["block", "ko-dropdown/container", [], ["hideOnClick", ["subexpr", "@mut", [["get", "hideOnClick", ["loc", [null, [1, 37], [1, 48]]]]], [], []], "hideOnChildFocus", true, "onFocusChanged", "onFocusChanged"], 0, null, ["loc", [null, [1, 0], [17, 26]]]]],
-      locals: [],
-      templates: [child0]
     };
   })());
 });
@@ -64027,7 +62676,7 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
             var el3 = dom.createTextNode("\n        ");
             dom.appendChild(el2, el3);
             var el3 = dom.createElement("ul");
-            dom.setAttribute(el3, "class", "list-inline t-right");
+            dom.setAttribute(el3, "class", "list-inline");
             var el4 = dom.createTextNode("\n          ");
             dom.appendChild(el3, el4);
             var el4 = dom.createElement("li");
@@ -98378,13 +97027,6 @@ define("frontend-cp/styles/components/ko-case-action-menu/styles.scss", ["export
     "ember-basic-dropdown-content": "_ember-basic-dropdown-content_zuq3yf"
   };
 });
-define("frontend-cp/styles/components/ko-case-content/dropdown/styles.scss", ["exports"], function (exports) {
-  exports["default"] = {
-    "ko-case-content_dropdown": "_ko-case-content_dropdown_1qalsl",
-    "ko-case-content_dropdown__label": "_ko-case-content_dropdown__label_1qalsl",
-    "ko-case-content_dropdown__current-value": "_ko-case-content_dropdown__current-value_1qalsl"
-  };
-});
 define("frontend-cp/styles/components/ko-case-content/field/forms/styles.scss", ["exports"], function (exports) {
   exports["default"] = {
     "ko-case-content_field_forms": "_ko-case-content_field_forms_188lxp"
@@ -98496,23 +97138,6 @@ define("frontend-cp/styles/components/ko-draggable-dropzone/styles.scss", ["expo
     "ko-draggable-dropzone__border": "_ko-draggable-dropzone__border_1et6d3"
   };
 });
-define("frontend-cp/styles/components/ko-dropdown/container/button/styles.scss", ["exports"], function (exports) {
-  exports["default"] = {
-    "ko-dropdown_container_button": "_ko-dropdown_container_button_1t1wgx"
-  };
-});
-define("frontend-cp/styles/components/ko-dropdown/container/content/styles.scss", ["exports"], function (exports) {
-  exports["default"] = {
-    "ko-dropdown-container-content": "_ko-dropdown-container-content_1j2cbw"
-  };
-});
-define("frontend-cp/styles/components/ko-dropdown/container/styles.scss", ["exports"], function (exports) {
-  exports["default"] = {
-    "ko-dropdown-container": "_ko-dropdown-container_1y6hvv",
-    "ko-dropdown__item-chevron": "_ko-dropdown__item-chevron_1y6hvv",
-    "focused": "_focused_1y6hvv"
-  };
-});
 define("frontend-cp/styles/components/ko-dropdown/drill-down/styles.scss", ["exports"], function (exports) {
   exports["default"] = {
     "ko-dropdown_drill-down": "_ko-dropdown_drill-down_14yn5c",
@@ -98521,19 +97146,6 @@ define("frontend-cp/styles/components/ko-dropdown/drill-down/styles.scss", ["exp
     "i-chevron-large-left": "_i-chevron-large-left_14yn5c",
     "i-chevron-large-right": "_i-chevron-large-right_14yn5c",
     "ember-power-select-option": "_ember-power-select-option_14yn5c"
-  };
-});
-define("frontend-cp/styles/components/ko-dropdown/list/styles.scss", ["exports"], function (exports) {
-  exports["default"] = {
-    "ko-dropdown_list": "_ko-dropdown_list_t78gyw",
-    "ko-dropdown_list__item": "_ko-dropdown_list__item_t78gyw",
-    "t-caption": "_t-caption_t78gyw"
-  };
-});
-define("frontend-cp/styles/components/ko-dropdown/select/button/styles.scss", ["exports"], function (exports) {
-  exports["default"] = {
-    "ko-dropdown_select_button": "_ko-dropdown_select_button_debhsr",
-    "ko-dropdown-select__icon": "_ko-dropdown-select__icon_debhsr"
   };
 });
 define("frontend-cp/styles/components/ko-editable-text/styles.scss", ["exports"], function (exports) {
@@ -98847,7 +97459,6 @@ define("frontend-cp/styles/components/ko-notification-badge/styles.scss", ["expo
 define("frontend-cp/styles/components/ko-organisation-action-menu/styles.scss", ["exports"], function (exports) {
   exports["default"] = {
     "ko-organisation-action-menu": "_ko-organisation-action-menu_15xj0c",
-    "ko-dropdown-select__content": "_ko-dropdown-select__content_15xj0c",
     "menu-active": "_menu-active_15xj0c",
     "button--dropdown": "_button--dropdown_15xj0c"
   };
@@ -99044,11 +97655,6 @@ define("frontend-cp/styles/components/ko-stateful-button/styles.scss", ["exports
     "ko-stateful-button__button-loading": "_ko-stateful-button__button-loading_1v8se3"
   };
 });
-define("frontend-cp/styles/components/ko-suggest/styles.scss", ["exports"], function (exports) {
-  exports["default"] = {
-    "ko-suggest__input": "_ko-suggest__input_17joqv"
-  };
-});
 define("frontend-cp/styles/components/ko-table/cell/styles.scss", ["exports"], function (exports) {
   exports["default"] = {
     "ko-table_cell": "_ko-table_cell_1i3e8u",
@@ -99126,7 +97732,6 @@ define("frontend-cp/styles/components/ko-text-editor/styles.scss", ["exports"], 
     "ko-text-editor__right-group-item-icon": "_ko-text-editor__right-group-item-icon_1mxvia",
     "ko-text-editor-header-group__item-text": "_ko-text-editor-header-group__item-text_1mxvia",
     "ko-text-editor-header-group__users-item--active": "_ko-text-editor-header-group__users-item--active_1mxvia",
-    "ko-dropdown-container": "_ko-dropdown-container_1mxvia",
     "ko-text-editor__dropzone-and-editor-container": "_ko-text-editor__dropzone-and-editor-container_1mxvia",
     "ko-text-editor__dropzone-and-editor-container--small": "_ko-text-editor__dropzone-and-editor-container--small_1mxvia",
     "ko-text-editor__dropzone-and-editor-container--social": "_ko-text-editor__dropzone-and-editor-container--social_1mxvia",
@@ -99463,6 +98068,13 @@ define("frontend-cp/styles/styles/objects/_dropdown-menu.scss", ["exports"], fun
     "dropdown": "_dropdown_1ufeus",
     "dropdown-menu": "_dropdown-menu_1ufeus",
     "dropdown-menu__item": "_dropdown-menu__item_1ufeus"
+  };
+});
+define("frontend-cp/styles/styles/objects/_dropdown.scss", ["exports"], function (exports) {
+  exports["default"] = {
+    "ko-dropdown_list": "_ko-dropdown_list_1vnf78",
+    "ko-dropdown_list__item": "_ko-dropdown_list__item_1vnf78",
+    "t-caption": "_t-caption_1vnf78"
   };
 });
 define("frontend-cp/styles/styles/objects/_headings.scss", ["exports"], function (exports) {
@@ -101954,7 +100566,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"viewingUsersInactiveThreshold":300000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+79e30b5f"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"viewingUsersInactiveThreshold":300000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+c90471d7"});
 }
 
 /* jshint ignore:end */
