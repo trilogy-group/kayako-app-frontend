@@ -49753,7 +49753,9 @@ define('frontend-cp/components/ko-organisation-content/component', ['exports', '
       if (!oldAttrs || newAttrs.model.value !== oldAttrs.model.value) {
         this.set('notes', []);
         this.set('totalNotes', 0);
+        this.get('model.tags').setObjects([]);
 
+        this.refreshTags();
         this.requestOrganizationNotes();
       }
     },
@@ -62760,7 +62762,7 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember', 
     initEditedTags: function initEditedTags() {
       this.set('editedTags', this.get('model.tags').map(function (tag) {
         return {
-          name: tag.get('id')
+          name: tag.get('name')
         };
       }));
     },
@@ -62813,9 +62815,12 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember', 
       this._super.apply(this, arguments);
 
       if (!oldAttrs || newAttrs.model.value !== oldAttrs.model.value) {
+
         this.set('notes', []);
+        this.get('model.tags').setObjects([]);
         this.set('totalNotes', 0);
 
+        this.refreshTags();
         this.requestUserNotes();
       }
     },
@@ -62885,9 +62890,9 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember', 
       });
     }),
 
-    isTagsFieldEdited: _ember['default'].computed('editedTags.@each.name', 'model.tags.@each.id', function () {
+    isTagsFieldEdited: _ember['default'].computed('editedTags.@each.name', 'model.tags.@each.name', function () {
       var editedTags = this.get('editedTags').mapBy('name');
-      var tags = this.get('model.tags').mapBy('id');
+      var tags = this.get('model.tags').mapBy('name');
       return editedTags.length !== tags.length || _npmLodash['default'].intersection(editedTags, tags).length !== tags.length;
     }),
 
@@ -76091,7 +76096,8 @@ define('frontend-cp/serializers/organization', ['exports', 'frontend-cp/serializ
 
     extractRelationships: function extractRelationships(modelClass, resourceHash) {
       resourceHash.links = {
-        notes: 'notes'
+        notes: 'notes',
+        tags: 'tags'
       };
       return this._super.apply(this, arguments);
     },
@@ -76297,7 +76303,8 @@ define('frontend-cp/serializers/user', ['exports', 'frontend-cp/serializers/appl
 
     extractRelationships: function extractRelationships(modelClass, resourceHash) {
       resourceHash.links = {
-        notes: 'notes'
+        notes: 'notes',
+        tags: 'tags'
       };
       return this._super.apply(this, arguments);
     },
@@ -82392,7 +82399,7 @@ define('frontend-cp/session/admin/automation/sla/index/controller', ['exports', 
 define('frontend-cp/session/admin/automation/sla/index/route', ['exports', 'ember', 'frontend-cp/mixins/remember-route'], function (exports, _ember, _frontendCpMixinsRememberRoute) {
   exports['default'] = _ember['default'].Route.extend(_frontendCpMixinsRememberRoute['default'], {
     model: function model() {
-      return this.store.findAll('sla');
+      return this.store.query('sla', { limit: 10000 });
     }
   });
 });
@@ -101947,7 +101954,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"viewingUsersInactiveThreshold":300000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+a2a09e5d"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"viewingUsersInactiveThreshold":300000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+79e30b5f"});
 }
 
 /* jshint ignore:end */
