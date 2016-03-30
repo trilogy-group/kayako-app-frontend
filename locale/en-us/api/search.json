@@ -13,22 +13,22 @@
   "searchresults": "Search results for \"{term}\"",
   "seemore": "Advanced search",
 
-  "case.id": "Case ID",
-  "case.subject": "Subject",
-  "case.priority.label": "Priority",
-  "case.status.label": "Status",
-  "case.assigneeAgent.fullName": "Assigned agent",
-  "case.notfound": "There are no cases here.",
+  "CASES.id": "Case ID",
+  "CASES.subject": "Subject",
+  "CASES.priority.label": "Priority",
+  "CASES.status.label": "Status",
+  "CASES.assigneeAgent.fullName": "Assigned agent",
+  "CASES.notfound": "There are no cases here.",
 
-  "user.id": "User ID",
-  "user.fullName": "Subject",
-  "user.primaryEmail.email": "Primary email",
-  "user.organization.name": "Organization",
-  "user.lastActivityAt": "Last seen",
-  "user.notfound": "There are no users here.",
+  "USERS.id": "User ID",
+  "USERS.fullName": "Subject",
+  "USERS.primaryEmail.email": "Primary email",
+  "USERS.organization.name": "Organization",
+  "USERS.lastActivityAt": "Last seen",
+  "USERS.notfound": "There are no users here.",
 
-  "organization.id": "Org ID",
-  "organization.name": "Name",
-  "organization.updatedAt": "Last updated",
-  "organization.notfound": "There are no organizations here."
+  "ORGANIZATIONS.id": "Org ID",
+  "ORGANIZATIONS.name": "Name",
+  "ORGANIZATIONS.updatedAt": "Last updated",
+  "ORGANIZATIONS.notfound": "There are no organizations here."
 }
