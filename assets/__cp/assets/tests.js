@@ -7608,6 +7608,7 @@ define('frontend-cp/tests/acceptance/agent/cases/timeline-test', ['exports', 'fr
       identity: identityEmail,
       'case': targetCase,
       original: null,
+      created_at: new Date(),
       contents: 'http://google.com'
     });
 

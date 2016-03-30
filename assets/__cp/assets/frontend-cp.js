@@ -521,8 +521,9 @@ define('frontend-cp/adapters/post', ['exports', 'ember', 'frontend-cp/adapters/a
       if (query.parent) {
         var id = query.parent.id;
         var url = this._super.apply(this, arguments);
+        var type = query.parent.get('constructor.modelName');
         Reflect.deleteProperty(query, 'parent');
-        return url.replace('/posts', '/cases/' + id + '/posts');
+        return url.replace('/posts', '/' + _ember['default'].String.pluralize(type) + '/' + id + '/posts');
       }
       return this._super.apply(this, arguments);
     },
@@ -57746,7 +57747,8 @@ define('frontend-cp/components/ko-timeline/component', ['exports', 'ember', 'npm
 
     classNames: ['ko-timeline'],
 
-    onReplyWithQuote: null,
+    onReplyWithQuote: function onReplyWithQuote() {},
+    onReplyToPost: function onReplyToPost() {},
     onLoadPostsBelow: null,
     onLoadPostsAbove: null,
     onQueryParamsUpdate: null,
@@ -61340,7 +61342,6 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember', 
     isStateSaving: false,
     isTimezoneEdited: false,
     isUserEdited: false,
-    notes: [],
     organizations: [],
     recentFeedback: [],
     replyContent: '',
@@ -61350,7 +61351,11 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember', 
     suggestedTeams: [],
     teamRecords: [],
     teams: [],
-    totalNotes: 0,
+    state: null,
+    filter: '',
+    postId: null,
+    sortOrder: '',
+    onQueryParamsUpdate: null,
 
     // HTML
     classNames: ['ko-user-content'],
@@ -61368,6 +61373,7 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember', 
     intl: service(),
     tagSuggestionService: service('suggestion/tag'),
     organizationSuggestionService: service('suggestion/organization'),
+    timeline: service(),
 
     init: function init() {
       this._super.apply(this, arguments);
@@ -61439,14 +61445,24 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember', 
 
       this._super.apply(this, arguments);
 
-      if (!oldAttrs || newAttrs.model.value !== oldAttrs.model.value) {
-
-        this.set('notes', []);
+      if (!oldAttrs || newAttrs.model.value !== oldAttrs.model.value || newAttrs.sortOrder.value !== oldAttrs.sortOrder.value || newAttrs.filter.value !== oldAttrs.filter.value) {
         this.get('model.tags').setObjects([]);
-        this.set('totalNotes', 0);
-
         this.refreshTags();
-        this.requestUserNotes();
+        var state = _ember['default'].Object.create({
+          posts: [],
+          bottomPostsAvailable: true,
+          topPostsAvailable: Boolean(this.get('postId'))
+        });
+
+        this.set('state', state);
+
+        this.get('timeline').loadPostsBelow(this.get('state'), {
+          model: this.get('model'),
+          filter: this.get('filter'),
+          sortOrder: this.get('sortOrder'),
+          postId: this.get('postId'),
+          including: true
+        });
       }
     },
 
@@ -61565,29 +61581,6 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember', 
       return values;
     }),
 
-    requestUserNotes: function requestUserNotes() {
-      var _this5 = this;
-
-      var store = this.get('store');
-      var user = this.get('model');
-
-      // when we request user note, we convert them to post model
-      // that can be used by ko-feed/item component
-      store.query('user-note', { parent: user, limit: 20 }).then(function (notes) {
-        if (_this5.get('isDestroyed')) {
-          return;
-        }
-
-        _this5.set('totalNotes', notes.get('meta.total'));
-
-        var notesList = store.peekAll('post').filter(function (post) {
-          return post.get('original.parent.id') === user.get('id');
-        });
-
-        _this5.set('notes', notesList);
-      });
-    },
-
     convertErrorsToMap: function convertErrorsToMap(errors) {
       return (errors || []).filter(function (error) {
         return error.parameter;
@@ -61598,7 +61591,7 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember', 
     },
 
     updateDirtyFieldHash: function updateDirtyFieldHash() {
-      var _this6 = this;
+      var _this5 = this;
 
       var editedCustomFields = this.get('editedCustomFields');
       this.get('model.customFields').forEach(function (customField) {
@@ -61611,7 +61604,7 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember', 
 
       var fields = ['isTeamsFieldEdited', 'isTagsFieldEdited', 'isTimezoneEdited', 'isOrganisationEdited', 'isRoleEdited', 'isAccessLevelEdited', 'isFullNameEdited'];
       var systemFieldEdited = fields.any(function (field) {
-        return _this6.get(field);
+        return _this5.get(field);
       });
       var sigEdited = this.get('model').hasDirtyAttribute('signature');
       var customEdited = Object.values(editedCustomFields).reduce(function (accum, current) {
@@ -61639,10 +61632,10 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember', 
     },
 
     refreshTags: function refreshTags() {
-      var _this7 = this;
+      var _this6 = this;
 
       this.get('tagService').refreshTagsForUser(this.get('model')).then(function (tags) {
-        return _this7.initEditedTags();
+        return _this6.initEditedTags();
       });
     },
 
@@ -61667,6 +61660,14 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember', 
       return organization;
     },
 
+    reloadPosts: function reloadPosts() {
+      this.get('timeline').loadPostsBelow(this.get('state'), {
+        model: this.get('model'),
+        filter: this.get('filter'),
+        sortOrder: this.get('sortOrder')
+      });
+    },
+
     actions: {
       textEditorFocusStateChange: function textEditorFocusStateChange(state) {
         if (!state) {
@@ -61683,7 +61684,7 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember', 
       },
 
       searchOrganization: function searchOrganization(query) {
-        var _this8 = this;
+        var _this7 = this;
 
         if (!query) {
           return this.get('organizations');
@@ -61693,7 +61694,7 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember', 
 
         return searchService.suggest(query).then(function (response) {
           if (searchService.isPromiseDiscarded(query)) {
-            return _this8.get('organizations');
+            return _this7.get('organizations');
           }
 
           searchService.flushQueue();
@@ -61703,19 +61704,19 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember', 
       },
 
       toggleUserState: function toggleUserState() {
-        var _this9 = this;
+        var _this8 = this;
 
         this.set('isStateSaving', true);
         this.toggleProperty('model.isEnabled');
         this.get('model').save().then(function () {
-          _this9.get('metrics').trackEvent({
+          _this8.get('metrics').trackEvent({
             event: 'User State Changed',
             category: 'User',
-            action: _this9.get('model.isEnabled') ? 'enabled' : 'disabled',
+            action: _this8.get('model.isEnabled') ? 'enabled' : 'disabled',
             label: 'state button'
           });
 
-          return _this9.resetForm();
+          return _this8.resetForm();
         });
       },
 
@@ -61758,7 +61759,7 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember', 
       },
 
       organizationSelect: function organizationSelect(org) {
-        var _this10 = this;
+        var _this9 = this;
 
         if (org) {
           this.set('model.organization', this.processOrganizationPayload(org));
@@ -61768,8 +61769,8 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember', 
 
         this.set('errorMap.organization_id', null);
         this.get('model').hasDirtyBelongsToRelationship('organization').then(function (relationshipIsDirty) {
-          _this10.set('isOrganisationEdited', relationshipIsDirty);
-          _this10.updateDirtyFieldHash();
+          _this9.set('isOrganisationEdited', relationshipIsDirty);
+          _this9.updateDirtyFieldHash();
         });
       },
 
@@ -61862,7 +61863,7 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember', 
       },
 
       changeUserPassword: function changeUserPassword() {
-        var _this11 = this;
+        var _this10 = this;
 
         var PAYLOAD = { email: this.get('model.primaryEmailAddress') };
         var adapter = getOwner(this).lookup('adapter:application');
@@ -61875,22 +61876,22 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember', 
             'Content-Type': 'application/json'
           }
         }).then(function () {
-          _this11.get('notificationService').add({
+          _this10.get('notificationService').add({
             type: 'success',
-            title: _this11.get('intl').findTranslationByKey('users.password_reset_email.success'),
+            title: _this10.get('intl').findTranslationByKey('users.password_reset_email.success'),
             autodismiss: true
           });
 
-          _this11.get('metrics').trackEvent({
+          _this10.get('metrics').trackEvent({
             event: 'User Password Reset',
             category: 'User',
             action: 'click',
             label: 'reset button'
           });
         }, function (response) {
-          _this11.get('errorHandler').process(response.responseJSON);
+          _this10.get('errorHandler').process(response.responseJSON);
 
-          _this11.get('metrics').trackEvent({
+          _this10.get('metrics').trackEvent({
             event: 'User Password Reset Failed',
             category: 'User',
             action: 'click',
@@ -61900,46 +61901,46 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember', 
       },
 
       submit: function submit() {
-        var _this12 = this;
+        var _this11 = this;
 
         var originalTags = this.get('model.tags').toArray();
         var originalTeams = this.get('model.teams').toArray();
         this.set('model.tags', this.get('editedTags').map(function (tag) {
-          return _this12.get('tagService').getTagByName(get(tag, 'name'));
+          return _this11.get('tagService').getTagByName(get(tag, 'name'));
         }));
         this.set('model.teams', this.get('editedTeams').map(function (team) {
-          return _this12.get('store').peekRecord('team', get(team, 'id'));
+          return _this11.get('store').peekRecord('team', get(team, 'id'));
         }));
         this.set('isSaving', true);
 
         this.get('model').saveWithNote(this.get('replyContent')).then(function () {
-          _this12.get('notificationService').add({
+          _this11.get('notificationService').add({
             type: 'success',
-            title: _this12.get('intl').findTranslationByKey('users.user.updated'),
+            title: _this11.get('intl').findTranslationByKey('users.user.updated'),
             autodismiss: true
           });
 
-          _this12.resetForm();
-          _this12.refreshTags();
-          _this12.requestUserNotes();
-          _this12.initEditedTeams();
+          _this11.resetForm();
+          _this11.refreshTags();
+          _this11.reloadPosts();
+          _this11.initEditedTeams();
 
-          _this12.get('metrics').trackEvent({
+          _this11.get('metrics').trackEvent({
             event: 'User Updated',
             category: 'User',
             action: 'click',
             label: 'submit button'
           });
         }, function (e) {
-          _this12.set('model.tags', originalTags);
-          _this12.set('model.teams', originalTeams);
+          _this11.set('model.tags', originalTags);
+          _this11.set('model.teams', originalTeams);
           e.errors || (e.errors = {});
-          _this12.set('errors', e.errors);
-          _this12.set('errorMap', _this12.convertErrorsToMap(e.errors));
-          _this12.set('isSaving', false);
-          _this12.updateDirtyFieldHash();
+          _this11.set('errors', e.errors);
+          _this11.set('errorMap', _this11.convertErrorsToMap(e.errors));
+          _this11.set('isSaving', false);
+          _this11.updateDirtyFieldHash();
 
-          _this12.get('metrics').trackEvent({
+          _this11.get('metrics').trackEvent({
             event: 'User Update Failed',
             category: 'User',
             action: 'click',
@@ -61968,6 +61969,28 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember', 
 
       updatePostContent: function updatePostContent(newContent) {
         this.set('replyContent', newContent);
+      },
+
+      loadPostsBelow: function loadPostsBelow() {
+        var state = this.get('state');
+
+        this.get('timeline').loadPostsBelow(state, {
+          model: this.get('model'),
+          filter: this.get('filter'),
+          sortOrder: this.get('sortOrder'),
+          postId: this.get('postId')
+        });
+      },
+
+      loadPostsAbove: function loadPostsAbove() {
+        var state = this.get('state');
+
+        this.get('timeline').loadPostsAbove(state, {
+          model: this.get('model'),
+          filter: this.get('filter'),
+          sortOrder: this.get('sortOrder'),
+          postId: this.get('postId')
+        });
       }
     }
   });
@@ -62883,12 +62906,12 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 190,
-                    "column": 6
+                    "line": 191,
+                    "column": 8
                   },
                   "end": {
-                    "line": 228,
-                    "column": 6
+                    "line": 227,
+                    "column": 8
                   }
                 },
                 "moduleName": "frontend-cp/components/ko-user-content/template.hbs"
@@ -62899,24 +62922,15 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
               hasRendered: false,
               buildFragment: function buildFragment(dom) {
                 var el0 = dom.createDocumentFragment();
-                var el1 = dom.createTextNode("        ");
-                dom.appendChild(el0, el1);
-                var el1 = dom.createElement("div");
-                dom.setAttribute(el1, "class", "ko-layout_advanced_editor");
-                var el2 = dom.createTextNode("\n");
-                dom.appendChild(el1, el2);
-                var el2 = dom.createComment("");
-                dom.appendChild(el1, el2);
-                var el2 = dom.createTextNode("        ");
-                dom.appendChild(el1, el2);
-                dom.appendChild(el0, el1);
-                var el1 = dom.createTextNode("\n");
+                var el1 = dom.createComment("");
                 dom.appendChild(el0, el1);
                 return el0;
               },
               buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
                 var morphs = new Array(1);
-                morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
+                morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+                dom.insertBoundary(fragment, 0);
+                dom.insertBoundary(fragment, null);
                 return morphs;
               },
               statements: [["block", "ko-text-editor", [], ["suggestedPeople", ["subexpr", "@mut", [["get", "suggestedPeople", ["loc", [null, [193, 26], [193, 41]]]]], [], []], "peopleCCd", ["subexpr", "@mut", [["get", "peopleCCd", ["loc", [null, [194, 20], [194, 29]]]]], [], []], "suggestedPeopleTotal", ["subexpr", "@mut", [["get", "suggestedPeopleTotal", ["loc", [null, [195, 31], [195, 51]]]]], [], []], "suggestedPeopleLoading", ["subexpr", "@mut", [["get", "suggestedPeopleLoading", ["loc", [null, [196, 33], [196, 55]]]]], [], []], "isPeopleIconAvailable", ["subexpr", "@mut", [["get", "isPeopleAutoCompleteAvailable", ["loc", [null, [197, 32], [197, 61]]]]], [], []], "isTimerIconAvailable", ["subexpr", "@mut", [["get", "isTimerAvailable", ["loc", [null, [198, 31], [198, 47]]]]], [], []], "onPeopleSuggestion", "onPeopleSuggestion", "onAttachFiles", "onAttachFiles", "placeholder", ["subexpr", "t", ["users.add_a_note"], [], ["loc", [null, [201, 22], [201, 44]]]], "isErrored", ["subexpr", "@mut", [["get", "isErrored", ["loc", [null, [202, 20], [202, 29]]]]], [], []], "showControls", ["subexpr", "@mut", [["get", "isShowingControls", ["loc", [null, [203, 23], [203, 40]]]]], [], []], "textAreaIsSmall", true, "onPersonSelected", ["subexpr", "@mut", [["get", "attrs.addCC", ["loc", [null, [205, 27], [205, 38]]]]], [], []], "onPersonRemoved", ["subexpr", "@mut", [["get", "attrs.removeCC", ["loc", [null, [206, 26], [206, 40]]]]], [], []], "onTextChanged", ["subexpr", "action", ["updatePostContent"], [], ["loc", [null, [207, 24], [207, 52]]]], "value", ["subexpr", "@mut", [["get", "replyContent", ["loc", [null, [208, 16], [208, 28]]]]], [], []], "onFocusStateChange", ["subexpr", "action", ["textEditorFocusStateChange"], [], ["loc", [null, [209, 29], [209, 66]]]]], 0, null, ["loc", [null, [192, 10], [226, 29]]]]],
@@ -62932,12 +62946,12 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
                 "loc": {
                   "source": null,
                   "start": {
-                    "line": 228,
-                    "column": 6
+                    "line": 227,
+                    "column": 8
                   },
                   "end": {
-                    "line": 232,
-                    "column": 6
+                    "line": 231,
+                    "column": 8
                   }
                 },
                 "moduleName": "frontend-cp/components/ko-user-content/template.hbs"
@@ -62948,11 +62962,11 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
               hasRendered: false,
               buildFragment: function buildFragment(dom) {
                 var el0 = dom.createDocumentFragment();
-                var el1 = dom.createTextNode("        ");
+                var el1 = dom.createTextNode("          ");
                 dom.appendChild(el0, el1);
                 var el1 = dom.createElement("div");
                 dom.setAttribute(el1, "class", "ko-layout_advanced_editor__placeholder");
-                var el2 = dom.createTextNode("\n          ");
+                var el2 = dom.createTextNode("\n            ");
                 dom.appendChild(el1, el2);
                 var el2 = dom.createComment("");
                 dom.appendChild(el1, el2);
@@ -62963,7 +62977,7 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
                 var el3 = dom.createComment("");
                 dom.appendChild(el2, el3);
                 dom.appendChild(el1, el2);
-                var el2 = dom.createTextNode("...\n        ");
+                var el2 = dom.createTextNode("...\n          ");
                 dom.appendChild(el1, el2);
                 dom.appendChild(el0, el1);
                 var el1 = dom.createTextNode("\n");
@@ -62980,7 +62994,7 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
                 morphs[3] = dom.createMorphAt(element6, 0, 0);
                 return morphs;
               },
-              statements: [["element", "action", ["beginReply"], [], ["loc", [null, [229, 13], [229, 36]]]], ["inline", "t", ["generic.reply.click_to_leave_a"], [], ["loc", [null, [230, 10], [230, 48]]]], ["element", "action", ["beginReply"], [], ["loc", [null, [230, 97], [230, 120]]]], ["inline", "t", ["generic.reply.note"], [], ["loc", [null, [230, 121], [230, 147]]]]],
+              statements: [["element", "action", ["beginReply"], [], ["loc", [null, [228, 15], [228, 38]]]], ["inline", "t", ["generic.reply.click_to_leave_a"], [], ["loc", [null, [229, 12], [229, 50]]]], ["element", "action", ["beginReply"], [], ["loc", [null, [229, 99], [229, 122]]]], ["inline", "t", ["generic.reply.note"], [], ["loc", [null, [229, 123], [229, 149]]]]],
               locals: [],
               templates: []
             };
@@ -63008,18 +63022,27 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
             hasRendered: false,
             buildFragment: function buildFragment(dom) {
               var el0 = dom.createDocumentFragment();
-              var el1 = dom.createComment("");
+              var el1 = dom.createTextNode("      ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createElement("div");
+              dom.setAttribute(el1, "class", "ko-layout_advanced_editor");
+              var el2 = dom.createTextNode("\n");
+              dom.appendChild(el1, el2);
+              var el2 = dom.createComment("");
+              dom.appendChild(el1, el2);
+              var el2 = dom.createTextNode("      ");
+              dom.appendChild(el1, el2);
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n");
               dom.appendChild(el0, el1);
               return el0;
             },
             buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
               var morphs = new Array(1);
-              morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-              dom.insertBoundary(fragment, 0);
-              dom.insertBoundary(fragment, null);
+              morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
               return morphs;
             },
-            statements: [["block", "if", [["get", "isEditInProgress", ["loc", [null, [190, 12], [190, 28]]]]], [], 0, 1, ["loc", [null, [190, 6], [232, 13]]]]],
+            statements: [["block", "if", [["get", "isEditInProgress", ["loc", [null, [191, 14], [191, 30]]]]], [], 0, 1, ["loc", [null, [191, 8], [231, 15]]]]],
             locals: [],
             templates: [child0, child1]
           };
@@ -63075,7 +63098,7 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
                 "column": 2
               },
               "end": {
-                "line": 244,
+                "line": 252,
                 "column": 2
               }
             },
@@ -63100,7 +63123,7 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
             morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
             return morphs;
           },
-          statements: [["inline", "ko-timeline", [], ["controlsVisible", false, "model", ["subexpr", "@mut", [["get", "model", ["loc", [null, [239, 12], [239, 17]]]]], [], []], "posts", ["subexpr", "@mut", [["get", "notes", ["loc", [null, [240, 12], [240, 17]]]]], [], []], "totalNotes", ["subexpr", "@mut", [["get", "totalNotes", ["loc", [null, [241, 17], [241, 27]]]]], [], []], "isReplyDisabled", true], ["loc", [null, [237, 4], [243, 6]]]]],
+          statements: [["inline", "ko-timeline", [], ["controlsVisible", true, "model", ["subexpr", "@mut", [["get", "model", ["loc", [null, [239, 12], [239, 17]]]]], [], []], "loadingTop", ["subexpr", "@mut", [["get", "state.loadingTop", ["loc", [null, [240, 17], [240, 33]]]]], [], []], "loadingBottom", ["subexpr", "@mut", [["get", "state.loadingBottom", ["loc", [null, [241, 20], [241, 39]]]]], [], []], "posts", ["subexpr", "@mut", [["get", "state.posts", ["loc", [null, [242, 12], [242, 23]]]]], [], []], "bottomPostsAvailable", ["subexpr", "@mut", [["get", "state.bottomPostsAvailable", ["loc", [null, [243, 27], [243, 53]]]]], [], []], "topPostsAvailable", ["subexpr", "@mut", [["get", "state.topPostsAvailable", ["loc", [null, [244, 24], [244, 47]]]]], [], []], "onLoadPostsBelow", ["subexpr", "action", ["loadPostsBelow"], [], ["loc", [null, [245, 23], [245, 48]]]], "onLoadPostsAbove", ["subexpr", "action", ["loadPostsAbove"], [], ["loc", [null, [246, 23], [246, 48]]]], "isReplyDisabled", true, "sortOrder", ["subexpr", "@mut", [["get", "sortOrder", ["loc", [null, [248, 16], [248, 25]]]]], [], []], "filter", ["subexpr", "@mut", [["get", "filter", ["loc", [null, [249, 13], [249, 19]]]]], [], []], "onQueryParamsUpdate", ["subexpr", "@mut", [["get", "onQueryParamsUpdate", ["loc", [null, [250, 26], [250, 45]]]]], [], []]], ["loc", [null, [237, 4], [251, 6]]]]],
           locals: [],
           templates: []
         };
@@ -63119,7 +63142,7 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
               "column": 0
             },
             "end": {
-              "line": 245,
+              "line": 253,
               "column": 0
             }
           },
@@ -63162,7 +63185,7 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [["block", "if", [["subexpr", "eq", [["get", "name", ["loc", [null, [2, 12], [2, 16]]]], "sidebar-sticky"], [], ["loc", [null, [2, 8], [2, 34]]]]], [], 0, null, ["loc", [null, [2, 2], [12, 9]]]], ["block", "if", [["subexpr", "eq", [["get", "name", ["loc", [null, [14, 12], [14, 16]]]], "sidebar"], [], ["loc", [null, [14, 8], [14, 27]]]]], [], 1, null, ["loc", [null, [14, 2], [129, 9]]]], ["block", "if", [["subexpr", "eq", [["get", "name", ["loc", [null, [131, 12], [131, 16]]]], "heading"], [], ["loc", [null, [131, 8], [131, 27]]]]], [], 2, null, ["loc", [null, [131, 2], [186, 9]]]], ["block", "if", [["get", "features.userNote", ["loc", [null, [188, 8], [188, 25]]]]], [], 3, null, ["loc", [null, [188, 2], [234, 9]]]], ["block", "if", [["subexpr", "eq", [["get", "name", ["loc", [null, [236, 12], [236, 16]]]], "timeline-area"], [], ["loc", [null, [236, 8], [236, 33]]]]], [], 4, null, ["loc", [null, [236, 2], [244, 9]]]]],
+        statements: [["block", "if", [["subexpr", "eq", [["get", "name", ["loc", [null, [2, 12], [2, 16]]]], "sidebar-sticky"], [], ["loc", [null, [2, 8], [2, 34]]]]], [], 0, null, ["loc", [null, [2, 2], [12, 9]]]], ["block", "if", [["subexpr", "eq", [["get", "name", ["loc", [null, [14, 12], [14, 16]]]], "sidebar"], [], ["loc", [null, [14, 8], [14, 27]]]]], [], 1, null, ["loc", [null, [14, 2], [129, 9]]]], ["block", "if", [["subexpr", "eq", [["get", "name", ["loc", [null, [131, 12], [131, 16]]]], "heading"], [], ["loc", [null, [131, 8], [131, 27]]]]], [], 2, null, ["loc", [null, [131, 2], [186, 9]]]], ["block", "if", [["get", "features.userNote", ["loc", [null, [188, 8], [188, 25]]]]], [], 3, null, ["loc", [null, [188, 2], [234, 9]]]], ["block", "if", [["subexpr", "eq", [["get", "name", ["loc", [null, [236, 12], [236, 16]]]], "timeline-area"], [], ["loc", [null, [236, 8], [236, 33]]]]], [], 4, null, ["loc", [null, [236, 2], [252, 9]]]]],
         locals: ["name"],
         templates: [child0, child1, child2, child3, child4]
       };
@@ -63176,11 +63199,11 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
             "loc": {
               "source": null,
               "start": {
-                "line": 248,
+                "line": 256,
                 "column": 2
               },
               "end": {
-                "line": 263,
+                "line": 271,
                 "column": 2
               }
             },
@@ -63264,7 +63287,7 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
             morphs[6] = dom.createMorphAt(element4, 1, 1);
             return morphs;
           },
-          statements: [["attribute", "value", ["get", "editingSignature", ["loc", [null, [249, 47], [249, 63]]]]], ["attribute", "oninput", ["subexpr", "action", [["subexpr", "mut", [["get", "editingSignature", ["loc", [null, [249, 88], [249, 104]]]]], [], ["loc", [null, [249, 83], [249, 105]]]]], ["value", "target.value"], ["loc", [null, [249, 74], [249, 128]]]]], ["inline", "t", ["users.signaturemessage"], [], ["loc", [null, [252, 8], [252, 38]]]], ["attribute", "onclick", ["subexpr", "action", ["closeSignatureModal"], [], ["loc", [null, [255, 19], [255, 51]]]]], ["inline", "t", ["generic.cancel"], [], ["loc", [null, [256, 10], [256, 32]]]], ["attribute", "onclick", ["subexpr", "action", ["updateSignature"], [], ["loc", [null, [258, 55], [258, 83]]]]], ["inline", "t", ["users.update_signature"], [], ["loc", [null, [259, 10], [259, 40]]]]],
+          statements: [["attribute", "value", ["get", "editingSignature", ["loc", [null, [257, 47], [257, 63]]]]], ["attribute", "oninput", ["subexpr", "action", [["subexpr", "mut", [["get", "editingSignature", ["loc", [null, [257, 88], [257, 104]]]]], [], ["loc", [null, [257, 83], [257, 105]]]]], ["value", "target.value"], ["loc", [null, [257, 74], [257, 128]]]]], ["inline", "t", ["users.signaturemessage"], [], ["loc", [null, [260, 8], [260, 38]]]], ["attribute", "onclick", ["subexpr", "action", ["closeSignatureModal"], [], ["loc", [null, [263, 19], [263, 51]]]]], ["inline", "t", ["generic.cancel"], [], ["loc", [null, [264, 10], [264, 32]]]], ["attribute", "onclick", ["subexpr", "action", ["updateSignature"], [], ["loc", [null, [266, 55], [266, 83]]]]], ["inline", "t", ["users.update_signature"], [], ["loc", [null, [267, 10], [267, 40]]]]],
           locals: [],
           templates: []
         };
@@ -63276,11 +63299,11 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
           "loc": {
             "source": null,
             "start": {
-              "line": 247,
+              "line": 255,
               "column": 0
             },
             "end": {
-              "line": 264,
+              "line": 272,
               "column": 0
             }
           },
@@ -63303,7 +63326,7 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [["block", "ko-editor-modal", [], ["title", ["subexpr", "t", ["users.editsignature"], [], ["loc", [null, [248, 27], [248, 52]]]]], 0, null, ["loc", [null, [248, 2], [263, 22]]]]],
+        statements: [["block", "ko-editor-modal", [], ["title", ["subexpr", "t", ["users.editsignature"], [], ["loc", [null, [256, 27], [256, 52]]]]], 0, null, ["loc", [null, [256, 2], [271, 22]]]]],
         locals: [],
         templates: [child0]
       };
@@ -63322,7 +63345,7 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
             "column": 0
           },
           "end": {
-            "line": 265,
+            "line": 273,
             "column": 0
           }
         },
@@ -63350,7 +63373,7 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["block", "ko-layout/advanced", [], [], 0, null, ["loc", [null, [1, 0], [245, 23]]]], ["block", "if", [["get", "signatureModal", ["loc", [null, [247, 6], [247, 20]]]]], [], 1, null, ["loc", [null, [247, 0], [264, 7]]]]],
+      statements: [["block", "ko-layout/advanced", [], [], 0, null, ["loc", [null, [1, 0], [253, 23]]]], ["block", "if", [["get", "signatureModal", ["loc", [null, [255, 6], [255, 20]]]]], [], 1, null, ["loc", [null, [255, 0], [272, 7]]]]],
       locals: [],
       templates: [child0, child1]
     };
@@ -68419,6 +68442,30 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
 
     this.get('/api/v1/cases/:id/posts', function (db) {
       return {
+        data: db.posts.sortBy('created_at').reverse(),
+        limit: 10,
+        resource: 'post',
+        resources: {
+          brand: arrayToObjectWithNumberedKeys(db.brands),
+          attachments: arrayToObjectWithNumberedKeys(db.attachments),
+          case_message: arrayToObjectWithNumberedKeys(db['case-messages']),
+          identity_domain: arrayToObjectWithNumberedKeys(db['identity-domains']),
+          identity_email: arrayToObjectWithNumberedKeys(db['identity-emails']),
+          identity_phone: arrayToObjectWithNumberedKeys(db['identity-phones']),
+          locale: arrayToObjectWithNumberedKeys(db.locales),
+          mailbox: arrayToObjectWithNumberedKeys(db.mailboxes),
+          message_recipient: arrayToObjectWithNumberedKeys(db['message-recipients']),
+          organization: arrayToObjectWithNumberedKeys(db.organizations),
+          role: arrayToObjectWithNumberedKeys(db.roles),
+          user: arrayToObjectWithNumberedKeys(db.users)
+        },
+        status: 200,
+        total_count: db.posts.length
+      };
+    });
+
+    this.get('/api/v1/users/:id/posts', function (db) {
+      return {
         data: db.posts,
         limit: 10,
         resource: 'post',
@@ -68442,6 +68489,17 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
     });
 
     this.get('/api/v1/cases/:case_id/posts/:post_id', function (db, req) {
+      var post = db.posts.find(req.params.post_id);
+
+      return {
+        status: 200,
+        data: post,
+        resource: 'post',
+        resources: {}
+      };
+    });
+
+    this.get('/api/v1/users/:case_id/posts/:post_id', function (db, req) {
       var post = db.posts.find(req.params.post_id);
 
       return {
@@ -68590,6 +68648,28 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
     });
 
     this.get('/api/v1/cases/:id/activities', function (db, request) {
+      var since = request.queryParams.since;
+      var until = request.queryParams.until;
+
+      var activities = db.activities;
+      if (since) {
+        activities = activities.filter(function (activity) {
+          return (0, _moment['default'])(activity.created_at).isAfter(_moment['default'].unix(since));
+        });
+      } else if (until) {
+        activities = activities.filter(function (activity) {
+          return (0, _moment['default'])(activity.created_at).isBefore(_moment['default'].unix(until));
+        });
+      }
+      return {
+        data: activities,
+        resource: 'activity',
+        status: 200,
+        total_count: db.activities.length
+      };
+    });
+
+    this.get('/api/v1/users/:id/activities', function (db, request) {
       var since = request.queryParams.since;
       var until = request.queryParams.until;
 
@@ -73222,7 +73302,6 @@ define('frontend-cp/models/plan', ['exports', 'ember-data', 'model-fragments'], 
 define('frontend-cp/models/post', ['exports', 'ember-data'], function (exports, _emberData) {
   exports['default'] = _emberData['default'].Model.extend({
     uuid: _emberData['default'].attr('string'),
-    sequence: _emberData['default'].attr('number'),
     subject: _emberData['default'].attr('string'),
     contents: _emberData['default'].attr('string'),
     creator: _emberData['default'].belongsTo('user', { async: false }),
@@ -73952,7 +74031,7 @@ define('frontend-cp/serializers/application', ['exports', 'ember', 'ember-data',
   var underscore = _Ember$String.underscore;
 
   var errorCodes = ['FIELD_REQUIRED', 'FIELD_DUPLICATE', 'FIELD_EMPTY', 'FIELD_INVALID'];
-  var errorMessages = _npmLodash['default'].zipObject(errorCodes.map(function (e) {
+  var errorMessages = _npmLodash['default'].fromPairs(errorCodes.map(function (e) {
     return [e, 'generic.error.' + e.toLowerCase()];
   }));
   var isValidationError = function isValidationError(e) {
@@ -74003,14 +74082,6 @@ define('frontend-cp/serializers/application', ['exports', 'ember', 'ember-data',
         if (typeof payload.meta.next_url !== 'undefined') {
           payload.meta.next = payload.meta.next_url;
           Reflect.deleteProperty(payload.meta, 'next_url');
-        }
-        if (typeof payload.meta.offset !== 'undefined') {
-          payload.meta.offset = payload.meta.offset;
-          Reflect.deleteProperty(payload.meta, 'offset');
-        }
-        if (typeof payload.meta.limit !== 'undefined') {
-          payload.meta.limit = payload.meta.limit;
-          Reflect.deleteProperty(payload.meta, 'limit');
         }
       }
       return this._super.apply(this, arguments);
@@ -75518,7 +75589,6 @@ define('frontend-cp/services/case-tab', ['exports', 'ember', 'npm:lodash', 'fron
 
     addPostFromReply: function addPostFromReply(tabId, model, post, sortOrder) {
       var state = this.getState(tabId);
-      this.get('timeline').addPost(model, post);
 
       if (sortOrder === 'newest' && !state.get('topPostsAvailable')) {
         state.get('posts').unshiftObject(post);
@@ -78883,7 +78953,6 @@ define('frontend-cp/services/timeline', ['exports', 'ember', 'npm:lodash'], func
   function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
   var Promise = _ember['default'].RSVP.Promise;
-  var defaultPostCount = 10;
 
   var includeActivities = function includeActivities(filter) {
     return filter === 'all' || filter === 'posts,activities';
@@ -78892,92 +78961,60 @@ define('frontend-cp/services/timeline', ['exports', 'ember', 'npm:lodash'], func
     return filter === 'all' || filter === 'posts,events';
   };
 
+  /**
+   * Perform merge by timestamp.
+   * When same-date conflicts occur, the first timeline objects will be
+   * considered to be newer.
+   *
+   * @param {Array<DS.Model>} activities 1st timeline
+   * @param {Array<DS.Model>} posts 2nd timeline
+   * @param {String} direction older or newer
+   * @return {Array<DS.Model>} merged timeline
+   */
+  var mergeTwoTimelines = function mergeTwoTimelines(activities, posts, direction) {
+    var postsWithActivities = [];
+    while (posts.length !== 0 || activities.length !== 0) {
+      var topPost = posts[0];
+      var topActivity = activities[0];
+
+      if (!topPost) {
+        postsWithActivities.push(topActivity);
+        activities.splice(0, 1);
+        continue;
+      }
+
+      if (!topActivity) {
+        postsWithActivities.push(topPost);
+        posts.splice(0, 1);
+        continue;
+      }
+
+      var postDate = topPost.get('createdAt');
+      var activityDate = topActivity.get('createdAt');
+
+      if (direction === 'newer') {
+        if (activityDate.getTime() < postDate.getTime()) {
+          postsWithActivities.push(topActivity);
+          activities.splice(0, 1);
+        } else {
+          postsWithActivities.push(topPost);
+          posts.splice(0, 1);
+        }
+      } else if (direction === 'older') {
+        if (postDate.getTime() > activityDate.getTime()) {
+          postsWithActivities.push(topPost);
+          posts.splice(0, 1);
+        } else {
+          postsWithActivities.push(topActivity);
+          activities.splice(0, 1);
+        }
+      }
+    }
+    return postsWithActivities;
+  };
+
   exports['default'] = _ember['default'].Service.extend({
     store: _ember['default'].inject.service(),
-
-    cache: null,
-
-    initCache: _ember['default'].on('init', function () {
-      this.set('cache', {});
-    }),
-
-    /**
-     * Return cache object for a given parent model
-     *
-     * @private
-     * @param {DS.Model} model model
-     * @return {*} cache object
-     */
-    _getCache: function _getCache(model) {
-      var cacheKey = model.constructor.modelName + '_' + model.get('id');
-
-      var cache = this.get('cache')[cacheKey];
-      if (!cache) {
-        cache = this.get('cache')[cacheKey] = {
-          posts: {},
-          newestPost: null,
-          oldestPost: null,
-          total: null,
-          activities: [],
-          firstActivityTimestamp: null,
-          lastActivityTimestamp: null
-        };
-      }
-      return cache;
-    },
-
-    /**
-     * Return the most recent post, or null if no posts. Result is wrapped
-     * in a Promise.
-     *
-     * @private
-     * @param {DS.Model} model model
-     * @return {Promise} post
-     */
-    _getNewestPost: function _getNewestPost(model) {
-      var _this = this;
-
-      return this._fetchPosts(model).then(function () {
-        return _this._getCache(model).newestPost;
-      });
-    },
-
-    /**
-     * Add post to the cache.
-     *
-     * @param {DS.Model} model model
-     * @param {DS.Model} post post
-     */
-    addPost: function addPost(model, post) {
-      var cache = this._getCache(model);
-      cache.posts[post.get('sequence')] = post;
-      cache.total += 1;
-      var previousPost = cache.newestPost;
-      if (!previousPost || previousPost.get('sequence') < post.get('sequence')) {
-        cache.newestPost = post;
-      }
-    },
-
-    /**
-     * Return the oldest post, or null if no posts. Result is wrapped
-     * in a Promise.
-     *
-     * @private
-     * @param {DS.Model} model model
-     * @return {Promise<DS.Model>} post
-     */
-    _getOldestPost: function _getOldestPost(model) {
-      var cache = this._getCache(model);
-      if (cache.oldestPost) {
-        return Promise.resolve(cache.oldestPost);
-      } else if (cache.total === 0) {
-        return Promise.resolve(null);
-      } else {
-        return this._fetchPosts(model, { beforeId: 0 }).then(function () {
-          return cache.oldestPost;
-        });
-      }
-    },
 
     /**
      * Get a single post.
@@ -79013,14 +79050,14 @@ define('frontend-cp/services/timeline', ['exports', 'ember', 'npm:lodash'], func
      * @return {Promise} posts
      */
     getPosts: function getPosts(model, postId) {
-      var _this2 = this;
+      var _this = this;
 
       var _ref = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
 
       var _ref$direction = _ref.direction;
       var direction = _ref$direction === undefined ? 'older' : _ref$direction;
       var _ref$count = _ref.count;
-      var count = _ref$count === undefined ? defaultPostCount : _ref$count;
+      var count = _ref$count === undefined ? 10 : _ref$count;
       var _ref$includeActivities = _ref.includeActivities;
       var includeActivities = _ref$includeActivities === undefined ? true : _ref$includeActivities;
       var _ref$includeEvents = _ref.includeEvents;
@@ -79028,44 +79065,41 @@ define('frontend-cp/services/timeline', ['exports', 'ember', 'npm:lodash'], func
       var _ref$including = _ref.including;
       var including = _ref$including === undefined ? false : _ref$including;
 
-      var post = undefined;
+      var posts = undefined;
+      var startingPost = undefined;
+      var morePostsAvailable = undefined;
+
+      var startFromTop = !postId;
+      var queryParamName = direction === 'older' ? 'afterId' : 'beforeId';
 
       if (postId) {
-        post = this._getSinglePost(model, postId);
+        posts = this._getSinglePost(model, postId).then(function (post) {
+          var _fetchPosts2;
+
+          startingPost = post;
+          return _this._fetchPosts(model, (_fetchPosts2 = {}, _defineProperty(_fetchPosts2, queryParamName, postId), _defineProperty(_fetchPosts2, 'limit', including ? count - 1 : count), _fetchPosts2)).then(function (posts) {
+            return [post].concat(posts.toArray());
+          });
+        });
       } else {
-        post = direction === 'older' ? this._getNewestPost(model) : this._getOldestPost(model);
+        posts = direction === 'older' ? this._fetchPosts(model) : this._fetchPosts(model, { beforeId: 0 });
       }
 
-      return post.then(function (post) {
-        if (!post) {
-          return { posts: [], morePostsAvailable: false };
-        }
-        return _this2._getPostsRecursive(model, post, direction, including ? count - 1 : count).then(function (posts) {
-          return [post].concat(posts);
-        })
-        // Load activities
-        .then(function (posts) {
-          return Promise.all([includeActivities ? _this2._getActivitiesForPosts(model, posts, direction, 'activity') : [], includeEvents ? _this2._getActivitiesForPosts(model, posts, direction, 'event') : [], posts]);
-        }).then(function (_ref2) {
-          var _ref22 = _slicedToArray(_ref2, 3);
+      return posts.then(function (posts) {
+        morePostsAvailable = !(posts.get('length') < (including ? count : count + 1));
+
+        return Promise.all([includeActivities ? _this._getActivitiesForPosts(model, posts, direction, 'activity', startFromTop, morePostsAvailable) : [], includeEvents ? _this._getActivitiesForPosts(model, posts, direction, 'event', startFromTop, morePostsAvailable) : []]).then(function (_ref2) {
+          var _ref22 = _slicedToArray(_ref2, 2);
 
           var activities = _ref22[0];
           var events = _ref22[1];
-          var posts = _ref22[2];
-
-          var cache = _this2._getCache(model);
-          var morePostsAvailable = undefined;
-          if (direction === 'older') {
-            morePostsAvailable = posts.get('lastObject.sequence') !== 1;
-          } else {
-            morePostsAvailable = posts.get('lastObject.sequence') !== cache.total;
-          }
 
           // Merge events, activities and posts
-          var all = _this2._mergeTwoTimelines(_this2._mergeTwoTimelines(activities, events, direction), posts, direction);
+          var all = mergeTwoTimelines(mergeTwoTimelines(activities, events, direction), posts, direction);
+
           // Finally, remove initial post if it's not required
           all = including ? all : all.filter(function (p) {
-            return p !== post;
+            return p !== startingPost;
           });
           return { posts: all, morePostsAvailable: morePostsAvailable };
         });
@@ -79127,59 +79161,6 @@ define('frontend-cp/services/timeline', ['exports', 'ember', 'npm:lodash'], func
     },
 
     /**
-     * Perform merge by timestamp.
-     * When same-date conflicts occur, the first timeline objects will be
-     * considered to be newer.
-     *
-     * @private
-     * @param {Array<DS.Model>} activities 1st timeline
-     * @param {Array<DS.Model>} posts 2nd timeline
-     * @param {String} direction older or newer
-     * @return {Array<DS.Model>} merged timeline
-     */
-    _mergeTwoTimelines: function _mergeTwoTimelines(activities, posts, direction) {
-      var postsWithActivities = [];
-      while (posts.length !== 0 || activities.length !== 0) {
-        var topPost = posts[0];
-        var topActivity = activities[0];
-
-        if (!topPost) {
-          postsWithActivities.push(topActivity);
-          activities.splice(0, 1);
-          continue;
-        }
-
-        if (!topActivity) {
-          postsWithActivities.push(topPost);
-          posts.splice(0, 1);
-          continue;
-        }
-
-        var postDate = topPost.get('createdAt');
-        var activityDate = topActivity.get('createdAt');
-
-        if (direction === 'newer') {
-          if (activityDate.getTime() < postDate.getTime()) {
-            postsWithActivities.push(topActivity);
-            activities.splice(0, 1);
-          } else {
-            postsWithActivities.push(topPost);
-            posts.splice(0, 1);
-          }
-        } else if (direction === 'older') {
-          if (postDate.getTime() > activityDate.getTime()) {
-            postsWithActivities.push(topPost);
-            posts.splice(0, 1);
-          } else {
-            postsWithActivities.push(topActivity);
-            activities.splice(0, 1);
-          }
-        }
-      }
-      return postsWithActivities;
-    },
-
-    /**
      * Get all activites for a range of posts.
      *
      * @private
@@ -79187,26 +79168,39 @@ define('frontend-cp/services/timeline', ['exports', 'ember', 'npm:lodash'], func
      * @param {Array<DS.Model>} posts posts
      * @param {String} direction older or newer
      * @param {String} type activity or event
+     * @param {Boolean} startFromTop if true, activities will be fetched from the beginning of timeline
+     * @param {Boolean} morePostsAvailable if true, activities to be fetched will be bounded by the timestamp of the last post
      * @return {Promise<Array<DS.Model>>} activities
      */
-    _getActivitiesForPosts: function _getActivitiesForPosts(model, posts, direction, type) {
-      var _this3 = this;
-
-      var cache = this._getCache(model);
+    _getActivitiesForPosts: function _getActivitiesForPosts(model, posts, direction, type, startFromTop, morePostsAvailable) {
+      var _this2 = this;
 
       var parseNextUrl = function parseNextUrl(nextUrl) {
-        return _npmLodash['default'].zipObject(nextUrl.split('&').map(function (segment) {
+        return _npmLodash['default'].fromPairs(nextUrl.split('&').map(function (segment) {
           return segment.split('=');
         }));
       };
 
+      var parent = (function () {
+        if (type === 'activity') {
+          return model;
+        } else if (model.get('requester')) {
+          return model.get('requester');
+        } else {
+          return model;
+        }
+      })();
+
       // Fetch all activities or events between two points in time (inclusive).
-      var fetchActivities = function fetchActivities(timestamps, end, direction) {
-        return _this3.get('store').query(type, {
-          parent: type === 'activity' ? model : model.get('requester'),
+      var fetchActivities = function fetchActivities(_ref7, end, direction) {
+        var since = _ref7.since;
+        var until = _ref7.until;
+        var offset = _ref7.offset;
+        return _this2.get('store').query(type, {
+          parent: parent,
           // since and until are exclusive
-          since: timestamps.since,
-          until: timestamps.until,
+          since: since, until: until,
+          offset: offset,
           sort_order: direction === 'newer' ? 'ASC' : 'DESC',
           limit: 10
         }).then(function (result) {
@@ -79228,10 +79222,10 @@ define('frontend-cp/services/timeline', ['exports', 'ember', 'npm:lodash'], func
           }
 
           var activities = _npmLodash['default'].filter(result.toArray(), filteringFunction);
-          if (activities.length < 10) {
+          var nextUrl = result.get('meta').next;
+          if (activities.length < 10 || !nextUrl) {
             return activities;
           } else {
-            var nextUrl = _this3.get('store').metadataFor('activity').next;
             return fetchActivities(parseNextUrl(nextUrl), end, direction).then(function (moreActivities) {
               return activities.concat(moreActivities);
             });
@@ -79239,64 +79233,17 @@ define('frontend-cp/services/timeline', ['exports', 'ember', 'npm:lodash'], func
         });
       };
 
-      var getActivitiesBetweenPosts = function getActivitiesBetweenPosts(from, to, direction) {
-        var newer = direction === 'newer';
-        var isBounded = !to || (newer ? to.get('sequence') === cache.total : to.get('sequence') === 1);
-        var start = new Date(from.get('createdAt').getTime() - (newer ? 0 : 1000));
-        var end = !isBounded ? new Date(to.get('createdAt').getTime() - (newer ? 1000 : 0)) : null;
-        var timestamps = {
-          since: direction === 'newer' ? Math.floor((start.getTime() - 1000) / 1000) : null,
-          until: direction === 'older' ? Math.floor((start.getTime() + 1000) / 1000) : null
-        };
-        return fetchActivities(timestamps, end, direction);
+      var from = posts[0];
+      var to = morePostsAvailable ? posts[posts.length - 1] : null;
+      var newer = direction === 'newer';
+      var start = from ? new Date(from.get('createdAt').getTime() - (newer ? 0 : 1000)).getTime() : null;
+      var end = morePostsAvailable ? new Date(to.get('createdAt').getTime() - (newer ? 1000 : 0)) : null;
+      var timestamps = {
+        since: direction === 'newer' && !startFromTop ? Math.floor((start - 1000) / 1000) : null,
+        until: direction === 'older' && !startFromTop ? Math.floor((start + 1000) / 1000) : null
       };
 
-      var from = posts[0];
-      var to = posts.length === 1 ? null : posts[posts.length - 1];
-
-      return getActivitiesBetweenPosts(from, to, direction);
-    },
-
-    /**
-     * Recursive function used by getPosts
-     *
-     * @private
-     * @param {DS.Model} model model
-     * @param {DS.Model} post post
-     * @param {String} direction 'older' or 'newer'
-     * @param {Number} [count] count
-     * @return {Promise} posts
-     */
-    _getPostsRecursive: function _getPostsRecursive(model, post, direction) {
-      var _this4 = this;
-
-      var count = arguments.length <= 3 || arguments[3] === undefined ? defaultPostCount : arguments[3];
-
-      if (count === 0) {
-        return Promise.resolve([]);
-      }
-
-      var cache = this._getCache(model);
-
-      var nextSequence = post.get('sequence') + (direction === 'older' ? -1 : 1);
-      if (cache.total !== null && nextSequence === 0) {
-        return Promise.resolve([]);
-      }
-
-      var nextPost = cache.posts[nextSequence];
-      var queryParamName = direction === 'older' ? 'afterId' : 'beforeId';
-
-      return (nextPost ? Promise.resolve(nextPost) : this._fetchPosts(model, _defineProperty({}, queryParamName, post.get('id'))).then(function () {
-        return cache.posts[nextSequence];
-      })).then(function (post) {
-        if (!post) {
-          return [];
-        } else {
-          return _this4._getPostsRecursive(model, post, direction, count - 1).then(function (posts) {
-            return [post].concat(posts);
-          });
-        }
-      });
+      return fetchActivities(timestamps, end, direction);
     },
 
     /**
@@ -79310,15 +79257,16 @@ define('frontend-cp/services/timeline', ['exports', 'ember', 'npm:lodash'], func
      * @return {Promise} promise
      */
     _fetchPosts: function _fetchPosts(model) {
-      var _ref7 = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+      var _ref8 = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
-      var _ref7$beforeId = _ref7.beforeId;
-      var beforeId = _ref7$beforeId === undefined ? null : _ref7$beforeId;
-      var _ref7$afterId = _ref7.afterId;
-      var afterId = _ref7$afterId === undefined ? null : _ref7$afterId;
+      var _ref8$beforeId = _ref8.beforeId;
+      var beforeId = _ref8$beforeId === undefined ? null : _ref8$beforeId;
+      var _ref8$afterId = _ref8.afterId;
+      var afterId = _ref8$afterId === undefined ? null : _ref8$afterId;
+      var _ref8$limit = _ref8.limit;
+      var limit = _ref8$limit === undefined ? 10 : _ref8$limit;
 
-      var cache = this._getCache(model);
-      var params = { parent: model };
+      var params = { parent: model, limit: limit };
       if (beforeId !== null) {
         params.before_id = beforeId;
       }
@@ -79326,17 +79274,12 @@ define('frontend-cp/services/timeline', ['exports', 'ember', 'npm:lodash'], func
         params.after_id = afterId;
       }
 
-      return this.get('store').query('post', params).then(function (newPosts) {
-        cache.total = newPosts.get('meta').total;
-        newPosts.forEach(function (post) {
-          cache.posts[post.get('sequence')] = post;
-          if (post.get('sequence') === cache.total) {
-            cache.newestPost = post;
-          }
-          if (post.get('sequence') === 1) {
-            cache.oldestPost = post;
-          }
-        });
+      return this.get('store').query('post', params).then(function (posts) {
+        if (beforeId !== null) {
+          return posts.toArray().reverse();
+        } else {
+          return posts.toArray();
+        }
       });
     }
   });
@@ -90983,7 +90926,17 @@ define("frontend-cp/session/agent/cases/case/template", ["exports"], function (e
 });
 define('frontend-cp/session/agent/cases/case/user/controller', ['exports', 'ember', 'moment'], function (exports, _ember, _moment) {
   exports['default'] = _ember['default'].Controller.extend({
+    queryParams: ['postId', 'filter', 'sort'],
+    filter: 'posts',
+    sort: 'newest',
+    postId: null,
+
     actions: {
+      updateQueryParams: function updateQueryParams(changes) {
+        this.setProperties(changes);
+        return true;
+      },
+
       createNewCase: function createNewCase(user) {
         this.transitionToRoute('session.agent.cases.new', (0, _moment['default'])().format('YYYY-MM-DD-hh-mm-ss'), { queryParams: { requester_id: user.id } });
       }
@@ -90993,6 +90946,12 @@ define('frontend-cp/session/agent/cases/case/user/controller', ['exports', 'embe
 define('frontend-cp/session/agent/cases/case/user/route', ['exports', 'ember', 'frontend-cp/routes/abstract/tabbed-route-child'], function (exports, _ember, _frontendCpRoutesAbstractTabbedRouteChild) {
   exports['default'] = _frontendCpRoutesAbstractTabbedRouteChild['default'].extend({
     storeCache: _ember['default'].inject.service('store-cache'),
+
+    queryParams: {
+      postId: { replace: true },
+      filter: { replace: true },
+      sort: { replace: true }
+    },
 
     model: function model() {
       this.get('storeCache').findAll('user-field');
@@ -91016,7 +90975,7 @@ define("frontend-cp/session/agent/cases/case/user/template", ["exports"], functi
             "column": 0
           },
           "end": {
-            "line": 2,
+            "line": 9,
             "column": 0
           }
         },
@@ -91040,7 +90999,7 @@ define("frontend-cp/session/agent/cases/case/user/template", ["exports"], functi
         dom.insertBoundary(fragment, 0);
         return morphs;
       },
-      statements: [["inline", "ko-user-content", [], ["onCreateNewCase", ["subexpr", "action", ["createNewCase"], [], ["loc", [null, [1, 34], [1, 58]]]], "model", ["subexpr", "@mut", [["get", "model", ["loc", [null, [1, 65], [1, 70]]]]], [], []]], ["loc", [null, [1, 0], [1, 72]]]]],
+      statements: [["inline", "ko-user-content", [], ["filter", ["subexpr", "@mut", [["get", "filter", ["loc", [null, [2, 9], [2, 15]]]]], [], []], "model", ["subexpr", "@mut", [["get", "model", ["loc", [null, [3, 8], [3, 13]]]]], [], []], "onCreateNewCase", ["subexpr", "action", ["createNewCase"], [], ["loc", [null, [4, 18], [4, 42]]]], "onQueryParamsUpdate", ["subexpr", "action", ["updateQueryParams"], [], ["loc", [null, [5, 22], [5, 50]]]], "postId", ["subexpr", "@mut", [["get", "postId", ["loc", [null, [6, 9], [6, 15]]]]], [], []], "sortOrder", ["subexpr", "@mut", [["get", "sort", ["loc", [null, [7, 12], [7, 16]]]]], [], []]], ["loc", [null, [1, 0], [8, 2]]]]],
       locals: [],
       templates: []
     };
@@ -94474,20 +94433,37 @@ define('frontend-cp/session/agent/users/user/controller', ['exports', 'ember'], 
 define('frontend-cp/session/agent/users/user/index/controller', ['exports', 'ember', 'moment'], function (exports, _ember, _moment) {
   var _slice = Array.prototype.slice;
   exports['default'] = _ember['default'].Controller.extend({
+    queryParams: ['postId', 'filter', 'sort'],
+    filter: 'posts',
+    sort: 'newest',
+    postId: null,
+
     actions: {
       createNewCase: function createNewCase(user) {
         this.transitionToRoute('session.agent.cases.new', (0, _moment['default'])().format('YYYY-MM-DD-hh-mm-ss'), { queryParams: { requester_id: user.id } });
       },
+
       updateTabName: function updateTabName() {
         var _target;
 
         (_target = this.target).send.apply(_target, ['updateTabName'].concat(_slice.call(arguments)));
+      },
+
+      updateQueryParams: function updateQueryParams(changes) {
+        this.setProperties(changes);
+        return true;
       }
     }
   });
 });
 define('frontend-cp/session/agent/users/user/index/route', ['exports', 'frontend-cp/routes/abstract/tabbed-route-child'], function (exports, _frontendCpRoutesAbstractTabbedRouteChild) {
-  exports['default'] = _frontendCpRoutesAbstractTabbedRouteChild['default'].extend({});
+  exports['default'] = _frontendCpRoutesAbstractTabbedRouteChild['default'].extend({
+    queryParams: {
+      postId: { replace: true },
+      filter: { replace: true },
+      sort: { replace: true }
+    }
+  });
 });
 define("frontend-cp/session/agent/users/user/index/template", ["exports"], function (exports) {
   exports["default"] = Ember.HTMLBars.template((function () {
@@ -94505,7 +94481,7 @@ define("frontend-cp/session/agent/users/user/index/template", ["exports"], funct
             "column": 0
           },
           "end": {
-            "line": 5,
+            "line": 10,
             "column": 0
           }
         },
@@ -94529,7 +94505,7 @@ define("frontend-cp/session/agent/users/user/index/template", ["exports"], funct
         dom.insertBoundary(fragment, 0);
         return morphs;
       },
-      statements: [["inline", "ko-user-content", [], ["onTabNameUpdate", ["subexpr", "action", ["updateTabName"], [], ["loc", [null, [2, 18], [2, 42]]]], "onCreateNewCase", ["subexpr", "action", ["createNewCase"], [], ["loc", [null, [3, 18], [3, 42]]]], "model", ["subexpr", "@mut", [["get", "model", ["loc", [null, [4, 8], [4, 13]]]]], [], []]], ["loc", [null, [1, 0], [4, 15]]]]],
+      statements: [["inline", "ko-user-content", [], ["filter", ["subexpr", "@mut", [["get", "filter", ["loc", [null, [2, 9], [2, 15]]]]], [], []], "onTabNameUpdate", ["subexpr", "action", ["updateTabName"], [], ["loc", [null, [3, 18], [3, 42]]]], "onCreateNewCase", ["subexpr", "action", ["createNewCase"], [], ["loc", [null, [4, 18], [4, 42]]]], "onQueryParamsUpdate", ["subexpr", "action", ["updateQueryParams"], [], ["loc", [null, [5, 22], [5, 50]]]], "model", ["subexpr", "@mut", [["get", "model", ["loc", [null, [6, 8], [6, 13]]]]], [], []], "postId", ["subexpr", "@mut", [["get", "postId", ["loc", [null, [7, 9], [7, 15]]]]], [], []], "sortOrder", ["subexpr", "@mut", [["get", "sort", ["loc", [null, [8, 12], [8, 16]]]]], [], []]], ["loc", [null, [1, 0], [9, 2]]]]],
       locals: [],
       templates: []
     };
@@ -100530,7 +100506,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"viewingUsersInactiveThreshold":300000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+267d1de4"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"viewingUsersInactiveThreshold":300000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+78596d5f"});
 }
 
 /* jshint ignore:end */
