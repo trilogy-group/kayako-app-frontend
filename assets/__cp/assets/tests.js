@@ -38,16 +38,17 @@ define('frontend-cp/tests/acceptance/admin/automation/businesshours/edit-test', 
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/businesshours/1');
-      click('.ko-grid-picker__cell:first-child');
+      nativeClick('.ko-grid-picker__row:first-child .ko-grid-picker__cell:first-child');
+      nativeClick('.ko-grid-picker__row:nth-child(2) .ko-grid-picker__cell:first-child');
     });
 
     andThen(function () {
-      assert.equal(find('.ko-grid-picker__row .selected').length, 7);
-      click('.ko-grid-picker__row:first-child .ko-grid-picker__cell:first-child');
+      assert.equal(find('.ko-grid-picker__row .selected').length, 2);
+      nativeClick('.ko-grid-picker__row:first-child .ko-grid-picker__cell:first-child');
     });
 
     andThen(function () {
-      assert.equal(find('.ko-grid-picker__row .selected').length, 6);
+      assert.equal(find('.ko-grid-picker__row .selected').length, 1);
     });
   });
 
@@ -2657,7 +2658,7 @@ define('frontend-cp/tests/acceptance/admin/manage/macros/new-test', ['exports', 
     }
 
     function addTag(id, name) {
-      var input = '.qa-ko-admin-macros-action-' + id + ' .ko-tags input';
+      var input = '.qa-ko-admin-macros-action-' + id + ' input';
 
       fillIn(input, name);
       triggerEvent(input, 'focus');
@@ -3142,27 +3143,27 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
     });
   });
 
-  (0, _frontendCpTestsHelpersQunit.test)('creating a new view with a single proposition using is equal to on an autocomplete field', function (assert) {
-    visit('/admin/manage/views/new');
-
-    andThen(function () {
-      assert.equal(currentURL(), '/admin/manage/views/new');
-
-      fillIn('input[name=title]', fieldTitle);
-      nativeClick('.ko-radio__label:contains(Just myself)');
-      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Case: Assigned Agent');
-      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'is equal to');
-
-      selectSearch('.qa-predicate-builder--proposition:first .qa-proposition--property', 'current user');
-      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--property', '(current user)');
-      nativeClick('.button[name=submit]:first');
-    });
-
-    andThen(function () {
-      assert.equal(currentURL(), '/admin/manage/views');
-      findWithAssert('.qa-view-list-inactive--title:contains(' + fieldTitle + ')');
-    });
-  });
+  // test('creating a new view with a single proposition using is equal to on an autocomplete field', function(assert) {
+  //   visit('/admin/manage/views/new');
+  //
+  //   andThen(function() {
+  //     assert.equal(currentURL(), '/admin/manage/views/new');
+  //
+  //     fillIn('input[name=title]', fieldTitle);
+  //     nativeClick('.ko-radio__label:contains(Just myself)');
+  //     selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Case: Assigned Agent');
+  //     selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'is equal to');
+  //
+  //     selectSearch('.qa-predicate-builder--proposition:first .qa-proposition--property', 'current user');
+  //     selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--property', '(current user)');
+  //     nativeClick('.button[name=submit]:first');
+  //   });
+  //
+  //   andThen(function() {
+  //     assert.equal(currentURL(), '/admin/manage/views');
+  //     findWithAssert('.qa-view-list-inactive--title:contains(' + fieldTitle + ')');
+  //   });
+  // });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new view with a single proposition using is not equal to', function (assert) {
     visit('/admin/manage/views/new');
@@ -7195,8 +7196,13 @@ define('frontend-cp/tests/acceptance/agent/cases/create-test', ['exports', 'fron
     });
 
     andThen(function () {
-      nativeClick('.ko-agent-dropdown-create-case__input .ember-basic-dropdown-trigger');
-      fillIn('.ember-power-select-typeahead-input', 'Barney');
+      nativeClick('.ko-agent-dropdown-create-case__input .ember-power-select');
+    });
+
+    andThen(function () {
+      find('.ember-power-select-trigger input').val('Barney');
+      var evt = new window.Event('input');
+      find('.ember-power-select-trigger input')[0].dispatchEvent(evt);
     });
 
     andThen(function () {
@@ -7487,6 +7493,9 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
       selectChoose('.fields div:nth-child(2) .ember-power-select', 'Open');
       selectChoose('.fields div:nth-child(3) .ember-power-select', 'Question');
       selectChoose('.fields div:nth-child(4) .ember-power-select', 'Low');
+    });
+
+    andThen(function () {
       _ember['default'].$('.fields div:nth-child(5) input').val('tag test');
       _ember['default'].$('.fields div:nth-child(5) input').trigger('input');
     });
@@ -7699,18 +7708,16 @@ define('frontend-cp/tests/acceptance/agent/cases/update-test', ['exports', 'fron
     andThen(function () {
       assert.equal(currentURL(), '/agent/cases/5');
       assert.ok(find('.button--primary')[0].classList.contains('disabled'));
-      fillIn('.js-tag-input', 'Test');
-      triggerEvent('.js-tag-input', 'input');
-
-      tagCount = find('.ko-tags__item').length;
+      tagCount = find('.qa-ko-case-content__tags .qa-ko-select_multiple_pill').length;
+      fillIn('.qa-ko-case-content__tags input', 'Test ');
     });
 
     andThen(function () {
-      find('.js-tag-input').trigger($.Event('keydown', { which: 13, keyCode: 13 }));
+      find('.qa-ko-case-content__tags input').trigger($.Event('keydown', { which: 13, keyCode: 13 }));
     });
 
     andThen(function () {
-      assert.equal(find('.ko-tags__item').length, tagCount + 1);
+      assert.equal(find('.qa-ko-case-content__tags .qa-ko-select_multiple_pill').length, tagCount + 1);
       assert.notOk(find('.button--primary')[0].classList.contains('disabled'));
     });
   });
@@ -7724,12 +7731,12 @@ define('frontend-cp/tests/acceptance/agent/cases/update-test', ['exports', 'fron
     andThen(function () {
       assert.equal(currentURL(), '/agent/cases/5');
       assert.ok(find('.button--primary')[0].classList.contains('disabled'));
-      tagCount = find('.ko-tags__item').length;
-      nativeClick('.ko-tags__action:first');
+      tagCount = find('.qa-ko-case-content__tags .qa-ko-select_multiple_pill').length;
+      nativeClick('.qa-ko-case-content__tags .qa-ko-select_multiple_pill:first [role=button]');
     });
 
     andThen(function () {
-      assert.equal(find('.ko-tags__item').length, tagCount - 1);
+      assert.equal(find('.qa-ko-case-content__tags .qa-ko-select_multiple_pill').length, tagCount - 1);
       assert.notOk(find('.button--primary')[0].classList.contains('disabled'));
     });
   });
@@ -9606,131 +9613,53 @@ define('frontend-cp/tests/helpers/use-default-scenario', ['exports', 'ember', 'f
     (0, _frontendCpMirageScenariosDefault['default'])(server); //eslint-disable-line no-undef
   });
 });
-define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-organisation/component-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'ember', 'sinon'], function (exports, _frontendCpTestsHelpersQunit, _ember, _sinon) {
-  var getOwner = _ember['default'].getOwner;
-
-  (0, _frontendCpTestsHelpersQunit.moduleForComponent)('ko-agent-dropdown/create-organisation', 'Integration | Component | ko agent dropdown/create organisation', {
-    integration: true,
-    beforeEach: function beforeEach() {
-      var intl = getOwner(this).lookup('service:intl');
-      intl.setLocale('en-us');
-    }
-  });
-
-  (0, _frontendCpTestsHelpersQunit.test)('it renders', function (assert) {
-    assert.expect(2);
-
-    this.render(_ember['default'].HTMLBars.template((function () {
-      return {
-        meta: {
-          'fragmentReason': {
-            'name': 'missing-wrapper',
-            'problems': ['wrong-type']
-          },
-          'revision': 'Ember@2.4.3',
-          'loc': {
-            'source': null,
-            'start': {
-              'line': 1,
-              'column': 0
-            },
-            'end': {
-              'line': 1,
-              'column': 41
-            }
-          }
-        },
-        isEmpty: false,
-        arity: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createComment('');
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-          dom.insertBoundary(fragment, 0);
-          dom.insertBoundary(fragment, null);
-          return morphs;
-        },
-        statements: [['content', 'ko-agent-dropdown/create-organisation', ['loc', [null, [1, 0], [1, 41]]]]],
-        locals: [],
-        templates: []
-      };
-    })()));
-
-    assert.equal(this.$('input').length, 2);
-    assert.equal(this.$('button').length, 2);
-  });
-
-  (0, _frontendCpTestsHelpersQunit.test)('it emits a cancel event', function (assert) {
-    var _this = this;
-
-    assert.expect(1);
-
-    var onCancel = _sinon['default'].spy();
-
-    this.on('onCancel', onCancel);
-
-    this.render(_ember['default'].HTMLBars.template((function () {
-      return {
-        meta: {
-          'fragmentReason': {
-            'name': 'missing-wrapper',
-            'problems': ['wrong-type']
-          },
-          'revision': 'Ember@2.4.3',
-          'loc': {
-            'source': null,
-            'start': {
-              'line': 1,
-              'column': 0
-            },
-            'end': {
-              'line': 3,
-              'column': 4
-            }
-          }
-        },
-        isEmpty: false,
-        arity: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createComment('');
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-          dom.insertBoundary(fragment, 0);
-          dom.insertBoundary(fragment, null);
-          return morphs;
-        },
-        statements: [['inline', 'ko-agent-dropdown/create-organisation', [], ['onCancel', ['subexpr', 'action', ['onCancel'], [], ['loc', [null, [2, 15], [2, 34]]]]], ['loc', [null, [1, 0], [3, 4]]]]],
-        locals: [],
-        templates: []
-      };
-    })()));
-
-    _ember['default'].run(function () {
-      getFormControl(_this.$('form'), 'cancel').click();
-    });
-
-    assert.equal(onCancel.callCount, 1);
-  });
-
-  function getFormControl(formElement, controlName) {
-    formElement = $(formElement)[0];
-    return $(formElement.elements.namedItem(controlName));
-  }
-});
+define("frontend-cp/tests/integration/components/ko-agent-dropdown/create-organisation/component-test", ["exports"], function (exports) {});
+// import { moduleForComponent, test } from 'frontend-cp/tests/helpers/qunit';
+// import hbs from 'htmlbars-inline-precompile';
+// import Ember from 'ember';
+// import sinon from 'sinon';
+// const { getOwner } = Ember;
+//
+//
+// moduleForComponent('ko-agent-dropdown/create-organisation', 'Integration | Component | ko agent dropdown/create organisation', {
+//   integration: true,
+//   beforeEach() {
+//     let intl = getOwner(this).lookup('service:intl');
+//     intl.setLocale('en-us');
+//   }
+// });
+//
+// test('it renders', function(assert) {
+//   assert.expect(2);
+//
+//   this.render(hbs`{{ko-agent-dropdown/create-organisation}}`);
+//
+//   assert.equal(this.$('input').length, 2);
+//   assert.equal(this.$('button').length, 2);
+// });
+//
+// test('it emits a cancel event', function(assert) {
+//   assert.expect(1);
+//
+//   let onCancel = sinon.spy();
+//
+//   this.on('onCancel', onCancel);
+//
+//   this.render(hbs`{{ko-agent-dropdown/create-organisation
+//       onCancel=(action "onCancel")
+//   }}`);
+//
+//   Ember.run(() => {
+//     getFormControl(this.$('form'), 'cancel').click();
+//   });
+//
+//   assert.equal(onCancel.callCount, 1);
+// });
+//
+// function getFormControl(formElement, controlName) {
+//   formElement = $(formElement)[0];
+//   return $(formElement.elements.namedItem(controlName));
+// }
 define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/component-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'ember', 'sinon'], function (exports, _frontendCpTestsHelpersQunit, _ember, _sinon) {
   var getOwner = _ember['default'].getOwner;
 
@@ -10941,68 +10870,31 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/select/compon
     (0, _frontendCpTestsHelpersEmberPowerSelect.nativeMouseUp)('.ember-power-select-option:nth-child(2)');
   });
 });
-define('frontend-cp/tests/integration/components/ko-info-bar/field/tags/component-test', ['exports', 'ember', 'ember-qunit'], function (exports, _ember, _emberQunit) {
-  var getOwner = _ember['default'].getOwner;
-
-  var title = 'span:first';
-
-  (0, _emberQunit.moduleForComponent)('ko-info-bar/field/tags', 'Integration | Component | ko info bar field tags', {
-    integration: true,
-    beforeEach: function beforeEach() {
-      var intl = getOwner(this).lookup('service:intl');
-      intl.setLocale('en-us');
-    }
-  });
-
-  (0, _emberQunit.test)('renders with title', function (assert) {
-    assert.expect(1);
-
-    this.render(_ember['default'].HTMLBars.template((function () {
-      return {
-        meta: {
-          'fragmentReason': {
-            'name': 'missing-wrapper',
-            'problems': ['wrong-type']
-          },
-          'revision': 'Ember@2.4.3',
-          'loc': {
-            'source': null,
-            'start': {
-              'line': 1,
-              'column': 0
-            },
-            'end': {
-              'line': 3,
-              'column': 4
-            }
-          }
-        },
-        isEmpty: false,
-        arity: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createComment('');
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-          dom.insertBoundary(fragment, 0);
-          dom.insertBoundary(fragment, null);
-          return morphs;
-        },
-        statements: [['inline', 'ko-info-bar/field/tags', [], ['title', 'Some other field'], ['loc', [null, [1, 0], [3, 4]]]]],
-        locals: [],
-        templates: []
-      };
-    })()));
-
-    assert.equal(this.$(title).text(), 'Some other field');
-  });
-});
+define("frontend-cp/tests/integration/components/ko-info-bar/field/select-multiple/component-test", ["exports"], function (exports) {});
+// import Ember from 'ember';
+// import { moduleForComponent, test } from 'ember-qunit';
+// import hbs from 'htmlbars-inline-precompile';
+// const { getOwner } = Ember;
+//
+// let title = 'span:first';
+//
+// moduleForComponent('ko-info-bar/field/select-multiple', 'Integration | Component | ko-info-bar/field/select-multiple', {
+//   integration: true,
+//   beforeEach() {
+//     let intl = getOwner(this).lookup('service:intl');
+//     intl.setLocale('en-us');
+//   }
+// });
+//
+// test('renders with title', function(assert) {
+//   assert.expect(1);
+//
+//   this.render(hbs`{{ko-info-bar/field/select-multiple
+//     title='Some other field'
+//   }}`);
+//
+//   assert.equal(this.$(title).text(), 'Some other field');
+// });
 define('frontend-cp/tests/integration/components/ko-info-bar/field/text/component-test', ['exports', 'ember', 'frontend-cp/tests/helpers/qunit'], function (exports, _ember, _frontendCpTestsHelpersQunit) {
   var getOwner = _ember['default'].getOwner;
 
@@ -12187,232 +12079,6 @@ define("frontend-cp/tests/unit/components/ko-table-row/component-test", ["export
 //     assert.equal(row, component);
 //   });
 // });
-define('frontend-cp/tests/unit/components/ko-tags/component-test', ['exports', 'ember', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/lib/keycodes'], function (exports, _ember, _frontendCpTestsHelpersQunit, _frontendCpLibKeycodes) {
-
-  var component = undefined;
-  var firstSelectedTag = 'ul:first li:first';
-  var deleteTag = 'span:nth-child(2)';
-  var firstSelectedTagText = 'ul:first li:first span:first';
-  var firstSuggestion = 'ul:nth-child(2) li:first';
-  var searchField = 'ul:first li input';
-
-  (0, _frontendCpTestsHelpersQunit.moduleForComponent)('ko-tags', {
-    unit: true,
-    needs: ['helper:and', 'helper:not'],
-    setup: function setup() {
-      component = this.subject();
-
-      component.reopen({
-        // Mock for Ember.run.debounce, as it is failing tests randomly
-        // because debounce callback is executed after component *might*
-        // be destroyed.
-        debounceSuggestedTags: function debounceSuggestedTags(scope, callback) {
-          Reflect.apply(callback, scope, []);
-        }
-      });
-
-      component.set('values', []);
-      component.set('newTagText', 'New Tag');
-      component.set('tags', ['dog', 'pig', 'moose', 'duck', 'donkey', 'dave', 'don', 'derek']);
-    },
-    teardown: function teardown() {}
-  });
-
-  (0, _frontendCpTestsHelpersQunit.test)('is not suggested when there are no tags', function (assert) {
-    var _this = this;
-
-    assert.expect(1);
-
-    _ember['default'].run(function () {
-      component.set('tags', []);
-      component.set('searchTerm', 'dog');
-      _this.$('input').trigger(new $.Event('keyup', { keyCode: _frontendCpLibKeycodes.g }));
-    });
-
-    assert.equal(component.get('isSuggested'), false);
-  });
-
-  (0, _frontendCpTestsHelpersQunit.test)('is not suggested when nothing has been typed', function (assert) {
-    assert.expect(1);
-
-    _ember['default'].run(function () {
-      component.set('tags', [new _ember['default'].Object({ name: 'dog' })]);
-      component.set('searchTerm', '');
-    });
-
-    assert.equal(component.get('isSuggested'), false);
-  });
-
-  (0, _frontendCpTestsHelpersQunit.test)('after a selection has taken place the text in the input should be cleared', function (assert) {
-    var _this2 = this;
-
-    assert.expect(1);
-
-    this.render();
-
-    _ember['default'].run(function () {
-      component.set('searchTerm', 'dog');
-      _this2.$('input').trigger(new $.Event('keyup', { keyCode: _frontendCpLibKeycodes.g }));
-    });
-
-    this.$(firstSuggestion).click();
-    assert.equal($.trim(component.$(searchField).val()), '', 'The search field has been cleared');
-  });
-
-  (0, _frontendCpTestsHelpersQunit.test)('selected tags should be able to be removed by mouse', function (assert) {
-    assert.expect(2);
-
-    this.render();
-    component.set('attrs.onTagRemoval', function (tagToRemove) {
-      assert.deepEqual(tagToRemove.get('name'), 'dog', 'external action was called');
-    });
-
-    _ember['default'].run(function () {
-      var newTag = new _ember['default'].Object();
-      newTag.set('name', 'dog');
-      component.get('values').pushObject(newTag);
-    });
-
-    assert.equal($.trim(component.$(firstSelectedTagText).text()), 'dog', 'selected tags');
-
-    this.$(firstSelectedTag + ' ' + deleteTag).click();
-  });
-
-  (0, _frontendCpTestsHelpersQunit.test)('suggested tags should be able to be selected by keyboard', function (assert) {
-    var _this3 = this;
-
-    assert.expect(1);
-
-    this.render();
-
-    component.set('attrs.onTagAddition', function (newTag) {
-      assert.deepEqual(newTag, 'dog', 'external tag selection change action was called');
-    });
-
-    _ember['default'].run(function () {
-      component.set('searchTerm', 'dog');
-      _this3.$('input').trigger(new $.Event('keyup', { keyCode: _frontendCpLibKeycodes.g }));
-    });
-
-    this.$('input').trigger(new $.Event('keydown', { keyCode: _frontendCpLibKeycodes.down }));
-
-    _ember['default'].run(function () {
-      _this3.$('input').trigger(new $.Event('keydown', { keyCode: _frontendCpLibKeycodes.enter }));
-    });
-  });
-
-  (0, _frontendCpTestsHelpersQunit.test)('new tags can be created and added by keyboard', function (assert) {
-    var _this4 = this;
-
-    assert.expect(1);
-
-    this.render();
-
-    component.set('attrs.onTagAddition', function (tags) {
-      assert.deepEqual(tags, 'qwerty', 'external tag addition action was called');
-    });
-
-    _ember['default'].run(function () {
-      component.set('tags', '');
-      component.set('suggestedTags', []);
-      component.set('searchTerm', 'qwerty');
-      _this4.$('input').trigger(new $.Event('keyup', { keyCode: _frontendCpLibKeycodes.y }));
-    });
-
-    this.$('input').trigger(new $.Event('keydown', { keyCode: _frontendCpLibKeycodes.down }));
-    _ember['default'].run(function () {
-      _this4.$('input').trigger(new $.Event('keydown', { keyCode: _frontendCpLibKeycodes.enter }));
-    });
-  });
-
-  (0, _frontendCpTestsHelpersQunit.test)('new tags can be created and added by enter press on keyboard', function (assert) {
-    var _this5 = this;
-
-    assert.expect(1);
-
-    this.render();
-    component.set('attrs.onTagAddition', function (tags) {
-      assert.deepEqual(tags, 'qwerty', 'external tag addition action was called');
-    });
-
-    _ember['default'].run(function () {
-      component.set('tags', '');
-      component.set('searchTerm', 'qwerty');
-      _this5.$('input').trigger(new $.Event('keyup', { keyCode: _frontendCpLibKeycodes.y }));
-      _this5.$('input').trigger(new $.Event('keydown', { keyCode: _frontendCpLibKeycodes.enter }));
-    });
-  });
-
-  (0, _frontendCpTestsHelpersQunit.test)('tags are coerced to lower case on addition', function (assert) {
-    var _this6 = this;
-
-    assert.expect(1);
-
-    this.render();
-
-    component.set('attrs.onTagAddition', function (tags) {
-      assert.deepEqual(tags, 'qwerty', 'external tag addition action was called');
-    });
-
-    _ember['default'].run(function () {
-      component.set('tags', '');
-      component.set('searchTerm', 'QWERTY');
-      _this6.$('input').trigger(new $.Event('keyup', { keyCode: _frontendCpLibKeycodes.y }));
-      _this6.$('input').trigger(new $.Event('keydown', { keyCode: _frontendCpLibKeycodes.enter }));
-    });
-  });
-
-  (0, _frontendCpTestsHelpersQunit.test)('spacebar creates a new tag with search term', function (assert) {
-    var _this7 = this;
-
-    assert.expect(1);
-
-    this.render();
-
-    component.set('attrs.onTagAddition', function (tags) {
-      assert.deepEqual(tags, 'qwerty', 'external tag addition action was called');
-    });
-
-    _ember['default'].run(function () {
-      component.set('tags', '');
-      _this7.$('input').val('qwerty ');
-      _this7.$('input').trigger('input');
-    });
-  });
-
-  (0, _frontendCpTestsHelpersQunit.test)('tags cannot be removed with click when disabled', function (assert) {
-    assert.expect(1);
-
-    this.render();
-
-    component.set('attrs.onTagRemoval', function (tagToRemove) {
-      // this should never run
-      assert.ok(true);
-    });
-
-    _ember['default'].run(function () {
-      var newTag = new _ember['default'].Object();
-      newTag.set('name', 'dog');
-      component.set('isDisabled', true);
-      component.get('values').pushObject(newTag);
-    });
-
-    this.$(firstSelectedTag + ' ' + deleteTag).click();
-    assert.equal(this.$(firstSelectedTag + ' ' + deleteTag).length, 0);
-  });
-
-  (0, _frontendCpTestsHelpersQunit.test)('tags cannot be added when disabled', function (assert) {
-    assert.expect(1);
-
-    this.render();
-
-    _ember['default'].run(function () {
-      component.set('isDisabled', true);
-    });
-
-    assert.equal(this.$('input').length, 0);
-  });
-});
 define('frontend-cp/tests/unit/components/ko-toggle/component-test', ['exports', 'ember', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/lib/keycodes'], function (exports, _ember, _frontendCpTestsHelpersQunit, _frontendCpLibKeycodes) {
 
   var component = undefined;
