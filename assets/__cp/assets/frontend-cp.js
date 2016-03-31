@@ -13932,18 +13932,18 @@ define('frontend-cp/components/ko-admin/macros/action/assignee/component', ['exp
       });
     }),
 
-    assignee: _ember['default'].computed('agentValues', 'teamValues', 'macro.{assigneeType,assigneeAgent,assigneeTeam}', function () {
+    assignee: _ember['default'].computed('agentValues', 'teamValues', 'macro.{assigneeType,assignedAgent,assignedTeam}', function () {
       var _this = this;
 
       var assigneeType = this.get('macro.assigneeType');
-      var assigneeTeam = this.get('macro.assigneeTeam');
+      var assignedTeam = this.get('macro.assignedTeam');
 
       if (assigneeType === 'AGENT') {
         return this.get('agentValues').find(function (agentValue) {
-          return _this.get('macro.assigneeAgent') === agentValue.agent && assigneeTeam === agentValue.team;
+          return _this.get('macro.assignedAgent') === agentValue.agent && assignedTeam === agentValue.team;
         });
       } else if (assigneeType === 'TEAM') {
-        return this.get('teamValues').findBy('team', assigneeTeam);
+        return this.get('teamValues').findBy('team', assignedTeam);
       }
 
       return null;
@@ -13955,14 +13955,14 @@ define('frontend-cp/components/ko-admin/macros/action/assignee/component', ['exp
 
         if (value.agent) {
           macro.setProperties({
-            assigneeAgent: value.agent,
-            assigneeTeam: value.team,
+            assignedAgent: value.agent,
+            assignedTeam: value.team,
             assigneeType: 'AGENT'
           });
         } else {
           macro.setProperties({
-            assigneeAgent: null,
-            assigneeTeam: value.team,
+            assignedAgent: null,
+            assignedTeam: value.team,
             assigneeType: 'TEAM'
           });
         }
@@ -15282,8 +15282,8 @@ define('frontend-cp/components/ko-admin/macros/edit/component', ['exports', 'emb
         onDeactivate: function onDeactivate() {
           this.get('macro').setProperties({
             assigneeType: null,
-            assigneeAgent: null,
-            assigneeTeam: null
+            assignedAgent: null,
+            assignedTeam: null
           });
         }
       }), macroAction({
@@ -25334,7 +25334,7 @@ define("frontend-cp/components/ko-admin-selectable-card/template", ["exports"], 
 define('frontend-cp/components/ko-advanced-search/component', ['exports', 'ember', 'frontend-cp/config/environment'], function (exports, _ember, _frontendCpConfigEnvironment) {
 
   var columns = {
-    CASES: ['id', 'subject', 'priority.label', 'status.label', 'assigneeAgent.fullName'],
+    CASES: ['id', 'subject', 'priority.label', 'status.label', 'assignedAgent.fullName'],
     USERS: ['id', 'fullName', 'primaryEmail.email', 'organization.name', 'lastActivityAt'],
     ORGANIZATIONS: ['id', 'name', 'updatedAt']
   };
@@ -28795,8 +28795,8 @@ define('frontend-cp/components/ko-bulk-sidebar/component', ['exports', 'ember', 
     selectedCaseIds: null,
 
     //State
-    assigneeTeam: null,
-    assigneeAgent: null,
+    assignedTeam: null,
+    assignedAgent: null,
     caseStatus: null,
     casePriority: null,
     caseType: null,
@@ -28907,12 +28907,12 @@ define('frontend-cp/components/ko-bulk-sidebar/component', ['exports', 'ember', 
     actions: {
       setAssignee: function setAssignee(team, agent) {
         if (team === null && agent === null) {
-          this.set('assigneeTeam', null);
-          this.set('assigneeAgent', null);
+          this.set('assignedTeam', null);
+          this.set('assignedAgent', null);
           this.set('isAssigneeEdited', false);
         } else {
-          this.set('assigneeTeam', team);
-          this.set('assigneeAgent', agent);
+          this.set('assignedTeam', team);
+          this.set('assignedAgent', agent);
           this.set('isAssigneeEdited', true);
         }
       },
@@ -28983,11 +28983,11 @@ define('frontend-cp/components/ko-bulk-sidebar/component', ['exports', 'ember', 
 
         var bulkService = this.get('bulkService');
         var options = {};
-        if (this.get('assigneeTeam')) {
-          options.assigneeTeam = this.get('assigneeTeam');
+        if (this.get('assignedTeam')) {
+          options.assignedTeam = this.get('assignedTeam');
         }
-        if (this.get('assigneeAgent')) {
-          options.assigneeAgent = this.get('assigneeAgent');
+        if (this.get('assignedAgent')) {
+          options.assignedAgent = this.get('assignedAgent');
         }
         if (this.get('caseStatus.id') !== -1) {
           options.caseStatus = this.get('caseStatus');
@@ -29233,7 +29233,7 @@ define("frontend-cp/components/ko-bulk-sidebar/template", ["exports"], function 
         morphs[9] = dom.createMorphAt(element3, 1, 1);
         return morphs;
       },
-      statements: [["inline", "ko-case-content/field/assignee", [], ["team", ["subexpr", "@mut", [["get", "assigneeTeam", ["loc", [null, [6, 9], [6, 21]]]]], [], []], "agent", ["subexpr", "@mut", [["get", "assigneeAgent", ["loc", [null, [7, 10], [7, 23]]]]], [], []], "field", ["subexpr", "@mut", [["get", "assigneeField", ["loc", [null, [8, 10], [8, 23]]]]], [], []], "onValueChange", ["subexpr", "action", ["setAssignee"], [], ["loc", [null, [9, 18], [9, 40]]]], "isEdited", ["subexpr", "@mut", [["get", "isAssigneeEdited", ["loc", [null, [10, 13], [10, 29]]]]], [], []], "emptyLabel", ["subexpr", "t", ["generic.no_changes"], [], ["loc", [null, [11, 15], [11, 39]]]], "hasEmptyOption", true], ["loc", [null, [5, 2], [13, 4]]]], ["inline", "ko-info-bar/field/select", [], ["title", "Status", "options", ["subexpr", "@mut", [["get", "bulkCaseStatuses", ["loc", [null, [17, 12], [17, 28]]]]], [], []], "value", ["subexpr", "@mut", [["get", "caseStatus", ["loc", [null, [18, 10], [18, 20]]]]], [], []], "isEdited", ["subexpr", "@mut", [["get", "isCaseStatusEdited", ["loc", [null, [19, 13], [19, 31]]]]], [], []], "onValueChange", ["subexpr", "action", ["setCaseStatus"], [], ["loc", [null, [20, 18], [20, 42]]]], "labelPath", "label", "hasEmptyOption", false], ["loc", [null, [15, 2], [23, 4]]]], ["inline", "ko-info-bar/field/select", [], ["title", "Type", "options", ["subexpr", "@mut", [["get", "bulkCaseTypes", ["loc", [null, [27, 12], [27, 25]]]]], [], []], "value", ["subexpr", "@mut", [["get", "caseType", ["loc", [null, [28, 10], [28, 18]]]]], [], []], "isEdited", ["subexpr", "@mut", [["get", "isCaseTypeEdited", ["loc", [null, [29, 13], [29, 29]]]]], [], []], "onValueChange", ["subexpr", "action", ["setCaseType"], [], ["loc", [null, [30, 18], [30, 40]]]], "labelPath", "label", "hasEmptyOption", false], ["loc", [null, [25, 2], [33, 4]]]], ["inline", "ko-info-bar/field/select", [], ["title", "Priority", "options", ["subexpr", "@mut", [["get", "bulkCasePriorities", ["loc", [null, [37, 12], [37, 30]]]]], [], []], "value", ["subexpr", "@mut", [["get", "casePriority", ["loc", [null, [38, 10], [38, 22]]]]], [], []], "isEdited", ["subexpr", "@mut", [["get", "isCasePriorityEdited", ["loc", [null, [39, 13], [39, 33]]]]], [], []], "onValueChange", ["subexpr", "action", ["setCasePriority"], [], ["loc", [null, [40, 18], [40, 44]]]], "labelPath", "label", "hasEmptyOption", false], ["loc", [null, [35, 2], [43, 4]]]], ["inline", "ko-info-bar/field/tags", [], ["title", ["subexpr", "t", ["cases.tags"], [], ["loc", [null, [46, 10], [46, 26]]]], "isEdited", ["subexpr", "@mut", [["get", "isTagsFieldEdited", ["loc", [null, [47, 13], [47, 30]]]]], [], []], "values", ["subexpr", "@mut", [["get", "tags", ["loc", [null, [48, 11], [48, 15]]]]], [], []], "suggestedTags", ["subexpr", "@mut", [["get", "suggestedTags", ["loc", [null, [49, 18], [49, 31]]]]], [], []], "onTagAddition", ["subexpr", "action", ["addTag"], [], ["loc", [null, [50, 18], [50, 35]]]], "onTagRemoval", ["subexpr", "action", ["removeTag"], [], ["loc", [null, [51, 17], [51, 37]]]], "onTagSuggestion", ["subexpr", "action", ["suggestTags"], [], ["loc", [null, [52, 20], [52, 42]]]], "newTagText", ["subexpr", "t", ["cases.newtag"], [], ["loc", [null, [53, 15], [53, 33]]]], "addTagText", ["subexpr", "t", ["cases.addtag"], [], ["loc", [null, [54, 15], [54, 33]]]]], ["loc", [null, [45, 2], [55, 4]]]], ["attribute", "onclick", ["subexpr", "action", ["cancel"], [], ["loc", [null, [58, 69], [58, 88]]]]], ["inline", "t", ["generic.cancel"], [], ["loc", [null, [59, 4], [59, 26]]]], ["attribute", "class", ["concat", ["button button--primary ", ["subexpr", "if", [["subexpr", "not", [["get", "isEdited", ["loc", [null, [61, 64], [61, 72]]]]], [], ["loc", [null, [61, 59], [61, 73]]]], "disabled"], [], ["loc", [null, [61, 54], [61, 86]]]]]]], ["attribute", "onclick", ["subexpr", "action", ["submit"], [], ["loc", [null, [61, 116], [61, 135]]]]], ["block", "if", [["get", "isSaving", ["loc", [null, [62, 10], [62, 18]]]]], [], 0, 1, ["loc", [null, [62, 4], [66, 11]]]]],
+      statements: [["inline", "ko-case-content/field/assignee", [], ["team", ["subexpr", "@mut", [["get", "assignedTeam", ["loc", [null, [6, 9], [6, 21]]]]], [], []], "agent", ["subexpr", "@mut", [["get", "assignedAgent", ["loc", [null, [7, 10], [7, 23]]]]], [], []], "field", ["subexpr", "@mut", [["get", "assigneeField", ["loc", [null, [8, 10], [8, 23]]]]], [], []], "onValueChange", ["subexpr", "action", ["setAssignee"], [], ["loc", [null, [9, 18], [9, 40]]]], "isEdited", ["subexpr", "@mut", [["get", "isAssigneeEdited", ["loc", [null, [10, 13], [10, 29]]]]], [], []], "emptyLabel", ["subexpr", "t", ["generic.no_changes"], [], ["loc", [null, [11, 15], [11, 39]]]], "hasEmptyOption", true], ["loc", [null, [5, 2], [13, 4]]]], ["inline", "ko-info-bar/field/select", [], ["title", "Status", "options", ["subexpr", "@mut", [["get", "bulkCaseStatuses", ["loc", [null, [17, 12], [17, 28]]]]], [], []], "value", ["subexpr", "@mut", [["get", "caseStatus", ["loc", [null, [18, 10], [18, 20]]]]], [], []], "isEdited", ["subexpr", "@mut", [["get", "isCaseStatusEdited", ["loc", [null, [19, 13], [19, 31]]]]], [], []], "onValueChange", ["subexpr", "action", ["setCaseStatus"], [], ["loc", [null, [20, 18], [20, 42]]]], "labelPath", "label", "hasEmptyOption", false], ["loc", [null, [15, 2], [23, 4]]]], ["inline", "ko-info-bar/field/select", [], ["title", "Type", "options", ["subexpr", "@mut", [["get", "bulkCaseTypes", ["loc", [null, [27, 12], [27, 25]]]]], [], []], "value", ["subexpr", "@mut", [["get", "caseType", ["loc", [null, [28, 10], [28, 18]]]]], [], []], "isEdited", ["subexpr", "@mut", [["get", "isCaseTypeEdited", ["loc", [null, [29, 13], [29, 29]]]]], [], []], "onValueChange", ["subexpr", "action", ["setCaseType"], [], ["loc", [null, [30, 18], [30, 40]]]], "labelPath", "label", "hasEmptyOption", false], ["loc", [null, [25, 2], [33, 4]]]], ["inline", "ko-info-bar/field/select", [], ["title", "Priority", "options", ["subexpr", "@mut", [["get", "bulkCasePriorities", ["loc", [null, [37, 12], [37, 30]]]]], [], []], "value", ["subexpr", "@mut", [["get", "casePriority", ["loc", [null, [38, 10], [38, 22]]]]], [], []], "isEdited", ["subexpr", "@mut", [["get", "isCasePriorityEdited", ["loc", [null, [39, 13], [39, 33]]]]], [], []], "onValueChange", ["subexpr", "action", ["setCasePriority"], [], ["loc", [null, [40, 18], [40, 44]]]], "labelPath", "label", "hasEmptyOption", false], ["loc", [null, [35, 2], [43, 4]]]], ["inline", "ko-info-bar/field/tags", [], ["title", ["subexpr", "t", ["cases.tags"], [], ["loc", [null, [46, 10], [46, 26]]]], "isEdited", ["subexpr", "@mut", [["get", "isTagsFieldEdited", ["loc", [null, [47, 13], [47, 30]]]]], [], []], "values", ["subexpr", "@mut", [["get", "tags", ["loc", [null, [48, 11], [48, 15]]]]], [], []], "suggestedTags", ["subexpr", "@mut", [["get", "suggestedTags", ["loc", [null, [49, 18], [49, 31]]]]], [], []], "onTagAddition", ["subexpr", "action", ["addTag"], [], ["loc", [null, [50, 18], [50, 35]]]], "onTagRemoval", ["subexpr", "action", ["removeTag"], [], ["loc", [null, [51, 17], [51, 37]]]], "onTagSuggestion", ["subexpr", "action", ["suggestTags"], [], ["loc", [null, [52, 20], [52, 42]]]], "newTagText", ["subexpr", "t", ["cases.newtag"], [], ["loc", [null, [53, 15], [53, 33]]]], "addTagText", ["subexpr", "t", ["cases.addtag"], [], ["loc", [null, [54, 15], [54, 33]]]]], ["loc", [null, [45, 2], [55, 4]]]], ["attribute", "onclick", ["subexpr", "action", ["cancel"], [], ["loc", [null, [58, 69], [58, 88]]]]], ["inline", "t", ["generic.cancel"], [], ["loc", [null, [59, 4], [59, 26]]]], ["attribute", "class", ["concat", ["button button--primary ", ["subexpr", "if", [["subexpr", "not", [["get", "isEdited", ["loc", [null, [61, 64], [61, 72]]]]], [], ["loc", [null, [61, 59], [61, 73]]]], "disabled"], [], ["loc", [null, [61, 54], [61, 86]]]]]]], ["attribute", "onclick", ["subexpr", "action", ["submit"], [], ["loc", [null, [61, 116], [61, 135]]]]], ["block", "if", [["get", "isSaving", ["loc", [null, [62, 10], [62, 18]]]]], [], 0, 1, ["loc", [null, [62, 4], [66, 11]]]]],
       locals: [],
       templates: [child0, child1]
     };
@@ -30342,8 +30342,8 @@ define('frontend-cp/components/ko-case-content/component', ['exports', 'ember'],
       return this.get('case.requester') !== this.get('editedCase.requester');
     }),
 
-    isAssigneeEdited: _ember['default'].computed('editedCase.assigneeAgent', 'case.assigneeAgent', 'editedCase.assigneeTeam', 'case.assigneeTeam', function () {
-      return this.get('case.assigneeAgent') !== this.get('editedCase.assigneeAgent') || this.get('case.assigneeTeam') !== this.get('editedCase.assigneeTeam');
+    isAssigneeEdited: _ember['default'].computed('editedCase.assignedAgent', 'case.assignedAgent', 'editedCase.assignedTeam', 'case.assignedTeam', function () {
+      return this.get('case.assignedAgent') !== this.get('editedCase.assignedAgent') || this.get('case.assignedTeam') !== this.get('editedCase.assignedTeam');
     }),
 
     isStatusEdited: _ember['default'].computed('editedCase.status', 'case.status', function () {
@@ -32646,7 +32646,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
               morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
               return morphs;
             },
-            statements: [["inline", "ko-case-content/field/assignee", [], ["team", ["subexpr", "@mut", [["get", "editedCase.assigneeTeam", ["loc", [null, [36, 13], [36, 36]]]]], [], []], "agent", ["subexpr", "@mut", [["get", "editedCase.assigneeAgent", ["loc", [null, [37, 14], [37, 38]]]]], [], []], "field", ["subexpr", "@mut", [["get", "assigneeField", ["loc", [null, [38, 14], [38, 27]]]]], [], []], "onValueChange", ["subexpr", "action", ["dispatch", "setAssignee", ["get", "tabId", ["loc", [null, [39, 55], [39, 60]]]]], [], ["loc", [null, [39, 22], [39, 61]]]], "isEdited", ["subexpr", "@mut", [["get", "isAssigneeEdited", ["loc", [null, [40, 17], [40, 33]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "propertiesChangeViaPusher.assignee", ["loc", [null, [41, 23], [41, 57]]]]], [], []], "isErrored", ["subexpr", "or", [["get", "errorMap.assignee_agent_id", ["loc", [null, [42, 22], [42, 48]]]], ["get", "errorMap.assignee_team_id", ["loc", [null, [42, 49], [42, 74]]]]], [], ["loc", [null, [42, 18], [42, 75]]]], "isDisabled", ["subexpr", "@mut", [["get", "isCaseDisabled", ["loc", [null, [43, 19], [43, 33]]]]], [], []]], ["loc", [null, [35, 6], [44, 8]]]]],
+            statements: [["inline", "ko-case-content/field/assignee", [], ["team", ["subexpr", "@mut", [["get", "editedCase.assignedTeam", ["loc", [null, [36, 13], [36, 36]]]]], [], []], "agent", ["subexpr", "@mut", [["get", "editedCase.assignedAgent", ["loc", [null, [37, 14], [37, 38]]]]], [], []], "field", ["subexpr", "@mut", [["get", "assigneeField", ["loc", [null, [38, 14], [38, 27]]]]], [], []], "onValueChange", ["subexpr", "action", ["dispatch", "setAssignee", ["get", "tabId", ["loc", [null, [39, 55], [39, 60]]]]], [], ["loc", [null, [39, 22], [39, 61]]]], "isEdited", ["subexpr", "@mut", [["get", "isAssigneeEdited", ["loc", [null, [40, 17], [40, 33]]]]], [], []], "isPusherEdited", ["subexpr", "@mut", [["get", "propertiesChangeViaPusher.assignee", ["loc", [null, [41, 23], [41, 57]]]]], [], []], "isErrored", ["subexpr", "or", [["get", "errorMap.assigned_agent_id", ["loc", [null, [42, 22], [42, 48]]]], ["get", "errorMap.assigned_team_id", ["loc", [null, [42, 49], [42, 74]]]]], [], ["loc", [null, [42, 18], [42, 75]]]], "isDisabled", ["subexpr", "@mut", [["get", "isCaseDisabled", ["loc", [null, [43, 19], [43, 33]]]]], [], []]], ["loc", [null, [35, 6], [44, 8]]]]],
             locals: [],
             templates: []
           };
@@ -33719,7 +33719,7 @@ define("frontend-cp/components/ko-cases-list/column/assigneeagentid/template", [
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["content", "case.assigneeAgent.fullName", ["loc", [null, [1, 0], [1, 31]]]]],
+      statements: [["content", "case.assignedAgent.fullName", ["loc", [null, [1, 0], [1, 31]]]]],
       locals: [],
       templates: []
     };
@@ -33776,7 +33776,7 @@ define("frontend-cp/components/ko-cases-list/column/assigneeteamid/template", ["
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["content", "case.assigneeTeam.title", ["loc", [null, [1, 0], [1, 27]]]]],
+      statements: [["content", "case.assignedTeam.title", ["loc", [null, [1, 0], [1, 27]]]]],
       locals: [],
       templates: []
     };
@@ -35058,7 +35058,7 @@ define("frontend-cp/components/ko-cases-list/column/team/template", ["exports"],
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["content", "case.assigneeTeam.title", ["loc", [null, [1, 0], [1, 27]]]]],
+      statements: [["content", "case.assignedTeam.title", ["loc", [null, [1, 0], [1, 27]]]]],
       locals: [],
       templates: []
     };
@@ -59368,7 +59368,7 @@ define("frontend-cp/components/ko-universal-search/preview/template", ["exports"
               morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
               return morphs;
             },
-            statements: [["inline", "t", ["cases.assignedtoagentteam"], ["agent", ["subexpr", "@mut", [["get", "previewModel.assigneeAgent.fullName", ["loc", [null, [27, 18], [27, 53]]]]], [], []], "team", ["subexpr", "@mut", [["get", "previewModel.assigneeTeam.title", ["loc", [null, [28, 17], [28, 48]]]]], [], []]], ["loc", [null, [26, 10], [28, 50]]]]],
+            statements: [["inline", "t", ["cases.assignedtoagentteam"], ["agent", ["subexpr", "@mut", [["get", "previewModel.assignedAgent.fullName", ["loc", [null, [27, 18], [27, 53]]]]], [], []], "team", ["subexpr", "@mut", [["get", "previewModel.assignedTeam.title", ["loc", [null, [28, 17], [28, 48]]]]], [], []]], ["loc", [null, [26, 10], [28, 50]]]]],
             locals: [],
             templates: []
           };
@@ -59410,7 +59410,7 @@ define("frontend-cp/components/ko-universal-search/preview/template", ["exports"
               morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
               return morphs;
             },
-            statements: [["content", "previewModel.assigneeTeam.title", ["loc", [null, [30, 10], [30, 45]]]]],
+            statements: [["content", "previewModel.assignedTeam.title", ["loc", [null, [30, 10], [30, 45]]]]],
             locals: [],
             templates: []
           };
@@ -59449,7 +59449,7 @@ define("frontend-cp/components/ko-universal-search/preview/template", ["exports"
             dom.insertBoundary(fragment, null);
             return morphs;
           },
-          statements: [["block", "if", [["get", "previewModel.assigneeAgent", ["loc", [null, [25, 14], [25, 40]]]]], [], 0, 1, ["loc", [null, [25, 8], [31, 15]]]]],
+          statements: [["block", "if", [["get", "previewModel.assignedAgent", ["loc", [null, [25, 14], [25, 40]]]]], [], 0, 1, ["loc", [null, [25, 8], [31, 15]]]]],
           locals: [],
           templates: [child0, child1]
         };
@@ -59552,7 +59552,7 @@ define("frontend-cp/components/ko-universal-search/preview/template", ["exports"
           dom.appendChild(el1, el2);
           var el2 = dom.createComment("");
           dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode(" \n      ");
+          var el2 = dom.createTextNode("\n      ");
           dom.appendChild(el1, el2);
           var el2 = dom.createElement("strong");
           var el3 = dom.createComment("");
@@ -59612,7 +59612,7 @@ define("frontend-cp/components/ko-universal-search/preview/template", ["exports"
           morphs[8] = dom.createMorphAt(dom.childAt(element4, [3]), 1, 1);
           return morphs;
         },
-        statements: [["inline", "t", ["cases.ticketid"], [], ["loc", [null, [9, 6], [9, 28]]]], ["content", "previewModel.id", ["loc", [null, [9, 29], [9, 48]]]], ["content", "previewModel.status.label", ["loc", [null, [10, 14], [10, 43]]]], ["inline", "t", ["cases.lastupdated"], ["time", ["subexpr", "moment-from-now", [["get", "previewModel.updatedAt", ["loc", [null, [11, 52], [11, 74]]]]], [], ["loc", [null, [11, 35], [11, 75]]]]], ["loc", [null, [11, 6], [11, 77]]]], ["inline", "t", ["cases.created"], [], ["loc", [null, [14, 6], [14, 27]]]], ["inline", "format-date", [["get", "previewModel.createdAt", ["loc", [null, [15, 28], [15, 50]]]]], ["format", "full"], ["loc", [null, [15, 14], [15, 66]]]], ["inline", "t", [["subexpr", "concat", ["cases.channelType.", ["get", "previewModel.sourceChannel.channelType", ["loc", [null, [18, 41], [18, 79]]]]], [], ["loc", [null, [18, 12], [18, 80]]]]], [], ["loc", [null, [18, 8], [18, 82]]]], ["inline", "t", ["cases.currentlyassignedto"], [], ["loc", [null, [22, 6], [22, 39]]]], ["block", "if", [["get", "previewModel.assigneeTeam", ["loc", [null, [24, 12], [24, 37]]]]], [], 0, 1, ["loc", [null, [24, 6], [34, 13]]]]],
+        statements: [["inline", "t", ["cases.ticketid"], [], ["loc", [null, [9, 6], [9, 28]]]], ["content", "previewModel.id", ["loc", [null, [9, 29], [9, 48]]]], ["content", "previewModel.status.label", ["loc", [null, [10, 14], [10, 43]]]], ["inline", "t", ["cases.lastupdated"], ["time", ["subexpr", "moment-from-now", [["get", "previewModel.updatedAt", ["loc", [null, [11, 52], [11, 74]]]]], [], ["loc", [null, [11, 35], [11, 75]]]]], ["loc", [null, [11, 6], [11, 77]]]], ["inline", "t", ["cases.created"], [], ["loc", [null, [14, 6], [14, 27]]]], ["inline", "format-date", [["get", "previewModel.createdAt", ["loc", [null, [15, 28], [15, 50]]]]], ["format", "full"], ["loc", [null, [15, 14], [15, 66]]]], ["inline", "t", [["subexpr", "concat", ["cases.channelType.", ["get", "previewModel.sourceChannel.channelType", ["loc", [null, [18, 41], [18, 79]]]]], [], ["loc", [null, [18, 12], [18, 80]]]]], [], ["loc", [null, [18, 8], [18, 82]]]], ["inline", "t", ["cases.currentlyassignedto"], [], ["loc", [null, [22, 6], [22, 39]]]], ["block", "if", [["get", "previewModel.assignedTeam", ["loc", [null, [24, 12], [24, 37]]]]], [], 0, 1, ["loc", [null, [24, 6], [34, 13]]]]],
         locals: [],
         templates: [child0, child1]
       };
@@ -66132,7 +66132,6 @@ define("frontend-cp/locales/en-us/organisation", ["exports"], function (exports)
 define("frontend-cp/locales/en-us/search", ["exports"], function (exports) {
   exports["default"] = {
     "noresults": "No results found",
-    "searching": "Searching...",
     "placeholder": "Search...",
 
     "nopreview": "Mouse over a search result to see a preview.",
@@ -66149,7 +66148,7 @@ define("frontend-cp/locales/en-us/search", ["exports"], function (exports) {
     "CASES.subject": "Subject",
     "CASES.priority.label": "Priority",
     "CASES.status.label": "Status",
-    "CASES.assigneeAgent.fullName": "Assigned agent",
+    "CASES.assignedAgent.fullName": "Assigned agent",
     "CASES.notfound": "There are no cases here.",
 
     "USERS.id": "User ID",
@@ -71280,8 +71279,8 @@ define('frontend-cp/mirage/scenarios/default', ['exports'], function (exports) {
     server.createList('definition', 3);
 
     var sourceChannel = server.create('channel');
-    var assigneeAgent = defaultUser;
-    var assigneeTeam = teams[0];
+    var assignedAgent = defaultUser;
+    var assignedTeam = teams[0];
     var locale = server.create('locale', {
       id: 1,
       locale: 'en-us'
@@ -71314,10 +71313,8 @@ define('frontend-cp/mirage/scenarios/default', ['exports'], function (exports) {
       requester: defaultUser,
       creator: defaultUser,
       identity: identityEmail,
-      assignee: {
-        agent: { id: 1, resource_type: 'user' },
-        team: { id: 1, resource_type: 'team' }
-      },
+      assignedAgent: { id: 1, resource_type: 'user' },
+      assignedTeam: { id: 1, resource_type: 'team' },
       brand: brand,
       status: status,
       priority: priority,
@@ -71338,10 +71335,8 @@ define('frontend-cp/mirage/scenarios/default', ['exports'], function (exports) {
       requester: defaultUser,
       creator: defaultUser,
       identity: identityEmail,
-      assignee: {
-        agent: assigneeAgent,
-        team: assigneeTeam
-      },
+      assignedAgent: assignedAgent,
+      assignedTeam: assignedTeam,
       brand: brand,
       status: statuses[3],
       priority: priority,
@@ -71360,10 +71355,8 @@ define('frontend-cp/mirage/scenarios/default', ['exports'], function (exports) {
       requester: defaultUser,
       creator: defaultUser,
       identity: identityEmail,
-      assignee: {
-        agent: assigneeAgent,
-        team: assigneeTeam
-      },
+      assignedAgent: assignedAgent,
+      assignedTeam: assignedTeam,
       brand: brand,
       status: status,
       priority: priority,
@@ -72347,8 +72340,8 @@ define('frontend-cp/models/case-reply', ['exports', 'ember-data', 'model-fragmen
     status: _emberData['default'].belongsTo('case-status', { async: false }),
     priority: _emberData['default'].belongsTo('case-priority', { async: false }),
     caseType: _emberData['default'].belongsTo('case-type', { async: false }),
-    assigneeTeam: _emberData['default'].belongsTo('team', { async: false }),
-    assigneeAgent: _emberData['default'].belongsTo('user', { async: false }),
+    assignedTeam: _emberData['default'].belongsTo('team', { async: false }),
+    assignedAgent: _emberData['default'].belongsTo('user', { async: false }),
     tags: _emberData['default'].attr('string'),
     fieldValues: _modelFragments['default'].fragmentArray('case-field-value'),
     // _filename: DS.belongsTo('?'),
@@ -72431,8 +72424,8 @@ define('frontend-cp/models/case-type', ['exports', 'ember-data'], function (expo
 });
 define('frontend-cp/models/case', ['exports', 'ember-data', 'model-fragments', 'frontend-cp/models/has-posts'], function (exports, _emberData, _modelFragments, _frontendCpModelsHasPosts) {
   exports['default'] = _frontendCpModelsHasPosts['default'].extend({
-    assigneeTeam: _emberData['default'].belongsTo('team', { async: false }),
-    assigneeAgent: _emberData['default'].belongsTo('user', { async: false }),
+    assignedTeam: _emberData['default'].belongsTo('team', { async: false }),
+    assignedAgent: _emberData['default'].belongsTo('user', { async: false }),
     subject: _emberData['default'].attr('string', { defaultValue: '' }),
     portal: _emberData['default'].attr('string'),
     sourceChannel: _emberData['default'].belongsTo('channel', { async: false }),
@@ -72495,8 +72488,8 @@ define('frontend-cp/models/case', ['exports', 'ember-data', 'model-fragments', '
       var reply = this.get('store').createRecord('case-reply', {
         'case': this,
         channel: account,
-        assigneeTeam: this.get('assigneeTeam'),
-        assigneeAgent: this.get('assigneeAgent'),
+        assignedTeam: this.get('assignedTeam'),
+        assignedAgent: this.get('assignedAgent'),
         channelType: channelType,
         contents: contents,
         inReplyToUuid: inReplyToUuid,
@@ -73058,8 +73051,8 @@ define('frontend-cp/models/macro', ['exports', 'ember-data', 'model-fragments'],
 
     // Relationships
     visibleToTeam: _emberData['default'].belongsTo('team', { async: true }),
-    assigneeTeam: _emberData['default'].belongsTo('team', { async: false }),
-    assigneeAgent: _emberData['default'].belongsTo('user', { async: false }),
+    assignedTeam: _emberData['default'].belongsTo('team', { async: false }),
+    assignedAgent: _emberData['default'].belongsTo('user', { async: false }),
     priority: _emberData['default'].belongsTo('case-priority', { async: false }),
     status: _emberData['default'].belongsTo('case-status', { async: false }),
     agent: _emberData['default'].belongsTo('user', { async: false }),
@@ -74340,6 +74333,10 @@ define('frontend-cp/serializers/case-reply', ['exports', 'frontend-cp/serializer
         Reflect.deleteProperty(json, 'channel_options');
       }
 
+      // TODO: support of previous approach, remove when it will be fixed
+      json.assignee_agent_id = json.assigned_agent_id;
+      json.assignee_team_id = json.assigned_team_id;
+
       return json;
     },
 
@@ -74431,11 +74428,6 @@ define('frontend-cp/serializers/case', ['exports', 'frontend-cp/serializers/appl
         replyChannels: 'reply/channels',
         tags: 'tags'
       };
-      var agent = resourceHash.assignee && resourceHash.assignee.agent;
-      var team = resourceHash.assignee && resourceHash.assignee.team;
-      resourceHash.assignee_agent = agent && { id: agent.id, type: agent.resource_type };
-      resourceHash.assignee_team = team && { id: team.id, type: team.resource_type };
-      Reflect.deleteProperty(resourceHash, 'assignee');
       return this._super.apply(this, arguments);
     },
 
@@ -74456,6 +74448,10 @@ define('frontend-cp/serializers/case', ['exports', 'frontend-cp/serializers/appl
 
       json.type_id = json.case_type_id && parseInt(json.case_type_id, 10);
       Reflect.deleteProperty(json, 'case_type_id');
+
+      // TODO: support of previous approach, remove when it will be fixed
+      json.assignee_agent_id = json.assigned_agent_id;
+      json.assignee_team_id = json.assigned_team_id;
 
       return json;
     }
@@ -74646,10 +74642,10 @@ define('frontend-cp/serializers/macro', ['exports', 'frontend-cp/serializers/app
       var team = resourceHash.assignee && resourceHash.assignee.team;
       var caseType = resourceHash.macro_type;
       if (agent) {
-        resourceHash.assignee_agent = { id: agent.id, type: agent.resource_type };
+        resourceHash.assigned_agent = { id: agent.id, type: agent.resource_type };
       }
       if (team) {
-        resourceHash.assignee_team = { id: team.id, type: team.resource_type };
+        resourceHash.assigned_team = { id: team.id, type: team.resource_type };
       }
       if (caseType) {
         resourceHash.case_type = { id: caseType.id, type: caseType.resource_type };
@@ -75210,15 +75206,18 @@ define('frontend-cp/services/case-bulk-update', ['exports', 'ember'], function (
           return resolve();
         });
       } else {
-        if (typeof options.assigneeTeam !== 'undefined') {
-          payload.assignee_team_id = options.assigneeTeam.id;
+        if (typeof options.assignedTeam !== 'undefined') {
+          payload.assigned_team_id = options.assignedTeam.id;
         }
-        if (typeof options.assigneeAgent !== 'undefined') {
-          payload.assignee_agent_id = options.assigneeAgent.id;
+
+        if (typeof options.assignedAgent !== 'undefined') {
+          payload.assigned_agent_id = options.assignedAgent.id;
         }
+
         if (typeof options.caseStatus !== 'undefined') {
           payload.status_id = options.caseStatus.id;
         }
+
         if (typeof options.casePriority !== 'undefined') {
           if (options.casePriority) {
             payload.priority_id = options.casePriority.id;
@@ -75403,8 +75402,8 @@ define('frontend-cp/services/case-tab', ['exports', 'ember', 'npm:lodash', 'fron
   var copyCase = function copyCase(caseModel) {
     return _ember['default'].Object.create({
       subject: caseModel.get('subject'),
-      assigneeTeam: caseModel.get('assigneeTeam'),
-      assigneeAgent: caseModel.get('assigneeAgent'),
+      assignedTeam: caseModel.get('assignedTeam'),
+      assignedAgent: caseModel.get('assignedAgent'),
       requester: caseModel.get('requester'),
       status: caseModel.get('status'),
       caseType: caseModel.get('caseType'),
@@ -75427,8 +75426,8 @@ define('frontend-cp/services/case-tab', ['exports', 'ember', 'npm:lodash', 'fron
     model.get('errors').clear();
     model.setProperties({
       subject: original.get('subject'),
-      assigneeTeam: original.get('assigneeTeam'),
-      assigneeAgent: original.get('assigneeAgent'),
+      assignedTeam: original.get('assignedTeam'),
+      assignedAgent: original.get('assignedAgent'),
       requester: original.get('requester'),
       status: original.get('status'),
       caseType: original.get('caseType'),
@@ -75713,15 +75712,15 @@ define('frontend-cp/services/case-tab', ['exports', 'ember', 'npm:lodash', 'fron
     },
 
     getAssigneeFromMacro: function getAssigneeFromMacro(user, macro) {
-      switch (macro.get('assignee.type')) {
+      switch (macro.get('assigneeType')) {
         case 'UNASSIGNED':
           return [null, null];
         case 'CURRENT_AGENT':
           return [user.get('teams.firstObject'), user];
         case 'TEAM':
-          return [macro.get('assignee.team'), macro.get('assignee.agent')];
+          return [macro.get('assignedTeam'), macro.get('assignedAgent')];
         case 'AGENT':
-          return [macro.get('assignee.team'), macro.get('assignee.agent')];
+          return [macro.get('assignedTeam'), macro.get('assignedAgent')];
       }
     },
 
@@ -75877,10 +75876,10 @@ define('frontend-cp/services/case-tab', ['exports', 'ember', 'npm:lodash', 'fron
 
     setAssignee: function setAssignee(tabId, team, agent) {
       var state = this.getState(tabId);
-      state.set('editedCase.assigneeAgent', agent);
-      state.set('editedCase.assigneeTeam', team);
-      state.set('errorMap.assignee_agent_id', false);
-      state.set('errorMap.assignee_team_id', false);
+      state.set('editedCase.assignedAgent', agent);
+      state.set('editedCase.assignedTeam', team);
+      state.set('errorMap.assigned_agent_id', false);
+      state.set('errorMap.assigned_team_id', false);
       this.persistTabState(tabId);
     },
 
@@ -75941,8 +75940,8 @@ define('frontend-cp/services/case-tab', ['exports', 'ember', 'npm:lodash', 'fron
 
       model.setProperties({
         subject: editedCase.get('subject'),
-        assigneeTeam: editedCase.get('assigneeTeam'),
-        assigneeAgent: editedCase.get('assigneeAgent'),
+        assignedTeam: editedCase.get('assignedTeam'),
+        assignedAgent: editedCase.get('assignedAgent'),
         requester: editedCase.get('requester'),
         status: editedCase.get('status'),
         caseType: editedCase.get('caseType'),
@@ -76218,11 +76217,11 @@ define('frontend-cp/services/case-tab', ['exports', 'ember', 'npm:lodash', 'fron
       }
 
       caseModel.reload().then(function () {
-        if (original.get('assigneeTeam') !== caseModel.get('assigneeTeam') || original.get('assigneeAgent') !== caseModel.get('assigneeAgent')) {
-          editedCase.set('assigneeTeam', caseModel.get('assigneeTeam'));
-          editedCase.set('assigneeAgent', caseModel.get('assigneeAgent'));
-          errorMap.set('assignee_agent_id', false);
-          errorMap.set('assignee_team_id', false);
+        if (original.get('assignedTeam') !== caseModel.get('assignedTeam') || original.get('assignedAgent') !== caseModel.get('assignedAgent')) {
+          editedCase.set('assignedTeam', caseModel.get('assignedTeam'));
+          editedCase.set('assignedAgent', caseModel.get('assignedAgent'));
+          errorMap.set('assigned_agent_id', false);
+          errorMap.set('assigned_team_id', false);
           propertiesChangeViaPusher.set('assignee', true);
         }
 
@@ -100506,7 +100505,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"viewingUsersInactiveThreshold":300000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+78596d5f"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"viewingUsersInactiveThreshold":300000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+11d795dd"});
 }
 
 /* jshint ignore:end */
