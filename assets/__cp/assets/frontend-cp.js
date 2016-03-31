@@ -50947,7 +50947,7 @@ define('frontend-cp/components/ko-predicate-builder/rule/component', ['exports',
     definitions: [],
     onRuleDeletion: null,
     rule: null,
-    currentUserString: 'current user',
+    currentUserString: 'current_user',
 
     // HTML
     classNames: ['ko-predicate-builder_rule'],
@@ -50985,7 +50985,10 @@ define('frontend-cp/components/ko-predicate-builder/rule/component', ['exports',
             var currentUserString = '(' + this.get('currentUserString') + ')';
             if (ruleValue) {
               if (ruleValue === currentUserString) {
-                return _ember['default'].Object.create({ id: currentUserString, fullName: currentUserString });
+                return _ember['default'].Object.create({
+                  id: currentUserString,
+                  fullName: this.get('intl').findTranslationByKey('admin.predicate_builder.current_user')
+                });
               } else {
                 return this.get('store').findRecord(this.get('autocompleteType'), ruleValue);
               }
@@ -51097,17 +51100,20 @@ define('frontend-cp/components/ko-predicate-builder/rule/component', ['exports',
       },
 
       searchAutocomplete: function searchAutocomplete(text) {
+        var _this = this;
+
         var currentUserString = this.get('currentUserString');
         var autocompleteType = this.get('autocompleteType');
 
         return this.get('store').query(autocompleteType, _npmLodash['default'].extend({}, this.get('autocompleteQueryOptions'), { name: text })).then(function (searchResults) {
+          var users = searchResults.toArray();
           if (autocompleteType === 'user' && currentUserString.indexOf(text) !== -1) {
-            searchResults.pushObject(_ember['default'].Object.create({
+            users.pushObject(_ember['default'].Object.create({
               id: '(' + currentUserString + ')',
-              fullName: '(' + currentUserString + ')'
+              fullName: _this.get('intl').findTranslationByKey('admin.predicate_builder.current_user')
             }));
           }
-          return searchResults;
+          return users;
         });
       }
     }
@@ -66422,6 +66428,7 @@ define("frontend-cp/locales/en-us/admin", ["exports"], function (exports) {
     "predicate_builder.group.REQUESTER": "Requester:",
     "predicate_builder.group.ORGANIZATION": "Organization:",
     "predicate_builder.group.SLA": "SLA:",
+    "predicate_builder.current_user": "(current user)",
     "macros.title": "Macros",
     "macros.usage_count": "Used {count, plural, =1 {1 time} other {# times}}",
     "macros.last_used_at": "Last used at {date}",
@@ -101187,7 +101194,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"viewingUsersInactiveThreshold":300000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+cde93931"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"viewingUsersInactiveThreshold":300000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+537da528"});
 }
 
 /* jshint ignore:end */

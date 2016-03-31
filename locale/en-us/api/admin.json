@@ -349,6 +349,7 @@
   "predicate_builder.group.REQUESTER": "Requester:",
   "predicate_builder.group.ORGANIZATION": "Organization:",
   "predicate_builder.group.SLA": "SLA:",
+  "predicate_builder.current_user": "(current user)",
   "macros.title": "Macros",
   "macros.usage_count": "Used {count, plural, =1 {1 time} other {# times}}",
   "macros.last_used_at": "Last used at {date}",
