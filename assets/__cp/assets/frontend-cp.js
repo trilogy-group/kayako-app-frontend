@@ -62480,14 +62480,6 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember', 
       return organization;
     },
 
-    reloadPosts: function reloadPosts() {
-      this.get('timeline').loadPostsBelow(this.get('state'), {
-        model: this.get('model'),
-        filter: this.get('filter'),
-        sortOrder: this.get('sortOrder')
-      });
-    },
-
     actions: {
       textEditorFocusStateChange: function textEditorFocusStateChange(state) {
         if (!state) {
@@ -62722,8 +62714,26 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember', 
 
           _this11.resetForm();
           _this11.refreshTags();
-          _this11.reloadPosts();
           _this11.initEditedTeams();
+
+          var sortOrder = _this11.get('sortOrder');
+          var state = _this11.get('state');
+          var posts = state.get('posts');
+          if (sortOrder === 'newest' && !state.get('topPostsAvailable')) {
+            _this11.get('timeline').loadPostsAbove(_this11.get('state'), {
+              model: _this11.get('model'),
+              filter: _this11.get('filter'),
+              sortOrder: _this11.get('sortOrder'),
+              postId: posts.length ? posts.objectAt(0).get('id') : null
+            });
+          } else if (sortOrder === 'oldest' && !state.get('bottomPostsAvailable')) {
+            _this11.get('timeline').loadPostsBelow(_this11.get('state'), {
+              model: _this11.get('model'),
+              filter: _this11.get('filter'),
+              sortOrder: _this11.get('sortOrder'),
+              postId: posts.length ? posts.objectAt(posts.length - 1).get('id') : null
+            });
+          }
 
           _this11.get('metrics').trackEvent({
             event: 'User Updated',
@@ -62771,26 +62781,12 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember', 
         this.set('replyContent', newContent);
       },
 
-      loadPostsBelow: function loadPostsBelow() {
-        var state = this.get('state');
-
-        this.get('timeline').loadPostsBelow(state, {
-          model: this.get('model'),
-          filter: this.get('filter'),
-          sortOrder: this.get('sortOrder'),
-          postId: this.get('postId')
-        });
+      loadPostsBelow: function loadPostsBelow(options) {
+        this.get('timeline').loadPostsBelow(this.get('state'), options);
       },
 
-      loadPostsAbove: function loadPostsAbove() {
-        var state = this.get('state');
-
-        this.get('timeline').loadPostsAbove(state, {
-          model: this.get('model'),
-          filter: this.get('filter'),
-          sortOrder: this.get('sortOrder'),
-          postId: this.get('postId')
-        });
+      loadPostsAbove: function loadPostsAbove(options) {
+        this.get('timeline').loadPostsAbove(this.get('state'), options);
       }
     }
   });
@@ -101191,7 +101187,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"viewingUsersInactiveThreshold":300000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+3a2d2cd4"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"viewingUsersInactiveThreshold":300000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+cde93931"});
 }
 
 /* jshint ignore:end */
