@@ -59,7 +59,6 @@
   "lastupdated": "Last updated {time}",
   "metric.total": "{number, number} Total",
   "metric.unresolved": "Unresolved",
-  "newtag": "New Tag",
   "addtag": "Add a tag...",
   "tags": "Tags",
   "note": "Note",
