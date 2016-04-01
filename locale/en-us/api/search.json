@@ -1,6 +1,5 @@
 {
   "noresults": "No results found",
-  "searching": "Searching...",
   "placeholder": "Search...",
 
   "nopreview": "Mouse over a search result to see a preview.",
@@ -17,7 +16,7 @@
   "CASES.subject": "Subject",
   "CASES.priority.label": "Priority",
   "CASES.status.label": "Status",
-  "CASES.assigneeAgent.fullName": "Assigned agent",
+  "CASES.assignedAgent.fullName": "Assigned agent",
   "CASES.notfound": "There are no cases here.",
 
   "USERS.id": "User ID",

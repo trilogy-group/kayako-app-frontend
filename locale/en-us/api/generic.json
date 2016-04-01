@@ -144,6 +144,8 @@
   "reply.click_to_leave_a": "Click to leave a",
   "reply.note": "Note",
 
+  "addtagname": "Add tag “{tag}”",
+
   "units.kB": "kB",
   "units.MB": "MB",
   "units.GB": "GB",
