@@ -26076,12 +26076,18 @@ define('frontend-cp/components/ko-agent-dropdown/component', ['exports', 'ember'
     actions: {
       reset: function reset() {
         this.set('selectedNavItem', null);
-        _ember['default'].run.cancel(this.get('closeDropdownTimer'));
+        if (!_ember['default'].testing) {
+          _ember['default'].run.cancel(this.get('closeDropdownTimer'));
+        }
       },
 
       onTabCreateComplete: function onTabCreateComplete(route, model) {
         this._createSuccessNotification(route);
-        _ember['default'].run.cancel(this.get('closeDropdownTimer'));
+
+        if (!_ember['default'].testing) {
+          _ember['default'].run.cancel(this.get('closeDropdownTimer'));
+        }
+
         this.get('routing').transitionTo(route, [model]);
       },
 
@@ -26091,20 +26097,30 @@ define('frontend-cp/components/ko-agent-dropdown/component', ['exports', 'ember'
         }
 
         this.sendAction.apply(this, ['transitionToRouteAction'].concat(rest));
-        _ember['default'].run.cancel(this.get('closeDropdownTimer'));
+
+        if (!_ember['default'].testing) {
+          _ember['default'].run.cancel(this.get('closeDropdownTimer'));
+        }
+
         dropdown.actions.close();
       },
 
       mouseEnter: function mouseEnter(dropdown) {
         dropdown.actions.open();
 
-        _ember['default'].run.cancel(this.get('closeDropdownTimer'));
+        if (!_ember['default'].testing) {
+          _ember['default'].run.cancel(this.get('closeDropdownTimer'));
+        }
       },
 
       mouseLeave: function mouseLeave(dropdown) {
-        this.set('closeDropdownTimer', _ember['default'].run.later(function () {
+        if (_ember['default'].testing) {
           dropdown.actions.close();
-        }, 750));
+        } else {
+          this.set('closeDropdownTimer', _ember['default'].run.later(function () {
+            dropdown.actions.close();
+          }, 750));
+        }
       }
     },
 
@@ -68384,6 +68400,7 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
           is_enabled: true,
           created_at: '2015-05-28T14:12:59Z',
           updated_at: '2015-05-28T14:12:59Z',
+          strings: [],
           resource_type: 'locale'
         },
         resource: 'locale'
@@ -71181,6 +71198,8 @@ define('frontend-cp/mirage/factories/locale', ['exports', 'ember-cli-mirage'], f
     is_enabled: true,
     is_public: true,
     is_localised: true,
+    locale_string: [],
+    strings: [],
     created_at: '2015-07-09T15:36:10Z',
     updated_at: '2015-07-09T15:36:10Z',
     resource_type: 'locale',
@@ -71519,7 +71538,7 @@ define('frontend-cp/mirage/factories/user', ['exports', 'ember-cli-mirage'], fun
     notes: [],
     pinned_notes_count: 0,
     followers: [],
-    locale: 'en-us',
+    locale: null,
     time_zone: null,
     time_zone_offset: null,
     greeting: null,
@@ -71595,6 +71614,10 @@ define('frontend-cp/mirage/scenarios/default', ['exports'], function (exports) {
     var twitter = [server.create('identity-twitter', { is_primary: true }), server.create('identity-twitter')];
     var facebook = [server.create('identity-facebook', { is_primary: true }), server.create('identity-facebook')];
     var custom_fields = server.createList('user-field-value', 3);
+    var defaultLocale = server.create('locale', {
+      id: 1,
+      locale: 'en-us'
+    });
     var metadata = server.create('metadata');
     var defaultUser = server.create('user', {
       custom_fields: custom_fields,
@@ -71604,7 +71627,8 @@ define('frontend-cp/mirage/scenarios/default', ['exports'], function (exports) {
       phones: phones,
       twitter: twitter,
       facebook: facebook,
-      metadata: metadata
+      metadata: metadata,
+      locale: defaultLocale
     });
 
     server.create('session', { user: defaultUser });
@@ -71626,7 +71650,8 @@ define('frontend-cp/mirage/scenarios/default', ['exports'], function (exports) {
       facebook: [
         // server.create('identity-facebook', { is_primary: true }),
         // server.create('identity-facebook')
-      ]
+      ],
+      locale: defaultLocale
     });
 
     var identityEmail = server.create('identity-email');
@@ -74393,7 +74418,7 @@ define('frontend-cp/models/user', ['exports', 'ember-data', 'model-fragments', '
     teams: _emberData['default'].hasMany('team', { async: false }),
     customFields: _modelFragments['default'].fragmentArray('user-field-value', { defaultValue: [] }),
     fieldValues: _modelFragments['default'].fragmentArray('user-field-value', { defaultValue: [] }), // write only
-    locale: _emberData['default'].attr('string'),
+    locale: _emberData['default'].belongsTo('locale', { async: true }),
     timeZone: _emberData['default'].attr('string'),
     timeZoneOffset: _emberData['default'].attr('number'),
     greeting: _emberData['default'].attr('string'),
@@ -75742,7 +75767,7 @@ define('frontend-cp/serializers/user-note', ['exports', 'frontend-cp/serializers
     }
   });
 });
-define('frontend-cp/serializers/user', ['exports', 'frontend-cp/serializers/application', 'frontend-cp/mixins/custom-field-serialization'], function (exports, _frontendCpSerializersApplication, _frontendCpMixinsCustomFieldSerialization) {
+define('frontend-cp/serializers/user', ['exports', 'ember', 'frontend-cp/serializers/application', 'frontend-cp/mixins/custom-field-serialization', 'npm:lodash'], function (exports, _ember, _frontendCpSerializersApplication, _frontendCpMixinsCustomFieldSerialization, _npmLodash) {
 
   function getPrimaryEmailAddress(snapshot) {
     return snapshot.hasMany('emails').filter(function (identityEmail) {
@@ -75753,6 +75778,8 @@ define('frontend-cp/serializers/user', ['exports', 'frontend-cp/serializers/appl
   }
 
   exports['default'] = _frontendCpSerializersApplication['default'].extend(_frontendCpMixinsCustomFieldSerialization['default'], {
+    store: _ember['default'].inject.service(),
+
     attrs: {
       avatar: { serialize: false },
       phones: { serialize: false },
@@ -75767,6 +75794,31 @@ define('frontend-cp/serializers/user', ['exports', 'frontend-cp/serializers/appl
       createdAt: { serialize: false },
       updatedAt: { serialize: false },
       teams: { serialize: false }
+    },
+
+    extractAttributes: function extractAttributes(modelClass, resourceHash) {
+      var locales = this.get('store').peekAll('locale');
+
+      // TODO: this check is to have B/C for locale being object or string
+      if (!_npmLodash['default'].isObject(resourceHash.locale)) {
+        var locale = undefined;
+        locales.forEach(function (record) {
+          if (record.get('locale') === resourceHash.locale) {
+            locale = record;
+          }
+        });
+
+        if (!locale) {
+          locale = locales.get('firstObject');
+        }
+
+        resourceHash.locale = {
+          id: locale.id,
+          type: 'locale'
+        };
+      }
+
+      return this._super.apply(this, arguments);
     },
 
     extractRelationships: function extractRelationships(modelClass, resourceHash) {
@@ -78329,7 +78381,7 @@ define('frontend-cp/services/locale', ['exports', 'ember', 'moment', 'frontend-c
     getCurrentLocale: function getCurrentLocale(locales) {
       var _this2 = this;
 
-      var userLocale = this.get('userLocale');
+      var userLocale = this.get('userLocale.locale');
 
       if (!userLocale) {
         var _ret2 = (function () {
@@ -79026,6 +79078,11 @@ define('frontend-cp/services/session', ['exports', 'ember', 'frontend-cp/utils/b
             _this.set('sessionId', null);
             _this.set('session', null);
             _this.set('user', null);
+
+            if (console && console.error) {
+              console.error(e);
+            }
+
             return reject(e);
           });
           // No session information available
@@ -79161,6 +79218,7 @@ define('frontend-cp/services/session', ['exports', 'ember', 'frontend-cp/utils/b
     }
   });
 });
+/* eslint-disable no-console */
 define('frontend-cp/services/sorter', ['exports', 'ember'], function (exports, _ember) {
   function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -91789,7 +91847,7 @@ define('frontend-cp/session/agent/cases/index/route', ['exports', 'ember', 'fron
 
       var caseListTab = this.get('caseListTab');
 
-      if (VIEWS_POLLING_ENABLED) {
+      if (VIEWS_POLLING_ENABLED && !_ember['default'].testing) {
         this.viewsCountPollingTimer = run.later(this, this._pollCurrentViewCounts, VIEWS_POLLING_INTERVAL);
       }
 
@@ -91811,7 +91869,10 @@ define('frontend-cp/session/agent/cases/index/route', ['exports', 'ember', 'fron
       this.get('caseListTab').set('forceNextLoad', true);
 
       this.model(this.paramsFor(this.routeName));
-      this.viewsCountPollingTimer = run.later(this, this._pollCurrentViewCounts, VIEWS_POLLING_INTERVAL);
+
+      if (!_ember['default'].testing) {
+        this.viewsCountPollingTimer = run.later(this, this._pollCurrentViewCounts, VIEWS_POLLING_INTERVAL);
+      }
     },
 
     actions: {
@@ -101191,7 +101252,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"viewingUsersInactiveThreshold":300000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+fd1ec434"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"viewingUsersInactiveThreshold":300000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+d018d4ac"});
 }
 
 /* jshint ignore:end */
