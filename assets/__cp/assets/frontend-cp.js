@@ -28804,7 +28804,7 @@ define('frontend-cp/components/ko-bulk-sidebar/component', ['exports', 'ember', 
       var apiCaseStatuses = this.get('statuses').toArray();
 
       return [this.get('statusNoChangesItem')].concat(_toConsumableArray(apiCaseStatuses.filter(function (caseStatus) {
-        return caseStatus.get('statusType') !== 'NEW';
+        return ['NEW', 'CLOSED'].indexOf(caseStatus.get('statusType')) === -1;
       })));
     }),
 
@@ -28945,13 +28945,8 @@ define('frontend-cp/components/ko-bulk-sidebar/component', ['exports', 'ember', 
 
           _this.set('isSaving', false);
           _this.sendAction('onBulkUpdateCases');
-        })['catch'](function (e) {
+        })['catch'](function () {
           _this.set('isSaving', false);
-          _this.get('notification').add({
-            type: 'error',
-            title: e.message,
-            autodismiss: true
-          });
         });
       },
 
@@ -101196,7 +101191,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"viewingUsersInactiveThreshold":300000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+dbce0fcc"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"viewingUsersInactiveThreshold":300000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+fd1ec434"});
 }
 
 /* jshint ignore:end */
