@@ -542,21 +542,14 @@ define('frontend-cp/adapters/rating', ['exports', 'frontend-cp/adapters/applicat
     }
   });
 });
-define('frontend-cp/adapters/session', ['exports', 'ember', 'frontend-cp/adapters/application'], function (exports, _ember, _frontendCpAdaptersApplication) {
-
-  function b64EncodeUnicode(str) {
-    return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function (match, p1) {
-      return String.fromCharCode('0x' + p1);
-    }));
-  }
-
+define('frontend-cp/adapters/session', ['exports', 'ember', 'frontend-cp/adapters/application', 'frontend-cp/utils/base64'], function (exports, _ember, _frontendCpAdaptersApplication, _frontendCpUtilsBase64) {
   exports['default'] = _frontendCpAdaptersApplication['default'].extend({
     // CPs
     headers: _ember['default'].computed('session.{email,password,sessionId}', function () {
       var sessionId = this.get('session.sessionId');
       var email = this.get('session.email');
       var password = this.get('session.password');
-      var authorizationHeader = 'Basic ' + b64EncodeUnicode(email + ':' + password);
+      var authorizationHeader = 'Basic ' + (0, _frontendCpUtilsBase64.b64EncodeUnicode)(email + ':' + password);
       var withPassword = email && password;
 
       var headers = {
@@ -75848,7 +75841,7 @@ define('frontend-cp/serializers/view', ['exports', 'ember-data', 'frontend-cp/se
     }
   });
 });
-define('frontend-cp/services/advanced-search', ['exports', 'ember', 'npm:lodash'], function (exports, _ember, _npmLodash) {
+define('frontend-cp/services/advanced-search', ['exports', 'ember', 'npm:lodash', 'frontend-cp/utils/base64'], function (exports, _ember, _npmLodash, _frontendCpUtilsBase64) {
 
   var resultGroups = ['CASES', 'USERS', 'ORGANIZATIONS'];
 
@@ -75858,7 +75851,7 @@ define('frontend-cp/services/advanced-search', ['exports', 'ember', 'npm:lodash'
     cache: _ember['default'].Object.create({}),
 
     search: function search(term, offset, pageLimit) {
-      var cacheKey = term + '|' + offset;
+      var cacheKey = (0, _frontendCpUtilsBase64.b64EncodeUnicode)(term + '|' + offset);
       var cache = this.get('cache');
 
       if (cache.get(cacheKey)) {
@@ -75876,7 +75869,7 @@ define('frontend-cp/services/advanced-search', ['exports', 'ember', 'npm:lodash'
     _performSearch: function _performSearch(term, offset, pageLimit) {
       var _this = this;
 
-      var cacheKey = term + '|' + offset;
+      var cacheKey = (0, _frontendCpUtilsBase64.b64EncodeUnicode)(term + '|' + offset);
       var searchService = this.get('universalSearchService');
       var promises = resultGroups.map(function (group) {
         return searchService.search(term, offset, pageLimit, group);
@@ -101049,6 +101042,15 @@ define('frontend-cp/utils/base-path', ['exports'], function (exports) {
     }
   }
 });
+define('frontend-cp/utils/base64', ['exports'], function (exports) {
+  exports.b64EncodeUnicode = b64EncodeUnicode;
+
+  function b64EncodeUnicode(str) {
+    return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function (match, p1) {
+      return String.fromCharCode('0x' + p1);
+    }));
+  }
+});
 define('frontend-cp/utils/can-use-dom', ['exports', 'ember-metrics/utils/can-use-dom'], function (exports, _emberMetricsUtilsCanUseDom) {
   Object.defineProperty(exports, 'default', {
     enumerable: true,
@@ -101194,7 +101196,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"viewingUsersInactiveThreshold":300000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+537da528"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"viewingUsersInactiveThreshold":300000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+dbce0fcc"});
 }
 
 /* jshint ignore:end */
