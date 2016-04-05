@@ -93721,8 +93721,9 @@ define('frontend-cp/session/agent/cases/index/view/route', ['exports', 'ember', 
 
       if (this.pollViewTimer) {
         run.cancel(this.pollViewTimer);
-        this.controllerFor('session.agent.cases.index.view').set('isPollingEnabled', false);
       }
+
+      this.controllerFor('session.agent.cases.index.view').set('isPollingEnabled', false);
     },
 
     _pollView: function _pollView() {
@@ -101252,7 +101253,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"viewingUsersInactiveThreshold":300000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+d018d4ac"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"viewingUsersInactiveThreshold":300000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+4625a389"});
 }
 
 /* jshint ignore:end */
