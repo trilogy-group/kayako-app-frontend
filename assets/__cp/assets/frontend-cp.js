@@ -812,7 +812,7 @@ define("frontend-cp/application/template", ["exports"], function (exports) {
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -856,7 +856,7 @@ define("frontend-cp/application/template", ["exports"], function (exports) {
           "name": "missing-wrapper",
           "problems": ["wrong-type", "multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -1068,7 +1068,7 @@ define("frontend-cp/components/ko-admin/apps/endpoints/edit/template", ["exports
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -1109,7 +1109,7 @@ define("frontend-cp/components/ko-admin/apps/endpoints/edit/template", ["exports
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -1159,7 +1159,7 @@ define("frontend-cp/components/ko-admin/apps/endpoints/edit/template", ["exports
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -1202,7 +1202,7 @@ define("frontend-cp/components/ko-admin/apps/endpoints/edit/template", ["exports
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -1243,7 +1243,7 @@ define("frontend-cp/components/ko-admin/apps/endpoints/edit/template", ["exports
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -1295,7 +1295,7 @@ define("frontend-cp/components/ko-admin/apps/endpoints/edit/template", ["exports
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -1336,7 +1336,7 @@ define("frontend-cp/components/ko-admin/apps/endpoints/edit/template", ["exports
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -1386,7 +1386,7 @@ define("frontend-cp/components/ko-admin/apps/endpoints/edit/template", ["exports
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -1430,7 +1430,7 @@ define("frontend-cp/components/ko-admin/apps/endpoints/edit/template", ["exports
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -1473,7 +1473,7 @@ define("frontend-cp/components/ko-admin/apps/endpoints/edit/template", ["exports
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -1514,7 +1514,7 @@ define("frontend-cp/components/ko-admin/apps/endpoints/edit/template", ["exports
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -1560,7 +1560,7 @@ define("frontend-cp/components/ko-admin/apps/endpoints/edit/template", ["exports
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -1603,7 +1603,7 @@ define("frontend-cp/components/ko-admin/apps/endpoints/edit/template", ["exports
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -1644,7 +1644,7 @@ define("frontend-cp/components/ko-admin/apps/endpoints/edit/template", ["exports
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -1689,7 +1689,7 @@ define("frontend-cp/components/ko-admin/apps/endpoints/edit/template", ["exports
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -1738,7 +1738,7 @@ define("frontend-cp/components/ko-admin/apps/endpoints/edit/template", ["exports
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -1781,7 +1781,7 @@ define("frontend-cp/components/ko-admin/apps/endpoints/edit/template", ["exports
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -1823,7 +1823,7 @@ define("frontend-cp/components/ko-admin/apps/endpoints/edit/template", ["exports
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -1864,7 +1864,7 @@ define("frontend-cp/components/ko-admin/apps/endpoints/edit/template", ["exports
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -1915,7 +1915,7 @@ define("frontend-cp/components/ko-admin/apps/endpoints/edit/template", ["exports
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -1957,7 +1957,7 @@ define("frontend-cp/components/ko-admin/apps/endpoints/edit/template", ["exports
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -1998,7 +1998,7 @@ define("frontend-cp/components/ko-admin/apps/endpoints/edit/template", ["exports
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -2046,7 +2046,7 @@ define("frontend-cp/components/ko-admin/apps/endpoints/edit/template", ["exports
                 return {
                   meta: {
                     "fragmentReason": false,
-                    "revision": "Ember@2.4.3",
+                    "revision": "Ember@2.4.4",
                     "loc": {
                       "source": null,
                       "start": {
@@ -2088,7 +2088,7 @@ define("frontend-cp/components/ko-admin/apps/endpoints/edit/template", ["exports
                 return {
                   meta: {
                     "fragmentReason": false,
-                    "revision": "Ember@2.4.3",
+                    "revision": "Ember@2.4.4",
                     "loc": {
                       "source": null,
                       "start": {
@@ -2129,7 +2129,7 @@ define("frontend-cp/components/ko-admin/apps/endpoints/edit/template", ["exports
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -2173,7 +2173,7 @@ define("frontend-cp/components/ko-admin/apps/endpoints/edit/template", ["exports
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -2222,7 +2222,7 @@ define("frontend-cp/components/ko-admin/apps/endpoints/edit/template", ["exports
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -2266,7 +2266,7 @@ define("frontend-cp/components/ko-admin/apps/endpoints/edit/template", ["exports
                 return {
                   meta: {
                     "fragmentReason": false,
-                    "revision": "Ember@2.4.3",
+                    "revision": "Ember@2.4.4",
                     "loc": {
                       "source": null,
                       "start": {
@@ -2307,7 +2307,7 @@ define("frontend-cp/components/ko-admin/apps/endpoints/edit/template", ["exports
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -2354,7 +2354,7 @@ define("frontend-cp/components/ko-admin/apps/endpoints/edit/template", ["exports
                 return {
                   meta: {
                     "fragmentReason": false,
-                    "revision": "Ember@2.4.3",
+                    "revision": "Ember@2.4.4",
                     "loc": {
                       "source": null,
                       "start": {
@@ -2395,7 +2395,7 @@ define("frontend-cp/components/ko-admin/apps/endpoints/edit/template", ["exports
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -2440,7 +2440,7 @@ define("frontend-cp/components/ko-admin/apps/endpoints/edit/template", ["exports
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -2484,7 +2484,7 @@ define("frontend-cp/components/ko-admin/apps/endpoints/edit/template", ["exports
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -2559,7 +2559,7 @@ define("frontend-cp/components/ko-admin/apps/endpoints/edit/template", ["exports
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -2601,7 +2601,7 @@ define("frontend-cp/components/ko-admin/apps/endpoints/edit/template", ["exports
             "name": "missing-wrapper",
             "problems": ["wrong-type", "multiple-nodes"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -2670,7 +2670,7 @@ define("frontend-cp/components/ko-admin/apps/endpoints/edit/template", ["exports
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -2720,7 +2720,7 @@ define("frontend-cp/components/ko-admin/apps/endpoints/list-row/template", ["exp
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -2764,7 +2764,7 @@ define("frontend-cp/components/ko-admin/apps/endpoints/list-row/template", ["exp
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -2831,7 +2831,7 @@ define("frontend-cp/components/ko-admin/apps/endpoints/list-row/template", ["exp
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -2879,7 +2879,7 @@ define("frontend-cp/components/ko-admin/apps/endpoints/list-row/template", ["exp
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -2918,7 +2918,7 @@ define("frontend-cp/components/ko-admin/apps/endpoints/list-row/template", ["exp
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -2980,7 +2980,7 @@ define("frontend-cp/components/ko-admin/apps/endpoints/list-row/template", ["exp
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -3032,7 +3032,7 @@ define("frontend-cp/components/ko-admin/apps/endpoints/list-row/template", ["exp
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -3078,7 +3078,7 @@ define("frontend-cp/components/ko-admin/apps/endpoints/list-row/template", ["exp
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -3123,7 +3123,7 @@ define("frontend-cp/components/ko-admin/apps/endpoints/list-row/template", ["exp
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -3185,7 +3185,7 @@ define("frontend-cp/components/ko-admin/apps/endpoints/list-row/template", ["exp
             "name": "missing-wrapper",
             "problems": ["wrong-type", "multiple-nodes"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -3232,7 +3232,7 @@ define("frontend-cp/components/ko-admin/apps/endpoints/list-row/template", ["exp
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -3291,7 +3291,7 @@ define("frontend-cp/components/ko-admin/apps/endpoints/select-type/template", ["
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -3334,7 +3334,7 @@ define("frontend-cp/components/ko-admin/apps/endpoints/select-type/template", ["
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -3388,7 +3388,7 @@ define("frontend-cp/components/ko-admin/apps/endpoints/select-type/template", ["
           "fragmentReason": {
             "name": "triple-curlies"
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -3453,7 +3453,7 @@ define("frontend-cp/components/ko-admin/apps/endpoints/select-type/template", ["
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -3588,7 +3588,7 @@ define("frontend-cp/components/ko-admin/businesshours/edit/template", ["exports"
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -3627,7 +3627,7 @@ define("frontend-cp/components/ko-admin/businesshours/edit/template", ["exports"
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -3684,7 +3684,7 @@ define("frontend-cp/components/ko-admin/businesshours/edit/template", ["exports"
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -3726,7 +3726,7 @@ define("frontend-cp/components/ko-admin/businesshours/edit/template", ["exports"
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -3774,7 +3774,7 @@ define("frontend-cp/components/ko-admin/businesshours/edit/template", ["exports"
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -3813,7 +3813,7 @@ define("frontend-cp/components/ko-admin/businesshours/edit/template", ["exports"
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -3870,7 +3870,7 @@ define("frontend-cp/components/ko-admin/businesshours/edit/template", ["exports"
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -3914,7 +3914,7 @@ define("frontend-cp/components/ko-admin/businesshours/edit/template", ["exports"
                 return {
                   meta: {
                     "fragmentReason": false,
-                    "revision": "Ember@2.4.3",
+                    "revision": "Ember@2.4.4",
                     "loc": {
                       "source": null,
                       "start": {
@@ -3955,7 +3955,7 @@ define("frontend-cp/components/ko-admin/businesshours/edit/template", ["exports"
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -3994,7 +3994,7 @@ define("frontend-cp/components/ko-admin/businesshours/edit/template", ["exports"
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -4033,7 +4033,7 @@ define("frontend-cp/components/ko-admin/businesshours/edit/template", ["exports"
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -4076,7 +4076,7 @@ define("frontend-cp/components/ko-admin/businesshours/edit/template", ["exports"
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -4134,7 +4134,7 @@ define("frontend-cp/components/ko-admin/businesshours/edit/template", ["exports"
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -4197,7 +4197,7 @@ define("frontend-cp/components/ko-admin/businesshours/edit/template", ["exports"
             "name": "missing-wrapper",
             "problems": ["wrong-type", "multiple-nodes"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -4261,7 +4261,7 @@ define("frontend-cp/components/ko-admin/businesshours/edit/template", ["exports"
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -4460,7 +4460,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/options/template", ["ex
             "name": "missing-wrapper",
             "problems": ["multiple-nodes", "wrong-type"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -4550,7 +4550,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/options/template", ["ex
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -4670,7 +4670,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/priorities/template", [
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -4715,7 +4715,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/priorities/template", [
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -4762,7 +4762,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/priorities/template", [
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -4822,7 +4822,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/priorities/template", [
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -4866,7 +4866,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/priorities/template", [
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -4911,7 +4911,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/priorities/template", [
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -4967,7 +4967,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/priorities/template", [
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -5009,7 +5009,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/priorities/template", [
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -5048,7 +5048,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/priorities/template", [
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -5090,7 +5090,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/priorities/template", [
             "name": "missing-wrapper",
             "problems": ["multiple-nodes", "wrong-type"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -5163,7 +5163,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/priorities/template", [
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -5214,7 +5214,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/regex/template", ["expo
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -5253,7 +5253,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/regex/template", ["expo
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -5307,7 +5307,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/regex/template", ["expo
             "name": "missing-wrapper",
             "problems": ["wrong-type"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -5349,7 +5349,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/regex/template", ["expo
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -5486,7 +5486,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/statuses/template", ["e
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -5528,7 +5528,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/statuses/template", ["e
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -5572,7 +5572,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/statuses/template", ["e
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -5625,7 +5625,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/statuses/template", ["e
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -5669,7 +5669,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/statuses/template", ["e
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -5717,7 +5717,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/statuses/template", ["e
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -5761,7 +5761,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/statuses/template", ["e
                 return {
                   meta: {
                     "fragmentReason": false,
-                    "revision": "Ember@2.4.3",
+                    "revision": "Ember@2.4.4",
                     "loc": {
                       "source": null,
                       "start": {
@@ -5808,7 +5808,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/statuses/template", ["e
                 return {
                   meta: {
                     "fragmentReason": false,
-                    "revision": "Ember@2.4.3",
+                    "revision": "Ember@2.4.4",
                     "loc": {
                       "source": null,
                       "start": {
@@ -5857,7 +5857,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/statuses/template", ["e
                 return {
                   meta: {
                     "fragmentReason": false,
-                    "revision": "Ember@2.4.3",
+                    "revision": "Ember@2.4.4",
                     "loc": {
                       "source": null,
                       "start": {
@@ -5917,7 +5917,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/statuses/template", ["e
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -5964,7 +5964,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/statuses/template", ["e
                 return {
                   meta: {
                     "fragmentReason": false,
-                    "revision": "Ember@2.4.3",
+                    "revision": "Ember@2.4.4",
                     "loc": {
                       "source": null,
                       "start": {
@@ -6009,7 +6009,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/statuses/template", ["e
                 return {
                   meta: {
                     "fragmentReason": false,
-                    "revision": "Ember@2.4.3",
+                    "revision": "Ember@2.4.4",
                     "loc": {
                       "source": null,
                       "start": {
@@ -6058,7 +6058,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/statuses/template", ["e
                 return {
                   meta: {
                     "fragmentReason": false,
-                    "revision": "Ember@2.4.3",
+                    "revision": "Ember@2.4.4",
                     "loc": {
                       "source": null,
                       "start": {
@@ -6114,7 +6114,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/statuses/template", ["e
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -6159,7 +6159,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/statuses/template", ["e
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -6198,7 +6198,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/statuses/template", ["e
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -6237,7 +6237,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/statuses/template", ["e
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -6279,7 +6279,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/statuses/template", ["e
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -6331,7 +6331,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/statuses/template", ["e
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -6370,7 +6370,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/statuses/template", ["e
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -6412,7 +6412,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/statuses/template", ["e
             "name": "missing-wrapper",
             "problems": ["multiple-nodes", "wrong-type"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -6500,7 +6500,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/statuses/template", ["e
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -6547,7 +6547,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -6587,7 +6587,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -6626,7 +6626,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -6691,7 +6691,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
                 return {
                   meta: {
                     "fragmentReason": false,
-                    "revision": "Ember@2.4.3",
+                    "revision": "Ember@2.4.4",
                     "loc": {
                       "source": null,
                       "start": {
@@ -6731,7 +6731,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
                 return {
                   meta: {
                     "fragmentReason": false,
-                    "revision": "Ember@2.4.3",
+                    "revision": "Ember@2.4.4",
                     "loc": {
                       "source": null,
                       "start": {
@@ -6778,7 +6778,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
                 return {
                   meta: {
                     "fragmentReason": false,
-                    "revision": "Ember@2.4.3",
+                    "revision": "Ember@2.4.4",
                     "loc": {
                       "source": null,
                       "start": {
@@ -6824,7 +6824,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -6874,7 +6874,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -6913,7 +6913,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -6958,7 +6958,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -7000,7 +7000,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -7046,7 +7046,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -7088,7 +7088,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -7127,7 +7127,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -7192,7 +7192,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
                 return {
                   meta: {
                     "fragmentReason": false,
-                    "revision": "Ember@2.4.3",
+                    "revision": "Ember@2.4.4",
                     "loc": {
                       "source": null,
                       "start": {
@@ -7232,7 +7232,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
                 return {
                   meta: {
                     "fragmentReason": false,
-                    "revision": "Ember@2.4.3",
+                    "revision": "Ember@2.4.4",
                     "loc": {
                       "source": null,
                       "start": {
@@ -7271,7 +7271,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -7345,7 +7345,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -7387,7 +7387,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
                 return {
                   meta: {
                     "fragmentReason": false,
-                    "revision": "Ember@2.4.3",
+                    "revision": "Ember@2.4.4",
                     "loc": {
                       "source": null,
                       "start": {
@@ -7426,7 +7426,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -7480,7 +7480,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
                   return {
                     meta: {
                       "fragmentReason": false,
-                      "revision": "Ember@2.4.3",
+                      "revision": "Ember@2.4.4",
                       "loc": {
                         "source": null,
                         "start": {
@@ -7519,7 +7519,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
                 return {
                   meta: {
                     "fragmentReason": false,
-                    "revision": "Ember@2.4.3",
+                    "revision": "Ember@2.4.4",
                     "loc": {
                       "source": null,
                       "start": {
@@ -7570,7 +7570,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -7609,7 +7609,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -7653,7 +7653,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -7703,7 +7703,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -7748,7 +7748,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -7792,7 +7792,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -7832,7 +7832,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -7874,7 +7874,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -7924,7 +7924,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -7969,7 +7969,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -8014,7 +8014,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
                   return {
                     meta: {
                       "fragmentReason": false,
-                      "revision": "Ember@2.4.3",
+                      "revision": "Ember@2.4.4",
                       "loc": {
                         "source": null,
                         "start": {
@@ -8053,7 +8053,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
                 return {
                   meta: {
                     "fragmentReason": false,
-                    "revision": "Ember@2.4.3",
+                    "revision": "Ember@2.4.4",
                     "loc": {
                       "source": null,
                       "start": {
@@ -8104,7 +8104,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -8146,7 +8146,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
                   return {
                     meta: {
                       "fragmentReason": false,
-                      "revision": "Ember@2.4.3",
+                      "revision": "Ember@2.4.4",
                       "loc": {
                         "source": null,
                         "start": {
@@ -8186,7 +8186,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
                   return {
                     meta: {
                       "fragmentReason": false,
-                      "revision": "Ember@2.4.3",
+                      "revision": "Ember@2.4.4",
                       "loc": {
                         "source": null,
                         "start": {
@@ -8225,7 +8225,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
                 return {
                   meta: {
                     "fragmentReason": false,
-                    "revision": "Ember@2.4.3",
+                    "revision": "Ember@2.4.4",
                     "loc": {
                       "source": null,
                       "start": {
@@ -8285,7 +8285,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -8325,7 +8325,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -8371,7 +8371,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -8410,7 +8410,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -8452,7 +8452,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
             "name": "missing-wrapper",
             "problems": ["wrong-type", "multiple-nodes"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -8526,7 +8526,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/template", ["exports"],
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -8642,7 +8642,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/types/template", ["expo
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -8686,7 +8686,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/types/template", ["expo
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -8738,7 +8738,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/types/template", ["expo
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -8777,7 +8777,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/types/template", ["expo
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -8820,7 +8820,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/types/template", ["expo
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -8867,7 +8867,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/types/template", ["expo
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -8927,7 +8927,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/types/template", ["expo
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -8971,7 +8971,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/types/template", ["expo
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -9016,7 +9016,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/types/template", ["expo
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -9072,7 +9072,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/types/template", ["expo
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -9114,7 +9114,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/types/template", ["expo
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -9153,7 +9153,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/types/template", ["expo
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -9195,7 +9195,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/types/template", ["expo
             "name": "missing-wrapper",
             "problems": ["multiple-nodes", "wrong-type"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -9273,7 +9273,7 @@ define("frontend-cp/components/ko-admin/case-fields/edit/types/template", ["expo
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -9417,7 +9417,7 @@ define("frontend-cp/components/ko-admin/case-fields/index/template", ["exports"]
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -9478,7 +9478,7 @@ define("frontend-cp/components/ko-admin/case-fields/index/template", ["exports"]
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -9521,7 +9521,7 @@ define("frontend-cp/components/ko-admin/case-fields/index/template", ["exports"]
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -9565,7 +9565,7 @@ define("frontend-cp/components/ko-admin/case-fields/index/template", ["exports"]
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -9605,7 +9605,7 @@ define("frontend-cp/components/ko-admin/case-fields/index/template", ["exports"]
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -9650,7 +9650,7 @@ define("frontend-cp/components/ko-admin/case-fields/index/template", ["exports"]
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -9695,7 +9695,7 @@ define("frontend-cp/components/ko-admin/case-fields/index/template", ["exports"]
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -9737,7 +9737,7 @@ define("frontend-cp/components/ko-admin/case-fields/index/template", ["exports"]
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -9783,7 +9783,7 @@ define("frontend-cp/components/ko-admin/case-fields/index/template", ["exports"]
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -9826,7 +9826,7 @@ define("frontend-cp/components/ko-admin/case-fields/index/template", ["exports"]
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -9870,7 +9870,7 @@ define("frontend-cp/components/ko-admin/case-fields/index/template", ["exports"]
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -9910,7 +9910,7 @@ define("frontend-cp/components/ko-admin/case-fields/index/template", ["exports"]
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -9973,7 +9973,7 @@ define("frontend-cp/components/ko-admin/case-fields/index/template", ["exports"]
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -10018,7 +10018,7 @@ define("frontend-cp/components/ko-admin/case-fields/index/template", ["exports"]
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -10060,7 +10060,7 @@ define("frontend-cp/components/ko-admin/case-fields/index/template", ["exports"]
             "name": "missing-wrapper",
             "problems": ["multiple-nodes", "wrong-type"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -10122,7 +10122,7 @@ define("frontend-cp/components/ko-admin/case-fields/index/template", ["exports"]
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -10168,7 +10168,7 @@ define("frontend-cp/components/ko-admin/case-fields/index/template", ["exports"]
                 return {
                   meta: {
                     "fragmentReason": false,
-                    "revision": "Ember@2.4.3",
+                    "revision": "Ember@2.4.4",
                     "loc": {
                       "source": null,
                       "start": {
@@ -10211,7 +10211,7 @@ define("frontend-cp/components/ko-admin/case-fields/index/template", ["exports"]
                 return {
                   meta: {
                     "fragmentReason": false,
-                    "revision": "Ember@2.4.3",
+                    "revision": "Ember@2.4.4",
                     "loc": {
                       "source": null,
                       "start": {
@@ -10255,7 +10255,7 @@ define("frontend-cp/components/ko-admin/case-fields/index/template", ["exports"]
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -10295,7 +10295,7 @@ define("frontend-cp/components/ko-admin/case-fields/index/template", ["exports"]
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -10358,7 +10358,7 @@ define("frontend-cp/components/ko-admin/case-fields/index/template", ["exports"]
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -10403,7 +10403,7 @@ define("frontend-cp/components/ko-admin/case-fields/index/template", ["exports"]
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -10442,7 +10442,7 @@ define("frontend-cp/components/ko-admin/case-fields/index/template", ["exports"]
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -10494,7 +10494,7 @@ define("frontend-cp/components/ko-admin/case-fields/index/template", ["exports"]
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -10536,7 +10536,7 @@ define("frontend-cp/components/ko-admin/case-fields/index/template", ["exports"]
           "name": "missing-wrapper",
           "problems": ["wrong-type", "multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -10598,7 +10598,7 @@ define("frontend-cp/components/ko-admin/case-fields/select-type/template", ["exp
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -10641,7 +10641,7 @@ define("frontend-cp/components/ko-admin/case-fields/select-type/template", ["exp
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -10695,7 +10695,7 @@ define("frontend-cp/components/ko-admin/case-fields/select-type/template", ["exp
           "fragmentReason": {
             "name": "triple-curlies"
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -10760,7 +10760,7 @@ define("frontend-cp/components/ko-admin/case-fields/select-type/template", ["exp
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -10814,7 +10814,7 @@ define("frontend-cp/components/ko-admin/case-fields/type-icon/template", ["expor
           "name": "missing-wrapper",
           "problems": ["empty-body"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -10941,7 +10941,7 @@ define("frontend-cp/components/ko-admin/case-forms/edit/fields/template", ["expo
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -11027,7 +11027,7 @@ define("frontend-cp/components/ko-admin/case-forms/edit/fields/template", ["expo
             "name": "missing-wrapper",
             "problems": ["wrong-type"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -11068,7 +11068,7 @@ define("frontend-cp/components/ko-admin/case-forms/edit/fields/template", ["expo
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -11163,7 +11163,7 @@ define("frontend-cp/components/ko-admin/case-forms/edit/fields/template", ["expo
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -11204,7 +11204,7 @@ define("frontend-cp/components/ko-admin/case-forms/edit/fields/template", ["expo
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -11245,7 +11245,7 @@ define("frontend-cp/components/ko-admin/case-forms/edit/fields/template", ["expo
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -11287,7 +11287,7 @@ define("frontend-cp/components/ko-admin/case-forms/edit/fields/template", ["expo
           "name": "missing-wrapper",
           "problems": ["wrong-type", "multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -11343,7 +11343,7 @@ define("frontend-cp/components/ko-admin/case-forms/edit/template", ["exports"], 
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -11382,7 +11382,7 @@ define("frontend-cp/components/ko-admin/case-forms/edit/template", ["exports"], 
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -11440,7 +11440,7 @@ define("frontend-cp/components/ko-admin/case-forms/edit/template", ["exports"], 
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -11486,7 +11486,7 @@ define("frontend-cp/components/ko-admin/case-forms/edit/template", ["exports"], 
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -11525,7 +11525,7 @@ define("frontend-cp/components/ko-admin/case-forms/edit/template", ["exports"], 
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -11572,7 +11572,7 @@ define("frontend-cp/components/ko-admin/case-forms/edit/template", ["exports"], 
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -11611,7 +11611,7 @@ define("frontend-cp/components/ko-admin/case-forms/edit/template", ["exports"], 
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -11665,7 +11665,7 @@ define("frontend-cp/components/ko-admin/case-forms/edit/template", ["exports"], 
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -11704,7 +11704,7 @@ define("frontend-cp/components/ko-admin/case-forms/edit/template", ["exports"], 
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -11762,7 +11762,7 @@ define("frontend-cp/components/ko-admin/case-forms/edit/template", ["exports"], 
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -11801,7 +11801,7 @@ define("frontend-cp/components/ko-admin/case-forms/edit/template", ["exports"], 
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -11856,7 +11856,7 @@ define("frontend-cp/components/ko-admin/case-forms/edit/template", ["exports"], 
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -11900,7 +11900,7 @@ define("frontend-cp/components/ko-admin/case-forms/edit/template", ["exports"], 
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -11946,7 +11946,7 @@ define("frontend-cp/components/ko-admin/case-forms/edit/template", ["exports"], 
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -11987,7 +11987,7 @@ define("frontend-cp/components/ko-admin/case-forms/edit/template", ["exports"], 
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -12029,7 +12029,7 @@ define("frontend-cp/components/ko-admin/case-forms/edit/template", ["exports"], 
             "name": "missing-wrapper",
             "problems": ["wrong-type", "multiple-nodes"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -12093,7 +12093,7 @@ define("frontend-cp/components/ko-admin/case-forms/edit/template", ["exports"], 
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -12147,7 +12147,7 @@ define("frontend-cp/components/ko-admin/facebook/edit/template", ["exports"], fu
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -12186,7 +12186,7 @@ define("frontend-cp/components/ko-admin/facebook/edit/template", ["exports"], fu
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -12239,7 +12239,7 @@ define("frontend-cp/components/ko-admin/facebook/edit/template", ["exports"], fu
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -12278,7 +12278,7 @@ define("frontend-cp/components/ko-admin/facebook/edit/template", ["exports"], fu
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -12329,7 +12329,7 @@ define("frontend-cp/components/ko-admin/facebook/edit/template", ["exports"], fu
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -12376,7 +12376,7 @@ define("frontend-cp/components/ko-admin/facebook/edit/template", ["exports"], fu
             "name": "missing-wrapper",
             "problems": ["wrong-type", "multiple-nodes"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -12430,7 +12430,7 @@ define("frontend-cp/components/ko-admin/facebook/edit/template", ["exports"], fu
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -12478,7 +12478,7 @@ define("frontend-cp/components/ko-admin/forms/group/template", ["exports"], func
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -12542,7 +12542,7 @@ define("frontend-cp/components/ko-admin/forms/group/template", ["exports"], func
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -12592,7 +12592,7 @@ define("frontend-cp/components/ko-admin/forms/group/template", ["exports"], func
         "fragmentReason": {
           "name": "triple-curlies"
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -12709,7 +12709,7 @@ define("frontend-cp/components/ko-admin/holidays/edit/template", ["exports"], fu
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -12751,7 +12751,7 @@ define("frontend-cp/components/ko-admin/holidays/edit/template", ["exports"], fu
             "name": "missing-wrapper",
             "problems": ["wrong-type", "multiple-nodes"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -12809,7 +12809,7 @@ define("frontend-cp/components/ko-admin/holidays/edit/template", ["exports"], fu
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -12859,7 +12859,7 @@ define("frontend-cp/components/ko-admin/holidays/edit/template", ["exports"], fu
           "name": "missing-wrapper",
           "problems": ["wrong-type", "multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -12977,7 +12977,7 @@ define("frontend-cp/components/ko-admin/holidays/row/template", ["exports"], fun
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -13018,7 +13018,7 @@ define("frontend-cp/components/ko-admin/holidays/row/template", ["exports"], fun
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -13059,7 +13059,7 @@ define("frontend-cp/components/ko-admin/holidays/row/template", ["exports"], fun
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -13104,7 +13104,7 @@ define("frontend-cp/components/ko-admin/holidays/row/template", ["exports"], fun
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -13149,7 +13149,7 @@ define("frontend-cp/components/ko-admin/holidays/row/template", ["exports"], fun
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -13210,7 +13210,7 @@ define("frontend-cp/components/ko-admin/holidays/row/template", ["exports"], fun
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -13260,7 +13260,7 @@ define("frontend-cp/components/ko-admin/holidays/row/template", ["exports"], fun
             "name": "missing-wrapper",
             "problems": ["wrong-type"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -13302,7 +13302,7 @@ define("frontend-cp/components/ko-admin/holidays/row/template", ["exports"], fun
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -13393,7 +13393,7 @@ define("frontend-cp/components/ko-admin/inline-locale-edit/template", ["exports"
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -13454,7 +13454,7 @@ define("frontend-cp/components/ko-admin/inline-locale-edit/template", ["exports"
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -13500,7 +13500,7 @@ define("frontend-cp/components/ko-admin/inline-locale-edit/template", ["exports"
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -13544,7 +13544,7 @@ define("frontend-cp/components/ko-admin/inline-locale-edit/template", ["exports"
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -13596,7 +13596,7 @@ define("frontend-cp/components/ko-admin/inline-locale-edit/template", ["exports"
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -13668,7 +13668,7 @@ define("frontend-cp/components/ko-admin/inline-locale-edit/template", ["exports"
           "fragmentReason": {
             "name": "triple-curlies"
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -13719,7 +13719,7 @@ define("frontend-cp/components/ko-admin/inline-locale-edit/template", ["exports"
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -13785,7 +13785,7 @@ define("frontend-cp/components/ko-admin/macros/action/add-tags/template", ["expo
             "name": "missing-wrapper",
             "problems": ["wrong-type"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -13829,7 +13829,7 @@ define("frontend-cp/components/ko-admin/macros/action/add-tags/template", ["expo
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -13968,7 +13968,7 @@ define("frontend-cp/components/ko-admin/macros/action/assignee/template", ["expo
             "name": "missing-wrapper",
             "problems": ["wrong-type"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -14012,7 +14012,7 @@ define("frontend-cp/components/ko-admin/macros/action/assignee/template", ["expo
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -14155,7 +14155,7 @@ define("frontend-cp/components/ko-admin/macros/action/priority/template", ["expo
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -14196,7 +14196,7 @@ define("frontend-cp/components/ko-admin/macros/action/priority/template", ["expo
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -14238,7 +14238,7 @@ define("frontend-cp/components/ko-admin/macros/action/priority/template", ["expo
             "name": "missing-wrapper",
             "problems": ["wrong-type"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -14280,7 +14280,7 @@ define("frontend-cp/components/ko-admin/macros/action/priority/template", ["expo
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -14346,7 +14346,7 @@ define("frontend-cp/components/ko-admin/macros/action/remove-tags/template", ["e
             "name": "missing-wrapper",
             "problems": ["wrong-type"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -14390,7 +14390,7 @@ define("frontend-cp/components/ko-admin/macros/action/remove-tags/template", ["e
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -14442,7 +14442,7 @@ define("frontend-cp/components/ko-admin/macros/action/reply-contents/template", 
           "fragmentReason": {
             "name": "triple-curlies"
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -14489,7 +14489,7 @@ define("frontend-cp/components/ko-admin/macros/action/reply-contents/template", 
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -14561,7 +14561,7 @@ define("frontend-cp/components/ko-admin/macros/action/reply-type/template", ["ex
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -14605,7 +14605,7 @@ define("frontend-cp/components/ko-admin/macros/action/reply-type/template", ["ex
             "name": "missing-wrapper",
             "problems": ["wrong-type"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -14647,7 +14647,7 @@ define("frontend-cp/components/ko-admin/macros/action/reply-type/template", ["ex
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -14714,7 +14714,7 @@ define("frontend-cp/components/ko-admin/macros/action/status/template", ["export
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -14758,7 +14758,7 @@ define("frontend-cp/components/ko-admin/macros/action/status/template", ["export
             "name": "missing-wrapper",
             "problems": ["wrong-type"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -14800,7 +14800,7 @@ define("frontend-cp/components/ko-admin/macros/action/status/template", ["export
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -14844,7 +14844,7 @@ define("frontend-cp/components/ko-admin/macros/action/template", ["exports"], fu
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -14885,7 +14885,7 @@ define("frontend-cp/components/ko-admin/macros/action/template", ["exports"], fu
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -14936,7 +14936,7 @@ define("frontend-cp/components/ko-admin/macros/action/template", ["exports"], fu
           "name": "missing-wrapper",
           "problems": ["multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -15056,7 +15056,7 @@ define("frontend-cp/components/ko-admin/macros/action/type/template", ["exports"
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -15100,7 +15100,7 @@ define("frontend-cp/components/ko-admin/macros/action/type/template", ["exports"
             "name": "missing-wrapper",
             "problems": ["wrong-type"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -15142,7 +15142,7 @@ define("frontend-cp/components/ko-admin/macros/action/type/template", ["exports"
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -15409,7 +15409,7 @@ define("frontend-cp/components/ko-admin/macros/edit/template", ["exports"], func
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -15448,7 +15448,7 @@ define("frontend-cp/components/ko-admin/macros/edit/template", ["exports"], func
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -15504,7 +15504,7 @@ define("frontend-cp/components/ko-admin/macros/edit/template", ["exports"], func
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -15546,7 +15546,7 @@ define("frontend-cp/components/ko-admin/macros/edit/template", ["exports"], func
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -15586,7 +15586,7 @@ define("frontend-cp/components/ko-admin/macros/edit/template", ["exports"], func
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -15627,7 +15627,7 @@ define("frontend-cp/components/ko-admin/macros/edit/template", ["exports"], func
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -15707,7 +15707,7 @@ define("frontend-cp/components/ko-admin/macros/edit/template", ["exports"], func
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -15748,7 +15748,7 @@ define("frontend-cp/components/ko-admin/macros/edit/template", ["exports"], func
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -15788,7 +15788,7 @@ define("frontend-cp/components/ko-admin/macros/edit/template", ["exports"], func
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -15830,7 +15830,7 @@ define("frontend-cp/components/ko-admin/macros/edit/template", ["exports"], func
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -15871,7 +15871,7 @@ define("frontend-cp/components/ko-admin/macros/edit/template", ["exports"], func
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -15932,7 +15932,7 @@ define("frontend-cp/components/ko-admin/macros/edit/template", ["exports"], func
             "name": "missing-wrapper",
             "problems": ["wrong-type", "multiple-nodes"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -15996,7 +15996,7 @@ define("frontend-cp/components/ko-admin/macros/edit/template", ["exports"], func
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -16061,7 +16061,7 @@ define("frontend-cp/components/ko-admin/page-container/template", ["exports"], f
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -16096,7 +16096,7 @@ define("frontend-cp/components/ko-admin/page-container/template", ["exports"], f
         "fragmentReason": {
           "name": "triple-curlies"
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -16202,7 +16202,7 @@ define("frontend-cp/components/ko-admin/page-footer/template", ["exports"], func
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -16269,7 +16269,7 @@ define("frontend-cp/components/ko-admin/page-header/template", ["exports"], func
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -16314,7 +16314,7 @@ define("frontend-cp/components/ko-admin/page-header/template", ["exports"], func
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -16363,7 +16363,7 @@ define("frontend-cp/components/ko-admin/page-header/template", ["exports"], func
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -16408,7 +16408,7 @@ define("frontend-cp/components/ko-admin/page-header/template", ["exports"], func
           "name": "missing-wrapper",
           "problems": ["multiple-nodes", "wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -16736,7 +16736,7 @@ define("frontend-cp/components/ko-admin/roles/form/template", ["exports"], funct
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -16775,7 +16775,7 @@ define("frontend-cp/components/ko-admin/roles/form/template", ["exports"], funct
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -16833,7 +16833,7 @@ define("frontend-cp/components/ko-admin/roles/form/template", ["exports"], funct
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -16873,7 +16873,7 @@ define("frontend-cp/components/ko-admin/roles/form/template", ["exports"], funct
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -16915,7 +16915,7 @@ define("frontend-cp/components/ko-admin/roles/form/template", ["exports"], funct
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -16968,7 +16968,7 @@ define("frontend-cp/components/ko-admin/roles/form/template", ["exports"], funct
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -17023,7 +17023,7 @@ define("frontend-cp/components/ko-admin/roles/form/template", ["exports"], funct
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -17072,7 +17072,7 @@ define("frontend-cp/components/ko-admin/roles/form/template", ["exports"], funct
                 return {
                   meta: {
                     "fragmentReason": false,
-                    "revision": "Ember@2.4.3",
+                    "revision": "Ember@2.4.4",
                     "loc": {
                       "source": null,
                       "start": {
@@ -17112,7 +17112,7 @@ define("frontend-cp/components/ko-admin/roles/form/template", ["exports"], funct
                 return {
                   meta: {
                     "fragmentReason": false,
-                    "revision": "Ember@2.4.3",
+                    "revision": "Ember@2.4.4",
                     "loc": {
                       "source": null,
                       "start": {
@@ -17154,7 +17154,7 @@ define("frontend-cp/components/ko-admin/roles/form/template", ["exports"], funct
                 return {
                   meta: {
                     "fragmentReason": false,
-                    "revision": "Ember@2.4.3",
+                    "revision": "Ember@2.4.4",
                     "loc": {
                       "source": null,
                       "start": {
@@ -17193,7 +17193,7 @@ define("frontend-cp/components/ko-admin/roles/form/template", ["exports"], funct
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -17249,7 +17249,7 @@ define("frontend-cp/components/ko-admin/roles/form/template", ["exports"], funct
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -17292,7 +17292,7 @@ define("frontend-cp/components/ko-admin/roles/form/template", ["exports"], funct
                   return {
                     meta: {
                       "fragmentReason": false,
-                      "revision": "Ember@2.4.3",
+                      "revision": "Ember@2.4.4",
                       "loc": {
                         "source": null,
                         "start": {
@@ -17333,7 +17333,7 @@ define("frontend-cp/components/ko-admin/roles/form/template", ["exports"], funct
                 return {
                   meta: {
                     "fragmentReason": false,
-                    "revision": "Ember@2.4.3",
+                    "revision": "Ember@2.4.4",
                     "loc": {
                       "source": null,
                       "start": {
@@ -17372,7 +17372,7 @@ define("frontend-cp/components/ko-admin/roles/form/template", ["exports"], funct
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -17417,7 +17417,7 @@ define("frontend-cp/components/ko-admin/roles/form/template", ["exports"], funct
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -17456,7 +17456,7 @@ define("frontend-cp/components/ko-admin/roles/form/template", ["exports"], funct
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -17500,7 +17500,7 @@ define("frontend-cp/components/ko-admin/roles/form/template", ["exports"], funct
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -17542,7 +17542,7 @@ define("frontend-cp/components/ko-admin/roles/form/template", ["exports"], funct
             "name": "missing-wrapper",
             "problems": ["wrong-type", "multiple-nodes"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -17601,7 +17601,7 @@ define("frontend-cp/components/ko-admin/roles/form/template", ["exports"], funct
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -17692,7 +17692,7 @@ define("frontend-cp/components/ko-admin/roles/list-item/template", ["exports"], 
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -17736,7 +17736,7 @@ define("frontend-cp/components/ko-admin/roles/list-item/template", ["exports"], 
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -17798,7 +17798,7 @@ define("frontend-cp/components/ko-admin/roles/list-item/template", ["exports"], 
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -17849,7 +17849,7 @@ define("frontend-cp/components/ko-admin/roles/list-item/template", ["exports"], 
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -17908,7 +17908,7 @@ define("frontend-cp/components/ko-admin/roles/list-item/template", ["exports"], 
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -17966,7 +17966,7 @@ define("frontend-cp/components/ko-admin/roles/list-item/template", ["exports"], 
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -18013,7 +18013,7 @@ define("frontend-cp/components/ko-admin/roles/list-item/template", ["exports"], 
             "name": "missing-wrapper",
             "problems": ["wrong-type", "multiple-nodes"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -18065,7 +18065,7 @@ define("frontend-cp/components/ko-admin/roles/list-item/template", ["exports"], 
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -18124,7 +18124,7 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -18165,7 +18165,7 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -18230,7 +18230,7 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -18271,7 +18271,7 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -18312,7 +18312,7 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -18353,7 +18353,7 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -18392,7 +18392,7 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -18460,7 +18460,7 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -18502,7 +18502,7 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -18544,7 +18544,7 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -18586,7 +18586,7 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -18628,7 +18628,7 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -18670,7 +18670,7 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -18713,7 +18713,7 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -18754,7 +18754,7 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -18794,7 +18794,7 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -18837,7 +18837,7 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -18878,7 +18878,7 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -18919,7 +18919,7 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -18960,7 +18960,7 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -19002,7 +19002,7 @@ define("frontend-cp/components/ko-admin/sidebar/template", ["exports"], function
           "name": "missing-wrapper",
           "problems": ["wrong-type", "multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -19315,7 +19315,7 @@ define("frontend-cp/components/ko-admin/sla/edit/operational-hours/template", ["
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -19356,7 +19356,7 @@ define("frontend-cp/components/ko-admin/sla/edit/operational-hours/template", ["
     return {
       meta: {
         "fragmentReason": false,
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -19478,7 +19478,7 @@ define("frontend-cp/components/ko-admin/sla/edit/target/template", ["exports"], 
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -19522,7 +19522,7 @@ define("frontend-cp/components/ko-admin/sla/edit/target/template", ["exports"], 
           "name": "missing-wrapper",
           "problems": ["multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -19600,7 +19600,7 @@ define("frontend-cp/components/ko-admin/sla/edit/targets/template", ["exports"],
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -19640,7 +19640,7 @@ define("frontend-cp/components/ko-admin/sla/edit/targets/template", ["exports"],
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -19680,7 +19680,7 @@ define("frontend-cp/components/ko-admin/sla/edit/targets/template", ["exports"],
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -19720,7 +19720,7 @@ define("frontend-cp/components/ko-admin/sla/edit/targets/template", ["exports"],
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -19813,7 +19813,7 @@ define("frontend-cp/components/ko-admin/sla/edit/targets/template", ["exports"],
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -19853,7 +19853,7 @@ define("frontend-cp/components/ko-admin/sla/edit/targets/template", ["exports"],
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -19895,7 +19895,7 @@ define("frontend-cp/components/ko-admin/sla/edit/targets/template", ["exports"],
           "name": "missing-wrapper",
           "problems": ["multiple-nodes", "wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -20116,7 +20116,7 @@ define("frontend-cp/components/ko-admin/sla/edit/template", ["exports"], functio
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -20155,7 +20155,7 @@ define("frontend-cp/components/ko-admin/sla/edit/template", ["exports"], functio
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -20213,7 +20213,7 @@ define("frontend-cp/components/ko-admin/sla/edit/template", ["exports"], functio
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -20252,7 +20252,7 @@ define("frontend-cp/components/ko-admin/sla/edit/template", ["exports"], functio
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -20310,7 +20310,7 @@ define("frontend-cp/components/ko-admin/sla/edit/template", ["exports"], functio
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -20356,7 +20356,7 @@ define("frontend-cp/components/ko-admin/sla/edit/template", ["exports"], functio
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -20395,7 +20395,7 @@ define("frontend-cp/components/ko-admin/sla/edit/template", ["exports"], functio
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -20446,7 +20446,7 @@ define("frontend-cp/components/ko-admin/sla/edit/template", ["exports"], functio
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -20485,7 +20485,7 @@ define("frontend-cp/components/ko-admin/sla/edit/template", ["exports"], functio
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -20541,7 +20541,7 @@ define("frontend-cp/components/ko-admin/sla/edit/template", ["exports"], functio
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -20580,7 +20580,7 @@ define("frontend-cp/components/ko-admin/sla/edit/template", ["exports"], functio
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -20637,7 +20637,7 @@ define("frontend-cp/components/ko-admin/sla/edit/template", ["exports"], functio
             "name": "missing-wrapper",
             "problems": ["wrong-type", "multiple-nodes"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -20701,7 +20701,7 @@ define("frontend-cp/components/ko-admin/sla/edit/template", ["exports"], functio
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -20824,7 +20824,7 @@ define("frontend-cp/components/ko-admin/sla/index/template", ["exports"], functi
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -20869,7 +20869,7 @@ define("frontend-cp/components/ko-admin/sla/index/template", ["exports"], functi
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -20913,7 +20913,7 @@ define("frontend-cp/components/ko-admin/sla/index/template", ["exports"], functi
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -20990,7 +20990,7 @@ define("frontend-cp/components/ko-admin/sla/index/template", ["exports"], functi
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -21035,7 +21035,7 @@ define("frontend-cp/components/ko-admin/sla/index/template", ["exports"], functi
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -21074,7 +21074,7 @@ define("frontend-cp/components/ko-admin/sla/index/template", ["exports"], functi
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -21131,7 +21131,7 @@ define("frontend-cp/components/ko-admin/sla/index/template", ["exports"], functi
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -21176,7 +21176,7 @@ define("frontend-cp/components/ko-admin/sla/index/template", ["exports"], functi
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -21221,7 +21221,7 @@ define("frontend-cp/components/ko-admin/sla/index/template", ["exports"], functi
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -21266,7 +21266,7 @@ define("frontend-cp/components/ko-admin/sla/index/template", ["exports"], functi
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -21311,7 +21311,7 @@ define("frontend-cp/components/ko-admin/sla/index/template", ["exports"], functi
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -21350,7 +21350,7 @@ define("frontend-cp/components/ko-admin/sla/index/template", ["exports"], functi
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -21402,7 +21402,7 @@ define("frontend-cp/components/ko-admin/sla/index/template", ["exports"], functi
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -21444,7 +21444,7 @@ define("frontend-cp/components/ko-admin/sla/index/template", ["exports"], functi
           "name": "missing-wrapper",
           "problems": ["wrong-type", "multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -21709,7 +21709,7 @@ define("frontend-cp/components/ko-admin/team/template", ["exports"], function (e
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -21748,7 +21748,7 @@ define("frontend-cp/components/ko-admin/team/template", ["exports"], function (e
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -21800,7 +21800,7 @@ define("frontend-cp/components/ko-admin/team/template", ["exports"], function (e
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -21840,7 +21840,7 @@ define("frontend-cp/components/ko-admin/team/template", ["exports"], function (e
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -21881,7 +21881,7 @@ define("frontend-cp/components/ko-admin/team/template", ["exports"], function (e
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -21946,7 +21946,7 @@ define("frontend-cp/components/ko-admin/team/template", ["exports"], function (e
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -21985,7 +21985,7 @@ define("frontend-cp/components/ko-admin/team/template", ["exports"], function (e
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -22036,7 +22036,7 @@ define("frontend-cp/components/ko-admin/team/template", ["exports"], function (e
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -22084,7 +22084,7 @@ define("frontend-cp/components/ko-admin/team/template", ["exports"], function (e
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -22124,7 +22124,7 @@ define("frontend-cp/components/ko-admin/team/template", ["exports"], function (e
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -22172,7 +22172,7 @@ define("frontend-cp/components/ko-admin/team/template", ["exports"], function (e
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -22215,7 +22215,7 @@ define("frontend-cp/components/ko-admin/team/template", ["exports"], function (e
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -22268,7 +22268,7 @@ define("frontend-cp/components/ko-admin/team/template", ["exports"], function (e
             "name": "missing-wrapper",
             "problems": ["wrong-type", "multiple-nodes"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -22391,7 +22391,7 @@ define("frontend-cp/components/ko-admin/team/template", ["exports"], function (e
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -22464,7 +22464,7 @@ define("frontend-cp/components/ko-admin/twitter/edit/template", ["exports"], fun
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -22504,7 +22504,7 @@ define("frontend-cp/components/ko-admin/twitter/edit/template", ["exports"], fun
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -22546,7 +22546,7 @@ define("frontend-cp/components/ko-admin/twitter/edit/template", ["exports"], fun
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -22585,7 +22585,7 @@ define("frontend-cp/components/ko-admin/twitter/edit/template", ["exports"], fun
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -22641,7 +22641,7 @@ define("frontend-cp/components/ko-admin/twitter/edit/template", ["exports"], fun
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -22682,7 +22682,7 @@ define("frontend-cp/components/ko-admin/twitter/edit/template", ["exports"], fun
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -22725,7 +22725,7 @@ define("frontend-cp/components/ko-admin/twitter/edit/template", ["exports"], fun
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -22764,7 +22764,7 @@ define("frontend-cp/components/ko-admin/twitter/edit/template", ["exports"], fun
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -22817,7 +22817,7 @@ define("frontend-cp/components/ko-admin/twitter/edit/template", ["exports"], fun
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -22856,7 +22856,7 @@ define("frontend-cp/components/ko-admin/twitter/edit/template", ["exports"], fun
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -22909,7 +22909,7 @@ define("frontend-cp/components/ko-admin/twitter/edit/template", ["exports"], fun
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -22948,7 +22948,7 @@ define("frontend-cp/components/ko-admin/twitter/edit/template", ["exports"], fun
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -22999,7 +22999,7 @@ define("frontend-cp/components/ko-admin/twitter/edit/template", ["exports"], fun
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -23056,7 +23056,7 @@ define("frontend-cp/components/ko-admin/twitter/edit/template", ["exports"], fun
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -23096,7 +23096,7 @@ define("frontend-cp/components/ko-admin/twitter/edit/template", ["exports"], fun
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -23135,7 +23135,7 @@ define("frontend-cp/components/ko-admin/twitter/edit/template", ["exports"], fun
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -23191,7 +23191,7 @@ define("frontend-cp/components/ko-admin/twitter/edit/template", ["exports"], fun
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -23233,7 +23233,7 @@ define("frontend-cp/components/ko-admin/twitter/edit/template", ["exports"], fun
             "name": "missing-wrapper",
             "problems": ["wrong-type", "multiple-nodes"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -23297,7 +23297,7 @@ define("frontend-cp/components/ko-admin/twitter/edit/template", ["exports"], fun
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -23398,7 +23398,7 @@ define("frontend-cp/components/ko-admin/views/edit/columns/template", ["exports"
             "name": "missing-wrapper",
             "problems": ["wrong-type"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -23440,7 +23440,7 @@ define("frontend-cp/components/ko-admin/views/edit/columns/template", ["exports"
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -23506,7 +23506,7 @@ define("frontend-cp/components/ko-admin/views/edit/columns/template", ["exports"
           "name": "missing-wrapper",
           "problems": ["wrong-type", "multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -23742,7 +23742,7 @@ define("frontend-cp/components/ko-admin/views/edit/template", ["exports"], funct
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -23781,7 +23781,7 @@ define("frontend-cp/components/ko-admin/views/edit/template", ["exports"], funct
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -23840,7 +23840,7 @@ define("frontend-cp/components/ko-admin/views/edit/template", ["exports"], funct
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -23886,7 +23886,7 @@ define("frontend-cp/components/ko-admin/views/edit/template", ["exports"], funct
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -23925,7 +23925,7 @@ define("frontend-cp/components/ko-admin/views/edit/template", ["exports"], funct
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -23972,7 +23972,7 @@ define("frontend-cp/components/ko-admin/views/edit/template", ["exports"], funct
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -24011,7 +24011,7 @@ define("frontend-cp/components/ko-admin/views/edit/template", ["exports"], funct
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -24091,7 +24091,7 @@ define("frontend-cp/components/ko-admin/views/edit/template", ["exports"], funct
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -24132,7 +24132,7 @@ define("frontend-cp/components/ko-admin/views/edit/template", ["exports"], funct
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -24186,7 +24186,7 @@ define("frontend-cp/components/ko-admin/views/edit/template", ["exports"], funct
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -24226,7 +24226,7 @@ define("frontend-cp/components/ko-admin/views/edit/template", ["exports"], funct
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -24271,7 +24271,7 @@ define("frontend-cp/components/ko-admin/views/edit/template", ["exports"], funct
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -24311,7 +24311,7 @@ define("frontend-cp/components/ko-admin/views/edit/template", ["exports"], funct
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -24353,7 +24353,7 @@ define("frontend-cp/components/ko-admin/views/edit/template", ["exports"], funct
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -24394,7 +24394,7 @@ define("frontend-cp/components/ko-admin/views/edit/template", ["exports"], funct
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -24476,7 +24476,7 @@ define("frontend-cp/components/ko-admin/views/edit/template", ["exports"], funct
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -24515,7 +24515,7 @@ define("frontend-cp/components/ko-admin/views/edit/template", ["exports"], funct
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -24561,7 +24561,7 @@ define("frontend-cp/components/ko-admin/views/edit/template", ["exports"], funct
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -24602,7 +24602,7 @@ define("frontend-cp/components/ko-admin/views/edit/template", ["exports"], funct
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -24644,7 +24644,7 @@ define("frontend-cp/components/ko-admin/views/edit/template", ["exports"], funct
             "name": "missing-wrapper",
             "problems": ["wrong-type", "multiple-nodes"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -24718,7 +24718,7 @@ define("frontend-cp/components/ko-admin/views/edit/template", ["exports"], funct
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -24776,7 +24776,7 @@ define("frontend-cp/components/ko-admin-card-team/template", ["exports"], functi
           "fragmentReason": {
             "name": "triple-curlies"
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -24856,7 +24856,7 @@ define("frontend-cp/components/ko-admin-card-team/template", ["exports"], functi
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -24900,7 +24900,7 @@ define("frontend-cp/components/ko-admin-card-team/template", ["exports"], functi
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -24958,7 +24958,7 @@ define("frontend-cp/components/ko-admin-card-team/template", ["exports"], functi
           "name": "missing-wrapper",
           "problems": ["wrong-type", "multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -25019,7 +25019,7 @@ define("frontend-cp/components/ko-admin-card-user/template", ["exports"], functi
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -25061,7 +25061,7 @@ define("frontend-cp/components/ko-admin-card-user/template", ["exports"], functi
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -25124,7 +25124,7 @@ define("frontend-cp/components/ko-admin-card-user/template", ["exports"], functi
             "name": "missing-wrapper",
             "problems": ["wrong-type"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -25166,7 +25166,7 @@ define("frontend-cp/components/ko-admin-card-user/template", ["exports"], functi
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -25233,7 +25233,7 @@ define("frontend-cp/components/ko-admin-selectable-card/template", ["exports"], 
           "name": "missing-wrapper",
           "problems": ["multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -25365,7 +25365,7 @@ define("frontend-cp/components/ko-advanced-search/template", ["exports"], functi
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -25402,7 +25402,7 @@ define("frontend-cp/components/ko-advanced-search/template", ["exports"], functi
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -25445,7 +25445,7 @@ define("frontend-cp/components/ko-advanced-search/template", ["exports"], functi
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -25484,7 +25484,7 @@ define("frontend-cp/components/ko-advanced-search/template", ["exports"], functi
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -25533,7 +25533,7 @@ define("frontend-cp/components/ko-advanced-search/template", ["exports"], functi
                 return {
                   meta: {
                     "fragmentReason": false,
-                    "revision": "Ember@2.4.3",
+                    "revision": "Ember@2.4.4",
                     "loc": {
                       "source": null,
                       "start": {
@@ -25577,7 +25577,7 @@ define("frontend-cp/components/ko-advanced-search/template", ["exports"], functi
                     return {
                       meta: {
                         "fragmentReason": false,
-                        "revision": "Ember@2.4.3",
+                        "revision": "Ember@2.4.4",
                         "loc": {
                           "source": null,
                           "start": {
@@ -25619,7 +25619,7 @@ define("frontend-cp/components/ko-advanced-search/template", ["exports"], functi
                     return {
                       meta: {
                         "fragmentReason": false,
-                        "revision": "Ember@2.4.3",
+                        "revision": "Ember@2.4.4",
                         "loc": {
                           "source": null,
                           "start": {
@@ -25660,7 +25660,7 @@ define("frontend-cp/components/ko-advanced-search/template", ["exports"], functi
                   return {
                     meta: {
                       "fragmentReason": false,
-                      "revision": "Ember@2.4.3",
+                      "revision": "Ember@2.4.4",
                       "loc": {
                         "source": null,
                         "start": {
@@ -25708,7 +25708,7 @@ define("frontend-cp/components/ko-advanced-search/template", ["exports"], functi
                 return {
                   meta: {
                     "fragmentReason": false,
-                    "revision": "Ember@2.4.3",
+                    "revision": "Ember@2.4.4",
                     "loc": {
                       "source": null,
                       "start": {
@@ -25747,7 +25747,7 @@ define("frontend-cp/components/ko-advanced-search/template", ["exports"], functi
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -25789,7 +25789,7 @@ define("frontend-cp/components/ko-advanced-search/template", ["exports"], functi
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -25829,7 +25829,7 @@ define("frontend-cp/components/ko-advanced-search/template", ["exports"], functi
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -25877,7 +25877,7 @@ define("frontend-cp/components/ko-advanced-search/template", ["exports"], functi
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -25916,7 +25916,7 @@ define("frontend-cp/components/ko-advanced-search/template", ["exports"], functi
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -25958,7 +25958,7 @@ define("frontend-cp/components/ko-advanced-search/template", ["exports"], functi
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -25999,7 +25999,7 @@ define("frontend-cp/components/ko-advanced-search/template", ["exports"], functi
         "fragmentReason": {
           "name": "triple-curlies"
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -26235,7 +26235,7 @@ define("frontend-cp/components/ko-agent-dropdown/create-case/template", ["export
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -26276,7 +26276,7 @@ define("frontend-cp/components/ko-agent-dropdown/create-case/template", ["export
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -26321,7 +26321,7 @@ define("frontend-cp/components/ko-agent-dropdown/create-case/template", ["export
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -26363,7 +26363,7 @@ define("frontend-cp/components/ko-agent-dropdown/create-case/template", ["export
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -26422,7 +26422,7 @@ define("frontend-cp/components/ko-agent-dropdown/create-case/template", ["export
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -26471,7 +26471,7 @@ define("frontend-cp/components/ko-agent-dropdown/create-case/template", ["export
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -26519,7 +26519,7 @@ define("frontend-cp/components/ko-agent-dropdown/create-case/template", ["export
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -26565,7 +26565,7 @@ define("frontend-cp/components/ko-agent-dropdown/create-case/template", ["export
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -26607,7 +26607,7 @@ define("frontend-cp/components/ko-agent-dropdown/create-case/template", ["export
           "name": "missing-wrapper",
           "problems": ["multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -26836,7 +26836,7 @@ define("frontend-cp/components/ko-agent-dropdown/create-organisation/template", 
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -26875,7 +26875,7 @@ define("frontend-cp/components/ko-agent-dropdown/create-organisation/template", 
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -26934,7 +26934,7 @@ define("frontend-cp/components/ko-agent-dropdown/create-organisation/template", 
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -26973,7 +26973,7 @@ define("frontend-cp/components/ko-agent-dropdown/create-organisation/template", 
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -27025,7 +27025,7 @@ define("frontend-cp/components/ko-agent-dropdown/create-organisation/template", 
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -27086,7 +27086,7 @@ define("frontend-cp/components/ko-agent-dropdown/create-organisation/template", 
           "name": "missing-wrapper",
           "problems": ["multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -27269,7 +27269,7 @@ define("frontend-cp/components/ko-agent-dropdown/create-user/template", ["export
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -27308,7 +27308,7 @@ define("frontend-cp/components/ko-agent-dropdown/create-user/template", ["export
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -27363,7 +27363,7 @@ define("frontend-cp/components/ko-agent-dropdown/create-user/template", ["export
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -27402,7 +27402,7 @@ define("frontend-cp/components/ko-agent-dropdown/create-user/template", ["export
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -27455,7 +27455,7 @@ define("frontend-cp/components/ko-agent-dropdown/create-user/template", ["export
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -27516,7 +27516,7 @@ define("frontend-cp/components/ko-agent-dropdown/create-user/template", ["export
           "name": "missing-wrapper",
           "problems": ["multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -27581,7 +27581,7 @@ define("frontend-cp/components/ko-agent-dropdown/template", ["exports"], functio
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -27624,7 +27624,7 @@ define("frontend-cp/components/ko-agent-dropdown/template", ["exports"], functio
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -27667,7 +27667,7 @@ define("frontend-cp/components/ko-agent-dropdown/template", ["exports"], functio
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -27708,7 +27708,7 @@ define("frontend-cp/components/ko-agent-dropdown/template", ["exports"], functio
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -27747,7 +27747,7 @@ define("frontend-cp/components/ko-agent-dropdown/template", ["exports"], functio
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -27786,7 +27786,7 @@ define("frontend-cp/components/ko-agent-dropdown/template", ["exports"], functio
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -27827,7 +27827,7 @@ define("frontend-cp/components/ko-agent-dropdown/template", ["exports"], functio
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -27890,7 +27890,7 @@ define("frontend-cp/components/ko-agent-dropdown/template", ["exports"], functio
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -27943,7 +27943,7 @@ define("frontend-cp/components/ko-agent-dropdown/template", ["exports"], functio
             "name": "missing-wrapper",
             "problems": ["wrong-type"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -27983,7 +27983,7 @@ define("frontend-cp/components/ko-agent-dropdown/template", ["exports"], functio
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -28033,7 +28033,7 @@ define("frontend-cp/components/ko-agent-dropdown/template", ["exports"], functio
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -28104,7 +28104,7 @@ define("frontend-cp/components/ko-avatar/template", ["exports"], function (expor
         "fragmentReason": {
           "name": "triple-curlies"
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -28156,7 +28156,7 @@ define("frontend-cp/components/ko-breadcrumbs/template", ["exports"], function (
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -28197,7 +28197,7 @@ define("frontend-cp/components/ko-breadcrumbs/template", ["exports"], function (
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -28239,7 +28239,7 @@ define("frontend-cp/components/ko-breadcrumbs/template", ["exports"], function (
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -28280,7 +28280,7 @@ define("frontend-cp/components/ko-breadcrumbs/template", ["exports"], function (
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -28320,7 +28320,7 @@ define("frontend-cp/components/ko-breadcrumbs/template", ["exports"], function (
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -28359,7 +28359,7 @@ define("frontend-cp/components/ko-breadcrumbs/template", ["exports"], function (
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -28401,7 +28401,7 @@ define("frontend-cp/components/ko-breadcrumbs/template", ["exports"], function (
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -28442,7 +28442,7 @@ define("frontend-cp/components/ko-breadcrumbs/template", ["exports"], function (
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -28484,7 +28484,7 @@ define("frontend-cp/components/ko-breadcrumbs/template", ["exports"], function (
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -28525,7 +28525,7 @@ define("frontend-cp/components/ko-breadcrumbs/template", ["exports"], function (
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -28565,7 +28565,7 @@ define("frontend-cp/components/ko-breadcrumbs/template", ["exports"], function (
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -28604,7 +28604,7 @@ define("frontend-cp/components/ko-breadcrumbs/template", ["exports"], function (
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -28643,7 +28643,7 @@ define("frontend-cp/components/ko-breadcrumbs/template", ["exports"], function (
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -28684,7 +28684,7 @@ define("frontend-cp/components/ko-breadcrumbs/template", ["exports"], function (
         "fragmentReason": {
           "name": "triple-curlies"
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -28978,7 +28978,7 @@ define("frontend-cp/components/ko-bulk-sidebar/template", ["exports"], function 
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -29020,7 +29020,7 @@ define("frontend-cp/components/ko-bulk-sidebar/template", ["exports"], function 
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -29064,7 +29064,7 @@ define("frontend-cp/components/ko-bulk-sidebar/template", ["exports"], function 
           "name": "missing-wrapper",
           "problems": ["multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -29256,7 +29256,7 @@ define("frontend-cp/components/ko-case/macro-selector/template", ["exports"], fu
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -29313,7 +29313,7 @@ define("frontend-cp/components/ko-case/macro-selector/trigger/template", ["expor
           "name": "missing-wrapper",
           "problems": ["wrong-type", "multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -29412,7 +29412,7 @@ define("frontend-cp/components/ko-case/sla-sidebar/metric/template", ["exports"]
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -29448,7 +29448,7 @@ define("frontend-cp/components/ko-case/sla-sidebar/metric/template", ["exports"]
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -29493,7 +29493,7 @@ define("frontend-cp/components/ko-case/sla-sidebar/metric/template", ["exports"]
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -29540,7 +29540,7 @@ define("frontend-cp/components/ko-case/sla-sidebar/metric/template", ["exports"]
           "name": "missing-wrapper",
           "problems": ["multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -29634,7 +29634,7 @@ define("frontend-cp/components/ko-case/sla-sidebar/template", ["exports"], funct
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -29678,7 +29678,7 @@ define("frontend-cp/components/ko-case/sla-sidebar/template", ["exports"], funct
           "name": "missing-wrapper",
           "problems": ["multiple-nodes", "wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -29777,7 +29777,7 @@ define("frontend-cp/components/ko-case-action-menu/template", ["exports"], funct
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -29830,7 +29830,7 @@ define("frontend-cp/components/ko-case-action-menu/template", ["exports"], funct
             "name": "missing-wrapper",
             "problems": ["wrong-type"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -29870,7 +29870,7 @@ define("frontend-cp/components/ko-case-action-menu/template", ["exports"], funct
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -29921,7 +29921,7 @@ define("frontend-cp/components/ko-case-action-menu/template", ["exports"], funct
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -30742,7 +30742,7 @@ define("frontend-cp/components/ko-case-content/field/assignee/template", ["expor
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -30801,7 +30801,7 @@ define("frontend-cp/components/ko-case-content/field/forms/template", ["exports"
             "name": "missing-wrapper",
             "problems": ["wrong-type"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -30845,7 +30845,7 @@ define("frontend-cp/components/ko-case-content/field/forms/template", ["exports"
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -30988,7 +30988,7 @@ define("frontend-cp/components/ko-case-content/field/post/template", ["exports"]
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -31029,7 +31029,7 @@ define("frontend-cp/components/ko-case-content/field/post/template", ["exports"]
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -31085,7 +31085,7 @@ define("frontend-cp/components/ko-case-content/field/post/template", ["exports"]
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -31143,7 +31143,7 @@ define("frontend-cp/components/ko-case-content/field/post/template", ["exports"]
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -31185,7 +31185,7 @@ define("frontend-cp/components/ko-case-content/field/post/template", ["exports"]
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -31230,7 +31230,7 @@ define("frontend-cp/components/ko-case-content/field/post/template", ["exports"]
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -31279,7 +31279,7 @@ define("frontend-cp/components/ko-case-content/field/post/template", ["exports"]
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -31346,7 +31346,7 @@ define("frontend-cp/components/ko-case-content/field/post/template", ["exports"]
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -31385,7 +31385,7 @@ define("frontend-cp/components/ko-case-content/field/post/template", ["exports"]
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -31427,7 +31427,7 @@ define("frontend-cp/components/ko-case-content/field/post/template", ["exports"]
             "name": "missing-wrapper",
             "problems": ["wrong-type", "multiple-nodes"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -31476,7 +31476,7 @@ define("frontend-cp/components/ko-case-content/field/post/template", ["exports"]
           "name": "missing-wrapper",
           "problems": ["wrong-type", "multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -31543,7 +31543,7 @@ define("frontend-cp/components/ko-case-content/field/priority/template", ["expor
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -31623,7 +31623,7 @@ define("frontend-cp/components/ko-case-content/field/requester/template", ["expo
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -31703,7 +31703,7 @@ define("frontend-cp/components/ko-case-content/field/status/template", ["exports
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -31764,7 +31764,7 @@ define("frontend-cp/components/ko-case-content/field/type/template", ["exports"]
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -31932,7 +31932,7 @@ define("frontend-cp/components/ko-case-content/file-upload/template", ["exports"
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -31975,7 +31975,7 @@ define("frontend-cp/components/ko-case-content/file-upload/template", ["exports"
         "fragmentReason": {
           "name": "triple-curlies"
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -32075,7 +32075,7 @@ define("frontend-cp/components/ko-case-content/file-upload/upload-item/template"
           "fragmentReason": {
             "name": "triple-curlies"
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -32130,7 +32130,7 @@ define("frontend-cp/components/ko-case-content/file-upload/upload-item/template"
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -32192,7 +32192,7 @@ define("frontend-cp/components/ko-case-content/file-upload/upload-item/template"
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -32256,7 +32256,7 @@ define("frontend-cp/components/ko-case-content/file-upload/upload-item/template"
           "name": "missing-wrapper",
           "problems": ["wrong-type", "multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -32312,7 +32312,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -32354,7 +32354,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -32395,7 +32395,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -32446,7 +32446,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -32487,7 +32487,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -32529,7 +32529,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -32571,7 +32571,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -32613,7 +32613,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -32655,7 +32655,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -32697,7 +32697,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -32741,7 +32741,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -32782,7 +32782,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -32821,7 +32821,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -32861,7 +32861,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -32902,7 +32902,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -32999,7 +32999,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -33048,7 +33048,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -33097,7 +33097,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -33145,7 +33145,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -33284,7 +33284,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -33326,7 +33326,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -33401,7 +33401,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -33449,7 +33449,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -33489,7 +33489,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -33533,7 +33533,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
             "name": "missing-wrapper",
             "problems": ["wrong-type", "multiple-nodes"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -33595,7 +33595,7 @@ define("frontend-cp/components/ko-case-content/template", ["exports"], function 
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -33646,7 +33646,7 @@ define("frontend-cp/components/ko-cases-list/column/assigneeagentid/template", [
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -33703,7 +33703,7 @@ define("frontend-cp/components/ko-cases-list/column/assigneeteamid/template", ["
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -33748,7 +33748,7 @@ define("frontend-cp/components/ko-cases-list/column/avatar/template", ["exports"
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -33800,7 +33800,7 @@ define("frontend-cp/components/ko-cases-list/column/brandid/template", ["exports
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -33851,7 +33851,7 @@ define("frontend-cp/components/ko-cases-list/column/case-form/template", ["expor
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -33902,7 +33902,7 @@ define("frontend-cp/components/ko-cases-list/column/caseid/template", ["exports"
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -33953,7 +33953,7 @@ define("frontend-cp/components/ko-cases-list/column/casepriorityid/template", ["
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -34004,7 +34004,7 @@ define("frontend-cp/components/ko-cases-list/column/casestatusid/template", ["ex
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -34055,7 +34055,7 @@ define("frontend-cp/components/ko-cases-list/column/casetypeid/template", ["expo
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -34106,7 +34106,7 @@ define("frontend-cp/components/ko-cases-list/column/channeltype/template", ["exp
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -34156,7 +34156,7 @@ define("frontend-cp/components/ko-cases-list/column/createdat/template", ["expor
         "fragmentReason": {
           "name": "triple-curlies"
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -34222,7 +34222,7 @@ define("frontend-cp/components/ko-cases-list/column/first-reply-time/template", 
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -34273,7 +34273,7 @@ define("frontend-cp/components/ko-cases-list/column/last-update-by-a-user/templa
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -34320,7 +34320,7 @@ define("frontend-cp/components/ko-cases-list/column/last-update-by-assignee/temp
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -34367,7 +34367,7 @@ define("frontend-cp/components/ko-cases-list/column/last-update-by-requester/tem
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -34408,7 +34408,7 @@ define("frontend-cp/components/ko-cases-list/column/lastcompletedat/template", [
           "fragmentReason": {
             "name": "triple-curlies"
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -34460,7 +34460,7 @@ define("frontend-cp/components/ko-cases-list/column/lastcompletedat/template", [
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -34511,7 +34511,7 @@ define("frontend-cp/components/ko-cases-list/column/next-breach/template", ["exp
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -34569,7 +34569,7 @@ define("frontend-cp/components/ko-cases-list/column/next-reply-time/template", [
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -34620,7 +34620,7 @@ define("frontend-cp/components/ko-cases-list/column/oldest-update-by-requester/t
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -34667,7 +34667,7 @@ define("frontend-cp/components/ko-cases-list/column/organization/template", ["ex
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -34718,7 +34718,7 @@ define("frontend-cp/components/ko-cases-list/column/requester-language/template"
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -34769,7 +34769,7 @@ define("frontend-cp/components/ko-cases-list/column/requesterid/template", ["exp
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -34831,7 +34831,7 @@ define("frontend-cp/components/ko-cases-list/column/resolution-time/template", [
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -34882,7 +34882,7 @@ define("frontend-cp/components/ko-cases-list/column/sla-name/template", ["export
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -34933,7 +34933,7 @@ define("frontend-cp/components/ko-cases-list/column/subject/template", ["exports
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -34985,7 +34985,7 @@ define("frontend-cp/components/ko-cases-list/column/team/template", ["exports"],
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -35036,7 +35036,7 @@ define("frontend-cp/components/ko-cases-list/column/updatedat/template", ["expor
           "fragmentReason": {
             "name": "triple-curlies"
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -35088,7 +35088,7 @@ define("frontend-cp/components/ko-cases-list/column/updatedat/template", ["expor
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -35277,7 +35277,7 @@ define("frontend-cp/components/ko-cases-list/header/assigneeagentid/template", [
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -35322,7 +35322,7 @@ define("frontend-cp/components/ko-cases-list/header/assigneeteamid/template", ["
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -35367,7 +35367,7 @@ define("frontend-cp/components/ko-cases-list/header/avatar/template", ["exports"
           "name": "missing-wrapper",
           "problems": ["empty-body"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -35406,7 +35406,7 @@ define("frontend-cp/components/ko-cases-list/header/brandid/template", ["exports
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -35451,7 +35451,7 @@ define("frontend-cp/components/ko-cases-list/header/case-form/template", ["expor
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -35496,7 +35496,7 @@ define("frontend-cp/components/ko-cases-list/header/caseid/template", ["exports"
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -35541,7 +35541,7 @@ define("frontend-cp/components/ko-cases-list/header/casepriorityid/template", ["
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -35586,7 +35586,7 @@ define("frontend-cp/components/ko-cases-list/header/casestatusid/template", ["ex
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -35631,7 +35631,7 @@ define("frontend-cp/components/ko-cases-list/header/casetypeid/template", ["expo
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -35676,7 +35676,7 @@ define("frontend-cp/components/ko-cases-list/header/channeltype/template", ["exp
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -35721,7 +35721,7 @@ define("frontend-cp/components/ko-cases-list/header/createdat/template", ["expor
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -35766,7 +35766,7 @@ define("frontend-cp/components/ko-cases-list/header/first-reply-time/template", 
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -35811,7 +35811,7 @@ define("frontend-cp/components/ko-cases-list/header/last-update-by-a-user/templa
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -35856,7 +35856,7 @@ define("frontend-cp/components/ko-cases-list/header/last-update-by-assignee/temp
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -35901,7 +35901,7 @@ define("frontend-cp/components/ko-cases-list/header/last-update-by-requester/tem
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -35946,7 +35946,7 @@ define("frontend-cp/components/ko-cases-list/header/lastcompletedat/template", [
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -35991,7 +35991,7 @@ define("frontend-cp/components/ko-cases-list/header/next-breach/template", ["exp
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -36036,7 +36036,7 @@ define("frontend-cp/components/ko-cases-list/header/next-reply-time/template", [
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -36081,7 +36081,7 @@ define("frontend-cp/components/ko-cases-list/header/oldest-update-by-requester/t
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -36126,7 +36126,7 @@ define("frontend-cp/components/ko-cases-list/header/organization/template", ["ex
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -36172,7 +36172,7 @@ define("frontend-cp/components/ko-cases-list/header/requester-language/template"
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -36217,7 +36217,7 @@ define("frontend-cp/components/ko-cases-list/header/requesterid/template", ["exp
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -36262,7 +36262,7 @@ define("frontend-cp/components/ko-cases-list/header/resolution-time/template", [
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -36307,7 +36307,7 @@ define("frontend-cp/components/ko-cases-list/header/sla-name/template", ["export
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -36352,7 +36352,7 @@ define("frontend-cp/components/ko-cases-list/header/subject/template", ["exports
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -36397,7 +36397,7 @@ define("frontend-cp/components/ko-cases-list/header/team/template", ["exports"],
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -36442,7 +36442,7 @@ define("frontend-cp/components/ko-cases-list/header/updatedat/template", ["expor
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -36487,7 +36487,7 @@ define("frontend-cp/components/ko-cases-list/template", ["exports"], function (e
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -36526,7 +36526,7 @@ define("frontend-cp/components/ko-cases-list/template", ["exports"], function (e
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -36568,7 +36568,7 @@ define("frontend-cp/components/ko-cases-list/template", ["exports"], function (e
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -36609,7 +36609,7 @@ define("frontend-cp/components/ko-cases-list/template", ["exports"], function (e
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -36665,7 +36665,7 @@ define("frontend-cp/components/ko-cases-list/template", ["exports"], function (e
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -36706,7 +36706,7 @@ define("frontend-cp/components/ko-cases-list/template", ["exports"], function (e
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -36745,7 +36745,7 @@ define("frontend-cp/components/ko-cases-list/template", ["exports"], function (e
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -36789,7 +36789,7 @@ define("frontend-cp/components/ko-cases-list/template", ["exports"], function (e
                 return {
                   meta: {
                     "fragmentReason": false,
-                    "revision": "Ember@2.4.3",
+                    "revision": "Ember@2.4.4",
                     "loc": {
                       "source": null,
                       "start": {
@@ -36830,7 +36830,7 @@ define("frontend-cp/components/ko-cases-list/template", ["exports"], function (e
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -36869,7 +36869,7 @@ define("frontend-cp/components/ko-cases-list/template", ["exports"], function (e
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -36908,7 +36908,7 @@ define("frontend-cp/components/ko-cases-list/template", ["exports"], function (e
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -36947,7 +36947,7 @@ define("frontend-cp/components/ko-cases-list/template", ["exports"], function (e
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -36986,7 +36986,7 @@ define("frontend-cp/components/ko-cases-list/template", ["exports"], function (e
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -37029,7 +37029,7 @@ define("frontend-cp/components/ko-cases-list/template", ["exports"], function (e
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -37078,7 +37078,7 @@ define("frontend-cp/components/ko-cases-list/template", ["exports"], function (e
           "name": "missing-wrapper",
           "problems": ["multiple-nodes", "wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -37166,7 +37166,7 @@ define("frontend-cp/components/ko-center/template", ["exports"], function (expor
         "fragmentReason": {
           "name": "triple-curlies"
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -37250,7 +37250,7 @@ define("frontend-cp/components/ko-channel-selector/selected-channel/template", [
           "name": "missing-wrapper",
           "problems": ["multiple-nodes", "wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -37307,7 +37307,7 @@ define("frontend-cp/components/ko-channel-selector/template", ["exports"], funct
             "name": "missing-wrapper",
             "problems": ["multiple-nodes", "wrong-type"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -37357,7 +37357,7 @@ define("frontend-cp/components/ko-channel-selector/template", ["exports"], funct
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -37440,7 +37440,7 @@ define("frontend-cp/components/ko-checkbox/template", ["exports"], function (exp
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -37483,7 +37483,7 @@ define("frontend-cp/components/ko-checkbox/template", ["exports"], function (exp
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -37533,7 +37533,7 @@ define("frontend-cp/components/ko-checkbox/template", ["exports"], function (exp
           "name": "missing-wrapper",
           "problems": ["multiple-nodes", "wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -37839,7 +37839,7 @@ define("frontend-cp/components/ko-context-modal/template", ["exports"], function
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -37884,7 +37884,7 @@ define("frontend-cp/components/ko-context-modal/template", ["exports"], function
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -37949,7 +37949,7 @@ define("frontend-cp/components/ko-context-modal/template", ["exports"], function
           "name": "missing-wrapper",
           "problems": ["multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -38054,7 +38054,7 @@ define("frontend-cp/components/ko-date-select/template", ["exports"], function (
             "name": "missing-wrapper",
             "problems": ["wrong-type"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -38097,7 +38097,7 @@ define("frontend-cp/components/ko-date-select/template", ["exports"], function (
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -38139,7 +38139,7 @@ define("frontend-cp/components/ko-date-select/template", ["exports"], function (
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -38180,7 +38180,7 @@ define("frontend-cp/components/ko-date-select/template", ["exports"], function (
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -38228,7 +38228,7 @@ define("frontend-cp/components/ko-date-select/template", ["exports"], function (
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -38400,7 +38400,7 @@ define("frontend-cp/components/ko-datepicker/template", ["exports"], function (e
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -38445,7 +38445,7 @@ define("frontend-cp/components/ko-datepicker/template", ["exports"], function (e
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -38494,7 +38494,7 @@ define("frontend-cp/components/ko-datepicker/template", ["exports"], function (e
           "name": "missing-wrapper",
           "problems": ["multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -38708,7 +38708,7 @@ define("frontend-cp/components/ko-draggable-dropzone/template", ["exports"], fun
           "name": "missing-wrapper",
           "problems": ["multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -38955,7 +38955,7 @@ define("frontend-cp/components/ko-dropdown/drill-down/template", ["exports"], fu
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -38996,7 +38996,7 @@ define("frontend-cp/components/ko-dropdown/drill-down/template", ["exports"], fu
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -39039,7 +39039,7 @@ define("frontend-cp/components/ko-dropdown/drill-down/template", ["exports"], fu
             "name": "missing-wrapper",
             "problems": ["wrong-type", "multiple-nodes"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -39091,7 +39091,7 @@ define("frontend-cp/components/ko-dropdown/drill-down/template", ["exports"], fu
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -39208,7 +39208,7 @@ define("frontend-cp/components/ko-editable-text/template", ["exports"], function
           "name": "missing-wrapper",
           "problems": ["multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -39292,7 +39292,7 @@ define("frontend-cp/components/ko-editor-modal/template", ["exports"], function 
           "name": "missing-wrapper",
           "problems": ["multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -39380,7 +39380,7 @@ define("frontend-cp/components/ko-feed/activity/template", ["exports"], function
           "name": "missing-wrapper",
           "problems": ["multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -39514,7 +39514,7 @@ define("frontend-cp/components/ko-feed/item/link-to/template", ["exports"], func
           "fragmentReason": {
             "name": "triple-curlies"
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -39566,7 +39566,7 @@ define("frontend-cp/components/ko-feed/item/link-to/template", ["exports"], func
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -39613,7 +39613,7 @@ define("frontend-cp/components/ko-feed/item/link-to/template", ["exports"], func
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -39672,7 +39672,7 @@ define("frontend-cp/components/ko-feed/item/menu/template", ["exports"], functio
           "fragmentReason": {
             "name": "triple-curlies"
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -39716,7 +39716,7 @@ define("frontend-cp/components/ko-feed/item/menu/template", ["exports"], functio
           "name": "missing-wrapper",
           "problems": ["wrong-type", "multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -39765,7 +39765,7 @@ define("frontend-cp/components/ko-feed/item/template", ["exports"], function (ex
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -39810,7 +39810,7 @@ define("frontend-cp/components/ko-feed/item/template", ["exports"], function (ex
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -39853,7 +39853,7 @@ define("frontend-cp/components/ko-feed/item/template", ["exports"], function (ex
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -39905,7 +39905,7 @@ define("frontend-cp/components/ko-feed/item/template", ["exports"], function (ex
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -39957,7 +39957,7 @@ define("frontend-cp/components/ko-feed/item/template", ["exports"], function (ex
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -40013,7 +40013,7 @@ define("frontend-cp/components/ko-feed/item/template", ["exports"], function (ex
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -40091,7 +40091,7 @@ define("frontend-cp/components/ko-feed/item/template", ["exports"], function (ex
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -40131,7 +40131,7 @@ define("frontend-cp/components/ko-feed/item/template", ["exports"], function (ex
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -40175,7 +40175,7 @@ define("frontend-cp/components/ko-feed/item/template", ["exports"], function (ex
           "name": "missing-wrapper",
           "problems": ["multiple-nodes", "wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -40301,7 +40301,7 @@ define("frontend-cp/components/ko-feedback/template", ["exports"], function (exp
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -40344,7 +40344,7 @@ define("frontend-cp/components/ko-feedback/template", ["exports"], function (exp
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -40386,7 +40386,7 @@ define("frontend-cp/components/ko-feedback/template", ["exports"], function (exp
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -40435,7 +40435,7 @@ define("frontend-cp/components/ko-feedback/template", ["exports"], function (exp
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -40480,7 +40480,7 @@ define("frontend-cp/components/ko-feedback/template", ["exports"], function (exp
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -40528,7 +40528,7 @@ define("frontend-cp/components/ko-feedback/template", ["exports"], function (exp
           "name": "missing-wrapper",
           "problems": ["multiple-nodes", "wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -40604,7 +40604,7 @@ define("frontend-cp/components/ko-file-field/template", ["exports"], function (e
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -40684,7 +40684,7 @@ define("frontend-cp/components/ko-file-size/template", ["exports"], function (ex
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -40742,7 +40742,7 @@ define("frontend-cp/components/ko-flag/template", ["exports"], function (exports
           "name": "missing-wrapper",
           "problems": ["multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -40813,7 +40813,7 @@ define("frontend-cp/components/ko-form/buttons/template", ["exports"], function 
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -40859,7 +40859,7 @@ define("frontend-cp/components/ko-form/buttons/template", ["exports"], function 
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -40907,7 +40907,7 @@ define("frontend-cp/components/ko-form/buttons/template", ["exports"], function 
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -40947,7 +40947,7 @@ define("frontend-cp/components/ko-form/buttons/template", ["exports"], function 
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -40997,7 +40997,7 @@ define("frontend-cp/components/ko-form/buttons/template", ["exports"], function 
         "fragmentReason": {
           "name": "triple-curlies"
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -41225,7 +41225,7 @@ define("frontend-cp/components/ko-form/field/errors/template", ["exports"], func
           "fragmentReason": {
             "name": "triple-curlies"
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -41270,7 +41270,7 @@ define("frontend-cp/components/ko-form/field/errors/template", ["exports"], func
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -41322,7 +41322,7 @@ define("frontend-cp/components/ko-form/field/help/template", ["exports"], functi
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -41374,7 +41374,7 @@ define("frontend-cp/components/ko-form/field/label/template", ["exports"], funct
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -41418,7 +41418,7 @@ define("frontend-cp/components/ko-form/field/template", ["exports"], function (e
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -41458,7 +41458,7 @@ define("frontend-cp/components/ko-form/field/template", ["exports"], function (e
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -41500,7 +41500,7 @@ define("frontend-cp/components/ko-form/field/template", ["exports"], function (e
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -41543,7 +41543,7 @@ define("frontend-cp/components/ko-form/field/template", ["exports"], function (e
           "name": "missing-wrapper",
           "problems": ["wrong-type", "multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -41596,7 +41596,7 @@ define("frontend-cp/components/ko-form/template", ["exports"], function (exports
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -41765,7 +41765,7 @@ define("frontend-cp/components/ko-grid-picker/template", ["exports"], function (
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -41811,7 +41811,7 @@ define("frontend-cp/components/ko-grid-picker/template", ["exports"], function (
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -41860,7 +41860,7 @@ define("frontend-cp/components/ko-grid-picker/template", ["exports"], function (
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -41911,7 +41911,7 @@ define("frontend-cp/components/ko-grid-picker/template", ["exports"], function (
           "name": "missing-wrapper",
           "problems": ["multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -42224,7 +42224,7 @@ define("frontend-cp/components/ko-identities/form/template", ["exports"], functi
             "name": "missing-wrapper",
             "problems": ["multiple-nodes", "wrong-type"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -42323,7 +42323,7 @@ define("frontend-cp/components/ko-identities/form/template", ["exports"], functi
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -42370,7 +42370,7 @@ define("frontend-cp/components/ko-identities/template", ["exports"], function (e
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -42421,7 +42421,7 @@ define("frontend-cp/components/ko-identities/template", ["exports"], function (e
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -42472,7 +42472,7 @@ define("frontend-cp/components/ko-identities/template", ["exports"], function (e
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -42523,7 +42523,7 @@ define("frontend-cp/components/ko-identities/template", ["exports"], function (e
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -42564,7 +42564,7 @@ define("frontend-cp/components/ko-identities/template", ["exports"], function (e
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -42614,7 +42614,7 @@ define("frontend-cp/components/ko-identities/template", ["exports"], function (e
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -42650,7 +42650,7 @@ define("frontend-cp/components/ko-identities/template", ["exports"], function (e
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -42723,7 +42723,7 @@ define("frontend-cp/components/ko-identities/template", ["exports"], function (e
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -42771,7 +42771,7 @@ define("frontend-cp/components/ko-identities/template", ["exports"], function (e
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -42830,7 +42830,7 @@ define("frontend-cp/components/ko-identities/template", ["exports"], function (e
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -42877,7 +42877,7 @@ define("frontend-cp/components/ko-identities/template", ["exports"], function (e
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -42924,7 +42924,7 @@ define("frontend-cp/components/ko-identities/template", ["exports"], function (e
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -42965,7 +42965,7 @@ define("frontend-cp/components/ko-identities/template", ["exports"], function (e
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -43029,7 +43029,7 @@ define("frontend-cp/components/ko-identities/template", ["exports"], function (e
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -43096,7 +43096,7 @@ define("frontend-cp/components/ko-identities/template", ["exports"], function (e
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -43144,7 +43144,7 @@ define("frontend-cp/components/ko-identities/template", ["exports"], function (e
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -43204,7 +43204,7 @@ define("frontend-cp/components/ko-identities/template", ["exports"], function (e
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -43251,7 +43251,7 @@ define("frontend-cp/components/ko-identities/template", ["exports"], function (e
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -43298,7 +43298,7 @@ define("frontend-cp/components/ko-identities/template", ["exports"], function (e
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -43339,7 +43339,7 @@ define("frontend-cp/components/ko-identities/template", ["exports"], function (e
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -43385,7 +43385,7 @@ define("frontend-cp/components/ko-identities/template", ["exports"], function (e
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -43452,7 +43452,7 @@ define("frontend-cp/components/ko-identities/template", ["exports"], function (e
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -43492,7 +43492,7 @@ define("frontend-cp/components/ko-identities/template", ["exports"], function (e
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -43538,7 +43538,7 @@ define("frontend-cp/components/ko-identities/template", ["exports"], function (e
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -43586,7 +43586,7 @@ define("frontend-cp/components/ko-identities/template", ["exports"], function (e
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -43646,7 +43646,7 @@ define("frontend-cp/components/ko-identities/template", ["exports"], function (e
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -43693,7 +43693,7 @@ define("frontend-cp/components/ko-identities/template", ["exports"], function (e
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -43740,7 +43740,7 @@ define("frontend-cp/components/ko-identities/template", ["exports"], function (e
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -43781,7 +43781,7 @@ define("frontend-cp/components/ko-identities/template", ["exports"], function (e
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -43827,7 +43827,7 @@ define("frontend-cp/components/ko-identities/template", ["exports"], function (e
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -43894,7 +43894,7 @@ define("frontend-cp/components/ko-identities/template", ["exports"], function (e
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -43934,7 +43934,7 @@ define("frontend-cp/components/ko-identities/template", ["exports"], function (e
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -43980,7 +43980,7 @@ define("frontend-cp/components/ko-identities/template", ["exports"], function (e
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -44028,7 +44028,7 @@ define("frontend-cp/components/ko-identities/template", ["exports"], function (e
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -44085,7 +44085,7 @@ define("frontend-cp/components/ko-identities/template", ["exports"], function (e
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -44152,7 +44152,7 @@ define("frontend-cp/components/ko-identities/template", ["exports"], function (e
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -44212,7 +44212,7 @@ define("frontend-cp/components/ko-identities/template", ["exports"], function (e
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -44252,7 +44252,7 @@ define("frontend-cp/components/ko-identities/template", ["exports"], function (e
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -44295,7 +44295,7 @@ define("frontend-cp/components/ko-identities/template", ["exports"], function (e
         "fragmentReason": {
           "name": "triple-curlies"
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -44442,7 +44442,7 @@ define("frontend-cp/components/ko-info-bar/field/cascadingselect/template", ["ex
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -44527,7 +44527,7 @@ define("frontend-cp/components/ko-info-bar/field/checkbox/template", ["exports"]
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -44571,7 +44571,7 @@ define("frontend-cp/components/ko-info-bar/field/checkbox/template", ["exports"]
           "name": "missing-wrapper",
           "problems": ["multiple-nodes", "wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -44675,7 +44675,7 @@ define("frontend-cp/components/ko-info-bar/field/date/template", ["exports"], fu
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -44717,7 +44717,7 @@ define("frontend-cp/components/ko-info-bar/field/date/template", ["exports"], fu
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -44771,7 +44771,7 @@ define("frontend-cp/components/ko-info-bar/field/date/template", ["exports"], fu
           "name": "missing-wrapper",
           "problems": ["multiple-nodes", "wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -44856,7 +44856,7 @@ define("frontend-cp/components/ko-info-bar/field/decimal/template", ["exports"],
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -44922,7 +44922,7 @@ define("frontend-cp/components/ko-info-bar/field/drill-down/template", ["exports
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -45032,7 +45032,7 @@ define("frontend-cp/components/ko-info-bar/field/drill-down/trigger/template", [
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -45076,7 +45076,7 @@ define("frontend-cp/components/ko-info-bar/field/drill-down/trigger/template", [
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -45127,7 +45127,7 @@ define("frontend-cp/components/ko-info-bar/field/drill-down/trigger/template", [
           "name": "missing-wrapper",
           "problems": ["multiple-nodes", "wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -45218,7 +45218,7 @@ define("frontend-cp/components/ko-info-bar/field/file/template", ["exports"], fu
           "name": "missing-wrapper",
           "problems": ["multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -45311,7 +45311,7 @@ define("frontend-cp/components/ko-info-bar/field/multiline-text/template", ["exp
           "name": "missing-wrapper",
           "problems": ["multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -45390,7 +45390,7 @@ define("frontend-cp/components/ko-info-bar/field/numeric/template", ["exports"],
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -45452,7 +45452,7 @@ define("frontend-cp/components/ko-info-bar/field/radio/template", ["exports"], f
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -45514,7 +45514,7 @@ define("frontend-cp/components/ko-info-bar/field/regex/template", ["exports"], f
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -45711,7 +45711,7 @@ define("frontend-cp/components/ko-info-bar/field/search/template", ["exports"], 
           "fragmentReason": {
             "name": "triple-curlies"
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -45757,7 +45757,7 @@ define("frontend-cp/components/ko-info-bar/field/search/template", ["exports"], 
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -45799,7 +45799,7 @@ define("frontend-cp/components/ko-info-bar/field/search/template", ["exports"], 
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -45840,7 +45840,7 @@ define("frontend-cp/components/ko-info-bar/field/search/template", ["exports"], 
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -45892,7 +45892,7 @@ define("frontend-cp/components/ko-info-bar/field/search/template", ["exports"], 
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -45946,7 +45946,7 @@ define("frontend-cp/components/ko-info-bar/field/search/template", ["exports"], 
           "name": "missing-wrapper",
           "problems": ["wrong-type", "multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -46088,7 +46088,7 @@ define("frontend-cp/components/ko-info-bar/field/select/template", ["exports"], 
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -46131,7 +46131,7 @@ define("frontend-cp/components/ko-info-bar/field/select/template", ["exports"], 
         "fragmentReason": {
           "name": "triple-curlies"
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -46251,7 +46251,7 @@ define("frontend-cp/components/ko-info-bar/field/select/trigger/template", ["exp
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -46298,7 +46298,7 @@ define("frontend-cp/components/ko-info-bar/field/select/trigger/template", ["exp
           "name": "missing-wrapper",
           "problems": ["multiple-nodes", "wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -46399,7 +46399,7 @@ define("frontend-cp/components/ko-info-bar/field/select-multiple/template", ["ex
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -46466,7 +46466,7 @@ define("frontend-cp/components/ko-info-bar/field/select-multiple/trigger/templat
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -46508,7 +46508,7 @@ define("frontend-cp/components/ko-info-bar/field/select-multiple/trigger/templat
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -46565,7 +46565,7 @@ define("frontend-cp/components/ko-info-bar/field/select-multiple/trigger/templat
           "name": "missing-wrapper",
           "problems": ["multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -46667,7 +46667,7 @@ define("frontend-cp/components/ko-info-bar/field/text/template", ["exports"], fu
           "name": "missing-wrapper",
           "problems": ["multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -46749,7 +46749,7 @@ define("frontend-cp/components/ko-info-bar/field/yesno/template", ["exports"], f
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -46801,7 +46801,7 @@ define("frontend-cp/components/ko-info-bar/item/template", ["exports"], function
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -46853,7 +46853,7 @@ define("frontend-cp/components/ko-info-bar/metadata/template", ["exports"], func
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -46917,7 +46917,7 @@ define("frontend-cp/components/ko-info-bar/metadata/template", ["exports"], func
         "fragmentReason": {
           "name": "triple-curlies"
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -46967,7 +46967,7 @@ define("frontend-cp/components/ko-info-bar/template", ["exports"], function (exp
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -47048,7 +47048,7 @@ define("frontend-cp/components/ko-info-bar/update-log/template", ["exports"], fu
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -47089,7 +47089,7 @@ define("frontend-cp/components/ko-info-bar/update-log/template", ["exports"], fu
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -47158,7 +47158,7 @@ define("frontend-cp/components/ko-info-bar/update-log/template", ["exports"], fu
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -47208,7 +47208,7 @@ define("frontend-cp/components/ko-info-bar/update-log/template", ["exports"], fu
         "fragmentReason": {
           "name": "triple-curlies"
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -47339,7 +47339,7 @@ define("frontend-cp/components/ko-info-bar/viewing-users/template", ["exports"],
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -47403,7 +47403,7 @@ define("frontend-cp/components/ko-info-bar/viewing-users/template", ["exports"],
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -47459,7 +47459,7 @@ define("frontend-cp/components/ko-info-bar/viewing-users/template", ["exports"],
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -47498,7 +47498,7 @@ define("frontend-cp/components/ko-info-bar/viewing-users/template", ["exports"],
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -47548,7 +47548,7 @@ define("frontend-cp/components/ko-info-bar/viewing-users/template", ["exports"],
         "fragmentReason": {
           "name": "triple-curlies"
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -47621,7 +47621,7 @@ define("frontend-cp/components/ko-layout/advanced/template", ["exports"], functi
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -47664,7 +47664,7 @@ define("frontend-cp/components/ko-layout/advanced/template", ["exports"], functi
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -47705,7 +47705,7 @@ define("frontend-cp/components/ko-layout/advanced/template", ["exports"], functi
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -47753,7 +47753,7 @@ define("frontend-cp/components/ko-layout/advanced/template", ["exports"], functi
           "name": "missing-wrapper",
           "problems": ["multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -47866,7 +47866,7 @@ define("frontend-cp/components/ko-loader/template", ["exports"], function (expor
           "name": "missing-wrapper",
           "problems": ["multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -47916,7 +47916,7 @@ define("frontend-cp/components/ko-login-otp/template", ["exports"], function (ex
         "fragmentReason": {
           "name": "triple-curlies"
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -47977,7 +47977,7 @@ define("frontend-cp/components/ko-login-password/template", ["exports"], functio
         "fragmentReason": {
           "name": "triple-curlies"
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -48050,7 +48050,7 @@ define("frontend-cp/components/ko-login-reset/template", ["exports"], function (
         "fragmentReason": {
           "name": "triple-curlies"
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -48124,7 +48124,7 @@ define("frontend-cp/components/ko-modal/template", ["exports"], function (export
         "fragmentReason": {
           "name": "triple-curlies"
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -48225,7 +48225,7 @@ define("frontend-cp/components/ko-notification-badge/template", ["exports"], fun
         "fragmentReason": {
           "name": "triple-curlies"
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -48304,7 +48304,7 @@ define("frontend-cp/components/ko-organisation-action-menu/template", ["exports"
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -48354,7 +48354,7 @@ define("frontend-cp/components/ko-organisation-action-menu/template", ["exports"
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -48394,7 +48394,7 @@ define("frontend-cp/components/ko-organisation-action-menu/template", ["exports"
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -48445,7 +48445,7 @@ define("frontend-cp/components/ko-organisation-action-menu/template", ["exports"
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -48889,7 +48889,7 @@ define("frontend-cp/components/ko-organisation-content/template", ["exports"], f
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -48931,7 +48931,7 @@ define("frontend-cp/components/ko-organisation-content/template", ["exports"], f
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -48972,7 +48972,7 @@ define("frontend-cp/components/ko-organisation-content/template", ["exports"], f
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -49023,7 +49023,7 @@ define("frontend-cp/components/ko-organisation-content/template", ["exports"], f
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -49066,7 +49066,7 @@ define("frontend-cp/components/ko-organisation-content/template", ["exports"], f
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -49107,7 +49107,7 @@ define("frontend-cp/components/ko-organisation-content/template", ["exports"], f
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -49146,7 +49146,7 @@ define("frontend-cp/components/ko-organisation-content/template", ["exports"], f
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -49185,7 +49185,7 @@ define("frontend-cp/components/ko-organisation-content/template", ["exports"], f
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -49247,7 +49247,7 @@ define("frontend-cp/components/ko-organisation-content/template", ["exports"], f
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -49399,7 +49399,7 @@ define("frontend-cp/components/ko-organisation-content/template", ["exports"], f
                 return {
                   meta: {
                     "fragmentReason": false,
-                    "revision": "Ember@2.4.3",
+                    "revision": "Ember@2.4.4",
                     "loc": {
                       "source": null,
                       "start": {
@@ -49448,7 +49448,7 @@ define("frontend-cp/components/ko-organisation-content/template", ["exports"], f
                 return {
                   meta: {
                     "fragmentReason": false,
-                    "revision": "Ember@2.4.3",
+                    "revision": "Ember@2.4.4",
                     "loc": {
                       "source": null,
                       "start": {
@@ -49503,7 +49503,7 @@ define("frontend-cp/components/ko-organisation-content/template", ["exports"], f
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -49549,7 +49549,7 @@ define("frontend-cp/components/ko-organisation-content/template", ["exports"], f
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -49598,7 +49598,7 @@ define("frontend-cp/components/ko-organisation-content/template", ["exports"], f
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -49658,7 +49658,7 @@ define("frontend-cp/components/ko-organisation-content/template", ["exports"], f
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -49697,7 +49697,7 @@ define("frontend-cp/components/ko-organisation-content/template", ["exports"], f
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -49737,7 +49737,7 @@ define("frontend-cp/components/ko-organisation-content/template", ["exports"], f
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -49781,7 +49781,7 @@ define("frontend-cp/components/ko-organisation-content/template", ["exports"], f
             "name": "missing-wrapper",
             "problems": ["wrong-type", "multiple-nodes"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -49843,7 +49843,7 @@ define("frontend-cp/components/ko-organisation-content/template", ["exports"], f
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -49913,7 +49913,7 @@ define("frontend-cp/components/ko-pagination/template", ["exports"], function (e
         "fragmentReason": {
           "name": "triple-curlies"
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -50169,7 +50169,7 @@ define("frontend-cp/components/ko-people-popover/template", ["exports"], functio
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -50215,7 +50215,7 @@ define("frontend-cp/components/ko-people-popover/template", ["exports"], functio
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -50286,7 +50286,7 @@ define("frontend-cp/components/ko-people-popover/template", ["exports"], functio
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -50335,7 +50335,7 @@ define("frontend-cp/components/ko-people-popover/template", ["exports"], functio
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -50387,7 +50387,7 @@ define("frontend-cp/components/ko-people-popover/template", ["exports"], functio
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -50430,7 +50430,7 @@ define("frontend-cp/components/ko-people-popover/template", ["exports"], functio
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -50471,7 +50471,7 @@ define("frontend-cp/components/ko-people-popover/template", ["exports"], functio
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -50542,7 +50542,7 @@ define("frontend-cp/components/ko-people-popover/template", ["exports"], functio
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -50593,7 +50593,7 @@ define("frontend-cp/components/ko-people-popover/template", ["exports"], functio
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -50651,7 +50651,7 @@ define("frontend-cp/components/ko-people-popover/template", ["exports"], functio
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -50699,7 +50699,7 @@ define("frontend-cp/components/ko-people-popover/template", ["exports"], functio
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -50739,7 +50739,7 @@ define("frontend-cp/components/ko-people-popover/template", ["exports"], functio
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -50787,7 +50787,7 @@ define("frontend-cp/components/ko-people-popover/template", ["exports"], functio
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -50834,7 +50834,7 @@ define("frontend-cp/components/ko-people-popover/template", ["exports"], functio
           "name": "missing-wrapper",
           "problems": ["multiple-nodes", "wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -51131,7 +51131,7 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -51170,7 +51170,7 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -51217,7 +51217,7 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -51258,7 +51258,7 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -51298,7 +51298,7 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -51340,7 +51340,7 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -51383,7 +51383,7 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -51426,7 +51426,7 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -51477,7 +51477,7 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -51518,7 +51518,7 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -51559,7 +51559,7 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -51601,7 +51601,7 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -51646,7 +51646,7 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -51685,7 +51685,7 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -51724,7 +51724,7 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -51763,7 +51763,7 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -51803,7 +51803,7 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -51856,7 +51856,7 @@ define("frontend-cp/components/ko-predicate-builder/rule/template", ["exports"],
           "name": "missing-wrapper",
           "problems": ["multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -51963,7 +51963,7 @@ define("frontend-cp/components/ko-predicate-builder/template", ["exports"], func
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -52014,7 +52014,7 @@ define("frontend-cp/components/ko-predicate-builder/template", ["exports"], func
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -52057,7 +52057,7 @@ define("frontend-cp/components/ko-predicate-builder/template", ["exports"], func
           "fragmentReason": {
             "name": "triple-curlies"
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -52132,7 +52132,7 @@ define("frontend-cp/components/ko-predicate-builder/template", ["exports"], func
           "name": "missing-wrapper",
           "problems": ["wrong-type", "multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -52230,7 +52230,7 @@ define("frontend-cp/components/ko-radio/template", ["exports"], function (export
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -52273,7 +52273,7 @@ define("frontend-cp/components/ko-radio/template", ["exports"], function (export
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -52323,7 +52323,7 @@ define("frontend-cp/components/ko-radio/template", ["exports"], function (export
           "name": "missing-wrapper",
           "problems": ["multiple-nodes", "wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -52399,7 +52399,7 @@ define("frontend-cp/components/ko-recent-cases/template", ["exports"], function 
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -52469,7 +52469,7 @@ define("frontend-cp/components/ko-recent-cases/template", ["exports"], function 
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -52508,7 +52508,7 @@ define("frontend-cp/components/ko-recent-cases/template", ["exports"], function 
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -52548,7 +52548,7 @@ define("frontend-cp/components/ko-recent-cases/template", ["exports"], function 
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -52599,7 +52599,7 @@ define("frontend-cp/components/ko-recent-cases/template", ["exports"], function 
           "name": "missing-wrapper",
           "problems": ["multiple-nodes", "wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -52678,7 +52678,7 @@ define("frontend-cp/components/ko-reorderable-crud-list/template", ["exports"], 
           "fragmentReason": {
             "name": "triple-curlies"
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -52764,7 +52764,7 @@ define("frontend-cp/components/ko-reorderable-crud-list/template", ["exports"], 
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -52819,7 +52819,7 @@ define("frontend-cp/components/ko-reorderable-list/template", ["exports"], funct
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -52872,7 +52872,7 @@ define("frontend-cp/components/ko-reorderable-list/template", ["exports"], funct
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -52914,7 +52914,7 @@ define("frontend-cp/components/ko-reorderable-list/template", ["exports"], funct
             "name": "missing-wrapper",
             "problems": ["wrong-type"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -52956,7 +52956,7 @@ define("frontend-cp/components/ko-reorderable-list/template", ["exports"], funct
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -53022,7 +53022,7 @@ define("frontend-cp/components/ko-search-sidebar/item/template", ["exports"], fu
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -53072,7 +53072,7 @@ define("frontend-cp/components/ko-search-sidebar/item/template", ["exports"], fu
         "fragmentReason": {
           "name": "triple-curlies"
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -53126,7 +53126,7 @@ define("frontend-cp/components/ko-search-sidebar/template", ["exports"], functio
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -53168,7 +53168,7 @@ define("frontend-cp/components/ko-search-sidebar/template", ["exports"], functio
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -53210,7 +53210,7 @@ define("frontend-cp/components/ko-search-sidebar/template", ["exports"], functio
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -53253,7 +53253,7 @@ define("frontend-cp/components/ko-search-sidebar/template", ["exports"], functio
         "fragmentReason": {
           "name": "triple-curlies"
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -53463,7 +53463,7 @@ define("frontend-cp/components/ko-select/drill-down/template", ["exports"], func
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -53514,7 +53514,7 @@ define("frontend-cp/components/ko-select/drill-down/template", ["exports"], func
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -53554,7 +53554,7 @@ define("frontend-cp/components/ko-select/drill-down/template", ["exports"], func
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -53601,7 +53601,7 @@ define("frontend-cp/components/ko-select/drill-down/template", ["exports"], func
           "fragmentReason": {
             "name": "triple-curlies"
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -53652,7 +53652,7 @@ define("frontend-cp/components/ko-select/drill-down/template", ["exports"], func
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -53815,7 +53815,7 @@ define("frontend-cp/components/ko-select/multiple/internal/template", ["exports"
             "name": "missing-wrapper",
             "problems": ["wrong-type"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -53859,7 +53859,7 @@ define("frontend-cp/components/ko-select/multiple/internal/template", ["exports"
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -53924,7 +53924,7 @@ define("frontend-cp/components/ko-select/multiple/pill/template", ["exports"], f
         "fragmentReason": {
           "name": "triple-curlies"
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -53997,7 +53997,7 @@ define("frontend-cp/components/ko-select/multiple/template", ["exports"], functi
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -54062,7 +54062,7 @@ define("frontend-cp/components/ko-select/multiple/trigger/template", ["exports"]
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -54104,7 +54104,7 @@ define("frontend-cp/components/ko-select/multiple/trigger/template", ["exports"]
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -54159,7 +54159,7 @@ define("frontend-cp/components/ko-select/multiple/trigger/template", ["exports"]
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -54203,7 +54203,7 @@ define("frontend-cp/components/ko-select/multiple/trigger/template", ["exports"]
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -54243,7 +54243,7 @@ define("frontend-cp/components/ko-select/multiple/trigger/template", ["exports"]
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -54285,7 +54285,7 @@ define("frontend-cp/components/ko-select/multiple/trigger/template", ["exports"]
           "name": "missing-wrapper",
           "problems": ["multiple-nodes", "wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -54362,7 +54362,7 @@ define("frontend-cp/components/ko-select/template", ["exports"], function (expor
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -54404,7 +54404,7 @@ define("frontend-cp/components/ko-select/template", ["exports"], function (expor
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -54448,7 +54448,7 @@ define("frontend-cp/components/ko-select/template", ["exports"], function (expor
             "name": "missing-wrapper",
             "problems": ["wrong-type"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -54490,7 +54490,7 @@ define("frontend-cp/components/ko-select/template", ["exports"], function (expor
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -54573,7 +54573,7 @@ define("frontend-cp/components/ko-select/trigger/template", ["exports"], functio
           "fragmentReason": {
             "name": "triple-curlies"
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -54629,7 +54629,7 @@ define("frontend-cp/components/ko-select/trigger/template", ["exports"], functio
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -54674,7 +54674,7 @@ define("frontend-cp/components/ko-select/trigger/template", ["exports"], functio
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -54718,7 +54718,7 @@ define("frontend-cp/components/ko-select/trigger/template", ["exports"], functio
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -54759,7 +54759,7 @@ define("frontend-cp/components/ko-select/trigger/template", ["exports"], functio
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -54803,7 +54803,7 @@ define("frontend-cp/components/ko-select/trigger/template", ["exports"], functio
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -54842,7 +54842,7 @@ define("frontend-cp/components/ko-select/trigger/template", ["exports"], functio
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -54882,7 +54882,7 @@ define("frontend-cp/components/ko-select/trigger/template", ["exports"], functio
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -54926,7 +54926,7 @@ define("frontend-cp/components/ko-select/trigger/template", ["exports"], functio
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -54966,7 +54966,7 @@ define("frontend-cp/components/ko-select/trigger/template", ["exports"], functio
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -55008,7 +55008,7 @@ define("frontend-cp/components/ko-select/trigger/template", ["exports"], functio
           "name": "missing-wrapper",
           "problems": ["wrong-type", "multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -55091,7 +55091,7 @@ define("frontend-cp/components/ko-session-widgets/template", ["exports"], functi
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -55141,7 +55141,7 @@ define("frontend-cp/components/ko-session-widgets/template", ["exports"], functi
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -55218,7 +55218,7 @@ define("frontend-cp/components/ko-session-widgets/template", ["exports"], functi
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -55276,7 +55276,7 @@ define("frontend-cp/components/ko-session-widgets/template", ["exports"], functi
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -55325,7 +55325,7 @@ define("frontend-cp/components/ko-session-widgets/template", ["exports"], functi
           "name": "missing-wrapper",
           "problems": ["wrong-type", "multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -55393,7 +55393,7 @@ define("frontend-cp/components/ko-sidebar/item/template", ["exports"], function 
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -55436,7 +55436,7 @@ define("frontend-cp/components/ko-sidebar/item/template", ["exports"], function 
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -55491,7 +55491,7 @@ define("frontend-cp/components/ko-sidebar/item/template", ["exports"], function 
             "name": "missing-wrapper",
             "problems": ["wrong-type", "multiple-nodes"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -55548,7 +55548,7 @@ define("frontend-cp/components/ko-sidebar/item/template", ["exports"], function 
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -55592,7 +55592,7 @@ define("frontend-cp/components/ko-sidebar/template", ["exports"], function (expo
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -55633,7 +55633,7 @@ define("frontend-cp/components/ko-sidebar/template", ["exports"], function (expo
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -55679,7 +55679,7 @@ define("frontend-cp/components/ko-sidebar/template", ["exports"], function (expo
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -55721,7 +55721,7 @@ define("frontend-cp/components/ko-sidebar/template", ["exports"], function (expo
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -55765,7 +55765,7 @@ define("frontend-cp/components/ko-sidebar/template", ["exports"], function (expo
           "name": "missing-wrapper",
           "problems": ["wrong-type", "multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -55836,7 +55836,7 @@ define("frontend-cp/components/ko-simple-box-row/template", ["exports"], functio
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -55886,7 +55886,7 @@ define("frontend-cp/components/ko-simple-list/actions/template", ["exports"], fu
           "fragmentReason": {
             "name": "triple-curlies"
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -55937,7 +55937,7 @@ define("frontend-cp/components/ko-simple-list/actions/template", ["exports"], fu
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -55987,7 +55987,7 @@ define("frontend-cp/components/ko-simple-list/cell/template", ["exports"], funct
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -56055,7 +56055,7 @@ define("frontend-cp/components/ko-simple-list/row/template", ["exports"], functi
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -56101,7 +56101,7 @@ define("frontend-cp/components/ko-simple-list/template", ["exports"], function (
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -56186,7 +56186,7 @@ define("frontend-cp/components/ko-sla/template", ["exports"], function (exports)
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -56222,7 +56222,7 @@ define("frontend-cp/components/ko-sla/template", ["exports"], function (exports)
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -56268,7 +56268,7 @@ define("frontend-cp/components/ko-sla/template", ["exports"], function (exports)
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -56313,7 +56313,7 @@ define("frontend-cp/components/ko-sla/template", ["exports"], function (exports)
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -56357,7 +56357,7 @@ define("frontend-cp/components/ko-sla/template", ["exports"], function (exports)
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -56398,7 +56398,7 @@ define("frontend-cp/components/ko-sla/template", ["exports"], function (exports)
           "fragmentReason": {
             "name": "triple-curlies"
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -56476,7 +56476,7 @@ define("frontend-cp/components/ko-sla/template", ["exports"], function (exports)
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -56553,7 +56553,7 @@ define("frontend-cp/components/ko-stateful-button/template", ["exports"], functi
             "name": "missing-wrapper",
             "problems": ["wrong-type"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -56595,7 +56595,7 @@ define("frontend-cp/components/ko-stateful-button/template", ["exports"], functi
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -56658,7 +56658,7 @@ define("frontend-cp/components/ko-stateful-button/template", ["exports"], functi
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -56708,7 +56708,7 @@ define("frontend-cp/components/ko-table/body/template", ["exports"], function (e
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -56767,7 +56767,7 @@ define("frontend-cp/components/ko-table/cell/template", ["exports"], function (e
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -56936,7 +56936,7 @@ define("frontend-cp/components/ko-table/column/template", ["exports"], function 
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -56977,7 +56977,7 @@ define("frontend-cp/components/ko-table/column/template", ["exports"], function 
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -57017,7 +57017,7 @@ define("frontend-cp/components/ko-table/column/template", ["exports"], function 
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -57063,7 +57063,7 @@ define("frontend-cp/components/ko-table/column/template", ["exports"], function 
         "fragmentReason": {
           "name": "triple-curlies"
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -57205,7 +57205,7 @@ define("frontend-cp/components/ko-table/header/template", ["exports"], function 
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -57246,7 +57246,7 @@ define("frontend-cp/components/ko-table/header/template", ["exports"], function 
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -57285,7 +57285,7 @@ define("frontend-cp/components/ko-table/header/template", ["exports"], function 
     return {
       meta: {
         "fragmentReason": false,
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -57395,7 +57395,7 @@ define("frontend-cp/components/ko-table/row/template", ["exports"], function (ex
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -57439,7 +57439,7 @@ define("frontend-cp/components/ko-table/row/template", ["exports"], function (ex
             "name": "missing-wrapper",
             "problems": ["wrong-type"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -57481,7 +57481,7 @@ define("frontend-cp/components/ko-table/row/template", ["exports"], function (ex
           "name": "missing-wrapper",
           "problems": ["wrong-type", "multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -57530,7 +57530,7 @@ define("frontend-cp/components/ko-table/template", ["exports"], function (export
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -58004,7 +58004,7 @@ define("frontend-cp/components/ko-text-editor/template", ["exports"], function (
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -58044,7 +58044,7 @@ define("frontend-cp/components/ko-text-editor/template", ["exports"], function (
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -58091,7 +58091,7 @@ define("frontend-cp/components/ko-text-editor/template", ["exports"], function (
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -58132,7 +58132,7 @@ define("frontend-cp/components/ko-text-editor/template", ["exports"], function (
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -58181,7 +58181,7 @@ define("frontend-cp/components/ko-text-editor/template", ["exports"], function (
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -58232,7 +58232,7 @@ define("frontend-cp/components/ko-text-editor/template", ["exports"], function (
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -58277,7 +58277,7 @@ define("frontend-cp/components/ko-text-editor/template", ["exports"], function (
           "name": "missing-wrapper",
           "problems": ["multiple-nodes", "wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -58708,7 +58708,7 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -58750,7 +58750,7 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -58791,7 +58791,7 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -58853,7 +58853,7 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -58895,7 +58895,7 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -58940,7 +58940,7 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -58990,7 +58990,7 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -59032,7 +59032,7 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -59073,7 +59073,7 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -59116,7 +59116,7 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -59164,7 +59164,7 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -59206,7 +59206,7 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -59251,7 +59251,7 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -59302,7 +59302,7 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
             "name": "missing-wrapper",
             "problems": ["multiple-nodes", "wrong-type"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -59380,7 +59380,7 @@ define("frontend-cp/components/ko-timeline/template", ["exports"], function (exp
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -59532,7 +59532,7 @@ define("frontend-cp/components/ko-toast/template", ["exports"], function (export
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -59577,7 +59577,7 @@ define("frontend-cp/components/ko-toast/template", ["exports"], function (export
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -59636,7 +59636,7 @@ define("frontend-cp/components/ko-toast/template", ["exports"], function (export
         "fragmentReason": {
           "name": "triple-curlies"
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -59758,7 +59758,7 @@ define("frontend-cp/components/ko-toggle/template", ["exports"], function (expor
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -59808,7 +59808,7 @@ define("frontend-cp/components/ko-toggle/template", ["exports"], function (expor
           "name": "missing-wrapper",
           "problems": ["multiple-nodes", "wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -59994,6 +59994,13 @@ define('frontend-cp/components/ko-universal-search/component', ['exports', 'embe
             case 'organization':
               this.attrs.onLoadSearchRoute('session.agent.organisations.organisation', result.title, result.id, hasModifier);
               break;
+            case 'article':
+              var article = this.get('store').peekRecord('article', result.data.id);
+              var $articleLink = _ember['default'].$('<a href="/article/' + article.get('slug') + '" target="_blank" style="visibility: hidden;"></a>');
+              _ember['default'].$('body').append($articleLink);
+              $articleLink.get(0).click();
+              $articleLink.remove();
+              break;
             default:
               break;
           }
@@ -60093,6 +60100,7 @@ define('frontend-cp/components/ko-universal-search/preview/component', ['exports
     isCase: _ember['default'].computed.equal('previewResult.resource', 'case'),
     isUser: _ember['default'].computed.equal('previewResult.resource', 'user'),
     isOrganization: _ember['default'].computed.equal('previewResult.resource', 'organization'),
+    isArticle: _ember['default'].computed.equal('previewResult.resource', 'article'),
 
     previewModel: _ember['default'].computed('previewResult.id', function () {
       var id = this.get('previewResult.id');
@@ -60112,8 +60120,18 @@ define('frontend-cp/components/ko-universal-search/preview/component', ['exports
             return model.get('avatar');
           case 'organization':
             return _frontendCpConfigEnvironment['default'].assetRoot + '/images/icons/organization.svg';
+          case 'article':
+            return model.get('creator.avatar');
         }
       }
+    }),
+
+    previewLink: _ember['default'].computed('previewResult', function () {
+      if (this.get('previewResult.resource') === 'article') {
+        return '/article/' + this.get('previewModel').get('slug');
+      }
+
+      return '';
     }),
 
     formattedSnippet: _ember['default'].computed('previewResult.snippet', function () {
@@ -60122,7 +60140,13 @@ define('frontend-cp/components/ko-universal-search/preview/component', ['exports
       } else {
         return '';
       }
-    })
+    }),
+
+    actions: {
+      previewLinkClick: function previewLinkClick() {
+        return this.get('previewResult.resource') === 'article';
+      }
+    }
   });
 });
 define("frontend-cp/components/ko-universal-search/preview/template", ["exports"], function (exports) {
@@ -60133,15 +60157,15 @@ define("frontend-cp/components/ko-universal-search/preview/template", ["exports"
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 25,
+                  "line": 29,
                   "column": 8
                 },
                 "end": {
-                  "line": 29,
+                  "line": 33,
                   "column": 8
                 }
               },
@@ -60166,7 +60190,7 @@ define("frontend-cp/components/ko-universal-search/preview/template", ["exports"
               morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
               return morphs;
             },
-            statements: [["inline", "t", ["cases.assignedtoagentteam"], ["agent", ["subexpr", "@mut", [["get", "previewModel.assignedAgent.fullName", ["loc", [null, [27, 18], [27, 53]]]]], [], []], "team", ["subexpr", "@mut", [["get", "previewModel.assignedTeam.title", ["loc", [null, [28, 17], [28, 48]]]]], [], []]], ["loc", [null, [26, 10], [28, 50]]]]],
+            statements: [["inline", "t", ["cases.assignedtoagentteam"], ["agent", ["subexpr", "@mut", [["get", "previewModel.assignedAgent.fullName", ["loc", [null, [31, 18], [31, 53]]]]], [], []], "team", ["subexpr", "@mut", [["get", "previewModel.assignedTeam.title", ["loc", [null, [32, 17], [32, 48]]]]], [], []]], ["loc", [null, [30, 10], [32, 50]]]]],
             locals: [],
             templates: []
           };
@@ -60175,15 +60199,15 @@ define("frontend-cp/components/ko-universal-search/preview/template", ["exports"
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 29,
+                  "line": 33,
                   "column": 8
                 },
                 "end": {
-                  "line": 31,
+                  "line": 35,
                   "column": 8
                 }
               },
@@ -60208,7 +60232,7 @@ define("frontend-cp/components/ko-universal-search/preview/template", ["exports"
               morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
               return morphs;
             },
-            statements: [["content", "previewModel.assignedTeam.title", ["loc", [null, [30, 10], [30, 45]]]]],
+            statements: [["content", "previewModel.assignedTeam.title", ["loc", [null, [34, 10], [34, 45]]]]],
             locals: [],
             templates: []
           };
@@ -60216,15 +60240,15 @@ define("frontend-cp/components/ko-universal-search/preview/template", ["exports"
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
-                "line": 24,
+                "line": 28,
                 "column": 6
               },
               "end": {
-                "line": 32,
+                "line": 36,
                 "column": 6
               }
             },
@@ -60247,7 +60271,7 @@ define("frontend-cp/components/ko-universal-search/preview/template", ["exports"
             dom.insertBoundary(fragment, null);
             return morphs;
           },
-          statements: [["block", "if", [["get", "previewModel.assignedAgent", ["loc", [null, [25, 14], [25, 40]]]]], [], 0, 1, ["loc", [null, [25, 8], [31, 15]]]]],
+          statements: [["block", "if", [["get", "previewModel.assignedAgent", ["loc", [null, [29, 14], [29, 40]]]]], [], 0, 1, ["loc", [null, [29, 8], [35, 15]]]]],
           locals: [],
           templates: [child0, child1]
         };
@@ -60256,15 +60280,15 @@ define("frontend-cp/components/ko-universal-search/preview/template", ["exports"
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
-                "line": 32,
+                "line": 36,
                 "column": 6
               },
               "end": {
-                "line": 34,
+                "line": 38,
                 "column": 6
               }
             },
@@ -60289,7 +60313,7 @@ define("frontend-cp/components/ko-universal-search/preview/template", ["exports"
             morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
             return morphs;
           },
-          statements: [["inline", "t", ["cases.assignedtonobody"], [], ["loc", [null, [33, 8], [33, 38]]]]],
+          statements: [["inline", "t", ["cases.assignedtonobody"], [], ["loc", [null, [37, 8], [37, 38]]]]],
           locals: [],
           templates: []
         };
@@ -60297,15 +60321,15 @@ define("frontend-cp/components/ko-universal-search/preview/template", ["exports"
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
-              "line": 7,
+              "line": 11,
               "column": 2
             },
             "end": {
-              "line": 37,
+              "line": 41,
               "column": 2
             }
           },
@@ -60395,22 +60419,22 @@ define("frontend-cp/components/ko-universal-search/preview/template", ["exports"
           return el0;
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var element2 = dom.childAt(fragment, [1]);
-          var element3 = dom.childAt(fragment, [3]);
-          var element4 = dom.childAt(fragment, [5]);
+          var element3 = dom.childAt(fragment, [1]);
+          var element4 = dom.childAt(fragment, [3]);
+          var element5 = dom.childAt(fragment, [5]);
           var morphs = new Array(9);
-          morphs[0] = dom.createMorphAt(element2, 1, 1);
-          morphs[1] = dom.createMorphAt(element2, 3, 3);
-          morphs[2] = dom.createMorphAt(dom.childAt(element2, [5]), 0, 0);
-          morphs[3] = dom.createMorphAt(element2, 7, 7);
-          morphs[4] = dom.createMorphAt(element3, 1, 1);
-          morphs[5] = dom.createMorphAt(dom.childAt(element3, [3]), 0, 0);
-          morphs[6] = dom.createMorphAt(dom.childAt(element3, [5]), 1, 1);
-          morphs[7] = dom.createMorphAt(element4, 1, 1);
-          morphs[8] = dom.createMorphAt(dom.childAt(element4, [3]), 1, 1);
+          morphs[0] = dom.createMorphAt(element3, 1, 1);
+          morphs[1] = dom.createMorphAt(element3, 3, 3);
+          morphs[2] = dom.createMorphAt(dom.childAt(element3, [5]), 0, 0);
+          morphs[3] = dom.createMorphAt(element3, 7, 7);
+          morphs[4] = dom.createMorphAt(element4, 1, 1);
+          morphs[5] = dom.createMorphAt(dom.childAt(element4, [3]), 0, 0);
+          morphs[6] = dom.createMorphAt(dom.childAt(element4, [5]), 1, 1);
+          morphs[7] = dom.createMorphAt(element5, 1, 1);
+          morphs[8] = dom.createMorphAt(dom.childAt(element5, [3]), 1, 1);
           return morphs;
         },
-        statements: [["inline", "t", ["cases.ticketid"], [], ["loc", [null, [9, 6], [9, 28]]]], ["content", "previewModel.id", ["loc", [null, [9, 29], [9, 48]]]], ["content", "previewModel.status.label", ["loc", [null, [10, 14], [10, 43]]]], ["inline", "t", ["cases.lastupdated"], ["time", ["subexpr", "moment-from-now", [["get", "previewModel.updatedAt", ["loc", [null, [11, 52], [11, 74]]]]], [], ["loc", [null, [11, 35], [11, 75]]]]], ["loc", [null, [11, 6], [11, 77]]]], ["inline", "t", ["cases.created"], [], ["loc", [null, [14, 6], [14, 27]]]], ["inline", "format-date", [["get", "previewModel.createdAt", ["loc", [null, [15, 28], [15, 50]]]]], ["format", "full"], ["loc", [null, [15, 14], [15, 66]]]], ["inline", "t", [["subexpr", "concat", ["cases.channelType.", ["get", "previewModel.sourceChannel.channelType", ["loc", [null, [18, 41], [18, 79]]]]], [], ["loc", [null, [18, 12], [18, 80]]]]], [], ["loc", [null, [18, 8], [18, 82]]]], ["inline", "t", ["cases.currentlyassignedto"], [], ["loc", [null, [22, 6], [22, 39]]]], ["block", "if", [["get", "previewModel.assignedTeam", ["loc", [null, [24, 12], [24, 37]]]]], [], 0, 1, ["loc", [null, [24, 6], [34, 13]]]]],
+        statements: [["inline", "t", ["cases.ticketid"], [], ["loc", [null, [13, 6], [13, 28]]]], ["content", "previewModel.id", ["loc", [null, [13, 29], [13, 48]]]], ["content", "previewModel.status.label", ["loc", [null, [14, 14], [14, 43]]]], ["inline", "t", ["cases.lastupdated"], ["time", ["subexpr", "moment-from-now", [["get", "previewModel.updatedAt", ["loc", [null, [15, 52], [15, 74]]]]], [], ["loc", [null, [15, 35], [15, 75]]]]], ["loc", [null, [15, 6], [15, 77]]]], ["inline", "t", ["cases.created"], [], ["loc", [null, [18, 6], [18, 27]]]], ["inline", "format-date", [["get", "previewModel.createdAt", ["loc", [null, [19, 28], [19, 50]]]]], ["format", "full"], ["loc", [null, [19, 14], [19, 66]]]], ["inline", "t", [["subexpr", "concat", ["cases.channelType.", ["get", "previewModel.sourceChannel.channelType", ["loc", [null, [22, 41], [22, 79]]]]], [], ["loc", [null, [22, 12], [22, 80]]]]], [], ["loc", [null, [22, 8], [22, 82]]]], ["inline", "t", ["cases.currentlyassignedto"], [], ["loc", [null, [26, 6], [26, 39]]]], ["block", "if", [["get", "previewModel.assignedTeam", ["loc", [null, [28, 12], [28, 37]]]]], [], 0, 1, ["loc", [null, [28, 6], [38, 13]]]]],
         locals: [],
         templates: [child0, child1]
       };
@@ -60419,15 +60443,75 @@ define("frontend-cp/components/ko-universal-search/preview/template", ["exports"
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
-              "line": 39,
+              "line": 43,
               "column": 2
             },
             "end": {
-              "line": 44,
+              "line": 48,
+              "column": 2
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-universal-search/preview/template.hbs"
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("    ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1, "class", "ko-universal-search_preview__metadata");
+          var el2 = dom.createTextNode("\n      ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode(" ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode(" |\n      ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n    ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var element2 = dom.childAt(fragment, [1]);
+          var morphs = new Array(3);
+          morphs[0] = dom.createMorphAt(element2, 1, 1);
+          morphs[1] = dom.createMorphAt(element2, 3, 3);
+          morphs[2] = dom.createMorphAt(element2, 5, 5);
+          return morphs;
+        },
+        statements: [["inline", "t", ["users.userid"], [], ["loc", [null, [45, 6], [45, 26]]]], ["content", "previewModel.id", ["loc", [null, [45, 27], [45, 46]]]], ["inline", "t", ["cases.lastupdated"], ["time", ["subexpr", "moment-from-now", [["get", "previewModel.updatedAt", ["loc", [null, [46, 52], [46, 74]]]]], [], ["loc", [null, [46, 35], [46, 75]]]]], ["loc", [null, [46, 6], [46, 77]]]]],
+        locals: [],
+        templates: []
+      };
+    })();
+    var child2 = (function () {
+      return {
+        meta: {
+          "fragmentReason": false,
+          "revision": "Ember@2.4.4",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 50,
+              "column": 2
+            },
+            "end": {
+              "line": 55,
               "column": 2
             }
           },
@@ -60470,24 +60554,24 @@ define("frontend-cp/components/ko-universal-search/preview/template", ["exports"
           morphs[2] = dom.createMorphAt(element1, 5, 5);
           return morphs;
         },
-        statements: [["inline", "t", ["users.userid"], [], ["loc", [null, [41, 6], [41, 26]]]], ["content", "previewModel.id", ["loc", [null, [41, 27], [41, 46]]]], ["inline", "t", ["cases.lastupdated"], ["time", ["subexpr", "moment-from-now", [["get", "previewModel.updatedAt", ["loc", [null, [42, 52], [42, 74]]]]], [], ["loc", [null, [42, 35], [42, 75]]]]], ["loc", [null, [42, 6], [42, 77]]]]],
+        statements: [["inline", "t", ["organisation.organizationid"], [], ["loc", [null, [52, 6], [52, 41]]]], ["content", "previewModel.id", ["loc", [null, [52, 42], [52, 61]]]], ["inline", "t", ["cases.lastupdated"], ["time", ["subexpr", "moment-from-now", [["get", "previewModel.updatedAt", ["loc", [null, [53, 52], [53, 74]]]]], [], ["loc", [null, [53, 35], [53, 75]]]]], ["loc", [null, [53, 6], [53, 77]]]]],
         locals: [],
         templates: []
       };
     })();
-    var child2 = (function () {
+    var child3 = (function () {
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
-              "line": 46,
+              "line": 57,
               "column": 2
             },
             "end": {
-              "line": 51,
+              "line": 62,
               "column": 2
             }
           },
@@ -60507,13 +60591,23 @@ define("frontend-cp/components/ko-universal-search/preview/template", ["exports"
           dom.appendChild(el1, el2);
           var el2 = dom.createComment("");
           dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode(" ");
+          var el2 = dom.createTextNode(" / ");
           dom.appendChild(el1, el2);
           var el2 = dom.createComment("");
           dom.appendChild(el1, el2);
           var el2 = dom.createTextNode(" |\n      ");
           dom.appendChild(el1, el2);
           var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode(" ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode(" by ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("b");
+          var el3 = dom.createComment("");
+          dom.appendChild(el2, el3);
           dom.appendChild(el1, el2);
           var el2 = dom.createTextNode("\n    ");
           dom.appendChild(el1, el2);
@@ -60524,30 +60618,32 @@ define("frontend-cp/components/ko-universal-search/preview/template", ["exports"
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
           var element0 = dom.childAt(fragment, [1]);
-          var morphs = new Array(3);
+          var morphs = new Array(5);
           morphs[0] = dom.createMorphAt(element0, 1, 1);
           morphs[1] = dom.createMorphAt(element0, 3, 3);
           morphs[2] = dom.createMorphAt(element0, 5, 5);
+          morphs[3] = dom.createMorphAt(element0, 7, 7);
+          morphs[4] = dom.createMorphAt(dom.childAt(element0, [9]), 0, 0);
           return morphs;
         },
-        statements: [["inline", "t", ["organisation.organizationid"], [], ["loc", [null, [48, 6], [48, 41]]]], ["content", "previewModel.id", ["loc", [null, [48, 42], [48, 61]]]], ["inline", "t", ["cases.lastupdated"], ["time", ["subexpr", "moment-from-now", [["get", "previewModel.updatedAt", ["loc", [null, [49, 52], [49, 74]]]]], [], ["loc", [null, [49, 35], [49, 75]]]]], ["loc", [null, [49, 6], [49, 77]]]]],
+        statements: [["content", "previewModel.section.title", ["loc", [null, [59, 6], [59, 36]]]], ["content", "previewModel.section.category.label", ["loc", [null, [59, 39], [59, 78]]]], ["inline", "t", ["cases.created"], [], ["loc", [null, [60, 6], [60, 27]]]], ["inline", "moment-from-now", [["get", "previewModel.createdAt", ["loc", [null, [60, 46], [60, 68]]]]], [], ["loc", [null, [60, 28], [60, 70]]]], ["content", "previewModel.creator.fullName", ["loc", [null, [60, 77], [60, 110]]]]],
         locals: [],
         templates: []
       };
     })();
-    var child3 = (function () {
+    var child4 = (function () {
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
-              "line": 58,
+              "line": 70,
               "column": 6
             },
             "end": {
-              "line": 60,
+              "line": 72,
               "column": 6
             }
           },
@@ -60572,24 +60668,24 @@ define("frontend-cp/components/ko-universal-search/preview/template", ["exports"
           morphs[0] = dom.createUnsafeMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [["content", "formattedSnippet", ["loc", [null, [59, 8], [59, 30]]]]],
+        statements: [["content", "formattedSnippet", ["loc", [null, [71, 8], [71, 30]]]]],
         locals: [],
         templates: []
       };
     })();
-    var child4 = (function () {
+    var child5 = (function () {
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
-              "line": 60,
+              "line": 72,
               "column": 6
             },
             "end": {
-              "line": 62,
+              "line": 74,
               "column": 6
             }
           },
@@ -60614,7 +60710,7 @@ define("frontend-cp/components/ko-universal-search/preview/template", ["exports"
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [["inline", "t", ["search.nosnippet"], [], ["loc", [null, [61, 8], [61, 32]]]]],
+        statements: [["inline", "t", ["search.nosnippet"], [], ["loc", [null, [73, 8], [73, 32]]]]],
         locals: [],
         templates: []
       };
@@ -60624,7 +60720,7 @@ define("frontend-cp/components/ko-universal-search/preview/template", ["exports"
         "fragmentReason": {
           "name": "triple-curlies"
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -60632,7 +60728,7 @@ define("frontend-cp/components/ko-universal-search/preview/template", ["exports"
             "column": 0
           },
           "end": {
-            "line": 66,
+            "line": 78,
             "column": 0
           }
         },
@@ -60658,9 +60754,21 @@ define("frontend-cp/components/ko-universal-search/preview/template", ["exports"
         dom.appendChild(el2, el3);
         var el3 = dom.createTextNode("\n    ");
         dom.appendChild(el2, el3);
-        var el3 = dom.createElement("h3");
-        dom.setAttribute(el3, "class", "ko-universal-search_preview__title");
-        var el4 = dom.createComment("");
+        var el3 = dom.createElement("a");
+        dom.setAttribute(el3, "class", "universal-search_result__link");
+        dom.setAttribute(el3, "target", "_blank");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h3");
+        dom.setAttribute(el4, "class", "ko-universal-search_preview__title");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createComment("");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
         dom.appendChild(el2, el3);
         var el3 = dom.createTextNode("\n  ");
@@ -60682,7 +60790,11 @@ define("frontend-cp/components/ko-universal-search/preview/template", ["exports"
         dom.appendChild(el2, el3);
         var el3 = dom.createComment("");
         dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("  ");
+        var el3 = dom.createTextNode("\n");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n  ");
@@ -60722,36 +60834,41 @@ define("frontend-cp/components/ko-universal-search/preview/template", ["exports"
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var element5 = dom.childAt(fragment, [0]);
-        var element6 = dom.childAt(element5, [1]);
+        var element6 = dom.childAt(fragment, [0]);
         var element7 = dom.childAt(element6, [1]);
-        var element8 = dom.childAt(element5, [3]);
-        var element9 = dom.childAt(element5, [5]);
-        var morphs = new Array(7);
-        morphs[0] = dom.createAttrMorph(element7, 'src');
-        morphs[1] = dom.createMorphAt(dom.childAt(element6, [3]), 0, 0);
-        morphs[2] = dom.createMorphAt(element8, 1, 1);
-        morphs[3] = dom.createMorphAt(element8, 3, 3);
-        morphs[4] = dom.createMorphAt(element8, 5, 5);
-        morphs[5] = dom.createMorphAt(dom.childAt(element9, [1]), 1, 1);
-        morphs[6] = dom.createMorphAt(dom.childAt(element9, [3]), 1, 1);
+        var element8 = dom.childAt(element7, [1]);
+        var element9 = dom.childAt(element7, [3]);
+        var element10 = dom.childAt(element6, [3]);
+        var element11 = dom.childAt(element6, [5]);
+        var morphs = new Array(10);
+        morphs[0] = dom.createAttrMorph(element8, 'src');
+        morphs[1] = dom.createAttrMorph(element9, 'href');
+        morphs[2] = dom.createAttrMorph(element9, 'onclick');
+        morphs[3] = dom.createMorphAt(dom.childAt(element9, [1]), 1, 1);
+        morphs[4] = dom.createMorphAt(element10, 1, 1);
+        morphs[5] = dom.createMorphAt(element10, 3, 3);
+        morphs[6] = dom.createMorphAt(element10, 5, 5);
+        morphs[7] = dom.createMorphAt(element10, 7, 7);
+        morphs[8] = dom.createMorphAt(dom.childAt(element11, [1]), 1, 1);
+        morphs[9] = dom.createMorphAt(dom.childAt(element11, [3]), 1, 1);
         return morphs;
       },
-      statements: [["attribute", "src", ["concat", [["get", "previewAvatar", ["loc", [null, [3, 16], [3, 29]]]]]]], ["content", "previewResult.title", ["loc", [null, [4, 51], [4, 74]]]], ["block", "if", [["get", "isCase", ["loc", [null, [7, 8], [7, 14]]]]], [], 0, null, ["loc", [null, [7, 2], [37, 9]]]], ["block", "if", [["get", "isUser", ["loc", [null, [39, 8], [39, 14]]]]], [], 1, null, ["loc", [null, [39, 2], [44, 9]]]], ["block", "if", [["get", "isOrganization", ["loc", [null, [46, 8], [46, 22]]]]], [], 2, null, ["loc", [null, [46, 2], [51, 9]]]], ["inline", "t", ["search.matchingsnippet"], [], ["loc", [null, [55, 6], [55, 36]]]], ["block", "if", [["get", "formattedSnippet", ["loc", [null, [58, 12], [58, 28]]]]], [], 3, 4, ["loc", [null, [58, 6], [62, 13]]]]],
+      statements: [["attribute", "src", ["concat", [["get", "previewAvatar", ["loc", [null, [3, 16], [3, 29]]]]]]], ["attribute", "href", ["get", "previewLink", ["loc", [null, [4, 14], [4, 25]]]]], ["attribute", "onclick", ["subexpr", "action", ["previewLinkClick"], [], ["loc", [null, [4, 36], [4, 65]]]]], ["content", "previewResult.title", ["loc", [null, [6, 8], [6, 31]]]], ["block", "if", [["get", "isCase", ["loc", [null, [11, 8], [11, 14]]]]], [], 0, null, ["loc", [null, [11, 2], [41, 9]]]], ["block", "if", [["get", "isUser", ["loc", [null, [43, 8], [43, 14]]]]], [], 1, null, ["loc", [null, [43, 2], [48, 9]]]], ["block", "if", [["get", "isOrganization", ["loc", [null, [50, 8], [50, 22]]]]], [], 2, null, ["loc", [null, [50, 2], [55, 9]]]], ["block", "if", [["get", "isArticle", ["loc", [null, [57, 8], [57, 17]]]]], [], 3, null, ["loc", [null, [57, 2], [62, 9]]]], ["inline", "t", ["search.matchingsnippet"], [], ["loc", [null, [67, 6], [67, 36]]]], ["block", "if", [["get", "formattedSnippet", ["loc", [null, [70, 12], [70, 28]]]]], [], 4, 5, ["loc", [null, [70, 6], [74, 13]]]]],
       locals: [],
-      templates: [child0, child1, child2, child3, child4]
+      templates: [child0, child1, child2, child3, child4, child5]
     };
   })());
 });
 define('frontend-cp/components/ko-universal-search/result/component', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = _ember['default'].Component.extend({
-    //Parmas:
+    store: _ember['default'].inject.service(),
     result: null,
     isHighlighted: false,
     onSelectHighlightedResult: null,
     onHighlight: null,
     onHighlightPreviousResult: null,
     onStopSearch: null,
+    href: null,
 
     tagName: 'li',
     classNames: ['ko-universal-search_result'],
@@ -60768,6 +60885,13 @@ define('frontend-cp/components/ko-universal-search/result/component', ['exports'
     }),
 
     click: function click(event) {
+      if (this.get('result.resource') === 'article') {
+        var article = this.get('store').peekRecord('article', this.get('result.data.id'));
+        return this.set('href', '/article/' + article.get('slug'));
+      }
+
+      event.preventDefault();
+
       var hasModifier = event.metaKey || event.ctrlKey || event.shiftKey;
       this.attrs.onSelectHighlightedResult(hasModifier);
       if (!hasModifier && this.attrs.onStopSearch) {
@@ -60783,16 +60907,16 @@ define("frontend-cp/components/ko-universal-search/result/template", ["exports"]
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
-              "line": 2,
-              "column": 2
+              "line": 3,
+              "column": 4
             },
             "end": {
-              "line": 4,
-              "column": 2
+              "line": 5,
+              "column": 4
             }
           },
           "moduleName": "frontend-cp/components/ko-universal-search/result/template.hbs"
@@ -60803,7 +60927,7 @@ define("frontend-cp/components/ko-universal-search/result/template", ["exports"]
         hasRendered: false,
         buildFragment: function buildFragment(dom) {
           var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("    ");
+          var el1 = dom.createTextNode("      ");
           dom.appendChild(el0, el1);
           var el1 = dom.createElement("i");
           dom.appendChild(el0, el1);
@@ -60817,7 +60941,7 @@ define("frontend-cp/components/ko-universal-search/result/template", ["exports"]
           morphs[0] = dom.createAttrMorph(element0, 'class');
           return morphs;
         },
-        statements: [["attribute", "class", ["concat", ["universal-search_result__icon ", ["get", "iconClass", ["loc", [null, [3, 46], [3, 55]]]]]]]],
+        statements: [["attribute", "class", ["concat", ["universal-search_result__icon ", ["get", "iconClass", ["loc", [null, [4, 48], [4, 57]]]]]]]],
         locals: [],
         templates: []
       };
@@ -60827,7 +60951,7 @@ define("frontend-cp/components/ko-universal-search/result/template", ["exports"]
         "fragmentReason": {
           "name": "triple-curlies"
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -60835,8 +60959,8 @@ define("frontend-cp/components/ko-universal-search/result/template", ["exports"]
             "column": 0
           },
           "end": {
-            "line": 9,
-            "column": 0
+            "line": 10,
+            "column": 4
           }
         },
         "moduleName": "frontend-cp/components/ko-universal-search/result/template.hbs"
@@ -60847,19 +60971,27 @@ define("frontend-cp/components/ko-universal-search/result/template", ["exports"]
       hasRendered: false,
       buildFragment: function buildFragment(dom) {
         var el0 = dom.createDocumentFragment();
-        var el1 = dom.createElement("div");
-        dom.setAttribute(el1, "class", "universal-search_result__wrap");
-        var el2 = dom.createTextNode("\n");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createComment("");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("  ");
+        var el1 = dom.createElement("a");
+        dom.setAttribute(el1, "class", "universal-search_result__link");
+        dom.setAttribute(el1, "target", "_blank");
+        var el2 = dom.createTextNode("\n  ");
         dom.appendChild(el1, el2);
         var el2 = dom.createElement("div");
-        dom.setAttribute(el2, "class", "universal-search_result__content");
-        var el3 = dom.createTextNode("\n    ");
+        dom.setAttribute(el2, "class", "universal-search_result__wrap");
+        var el3 = dom.createTextNode("\n");
         dom.appendChild(el2, el3);
         var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3, "class", "universal-search_result__content");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
         dom.appendChild(el2, el3);
         var el3 = dom.createTextNode("\n  ");
         dom.appendChild(el2, el3);
@@ -60867,18 +60999,18 @@ define("frontend-cp/components/ko-universal-search/result/template", ["exports"]
         var el2 = dom.createTextNode("\n");
         dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
-        dom.appendChild(el0, el1);
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
         var element1 = dom.childAt(fragment, [0]);
-        var morphs = new Array(2);
-        morphs[0] = dom.createMorphAt(element1, 1, 1);
-        morphs[1] = dom.createMorphAt(dom.childAt(element1, [3]), 1, 1);
+        var element2 = dom.childAt(element1, [1]);
+        var morphs = new Array(3);
+        morphs[0] = dom.createAttrMorph(element1, 'href');
+        morphs[1] = dom.createMorphAt(element2, 1, 1);
+        morphs[2] = dom.createMorphAt(dom.childAt(element2, [3]), 1, 1);
         return morphs;
       },
-      statements: [["block", "if", [["get", "iconClass", ["loc", [null, [2, 8], [2, 17]]]]], [], 0, null, ["loc", [null, [2, 2], [4, 9]]]], ["inline", "escape-html", [["get", "result.title", ["loc", [null, [6, 18], [6, 30]]]]], [], ["loc", [null, [6, 4], [6, 32]]]]],
+      statements: [["attribute", "href", ["get", "href", ["loc", [null, [1, 10], [1, 14]]]]], ["block", "if", [["get", "iconClass", ["loc", [null, [3, 10], [3, 19]]]]], [], 0, null, ["loc", [null, [3, 4], [5, 11]]]], ["inline", "escape-html", [["get", "result.title", ["loc", [null, [7, 20], [7, 32]]]]], [], ["loc", [null, [7, 6], [7, 34]]]]],
       locals: [],
       templates: [child0]
     };
@@ -60892,7 +61024,7 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
           "fragmentReason": {
             "name": "triple-curlies"
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -60934,7 +61066,7 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -60976,7 +61108,7 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -61017,7 +61149,7 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -61065,7 +61197,7 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -61109,7 +61241,7 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -61151,7 +61283,7 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -61192,7 +61324,7 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -61240,7 +61372,7 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -61280,7 +61412,7 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -61322,7 +61454,7 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -61365,7 +61497,7 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -61408,7 +61540,7 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -61456,7 +61588,7 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -61495,7 +61627,7 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -61535,7 +61667,7 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -61583,7 +61715,7 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -61670,7 +61802,7 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
           "name": "missing-wrapper",
           "problems": ["wrong-type", "multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -61804,7 +61936,7 @@ define("frontend-cp/components/ko-user-action-menu/template", ["exports"], funct
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -61855,7 +61987,7 @@ define("frontend-cp/components/ko-user-action-menu/template", ["exports"], funct
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -61906,7 +62038,7 @@ define("frontend-cp/components/ko-user-action-menu/template", ["exports"], funct
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -61959,7 +62091,7 @@ define("frontend-cp/components/ko-user-action-menu/template", ["exports"], funct
             "name": "missing-wrapper",
             "problems": ["multiple-nodes", "wrong-type"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -62024,7 +62156,7 @@ define("frontend-cp/components/ko-user-action-menu/template", ["exports"], funct
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -62075,7 +62207,7 @@ define("frontend-cp/components/ko-user-action-menu/template", ["exports"], funct
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -62824,7 +62956,7 @@ define("frontend-cp/components/ko-user-content/field/timezone-select/template", 
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -62871,7 +63003,7 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -62913,7 +63045,7 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -62954,7 +63086,7 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -63005,7 +63137,7 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -63046,7 +63178,7 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -63088,7 +63220,7 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -63130,7 +63262,7 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -63174,7 +63306,7 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -63215,7 +63347,7 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -63254,7 +63386,7 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -63293,7 +63425,7 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -63390,7 +63522,7 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -63558,7 +63690,7 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
                 return {
                   meta: {
                     "fragmentReason": false,
-                    "revision": "Ember@2.4.3",
+                    "revision": "Ember@2.4.4",
                     "loc": {
                       "source": null,
                       "start": {
@@ -63607,7 +63739,7 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
                 return {
                   meta: {
                     "fragmentReason": false,
-                    "revision": "Ember@2.4.3",
+                    "revision": "Ember@2.4.4",
                     "loc": {
                       "source": null,
                       "start": {
@@ -63662,7 +63794,7 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -63708,7 +63840,7 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -63748,7 +63880,7 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -63808,7 +63940,7 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -63856,7 +63988,7 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -63896,7 +64028,7 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -63940,7 +64072,7 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
             "name": "missing-wrapper",
             "problems": ["wrong-type", "multiple-nodes"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -64001,7 +64133,7 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -64101,7 +64233,7 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -64143,7 +64275,7 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
           "name": "missing-wrapper",
           "problems": ["wrong-type", "multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -66001,7 +66133,7 @@ define("frontend-cp/loading/template", ["exports"], function (exports) {
             "name": "missing-wrapper",
             "problems": ["wrong-type"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -66043,7 +66175,7 @@ define("frontend-cp/loading/template", ["exports"], function (exports) {
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -67605,7 +67737,7 @@ define("frontend-cp/login/template", ["exports"], function (exports) {
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -67658,7 +67790,7 @@ define("frontend-cp/login/template", ["exports"], function (exports) {
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -67699,7 +67831,7 @@ define("frontend-cp/login/template", ["exports"], function (exports) {
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -67748,7 +67880,7 @@ define("frontend-cp/login/template", ["exports"], function (exports) {
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -67823,7 +67955,7 @@ define("frontend-cp/login/template", ["exports"], function (exports) {
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -67864,7 +67996,7 @@ define("frontend-cp/login/template", ["exports"], function (exports) {
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -67911,7 +68043,7 @@ define("frontend-cp/login/template", ["exports"], function (exports) {
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -67953,7 +68085,7 @@ define("frontend-cp/login/template", ["exports"], function (exports) {
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -67995,7 +68127,7 @@ define("frontend-cp/login/template", ["exports"], function (exports) {
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -68050,7 +68182,7 @@ define("frontend-cp/login/template", ["exports"], function (exports) {
         "fragmentReason": {
           "name": "triple-curlies"
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -72875,6 +73007,34 @@ define('frontend-cp/models/app', ['exports', 'ember-data'], function (exports, _
     // TODO action: uninstall
   });
 });
+define('frontend-cp/models/article', ['exports', 'ember-data'], function (exports, _emberData) {
+  var attr = _emberData['default'].attr;
+  var hasMany = _emberData['default'].hasMany;
+  var belongsTo = _emberData['default'].belongsTo;
+  var Model = _emberData['default'].Model;
+  exports['default'] = Model.extend({
+    allowComments: attr('boolean'),
+    isFeatured: attr('boolean'),
+    attachments: hasMany('attachment', { async: false }),
+    author: belongsTo('user-minimal', { async: false }),
+    creator: belongsTo('user-minimal', { async: false }),
+    contents: attr('string'),
+    downloadAll: attr('string'),
+    keywords: attr('string'),
+    slug: attr('string'),
+    status: attr('string'),
+    title: attr('string'),
+    rank: attr('number'),
+    rating: attr('number'),
+    views: attr('number'),
+    totalComments: attr('number'),
+    tags: _emberData['default'].hasMany('tag', { async: true, noCache: true }),
+    section: belongsTo('section', { async: false }),
+    createdAt: attr('date'),
+    updatedAt: attr('date'),
+    uuid: _emberData['default'].attr('string')
+  });
+});
 define('frontend-cp/models/attachment', ['exports', 'ember-data', 'model-fragments'], function (exports, _emberData, _modelFragments) {
   exports['default'] = _emberData['default'].Model.extend({
     name: _emberData['default'].attr('string'),
@@ -72892,11 +73052,21 @@ define('frontend-cp/models/attachment', ['exports', 'ember-data', 'model-fragmen
   });
 });
 define('frontend-cp/models/brand', ['exports', 'ember-data'], function (exports, _emberData) {
-  exports['default'] = _emberData['default'].Model.extend({
-    name: _emberData['default'].attr('string'),
-    url: _emberData['default'].attr('string'),
-    locale: _emberData['default'].belongsTo('locale', { async: false }),
-    isEnabled: _emberData['default'].attr('boolean')
+  var attr = _emberData['default'].attr;
+  var Model = _emberData['default'].Model;
+  var belongsTo = _emberData['default'].belongsTo;
+  exports['default'] = Model.extend({
+    alias: attr('string'),
+    domain: attr('string'),
+    name: attr('string'),
+    url: attr('string'),
+    sslCertificate: attr('string'),
+    locale: belongsTo('locale', { async: false }),
+    isEnabled: attr('boolean'),
+    isDefault: attr('boolean'),
+
+    createdAt: attr('date'),
+    updatedAt: attr('date')
   });
 });
 define('frontend-cp/models/business-hour', ['exports', 'ember-data', 'npm:lodash'], function (exports, _emberData, _npmLodash) {
@@ -73318,6 +73488,20 @@ define('frontend-cp/models/case', ['exports', 'ember-data', 'model-fragments', '
 
       return reply.save();
     }
+  });
+});
+define('frontend-cp/models/category', ['exports', 'ember-data'], function (exports, _emberData) {
+  var attr = _emberData['default'].attr;
+  var belongsTo = _emberData['default'].belongsTo;
+  var Model = _emberData['default'].Model;
+  exports['default'] = Model.extend({
+    brand: belongsTo('brand', { async: false }),
+    description: attr('string'),
+    displayOrder: attr('number'),
+    label: attr('string'),
+    slug: attr('string'),
+    createdAt: attr('date'),
+    updatedAt: attr('date')
   });
 });
 define('frontend-cp/models/channel', ['exports', 'ember-data', 'ember'], function (exports, _emberData, _ember) {
@@ -74150,6 +74334,23 @@ define('frontend-cp/models/role', ['exports', 'ember-data'], function (exports, 
     isSystem: _emberData['default'].attr('boolean')
   });
 });
+define('frontend-cp/models/section', ['exports', 'ember-data'], function (exports, _emberData) {
+  var attr = _emberData['default'].attr;
+  var belongsTo = _emberData['default'].belongsTo;
+  var Model = _emberData['default'].Model;
+  exports['default'] = Model.extend({
+    agent: belongsTo('user', { async: false }),
+    articleOrderBy: attr('string'),
+    category: belongsTo('category', { async: false }),
+    description: attr('string'),
+    slug: attr('string'),
+    title: attr('string'),
+    totalArticles: attr('number'),
+    visibility: attr('string'),
+    createdAt: attr('date'),
+    updatedAt: attr('date')
+  });
+});
 define('frontend-cp/models/session', ['exports', 'ember-data'], function (exports, _emberData) {
   exports['default'] = _emberData['default'].Model.extend({
     portal: _emberData['default'].attr('string'),
@@ -74225,6 +74426,9 @@ define('frontend-cp/models/tag', ['exports', 'ember-data'], function (exports, _
   exports['default'] = _emberData['default'].Model.extend({
     name: _emberData['default'].attr('string')
   });
+});
+define('frontend-cp/models/team-minimal', ['exports', 'frontend-cp/models/team'], function (exports, _frontendCpModelsTeam) {
+  exports['default'] = _frontendCpModelsTeam['default'].extend();
 });
 define('frontend-cp/models/team', ['exports', 'ember-data', 'frontend-cp/mixins/change-aware-model'], function (exports, _emberData, _frontendCpMixinsChangeAwareModel) {
   exports['default'] = _emberData['default'].Model.extend(_frontendCpMixinsChangeAwareModel['default'], {
@@ -74924,25 +75128,12 @@ define('frontend-cp/serializers/application', ['exports', 'ember', 'ember-data',
       return this._super.apply(this, arguments);
     },
 
-    /*
-    This method removes from the `resources` key in the payload any model
-    we want to ignore.
-    */
-    removeBacklistedSideloadedResources: function removeBacklistedSideloadedResources(resources) {
-      if (!resources) {
-        return;
-      }
-      Reflect.deleteProperty(resources, 'user_minimal');
-      Reflect.deleteProperty(resources, 'team_minimal');
-    },
-
     pushPayload: function pushPayload(store, payload) {
       payload = this._normalizePayload(payload);
       this._super(store, payload);
     },
 
     _normalizePayload: function _normalizePayload(payload) {
-      this.removeBacklistedSideloadedResources(payload.resources);
       payload[pluralize(payload.resource)] = _ember['default'].makeArray(payload.data);
       Reflect.deleteProperty(payload, 'status');
       Reflect.deleteProperty(payload, 'resource');
@@ -80245,7 +80436,7 @@ define("frontend-cp/session/admin/apps/endpoints/edit/template", ["exports"], fu
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -80358,7 +80549,7 @@ define("frontend-cp/session/admin/apps/endpoints/index/template", ["exports"], f
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -80399,7 +80590,7 @@ define("frontend-cp/session/admin/apps/endpoints/index/template", ["exports"], f
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -80454,7 +80645,7 @@ define("frontend-cp/session/admin/apps/endpoints/index/template", ["exports"], f
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -80495,7 +80686,7 @@ define("frontend-cp/session/admin/apps/endpoints/index/template", ["exports"], f
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -80547,7 +80738,7 @@ define("frontend-cp/session/admin/apps/endpoints/index/template", ["exports"], f
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -80589,7 +80780,7 @@ define("frontend-cp/session/admin/apps/endpoints/index/template", ["exports"], f
           "name": "missing-wrapper",
           "problems": ["wrong-type", "multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -80734,7 +80925,7 @@ define("frontend-cp/session/admin/apps/endpoints/new/template", ["exports"], fun
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -80817,7 +81008,7 @@ define("frontend-cp/session/admin/apps/endpoints/select-type/template", ["export
           "name": "missing-wrapper",
           "problems": ["wrong-type", "multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -80900,7 +81091,7 @@ define("frontend-cp/session/admin/automation/businesshours/edit/template", ["exp
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -81021,7 +81212,7 @@ define("frontend-cp/session/admin/automation/businesshours/index/template", ["ex
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -81069,7 +81260,7 @@ define("frontend-cp/session/admin/automation/businesshours/index/template", ["ex
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -81119,7 +81310,7 @@ define("frontend-cp/session/admin/automation/businesshours/index/template", ["ex
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -81172,7 +81363,7 @@ define("frontend-cp/session/admin/automation/businesshours/index/template", ["ex
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -81224,7 +81415,7 @@ define("frontend-cp/session/admin/automation/businesshours/index/template", ["ex
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -81277,7 +81468,7 @@ define("frontend-cp/session/admin/automation/businesshours/index/template", ["ex
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -81319,7 +81510,7 @@ define("frontend-cp/session/admin/automation/businesshours/index/template", ["ex
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -81358,7 +81549,7 @@ define("frontend-cp/session/admin/automation/businesshours/index/template", ["ex
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -81400,7 +81591,7 @@ define("frontend-cp/session/admin/automation/businesshours/index/template", ["ex
           "name": "missing-wrapper",
           "problems": ["wrong-type", "multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -81540,7 +81731,7 @@ define("frontend-cp/session/admin/automation/businesshours/new/template", ["expo
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -81696,7 +81887,7 @@ define("frontend-cp/session/admin/automation/sla/edit/template", ["exports"], fu
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -81762,7 +81953,7 @@ define("frontend-cp/session/admin/automation/sla/index/template", ["exports"], f
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -81864,7 +82055,7 @@ define("frontend-cp/session/admin/automation/sla/new/template", ["exports"], fun
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -81968,7 +82159,7 @@ define("frontend-cp/session/admin/channels/facebook/edit/template", ["exports"],
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -82135,7 +82326,7 @@ define("frontend-cp/session/admin/channels/facebook/index/template", ["exports"]
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -82178,7 +82369,7 @@ define("frontend-cp/session/admin/channels/facebook/index/template", ["exports"]
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -82228,7 +82419,7 @@ define("frontend-cp/session/admin/channels/facebook/index/template", ["exports"]
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -82273,7 +82464,7 @@ define("frontend-cp/session/admin/channels/facebook/index/template", ["exports"]
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -82320,7 +82511,7 @@ define("frontend-cp/session/admin/channels/facebook/index/template", ["exports"]
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -82359,7 +82550,7 @@ define("frontend-cp/session/admin/channels/facebook/index/template", ["exports"]
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -82478,7 +82669,7 @@ define("frontend-cp/session/admin/channels/facebook/index/template", ["exports"]
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -82522,7 +82713,7 @@ define("frontend-cp/session/admin/channels/facebook/index/template", ["exports"]
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -82570,7 +82761,7 @@ define("frontend-cp/session/admin/channels/facebook/index/template", ["exports"]
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -82628,7 +82819,7 @@ define("frontend-cp/session/admin/channels/facebook/index/template", ["exports"]
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -82674,7 +82865,7 @@ define("frontend-cp/session/admin/channels/facebook/index/template", ["exports"]
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -82713,7 +82904,7 @@ define("frontend-cp/session/admin/channels/facebook/index/template", ["exports"]
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -82778,7 +82969,7 @@ define("frontend-cp/session/admin/channels/facebook/index/template", ["exports"]
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -82822,7 +83013,7 @@ define("frontend-cp/session/admin/channels/facebook/index/template", ["exports"]
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -82861,7 +83052,7 @@ define("frontend-cp/session/admin/channels/facebook/index/template", ["exports"]
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -82919,7 +83110,7 @@ define("frontend-cp/session/admin/channels/facebook/index/template", ["exports"]
                 return {
                   meta: {
                     "fragmentReason": false,
-                    "revision": "Ember@2.4.3",
+                    "revision": "Ember@2.4.4",
                     "loc": {
                       "source": null,
                       "start": {
@@ -82967,7 +83158,7 @@ define("frontend-cp/session/admin/channels/facebook/index/template", ["exports"]
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -83025,7 +83216,7 @@ define("frontend-cp/session/admin/channels/facebook/index/template", ["exports"]
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -83079,7 +83270,7 @@ define("frontend-cp/session/admin/channels/facebook/index/template", ["exports"]
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -83123,7 +83314,7 @@ define("frontend-cp/session/admin/channels/facebook/index/template", ["exports"]
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -83162,7 +83353,7 @@ define("frontend-cp/session/admin/channels/facebook/index/template", ["exports"]
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -83214,7 +83405,7 @@ define("frontend-cp/session/admin/channels/facebook/index/template", ["exports"]
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -83256,7 +83447,7 @@ define("frontend-cp/session/admin/channels/facebook/index/template", ["exports"]
           "name": "missing-wrapper",
           "problems": ["wrong-type", "multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -83425,7 +83616,7 @@ define("frontend-cp/session/admin/channels/twitter/edit/template", ["exports"], 
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -83532,7 +83723,7 @@ define("frontend-cp/session/admin/channels/twitter/index/template", ["exports"],
                 return {
                   meta: {
                     "fragmentReason": false,
-                    "revision": "Ember@2.4.3",
+                    "revision": "Ember@2.4.4",
                     "loc": {
                       "source": null,
                       "start": {
@@ -83579,7 +83770,7 @@ define("frontend-cp/session/admin/channels/twitter/index/template", ["exports"],
                 return {
                   meta: {
                     "fragmentReason": false,
-                    "revision": "Ember@2.4.3",
+                    "revision": "Ember@2.4.4",
                     "loc": {
                       "source": null,
                       "start": {
@@ -83623,7 +83814,7 @@ define("frontend-cp/session/admin/channels/twitter/index/template", ["exports"],
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -83688,7 +83879,7 @@ define("frontend-cp/session/admin/channels/twitter/index/template", ["exports"],
                 return {
                   meta: {
                     "fragmentReason": false,
-                    "revision": "Ember@2.4.3",
+                    "revision": "Ember@2.4.4",
                     "loc": {
                       "source": null,
                       "start": {
@@ -83727,7 +83918,7 @@ define("frontend-cp/session/admin/channels/twitter/index/template", ["exports"],
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -83796,7 +83987,7 @@ define("frontend-cp/session/admin/channels/twitter/index/template", ["exports"],
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -83838,7 +84029,7 @@ define("frontend-cp/session/admin/channels/twitter/index/template", ["exports"],
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -83878,7 +84069,7 @@ define("frontend-cp/session/admin/channels/twitter/index/template", ["exports"],
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -83930,7 +84121,7 @@ define("frontend-cp/session/admin/channels/twitter/index/template", ["exports"],
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -83974,7 +84165,7 @@ define("frontend-cp/session/admin/channels/twitter/index/template", ["exports"],
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -84029,7 +84220,7 @@ define("frontend-cp/session/admin/channels/twitter/index/template", ["exports"],
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -84084,7 +84275,7 @@ define("frontend-cp/session/admin/channels/twitter/index/template", ["exports"],
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -84126,7 +84317,7 @@ define("frontend-cp/session/admin/channels/twitter/index/template", ["exports"],
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -84165,7 +84356,7 @@ define("frontend-cp/session/admin/channels/twitter/index/template", ["exports"],
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -84217,7 +84408,7 @@ define("frontend-cp/session/admin/channels/twitter/index/template", ["exports"],
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -84259,7 +84450,7 @@ define("frontend-cp/session/admin/channels/twitter/index/template", ["exports"],
           "name": "missing-wrapper",
           "problems": ["wrong-type", "multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -84384,7 +84575,7 @@ define("frontend-cp/session/admin/manage/case-fields/edit/template", ["exports"]
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -84445,7 +84636,7 @@ define("frontend-cp/session/admin/manage/case-fields/index/template", ["exports"
           "name": "missing-wrapper",
           "problems": ["wrong-type", "multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -84614,7 +84805,7 @@ define("frontend-cp/session/admin/manage/case-fields/new/template", ["exports"],
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -84685,7 +84876,7 @@ define("frontend-cp/session/admin/manage/case-fields/select-type/template", ["ex
           "name": "missing-wrapper",
           "problems": ["wrong-type", "multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -84772,7 +84963,7 @@ define("frontend-cp/session/admin/manage/case-forms/edit/template", ["exports"],
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -84943,7 +85134,7 @@ define("frontend-cp/session/admin/manage/case-forms/index/template", ["exports"]
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -84987,7 +85178,7 @@ define("frontend-cp/session/admin/manage/case-forms/index/template", ["exports"]
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -85043,7 +85234,7 @@ define("frontend-cp/session/admin/manage/case-forms/index/template", ["exports"]
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -85089,7 +85280,7 @@ define("frontend-cp/session/admin/manage/case-forms/index/template", ["exports"]
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -85135,7 +85326,7 @@ define("frontend-cp/session/admin/manage/case-forms/index/template", ["exports"]
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -85180,7 +85371,7 @@ define("frontend-cp/session/admin/manage/case-forms/index/template", ["exports"]
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -85235,7 +85426,7 @@ define("frontend-cp/session/admin/manage/case-forms/index/template", ["exports"]
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -85277,7 +85468,7 @@ define("frontend-cp/session/admin/manage/case-forms/index/template", ["exports"]
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -85316,7 +85507,7 @@ define("frontend-cp/session/admin/manage/case-forms/index/template", ["exports"]
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -85373,7 +85564,7 @@ define("frontend-cp/session/admin/manage/case-forms/index/template", ["exports"]
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -85419,7 +85610,7 @@ define("frontend-cp/session/admin/manage/case-forms/index/template", ["exports"]
                 return {
                   meta: {
                     "fragmentReason": false,
-                    "revision": "Ember@2.4.3",
+                    "revision": "Ember@2.4.4",
                     "loc": {
                       "source": null,
                       "start": {
@@ -85464,7 +85655,7 @@ define("frontend-cp/session/admin/manage/case-forms/index/template", ["exports"]
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -85522,7 +85713,7 @@ define("frontend-cp/session/admin/manage/case-forms/index/template", ["exports"]
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -85564,7 +85755,7 @@ define("frontend-cp/session/admin/manage/case-forms/index/template", ["exports"]
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -85603,7 +85794,7 @@ define("frontend-cp/session/admin/manage/case-forms/index/template", ["exports"]
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -85655,7 +85846,7 @@ define("frontend-cp/session/admin/manage/case-forms/index/template", ["exports"]
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -85697,7 +85888,7 @@ define("frontend-cp/session/admin/manage/case-forms/index/template", ["exports"]
           "name": "missing-wrapper",
           "problems": ["wrong-type", "multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -85867,7 +86058,7 @@ define("frontend-cp/session/admin/manage/case-forms/new/template", ["exports"], 
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -85940,7 +86131,7 @@ define("frontend-cp/session/admin/manage/macros/edit/template", ["exports"], fun
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -86017,7 +86208,7 @@ define("frontend-cp/session/admin/manage/macros/index/template", ["exports"], fu
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -86065,7 +86256,7 @@ define("frontend-cp/session/admin/manage/macros/index/template", ["exports"], fu
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -86105,7 +86296,7 @@ define("frontend-cp/session/admin/manage/macros/index/template", ["exports"], fu
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -86160,7 +86351,7 @@ define("frontend-cp/session/admin/manage/macros/index/template", ["exports"], fu
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -86222,7 +86413,7 @@ define("frontend-cp/session/admin/manage/macros/index/template", ["exports"], fu
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -86267,7 +86458,7 @@ define("frontend-cp/session/admin/manage/macros/index/template", ["exports"], fu
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -86306,7 +86497,7 @@ define("frontend-cp/session/admin/manage/macros/index/template", ["exports"], fu
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -86348,7 +86539,7 @@ define("frontend-cp/session/admin/manage/macros/index/template", ["exports"], fu
           "name": "missing-wrapper",
           "problems": ["wrong-type", "multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -86424,7 +86615,7 @@ define("frontend-cp/session/admin/manage/macros/new/template", ["exports"], func
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -86495,7 +86686,7 @@ define("frontend-cp/session/admin/manage/views/edit/template", ["exports"], func
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -86679,7 +86870,7 @@ define("frontend-cp/session/admin/manage/views/index/template", ["exports"], fun
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -86739,7 +86930,7 @@ define("frontend-cp/session/admin/manage/views/index/template", ["exports"], fun
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -86793,7 +86984,7 @@ define("frontend-cp/session/admin/manage/views/index/template", ["exports"], fun
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -86844,7 +87035,7 @@ define("frontend-cp/session/admin/manage/views/index/template", ["exports"], fun
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -86893,7 +87084,7 @@ define("frontend-cp/session/admin/manage/views/index/template", ["exports"], fun
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -86948,7 +87139,7 @@ define("frontend-cp/session/admin/manage/views/index/template", ["exports"], fun
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -87025,7 +87216,7 @@ define("frontend-cp/session/admin/manage/views/index/template", ["exports"], fun
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -87070,7 +87261,7 @@ define("frontend-cp/session/admin/manage/views/index/template", ["exports"], fun
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -87111,7 +87302,7 @@ define("frontend-cp/session/admin/manage/views/index/template", ["exports"], fun
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -87171,7 +87362,7 @@ define("frontend-cp/session/admin/manage/views/index/template", ["exports"], fun
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -87225,7 +87416,7 @@ define("frontend-cp/session/admin/manage/views/index/template", ["exports"], fun
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -87275,7 +87466,7 @@ define("frontend-cp/session/admin/manage/views/index/template", ["exports"], fun
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -87335,7 +87526,7 @@ define("frontend-cp/session/admin/manage/views/index/template", ["exports"], fun
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -87389,7 +87580,7 @@ define("frontend-cp/session/admin/manage/views/index/template", ["exports"], fun
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -87437,7 +87628,7 @@ define("frontend-cp/session/admin/manage/views/index/template", ["exports"], fun
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -87509,7 +87700,7 @@ define("frontend-cp/session/admin/manage/views/index/template", ["exports"], fun
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -87554,7 +87745,7 @@ define("frontend-cp/session/admin/manage/views/index/template", ["exports"], fun
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -87605,7 +87796,7 @@ define("frontend-cp/session/admin/manage/views/index/template", ["exports"], fun
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -87682,7 +87873,7 @@ define("frontend-cp/session/admin/manage/views/index/template", ["exports"], fun
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -87727,7 +87918,7 @@ define("frontend-cp/session/admin/manage/views/index/template", ["exports"], fun
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -87766,7 +87957,7 @@ define("frontend-cp/session/admin/manage/views/index/template", ["exports"], fun
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -87818,7 +88009,7 @@ define("frontend-cp/session/admin/manage/views/index/template", ["exports"], fun
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -87860,7 +88051,7 @@ define("frontend-cp/session/admin/manage/views/index/template", ["exports"], fun
           "name": "missing-wrapper",
           "problems": ["wrong-type", "multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -88017,7 +88208,7 @@ define("frontend-cp/session/admin/manage/views/new/template", ["exports"], funct
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -88084,7 +88275,7 @@ define("frontend-cp/session/admin/people/organization-fields/edit/template", ["e
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -88224,7 +88415,7 @@ define("frontend-cp/session/admin/people/organization-fields/index/template", ["
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -88270,7 +88461,7 @@ define("frontend-cp/session/admin/people/organization-fields/index/template", ["
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -88313,7 +88504,7 @@ define("frontend-cp/session/admin/people/organization-fields/index/template", ["
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -88357,7 +88548,7 @@ define("frontend-cp/session/admin/people/organization-fields/index/template", ["
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -88397,7 +88588,7 @@ define("frontend-cp/session/admin/people/organization-fields/index/template", ["
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -88460,7 +88651,7 @@ define("frontend-cp/session/admin/people/organization-fields/index/template", ["
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -88505,7 +88696,7 @@ define("frontend-cp/session/admin/people/organization-fields/index/template", ["
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -88544,7 +88735,7 @@ define("frontend-cp/session/admin/people/organization-fields/index/template", ["
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -88601,7 +88792,7 @@ define("frontend-cp/session/admin/people/organization-fields/index/template", ["
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -88647,7 +88838,7 @@ define("frontend-cp/session/admin/people/organization-fields/index/template", ["
                 return {
                   meta: {
                     "fragmentReason": false,
-                    "revision": "Ember@2.4.3",
+                    "revision": "Ember@2.4.4",
                     "loc": {
                       "source": null,
                       "start": {
@@ -88690,7 +88881,7 @@ define("frontend-cp/session/admin/people/organization-fields/index/template", ["
                 return {
                   meta: {
                     "fragmentReason": false,
-                    "revision": "Ember@2.4.3",
+                    "revision": "Ember@2.4.4",
                     "loc": {
                       "source": null,
                       "start": {
@@ -88734,7 +88925,7 @@ define("frontend-cp/session/admin/people/organization-fields/index/template", ["
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -88774,7 +88965,7 @@ define("frontend-cp/session/admin/people/organization-fields/index/template", ["
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -88837,7 +89028,7 @@ define("frontend-cp/session/admin/people/organization-fields/index/template", ["
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -88882,7 +89073,7 @@ define("frontend-cp/session/admin/people/organization-fields/index/template", ["
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -88921,7 +89112,7 @@ define("frontend-cp/session/admin/people/organization-fields/index/template", ["
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -88973,7 +89164,7 @@ define("frontend-cp/session/admin/people/organization-fields/index/template", ["
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -89015,7 +89206,7 @@ define("frontend-cp/session/admin/people/organization-fields/index/template", ["
           "name": "missing-wrapper",
           "problems": ["wrong-type", "multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -89198,7 +89389,7 @@ define("frontend-cp/session/admin/people/organization-fields/new/template", ["ex
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -89268,7 +89459,7 @@ define("frontend-cp/session/admin/people/organization-fields/select-type/templat
           "name": "missing-wrapper",
           "problems": ["wrong-type", "multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -89349,7 +89540,7 @@ define("frontend-cp/session/admin/people/roles/form/template", ["exports"], func
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -89418,7 +89609,7 @@ define("frontend-cp/session/admin/people/roles/index/template", ["exports"], fun
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -89459,7 +89650,7 @@ define("frontend-cp/session/admin/people/roles/index/template", ["exports"], fun
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -89501,7 +89692,7 @@ define("frontend-cp/session/admin/people/roles/index/template", ["exports"], fun
           "name": "missing-wrapper",
           "problems": ["wrong-type", "multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -89586,7 +89777,7 @@ define("frontend-cp/session/admin/people/teams/edit/template", ["exports"], func
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -89684,7 +89875,7 @@ define("frontend-cp/session/admin/people/teams/index/template", ["exports"], fun
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -89727,7 +89918,7 @@ define("frontend-cp/session/admin/people/teams/index/template", ["exports"], fun
           "name": "missing-wrapper",
           "problems": ["wrong-type", "multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -89924,7 +90115,7 @@ define("frontend-cp/session/admin/people/teams/new/template", ["exports"], funct
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -89990,7 +90181,7 @@ define("frontend-cp/session/admin/people/user-fields/edit/template", ["exports"]
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -90130,7 +90321,7 @@ define("frontend-cp/session/admin/people/user-fields/index/template", ["exports"
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -90176,7 +90367,7 @@ define("frontend-cp/session/admin/people/user-fields/index/template", ["exports"
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -90219,7 +90410,7 @@ define("frontend-cp/session/admin/people/user-fields/index/template", ["exports"
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -90263,7 +90454,7 @@ define("frontend-cp/session/admin/people/user-fields/index/template", ["exports"
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -90303,7 +90494,7 @@ define("frontend-cp/session/admin/people/user-fields/index/template", ["exports"
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -90366,7 +90557,7 @@ define("frontend-cp/session/admin/people/user-fields/index/template", ["exports"
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -90411,7 +90602,7 @@ define("frontend-cp/session/admin/people/user-fields/index/template", ["exports"
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -90450,7 +90641,7 @@ define("frontend-cp/session/admin/people/user-fields/index/template", ["exports"
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -90507,7 +90698,7 @@ define("frontend-cp/session/admin/people/user-fields/index/template", ["exports"
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -90553,7 +90744,7 @@ define("frontend-cp/session/admin/people/user-fields/index/template", ["exports"
                 return {
                   meta: {
                     "fragmentReason": false,
-                    "revision": "Ember@2.4.3",
+                    "revision": "Ember@2.4.4",
                     "loc": {
                       "source": null,
                       "start": {
@@ -90596,7 +90787,7 @@ define("frontend-cp/session/admin/people/user-fields/index/template", ["exports"
                 return {
                   meta: {
                     "fragmentReason": false,
-                    "revision": "Ember@2.4.3",
+                    "revision": "Ember@2.4.4",
                     "loc": {
                       "source": null,
                       "start": {
@@ -90640,7 +90831,7 @@ define("frontend-cp/session/admin/people/user-fields/index/template", ["exports"
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -90680,7 +90871,7 @@ define("frontend-cp/session/admin/people/user-fields/index/template", ["exports"
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -90743,7 +90934,7 @@ define("frontend-cp/session/admin/people/user-fields/index/template", ["exports"
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -90788,7 +90979,7 @@ define("frontend-cp/session/admin/people/user-fields/index/template", ["exports"
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -90827,7 +91018,7 @@ define("frontend-cp/session/admin/people/user-fields/index/template", ["exports"
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -90879,7 +91070,7 @@ define("frontend-cp/session/admin/people/user-fields/index/template", ["exports"
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -90921,7 +91112,7 @@ define("frontend-cp/session/admin/people/user-fields/index/template", ["exports"
           "name": "missing-wrapper",
           "problems": ["wrong-type", "multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -91094,7 +91285,7 @@ define("frontend-cp/session/admin/people/user-fields/new/template", ["exports"],
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -91165,7 +91356,7 @@ define("frontend-cp/session/admin/people/user-fields/select-type/template", ["ex
           "name": "missing-wrapper",
           "problems": ["wrong-type", "multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -91251,7 +91442,7 @@ define("frontend-cp/session/admin/template", ["exports"], function (exports) {
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -91428,7 +91619,7 @@ define("frontend-cp/session/agent/cases/case/index/template", ["exports"], funct
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -91475,7 +91666,7 @@ define("frontend-cp/session/agent/cases/case/loading/template", ["exports"], fun
             "name": "missing-wrapper",
             "problems": ["wrong-type"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -91517,7 +91708,7 @@ define("frontend-cp/session/agent/cases/case/loading/template", ["exports"], fun
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -91585,7 +91776,7 @@ define("frontend-cp/session/agent/cases/case/organisation/template", ["exports"]
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -91651,7 +91842,7 @@ define("frontend-cp/session/agent/cases/case/template", ["exports"], function (e
         "fragmentReason": {
           "name": "triple-curlies"
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -91749,7 +91940,7 @@ define("frontend-cp/session/agent/cases/case/user/template", ["exports"], functi
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -92012,7 +92203,7 @@ define("frontend-cp/session/agent/cases/index/suspended-messages/show/template",
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -92055,7 +92246,7 @@ define("frontend-cp/session/agent/cases/index/suspended-messages/show/template",
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -92097,7 +92288,7 @@ define("frontend-cp/session/agent/cases/index/suspended-messages/show/template",
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -92138,7 +92329,7 @@ define("frontend-cp/session/agent/cases/index/suspended-messages/show/template",
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -92180,7 +92371,7 @@ define("frontend-cp/session/agent/cases/index/suspended-messages/show/template",
             "name": "missing-wrapper",
             "problems": ["multiple-nodes"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -92453,7 +92644,7 @@ define("frontend-cp/session/agent/cases/index/suspended-messages/show/template",
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -92496,7 +92687,7 @@ define("frontend-cp/session/agent/cases/index/suspended-messages/template", ["ex
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -92544,7 +92735,7 @@ define("frontend-cp/session/agent/cases/index/suspended-messages/template", ["ex
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -92586,7 +92777,7 @@ define("frontend-cp/session/agent/cases/index/suspended-messages/template", ["ex
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -92628,7 +92819,7 @@ define("frontend-cp/session/agent/cases/index/suspended-messages/template", ["ex
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -92670,7 +92861,7 @@ define("frontend-cp/session/agent/cases/index/suspended-messages/template", ["ex
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -92711,7 +92902,7 @@ define("frontend-cp/session/agent/cases/index/suspended-messages/template", ["ex
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -92763,7 +92954,7 @@ define("frontend-cp/session/agent/cases/index/suspended-messages/template", ["ex
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -92808,7 +92999,7 @@ define("frontend-cp/session/agent/cases/index/suspended-messages/template", ["ex
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -92853,7 +93044,7 @@ define("frontend-cp/session/agent/cases/index/suspended-messages/template", ["ex
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -92898,7 +93089,7 @@ define("frontend-cp/session/agent/cases/index/suspended-messages/template", ["ex
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -92942,7 +93133,7 @@ define("frontend-cp/session/agent/cases/index/suspended-messages/template", ["ex
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -92990,7 +93181,7 @@ define("frontend-cp/session/agent/cases/index/suspended-messages/template", ["ex
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -93029,7 +93220,7 @@ define("frontend-cp/session/agent/cases/index/suspended-messages/template", ["ex
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -93068,7 +93259,7 @@ define("frontend-cp/session/agent/cases/index/suspended-messages/template", ["ex
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -93111,7 +93302,7 @@ define("frontend-cp/session/agent/cases/index/suspended-messages/template", ["ex
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -93161,7 +93352,7 @@ define("frontend-cp/session/agent/cases/index/suspended-messages/template", ["ex
         "fragmentReason": {
           "name": "triple-curlies"
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -93260,7 +93451,7 @@ define("frontend-cp/session/agent/cases/index/template", ["exports"], function (
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -93302,7 +93493,7 @@ define("frontend-cp/session/agent/cases/index/template", ["exports"], function (
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -93343,7 +93534,7 @@ define("frontend-cp/session/agent/cases/index/template", ["exports"], function (
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -93383,7 +93574,7 @@ define("frontend-cp/session/agent/cases/index/template", ["exports"], function (
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -93434,7 +93625,7 @@ define("frontend-cp/session/agent/cases/index/template", ["exports"], function (
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -93467,7 +93658,7 @@ define("frontend-cp/session/agent/cases/index/template", ["exports"], function (
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -93508,7 +93699,7 @@ define("frontend-cp/session/agent/cases/index/template", ["exports"], function (
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -93549,7 +93740,7 @@ define("frontend-cp/session/agent/cases/index/template", ["exports"], function (
         "fragmentReason": {
           "name": "triple-curlies"
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -93816,7 +94007,7 @@ define("frontend-cp/session/agent/cases/index/view/template", ["exports"], funct
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -93863,7 +94054,7 @@ define("frontend-cp/session/agent/cases/index/view-loading/template", ["exports"
             "name": "missing-wrapper",
             "problems": ["wrong-type"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -93905,7 +94096,7 @@ define("frontend-cp/session/agent/cases/index/view-loading/template", ["exports"
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -93952,7 +94143,7 @@ define("frontend-cp/session/agent/cases/loading/template", ["exports"], function
             "name": "missing-wrapper",
             "problems": ["wrong-type"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -93994,7 +94185,7 @@ define("frontend-cp/session/agent/cases/loading/template", ["exports"], function
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -94135,7 +94326,7 @@ define("frontend-cp/session/agent/cases/new/index/template", ["exports"], functi
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -94190,7 +94381,7 @@ define("frontend-cp/session/agent/cases/new/organisation/template", ["exports"],
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -94301,7 +94492,7 @@ define("frontend-cp/session/agent/cases/new/template", ["exports"], function (ex
         "fragmentReason": {
           "name": "triple-curlies"
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -94381,7 +94572,7 @@ define("frontend-cp/session/agent/cases/new/user/template", ["exports"], functio
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -94427,7 +94618,7 @@ define("frontend-cp/session/agent/loading/template", ["exports"], function (expo
             "name": "missing-wrapper",
             "problems": ["wrong-type"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -94469,7 +94660,7 @@ define("frontend-cp/session/agent/loading/template", ["exports"], function (expo
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -94546,7 +94737,7 @@ define("frontend-cp/session/agent/organisations/organisation/index/template", ["
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -94620,7 +94811,7 @@ define("frontend-cp/session/agent/organisations/organisation/template", ["export
         "fragmentReason": {
           "name": "triple-curlies"
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -94832,7 +95023,7 @@ define("frontend-cp/session/agent/search/template", ["exports"], function (expor
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -94865,7 +95056,7 @@ define("frontend-cp/session/agent/search/template", ["exports"], function (expor
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -94906,7 +95097,7 @@ define("frontend-cp/session/agent/search/template", ["exports"], function (expor
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -94953,7 +95144,7 @@ define("frontend-cp/session/agent/search/template", ["exports"], function (expor
           "name": "missing-wrapper",
           "problems": ["multiple-nodes", "wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -95048,7 +95239,7 @@ define("frontend-cp/session/agent/users/index/template", ["exports"], function (
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -95087,7 +95278,7 @@ define("frontend-cp/session/agent/users/index/template", ["exports"], function (
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -95132,7 +95323,7 @@ define("frontend-cp/session/agent/users/index/template", ["exports"], function (
         "fragmentReason": {
           "name": "triple-curlies"
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -95259,7 +95450,7 @@ define("frontend-cp/session/agent/users/user/index/template", ["exports"], funct
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -95316,7 +95507,7 @@ define("frontend-cp/session/agent/users/user/organisation/template", ["exports"]
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -95375,7 +95566,7 @@ define("frontend-cp/session/agent/users/user/template", ["exports"], function (e
         "fragmentReason": {
           "name": "triple-curlies"
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -95527,7 +95718,7 @@ define("frontend-cp/session/loading/template", ["exports"], function (exports) {
             "name": "missing-wrapper",
             "problems": ["wrong-type"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -95569,7 +95760,7 @@ define("frontend-cp/session/loading/template", ["exports"], function (exports) {
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -95674,7 +95865,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -95707,7 +95898,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -95750,7 +95941,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -95783,7 +95974,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -95827,7 +96018,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -95860,7 +96051,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -95903,7 +96094,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -95936,7 +96127,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -95977,7 +96168,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -96018,7 +96209,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -96051,7 +96242,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -96097,7 +96288,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -96138,7 +96329,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -96188,7 +96379,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -96231,7 +96422,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
                 return {
                   meta: {
                     "fragmentReason": false,
-                    "revision": "Ember@2.4.3",
+                    "revision": "Ember@2.4.4",
                     "loc": {
                       "source": null,
                       "start": {
@@ -96272,7 +96463,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -96322,7 +96513,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -96365,7 +96556,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
                 return {
                   meta: {
                     "fragmentReason": false,
-                    "revision": "Ember@2.4.3",
+                    "revision": "Ember@2.4.4",
                     "loc": {
                       "source": null,
                       "start": {
@@ -96406,7 +96597,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -96456,7 +96647,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -96499,7 +96690,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -96538,7 +96729,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -96581,7 +96772,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -96622,7 +96813,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -96672,7 +96863,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -96715,7 +96906,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
                 return {
                   meta: {
                     "fragmentReason": false,
-                    "revision": "Ember@2.4.3",
+                    "revision": "Ember@2.4.4",
                     "loc": {
                       "source": null,
                       "start": {
@@ -96756,7 +96947,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -96806,7 +96997,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -96849,7 +97040,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
                 return {
                   meta: {
                     "fragmentReason": false,
-                    "revision": "Ember@2.4.3",
+                    "revision": "Ember@2.4.4",
                     "loc": {
                       "source": null,
                       "start": {
@@ -96890,7 +97081,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
               return {
                 meta: {
                   "fragmentReason": false,
-                  "revision": "Ember@2.4.3",
+                  "revision": "Ember@2.4.4",
                   "loc": {
                     "source": null,
                     "start": {
@@ -96940,7 +97131,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -96983,7 +97174,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -97022,7 +97213,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -97061,7 +97252,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -97101,7 +97292,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -97164,7 +97355,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -97206,7 +97397,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -97250,7 +97441,7 @@ define("frontend-cp/session/template", ["exports"], function (exports) {
           "name": "missing-wrapper",
           "problems": ["multiple-nodes"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -97426,7 +97617,7 @@ define("frontend-cp/session/test/entry/template", ["exports"], function (exports
         "fragmentReason": {
           "name": "triple-curlies"
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -98537,7 +98728,8 @@ define("frontend-cp/styles/components/ko-universal-search/result/styles.scss", [
     "ko-universal-search_result__see-more": "_ko-universal-search_result__see-more_1ti20m",
     "universal-search_result__content": "_universal-search_result__content_1ti20m",
     "ko-universal-search_result__see-more--inline": "_ko-universal-search_result__see-more--inline_1ti20m",
-    "universal-search_result__wrap": "_universal-search_result__wrap_1ti20m"
+    "universal-search_result__wrap": "_universal-search_result__wrap_1ti20m",
+    "universal-search_result__link": "_universal-search_result__link_1ti20m"
   };
 });
 define("frontend-cp/styles/components/ko-universal-search/styles.scss", ["exports"], function (exports) {
@@ -98903,7 +99095,7 @@ define("frontend-cp/templates/application", ["exports"], function (exports) {
           "name": "missing-wrapper",
           "problems": ["multiple-nodes", "wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -98955,7 +99147,7 @@ define("frontend-cp/templates/components/liquid-bind", ["exports"], function (ex
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -98995,7 +99187,7 @@ define("frontend-cp/templates/components/liquid-bind", ["exports"], function (ex
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -99034,7 +99226,7 @@ define("frontend-cp/templates/components/liquid-bind", ["exports"], function (ex
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -99076,7 +99268,7 @@ define("frontend-cp/templates/components/liquid-bind", ["exports"], function (ex
             "name": "missing-wrapper",
             "problems": ["wrong-type"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -99119,7 +99311,7 @@ define("frontend-cp/templates/components/liquid-bind", ["exports"], function (ex
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -99159,7 +99351,7 @@ define("frontend-cp/templates/components/liquid-bind", ["exports"], function (ex
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -99198,7 +99390,7 @@ define("frontend-cp/templates/components/liquid-bind", ["exports"], function (ex
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -99237,7 +99429,7 @@ define("frontend-cp/templates/components/liquid-bind", ["exports"], function (ex
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -99276,7 +99468,7 @@ define("frontend-cp/templates/components/liquid-bind", ["exports"], function (ex
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -99318,7 +99510,7 @@ define("frontend-cp/templates/components/liquid-bind", ["exports"], function (ex
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -99363,7 +99555,7 @@ define("frontend-cp/templates/components/liquid-container", ["exports"], functio
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -99408,7 +99600,7 @@ define("frontend-cp/templates/components/liquid-if", ["exports"], function (expo
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -99450,7 +99642,7 @@ define("frontend-cp/templates/components/liquid-if", ["exports"], function (expo
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -99491,7 +99683,7 @@ define("frontend-cp/templates/components/liquid-if", ["exports"], function (expo
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -99533,7 +99725,7 @@ define("frontend-cp/templates/components/liquid-if", ["exports"], function (expo
             "name": "missing-wrapper",
             "problems": ["wrong-type"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -99576,7 +99768,7 @@ define("frontend-cp/templates/components/liquid-if", ["exports"], function (expo
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -99618,7 +99810,7 @@ define("frontend-cp/templates/components/liquid-if", ["exports"], function (expo
             return {
               meta: {
                 "fragmentReason": false,
-                "revision": "Ember@2.4.3",
+                "revision": "Ember@2.4.4",
                 "loc": {
                   "source": null,
                   "start": {
@@ -99659,7 +99851,7 @@ define("frontend-cp/templates/components/liquid-if", ["exports"], function (expo
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -99698,7 +99890,7 @@ define("frontend-cp/templates/components/liquid-if", ["exports"], function (expo
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -99737,7 +99929,7 @@ define("frontend-cp/templates/components/liquid-if", ["exports"], function (expo
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -99779,7 +99971,7 @@ define("frontend-cp/templates/components/liquid-if", ["exports"], function (expo
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -99823,7 +100015,7 @@ define("frontend-cp/templates/components/liquid-modal", ["exports"], function (e
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -99878,7 +100070,7 @@ define("frontend-cp/templates/components/liquid-modal", ["exports"], function (e
             "name": "missing-wrapper",
             "problems": ["wrong-type", "multiple-nodes"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -99926,7 +100118,7 @@ define("frontend-cp/templates/components/liquid-modal", ["exports"], function (e
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -99971,7 +100163,7 @@ define("frontend-cp/templates/components/liquid-outlet", ["exports"], function (
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -100010,7 +100202,7 @@ define("frontend-cp/templates/components/liquid-outlet", ["exports"], function (
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -100052,7 +100244,7 @@ define("frontend-cp/templates/components/liquid-outlet", ["exports"], function (
             "name": "missing-wrapper",
             "problems": ["wrong-type"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -100094,7 +100286,7 @@ define("frontend-cp/templates/components/liquid-outlet", ["exports"], function (
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -100139,7 +100331,7 @@ define("frontend-cp/templates/components/liquid-versions", ["exports"], function
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -100178,7 +100370,7 @@ define("frontend-cp/templates/components/liquid-versions", ["exports"], function
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -100220,7 +100412,7 @@ define("frontend-cp/templates/components/liquid-versions", ["exports"], function
             "name": "missing-wrapper",
             "problems": ["wrong-type"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -100262,7 +100454,7 @@ define("frontend-cp/templates/components/liquid-versions", ["exports"], function
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -100306,7 +100498,7 @@ define("frontend-cp/templates/components/liquid-with", ["exports"], function (ex
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -100348,7 +100540,7 @@ define("frontend-cp/templates/components/liquid-with", ["exports"], function (ex
             "name": "missing-wrapper",
             "problems": ["wrong-type"]
           },
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -100390,7 +100582,7 @@ define("frontend-cp/templates/components/liquid-with", ["exports"], function (ex
           return {
             meta: {
               "fragmentReason": false,
-              "revision": "Ember@2.4.3",
+              "revision": "Ember@2.4.4",
               "loc": {
                 "source": null,
                 "start": {
@@ -100429,7 +100621,7 @@ define("frontend-cp/templates/components/liquid-with", ["exports"], function (ex
         return {
           meta: {
             "fragmentReason": false,
-            "revision": "Ember@2.4.3",
+            "revision": "Ember@2.4.4",
             "loc": {
               "source": null,
               "start": {
@@ -100468,7 +100660,7 @@ define("frontend-cp/templates/components/liquid-with", ["exports"], function (ex
       return {
         meta: {
           "fragmentReason": false,
-          "revision": "Ember@2.4.3",
+          "revision": "Ember@2.4.4",
           "loc": {
             "source": null,
             "start": {
@@ -100510,7 +100702,7 @@ define("frontend-cp/templates/components/liquid-with", ["exports"], function (ex
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -100555,7 +100747,7 @@ define("frontend-cp/templates/components/tool-tipster", ["exports"], function (e
           "name": "missing-wrapper",
           "problems": ["wrong-type"]
         },
-        "revision": "Ember@2.4.3",
+        "revision": "Ember@2.4.4",
         "loc": {
           "source": null,
           "start": {
@@ -101253,7 +101445,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"viewingUsersInactiveThreshold":300000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+72458730"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"viewingUsersInactiveThreshold":300000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":30,"casesPollingInterval":30,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+37ce0e9c"});
 }
 
 /* jshint ignore:end */
