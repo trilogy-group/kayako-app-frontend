@@ -7413,6 +7413,12 @@ span#HW_badge.HW_softHidden {
   font-style: italic;
   font-size: 12px; }
 
+.universal-search_result__link {
+  color: #2D3138;
+  width: 100%; }
+  .universal-search_result__link:hover {
+    color: #2D3138; }
+
 .ko-search-sidebar {
   padding-top: 9px;
   min-width: 300px;
