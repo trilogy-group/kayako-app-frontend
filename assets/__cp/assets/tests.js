@@ -9325,6 +9325,26 @@ define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'ember'], fun
         }
       }
     });
+
+    _ember['default'].Test.registerAsyncHelper('removeMultipleOption', function (app, cssPath, value) {
+      var elem = find(cssPath + ' .ember-power-select-multiple-options > li:contains(' + value + ') > .ember-power-select-multiple-remove-btn')[0];
+      try {
+        nativeMouseDown(elem);
+      } catch (e) {
+        console.warn('css path to remove btn not found');
+        throw e;
+      }
+    });
+
+    _ember['default'].Test.registerAsyncHelper('clearSelected', function (app, cssPath, value) {
+      var elem = find(cssPath + ' .ember-power-select-clear-btn')[0];
+      try {
+        nativeMouseDown(elem);
+      } catch (e) {
+        console.warn('css path to clear btn not found');
+        throw e;
+      }
+    });
   };
 });
 define('frontend-cp/tests/helpers/ember-sortable/test-helpers', ['exports', 'ember-sortable/helpers/drag', 'ember-sortable/helpers/reorder'], function (exports, _emberSortableHelpersDrag, _emberSortableHelpersReorder) {});
