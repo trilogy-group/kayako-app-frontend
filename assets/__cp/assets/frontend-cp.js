@@ -72690,7 +72690,9 @@ define('frontend-cp/mixins/change-aware-model', ['exports', 'ember', 'npm:lodash
   });
 });
 define('frontend-cp/mixins/custom-field-serialization', ['exports', 'ember'], function (exports, _ember) {
-  exports['default'] = _ember['default'].Mixin.create({
+  var keys = _ember['default'].keys;
+  var Mixin = _ember['default'].Mixin;
+  exports['default'] = Mixin.create({
     serializeCustomFields: function serializeCustomFields(customFields, form) {
       var fieldValues = {};
       var formFields = form ? form.hasMany('fields').map(function (field) {
@@ -72720,6 +72722,61 @@ define('frontend-cp/mixins/custom-field-serialization', ['exports', 'ember'], fu
       });
 
       return fieldValues;
+    },
+
+    serializeChannelOptions: function serializeChannelOptions(json, channelOptions) {
+      if (json.channel === 'NOTE') {
+        Reflect.deleteProperty(json, 'options');
+      }
+
+      if (json.channel_options && ['MAILBOX', 'MAIL'].indexOf(json.channel) === -1) {
+        Reflect.deleteProperty(json.channel_options, 'cc');
+      }
+
+      if (json.channel_options) {
+        ['type', 'color', 'send_link'].forEach(function (key) {
+          if (!json.channel_options[key]) {
+            Reflect.deleteProperty(json.channel_options, key);
+          }
+        });
+      }
+
+      switch (json.channel) {
+        case 'MAILBOX':
+        case 'MAIL':
+          ['type', 'color', 'send_link'].forEach(function (key) {
+            Reflect.deleteProperty(json.channel_options, key);
+          });
+          break;
+        case 'TWITTER':
+          ['cc', 'html', 'color'].forEach(function (key) {
+            Reflect.deleteProperty(json.channel_options, key);
+          });
+          break;
+        case 'FACEBOOK':
+          ['cc', 'html', 'type', 'color'].forEach(function (key) {
+            Reflect.deleteProperty(json.channel_options, key);
+          });
+          break;
+        case 'NOTE':
+          ['cc', 'html', 'type', 'send_link'].forEach(function (key) {
+            Reflect.deleteProperty(json.channel_options, key);
+          });
+          break;
+      }
+
+      if (channelOptions) {
+        var cc = channelOptions.attr('cc');
+        if (cc.length) {
+          json.channel_options.cc = cc.toString();
+        }
+      }
+
+      if (keys(json.channel_options || {}).length === 0) {
+        Reflect.deleteProperty(json, 'channel_options');
+      }
+
+      return json;
     }
   });
 });
@@ -73406,6 +73463,7 @@ define('frontend-cp/models/case', ['exports', 'ember-data', 'model-fragments', '
     activities: _emberData['default'].hasMany('activity', { async: true, noCache: true }),
     replyChannels: _emberData['default'].hasMany('channel', { async: true, noCache: true }),
     reply: _emberData['default'].hasMany('case-reply', { async: true, noCache: true }),
+    channelOptions: _modelFragments['default'].fragment('case-reply-options'),
     tags: _emberData['default'].hasMany('tag', { async: true, noCache: true }),
 
     // Parent field
@@ -75231,8 +75289,7 @@ define('frontend-cp/serializers/case-form', ['exports', 'ember', 'frontend-cp/se
     }
   });
 });
-define('frontend-cp/serializers/case-reply', ['exports', 'frontend-cp/serializers/application', 'frontend-cp/mixins/custom-field-serialization', 'ember'], function (exports, _frontendCpSerializersApplication, _frontendCpMixinsCustomFieldSerialization, _ember) {
-  var keys = _ember['default'].keys;
+define('frontend-cp/serializers/case-reply', ['exports', 'frontend-cp/serializers/application', 'frontend-cp/mixins/custom-field-serialization'], function (exports, _frontendCpSerializersApplication, _frontendCpMixinsCustomFieldSerialization) {
   exports['default'] = _frontendCpSerializersApplication['default'].extend(_frontendCpMixinsCustomFieldSerialization['default'], {
     attrs: {
       channelType: { key: 'channel' },
@@ -75244,58 +75301,10 @@ define('frontend-cp/serializers/case-reply', ['exports', 'frontend-cp/serializer
     serialize: function serialize(snapshot, options) {
       var json = this._super(snapshot, options);
       var form = snapshot.belongsTo('case').belongsTo('form');
+
       json.field_values = this.serializeCustomFields(snapshot.attr('fieldValues'), form);
 
-      if (json.channel === 'NOTE') {
-        Reflect.deleteProperty(json, 'options');
-      }
-
-      if (json.channel_options && ['MAILBOX', 'MAIL'].indexOf(json.channel) === -1) {
-        Reflect.deleteProperty(json.channel_options, 'cc');
-      }
-
-      ['type', 'color', 'send_link'].forEach(function (key) {
-        if (!json.channel_options[key]) {
-          Reflect.deleteProperty(json.channel_options, key);
-        }
-      });
-
-      switch (json.channel) {
-        case 'MAILBOX':
-        case 'MAIL':
-          ['type', 'color', 'send_link'].forEach(function (key) {
-            Reflect.deleteProperty(json.channel_options, key);
-          });
-          break;
-        case 'TWITTER':
-          ['cc', 'html', 'color'].forEach(function (key) {
-            Reflect.deleteProperty(json.channel_options, key);
-          });
-          break;
-        case 'FACEBOOK':
-          ['cc', 'html', 'type', 'color'].forEach(function (key) {
-            Reflect.deleteProperty(json.channel_options, key);
-          });
-          break;
-        case 'NOTE':
-          ['cc', 'html', 'type', 'send_link'].forEach(function (key) {
-            Reflect.deleteProperty(json.channel_options, key);
-          });
-          break;
-      }
-
-      var cc = snapshot.attr('channelOptions').attr('cc');
-      if (cc.length) {
-        json.channel_options.cc = cc.toString();
-      }
-
-      if (keys(json.channel_options).length === 0) {
-        Reflect.deleteProperty(json, 'channel_options');
-      }
-
-      // TODO: support of previous approach, remove when it will be fixed
-      json.assignee_agent_id = json.assigned_agent_id;
-      json.assignee_team_id = json.assigned_team_id;
+      json = this.serializeChannelOptions(json, snapshot.attr('channelOptions'));
 
       return json;
     },
@@ -75403,15 +75412,14 @@ define('frontend-cp/serializers/case', ['exports', 'frontend-cp/serializers/appl
 
     serialize: function serialize(snapshot, options) {
       var json = this._super(snapshot, options);
+
       json.field_values = this.serializeCustomFields(snapshot.attr('customFields'), snapshot.belongsTo('form'));
+      json.type_id = json.case_type_id && parseInt(json.case_type_id, 10);
+
+      Reflect.deleteProperty(json, 'case_type_id');
       Reflect.deleteProperty(json, 'custom_fields');
 
-      json.type_id = json.case_type_id && parseInt(json.case_type_id, 10);
-      Reflect.deleteProperty(json, 'case_type_id');
-
-      // TODO: support of previous approach, remove when it will be fixed
-      json.assignee_agent_id = json.assigned_agent_id;
-      json.assignee_team_id = json.assigned_team_id;
+      json = this.serializeChannelOptions(json, snapshot.attr('channelOptions'));
 
       return json;
     }
@@ -77017,6 +77025,7 @@ define('frontend-cp/services/case-tab', ['exports', 'ember', 'npm:lodash', 'fron
       var state = this.getState(tabId);
       var uploads = state.get('attachedPostFiles');
       var attachmentIds = uploads.mapBy('attachmentId').compact();
+      var replyOptions = state.get('replyOptions');
 
       this.updateModel(model, state);
 
@@ -77024,6 +77033,7 @@ define('frontend-cp/services/case-tab', ['exports', 'ember', 'npm:lodash', 'fron
       model.set('channel', channel.get('channelType'));
       model.set('channelId', channel.get('account.id'));
       model.set('attachmentFileIds', attachmentIds);
+      model.set('channelOptions', replyOptions.copy());
 
       state.set('isSaving', true);
 
@@ -101408,7 +101418,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"viewingUsersInactiveThreshold":300000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":60,"casesPollingInterval":60,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+3dc36f90"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"viewingUsersInactiveThreshold":300000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":60,"casesPollingInterval":60,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+446c1652"});
 }
 
 /* jshint ignore:end */
