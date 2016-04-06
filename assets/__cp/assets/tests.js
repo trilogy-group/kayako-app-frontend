@@ -5078,7 +5078,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/reorder-te
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/people/roles/form-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
+define('frontend-cp/tests/acceptance/admin/people/roles/form-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-admin/page-header/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoAdminPageHeaderStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/people/roles form', {
     beforeEach: function beforeEach() {
@@ -5113,7 +5113,7 @@ define('frontend-cp/tests/acceptance/admin/people/roles/form-test', ['exports', 
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new role', function (assert) {
     visit('/admin/people/roles');
-    nativeClick('.ko-admin-header button:contains("Add New Role")');
+    nativeClick('.' + _frontendCpComponentsKoAdminPageHeaderStyles['default'].header + ' button:contains("Add New Role")');
     fillIn('input[name="title"]', 'Custom Role');
     selectChoose('.qa-ko-admin_roles_form__role-type', 'Collaborator');
     selectChoose('.qa-ko-admin_roles_form__agent-case-access-type', 'Assigned to agent');
@@ -5141,7 +5141,7 @@ define('frontend-cp/tests/acceptance/admin/people/roles/form-test', ['exports', 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new admin role', function (assert) {
     assert.expect(0);
     visit('/admin/people/roles');
-    nativeClick('.ko-admin-header button:contains("Add New Role")');
+    nativeClick('.' + _frontendCpComponentsKoAdminPageHeaderStyles['default'].header + ' button:contains("Add New Role")');
     fillIn('input[name="title"]', 'Custom Role');
     selectChoose('.qa-ko-admin_roles_form__role-type', 'Administrator');
     selectChoose('.qa-ko-admin_roles_form__agent-case-access-type', 'Assigned to agent');
@@ -7169,7 +7169,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/reorder-test', ['e
     });
   });
 });
-define('frontend-cp/tests/acceptance/agent/cases/create-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
+define('frontend-cp/tests/acceptance/agent/cases/create-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/session/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpSessionStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | Case | Create case', {
     beforeEach: function beforeEach() {
@@ -7235,11 +7235,11 @@ define('frontend-cp/tests/acceptance/agent/cases/create-test', ['exports', 'fron
 
       assert.equal(find('.ko-agent-dropdown__drop').is(':visible'), false, '"+" Dropdown content should be hidden');
 
-      assert.equal(find('.ko-layout_advanced__sidebar .list-bare .ko-info-bar_item:eq(1) input').val(), 'Barney Stinson', 'The recipient of the new case is Barney');
+      assert.equal(find('.ko-layout_advanced__sidebar .ko-info-bar_item:eq(1) input').val(), 'Barney Stinson', 'The recipient of the new case is Barney');
       assert.ok(find('.breadcrumbs .breadcrumbs__item:eq(0)').text().trim() === 'Barney Stinson' && find('.breadcrumbs .breadcrumbs__item:eq(1)').text().trim() === 'New case', 'Breadcrums are correct');
-      assert.equal(find('.nav-primary__tab').length, 1, 'There is only one tab');
-      assert.equal(find('.nav-primary__tab.active').length, 1, 'That tab is active');
-      assert.equal(find('.nav-primary__tab').text().trim(), 'New case', 'That tab belongs to the case being created');
+      assert.equal(find('.' + _frontendCpSessionStyles['default'].tab).length, 1, 'There is only one tab');
+      assert.equal(find('.' + _frontendCpSessionStyles['default'].tab + '.active').length, 1, 'That tab is active');
+      assert.equal(find('.' + _frontendCpSessionStyles['default'].tab).text().trim(), 'New case', 'That tab belongs to the case being created');
       nativeClick('.ko-layout_advanced_section__subject .editable-text__text');
       fillIn('.ko-layout_advanced_section__subject input', 'No internet');
       triggerEvent('.ko-layout_advanced_section__subject input', 'input');
@@ -7250,7 +7250,7 @@ define('frontend-cp/tests/acceptance/agent/cases/create-test', ['exports', 'fron
       fillInRichTextEditor('I press the button and the bomb explodes');
       // nativeClick('.ko-info-bar_item:contains("Case form")');
       // nativeClick('.ko-info-bar_item:contains("Case form") .dropdown-menu__item:contains("Internet Related Issue")');
-      nativeClick('.ko-layout_advanced__sidebar .list-bare .button--primary');
+      nativeClick('.ko-layout_advanced__sidebar .button--primary');
       var status = find('.ko-info-bar_item__header:contains("Status")').next().val();
       assert.equal(status, 'New', 'Status defaults to NEW');
     });
@@ -7258,14 +7258,14 @@ define('frontend-cp/tests/acceptance/agent/cases/create-test', ['exports', 'fron
     andThen(function () {
       var status = find('.ko-info-bar_item__header:contains("Status")').next().val();
       assert.equal(status, 'Open', 'Status has updated to OPEN');
-      assert.equal(find('.nav-primary__tab').length, 1, 'There is only one tab');
-      assert.equal(find('.nav-primary__tab').text().trim(), 'No internet', 'That title of the tab has updated');
+      assert.equal(find('.' + _frontendCpSessionStyles['default'].tab).length, 1, 'There is only one tab');
+      assert.equal(find('.' + _frontendCpSessionStyles['default'].tab).text().trim(), 'No internet', 'That title of the tab has updated');
       assert.equal(currentURL(), '/agent/cases/123');
     });
   });
 });
 /* eslint-disable new-cap */
-define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'ember'], function (exports, _frontendCpTestsHelpersQunit, _ember) {
+define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'ember', 'frontend-cp/session/styles'], function (exports, _frontendCpTestsHelpersQunit, _ember, _frontendCpSessionStyles) {
 
   var originalConfirm = window.confirm;
 
@@ -7311,17 +7311,17 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
 
     andThen(function () {
       assert.equal(currentURL(), '/agent/cases/view/1');
-      assert.equal(find('.nav-primary__tab').length, 0);
+      assert.equal(find('.' + _frontendCpSessionStyles['default'].tab).length, 0);
       triggerEvent('.ko-cases-list__row:first-child', 'click', { metaKey: true });
     });
 
     andThen(function () {
-      assert.equal(find('.nav-primary__tab').length, 1);
+      assert.equal(find('.' + _frontendCpSessionStyles['default'].tab).length, 1);
       triggerEvent('.ko-cases-list__row:first-child', 'click', { metaKey: true });
     });
 
     andThen(function () {
-      assert.equal(find('.nav-primary__tab').length, 1);
+      assert.equal(find('.' + _frontendCpSessionStyles['default'].tab).length, 1);
     });
   });
 
@@ -8245,7 +8245,7 @@ define('frontend-cp/tests/acceptance/agent/organisations/create-test', ['exports
   //});
 });
 /* eslint-disable camelcase, new-cap */
-define('frontend-cp/tests/acceptance/agent/search/search-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/lib/keycodes'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpLibKeycodes) {
+define('frontend-cp/tests/acceptance/agent/search/search-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/lib/keycodes', 'frontend-cp/session/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpLibKeycodes, _frontendCpSessionStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | Case | Search', {
     beforeEach: function beforeEach() {
@@ -8271,7 +8271,7 @@ define('frontend-cp/tests/acceptance/agent/search/search-test', ['exports', 'fro
     visit('/agent/search/' + term);
 
     andThen(function () {
-      assert.equal(find('.nav-primary__tab-label').text().trim(), '"' + term + '"');
+      assert.equal(find('.' + _frontendCpSessionStyles['default']['tab-label']).text().trim(), '"' + term + '"');
       assert.equal(find('.ko-universal-search_entry').val(), term);
     });
   });
@@ -8282,8 +8282,8 @@ define('frontend-cp/tests/acceptance/agent/search/search-test', ['exports', 'fro
     visit('/agent/search/' + term1);
 
     andThen(function () {
-      assert.equal(find('.nav-primary__tab-label').length, 1);
-      assert.equal(find('.nav-primary__tab-label').text().trim(), '"' + term1 + '"');
+      assert.equal(find('.' + _frontendCpSessionStyles['default']['tab-label']).length, 1);
+      assert.equal(find('.' + _frontendCpSessionStyles['default']['tab-label']).text().trim(), '"' + term1 + '"');
     });
 
     andThen(function () {
@@ -8292,8 +8292,8 @@ define('frontend-cp/tests/acceptance/agent/search/search-test', ['exports', 'fro
     });
 
     andThen(function () {
-      assert.equal(find('.nav-primary__tab-label').length, 1);
-      assert.equal(find('.nav-primary__tab-label').text().trim(), '"' + term2 + '"');
+      assert.equal(find('.' + _frontendCpSessionStyles['default']['tab-label']).length, 1);
+      assert.equal(find('.' + _frontendCpSessionStyles['default']['tab-label']).text().trim(), '"' + term2 + '"');
     });
   });
 
@@ -8317,8 +8317,8 @@ define('frontend-cp/tests/acceptance/agent/search/search-test', ['exports', 'fro
     visit('/agent/search/' + term1);
 
     andThen(function () {
-      assert.equal(find('.nav-primary__tab-label').length, 1);
-      assert.equal(find('.nav-primary__tab .active').text().trim(), '"' + term1 + '"');
+      assert.equal(find('.' + _frontendCpSessionStyles['default']['tab-label']).length, 1);
+      assert.equal(find('.' + _frontendCpSessionStyles['default'].tab + ' .active').text().trim(), '"' + term1 + '"');
     });
 
     andThen(function () {
@@ -8330,13 +8330,13 @@ define('frontend-cp/tests/acceptance/agent/search/search-test', ['exports', 'fro
     });
 
     andThen(function () {
-      assert.equal(find('.nav-primary__tab-label').length, 2);
-      assert.equal(find('.nav-primary__tab .active').text().trim(), '"' + term2 + '"');
+      assert.equal(find('.' + _frontendCpSessionStyles['default']['tab-label']).length, 2);
+      assert.equal(find('.' + _frontendCpSessionStyles['default'].tab + ' .active').text().trim(), '"' + term2 + '"');
     });
   });
 });
 /* eslint-disable camelcase */
-define('frontend-cp/tests/acceptance/agent/tabs/tabs-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/tests/fixtures/location/mock-location'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpTestsFixturesLocationMockLocation) {
+define('frontend-cp/tests/acceptance/agent/tabs/tabs-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/tests/fixtures/location/mock-location', 'frontend-cp/session/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpTestsFixturesLocationMockLocation, _frontendCpSessionStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | Tabs', {
     beforeEach: function beforeEach(application) {
@@ -8562,7 +8562,7 @@ define('frontend-cp/tests/acceptance/agent/tabs/tabs-test', ['exports', 'fronten
   });
 
   function getTabElements() {
-    return find('.nav-primary__tab');
+    return find('.' + _frontendCpSessionStyles['default'].tab);
   }
 
   function getActiveTabElement() {
@@ -8575,11 +8575,11 @@ define('frontend-cp/tests/acceptance/agent/tabs/tabs-test', ['exports', 'fronten
 
   function closeTab(tabElement) {
     andThen(function () {
-      $(tabElement).find('.nav-primary__tab-close').click();
+      $(tabElement).find('.' + _frontendCpSessionStyles['default']['tab-close']).click();
     });
   }
 });
-define('frontend-cp/tests/acceptance/agent/users/create-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
+define('frontend-cp/tests/acceptance/agent/users/create-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/session/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpSessionStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | User | Create user', {
     beforeEach: function beforeEach() {
@@ -8632,9 +8632,9 @@ define('frontend-cp/tests/acceptance/agent/users/create-test', ['exports', 'fron
 
       assert.equal(find('.ko-layout_advanced_section__subject').text().trim(), 'Barney Stinson', 'The name of the user is vissible in the header');
       assert.equal(find('.breadcrumbs .breadcrumbs__item:eq(0)').text().trim(), 'Barney Stinson', 'Breadcrumbs are correct');
-      assert.equal(find('.nav-primary__tab').length, 1, 'There is only one tab');
-      assert.equal(find('.nav-primary__tab.active').length, 1, 'That tab is active');
-      assert.equal(find('.nav-primary__tab').text().trim(), 'Barney Stinson', 'That tab belongs to the created user');
+      assert.equal(find('.' + _frontendCpSessionStyles['default'].tab).length, 1, 'There is only one tab');
+      assert.equal(find('.' + _frontendCpSessionStyles['default'].tab + '.active').length, 1, 'That tab is active');
+      assert.equal(find('.' + _frontendCpSessionStyles['default'].tab).text().trim(), 'Barney Stinson', 'That tab belongs to the created user');
     });
   });
 });
@@ -9701,7 +9701,7 @@ define("frontend-cp/tests/integration/components/ko-agent-dropdown/create-organi
 //   formElement = $(formElement)[0];
 //   return $(formElement.elements.namedItem(controlName));
 // }
-define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/component-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'ember', 'sinon'], function (exports, _frontendCpTestsHelpersQunit, _ember, _sinon) {
+define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/component-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'ember', 'sinon', 'frontend-cp/components/ko-form/buttons/styles'], function (exports, _frontendCpTestsHelpersQunit, _ember, _sinon, _frontendCpComponentsKoFormButtonsStyles) {
   var getOwner = _ember['default'].getOwner;
 
   (0, _frontendCpTestsHelpersQunit.moduleForComponent)('ko-agent-dropdown/create-user', 'Integration | Component | ko agent dropdown/create user', {
@@ -10007,7 +10007,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
     var $nameInputElement = getFormControl($formElement, 'full_name');
     var $emailInputElement = getFormControl($formElement, 'email');
     var $cancelButtonElement = getFormControl($formElement, 'cancel');
-    var $loaderElement = $formElement.find('.ko-form_buttons__loader');
+    var $loaderElement = $formElement.find('.' + _frontendCpComponentsKoFormButtonsStyles['default'].loader);
 
     assert.equal($formElement.hasClass('ko-form--is-submitting'), false);
     assert.equal($cancelButtonElement.length, 1);
@@ -10023,7 +10023,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
 
     _ember['default'].run(function () {
       var $cancelButtonElement = getFormControl($formElement, 'cancel');
-      var $loaderElement = $formElement.find('.ko-form_buttons__loader');
+      var $loaderElement = $formElement.find('.' + _frontendCpComponentsKoFormButtonsStyles['default'].loader);
 
       assert.equal($formElement.hasClass('ko-form--is-submitting'), true);
       assert.equal($cancelButtonElement.length, 0);
@@ -10035,7 +10035,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
 
     _ember['default'].run.later(function () {
       var $cancelButtonElement = getFormControl($formElement, 'cancel');
-      var $loaderElement = $formElement.find('.ko-form_buttons__loader');
+      var $loaderElement = $formElement.find('.' + _frontendCpComponentsKoFormButtonsStyles['default'].loader);
 
       assert.equal($formElement.hasClass('ko-form--is-submitting'), false);
       assert.equal($cancelButtonElement.length, 1);
@@ -11450,7 +11450,7 @@ define('frontend-cp/tests/unit/components/ko-editable-text/component-test', ['ex
       component = this.subject();
       component.set('value', 'I am a hunky munky');
     },
-    teardown: function teardown() {}
+    needs: ['helper:not']
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('is not editing by default', function (assert) {
