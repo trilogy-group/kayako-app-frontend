@@ -68436,38 +68436,6 @@ define('frontend-cp/mail/model', ['exports', 'ember-data'], function (exports, _
     createdAt: _emberData['default'].attr('date')
   });
 });
-define('frontend-cp/metrics-adapters/base', ['exports', 'ember-metrics/metrics-adapters/base'], function (exports, _emberMetricsMetricsAdaptersBase) {
-  Object.defineProperty(exports, 'default', {
-    enumerable: true,
-    get: function get() {
-      return _emberMetricsMetricsAdaptersBase['default'];
-    }
-  });
-});
-define('frontend-cp/metrics-adapters/google-analytics', ['exports', 'ember-metrics/metrics-adapters/google-analytics'], function (exports, _emberMetricsMetricsAdaptersGoogleAnalytics) {
-  Object.defineProperty(exports, 'default', {
-    enumerable: true,
-    get: function get() {
-      return _emberMetricsMetricsAdaptersGoogleAnalytics['default'];
-    }
-  });
-});
-define('frontend-cp/metrics-adapters/google-tag-manager', ['exports', 'ember-metrics/metrics-adapters/google-tag-manager'], function (exports, _emberMetricsMetricsAdaptersGoogleTagManager) {
-  Object.defineProperty(exports, 'default', {
-    enumerable: true,
-    get: function get() {
-      return _emberMetricsMetricsAdaptersGoogleTagManager['default'];
-    }
-  });
-});
-define('frontend-cp/metrics-adapters/mixpanel', ['exports', 'ember-metrics/metrics-adapters/mixpanel'], function (exports, _emberMetricsMetricsAdaptersMixpanel) {
-  Object.defineProperty(exports, 'default', {
-    enumerable: true,
-    get: function get() {
-      return _emberMetricsMetricsAdaptersMixpanel['default'];
-    }
-  });
-});
 define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp/mirage/fixtures/en-us-strings', 'moment', 'ember'], function (exports, _emberCliMirage, _frontendCpMirageFixturesEnUsStrings, _moment, _ember) {
 
   // API Inconsistencies
@@ -76158,13 +76126,13 @@ define('frontend-cp/services/analytics', ['exports', 'ember'], function (exports
         distinctId: user.get('id'),
         name: user.get('fullName'),
         email: user.get('greeting'),
-        locale: user.get('locale')
+        locale: user.get('locale.locale')
       });
 
       _ember['default'].set(this, 'metrics.context.userName', user.get('fullName'));
       _ember['default'].set(this, 'metrics.context.userId', user.get('id'));
       _ember['default'].set(this, 'metrics.context.userEmail', user.get('greeting'));
-      _ember['default'].set(this, 'metrics.context.userLocale', user.get('locale'));
+      _ember['default'].set(this, 'metrics.context.userLocale', user.get('locale.locale'));
     }
   });
 });
@@ -101440,7 +101408,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"viewingUsersInactiveThreshold":300000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":60,"casesPollingInterval":60,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+417c426c"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"viewingUsersInactiveThreshold":300000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":60,"casesPollingInterval":60,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+3dc36f90"});
 }
 
 /* jshint ignore:end */
