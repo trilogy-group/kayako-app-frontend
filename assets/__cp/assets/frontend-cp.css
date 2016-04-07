@@ -2763,16 +2763,16 @@ img {
 .ko-agent-dropdown__footer {
   margin: 13.5px 0 18px; }
 
-.ko-agent-dropdown_create-case .ko-agent-dropdown-create-case__dropdown-user {
+.ko-agent-dropdown-create-case__dropdown-user {
   line-height: initial;
   padding: 4.5px 0; }
 
-.ko-agent-dropdown_create-case .ko-agent-dropdown-create-case__dropdown-user-image {
+.ko-agent-dropdown-create-case__dropdown-user-image {
   width: 30px;
   height: 30px;
   border-radius: 2px; }
 
-.ko-agent-dropdown_create-case .ember-power-select-option[aria-current="true"] .t-caption {
+.ember-power-select-option[aria-current="true"] .t-caption {
   color: white; }
 
 .ko-agent-dropdown_create-case__buttons {
