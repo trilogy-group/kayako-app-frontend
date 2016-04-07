@@ -70,6 +70,167 @@ define('frontend-cp/tests/acceptance/admin/automation/businesshours/edit-test', 
     });
   });
 });
+define('frontend-cp/tests/acceptance/admin/automation/case-triggers/index-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
+
+  var originalConfirm = undefined;
+
+  (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/automation/case-triggers/index', {
+    beforeEach: function beforeEach() {
+      var locale = server.create('locale', {
+        id: 1,
+        locale: 'en-us'
+      });
+
+      var adminRole = server.create('role', { type: 'ADMIN' });
+      var agent = server.create('user', { role: adminRole, locale: locale });
+      var session = server.create('session', { user: agent });
+      login(session.id);
+
+      server.create('plan', {
+        limits: [],
+        features: []
+      });
+      originalConfirm = window.confirm;
+    },
+
+    afterEach: function afterEach() {
+      window.confirm = originalConfirm;
+      logout();
+    }
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('deleting an enabled trigger field', function (assert) {
+    assert.expect(4);
+
+    server.create('trigger', { title: 'test trigger', is_enabled: true, execution_order: 1 });
+
+    visit('/admin/automation/case-triggers');
+
+    window.confirm = function (message) {
+      assert.equal(message, 'Are you sure you want to delete this?', 'The proper confirm message is shown');
+      return true;
+    };
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/case-triggers');
+      click('div[class*="ko-simple-list_row"]:contains("test trigger") a:contains(Delete)');
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/case-triggers');
+      assert.notOk(find('span:contains("test trigger")').length > 0);
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('disabled triggers cannot be deleted', function (assert) {
+    assert.expect(2);
+
+    server.create('trigger', { title: 'test trigger', is_enabled: false, execution_order: 1 });
+
+    visit('/admin/automation/case-triggers');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/case-triggers');
+      assert.notOk(find('div[class*="ko-simple-list_row"]:contains("test trigger") a:contains(Delete)').length > 0);
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('disabled triggers can be enabled', function (assert) {
+    assert.expect(6);
+
+    server.create('trigger', { title: 'test trigger', is_enabled: false, execution_order: 1 });
+
+    visit('/admin/automation/case-triggers');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/case-triggers');
+      assert.ok(find('.qa-admin_case-tiggers--enabled li').length === 0);
+      assert.ok(find('.qa-admin_case-tiggers--disabled').length === 1);
+      click('div[class*="ko-simple-list_row"]:contains("test trigger") a:contains(Enable)');
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/case-triggers');
+      assert.ok(find('.qa-admin_case-tiggers--enabled li').length === 1);
+      assert.ok(find('.qa-admin_case-tiggers--disabled').length === 0);
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('enabled triggers can be disabled', function (assert) {
+    assert.expect(6);
+
+    server.create('trigger', { title: 'test trigger', is_enabled: true, execution_order: 1 });
+
+    visit('/admin/automation/case-triggers');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/case-triggers');
+      assert.ok(find('.qa-admin_case-tiggers--enabled li').length === 1);
+      assert.ok(find('.qa-admin_case-tiggers--disabled').length === 0);
+      click('div[class*="ko-simple-list_row"]:contains("test trigger") a:contains(Disable)');
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/case-triggers');
+      assert.ok(find('.qa-admin_case-tiggers--enabled li').length === 0);
+      assert.ok(find('.qa-admin_case-tiggers--disabled').length === 1);
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('triggers are ordered by their execution order and then grouped by enabled and disabled', function (assert) {
+    assert.expect(6);
+
+    server.create('trigger', { title: 'test trigger 5', is_enabled: false, execution_order: 5 });
+    server.create('trigger', { title: 'test trigger 4', is_enabled: true, execution_order: 4 });
+    server.create('trigger', { title: 'test trigger 3', is_enabled: true, execution_order: 3 });
+    server.create('trigger', { title: 'test trigger 2', is_enabled: true, execution_order: 2 });
+    server.create('trigger', { title: 'test trigger 1', is_enabled: false, execution_order: 1 });
+
+    visit('/admin/automation/case-triggers');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/case-triggers');
+      assert.equal(find('.qa-admin_case-tiggers--enabled li:nth-of-type(1) .t-bold').text().trim(), 'test trigger 2');
+      assert.equal(find('.qa-admin_case-tiggers--enabled li:nth-of-type(2) .t-bold').text().trim(), 'test trigger 3');
+      assert.equal(find('.qa-admin_case-tiggers--enabled li:nth-of-type(3) .t-bold').text().trim(), 'test trigger 4');
+      assert.equal(find('.qa-admin_case-tiggers--disabled div.ko-simple-list_row:nth-of-type(2) .t-bold').text().trim(), 'test trigger 1');
+      assert.equal(find('.qa-admin_case-tiggers--disabled div.ko-simple-list_row:nth-of-type(3) .t-bold').text().trim(), 'test trigger 5');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('enabled triggers can be reordered', function (assert) {
+    assert.expect(11);
+
+    server.create('trigger', { title: 'test trigger 1', is_enabled: true, execution_order: 1 });
+    server.create('trigger', { title: 'test trigger 2', is_enabled: true, execution_order: 2 });
+    server.create('trigger', { title: 'test trigger 3', is_enabled: true, execution_order: 3 });
+    server.create('trigger', { title: 'test trigger 4', is_enabled: true, execution_order: 4 });
+    server.create('trigger', { title: 'test trigger 5', is_enabled: true, execution_order: 5 });
+
+    visit('/admin/automation/case-triggers');
+
+    scrollToBottomOfPage();
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/case-triggers');
+      assert.equal(find('.qa-admin_case-tiggers--enabled li:nth-of-type(1) .t-bold').text().trim(), 'test trigger 1');
+      assert.equal(find('.qa-admin_case-tiggers--enabled li:nth-of-type(2) .t-bold').text().trim(), 'test trigger 2');
+      assert.equal(find('.qa-admin_case-tiggers--enabled li:nth-of-type(3) .t-bold').text().trim(), 'test trigger 3');
+      assert.equal(find('.qa-admin_case-tiggers--enabled li:nth-of-type(4) .t-bold').text().trim(), 'test trigger 4');
+      assert.equal(find('.qa-admin_case-tiggers--enabled li:nth-of-type(5) .t-bold').text().trim(), 'test trigger 5');
+    });
+
+    reorderListItems('.i-dragstrip', '.t-bold', 'test trigger 5', 'test trigger 4', 'test trigger 3', 'test trigger 2', 'test trigger 1');
+
+    andThen(function () {
+      assert.equal(find('.qa-admin_case-tiggers--enabled li:nth-of-type(1) .t-bold').text().trim(), 'test trigger 5');
+      assert.equal(find('.qa-admin_case-tiggers--enabled li:nth-of-type(2) .t-bold').text().trim(), 'test trigger 4');
+      assert.equal(find('.qa-admin_case-tiggers--enabled li:nth-of-type(3) .t-bold').text().trim(), 'test trigger 3');
+      assert.equal(find('.qa-admin_case-tiggers--enabled li:nth-of-type(4) .t-bold').text().trim(), 'test trigger 2');
+      assert.equal(find('.qa-admin_case-tiggers--enabled li:nth-of-type(5) .t-bold').text().trim(), 'test trigger 1');
+    });
+  });
+});
 define('frontend-cp/tests/acceptance/admin/manage/case-fields/delete-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
 
   var originalConfirm = undefined;
@@ -9556,6 +9717,35 @@ define('frontend-cp/tests/helpers/reorder-inputs', ['exports', 'ember'], functio
   });
 });
 //unashamedly stolen from ember-sortable test helper
+define('frontend-cp/tests/helpers/reorder-list-items', ['exports', 'ember'], function (exports, _ember) {
+
+  var OVERSHOOT = 2;
+
+  exports['default'] = _ember['default'].Test.registerAsyncHelper('reorderListItems', function (app, itemSelector, elementSelector) {
+    for (var _len = arguments.length, resultSelectors = Array(_len > 3 ? _len - 3 : 0), _key = 3; _key < _len; _key++) {
+      resultSelectors[_key - 3] = arguments[_key];
+    }
+
+    resultSelectors.forEach(function (selector, targetIndex) {
+      andThen(function () {
+        var items = findWithAssert(itemSelector);
+        var element = items.filter(function (index, element) {
+          return $(element).parent().find(elementSelector).text().trim() === selector;
+        });
+        var targetElement = items.eq(targetIndex);
+        var dx = targetElement.offset().left - OVERSHOOT - element.offset().left;
+        var dy = targetElement.offset().top - OVERSHOOT - element.offset().top;
+
+        drag(element, function () {
+          return { dx: dx, dy: dy };
+        });
+      });
+    });
+
+    return wait();
+  });
+});
+//unashamedly stolen from ember-sortable test helper
 define('frontend-cp/tests/helpers/reorder', ['exports', 'ember'], function (exports, _ember) {
 
   var OVERSHOOT = 2;
@@ -9607,7 +9797,7 @@ define('frontend-cp/tests/helpers/setup-mirage-for-integration', ['exports', 'fr
 });
 //Work around until this is real
 //https://github.com/samselikoff/ember-cli-mirage/issues/183
-define('frontend-cp/tests/helpers/start-app', ['exports', 'ember', 'frontend-cp/app', 'frontend-cp/config/environment', 'frontend-cp/tests/helpers/login', 'frontend-cp/tests/helpers/native-click', 'frontend-cp/tests/helpers/fill-in-rich-text-editor', 'frontend-cp/tests/helpers/use-default-scenario', 'frontend-cp/tests/helpers/ember-power-select', 'frontend-cp/tests/helpers/reorder', 'frontend-cp/tests/helpers/reorder-inputs', 'frontend-cp/tests/helpers/confirming', 'frontend-cp/tests/helpers/drag', 'frontend-cp/tests/helpers/scroll-to-bottom-of-page', 'frontend-cp/tests/helpers/input-array-to-input-val-array', 'frontend-cp/tests/helpers/logout'], function (exports, _ember, _frontendCpApp, _frontendCpConfigEnvironment, _frontendCpTestsHelpersLogin, _frontendCpTestsHelpersNativeClick, _frontendCpTestsHelpersFillInRichTextEditor, _frontendCpTestsHelpersUseDefaultScenario, _frontendCpTestsHelpersEmberPowerSelect, _frontendCpTestsHelpersReorder, _frontendCpTestsHelpersReorderInputs, _frontendCpTestsHelpersConfirming, _frontendCpTestsHelpersDrag, _frontendCpTestsHelpersScrollToBottomOfPage, _frontendCpTestsHelpersInputArrayToInputValArray, _frontendCpTestsHelpersLogout) {
+define('frontend-cp/tests/helpers/start-app', ['exports', 'ember', 'frontend-cp/app', 'frontend-cp/config/environment', 'frontend-cp/tests/helpers/login', 'frontend-cp/tests/helpers/native-click', 'frontend-cp/tests/helpers/fill-in-rich-text-editor', 'frontend-cp/tests/helpers/use-default-scenario', 'frontend-cp/tests/helpers/ember-power-select', 'frontend-cp/tests/helpers/reorder', 'frontend-cp/tests/helpers/reorder-inputs', 'frontend-cp/tests/helpers/reorder-list-items', 'frontend-cp/tests/helpers/confirming', 'frontend-cp/tests/helpers/drag', 'frontend-cp/tests/helpers/scroll-to-bottom-of-page', 'frontend-cp/tests/helpers/input-array-to-input-val-array', 'frontend-cp/tests/helpers/logout'], function (exports, _ember, _frontendCpApp, _frontendCpConfigEnvironment, _frontendCpTestsHelpersLogin, _frontendCpTestsHelpersNativeClick, _frontendCpTestsHelpersFillInRichTextEditor, _frontendCpTestsHelpersUseDefaultScenario, _frontendCpTestsHelpersEmberPowerSelect, _frontendCpTestsHelpersReorder, _frontendCpTestsHelpersReorderInputs, _frontendCpTestsHelpersReorderListItems, _frontendCpTestsHelpersConfirming, _frontendCpTestsHelpersDrag, _frontendCpTestsHelpersScrollToBottomOfPage, _frontendCpTestsHelpersInputArrayToInputValArray, _frontendCpTestsHelpersLogout) {
   exports['default'] = startApp;
   // eslint-disable-line
 
@@ -9628,6 +9818,7 @@ define('frontend-cp/tests/helpers/start-app', ['exports', 'ember', 'frontend-cp/
     return application;
   }
 });
+// eslint-disable-line
 // eslint-disable-line
 // eslint-disable-line
 // eslint-disable-line

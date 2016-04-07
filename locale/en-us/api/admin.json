@@ -82,6 +82,13 @@
   "businesshours.holidays.addaholiday": "Add a Holiday",
   "businesshours.holidays.saveholiday": "Save Holiday",
 
+  "case_triggers.title": "Case Triggers",
+  "case_triggers.headings.index": "Case Triggers",
+  "case_triggers.buttons.add": "Add New",
+  "case_triggers.enabled.success_message": "Case trigger enabled successfully",
+  "case_triggers.disabled.success_message": "Case trigger disabled successfully",
+  "case_triggers.delete.success_message": "Case trigger deleted successfully",
+
   "teams.title": "Teams",
   "teams.agent": "{numAgents, plural, =1 {agent} other {agents}}",
   "teams.headings.index": "Teams",
