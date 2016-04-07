@@ -7213,7 +7213,7 @@ define('frontend-cp/tests/acceptance/agent/cases/create-test', ['exports', 'fron
     });
 
     andThen(function () {
-      nativeClick('.ko-agent-dropdown-create-case__input .ember-power-select');
+      nativeClick('.ko-agent-dropdown-create-case__input .ember-power-select-trigger');
     });
 
     andThen(function () {
@@ -9206,10 +9206,10 @@ define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'ember'], fun
     $selector[0].dispatchEvent(event);
   }
 
-  function nativeMouseDown(selectorOrDomElement) {
-    var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+  function fireNativeMouseEvent(eventType, selectorOrDomElement) {
+    var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
 
-    var event = new window.Event('mousedown', { bubbles: true, cancelable: true, view: window });
+    var event = new window.Event(eventType, { bubbles: true, cancelable: true, view: window });
     Object.keys(options).forEach(function (key) {
       return event[key] = options[key];
     });
@@ -9224,22 +9224,12 @@ define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'ember'], fun
     });
   }
 
-  function nativeMouseUp(selectorOrDomElement) {
-    var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+  function nativeMouseDown(selectorOrDomElement, options) {
+    fireNativeMouseEvent('mousedown', selectorOrDomElement, options);
+  }
 
-    var event = new window.Event('mouseup', { bubbles: true, cancelable: true, view: window });
-    Object.keys(options).forEach(function (key) {
-      return event[key] = options[key];
-    });
-    var target = undefined;
-    if (typeof selectorOrDomElement === 'string') {
-      target = _ember['default'].$(selectorOrDomElement)[0];
-    } else {
-      target = selectorOrDomElement;
-    }
-    _ember['default'].run(function () {
-      return target.dispatchEvent(event);
-    });
+  function nativeMouseUp(selectorOrDomElement, options) {
+    fireNativeMouseEvent('mouseup', selectorOrDomElement, options);
   }
 
   function triggerKeydown(domElement, k) {
@@ -9293,7 +9283,7 @@ define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'ember'], fun
         var potentialTargets = $('.ember-power-select-dropdown-ember' + id + ' .ember-power-select-option:contains("' + value + '")').toArray();
         var target = undefined;
         if (potentialTargets.length > 1) {
-          target = potentialTargets.find(function (t) {
+          target = _ember['default'].A(potentialTargets).find(function (t) {
             return t.textContent.trim() === value;
           }) || potentialTargets[0];
         } else {
