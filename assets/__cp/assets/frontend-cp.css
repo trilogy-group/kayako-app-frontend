@@ -2906,7 +2906,7 @@ img {
   max-height: 280px; }
 
 .ko-case-content_field_post__editor-overlay {
-  padding: 0 15px 9px 15px;
+  padding: 0 15px 0 15px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -5528,7 +5528,7 @@ span#HW_badge.HW_softHidden {
   border-bottom: 1px solid #CFD4D8; }
 
 .ko-text-editor__dropzone-and-editor-container--social {
-  padding-bottom: 40px;
+  padding-bottom: 9px;
   max-height: 320px;
   border-bottom: 1px solid #CFD4D8; }
 
