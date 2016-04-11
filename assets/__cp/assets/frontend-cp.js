@@ -79370,7 +79370,7 @@ define('frontend-cp/services/error-handler', ['exports', 'ember'], function (exp
         FIELD_REQUIRED: this.get('formInvalidStrategy'),
         FIELD_EMPTY: this.get('formInvalidStrategy'),
         AUTHENTICATION_FAILED: null,
-        SESSION_LOADING_FAILED: this.get('sessionLoadingFailedStrategy'),
+        AUTHORIZATION_REQUIRED: this.get('sessionLoadingFailedStrategy'),
         NOTIFICATION: this.get('notificationStrategy'),
         PERMISSIONS_DENIED: this.get('permissionDeniedStrategy'),
         RESOURCE_NOT_FOUND: this.get('resourceNotFoundStrategy'),
@@ -101296,7 +101296,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"viewingUsersInactiveThreshold":300000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":60,"casesPollingInterval":60,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+364f6578"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"viewingUsersInactiveThreshold":300000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":60,"casesPollingInterval":60,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+a9ec11c2"});
 }
 
 /* jshint ignore:end */
