@@ -13443,14 +13443,14 @@ define('frontend-cp/tests/unit/services/error-handler-test', ['exports', 'ember'
     assert.equal(globalProcessedCount, 0, 'Processed count should be zero as AUTHENTICATION_FAILED does not have separate handler.');
   });
 
-  (0, _emberQunit.test)('it will logout and send notification on SESSION_LOADING_FAILED error', function (assert) {
+  (0, _emberQunit.test)('it will logout and send notification on AUTHORIZATION_REQUIRED error', function (assert) {
     assert.expect(5);
 
     var service = this.subject();
 
     var error = {
       errors: [{
-        code: 'SESSION_LOADING_FAILED',
+        code: 'AUTHORIZATION_REQUIRED',
         message: '',
         more_info: ''
       }]
@@ -13459,7 +13459,7 @@ define('frontend-cp/tests/unit/services/error-handler-test', ['exports', 'ember'
     var strategies = service.get('strategies');
 
     _ember['default'].run(function () {
-      strategies.SESSION_LOADING_FAILED.set('session', _frontendCpServicesSession['default'].create({
+      strategies.AUTHORIZATION_REQUIRED.set('session', _frontendCpServicesSession['default'].create({
         logout: function logout() {
           assert.ok(true);
 
@@ -13467,7 +13467,7 @@ define('frontend-cp/tests/unit/services/error-handler-test', ['exports', 'ember'
         }
       }));
 
-      strategies.SESSION_LOADING_FAILED.get('notification').reopen({
+      strategies.AUTHORIZATION_REQUIRED.get('notification').reopen({
         add: function add(object) {
           assert.equal('error', object.type);
           assert.equal('user_logged_out', object.title);
@@ -13506,7 +13506,7 @@ define('frontend-cp/tests/unit/services/error-handler-test', ['exports', 'ember'
     var strategies = service.get('strategies');
 
     _ember['default'].run(function () {
-      strategies.SESSION_LOADING_FAILED.get('session').reopen({
+      strategies.AUTHORIZATION_REQUIRED.get('session').reopen({
         logout: function logout() {
           return _ember['default'].RSVP.Promise.resolve();
         }
@@ -13548,7 +13548,7 @@ define('frontend-cp/tests/unit/services/error-handler-test', ['exports', 'ember'
     var strategies = service.get('strategies');
 
     _ember['default'].run(function () {
-      strategies.SESSION_LOADING_FAILED.get('session').reopen({
+      strategies.AUTHORIZATION_REQUIRED.get('session').reopen({
         logout: function logout() {
           return _ember['default'].RSVP.Promise.resolve();
         }
@@ -13591,7 +13591,7 @@ define('frontend-cp/tests/unit/services/error-handler-test', ['exports', 'ember'
     var strategies = service.get('strategies');
 
     _ember['default'].run(function () {
-      strategies.SESSION_LOADING_FAILED.get('session').reopen({
+      strategies.AUTHORIZATION_REQUIRED.get('session').reopen({
         logout: function logout() {
           return _ember['default'].RSVP.Promise.resolve();
         }
@@ -13628,7 +13628,7 @@ define('frontend-cp/tests/unit/services/error-handler-test', ['exports', 'ember'
     var strategies = service.get('strategies');
 
     _ember['default'].run(function () {
-      strategies.SESSION_LOADING_FAILED.get('session').reopen({
+      strategies.AUTHORIZATION_REQUIRED.get('session').reopen({
         logout: function logout() {
           return _ember['default'].RSVP.Promise.resolve();
         }
