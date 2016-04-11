@@ -1363,6 +1363,7 @@ textarea {
   border-radius: 2px;
   background-color: #ffffff;
   line-height: 2;
+  overflow-x: hidden;
   text-overflow: ellipsis;
   min-height: 2em;
   -moz-user-select: none;
@@ -6778,6 +6779,9 @@ span#HW_badge.HW_softHidden {
   padding: 6px 0;
   margin-top: 3px; }
 
+._dropdown_1ovczd .ember-power-select-options {
+  overflow-x: hidden; }
+
 ._dropdown_1ovczd .ember-power-select-option {
   font-size: 14px;
   line-height: 22px;
@@ -6870,12 +6874,27 @@ span#HW_badge.HW_softHidden {
 ._select--medium_yahmzy {
   width: 225px; }
 
+._ko-select-typeahead-trigger_yahmzy {
+  min-height: inherit; }
+
 /* styles for frontend-cp/components/ko-select/trigger/styles.css */
 ._input_plyl15 {
   outline: none;
   border: none;
   width: 100%;
   padding: 0;
+  line-height: 28px; }
+
+/* styles for frontend-cp/components/ko-select/typeahead-trigger/styles.css */
+._wrapper_13g081 {
+  margin-left: -9px;
+  margin-right: -18px; }
+
+._input_13g081 {
+  outline: none;
+  border: none;
+  width: 100%;
+  padding: 0 0 0 5px;
   line-height: 28px; }
 
 /* styles for frontend-cp/components/ko-admin/forms/group/styles.css */
