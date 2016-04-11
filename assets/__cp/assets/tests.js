@@ -1477,7 +1477,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-types-test'
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
+define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/tests/helpers/dom-helpers'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpTestsHelpersDomHelpers) {
 
   var originalConfirm = window.confirm;
 
@@ -1506,6 +1506,8 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new text field', function (assert) {
+    assert.expect(9);
+
     window.confirm = function () {
       return assert.ok(false, 'dialogue not expected to be shown');
     };
@@ -1519,12 +1521,17 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields/new/TEXT');
       assert.equal(find('.qa-admin_case-fields_edit__api-key').length, 0);
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Case Fields / Text / New', 'Edit form default title is correct');
 
       fillIn('input[name=title]', fieldTitle);
 
       click('div .ko-checkbox:contains(Customers can see this field) div');
       fillIn('input[name=customerTitle]', customerTitle);
       fillIn('textarea[name=description]', description);
+    });
+
+    andThen(function () {
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Case Fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -1543,6 +1550,8 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new text area field', function (assert) {
+    assert.expect(7);
+
     window.confirm = function () {
       return assert.ok(false, 'dialogue not expected to be shown');
     };
@@ -1555,12 +1564,17 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields/new/TEXTAREA');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Case Fields / Multi-line Text / New', 'Edit form default title is correct');
 
       fillIn('input[name=title]', fieldTitle);
 
       click('div .ko-checkbox:contains(Customers can see this field) div');
       fillIn('input[name=customerTitle]', customerTitle);
       fillIn('textarea[name=description]', description);
+    });
+
+    andThen(function () {
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Case Fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -1578,6 +1592,8 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new radio field', function (assert) {
+    assert.expect(11);
+
     window.confirm = function () {
       return assert.ok(false, 'dialogue not expected to be shown');
     };
@@ -1594,6 +1610,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields/new/RADIO');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Case Fields / Radio box (single choice) / New', 'Edit form default title is correct');
 
       fillIn('input[name=title]', fieldTitle);
 
@@ -1607,6 +1624,10 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
       click('.i-add-circle');
       fillIn('.ko-reorderable-list-item:last input:first', option2Title);
       fillIn('.ko-reorderable-list-item:last input:last', option2Tag);
+    });
+
+    andThen(function () {
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Case Fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -1628,6 +1649,8 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new dropdown box field', function (assert) {
+    assert.expect(11);
+
     window.confirm = function () {
       return assert.ok(false, 'dialogue not expected to be shown');
     };
@@ -1644,6 +1667,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields/new/SELECT');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Case Fields / Dropdown box (single choice) / New', 'Edit form default title is correct');
 
       fillIn('input[name=title]', fieldTitle);
 
@@ -1657,6 +1681,10 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
       click('.i-add-circle');
       fillIn('.ko-reorderable-list-item:last input:first', option2Title);
       fillIn('.ko-reorderable-list-item:last input:last', option2Tag);
+    });
+
+    andThen(function () {
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Case Fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -1678,6 +1706,8 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new checkbox field', function (assert) {
+    assert.expect(11);
+
     window.confirm = function () {
       return assert.ok(false, 'dialogue not expected to be shown');
     };
@@ -1694,6 +1724,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields/new/CHECKBOX');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Case Fields / Checkbox (multi choice) / New', 'Edit form default title is correct');
 
       fillIn('input[name=title]', fieldTitle);
 
@@ -1707,6 +1738,10 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
       click('.i-add-circle');
       fillIn('.ko-reorderable-list-item:last input:first', option2Title);
       fillIn('.ko-reorderable-list-item:last input:last', option2Tag);
+    });
+
+    andThen(function () {
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Case Fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -1728,6 +1763,8 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new numeric field', function (assert) {
+    assert.expect(7);
+
     window.confirm = function () {
       return assert.ok(false, 'dialogue not expected to be shown');
     };
@@ -1740,12 +1777,17 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields/new/NUMERIC');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Case Fields / Numeric / New', 'Edit form default title is correct');
 
       fillIn('input[name=title]', fieldTitle);
 
       click('div .ko-checkbox:contains(Customers can see this field) div');
       fillIn('input[name=customerTitle]', customerTitle);
       fillIn('textarea[name=description]', description);
+    });
+
+    andThen(function () {
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Case Fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -1763,6 +1805,8 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new decimal field', function (assert) {
+    assert.expect(7);
+
     window.confirm = function () {
       return assert.ok(false, 'dialogue not expected to be shown');
     };
@@ -1775,12 +1819,17 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields/new/DECIMAL');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Case Fields / Decimal / New', 'Edit form default title is correct');
 
       fillIn('input[name=title]', fieldTitle);
 
       click('div .ko-checkbox:contains(Customers can see this field) div');
       fillIn('input[name=customerTitle]', customerTitle);
       fillIn('textarea[name=description]', description);
+    });
+
+    andThen(function () {
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Case Fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -1798,6 +1847,8 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new file field', function (assert) {
+    assert.expect(7);
+
     window.confirm = function () {
       return assert.ok(false, 'dialogue not expected to be shown');
     };
@@ -1810,12 +1861,17 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields/new/FILE');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Case Fields / File / New', 'Edit form default title is correct');
 
       fillIn('input[name=title]', fieldTitle);
 
       click('div .ko-checkbox:contains(Customers can see this field) div');
       fillIn('input[name=customerTitle]', customerTitle);
       fillIn('textarea[name=description]', description);
+    });
+
+    andThen(function () {
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Case Fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -1833,6 +1889,8 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new yes/no toggle field', function (assert) {
+    assert.expect(7);
+
     window.confirm = function () {
       return assert.ok(false, 'dialogue not expected to be shown');
     };
@@ -1845,12 +1903,17 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields/new/YESNO');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Case Fields / Yes or no toggle / New', 'Edit form default title is correct');
 
       fillIn('input[name=title]', fieldTitle);
 
       click('div .ko-checkbox:contains(Customers can see this field) div');
       fillIn('input[name=customerTitle]', customerTitle);
       fillIn('textarea[name=description]', description);
+    });
+
+    andThen(function () {
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Case Fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -1868,6 +1931,8 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new cascading select field', function (assert) {
+    assert.expect(11);
+
     window.confirm = function () {
       return assert.ok(false, 'dialogue not expected to be shown');
     };
@@ -1884,6 +1949,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields/new/CASCADINGSELECT');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Case Fields / Cascading select / New', 'Edit form default title is correct');
 
       fillIn('input[name=title]', fieldTitle);
 
@@ -1897,6 +1963,10 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
       click('.i-add-circle');
       fillIn('.ko-reorderable-list-item:last input:first', option2Title);
       fillIn('.ko-reorderable-list-item:last input:last', option2Tag);
+    });
+
+    andThen(function () {
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Case Fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -1918,6 +1988,8 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new date field', function (assert) {
+    assert.expect(7);
+
     window.confirm = function () {
       return assert.ok(false, 'dialogue not expected to be shown');
     };
@@ -1930,12 +2002,17 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields/new/DATE');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Case Fields / Date / New', 'Edit form default title is correct');
 
       fillIn('input[name=title]', fieldTitle);
 
       click('div .ko-checkbox:contains(Customers can see this field) div');
       fillIn('input[name=customerTitle]', customerTitle);
       fillIn('textarea[name=description]', description);
+    });
+
+    andThen(function () {
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Case Fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -1953,6 +2030,8 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new regular expression field', function (assert) {
+    assert.expect(8);
+
     window.confirm = function () {
       return assert.ok(false, 'dialogue not expected to be shown');
     };
@@ -1966,6 +2045,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields/new/REGEX');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Case Fields / Regular expression / New', 'Edit form default title is correct');
 
       fillIn('input[name=title]', fieldTitle);
 
@@ -1974,6 +2054,10 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
       fillIn('textarea[name=description]', description);
 
       fillIn('input[name=regex]', regEx);
+    });
+
+    andThen(function () {
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Case Fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -4374,7 +4458,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
+define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/tests/helpers/dom-helpers'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpTestsHelpersDomHelpers) {
 
   var originalConfirm = window.confirm;
 
@@ -4403,6 +4487,8 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new text field', function (assert) {
+    assert.expect(9);
+
     window.confirm = function () {
       return assert.ok(false, 'dialogue not expected to be shown');
     };
@@ -4416,12 +4502,17 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields/new/TEXT');
       assert.equal(find('.qa-admin_case-fields_edit__api-key').length, 0);
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Organization Fields / Text / New', 'Edit form default title is correct');
 
       fillIn('input[name=title]', fieldTitle);
 
       click('div .ko-checkbox:contains(Customers can see this field) div');
       fillIn('input[name=customerTitle]', customerTitle);
       fillIn('textarea[name=description]', description);
+    });
+
+    andThen(function () {
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Organization Fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -4440,6 +4531,8 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new text area field', function (assert) {
+    assert.expect(7);
+
     window.confirm = function () {
       return assert.ok(false, 'dialogue not expected to be shown');
     };
@@ -4452,12 +4545,17 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields/new/TEXTAREA');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Organization Fields / Multi-line Text / New', 'Edit form default title is correct');
 
       fillIn('input[name=title]', fieldTitle);
 
       click('div .ko-checkbox:contains(Customers can see this field) div');
       fillIn('input[name=customerTitle]', customerTitle);
       fillIn('textarea[name=description]', description);
+    });
+
+    andThen(function () {
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Organization Fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -4475,6 +4573,8 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new radio field', function (assert) {
+    assert.expect(11);
+
     window.confirm = function () {
       return assert.ok(false, 'dialogue not expected to be shown');
     };
@@ -4491,6 +4591,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields/new/RADIO');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Organization Fields / Radio box (single choice) / New', 'Edit form default title is correct');
 
       fillIn('input[name=title]', fieldTitle);
 
@@ -4504,6 +4605,10 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
       click('.i-add-circle');
       fillIn('.ko-reorderable-list-item:last input:first', option2Title);
       fillIn('.ko-reorderable-list-item:last input:last', option2Tag);
+    });
+
+    andThen(function () {
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Organization Fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -4525,6 +4630,8 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new dropdown box field', function (assert) {
+    assert.expect(11);
+
     window.confirm = function () {
       return assert.ok(false, 'dialogue not expected to be shown');
     };
@@ -4541,6 +4648,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields/new/SELECT');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Organization Fields / Dropdown box (single choice) / New', 'Edit form default title is correct');
 
       fillIn('input[name=title]', fieldTitle);
 
@@ -4554,6 +4662,10 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
       click('.i-add-circle');
       fillIn('.ko-reorderable-list-item:last input:first', option2Title);
       fillIn('.ko-reorderable-list-item:last input:last', option2Tag);
+    });
+
+    andThen(function () {
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Organization Fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -4575,6 +4687,8 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new checkbox field', function (assert) {
+    assert.expect(11);
+
     window.confirm = function () {
       return assert.ok(false, 'dialogue not expected to be shown');
     };
@@ -4591,6 +4705,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields/new/CHECKBOX');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Organization Fields / Checkbox (multi choice) / New', 'Edit form default title is correct');
 
       fillIn('input[name=title]', fieldTitle);
 
@@ -4604,6 +4719,10 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
       click('.i-add-circle');
       fillIn('.ko-reorderable-list-item:last input:first', option2Title);
       fillIn('.ko-reorderable-list-item:last input:last', option2Tag);
+    });
+
+    andThen(function () {
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Organization Fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -4625,6 +4744,8 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new numeric field', function (assert) {
+    assert.expect(7);
+
     window.confirm = function () {
       return assert.ok(false, 'dialogue not expected to be shown');
     };
@@ -4637,12 +4758,17 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields/new/NUMERIC');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Organization Fields / Numeric / New', 'Edit form default title is correct');
 
       fillIn('input[name=title]', fieldTitle);
 
       click('div .ko-checkbox:contains(Customers can see this field) div');
       fillIn('input[name=customerTitle]', customerTitle);
       fillIn('textarea[name=description]', description);
+    });
+
+    andThen(function () {
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Organization Fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -4660,6 +4786,8 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new decimal field', function (assert) {
+    assert.expect(7);
+
     window.confirm = function () {
       return assert.ok(false, 'dialogue not expected to be shown');
     };
@@ -4672,12 +4800,17 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields/new/DECIMAL');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Organization Fields / Decimal / New', 'Edit form default title is correct');
 
       fillIn('input[name=title]', fieldTitle);
 
       click('div .ko-checkbox:contains(Customers can see this field) div');
       fillIn('input[name=customerTitle]', customerTitle);
       fillIn('textarea[name=description]', description);
+    });
+
+    andThen(function () {
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Organization Fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -4695,6 +4828,8 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new file field', function (assert) {
+    assert.expect(7);
+
     window.confirm = function () {
       return assert.ok(false, 'dialogue not expected to be shown');
     };
@@ -4707,12 +4842,17 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields/new/FILE');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Organization Fields / File / New', 'Edit form default title is correct');
 
       fillIn('input[name=title]', fieldTitle);
 
       click('div .ko-checkbox:contains(Customers can see this field) div');
       fillIn('input[name=customerTitle]', customerTitle);
       fillIn('textarea[name=description]', description);
+    });
+
+    andThen(function () {
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Organization Fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -4730,6 +4870,8 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new yes/no toggle field', function (assert) {
+    assert.expect(7);
+
     window.confirm = function () {
       return assert.ok(false, 'dialogue not expected to be shown');
     };
@@ -4742,12 +4884,17 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields/new/YESNO');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Organization Fields / Yes or no toggle / New', 'Edit form default title is correct');
 
       fillIn('input[name=title]', fieldTitle);
 
       click('div .ko-checkbox:contains(Customers can see this field) div');
       fillIn('input[name=customerTitle]', customerTitle);
       fillIn('textarea[name=description]', description);
+    });
+
+    andThen(function () {
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Organization Fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -4765,6 +4912,8 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new cascading select field', function (assert) {
+    assert.expect(11);
+
     window.confirm = function () {
       return assert.ok(false, 'dialogue not expected to be shown');
     };
@@ -4781,6 +4930,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields/new/CASCADINGSELECT');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Organization Fields / Cascading select / New', 'Edit form default title is correct');
 
       fillIn('input[name=title]', fieldTitle);
 
@@ -4794,6 +4944,10 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
       click('.i-add-circle');
       fillIn('.ko-reorderable-list-item:last input:first', option2Title);
       fillIn('.ko-reorderable-list-item:last input:last', option2Tag);
+    });
+
+    andThen(function () {
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Organization Fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -4815,6 +4969,8 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new date field', function (assert) {
+    assert.expect(7);
+
     window.confirm = function () {
       return assert.ok(false, 'dialogue not expected to be shown');
     };
@@ -4827,12 +4983,17 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields/new/DATE');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Organization Fields / Date / New', 'Edit form default title is correct');
 
       fillIn('input[name=title]', fieldTitle);
 
       click('div .ko-checkbox:contains(Customers can see this field) div');
       fillIn('input[name=customerTitle]', customerTitle);
       fillIn('textarea[name=description]', description);
+    });
+
+    andThen(function () {
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Organization Fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -4850,6 +5011,8 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new regular expression field', function (assert) {
+    assert.expect(8);
+
     window.confirm = function () {
       return assert.ok(false, 'dialogue not expected to be shown');
     };
@@ -4863,6 +5026,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields/new/REGEX');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Organization Fields / Regular expression / New', 'Edit form default title is correct');
 
       fillIn('input[name=title]', fieldTitle);
 
@@ -4871,6 +5035,10 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
       fillIn('textarea[name=description]', description);
 
       fillIn('input[name=regex]', regEx);
+    });
+
+    andThen(function () {
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Organization Fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -6467,7 +6635,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
+define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/tests/helpers/dom-helpers'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpTestsHelpersDomHelpers) {
 
   var originalConfirm = window.confirm;
 
@@ -6496,6 +6664,8 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new text field', function (assert) {
+    assert.expect(9);
+
     window.confirm = function () {
       return assert.ok(false, 'dialogue not expected to be shown');
     };
@@ -6509,12 +6679,17 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields/new/TEXT');
       assert.equal(find('.qa-admin_case-fields_edit__api-key').length, 0);
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'User Fields / Text / New', 'Edit form default title is correct');
 
       fillIn('input[name=title]', fieldTitle);
 
       click('div .ko-checkbox:contains(Customers can see this field) div');
       fillIn('input[name=customerTitle]', customerTitle);
       fillIn('textarea[name=description]', description);
+    });
+
+    andThen(function () {
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'User Fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -6533,6 +6708,8 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new text area field', function (assert) {
+    assert.expect(7);
+
     window.confirm = function () {
       return assert.ok(false, 'dialogue not expected to be shown');
     };
@@ -6545,12 +6722,17 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields/new/TEXTAREA');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'User Fields / Multi-line Text / New', 'Edit form default title is correct');
 
       fillIn('input[name=title]', fieldTitle);
 
       click('div .ko-checkbox:contains(Customers can see this field) div');
       fillIn('input[name=customerTitle]', customerTitle);
       fillIn('textarea[name=description]', description);
+    });
+
+    andThen(function () {
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'User Fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -6568,6 +6750,8 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new radio field', function (assert) {
+    assert.expect(11);
+
     window.confirm = function () {
       return assert.ok(false, 'dialogue not expected to be shown');
     };
@@ -6584,6 +6768,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields/new/RADIO');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'User Fields / Radio box (single choice) / New', 'Edit form default title is correct');
 
       fillIn('input[name=title]', fieldTitle);
 
@@ -6597,6 +6782,10 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
       click('.i-add-circle');
       fillIn('.ko-reorderable-list-item:last input:first', option2Title);
       fillIn('.ko-reorderable-list-item:last input:last', option2Tag);
+    });
+
+    andThen(function () {
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'User Fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -6618,6 +6807,8 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new dropdown box field', function (assert) {
+    assert.expect(11);
+
     window.confirm = function () {
       return assert.ok(false, 'dialogue not expected to be shown');
     };
@@ -6634,6 +6825,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields/new/SELECT');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'User Fields / Dropdown box (single choice) / New', 'Edit form default title is correct');
 
       fillIn('input[name=title]', fieldTitle);
 
@@ -6647,6 +6839,10 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
       click('.i-add-circle');
       fillIn('.ko-reorderable-list-item:last input:first', option2Title);
       fillIn('.ko-reorderable-list-item:last input:last', option2Tag);
+    });
+
+    andThen(function () {
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'User Fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -6668,6 +6864,8 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new checkbox field', function (assert) {
+    assert.expect(11);
+
     window.confirm = function () {
       return assert.ok(false, 'dialogue not expected to be shown');
     };
@@ -6684,6 +6882,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields/new/CHECKBOX');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'User Fields / Checkbox (multi choice) / New', 'Edit form default title is correct');
 
       fillIn('input[name=title]', fieldTitle);
 
@@ -6697,6 +6896,10 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
       click('.i-add-circle');
       fillIn('.ko-reorderable-list-item:last input:first', option2Title);
       fillIn('.ko-reorderable-list-item:last input:last', option2Tag);
+    });
+
+    andThen(function () {
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'User Fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -6718,6 +6921,8 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new numeric field', function (assert) {
+    assert.expect(7);
+
     window.confirm = function () {
       return assert.ok(false, 'dialogue not expected to be shown');
     };
@@ -6730,12 +6935,17 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields/new/NUMERIC');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'User Fields / Numeric / New', 'Edit form default title is correct');
 
       fillIn('input[name=title]', fieldTitle);
 
       click('div .ko-checkbox:contains(Customers can see this field) div');
       fillIn('input[name=customerTitle]', customerTitle);
       fillIn('textarea[name=description]', description);
+    });
+
+    andThen(function () {
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'User Fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -6753,6 +6963,8 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new decimal field', function (assert) {
+    assert.expect(7);
+
     window.confirm = function () {
       return assert.ok(false, 'dialogue not expected to be shown');
     };
@@ -6765,12 +6977,17 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields/new/DECIMAL');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'User Fields / Decimal / New', 'Edit form default title is correct');
 
       fillIn('input[name=title]', fieldTitle);
 
       click('div .ko-checkbox:contains(Customers can see this field) div');
       fillIn('input[name=customerTitle]', customerTitle);
       fillIn('textarea[name=description]', description);
+    });
+
+    andThen(function () {
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'User Fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -6788,6 +7005,8 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new file field', function (assert) {
+    assert.expect(7);
+
     window.confirm = function () {
       return assert.ok(false, 'dialogue not expected to be shown');
     };
@@ -6800,12 +7019,17 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields/new/FILE');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'User Fields / File / New', 'Edit form default title is correct');
 
       fillIn('input[name=title]', fieldTitle);
 
       click('div .ko-checkbox:contains(Customers can see this field) div');
       fillIn('input[name=customerTitle]', customerTitle);
       fillIn('textarea[name=description]', description);
+    });
+
+    andThen(function () {
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'User Fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -6823,6 +7047,8 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new yes/no toggle field', function (assert) {
+    assert.expect(7);
+
     window.confirm = function () {
       return assert.ok(false, 'dialogue not expected to be shown');
     };
@@ -6835,12 +7061,17 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields/new/YESNO');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'User Fields / Yes or no toggle / New', 'Edit form default title is correct');
 
       fillIn('input[name=title]', fieldTitle);
 
       click('div .ko-checkbox:contains(Customers can see this field) div');
       fillIn('input[name=customerTitle]', customerTitle);
       fillIn('textarea[name=description]', description);
+    });
+
+    andThen(function () {
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'User Fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -6858,6 +7089,8 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new cascading select field', function (assert) {
+    assert.expect(11);
+
     window.confirm = function () {
       return assert.ok(false, 'dialogue not expected to be shown');
     };
@@ -6874,6 +7107,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields/new/CASCADINGSELECT');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'User Fields / Cascading select / New', 'Edit form default title is correct');
 
       fillIn('input[name=title]', fieldTitle);
 
@@ -6887,6 +7121,10 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
       click('.i-add-circle');
       fillIn('.ko-reorderable-list-item:last input:first', option2Title);
       fillIn('.ko-reorderable-list-item:last input:last', option2Tag);
+    });
+
+    andThen(function () {
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'User Fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -6908,6 +7146,8 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new date field', function (assert) {
+    assert.expect(7);
+
     window.confirm = function () {
       return assert.ok(false, 'dialogue not expected to be shown');
     };
@@ -6920,12 +7160,17 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields/new/DATE');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'User Fields / Date / New', 'Edit form default title is correct');
 
       fillIn('input[name=title]', fieldTitle);
 
       click('div .ko-checkbox:contains(Customers can see this field) div');
       fillIn('input[name=customerTitle]', customerTitle);
       fillIn('textarea[name=description]', description);
+    });
+
+    andThen(function () {
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'User Fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -6943,6 +7188,8 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new regular expression field', function (assert) {
+    assert.expect(8);
+
     window.confirm = function () {
       return assert.ok(false, 'dialogue not expected to be shown');
     };
@@ -6956,6 +7203,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields/new/REGEX');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'User Fields / Regular expression / New', 'Edit form default title is correct');
 
       fillIn('input[name=title]', fieldTitle);
 
@@ -6964,6 +7212,10 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
       fillIn('textarea[name=description]', description);
 
       fillIn('input[name=regex]', regEx);
+    });
+
+    andThen(function () {
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'User Fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -9252,6 +9504,13 @@ define('frontend-cp/tests/helpers/destroy-app', ['exports', 'ember'], function (
   function destroyApp(application) {
     _ember['default'].run(application, 'destroy');
   }
+});
+define('frontend-cp/tests/helpers/dom-helpers', ['exports'], function (exports) {
+  function text(selector) {
+    return $.trim($(selector).text()).replace(/\s+/g, ' ');
+  }
+
+  exports.text = text;
 });
 define('frontend-cp/tests/helpers/drag', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = _ember['default'].Test.registerAsyncHelper('drag', function (app, itemSelector, offsetFn) {

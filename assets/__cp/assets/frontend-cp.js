@@ -85952,7 +85952,7 @@ define('frontend-cp/session/admin/manage/case-fields/new/controller', ['exports'
     queryParams: ['caseFieldType'],
     caseFieldType: null,
 
-    title: _ember['default'].computed('model', function () {
+    title: _ember['default'].computed('model.title', function () {
       return this.get('customFields').getTitleBreadcrumbs(this.get('model'));
     }),
 
@@ -90526,7 +90526,7 @@ define('frontend-cp/session/admin/people/organization-fields/new/controller', ['
     queryParams: ['organizationFieldType'],
     organizationFieldType: null,
 
-    title: _ember['default'].computed('model', function () {
+    title: _ember['default'].computed('model.title', function () {
       return this.get('customFields').getTitleBreadcrumbs(this.get('model'));
     }),
 
@@ -92437,7 +92437,7 @@ define('frontend-cp/session/admin/people/user-fields/new/controller', ['exports'
     queryParams: ['userFieldType'],
     userFieldType: null,
 
-    title: _ember['default'].computed('model', function () {
+    title: _ember['default'].computed('model.title', function () {
       return this.get('customFields').getTitleBreadcrumbs(this.get('model'));
     }),
 
@@ -101259,7 +101259,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"viewingUsersInactiveThreshold":300000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":60,"casesPollingInterval":60,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+9a0c96a7"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"viewingUsersInactiveThreshold":300000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":60,"casesPollingInterval":60,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+9bbabed4"});
 }
 
 /* jshint ignore:end */
