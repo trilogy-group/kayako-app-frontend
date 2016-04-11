@@ -54395,8 +54395,12 @@ define('frontend-cp/components/ko-select/component', ['exports', 'ember'], funct
     },
 
     // CPs
-    isTypeahead: computed('options', function () {
-      return this.get('options') === null;
+    triggerComponent: computed('options', function () {
+      if (this.get('options') === null) {
+        return 'ko-select/typeahead-trigger';
+      } else {
+        return 'ko-select/trigger';
+      }
     })
   });
 });
@@ -55410,6 +55414,7 @@ define("frontend-cp/components/ko-select/styles", ["exports", "ember-css-modules
     "select": "_select_yahmzy",
     "select--medium": "_select--medium_yahmzy",
     "trigger": "_trigger_yahmzy _trigger_1ovczd _statusIcon_1ovczd",
+    "ko-select-typeahead-trigger": "_ko-select-typeahead-trigger_yahmzy",
     "trigger--focused": "_trigger--focused_yahmzy _trigger--focused_1ovczd",
     "dropdown": "_dropdown_yahmzy _dropdown_1ovczd"
   });
@@ -55425,11 +55430,11 @@ define("frontend-cp/components/ko-select/template", ["exports"], function (expor
             "loc": {
               "source": null,
               "start": {
-                "line": 24,
+                "line": 23,
                 "column": 2
               },
               "end": {
-                "line": 26,
+                "line": 25,
                 "column": 2
               }
             },
@@ -55454,7 +55459,7 @@ define("frontend-cp/components/ko-select/template", ["exports"], function (expor
             morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
             return morphs;
           },
-          statements: [["inline", "yield", [["get", "option", ["loc", [null, [25, 12], [25, 18]]]]], [], ["loc", [null, [25, 4], [25, 20]]]]],
+          statements: [["inline", "yield", [["get", "option", ["loc", [null, [24, 12], [24, 18]]]]], [], ["loc", [null, [24, 4], [24, 20]]]]],
           locals: [],
           templates: []
         };
@@ -55467,11 +55472,11 @@ define("frontend-cp/components/ko-select/template", ["exports"], function (expor
             "loc": {
               "source": null,
               "start": {
-                "line": 26,
+                "line": 25,
                 "column": 2
               },
               "end": {
-                "line": 28,
+                "line": 27,
                 "column": 2
               }
             },
@@ -55496,7 +55501,7 @@ define("frontend-cp/components/ko-select/template", ["exports"], function (expor
             morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
             return morphs;
           },
-          statements: [["inline", "get", [["get", "option", ["loc", [null, [27, 10], [27, 16]]]], ["get", "searchField", ["loc", [null, [27, 17], [27, 28]]]]], [], ["loc", [null, [27, 4], [27, 30]]]]],
+          statements: [["inline", "get", [["get", "option", ["loc", [null, [26, 10], [26, 16]]]], ["get", "searchField", ["loc", [null, [26, 17], [26, 28]]]]], [], ["loc", [null, [26, 4], [26, 30]]]]],
           locals: [],
           templates: []
         };
@@ -55515,7 +55520,7 @@ define("frontend-cp/components/ko-select/template", ["exports"], function (expor
               "column": 0
             },
             "end": {
-              "line": 29,
+              "line": 28,
               "column": 0
             }
           },
@@ -55538,7 +55543,7 @@ define("frontend-cp/components/ko-select/template", ["exports"], function (expor
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [["block", "if", [["get", "hasBlock", ["loc", [null, [24, 8], [24, 16]]]]], [], 0, 1, ["loc", [null, [24, 2], [28, 9]]]]],
+        statements: [["block", "if", [["get", "hasBlock", ["loc", [null, [23, 8], [23, 16]]]]], [], 0, 1, ["loc", [null, [23, 2], [27, 9]]]]],
         locals: ["option"],
         templates: [child0, child1]
       };
@@ -55557,7 +55562,7 @@ define("frontend-cp/components/ko-select/template", ["exports"], function (expor
             "column": 0
           },
           "end": {
-            "line": 30,
+            "line": 29,
             "column": 0
           }
         },
@@ -55580,7 +55585,7 @@ define("frontend-cp/components/ko-select/template", ["exports"], function (expor
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["block", "power-select", [], ["class", ["subexpr", "concat", [["get", "styles.select", ["loc", [null, [2, 16], [2, 29]]]], " ", ["subexpr", "if", [["subexpr", "eq", [["get", "size", ["loc", [null, [2, 42], [2, 46]]]], "medium"], [], ["loc", [null, [2, 38], [2, 56]]]], ["get", "styles.select--medium", ["loc", [null, [2, 57], [2, 78]]]]], [], ["loc", [null, [2, 34], [2, 79]]]]], [], ["loc", [null, [2, 8], [2, 80]]]], "disabled", ["subexpr", "@mut", [["get", "disabled", ["loc", [null, [3, 11], [3, 19]]]]], [], []], "matchTriggerWidth", ["subexpr", "@mut", [["get", "matchTriggerWidth", ["loc", [null, [4, 20], [4, 37]]]]], [], []], "dropdownClass", ["subexpr", "@mut", [["get", "styles.dropdown", ["loc", [null, [5, 16], [5, 31]]]]], [], []], "initiallyOpened", ["subexpr", "@mut", [["get", "initiallyOpened", ["loc", [null, [6, 18], [6, 33]]]]], [], []], "onchange", ["subexpr", "@mut", [["get", "onChange", ["loc", [null, [7, 11], [7, 19]]]]], [], []], "options", ["subexpr", "@mut", [["get", "options", ["loc", [null, [8, 10], [8, 17]]]]], [], []], "placeholder", ["subexpr", "@mut", [["get", "placeholder", ["loc", [null, [9, 14], [9, 25]]]]], [], []], "renderInPlace", ["subexpr", "@mut", [["get", "renderInPlace", ["loc", [null, [10, 16], [10, 29]]]]], [], []], "search", ["subexpr", "@mut", [["get", "search", ["loc", [null, [11, 9], [11, 15]]]]], [], []], "searchEnabled", false, "loadingMessage", false, "searchField", ["subexpr", "@mut", [["get", "searchField", ["loc", [null, [14, 14], [14, 25]]]]], [], []], "selected", ["subexpr", "@mut", [["get", "selected", ["loc", [null, [15, 11], [15, 19]]]]], [], []], "triggerComponent", "ko-select/trigger", "triggerClass", ["subexpr", "concat", [["get", "styles.trigger", ["loc", [null, [17, 23], [17, 37]]]], " ", ["subexpr", "if", [["get", "focused", ["loc", [null, [17, 46], [17, 53]]]], ["get", "styles.trigger--focused", ["loc", [null, [17, 54], [17, 77]]]], ""], [], ["loc", [null, [17, 42], [17, 81]]]]], [], ["loc", [null, [17, 15], [17, 82]]]], "extra", ["subexpr", "hash", [], ["isTypeahead", ["get", "isTypeahead", ["loc", [null, [19, 16], [19, 27]]]], "searchEnabled", ["subexpr", "or", [["get", "searchEnabled", ["loc", [null, [20, 22], [20, 35]]]], ["subexpr", "and", [["get", "search", ["loc", [null, [20, 41], [20, 47]]]], ["subexpr", "not", [["get", "options", ["loc", [null, [20, 53], [20, 60]]]]], [], ["loc", [null, [20, 48], [20, 61]]]]], [], ["loc", [null, [20, 36], [20, 62]]]]], [], ["loc", [null, [20, 18], [20, 63]]]], "focused", ["get", "focused", ["loc", [null, [21, 12], [21, 19]]]]], ["loc", [null, [18, 8], [22, 3]]]]], 0, null, ["loc", [null, [1, 0], [29, 17]]]]],
+      statements: [["block", "power-select", [], ["class", ["subexpr", "concat", [["get", "styles.select", ["loc", [null, [2, 16], [2, 29]]]], " ", ["subexpr", "if", [["subexpr", "eq", [["get", "size", ["loc", [null, [2, 42], [2, 46]]]], "medium"], [], ["loc", [null, [2, 38], [2, 56]]]], ["get", "styles.select--medium", ["loc", [null, [2, 57], [2, 78]]]]], [], ["loc", [null, [2, 34], [2, 79]]]]], [], ["loc", [null, [2, 8], [2, 80]]]], "disabled", ["subexpr", "@mut", [["get", "disabled", ["loc", [null, [3, 11], [3, 19]]]]], [], []], "matchTriggerWidth", ["subexpr", "@mut", [["get", "matchTriggerWidth", ["loc", [null, [4, 20], [4, 37]]]]], [], []], "dropdownClass", ["subexpr", "@mut", [["get", "styles.dropdown", ["loc", [null, [5, 16], [5, 31]]]]], [], []], "initiallyOpened", ["subexpr", "@mut", [["get", "initiallyOpened", ["loc", [null, [6, 18], [6, 33]]]]], [], []], "onchange", ["subexpr", "@mut", [["get", "onChange", ["loc", [null, [7, 11], [7, 19]]]]], [], []], "options", ["subexpr", "@mut", [["get", "options", ["loc", [null, [8, 10], [8, 17]]]]], [], []], "placeholder", ["subexpr", "@mut", [["get", "placeholder", ["loc", [null, [9, 14], [9, 25]]]]], [], []], "renderInPlace", ["subexpr", "@mut", [["get", "renderInPlace", ["loc", [null, [10, 16], [10, 29]]]]], [], []], "search", ["subexpr", "@mut", [["get", "search", ["loc", [null, [11, 9], [11, 15]]]]], [], []], "searchEnabled", false, "loadingMessage", false, "searchField", ["subexpr", "@mut", [["get", "searchField", ["loc", [null, [14, 14], [14, 25]]]]], [], []], "selected", ["subexpr", "@mut", [["get", "selected", ["loc", [null, [15, 11], [15, 19]]]]], [], []], "triggerComponent", ["subexpr", "@mut", [["get", "triggerComponent", ["loc", [null, [16, 19], [16, 35]]]]], [], []], "triggerClass", ["subexpr", "concat", [["get", "styles.trigger", ["loc", [null, [17, 23], [17, 37]]]], " ", ["subexpr", "if", [["get", "focused", ["loc", [null, [17, 46], [17, 53]]]], ["get", "styles.trigger--focused", ["loc", [null, [17, 54], [17, 77]]]], ""], [], ["loc", [null, [17, 42], [17, 81]]]]], [], ["loc", [null, [17, 15], [17, 82]]]], "extra", ["subexpr", "hash", [], ["searchEnabled", ["subexpr", "or", [["get", "searchEnabled", ["loc", [null, [19, 22], [19, 35]]]], ["subexpr", "and", [["get", "search", ["loc", [null, [19, 41], [19, 47]]]], ["subexpr", "not", [["get", "options", ["loc", [null, [19, 53], [19, 60]]]]], [], ["loc", [null, [19, 48], [19, 61]]]]], [], ["loc", [null, [19, 36], [19, 62]]]]], [], ["loc", [null, [19, 18], [19, 63]]]], "focused", ["get", "focused", ["loc", [null, [20, 12], [20, 19]]]]], ["loc", [null, [18, 8], [21, 3]]]]], 0, null, ["loc", [null, [1, 0], [28, 17]]]]],
       locals: [],
       templates: [child0]
     };
@@ -55684,96 +55689,6 @@ define("frontend-cp/components/ko-select/trigger/template", ["exports"], functio
     })();
     var child1 = (function () {
       var child0 = (function () {
-        var child0 = (function () {
-          return {
-            meta: {
-              "fragmentReason": false,
-              "revision": "Ember@2.4.4",
-              "loc": {
-                "source": null,
-                "start": {
-                  "line": 10,
-                  "column": 2
-                },
-                "end": {
-                  "line": 12,
-                  "column": 2
-                }
-              },
-              "moduleName": "frontend-cp/components/ko-select/trigger/template.hbs"
-            },
-            isEmpty: false,
-            arity: 0,
-            cachedFragment: null,
-            hasRendered: false,
-            buildFragment: function buildFragment(dom) {
-              var el0 = dom.createDocumentFragment();
-              var el1 = dom.createTextNode("    ");
-              dom.appendChild(el0, el1);
-              var el1 = dom.createElement("span");
-              dom.setAttribute(el1, "class", "ember-power-select-selected-item");
-              var el2 = dom.createComment("");
-              dom.appendChild(el1, el2);
-              dom.appendChild(el0, el1);
-              var el1 = dom.createTextNode("\n");
-              dom.appendChild(el0, el1);
-              return el0;
-            },
-            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-              var morphs = new Array(1);
-              morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 0, 0);
-              return morphs;
-            },
-            statements: [["inline", "get", [["get", "selected", ["loc", [null, [11, 57], [11, 65]]]], ["get", "searchField", ["loc", [null, [11, 66], [11, 77]]]]], [], ["loc", [null, [11, 51], [11, 79]]]]],
-            locals: [],
-            templates: []
-          };
-        })();
-        var child1 = (function () {
-          return {
-            meta: {
-              "fragmentReason": false,
-              "revision": "Ember@2.4.4",
-              "loc": {
-                "source": null,
-                "start": {
-                  "line": 12,
-                  "column": 2
-                },
-                "end": {
-                  "line": 14,
-                  "column": 2
-                }
-              },
-              "moduleName": "frontend-cp/components/ko-select/trigger/template.hbs"
-            },
-            isEmpty: false,
-            arity: 0,
-            cachedFragment: null,
-            hasRendered: false,
-            buildFragment: function buildFragment(dom) {
-              var el0 = dom.createDocumentFragment();
-              var el1 = dom.createTextNode("    ");
-              dom.appendChild(el0, el1);
-              var el1 = dom.createElement("span");
-              dom.setAttribute(el1, "class", "ember-power-select-selected-item");
-              var el2 = dom.createComment("");
-              dom.appendChild(el1, el2);
-              dom.appendChild(el0, el1);
-              var el1 = dom.createTextNode("\n");
-              dom.appendChild(el0, el1);
-              return el0;
-            },
-            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-              var morphs = new Array(1);
-              morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 0, 0);
-              return morphs;
-            },
-            statements: [["inline", "yield", [["get", "selected", ["loc", [null, [13, 59], [13, 67]]]], ["get", "lastSearchedText", ["loc", [null, [13, 68], [13, 84]]]]], [], ["loc", [null, [13, 51], [13, 86]]]]],
-            locals: [],
-            templates: []
-          };
-        })();
         return {
           meta: {
             "fragmentReason": false,
@@ -55785,7 +55700,7 @@ define("frontend-cp/components/ko-select/trigger/template", ["exports"], functio
                 "column": 0
               },
               "end": {
-                "line": 15,
+                "line": 11,
                 "column": 0
               }
             },
@@ -55797,20 +55712,25 @@ define("frontend-cp/components/ko-select/trigger/template", ["exports"], functio
           hasRendered: false,
           buildFragment: function buildFragment(dom) {
             var el0 = dom.createDocumentFragment();
-            var el1 = dom.createComment("");
+            var el1 = dom.createTextNode("  ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("span");
+            dom.setAttribute(el1, "class", "ember-power-select-selected-item");
+            var el2 = dom.createComment("");
+            dom.appendChild(el1, el2);
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
             dom.appendChild(el0, el1);
             return el0;
           },
           buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
             var morphs = new Array(1);
-            morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-            dom.insertBoundary(fragment, 0);
-            dom.insertBoundary(fragment, null);
+            morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 0, 0);
             return morphs;
           },
-          statements: [["block", "if", [["get", "extra.isTypeahead", ["loc", [null, [10, 8], [10, 25]]]]], [], 0, 1, ["loc", [null, [10, 2], [14, 9]]]]],
+          statements: [["inline", "yield", [["get", "selected", ["loc", [null, [10, 57], [10, 65]]]], ["get", "lastSearchedText", ["loc", [null, [10, 66], [10, 82]]]]], [], ["loc", [null, [10, 49], [10, 84]]]]],
           locals: [],
-          templates: [child0, child1]
+          templates: []
         };
       })();
       var child1 = (function () {
@@ -55822,11 +55742,11 @@ define("frontend-cp/components/ko-select/trigger/template", ["exports"], functio
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 15,
+                  "line": 11,
                   "column": 0
                 },
                 "end": {
-                  "line": 17,
+                  "line": 13,
                   "column": 0
                 }
               },
@@ -55854,7 +55774,7 @@ define("frontend-cp/components/ko-select/trigger/template", ["exports"], functio
               morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 0, 0);
               return morphs;
             },
-            statements: [["content", "placeholder", ["loc", [null, [16, 47], [16, 62]]]]],
+            statements: [["content", "placeholder", ["loc", [null, [12, 47], [12, 62]]]]],
             locals: [],
             templates: []
           };
@@ -55866,11 +55786,11 @@ define("frontend-cp/components/ko-select/trigger/template", ["exports"], functio
             "loc": {
               "source": null,
               "start": {
-                "line": 15,
+                "line": 11,
                 "column": 0
               },
               "end": {
-                "line": 17,
+                "line": 13,
                 "column": 0
               }
             },
@@ -55893,7 +55813,7 @@ define("frontend-cp/components/ko-select/trigger/template", ["exports"], functio
             dom.insertBoundary(fragment, null);
             return morphs;
           },
-          statements: [["block", "if", [["get", "placeholder", ["loc", [null, [15, 10], [15, 21]]]]], [], 0, null, ["loc", [null, [15, 0], [17, 0]]]]],
+          statements: [["block", "if", [["get", "placeholder", ["loc", [null, [11, 10], [11, 21]]]]], [], 0, null, ["loc", [null, [11, 0], [13, 0]]]]],
           locals: [],
           templates: [child0]
         };
@@ -55909,7 +55829,7 @@ define("frontend-cp/components/ko-select/trigger/template", ["exports"], functio
               "column": 0
             },
             "end": {
-              "line": 17,
+              "line": 13,
               "column": 0
             }
           },
@@ -55932,7 +55852,7 @@ define("frontend-cp/components/ko-select/trigger/template", ["exports"], functio
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [["block", "if", [["get", "selected", ["loc", [null, [9, 10], [9, 18]]]]], [], 0, 1, ["loc", [null, [9, 0], [17, 0]]]]],
+        statements: [["block", "if", [["get", "selected", ["loc", [null, [9, 10], [9, 18]]]]], [], 0, 1, ["loc", [null, [9, 0], [13, 0]]]]],
         locals: [],
         templates: [child0, child1]
       };
@@ -55945,11 +55865,11 @@ define("frontend-cp/components/ko-select/trigger/template", ["exports"], functio
           "loc": {
             "source": null,
             "start": {
-              "line": 19,
+              "line": 15,
               "column": 0
             },
             "end": {
-              "line": 21,
+              "line": 17,
               "column": 0
             }
           },
@@ -55975,53 +55895,12 @@ define("frontend-cp/components/ko-select/trigger/template", ["exports"], functio
           morphs[0] = dom.createAttrMorph(element0, 'class');
           return morphs;
         },
-        statements: [["attribute", "class", ["get", "styles.loading", ["loc", [null, [20, 16], [20, 30]]]]]],
+        statements: [["attribute", "class", ["get", "styles.loading", ["loc", [null, [16, 16], [16, 30]]]]]],
         locals: [],
         templates: []
       };
     })();
     var child3 = (function () {
-      var child0 = (function () {
-        return {
-          meta: {
-            "fragmentReason": false,
-            "revision": "Ember@2.4.4",
-            "loc": {
-              "source": null,
-              "start": {
-                "line": 21,
-                "column": 0
-              },
-              "end": {
-                "line": 23,
-                "column": 0
-              }
-            },
-            "moduleName": "frontend-cp/components/ko-select/trigger/template.hbs"
-          },
-          isEmpty: false,
-          arity: 0,
-          cachedFragment: null,
-          hasRendered: false,
-          buildFragment: function buildFragment(dom) {
-            var el0 = dom.createDocumentFragment();
-            var el1 = dom.createTextNode("  ");
-            dom.appendChild(el0, el1);
-            var el1 = dom.createElement("span");
-            dom.setAttribute(el1, "class", "ember-power-select-status-icon");
-            dom.appendChild(el0, el1);
-            var el1 = dom.createTextNode("\n");
-            dom.appendChild(el0, el1);
-            return el0;
-          },
-          buildRenderNodes: function buildRenderNodes() {
-            return [];
-          },
-          statements: [],
-          locals: [],
-          templates: []
-        };
-      })();
       return {
         meta: {
           "fragmentReason": false,
@@ -56029,11 +55908,11 @@ define("frontend-cp/components/ko-select/trigger/template", ["exports"], functio
           "loc": {
             "source": null,
             "start": {
-              "line": 21,
+              "line": 17,
               "column": 0
             },
             "end": {
-              "line": 23,
+              "line": 19,
               "column": 0
             }
           },
@@ -56045,20 +55924,21 @@ define("frontend-cp/components/ko-select/trigger/template", ["exports"], functio
         hasRendered: false,
         buildFragment: function buildFragment(dom) {
           var el0 = dom.createDocumentFragment();
-          var el1 = dom.createComment("");
+          var el1 = dom.createTextNode("  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("span");
+          dom.setAttribute(el1, "class", "ember-power-select-status-icon");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
           dom.appendChild(el0, el1);
           return el0;
         },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-          dom.insertBoundary(fragment, 0);
-          dom.insertBoundary(fragment, null);
-          return morphs;
+        buildRenderNodes: function buildRenderNodes() {
+          return [];
         },
-        statements: [["block", "if", [["subexpr", "not", [["get", "extra.isTypeahead", ["loc", [null, [21, 15], [21, 32]]]]], [], ["loc", [null, [21, 10], [21, 33]]]]], [], 0, null, ["loc", [null, [21, 0], [23, 0]]]]],
+        statements: [],
         locals: [],
-        templates: [child0]
+        templates: []
       };
     })();
     return {
@@ -56075,7 +55955,7 @@ define("frontend-cp/components/ko-select/trigger/template", ["exports"], functio
             "column": 0
           },
           "end": {
-            "line": 24,
+            "line": 20,
             "column": 0
           }
         },
@@ -56103,9 +55983,166 @@ define("frontend-cp/components/ko-select/trigger/template", ["exports"], functio
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["block", "if", [["subexpr", "and", [["get", "extra.searchEnabled", ["loc", [null, [1, 11], [1, 30]]]], ["get", "select.isOpen", ["loc", [null, [1, 31], [1, 44]]]]], [], ["loc", [null, [1, 6], [1, 45]]]]], [], 0, 1, ["loc", [null, [1, 0], [17, 7]]]], ["block", "if", [["get", "loading", ["loc", [null, [19, 6], [19, 13]]]]], [], 2, 3, ["loc", [null, [19, 0], [23, 7]]]]],
+      statements: [["block", "if", [["subexpr", "and", [["get", "extra.searchEnabled", ["loc", [null, [1, 11], [1, 30]]]], ["get", "select.isOpen", ["loc", [null, [1, 31], [1, 44]]]]], [], ["loc", [null, [1, 6], [1, 45]]]]], [], 0, 1, ["loc", [null, [1, 0], [13, 7]]]], ["block", "if", [["get", "loading", ["loc", [null, [15, 6], [15, 13]]]]], [], 2, 3, ["loc", [null, [15, 0], [19, 7]]]]],
       locals: [],
       templates: [child0, child1, child2, child3]
+    };
+  })());
+});
+define('frontend-cp/components/ko-select/typeahead-trigger/component', ['exports', 'ember', 'frontend-cp/components/ko-select/typeahead-trigger/template'], function (exports, _ember, _frontendCpComponentsKoSelectTypeaheadTriggerTemplate) {
+  var run = _ember['default'].run;
+  var isBlank = _ember['default'].isBlank;
+  var get = _ember['default'].get;
+  exports['default'] = _ember['default'].Component.extend({
+    layout: _frontendCpComponentsKoSelectTypeaheadTriggerTemplate['default'],
+
+    // Lifecycle hooks
+    didUpdateAttrs: function didUpdateAttrs(_ref) {
+      var oldAttrs = _ref.oldAttrs;
+      var newAttrs = _ref.newAttrs;
+
+      this._super.apply(this, arguments);
+      if (newAttrs.lastSearchedText !== oldAttrs.lastSearchedText) {
+        if (isBlank(newAttrs.lastSearchedText)) {
+          run.schedule('actions', null, newAttrs.select.actions.close, null, true);
+        } else {
+          run.schedule('actions', null, newAttrs.select.actions.open);
+        }
+      } else if (!isBlank(newAttrs.lastSearchedText) && get(this, 'options.length') === 0 && this.get('loading')) {
+        run.schedule('actions', null, newAttrs.select.actions.close, null, true);
+      }
+    },
+
+    // Actions
+    actions: {
+      stopPropagation: function stopPropagation(e) {
+        e.stopPropagation();
+      },
+
+      handleKeydown: function handleKeydown(e) {
+        var isLetter = e.keyCode >= 48 && e.keyCode <= 90 || e.keyCode === 32; // Keys 0-9, a-z or SPACE
+        var isSpecialKeyWhileClosed = !isLetter && !this.get('select.isOpen') && [13, 27, 38, 40].indexOf(e.keyCode) > -1;
+        if (isLetter || isSpecialKeyWhileClosed) {
+          e.stopPropagation();
+        }
+      }
+    }
+  });
+});
+define("frontend-cp/components/ko-select/typeahead-trigger/styles", ["exports", "ember-css-modules/styles-object"], function (exports, _emberCssModulesStylesObject) {
+  exports["default"] = _emberCssModulesStylesObject["default"].create({
+    "wrapper": "_wrapper_13g081",
+    "input": "_input_13g081",
+    "loading": "_loading_13g081 _loading_1ovczd"
+  });
+});
+define("frontend-cp/components/ko-select/typeahead-trigger/template", ["exports"], function (exports) {
+  exports["default"] = Ember.HTMLBars.template((function () {
+    var child0 = (function () {
+      return {
+        meta: {
+          "fragmentReason": false,
+          "revision": "Ember@2.4.4",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 15,
+              "column": 2
+            },
+            "end": {
+              "line": 17,
+              "column": 2
+            }
+          },
+          "moduleName": "frontend-cp/components/ko-select/typeahead-trigger/template.hbs"
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("    ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("span");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var element0 = dom.childAt(fragment, [1]);
+          var morphs = new Array(1);
+          morphs[0] = dom.createAttrMorph(element0, 'class');
+          return morphs;
+        },
+        statements: [["attribute", "class", ["get", "styles.loading", ["loc", [null, [16, 18], [16, 32]]]]]],
+        locals: [],
+        templates: []
+      };
+    })();
+    return {
+      meta: {
+        "fragmentReason": false,
+        "revision": "Ember@2.4.4",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 19,
+            "column": 0
+          }
+        },
+        "moduleName": "frontend-cp/components/ko-select/typeahead-trigger/template.hbs"
+      },
+      isEmpty: false,
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("div");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("input");
+        dom.setAttribute(el2, "type", "search");
+        dom.setAttribute(el2, "tabindex", "0");
+        dom.setAttribute(el2, "autocomplete", "off");
+        dom.setAttribute(el2, "autocorrect", "off");
+        dom.setAttribute(el2, "autocapitalize", "off");
+        dom.setAttribute(el2, "spellcheck", "false");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var element1 = dom.childAt(fragment, [0]);
+        var element2 = dom.childAt(element1, [1]);
+        var morphs = new Array(10);
+        morphs[0] = dom.createAttrMorph(element1, 'class');
+        morphs[1] = dom.createAttrMorph(element1, 'onmousedown');
+        morphs[2] = dom.createAttrMorph(element2, 'class');
+        morphs[3] = dom.createAttrMorph(element2, 'aria-controls');
+        morphs[4] = dom.createAttrMorph(element2, 'placeholder');
+        morphs[5] = dom.createAttrMorph(element2, 'disabled');
+        morphs[6] = dom.createAttrMorph(element2, 'value');
+        morphs[7] = dom.createAttrMorph(element2, 'onkeydown');
+        morphs[8] = dom.createAttrMorph(element2, 'oninput');
+        morphs[9] = dom.createMorphAt(element1, 3, 3);
+        return morphs;
+      },
+      statements: [["attribute", "class", ["get", "styles.wrapper", ["loc", [null, [1, 13], [1, 27]]]]], ["attribute", "onmousedown", ["subexpr", "action", ["stopPropagation"], [], ["loc", [null, [1, 42], [1, 70]]]]], ["attribute", "class", ["get", "styles.input", ["loc", [null, [2, 31], [2, 43]]]]], ["attribute", "aria-controls", ["get", "listboxId", ["loc", [null, [8, 20], [8, 29]]]]], ["attribute", "placeholder", ["get", "searchPlaceholder", ["loc", [null, [9, 18], [9, 35]]]]], ["attribute", "disabled", ["get", "disabled", ["loc", [null, [10, 15], [10, 23]]]]], ["attribute", "value", ["subexpr", "get", [["get", "selected", ["loc", [null, [11, 16], [11, 24]]]], ["get", "searchField", ["loc", [null, [11, 25], [11, 36]]]]], [], ["loc", [null, [11, 10], [11, 38]]]]], ["attribute", "onkeydown", ["subexpr", "action", ["handleKeydown"], [], ["loc", [null, [12, 14], [12, 40]]]]], ["attribute", "oninput", ["subexpr", "action", [["get", "select.actions.search", ["loc", [null, [13, 21], [13, 42]]]]], ["value", "target.value"], ["loc", [null, [13, 12], [13, 65]]]]], ["block", "if", [["get", "loading", ["loc", [null, [15, 8], [15, 15]]]]], [], 0, null, ["loc", [null, [15, 2], [17, 9]]]]],
+      locals: [],
+      templates: [child0]
     };
   })());
 });
@@ -101259,7 +101296,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"viewingUsersInactiveThreshold":300000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":60,"casesPollingInterval":60,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+9bbabed4"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"viewingUsersInactiveThreshold":300000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":60,"casesPollingInterval":60,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+364f6578"});
 }
 
 /* jshint ignore:end */
