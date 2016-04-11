@@ -3476,7 +3476,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
     });
   });
 
-  (0, _frontendCpTestsHelpersQunit.test)('creating a new view with a single proposition using is string contains (case insensitive)', function (assert) {
+  (0, _frontendCpTestsHelpersQunit.test)('creating a new view with a single proposition using contains one of the following', function (assert) {
     visit('/admin/manage/views/new');
 
     andThen(function () {
@@ -3485,7 +3485,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
       fillIn('input[name=title]', fieldTitle);
       nativeClick('.ko-radio__label:contains(Just myself)');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Case: Tags');
-      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'string contains (case insensitive)');
+      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'contains one of the following');
       fillIn('.qa-predicate-builder--proposition:first input:last', rule1String);
       nativeClick('.button[name=submit]:first');
     });
@@ -3496,7 +3496,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
     });
   });
 
-  (0, _frontendCpTestsHelpersQunit.test)('creating a new view with a single proposition using is string does not contain (case insensitive)', function (assert) {
+  (0, _frontendCpTestsHelpersQunit.test)('creating a new view with a single proposition using does not contain', function (assert) {
     visit('/admin/manage/views/new');
 
     andThen(function () {
@@ -3505,7 +3505,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
       fillIn('input[name=title]', fieldTitle);
       nativeClick('.ko-radio__label:contains(Just myself)');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Case: Tags');
-      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'string does not contain (case insensitive)');
+      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'does not contain');
       fillIn('.qa-predicate-builder--proposition:first input:last', rule1String);
       nativeClick('.button[name=submit]:first');
     });
@@ -3516,7 +3516,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
     });
   });
 
-  (0, _frontendCpTestsHelpersQunit.test)('creating a new view with a single proposition using is string contains any (case insensitive)', function (assert) {
+  (0, _frontendCpTestsHelpersQunit.test)('creating a new view with a single proposition using is contains one of the following', function (assert) {
     visit('/admin/manage/views/new');
 
     andThen(function () {
@@ -3525,7 +3525,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
       fillIn('input[name=title]', fieldTitle);
       nativeClick('.ko-radio__label:contains(Just myself)');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Case: Tags');
-      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'string contains any (case insensitive)');
+      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'contains one of the following');
       fillIn('.qa-predicate-builder--proposition:first input:last', rule1String);
       nativeClick('.button[name=submit]:first');
     });
@@ -7684,7 +7684,168 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | Case | List', {
     beforeEach: function beforeEach() {
-      useDefaultScenario();
+      var enUsLocale = server.create('locale', {
+        locale: 'en-us'
+      });
+      var organization = server.create('organization');
+      var team = server.create('team');
+      var role = server.create('role', { title: 'Admin', type: 'ADMIN', id: 1 });
+
+      server.create('contact-address');
+      server.create('contact-website');
+
+      server.create('identity-domain');
+      var identityEmail = server.create('identity-email');
+      server.create('identity-phone');
+
+      var custom_fields = server.createList('user-field-value', 3);
+      var metadata = server.create('metadata');
+      var defaultUser = server.create('user', {
+        custom_fields: custom_fields,
+        emails: [{ id: identityEmail.id, resource_type: 'identityEmail' }],
+        locale: { id: enUsLocale.id, resource_type: 'locale' },
+        organization: { id: organization.id, resource_type: 'organization' },
+        role: { id: role.id, resource_type: 'role' },
+        teams: [{ id: team.id, resource_type: 'team' }]
+      });
+
+      server.create('session', { user: { id: defaultUser.id, resource_type: 'user' } });
+
+      var columns = server.createList('column', 5);
+      var propositionAssignedToCurrentUser = server.create('proposition', {
+        field: 'cases.assigneeagentid',
+        operator: 'comparison_equalto',
+        value: '(current_user)'
+      });
+      var stringProposition = server.create('proposition', {
+        field: 'cases.subject',
+        operator: 'string_contains',
+        value: 'dave'
+      });
+      var inboxPredicateCollection = server.create('predicate-collection', {
+        propositions: [{ id: propositionAssignedToCurrentUser.id, resource_type: 'proposition' }]
+      });
+      var simplePredicateCollection = server.create('predicate-collection', {
+        propositions: [{ id: stringProposition.id, resource_type: 'proposition' }]
+      });
+
+      server.create('view', {
+        title: 'Inbox',
+        is_default: true,
+        is_enabled: true,
+        is_system: true,
+        order_by: 'DESC',
+        order_by_column: 'caseid',
+        columns: columns,
+        predicate_collections: [{ id: inboxPredicateCollection.id, resource_type: 'predicate_collection' }],
+        sort_order: 1,
+        type: 'INBOX'
+      });
+      server.create('view', {
+        title: 'Test basic custom view',
+        is_default: false,
+        is_enabled: true,
+        is_system: false,
+        order_by: 'DESC',
+        order_by_column: 'caseid',
+        columns: columns,
+        predicate_collections: [{ id: simplePredicateCollection.id, resource_type: 'predicate_collection' }],
+        sort_order: 2,
+        type: 'CUSTOM',
+        visibility_type: 'ALL'
+      });
+      server.create('view', {
+        title: 'Trash',
+        is_default: false,
+        is_enabled: true,
+        is_system: true,
+        sort_order: 5,
+        type: 'TRASH'
+      });
+
+      var operatorsForInputTypeString = ['string_contains', 'string_does_not_contain'];
+
+      server.create('definition', {
+        field: 'cases.subject',
+        group: 'CASES',
+        type: 'STRING',
+        sub_type: '',
+        input_type: 'STRING',
+        label: 'STRING',
+        operators: operatorsForInputTypeString,
+        values: ''
+      });
+
+      var assignedAgent = defaultUser;
+      var assignedTeam = team;
+      var brand = server.create('brand', { locale: enUsLocale });
+      var statuses = server.createList('case-status', 5);
+      var status = statuses[0];
+      var priority = server.create('case-priority');
+      var type = server.create('type');
+      var slas = server.createList('sla', 10);
+      var sla = slas[0];
+      var caseSlaMetrics = server.createList('case-sla-metric', 3);
+      var tags = server.createList('tag', 2);
+
+      var caseFields = server.createList('case-field', 14);
+
+      server.createList('case', 50, {
+        source_channel: null,
+        requester: defaultUser,
+        creator: defaultUser,
+        identity: identityEmail,
+        assignedAgent: assignedAgent,
+        assignedTeam: assignedTeam,
+        brand: brand,
+        status: status,
+        priority: priority,
+        type: type,
+        sla: sla,
+        sla_metrics: caseSlaMetrics,
+        tags: tags,
+        custom_fields: [],
+        metadata: metadata,
+        last_replier: defaultUser,
+        last_replier_identity: identityEmail
+      });
+
+      server.createList('case-priority', 3);
+      server.createList('case-type', 4, {
+        resource_url: function resource_url(i) {
+          return 'http://novo/api/index.php?/v1/cases/types/' + ++i;
+        }
+      });
+      server.create('case-form', {
+        fields: caseFields,
+        brand: brand
+      });
+
+      var limit = server.create('limit', {
+        name: 'collaborators',
+        limit: 10
+      });
+
+      var feature = server.create('feature', {
+        code: 3232,
+        name: 'collaborators',
+        description: 'People who may log in as a team member'
+      });
+
+      server.create('plan', {
+        limits: [limit],
+        features: [feature]
+      });
+
+      var macroAssignee = server.create('macro-assignee');
+      var macroVisibility = server.create('macro-visibility');
+
+      server.create('macro', {
+        agent: defaultUser,
+        assignee: macroAssignee,
+        visibility: macroVisibility
+      });
+
       login();
     },
 
@@ -7713,7 +7874,7 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
 
     andThen(function () {
       assert.ok(find('thead th:nth-child(3) span:last').hasClass('i-chevron-small-down'));
-      assert.equal(find('tbody tr:first td:nth-child(3)').text().trim(), '55');
+      assert.equal(find('tbody tr:first td:nth-child(3)').text().trim(), '50');
     });
   });
 
@@ -7742,21 +7903,32 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
     assert.expect(3);
 
     server.create('view', {
+      title: 'DisabledView',
       is_default: false,
       is_enabled: false,
-      title: 'DisabledView'
+      is_system: false,
+      order_by: 'DESC',
+      order_by_column: 'caseid',
+      columns: [],
+      sort_order: 3
     });
 
     server.create('view', {
+      title: 'EnabledView',
       is_default: false,
-      title: 'EnabledView'
+      is_enabled: true,
+      is_system: false,
+      order_by: 'DESC',
+      order_by_column: 'caseid',
+      columns: [],
+      sort_order: 4
     });
 
     visit('/agent');
     visit('/agent/cases');
 
     andThen(function () {
-      assert.equal(find('.sidebar__link').length, 3);
+      assert.equal(find('.sidebar__link').length, 5);
       assert.equal(find('.sidebar__link').text().indexOf('DisabledView'), -1);
       assert.ok(find('.sidebar__link').text().indexOf('EnabledView') > -1);
     });
@@ -7952,9 +8124,10 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
   (0, _frontendCpTestsHelpersQunit.test)('REGRESSION(FT-278) A case without assignee (assignee.agent and assignee.team are null) is not considered dirty', function (assert) {
     assert.expect(1);
     var defautlUser = server.db.users[0];
+
     var unassignedCase = unassignedCase = server.create('case', {
       assignee: server.create('assignee', { agent: null, team: null }),
-      source_channel: server.db.channels[0],
+      source_channel: null,
       requester: defautlUser,
       creator: defautlUser,
       identity: server.db['identity-emails'][0],
@@ -9782,8 +9955,10 @@ define('frontend-cp/tests/helpers/login', ['exports', 'ember'], function (export
     var sessionId = arguments.length <= 1 || arguments[1] === undefined ? '1' : arguments[1];
 
     var sessionService = app.__container__.lookup('service:session');
+    var locale = app.__container__.lookup('service:locale');
+    locale.setup();
     sessionService.set('sessionId', null);
-    sessionService.set('sessionId', JSON.stringify(String(sessionId)));
+    sessionService.set('sessionId', sessionId);
   });
 });
 define('frontend-cp/tests/helpers/logout', ['exports', 'ember', 'frontend-cp/config/environment'], function (exports, _ember, _frontendCpConfigEnvironment) {

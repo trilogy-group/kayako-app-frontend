@@ -4960,6 +4960,12 @@ span#HW_badge.HW_softHidden {
 .ko-predicate-builder_rule__input {
   width: 100%; }
 
+.ko-predicate-builder_rule__input-time {
+  width: 50%; }
+
+.ko-predicate-builder_rule__input-time-label {
+  padding-left: 9px; }
+
 .ko-predicate-builder_rule__label {
   left: -27px;
   color: #5F6C73;
