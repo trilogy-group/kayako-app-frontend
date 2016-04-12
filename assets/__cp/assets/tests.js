@@ -8364,6 +8364,43 @@ define('frontend-cp/tests/acceptance/agent/cases/user-test', ['exports', 'fronte
       assert.equal(find('.breadcrumbs__item').length, 2);
     });
   });
+
+  (0, _frontendCpTestsHelpersQunit.test)('User menu drop-down is visible for agents', function (assert) {
+    var locale = server.create('locale', { id: 1, locale: 'en-us' });
+    var brand = server.create('brand', { locale: locale });
+    var caseFields = server.createList('case-field', 4);
+    var mailbox = server.create('mailbox', { brand: brand });
+    server.create('channel', { account: { id: mailbox.id, resource_type: 'mailbox' } });
+    server.create('case-form', {
+      fields: caseFields,
+      brand: brand
+    });
+    var agentRole = server.create('role', { type: 'AGENT' });
+    var customerRole = server.create('role', { type: 'AGENT' });
+    var agent = server.create('user', { role: agentRole, locale: locale });
+    var session = server.create('session', { user: agent });
+    server.create('user', { full_name: 'Barney Stinson', role: customerRole, locale: locale });
+    server.createList('case-status', 5);
+    server.createList('case-priority', 4);
+    login(session.id);
+
+    server.create('plan', {
+      limits: [],
+      features: []
+    });
+
+    assert.expect(1);
+
+    visit('/agent/cases/1/user');
+
+    andThen(function () {
+      nativeClick('.qa-user-action-menu__dropdown .ember-basic-dropdown-trigger');
+    });
+
+    andThen(function () {
+      assert.equal(find('.qa-user-action-menu__dropdown .ko-dropdown_list__item').length, 3);
+    });
+  });
 });
 define("frontend-cp/tests/acceptance/agent/macros/select-macro-test", ["exports"], function (exports) {});
 // /* eslint-disable new-cap */
