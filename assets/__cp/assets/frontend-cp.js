@@ -72419,6 +72419,15 @@ define('frontend-cp/mirage/config', ['exports', 'ember-cli-mirage', 'frontend-cp
       };
     });
 
+    this.get('/api/v1/sla/definitions', function (db, request) {
+      return {
+        status: 200,
+        data: db.definitions,
+        resource: 'definition',
+        total_count: db.definitions.length
+      };
+    });
+
     this.get('/api/v1/sla/:id', function (db, request) {
       if (isNaN(request.params.id)) {
         throw Error('Caught by a wild card!');
@@ -102051,7 +102060,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"viewingUsersInactiveThreshold":300000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":60,"casesPollingInterval":60,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+75e373bc"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"viewingUsersInactiveThreshold":300000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":60,"casesPollingInterval":60,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+2528ebea"});
 }
 
 /* jshint ignore:end */
