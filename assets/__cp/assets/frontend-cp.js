@@ -63551,60 +63551,32 @@ define("frontend-cp/components/ko-universal-search/template", ["exports"], funct
   })());
 });
 define('frontend-cp/components/ko-user-action-menu/component', ['exports', 'ember'], function (exports, _ember) {
-  exports['default'] = _ember['default'].Component.extend({
-    //Params
-    permissions: null,
-    userRoleType: null,
-    userModel: null,
+  var Component = _ember['default'].Component;
+  var inject = _ember['default'].inject;
+  var computed = _ember['default'].computed;
+  exports['default'] = Component.extend({
+    permission: inject.service('permissions'),
+    session: inject.service('session'),
 
-    permissionService: _ember['default'].inject.service('permissions'),
-    sessionService: _ember['default'].inject.service('session'),
+    currentUser: computed.readOnly('session.user'),
+    permissions: computed.readOnly('session.permissions'),
 
-    editSignature: 'editSignature',
-    changeUserPassword: 'changeUserPassword',
-    deleteUser: 'deleteUser',
+    onCreateNewCase: null,
+    onEditSignature: null,
+    onDeleteUser: null,
+    onChangeUserPassword: null,
 
-    classNameBindings: ['menuActive', 'noItems:u-hidden'],
-    menuActive: false,
-
-    noItems: _ember['default'].computed('hasChangePasswordEmailPermission', 'hasChangeSignaturePermission', 'hasDeletePermission', function () {
-      var _this = this;
-
-      var permissionItems = ['hasChangePasswordEmailPermission', 'hasChangeSignaturePermission', 'hasDeletePermission'];
-      return permissionItems.filter(function (item) {
-        return _this.get(item);
-      }).length === 0;
+    hasChangeSignaturePermission: computed('permissions', 'currentUser.role.roleType', function () {
+      return this.get('permission').has('app.user.signature.edit', this.get('currentUser'));
     }),
 
-    hasChangeSignaturePermission: _ember['default'].computed('sessionService.permissions', 'userModel.role.roleType', function () {
-      return this.get('permissionService').has('app.user.signature.edit', this.get('userModel'));
+    hasChangePasswordEmailPermission: computed('permissions', 'currentUser.role.roleType', function () {
+      return this.get('permission').has('app.user.password.change', this.get('currentUser'));
     }),
 
-    hasChangePasswordEmailPermission: _ember['default'].computed('sessionService.permissions', 'userModel.role.roleType', function () {
-      return this.get('permissionService').has('app.user.password.change', this.get('userModel'));
-    }),
-
-    hasDeletePermission: _ember['default'].computed('sessionService.permissions', 'userModel.role.roleType', function () {
-      return this.get('permissionService').has('app.user.delete', this.get('userModel'));
-    }),
-
-    actions: {
-      editSignature: function editSignature() {
-        this.sendAction('editSignature');
-      },
-      deleteUser: function deleteUser() {
-        this.sendAction('deleteUser');
-      },
-      changeUserPassword: function changeUserPassword() {
-        this.sendAction('changeUserPassword');
-      },
-      showMenu: function showMenu() {
-        this.set('menuActive', true);
-      },
-      hideMenu: function hideMenu() {
-        this.set('menuActive', false);
-      }
-    }
+    hasDeletePermission: computed('permissions', 'currentUser.role.roleType', function () {
+      return this.get('permission').has('app.user.delete', this.get('currentUser'));
+    })
   });
 });
 define("frontend-cp/components/ko-user-action-menu/template", ["exports"], function (exports) {
@@ -63656,7 +63628,7 @@ define("frontend-cp/components/ko-user-action-menu/template", ["exports"], funct
             morphs[1] = dom.createMorphAt(element2, 1, 1);
             return morphs;
           },
-          statements: [["attribute", "onclick", ["subexpr", "action", ["editSignature"], [], ["loc", [null, [9, 48], [9, 74]]]]], ["inline", "t", ["users.editsignature"], [], ["loc", [null, [10, 6], [10, 33]]]]],
+          statements: [["attribute", "onclick", ["get", "onEditSignature", ["loc", [null, [9, 50], [9, 65]]]]], ["inline", "t", ["users.editsignature"], [], ["loc", [null, [10, 6], [10, 33]]]]],
           locals: [],
           templates: []
         };
@@ -63707,7 +63679,7 @@ define("frontend-cp/components/ko-user-action-menu/template", ["exports"], funct
             morphs[1] = dom.createMorphAt(element1, 1, 1);
             return morphs;
           },
-          statements: [["attribute", "onclick", ["subexpr", "action", ["changeUserPassword"], [], ["loc", [null, [15, 48], [15, 79]]]]], ["inline", "t", ["users.changepassword"], [], ["loc", [null, [16, 6], [16, 34]]]]],
+          statements: [["attribute", "onclick", ["get", "onChangeUserPassword", ["loc", [null, [15, 50], [15, 70]]]]], ["inline", "t", ["users.changepassword"], [], ["loc", [null, [16, 6], [16, 34]]]]],
           locals: [],
           templates: []
         };
@@ -63758,7 +63730,7 @@ define("frontend-cp/components/ko-user-action-menu/template", ["exports"], funct
             morphs[1] = dom.createMorphAt(element0, 1, 1);
             return morphs;
           },
-          statements: [["attribute", "onclick", ["subexpr", "action", ["deleteUser"], [], ["loc", [null, [21, 48], [21, 71]]]]], ["inline", "t", ["users.deleteuser"], [], ["loc", [null, [22, 6], [22, 30]]]]],
+          statements: [["attribute", "onclick", ["get", "onDeleteUser", ["loc", [null, [21, 50], [21, 62]]]]], ["inline", "t", ["users.deleteuser"], [], ["loc", [null, [22, 6], [22, 30]]]]],
           locals: [],
           templates: []
         };
@@ -63825,7 +63797,7 @@ define("frontend-cp/components/ko-user-action-menu/template", ["exports"], funct
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [["attribute", "onclick", ["subexpr", "action", [["get", "onCreateNewCase", ["loc", [null, [4, 55], [4, 70]]]]], [], ["loc", [null, [4, 46], [4, 72]]]]], ["inline", "t", ["users.create_new_case"], [], ["loc", [null, [5, 4], [5, 33]]]], ["block", "if", [["get", "hasChangeSignaturePermission", ["loc", [null, [8, 8], [8, 36]]]]], [], 0, null, ["loc", [null, [8, 2], [12, 9]]]], ["block", "if", [["get", "hasChangePasswordEmailPermission", ["loc", [null, [14, 8], [14, 40]]]]], [], 1, null, ["loc", [null, [14, 2], [18, 9]]]], ["block", "if", [["get", "hasDeletePermission", ["loc", [null, [20, 8], [20, 27]]]]], [], 2, null, ["loc", [null, [20, 2], [24, 9]]]]],
+        statements: [["attribute", "onclick", ["get", "onCreateNewCase", ["loc", [null, [4, 48], [4, 63]]]]], ["inline", "t", ["users.create_new_case"], [], ["loc", [null, [5, 4], [5, 33]]]], ["block", "if", [["get", "hasChangeSignaturePermission", ["loc", [null, [8, 8], [8, 36]]]]], [], 0, null, ["loc", [null, [8, 2], [12, 9]]]], ["block", "if", [["get", "hasChangePasswordEmailPermission", ["loc", [null, [14, 8], [14, 40]]]]], [], 1, null, ["loc", [null, [14, 2], [18, 9]]]], ["block", "if", [["get", "hasDeletePermission", ["loc", [null, [20, 8], [20, 27]]]]], [], 2, null, ["loc", [null, [20, 2], [24, 9]]]]],
         locals: ["dropdown"],
         templates: [child0, child1, child2]
       };
@@ -63916,7 +63888,7 @@ define("frontend-cp/components/ko-user-action-menu/template", ["exports"], funct
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["block", "basic-dropdown", [], ["renderInPlace", true, "class", "ko-user-action-menu__dropdown"], 0, 1, ["loc", [null, [1, 0], [29, 19]]]]],
+      statements: [["block", "basic-dropdown", [], ["renderInPlace", true, "class", ["subexpr", "concat", ["ko-user-action-menu__dropdown", ["subexpr", "qa-cls", [" qa-user-action-menu__dropdown"], [], ["loc", [null, [3, 48], [3, 89]]]]], [], ["loc", [null, [3, 8], [3, 90]]]]], 0, 1, ["loc", [null, [1, 0], [29, 19]]]]],
       locals: [],
       templates: [child0, child1]
     };
@@ -64352,21 +64324,21 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember', 
         });
       },
 
-      editSignature: function editSignature() {
+      editSignature: function editSignature(signature) {
         this.set('signatureModal', true);
-        this.set('editingSignature', this.get('model.signature'));
+        this.set('editingSignature', signature);
       },
 
       closeSignatureModal: function closeSignatureModal() {
         this.set('signatureModal', false);
       },
 
-      deleteUser: function deleteUser() {
+      deleteUser: function deleteUser(user) {
         var deleteMsg = this.get('intl').findTranslationByKey('users.confirmdelete');
 
         if (confirm(deleteMsg)) {
-          this.get('model').deleteRecord();
-          this.get('model').save();
+          user.deleteRecord();
+          user.save();
         }
       },
 
@@ -64474,10 +64446,10 @@ define('frontend-cp/components/ko-user-content/component', ['exports', 'ember', 
         this.updateDirtyFieldHash();
       },
 
-      changeUserPassword: function changeUserPassword() {
+      changeUserPassword: function changeUserPassword(primaryEmailAddress) {
         var _this10 = this;
 
-        var PAYLOAD = { email: this.get('model.primaryEmailAddress') };
+        var PAYLOAD = { email: primaryEmailAddress };
         var adapter = getOwner(this).lookup('adapter:application');
 
         _ember['default'].$.ajax(adapter.namespace + '/base/password/reset', {
@@ -65353,7 +65325,7 @@ define("frontend-cp/components/ko-user-content/template", ["exports"], function 
             morphs[6] = dom.createMorphAt(dom.childAt(element12, [5]), 1, 1);
             return morphs;
           },
-          statements: [["attribute", "src", ["concat", [["get", "model.avatar", ["loc", [null, [133, 24], [133, 36]]]]]]], ["inline", "ko-editable-text", [], ["onValueChange", ["subexpr", "action", ["setName"], [], ["loc", [null, [138, 30], [138, 48]]]], "isEdited", ["subexpr", "@mut", [["get", "isFullNameEdited", ["loc", [null, [139, 25], [139, 41]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "errorMap.fullName", ["loc", [null, [140, 26], [140, 43]]]]], [], []], "value", ["subexpr", "@mut", [["get", "model.fullName", ["loc", [null, [141, 22], [141, 36]]]]], [], []]], ["loc", [null, [137, 14], [141, 38]]]], ["content", "updatedDate.title", ["loc", [null, [144, 14], [144, 35]]]], ["inline", "ko-datetime-format", [["get", "updatedDate.value", ["loc", [null, [144, 57], [144, 74]]]]], [], ["loc", [null, [144, 36], [144, 76]]]], ["inline", "ko-stateful-button", [], ["activeText", ["subexpr", "t", ["users.button.following.active.text"], [], ["loc", [null, [152, 23], [152, 63]]]], "activeHoverText", ["subexpr", "t", ["users.button.following.active.hovertext"], [], ["loc", [null, [153, 28], [153, 73]]]], "inactiveText", ["subexpr", "t", ["users.button.following.inactive.text"], [], ["loc", [null, [154, 25], [154, 67]]]], "inactiveHoverText", ["subexpr", "t", ["users.button.following.inactive.hovertext"], [], ["loc", [null, [155, 30], [155, 77]]]], "isActive", false, "isLoading", ["subexpr", "@mut", [["get", "isFollowingSaving", ["loc", [null, [157, 22], [157, 39]]]]], [], []], "isEnabled", ["subexpr", "@mut", [["get", "canFollowUser", ["loc", [null, [158, 22], [158, 35]]]]], [], []]], ["loc", [null, [151, 10], [158, 37]]]], ["inline", "ko-stateful-button", [], ["activeText", ["subexpr", "t", ["users.button.user.enabled.text"], [], ["loc", [null, [162, 23], [162, 59]]]], "activeHoverText", ["subexpr", "t", ["users.button.user.enabled.hovertext"], [], ["loc", [null, [163, 28], [163, 69]]]], "inactiveText", ["subexpr", "t", ["users.button.user.disabled.text"], [], ["loc", [null, [164, 25], [164, 62]]]], "inactiveHoverText", ["subexpr", "t", ["users.button.user.disabled.hovertext"], [], ["loc", [null, [165, 30], [165, 72]]]], "isActive", ["subexpr", "@mut", [["get", "model.isEnabled", ["loc", [null, [166, 21], [166, 36]]]]], [], []], "isEnabled", ["subexpr", "@mut", [["get", "canModifyUserState", ["loc", [null, [167, 22], [167, 40]]]]], [], []], "isLoading", ["subexpr", "@mut", [["get", "isStateSaving", ["loc", [null, [168, 22], [168, 35]]]]], [], []], "onClick", "toggleUserState"], ["loc", [null, [161, 10], [169, 39]]]], ["inline", "ko-user-action-menu", [], ["permissions", ["subexpr", "@mut", [["get", "sessionService.permissions", ["loc", [null, [173, 24], [173, 50]]]]], [], []], "userRoleType", ["subexpr", "@mut", [["get", "model.role.roleType", ["loc", [null, [174, 25], [174, 44]]]]], [], []], "userModel", ["subexpr", "@mut", [["get", "model", ["loc", [null, [175, 22], [175, 27]]]]], [], []], "onCreateNewCase", ["subexpr", "action", [["get", "onCreateNewCase", ["loc", [null, [176, 36], [176, 51]]]], ["get", "model", ["loc", [null, [176, 52], [176, 57]]]]], [], ["loc", [null, [176, 28], [176, 58]]]]], ["loc", [null, [172, 10], [177, 12]]]]],
+          statements: [["attribute", "src", ["concat", [["get", "model.avatar", ["loc", [null, [133, 24], [133, 36]]]]]]], ["inline", "ko-editable-text", [], ["onValueChange", ["subexpr", "action", ["setName"], [], ["loc", [null, [138, 30], [138, 48]]]], "isEdited", ["subexpr", "@mut", [["get", "isFullNameEdited", ["loc", [null, [139, 25], [139, 41]]]]], [], []], "isErrored", ["subexpr", "@mut", [["get", "errorMap.fullName", ["loc", [null, [140, 26], [140, 43]]]]], [], []], "value", ["subexpr", "@mut", [["get", "model.fullName", ["loc", [null, [141, 22], [141, 36]]]]], [], []]], ["loc", [null, [137, 14], [141, 38]]]], ["content", "updatedDate.title", ["loc", [null, [144, 14], [144, 35]]]], ["inline", "ko-datetime-format", [["get", "updatedDate.value", ["loc", [null, [144, 57], [144, 74]]]]], [], ["loc", [null, [144, 36], [144, 76]]]], ["inline", "ko-stateful-button", [], ["activeText", ["subexpr", "t", ["users.button.following.active.text"], [], ["loc", [null, [152, 23], [152, 63]]]], "activeHoverText", ["subexpr", "t", ["users.button.following.active.hovertext"], [], ["loc", [null, [153, 28], [153, 73]]]], "inactiveText", ["subexpr", "t", ["users.button.following.inactive.text"], [], ["loc", [null, [154, 25], [154, 67]]]], "inactiveHoverText", ["subexpr", "t", ["users.button.following.inactive.hovertext"], [], ["loc", [null, [155, 30], [155, 77]]]], "isActive", false, "isLoading", ["subexpr", "@mut", [["get", "isFollowingSaving", ["loc", [null, [157, 22], [157, 39]]]]], [], []], "isEnabled", ["subexpr", "@mut", [["get", "canFollowUser", ["loc", [null, [158, 22], [158, 35]]]]], [], []]], ["loc", [null, [151, 10], [158, 37]]]], ["inline", "ko-stateful-button", [], ["activeText", ["subexpr", "t", ["users.button.user.enabled.text"], [], ["loc", [null, [162, 23], [162, 59]]]], "activeHoverText", ["subexpr", "t", ["users.button.user.enabled.hovertext"], [], ["loc", [null, [163, 28], [163, 69]]]], "inactiveText", ["subexpr", "t", ["users.button.user.disabled.text"], [], ["loc", [null, [164, 25], [164, 62]]]], "inactiveHoverText", ["subexpr", "t", ["users.button.user.disabled.hovertext"], [], ["loc", [null, [165, 30], [165, 72]]]], "isActive", ["subexpr", "@mut", [["get", "model.isEnabled", ["loc", [null, [166, 21], [166, 36]]]]], [], []], "isEnabled", ["subexpr", "@mut", [["get", "canModifyUserState", ["loc", [null, [167, 22], [167, 40]]]]], [], []], "isLoading", ["subexpr", "@mut", [["get", "isStateSaving", ["loc", [null, [168, 22], [168, 35]]]]], [], []], "onClick", "toggleUserState"], ["loc", [null, [161, 10], [169, 39]]]], ["inline", "ko-user-action-menu", [], ["onCreateNewCase", ["subexpr", "action", [["get", "onCreateNewCase", ["loc", [null, [173, 36], [173, 51]]]], ["get", "model.id", ["loc", [null, [173, 52], [173, 60]]]]], [], ["loc", [null, [173, 28], [173, 61]]]], "onEditSignature", ["subexpr", "action", ["editSignature", ["get", "model.signature", ["loc", [null, [174, 52], [174, 67]]]]], [], ["loc", [null, [174, 28], [174, 68]]]], "onDeleteUser", ["subexpr", "action", ["deleteUser", ["get", "model", ["loc", [null, [175, 46], [175, 51]]]]], [], ["loc", [null, [175, 25], [175, 52]]]], "onChangeUserPassword", ["subexpr", "action", ["changeUserPassword", ["get", "model.primaryEmailAddress", ["loc", [null, [176, 62], [176, 87]]]]], [], ["loc", [null, [176, 33], [176, 88]]]]], ["loc", [null, [172, 10], [177, 12]]]]],
           locals: [],
           templates: []
         };
@@ -93993,8 +93965,8 @@ define('frontend-cp/session/agent/cases/case/user/controller', ['exports', 'embe
         return true;
       },
 
-      createNewCase: function createNewCase(user) {
-        this.transitionToRoute('session.agent.cases.new', (0, _moment['default'])().format('YYYY-MM-DD-hh-mm-ss'), { queryParams: { requester_id: user.id } });
+      createNewCase: function createNewCase(userId) {
+        this.transitionToRoute('session.agent.cases.new', (0, _moment['default'])().format('YYYY-MM-DD-hh-mm-ss'), { queryParams: { requester_id: userId } });
       }
     }
   });
@@ -96618,8 +96590,8 @@ define("frontend-cp/session/agent/cases/new/template", ["exports"], function (ex
 define('frontend-cp/session/agent/cases/new/user/controller', ['exports', 'ember', 'moment'], function (exports, _ember, _moment) {
   exports['default'] = _ember['default'].Controller.extend({
     actions: {
-      createNewCase: function createNewCase(user) {
-        this.transitionToRoute('session.agent.cases.new', (0, _moment['default'])().format('YYYY-MM-DD-hh-mm-ss'), { queryParams: { requester_id: user.id } });
+      createNewCase: function createNewCase(userId) {
+        this.transitionToRoute('session.agent.cases.new', (0, _moment['default'])().format('YYYY-MM-DD-hh-mm-ss'), { queryParams: { requester_id: userId } });
       }
     }
   });
@@ -97471,8 +97443,8 @@ define('frontend-cp/session/agent/users/user/index/controller', ['exports', 'emb
     postId: null,
 
     actions: {
-      createNewCase: function createNewCase(user) {
-        this.transitionToRoute('session.agent.cases.new', (0, _moment['default'])().format('YYYY-MM-DD-hh-mm-ss'), { queryParams: { requester_id: user.id } });
+      createNewCase: function createNewCase(userId) {
+        this.transitionToRoute('session.agent.cases.new', (0, _moment['default'])().format('YYYY-MM-DD-hh-mm-ss'), { queryParams: { requester_id: userId } });
       },
 
       updateTabName: function updateTabName() {
@@ -102079,7 +102051,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"viewingUsersInactiveThreshold":300000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":60,"casesPollingInterval":60,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+c83226bd"});
+  require("frontend-cp/app")["default"].create({"autodismissTimeout":3000,"updateLogRefreshTimeout":30000,"viewingUsersInactiveThreshold":300000,"PUSHER_OPTIONS":{"disabled":false,"logEvents":true,"encrypted":true,"authEndpoint":"/api/v1/realtime/auth","wsHost":"ws.realtime.kayako.com","httpHost":"sockjs.realtime.kayako.com"},"views":{"maxLimit":999,"viewsPollingInterval":60,"casesPollingInterval":60,"isPollingEnabled":true},"name":"frontend-cp","version":"0.0.0+75e373bc"});
 }
 
 /* jshint ignore:end */
