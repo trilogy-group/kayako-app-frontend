@@ -385,7 +385,7 @@ textarea {
 /* ==========================================================================
    	Positioning
    ========================================================================= */
-.i-after[class*="i-"]:before, .input--search > [class*="i-"]:before, .ko-admin_case-fields_select-type__action > [class*="i-"]:before, .ko-admin_endpoints_select-type__action > [class*="i-"]:before, .ko-case_macro-selector .ember-power-select-search::before, .editable-text > [class*="i-"]:before, .ko-predicate-builder_rule__label, .ko-predicate-builder_rule__remove, .ko-reorderable-list .ko-reorderable-list_item_handle[class*="i-"]:before, .sidebar__value, .ko-simple-list [class*="ko-reorderable-list_item_handle"][class*="i-"]:before, .universal-search_result__action, ._icon_6p3bsw,
+.i-after[class*="i-"]:before, .input--search > [class*="i-"]:before, .ko-admin_case-fields_select-type__action > [class*="i-"]:before, .ko-admin_endpoints_select-type__action > [class*="i-"]:before, .ko-case_macro-selector .ember-power-select-search::before, .editable-text > [class*="i-"]:before, .ko-predicate-builder_proposition__label, .ko-predicate-builder_proposition__remove, .ko-reorderable-list .ko-reorderable-list_item_handle[class*="i-"]:before, .sidebar__value, .ko-simple-list [class*="ko-reorderable-list_item_handle"][class*="i-"]:before, .universal-search_result__action, ._icon_6p3bsw,
 .u-v-center {
   position: absolute;
   top: 50%;
@@ -1760,10 +1760,6 @@ img {
   text-align: inherit;
   background-color: transparent; }
 
-/*
-	Base input styling and initial configuration. Types of input should be
-	separated out into their own file (text, text-area etc).
-   ========================================================================== */
 .text-area, .input-text, .ko-case_macro-selector .ember-power-select-search input, .input-text--alone, .input-text--full, .login__input {
   padding: 4.5px 9px;
   margin-bottom: 9px;
@@ -1781,9 +1777,6 @@ img {
   .has-icon.text-area, .has-icon.input-text, .ko-case_macro-selector .ember-power-select-search input.has-icon, .has-icon.input-text--alone, .has-icon.input-text--full, .has-icon.login__input {
     padding-right: 27px; }
 
-/*
-	Text area styling
-   ========================================================================== */
 .text-area {
   width: 285px;
   margin-bottom: 9px; }
@@ -1803,33 +1796,30 @@ img {
   right: 18px;
   bottom: 18px; }
 
-/* ==========================================================================
-   ========================================================================= */
 .input {
   position: relative; }
   .input > * {
     display: block; }
-  .input--search {
-    position: relative; }
-    .input--search > [class*="i-"]:before {
-      right: 9px; }
-  .input--full {
-    width: 100% !important; }
+
+.input--search {
+  position: relative; }
+  .input--search > [class*="i-"]:before {
+    right: 9px; }
+
+.input--full {
+  width: 100% !important; }
 
 .input-text, .ko-case_macro-selector .ember-power-select-search input {
-  width: 285px; }
-  .input-text--search {
-    display: inline-block;
-    padding-right: 18px; }
+  width: 285px;
+  min-height: 30px; }
+
+.input-text--search {
+  display: inline-block;
+  padding-right: 18px; }
 
 .input-text-area-wrapper {
   display: inline-block; }
 
-/* ==========================================================================
-      In constrast to the usual styling, sometimes inputs are on their own.
-      This overrides the removal of top borders. As it is the first and last
-      type, border radius will display properly anyway.
-     ========================================================================= */
 .input-text--alone:last-of-type, .input-text--alone:first-of-type {
   border: 1px solid #CFD4D8; }
 
@@ -4884,22 +4874,33 @@ span#HW_badge.HW_softHidden {
 
 .ko-predicate-builder {
   position: relative;
-  padding: 27px 18px 18px 54px;
+  padding: 15px 15px 15px 40px;
   margin-bottom: 9px;
   background-color: #F7F8F9;
-  border-radius: 2px; }
+  border-radius: 2px;
+  opacity: 0;
+  -webkit-animation: fadeIn ease-in 1;
+          animation: fadeIn ease-in 1;
+  -webkit-animation-fill-mode: forwards;
+          animation-fill-mode: forwards;
+  -webkit-animation-duration: 0.3s;
+          animation-duration: 0.3s; }
+
+.ko-predicate-builder--removing {
+  opacity: 1;
+  -webkit-animation: fadeIn ease-out 1;
+          animation: fadeIn ease-out 1; }
 
 .ko-predicate-builder__label {
   position: absolute;
   top: 0;
   left: 0;
   padding: 4.5px 9px;
-  border-radius: 2px 0 2px 0;
+  border-radius: 2px 0 5px 0;
   background-color: #D1D5D7;
   text-transform: uppercase;
   color: #5F6C73;
-  font-size: 12px;
-  line-height: 1.5;
+  font-size: 10px;
   font-weight: 600;
   -webkit-user-select: none;
   cursor: default; }
@@ -4939,35 +4940,52 @@ span#HW_badge.HW_softHidden {
     padding-right: 2px;
     font-weight: 700; }
 
-.ko-predicate-builder_rule {
+@-webkit-keyframes fadeIn {
+  from {
+    opacity: 0; }
+  to {
+    opacity: 1; } }
+
+@keyframes fadeIn {
+  from {
+    opacity: 0; }
+  to {
+    opacity: 1; } }
+
+.ko-predicate-builder_proposition {
   position: relative;
-  margin-bottom: 9px; }
-  .ko-predicate-builder_rule:hover .ko-predicate-builder_rule__remove {
+  margin-bottom: 9px;
+  opacity: 0;
+  -webkit-animation: fadeIn ease-in 1;
+          animation: fadeIn ease-in 1;
+  -webkit-animation-fill-mode: forwards;
+          animation-fill-mode: forwards;
+  -webkit-animation-duration: 0.3s;
+          animation-duration: 0.3s; }
+  .ko-predicate-builder_proposition:hover .ko-predicate-builder_proposition__remove {
     visibility: visible; }
-  .ko-predicate-builder_rule + .ko-predicate-builder_rule .ko-predicate-builder_rule__label {
+  .ko-predicate-builder_proposition + .ko-predicate-builder_proposition .ko-predicate-builder_proposition__label {
     visibility: visible; }
 
-.ko-predicate-builder_rule__items {
-  margin-left: -18px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex; }
+.ko-predicate-builder_proposition--removing {
+  opacity: 1;
+  -webkit-animation: fadeIn ease-out 1;
+          animation: fadeIn ease-out 1; }
 
-.ko-predicate-builder_rule__item {
-  width: 31%;
-  padding-left: 18px; }
+.ko-predicate-builder_proposition__item {
+  width: calc((100% - 100px) / 3);
+  padding-left: 10px; }
 
-.ko-predicate-builder_rule__input {
+.ko-predicate-builder_proposition__input {
   width: 100%; }
 
-.ko-predicate-builder_rule__input-time {
+.ko-predicate-builder_proposition__input-time {
   width: 50%; }
 
-.ko-predicate-builder_rule__input-time-label {
+.ko-predicate-builder_proposition__input-time-label {
   padding-left: 9px; }
 
-.ko-predicate-builder_rule__label {
+.ko-predicate-builder_proposition__label {
   left: -27px;
   color: #5F6C73;
   font-size: 12px;
@@ -4976,18 +4994,36 @@ span#HW_badge.HW_softHidden {
   text-transform: uppercase;
   visibility: hidden; }
 
-.ko-predicate-builder_rule__actions {
+.ko-predicate-builder_proposition__actions {
   width: 7%;
-  padding-left: 18px; }
+  padding-left: 10px; }
 
-.ko-predicate-builder_rule__remove {
-  right: 0;
+.ko-predicate-builder_proposition__remove {
   visibility: hidden;
   font-size: 16px;
   line-height: 1.125;
   cursor: pointer; }
-  .ko-predicate-builder_rule__remove:hover {
+  .ko-predicate-builder_proposition__remove:hover {
     visibility: visible; }
+
+.ko-predicate-builder_proposition__layout {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  margin-left: -10px; }
+
+@-webkit-keyframes fadeIn {
+  from {
+    opacity: 0; }
+  to {
+    opacity: 1; } }
+
+@keyframes fadeIn {
+  from {
+    opacity: 0; }
+  to {
+    opacity: 1; } }
 
 .ko-radio {
   margin-bottom: 4.5px; }
