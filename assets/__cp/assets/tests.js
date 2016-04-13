@@ -231,6 +231,177 @@ define('frontend-cp/tests/acceptance/admin/automation/case-triggers/index-test',
     });
   });
 });
+define('frontend-cp/tests/acceptance/admin/automation/monitors/index-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
+
+  var originalConfirm = undefined;
+
+  (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/automation/monitors/index', {
+    beforeEach: function beforeEach() {
+      var locale = server.create('locale', {
+        id: 1,
+        locale: 'en-us'
+      });
+
+      var adminRole = server.create('role', { type: 'ADMIN' });
+      var agent = server.create('user', { role: adminRole, locale: locale });
+      var session = server.create('session', { user: agent });
+      login(session.id);
+
+      server.create('plan', {
+        limits: [],
+        features: []
+      });
+      originalConfirm = window.confirm;
+    },
+
+    afterEach: function afterEach() {
+      window.confirm = originalConfirm;
+      logout();
+    }
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('deleting an enabled monitor', function (assert) {
+    assert.expect(4);
+
+    server.create('monitor', { title: 'test monitor', is_enabled: true, execution_order: 1 });
+
+    visit('/admin/automation/monitors');
+
+    window.confirm = function (message) {
+      assert.equal(message, 'Are you sure you want to delete this?', 'The proper confirm message is shown');
+      return true;
+    };
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors');
+      click('div[class*="ko-simple-list_row"]:contains("test monitor") a:contains(Delete)');
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors');
+      assert.equal(find('span:contains("test monitor")').length, 0);
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('deleting a disabled monitor', function (assert) {
+    assert.expect(4);
+
+    server.create('monitor', { title: 'test monitor', is_enabled: false, execution_order: 1 });
+
+    visit('/admin/automation/monitors');
+
+    window.confirm = function (message) {
+      assert.equal(message, 'Are you sure you want to delete this?', 'The proper confirm message is shown');
+      return true;
+    };
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors');
+      click('div[class*="ko-simple-list_row"]:contains("test monitor") a:contains(Delete)');
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors');
+      assert.equal(find('span:contains("test monitor")').length, 0);
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('disabled monitors can be enabled', function (assert) {
+    assert.expect(6);
+
+    server.create('monitor', { title: 'test monitor', is_enabled: false, execution_order: 1 });
+
+    visit('/admin/automation/monitors');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors');
+      assert.equal(find('.qa-admin_monitors--enabled li').length, 0);
+      assert.equal(find('.qa-admin_monitors--disabled').length, 1);
+      click('div[class*="ko-simple-list_row"]:contains("test monitor") a:contains(Enable)');
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors');
+      assert.equal(find('.qa-admin_monitors--enabled li').length, 1);
+      assert.equal(find('.qa-admin_monitors--disabled').length, 0);
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('enabled monitors can be disabled', function (assert) {
+    assert.expect(6);
+
+    server.create('monitor', { title: 'test monitor', is_enabled: true, execution_order: 1 });
+
+    visit('/admin/automation/monitors');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors');
+      assert.ok(find('.qa-admin_monitors--enabled li').length === 1);
+      assert.ok(find('.qa-admin_monitors--disabled').length === 0);
+      click('div[class*="ko-simple-list_row"]:contains("test monitor") a:contains(Disable)');
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors');
+      assert.ok(find('.qa-admin_monitors--enabled li').length === 0);
+      assert.ok(find('.qa-admin_monitors--disabled').length === 1);
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('enabled monitors are ordered by their execution order, disabled monitors are ordered by title', function (assert) {
+    assert.expect(6);
+
+    server.create('monitor', { title: 'test monitor 5', is_enabled: false, execution_order: 5 });
+    server.create('monitor', { title: 'test monitor 4', is_enabled: true, execution_order: 4 });
+    server.create('monitor', { title: 'test monitor 3', is_enabled: true, execution_order: 3 });
+    server.create('monitor', { title: 'test monitor 2', is_enabled: true, execution_order: 2 });
+    server.create('monitor', { title: 'test monitor 1', is_enabled: false, execution_order: 1 });
+
+    visit('/admin/automation/monitors');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors');
+      assert.equal(find('.qa-admin_monitors--enabled li:nth-of-type(1) .t-bold').text().trim(), 'test monitor 2');
+      assert.equal(find('.qa-admin_monitors--enabled li:nth-of-type(2) .t-bold').text().trim(), 'test monitor 3');
+      assert.equal(find('.qa-admin_monitors--enabled li:nth-of-type(3) .t-bold').text().trim(), 'test monitor 4');
+      assert.equal(find('.qa-admin_monitors--disabled .ko-simple-list_row:nth-of-type(1) .t-bold').text().trim(), 'test monitor 1');
+      assert.equal(find('.qa-admin_monitors--disabled .ko-simple-list_row:nth-of-type(2) .t-bold').text().trim(), 'test monitor 5');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('enabled monitors can be reordered', function (assert) {
+    assert.expect(11);
+
+    server.create('monitor', { title: 'test monitor 1', is_enabled: true, execution_order: 1 });
+    server.create('monitor', { title: 'test monitor 2', is_enabled: true, execution_order: 2 });
+    server.create('monitor', { title: 'test monitor 3', is_enabled: true, execution_order: 3 });
+    server.create('monitor', { title: 'test monitor 4', is_enabled: true, execution_order: 4 });
+    server.create('monitor', { title: 'test monitor 5', is_enabled: true, execution_order: 5 });
+
+    visit('/admin/automation/monitors');
+
+    scrollToBottomOfPage();
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors');
+      assert.equal(find('.qa-admin_monitors--enabled li:nth-of-type(1) .t-bold').text().trim(), 'test monitor 1');
+      assert.equal(find('.qa-admin_monitors--enabled li:nth-of-type(2) .t-bold').text().trim(), 'test monitor 2');
+      assert.equal(find('.qa-admin_monitors--enabled li:nth-of-type(3) .t-bold').text().trim(), 'test monitor 3');
+      assert.equal(find('.qa-admin_monitors--enabled li:nth-of-type(4) .t-bold').text().trim(), 'test monitor 4');
+      assert.equal(find('.qa-admin_monitors--enabled li:nth-of-type(5) .t-bold').text().trim(), 'test monitor 5');
+    });
+
+    reorderListItems('.i-dragstrip', '.t-bold', 'test monitor 5', 'test monitor 4', 'test monitor 3', 'test monitor 2', 'test monitor 1');
+
+    andThen(function () {
+      assert.equal(find('.qa-admin_monitors--enabled li:nth-of-type(1) .t-bold').text().trim(), 'test monitor 5');
+      assert.equal(find('.qa-admin_monitors--enabled li:nth-of-type(2) .t-bold').text().trim(), 'test monitor 4');
+      assert.equal(find('.qa-admin_monitors--enabled li:nth-of-type(3) .t-bold').text().trim(), 'test monitor 3');
+      assert.equal(find('.qa-admin_monitors--enabled li:nth-of-type(4) .t-bold').text().trim(), 'test monitor 2');
+      assert.equal(find('.qa-admin_monitors--enabled li:nth-of-type(5) .t-bold').text().trim(), 'test monitor 1');
+    });
+  });
+});
 define('frontend-cp/tests/acceptance/admin/manage/case-fields/delete-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
 
   var originalConfirm = undefined;
@@ -10397,7 +10568,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
             'name': 'missing-wrapper',
             'problems': ['wrong-type']
           },
-          'revision': 'Ember@2.4.4',
+          'revision': 'Ember@2.4.5',
           'loc': {
             'source': null,
             'start': {
@@ -10471,7 +10642,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
             'name': 'missing-wrapper',
             'problems': ['wrong-type']
           },
-          'revision': 'Ember@2.4.4',
+          'revision': 'Ember@2.4.5',
           'loc': {
             'source': null,
             'start': {
@@ -10618,7 +10789,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
             'name': 'missing-wrapper',
             'problems': ['wrong-type']
           },
-          'revision': 'Ember@2.4.4',
+          'revision': 'Ember@2.4.5',
           'loc': {
             'source': null,
             'start': {
@@ -10741,7 +10912,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
             'name': 'missing-wrapper',
             'problems': ['wrong-type']
           },
-          'revision': 'Ember@2.4.4',
+          'revision': 'Ember@2.4.5',
           'loc': {
             'source': null,
             'start': {
@@ -10868,7 +11039,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/component-test', ['
             'name': 'missing-wrapper',
             'problems': ['wrong-type']
           },
-          'revision': 'Ember@2.4.4',
+          'revision': 'Ember@2.4.5',
           'loc': {
             'source': null,
             'start': {
@@ -10943,7 +11114,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
             'name': 'missing-wrapper',
             'problems': ['wrong-type']
           },
-          'revision': 'Ember@2.4.4',
+          'revision': 'Ember@2.4.5',
           'loc': {
             'source': null,
             'start': {
@@ -11000,7 +11171,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
             'name': 'missing-wrapper',
             'problems': ['wrong-type']
           },
-          'revision': 'Ember@2.4.4',
+          'revision': 'Ember@2.4.5',
           'loc': {
             'source': null,
             'start': {
@@ -11071,7 +11242,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
             'name': 'missing-wrapper',
             'problems': ['wrong-type']
           },
-          'revision': 'Ember@2.4.4',
+          'revision': 'Ember@2.4.5',
           'loc': {
             'source': null,
             'start': {
@@ -11132,7 +11303,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
             'name': 'missing-wrapper',
             'problems': ['wrong-type']
           },
-          'revision': 'Ember@2.4.4',
+          'revision': 'Ember@2.4.5',
           'loc': {
             'source': null,
             'start': {
@@ -11196,7 +11367,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
             'name': 'missing-wrapper',
             'problems': ['wrong-type']
           },
-          'revision': 'Ember@2.4.4',
+          'revision': 'Ember@2.4.5',
           'loc': {
             'source': null,
             'start': {
@@ -11278,7 +11449,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/multiline-tex
             'name': 'missing-wrapper',
             'problems': ['wrong-type']
           },
-          'revision': 'Ember@2.4.4',
+          'revision': 'Ember@2.4.5',
           'loc': {
             'source': null,
             'start': {
@@ -11332,7 +11503,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/multiline-tex
             'name': 'missing-wrapper',
             'problems': ['wrong-type']
           },
-          'revision': 'Ember@2.4.4',
+          'revision': 'Ember@2.4.5',
           'loc': {
             'source': null,
             'start': {
@@ -11405,7 +11576,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/select/compon
             'name': 'missing-wrapper',
             'problems': ['wrong-type']
           },
-          'revision': 'Ember@2.4.4',
+          'revision': 'Ember@2.4.5',
           'loc': {
             'source': null,
             'start': {
@@ -11463,7 +11634,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/select/compon
             'name': 'missing-wrapper',
             'problems': ['wrong-type']
           },
-          'revision': 'Ember@2.4.4',
+          'revision': 'Ember@2.4.5',
           'loc': {
             'source': null,
             'start': {
@@ -11521,7 +11692,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/select/compon
             'name': 'missing-wrapper',
             'problems': ['wrong-type']
           },
-          'revision': 'Ember@2.4.4',
+          'revision': 'Ember@2.4.5',
           'loc': {
             'source': null,
             'start': {
@@ -11614,7 +11785,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/text/componen
             'name': 'missing-wrapper',
             'problems': ['wrong-type']
           },
-          'revision': 'Ember@2.4.4',
+          'revision': 'Ember@2.4.5',
           'loc': {
             'source': null,
             'start': {
@@ -11670,7 +11841,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/text/componen
             'name': 'missing-wrapper',
             'problems': ['wrong-type']
           },
-          'revision': 'Ember@2.4.4',
+          'revision': 'Ember@2.4.5',
           'loc': {
             'source': null,
             'start': {

@@ -1690,7 +1690,8 @@ img {
   outline: none;
   border: none;
   cursor: pointer;
-  color: #5F6C73; }
+  color: #5F6C73;
+  height: 32px; }
   
   .button:disabled,
   .button.disabled {
