@@ -410,6 +410,12 @@
   "macros.actions.assignee.label": "Assignee",
   "macros.errors.actions.required": "Please add at least one action",
 
+  "monitors.title": "Monitors",
+  "monitors.buttons.add": "Add New",
+  "monitors.enabled.success_message": "Monitor enabled successfully",
+  "monitors.disabled.success_message": "Monitor disabled successfully",
+  "monitors.delete.success_message": "Monitor deleted successfully",
+
   "roles.type.admin": "Administrator",
   "roles.type.agent": "Agent",
   "roles.type.collaborator": "Collaborator",
