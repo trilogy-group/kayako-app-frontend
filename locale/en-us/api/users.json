@@ -51,5 +51,8 @@
   "update_signature": "Proceed",
   "signaturemessage": "Please press \"Submit\" on the next page for this to take effect",
 
+  "change_role.from_customer": "You are about to upgrade this user's role. The user may receive greater access to cases, private case notes, user information and some configuration areas, depending on how your permissions are configured.",
+  "change_role.to_customer": "You are about to downgrade this user's role. The user may lose access to cases, private case notes, user information and some configuration areas. The user may permanently lose any agent-specific data (such as personal macros, or personal case views).",
+
   "userid": "User ID"
 }
