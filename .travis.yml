@@ -1,10 +1,33 @@
 sudo: false
+
 language: php
-script: echo 'build'
-notifications:
-  webhooks:
-    urls:
-    - https://my.kayako.com/Backend/Travis
-    on_success: always
-    on_failure: always
-    on_start: never
+
+php:
+  - 7
+
+env:
+  matrix:
+    - TEST_ENV=quality
+    - TEST_ENV=tests
+    - TEST_ENV=upgrade
+  global:
+    - CI_HOME=`pwd`/../..
+
+services:
+  - redis-server
+
+before_install:
+  - cd $CI_HOME && git clone --depth=50 --branch=master git@github.com:kayako/travis-k5.git kayako/travis
+  - export GITHUBTOKEN=`openssl rsautl -decrypt -inkey ~/.ssh/id_rsa -in $CI_HOME/kayako/travis/.travis/github_token_secret`
+  - mysql -e 'create database novo;'
+  - echo "opcache.enable=1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  - echo "opcache.enable_cli=1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  - echo "opcache.dups_fix=1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  - echo "opcache.inherited_hack=1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  - mysql -e "SET GLOBAL wait_timeout=28800;"
+
+install:
+  - $CI_HOME/kayako/travis/install_dependencies.sh
+
+script:
+  - cd $CI_HOME/kayako/travis && php init.php
