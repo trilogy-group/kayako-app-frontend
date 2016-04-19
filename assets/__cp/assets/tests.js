@@ -9378,6 +9378,135 @@ define('frontend-cp/tests/acceptance/agent/tabs/tabs-test', ['exports', 'fronten
     });
   }
 });
+define('frontend-cp/tests/acceptance/agent/users/change-role-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'qunit', 'frontend-cp/locales/en-us/users'], function (exports, _frontendCpTestsHelpersQunit, _qunit, _frontendCpLocalesEnUsUsers) {
+
+  var originalConfirm = window.confirm;
+
+  (0, _frontendCpTestsHelpersQunit.app)('Acceptance | User | Change role', {
+    beforeEach: function beforeEach() {
+      var _this = this;
+
+      this.roles = {
+        admin: server.create('role', { type: 'ADMIN', title: 'Administrator' }),
+        agent: server.create('role', { type: 'AGENT', title: 'Agent' }),
+        customer: server.create('role', { type: 'CUSTOMER', title: 'Customer' })
+      };
+
+      this.confirmationMessages = [];
+
+      window.confirm = function (msg) {
+        _this.confirmationMessages.push(msg);
+        return true;
+      };
+    },
+
+    afterEach: function afterEach() {
+      window.confirm = originalConfirm;
+      logout();
+    }
+  });
+
+  (0, _qunit.test)('Changing another user’s role from CUSTOMER requires confirmation', function (assert) {
+    var _this2 = this;
+
+    var me = server.create('user', { role: this.roles.admin });
+    var other = server.create('user', { role: this.roles.customer });
+    var session = server.create('session', { user: me });
+
+    server.create('plan', { limits: [], features: [] });
+    login(session.id);
+
+    visit('/agent/users/' + other.id);
+    selectChoose('.ko-user-content__role-field', 'Agent');
+    click('button:contains(Submit)');
+
+    andThen(function () {
+      assert.ok(find('.ko-user-content__role-field').is(':contains(Agent)'), 'expected role field to contain "Agent"');
+      assert.deepEqual(_this2.confirmationMessages, [_frontendCpLocalesEnUsUsers['default']['change_role.from_customer']]);
+    });
+  });
+
+  (0, _qunit.test)('Changing another user’s role to CUSTOMER requires confirmation', function (assert) {
+    var _this3 = this;
+
+    var me = server.create('user', { role: this.roles.admin });
+    var other = server.create('user', { role: this.roles.agent });
+    var session = server.create('session', { user: me });
+
+    server.create('plan', { limits: [], features: [] });
+    login(session.id);
+
+    visit('/agent/users/' + other.id);
+    selectChoose('.ko-user-content__role-field', 'Customer');
+    click('button:contains(Submit)');
+
+    andThen(function () {
+      assert.ok(find('.ko-user-content__role-field').is(':contains(Customer)'), 'expected role field to contain "Agent"');
+      assert.deepEqual(_this3.confirmationMessages, [_frontendCpLocalesEnUsUsers['default']['change_role.to_customer']]);
+    });
+  });
+
+  (0, _qunit.test)('Declining confirmation prevents the record from saving', function (assert) {
+    var me = server.create('user', { role: this.roles.admin });
+    var other = server.create('user', { role: this.roles.agent });
+    var session = server.create('session', { user: me });
+    var requested = false;
+    var endpoint = '/api/v1/users/' + other.id;
+
+    server.create('plan', { limits: [], features: [] });
+    login(session.id);
+
+    server.put(endpoint, function () {
+      assert.ok(false, 'expected NOT to request PUT ' + endpoint);
+    });
+
+    visit('/agent/users/' + other.id);
+    selectChoose('.ko-user-content__role-field', 'Customer');
+    click('button:contains(Submit)');
+
+    window.confirm = function () {
+      return false;
+    };
+
+    andThen(function () {
+      assert.equal(requested, false, 'expect NOT to request PUT ' + endpoint);
+    });
+  });
+
+  (0, _qunit.test)('AGENTs may not change another user’s role', function (assert) {
+    var me = server.create('user', { role: this.roles.agent });
+    var other = server.create('user', { role: this.roles.customer });
+    var session = server.create('session', { user: me });
+
+    server.create('plan', { limits: [], features: [] });
+    login(session.id);
+
+    visit('/agent/users/' + other.id);
+
+    andThen(function () {
+      var trigger = find('.ko-user-content__role-field .ember-power-select-trigger');
+
+      assert.ok(trigger.is('[aria-disabled="true"]'), 'expected role field to be disabled');
+    });
+  });
+
+  (0, _qunit.test)('CUSTOMERs may not change another user’s role', function (assert) {
+    var me = server.create('user', { role: this.roles.customer });
+    var other = server.create('user', { role: this.roles.customer });
+    var session = server.create('session', { user: me });
+
+    server.create('plan', { limits: [], features: [] });
+    login(session.id);
+
+    visit('/agent/users/' + other.id);
+
+    andThen(function () {
+      var trigger = find('.ko-user-content__role-field .ember-power-select-trigger');
+
+      assert.ok(trigger.is('[aria-disabled="true"]'), 'expected role field to be disabled');
+    });
+  });
+});
 define('frontend-cp/tests/acceptance/agent/users/create-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/session/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpSessionStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | User | Create user', {

@@ -4067,6 +4067,8 @@ label {
   cursor: pointer;
   line-height: 18px;
   color: #3B4048; }
+  .ko-info-bar_field_select_trigger.ko-info-bar_item--no-hover, .ko-info-bar_item--no-hover._trigger_1m2eux {
+    cursor: default; }
 
 .ko-info-bar_field_select_trigger-input {
   width: calc(100% - 16px);
