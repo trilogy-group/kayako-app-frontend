@@ -8578,6 +8578,238 @@ define('frontend-cp/tests/acceptance/agent/cases/user-test', ['exports', 'fronte
     });
   });
 });
+define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/tests/helpers/dom-helpers'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpTestsHelpersDomHelpers) {
+
+  var targetCase = undefined;
+
+  (0, _frontendCpTestsHelpersQunit.app)('Acceptance | agent/cases/user timeline', {
+    beforeEach: function beforeEach() {
+      var locale = server.create('locale', { id: 1, locale: 'en-us' });
+      var brand = server.create('brand', { locale: locale });
+      var caseFields = server.createList('case-field', 4);
+      var mailbox = server.create('mailbox', { brand: brand });
+      var sourceChannel = server.create('channel', { uuid: 1, account: mailbox });
+      server.create('channel', {
+        uuid: 3,
+        type: 'NOTE'
+      });
+      server.create('case-form', {
+        fields: caseFields,
+        brand: brand
+      });
+      var agentRole = server.create('role', { type: 'AGENT' });
+      var customerRole = server.create('role', { type: 'AGENT' });
+      var agent = server.create('user', { role: agentRole, locale: locale });
+      var session = server.create('session', { user: agent });
+      var customer = server.create('user', { full_name: 'Barney Stinson', role: customerRole, locale: locale });
+      var identityEmail = server.create('identity-email');
+      server.createList('case-status', 5);
+      server.createList('case-priority', 4);
+      server.createList('attachment', 3);
+
+      server.create('plan', {
+        limits: [],
+        features: []
+      });
+      var status = server.create('case-status');
+      targetCase = server.create('case', {
+        source_channel: sourceChannel,
+        requester: customer,
+        creator: agent,
+        identity: identityEmail,
+        status: status,
+        assignee: {
+          agent: agent
+        }
+      });
+
+      server.create('activity', {
+        summary: 'Test activity'
+      });
+      server.create('event', {
+        body: 'Test event'
+      });
+
+      var note = server.create('note');
+
+      server.createList('post', 10, {
+        creator: agent,
+        identity: identityEmail,
+        'case': targetCase,
+        original: note
+      });
+
+      login(session.id);
+    },
+
+    afterEach: function afterEach() {
+      logout();
+      targetCase = null;
+    }
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('it shows shows all notes, events and activities', function (assert) {
+    assert.expect(2);
+
+    visit('/agent/cases/' + targetCase.id + '/user');
+
+    andThen(function () {
+      selectChoose('.ko-timeline__filter .ember-power-select', 'All');
+    });
+
+    andThen(function () {
+      assert.equal(find('.ko-feed_item--note').length, 10, 'Notes displayed');
+      assert.equal(find('.ko-feed_activity').length, 2, 'Activities and events displayed');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('it filters feed items to show only notes', function (assert) {
+    assert.expect(2);
+
+    visit('/agent/cases/' + targetCase.id + '/user');
+
+    andThen(function () {
+      selectChoose('.ko-timeline__filter .ember-power-select', 'Posts');
+    });
+
+    andThen(function () {
+      assert.equal(find('.ko-feed_item--note').length, 10, 'Notes displayed');
+      assert.equal(find('.ko-feed_activity').length, 0, 'Activities and events not displayed');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('it filters feed items to show only notes and events', function (assert) {
+    assert.expect(3);
+
+    visit('/agent/cases/' + targetCase.id + '/user');
+
+    andThen(function () {
+      selectChoose('.ko-timeline__filter .ember-power-select', 'Posts and events');
+    });
+
+    andThen(function () {
+      assert.equal(find('.ko-feed_item--note').length, 10, 'Notes displayed');
+      assert.equal(find('.ko-feed_activity').length, 1, 'Events displayed');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-feed_activity__summary'), 'Test event', 'Event text displayed');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('it filters feed items to show only notes and activities', function (assert) {
+    assert.expect(3);
+
+    visit('/agent/cases/' + targetCase.id + '/user');
+
+    andThen(function () {
+      selectChoose('.ko-timeline__filter .ember-power-select', 'Posts and activities');
+    });
+
+    andThen(function () {
+      assert.equal(find('.ko-feed_item--note').length, 10, 'Notes displayed');
+      assert.equal(find('.ko-feed_activity').length, 1, 'Activities displayed');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-feed_activity__summary'), 'Test activity', 'Activity text displayed');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('default filter', function (assert) {
+    assert.expect(1);
+
+    visit('/agent/cases/' + targetCase.id + '/user');
+
+    andThen(function () {
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-timeline__filter .ember-power-select-placeholder'), 'Filter: Posts', 'Default filter is correct');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('loading more entries below', function (assert) {
+    assert.expect(2);
+
+    visit('/agent/cases/' + targetCase.id + '/user');
+
+    andThen(function () {
+      assert.equal(find('.ko-feed_item--note').length, 10, 'Default number of notes displayed');
+    });
+
+    andThen(function () {
+      click('.ko-timeline__load-more-below');
+    });
+
+    andThen(function () {
+      assert.equal(find('.ko-feed_item--note').length, 19, 'Load more notes');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('loading more entries above', function (assert) {
+    assert.expect(2);
+
+    var lastPostId = server.db.posts[server.db.posts.length - 1].id;
+
+    visit('/agent/cases/' + targetCase.id + '/user?postId=' + lastPostId);
+
+    andThen(function () {
+      assert.equal(find('.ko-feed_item--note').length, 11, 'Default number of notes displayed');
+    });
+
+    andThen(function () {
+      click('.ko-timeline__load-more-above');
+    });
+
+    andThen(function () {
+      assert.equal(find('.ko-feed_item--note').length, 20, 'Load more notes');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('sorting newest entries first', function (assert) {
+    assert.expect(1);
+
+    visit('/agent/cases/' + targetCase.id + '/user');
+
+    andThen(function () {
+      selectChoose('.ko-timeline__sort .ember-power-select', 'Newest first');
+    });
+
+    andThen(function () {
+      var actualOrder = find('.ko-feed_item').map(function () {
+        return $(this).data('id');
+      }).toArray();
+      var expectedOrder = server.db.posts.sortBy('created_at').reverse().map(function (record) {
+        return parseInt(record.id);
+      });
+
+      assert.deepEqual(actualOrder, expectedOrder, 'Posts sorted by newest first');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('sorting oldest entries first', function (assert) {
+    assert.expect(1);
+
+    visit('/agent/cases/' + targetCase.id + '/user');
+
+    andThen(function () {
+      selectChoose('.ko-timeline__sort .ember-power-select', 'Oldest first');
+    });
+
+    andThen(function () {
+      var actualOrder = find('.ko-feed_item').map(function () {
+        return $(this).data('id');
+      }).toArray();
+      var expectedOrder = server.db.posts.sortBy('created_at').map(function (record) {
+        return parseInt(record.id);
+      });
+
+      assert.deepEqual(actualOrder, expectedOrder, 'Posts sorted by oldest first');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('default sort order', function (assert) {
+    assert.expect(1);
+
+    visit('/agent/cases/' + targetCase.id + '/user');
+
+    andThen(function () {
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-timeline__sort .ember-power-select-placeholder'), 'Sort: Newest first', 'Default sort is correct');
+    });
+  });
+});
 define("frontend-cp/tests/acceptance/agent/macros/select-macro-test", ["exports"], function (exports) {});
 // /* eslint-disable new-cap */
 //
