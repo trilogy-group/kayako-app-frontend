@@ -1872,14 +1872,14 @@ requireModule("ember-testing");
 }());
 
 /*!
- * QUnit 1.23.0
+ * QUnit 1.23.1
  * https://qunitjs.com/
  *
  * Copyright jQuery Foundation and other contributors
  * Released under the MIT license
  * https://jquery.org/license
  *
- * Date: 2016-03-25T19:37Z
+ * Date: 2016-04-12T17:29Z
  */
 
 ( function( global ) {
@@ -2257,7 +2257,7 @@ function verifyLoggingCallbacks() {
 QUnit.isLocal = !( defined.document && window.location.protocol !== "file:" );
 
 // Expose the current QUnit version
-QUnit.version = "1.23.0";
+QUnit.version = "1.23.1";
 
 extend( QUnit, {
 
@@ -2267,7 +2267,7 @@ extend( QUnit, {
 		var currentModule = config.currentModule;
 
 		if ( arguments.length === 2 ) {
-			if ( testEnvironment instanceof Function ) {
+			if ( objectType( testEnvironment ) === "function" ) {
 				executeNow = testEnvironment;
 				testEnvironment = undefined;
 			}
@@ -2291,7 +2291,7 @@ extend( QUnit, {
 			afterEach: setHook( module, "afterEach" )
 		};
 
-		if ( executeNow instanceof Function ) {
+		if ( objectType( executeNow ) === "function" ) {
 			config.moduleStack.push( module );
 			setCurrentModule( module );
 			executeNow.call( module.testEnvironment, moduleFns );
@@ -3497,7 +3497,7 @@ QUnit.assert = Assert.prototype = {
 // Known to us are: Closure Compiler, Narwhal
 ( function() {
 	/*jshint sub:true */
-	Assert.prototype.raises = Assert.prototype.throws;
+	Assert.prototype.raises = Assert.prototype [ "throws" ]; //jscs:ignore requireDotNotation
 }() );
 
 function errorString( error ) {
