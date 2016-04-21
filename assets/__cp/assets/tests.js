@@ -231,14 +231,331 @@ define('frontend-cp/tests/acceptance/admin/automation/case-triggers/index-test',
     });
   });
 });
+define('frontend-cp/tests/acceptance/admin/automation/monitors/edit-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
+
+  var originalConfirm = undefined;
+  var monitor = undefined;
+
+  (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/automation/monitors - Edit a monitor', {
+    beforeEach: function beforeEach() {
+      /*eslint-disable quote-props*/
+      var locale = server.create('locale', {
+        locale: 'en-us'
+      });
+
+      var adminRole = server.create('role', { type: 'ADMIN' });
+      var agent = server.create('user', { role: adminRole, locale: locale });
+      var session = server.create('session', { user: agent });
+
+      server.create('definition', {
+        label: 'Subject',
+        field: 'cases.subject',
+        type: 'STRING',
+        sub_type: '',
+        group: 'CASES',
+        input_type: 'STRING',
+        operators: ['string_contains', 'string_does_not_contain'],
+        values: ''
+      });
+
+      server.create('definition', {
+        label: 'Status',
+        field: 'cases.casestatusid',
+        type: 'NUMERIC',
+        sub_type: 'INTEGER',
+        group: 'CASES',
+        input_type: 'OPTIONS',
+        operators: ['comparison_equalto', 'comparison_not_equalto', 'comparison_lessthan', 'comparison_greaterthan'],
+        values: {
+          '5': 'Closed',
+          '4': 'Completed',
+          '1': 'New',
+          '2': 'Open',
+          '3': 'Pending'
+        }
+      });
+
+      server.create('definition', {
+        label: 'Type',
+        field: 'cases.casetypeid',
+        type: 'NUMERIC',
+        sub_type: 'INTEGER',
+        group: 'CASES',
+        input_type: 'OPTIONS',
+        operators: ['comparison_equalto', 'comparison_not_equalto'],
+        values: {
+          '4': 'Incident',
+          '3': 'Problem',
+          '1': 'Question',
+          '2': 'Task'
+        }
+      });
+
+      server.create('definition', {
+        label: 'Priority',
+        field: 'cases.casepriorityid',
+        type: 'NUMERIC',
+        sub_type: 'INTEGER',
+        group: 'CASES',
+        input_type: 'OPTIONS',
+        operators: ['comparison_equalto', 'comparison_not_equalto', 'comparison_lessthan', 'comparison_greaterthan'],
+        values: {
+          '3': 'High',
+          '1': 'Low',
+          '2': 'Normal',
+          '4': 'Urgent'
+        }
+      });
+
+      server.create('definition', {
+        label: 'State',
+        field: 'cases.state',
+        type: 'NUMERIC',
+        sub_type: 'INTEGER',
+        group: 'CASES',
+        input_type: 'OPTIONS',
+        operators: ['comparison_equalto'],
+        values: {
+          '1': 'Active',
+          '3': 'Spam',
+          '2': 'Trash'
+        }
+      });
+
+      server.create('definition', {
+        label: 'Brand',
+        field: 'cases.brandid',
+        type: 'NUMERIC',
+        sub_type: 'INTEGER',
+        group: 'CASES',
+        input_type: 'OPTIONS',
+        operators: ['comparison_equalto', 'comparison_not_equalto'],
+        values: {
+          '1': 'Default'
+        }
+      });
+
+      server.create('definition', {
+        label: 'Assigned Agent Team',
+        field: 'cases.assigneeteamid',
+        type: 'NUMERIC',
+        sub_type: 'INTEGER',
+        group: 'CASES',
+        input_type: 'OPTIONS',
+        operators: ['comparison_equalto', 'comparison_not_equalto'],
+        values: {
+          '0': 'unassigned',
+          '(current users team)': '(current users team)',
+          '5': 'Contractors',
+          '3': 'Finance',
+          '4': 'Human Resources',
+          '1': 'Sales',
+          '2': 'Support'
+        }
+      });
+
+      server.create('definition', {
+        label: 'Assigned agent',
+        field: 'cases.assigneeagentid',
+        type: 'NUMERIC',
+        sub_type: 'INTEGER',
+        group: 'CASES',
+        input_type: 'AUTOCOMPLETE',
+        operators: ['comparison_equalto', 'comparison_not_equalto'],
+        values: ''
+      });
+
+      server.create('definition', {
+        label: 'Requester',
+        field: 'cases.requesterid',
+        type: 'NUMERIC',
+        sub_type: 'INTEGER',
+        group: 'CASES',
+        input_type: 'AUTOCOMPLETE',
+        operators: ['comparison_equalto', 'comparison_not_equalto'],
+        values: ''
+      });
+
+      server.create('definition', {
+        label: 'Tags',
+        field: 'tags.name',
+        type: 'COLLECTION',
+        sub_type: '',
+        group: 'CASES',
+        input_type: 'TAGS',
+        operators: ['collection_contains_insensitive', 'collection_does_not_contain_insensitive', 'collection_contains_any_insensitive'],
+        values: ''
+      });
+
+      server.create('definition', {
+        label: 'Organisation',
+        field: 'users.organizationid',
+        type: 'NUMERIC',
+        sub_type: 'INTEGER',
+        group: 'CASES',
+        input_type: 'AUTOCOMPLETE',
+        operators: ['comparison_equalto', 'comparison_not_equalto'],
+        values: ''
+      });
+
+      server.create('definition', {
+        label: 'Following',
+        field: 'followers.userid',
+        type: 'NUMERIC',
+        sub_type: 'INTEGER',
+        group: 'CASES',
+        input_type: 'OPTIONS',
+        operators: ['comparison_equalto', 'comparison_not_equalto'],
+        values: {
+          '(current user)': '(current user)'
+        }
+      });
+
+      server.create('definition', {
+        label: 'SLA Breached',
+        field: 'caseslametrics.isbreached',
+        type: 'NUMERIC',
+        sub_type: 'INTEGER',
+        group: 'CASES',
+        input_type: 'OPTIONS',
+        operators: ['comparison_equalto', 'comparison_not_equalto'],
+        values: {
+          '1': 'breached'
+        }
+      });
+
+      var proposition = server.create('proposition', {
+        field: 'cases.subject',
+        operator: 'string_contains',
+        value: 'dave'
+      });
+      var collection = server.create('predicate-collection', {
+        propositions: [{ id: proposition.id, resource_type: 'proposition' }]
+      });
+      var action = server.create('action');
+      monitor = server.create('monitor', {
+        predicate_collections: [{ id: collection.id, resource_type: 'predicate_collection' }],
+        action: { id: action.id, resource_type: 'action' }
+      });
+
+      login(session.id);
+
+      server.create('plan', {
+        limits: [],
+        features: []
+      });
+      originalConfirm = window.confirm;
+      /*eslint-enable quote-props*/
+    },
+
+    afterEach: function afterEach() {
+      window.confirm = originalConfirm;
+      logout();
+    }
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('Edit an existing monitor', function (assert) {
+    assert.expect(15);
+
+    visit('/admin/automation/monitors/' + monitor.id);
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors/' + monitor.id);
+      nativeClick('.ko-predicate-builder__add');
+
+      selectChoose('.qa-predicate-builder--proposition:eq(1) .qa-proposition--column', 'Cases: Subject');
+      selectChoose('.qa-predicate-builder--proposition:eq(1) .qa-proposition--operator', 'string does not contain');
+      fillIn('.qa-predicate-builder--proposition:eq(1) input:last', 'collection1proposition2');
+
+      nativeClick('.ko-predicate-builder__new');
+
+      selectChoose('.qa-predicate-builder--proposition:eq(2) .qa-proposition--column', 'Cases: Subject');
+      selectChoose('.qa-predicate-builder--proposition:eq(2) .qa-proposition--operator', 'string does not contain');
+      fillIn('.qa-predicate-builder--proposition:eq(2) input:last', 'collection2proposition1');
+
+      nativeClick('.ko-predicate-builder_proposition__remove:eq(0)');
+      nativeClick('.button[name=submit]');
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors');
+      assert.equal(find('.qa-admin_monitors--enabled .ko-simple-list_row').length, 1, 'The monitor is still enabled');
+      assert.equal(find('.qa-admin_monitors--disabled .ko-simple-list_row').length, 0, 'There is no disabled monitors');
+      nativeClick('.qa-admin_monitors--enabled .ko-simple-list_row');
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors/' + monitor.id);
+      assert.equal(find('.ko-predicate-builder').length, 2, 'There is 2 predicate collections');
+      assert.equal(find('.ko-predicate-builder:eq(0) .qa-predicate-builder--proposition').length, 1, 'There is 1 proposition in the first predicate collection');
+      assert.equal(find('.ko-predicate-builder:eq(1) .qa-predicate-builder--proposition').length, 1, 'There is 1 proposition in the second predicate collection');
+      nativeClick('.ko-predicate-builder__remove:eq(0)'); // Remove the first predicate collection
+      nativeClick('.button[name=submit]');
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors');
+      assert.equal(find('.qa-admin_monitors--enabled .ko-simple-list_row').length, 1, 'The monitor is still enabled');
+      assert.equal(find('.qa-admin_monitors--disabled .ko-simple-list_row').length, 0, 'There is no disabled monitors');
+      nativeClick('.qa-admin_monitors--enabled .ko-simple-list_row');
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors/' + monitor.id);
+      assert.equal(find('.ko-predicate-builder').length, 1, 'There is 1 predicate collection');
+      assert.equal(find('.ko-predicate-builder:eq(0) .qa-predicate-builder--proposition').length, 1, 'There is 1 proposition in the first predicate collection');
+      assert.equal(find('.ko-predicate-builder_proposition__input').val(), 'collection2proposition1', 'The proposition left is the expected one');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('Exit having pending changes ask for confirmation', function (assert) {
+    assert.expect(3);
+
+    window.confirm = function (message) {
+      assert.equal(message, 'You have unsaved changes on this page. Are you sure you want to discard these changes?', 'The proper confirm message is shown');
+      return true;
+    };
+
+    visit('/admin/automation/monitors/' + monitor.id);
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors/' + monitor.id);
+      fillIn('input[name="title"]', 'Sample monitor name');
+      nativeClick('.button[name=cancel]');
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('Exit without having pending changes doesn\'t ask for confirmation', function (assert) {
+    assert.expect(2);
+
+    window.confirm = function (message) {
+      assert.ok(false, 'This should never be called');
+      return false;
+    };
+
+    visit('/admin/automation/monitors/' + monitor.id);
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors/' + monitor.id);
+      nativeClick('.button[name=cancel]');
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors');
+    });
+  });
+});
 define('frontend-cp/tests/acceptance/admin/automation/monitors/index-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
 
   var originalConfirm = undefined;
 
-  (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/automation/monitors/index', {
+  (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/automation/monitors - Index of monitors', {
     beforeEach: function beforeEach() {
       var locale = server.create('locale', {
-        id: 1,
         locale: 'en-us'
       });
 
@@ -399,6 +716,288 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/index-test', ['ex
       assert.equal(find('.qa-admin_monitors--enabled li:nth-of-type(3) .t-bold').text().trim(), 'test monitor 3');
       assert.equal(find('.qa-admin_monitors--enabled li:nth-of-type(4) .t-bold').text().trim(), 'test monitor 2');
       assert.equal(find('.qa-admin_monitors--enabled li:nth-of-type(5) .t-bold').text().trim(), 'test monitor 1');
+    });
+  });
+});
+define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
+
+  var originalConfirm = undefined;
+
+  (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/automation/monitors - Create a monitor', {
+    beforeEach: function beforeEach() {
+      /*eslint-disable quote-props*/
+      var locale = server.create('locale', {
+        locale: 'en-us'
+      });
+
+      var adminRole = server.create('role', { type: 'ADMIN' });
+      var agent = server.create('user', { role: adminRole, locale: locale });
+      var session = server.create('session', { user: agent });
+
+      server.create('definition', {
+        label: 'Subject',
+        field: 'cases.subject',
+        type: 'STRING',
+        sub_type: '',
+        group: 'CASES',
+        input_type: 'STRING',
+        operators: ['string_contains', 'string_does_not_contain'],
+        values: ''
+      });
+
+      server.create('definition', {
+        label: 'Status',
+        field: 'cases.casestatusid',
+        type: 'NUMERIC',
+        sub_type: 'INTEGER',
+        group: 'CASES',
+        input_type: 'OPTIONS',
+        operators: ['comparison_equalto', 'comparison_not_equalto', 'comparison_lessthan', 'comparison_greaterthan'],
+        values: {
+          '5': 'Closed',
+          '4': 'Completed',
+          '1': 'New',
+          '2': 'Open',
+          '3': 'Pending'
+        }
+      });
+
+      server.create('definition', {
+        label: 'Type',
+        field: 'cases.casetypeid',
+        type: 'NUMERIC',
+        sub_type: 'INTEGER',
+        group: 'CASES',
+        input_type: 'OPTIONS',
+        operators: ['comparison_equalto', 'comparison_not_equalto'],
+        values: {
+          '4': 'Incident',
+          '3': 'Problem',
+          '1': 'Question',
+          '2': 'Task'
+        }
+      });
+
+      server.create('definition', {
+        label: 'Priority',
+        field: 'cases.casepriorityid',
+        type: 'NUMERIC',
+        sub_type: 'INTEGER',
+        group: 'CASES',
+        input_type: 'OPTIONS',
+        operators: ['comparison_equalto', 'comparison_not_equalto', 'comparison_lessthan', 'comparison_greaterthan'],
+        values: {
+          '3': 'High',
+          '1': 'Low',
+          '2': 'Normal',
+          '4': 'Urgent'
+        }
+      });
+
+      server.create('definition', {
+        label: 'State',
+        field: 'cases.state',
+        type: 'NUMERIC',
+        sub_type: 'INTEGER',
+        group: 'CASES',
+        input_type: 'OPTIONS',
+        operators: ['comparison_equalto'],
+        values: {
+          '1': 'Active',
+          '3': 'Spam',
+          '2': 'Trash'
+        }
+      });
+
+      server.create('definition', {
+        label: 'Brand',
+        field: 'cases.brandid',
+        type: 'NUMERIC',
+        sub_type: 'INTEGER',
+        group: 'CASES',
+        input_type: 'OPTIONS',
+        operators: ['comparison_equalto', 'comparison_not_equalto'],
+        values: {
+          '1': 'Default'
+        }
+      });
+
+      server.create('definition', {
+        label: 'Assigned Agent Team',
+        field: 'cases.assigneeteamid',
+        type: 'NUMERIC',
+        sub_type: 'INTEGER',
+        group: 'CASES',
+        input_type: 'OPTIONS',
+        operators: ['comparison_equalto', 'comparison_not_equalto'],
+        values: {
+          '0': 'unassigned',
+          '(current users team)': '(current users team)',
+          '5': 'Contractors',
+          '3': 'Finance',
+          '4': 'Human Resources',
+          '1': 'Sales',
+          '2': 'Support'
+        }
+      });
+
+      server.create('definition', {
+        label: 'Assigned agent',
+        field: 'cases.assigneeagentid',
+        type: 'NUMERIC',
+        sub_type: 'INTEGER',
+        group: 'CASES',
+        input_type: 'AUTOCOMPLETE',
+        operators: ['comparison_equalto', 'comparison_not_equalto'],
+        values: ''
+      });
+
+      server.create('definition', {
+        label: 'Requester',
+        field: 'cases.requesterid',
+        type: 'NUMERIC',
+        sub_type: 'INTEGER',
+        group: 'CASES',
+        input_type: 'AUTOCOMPLETE',
+        operators: ['comparison_equalto', 'comparison_not_equalto'],
+        values: ''
+      });
+
+      server.create('definition', {
+        label: 'Tags',
+        field: 'tags.name',
+        type: 'COLLECTION',
+        sub_type: '',
+        group: 'CASES',
+        input_type: 'TAGS',
+        operators: ['collection_contains_insensitive', 'collection_does_not_contain_insensitive', 'collection_contains_any_insensitive'],
+        values: ''
+      });
+
+      server.create('definition', {
+        label: 'Organisation',
+        field: 'users.organizationid',
+        type: 'NUMERIC',
+        sub_type: 'INTEGER',
+        group: 'CASES',
+        input_type: 'AUTOCOMPLETE',
+        operators: ['comparison_equalto', 'comparison_not_equalto'],
+        values: ''
+      });
+
+      server.create('definition', {
+        label: 'Following',
+        field: 'followers.userid',
+        type: 'NUMERIC',
+        sub_type: 'INTEGER',
+        group: 'CASES',
+        input_type: 'OPTIONS',
+        operators: ['comparison_equalto', 'comparison_not_equalto'],
+        values: {
+          '(current user)': '(current user)'
+        }
+      });
+
+      server.create('definition', {
+        label: 'SLA Breached',
+        field: 'caseslametrics.isbreached',
+        type: 'NUMERIC',
+        sub_type: 'INTEGER',
+        group: 'CASES',
+        input_type: 'OPTIONS',
+        operators: ['comparison_equalto', 'comparison_not_equalto'],
+        values: {
+          '1': 'breached'
+        }
+      });
+
+      login(session.id);
+
+      server.create('plan', {
+        limits: [],
+        features: []
+      });
+      originalConfirm = window.confirm;
+      /*eslint-enable quote-props*/
+    },
+
+    afterEach: function afterEach() {
+      window.confirm = originalConfirm;
+      logout();
+    }
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('Creating a monitor', function (assert) {
+    assert.expect(4);
+    visit('/admin/automation/monitors/new');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors/new');
+      fillIn('input[name="title"]', 'Sample monitor name');
+      selectChoose('.qa-predicate-builder--proposition:eq(0) .qa-proposition--column', 'Cases: Subject');
+      selectChoose('.qa-predicate-builder--proposition:eq(0) .qa-proposition--operator', 'string does not contain');
+      fillIn('.qa-predicate-builder--proposition:eq(0) input:last', 'collection1proposition1');
+
+      nativeClick('.ko-predicate-builder__add');
+
+      selectChoose('.qa-predicate-builder--proposition:eq(1) .qa-proposition--column', 'Cases: Subject');
+      selectChoose('.qa-predicate-builder--proposition:eq(1) .qa-proposition--operator', 'string does not contain');
+      fillIn('.qa-predicate-builder--proposition:eq(1) input:last', 'collection1proposition2');
+
+      nativeClick('.ko-predicate-builder__new');
+
+      selectChoose('.qa-predicate-builder--proposition:eq(2) .qa-proposition--column', 'Cases: Subject');
+      selectChoose('.qa-predicate-builder--proposition:eq(2) .qa-proposition--operator', 'string does not contain');
+      fillIn('.qa-predicate-builder--proposition:eq(2) input:last', 'collection2proposition1');
+
+      nativeClick('.button[name=submit]');
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors');
+      assert.equal(find('.qa-admin_monitors--disabled .ko-simple-list_row').length, 1, 'The monitor has been created and it is disabled');
+      assert.equal(find('.qa-admin_monitors--enabled .ko-simple-list_row').length, 0, 'There is no enabled monitors');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('Exit having pending changes ask for confirmation', function (assert) {
+    assert.expect(3);
+
+    window.confirm = function (message) {
+      assert.equal(message, 'You have unsaved changes on this page. Are you sure you want to discard these changes?', 'The proper confirm message is shown');
+      return true;
+    };
+
+    visit('/admin/automation/monitors/new');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors/new');
+      fillIn('input[name="title"]', 'Sample monitor name');
+      nativeClick('.button[name=cancel]');
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('Exit without having pending changes doesn\'t ask for confirmation', function (assert) {
+    assert.expect(2);
+
+    window.confirm = function (message) {
+      assert.ok(false, 'This should never be called');
+      return false;
+    };
+
+    visit('/admin/automation/monitors/new');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors/new');
+      nativeClick('.button[name=cancel]');
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors');
     });
   });
 });
