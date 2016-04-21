@@ -4,6 +4,7 @@
   "navigation.people": "People",
   "navigation.channels": "Channels",
   "navigation.automation": "Automation",
+  "navigation.account": "Account Overview",
 
   "administration": "Administration",
   "apps.title": "Apps",
@@ -527,5 +528,18 @@
   "facebook.help.route_posts": "Capturing customer posts and comments",
   "facebook.no_pages": "No pages found",
   "facebook.see_facebook_account": "Don't see your Facebook page?",
-  "facebook.connect_facebook_account": "Connect your Facebook account"
+  "facebook.connect_facebook_account": "Connect your Facebook account",
+  "account.overview.title": "Overview",
+  "account.overview.list.title": "Billing Overview",
+  "account.overview.invoices.title": "Invoices",
+  "account.overview.invoices.date": "Date",
+  "account.overview.invoices.amount": "Amount",
+  "account.overview.invoices.downloadText": "PDF",
+  "account.overview.balance.title": "Balance",
+  "account.overview.plan.title" : "Current Plan",
+  "account.overview.plan.buttonText": "Change plan",
+  "account.overview.payment.title" : "Payment Method",
+  "account.overview.payment.buttonText" : "Update Card",
+  "account.overview.billing.title" : "Billing Information",
+  "account.overview.billing.buttonText" : "Update information"
 }
