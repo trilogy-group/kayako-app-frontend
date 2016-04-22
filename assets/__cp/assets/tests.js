@@ -9231,7 +9231,7 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
 
       var note = server.create('note');
 
-      server.createList('post', 10, {
+      server.createList('post', 15, {
         creator: agent,
         identity: identityEmail,
         'case': targetCase,
@@ -9320,12 +9320,13 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('loading more entries below', function (assert) {
-    assert.expect(2);
+    assert.expect(4);
 
     visit('/agent/cases/' + targetCase.id + '/user');
 
     andThen(function () {
       assert.equal(find('.ko-feed_item--note').length, 10, 'Default number of notes displayed');
+      assert.equal(find('.ko-timeline__load-more-below').length, 1, 'Load more link available due to more posts to load');
     });
 
     andThen(function () {
@@ -9333,19 +9334,22 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
     });
 
     andThen(function () {
-      assert.equal(find('.ko-feed_item--note').length, 19, 'Load more notes');
+      assert.equal(find('.ko-feed_item--note').length, 15, 'Load more notes below');
+      assert.equal(find('.ko-timeline__load-more-below').length, 0, 'Load more link hidden due to no more posts to load');
     });
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('loading more entries above', function (assert) {
-    assert.expect(2);
+    assert.expect(4);
 
-    var lastPostId = server.db.posts[server.db.posts.length - 1].id;
+    var allPosts = server.db.posts.sortBy('created_at').reverse();
+    var postId = allPosts[allPosts.length - 8].id;
 
-    visit('/agent/cases/' + targetCase.id + '/user?postId=' + lastPostId);
+    visit('/agent/cases/' + targetCase.id + '/user?postId=' + postId);
 
     andThen(function () {
-      assert.equal(find('.ko-feed_item--note').length, 11, 'Default number of notes displayed');
+      assert.equal(find('.ko-feed_item--note').length, 8, 'Last 8 notes displayed');
+      assert.equal(find('.ko-timeline__load-more-above').length, 1, 'Load more link available due to more posts to load');
     });
 
     andThen(function () {
@@ -9353,7 +9357,8 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
     });
 
     andThen(function () {
-      assert.equal(find('.ko-feed_item--note').length, 20, 'Load more notes');
+      assert.equal(find('.ko-feed_item--note').length, 15, 'Load more notes');
+      assert.equal(find('.ko-timeline__load-more-above').length, 0, 'Load more link hidden due to no more posts to load');
     });
   });
 
@@ -9372,7 +9377,7 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
       }).toArray();
       var expectedOrder = server.db.posts.sortBy('created_at').reverse().map(function (record) {
         return parseInt(record.id);
-      });
+      }).slice(0, 10);
 
       assert.deepEqual(actualOrder, expectedOrder, 'Posts sorted by newest first');
     });
@@ -9393,7 +9398,7 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
       }).toArray();
       var expectedOrder = server.db.posts.sortBy('created_at').map(function (record) {
         return parseInt(record.id);
-      });
+      }).slice(5);
 
       assert.deepEqual(actualOrder, expectedOrder, 'Posts sorted by oldest first');
     });
@@ -9406,6 +9411,25 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
 
     andThen(function () {
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-timeline__sort .ember-power-select-placeholder'), 'Sort: Newest first', 'Default sort is correct');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('adding a note updates the timeline', function (assert) {
+    assert.expect(3);
+
+    visit('/agent/cases/' + targetCase.id + '/user');
+
+    andThen(function () {
+      assert.equal(find('.ko-feed_item--note').length, 10, 'Begin with 10 notes');
+    });
+
+    nativeClick('.ko-layout_advanced_editor__placeholder');
+    fillInRichTextEditor('Testing notes');
+    nativeClick('.button--primary');
+
+    andThen(function () {
+      assert.equal(find('.ko-feed_item--note').length, 11, 'Now there are 11 notes');
+      assert.equal(find('.ko-feed_item:eq(0) .ko-feed_item__content').text().trim(), 'Testing notes', 'The added note is in the top');
     });
   });
 });
