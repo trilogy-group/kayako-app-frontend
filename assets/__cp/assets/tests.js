@@ -10860,13 +10860,26 @@ define('frontend-cp/tests/helpers/dom-helpers', ['exports'], function (exports) 
   exports.text = text;
 });
 define('frontend-cp/tests/helpers/drag', ['exports', 'ember'], function (exports, _ember) {
-  exports['default'] = _ember['default'].Test.registerAsyncHelper('drag', function (app, itemSelector, offsetFn) {
+  exports.drag = drag;
+  var $ = _ember['default'].$;
+
+  function drag(app, itemSelector, offsetFn) {
     var callbacks = arguments.length <= 3 || arguments[3] === undefined ? {} : arguments[3];
 
-    var start = 'mousedown';
-    var move = 'mousemove';
-    var end = 'mouseup';
-    var which = 1;
+    var start = undefined,
+        move = undefined,
+        end = undefined,
+        which = undefined;
+
+    var _app$testHelpers = app.testHelpers;
+    var andThen = _app$testHelpers.andThen;
+    var findWithAssert = _app$testHelpers.findWithAssert;
+    var wait = _app$testHelpers.wait;
+
+    start = 'mousedown';
+    move = 'mousemove';
+    end = 'mouseup';
+    which = 1;
 
     andThen(function () {
       var item = findWithAssert(itemSelector);
@@ -10875,42 +10888,51 @@ define('frontend-cp/tests/helpers/drag', ['exports', 'ember'], function (exports
       var targetX = itemOffset.left + offset.dx;
       var targetY = itemOffset.top + offset.dy;
 
-      triggerEvent(item, start, {
+      triggerEvent(app, item, start, {
         pageX: itemOffset.left,
         pageY: itemOffset.top,
         which: which
-      }).then(function () {
-        if (callbacks.dragstart) {
-          callbacks.dragstart();
-        }
       });
 
-      triggerEvent(item, move, {
+      if (callbacks.dragstart) {
+        andThen(callbacks.dragstart);
+      }
+
+      triggerEvent(app, item, move, {
         pageX: itemOffset.left,
         pageY: itemOffset.top
-      }).then(function () {
-        if (callbacks.dragmove) {
-          callbacks.dragmove();
-        }
       });
 
-      triggerEvent(item, move, {
+      if (callbacks.dragmove) {
+        andThen(callbacks.dragmove);
+      }
+
+      triggerEvent(app, item, move, {
         pageX: targetX,
         pageY: targetY
       });
 
-      triggerEvent(item, end, {
+      triggerEvent(app, item, end, {
         pageX: targetX,
         pageY: targetY
-      }).then(function () {
-        if (callbacks.dragend) {
-          callbacks.dragend();
-        }
       });
+
+      if (callbacks.dragend) {
+        andThen(callbacks.dragend);
+      }
     });
 
     return wait();
-  });
+  }
+
+  function triggerEvent(app, el, type, props) {
+    return app.testHelpers.andThen(function () {
+      var event = $.Event(type, props);
+      $(el).trigger(event);
+    });
+  }
+
+  exports['default'] = _ember['default'].Test.registerAsyncHelper('drag', drag);
 });
 //unashamedly stolen from ember-sortable test helper
 define('frontend-cp/tests/helpers/ember-basic-dropdown', ['exports'], function (exports) {
@@ -11414,8 +11436,8 @@ define('frontend-cp/tests/helpers/start-app', ['exports', 'ember', 'frontend-cp/
   function startApp(attrs) {
     var application = undefined;
 
-    var attributes = _ember['default'].merge({}, _frontendCpConfigEnvironment['default'].APP);
-    attributes = _ember['default'].merge(attributes, attrs); // use defaults, but you can override;
+    var attributes = _ember['default'].assign({}, _frontendCpConfigEnvironment['default'].APP);
+    attributes = _ember['default'].assign(attributes, attrs); // use defaults, but you can override;
 
     _ember['default'].run(function () {
       application = _frontendCpApp['default'].create(attributes);
@@ -11534,7 +11556,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
             'name': 'missing-wrapper',
             'problems': ['wrong-type']
           },
-          'revision': 'Ember@2.4.5',
+          'revision': 'Ember@2.5.1',
           'loc': {
             'source': null,
             'start': {
@@ -11608,7 +11630,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
             'name': 'missing-wrapper',
             'problems': ['wrong-type']
           },
-          'revision': 'Ember@2.4.5',
+          'revision': 'Ember@2.5.1',
           'loc': {
             'source': null,
             'start': {
@@ -11755,7 +11777,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
             'name': 'missing-wrapper',
             'problems': ['wrong-type']
           },
-          'revision': 'Ember@2.4.5',
+          'revision': 'Ember@2.5.1',
           'loc': {
             'source': null,
             'start': {
@@ -11878,7 +11900,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
             'name': 'missing-wrapper',
             'problems': ['wrong-type']
           },
-          'revision': 'Ember@2.4.5',
+          'revision': 'Ember@2.5.1',
           'loc': {
             'source': null,
             'start': {
@@ -12005,7 +12027,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/component-test', ['
             'name': 'missing-wrapper',
             'problems': ['wrong-type']
           },
-          'revision': 'Ember@2.4.5',
+          'revision': 'Ember@2.5.1',
           'loc': {
             'source': null,
             'start': {
@@ -12080,7 +12102,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
             'name': 'missing-wrapper',
             'problems': ['wrong-type']
           },
-          'revision': 'Ember@2.4.5',
+          'revision': 'Ember@2.5.1',
           'loc': {
             'source': null,
             'start': {
@@ -12137,7 +12159,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
             'name': 'missing-wrapper',
             'problems': ['wrong-type']
           },
-          'revision': 'Ember@2.4.5',
+          'revision': 'Ember@2.5.1',
           'loc': {
             'source': null,
             'start': {
@@ -12208,7 +12230,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
             'name': 'missing-wrapper',
             'problems': ['wrong-type']
           },
-          'revision': 'Ember@2.4.5',
+          'revision': 'Ember@2.5.1',
           'loc': {
             'source': null,
             'start': {
@@ -12269,7 +12291,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
             'name': 'missing-wrapper',
             'problems': ['wrong-type']
           },
-          'revision': 'Ember@2.4.5',
+          'revision': 'Ember@2.5.1',
           'loc': {
             'source': null,
             'start': {
@@ -12333,7 +12355,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
             'name': 'missing-wrapper',
             'problems': ['wrong-type']
           },
-          'revision': 'Ember@2.4.5',
+          'revision': 'Ember@2.5.1',
           'loc': {
             'source': null,
             'start': {
@@ -12415,7 +12437,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/multiline-tex
             'name': 'missing-wrapper',
             'problems': ['wrong-type']
           },
-          'revision': 'Ember@2.4.5',
+          'revision': 'Ember@2.5.1',
           'loc': {
             'source': null,
             'start': {
@@ -12469,7 +12491,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/multiline-tex
             'name': 'missing-wrapper',
             'problems': ['wrong-type']
           },
-          'revision': 'Ember@2.4.5',
+          'revision': 'Ember@2.5.1',
           'loc': {
             'source': null,
             'start': {
@@ -12542,7 +12564,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/select/compon
             'name': 'missing-wrapper',
             'problems': ['wrong-type']
           },
-          'revision': 'Ember@2.4.5',
+          'revision': 'Ember@2.5.1',
           'loc': {
             'source': null,
             'start': {
@@ -12600,7 +12622,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/select/compon
             'name': 'missing-wrapper',
             'problems': ['wrong-type']
           },
-          'revision': 'Ember@2.4.5',
+          'revision': 'Ember@2.5.1',
           'loc': {
             'source': null,
             'start': {
@@ -12658,7 +12680,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/select/compon
             'name': 'missing-wrapper',
             'problems': ['wrong-type']
           },
-          'revision': 'Ember@2.4.5',
+          'revision': 'Ember@2.5.1',
           'loc': {
             'source': null,
             'start': {
@@ -12751,7 +12773,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/text/componen
             'name': 'missing-wrapper',
             'problems': ['wrong-type']
           },
-          'revision': 'Ember@2.4.5',
+          'revision': 'Ember@2.5.1',
           'loc': {
             'source': null,
             'start': {
@@ -12807,7 +12829,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/text/componen
             'name': 'missing-wrapper',
             'problems': ['wrong-type']
           },
-          'revision': 'Ember@2.4.5',
+          'revision': 'Ember@2.5.1',
           'loc': {
             'source': null,
             'start': {
@@ -15011,7 +15033,7 @@ define('frontend-cp/tests/unit/services/plan-test', ['exports', 'ember', 'ember-
     assert.expect(1);
 
     var service = getOwner(this).lookup('service:plan');
-    service.fetchPlan().then(function () {
+    return service.fetchPlan().then(function () {
       assert.equal(service.limitFor('collaborators'), 10);
     });
   });
@@ -15020,7 +15042,7 @@ define('frontend-cp/tests/unit/services/plan-test', ['exports', 'ember', 'ember-
     assert.expect(1);
 
     var service = getOwner(this).lookup('service:plan');
-    service.fetchPlan().then(function () {
+    return service.fetchPlan().then(function () {
       assert.equal(service.has('collaborators'), true);
     });
   });
@@ -15054,7 +15076,7 @@ define('frontend-cp/tests/unit/services/plan-test', ['exports', 'ember', 'ember-
       features: [feature]
     });
     /* eslint-enable no-undef, camelcase */
-    service.fetchPlan().then(function () {
+    return service.fetchPlan().then(function () {
       assert.equal(service.limitFor('agents'), 2);
       assert.equal(service.has('agents'), true);
     });
