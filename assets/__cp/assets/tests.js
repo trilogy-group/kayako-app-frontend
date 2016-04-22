@@ -35,13 +35,13 @@ define('frontend-cp/tests/acceptance/admin/automation/businesshours/edit-test', 
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/businesshours/1');
-      nativeClick('.ko-grid-picker__row:first-child .ko-grid-picker__cell:first-child');
-      nativeClick('.ko-grid-picker__row:nth-child(2) .ko-grid-picker__cell:first-child');
+      click('.ko-grid-picker__row:first-child .ko-grid-picker__cell:first-child');
+      click('.ko-grid-picker__row:nth-child(2) .ko-grid-picker__cell:first-child');
     });
 
     andThen(function () {
       assert.equal(find('.ko-grid-picker__row .selected').length, 2);
-      nativeClick('.ko-grid-picker__row:first-child .ko-grid-picker__cell:first-child');
+      click('.ko-grid-picker__row:first-child .ko-grid-picker__cell:first-child');
     });
 
     andThen(function () {
@@ -54,7 +54,7 @@ define('frontend-cp/tests/acceptance/admin/automation/businesshours/edit-test', 
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/businesshours/1');
-      nativeClick('.button--default');
+      click('.button--default');
     });
 
     andThen(function () {
@@ -62,7 +62,7 @@ define('frontend-cp/tests/acceptance/admin/automation/businesshours/edit-test', 
     });
 
     andThen(function () {
-      nativeClick('.ko-admin_holidays_edit__buttons button:first');
+      click('.ko-admin_holidays_edit__buttons button:first');
     });
 
     andThen(function () {
@@ -461,27 +461,27 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/edit-test', ['exp
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors/' + monitor.id);
-      nativeClick('.ko-predicate-builder__add');
+      click('.ko-predicate-builder__add');
 
       selectChoose('.qa-predicate-builder--proposition:eq(1) .qa-proposition--column', 'Cases: Subject');
       selectChoose('.qa-predicate-builder--proposition:eq(1) .qa-proposition--operator', 'string does not contain');
       fillIn('.qa-predicate-builder--proposition:eq(1) input:last', 'collection1proposition2');
 
-      nativeClick('.ko-predicate-builder__new');
+      click('.ko-predicate-builder__new');
 
       selectChoose('.qa-predicate-builder--proposition:eq(2) .qa-proposition--column', 'Cases: Subject');
       selectChoose('.qa-predicate-builder--proposition:eq(2) .qa-proposition--operator', 'string does not contain');
       fillIn('.qa-predicate-builder--proposition:eq(2) input:last', 'collection2proposition1');
 
-      nativeClick('.ko-predicate-builder_proposition__remove:eq(0)');
-      nativeClick('.button[name=submit]');
+      click('.ko-predicate-builder_proposition__remove:eq(0)');
+      click('.button[name=submit]');
     });
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors');
       assert.equal(find('.qa-admin_monitors--enabled .ko-simple-list_row').length, 1, 'The monitor is still enabled');
       assert.equal(find('.qa-admin_monitors--disabled .ko-simple-list_row').length, 0, 'There is no disabled monitors');
-      nativeClick('.qa-admin_monitors--enabled .ko-simple-list_row');
+      click('.qa-admin_monitors--enabled .ko-simple-list_row');
     });
 
     andThen(function () {
@@ -489,15 +489,15 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/edit-test', ['exp
       assert.equal(find('.ko-predicate-builder').length, 2, 'There is 2 predicate collections');
       assert.equal(find('.ko-predicate-builder:eq(0) .qa-predicate-builder--proposition').length, 1, 'There is 1 proposition in the first predicate collection');
       assert.equal(find('.ko-predicate-builder:eq(1) .qa-predicate-builder--proposition').length, 1, 'There is 1 proposition in the second predicate collection');
-      nativeClick('.ko-predicate-builder__remove:eq(0)'); // Remove the first predicate collection
-      nativeClick('.button[name=submit]');
+      click('.ko-predicate-builder__remove:eq(0)'); // Remove the first predicate collection
+      click('.button[name=submit]');
     });
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors');
       assert.equal(find('.qa-admin_monitors--enabled .ko-simple-list_row').length, 1, 'The monitor is still enabled');
       assert.equal(find('.qa-admin_monitors--disabled .ko-simple-list_row').length, 0, 'There is no disabled monitors');
-      nativeClick('.qa-admin_monitors--enabled .ko-simple-list_row');
+      click('.qa-admin_monitors--enabled .ko-simple-list_row');
     });
 
     andThen(function () {
@@ -521,7 +521,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/edit-test', ['exp
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors/' + monitor.id);
       fillIn('input[name="title"]', 'Sample monitor name');
-      nativeClick('.button[name=cancel]');
+      click('.button[name=cancel]');
     });
 
     andThen(function () {
@@ -541,7 +541,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/edit-test', ['exp
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors/' + monitor.id);
-      nativeClick('.button[name=cancel]');
+      click('.button[name=cancel]');
     });
 
     andThen(function () {
@@ -938,19 +938,19 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
       selectChoose('.qa-predicate-builder--proposition:eq(0) .qa-proposition--operator', 'string does not contain');
       fillIn('.qa-predicate-builder--proposition:eq(0) input:last', 'collection1proposition1');
 
-      nativeClick('.ko-predicate-builder__add');
+      click('.ko-predicate-builder__add');
 
       selectChoose('.qa-predicate-builder--proposition:eq(1) .qa-proposition--column', 'Cases: Subject');
       selectChoose('.qa-predicate-builder--proposition:eq(1) .qa-proposition--operator', 'string does not contain');
       fillIn('.qa-predicate-builder--proposition:eq(1) input:last', 'collection1proposition2');
 
-      nativeClick('.ko-predicate-builder__new');
+      click('.ko-predicate-builder__new');
 
       selectChoose('.qa-predicate-builder--proposition:eq(2) .qa-proposition--column', 'Cases: Subject');
       selectChoose('.qa-predicate-builder--proposition:eq(2) .qa-proposition--operator', 'string does not contain');
       fillIn('.qa-predicate-builder--proposition:eq(2) input:last', 'collection2proposition1');
 
-      nativeClick('.button[name=submit]');
+      click('.button[name=submit]');
     });
 
     andThen(function () {
@@ -973,7 +973,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors/new');
       fillIn('input[name="title"]', 'Sample monitor name');
-      nativeClick('.button[name=cancel]');
+      click('.button[name=cancel]');
     });
 
     andThen(function () {
@@ -993,7 +993,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors/new');
-      nativeClick('.button[name=cancel]');
+      click('.button[name=cancel]');
     });
 
     andThen(function () {
@@ -1983,7 +1983,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-priorities-
       var sortedItems = [items[1], items[0], items[2]];
 
       items[2].scrollIntoView();
-      reorder.apply(undefined, [handleSelector].concat(sortedItems));
+      reorder.apply(undefined, ['mouse', handleSelector].concat(sortedItems));
     });
 
     andThen(function () {
@@ -1995,9 +1995,9 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-priorities-
 
   (0, _qunit.test)('creating a priority', function (assert) {
     visit('/admin/manage/case-fields/' + caseFieldId);
-    nativeClick('.priorities__add-priority-message');
+    click('.priorities__add-priority-message');
     fillIn('.qa-custom-priority-label-input', 'New Priority');
-    nativeClick('.qa-custom-priority-save');
+    click('.qa-custom-priority-save');
 
     andThen(function () {
       assert.equal(find('.qa-custom-priority-label:contains("New Priority")').length, 1);
@@ -2006,9 +2006,9 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-priorities-
 
   (0, _qunit.test)('editing a status', function (assert) {
     visit('/admin/manage/case-fields/' + caseFieldId);
-    nativeClick('.qa-custom-priority-edit:first');
+    click('.qa-custom-priority-edit:first');
     fillIn('.qa-custom-priority-label-input', 'Edited Priority');
-    nativeClick('.qa-custom-priority-save');
+    click('.qa-custom-priority-save');
 
     andThen(function () {
       assert.equal(find('.qa-custom-priority-label:contains("Edited Priority")').length, 1);
@@ -2020,7 +2020,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-priorities-
     visit('/admin/manage/case-fields/' + caseFieldId);
 
     confirming(true, function () {
-      nativeClick('.qa-custom-priority-delete:first');
+      click('.qa-custom-priority-delete:first');
     });
 
     andThen(function () {
@@ -2032,7 +2032,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-priorities-
     visit('/admin/manage/case-fields/' + caseFieldId);
 
     confirming(false, function () {
-      nativeClick('.qa-custom-priority-delete:first');
+      click('.qa-custom-priority-delete:first');
     });
 
     andThen(function () {
@@ -2096,7 +2096,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-statuses-te
       var sortedItems = [items[1], items[0], items[2]];
 
       items[2].scrollIntoView();
-      reorder.apply(undefined, [handleSelector].concat(sortedItems));
+      reorder.apply(undefined, ['mouse', handleSelector].concat(sortedItems));
     });
 
     andThen(function () {
@@ -2108,10 +2108,10 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-statuses-te
 
   (0, _qunit.test)('creating a status', function (assert) {
     visit('/admin/manage/case-fields/' + caseFieldId);
-    nativeClick('.statuses__add-status-message');
+    click('.statuses__add-status-message');
     fillIn('.qa-custom-status-label-input', 'New Status');
-    nativeClick('.qa-custom-status-sla-toggle div[role="radio"]');
-    nativeClick('.qa-custom-status-save');
+    click('.qa-custom-status-sla-toggle div[role="radio"]');
+    click('.qa-custom-status-save');
 
     andThen(function () {
       assert.equal(find('.qa-custom-status-label:contains("New Status")').length, 1);
@@ -2121,9 +2121,9 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-statuses-te
 
   (0, _qunit.test)('editing a status', function (assert) {
     visit('/admin/manage/case-fields/' + caseFieldId);
-    nativeClick('.qa-custom-status-edit:first');
+    click('.qa-custom-status-edit:first');
     fillIn('.qa-custom-status-label-input', 'Edited Status');
-    nativeClick('.qa-custom-status-save');
+    click('.qa-custom-status-save');
 
     andThen(function () {
       assert.equal(find('.qa-custom-status-label:contains("Edited Status")').length, 1);
@@ -2135,7 +2135,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-statuses-te
     visit('/admin/manage/case-fields/' + caseFieldId);
 
     confirming(true, function () {
-      nativeClick('.qa-custom-status-delete:first');
+      click('.qa-custom-status-delete:first');
     });
 
     andThen(function () {
@@ -2147,7 +2147,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-statuses-te
     visit('/admin/manage/case-fields/' + caseFieldId);
 
     confirming(false, function () {
-      nativeClick('.qa-custom-status-delete:first');
+      click('.qa-custom-status-delete:first');
     });
 
     andThen(function () {
@@ -2199,9 +2199,9 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-types-test'
 
   (0, _qunit.test)('creating a type', function (assert) {
     visit('/admin/manage/case-fields/' + caseFieldId);
-    nativeClick('.types__add-type-message');
+    click('.types__add-type-message');
     fillIn('.qa-custom-type-label-input', 'New Type');
-    nativeClick('.qa-custom-type-save');
+    click('.qa-custom-type-save');
 
     andThen(function () {
       assert.equal(find('.qa-custom-type-label:contains("New Type")').length, 1);
@@ -2212,9 +2212,9 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-types-test'
     visit('/admin/manage/case-fields/' + caseFieldId);
 
     andThen(function () {
-      nativeClick('.qa-custom-type-edit:first');
+      click('.qa-custom-type-edit:first');
       fillIn('.qa-custom-type-label-input', 'Edited Type');
-      nativeClick('.qa-custom-type-save');
+      click('.qa-custom-type-save');
     });
 
     andThen(function () {
@@ -2227,7 +2227,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-types-test'
     visit('/admin/manage/case-fields/' + caseFieldId);
 
     confirming(true, function () {
-      nativeClick('.qa-custom-type-delete:first');
+      click('.qa-custom-type-delete:first');
     });
 
     andThen(function () {
@@ -2239,7 +2239,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-types-test'
     visit('/admin/manage/case-fields/' + caseFieldId);
 
     confirming(false, function () {
-      nativeClick('.qa-custom-type-delete:first');
+      click('.qa-custom-type-delete:first');
     });
 
     andThen(function () {
@@ -3227,7 +3227,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/reorder-test', ['e
       var sortedItems = [items[1], items[2], items[3], items[4], items[0]];
 
       items[0].scrollIntoView();
-      reorder.apply(undefined, [handleSelector].concat(sortedItems));
+      reorder.apply(undefined, ['mouse', handleSelector].concat(sortedItems));
     });
 
     andThen(function () {
@@ -3264,12 +3264,12 @@ define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['exports', 
     visit('/admin/manage/case-forms');
 
     andThen(function () {
-      nativeClick('.qa-admin_case-forms__new-button');
+      click('.qa-admin_case-forms__new-button');
     });
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-forms/new');
-      nativeClick('.qa-admin_case-forms__cancel-button');
+      click('.qa-admin_case-forms__cancel-button');
     });
 
     andThen(function () {
@@ -3286,7 +3286,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['exports', 
     };
 
     andThen(function () {
-      nativeClick('.qa-admin_case-forms__new-button');
+      click('.qa-admin_case-forms__new-button');
     });
 
     andThen(function () {
@@ -3295,7 +3295,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['exports', 
     });
 
     andThen(function () {
-      nativeClick('.qa-admin_case-forms__cancel-button');
+      click('.qa-admin_case-forms__cancel-button');
     });
 
     andThen(function () {
@@ -3312,7 +3312,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['exports', 
     };
 
     andThen(function () {
-      nativeClick('.qa-admin_case-forms__new-button');
+      click('.qa-admin_case-forms__new-button');
     });
 
     andThen(function () {
@@ -3321,7 +3321,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['exports', 
     });
 
     andThen(function () {
-      nativeClick('.qa-admin_case-forms__cancel-button');
+      click('.qa-admin_case-forms__cancel-button');
     });
 
     andThen(function () {
@@ -3355,7 +3355,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['exports', 
     visit('/admin/manage/case-forms');
 
     andThen(function () {
-      nativeClick('.qa-admin_case-forms__new-button');
+      click('.qa-admin_case-forms__new-button');
     });
 
     andThen(function () {
@@ -3369,7 +3369,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['exports', 
     });
 
     andThen(function () {
-      nativeClick('.qa-admin_case-forms__customer-available-checkbox');
+      click('.qa-admin_case-forms__customer-available-checkbox');
     });
 
     andThen(function () {
@@ -3381,32 +3381,32 @@ define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['exports', 
 
     andThen(function () {
       assert.equal(find('.qa-admin_case-forms_edit_fields__row').length, 5);
-      nativeClick('.qa-admin_case-forms_edit_fields__configure-dropdown .ember-basic-dropdown-trigger');
+      click('.qa-admin_case-forms_edit_fields__configure-dropdown .ember-basic-dropdown-trigger');
     });
 
     andThen(function () {
       assert.equal(find('.ember-power-select-option').length, 2);
-      nativeClick('.ember-power-select-option:eq(0)');
+      click('.ember-power-select-option:eq(0)');
     });
 
     andThen(function () {
       assert.equal(find('.qa-admin_case-forms_edit_fields__row').length, 6);
-      nativeClick('.qa-admin_case-forms_edit_fields__configure-dropdown .ember-basic-dropdown-trigger');
+      click('.qa-admin_case-forms_edit_fields__configure-dropdown .ember-basic-dropdown-trigger');
     });
 
     andThen(function () {
-      nativeClick('.ember-power-select-option:eq(0)');
+      click('.ember-power-select-option:eq(0)');
     });
 
     andThen(function () {
       assert.equal(find('.qa-admin_case-forms_edit_fields__row').length, 7);
       triggerEvent('.qa-admin_case-forms_edit_fields__row:eq(6)', 'hover');
-      nativeClick('.qa-admin_case-forms_edit_fields__row:eq(6) .ko-admin_case-forms_edit_fields__action');
+      click('.qa-admin_case-forms_edit_fields__row:eq(6) .ko-admin_case-forms_edit_fields__action');
     });
 
     andThen(function () {
       assert.equal(find('.qa-admin_case-forms_edit_fields__row').length, 6);
-      nativeClick('.qa-admin_case-forms_edit__submit-button');
+      click('.qa-admin_case-forms_edit__submit-button');
     });
 
     andThen(function () {
@@ -3480,13 +3480,13 @@ define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['exports', 
 
     andThen(function () {
       assert.equal(find('.qa-admin_case-forms__enabled-list .qa-admin_case-forms__list-row').length, 1);
-      nativeClick('.qa-admin_case-forms__enabled-list .ko-simple-list_cell:eq(1) a:contains("Disable")');
+      click('.qa-admin_case-forms__enabled-list .ko-simple-list_cell:eq(1) a:contains("Disable")');
     });
 
     andThen(function () {
       assert.equal(find('.qa-admin_case-forms__enabled-list .qa-admin_case-forms__list-row').length, 0);
       assert.equal(find('.qa-admin_case-forms__disabled-list .qa-admin_case-forms__list-row').length, 1);
-      nativeClick('.qa-admin_case-forms__disabled-list .ko-simple-list_cell:eq(1) a:contains("Enable")');
+      click('.qa-admin_case-forms__disabled-list .ko-simple-list_cell:eq(1) a:contains("Enable")');
     });
 
     andThen(function () {
@@ -3518,7 +3518,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['exports', 
       assert.equal(find('.qa-admin_case-forms__enabled-list .qa-admin_case-forms__list-row').length, 2);
       assert.equal(find('.qa-admin_case-forms__enabled-list .qa-admin_case-forms__list-row:contains("Form 1") .t-caption:contains("(Default)")').length, 0);
       assert.equal(find('.qa-admin_case-forms__enabled-list .qa-admin_case-forms__list-row:contains("Form 2") .t-caption:contains("(Default)")').length, 1);
-      nativeClick('.qa-admin_case-forms__enabled-list .qa-admin_case-forms__list-row:contains("Form 1") a:contains("Make default")');
+      click('.qa-admin_case-forms__enabled-list .qa-admin_case-forms__list-row:contains("Form 1") a:contains("Make default")');
     });
 
     andThen(function () {
@@ -3545,7 +3545,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['exports', 
 
     andThen(function () {
       assert.equal(find('.qa-admin_case-forms__enabled-list .qa-admin_case-forms__list-row').length, 1);
-      nativeClick('.qa-admin_case-forms__enabled-list .qa-admin_case-forms__list-row:contains("Form 1") a:contains("Delete")');
+      click('.qa-admin_case-forms__enabled-list .qa-admin_case-forms__list-row:contains("Form 1") a:contains("Delete")');
     });
 
     andThen(function () {
@@ -3594,7 +3594,7 @@ define('frontend-cp/tests/acceptance/admin/manage/facebook/manage-pages-test', [
 
   (0, _frontendCpTestsHelpersQunit.test)('disabling a page', function (assert) {
     visit('/admin/channels/facebook');
-    nativeClick('.qa-admin-facebook-page__disable');
+    click('.qa-admin-facebook-page__disable');
 
     andThen(function () {
       assert.equal(find('.t-disabled').length, 1);
@@ -3605,7 +3605,7 @@ define('frontend-cp/tests/acceptance/admin/manage/facebook/manage-pages-test', [
     visit('/admin/channels/facebook');
 
     confirming(true, function () {
-      nativeClick('.qa-admin-facebook-page__delete');
+      click('.qa-admin-facebook-page__delete');
     });
 
     andThen(function () {
@@ -3615,10 +3615,10 @@ define('frontend-cp/tests/acceptance/admin/manage/facebook/manage-pages-test', [
 
   (0, _frontendCpTestsHelpersQunit.test)('editing a page', function (assert) {
     visit('/admin/channels/facebook');
-    nativeClick('.qa-admin-facebook-page');
-    nativeClick('.qa-admin-facebook-page__route-messages .ko-toggle__container');
-    nativeClick('button:contains("Save")');
-    nativeClick('.qa-admin-facebook-page');
+    click('.qa-admin-facebook-page');
+    click('.qa-admin-facebook-page__route-messages .ko-toggle__container');
+    click('button:contains("Save")');
+    click('.qa-admin-facebook-page');
 
     andThen(function () {
       assert.equal(find('.qa-admin-facebook-page__route-messages .ko-toggle__container--activated').length, 0);
@@ -3709,13 +3709,13 @@ define('frontend-cp/tests/acceptance/admin/manage/macros/new-test', ['exports', 
     selectChoose(assigneeFormSelect, 'Leeroy Jenkins');
     addTag('add-tags', 'tag-to-add');
     addTag('remove-tags', 'tag-to-remove');
-    nativeClick('.qa-admin_macros_edit__submit-button');
+    click('.qa-admin_macros_edit__submit-button');
 
     andThen(function () {
       assert.equal(find('.ko-admin_macros__title:contains("New Macro")').length, 1);
     });
 
-    nativeClick('.ko-admin_macros__title:contains("New Macro")');
+    click('.ko-admin_macros__title:contains("New Macro")');
 
     andThen(function () {
       assert.equal(find('.qa-admin_macros_edit__title-input').val(), 'New Macro');
@@ -3971,16 +3971,16 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
   //     assert.equal(currentURL(), '/admin/manage/views/new');
   //
   //     fillIn('input[name=title]', fieldTitle);
-  //     // nativeClick('.ko-toggle__container');
-  //     nativeClick('.ko-radio__label:contains(Just myself)');
+  //     // click('.ko-toggle__container');
+  //     click('.ko-radio__label:contains(Just myself)');
   //     fillIn('.qa-predicate-builder--proposition:first input:last', rule1String);
-  //     nativeClick('.button[name=submit]:first');
+  //     click('.button[name=submit]:first');
   //   });
   //
   //   andThen(function() {
   //     assert.equal(currentURL(), '/admin/manage/views');
   //     findWithAssert('.qa-view-list-active--title:contains(' + fieldTitle + ')');
-  //     nativeClick('.qa-view-list-active--title:contains(' + fieldTitle + ')');
+  //     click('.qa-view-list-active--title:contains(' + fieldTitle + ')');
   //   });
   //
   //   andThen(function() {
@@ -3999,13 +3999,13 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
 
       fillIn('input[name=title]', fieldTitle);
       // findWithAssert('.ko-toggle__container[aria-checked=false]');
-      nativeClick('.ko-radio__label:contains(Just myself)');
+      click('.ko-radio__label:contains(Just myself)');
 
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Cases: Subject');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'string does not contain');
 
       fillIn('.qa-predicate-builder--proposition:first input:last', rule1String);
-      nativeClick('.button[name=submit]:first');
+      click('.button[name=submit]:first');
     });
 
     andThen(function () {
@@ -4021,16 +4021,16 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
   //     assert.equal(currentURL(), '/admin/manage/views/new');
   //
   //     fillIn('input[name=title]', fieldTitle);
-  //     // nativeClick('.ko-toggle__container');
-  //     nativeClick('.ko-radio__label:contains(Just myself)');
+  //     // click('.ko-toggle__container');
+  //     click('.ko-radio__label:contains(Just myself)');
   //     fillIn('.qa-predicate-builder--proposition:first input:last', rule1String);
-  //     nativeClick('.button[name=submit]:first');
+  //     click('.button[name=submit]:first');
   //   });
   //
   //   andThen(function() {
   //     assert.equal(currentURL(), '/admin/manage/views');
   //     findWithAssert('.qa-view-list-active--title:contains(' + fieldTitle + ')');
-  //     nativeClick('.qa-view-list-active--title:contains(' + fieldTitle + ')');
+  //     click('.qa-view-list-active--title:contains(' + fieldTitle + ')');
   //   });
   //
   //   andThen(function() {
@@ -4048,16 +4048,16 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
   //     assert.equal(currentURL(), '/admin/manage/views/new');
   //
   //     fillIn('input[name=title]', fieldTitle);
-  //     // nativeClick('.ko-toggle__container');
-  //     nativeClick('.ko-radio__label:contains(Every agent)');
+  //     // click('.ko-toggle__container');
+  //     click('.ko-radio__label:contains(Every agent)');
   //     fillIn('.qa-predicate-builder--proposition:first input:last', rule1String);
-  //     nativeClick('.button[name=submit]:first');
+  //     click('.button[name=submit]:first');
   //   });
   //
   //   andThen(function() {
   //     assert.equal(currentURL(), '/admin/manage/views');
   //     findWithAssert('.qa-view-list-active--title:contains(' + fieldTitle + ')');
-  //     nativeClick('.qa-view-list-active--title:contains(' + fieldTitle + ')');
+  //     click('.qa-view-list-active--title:contains(' + fieldTitle + ')');
   //   });
   //
   //   andThen(function() {
@@ -4075,18 +4075,18 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
   //     assert.equal(currentURL(), '/admin/manage/views/new');
   //
   //     fillIn('input[name=title]', fieldTitle);
-  //     // nativeClick('.ko-toggle__container');
-  //     nativeClick('.ko-radio__label:contains(Specific teams)');
+  //     // click('.ko-toggle__container');
+  //     click('.ko-radio__label:contains(Specific teams)');
   //     selectChoose('.ko-admin_views_edit_team-selector', 'Human Resources');
   //     selectChoose('.ko-admin_views_edit_team-selector', 'Contractors');
   //     fillIn('.qa-predicate-builder--proposition:first input:last', rule1String);
-  //     nativeClick('.button[name=submit]:first');
+  //     click('.button[name=submit]:first');
   //   });
   //
   //   andThen(function() {
   //     assert.equal(currentURL(), '/admin/manage/views');
   //     findWithAssert('.qa-view-list-active--title:contains(' + fieldTitle + ')');
-  //     nativeClick('.qa-view-list-active--title:contains(' + fieldTitle + ')');
+  //     click('.qa-view-list-active--title:contains(' + fieldTitle + ')');
   //   });
   //
   //   andThen(function() {
@@ -4104,18 +4104,18 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
   //     assert.equal(currentURL(), '/admin/manage/views/new');
   //
   //     fillIn('input[name=title]', fieldTitle);
-  //     // nativeClick('.ko-toggle__container');
-  //     nativeClick('.ko-radio__label:contains(Just myself)');
+  //     // click('.ko-toggle__container');
+  //     click('.ko-radio__label:contains(Just myself)');
   //     selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Cases: Subject');
   //     selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'string contains');
   //     fillIn('.qa-predicate-builder--proposition:first input:last', rule1String);
-  //     nativeClick('.button[name=submit]:first');
+  //     click('.button[name=submit]:first');
   //   });
   //
   //   andThen(function() {
   //     assert.equal(currentURL(), '/admin/manage/views');
   //     findWithAssert('.qa-view-list-active--title:contains(' + fieldTitle + ')');
-  //     nativeClick('.qa-view-list-active--title:contains(' + fieldTitle + ')');
+  //     click('.qa-view-list-active--title:contains(' + fieldTitle + ')');
   //   });
   //
   //   andThen(function() {
@@ -4137,11 +4137,11 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
       assert.equal(currentURL(), '/admin/manage/views/new');
 
       fillIn('input[name=title]', fieldTitle);
-      nativeClick('.ko-radio__label:contains(Just myself)');
+      click('.ko-radio__label:contains(Just myself)');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Cases: Subject');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'string does not contain');
       fillIn('.qa-predicate-builder--proposition:first input:last', rule1String);
-      nativeClick('.button[name=submit]:first');
+      click('.button[name=submit]:first');
     });
 
     andThen(function () {
@@ -4157,11 +4157,11 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
       assert.equal(currentURL(), '/admin/manage/views/new');
 
       fillIn('input[name=title]', fieldTitle);
-      nativeClick('.ko-radio__label:contains(Just myself)');
+      click('.ko-radio__label:contains(Just myself)');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Cases: Status');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'is equal to');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--property', 'New');
-      nativeClick('.button[name=submit]:first');
+      click('.button[name=submit]:first');
     });
 
     andThen(function () {
@@ -4177,13 +4177,13 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
   //     assert.equal(currentURL(), '/admin/manage/views/new');
   //
   //     fillIn('input[name=title]', fieldTitle);
-  //     nativeClick('.ko-radio__label:contains(Just myself)');
+  //     click('.ko-radio__label:contains(Just myself)');
   //     selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Cases: Assigned Agent');
   //     selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'is equal to');
   //
   //     selectSearch('.qa-predicate-builder--proposition:first .qa-proposition--property', 'current user');
   //     selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--property', '(current user)');
-  //     nativeClick('.button[name=submit]:first');
+  //     click('.button[name=submit]:first');
   //   });
   //
   //   andThen(function() {
@@ -4199,11 +4199,11 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
       assert.equal(currentURL(), '/admin/manage/views/new');
 
       fillIn('input[name=title]', fieldTitle);
-      nativeClick('.ko-radio__label:contains(Just myself)');
+      click('.ko-radio__label:contains(Just myself)');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Cases: Status');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'is not equal to');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--property', 'New');
-      nativeClick('.button[name=submit]:first');
+      click('.button[name=submit]:first');
     });
 
     andThen(function () {
@@ -4219,11 +4219,11 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
       assert.equal(currentURL(), '/admin/manage/views/new');
 
       fillIn('input[name=title]', fieldTitle);
-      nativeClick('.ko-radio__label:contains(Just myself)');
+      click('.ko-radio__label:contains(Just myself)');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Cases: Priority');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'is less than');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--property', 'Low');
-      nativeClick('.button[name=submit]:first');
+      click('.button[name=submit]:first');
     });
 
     andThen(function () {
@@ -4239,11 +4239,11 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
       assert.equal(currentURL(), '/admin/manage/views/new');
 
       fillIn('input[name=title]', fieldTitle);
-      nativeClick('.ko-radio__label:contains(Just myself)');
+      click('.ko-radio__label:contains(Just myself)');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Cases: Priority');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'is greater than');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--property', 'Low');
-      nativeClick('.button[name=submit]:first');
+      click('.button[name=submit]:first');
     });
 
     andThen(function () {
@@ -4259,11 +4259,11 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
       assert.equal(currentURL(), '/admin/manage/views/new');
 
       fillIn('input[name=title]', fieldTitle);
-      nativeClick('.ko-radio__label:contains(Just myself)');
+      click('.ko-radio__label:contains(Just myself)');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Cases: Tags');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'contains one of the following');
       fillIn('.qa-predicate-builder--proposition:first input:last', rule1String);
-      nativeClick('.button[name=submit]:first');
+      click('.button[name=submit]:first');
     });
 
     andThen(function () {
@@ -4279,11 +4279,11 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
       assert.equal(currentURL(), '/admin/manage/views/new');
 
       fillIn('input[name=title]', fieldTitle);
-      nativeClick('.ko-radio__label:contains(Just myself)');
+      click('.ko-radio__label:contains(Just myself)');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Cases: Tags');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'does not contain');
       fillIn('.qa-predicate-builder--proposition:first input:last', rule1String);
-      nativeClick('.button[name=submit]:first');
+      click('.button[name=submit]:first');
     });
 
     andThen(function () {
@@ -4299,11 +4299,11 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
       assert.equal(currentURL(), '/admin/manage/views/new');
 
       fillIn('input[name=title]', fieldTitle);
-      nativeClick('.ko-radio__label:contains(Just myself)');
+      click('.ko-radio__label:contains(Just myself)');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Cases: Tags');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'contains one of the following');
       fillIn('.qa-predicate-builder--proposition:first input:last', rule1String);
-      nativeClick('.button[name=submit]:first');
+      click('.button[name=submit]:first');
     });
 
     andThen(function () {
@@ -4319,13 +4319,13 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
       assert.equal(currentURL(), '/admin/manage/views/new');
 
       fillIn('input[name=title]', fieldTitle);
-      nativeClick('.ko-radio__label:contains(Just myself)');
+      click('.ko-radio__label:contains(Just myself)');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Cases: Subject');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'string contains');
       fillIn('.qa-predicate-builder--proposition:first input:last', rule1String);
       selectChoose('.qa-configure-column', 'Created at');
       selectChoose('.qa-sorted-by', 'Created at');
-      nativeClick('.button[name=submit]:first');
+      click('.button[name=submit]:first');
     });
 
     andThen(function () {
@@ -4345,7 +4345,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/views/new');
       fillIn('input[name=title]', fieldTitle);
-      nativeClick('.button[name=cancel]:first');
+      click('.button[name=cancel]:first');
     });
 
     andThen(function () {
@@ -6214,22 +6214,22 @@ define('frontend-cp/tests/acceptance/admin/people/roles/form-test', ['exports', 
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new role', function (assert) {
     visit('/admin/people/roles');
-    nativeClick('.' + _frontendCpComponentsKoAdminPageHeaderStyles['default'].header + ' button:contains("Add New Role")');
+    click('.' + _frontendCpComponentsKoAdminPageHeaderStyles['default'].header + ' button:contains("Add New Role")');
     fillIn('input[name="title"]', 'Custom Role');
     selectChoose('.qa-ko-admin_roles_form__role-type', 'Collaborator');
     selectChoose('.qa-ko-admin_roles_form__agent-case-access-type', 'Assigned to agent');
-    nativeClick('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Create new cases") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox);
-    nativeClick('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Accept new chat requests and invitations") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox);
-    nativeClick('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Create users and organizations") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox);
-    nativeClick('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Manage the Help Center") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox);
+    click('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Create new cases") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox);
+    click('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Accept new chat requests and invitations") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox);
+    click('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Create users and organizations") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox);
+    click('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Manage the Help Center") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox);
 
     andThen(function () {
       assert.equal(find('.ko-admin-form-group__legend:contains("User administration")').length, 0);
       assert.equal(find('.ko-admin-form-group__legend:contains("System administration")').length, 0);
     });
 
-    nativeClick('button:contains("Save")');
-    nativeClick('.qa-ko-admin_roles__list-item:contains("Custom Role") .qa-ko-admin_roles_list-item__edit');
+    click('button:contains("Save")');
+    click('.qa-ko-admin_roles__list-item:contains("Custom Role") .qa-ko-admin_roles_list-item__edit');
 
     andThen(function () {
       findWithAssert('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Create new cases") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox + '[aria-checked=false]');
@@ -6242,18 +6242,18 @@ define('frontend-cp/tests/acceptance/admin/people/roles/form-test', ['exports', 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new admin role', function (assert) {
     assert.expect(0);
     visit('/admin/people/roles');
-    nativeClick('.' + _frontendCpComponentsKoAdminPageHeaderStyles['default'].header + ' button:contains("Add New Role")');
+    click('.' + _frontendCpComponentsKoAdminPageHeaderStyles['default'].header + ' button:contains("Add New Role")');
     fillIn('input[name="title"]', 'Custom Role');
     selectChoose('.qa-ko-admin_roles_form__role-type', 'Administrator');
     selectChoose('.qa-ko-admin_roles_form__agent-case-access-type', 'Assigned to agent');
-    nativeClick('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Create new cases") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox);
-    nativeClick('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Accept new chat requests and invitations") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox);
-    nativeClick('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Create users and organizations") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox);
-    nativeClick('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Manage the Help Center") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox);
-    nativeClick('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Manage teams") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox);
-    nativeClick('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Manage apps and integrations") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox);
-    nativeClick('button:contains("Save")');
-    nativeClick('.qa-ko-admin_roles__list-item:contains("Custom Role") .qa-ko-admin_roles_list-item__edit');
+    click('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Create new cases") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox);
+    click('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Accept new chat requests and invitations") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox);
+    click('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Create users and organizations") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox);
+    click('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Manage the Help Center") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox);
+    click('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Manage teams") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox);
+    click('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Manage apps and integrations") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox);
+    click('button:contains("Save")');
+    click('.qa-ko-admin_roles__list-item:contains("Custom Role") .qa-ko-admin_roles_list-item__edit');
 
     andThen(function () {
       findWithAssert('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Create new cases") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox + '[aria-checked=false]');
@@ -6267,22 +6267,22 @@ define('frontend-cp/tests/acceptance/admin/people/roles/form-test', ['exports', 
 
   (0, _frontendCpTestsHelpersQunit.test)('editing a role', function (assert) {
     visit('/admin/people/roles');
-    nativeClick('.qa-ko-admin_roles__list-item:contains("Existing Role") .qa-ko-admin_roles_list-item__edit');
+    click('.qa-ko-admin_roles__list-item:contains("Existing Role") .qa-ko-admin_roles_list-item__edit');
 
     fillIn('input[name="title"]', 'Edited Role');
     selectChoose('.qa-ko-admin_roles_form__agent-case-access-type', 'Assigned to agent');
-    nativeClick('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Create new cases") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox);
-    nativeClick('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Accept new chat requests and invitations") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox);
-    nativeClick('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Create users and organizations") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox);
-    nativeClick('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Manage the Help Center") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox);
+    click('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Create new cases") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox);
+    click('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Accept new chat requests and invitations") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox);
+    click('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Create users and organizations") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox);
+    click('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Manage the Help Center") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox);
 
     andThen(function () {
       assert.equal(find('.ko-admin-form-group__legend:contains("User administration")').length, 0);
       assert.equal(find('.ko-admin-form-group__legend:contains("System administration")').length, 0);
     });
 
-    nativeClick('button:contains("Save")');
-    nativeClick('.qa-ko-admin_roles__list-item:contains("Edited Role") .qa-ko-admin_roles_list-item__edit');
+    click('button:contains("Save")');
+    click('.qa-ko-admin_roles__list-item:contains("Edited Role") .qa-ko-admin_roles_list-item__edit');
 
     andThen(function () {
       findWithAssert('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Create new cases") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox + '[aria-checked=true]');
@@ -6421,7 +6421,7 @@ define('frontend-cp/tests/acceptance/admin/people/roles/index-test', ['exports',
     });
 
     confirming(true, function () {
-      nativeClick('.qa-ko-admin_roles_list-item__delete:first');
+      click('.qa-ko-admin_roles_list-item__delete:first');
     });
 
     andThen(function () {
@@ -8390,15 +8390,15 @@ define('frontend-cp/tests/acceptance/agent/cases/create-test', ['exports', 'fron
   (0, _frontendCpTestsHelpersQunit.test)('Creating a case using the "+" button in the main header', function (assert) {
     visit('/agent');
 
-    nativeClick('.ko-agent-dropdown__add-icon');
+    click('.ko-agent-dropdown__add-icon');
 
     andThen(function () {
       assert.equal(find('.ko-agent-dropdown__drop').is(':visible'), true, '"+" Dropdown content should be visible');
-      nativeClick('.ko-agent-dropdown__nav-item:eq(0)');
+      click('.ko-agent-dropdown__nav-item:eq(0)');
     });
 
     andThen(function () {
-      nativeClick('.ko-agent-dropdown-create-case__input .ember-power-select-trigger');
+      click('.ko-agent-dropdown-create-case__input .ember-power-select-trigger');
     });
 
     andThen(function () {
@@ -8408,11 +8408,11 @@ define('frontend-cp/tests/acceptance/agent/cases/create-test', ['exports', 'fron
     });
 
     andThen(function () {
-      nativeClick('.ember-power-select-option');
+      click('.ember-power-select-option');
     });
 
     andThen(function () {
-      nativeClick('.ko-agent-dropdown__drop .button--primary');
+      click('.ko-agent-dropdown__drop .button--primary');
     });
 
     andThen(function () {
@@ -8425,7 +8425,7 @@ define('frontend-cp/tests/acceptance/agent/cases/create-test', ['exports', 'fron
       assert.equal(find('.' + _frontendCpSessionStyles['default'].tab).length, 1, 'There is only one tab');
       assert.equal(find('.' + _frontendCpSessionStyles['default'].tab + '.active').length, 1, 'That tab is active');
       assert.equal(find('.' + _frontendCpSessionStyles['default'].tab).text().trim(), 'New case', 'That tab belongs to the case being created');
-      nativeClick('.ko-layout_advanced_section__subject .editable-text__text');
+      click('.ko-layout_advanced_section__subject .editable-text__text');
       fillIn('.ko-layout_advanced_section__subject input', 'No internet');
       triggerEvent('.ko-layout_advanced_section__subject input', 'input');
     });
@@ -8433,9 +8433,9 @@ define('frontend-cp/tests/acceptance/agent/cases/create-test', ['exports', 'fron
     andThen(function () {
       find('.ko-layout_advanced_section__subject input').trigger($.Event('keydown', { which: 13, keyCode: 13 }));
       fillInRichTextEditor('I press the button and the bomb explodes');
-      // nativeClick('.ko-info-bar_item:contains("Case form")');
-      // nativeClick('.ko-info-bar_item:contains("Case form") .dropdown-menu__item:contains("Internet Related Issue")');
-      nativeClick('.ko-layout_advanced__sidebar .button--primary');
+      // click('.ko-info-bar_item:contains("Case form")');
+      // click('.ko-info-bar_item:contains("Case form") .dropdown-menu__item:contains("Internet Related Issue")');
+      click('.ko-layout_advanced__sidebar .button--primary');
       var status = find('.ko-info-bar_item__header:contains("Status")').next().val();
       assert.equal(status, 'New', 'Status defaults to NEW');
     });
@@ -8635,12 +8635,12 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
       assert.equal(currentURL(), '/agent/cases/view/1');
       assert.equal(find('tbody tr').length, 20);
       assert.equal(find('tbody tr:first td:nth-child(3)').text().trim(), '1');
-      nativeClick('thead th:nth-child(3)');
+      click('thead th:nth-child(3)');
     });
 
     andThen(function () {
       assert.ok(find('thead th:nth-child(3) span:last').hasClass('i-chevron-small-up'));
-      nativeClick('thead th:nth-child(3)');
+      click('thead th:nth-child(3)');
     });
 
     andThen(function () {
@@ -8725,7 +8725,7 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
 
     andThen(function () {
       assert.ok(find('.ko-pagination__container').length);
-      nativeClick('tbody .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox + ':first');
+      click('tbody .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox + ':first');
     });
 
     andThen(function () {
@@ -8744,7 +8744,7 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
     });
 
     andThen(function () {
-      nativeClick('thead .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox + ':first');
+      click('thead .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox + ':first');
     });
 
     andThen(function () {
@@ -8765,11 +8765,11 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
     });
 
     andThen(function () {
-      nativeClick('thead .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox + ':first');
+      click('thead .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox + ':first');
     });
 
     andThen(function () {
-      nativeClick('.ko-cases-list__action-button');
+      click('.ko-cases-list__action-button');
     });
   });
 
@@ -8783,7 +8783,7 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
     });
 
     andThen(function () {
-      nativeClick('thead .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox + ':first');
+      click('thead .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox + ':first');
     });
 
     andThen(function () {
@@ -8807,13 +8807,13 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
     });
 
     andThen(function () {
-      nativeClick('thead .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox + ':first');
+      click('thead .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox + ':first');
     });
 
     andThen(function () {
       assert.equal(find('.ko-bulk-sidebar__title').text().trim(), 'Update Cases');
       assert.equal(find('button:contains("Trash cases")').length, 1);
-      nativeClick('button[name=cancel]');
+      click('button[name=cancel]');
     });
 
     andThen(function () {
@@ -8833,13 +8833,13 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
     });
 
     andThen(function () {
-      nativeClick('thead .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox + ':first');
+      click('thead .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox + ':first');
     });
 
     andThen(function () {
       assert.equal(find('.ko-bulk-sidebar__title').text().trim(), 'Update Cases');
       selectChoose('.fields div:nth-child(2) .ember-power-select', 'Open');
-      nativeClick('button[name=update-cases]');
+      click('button[name=update-cases]');
     });
 
     andThen(function () {
@@ -8858,7 +8858,7 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
     });
 
     andThen(function () {
-      nativeClick('thead .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox + ':first');
+      click('thead .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox + ':first');
     });
 
     andThen(function () {
@@ -8874,11 +8874,11 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
     });
 
     andThen(function () {
-      nativeClick('button[name=update-cases]');
+      click('button[name=update-cases]');
     });
 
     andThen(function () {
-      nativeClick('thead .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox + ':first');
+      click('thead .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox + ':first');
     });
 
     andThen(function () {
@@ -9009,7 +9009,7 @@ define('frontend-cp/tests/acceptance/agent/cases/timeline-test', ['exports', 'fr
     visit('/agent/cases/' + targetCase.id);
 
     andThen(function () {
-      nativeClick('.ko-feed_item--post:first .ko-link-to-message');
+      click('.ko-feed_item--post:first .ko-link-to-message');
     });
 
     andThen(function () {
@@ -9024,12 +9024,12 @@ define('frontend-cp/tests/acceptance/agent/cases/timeline-test', ['exports', 'fr
 
     andThen(function () {
       assert.equal(find('.ko-feed_item--post').length, 3, 'There is three posts');
-      nativeClick('.ko-layout_advanced_editor__placeholder');
+      click('.ko-layout_advanced_editor__placeholder');
     });
 
     andThen(function () {
       fillInRichTextEditor('Testing replies');
-      nativeClick('.button--primary');
+      click('.button--primary');
     });
 
     andThen(function () {
@@ -9044,13 +9044,13 @@ define('frontend-cp/tests/acceptance/agent/cases/timeline-test', ['exports', 'fr
     andThen(function () {
       assert.equal(find('.ko-feed_item--post').length, 3, 'There is three posts');
       assert.equal(find('.ko-feed_item').length, 3, 'There is three items');
-      nativeClick('.ko-layout_advanced_editor__placeholder');
+      click('.ko-layout_advanced_editor__placeholder');
     });
 
     andThen(function () {
-      nativeClick('.ko-text-editor-header-group__item__set-note');
+      click('.ko-text-editor-header-group__item__set-note');
       fillInRichTextEditor('Testing notes');
-      nativeClick('.button--primary');
+      click('.button--primary');
     });
 
     andThen(function () {
@@ -9107,7 +9107,7 @@ define('frontend-cp/tests/acceptance/agent/cases/update-test', ['exports', 'fron
       assert.equal(currentURL(), '/agent/cases/5');
       assert.ok(find('.button--primary')[0].classList.contains('disabled'));
       tagCount = find('.qa-ko-case-content__tags .qa-ko-select_multiple_pill').length;
-      nativeClick('.qa-ko-case-content__tags .qa-ko-select_multiple_pill:first [role=button]');
+      click('.qa-ko-case-content__tags .qa-ko-select_multiple_pill:first [role=button]');
     });
 
     andThen(function () {
@@ -9169,7 +9169,7 @@ define('frontend-cp/tests/acceptance/agent/cases/user-test', ['exports', 'fronte
     visit('/agent/cases/1/user');
 
     andThen(function () {
-      nativeClick('.qa-user-action-menu__dropdown .ember-basic-dropdown-trigger');
+      click('.qa-user-action-menu__dropdown .ember-basic-dropdown-trigger');
     });
 
     andThen(function () {
@@ -9423,9 +9423,9 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
       assert.equal(find('.ko-feed_item--note').length, 10, 'Begin with 10 notes');
     });
 
-    nativeClick('.ko-layout_advanced_editor__placeholder');
+    click('.ko-layout_advanced_editor__placeholder');
     fillInRichTextEditor('Testing notes');
-    nativeClick('.button--primary');
+    click('.button--primary');
 
     andThen(function () {
       assert.equal(find('.ko-feed_item--note').length, 11, 'Now there are 11 notes');
@@ -9522,13 +9522,13 @@ define("frontend-cp/tests/acceptance/agent/macros/select-macro-test", ["exports"
 //   assert.expect(8);
 //   visit('/agent/cases/1');
 //
-//   nativeClick(triggerSelector);
+//   click(triggerSelector);
 //
 //   andThen(() => {
 //     assert.equal(find(optionSelector + ':eq(0)').text().trim(), 'Cat 1', 'Root level should be shown');
 //     assert.equal(find(optionSelector + ':eq(1)').text().trim(), 'Cat 2', 'Root level should be shown');
 //     assert.equal(find(optionSelector).length, 2, 'Dropdown content should be visible');
-//     nativeClick(optionSelector + ':eq(0)');
+//     click(optionSelector + ':eq(0)');
 //   });
 //
 //   andThen(() => {
@@ -9536,7 +9536,7 @@ define("frontend-cp/tests/acceptance/agent/macros/select-macro-test", ["exports"
 //     assert.equal(find(optionSelector + ':eq(1)').text().trim(), 'Cat 1  /  Foo', '1st level should be shown');
 //     assert.equal(find(optionSelector + ':eq(2)').text().trim(), 'Cat 1  /  Bar', '1st level should be shown');
 //     assert.equal(find(optionSelector).length, 3, 'Dropdown should be nested');
-//     nativeClick(optionSelector + ':eq(2)');
+//     click(optionSelector + ':eq(2)');
 //   });
 //
 //   andThen(() => {
@@ -9570,12 +9570,12 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('Validate an email identity of a user', function (assert) {
-    nativeClick('[class*=ember-basic-dropdown-trigger]:contains("third@example.com")');
+    click('[class*=ember-basic-dropdown-trigger]:contains("third@example.com")');
 
     andThen(function () {
       assert.equal(find('.ko-identities__list--emails .ember-basic-dropdown-content li:eq(0)').text().trim(), 'Remove identity', 'The identity can be removed');
       assert.equal(find('.ko-identities__list--emails .ember-basic-dropdown-content li:eq(1)').text().trim(), 'Send verification email', 'The identity is not validated');
-      nativeClick('.ko-identities__list--emails .ember-basic-dropdown-content li:eq(1)');
+      click('.ko-identities__list--emails .ember-basic-dropdown-content li:eq(1)');
     });
 
     andThen(function () {
@@ -9584,10 +9584,10 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('Mark a validate email as primary', function (assert) {
-    nativeClick('[class*=ember-basic-dropdown-trigger ]:contains("second@example.com")');
+    click('[class*=ember-basic-dropdown-trigger ]:contains("second@example.com")');
 
     andThen(function () {
-      nativeClick('.ko-identities__list--emails .ember-basic-dropdown-content li:contains("Make primary")');
+      click('.ko-identities__list--emails .ember-basic-dropdown-content li:contains("Make primary")');
     });
 
     andThen(function () {
@@ -9602,10 +9602,10 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
       assert.equal(message, 'Are you sure you want to remove this identity?');
       return true;
     };
-    nativeClick('[class*=ember-basic-dropdown-trigger ]:contains("second@example.com")');
+    click('[class*=ember-basic-dropdown-trigger ]:contains("second@example.com")');
 
     andThen(function () {
-      nativeClick('.ko-identities__list--emails .ember-basic-dropdown-content li:contains("Remove identity")');
+      click('.ko-identities__list--emails .ember-basic-dropdown-content li:contains("Remove identity")');
     });
 
     andThen(function () {
@@ -9616,12 +9616,12 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('Add an email identity', function (assert) {
-    nativeClick('[class*=ember-basic-dropdown-trigger ]:contains("Add new")');
+    click('[class*=ember-basic-dropdown-trigger ]:contains("Add new")');
 
     andThen(function () {
-      nativeClick('.ko-identities__create-dropdown .ember-basic-dropdown-content li:contains("Email")');
+      click('.ko-identities__create-dropdown .ember-basic-dropdown-content li:contains("Email")');
       fillIn('.ko-identities_form input', 'newemail@example.com');
-      nativeClick('.ko-identities_form button:contains("Save")');
+      click('.ko-identities_form button:contains("Save")');
     });
 
     andThen(function () {
@@ -9631,12 +9631,12 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('Add an invalid email identity shows an error message', function (assert) {
-    nativeClick('[class*=ember-basic-dropdown-trigger ]:contains("Add new")');
+    click('[class*=ember-basic-dropdown-trigger ]:contains("Add new")');
 
     andThen(function () {
-      nativeClick('.ko-identities__create-dropdown .ember-basic-dropdown-content li:contains("Email")');
+      click('.ko-identities__create-dropdown .ember-basic-dropdown-content li:contains("Email")');
       fillIn('.ko-identities_form input', 'wrong@example');
-      nativeClick('.ko-identities_form button:contains("Save")');
+      click('.ko-identities_form button:contains("Save")');
     });
 
     andThen(function () {
@@ -9670,10 +9670,10 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('Mark a validate twitter as primary', function (assert) {
-    nativeClick('[class*=ember-basic-dropdown-trigger ]:contains("@second")');
+    click('[class*=ember-basic-dropdown-trigger ]:contains("@second")');
 
     andThen(function () {
-      nativeClick('.ko-identities__list--twitters .ember-basic-dropdown-content li:contains("Make primary")');
+      click('.ko-identities__list--twitters .ember-basic-dropdown-content li:contains("Make primary")');
     });
 
     andThen(function () {
@@ -9688,10 +9688,10 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
       assert.equal(message, 'Are you sure you want to remove this identity?');
       return true;
     };
-    nativeClick('[class*=ember-basic-dropdown-trigger ]:contains("@second")');
+    click('[class*=ember-basic-dropdown-trigger ]:contains("@second")');
 
     andThen(function () {
-      nativeClick('.ko-identities__list--twitters .ember-basic-dropdown-content li:contains("Remove identity")');
+      click('.ko-identities__list--twitters .ember-basic-dropdown-content li:contains("Remove identity")');
     });
 
     andThen(function () {
@@ -9702,12 +9702,12 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('Add an twitter identity', function (assert) {
-    nativeClick('[class*=ember-basic-dropdown-trigger ]:contains("Add new")');
+    click('[class*=ember-basic-dropdown-trigger ]:contains("Add new")');
 
     andThen(function () {
-      nativeClick('.ko-identities__create-dropdown .ember-basic-dropdown-content li:contains("Twitter")');
+      click('.ko-identities__create-dropdown .ember-basic-dropdown-content li:contains("Twitter")');
       fillIn('.ko-identities_form input', '@miguelcamba');
-      nativeClick('.ko-identities_form button:contains("Save")');
+      click('.ko-identities_form button:contains("Save")');
     });
 
     andThen(function () {
@@ -9737,10 +9737,10 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('Mark a validate facebook as primary', function (assert) {
-    nativeClick('[class*=ember-basic-dropdown-trigger ]:contains("Mary")');
+    click('[class*=ember-basic-dropdown-trigger ]:contains("Mary")');
 
     andThen(function () {
-      nativeClick('.ko-identities__list--facebooks .ember-basic-dropdown-content li:contains("Make primary")');
+      click('.ko-identities__list--facebooks .ember-basic-dropdown-content li:contains("Make primary")');
     });
 
     andThen(function () {
@@ -9755,10 +9755,10 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
       assert.equal(message, 'Are you sure you want to remove this identity?');
       return true;
     };
-    nativeClick('[class*=ember-basic-dropdown-trigger ]:contains("Mary")');
+    click('[class*=ember-basic-dropdown-trigger ]:contains("Mary")');
 
     andThen(function () {
-      nativeClick('.ko-identities__list--facebooks .ember-basic-dropdown-content li:contains("Remove identity")');
+      click('.ko-identities__list--facebooks .ember-basic-dropdown-content li:contains("Remove identity")');
     });
 
     andThen(function () {
@@ -9790,10 +9790,10 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('Mark a validate phone as primary', function (assert) {
-    nativeClick('[class*=ember-basic-dropdown-trigger ]:contains("+44 2222 222222")');
+    click('[class*=ember-basic-dropdown-trigger ]:contains("+44 2222 222222")');
 
     andThen(function () {
-      nativeClick('.ko-identities__list--phones .ember-basic-dropdown-content li:contains("Make primary")');
+      click('.ko-identities__list--phones .ember-basic-dropdown-content li:contains("Make primary")');
     });
 
     andThen(function () {
@@ -9808,10 +9808,10 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
       assert.equal(message, 'Are you sure you want to remove this identity?');
       return true;
     };
-    nativeClick('[class*=ember-basic-dropdown-trigger ]:contains("+44 2222 222222")');
+    click('[class*=ember-basic-dropdown-trigger ]:contains("+44 2222 222222")');
 
     andThen(function () {
-      nativeClick('.ko-identities__list--phones .ember-basic-dropdown-content li:contains("Remove identity")');
+      click('.ko-identities__list--phones .ember-basic-dropdown-content li:contains("Remove identity")');
     });
 
     andThen(function () {
@@ -9822,12 +9822,12 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('Add an phone identity', function (assert) {
-    nativeClick('[class*=ember-basic-dropdown-trigger ]:contains("Add new")');
+    click('[class*=ember-basic-dropdown-trigger ]:contains("Add new")');
 
     andThen(function () {
-      nativeClick('.ko-identities__create-dropdown .ember-basic-dropdown-content li:contains("Phone")');
+      click('.ko-identities__create-dropdown .ember-basic-dropdown-content li:contains("Phone")');
       fillIn('.ko-identities_form input', '+44 (7746) 123-456');
-      nativeClick('.ko-identities_form button:contains("Save")');
+      click('.ko-identities_form button:contains("Save")');
     });
 
     andThen(function () {
@@ -9873,18 +9873,18 @@ define('frontend-cp/tests/acceptance/agent/organisations/create-test', ['exports
   //test('Creating a organisation using the "+" button in the main header', function(assert) {
   //  visit('/agent');
   //
-  //  nativeClick('.ko-agent-dropdown__add-icon');
+  //  click('.ko-agent-dropdown__add-icon');
   //
   //  andThen(function() {
   //    assert.equal(find('.ko-agent-dropdown__drop').length, 1, '"+" Dropdown content should be visible');
-  //    nativeClick('.ko-agent-dropdown__nav-item:eq(2)');
+  //    click('.ko-agent-dropdown__nav-item:eq(2)');
   //  });
   //
   //  andThen(function() {
   //    fillIn('.ko-agent-dropdown__drop input[name=name]', 'Gadisa');
   //    fillIn('.ko-agent-dropdown__drop .ko-tags__input', 'gadisa.com');
   //    triggerEvent('.ko-agent-dropdown__drop .ko-tags__input', 'blur');
-  //    nativeClick('.ko-agent-dropdown__drop .button--primary');
+  //    click('.ko-agent-dropdown__drop .button--primary');
   //  });
   //
   //  andThen(function() {
@@ -9957,7 +9957,7 @@ define('frontend-cp/tests/acceptance/agent/search/search-test', ['exports', 'fro
 
     andThen(function () {
       assert.equal(find('.ko-table_row').length, 0);
-      nativeClick(find('.sidebar__link')[1]);
+      click(find('.sidebar__link')[1]);
     });
 
     andThen(function () {
@@ -10395,17 +10395,17 @@ define('frontend-cp/tests/acceptance/agent/users/create-test', ['exports', 'fron
   (0, _frontendCpTestsHelpersQunit.test)('Creating a user using the "+" button in the main header', function (assert) {
     visit('/agent');
 
-    nativeClick('.ko-agent-dropdown__add-icon');
+    click('.ko-agent-dropdown__add-icon');
 
     andThen(function () {
       assert.equal(find('.ko-agent-dropdown__drop').length, 1, '"+" Dropdown content should be visible');
-      nativeClick('.ko-agent-dropdown__nav-item:eq(1)');
+      click('.ko-agent-dropdown__nav-item:eq(1)');
     });
 
     andThen(function () {
       fillIn('.ko-agent-dropdown__drop input[name=full_name]', 'Barney Stinson');
       fillIn('.ko-agent-dropdown__drop input[name=email]', 'barney@stin.son');
-      nativeClick('.ko-agent-dropdown__drop .button--primary');
+      click('.ko-agent-dropdown__drop .button--primary');
     });
 
     andThen(function () {
@@ -10472,7 +10472,7 @@ define('frontend-cp/tests/acceptance/suspended-messages-test', ['exports', 'fron
       assert.equal($('.ko-pagination__pageCount').text().trim(), 'of 2', '... of 2');
 
       assert.equal($('.suspended-messages-section__table tbody tr:eq(0) td:eq(1)').text().trim(), 'client0@example.com');
-      nativeClick('.ko-pagination__next a');
+      click('.ko-pagination__next a');
     });
 
     andThen(function () {
@@ -10488,14 +10488,14 @@ define('frontend-cp/tests/acceptance/suspended-messages-test', ['exports', 'fron
     visit('/agent/cases/suspended-messages');
 
     andThen(function () {
-      nativeClick($('.suspended-messages-section__table tbody tr:eq(2)'));
+      click($('.suspended-messages-section__table tbody tr:eq(2)'));
     });
 
     andThen(function () {
       assert.equal(currentURL(), '/agent/cases/suspended-messages/3');
       assert.equal($('.suspended-message-modal').length, 1, 'A modal opened with the message clicked');
       assert.equal($('.suspended-message-modal__table-row:eq(0) td:eq(1)').text().trim(), 'client2@example.com', 'The data seems correct');
-      nativeClick('a:contains("Cancel")');
+      click('a:contains("Cancel")');
     });
 
     andThen(function () {
@@ -10508,14 +10508,14 @@ define('frontend-cp/tests/acceptance/suspended-messages-test', ['exports', 'fron
     visit('/agent/cases/suspended-messages');
 
     andThen(function () {
-      nativeClick($('.suspended-messages-section__table tbody tr:eq(2)'));
+      click($('.suspended-messages-section__table tbody tr:eq(2)'));
     });
 
     andThen(function () {
       assert.equal(currentURL(), '/agent/cases/suspended-messages/3');
       assert.equal($('.suspended-message-modal').length, 1, 'A modal opened with the message clicked');
       assert.equal($('.suspended-message-modal__table-row:eq(0) td:eq(1)').text().trim(), 'client2@example.com', 'The data seems correct');
-      nativeClick('.button:contains("Permanently delete")');
+      click('.button:contains("Permanently delete")');
     });
 
     andThen(function () {
@@ -10529,14 +10529,14 @@ define('frontend-cp/tests/acceptance/suspended-messages-test', ['exports', 'fron
     visit('/agent/cases/suspended-messages');
 
     andThen(function () {
-      nativeClick($('.suspended-messages-section__table tbody tr:eq(2)'));
+      click($('.suspended-messages-section__table tbody tr:eq(2)'));
     });
 
     andThen(function () {
       assert.equal(currentURL(), '/agent/cases/suspended-messages/3');
       assert.equal($('.suspended-message-modal').length, 1, 'A modal opened with the message clicked');
       assert.equal($('.suspended-message-modal__table-row:eq(0) td:eq(1)').text().trim(), 'client2@example.com', 'The data seems correct');
-      nativeClick('.button:contains("Allow through")');
+      click('.button:contains("Allow through")');
     });
 
     andThen(function () {
@@ -10554,14 +10554,14 @@ define('frontend-cp/tests/acceptance/suspended-messages-test', ['exports', 'fron
 
     andThen(function () {
       assert.equal($('.suspended-messages-section__delete-all').length, 0, 'There is no button to delete ni batch visible');
-      nativeClick('.suspended-messages-section__table tbody tr .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox + ':eq(0)');
-      nativeClick('.suspended-messages-section__table tbody tr .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox + ':eq(2)');
-      nativeClick('.suspended-messages-section__table tbody tr .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox + ':eq(4)');
+      click('.suspended-messages-section__table tbody tr .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox + ':eq(0)');
+      click('.suspended-messages-section__table tbody tr .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox + ':eq(2)');
+      click('.suspended-messages-section__table tbody tr .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox + ':eq(4)');
     });
 
     andThen(function () {
       assert.equal($('.suspended-messages-section__delete-all').length, 1, 'The button to delete in batch appeared');
-      nativeClick('.suspended-messages-section__delete-all');
+      click('.suspended-messages-section__delete-all');
     });
 
     andThen(function () {
@@ -11216,35 +11216,6 @@ define('frontend-cp/tests/helpers/module-for-acceptance', ['exports', 'qunit', '
     });
   };
 });
-define('frontend-cp/tests/helpers/native-click', ['exports', 'ember', 'frontend-cp/tests/helpers/native-focus'], function (exports, _ember, _frontendCpTestsHelpersNativeFocus) {
-  var run = _ember['default'].run;
-
-  function triggerMouseEvent(node, eventType) {
-    var clickEvent = document.createEvent('MouseEvents');
-    clickEvent.initEvent(eventType, true, true);
-    node.dispatchEvent(clickEvent);
-  }
-
-  exports['default'] = _ember['default'].Test.registerAsyncHelper('nativeClick', function (app, selector, context) {
-    var $el = app.testHelpers.findWithAssert(selector, context);
-    var el = $el[0];
-
-    run(function () {
-      return triggerMouseEvent(el, 'mousedown');
-    });
-
-    (0, _frontendCpTestsHelpersNativeFocus['default'])(el);
-
-    run(function () {
-      return triggerMouseEvent(el, 'mouseup');
-    });
-    run(function () {
-      return triggerMouseEvent(el, 'click');
-    });
-
-    return app.testHelpers.wait();
-  });
-});
 define('frontend-cp/tests/helpers/native-focus', ['exports', 'ember'], function (exports, _ember) {
 
   function fireEvent(node, eventType) {
@@ -11361,7 +11332,7 @@ define('frontend-cp/tests/helpers/reorder-inputs', ['exports', 'ember'], functio
         var dx = targetElement.offset().left - OVERSHOOT - element.offset().left;
         var dy = targetElement.offset().top - OVERSHOOT - element.offset().top;
 
-        drag(element, function () {
+        drag('mouse', element, function () {
           return { dx: dx, dy: dy };
         });
       });
@@ -11390,7 +11361,7 @@ define('frontend-cp/tests/helpers/reorder-list-items', ['exports', 'ember'], fun
         var dx = targetElement.offset().left - OVERSHOOT - element.offset().left;
         var dy = targetElement.offset().top - OVERSHOOT - element.offset().top;
 
-        drag(element, function () {
+        drag('mouse', element, function () {
           return { dx: dx, dy: dy };
         });
       });
@@ -11400,32 +11371,6 @@ define('frontend-cp/tests/helpers/reorder-list-items', ['exports', 'ember'], fun
   });
 });
 //unashamedly stolen from ember-sortable test helper
-define('frontend-cp/tests/helpers/reorder', ['exports', 'ember'], function (exports, _ember) {
-
-  var OVERSHOOT = 2;
-
-  exports['default'] = _ember['default'].Test.registerAsyncHelper('reorder', function (app, itemSelector) {
-    for (var _len = arguments.length, resultSelectors = Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
-      resultSelectors[_key - 2] = arguments[_key];
-    }
-
-    resultSelectors.forEach(function (selector, targetIndex) {
-      andThen(function () {
-        var items = findWithAssert(itemSelector);
-        var element = items.filter(selector);
-        var targetElement = items.eq(targetIndex);
-        var dx = targetElement.offset().left - OVERSHOOT - element.offset().left;
-        var dy = targetElement.offset().top - OVERSHOOT - element.offset().top;
-
-        drag(element, function () {
-          return { dx: dx, dy: dy };
-        });
-      });
-    });
-
-    return wait();
-  });
-});
 define('frontend-cp/tests/helpers/resolver', ['exports', 'frontend-cp/resolver', 'frontend-cp/config/environment'], function (exports, _frontendCpResolver, _frontendCpConfigEnvironment) {
 
   var resolver = _frontendCpResolver['default'].create();
@@ -11451,7 +11396,7 @@ define('frontend-cp/tests/helpers/setup-mirage-for-integration', ['exports', 'fr
 });
 //Work around until this is real
 //https://github.com/samselikoff/ember-cli-mirage/issues/183
-define('frontend-cp/tests/helpers/start-app', ['exports', 'ember', 'frontend-cp/app', 'frontend-cp/config/environment', 'frontend-cp/tests/helpers/login', 'frontend-cp/tests/helpers/native-click', 'frontend-cp/tests/helpers/fill-in-rich-text-editor', 'frontend-cp/tests/helpers/use-default-scenario', 'frontend-cp/tests/helpers/ember-power-select', 'frontend-cp/tests/helpers/reorder', 'frontend-cp/tests/helpers/reorder-inputs', 'frontend-cp/tests/helpers/reorder-list-items', 'frontend-cp/tests/helpers/confirming', 'frontend-cp/tests/helpers/drag', 'frontend-cp/tests/helpers/scroll-to-bottom-of-page', 'frontend-cp/tests/helpers/input-array-to-input-val-array', 'frontend-cp/tests/helpers/logout'], function (exports, _ember, _frontendCpApp, _frontendCpConfigEnvironment, _frontendCpTestsHelpersLogin, _frontendCpTestsHelpersNativeClick, _frontendCpTestsHelpersFillInRichTextEditor, _frontendCpTestsHelpersUseDefaultScenario, _frontendCpTestsHelpersEmberPowerSelect, _frontendCpTestsHelpersReorder, _frontendCpTestsHelpersReorderInputs, _frontendCpTestsHelpersReorderListItems, _frontendCpTestsHelpersConfirming, _frontendCpTestsHelpersDrag, _frontendCpTestsHelpersScrollToBottomOfPage, _frontendCpTestsHelpersInputArrayToInputValArray, _frontendCpTestsHelpersLogout) {
+define('frontend-cp/tests/helpers/start-app', ['exports', 'ember', 'frontend-cp/app', 'frontend-cp/config/environment', 'frontend-cp/tests/helpers/login', 'frontend-cp/tests/helpers/fill-in-rich-text-editor', 'frontend-cp/tests/helpers/use-default-scenario', 'frontend-cp/tests/helpers/ember-power-select', 'frontend-cp/tests/helpers/reorder-inputs', 'frontend-cp/tests/helpers/reorder-list-items', 'frontend-cp/tests/helpers/confirming', 'frontend-cp/tests/helpers/ember-sortable/test-helpers', 'frontend-cp/tests/helpers/scroll-to-bottom-of-page', 'frontend-cp/tests/helpers/input-array-to-input-val-array', 'frontend-cp/tests/helpers/logout'], function (exports, _ember, _frontendCpApp, _frontendCpConfigEnvironment, _frontendCpTestsHelpersLogin, _frontendCpTestsHelpersFillInRichTextEditor, _frontendCpTestsHelpersUseDefaultScenario, _frontendCpTestsHelpersEmberPowerSelect, _frontendCpTestsHelpersReorderInputs, _frontendCpTestsHelpersReorderListItems, _frontendCpTestsHelpersConfirming, _frontendCpTestsHelpersEmberSortableTestHelpers, _frontendCpTestsHelpersScrollToBottomOfPage, _frontendCpTestsHelpersInputArrayToInputValArray, _frontendCpTestsHelpersLogout) {
   exports['default'] = startApp;
   // eslint-disable-line
 
@@ -11472,8 +11417,6 @@ define('frontend-cp/tests/helpers/start-app', ['exports', 'ember', 'frontend-cp/
     return application;
   }
 });
-// eslint-disable-line
-// eslint-disable-line
 // eslint-disable-line
 // eslint-disable-line
 // eslint-disable-line
