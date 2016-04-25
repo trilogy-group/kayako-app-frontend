@@ -4,6 +4,7 @@
   "navigation.people": "People",
   "navigation.channels": "Channels",
   "navigation.automation": "Automation",
+  "navigation.account": "Account Overview",
 
   "administration": "Administration",
   "apps.title": "Apps",
@@ -414,6 +415,15 @@
 
   "monitors.title": "Monitors",
   "monitors.buttons.add": "Add New",
+  "monitors.headings.new": "Monitors / New",
+  "monitors.headings.edit": "Monitors / {title}",
+  "monitors.heading.details": "Details",
+  "monitors.label.title": "Monitor rule title",
+  "monitors.actions.heading": "Perform the following actions",
+  "monitors.actions.info": "If the conditions match, the rule will fire and the actions will be executed. Note that any case update actions, such as changing the prority of a case, will take place before any notifications are sent out.",
+  "monitors.conditions.heading": "Monitors",
+  "monitors.conditions.info": "Case monitors will periodically check all non-closed cases to see if they meet the conditions below. If the rule's conditions match, the rule will fire and the actions further down in the page will be executed.",
+  "monitors.conditions.monitor_link": "Find out more about monitor rules",
   "monitors.enabled.success_message": "Monitor enabled successfully",
   "monitors.disabled.success_message": "Monitor disabled successfully",
   "monitors.delete.success_message": "Monitor deleted successfully",
@@ -527,5 +537,18 @@
   "facebook.help.route_posts": "Capturing customer posts and comments",
   "facebook.no_pages": "No pages found",
   "facebook.see_facebook_account": "Don't see your Facebook page?",
-  "facebook.connect_facebook_account": "Connect your Facebook account"
+  "facebook.connect_facebook_account": "Connect your Facebook account",
+  "account.overview.title": "Overview",
+  "account.overview.list.title": "Billing Overview",
+  "account.overview.invoices.title": "Invoices",
+  "account.overview.invoices.date": "Date",
+  "account.overview.invoices.amount": "Amount",
+  "account.overview.invoices.downloadText": "PDF",
+  "account.overview.balance.title": "Balance",
+  "account.overview.plan.title" : "Current Plan",
+  "account.overview.plan.buttonText": "Change plan",
+  "account.overview.payment.title" : "Payment Method",
+  "account.overview.payment.buttonText" : "Update Card",
+  "account.overview.billing.title" : "Billing Information",
+  "account.overview.billing.buttonText" : "Update information"
 }
