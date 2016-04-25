@@ -1837,10 +1837,6 @@ img {
   color: #2D3138;
   opacity: 0.6; }
 
-.sticky {
-  z-index: 1100;
-  max-height: calc(100vh - 84px); }
-
 .ko-dropdown_list {
   list-style-type: none;
   max-height: 300px;
@@ -4405,7 +4401,8 @@ label {
   font-size: 14px;
   font-style: italic;
   border-bottom: 1px solid #D1D5D7;
-  padding: 16px 15px; }
+  padding: 16px 15px;
+  min-height: 51px; }
 
 .ko-layout_advanced_editor__action {
   text-decoration: underline;
@@ -5493,7 +5490,7 @@ span#HW_badge.HW_softHidden {
   left: 13.5px; }
 
 .ko-text-editor-header {
-  min-height: 50px;
+  min-height: 51px;
   position: relative;
   border-bottom: 1px solid #CFD4D8; }
 
