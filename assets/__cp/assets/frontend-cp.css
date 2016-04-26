@@ -385,7 +385,7 @@ textarea {
 /* ==========================================================================
    	Positioning
    ========================================================================= */
-.i-after[class*="i-"]:before, .input--search > [class*="i-"]:before, .ko-admin_case-fields_select-type__action > [class*="i-"]:before, .ko-admin_endpoints_select-type__action > [class*="i-"]:before, .ko-case_macro-selector .ember-power-select-search::before, .editable-text > [class*="i-"]:before, .ko-predicate-builder_proposition__label, .ko-predicate-builder_proposition__remove, .ko-reorderable-list .ko-reorderable-list_item_handle[class*="i-"]:before, .sidebar__value, .ko-simple-list [class*="ko-reorderable-list_item_handle"][class*="i-"]:before, .universal-search_result__action, ._icon_6p3bsw,
+.i-after[class*="i-"]:before, .input--search > [class*="i-"]:before, .ko-admin_case-fields_select-type__action > [class*="i-"]:before, .ko-admin_endpoints_select-type__action > [class*="i-"]:before, .ko-case_macro-selector .ember-power-select-search::before, .editable-text > [class*="i-"]:before, .ko-predicate-builder_proposition__label, .ko-reorderable-list .ko-reorderable-list_item_handle[class*="i-"]:before, .sidebar__value, .ko-simple-list [class*="ko-reorderable-list_item_handle"][class*="i-"]:before, .universal-search_result__action, ._icon_6p3bsw,
 .u-v-center {
   position: absolute;
   top: 50%;
@@ -4963,7 +4963,7 @@ span#HW_badge.HW_softHidden {
           animation-fill-mode: forwards;
   -webkit-animation-duration: 0.3s;
           animation-duration: 0.3s; }
-  .ko-predicate-builder_proposition:hover .ko-predicate-builder_proposition__remove {
+  .ko-predicate-builder_proposition:hover .ko-predicate-builder_proposition__actions {
     visibility: visible; }
   .ko-predicate-builder_proposition + .ko-predicate-builder_proposition .ko-predicate-builder_proposition__label {
     visibility: visible; }
@@ -4996,16 +4996,25 @@ span#HW_badge.HW_softHidden {
   visibility: hidden; }
 
 .ko-predicate-builder_proposition__actions {
-  width: 7%;
-  padding-left: 10px; }
+  width: 100px;
+  padding-left: 10px;
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  visibility: hidden; }
 
 .ko-predicate-builder_proposition__remove {
-  visibility: hidden;
   font-size: 16px;
-  line-height: 1.125;
+  line-height: 16px;
   cursor: pointer; }
-  .ko-predicate-builder_proposition__remove:hover {
-    visibility: visible; }
+  .ko-predicate-builder_proposition__remove::before {
+    display: block; }
 
 .ko-predicate-builder_proposition__layout {
   display: -webkit-box;
