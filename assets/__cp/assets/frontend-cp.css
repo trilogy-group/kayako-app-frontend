@@ -5213,7 +5213,11 @@ span#HW_badge.HW_softHidden {
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
-  cursor: pointer; }
+  cursor: pointer;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+      -ms-flex: 1;
+          flex: 1; }
 
 .ko-session-widgets__notification {
   line-height: 42px;
