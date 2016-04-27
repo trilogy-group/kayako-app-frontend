@@ -9379,7 +9379,6 @@ define('frontend-cp/tests/acceptance/agent/cases/user-test', ['exports', 'fronte
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | Case | User', {
     beforeEach: function beforeEach() {
-      server.logging = true;
       useDefaultScenario().then(function () {
         login(server.db.sessions[0].id);
       });
